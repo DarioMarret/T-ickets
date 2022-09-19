@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Spinner } from "react-bootstrap"
 import { GetMetodo } from 'utils/CarritoLocalStorang';
+import { Envio } from 'utils/constantes';
+import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
+import { DatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import { getCedula } from 'utils/localstore';
 
 function ModalDetalle(props) {
@@ -8,10 +11,7 @@ function ModalDetalle(props) {
         listaPrecio, listarCarritoDetalle,
         datosPerson, setPerson, setModalPago,
         setDetalle
-     } = props
-
-
-
+    } = props
 
     const [actualState, changeCheckState] = useState({
         check1: false,
@@ -50,17 +50,16 @@ function ModalDetalle(props) {
             ...datosPerson,
             [name]: value
         })
-        if (name === "dni" && value.length > 9) {
+        if (name === "cedula" && value.length == 10) {
             setspiner("")
             const datos = await getCedula(value)
-            const resp = await datos;
-            if (resp.name) {
-                const { name, email } = resp
-                console.log(name)
+            if (datos.name) {
+                DatosUsuariosLocalStorag({...datos, cedula:value})
+                const { name, email } = datos
                 setPerson({
                     ...datosPerson,
-                    email: resp.email,
-                    name: resp.name,
+                    email: email,
+                    name: name,
                 })
                 setspiner("d-none")
             } else {
@@ -73,12 +72,39 @@ function ModalDetalle(props) {
             }
         }
     }
-    useEffect(() => {
-    
-        let metodos = GetMetodo()
+    function hanbleDatos(e) {
         setPerson({
             ...datosPerson,
-            metodo: metodos
+            [e.target.name]: e.target.value
+        })
+        let datosPersonal = getDatosUsuariosLocalStorag()
+        if (datosPersonal !== null) {
+            DatosUsuariosLocalStorag({
+                ...datosPersonal,
+                [e.target.name]: e.target.value
+            })
+        }
+    }
+
+    useEffect(() => {
+        let datosPersonal = getDatosUsuariosLocalStorag()
+        let metodoPago = GetMetodo()
+        if(datosPersonal !== null){
+            setPerson({
+                ...datosPerson,
+                email: datosPersonal.email,
+                name: datosPersonal.name,
+                whatsapp: datosPersonal.whatsapp,
+                cedula: datosPersonal.cedula,
+            })
+            DatosUsuariosLocalStorag({
+                ...datosPersonal,
+                ['metodoPago']: metodoPago
+            })
+        }
+        setPerson({
+            ...datosPerson,
+            metodoPago: metodoPago
         })
     }, [])
 
@@ -113,7 +139,7 @@ function ModalDetalle(props) {
                             <input type="text"
                                 className="form-control form-control-sm"
                                 name="metodo"
-                                value={datosPerson.metodo}
+                                value={datosPerson.metodoPago}
                                 id="formaPago" disabled={true}
                                 placeholder="forma de pago Selecionada"
                             />
@@ -128,8 +154,8 @@ function ModalDetalle(props) {
                                 className="form-control form-control-sm"
                                 id="dni"
                                 maxLength={10}
-                                name='dni'
-                                value={datosPerson.dni}
+                                name='cedula'
+                                value={datosPerson.cedula}
                                 onChange={(e) => handelchange(e.target)}
                                 placeholder="Ingrese su numero de identificacion"
                             />
@@ -149,8 +175,13 @@ function ModalDetalle(props) {
                             <span>Forma de envío:</span>
                             <div>
                                 <select className="form-select" id="envio-resumen" name="envio" onChange={(e) => handelchange(e)}>
-                                    <option selected value={1}>Correo electrónico</option>
-                                    <option value={2}>Whastapp</option>
+                                    {
+                                        Envio.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.envio}>{item.envio}</option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
 
@@ -163,32 +194,45 @@ function ModalDetalle(props) {
                                 name='email'
                                 required
                                 value={datosPerson.email}
-                                onChange={(e) => handelchange(e.target)}
+                                onChange={(e) => hanbleDatos(e)}
                                 placeholder="Ingrese su correo electronico"
                             />
 
                             <span>Whatsapp Contacto:</span>
                             <input type="text"
                                 className="form-control form-control-sm"
-                                id="number"
-                                name="number"
+                                id="whatsapp"
+                                name="whatsapp"
                                 minLength={10}
                                 maxLength={10}
                                 required
-                                onChange={(e) => handelchange(e.target)}
+                                value={datosPerson.whatsapp}
+                                onChange={(e) => hanbleDatos(e)}
                                 placeholder="Ingrese su whatsapp o numero de contacto"
                             />
 
                         </div>
+                            <span>Direccion:</span>
+                            <input type="text"
+                                className="form-control form-control-sm"
+                                id="direccion"
+                                name="direccion"
+                                minLength={10}
+                                maxLength={10}
+                                required
+                                value={datosPerson.direccion}
+                                onChange={(e) => hanbleDatos(e)}
+                                placeholder="Ingrese su direccion"
+                            />
                     </div>
                     <div className="container table-responsive">
                         <table className="resumen-table table ">
                             <thead>
-                                <tr  className="text-black">
-                                    <th scope="col"  className="text-black">CONCIENTO</th>
-                                    <th  className="text-black">LOCALIDAD</th>
+                                <tr className="text-black">
+                                    <th scope="col" className="text-black">CONCIENTO</th>
+                                    <th className="text-black">LOCALIDAD</th>
                                     <th className="text-black" scope="col">FILA</th>
-                                    <th className="text-black"scope="col">ASIENTO</th>
+                                    <th className="text-black" scope="col">ASIENTO</th>
                                     <th className="text-black" scope="col">TOTAL</th>
                                 </tr>
                             </thead>

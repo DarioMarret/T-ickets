@@ -112,7 +112,7 @@ function ModalPago(props) {
                             padding: '10px',
                             cursor: 'pointer'
                         }}
-                        onClick={CrearLinkPayPhone}
+                        onClick={()=>CrearLinkPayPhone()}
                     >
                         <img
                             src="https://codigomarret.online/img/payphone.jpeg"

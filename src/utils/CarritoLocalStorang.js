@@ -1,6 +1,4 @@
-import { CarritoTicket, Valores, Metodos } from "./constantes"
-
-
+import { CarritoTicket, Metodos } from "./constantes"
 
 let PViten = []
 export function TiendaIten(producto) {

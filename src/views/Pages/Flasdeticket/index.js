@@ -15,16 +15,19 @@ import ModalCarrito from "views/Components/MODAL/ModalCarrito";
 import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalPago from "views/Components/MODAL/ModalPago";
 import Footer from "views/Components/Footer/Footer";
+import { DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import { GetMetodo } from "utils/CarritoLocalStorang";
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 
 
 const IndexFlas = () => {
   const [lgShow, setLgShow] = useState(false);
   const [smShow, setSmShow] = useState(false);
   const [showDetalle, setDetalle] = useState(false)
-  const [repShop, setrepShow]= useState(false);
-  const [opsShow, setOpShow]= useState(false);
-  const [efectShow, efectiOpShow]= useState(false);
- 
+  const [repShop, setrepShow] = useState(false);
+  const [opsShow, setOpShow] = useState(false);
+  const [efectShow, efectiOpShow] = useState(false);
+
 
   const [modalPago, setModalPago] = useState(false);
 
@@ -32,12 +35,12 @@ const IndexFlas = () => {
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
-  
+
 
   const handleContinuar = () => {
     setShow(false)
     setDetalle(true)
-  } 
+  }
   const handleDetalleColse = () => {
     setDetalle(false)
     setShow(true)
@@ -50,13 +53,30 @@ const IndexFlas = () => {
   const [listarCarritoDetalle, setListarCarritoDetalle] = useState([])
 
   const [datosPerson, setPerson] = useState({
+    cedula: '',
     name: '',
     email: '',
-    dni: '',
-    number: '',
-    metodo: '',
-    envio: 1
+    whatsapp: '',
+    metodoPago: '',
+    envio: '',
+    direccion: '',
   })
+
+  useEffect(() => {
+    let datosPersonal = getDatosUsuariosLocalStorag()
+    let metodoPago = GetMetodo()
+    if (datosPersonal !== null) {
+      setPerson({
+        ...datosPerson,
+        email: datosPersonal.email,
+        name: datosPersonal.name,
+        whatsapp: datosPersonal.whatsapp,
+        cedula: datosPersonal.cedula,
+        metodoPago: metodoPago,
+        envio: datosPersonal.envio
+      })
+    }
+  }, [])
 
   return (
     <>

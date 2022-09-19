@@ -11,18 +11,17 @@ export function setDatosUser(data) {
 }
 export async function getCedula(cedula) {
     try {
-        const res = await axios.get("https://rec.netbot.ec/pdfqr/api/v1/cedula/" + cedula)
-        const { data } = await res;
+
+        const { data } = await axios.get("https://rec.netbot.ec/pdfqr/api/v1/cedula/"+cedula)
         const { message, portal } = data;
-        console.log("info", data)
         if (message.name) {
             return message;
+        } else {
+            return false
         }
-        else return false
     } catch (error) {
         return error;
     }
-
 }
 
 export function getUsuario() {
