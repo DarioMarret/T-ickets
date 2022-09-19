@@ -9,13 +9,15 @@ import AuthLayout from "layouts/Auth.js";
 import AdminLayout from "layouts/Admin.js";
 import Indexflas from "../src/views/Pages/Flasdeticket"
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
+
 root.render(
   <BrowserRouter>
     <Switch>
       <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Route path="/flastick" render={()=><Indexflas/>}/>
-      <Redirect from="/" to="/auth/login"  />
+      <Redirect from="/" to="/flastick"  />
     </Switch>
   </BrowserRouter>
 );

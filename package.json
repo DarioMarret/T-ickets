@@ -1,5 +1,5 @@
 {
-  "name": "light-bootstrap-dashboard-pro-react",
+  "name": "t-ickets",
   "version": "2.0.1",
   "private": true,
   "dependencies": {
@@ -19,6 +19,7 @@
     "nouislider": "14.6.3",
     "perfect-scrollbar": "1.5.5",
     "prop-types": "15.8.1",
+    "qs": "^6.11.0",
     "react": ">=16.8.0",
     "react-big-calendar": "0.40.2",
     "react-bootstrap": "1.4.3",
@@ -26,7 +27,7 @@
     "react-bootstrap-wizard": "0.0.9",
     "react-chartist": "0.14.4",
     "react-datetime": "3.1.1",
-    "react-dom": ">=16.8.0",
+    "react-dom": "^18.2.0",
     "react-jvectormap": "0.0.16",
     "react-notification-alert": "0.0.13",
     "react-router": "5.2.0",
@@ -52,8 +53,7 @@
     "typescript": "4.7.4"
   },
   "peerDependencies": {
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react": ">=16.8.0"
   },
   "browserslist": [
     ">0.2%",
