@@ -65,6 +65,7 @@ const IndexFlas = () => {
   useEffect(() => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let metodoPago = GetMetodo()
+    console.log(datosPerson.direccion)
     if (datosPersonal !== null) {
       setPerson({
         ...datosPerson,

@@ -7,10 +7,10 @@ export const Metodos = "Metodo-pago"
 
 
 export const Envio = [
-    // {
-    //     id: 1,
-    //     envio: "Seleccione una opción",
-    // },
+     {
+         id: 1,
+         envio: "",
+     },
     {
         id: 2,
         envio:"Correo Electrónico",

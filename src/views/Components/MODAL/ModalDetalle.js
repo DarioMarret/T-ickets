@@ -12,14 +12,17 @@ function ModalDetalle(props) {
         datosPerson, setPerson, setModalPago,
         setDetalle
     } = props
-
+    
     const [actualState, changeCheckState] = useState({
         check1: false,
         check2: false,
         check3: false
     });
+    const [checked,setChecked]=useState(false)
+   
     const [spinervi, setspiner] = useState("d-none")
     const handleCheckboxChange = (event) => {
+       
         const { name, checked } = event
         if (checked) {
             changeCheckState({
@@ -33,6 +36,7 @@ function ModalDetalle(props) {
                 [name]: false
             })
         }
+        
     }
 
     function handlePago() {
@@ -40,26 +44,30 @@ function ModalDetalle(props) {
         setModalPago(true)
     }
 
-    async function Consultacedula() {
-    }
-
-    async function handelchange(e) {
-
+   async function handelchange(e) {
         const { value, name } = e;
+        console.log(e)
         setPerson({
             ...datosPerson,
             [name]: value
         })
+       
         if (name === "cedula" && value.length == 10) {
             setspiner("")
             const datos = await getCedula(value)
             if (datos.name) {
                 DatosUsuariosLocalStorag({...datos, cedula:value})
-                const { name, email } = datos
+                
+
+                //console.log()
+                const { name, email ,direccion} = datos
+                console.log(datos)
                 setPerson({
                     ...datosPerson,
                     email: email,
                     name: name,
+                    cedula:value,
+                    direccion:direccion,                
                 })
                 setspiner("d-none")
             } else {
@@ -67,23 +75,29 @@ function ModalDetalle(props) {
                     ...datosPerson,
                     email: '',
                     name: '',
+                    direccion:'',
                 })
                 setspiner("d-none")
             }
         }
     }
     function hanbleDatos(e) {
+      
         setPerson({
             ...datosPerson,
             [e.target.name]: e.target.value
         })
+    
         let datosPersonal = getDatosUsuariosLocalStorag()
         if (datosPersonal !== null) {
             DatosUsuariosLocalStorag({
                 ...datosPersonal,
                 [e.target.name]: e.target.value
             })
+            console.log( Object.values(datosPersonal).every((d) => d))
         }
+       
+        
     }
 
     useEffect(() => {
@@ -96,17 +110,22 @@ function ModalDetalle(props) {
                 name: datosPersonal.name,
                 whatsapp: datosPersonal.whatsapp,
                 cedula: datosPersonal.cedula,
+                direccion:datosPersonal.direccion,
             })
+           
             DatosUsuariosLocalStorag({
                 ...datosPersonal,
                 ['metodoPago']: metodoPago
             })
         }
+        //setChecked((  Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d===true)))
+        setChecked( Object.values(datosPerson).every((d) => d))
         setPerson({
             ...datosPerson,
-            metodoPago: metodoPago
+            metodoPago: metodoPago,
+            direccion:datosPersonal.direccion,
         })
-    }, [])
+    }, [showDetalle,actualState])
 
 
 
@@ -174,10 +193,15 @@ function ModalDetalle(props) {
                         <div className="col-6 col-sm-6 d-flex flex-column">
                             <span>Forma de envío:</span>
                             <div>
-                                <select className="form-select" id="envio-resumen" name="envio" onChange={(e) => handelchange(e)}>
+                                <select className="form-select" value={datosPerson.envio} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
                                     {
                                         Envio.map((item, index) => {
+                                            if(index ==1){ return (
+                                                
+                                                <option key={index} value={""}>Selecione un metodo de envío</option>
+                                            )}
                                             return (
+                                                
                                                 <option key={index} value={item.envio}>{item.envio}</option>
                                             )
                                         })
@@ -309,6 +333,7 @@ function ModalDetalle(props) {
                                 </div>
                                 <div className="px-3">
                                     <input className="form-check-input terminoscheck" id="check2" type="checkbox"
+                                    
                                         name="check2"
                                         onChange={(e) => handleCheckboxChange(e.target)}
                                     />
@@ -318,9 +343,8 @@ function ModalDetalle(props) {
                             <div className="d-flex text-end  flex-wrap-reverse">
                                 <div className="col-10 d-flex text-end">
                                     <p style={{ fontSize: "0.7em" }}>
-                                        Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
-                                        realizada la compra , caso contrario no podra retirar los boletos duros sin opcion a
-                                        rembolso
+                                        Acepto que que se crea mi cuenta de usuario en el portal de flasthetickets, la misma que contiene mis datos persoanales, así como los 
+                                        datos de mis compras, así como tambien recibir las promociones por ese mismo medio.
                                     </p>
                                 </div>
                                 <div className="px-3">
@@ -333,9 +357,35 @@ function ModalDetalle(props) {
 
                         </div>
                         <div className="col-12 col-lg-2 text-center align-items-end ">
+                        {datosPerson.metodoPago=="Efectivo" ?<button id="pagarcuenta" className="btn btn-primary"
+                                                disabled={!checked}
+                                                 onClick={handlePago}
+                                                     >
+                                                     <i className="fa fa-credit-card "> </i>PAGAR1
+                                                 </button>:"" 
+                                                 }
+                        {datosPerson.metodoPago=="Tarjeta" ?<button id="pagarcuenta" className="btn btn-primary"
+                                                 disabled={!checked}                                                 
+                                                >
+                                                     <i className="fa fa-credit-card "> </i>PAGAR2
+                                                 </button>:"" 
+                         }
+                         {datosPerson.metodoPago=="Deposito" ?<button id="pagarcuenta" className="btn btn-primary"
+                                                 disabled={!checked}
+                                                 >
+                                                     <i className="fa fa-credit-card "> </i>PAGAR3
+                                                 </button>:"" 
+                         }
+                            
+                            
+                            
+                            
+                            
+                            
+                            {/*
                             <button id="pagarcuenta" className="btn btn-primary"
                                 disabled={false} onClick={handlePago}
-                            ><i className="fa fa-credit-card p-1"> </i>PAGAR</button>
+                            ><i className="fa fa-credit-card p-1"> </i>PAGAR</button>*/}
                         </div>
                     </div>
                 </div>
