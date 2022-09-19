@@ -1,0 +1,62 @@
+
+.cardcont {
+    width: 100%;
+    max-width: 400px;
+    max-height: 251px;
+    height: 54vw;
+    padding: 20px;
+}
+
+/* cardfront */
+#svgname {
+    text-transform: uppercase;
+}
+
+#cardfront .titulos {
+    fill: #FFFFFF;
+}
+
+#cardfront .code-type {
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 600;
+}
+
+#cardfront .code-size {
+    font-size: 54.7817px;
+}
+
+#cardfront .sub-type {
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 400;
+}
+
+#cardfront .sub-size {
+    font-size: 33.1112px;
+}
+
+#cardfront .subtitulos {
+    opacity: 0.8;
+    fill: #FFFFFF;
+}
+
+#cardfront .sub-size {
+    font-size: 24px;
+}
+
+#cardfront .sub-valida {
+    font-size: 36.5498px;
+}
+
+#cardfront .titel-valid {
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 300;
+}
+
+#cardfront .titel-subsize {
+    font-size: 16.1716px;
+}
+/*mask: 'MM{/}YY',
+    groups: {
+        YY: new IMask.MaskedPattern.Group.Range([0, 99]),
+        MM: new IMask.MaskedPattern.Group.Range([1, 12]),
+    }*/
