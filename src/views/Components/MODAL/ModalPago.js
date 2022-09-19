@@ -67,7 +67,7 @@ function ModalPago(props) {
 
                 <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
                     <strong>
-                        <h2 style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>escoje el metodo de pago</h2>
+                        <h2 style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>escoja el metodo de pago</h2>
                     </strong>
                 </div>
 
