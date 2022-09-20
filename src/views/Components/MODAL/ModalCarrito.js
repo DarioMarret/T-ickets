@@ -143,7 +143,7 @@ function ModalCarrito(props) {
         let data = GetValores()
         setListaPrecio(data)
         console.log(data)
-    }, [timer])
+    }, [timer,show])
 
 
     return (

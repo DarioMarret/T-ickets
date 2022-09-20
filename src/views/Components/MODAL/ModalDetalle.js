@@ -46,7 +46,7 @@ function ModalDetalle(props) {
 
    async function handelchange(e) {
         const { value, name } = e;
-        console.log(e)
+      
         setPerson({
             ...datosPerson,
             [name]: value
@@ -79,47 +79,53 @@ function ModalDetalle(props) {
         }
     }
     function hanbleDatos(e) {
-        
         setPerson({
             ...datosPerson,
             [e.target.name]: e.target.value
         })
         let datosPersonal = getDatosUsuariosLocalStorag()
-        if (datosPersonal !== null) {
+   
+       
             DatosUsuariosLocalStorag({
                 ...datosPersonal,
                 [e.target.name]: e.target.value
             })
-        }
-        //Aqui tengo el error
-        setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
-       
-        
+          / //Aqui tengo el error
+          // setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
+           setChecked((Object.values(actualState).every((d) => d)))
     }
+
     useEffect(() => {
         let datosPersonal = getDatosUsuariosLocalStorag()
         let metodoPago = GetMetodo()
         if(datosPersonal !== null){
+          
             setPerson({
                 ...datosPerson,
+                direccion:datosPersonal.direccion,
                 email: datosPersonal.email,
                 name: datosPersonal.name,
                 whatsapp: datosPersonal.whatsapp,
                 cedula: datosPersonal.cedula,
-                direccion:datosPersonal.direccion,
+                metodoPago: metodoPago
             })
-           
             DatosUsuariosLocalStorag({
                 ...datosPersonal,
-                ['metodoPago']: metodoPago
+                ['metodoPago']: metodoPago,
+                direccion:datosPersonal.direccion,
             })
         }
+        setPerson({
+            ...datosPerson,
+            metodoPago: metodoPago,
+            direccion:datosPersonal?datosPersonal.direccion:''
+        })
         
-       // setChecked( Object.values(datosPerson).every((d) => d))
-   
-        //Aqui queria validar el boton desabilitado
-        setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
-       
+         //Aqui tengo el error
+        // setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
+         setChecked((Object.values(actualState).every((d) => d)))
+         console.log(checked)
+      
     }, [showDetalle,actualState])
 
 
