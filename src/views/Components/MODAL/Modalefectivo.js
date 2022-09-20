@@ -4,16 +4,21 @@ import {ReportarEfectivoCompra} from "../../../utils/Query";
 
 const ModalEfectivo =(props)=>{
   const {efectShow,handleefectivoClose,handleClosefectivo,
-    setColroToast,
-      SetMesnajeToast,
-      setShowToast,
-      SetEstadoToast,
+    setDatoToas
   } =props;
    
    async  function  Guardarcompraefectivo(){
         try {
          const data =await ReportarEfectivoCompra()
          //handleefectivoClose()
+        /*
+        setShow(true)
+        setDatoToas({ 
+          message:'funciona',
+          color:'bg-danger',
+          estado:'sinproblemas',
+        })*/
+       
          console.log(data)
         } catch (error) {
           console.log(error)

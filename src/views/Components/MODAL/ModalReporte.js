@@ -5,11 +5,8 @@ import {ReportarDepositoCompra} from "../../../utils/Query";
 
 
 const Reporte =(props) => {
-    const { repShop, handlereportColse,setrepShow,
-      setColroToast,
-      SetMesnajeToast,
-      setShowToast,
-      SetEstadoToast,
+    const { repShop, handlereportColse,
+      setDatoToas
      } = props
     const [codigo,setCodigo] = useState("") 
    
@@ -20,11 +17,12 @@ const Reporte =(props) => {
       if(codigo.length>4){
         try {
           const info = await ReportarDepositoCompra(codigo)
-          setColroToast("bg-success")
-          SetMesnajeToast("En breve uno de nuestros colaboradores se comunicar con usted")
-          setShowToast(true)
-          SetEstadoToast("Se a Guardado exitosamente su reporte")
-         //setrepShow(false)
+         /* setDatoToas({ show:true,
+            message:'En breve uno de nuestros colaboradores se comunicar con usted',
+            color:'bg-success',
+            estado:'Se a Guardado exitosamente su reporte',
+          })*/
+         
           console.log(info)
         } catch (error) {
           console.log(error)

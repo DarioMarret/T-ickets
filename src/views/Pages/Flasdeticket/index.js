@@ -324,11 +324,8 @@ const IndexFlas = () => {
         handelReporShow={handelReporShow}
         listarCarritoDetalle={listarCarritoDetalle}
         handelefctivorShow={handelefctivorShow}
-        setModalPago={setModalPago}
-        setShowToast={setShowToast}
-        SetEstadoToast={SetEstadoToast}
-        SetMesnajeToast={SetMesnajeToast}
-        setColroToast={setColroToast}
+        setModalPago={setModalPago}        
+        setDatoToas={setDatoToas}
       />
 
       {
@@ -337,28 +334,22 @@ const IndexFlas = () => {
       <ModalReport 
       repShop={repShop}
       setrepShow={setrepShow}
-      handlereportColse={handlereportColse}    
-      setColroToast={setColroToast}
-      SetMesnajeToast={SetMesnajeToast}
-      setShowToast={setShowToast}
-      SetEstadoToast={SetEstadoToast}
+      handlereportColse={handlereportColse}  
+      setShow={setShowToast}
+      setDatoToas={setDatoToas}
       
        />  
       <ModalEfectivo
       efectShow={efectShow}
       handleefectivoClose={handleefectivoClose}
-      handleClosefectivo={handleClosefectivo}
-      setColroToast={setColroToast}
-      SetMesnajeToast={SetMesnajeToast}
-      setShowToast={setShowToast}
-      SetEstadoToast={SetEstadoToast}
+      handleClosefectivo={handleClosefectivo}  
+      
+      setDatoToas={setDatoToas}
       />
       <TOAST
-      setShow={setShowToast}
-      showToast={showToast}
-      estado={estadoToast}
-      message={mensajeToast}
-      color={colorToast}
+      
+      Toastestado={Toastestado}
+      setDatoToas={setDatoToas}
       />
    
 

@@ -10,7 +10,7 @@ function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
         listaPrecio, listarCarritoDetalle,
           setModalPago,handelReporShow,handelefctivorShow,
-        setDetalle,setShowToast,SetEstadoToast,SetMesnajeToast,setColroToast
+        setDetalle,setDatoToas
     } = props
     
     const [actualState, changeCheckState] = useState({
@@ -84,11 +84,11 @@ function ModalDetalle(props) {
                     direccion:'',
                 })
                 setspiner("d-none")
-                SetEstadoToast("Hubo un error")
-                SetMesnajeToast("No se encontraron datos")
-                setColroToast("bg-danger")
-                setShowToast(true)
-                
+                setDatoToas({ show:true,
+                    message:'Ingrese el número de cédula correcta o intente mas tarde',
+                    color:'bg-danger',
+                    estado:'No se encontraron datos',
+                  })
             }
         }
     }
