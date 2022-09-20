@@ -138,9 +138,9 @@ function ModalDetalle(props) {
         })
         
          //Aqui tengo el error
-         setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
+        // setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
         // setChecked((Object.values(actualState).every((d) => d)))
-         console.log(checked)
+        //console.log(checked)
       
     }, [showDetalle,actualState])
 

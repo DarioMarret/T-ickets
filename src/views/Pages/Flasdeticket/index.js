@@ -69,7 +69,7 @@ const IndexFlas = () => {
     comision: 0
   })
   const [listarCarritoDetalle, setListarCarritoDetalle] = useState([])
-
+///Esta parte la mande al modal de detalle para poder validar el boton pagar
   const [datosPerson, setPerson] = useState({
     cedula: '',
     name: '',
@@ -79,6 +79,7 @@ const IndexFlas = () => {
     envio: '',
     direccion: '',
   })
+  ////Fin de comentario
 
   useEffect(() => {
     let datosPersonal = getDatosUsuariosLocalStorag()
