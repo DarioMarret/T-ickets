@@ -1,7 +1,24 @@
-import React from "react";
+import React ,{useEffect,useState}from "react";
 
 const EventosViews =()=>{
-  
+   /*informacion de los enventos nuevos */
+   const [newEvento,setNewEvento]=({
+    fecha:'',
+    hora:'',
+    lugar:'',
+    nombre:'',
+    descripcion:'',
+    imagen:'',
+    idUsuario:'',
+    codigoEvento:'preguntar, se genera despues?',
+    general:'cantidad de localidades generales, opcional',
+    vip:'cantidad de localidades vip opcional',
+    silla:'cantidad de localidades sillas opcional',
+    mesas:'cantidad de localidades mesas opcional',
+    coretecia:'cantidad de localidades cortecia, opcional',
+    porcentajeDiscapacidad:'porcentaje discapacidad, opcional',
+    porcentajeDescuneto:'porcentaje discapacidad, opcional',
+    porcentajecero:'Porcentaje cero opcional'})
     return(
         <div className="container-fluid">
                 

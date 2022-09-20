@@ -22,11 +22,11 @@ import {
 
 function Sidebar({ routes, image, background }) {
   // to check for active links and opened collapses
-  const [user, setuser] = React.useState(() => {
+  /*const [user, setuser] = React.useState(() => {
     const user = clienteInfo()
     const parse = JSON.parse(user);
     return parse || "no user";
-})
+})*/
   let location = useLocation();
   // this is for the user collapse
   const [userCollapseState, setUserCollapseState] = React.useState(false);
@@ -167,7 +167,7 @@ function Sidebar({ routes, image, background }) {
                 aria-expanded={userCollapseState}
               >
                 <span>
-                {user}<b className="caret"></b>
+                Nombre del usuario <b className="caret"></b>
                 </span>
               </a>
               <Collapse id="collapseExample" in={userCollapseState}>
