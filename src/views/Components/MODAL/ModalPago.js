@@ -144,15 +144,9 @@ function ModalPago(props) {
                         height: '100%',
                     }}
                 >
-                    <button
-                        style={{
-                            backgroundColor: 'rgb(232, 232, 232, 0.5)',
-                            border: 'none',
-                            borderRadius: '10px',
-                            padding: '10px',
-                            cursor: 'pointer'
-
-                        }}
+                    <button 
+                    className='btn btn-outline-danger'
+                        
                         onClick={() => setModalPago(false)}
                     >Cancelar</button>
                 </div>
@@ -185,7 +179,7 @@ function ModalPago(props) {
                     padding: '10px',
                 }}>
                     <Spinner animation="grow" variant="light" size='100'></Spinner>
-                    <h4 className='text-light'>Cargando metodo de Pago</h4>
+                    <h4 className='text-light'>Cargando metodo de Pago...</h4>
 
 
                 </div>

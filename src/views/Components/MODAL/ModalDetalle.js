@@ -4,7 +4,7 @@ import { GetMetodo } from 'utils/CarritoLocalStorang';
 import { Envio } from 'utils/constantes';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import { DatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
-import { getCedula } from 'utils/localstore';
+import { getCedula } from 'utils/DatosUsuarioLocalStorag';
 
 function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
@@ -48,12 +48,10 @@ function ModalDetalle(props) {
         }
         
     }
-
     function handlePago() {
         setDetalle(!showDetalle)
         setModalPago(true)
     }
-
    async function handelchange(e) {
         const { value, name } = e;
       
@@ -93,17 +91,12 @@ function ModalDetalle(props) {
             ...datosPerson,
             [e.target.name]: e.target.value
         })
-        let datosPersonal = getDatosUsuariosLocalStorag()
-   
-       
-            DatosUsuariosLocalStorag({
+        let datosPersonal = getDatosUsuariosLocalStorag()  
+        DatosUsuariosLocalStorag({
                 ...datosPersonal,
                 [e.target.name]: e.target.value
             })
-          //Aqui tengo el error
-          // setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
-          //setChecked((Object.values(actualState).every((d) => d)))
-    }
+            }
 
     useEffect(() => {
         let datosPersonal = getDatosUsuariosLocalStorag()
@@ -137,10 +130,6 @@ function ModalDetalle(props) {
             direccion:datosPersonal?datosPersonal.direccion:''
         })
         
-         //Aqui tengo el error
-        // setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
-        // setChecked((Object.values(actualState).every((d) => d)))
-        //console.log(checked)
       
     }, [showDetalle,actualState])
 
@@ -180,10 +169,7 @@ function ModalDetalle(props) {
                                 placeholder="forma de pago Selecionada"
                             />
                             <div className="col-12 border border-bottom mb-3"></div>
-                            <div className="d-flex flex-wrap">
-                                <Spinner className={spinervi} animation="grow" />
-                                <span className={spinervi} >Consultando datos</span>
-                            </div>
+                            
 
                             <span>Cedula DNI:</span>
                             <input type="text"
@@ -209,13 +195,13 @@ function ModalDetalle(props) {
                             />
                         </div>
                         <div className="col-6 col-sm-6 d-flex flex-column">
-                            <span>Forma de envío:</span>
+                            <span>Forma de envío:</span> 
                             <div>
                                 <select className="form-select" value={datosPerson.envio} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
                                     {
                                         Envio.map((item, index) => {
                                            return(
-                                                <option key={index} value={item.envio}>{item.envio}</option>
+                                                <option key={index} value={item.envio}>{item.value}</option>
                                                 )
                                         })
                                     }
@@ -230,7 +216,7 @@ function ModalDetalle(props) {
                                 id="email"
                                 name='email'
                                 required
-                                value={datosPerson.email}
+                                value={datosPerson.email||''}
                                 onChange={(e) => hanbleDatos(e)}
                                 placeholder="Ingrese su correo electronico"
                             />
@@ -328,6 +314,7 @@ function ModalDetalle(props) {
                                 </div>
                                 <div className="px-3">
                                     <input className="form-check-input terminoscheck"
+                                    checked={actualState.check1}
                                         id="check1"
                                         name="check1"
                                         onChange={(e) => handleCheckboxChange(e.target)}
@@ -346,7 +333,7 @@ function ModalDetalle(props) {
                                 </div>
                                 <div className="px-3">
                                     <input className="form-check-input terminoscheck" id="check2" type="checkbox"
-                                    
+                                   checked={actualState.check2}
                                         name="check2"
                                         onChange={(e) => handleCheckboxChange(e.target)}
                                     />
@@ -362,6 +349,7 @@ function ModalDetalle(props) {
                                 </div>
                                 <div className="px-3">
                                     <input className="form-check-input terminoscheck" id="check3"
+                                      checked={actualState.check3}
                                         name="check3" type="checkbox"
                                         onChange={(e) => handleCheckboxChange(e.target)} />
                                 </div>
@@ -405,6 +393,26 @@ function ModalDetalle(props) {
                         </div>
                     </div>
                 </div>
+                <div className={spinervi}
+                style={{
+                    display: 'none',
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: '1000'
+                }}>
+                    <div className="d-flex flex-column align-items-center text-center">
+                                <Spinner variant='light' style={{ width: "4rem", height: "4rem" }}  animation="grow" />
+                                <span className='text-light' > Consultando datos...</span>
+                            </div>
+                </div>              
+                
             </Modal.Body>
         </Modal>
     );

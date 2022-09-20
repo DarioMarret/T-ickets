@@ -1,7 +1,7 @@
 import React from "react";
 import {Toast} from "react-bootstrap"
 
-const Toast =(props) =>{
+const ViewToas =(props) =>{
     const {setShow,show,estado,message,color}=props
     return(
         <>
@@ -25,3 +25,4 @@ const Toast =(props) =>{
         </>
     )
 }
+export default ViewToas;

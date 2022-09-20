@@ -16,13 +16,13 @@ function Iframe(props) {
     }, [width, height])
 
     function renderWidth() {
-        if (width < 460) {
+        if (width < 630) {
             return "100%"
         }
-        if (width > 768) {
-            return "20%"
+        if (width > 680) {
+            return "60%"
         }
-        if (width > 1024) {
+        if (width > 824) {
             return "30%"
         }
     }

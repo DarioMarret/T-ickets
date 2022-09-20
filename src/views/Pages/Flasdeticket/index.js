@@ -16,6 +16,7 @@ import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalPago from "views/Components/MODAL/ModalPago";
 import ModalReport from "views/Components/MODAL/ModalReporte";
 import ModalEfectivo from "views/Components/MODAL/Modalefectivo";
+import TOAST from "views/Components/TOAST";
 import Footer from "views/Components/Footer/Footer";
 import { DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { GetMetodo } from "utils/CarritoLocalStorang";
@@ -23,11 +24,15 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 
 
 const IndexFlas = () => {
-  const [lgShow, setLgShow] = useState(false);
-  const [smShow, setSmShow] = useState(false);
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
   const [efectShow, efectiOpShow] = useState(false);
+
+  const [mensajeToast,SetMesnajeToast]=useState("");
+  const [estadoToast,SetEstadoToast]=useState("")
+  const [colorToast,setColroToast]=useState("");
+  const [showToast,setShowToast]=useState(false);
+
 
 
   const [modalPago, setModalPago] = useState(false);
@@ -328,6 +333,15 @@ const IndexFlas = () => {
       efectShow={efectShow}
       handleefectivoClose={handleefectivoClose}
       handleClosefectivo={handleClosefectivo}
+
+      />
+     
+      <TOAST
+      setShow={setShowToast}
+      show={showToast}
+      estado={estadoToast}
+      message={mensajeToast}
+      color={colorToast}
 
       />
     </>

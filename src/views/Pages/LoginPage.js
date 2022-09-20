@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 import jwt_decode from "jwt-decode";
 import logo from "../../assets/img/logo-t-ickets.png";
 import logoportal from "../../assets/portada-login.png";
-import { getUsuario } from "../../utils/localstore"
+import { getCedula } from 'utils/DatosUsuarioLocalStorag';
 // react-bootstrap components
 import {
   Badge,
