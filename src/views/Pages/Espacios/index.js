@@ -3,7 +3,9 @@ import React, {useEffect,useState} from  "react";
 
 const EventosViews =()=>{
    let ListadeFilas=[]
+   let Listasillas=[]
    let i=0
+   let f=0
     const [valoresFilas,setValoresFila]=useState({
         filas:5,
         enpieza:'A2',
@@ -16,11 +18,26 @@ const EventosViews =()=>{
         const repeticiones =parseInt(numeroinicofilas) + parseInt(valoresFilas.filas)
         console.log(repeticiones)
         for(i= numeroinicofilas; i < repeticiones; i++){
-            ListadeFilas.push({mesa:letrafilas+""+i,sillas:0});        
+            ListadeFilas.push({fila:letrafilas+""+i,sillas:0,asientos:[]});        
         }
         console.log(ListadeFilas)
     }
-    const AgregasSillasMesa=()=>{
+    const AgregasSillasMesa=()=>{ 
+
+
+        for(i=0; i< ListadeFilas.length; i++){            
+            ListadeFilas[i]["sillas"]=5;
+         const fila =ListadeFilas[i]["fila"]
+          //console.log( ListadeFilas[i]["fila"])
+            for(f=0; f< 5; f++ ){
+                ListadeFilas[i]["asientos"][f]=fila+"-s-"+f;                
+            }
+            //
+            //ListadeFilas[i]["asientos"]=Listasillas
+        }
+        console.log(ListadeFilas)
+
+
         
     }
     useEffect(()=>{
@@ -321,6 +338,7 @@ const EventosViews =()=>{
                 <div className="col-md-12">
 
                     <button  className="btn btn-success" data-toggle="modal" data-target="#espacioModal" ><i className="mr-2 fa fa-plus"></i> Nuevo espacio</button>
+                    <button  className="btn btn-success" onClick={AgregasSillasMesa}><i className="mr-2 fa fa-plus"></i>Sillas</button>
 
                     <br/><br/>
 

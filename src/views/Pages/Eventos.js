@@ -2,7 +2,7 @@ import React ,{useEffect,useState}from "react";
 
 const EventosViews =()=>{
    /*informacion de los enventos nuevos */
-   const [newEvento,setNewEvento]=({
+   const [newEvento,setNewEvento]=useState({
     fecha:'',
     hora:'',
     lugar:'',

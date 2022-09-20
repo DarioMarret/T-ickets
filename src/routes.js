@@ -40,7 +40,7 @@ import RegisterPage from "views/Pages/RegisterPage.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 import Misdatos from "views/Pages/Misdatos.js";
 import Ticket from "views/Pages/Tickets.js";
-import Espacios from "views/Pages/Espacios.js";
+import Espacios from "views/Pages/Espacios";
 import Eventos from "views/Pages/Eventos.js"
 
 var routes = [

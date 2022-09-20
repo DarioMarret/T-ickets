@@ -209,7 +209,7 @@ function ModalDetalle(props) {
                         <div className="col-6 col-sm-6 d-flex flex-column">
                             <span>Forma de envío:</span> 
                             <div>
-                                <select className="form-select" value={datosPerson.envio} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
+                                <select className="form-select" value={datosPerson.envio|| ''} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
                                     {
                                         Envio.map((item, index) => {
                                            return(
