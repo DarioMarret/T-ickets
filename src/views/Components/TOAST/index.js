@@ -2,18 +2,18 @@ import React from "react";
 import {Toast} from "react-bootstrap"
 
 const ViewToas =(props) =>{
-    const {setShow,show,estado,message,color}=props
+    const {setShow,showToast,estado,message,color}=props
     return(
         <>
         
         <Toast
-        onClose={() => setShow(false)} show={show} delay={4000} autohide
+        onClose={() => setShow(false)} show={showToast} delay={4000} autohide
         className="top-center"
         style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          zIndex: 4
+            position: 'fixed',
+            top: 10,
+            right: '5%',
+            zIndex: 10000,
         }}>
        <Toast.Header>
       <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />

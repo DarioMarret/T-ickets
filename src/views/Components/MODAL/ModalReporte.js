@@ -1,9 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import {Toast,Modal ,Container} from 'react-bootstrap';
-import metodos from "../../../assets/imagen/todas-tc.png"
+import {Modal ,Container} from 'react-bootstrap';
+import metodos from "../../../assets/Banco_Internacional_Ecuador.png";
+import {ReportarDepositoCompra} from "../../../utils/Query";
+
 
 const Reporte =(props) => {
-    const { repShop, handlereportColse } = props
+    const { repShop, handlereportColse,setrepShow,
+      setColroToast,
+      SetMesnajeToast,
+      setShowToast,
+      SetEstadoToast,
+     } = props
+    const [codigo,setCodigo] = useState("") 
+   
+    function  handelchange(e){
+      setCodigo(e.target.value)
+    }
+    async  function  reportarComprobante(){
+      if(codigo.length>4){
+        try {
+          const info = await ReportarDepositoCompra(codigo)
+          setColroToast("bg-success")
+          SetMesnajeToast("En breve uno de nuestros colaboradores se comunicar con usted")
+          setShowToast(true)
+          SetEstadoToast("Se a Guardado exitosamente su reporte")
+         //setrepShow(false)
+          console.log(info)
+        } catch (error) {
+          console.log(error)
+        }
+       
+      }
+    }   
+   
    return (
    <>
     <Modal 
@@ -19,30 +48,32 @@ const Reporte =(props) => {
                 <div className="container ">
     <div className="d-flex flex-wrap justify-content-center align-items-center" >
     <div className='d-flex flex-column text-center justify-content-center align-items-center'>
-    <h5 className="modal-title pb-3 ">PARA DEPOSITO O TRANSFERENCIA</h5>
+    <h3 className="modal-title pb-3 ">PARA DEPOSITO O TRANSFERENCIA</h3>
     <img src={metodos} className="img-fluid"  style={{width:'300px'}} alt=""/>
-
+    <h3>Numero de Cuenta</h3>
+    <h3> <strong>1500618760</strong> </h3>
     </div>
 
 
 
       <div className="d-flex flex-wrap">
         <div className="col-12 col-sm-6 d-flex flex-column p-3">
-          <select className="form-control " name="banco"  aria-label="Selecione el Banco"> 
-            <option selected>Seleccione un Banco</option>
-            <option value={"Pichincha"}>Pichincha</option>
-            <option value={"Guayaquil"}>Guayaquil</option>
-            <option value={"Solidarios"}>Solidarios</option>
+          <select className="form-control " name="banco"  aria-label="Selecione el Banco">             
+            <option selected value={" Banco Internacional"}> Banco Internacional</option>            
           </select>
           <label >Numero de Control</label>
-          <input className="form-control" type="text" name="control"/>
+          <input className="form-control" type="text" name="control" 
+          onChange={(e)=>handelchange(e)}
+          />
         </div>
         <div className="col-12 col-sm-6 d-flex flex-column p-3 align-items-end" >
           <h5 >LUEGO DE REALIZAR LA TRANSACCIÓN 
             POR FAVOR REPORTAR EL PAGO
           </h5>
 
-          <button className="btn btn-danger col-6 float-end">
+          <button className="btn btn-danger col-6 float-end" 
+            onClick={reportarComprobante}
+          >
             Reportar Pago
           </button> 
 

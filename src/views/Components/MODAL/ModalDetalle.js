@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Spinner } from "react-bootstrap"
+import { Modal, Spinner,InputGroup } from "react-bootstrap"
 import { GetMetodo } from 'utils/CarritoLocalStorang';
 import { Envio } from 'utils/constantes';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
@@ -10,7 +10,7 @@ function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
         listaPrecio, listarCarritoDetalle,
           setModalPago,handelReporShow,handelefctivorShow,
-        setDetalle
+        setDetalle,setShowToast,SetEstadoToast,SetMesnajeToast,setColroToast
     } = props
     
     const [actualState, changeCheckState] = useState({
@@ -66,7 +66,7 @@ function ModalDetalle(props) {
             if (datos.name) {
                 DatosUsuariosLocalStorag({...datos, cedula:value})
                 const { name, email ,direccion} = datos
-                console.log(datos)
+               console.log(datos)
                 setPerson({
                     ...datosPerson,
                     email: email,
@@ -76,6 +76,7 @@ function ModalDetalle(props) {
                 })
                 setspiner("d-none")  
             } else {
+                
                 setPerson({
                     ...datosPerson,
                     email: '',
@@ -83,6 +84,11 @@ function ModalDetalle(props) {
                     direccion:'',
                 })
                 setspiner("d-none")
+                SetEstadoToast("Hubo un error")
+                SetMesnajeToast("No se encontraron datos")
+                setColroToast("bg-danger")
+                setShowToast(true)
+                
             }
         }
     }
@@ -97,7 +103,13 @@ function ModalDetalle(props) {
                 [e.target.name]: e.target.value
             })
             }
-
+         function onKeyPress(event) {
+                const keyCode = event.keyCode || event.which;
+                console.log(keyCode)
+                const keyValue = String.fromCharCode(keyCode);
+                 if (/\+|-/.test(keyValue))
+                   event.preventDefault();
+               }
     useEffect(() => {
         let datosPersonal = getDatosUsuariosLocalStorag()
         let metodoPago = GetMetodo()
@@ -229,6 +241,7 @@ function ModalDetalle(props) {
                                 minLength={10}
                                 maxLength={10}
                                 required
+                                
                                 value={datosPerson.whatsapp}
                                 onChange={(e) => hanbleDatos(e)}
                                 placeholder="Ingrese su whatsapp o numero de contacto"

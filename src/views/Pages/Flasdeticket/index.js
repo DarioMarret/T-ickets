@@ -10,7 +10,6 @@ import evento from "../../../assets/imagen/gpiminel.jpeg";
 import valla from "../../../assets/imagen/valla-proximo-evento.png";
 import "../../../assets/css/animate.css";
 import "../../../assets/css/bootstrap.css";
-import { Modal } from "react-bootstrap"
 import ModalCarrito from "views/Components/MODAL/ModalCarrito";
 import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalPago from "views/Components/MODAL/ModalPago";
@@ -32,16 +31,23 @@ const IndexFlas = () => {
   const [estadoToast,SetEstadoToast]=useState("")
   const [colorToast,setColroToast]=useState("");
   const [showToast,setShowToast]=useState(false);
+  const [Toastestado,setDatoToas]=useState({
+    show:false,
+    message:'',
+    color:'',
+    estado:'',
+  })
+  
 
 
 
   const [modalPago, setModalPago] = useState(false);
-
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
   const handleClosefectivo = () => efectShow(false)
+
+
 
   const handleContinuar = () => {
     setShow(false)
@@ -104,6 +110,7 @@ const IndexFlas = () => {
 
   return (
     <>
+         
       <nav className="navbar navbar-expand-lg justify-content-between navbar-dark bg-black fixed-top py-3">
         <div className="container-fluid col-lg-7    d-flex justify-content-between">
           <a className="navbar-brand " aria-label="TICKETS" href="#">
@@ -316,10 +323,12 @@ const IndexFlas = () => {
         setListaPrecio={setListaPrecio}
         handelReporShow={handelReporShow}
         listarCarritoDetalle={listarCarritoDetalle}
-       
         handelefctivorShow={handelefctivorShow}
-        
         setModalPago={setModalPago}
+        setShowToast={setShowToast}
+        SetEstadoToast={SetEstadoToast}
+        SetMesnajeToast={SetMesnajeToast}
+        setColroToast={setColroToast}
       />
 
       {
@@ -327,23 +336,32 @@ const IndexFlas = () => {
       }
       <ModalReport 
       repShop={repShop}
-      handlereportColse={handlereportColse}     
+      setrepShow={setrepShow}
+      handlereportColse={handlereportColse}    
+      setColroToast={setColroToast}
+      SetMesnajeToast={SetMesnajeToast}
+      setShowToast={setShowToast}
+      SetEstadoToast={SetEstadoToast}
+      
        />  
       <ModalEfectivo
       efectShow={efectShow}
       handleefectivoClose={handleefectivoClose}
       handleClosefectivo={handleClosefectivo}
-
+      setColroToast={setColroToast}
+      SetMesnajeToast={SetMesnajeToast}
+      setShowToast={setShowToast}
+      SetEstadoToast={SetEstadoToast}
       />
-     
       <TOAST
       setShow={setShowToast}
-      show={showToast}
+      showToast={showToast}
       estado={estadoToast}
       message={mensajeToast}
       color={colorToast}
-
       />
+   
+
     </>
 
   )
