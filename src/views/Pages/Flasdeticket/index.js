@@ -14,6 +14,8 @@ import { Modal } from "react-bootstrap"
 import ModalCarrito from "views/Components/MODAL/ModalCarrito";
 import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalPago from "views/Components/MODAL/ModalPago";
+import ModalReport from "views/Components/MODAL/ModalReporte";
+import ModalEfectivo from "views/Components/MODAL/Modalefectivo";
 import Footer from "views/Components/Footer/Footer";
 import { DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { GetMetodo } from "utils/CarritoLocalStorang";
@@ -25,7 +27,6 @@ const IndexFlas = () => {
   const [smShow, setSmShow] = useState(false);
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
-  const [opsShow, setOpShow] = useState(false);
   const [efectShow, efectiOpShow] = useState(false);
 
 
@@ -35,7 +36,7 @@ const IndexFlas = () => {
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
-
+  const handleClosefectivo = () => efectShow(false)
 
   const handleContinuar = () => {
     setShow(false)
@@ -45,6 +46,23 @@ const IndexFlas = () => {
     setDetalle(false)
     setShow(true)
   }
+  const handelReporShow=() =>{
+    setrepShow(true)
+    setDetalle(false)
+  }
+  const handlereportColse = () => {
+    setrepShow(false)
+    setDetalle(true)
+  };
+  const handelefctivorShow=() =>{
+    efectiOpShow(true)
+    setDetalle(false)
+  }
+  const handleefectivoClose =()=> {
+    efectiOpShow(false)
+    setDetalle(true)
+  };
+
   const [listaPrecio, setListaPrecio] = useState({
     total: 0,
     subtotal: 0,
@@ -65,7 +83,6 @@ const IndexFlas = () => {
   useEffect(() => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let metodoPago = GetMetodo()
-    console.log(datosPerson.direccion)
     if (datosPersonal !== null) {
       setPerson({
         ...datosPerson,
@@ -291,8 +308,10 @@ const IndexFlas = () => {
         handleDetalleColse={handleDetalleColse}
         listaPrecio={listaPrecio}
         setListaPrecio={setListaPrecio}
+        handelReporShow={handelReporShow}
         listarCarritoDetalle={listarCarritoDetalle}
         datosPerson={datosPerson}
+        handelefctivorShow={handelefctivorShow}
         setPerson={setPerson}
         setModalPago={setModalPago}
       />
@@ -300,33 +319,16 @@ const IndexFlas = () => {
       {
         modalPago ? <ModalPago setModalPago={setModalPago} modalPago={modalPago} /> : null
       }
+      <ModalReport 
+      repShop={repShop}
+      handlereportColse={handlereportColse}     
+       />  
+      <ModalEfectivo
+      efectShow={efectShow}
+      handleefectivoClose={handleefectivoClose}
+      handleClosefectivo={handleClosefectivo}
 
-      <Modal
-
-        show={smShow}
-        onHide={() => setSmShow(false)}
-        aria-labelledby="example-modal-sizes-title-sm"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-sm">
-            Small Modal
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>...</Modal.Body>
-      </Modal>
-      <Modal
-        size="lg"
-        show={lgShow}
-        onHide={() => setLgShow(false)}
-        aria-labelledby="example-modal-sizes-title-lg"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-lg">
-            Large Modal
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>...</Modal.Body>
-      </Modal>
+      />
     </>
 
   )

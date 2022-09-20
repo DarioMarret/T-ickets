@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import {Modal} from "react-bootstrap";
 
 
-const ModalEfectivo =()=>{
+const ModalEfectivo =(props)=>{
+  const {efectShow,handleefectivoClose,handleClosefectivo} =props;
     return(
         <>
-        <Modal>
-        
-
-
+        <Modal 
+        show={efectShow}
+        onHide={handleefectivoClose}
+        >       
         <Modal.Header closeButton>
-
         </Modal.Header>
         <Modal.Body>
         <div className="container pt-5">
@@ -18,13 +18,13 @@ const ModalEfectivo =()=>{
                 <h3 className='text-center'> Puede terminar la compra en: </h3>
                   <div className="container d-flex flex-column p-3">
                   <div className="col-12  d-flex  p-1">                    
-                      <h6 ><strong>Mall del SOL</strong>  </h6>                        
+                      <h6 > <i className="fa fa-map "> </i> <strong>Mall del SOL</strong>  </h6>                        
                       </div>
                       <div className="col-12  d-flex  p-1">                        
-                        <h6 > <strong>Mall del SUR</strong> </h6>                        
+                        <h6 > <i className="fa fa-map "> </i> <strong>Mall del SUR</strong> </h6>                        
                       </div>
                       <div className="col-12  d-flex  p-1">                        
-                        <h6 ><strong>De Mujeres </strong></h6>                        
+                        <h6 > <i className="fa fa-map "> </i> <strong>De Mujeres </strong></h6>                        
                       </div>
                       <div className="col-12  d-flex  p-1">
                         

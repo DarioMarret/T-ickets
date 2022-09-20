@@ -9,7 +9,7 @@ import { getCedula } from 'utils/localstore';
 function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
         listaPrecio, listarCarritoDetalle,
-        datosPerson, setPerson, setModalPago,
+        datosPerson, setPerson, setModalPago,handelReporShow,handelefctivorShow,
         setDetalle
     } = props
     
@@ -57,9 +57,6 @@ function ModalDetalle(props) {
             const datos = await getCedula(value)
             if (datos.name) {
                 DatosUsuariosLocalStorag({...datos, cedula:value})
-                
-
-                //console.log()
                 const { name, email ,direccion} = datos
                 console.log(datos)
                 setPerson({
@@ -69,7 +66,7 @@ function ModalDetalle(props) {
                     cedula:value,
                     direccion:direccion,                
                 })
-                setspiner("d-none")
+                setspiner("d-none")  
             } else {
                 setPerson({
                     ...datosPerson,
@@ -82,24 +79,23 @@ function ModalDetalle(props) {
         }
     }
     function hanbleDatos(e) {
-      
+        
         setPerson({
             ...datosPerson,
             [e.target.name]: e.target.value
         })
-    
         let datosPersonal = getDatosUsuariosLocalStorag()
         if (datosPersonal !== null) {
             DatosUsuariosLocalStorag({
                 ...datosPersonal,
                 [e.target.name]: e.target.value
             })
-            console.log( Object.values(datosPersonal).every((d) => d))
         }
+        //Aqui tengo el error
+        setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
        
         
     }
-
     useEffect(() => {
         let datosPersonal = getDatosUsuariosLocalStorag()
         let metodoPago = GetMetodo()
@@ -118,13 +114,12 @@ function ModalDetalle(props) {
                 ['metodoPago']: metodoPago
             })
         }
-        //setChecked((  Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d===true)))
-        setChecked( Object.values(datosPerson).every((d) => d))
-        setPerson({
-            ...datosPerson,
-            metodoPago: metodoPago,
-            direccion:datosPersonal.direccion,
-        })
+        
+       // setChecked( Object.values(datosPerson).every((d) => d))
+   
+        //Aqui queria validar el boton desabilitado
+        setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
+       
     }, [showDetalle,actualState])
 
 
@@ -186,6 +181,7 @@ function ModalDetalle(props) {
 
                                 name="name"
                                 value={datosPerson.name}
+                                onChange={(e) => hanbleDatos(e)}
 
                                 placeholder="Ingrese su nombre completo"
                             />
@@ -196,14 +192,9 @@ function ModalDetalle(props) {
                                 <select className="form-select" value={datosPerson.envio} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
                                     {
                                         Envio.map((item, index) => {
-                                            if(index ==1){ return (
-                                                
-                                                <option key={index} value={""}>Selecione un metodo de envío</option>
-                                            )}
-                                            return (
-                                                
+                                           return(
                                                 <option key={index} value={item.envio}>{item.envio}</option>
-                                            )
+                                                )
                                         })
                                     }
                                 </select>
@@ -357,23 +348,26 @@ function ModalDetalle(props) {
 
                         </div>
                         <div className="col-12 col-lg-2 text-center align-items-end ">
-                        {datosPerson.metodoPago=="Efectivo" ?<button id="pagarcuenta" className="btn btn-primary"
+                        {datosPerson.metodoPago=="Tarjeta" ?<button id="pagarcuenta" className="btn btn-primary"
                                                 disabled={!checked}
                                                  onClick={handlePago}
                                                      >
-                                                     <i className="fa fa-credit-card "> </i>PAGAR1
+                                                     <i className="fa fa-credit-card "> </i>PAGAR
                                                  </button>:"" 
                                                  }
-                        {datosPerson.metodoPago=="Tarjeta" ?<button id="pagarcuenta" className="btn btn-primary"
-                                                 disabled={!checked}                                                 
+                        {datosPerson.metodoPago=="Efectivo" ?<button id="pagarcuenta" className="btn btn-primary"
+                                                disabled={!checked}
+                                                 onClick={handelefctivorShow}                                               
                                                 >
-                                                     <i className="fa fa-credit-card "> </i>PAGAR2
+                                                     <i className="fa fa-credit-card "> </i>PAGAR
                                                  </button>:"" 
                          }
                          {datosPerson.metodoPago=="Deposito" ?<button id="pagarcuenta" className="btn btn-primary"
                                                  disabled={!checked}
+                                                 onClick={handelReporShow}
                                                  >
-                                                     <i className="fa fa-credit-card "> </i>PAGAR3
+                                                    
+                                                     <i className="fa fa-credit-card "> </i>PAGAR
                                                  </button>:"" 
                          }
                             

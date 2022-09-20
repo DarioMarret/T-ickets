@@ -19,8 +19,8 @@ const Reporte =(props) => {
                 <div className="container ">
     <div className="d-flex flex-wrap justify-content-center align-items-center" >
     <div className='d-flex flex-column text-center justify-content-center align-items-center'>
-    <h5 className="modal-title  ">PARA DEPOSITO O TRANSFERENCIA</h5>
-    <img src={metodos} className="img-fluid" alt=""/>
+    <h5 className="modal-title pb-3 ">PARA DEPOSITO O TRANSFERENCIA</h5>
+    <img src={metodos} className="img-fluid"  style={{width:'300px'}} alt=""/>
 
     </div>
 
