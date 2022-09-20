@@ -9,20 +9,20 @@ import { getCedula } from 'utils/localstore';
 function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
         listaPrecio, listarCarritoDetalle,
-        datosPerson, setPerson, setModalPago,handelReporShow,handelefctivorShow,
+        datosPerson, setPerson, setModalPago, handelReporShow, handelefctivorShow,
         setDetalle
     } = props
-    
+
     const [actualState, changeCheckState] = useState({
         check1: false,
         check2: false,
         check3: false
     });
-    const [checked,setChecked]=useState(false)
-   
+    const [checked, setChecked] = useState(false)
+
     const [spinervi, setspiner] = useState("d-none")
     const handleCheckboxChange = (event) => {
-       
+
         const { name, checked } = event
         if (checked) {
             changeCheckState({
@@ -36,7 +36,7 @@ function ModalDetalle(props) {
                 [name]: false
             })
         }
-        
+
     }
 
     function handlePago() {
@@ -44,42 +44,42 @@ function ModalDetalle(props) {
         setModalPago(true)
     }
 
-   async function handelchange(e) {
+    async function handelchange(e) {
         const { value, name } = e;
         console.log(e)
         setPerson({
             ...datosPerson,
             [name]: value
         })
-       
+
         if (name === "cedula" && value.length == 10) {
             setspiner("")
             const datos = await getCedula(value)
             if (datos.name) {
-                DatosUsuariosLocalStorag({...datos, cedula:value})
-                const { name, email ,direccion} = datos
+                DatosUsuariosLocalStorag({ ...datos, cedula: value })
+                const { name, email, direccion } = datos
                 console.log(datos)
                 setPerson({
                     ...datosPerson,
                     email: email,
                     name: name,
-                    cedula:value,
-                    direccion:direccion,                
+                    cedula: value,
+                    direccion: direccion,
                 })
-                setspiner("d-none")  
+                setspiner("d-none")
             } else {
                 setPerson({
                     ...datosPerson,
                     email: '',
                     name: '',
-                    direccion:'',
+                    direccion: '',
                 })
                 setspiner("d-none")
             }
         }
     }
     function hanbleDatos(e) {
-        
+
         setPerson({
             ...datosPerson,
             [e.target.name]: e.target.value
@@ -92,35 +92,36 @@ function ModalDetalle(props) {
             })
         }
         //Aqui tengo el error
-        setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
-       
-        
+        setChecked((Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d)))
+
+
     }
     useEffect(() => {
         let datosPersonal = getDatosUsuariosLocalStorag()
         let metodoPago = GetMetodo()
-        if(datosPersonal !== null){
+        if (datosPersonal !== null) {
             setPerson({
                 ...datosPerson,
                 email: datosPersonal.email,
                 name: datosPersonal.name,
                 whatsapp: datosPersonal.whatsapp,
                 cedula: datosPersonal.cedula,
-                direccion:datosPersonal.direccion,
+                direccion: datosPersonal.direccion,
+                metodoPago: datosPersonal.metodoPago,
             })
-           
+
             DatosUsuariosLocalStorag({
                 ...datosPersonal,
                 ['metodoPago']: metodoPago
             })
         }
-        
-       // setChecked( Object.values(datosPerson).every((d) => d))
-   
+
+        // setChecked( Object.values(datosPerson).every((d) => d))
+
         //Aqui queria validar el boton desabilitado
-        setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
-       
-    }, [showDetalle,actualState])
+        setChecked((Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d)))
+
+    }, [showDetalle, actualState])
 
 
 
@@ -152,7 +153,7 @@ function ModalDetalle(props) {
                             <span>Forma de Pago:</span>
                             <input type="text"
                                 className="form-control form-control-sm"
-                                name="metodo"
+                                name="metodoPago"
                                 value={datosPerson.metodoPago}
                                 id="formaPago" disabled={true}
                                 placeholder="forma de pago Selecionada"
@@ -192,9 +193,9 @@ function ModalDetalle(props) {
                                 <select className="form-select" value={datosPerson.envio} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
                                     {
                                         Envio.map((item, index) => {
-                                           return(
-                                                <option key={index} value={item.envio}>{item.envio}</option>
-                                                )
+                                            return (
+                                                <option key={index} value={item.value}>{item.envio}</option>
+                                            )
                                         })
                                     }
                                 </select>
@@ -227,18 +228,19 @@ function ModalDetalle(props) {
                             />
 
                         </div>
+                        <div className="col-12 col-sm-12 d-flex flex-column">
                             <span>Direccion:</span>
                             <input type="text"
                                 className="form-control form-control-sm"
                                 id="direccion"
                                 name="direccion"
-                                minLength={10}
-                                maxLength={10}
+                                maxLength={255}
                                 required
                                 value={datosPerson.direccion}
                                 onChange={(e) => hanbleDatos(e)}
                                 placeholder="Ingrese su direccion"
                             />
+                        </div>
                     </div>
                     <div className="container table-responsive">
                         <table className="resumen-table table ">
@@ -280,6 +282,9 @@ function ModalDetalle(props) {
                                 <p>Comision por Boleto:</p>
                             </div>
                             <div>
+                                <p>Comision Bancaria:</p>
+                            </div>
+                            <div>
                                 <h4>Total:</h4>
                             </div>
                         </div>
@@ -289,6 +294,9 @@ function ModalDetalle(props) {
                             </div>
                             <div className="container-fluid">
                                 <h4 className="comision-boleto text-end">${listaPrecio.comision} </h4>
+                            </div>
+                            <div className="container-fluid">
+                                <h4 className="comision-boleto text-end">${listaPrecio.comision_bancaria} </h4>
                             </div>
                             <div className="container  ">
                                 <h4 className="total-text"> ${listaPrecio.total} </h4>
@@ -311,7 +319,6 @@ function ModalDetalle(props) {
                                         onChange={(e) => handleCheckboxChange(e.target)}
                                         type="checkbox" />
                                 </div>
-
                             </div>
 
                             <div className="d-flex text-end  flex-wrap-reverse">
@@ -324,18 +331,17 @@ function ModalDetalle(props) {
                                 </div>
                                 <div className="px-3">
                                     <input className="form-check-input terminoscheck" id="check2" type="checkbox"
-                                    
+
                                         name="check2"
                                         onChange={(e) => handleCheckboxChange(e.target)}
                                     />
                                 </div>
-
                             </div>
                             <div className="d-flex text-end  flex-wrap-reverse">
                                 <div className="col-10 d-flex text-end">
                                     <p style={{ fontSize: "0.7em" }}>
-                                        Acepto que que se crea mi cuenta de usuario en el portal de flasthetickets, la misma que contiene mis datos persoanales, así como los 
-                                        datos de mis compras, así como tambien recibir las promociones por ese mismo medio.
+                                        Acepto que se crea mi cuenta de usuario en el portal de flasthetickets, la misma que contiene mis datos persoanales, así como los
+                                        datos de mis compras, tambien recibir las promociones por ese mismo medio.
                                     </p>
                                 </div>
                                 <div className="px-3">
@@ -343,43 +349,43 @@ function ModalDetalle(props) {
                                         name="check3" type="checkbox"
                                         onChange={(e) => handleCheckboxChange(e.target)} />
                                 </div>
-
                             </div>
 
                         </div>
                         <div className="col-12 col-lg-2 text-center align-items-end ">
-                        {datosPerson.metodoPago=="Tarjeta" ?<button id="pagarcuenta" className="btn btn-primary"
-                                                disabled={!checked}
-                                                 onClick={handlePago}
-                                                     >
-                                                     <i className="fa fa-credit-card "> </i>PAGAR
-                                                 </button>:"" 
-                                                 }
-                        {datosPerson.metodoPago=="Efectivo" ?<button id="pagarcuenta" className="btn btn-primary"
-                                                disabled={!checked}
-                                                 onClick={handelefctivorShow}                                               
-                                                >
-                                                     <i className="fa fa-credit-card "> </i>PAGAR
-                                                 </button>:"" 
-                         }
-                         {datosPerson.metodoPago=="Deposito" ?<button id="pagarcuenta" className="btn btn-primary"
-                                                 disabled={!checked}
-                                                 onClick={handelReporShow}
-                                                 >
-                                                    
-                                                     <i className="fa fa-credit-card "> </i>PAGAR
-                                                 </button>:"" 
-                         }
+
+                            {datosPerson.metodoPago == "Tarjeta" ? <button id="pagarcuenta" className="btn btn-primary"
+                                disabled={!checked}
+                                onClick={handlePago}
+                            >
+                                <i className="fa fa-credit-card "> </i>PAGAR
+                            </button> : ""
+                            }
+                            {datosPerson.metodoPago == "Efectivo" ? <button id="pagarcuenta" className="btn btn-primary"
+                                disabled={!checked}
+                                onClick={handelefctivorShow}
+                            >
+                                <i className="fa fa-credit-card "> </i>PAGAR
+                            </button> : ""
+                            }
+                            {datosPerson.metodoPago == "Deposito" ? <button id="pagarcuenta" className="btn btn-primary"
+                                disabled={!checked}
+                                onClick={handelReporShow}
+                            >
+
+                                <i className="fa fa-credit-card "> </i>PAGAR
+                            </button> : ""
+                            }
+
+
+
+
+
+
                             
-                            
-                            
-                            
-                            
-                            
-                            {/*
-                            <button id="pagarcuenta" className="btn btn-primary"
+                            {/* <button id="pagarcuenta" className="btn btn-primary"
                                 disabled={false} onClick={handlePago}
-                            ><i className="fa fa-credit-card p-1"> </i>PAGAR</button>*/}
+                            ><i className="fa fa-credit-card p-1"> </i>PAGAR</button> */}
                         </div>
                     </div>
                 </div>

@@ -66,8 +66,10 @@ const IndexFlas = () => {
   const [listaPrecio, setListaPrecio] = useState({
     total: 0,
     subtotal: 0,
-    comision: 0
+    comision: 0,
+    comision_bancaria: 0
   })
+  
   const [listarCarritoDetalle, setListarCarritoDetalle] = useState([])
 
   const [datosPerson, setPerson] = useState({
