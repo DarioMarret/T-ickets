@@ -310,9 +310,9 @@ const IndexFlas = () => {
         setListaPrecio={setListaPrecio}
         handelReporShow={handelReporShow}
         listarCarritoDetalle={listarCarritoDetalle}
-        datosPerson={datosPerson}
+       
         handelefctivorShow={handelefctivorShow}
-        setPerson={setPerson}
+        
         setModalPago={setModalPago}
       />
 

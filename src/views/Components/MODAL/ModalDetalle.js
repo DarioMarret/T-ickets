@@ -9,7 +9,7 @@ import { getCedula } from 'utils/localstore';
 function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
         listaPrecio, listarCarritoDetalle,
-        datosPerson, setPerson, setModalPago,handelReporShow,handelefctivorShow,
+          setModalPago,handelReporShow,handelefctivorShow,
         setDetalle
     } = props
     
@@ -21,6 +21,16 @@ function ModalDetalle(props) {
     const [checked,setChecked]=useState(false)
    
     const [spinervi, setspiner] = useState("d-none")
+    
+  const [datosPerson, setPerson] = useState({
+    cedula: '',
+    name: '',
+    email: '',
+    whatsapp: '',
+    metodoPago: '',
+    envio: '',
+    direccion: '',
+  })
     const handleCheckboxChange = (event) => {
        
         const { name, checked } = event
@@ -90,9 +100,9 @@ function ModalDetalle(props) {
                 ...datosPersonal,
                 [e.target.name]: e.target.value
             })
-          / //Aqui tengo el error
+          //Aqui tengo el error
           // setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
-           setChecked((Object.values(actualState).every((d) => d)))
+          //setChecked((Object.values(actualState).every((d) => d)))
     }
 
     useEffect(() => {
@@ -106,6 +116,7 @@ function ModalDetalle(props) {
                 email: datosPersonal.email,
                 name: datosPersonal.name,
                 whatsapp: datosPersonal.whatsapp,
+                envio:datosPersonal.envio,
                 cedula: datosPersonal.cedula,
                 metodoPago: metodoPago
             })
@@ -116,14 +127,19 @@ function ModalDetalle(props) {
             })
         }
         setPerson({
-            ...datosPerson,
+            ...datosPerson,            
+            email:datosPersonal? datosPersonal.email:'',
+            name:datosPersonal? datosPersonal.name:'',
+            whatsapp:datosPersonal? datosPersonal.whatsapp:'',
+            cedula:datosPersonal? datosPersonal.cedula:'',
             metodoPago: metodoPago,
+            envio:datosPersonal? datosPersonal.envio:'',
             direccion:datosPersonal?datosPersonal.direccion:''
         })
         
          //Aqui tengo el error
-        // setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
-         setChecked((Object.values(actualState).every((d) => d)))
+         setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
+        // setChecked((Object.values(actualState).every((d) => d)))
          console.log(checked)
       
     }, [showDetalle,actualState])
@@ -355,21 +371,21 @@ function ModalDetalle(props) {
                         </div>
                         <div className="col-12 col-lg-2 text-center align-items-end ">
                         {datosPerson.metodoPago=="Tarjeta" ?<button id="pagarcuenta" className="btn btn-primary"
-                                                disabled={!checked}
+                                                disabled={!(Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d))}
                                                  onClick={handlePago}
                                                      >
                                                      <i className="fa fa-credit-card "> </i>PAGAR
                                                  </button>:"" 
                                                  }
                         {datosPerson.metodoPago=="Efectivo" ?<button id="pagarcuenta" className="btn btn-primary"
-                                                disabled={!checked}
+                                                disabled={!(Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d))}
                                                  onClick={handelefctivorShow}                                               
                                                 >
                                                      <i className="fa fa-credit-card "> </i>PAGAR
                                                  </button>:"" 
                          }
                          {datosPerson.metodoPago=="Deposito" ?<button id="pagarcuenta" className="btn btn-primary"
-                                                 disabled={!checked}
+                                                 disabled={!(Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d))}
                                                  onClick={handelReporShow}
                                                  >
                                                     
