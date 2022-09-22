@@ -103,10 +103,10 @@ function ModalDetalle(props) {
         })
     }
     //Aqui tengo el error
-    setChecked((Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d)))
+    // setChecked((Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d)))
 
 
-}
+
 
 useEffect(() => {
     let datosPersonal = getDatosUsuariosLocalStorag()
@@ -398,6 +398,13 @@ return (
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                     onClick={handelReporShow}
+                                >
+                                    <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
+                        }
+                                                {
+                            !datosPerson.metodoPago ?
+                                <button id="pagarcuenta" className="btn btn-primary"
+                                    disabled={true}
                                 >
                                     <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                         }

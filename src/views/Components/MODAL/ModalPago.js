@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CrearLinkPagoPayPhone } from 'utils/Query';
 import { GenerarLinkPagoMedios } from 'utils/Query';
-import Iframe from '../IFrame/Iframe';
-import ButtonPago from '../PayPhone/ButtonPago';
+// import ButtonPago from '../PayPhone/ButtonPago';
 import { Spinner } from 'react-bootstrap';
 
 function ModalPago(props) {
@@ -38,20 +37,17 @@ function ModalPago(props) {
         setSpiner("d-none")
     }
     function popUp(URL) {
-        let newWindow = window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
-        // newWindow.focus();
-        console.log(newWindow)
-        newWindow.onload = function () {
-            let html = `<div style="font-size:300px">Welcome!</div>`;
-            newWindow.document.body.innerHTML = html;
-        };
+        window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
     }
 
 
     useEffect(() => {
-        // popUp("https://cloud.abitmedia.com/pagos/solicitudes/?t=2y-13-vh6rdxnaqfsq3det0iesr-huvle2bnw-0-47ivgkj-lsjgehlz3m6")
-    }, [])
-    //https://cloud.abitmedia.com/pagos/solicitudes/?t=2y-13-uvvrjal98e4jhycxepstlurylxqgnqnltcxz9plpn-npytcuwvabi
+        if(url !== ''){
+            popUp(url)
+
+        }
+    }, [url])
+
     return (
         <div
             style={{
@@ -206,7 +202,7 @@ function ModalPago(props) {
                 </div>
             </div>
 
-            {
+            {/* {
                 estadoFrame ?
                     <Iframe
                         setEstadoFrame={setEstadoFrame}
@@ -214,7 +210,7 @@ function ModalPago(props) {
                     />
                     : null
 
-            }
+            } */}
         </div>
     );
 }
