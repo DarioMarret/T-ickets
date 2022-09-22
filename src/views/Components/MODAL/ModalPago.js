@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CrearLinkPagoPayPhone } from 'utils/Query';
 import { GenerarLinkPagoMedios } from 'utils/Query';
 import Iframe from '../IFrame/Iframe';
-import ButtonPago from '../PayPhone/ButtonPago';
+// import ButtonPago from '../PayPhone/ButtonPago';
 import {Spinner} from 'react-bootstrap';
 
 function ModalPago(props) {
