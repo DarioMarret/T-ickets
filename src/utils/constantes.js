@@ -8,19 +8,19 @@ export const Metodos = "Metodo-pago"
  
 
 export const Envio = [
-     {
-         id: 1,
-         envio: "",
-         value:"Seleccione un método"
-     },
+    {
+        id: 1,
+        envio: "Seleccione el metodo de envio",
+        value:"correo"
+    },
     {
         id: 2,
-        envio:"Correo Electrónico",
-        value:"Correo Electrónico"
+        envio: "Correo Electrónico",
+        value:"correo"
     },
     {
         id: 3,
-        envio:"Whatsapp",
-        value:"Whatsapp"
+        envio: "Whatsapp",
+        value:"whatsapp"
     }
 ]

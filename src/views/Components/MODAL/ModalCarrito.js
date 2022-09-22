@@ -16,6 +16,7 @@ function ModalCarrito(props) {
         localidades_1: "A ESA - GENERAL",
         localidades_2: "PEGA LA VUELTA - PREFERENCIAL",
     })
+    const [Total, setTotal] = useState(0)
     const [listarCarrito, setListarCarrito] = useState([])
     const [timer, setTimer] = useState(false)
     const [check, setCheck] = useState(true)
@@ -32,24 +33,24 @@ function ModalCarrito(props) {
 
     //A ESA - GENERAL 
     function hanbleMas() {
-        AgregarAlCarrito(1, "A ESA - GENERAL", 30)
+        AgregarAlCarrito(1, "A ESA - GENERAL", estado.valorGeneral)
     }
 
     function hanbleMenos() {
         if (cantidad.cantidad_1 > 0) {
-            AgregarAlCarrito(-1, "A ESA - GENERAL", 30)
+            AgregarAlCarrito(-1, "A ESA - GENERAL", estado.valorGeneral)
         }
     }
 
 
     //B ESA - PREGERENCIAL
     function hanbleMasPreferencia() {
-        AgregarAlCarrito(1, "PEGA LA VUELTA - PREFERENCIAL", 50)
+        AgregarAlCarrito(1, "PEGA LA VUELTA - PREFERENCIAL", estado.valorPregerencial)
     }
 
     function hanbleMenosPreferencia() {
         if (cantidad.cantidad_2 > 0) {
-            AgregarAlCarrito(-1, "PEGA LA VUELTA - PREFERENCIAL", 50)
+            AgregarAlCarrito(-1, "PEGA LA VUELTA - PREFERENCIAL", estado.valorPregerencial)
         }
     }
 
@@ -59,7 +60,7 @@ function ModalCarrito(props) {
             localidad: localidad,
             fila: 0,
             valor: valor,
-            nombreConcierto: "Grupo Pimpinela 29-10-2022",
+            nombreConcierto: "GIRA 40 ANIVERSARIO",
         }
         TiendaIten(producto)
         setTimer(!timer)
@@ -70,20 +71,20 @@ function ModalCarrito(props) {
         setTimer(!timer)
         //const carritos = listarCarrito.filter(e=>e.localidad!=localidad)
         //setListarCarrito(carritos)
-        if(localidad==="A ESA - GENERAL"){
+        if (localidad === "A ESA - GENERAL") {
             setEstado({
                 ...estado,
                 cantidad_1: 0,
                 valorGeneral: 30,
             })
 
-        }else{
+        } else {
             setEstado({
                 ...estado,
                 cantidad_2: 0,
-            valorPregerencial: 50,
-            
-            })            
+                valorPregerencial: 50,
+
+            })
         }
         /*cantidad_1: 0,
         cantidad_2: 0,
@@ -141,8 +142,8 @@ function ModalCarrito(props) {
         listarCheck()
         let data = GetValores()
         setListaPrecio(data)
-        console.log(data)
-    }, [timer,show])
+        setTotal(GetValores().total)
+    }, [timer])
 
 
     return (
@@ -159,10 +160,10 @@ function ModalCarrito(props) {
                     <Table>
                         <thead className="bg-secondary text-black">
                             <tr className='text-'>
-                                <th className="text-center text-black"  scope="col">LOCALIDAD</th>
+                                <th className="text-center text-black" scope="col">LOCALIDAD</th>
                                 <th className="text-center text-black" scope="col">PRECIO</th>
                                 <th className="text-center text-black" scope="col">CANTIDAD</th>
-                                <th  className="text-center text-black" scope="col">CARACTERISTICA</th>
+                                <th className="text-center text-black" scope="col">CARACTERISTICA</th>
                             </tr>
                         </thead>
                         <tbody className="text-center ">
@@ -229,11 +230,11 @@ function ModalCarrito(props) {
                         >
                             <thead className="bg-secondary text-black">
                                 <tr>
-                                    <th  className="text-center text-black" scope="col">LOCALIDAD</th>
-                                    <th  className="text-center text-black" scope="col">FILA</th>
-                                    <th  className="text-center text-black" scope="col">TOTAL ASIENTOS</th>
-                                    <th  className="text-center text-black" scope="col">TOTAL</th>
-                                    <th  className="text-center text-black" scope="col">ACCION</th>
+                                    <th className="text-center text-black" scope="col">LOCALIDAD</th>
+                                    <th className="text-center text-black" scope="col">FILA</th>
+                                    <th className="text-center text-black" scope="col">TOTAL ASIENTOS</th>
+                                    <th className="text-center text-black" scope="col">TOTAL</th>
+                                    <th className="text-center text-black" scope="col">ACCION</th>
                                 </tr>
                             </thead>
                             <tbody className="text-center ">
@@ -260,9 +261,18 @@ function ModalCarrito(props) {
                         </table>
                     </div>
                     <div className="row justify-content-center bg-gray">
-                        <div className="col-6  d-flex  align-self-center justify-content-center">
-                            <h4>TOTAL A PAGAR</h4>
-                            <h4 className="px-1 total-detalle"> </h4>
+                        <div className="col-6 d-flex  align-self-center justify-content-center">
+                            <h4
+                            style={{ 
+                                fontSize: '2rem',
+                            }}
+                            >SUBTOTAL:</h4>
+                                <h4 
+                                style={{
+                                    fontSize: '2rem',
+                                    fontWeight: 'bold',
+                                }}
+                                className="px-1 total-detalle"> {Total != 0 ? "$" + Total : null}</h4>
                         </div>
                         <div className="col-sm d-flex flex-column align-items-end ">
                             <div className="px-5">

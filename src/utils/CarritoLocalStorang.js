@@ -3,7 +3,6 @@ import { CarritoTicket, Metodos } from "./constantes"
 let PViten = []
 export function TiendaIten(producto) {
     VerTienda()
-
     const existe = PViten.some(iten => iten.localidad === producto.localidad)
     if (existe) {
         //Actualizar Cantidad
@@ -18,20 +17,18 @@ export function TiendaIten(producto) {
                     return iten; // restorna la cantidad actualizada
                 }
             } else {
-                return iten; //retorna la objetos que no son actualizado
+                return iten //retorna la objetos que no son actualizado
             }
         })
         PViten = [...Product];
         localStorage.setItem(CarritoTicket, JSON.stringify(PViten))
         let array = JSON.parse(localStorage.getItem(CarritoTicket))
         return array
-
     } else {
         //Agregamos a la tienda
         localStorage.setItem(CarritoTicket, JSON.stringify([...PViten, producto]))
         let array = JSON.parse(localStorage.getItem(CarritoTicket))
         return array
-
     }
 }
 
@@ -121,16 +118,32 @@ export function GetValores() {
     var valor = 0;
     var subtotal = 0;
     var comision = 0;
+    var descrption = ""
     if (tag !== null) {
         tag.map(tienda => {
-            subtotal += (tienda.valor * tienda.cantidad)
-            comision += tienda.cantidad
+            subtotal += tienda.valor * tienda.cantidad
+            descrption = tienda.nombreConcierto
+            if(tienda.valor >= 101){
+                comision += tienda.cantidad * 2
+            }else if(tienda.valor >= 201){
+                comision += tienda.cantidad * 3
+            }else if(tienda.valor >= 301){
+                comision += tienda.cantidad * 4
+            }else if(tienda.valor >= 401){
+                comision += tienda.cantidad * 5
+            }else{
+                comision += tienda.cantidad
+            }
+
         })
         valor = subtotal + comision;
         let precios = {
-            total: valor.toFixed(2),
-            comision: comision.toFixed(2),
-            subtotal: subtotal.toFixed(2)
+            total: valor.toFixed(2)*5/100+valor,
+            comision:comision.toFixed(2),
+            comision_bancaria: valor.toFixed(2)*5/100,
+            subtotal: subtotal.toFixed(2),
+            description: descrption,
+            // envio: "Email" || "whatsapp"
         }
         return precios
     } else {

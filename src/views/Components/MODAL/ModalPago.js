@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { CrearLinkPagoPayPhone } from 'utils/Query';
 import { GenerarLinkPagoMedios } from 'utils/Query';
-import Iframe from '../IFrame/Iframe';
 // import ButtonPago from '../PayPhone/ButtonPago';
-import {Spinner} from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 
 function ModalPago(props) {
     const { setModalPago, modalPago } = props
-    const [spinerst,setSpiner]=useState("d-none")
+    const [spinerst, setSpiner] = useState("d-none")
     const [estadoFrame, setEstadoFrame] = useState(false)
     const [url, setUrl] = useState('')
     const [cargar, setCargar] = useState(false)
@@ -19,7 +18,7 @@ function ModalPago(props) {
     async function CrearPagoMedio() {
         setSpiner("")
         const data = await GenerarLinkPagoMedios()
-        
+
         if (data.status === 200) {
             setUrl(data.data.url)
             setEstadoFrame(!estadoFrame)
@@ -37,6 +36,17 @@ function ModalPago(props) {
         }
         setSpiner("d-none")
     }
+    function popUp(URL) {
+        window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
+    }
+
+
+    useEffect(() => {
+        if(url !== ''){
+            popUp(url)
+
+        }
+    }, [url])
 
     return (
         <div
@@ -66,7 +76,7 @@ function ModalPago(props) {
                 }}
             >
 
-                <div style={{ 
+                <div style={{
                     display: 'flex',
                     flexDirection: 'column',
                     border: '3px solid #000000',
@@ -74,119 +84,125 @@ function ModalPago(props) {
                     padding: '10px',
                 }}>
 
-                <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                    <strong>
-                        <h2 style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>escoja el metodo de pago</h2>
-                    </strong>
-                </div>
-
-                {/* //PAGO CON PAGO MEDIO */}
-                <label htmlFor="pagoMedio"
-                    style={{
-                        textAlign: 'center',
-                    }}
-                >
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: '10px',
-                            cursor: 'pointer'
-                        }}
-                        onClick={CrearPagoMedio}
-                    >
-                        <img
-                            src="https://codigomarret.online/img/whatsapp image 2022-09-18 at 15.12.28.jpeg"
-                            width={340}
-                            alt="Pagos medios"
-                        />
+                    <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                        <strong>
+                            <h2 style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>escoja el metodo de pago</h2>
+                        </strong>
                     </div>
-                </label>
 
-
-                {/* //PAGO CON PAYPHONE */}
-                <label htmlFor="payPhone"
-                    style={{
-                        textAlign: 'center',
-                    }}
-                >
-                    <div
+                    {/* //PAGO CON PAGO MEDIO */}
+                    <label htmlFor="pagoMedio"
                         style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: '10px',
-                            cursor: 'pointer'
+                            textAlign: 'center',
                         }}
-                        onClick={()=>CrearLinkPayPhone()}
                     >
-                        <img
-                            src="https://codigomarret.online/img/payphone.jpeg"
-                            width={300}
-                            alt="Pagos medios"
-                        />
-                    </div>
-                    {/* 
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: '10px',
+                                cursor: 'pointer'
+                            }}
+                            onClick={CrearPagoMedio}
+                        >
+                            <img
+                                src="https://codigomarret.online/img/whatsapp image 2022-09-18 at 15.12.28.jpeg"
+                                width={340}
+                                alt="Pagos medios"
+                            />
+                        </div>
+                    </label>
+
+
+                    {/* //PAGO CON PAYPHONE */}
+                    <label htmlFor="payPhone"
+                        style={{
+                            textAlign: 'center',
+                        }}
+                    >
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: '10px',
+                                cursor: 'pointer'
+                            }}
+                            onClick={() => CrearLinkPayPhone()}
+                        >
+                            <img
+                                src="https://codigomarret.online/img/payphone.jpeg"
+                                width={300}
+                                alt="Pagos medios"
+                            />
+                        </div>
+                        {/* 
                     <ButtonPago cargar={cargar} /> */}
-                </label>
+                    </label>
 
 
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'flex-end',
-                        alignItems: 'flex-end',
-                        width: '100%',
-                        height: '100%',
-                    }}
-                >
-                    <button 
-                    className='btn btn-outline-danger'
-                        
-                        onClick={() => setModalPago(false)}
-                    >Cancelar</button>
-                </div>
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'flex-end',
+                            alignItems: 'flex-end',
+                            width: '100%',
+                            height: '100%',
+                        }}
+                    >
+                        <button
+                            style={{
+                                backgroundColor: 'rgb(232, 232, 232, 0.5)',
+                                border: 'none',
+                                borderRadius: '10px',
+                                padding: '10px',
+                                cursor: 'pointer'
+
+                            }}
+                            onClick={() => setModalPago(false)}
+                        >Cancelar</button>
+                    </div>
 
                 </div>
             </div>
             <div>
-            <div className={spinerst}
-               style={{
-                display: 'none',
-                position: 'fixed',
-                top: '0',
-                left: '0',
-                width: '100%',
-                height: '100%',
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: '1000'
-            }}
-            >
+                <div className={spinerst}
+                    style={{
+                        display: 'none',
+                        position: 'fixed',
+                        top: '0',
+                        left: '0',
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: '1000'
+                    }}
+                >
 
-                <div style={{ 
-                    display: 'flex',
-                    flexDirection: 'column',
-                   justifyContent:'center',
-                   alignItems:'center',
-                    borderRadius: '10px',
-                    padding: '10px',
-                }}>
-                    <Spinner animation="grow" variant="light" size='100'></Spinner>
-                    <h4 className='text-light'>Cargando metodo de Pago...</h4>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: '10px',
+                        padding: '10px',
+                    }}>
+                        <Spinner animation="grow" variant="light" size='100'></Spinner>
+                        <h4 className='text-light'>Cargando metodo de Pago</h4>
 
 
+                    </div>
                 </div>
             </div>
-            </div>
-            
-            {
+
+            {/* {
                 estadoFrame ?
                     <Iframe
                         setEstadoFrame={setEstadoFrame}
@@ -194,7 +210,7 @@ function ModalPago(props) {
                     />
                     : null
 
-            }
+            } */}
         </div>
     );
 }

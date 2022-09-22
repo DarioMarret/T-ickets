@@ -77,8 +77,10 @@ const IndexFlas = () => {
   const [listaPrecio, setListaPrecio] = useState({
     total: 0,
     subtotal: 0,
-    comision: 0
+    comision: 0,
+    comision_bancaria: 0
   })
+  
   const [listarCarritoDetalle, setListarCarritoDetalle] = useState([])
 ///Esta parte la mande al modal de detalle para poder validar el boton pagar
   const [datosPerson, setPerson] = useState({
