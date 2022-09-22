@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-//import { CrearLinkPagoPayPhone } from 'utils/Query';
 import { GenerarLinkPagoMedios } from 'utils/Query';
 import {LimpiarLocalStore} from '../../../utils/CarritoLocalStorang';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
-// import ButtonPago from '../PayPhone/ButtonPago';
 import { Spinner } from 'react-bootstrap';
 
 function ModalPago(props) {
@@ -61,18 +59,39 @@ function ModalPago(props) {
         setSpiner("d-none")
     }
     function popUp(URL) {
-        window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
+        var popUp = window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
+       
+        if (popUp == null || typeof(popUp)=='undefined') {     
+        //console.log("error")
+            setDatoToas({ show:true,
+                message:'Por favor habilite las ventanas emergentes, e intente nuevamente',
+                color:'bg-danger',
+                estado:'Mensaje importante',
+              })
+         } else{
+         popUp.focus()
+        LimpiarLocalStore()}
     }
-
+   /* function popUp1() {
+        var popUp = window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
+       
+        if (popUp == null || typeof(popUp)=='undefined') {     
+        console.log("error")
+            setDatoToas({ show:true,
+                message:'Por favor habilite las ventanas emergentes, e intente nuevamente',
+                color:'bg-danger',
+                estado:'Mensaje importante',
+              })
+         } else{
+         popUp.focus()
+        //LimpiarLocalStore()
+    }
+    }*/
 
     useEffect(() => {
-        
-
-
-        if(url !== ''){
+       if(url !== ''){
             popUp(url)
-            LimpiarLocalStore()
-
+           
         }
     }, [url])
 

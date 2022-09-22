@@ -51,8 +51,9 @@ function ModalDetalle(props) {
 
     }
     function handlePago() {
+        if(validarEmail(datosPerson.email)){
         setDetalle(!showDetalle)
-        setModalPago(true)
+        setModalPago(true)}
     }
 
     async function handelchange(e) {
@@ -67,15 +68,17 @@ function ModalDetalle(props) {
             setspiner("")
             const datos = await getCedula(value)
             if (datos.name) {
-                DatosUsuariosLocalStorag({ ...datos, cedula: value })
+                DatosUsuariosLocalStorag({ ...datos, cedula: value,envio:datosPerson.envio,whatsapp:datosPerson.whatsapp })
                 const { name, email, direccion } = datos
                 console.log(datos)
                 setPerson({
                     ...datosPerson,
-                    email: email,
+                    email: email? email:'',
                     name: name,
                     cedula: value,
-                    direccion: direccion,
+                    direccion: direccion? direccion:'',
+                    envio:datosPerson.envio,
+                    whatsapp:datosPerson.whatsapp
                 })
                 setspiner("d-none")
             } else {
@@ -108,10 +111,27 @@ function ModalDetalle(props) {
             [e.target.name]: e.target.value
         })
     }
-    //Aqui tengo el error
-    // setChecked((Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d)))
-
-
+    function validarEmail(valor) {
+       let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+        console.log(valor)
+        if (emailRegex.test(valor) ){
+         return true
+        } else {
+            setDatoToas({ show:true,
+                message:'Campos inconpletos o Formato de correo invalido ',
+                color:'bg-danger',
+                estado:'Complete la información',
+              })
+              return false
+        }
+      }
+      $(document).ready(function() {
+        $(".numero").keypress(function(e) {
+          var n = (e = e || window.event).keyCode || e.which,
+            t = -1 != "0123456789xX".indexOf(String.fromCharCode(n));
+          (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
+        })     
+      });
 
 
 useEffect(() => {
@@ -134,16 +154,15 @@ useEffect(() => {
             direccion: datosPersonal.direccion,
         })
     }
-    setPerson({
+   /* setPerson({
         ...datosPerson,
         email: datosPersonal ? datosPersonal.email : '',
         name: datosPersonal ? datosPersonal.name : '',
         whatsapp: datosPersonal ? datosPersonal.whatsapp : '',
         cedula: datosPersonal ? datosPersonal.cedula : '',
-        metodoPago: metodoPago,
-        envio: datosPersonal ? datosPersonal.envio : '',
+        metodoPago: metodoPago,       
         direccion: datosPersonal ? datosPersonal.direccion : ''
-    })
+    })*/
     let mostrarcomision = GetMetodo()
     const mostrar= mostrarcomision!="Tarjeta"? "d-none":""
     sethideComision(mostrar)
@@ -186,7 +205,7 @@ return (
 
                         <span>Cedula DNI:</span>
                         <input type="text"
-                            className="form-control form-control-sm"
+                            className="numero form-control form-control-sm"
                             id="dni"
                             maxLength={10}
                             name='cedula'
@@ -210,7 +229,8 @@ return (
                     <div className="col-6 col-sm-6 d-flex flex-column">
                         <span>Forma de envío:</span>
                         <div>
-                            <select className="form-select" value={datosPerson.envio} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
+                            <select className="form-select"                             
+                            value={datosPerson.envio || ''} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
                                 {
                                     Envio.map((item, index) => {
                                         return (
@@ -236,7 +256,7 @@ return (
 
                         <span>Whatsapp Contacto:</span>
                         <input type="text"
-                            className="form-control form-control-sm"
+                            className="numero form-control form-control-sm"
                             id="whatsapp"
                             name="whatsapp"
                             minLength={10}
@@ -389,7 +409,7 @@ return (
                             datosPerson.metodoPago == "Efectivo" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
-                                    onClick={handelefctivorShow}
+                                    onClick={()=>{if(validarEmail(datosPerson.email)){handelefctivorShow()}}}
                                 >
                                     <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                         }
@@ -397,7 +417,7 @@ return (
                             datosPerson.metodoPago == "Deposito" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
-                                    onClick={handelReporShow}
+                                    onClick={()=>{ if(validarEmail(datosPerson.email)){handelReporShow()} }}
                                 >
                                     <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                         }

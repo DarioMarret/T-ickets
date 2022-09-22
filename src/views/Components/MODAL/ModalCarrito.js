@@ -137,13 +137,14 @@ function ModalCarrito(props) {
     })
     useEffect(() => {
         setListarCarrito(getVerTienda())
+        console.log(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
         CargarValores()
         listarCheck()
         let data = GetValores()
         setListaPrecio(data)
         setTotal(GetValores().total)
-    }, [timer])
+    }, [timer,show])
 
 
     return (

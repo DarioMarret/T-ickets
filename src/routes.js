@@ -41,7 +41,7 @@ import LockScreenPage from "views/Pages/LockScreenPage.js";
 import Misdatos from "views/Pages/Misdatos.js";
 import Ticket from "views/Pages/Tickets.js";
 import Espacios from "views/Pages/Espacios";
-import Eventos from "views/Pages/Eventos.js"
+import Eventos from "views/Pages/Evento"
 
 var routes = [
   {

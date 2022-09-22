@@ -19,8 +19,8 @@ const ViewToas =(props) =>{
             zIndex: 10000,
         }}>
        <Toast.Header>
-      <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
-       <strong className="mr-auto">{Toastestado.estado} </strong>
+        <div className={Toastestado.color+" rounded-3"} style={{width:'20px',height:'20px',}}></div>
+        <strong className="mr-auto  px-1">{Toastestado.estado} </strong>
       <small></small>
     </Toast.Header>
         <Toast.Body className={ Toastestado.color +" text-white"} >{Toastestado.message}</Toast.Body>
