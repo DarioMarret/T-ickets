@@ -6,7 +6,10 @@ const EventosViews =()=>{
     const[show,setShow] = useState(true)
   const [espacio,setEspacio]=useState([])
 
+ function nuevoevento(){
+  setShow(true)
 
+ }
    
    
     return(
@@ -172,7 +175,7 @@ const EventosViews =()=>{
                     <div className="col-md-12">
                         
 
-                        <button  className="btn btn-success" data-toggle="modal" data-target="#eventoModal"><i className="mr-2 fa fa-plus"></i> Nuevo evento</button>
+                        <button  className="btn btn-success" onClick={nuevoevento}><i className="mr-2 fa fa-plus"></i> Nuevo evento</button>
 
                         <br/><br/>
 

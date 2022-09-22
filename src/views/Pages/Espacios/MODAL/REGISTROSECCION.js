@@ -26,6 +26,10 @@ const Registroseccion =(props)=>{
         mesas:'',
         me_sillas:''
     })
+    const [SillasMesas, SetSillasmes]=useState({
+        sillas:'',
+        cantidad:''
+    })
     const [ListaFilas,setFilas]=useState([])
     const [ListaMesa,setMesas]=useState([])
     const [listaFilasConsillas,setFilasSillas]=useState([])
@@ -33,26 +37,24 @@ const Registroseccion =(props)=>{
         if(filass.inicial!=" "&& filass.cantidad!=" " ){
         const letrafilas = filass.inicial.replace(/[0-9]+/g, "")
         const numeroinicofilas= filass.inicial.replace(/[^0-9]+/g, "");        
-        const repeticiones =parseInt(numeroinicofilas) + parseInt(filass.cantidad)
-        console.log(repeticiones)
+        const repeticiones =parseInt(numeroinicofilas) + parseInt(filass.cantidad)      
         for(i= numeroinicofilas; i < repeticiones; i++){
             ListadeFilas.push({fila:letrafilas+""+i,sillas:0,asientos:[]});        
         }}
-        setFilas(ListadeFilas)
-        console.log(ListadeFilas)
+        setFilas(ListadeFilas)       
     }
-     const AgregasSillasMesa=()=>{ 
+     const AgregasSillasFila=()=>{ 
         ListadeFilas=ListaFilas
-        console.log(filass.fila,filass.sillas)
+       // console.log(filass.fila,filass.sillas)
         let interar = parseInt(filass.sillas);
          if(filass.fila!=""&& filass.sillas !=""){          
-            console.log(interar)
-            if(filass.fila==="todas"){
-                console.log(interar)              
+           
+            if(filass.fila==="Todas"){
+               
                 for(i=0; i< ListadeFilas.length; i++){            
                     ListadeFilas[i]["sillas"]=interar;
-                 const numfila =ListadeFilas[i]["fila"]
-                  console.log( ListadeFilas[i]["fila"])
+                    ListadeFilas[i]["asientos"]=[]
+                 const numfila =ListadeFilas[i]["fila"]                
                     for(f=0; f< interar; f++ ){                               
                         ListadeFilas[i]["asientos"][f]={silla:numfila+"-s-"+f,estado:"disponible"};                         
                     }                   
@@ -85,13 +87,60 @@ const Registroseccion =(props)=>{
             const letrafilas = Mesass.me_inicial.replace(/[0-9]+/g, "")
             const numeroinicofilas= Mesass.me_inicial.replace(/[^0-9]+/g, "");        
             const repeticiones =parseInt(numeroinicofilas) + parseInt(Mesass.me_cantidad)
-            console.log(repeticiones)
+          //  console.log(repeticiones)
             for(i= numeroinicofilas; i < repeticiones; i++){
                 ListadeMesas.push({mesa:letrafilas+""+i,sillas:0,asientos:[]});        
             }}
-            setMesas(ListadeFilas)
-            console.log(ListadeFilas)
+            setMesas(ListadeMesas)
+            //console.log(ListadeMesas)
      }
+     const AgregasSillasMesa =()=>{
+       
+        if(Mesass.mesas!="" && Mesass.me_sillas!=""){    
+            ListadeMesas=ListaMesa
+            console.log(ListadeMesas)
+            let interar = parseInt(Mesass.me_sillas);     
+                 if(Mesass.mesas==="Todas"){
+                     console.log(interar)              
+                     for(i=0; i< ListadeMesas.length; i++){            
+                         ListadeMesas[i]["sillas"]=interar;
+                         ListadeMesas[i]["asientos"]=[]
+                      const nummesa =ListadeMesas[i]["mesa"]                
+                         for(f=0; f< interar; f++ ){                               
+                             ListadeMesas[i]["asientos"][f]={silla:nummesa+"-s-"+f,estado:"disponible"};                         
+                         }                   
+                     }   
+                     SetSillasmes({sillas:"Todas",cantidad:interar})            
+                     setMesas([])                  
+                     setFilasSillas(ListadeMesas)
+                     setMesas(ListadeMesas)               
+                     setFilasSillas([])     
+                 
+                 }else{
+                     let sillas=[]
+                     let interarr = parseInt(Mesass.me_sillas);
+                     var numero=0
+                     var index = ListadeMesas.findIndex(obj => obj.mesa==Mesass.mesas);
+                    // console.log(index,ListadeMesas[index])
+                     setMesass({...Mesass,
+                        me_sillas:''})
+                     for(g=0; g< interarr;g++){                    
+                         numero=1+g                   
+                         sillas[g]={silla:"-s-"+numero,estado:"disponible"}                  
+                     }
+                     ListadeMesas[index].asientos=[...sillas]
+                     SetSillasmes({sillas:Mesass.mesas,cantidad:interarr})    
+                    /* setMesass({...Mesass,
+                        me_sillas:interarr})*/
+                     
+                     setMesas([...ListadeMesas])         
+                               
+                 }
+                    
+
+        }
+        
+     }   
 
     const  cambiar =(a,b,c)=>{
         setTabactive({
@@ -106,6 +155,8 @@ const Registroseccion =(props)=>{
             ...Mesass,
             [e.name]:e.value
         })
+        SetSillasmes({sillas:'',cantidad:''})
+        console.log(Mesass)
     }
     function handelchange(e){
         setFilass({
@@ -242,7 +293,7 @@ useEffect(()=>{
                                                                     </div>
                                                                     <select className="form-control " value={filass.fila}  name='fila' aria-label="Selecione Fila" onChange={(e)=>handelchange(e.target)} >
                                                                     <option >Seleccione una opcion</option>
-                                                                        <option value={"todas"}>Todas</option>
+                                                                        <option value={"Todas"}>Todas</option>
                                                                         {ListaFilas.length>0?
                                                                                 ListaFilas.map((elem,i)=>{
                                                                                     return(  
@@ -255,7 +306,7 @@ useEffect(()=>{
                                                             </div>
                                                             </div>
                                                             <div className="col-sm-2">
-                                                            <button className="btn btn-success" onClick={AgregasSillasMesa} >
+                                                            <button className="btn btn-success" onClick={AgregasSillasFila} >
                                                                     Agregar
                                                                 </button>
                                                                 </div>                                                              
@@ -299,28 +350,40 @@ useEffect(()=>{
 
                                                             <div className="col-sm-2 text-left">
                                                                 <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
-                                                                <button   className="btn btn-info"><i className="fa fa-plus"></i></button>
+                                                                <button   className="btn btn-info" onClick={GenerMesas}><i className="fa fa-plus"></i></button>
                                                             </div>
-                                                            <div className="col-sm-4">
+                                                            {
+                                                            ListaMesa.length>0?
+                                                            <div className="col-sm-5">
                                                                 <label className="form-label"><b> Mesas</b></label>
                                                                 <div className="input-group mb-3">
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div> 
                                                                     <select className="form-control " aria-label="Selecione Mesa" name="mesas" 
-                                                                    onChange={(e)=>handelchangeMesa(e.target)} id="numero_columna" >
-                                                                    <option  ></option>
-                                                                        <option >Todas</option>
+                                                                    value={Mesass.mesas}
+                                                                    onChange={(e)=>handelchangeMesa(e.target)} id="numero_columna" >                                                                   
+                                                                        <option value={"Todas"} >Todas</option>
+                                                                        {ListaMesa.length>0?
+                                                                        ListaMesa.map((e,i)=>{
+                                                                            return(
+                                                                            <option value={e.mesa} >{e.mesa}</option>
+                                                                            )
+                                                                        })
+                                                                        :""}
                                                                     </select>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-sm-4">
-                                                                <label className="form-label"><b>Sillas x Mesa</b></label>
+                                                                </div>                                                                
+                                                            </div>:""}
+                                                            {
+                                                            ListaMesa.length>0?
+                                                            <div className="col-sm-5">
+                                                                <label className="form-label"><b>Sillas </b></label>
                                                                 <div className="input-group mb-3">
                                                                 <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div>
                                                                     <select className="form-control " aria-label="Selecione Mesa" name="me_sillas" 
+                                                                    value={Mesass.me_sillas}
                                                                     onChange={(e)=>handelchangeMesa(e.target)}
                                                                     id="numero_silla" >
                                                                     <option ></option>
@@ -332,8 +395,10 @@ useEffect(()=>{
                                                                     <option >14</option>                                                         
                                                                     </select>
                                                                 </div>
-                                                            </div>                                                
-                                                            <div className="col-sm-2">
+                                                            </div>   :""}    
+                                                            {
+                                                                ListaMesa.length>0?                                         
+                                                            <div className="col-sm-2 d-none">
                                                             <label className="form-label"><b> Sillas</b></label>
                                                          
                                                                 <div className="input-group mb-3">
@@ -344,13 +409,14 @@ useEffect(()=>{
                                                                 
                                                 
 
-                                                            </div>
-
+                                                            </div>:""}
+                                                            {
+                                                                ListaMesa.length>0?
                                                             <div className="col-sm-2 text-left">
                                                                 <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
-                                                                <button  className="btn btn-info">Agrega</button>
+                                                                <button  className="btn btn-info" onClick={AgregasSillasMesa}>Agrega</button>
                                                             
-                                                            </div>
+                                                            </div>:""}
                                                         
                                                             
                                                             
@@ -397,10 +463,10 @@ useEffect(()=>{
                 
                 {                    
             return(
-                <div className='d-flex p-1 justify-content-center align-items-center '>
-                      <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Asientos {e.asientos.length>0?e.asientos.length:"0"}</Tooltip>}>
-                      <span className="d-inline-block">
-                      <div className="d-flex   mx-1 bg-light shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'50px',width:'70px'}} >
+                <div className='d-flex  px-3 pt-1'>
+                      <OverlayTrigger placement='right' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length>0?e.asientos.length:""}</Tooltip>}>
+                      <span className="d-inline-block " disabled >
+                      <div className="d-flex   mx-1 bg-primary text-white shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'50px',width:'50px'}} >
                                 {e.fila} 
                      </div> 
                 </span>
@@ -415,7 +481,7 @@ useEffect(()=>{
                         <div className={'px-3 '+ silla.silla} >
                             {index}
                         </div>  
-                        </div>    )                      
+                        </div>    )                    
                      })}
                      </div>:""}
 
@@ -433,10 +499,46 @@ useEffect(()=>{
           
              
             </div>
-            <div className={"col-sm-12 "+ tabactivo.tab2 } style={{ height:'450px', overflowY: 'scroll'}}>
-            <ul className="list-group">
-                tab2
-             </ul>
+            <div className={"col-sm-12  text-center "+ tabactivo.tab2 } >
+
+                <div className='col-12 pb-3'>                   
+                    {  ListaMesa.length>0 ?
+                    <div className="d-flex flex-column  mx-1 bg-primary text-white shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'100px',width:'150px'}} >                      
+                        {SillasMesas.sillas+" Tienen" || ''}  {SillasMesas.cantidad ||''}
+                    </div>:""
+                    }                  
+                    { ListaMesa.length>0?"":
+                    <div className="d-flex   mx-1 bg-primary text-white shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'100px',width:'150px'}} >
+                          No hay Mesas Creadas
+                    </div>
+                    }
+                    
+
+                </div>
+
+
+
+                <div className='d-flex pb-2' style={{overflowX:'auto',overflowY:'hide'}}>
+                {
+                ListaMesa.length>0?
+
+                ListaMesa.map((e,i)=>{
+                    return(                        
+                    <OverlayTrigger placement='bottom' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length>0?e.asientos.length:"0"}</Tooltip>}>
+                            <span className="d-inline-block " disabled >
+                            <div className="d-flex   mx-1 bg-primary text-white shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'50px',width:'50px'}} >
+                                {e.mesa} 
+                            </div> 
+                            </span>
+                    </OverlayTrigger>
+                       
+                    )
+                })
+                :""
+
+
+                }
+                </div>
             </div>
             <div className={"col-sm-12 "+ tabactivo.tab3 } >
            

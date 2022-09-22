@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from "react";
 import {Modal} from "react-bootstrap"
+import { Localidades } from "utils/constantes";
 
 const ModalNewEvento =(props)=>{
     const {show,Setshow} = props;
@@ -19,12 +20,24 @@ const [neweventos,setNewEventos]=useState(
           precioTC:'',
           precoDescuneto:'',
           HabilitarCortesia:''}
-      ]
-  
-  
+      ] 
     }
+    
   )
+  const [selectLocalidad,setLocalidad]=useState([])
+  function handelchange(e){
+   // let 
+    if(e.value!=""){
+    var index = Localidades.findIndex(obj => obj.id==e.value);
+   //console.log(Localidades[index])
+    setLocalidad(Localidades[index].localidad)
+    console.log(selectLocalidad)
+}else{setLocalidad([])}
+    //setLocalidad(e.value)
+  }  
+    useEffect(()=>{
 
+        },[show])
     return(
     <Modal
     show={show}
@@ -68,10 +81,14 @@ const [neweventos,setNewEventos]=useState(
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text"><i className="fa fa-map"></i></span>
                                                 </div>
-                                                <select className="form-control" placeholder="Seleccione localidad">
-                                                    <option selected> Selecione una localidad</option>
-                                                    <option value={"localidad 1"}>Localidad 1</option>
-                                                    <option value={"localidad 2"}>Localidad 2</option>
+                                                <select className="form-control" name="localidad" onChange={(e)=>handelchange(e.target)} placeholder="Seleccione localidad">
+                                                    <option value={""} selected> Selecione una localidad</option>
+                                                    {Localidades.map((e,i)=>{
+                                                    return(
+                                                    <option value={e.id}>{e.nombre}</option>
+                                                    )
+                                                    })}
+                                                    
 
                                                 </select>
                                                
@@ -101,6 +118,8 @@ const [neweventos,setNewEventos]=useState(
                                                 </div>
                                                 <input disabled={true} type="text" className="form-control" id="user_id"  placeholder="usuario que creo el evento"/>
                                             </div>
+                                        {
+                                          selectLocalidad.length?  
                                         <div className="col-12">
 
                                             <h3>Precios de Localidades </h3>
@@ -109,9 +128,15 @@ const [neweventos,setNewEventos]=useState(
                                                     <span className="input-group-text"><i className="fa fa-map"></i></span>
                                                 </div>
                                                 <select className="form-control">
-                                                    <option>General</option>
-                                                    <option>Vip</option>
-                                                    <option>Vip 2</option>
+                                                    {selectLocalidad.map((e,i)=>{
+                                                        return(
+                                                            <option value={e.nombre}>{e.nombre}</option>
+                                                        )
+                                                    })
+
+
+                                                    }
+                                                   
                                                 </select>                                              
                                             </div>
  
@@ -146,7 +171,7 @@ const [neweventos,setNewEventos]=useState(
                                                 <input className="form-control col-6"/>
                                             </div>
 
-                                        </div>
+                                        </div>:""}
 
 
 

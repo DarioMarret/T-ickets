@@ -12,6 +12,10 @@ const EventosViews =()=>{
   function  AgregasSillasMesa(){
         setShowToast(true)
 }
+function nuevoevento(){
+    setShowToast(true)
+  
+   }
     useEffect(()=>{
        
     },[])
@@ -72,9 +76,7 @@ const EventosViews =()=>{
                 </div>
                 <div className="col-md-12">
                 <button  className="btn btn-success" data-toggle="modal" data-target="#espacioModal" ><i className="mr-2 fa fa-plus"></i> Nuevo espacio</button>
-                   
-                <button  className="btn btn-success" onClick={AgregasSillasMesa}><i className="mr-2 fa fa-plus"></i>Sillas</button>
-                    
+               
 
                     <br/><br/>
 
@@ -100,7 +102,7 @@ const EventosViews =()=>{
                                         <td>dedededede</td>
                                         <td>
                                             <div className="btn-group" role="group" aria-label="Basic example">
-                                                <button data-toggle="modal" data-target="#seccionesModal" className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></button>
+                                                <button onClick={AgregasSillasMesa} className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -110,7 +112,7 @@ const EventosViews =()=>{
                                         <td>dedededede</td>
                                         <td>
                                             <div className="btn-group" role="group" aria-label="Basic example">
-                                                <button data-toggle="modal" data-target="#seccionesModal" className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></button>
+                                                <button onClick={AgregasSillasMesa} className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -120,7 +122,7 @@ const EventosViews =()=>{
                                         <td>dedededede</td>
                                         <td>
                                             <div className="btn-group" role="group" aria-label="Basic example">
-                                                <button data-toggle="modal" data-target="#seccionesModal" className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></button>
+                                                <button onClick={AgregasSillasMesa} className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></button>
                                             </div>
                                         </td>
                                     </tr>

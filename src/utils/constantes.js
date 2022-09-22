@@ -27,3 +27,25 @@ export const Envio = [
         class:""
     }
 ]
+
+export const Localidades=[
+    {
+        id:1,
+        nombre:"Estadio uno",
+        localidad:[
+            {nombre:"General"},
+            {nombre:"Vip"},
+            {nombre:"General Vip"}
+        ]        
+    },
+    {
+        id:2,
+        nombre:"Estadio uno",
+        localidad:[
+            {nombre:"Normal Vip"},
+            {nombre:"Vip Normal"},
+            {nombre:"Vip General"}
+        ]        
+    },
+
+]
