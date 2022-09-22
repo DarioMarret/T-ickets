@@ -1,4 +1,4 @@
-import { CarritoTicket, Metodos } from "./constantes"
+import { CarritoTicket, Metodos,DatosUsuarioLocalStorang } from "./constantes"
 
 let PViten = []
 export function TiendaIten(producto) {
@@ -158,6 +158,13 @@ export function GetValores() {
 export function GetPrecio() {
 
 }
+export function LimpiarLocalStore(){
+    localStorage.removeItem(CarritoTicket)
+    localStorage.removeItem(DatosUsuarioLocalStorang)
+    localStorage.removeItem(Metodos)
+
+}
+
 
 export function GetMetodo() {
     let tag = localStorage.getItem(Metodos);

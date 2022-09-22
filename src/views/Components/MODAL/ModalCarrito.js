@@ -154,7 +154,7 @@ function ModalCarrito(props) {
                 size="lg"
             >
                 <Modal.Header closeButton>
-                    <h5 className="modal-title text-center justify-content-center">TÉRMINOS Y CONDICIONES</h5>
+                    <h5 className="modal-title text-center justify-content-center">LOCALIDADES</h5>
                 </Modal.Header>
                 <Modal.Body>
                     <Table>

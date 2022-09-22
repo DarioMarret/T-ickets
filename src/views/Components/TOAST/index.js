@@ -10,7 +10,7 @@ const ViewToas =(props) =>{
         <>
         
         <Toast
-        onClose={() => setDatoToas({...Toastestado,show:false})} show={Toastestado.show} delay={4000} autohide
+        onClose={() => setDatoToas({...Toastestado,show:false})} show={Toastestado.show} delay={10000} autohide
         className="top-center"
         style={{
             position: 'fixed',
@@ -20,7 +20,7 @@ const ViewToas =(props) =>{
         }}>
        <Toast.Header>
       <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
-      <strong className="mr-auto">{Toastestado.estado} </strong>
+       <strong className="mr-auto">{Toastestado.estado} </strong>
       <small></small>
     </Toast.Header>
         <Toast.Body className={ Toastestado.color +" text-white"} >{Toastestado.message}</Toast.Body>

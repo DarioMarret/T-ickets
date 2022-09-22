@@ -1,17 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { CrearLinkPagoPayPhone } from 'utils/Query';
+//import { CrearLinkPagoPayPhone } from 'utils/Query';
 import { GenerarLinkPagoMedios } from 'utils/Query';
+import {LimpiarLocalStore} from '../../../utils/CarritoLocalStorang';
+import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 // import ButtonPago from '../PayPhone/ButtonPago';
 import { Spinner } from 'react-bootstrap';
 
 function ModalPago(props) {
-    const { setModalPago, modalPago } = props
+    const { setModalPago, modalPago,setDatoToas } = props
     const [spinerst, setSpiner] = useState("d-none")
     const [estadoFrame, setEstadoFrame] = useState(false)
     const [url, setUrl] = useState('')
     const [cargar, setCargar] = useState(false)
-
+    const [datosPerson, setPerson] = useState({
+        cedula: '',
+        name: '',
+        email: '',
+        whatsapp: '',
+        metodoPago: '',
+        envio: '',
+        direccion: '',
+    })
     useEffect(() => {
+        let datosPersonal = getDatosUsuariosLocalStorag()
+        if (datosPersonal !== null) {
+            setPerson({
+                ...datosPerson,
+                direccion: datosPersonal.direccion,
+                email: datosPersonal.email,
+                name: datosPersonal.name,
+                whatsapp: datosPersonal.whatsapp,
+                envio: datosPersonal.envio,
+                cedula: datosPersonal.cedula,
+                
+            })         
+        }
         setCargar(!cargar)
     }, [modalPago])
 
@@ -23,6 +46,7 @@ function ModalPago(props) {
             setUrl(data.data.url)
             setEstadoFrame(!estadoFrame)
             setSpiner("d-none")
+            setModalPago(false)
         }
         setSpiner("d-none")
     }
@@ -42,8 +66,12 @@ function ModalPago(props) {
 
 
     useEffect(() => {
+        
+
+
         if(url !== ''){
             popUp(url)
+            LimpiarLocalStore()
 
         }
     }, [url])
@@ -84,19 +112,26 @@ function ModalPago(props) {
                     padding: '10px',
                 }}>
 
-                    <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                    <div className='d-flex flex-column pb-3' style={{ textAlign: 'center', fontWeight: 'bold' }}>
                         <strong>
-                            <h2 style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>escoja el metodo de pago</h2>
+                            <span style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>Una vez confirmado el pago se enviara los boletos a :
+                             </span>
+                           
                         </strong>
+                        <strong>
+                        <span className='text-primary pt-2' style={{ fontWeight: 'bold',fontSize:'1.4em' }}>  
+                           {datosPerson.envio!="whatsapp"?datosPerson.email:datosPerson.whatsapp } 
+
+                        </span></strong>
                     </div>
 
-                    {/* //PAGO CON PAGO MEDIO */}
-                    <label htmlFor="pagoMedio"
+                    {/* //PAGO CON PAGO MEDIO */}  
+                    <label className='pt-3' htmlFor="pagoMedio"
                         style={{
                             textAlign: 'center',
                         }}
                     >
-                        <div
+                        <div  
                             style={{
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -117,7 +152,7 @@ function ModalPago(props) {
 
 
                     {/* //PAGO CON PAYPHONE */}
-                    <label htmlFor="payPhone"
+                    {/*<label htmlFor="payPhone"
                         style={{
                             textAlign: 'center',
                         }}
@@ -140,11 +175,11 @@ function ModalPago(props) {
                             />
                         </div>
                         {/* 
-                    <ButtonPago cargar={cargar} /> */}
-                    </label>
+                    <ButtonPago cargar={cargar} /> }
+                    </label> */}
 
 
-                    <div
+                  <div
                         style={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -154,9 +189,9 @@ function ModalPago(props) {
                             height: '100%',
                         }}
                     >
-                        <button
+                        <button className='btn btn-primary text-white'
                             style={{
-                                backgroundColor: 'rgb(232, 232, 232, 0.5)',
+                                
                                 border: 'none',
                                 borderRadius: '10px',
                                 padding: '10px',
@@ -194,8 +229,8 @@ function ModalPago(props) {
                         borderRadius: '10px',
                         padding: '10px',
                     }}>
-                        <Spinner animation="grow" variant="light" size='100'></Spinner>
-                        <h4 className='text-light'>Cargando metodo de Pago</h4>
+                        <Spinner animation="border" variant="light" size='120'></Spinner>
+                        <h4 className='text-light'>Generando Link de Pago</h4>
 
 
                     </div>

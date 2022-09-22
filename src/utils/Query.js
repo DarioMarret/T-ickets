@@ -1,6 +1,6 @@
 import axios from "axios"
 import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
-import { GetValores } from "./CarritoLocalStorang"
+import { GetValores,GetMetodo } from "./CarritoLocalStorang"
 /**
  * 
  * @returns {
@@ -12,12 +12,18 @@ import { GetValores } from "./CarritoLocalStorang"
 export const GenerarLinkPagoMedios = async () => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let valores = GetValores()
-
-    const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio",{
+    let metodo = GetMetodo()
+        
+        
+if(datosPersonal!=null && valores!=null )   {
+          const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio",{
         datosPersonal,
-        valores
-    })
-    return  data.data
+        valores,
+        metodo
+        })
+        //console.log("GenerarLinkPagoMedios data-----",data)
+        return  data.data
+        }
 }
 
 /**
@@ -26,17 +32,21 @@ export const GenerarLinkPagoMedios = async () => {
  * data
  * }
  */
+/*
 export const CrearLinkPagoPayPhone = async () => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let valores = GetValores()
+    console.log("CrearLinkPagoPayPhone-----",{ datosPersonal,valores})
     console.log(valores)
     console.log(datosPersonal)
+    if(datosPersonal!=null&& valore!=null)   {
     const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_payphone",{
         datosPersonal,
         valores
     })
     return  data
-}
+     }
+}*
 /* 
 Guradar compra y crear usuario Reportar deposito
 @parms codigo:codigo del deposito

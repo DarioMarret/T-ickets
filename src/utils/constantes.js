@@ -11,7 +11,7 @@ export const Envio = [
     {
         id: 1,
         envio: "Seleccione el metodo de envio",
-        value:"correo"
+        value:""
     },
     {
         id: 2,

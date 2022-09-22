@@ -10,7 +10,7 @@ function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
         listaPrecio, listarCarritoDetalle,
         setModalPago, handelReporShow, handelefctivorShow,
-        setDetalle
+        setDetalle,setDatoToas
     } = props
 
     const [actualState, changeCheckState] = useState({
@@ -21,6 +21,7 @@ function ModalDetalle(props) {
     const [checked, setChecked] = useState(false)
 
     const [spinervi, setspiner] = useState("d-none")
+    const [hidecomision, sethideComision] = useState("d-none")
 
     const [datosPerson, setPerson] = useState({
         cedula: '',
@@ -117,7 +118,6 @@ useEffect(() => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let metodoPago = GetMetodo()
     if (datosPersonal !== null) {
-
         setPerson({
             ...datosPerson,
             direccion: datosPersonal.direccion,
@@ -144,16 +144,10 @@ useEffect(() => {
         envio: datosPersonal ? datosPersonal.envio : '',
         direccion: datosPersonal ? datosPersonal.direccion : ''
     })
-
-    //Aqui tengo el error
-    // setChecked((Object.values(datosPerson).every((d) => d) &&Object.values(actualState).every((d) => d)))
-    // setChecked((Object.values(actualState).every((d) => d)))
-    //console.log(checked)
-
+    let mostrarcomision = GetMetodo()
+    const mostrar= mostrarcomision!="Tarjeta"? "d-none":""
+    sethideComision(mostrar)
 }, [showDetalle, actualState])
-
-
-
 return (
     <Modal
         show={showDetalle}
@@ -188,10 +182,7 @@ return (
                             placeholder="forma de pago Selecionada"
                         />
                         <div className="col-12 border border-bottom mb-3"></div>
-                        <div className="d-flex flex-wrap">
-                            <Spinner className={spinervi} animation="grow" />
-                            <span className={spinervi} >Consultando datos</span>
-                        </div>
+                        
 
                         <span>Cedula DNI:</span>
                         <input type="text"
@@ -310,7 +301,7 @@ return (
                         <div>
                             <p>Comision por Boleto:</p>
                         </div>
-                        <div>
+                        <div className={hidecomision}>
                             <p>Comision Bancaria:</p>
                         </div>
                         <div>
@@ -324,7 +315,7 @@ return (
                         <div className="container-fluid">
                             <h4 className="comision-boleto text-end">${listaPrecio.comision} </h4>
                         </div>
-                        <div className="container-fluid">
+                        <div  className={"container-fluid "+hidecomision}>
                             <h4 className="comision-boleto text-end">${listaPrecio.comision_bancaria} </h4>
                         </div>
                         <div className="container  ">
@@ -343,6 +334,7 @@ return (
                             </div>
                             <div className="px-3">
                                 <input className="form-check-input terminoscheck"
+                                checked={actualState.check1}
                                     id="check1"
                                     name="check1"
                                     onChange={(e) => handleCheckboxChange(e.target)}
@@ -360,7 +352,7 @@ return (
                             </div>
                             <div className="px-3">
                                 <input className="form-check-input terminoscheck" id="check2" type="checkbox"
-
+                                    checked={actualState.check2}
                                     name="check2"
                                     onChange={(e) => handleCheckboxChange(e.target)}
                                 />
@@ -368,13 +360,16 @@ return (
                         </div>
                         <div className="d-flex text-end  flex-wrap-reverse">
                             <div className="col-10 d-flex text-end">
-                                <p style={{ fontSize: "0.7em" }}>
+                            <strong>
+                                <p style={{ fontSize: "0.8em" }}>
                                     Acepto que se crea mi cuenta de usuario en el portal de flasthetickets, la misma que contiene mis datos persoanales, así como los
                                     datos de mis compras, tambien recibir las promociones por ese mismo medio.
                                 </p>
+                            </strong>
                             </div>
                             <div className="px-3">
                                 <input className="form-check-input terminoscheck" id="check3"
+                                checked={actualState.check3}
                                     name="check3" type="checkbox"
                                     onChange={(e) => handleCheckboxChange(e.target)} />
                             </div>
@@ -417,6 +412,36 @@ return (
                     </div>
                 </div>
             </div>
+            <div className={spinervi}
+                    style={{
+                        display: 'none',
+                        position: 'fixed',
+                        top: '0',
+                        left: '0',
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: '1000'
+                    }}
+                >
+
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: '10px',
+                        padding: '10px',
+                    }}>
+                        <Spinner animation="border" variant="light" size='120'></Spinner>
+                        <h4 className='text-light'>Consultando datos ...</h4>
+
+
+                    </div>
+                </div>
         </Modal.Body>
     </Modal>
 );

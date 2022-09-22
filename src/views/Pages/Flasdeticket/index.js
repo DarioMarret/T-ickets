@@ -331,7 +331,7 @@ const IndexFlas = () => {
       />
 
       {
-        modalPago ? <ModalPago setModalPago={setModalPago} modalPago={modalPago} /> : null
+        modalPago ? <ModalPago setModalPago={setModalPago} modalPago={modalPago} setDatoToas={setDatoToas} /> : null
       }
       <ModalReport 
       repShop={repShop}
