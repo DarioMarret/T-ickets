@@ -137,7 +137,7 @@ function ModalCarrito(props) {
     })
     useEffect(() => {
         setListarCarrito(getVerTienda())
-        console.log(getVerTienda())
+        
         setListarCarritoDetalle(getVerTienda())
         CargarValores()
         listarCheck()

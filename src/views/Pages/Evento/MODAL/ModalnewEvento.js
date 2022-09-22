@@ -69,8 +69,9 @@ const [neweventos,setNewEventos]=useState(
                                                     <span className="input-group-text"><i className="fa fa-map"></i></span>
                                                 </div>
                                                 <select className="form-control" placeholder="Seleccione localidad">
-                                                    <option>Localidad 1</option>
-                                                    <option>Localidad 2</option>
+                                                    <option selected> Selecione una localidad</option>
+                                                    <option value={"localidad 1"}>Localidad 1</option>
+                                                    <option value={"localidad 2"}>Localidad 2</option>
 
                                                 </select>
                                                
@@ -85,23 +86,74 @@ const [neweventos,setNewEventos]=useState(
                                         <div className="input-group mb-3">
                                         
                                                 <input type="file" className="form-control " id="imagen"  placeholder="Imagen del concierto"/>
+                                                <div className="input-group-prepend">
+                                                    <span className="input-group-text"></span>
+                                                </div>
                                                                             </div>
                                         </div>
 
                                         </div>
                                             
-                                        
                                             
-                                            
-                                            <hr/>
-                                            
-                                            <div className="input-group mb-3">
+                                            <div className="input-group mb-3 ">
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text"><i className="fa fa-dollar-sign"></i></span>
                                                 </div>
-                                                <input disabled="" type="text" className="form-control" id="user_id"  placeholder="usuario que creo el evento"/>
-                                                                            </div>
+                                                <input disabled={true} type="text" className="form-control" id="user_id"  placeholder="usuario que creo el evento"/>
+                                            </div>
+                                        <div className="col-12">
+
+                                            <h3>Precios de Localidades </h3>
+                                             <div className="input-group mb-3 col-6">
+                                                <div className="input-group-prepend">
+                                                    <span className="input-group-text"><i className="fa fa-map"></i></span>
+                                                </div>
+                                                <select className="form-control">
+                                                    <option>General</option>
+                                                    <option>Vip</option>
+                                                    <option>Vip 2</option>
+                                                </select>                                              
+                                            </div>
+ 
+                                            <div className="d-flex flex-wrap mb-2">
+                                                <div className="px-2 col-4">
+                                                    <label >PRECIO NORMAL</label>
+                                                </div>
+                                                <input className="form-control col-6"/>
+                                            </div>
+                                            <div className="d-flex flex-wrap mb-2">
+                                                <div className="px-2 col-4">
+                                                    <label >PRECIO DISCAPACIDA</label>
+                                                </div>
+                                                <input className="form-control col-6"/>
+                                            </div>
+                                            <div className="d-flex flex-wrap mb-2">
+                                                <div className="px-2 col-4">
+                                                    <label >PRECIO TC/TD Normal</label>
+                                                </div>
+                                                <input className="form-control col-6"/>
+                                            </div>
+                                            <div className="d-flex flex-wrap mb-2">
+                                                <div className="px-2 col-4">
+                                                    <label >PRECIO DECUNTO </label>
+                                                </div>
+                                                <input className="form-control col-6"/>
+                                            </div>
+                                            <div className="d-flex flex-wrap mb-2">
+                                                <div className="px-2 col-4">
+                                                    <label >HABILITAR CORTESIA </label>
+                                                </div>
+                                                <input className="form-control col-6"/>
+                                            </div>
+
                                         </div>
+
+
+
+                                    </div>
+
+
+
                                     </div>
                                 </div>
                                 <div className="modal-footer">

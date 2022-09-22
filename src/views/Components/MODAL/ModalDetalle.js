@@ -104,21 +104,18 @@ function ModalDetalle(props) {
             [e.target.name]: e.target.value
         })
         let datosPersonal = getDatosUsuariosLocalStorag()
-
-
         DatosUsuariosLocalStorag({
             ...datosPersonal,
             [e.target.name]: e.target.value
         })
     }
     function validarEmail(valor) {
-       let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-        console.log(valor)
+       let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;       
         if (emailRegex.test(valor) ){
          return true
         } else {
             setDatoToas({ show:true,
-                message:'Campos inconpletos o Formato de correo invalido ',
+                message:'Campos inconpletos o Formato de correo inválido ',
                 color:'bg-danger',
                 estado:'Complete la información',
               })

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Spinner,InputGroup } from "react-bootstrap"
+import { Modal,ProgressBar,OverlayTrigger,Tooltip} from "react-bootstrap"
 
 
 const Registroseccion =(props)=>{
     const {show,setShowToast} =props
     let ListadeFilas=[]
-    let Listasillas=[]
+    let ListadeMesas=[]
     let i=0
     let f=1
     let g=0
@@ -14,23 +14,21 @@ const Registroseccion =(props)=>{
         tab2:'d-none',
         tab3:'d-none'
     })
-  
     const [filass,setFilass]=useState({
         cantidad:'',
         inicial:'',
         fila:'',
         sillas:''
     })
+    const [Mesass,setMesass]=useState({
+        me_cantidad:'',
+        me_inicial:'',
+        mesas:'',
+        me_sillas:''
+    })
     const [ListaFilas,setFilas]=useState([])
+    const [ListaMesa,setMesas]=useState([])
     const [listaFilasConsillas,setFilasSillas]=useState([])
-
-    
-    
-     const [valoresFilas,setValoresFila]=useState({
-         filas:'7',
-         enpieza:"A2",
-         sillas:''
-     })
     const GeneraFilas=()=>{
         if(filass.inicial!=" "&& filass.cantidad!=" " ){
         const letrafilas = filass.inicial.replace(/[0-9]+/g, "")
@@ -47,8 +45,7 @@ const Registroseccion =(props)=>{
         ListadeFilas=ListaFilas
         console.log(filass.fila,filass.sillas)
         let interar = parseInt(filass.sillas);
-         if(filass.fila!=""&& filass.sillas !=""){
-          
+         if(filass.fila!=""&& filass.sillas !=""){          
             console.log(interar)
             if(filass.fila==="todas"){
                 console.log(interar)              
@@ -57,7 +54,7 @@ const Registroseccion =(props)=>{
                  const numfila =ListadeFilas[i]["fila"]
                   console.log( ListadeFilas[i]["fila"])
                     for(f=0; f< interar; f++ ){                               
-                        ListadeFilas[i]["asientos"][f]={silla:numfila+"-s-"+f,estado:"disponible"};                            
+                        ListadeFilas[i]["asientos"][f]={silla:numfila+"-s-"+f,estado:"disponible"};                         
                     }                   
                 }               
                 setFilas([])                  
@@ -76,12 +73,24 @@ const Registroseccion =(props)=>{
                 }
                 ListadeFilas[index].asientos=[...sillas]
               
-                //console.log(ListadeFilas[index])
+               
                 
                 setFilas([...ListadeFilas])               
-                //setFilasSillas([])                  
+                          
             }
          }         
+     }
+     const GenerMesas=()=>{
+        if(Mesass.me_inicial!=" "&& Mesass.me_cantidad!=" " ){
+            const letrafilas = Mesass.me_inicial.replace(/[0-9]+/g, "")
+            const numeroinicofilas= Mesass.me_inicial.replace(/[^0-9]+/g, "");        
+            const repeticiones =parseInt(numeroinicofilas) + parseInt(Mesass.me_cantidad)
+            console.log(repeticiones)
+            for(i= numeroinicofilas; i < repeticiones; i++){
+                ListadeMesas.push({mesa:letrafilas+""+i,sillas:0,asientos:[]});        
+            }}
+            setMesas(ListadeFilas)
+            console.log(ListadeFilas)
      }
 
     const  cambiar =(a,b,c)=>{
@@ -92,19 +101,27 @@ const Registroseccion =(props)=>{
         })
 
     }
+    function handelchangeMesa(e){
+        setMesass({
+            ...Mesass,
+            [e.name]:e.value
+        })
+    }
     function handelchange(e){
         setFilass({
             ...filass,
             [e.name]:e.value    
  
         })
+    
        
     }
     
 useEffect(()=>{
     console.log(filass)
-    console.log(ListaFilas)
-},[show])
+    console.log(Mesass)
+    //console.log(ListaFilas)
+},[show]) 
     return(
     <Modal 
     show={show}
@@ -261,7 +278,9 @@ useEffect(()=>{
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div>
-                                                                    <input type="number" name="cantidad_mesas" className="form-control" id="cantidad_mesas" placeholder="10" />
+                                                                    <input type="number" name="me_cantidad" id="me_cantidad"
+                                                                    onChange={(e)=>handelchangeMesa(e.target)}
+                                                                     className="form-control" placeholder="10" />
                                                                                                                         </div>
                                                             </div>
 
@@ -272,7 +291,9 @@ useEffect(()=>{
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div>
-                                                                    <input type="text" name="numero_partida" className="form-control" id="numero_partida" placeholder="10" />
+                                                                    <input type="text" name="me_inicial" 
+                                                                    onChange={(e)=>handelchangeMesa(e.target)}
+                                                                    className="form-control" id="numero_partida" placeholder="10" />
                                                                                                                         </div>
                                                             </div>
 
@@ -286,7 +307,8 @@ useEffect(()=>{
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div> 
-                                                                    <select className="form-control " aria-label="Selecione Mesa" name="numero_columna"  id="numero_columna" >
+                                                                    <select className="form-control " aria-label="Selecione Mesa" name="mesas" 
+                                                                    onChange={(e)=>handelchangeMesa(e.target)} id="numero_columna" >
                                                                     <option  ></option>
                                                                         <option >Todas</option>
                                                                     </select>
@@ -298,7 +320,9 @@ useEffect(()=>{
                                                                 <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div>
-                                                                    <select className="form-control " aria-label="Selecione Mesa" name="numero_silla" id="numero_silla" >
+                                                                    <select className="form-control " aria-label="Selecione Mesa" name="me_sillas" 
+                                                                    onChange={(e)=>handelchangeMesa(e.target)}
+                                                                    id="numero_silla" >
                                                                     <option ></option>
                                                                     <option >4</option>
                                                                     <option >6</option>
@@ -373,10 +397,15 @@ useEffect(()=>{
                 
                 {                    
             return(
-                <div className='d-flex  px-3'>
-                <ul className="list-group " style={{ height:'50px',width:'150px'}} >
-                     <li className="list-group-item">{e.fila} </li>  
-                </ul> 
+                <div className='d-flex p-1 justify-content-center align-items-center '>
+                      <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Asientos {e.asientos.length>0?e.asientos.length:"0"}</Tooltip>}>
+                      <span className="d-inline-block">
+                      <div className="d-flex   mx-1 bg-light shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'50px',width:'70px'}} >
+                                {e.fila} 
+                     </div> 
+                </span>
+                    </OverlayTrigger>
+                
                                                                  
                 {e.asientos.length>0?
                    <div className=' d-flex p-1 justify-content-center align-items-center ' >                    
@@ -386,7 +415,7 @@ useEffect(()=>{
                         <div className={'px-3 '+ silla.silla} >
                             {index}
                         </div>  
-                        </div>    )                    
+                        </div>    )                      
                      })}
                      </div>:""}
 
@@ -409,10 +438,42 @@ useEffect(()=>{
                 tab2
              </ul>
             </div>
-            <div className={"col-sm-12 "+ tabactivo.tab3 } style={{ height:'450px', overflowY: 'scroll'}}>
-            <ul className="list-group">
-                tab3
-             </ul>
+            <div className={"col-sm-12 "+ tabactivo.tab3 } >
+           
+            <div className='d-flex flex-wrap'>
+                <div className='col-3'>
+                    <h1>
+                        General 
+                    </h1>
+                </div>
+                <div className='col-9'>
+                <ProgressBar 
+                style={{height:'50px'}}
+                >                  
+                   <ProgressBar variant="danger"  now={50} key={1} />
+                    <ProgressBar  variant="success" label={"500 "} now={450} key={2} />                    
+                </ProgressBar>
+                </div>
+            </div>
+            <div className='d-flex flex-wrap'>
+                <div className='col-3'>
+                    <h1>
+                        Vip 
+                    </h1>
+                </div>
+                <div className='col-9'>
+                <ProgressBar 
+                style={{height:'50px'}}
+                >                  
+                    <ProgressBar variant="danger"  now={50} key={1} />
+                    <ProgressBar  variant="success" label={"500 "} now={450} key={2} />                  
+                </ProgressBar>
+                </div>
+
+            </div>
+                
+             
+
             </div>
             </div>
                  

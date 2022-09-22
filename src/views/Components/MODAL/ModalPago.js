@@ -72,7 +72,7 @@ function ModalPago(props) {
          popUp.focus()
         LimpiarLocalStore()}
     }
-   /* function popUp1() {
+    function popUp1() {
         var popUp = window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
        
         if (popUp == null || typeof(popUp)=='undefined') {     
@@ -86,7 +86,7 @@ function ModalPago(props) {
          popUp.focus()
         //LimpiarLocalStore()
     }
-    }*/
+    }
 
     useEffect(() => {
        if(url !== ''){
