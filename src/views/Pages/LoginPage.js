@@ -5,19 +5,9 @@ import jwt_decode from "jwt-decode";
 import logo from "../../assets/img/logo-t-ickets.png";
 import logoportal from "../../assets/portada-login.png";
 import { getCedula } from 'utils/DatosUsuarioLocalStorag';
+import { setDatosUser } from "utils/DatosUsuarioLocalStorag";
 // react-bootstrap components
-import {
-  Badge,
-  Button,
-  Card,
-  Form,
-  Navbar,
-  Nav,
-  Toast,
-  Container,
-  Col,
-  Row
-} from "react-bootstrap";
+import {Badge, Button,Card,Form,Navbar,Nav,oast,Container,Col,Row} from "react-bootstrap";
 //import ToastContainer from 'react-bootstrap/ToastContainer';
 function LoginPage() {
   const history = useHistory();
@@ -40,7 +30,7 @@ function LoginPage() {
   }, [])
   const Logincredet = async () => {
     // e.preventDefault()
-    console.log(credenciales)
+    //console.log(credenciales)
     try {
       if (credenciales.email != '' && credenciales.password != '') {
         const { data, status } = await axios.post("https://43d5-45-187-2-162.sa.ngrok.io/api/v1/auth_admin", credenciales, {
@@ -52,9 +42,9 @@ function LoginPage() {
         if (success) {
           // console.log("data-->", jwt_decode(token))
           setDatosUser(tocken)
-          setShow(true)
-          setmessage("Inicio de session exitoso")
-          histry.push('/admin')
+          //setShow(true)
+         // setmessage("Inicio de session exitoso")
+          history.push('/admin')
           //console.log("success-->", success)
           //console.log("status-->", status)
         }
@@ -83,8 +73,8 @@ function LoginPage() {
         if (success) {
           console.log("success-->",success)
           setDatosUser(tocken)
-          setShow(true)
-          setmessage("Inicio de session exitoso")
+          //setShow(true)
+          //setmessage("Inicio de session exitoso")
           history.push('/admin')
         }
        else {
@@ -93,7 +83,7 @@ function LoginPage() {
         console.log("mensage de alvertencia")
       }
     } catch (error) {
-      setmessage("Hubo un error verifique mas tarde")
+      setmessage("Hubo un error intente de nuevo o verifique mas tarde")
       console.log("error Logincredet-->",error)
     }
     setShow(true)
@@ -180,7 +170,7 @@ function LoginPage() {
       <strong className="mr-auto">Hubo un error </strong>
       <small></small>
     </Toast.Header>
-        <Toast.Body className="bg-danger text-white" >Ingrese sus datos o intente mas tarde </Toast.Body>
+        <Toast.Body className="bg-danger text-white" >{message} </Toast.Body>
       </Toast>
     </>
   );

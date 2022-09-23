@@ -49,7 +49,8 @@ var routes = [
     layout: "/admin",
     name: "Dashboard",
     icon: "nc-icon nc-chart-pie-35",
-    component: Dashboard
+    component: Dashboard,
+    permiso:["admin","superadmin","subscriptor"]
   },
  
   {
@@ -57,7 +58,8 @@ var routes = [
     layout:"/admin",
     name:"Mis Tickets",
     icon:"fas fa-ticket-alt",
-    component:Ticket
+    component:Ticket,
+    permiso:["admin","superadmin","subscriptor"]
 
   },
   {
@@ -65,24 +67,24 @@ var routes = [
     layout:"/admin",
     name:"Espacios",
     icon:"fas fa-user-cog",
-    component:Espacios
-
+    component:Espacios,
+    permiso:["admin","superadmin","subscriptor"]
   },
   {
     path:"/eventos",
     layout:"/admin",
     name:"Eventos",
     icon:"fas fa-user-cog",
-    component:Eventos
-
+    component:Eventos,
+    permiso:["admin","superadmin","subscriptor"]
   }, 
   {
     path:"/referidos",
     layout:"/admin",
     name:"Referido",
     icon:"fas fa-bullhorn",
-    component:Eventos
-
+    component:Eventos,
+    permiso:["admin","superadmin","subscriptor"]
   },
   
   {
@@ -90,16 +92,16 @@ var routes = [
     layout:"/admin",
     name:"Influencer",
     icon:"fab fa-tiktok",
-    component:Eventos
-
+    component:Eventos,
+    permiso:["admin","superadmin","subscriptor"]
   },
   {
     path:"/sorteos",
     layout:"/admin",
     name:"Sorteos",
     icon:" fas fa-dice",
-    component:Eventos
-
+    component:Eventos,
+    permiso:["admin","superadmin","subscriptor"]
   },
   {
     path:"/Tabla",
@@ -107,8 +109,7 @@ var routes = [
     name:"Tabla",
     icon:" fas fa-dice",
     component:ReactTables,
-    permiso:'usuario'
-
+    permiso:["admin","superadmin","subscriptor"]
   },
   {
     collapse: true,
@@ -116,6 +117,7 @@ var routes = [
     name: "Pages",
     state: "openPages",
     icon: "nc-icon nc-puzzle-10",
+    permiso:["admin","superadmin","subscriptor"],
     views: [
       {
         path: "/user-page",
@@ -123,6 +125,7 @@ var routes = [
         name: "User Page",
         mini: "UP",
         component: UserPage
+        
       },
       {
         path: "/login",

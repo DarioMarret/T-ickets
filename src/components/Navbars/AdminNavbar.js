@@ -46,7 +46,7 @@ function AdminNavbar() {
               </Button>
             </div>
             <Navbar.Brand href="#pablo" onClick={(e) => e.preventDefault()}>
-              Buttons
+              Menu
             </Navbar.Brand>
           </div>
           <button
@@ -61,7 +61,7 @@ function AdminNavbar() {
           <Navbar.Collapse className="justify-content-end" in={collapseOpen}>
             <Nav className="nav mr-auto" navbar>
               <Form
-                className="navbar-form navbar-left navbar-search-form ml-3 ml-lg-0"
+                className="navbar-form navbar-left navbar-search-form px-2 ml-3 ml-lg-0"
                 role="search"
               >
                 <InputGroup>

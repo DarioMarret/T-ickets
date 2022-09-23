@@ -40,7 +40,7 @@ export const Localidades=[
     },
     {
         id:2,
-        nombre:"Estadio uno",
+        nombre:"Estadio dos",
         localidad:[
             {nombre:"Normal Vip"},
             {nombre:"Vip Normal"},

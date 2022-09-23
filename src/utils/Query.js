@@ -81,3 +81,10 @@ export const ReportarEfectivoCompra= async()=>{
    */
     return {datosPersonal,valores}   
 }
+
+export const Iniciasession =async(params)=>{
+    const {data} = await axios.post("endpoit-login",{
+        params
+    })
+    return data;
+}

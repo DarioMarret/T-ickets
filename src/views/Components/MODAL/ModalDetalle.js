@@ -125,7 +125,7 @@ function ModalDetalle(props) {
       $(document).ready(function() {
         $(".numero").keypress(function(e) {
           var n = (e = e || window.event).keyCode || e.which,
-            t = -1 != "0123456789xX".indexOf(String.fromCharCode(n));
+            t = -1 != "0123456789".indexOf(String.fromCharCode(n));
           (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })     
       });

@@ -44,7 +44,7 @@ export function setDatosUser(data) {
 export function getUsuario() {
     try {
         const data = localStorage.getItem(DatoTokenusuario)
-        return data;
+        return  data;
 
     } catch (error) {
         console.log(error)

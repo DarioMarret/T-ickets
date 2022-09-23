@@ -24,7 +24,7 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 // dinamically create dashboard routes
 import routes from "routes.js";
-
+//import routes from "routesinicial.js"
 import image1 from "assets/img/full-screen-image-1.jpg";
 import image2 from "assets/img/full-screen-image-2.jpg";
 import image3 from "assets/img/full-screen-image-3.jpg";
@@ -36,6 +36,10 @@ function Admin() {
   //aqui valido las rutas que deben admitirse segun el permiso
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
+      if(prop.permiso!=null && prop.permiso.every(e=>e!="admin") ){
+        return null
+
+      }
       if (prop.collapse) {
         return getRoutes(prop.views);
       }

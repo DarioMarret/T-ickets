@@ -456,7 +456,8 @@ useEffect(()=>{
 
             </div>
             
-            <div className={"col-sm-12 text-center "+ tabactivo.tab1 } style={{ height:'450px', overflowY: 'scroll',overflowX: 'scroll',}}>
+            {ListaFilas.length>0?
+                <div className={"col-sm-12 text-center "+ tabactivo.tab1 } style={{ height:'450px', overflowY: 'scroll',overflowX: 'scroll',}}>
             { ListaFilas.length>0?
 
             ListaFilas.map((e,i)=>{
@@ -489,16 +490,14 @@ useEffect(()=>{
                   
                  </div>
                  
-                 )}
-               
-                 
+                 )}               
               
 
             })                           
              :""}
           
              
-            </div>
+            </div>:""}
             <div className={"col-sm-12  text-center "+ tabactivo.tab2 } >
 
                 <div className='col-12 pb-3'>                   

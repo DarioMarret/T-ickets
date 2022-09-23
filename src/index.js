@@ -14,10 +14,12 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Switch>
+    <Route path="/flastick" render={()=><Indexflas/>}/>
       <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-      <Route path="/flastick" render={()=><Indexflas/>}/>
+    
       <Redirect from="/" to="/flastick"  />
+      <Route path="*" to="/" />
     </Switch>
   </BrowserRouter>
 );

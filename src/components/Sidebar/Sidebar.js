@@ -68,6 +68,11 @@ function Sidebar({ routes, image, background }) {
   //aqui puedo validar lo navitem que quiero que se rendericen 
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
+     // console.log(prop.permiso.every(e=>e!="admin"))
+      if(prop.permiso!=null && prop.permiso.every(e=>e!="admin") ){
+        return null
+
+      }
       if (prop.redirect) {
         return null;
       }
