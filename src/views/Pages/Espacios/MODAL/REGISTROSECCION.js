@@ -540,38 +540,43 @@ useEffect(()=>{
                 }
                 </div>
             </div>
-            <div className={"col-sm-12 "+ tabactivo.tab3 } >
+            <div className={"container-fluid col-sm-12 "+ tabactivo.tab3 } >
            
-            <div className='d-flex flex-wrap'>
+            <div className=' d-flex flex-wrap '>
                 <div className='col-3'>
-                    <h1>
+                    <h3>
                         General 
-                    </h1>
+                    </h3>
                 </div>
-                <div className='col-9'>
+                <div className='col-7'>
                 <ProgressBar 
-                style={{height:'50px'}}
+                style={{height:'40px'}}
                 >                  
                    <ProgressBar variant="danger"  now={50} key={1} />
                     <ProgressBar  variant="success" label={"500 "} now={450} key={2} />                    
                 </ProgressBar>
                 </div>
+                <div className='col-2'>
+                <button className='btn btn-primary' ><i className='fa fa-edit'></i> </button>
+                </div>
             </div>
             <div className='d-flex flex-wrap'>
                 <div className='col-3'>
-                    <h1>
+                    <h3>
                         Vip 
-                    </h1>
+                    </h3>
                 </div>
-                <div className='col-9'>
+                <div className='col-7'>
                 <ProgressBar 
-                style={{height:'50px'}}
+                style={{height:'40px'}}
                 >                  
                     <ProgressBar variant="danger"  now={50} key={1} />
                     <ProgressBar  variant="success" label={"500 "} now={450} key={2} />                  
                 </ProgressBar>
                 </div>
-
+                <div className='col-2'>
+                <button className='btn btn-primary' ><i className='fa fa-edit'></i> </button>
+                </div>
             </div>
                 
              

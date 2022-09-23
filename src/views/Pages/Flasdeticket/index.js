@@ -20,6 +20,7 @@ import Footer from "views/Components/Footer/Footer";
 import { DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { GetMetodo } from "utils/CarritoLocalStorang";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import Modalterminos from "./Modalterminos";
 
 
 const IndexFlas = () => {
@@ -316,7 +317,7 @@ const IndexFlas = () => {
         datosPerson={datosPerson}
         setPerson={setPerson}
       />
-
+    <Modalterminos/>
       <ModalDetalle
         showDetalle={showDetalle}
         setDetalle={setDetalle}

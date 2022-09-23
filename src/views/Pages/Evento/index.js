@@ -3,7 +3,7 @@ import { Card,Col,Row ,Modal } from "react-bootstrap";
 import ModalNewEvento from "./MODAL/ModalnewEvento";
 
 const EventosViews =()=>{
-    const[show,setShow] = useState(true)
+    const[show,setShow] = useState(false)
   const [espacio,setEspacio]=useState([])
 
  function nuevoevento(){
@@ -204,8 +204,10 @@ const EventosViews =()=>{
                                             <td><span className="badge me-1 bg-success text-white">Emitido</span></td>
                                             <td><a href="#">Descargar</a></td>
                                             <td>
-                                                <a className="btn btn-primary btn-sm" href="#" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                                <a className="btn btn-primary btn-sm" target="_blank" href="#" data-toggle="tooltip" title="Ver mapa"><i className="fa fa-sitemap"></i></a>
+                                            <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
+                                                <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver mapa"><i className="fa fa-sitemap"></i></a>
+                                                <a className="btn btn-primary btn-sm px-1"  data-toggle="tooltip" title="Ver mapa"><i className="fa fa-edit"></i></a>
+                                            
                                             </td>
                                         </tr>
                                         <tr>
@@ -215,9 +217,10 @@ const EventosViews =()=>{
                                             <td><span className="badge me-1 bg-danger text-white">Usado</span></td>
                                             <td><a href="#">Descargar</a></td>
                                             <td>
-                                                <a className="btn btn-primary btn-sm" href="#" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                                <a className="btn btn-primary btn-sm" target="_blank" href="#" data-toggle="tooltip" title="Ver mapa"><i className="fa fa-sitemap"></i></a>
-                                            </td>
+                                            <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
+                                                <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver mapa"><i className="fa fa-sitemap"></i></a>
+                                                <a className="btn btn-primary btn-sm px-1"  data-toggle="tooltip" title="Ver mapa"><i className="fa fa-edit"></i></a>
+                                             </td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Evento 3</th>
@@ -225,10 +228,11 @@ const EventosViews =()=>{
                                             <td>Thornton</td>
                                             <td><span className="badge me-1 bg-dark text-white">Anulado</span></td>
                                             <td><a href="#">Descargar</a></td>
-                                            <td>
-                                                <a className="btn btn-primary btn-sm" href="#" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                                <a className="btn btn-primary btn-sm" target="_blank" href="#" data-toggle="tooltip" title="Ver mapa"><i className="fa fa-sitemap"></i></a>
-                                            </td>
+                                            <td >
+                                            <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
+                                                <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver mapa"><i className="fa fa-sitemap"></i></a>
+                                                <a className="btn btn-primary btn-sm px-1"  data-toggle="tooltip" title="Ver mapa"><i className="fa fa-edit"></i></a>
+                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>

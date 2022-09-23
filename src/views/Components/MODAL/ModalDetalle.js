@@ -379,8 +379,8 @@ return (
                             <div className="col-10 d-flex text-end">
                             <strong>
                                 <p style={{ fontSize: "0.8em" }}>
-                                    Acepto que se crea mi cuenta de usuario en el portal de flasthetickets, la misma que contiene mis datos persoanales, así como los
-                                    datos de mis compras, tambien recibir las promociones por ese mismo medio.
+                                <strong> Acepto que se crea mi cuenta de usuario en el portal de flasthetickets, la misma que contiene mis datos persoanales, así como los
+                                    datos de mis compras, tambien recibir las promociones por ese mismo medio.</strong>  
                                 </p>
                             </strong>
                             </div>

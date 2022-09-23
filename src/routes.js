@@ -102,6 +102,15 @@ var routes = [
 
   },
   {
+    path:"/Tabla",
+    layout:"/admin",
+    name:"Tabla",
+    icon:" fas fa-dice",
+    component:ReactTables,
+    permiso:'usuario'
+
+  },
+  {
     collapse: true,
     path: "/pages",
     name: "Pages",

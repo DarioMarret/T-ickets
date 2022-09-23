@@ -65,6 +65,7 @@ function Sidebar({ routes, image, background }) {
     return false;
   };
   // this function creates the links and collapses that appear in the sidebar (left menu)
+  //aqui puedo validar lo navitem que quiero que se rendericen 
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
       if (prop.redirect) {
@@ -134,7 +135,7 @@ function Sidebar({ routes, image, background }) {
         <div className="sidebar-wrapper">
           <div className="logo">
             <a
-              className="simple-text logo-mini"
+              className="simple-text logo-mini nav-link"
               href="http://www.creative-tim.com"
             >
               <div className="logo-img">
@@ -145,7 +146,7 @@ function Sidebar({ routes, image, background }) {
               </div>
             </a>
             <a
-              className="simple-text logo-normal"
+              className="simple-text logo-normal nav-link"
               href="http://www.creative-tim.com"
             >
               Flash ticket
@@ -157,7 +158,7 @@ function Sidebar({ routes, image, background }) {
             </div>
             <div className="info">
               <a
-                className={userCollapseState ? "collapsed" : ""}
+                className={userCollapseState ? "collapsed nav-link px-1" : " nav-link  px-1"}
                 data-toggle="collapse"
                 href="#pablo"
                 onClick={(e) => {

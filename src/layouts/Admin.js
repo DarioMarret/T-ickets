@@ -33,6 +33,7 @@ import image4 from "assets/img/full-screen-image-4.jpg";
 function Admin() {
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("black");
+  //aqui valido las rutas que deben admitirse segun el permiso
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {

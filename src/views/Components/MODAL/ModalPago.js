@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+//import { CrearLinkPagoPayPhone } from 'utils/Query';
 import { GenerarLinkPagoMedios } from 'utils/Query';
 import {LimpiarLocalStore} from '../../../utils/CarritoLocalStorang';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
+// import ButtonPago from '../PayPhone/ButtonPago';
 import { Spinner } from 'react-bootstrap';
 
 function ModalPago(props) {
@@ -95,7 +97,6 @@ function ModalPago(props) {
            
         }
     }, [url])
-
     return (
         <div
             style={{
