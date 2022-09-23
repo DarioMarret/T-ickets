@@ -7,7 +7,7 @@ import logoportal from "../../assets/portada-login.png";
 import { getCedula } from 'utils/DatosUsuarioLocalStorag';
 import { setDatosUser } from "utils/DatosUsuarioLocalStorag";
 // react-bootstrap components
-import {Badge, Button,Card,Form,Navbar,Nav,oast,Container,Col,Row} from "react-bootstrap";
+import {Badge, Button,Card,Form,Navbar,Nav,Toast,Container,Col,Row} from "react-bootstrap";
 //import ToastContainer from 'react-bootstrap/ToastContainer';
 function LoginPage() {
   const history = useHistory();

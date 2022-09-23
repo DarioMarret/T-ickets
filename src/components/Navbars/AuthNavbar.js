@@ -48,24 +48,24 @@ function AuthNavbar() {
               </Nav.Item>
               <Nav.Item
                 className={
-                  location.pathname === "/auth/register-page"
+                  location.pathname === "/auth/register"
                     ? "active mr-1"
                     : "mr-1"
                 }
               >
-                <Nav.Link to="/auth/register-page" as={Link}>
+                <Nav.Link to="/auth/register" as={Link}>
                   <i className="nc-icon nc-badge"></i>
                   Register
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item
                 className={
-                  location.pathname === "/auth/login-page"
+                  location.pathname === "/auth/login"
                     ? "active mr-1"
                     : "mr-1"
                 }
               >
-                <Nav.Link to="/auth/login-page" as={Link}>
+                <Nav.Link to="/auth/login" as={Link}>
                   <i className="nc-icon nc-mobile"></i>
                   Login
                 </Nav.Link>

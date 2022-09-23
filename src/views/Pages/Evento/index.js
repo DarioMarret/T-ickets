@@ -15,42 +15,8 @@ const EventosViews =()=>{
     return(
         <div className="container-fluid">
 
-              <ModalNewEvento
-              show={show}
-              Setshow={setShow}
-              />
-                
-
-                        {/**Posible eliminar */}
-                        <div className="d-none row justify-content-center align-items-center">
-                            <div className="col-sm-7">
-                                <div className="card" style={{backgroundColor: 'gray', color: 'white'}}>
-                                    <div className="card-body text-center">
-                                        <br/>
-                                        <b>ESCENARIO</b>
-                                        <br/>
-                                        <br/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br/>
-
-
-                    <div className="row d-none">
-                        <div className="col-sm-2">
-                            <h2 className="pb-2 border-bottom">MESAS</h2>
-                        </div>
-                        <div className="col-sm-9" style={{textAlign: 'right'}}>
-                            <span className="badge badge-danger">Pagados</span>
-                            <span className="badge badge-warning">Reservados</span>
-                            <span className="badge badge-success">Libres</span>
-                            <span className="badge badge-secondary">Seleccionados</span>
-                        </div>
-                    </div>
-                        {/**posible eliminar fin */}
-
-                        <Row>
+            
+          <Row>
           <Col lg="3" sm="6">
             <Card className="card-stats">
               <Card.Body>
@@ -240,7 +206,10 @@ const EventosViews =()=>{
                         </div>
                     </div>
                 </div>
-
+                <ModalNewEvento
+              show={show}
+              Setshow={setShow}
+              />
             </div>
     )
 

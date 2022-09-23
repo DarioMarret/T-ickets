@@ -262,7 +262,7 @@ function RegisterPage() {
                   <div className="card-footer p-4">
                     <div className="row">
                       <div className="col-12">
-                        <a className="btn btn-outline-primary btn-block" href="/login">Login</a>
+                        <a className="btn btn-outline-primary btn-block" href="/auth/login">Login</a>
                       </div>
                     </div>
                   </div>
@@ -286,7 +286,8 @@ function RegisterPage() {
           position: 'absolute',
           top: 10,
           right: 10,
-          zIndex: 4
+          zIndex: 4,
+          
         }}
       >
         <Toast.Header>
@@ -296,11 +297,12 @@ function RegisterPage() {
             alt=""
           />
           Hubo un error
-        </Toast.Header>
+        </Toast.Header >
         <Toast.Body>Intenete de nuevo</Toast.Body>
       </Toast>
     </>
   );
 }
+
 
 export default RegisterPage;

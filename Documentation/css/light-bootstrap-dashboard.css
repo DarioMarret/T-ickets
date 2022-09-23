@@ -9655,7 +9655,7 @@ form label.checkbox {
 }
 
 .full-page:after {
-  background: #282828;
+   background: #282828;
   background: -moz-linear-gradient(top, #282828 0%, rgba(17, 17, 17, 0.4) 100%);
   background: -webkit-gradient(
     linear,
@@ -9675,8 +9675,7 @@ form label.checkbox {
     to bottom,
     #282828 0%,
     rgba(17, 17, 17, 0.4) 100%
-  );
-  background-size: 150% 150%;
+  );  background-size: 150% 150%;
   z-index: 3;
   opacity: 1;
 }

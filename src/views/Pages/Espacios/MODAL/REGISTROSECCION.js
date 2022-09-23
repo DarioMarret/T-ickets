@@ -169,9 +169,9 @@ const Registroseccion =(props)=>{
     }
     
 useEffect(()=>{
-    console.log(filass)
-    console.log(Mesass)
-    //console.log(ListaFilas)
+   // console.log(filass)
+    console.log(ListaMesa)
+    console.log(ListaFilas)
 },[show]) 
     return(
     <Modal 
@@ -246,7 +246,7 @@ useEffect(()=>{
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div>
-                                                                    <input type="number" name="cantidad" 
+                                                                    <input type="number" minLength={1} name="cantidad" 
                                                                     value={filass.cantidad }
                                                                     className="form-control" id="cantidad"
                                                                     onChange={(e)=> handelchange(e.target)}
@@ -464,7 +464,7 @@ useEffect(()=>{
                 
                 {                    
             return(
-                <div className='d-flex  px-3 pt-1'>
+                <div className='d-flex  px-3 pt-1' key={"lista"+i}>
                       <OverlayTrigger placement='right' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length>0?e.asientos.length:""}</Tooltip>}>
                       <span className="d-inline-block " disabled >
                       <div className="d-flex   mx-1 bg-primary text-white shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'50px',width:'50px'}} >
@@ -478,7 +478,7 @@ useEffect(()=>{
                    <div className=' d-flex p-1 justify-content-center align-items-center ' >                    
                      {e.asientos.map((silla,index)=>{
                         return(
-                        <div  className='d-flex   mx-1 bg-light shadow-md  rounded-5 text-center  justify-content-center align-items-center ' style={{ height:'50px', width:'50px'}} >
+                        <div key={"silla"+index}  className='d-flex   mx-1 bg-light shadow-md  rounded-5 text-center  justify-content-center align-items-center ' style={{ height:'50px', width:'50px'}} >
                         <div className={'px-3 '+ silla.silla} >
                             {index}
                         </div>  
@@ -523,7 +523,7 @@ useEffect(()=>{
 
                 ListaMesa.map((e,i)=>{
                     return(                        
-                    <OverlayTrigger placement='bottom' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length>0?e.asientos.length:"0"}</Tooltip>}>
+                    <OverlayTrigger key={"tolti"+i} placement='bottom' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length>0?e.asientos.length:"0"}</Tooltip>}>
                             <span className="d-inline-block " disabled >
                             <div className="d-flex   mx-1 bg-primary text-white shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'50px',width:'50px'}} >
                                 {e.mesa} 

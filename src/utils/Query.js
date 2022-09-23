@@ -48,7 +48,7 @@ export const CrearLinkPagoPayPhone = async () => {
      }
 }*
 /* 
-Guradar compra y crear usuario Reportar deposito
+Guradar compra y crear usuario Reportar deposito no genera link de pago
 @parms codigo:codigo del deposito
 */
 export const ReportarDepositoCompra= async(codigo)=>{
@@ -64,10 +64,10 @@ export const ReportarDepositoCompra= async(codigo)=>{
     })
     return data;
    */
-    return {codigo, datosPersonal,valores}   
+      
 }
 /* *
-*Guardar la compra y crear usuario
+*Guardar la compra y crear usuario no genera link de pago
 */
 export const ReportarEfectivoCompra= async()=>{
     let datosPersonal = getDatosUsuariosLocalStorag()
@@ -78,10 +78,20 @@ export const ReportarEfectivoCompra= async()=>{
         valores
     })
     return data;
-   */
-    return {datosPersonal,valores}   
+   */   
 }
-
+export const listarusauriosregistrados=()=>{
+    /*
+    const {data} =await axios.get("")
+    return data;
+    */
+}
+export const listarTicketsvendidos=()=>{
+    /*
+        const {data} = await axios.get("")
+        return data;
+    */
+}
 export const Iniciasession =async(params)=>{
     const {data} = await axios.post("endpoit-login",{
         params

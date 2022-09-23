@@ -61,6 +61,8 @@ function Admin() {
       <div className="wrapper">
         <Sidebar
           routes={routes}
+          image={sidebarImage}
+          background={sidebarBackground}
           
         />
         <div className="main-panel">
@@ -77,7 +79,21 @@ function Admin() {
           />
         </div>
       </div>
-
+      <FixedPlugin
+        setSidebarImageParent={(value) => setSidebarImage(value)}
+        sidebarDefaultImage={sidebarImage}
+        sidebarImages={[image1, image2, image3, image4]}
+        backgroundColors={[
+          "black",
+          "azure",
+          "bg-success",
+          "orange",
+          "red",
+          "purple",
+        ]}
+        backgroundColor={sidebarBackground}
+        setSidebarBackgroundParent={(value) => setSidebarBackground(value)}
+      />
     </>
   );
 }

@@ -1,22 +1,23 @@
 import React,{useEffect,useState} from "react";
-import {Modal} from "react-bootstrap"
+import {Modal,Alert,OverlayTrigger,Tooltip} from "react-bootstrap"
 import { Localidades } from "utils/constantes";
 
 const ModalNewEvento =(props)=>{
     const {show,Setshow} = props;
+    const [alertnone,showAlernone]= useState("d-none")
     //Array donde se crearan las localidades con sus precios
     const [localidadPreci,setPreLocalidad]=useState([])
     function toggleValueInArray(array, value) {
+        //copia de array de localidades
         let ArrayCopia=array;
-        //console.log(array)
-        var index = ArrayCopia.findIndex(obj => obj.Localidades==value.Localidades);
-      //var index = array.indexOf(value);
+        
+        var index = ArrayCopia.findIndex(obj => obj.Localidades==value.Localidades);      
       if (index == -1) {
         ArrayCopia.push(value);
       } else {
         ArrayCopia[index]={...value}     
       }
-      console.log(ArrayCopia) 
+      //se agrega las localidades 
       setPreLocalidad(ArrayCopia)
       setPrecios({Localidades:'',
       precio:'',
@@ -38,15 +39,17 @@ const [neweventos,setNewEventos]=useState(
       name:'',
       fecha:'',
       hora:'',
-      imagen:'link?',
+      imagen:'',
       espacio_id:'',
-      espacio:[]
+      
     })
  function handelchangeComposeventos(e){
-    setNewEventos({
+    console.log(e.files)
+    if(e.name=="imagen") {setNewEventos({...neweventos,imagen:e.files?{...e.files}:''})}
+    else{setNewEventos({
         ...neweventos,
         [e.name]:e.value,
-    })
+    })}
 
  }
   const [precios,setPrecios]=useState(
@@ -63,6 +66,7 @@ const [neweventos,setNewEventos]=useState(
             var index = Localidades.findIndex(obj => obj.id==e.value);
                 console.log(Localidades[index])
                 setLocalidad(Localidades[index].localidad)
+                setNewEventos({...neweventos,espacio_id:e.value})
                 setPreLocalidad([])  
                 setPrecios({Localidades:'',
                 precio:'',
@@ -95,13 +99,17 @@ const [neweventos,setNewEventos]=useState(
         }
         function Agregarprecios(){
             toggleValueInArray(localidadPreci,precios)
+            showAlernone("")
+            setTimeout(() => {
+                showAlernone("d-none")
+              }, "1500")
            
         }
 
     useEffect(()=>{
-       // console.log(neweventos)
-       // console.log(selectLocalidad)
-        
+        console.log(neweventos)
+        console.log(!(selectLocalidad.length==localidadPreci.length))
+        console.log(localidadPreci,selectLocalidad)
         },[show,toggleValueInArray])
     return(
     <Modal
@@ -109,10 +117,10 @@ const [neweventos,setNewEventos]=useState(
     size='lg'
     onHide={()=>Setshow(false)}
     >
-        <Modal.Header closeButton>    
+        <Modal.Header closeButton> 
+           <Modal.Title>Registro Nuevo Evento</Modal.Title>
         </Modal.Header>
-         <Modal.Body>
-       
+         <Modal.Body>      
                     <div className="modal-body">
                                     <div className="row">
                                         <div className="col-sm-12">
@@ -123,6 +131,7 @@ const [neweventos,setNewEventos]=useState(
                                                     <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                 </div>
                                                 <input type="text" className="form-control" id="name" name="name"
+                                                value={neweventos.name}
                                                 onChange={(e)=>handelchangeComposeventos(e.target)}
                                                 placeholder="Nombre del evento" />
                                                                             </div>
@@ -132,7 +141,9 @@ const [neweventos,setNewEventos]=useState(
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text"><i className="fa fa-calendar"></i></span>
                                                 </div>
-                                                <input  className="form-control" id="fecha" name="fecha" type="date" placeholder="Fecha del evento"/>
+                                                <input  className="form-control" id="fecha" name="fecha"
+                                                value={neweventos.fecha} type="date"
+                                                onChange={(e)=>handelchangeComposeventos(e.target)} placeholder="Fecha del evento"/>
                                                                             </div>
                                         </div>
                                         <div className="col-12 col-md-6">
@@ -140,7 +151,10 @@ const [neweventos,setNewEventos]=useState(
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text"><i className="fa fa-clock"></i></span>
                                                 </div>
-                                                <input type="time" className="form-control" id="hora" name="hora" placeholder="hora del evento"/>
+                                                <input type="time" className="form-control" id="hora" name="hora"
+                                                value={neweventos.hora}
+                                                onChange={(e)=>handelchangeComposeventos(e.target)}
+                                                 placeholder="hora del evento"/>
                                                                             </div>
                                         </div>
                                         <div className="col-12 col-md-6">
@@ -149,7 +163,7 @@ const [neweventos,setNewEventos]=useState(
                                                     <span className="input-group-text"><i className="fa fa-map"></i></span>
                                                 </div>
                                                 <select className="form-control" name="localidad" onChange={(e)=>handelchange(e.target)} placeholder="Seleccione localidad">
-                                                    <option value={""}>Seleccione localidad</option>
+                                                    <option value={""}>Seleccione espacio</option>
                                                     {Localidades.map((e,i)=>{
                                                     return(
                                                     <option value={e.id} key={i+"n"+e.id}>{e.nombre}</option>
@@ -169,7 +183,9 @@ const [neweventos,setNewEventos]=useState(
                                         <label className="form-label">Seleccione una imagen</label>
                                         <div className="input-group mb-3">
                                         
-                                                <input type="file" accept="image/*" className="form-control " id="imagen"  placeholder="Imagen del concierto"/>
+                                                <input type="file" accept="image/*" name="imagen" className="form-control "
+                                                onChange={(e)=>handelchangeComposeventos(e.target)}
+                                                id="imagen"  placeholder="Imagen del concierto"/>
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text"></span>
                                                 </div>
@@ -211,6 +227,13 @@ const [neweventos,setNewEventos]=useState(
                                             </div>
                                             <div className="col-4">
                                                 <button className="numero btn btn-success" onClick={(e)=>Agregarprecios()} disabled={!Object.values(precios).every((e)=>e)} >  Agregar precios</button>
+                                            </div>
+                                            <div className="col-6">
+                                            <Alert className={alertnone} variant="success">
+                                                 Precios Agregados a la Localidad
+                                               
+                                                </Alert>
+
                                             </div>
                                             </div>
                                             <div className="d-flex flex-wrap mb-2">
@@ -254,10 +277,21 @@ const [neweventos,setNewEventos]=useState(
 
                                     </div>
                                 </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary close-btn" data-dismiss="modal">Salir</button>
-                                                            <button disabled={!Object.values(neweventos).every(e=>e)} className="btn btn-primary close-modal">Grabar</button>
-                                                    </div>
+                                <div className="modal-footer"> 
+                                <button type="button" className="btn btn-secondary close-btn" data-dismiss="modal">Salir</button>
+                                {selectLocalidad.length>0&&selectLocalidad.length!=localidadPreci.length?
+                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar1</button>:
+                                 ""}     
+                                 {!selectLocalidad.length>0&&Object.values(neweventos).every(e=>e)?
+                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar2</button>:
+                                 ""
+
+                                 }   
+                                 {selectLocalidad.length>0&&selectLocalidad.length==localidadPreci.length?                       
+                                <button disabled={ !Object.values(neweventos).every(e=>e)} className="btn btn-primary close-modal float-rigth">Grabar3</button>
+                                :
+                                 ""} 
+                     </div>
                                          
             
             </Modal.Body>   

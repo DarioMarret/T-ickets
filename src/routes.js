@@ -117,7 +117,7 @@ var routes = [
     name: "Pages",
     state: "openPages",
     icon: "nc-icon nc-puzzle-10",
-    permiso:["admin","superadmin","subscriptor"],
+    permiso:["superadmin","subscriptor"],
     views: [
       {
         path: "/user-page",
@@ -125,7 +125,6 @@ var routes = [
         name: "User Page",
         mini: "UP",
         component: UserPage
-        
       },
       {
         path: "/login",

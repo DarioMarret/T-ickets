@@ -27,6 +27,7 @@ function Sidebar({ routes, image, background }) {
     const parse = JSON.parse(user);
     return parse || "no user";
 })*/
+const usuario ="admin";
   let location = useLocation();
   // this is for the user collapse
   const [userCollapseState, setUserCollapseState] = React.useState(false);
@@ -69,7 +70,7 @@ function Sidebar({ routes, image, background }) {
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
      // console.log(prop.permiso.every(e=>e!="admin"))
-      if(prop.permiso!=null && prop.permiso.every(e=>e!="admin") ){
+      if(prop.permiso!=null && prop.permiso.every(e=>e!=usuario) ){
         return null
 
       }

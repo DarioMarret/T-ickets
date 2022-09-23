@@ -79,7 +79,7 @@ function FixedPlugin({
                 }}
               />
             </li>
-            <li className="adjustments-line d-flex align-items-center">
+           {/*<li className="adjustments-line d-flex align-items-center">
               <p className="pt-0 mr-auto">Filters</p>
               <div>
                 {backgroundColors.map((prop, key) => (
@@ -87,11 +87,11 @@ function FixedPlugin({
                     key={key}
                     variant={prop}
                     onClick={() => setSidebarBackgroundParent(prop)}
-                    className={prop === backgroundColor ? "active" : ""}
+                    className={prop === backgroundColor ? "active" : "active"}
                   ></Badge>
                 ))}
               </div>
-            </li>
+            </li>*/}
             <li className="header-title">Sidebar Images</li>
             {sidebarImages.map((prop, key) => (
               <li
@@ -106,43 +106,7 @@ function FixedPlugin({
                 </a>
               </li>
             ))}
-            <li className="button-container">
-              <div>
-                <Button
-                  block
-                  href="http://www.creative-tim.com/product/light-bootstrap-dashboard-react?ref=lbpr-fp"
-                  target="_blank"
-                  variant="info"
-                >
-                  Get free demo!
-                </Button>
-              </div>
-            </li>
-            <li className="button-container">
-              <div>
-                <Button
-                  block
-                  className="btn-fill"
-                  href="http://www.creative-tim.com/product/light-bootstrap-dashboard-pro-react?ref=lbpr-fp"
-                  target="_blank"
-                  variant="warning"
-                >
-                  Buy now!
-                </Button>
-              </div>
-            </li>
-            <li className="button-container">
-              <div>
-                <Button
-                  block
-                  href="https://demos.creative-tim.com/light-bootstrap-dashboard-pro-react/#/documentation/tutorial?ref=lbpr-fp"
-                  target="_blank"
-                  variant="danger"
-                >
-                  Documentation
-                </Button>
-              </div>
-            </li>
+           
             <li className="header-title" id="sharrreTitle">
               Thank you for sharing!
             </li>
