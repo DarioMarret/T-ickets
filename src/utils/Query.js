@@ -13,7 +13,7 @@ export const GenerarLinkPagoMedios = async () => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let valores = GetValores()
     let metodo = GetMetodo()
-        
+    console.log("se esta generando")    
         
 if(datosPersonal!=null && valores!=null )   {
           const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio",{
@@ -21,7 +21,7 @@ if(datosPersonal!=null && valores!=null )   {
         valores,
         metodo
         })
-        //console.log("GenerarLinkPagoMedios data-----",data)
+    console.log("GenerarLinkPagoMedios data-----",data)
         return  data.data
         }
 }

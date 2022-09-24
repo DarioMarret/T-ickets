@@ -134,6 +134,7 @@ function ModalDetalle(props) {
 useEffect(() => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let metodoPago = GetMetodo()
+    console.log("metodo",metodoPago)
     if (datosPersonal !== null) {
         setPerson({
             ...datosPerson,
@@ -151,7 +152,7 @@ useEffect(() => {
             direccion: datosPersonal.direccion,
         })
     }
-   /* setPerson({
+    setPerson({
         ...datosPerson,
         email: datosPersonal ? datosPersonal.email : '',
         name: datosPersonal ? datosPersonal.name : '',
@@ -159,7 +160,7 @@ useEffect(() => {
         cedula: datosPersonal ? datosPersonal.cedula : '',
         metodoPago: metodoPago,       
         direccion: datosPersonal ? datosPersonal.direccion : ''
-    })*/
+    })
     let mostrarcomision = GetMetodo()
     const mostrar= mostrarcomision!="Tarjeta"? "d-none":""
     sethideComision(mostrar)

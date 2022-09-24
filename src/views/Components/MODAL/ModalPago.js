@@ -43,7 +43,7 @@ function ModalPago(props) {
         const data = await GenerarLinkPagoMedios()
 
         if (data.status === 200) {
-            setUrl(data.data.url)
+            popUp(data.data.url)               
             setEstadoFrame(!estadoFrame)
             setSpiner("d-none")
             setModalPago(false)
@@ -61,18 +61,9 @@ function ModalPago(props) {
         setSpiner("d-none")
     }
     function popUp(URL) {
-        var popUp = window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
-       
-        if (popUp == null || typeof(popUp)=='undefined') {     
-        //console.log("error")
-            setDatoToas({ show:true,
-                message:'Por favor habilite las ventanas emergentes, e intente nuevamente',
-                color:'bg-danger',
-                estado:'Mensaje importante',
-              })
-         } else{
-         popUp.focus()
-        LimpiarLocalStore()}
+        window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
+               
+        LimpiarLocalStore()
     }
     /*function popUp1() {
         var popUp = window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
@@ -90,13 +81,7 @@ function ModalPago(props) {
     }
     }*/
 
-    useEffect(() => {
-        //popUp1()
-       if(url !== ''){
-            popUp(url)
-           
-        }
-    }, [url])
+   
     return (
         <div
             style={{

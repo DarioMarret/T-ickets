@@ -79,7 +79,7 @@ function FixedPlugin({
                 }}
               />
             </li>
-           {/*<li className="adjustments-line d-flex align-items-center">
+           <li className="adjustments-line d-flex align-items-center">
               <p className="pt-0 mr-auto">Filters</p>
               <div>
                 {backgroundColors.map((prop, key) => (
@@ -88,10 +88,10 @@ function FixedPlugin({
                     variant={prop}
                     onClick={() => setSidebarBackgroundParent(prop)}
                     className={prop === backgroundColor ? "active" : "active"}
-                  ></Badge>
+                  ></Badge> 
                 ))}
               </div>
-            </li>*/}
+            </li>
             <li className="header-title">Sidebar Images</li>
             {sidebarImages.map((prop, key) => (
               <li
