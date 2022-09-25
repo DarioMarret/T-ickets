@@ -25,7 +25,7 @@ function DefaultColumnFilter({
   return (
     <FormGroup>
       <Input
-        placeholder={`Search ${count} records...`}
+        placeholder={`Buscar ${count} items...`}
         type="text"
         onChange={(e) => {
           setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
@@ -129,7 +129,7 @@ function Table({ columns, data }) {
                 disabled={!canPreviousPage}
                 className="-btn"
               >
-                Previous
+                Anterior
               </button>
             </div>
             <div className="-center">
@@ -183,7 +183,7 @@ function Table({ columns, data }) {
                 disabled={!canNextPage}
                 className="-btn"
               >
-                Next
+                Siguiente
               </button>
             </div>
           </div>

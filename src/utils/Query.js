@@ -98,3 +98,7 @@ export const Iniciasession =async(params)=>{
     })
     return data;
 }
+export const ListarEventos= async()=>{
+    const {data} = await axios.get("")
+    return data;
+}

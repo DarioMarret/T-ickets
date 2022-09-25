@@ -41,7 +41,8 @@ import LockScreenPage from "views/Pages/LockScreenPage.js";
 import Misdatos from "views/Pages/Misdatos.js";
 import Ticket from "views/Pages/Tickets.js";
 import Espacios from "views/Pages/Espacios";
-import Eventos from "views/Pages/Evento"
+import Eventos from "views/Pages/Evento";
+import PerfilPage from "views/Pages/Perfil";
 
 var routes = [
   {
@@ -52,6 +53,13 @@ var routes = [
     component: Dashboard,
     permiso:["admin","superadmin","subscriptor"]
   },
+  { 
+  path: "/perfil",
+  layout: "/admin",
+  name: "Info",
+  icon: "nc-icon nc-chart-pie-35",
+  component: PerfilPage,
+  permiso:["admin","superadmin","subscriptor"]},
  
   {
     path:"/tickets",

@@ -96,6 +96,19 @@ const IndexFlas = () => {
   ////Fin de comentario
 
   useEffect(() => {
+   // window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
+    var popUp = window.open('url', '', 'options');
+    if (popUp == null || typeof(popUp)=='undefined') {
+      popUp.close();     
+      setDatoToas({ show:true,
+        message:'Por favor habilite las ventanas emergentes antes de continuar',
+        color:'bg-danger',
+        estado:'Mensaje importante',
+      })
+     }else{
+      popUp.close();
+     } 
+
     let datosPersonal = getDatosUsuariosLocalStorag()
     let metodoPago = GetMetodo()
     if (datosPersonal !== null) {

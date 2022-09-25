@@ -3,8 +3,12 @@ import React from "react";
 import { Calendar as BigCalendar, momentLocalizer } from "react-big-calendar";
 // dependency plugin for react-big-calendar
 import moment from "moment";
+import 'moment-timezone'
 // react component used to create alerts
+import 'moment/locale/es'; 
+require('moment/locale/es.js')
 import SweetAlert from "react-bootstrap-sweetalert";
+
 // react-bootstrap components
 import {
   Badge,
@@ -121,25 +125,7 @@ function Calendar() {
       {alert}
       <Container fluid>
         <div className="header text-center">
-          <h3 className="title">React Big Calendar</h3>
-          <small className="category">
-            Handcrafted by our friends from{" "}
-            <a
-              href="https://github.com/jquense/react-big-calendar"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              react-big-calendar
-            </a>
-            . Please checkout their{" "}
-            <a
-              href="http://jquense.github.io/react-big-calendar/examples/index.html"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              full documentation.
-            </a>
-          </small>
+          
         </div>
         <br></br>
         <Row>
@@ -153,9 +139,16 @@ function Calendar() {
                   defaultView="month"
                   scrollToTime={new Date(1970, 1, 1, 6)}
                   defaultDate={new Date()}
-                  onSelectEvent={(event) => selectedEvent(event)}
-                  onSelectSlot={(slotInfo) => addNewEventAlert(slotInfo)}
-                  eventPropGetter={eventColors}
+                  onSelectEvent={(event) => selectedEvent(event)}                 
+                  eventPropGetter={eventColors}                  
+                  messages={{
+                    next: "Sig",
+                    previous: "Ant",
+                    today: "Hoy",
+                    month: "Mes",
+                    week: "Semana",
+                    day: "Día"
+                  }}
                 />
               </Card.Body>
             </Card>

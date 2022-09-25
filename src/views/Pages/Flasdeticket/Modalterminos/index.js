@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap"
 const Modalterminos=()=>{
     
     return(
-        <div class="modal fade" id="terminosModalModal" tabindex="-1" role="dialog" aria-labelledby="erminosModalModalLabel"
+        <div className="modal fade" id="terminosModalModal" tabindex="-1" role="dialog" aria-labelledby="erminosModalModalLabel"
         aria-hidden="true">
              <div className="modal-dialog   modal-lg" role="document">
       <div className="terminos  bg-black modal-content  ">
