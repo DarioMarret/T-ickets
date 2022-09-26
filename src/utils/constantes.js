@@ -49,3 +49,7 @@ export const Localidades=[
     },
 
 ]
+
+export const Fechas=[
+    
+]

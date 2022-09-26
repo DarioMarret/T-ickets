@@ -132,23 +132,23 @@ function Example() {
       data={data}
       columns={[
         {
-          Header: "Name",
+          Header: "Nombre",
           accessor: "name",
         },
         {
-          Header: "Position",
+          Header: "Posicion",
           accessor: "position",
         },
         {
-          Header: "Office",
+          Header: "Officina",
           accessor: "office",
         },
         {
-          Header: "Age",
+          Header: "Edad",
           accessor: "age",
         },
         {
-          Header: "Actions",
+          Header: "Acciones",
           accessor: "actions",
           sortable: false,
           filterable: false,
