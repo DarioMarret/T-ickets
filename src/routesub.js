@@ -14,8 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Pages/Dasboarsubcri/index.js";
-import Reactabla from "views/Pages/Dasboarsubcri/Tickes.js";
+
 import Buttons from "views/Components/Buttons.js";
 import GridSystem from "views/Components/GridSystem.js";
 import Panels from "views/Components/Panels.js";
@@ -43,6 +42,8 @@ import Misdatos from "views/Pages/Misdatos.js";
 import Ticket from "views/Pages/Tickets.js";
 import Espacios from "views/Pages/Espacios";
 import Eventos from "views/Pages/Evento";
+import Dashboard from "views/Pages/Dasboarsubcri/index.js";
+import Reactabla from "views/Pages/Dasboarsubcri/Tickes.js";
 import PerfilPage from "views/Pages/Perfil";
 
 var routes = [
@@ -64,7 +65,7 @@ var routes = [
   { 
     path: "/tickets",
     layout: "/panel",
-    name: "Tickets",
+    name: "Mis Tickets",
     icon: "nc-icon nc-notification-70",
     component: Reactabla,
     permiso:["admin","superadmin","subscriptor"]},

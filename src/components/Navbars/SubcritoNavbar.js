@@ -81,8 +81,8 @@ function SubcritorNavbar() {
                      href="/panel/datos"
                     
                   >
-                    <i className="nc-icon nc-settings-90"></i>
-                    Settings
+                    <i className="nc-icon nc-satisfied"></i>
+                    Perfil
                   </Dropdown.Item>
                   <div className="divider"></div>
                   

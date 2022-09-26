@@ -43,81 +43,105 @@ import Ticket from "views/Pages/Tickets.js";
 import Espacios from "views/Pages/Espacios";
 import Eventos from "views/Pages/Evento";
 import PerfilPage from "views/Pages/Perfil";
+import Dashboardsub from "views/Pages/Dasboarsubcri/index.js";
+import Reactabla from "views/Pages/Dasboarsubcri/Tickes.js";
 
 var routes = [
   {
-    path: "/dashboard",
+    path: "/Inicio",
     layout: "/admin",
-    name: "Dashboard",
+    name: "Inicio",
     icon: "nc-icon nc-chart-pie-35",
     component: Dashboard,
-    permiso:["admin","superadmin","subscriptor"]
+    permiso:["superadmin","subscriptor"]
   },
+  {
+    path: "/inicio",
+    layout: "/admin",
+    name: "inicio",
+    icon: "nc-icon nc-layers-3",
+    component: Dashboardsub,
+    permiso:["admin"]
+  },
+  { 
+  path: "/datos",
+  layout: "/admin",
+  name: "Datos",
+  icon: "nc-icon nc-satisfied",
+  component: PerfilPage,
+  permiso:["admin"]},
+  { 
+    path: "/tickets",
+    layout: "/admin",
+    name: "Tickets",
+    icon: "nc-icon nc-notification-70",
+    component: Reactabla,
+    permiso:["admin"]},
   { 
   path: "/perfil",
   layout: "/admin",
   name: "Info",
-  icon: "nc-icon nc-chart-pie-35",
+  icon: "nc-icon nc-badge",
   component: PerfilPage,
-  permiso:["admin","superadmin","subscriptor"]},
+  permiso:["superadmin","subscriptor"]},
  
   {
     path:"/tickets",
     layout:"/admin",
     name:"Mis Tickets",
-    icon:"fas fa-ticket-alt",
+    icon:"nc-icon nc-tag-content",
     component:Ticket,
-    permiso:["admin","superadmin","subscriptor"]
+    permiso:["superadmin","subscriptor"]
 
   },
   {
     path:"/espacios",
     layout:"/admin",
     name:"Espacios",
-    icon:"fas fa-user-cog",
+    icon:"nc-icon nc-map-big",
     component:Espacios,
-    permiso:["admin","superadmin","subscriptor"]
+    permiso:["superadmin","subscriptor"]
   },
   {
     path:"/eventos",
     layout:"/admin",
     name:"Eventos",
-    icon:"fas fa-user-cog",
+    icon:"nc-icon nc-paper-2",
     component:Eventos,
-    permiso:["admin","superadmin","subscriptor"]
+    permiso:["superadmin","subscriptor"]
   }, 
   {
     path:"/referidos",
     layout:"/admin",
     name:"Referido",
-    icon:"fas fa-bullhorn",
+    icon:"nc-icon nc-notification-70",
     component:Eventos,
-    permiso:["admin","superadmin","subscriptor"]
+    permiso:["superadmin","subscriptor"]
   },
   
   {
     path:"/influencer",
     layout:"/admin",
     name:"Influencer",
-    icon:"fab fa-tiktok",
+    icon:"nc-icon nc-note-03",
     component:Eventos,
-    permiso:["admin","superadmin","subscriptor"]
+    permiso:["superadmin","subscriptor"]
   },
   {
     path:"/sorteos",
     layout:"/admin",
     name:"Sorteos",
-    icon:" fas fa-dice",
+    icon:"nc-icon nc-controller-modern",
     component:Eventos,
-    permiso:["admin","superadmin","subscriptor"]
+    permiso:["superadmin","subscriptor"]
   },
   {
     path:"/Tabla",
     layout:"/admin",
     name:"Tabla",
     icon:" fas fa-dice",
-    component:ReactTables,
-    permiso:["admin","superadmin","subscriptor"]
+    component:Reactabla,
+    permiso:["superadmin","subscriptor"]
   },
   {
     collapse: true,

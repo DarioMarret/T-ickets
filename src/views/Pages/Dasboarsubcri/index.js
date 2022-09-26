@@ -5,12 +5,11 @@ import ChartistGraph from "react-chartist";
 import { VectorMap } from "react-jvectormap";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import { Badge } from "@mui/material";
 
 
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
-import { MonthPicker } from '@mui/x-date-pickers/MonthPicker';
+import { MonthPicker } from "@mui/x-date-pickers/MonthPicker";
 import { PickersDay } from "@mui/x-date-pickers";
 import TextField from '@mui/material/TextField';
 import moment from "moment";
@@ -19,7 +18,7 @@ import moment from "moment";
 const today = new Date();
 const y = today.getFullYear();
 const m = today.getMonth();
-const d = today.getDate();
+const d = today.getDate()+2;
 import {
   Button,
   Card,
@@ -37,6 +36,7 @@ import {
 
 function Dashboardsub() {
   const [value, setValue] = React.useState( Date(y, m, d ));
+   // "Mon Sep 29 2022 10:15:40 GMT-0500"
  // console.log(value)
 
   return (
@@ -64,7 +64,7 @@ function Dashboardsub() {
                 <hr></hr>
                 <div className="stats">
                   <i className="fas fa-music mr-1"></i>
-                  Update Now
+                  Boletos
                 </div>
               </Card.Footer>
             </Card>
@@ -90,7 +90,7 @@ function Dashboardsub() {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-calendar-alt mr-1"></i>
-                  Last day
+                  Total Compras
                 </div>
               </Card.Footer>
             </Card>
@@ -117,7 +117,7 @@ function Dashboardsub() {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="far fa-clock-o mr-1"></i>
+                  <i className="far fa-clock mr-1"></i>
                   Hora de inicio Sección 26/09/2022 19:00
                 </div>
               </Card.Footer>
@@ -125,10 +125,10 @@ function Dashboardsub() {
           </Col>
          
         </Row>
-        <Row>
-        <Col md="12" sm="6" xl="6" className="pb-2">
-        <div className="header text-center shadow-md ">
-       {/* <LocalizationProvider dateAdapter={AdapterMoment} >
+       <Row>
+        <Col md="12" sm="6" xl="4" className="pb-2">
+        <div className="header text-center ">
+        <LocalizationProvider dateAdapter={AdapterMoment} >
         <StaticDatePicker
         orientation="landscape"
         label={"Nuevos Eventos"}
@@ -166,12 +166,22 @@ function Dashboardsub() {
         }}
         renderInput={(params) => <TextField {...params} />}
       />
-      </LocalizationProvider>*/}
+      </LocalizationProvider>
         </div>
         </Col>
-        </Row>
+        {/*<Col xl="4">
+        <LocalizationProvider dateAdapter={AdapterMoment} >
+        <MonthPicker
+            date={value}
+           onChange={(newDate) => setValue(newDate)}
+         />
+
+        </LocalizationProvider>
        
-        <Row>
+        </Col>*/}
+      </Row>
+       
+        {/*<Row>
           <Col md="4">
             <Card>
               <Card.Header>
@@ -275,7 +285,7 @@ function Dashboardsub() {
               </Card.Footer>
             </Card>
           </Col>
-        </Row>
+        </Row>*/}
        
       </Container>
     </>

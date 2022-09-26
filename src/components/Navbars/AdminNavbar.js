@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useLocation } from "react-router";
 // react-bootstrap components
 import {
   Badge,
@@ -19,6 +19,7 @@ import {
 } from "react-bootstrap";
 
 function AdminNavbar() {
+  let location = useLocation();
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   return (
     <>
@@ -45,8 +46,8 @@ function AdminNavbar() {
                 <i className="fas fa-bars visible-on-sidebar-mini"></i>
               </Button>
             </div>
-            <Navbar.Brand href="#pablo" onClick={(e) => e.preventDefault()}>
-              Menu
+            <Navbar.Brand className="text-uppercase" href="#pablo" onClick={(e) => e.preventDefault()}>
+              {location.pathname ?location.pathname.split("/")[2] :''}
             </Navbar.Brand>
           </div>
           <button

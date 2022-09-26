@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route,Redirect } from "react-router-dom";
 // react-bootstrap components
 import {
   Badge,
@@ -72,7 +72,9 @@ function Subcrito() {
         <div className="main-panel">
           <SubcritorNavbar />
           <div className="content">
-            <Switch>{getRoutes(routes)}</Switch>
+            <Switch>{getRoutes(routes)}
+            <Redirect from="/panel" to="/panel/inicio"  />
+            </Switch>
           </div>
           {/*<AdminFooter />*/}
           <div

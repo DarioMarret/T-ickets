@@ -99,7 +99,7 @@ const IndexFlas = () => {
    // window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
     var popUp = window.open('url', '', 'options');
     if (popUp == null || typeof(popUp)=='undefined') {
-      popUp.close();     
+        //  popUp.close();     
       setDatoToas({ show:true,
         message:'Por favor habilite las ventanas emergentes antes de continuar',
         color:'bg-danger',
@@ -147,10 +147,10 @@ const IndexFlas = () => {
                 <a className="nav-link " href="#nuevoseventos">Comprar</a>
               </li>
               <li className="  nav-item">
-                <a className=" btn btn-outline-light  " href="#"> Mi Cuenta <i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
+                {true?<a className=" btn btn-outline-light  " href="#"> Mi Cuenta <i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
                   <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
-                </svg></i> </a>
+                </svg></i> </a>:""}
               </li>
             </ul>
             <ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-1   justify-content-center ">
@@ -183,7 +183,7 @@ const IndexFlas = () => {
             <div className="col-12 col-lg-6">
               {/*<!--Carousel-->*/}
               <Carousel className="carousel-inner rounded-7   carousel-fade" slide={false}>
-                <Carousel.Item interval={1300}>
+                <Carousel.Item interval={2800}>
                   <img
                     className="d-block w-100"
                     src={principal}
@@ -193,7 +193,7 @@ const IndexFlas = () => {
 
                   </Carousel.Caption>
                 </Carousel.Item>
-                <Carousel.Item interval={1300}>
+                <Carousel.Item interval={2800}>
                   <img
                     className="d-block w-100"
                     src={secundaria}
@@ -203,14 +203,13 @@ const IndexFlas = () => {
 
                   </Carousel.Caption>
                 </Carousel.Item>
-                <Carousel.Item interval={1300}>
+                <Carousel.Item interval={2800}>
                   <img
                     className="d-block w-100"
                     src={tercero}
                     alt="Third slide"
                   />
                   <Carousel.Caption>
-
                   </Carousel.Caption>
                 </Carousel.Item>
               </Carousel>
@@ -285,9 +284,8 @@ const IndexFlas = () => {
                         <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">Coliseo Voltaire Paladines
                           Polo</span></p>
                         <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> 21:00</span></p>
-                        <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                          // {/*onclick="cronometro('Grupo Pimpinela 28-10-2022','Pimpinela')" */}
-                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => handleShow()} >Comprar Entrada</p>
+                     {true? <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"                          
+                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => handleShow()} >Comprar Entrada</p>:""}
                       </div>
                     </div>
                   </div>

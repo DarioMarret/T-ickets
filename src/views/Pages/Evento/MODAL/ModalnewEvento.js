@@ -108,7 +108,7 @@ const [neweventos,setNewEventos]=useState(
 
     useEffect(()=>{
         console.log(neweventos)
-        console.log(!(selectLocalidad.length==localidadPreci.length))
+        //console.log(!(selectLocalidad.length==localidadPreci.length))
         console.log(localidadPreci,selectLocalidad)
         },[show,toggleValueInArray])
     return(
@@ -280,15 +280,15 @@ const [neweventos,setNewEventos]=useState(
                                 <div className="modal-footer"> 
                                 <button type="button" className="btn btn-secondary close-btn" data-dismiss="modal">Salir</button>
                                 {selectLocalidad.length>0&&selectLocalidad.length!=localidadPreci.length?
-                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar1</button>:
+                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button>:
                                  ""}     
                                  {!selectLocalidad.length>0&&Object.values(neweventos).every(e=>e)?
-                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar2</button>:
+                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button>:
                                  ""
 
                                  }   
                                  {selectLocalidad.length>0&&selectLocalidad.length==localidadPreci.length?                       
-                                <button disabled={ !Object.values(neweventos).every(e=>e)} className="btn btn-primary close-modal float-rigth">Grabar3</button>
+                                <button disabled={ !Object.values(neweventos).every(e=>e)} className="btn btn-primary close-modal float-rigth">Grabar</button>
                                 :
                                  ""} 
                      </div>

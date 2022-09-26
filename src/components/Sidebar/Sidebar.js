@@ -2,6 +2,8 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import {clienteInfo} from "../../utils/localstore";
+
+import imagen5 from "assets/imagen/logo-tickets.png"
  //import {clienteInfo} from "../../utils" ;
 // react-bootstrap components
 import {
@@ -27,7 +29,7 @@ function Sidebar({ routes, image, background }) {
     const parse = JSON.parse(user);
     return parse || "no user";
 })*/
-const usuario ="admin";
+const usuario ="superadmin";
   let location = useLocation();
   // this is for the user collapse
   const [userCollapseState, setUserCollapseState] = React.useState(false);
@@ -158,6 +160,26 @@ const usuario ="admin";
               Flash ticket
             </a>
           </div>
+          {/*<div className="logo">
+            <a
+              className="simple-text logo-mini nav-link"
+             
+            >
+              <div className="logo-img">
+                
+              </div>
+            </a>
+            <a
+              className="simple-text logo-normal nav-link"
+              
+            >
+              <img
+                  src={imagen5}
+                  alt="react-logo"
+                  style={{height:'60px',width:'auto'}}
+                />
+            </a>
+             </div>*/}
           <div className="user">
             <div className="photo">
               {/*<img alt="..." src={require("assets/img/default-avatar.png")} />*/}
@@ -215,6 +237,30 @@ const usuario ="admin";
               </Collapse>
             </div>
           </div>
+          {
+          /*
+          <div className="user">
+            <div className="photo">
+             {/*<img alt="..." src={require("assets/img/default-avatar.png")} />}
+            </div>
+            <div className="info">
+              <a
+                className={userCollapseState ? "collapsed nav-link px-1" : " nav-link  px-1"}
+                data-toggle="collapse"
+                href="#pablo"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setUserCollapseState(!userCollapseState);
+                }}
+               
+              >
+                <span>
+                Nombre del usuario 
+                </span>
+              </a>
+              
+            </div>
+          </div>*/}
           <Nav as="ul">{createLinks(routes)}</Nav>
         </div>
         <div

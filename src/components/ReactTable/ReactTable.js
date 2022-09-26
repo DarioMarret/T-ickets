@@ -91,6 +91,7 @@ function Table({ columns, data }) {
     nextPage,
     pageOptions,
     pageCount,
+    setHiddenColumns,
     previousPage,
     canPreviousPage,
     canNextPage,
@@ -102,6 +103,7 @@ function Table({ columns, data }) {
       data,
       defaultColumn, // Be sure to pass the defaultColumn option
       filterTypes,
+      visibleColumns,
       initialState: { pageSize: 10, pageIndex: 0 },
     },
     useFilters, // useFilters!
@@ -117,6 +119,12 @@ function Table({ columns, data }) {
     Array(pageOptions.length)
   ).map(function () {});
   let numberOfRowsData = [5, 10, 20, 25, 50, 100];
+  React.useEffect(() => {
+    
+    setHiddenColumns(
+      columns.filter(column => !column.isVisible).map(column => column.accessor)
+    );
+  }, [setHiddenColumns, columns]);
   return (
     <>
       <div className="ReactTable -striped -highlight primary-pagination">
@@ -231,7 +239,7 @@ function Table({ columns, data }) {
                 >
                   {row.cells.map((cell) => {
                     return (
-                      <td {...cell.getCellProps()} className="rt-td">
+                      <td {...cell.getCellProps()} className="rt-td ">
                         {cell.render("Cell")}
                       </td>
                     );
@@ -241,7 +249,9 @@ function Table({ columns, data }) {
             })}
           </tbody>
         </table>
-        <div className="pagination-bottom"></div>
+        <div className="pagination-bottom">
+          
+        </div>
       </div>
     </>
   );

@@ -37,7 +37,7 @@ function Admin() {
   //aqui valido las rutas que deben admitirse segun el permiso
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if(prop.permiso!=null && prop.permiso.every(e=>e!="admin") ){
+      if(prop.permiso!=null && prop.permiso.every(e=>e!="superadmin") ){
         return null
 
       }

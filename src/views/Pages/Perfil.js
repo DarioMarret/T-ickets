@@ -23,45 +23,47 @@ function PerfilPage() {
           <Container>
             <Row>
               <Col md="8" sm="6">
-                <Form action="" className="form" method="">
+              
                   <Card>
                     <Card.Header>
                       <Card.Header>
-                        <Card.Title as="h4">Datos de usuario </Card.Title>
+                        <Card.Title as="h4">DATOS PERSONALES </Card.Title>
                       </Card.Header>
                     </Card.Header>
                     <Card.Body>
                     <Row>
-                    <Col className="pr-1" md="12">
+                    <Col className="p-2" md="12">
                           <Form.Group>
                             <label>Nombres</label>
-                            <Form.Control
-                              defaultValue="michael23"
+                            <Form.Control                              
                               placeholder="Username"
+                              name="nombre"
                               type="text"
                             ></Form.Control>
                           </Form.Group>
                         </Col>
                     </Row>
                       <Row>
-                        <Col className="pr-1" md="6">
+                        <Col className="pr-1 pl-1" md="6">
                           <Form.Group>
-                            <label>Cedula </label>
-                            <Form.Control
-                              defaultValue="Creative Code Inc."
+                            <label>Cédula </label>
+                            <Form.Control                            
                               disabled
-                              placeholder="Company"
+                              placeholder=""
+                              name="cedula"
                               type="text"
                             ></Form.Control>
                           </Form.Group>
                         </Col>
-                        <Col className="pl-1" md="6">
+                        <Col className="pr-1 pl-1" md="6">
                           <Form.Group>
                             <label htmlFor="exampleInputEmail1">
                               Correos
                             </label>
                             <Form.Control
-                              placeholder="Email"
+                              disabled
+                              placeholder=""
+                              name="correo"
                               type="email"
                             ></Form.Control>
                           </Form.Group>
@@ -70,59 +72,100 @@ function PerfilPage() {
                        
                       </Row>
                       <Row>
-                        <Col className="pr-1" md="6">
+                        <Col className="pr-1 pl-1" md="6">
                           <Form.Group>
                             <label>Whatsapp </label>
                             <Form.Control
-                              defaultValue="Mike"
-                              placeholder="Company"
+                              name="whatsapp"
+                              placeholder=""
                               type="text"
                             ></Form.Control>
                           </Form.Group>
                         </Col>
-                        <Col className="pl-1" md="6">
+                        <Col className="pr-1 pl-1" md="6">
                           <Form.Group>
-                            <label>Direccion</label>
+                            <label>Dirección</label>
                             <Form.Control
-                              defaultValue="Andrew"
-                              placeholder="Last Name"
+                            name="direccion"
+                              placeholder=""
                               type="text"
                             ></Form.Control>
                           </Form.Group>
                         </Col>
-                      </Row>
+                      </Row>                                        
                       <Row>
-                       
-                      </Row>
-                      <Row>
-                        
-                        
-                      
-                      </Row>
-                      <Row>
-                        <Col md="12">
+                        <Col md="6" className="pr-1 pl-1">
                           <Form.Group>
                             <label>Fecha de nacimiento</label>
                             <Form.Control
-                              cols="80"
-                              type="date"
-                             
+                            name="fecha"
+                              type="date"                             
+                              rows="4"
+                            ></Form.Control>
+                          </Form.Group>
+                        </Col>
+                        <Col className="pr-1 pl-1" md="6">
+                        <Form.Group>
+                            <label>Edad</label>
+                            <Form.Control
+                            disabled
+                            name="edad"
+                              type="text"                             
                               rows="4"
                             ></Form.Control>
                           </Form.Group>
                         </Col>
                       </Row>
-                      <Button
-                        className="btn-fill pull-right"
-                       
-                        variant="success"
+                      <button
+                        className="btn-fill pull-right btn btn-success"     
+                             
                       >
                        Actualizar
-                      </Button>
+                      </button>
                       <div className="clearfix"></div>
                     </Card.Body>
                   </Card>
-                </Form>
+               
+              </Col>
+              <Col md="4">
+              
+                  <Card>
+                    <Card.Header>
+                     CAMBIAR CONTRASEÑA
+                    </Card.Header>
+                    <Card.Body>
+                    <Row>
+                        <Col className="pr-1 pl-1" md="12">
+                          <Form.Group>
+                            <label>Contraseña Actual</label>
+                            <Form.Control
+                              name="contraseña"
+                              placeholder=""
+                              type="password"
+                            ></Form.Control>
+                          </Form.Group>
+                        </Col>
+                        <Col className="pr-1 pl-1" md="12">
+                          <Form.Group>
+                            <label>Nueva Contraseña</label>
+                            <Form.Control
+                              name="newcontraseña"
+                              placeholder=""
+                              type="password"
+                            ></Form.Control>
+                          </Form.Group>
+                        </Col>
+                    </Row>
+                    <button className="btn-fill pull-right btn btn-success">
+                       Actualizar
+                    </button>
+                      <div className="clearfix"></div>
+                     
+                    </Card.Body>
+
+                  </Card>
+               
+
               </Col>
               {/*<Col md="4">
                 <Card className="card-user">

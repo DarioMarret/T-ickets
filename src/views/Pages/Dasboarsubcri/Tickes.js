@@ -61,28 +61,12 @@ function Example() {
         position: prop[1],
         office: prop[2],
         age: prop[3],
+        count:prop[3],
         actions: (
           // we've added some custom button actions
-          <div className="actions-right">
+          <div className="container actions-right pl-2">
             {/* use this button to add a like kind of action */}
-            <Button
-              onClick={() => {
-                let obj = data.find((o) => o.id === key);
-                alert(
-                  "You've clicked LIKE button on { Name: " +
-                    obj.name +  ", position: " +
-                     obj.position + ", office: " +
-                    obj.office +", age: " +
-                     obj.age +
-                    "}."
-                );
-              }}
-              variant="info"
-              size="sm"
-              className="text-info btn-link like"
-            >
-              <i className="fa fa-heart" />
-            </Button>{" "}
+            
             {/* use this button to add a edit kind of action */}
             <Button
               onClick={() => {
@@ -121,6 +105,24 @@ function Example() {
             >
               <i className="fa fa-times" />
             </Button>{" "}
+            <Button
+              onClick={() => {
+                let obj = data.find((o) => o.id === key);
+                alert(
+                  "You've clicked LIKE button on { Name: " +
+                    obj.name +  ", position: " +
+                     obj.position + ", office: " +
+                    obj.office +", age: " +
+                     obj.age +
+                    "}."
+                );
+              }}
+              variant="info"
+              size="sm"
+              className="text-info btn-link like"
+            >
+              <i className="fa fa-heart" />
+            </Button>{" "}
           </div>
         ),
       };
@@ -132,32 +134,47 @@ function Example() {
       data={data}
       columns={[
         {
-          Header: "Nombre",
+          Header: "Concierto",
           accessor: "name",
+          isVisible: true,
         },
         {
-          Header: "Posicion",
+          Header: "Lugar",
           accessor: "position",
+          isVisible: true,
         },
         {
-          Header: "Officina",
+          Header: "Fecha",
           accessor: "office",
+          isVisible: true,
         },
         {
-          Header: "Edad",
+          Header: "Hora",
           accessor: "age",
+          isVisible: true
+          
+        },
+        {
+          Header: "Cantidad",
+          accessor: "count",
+          isVisible: true
+          
         },
         {
           Header: "Acciones",
           accessor: "actions",
+          isVisible: true,
           sortable: false,
           filterable: false,
         },
-      ]}
+      ]}     
+      
+      
+      
       /*
         You can choose between primary-pagination, info-pagination, success-pagination, warning-pagination, danger-pagination or none - which will make the pagination buttons gray
       */
-      className="-striped -highlight primary-pagination"
+      className="-striped -highlight success-pagination"
     />
     </>
   );
