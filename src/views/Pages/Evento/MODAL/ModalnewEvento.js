@@ -107,9 +107,9 @@ const [neweventos,setNewEventos]=useState(
         }
 
     useEffect(()=>{
-        console.log(neweventos)
-        //console.log(!(selectLocalidad.length==localidadPreci.length))
-        console.log(localidadPreci,selectLocalidad)
+        console.log("evento",neweventos)
+       //console.log(!(selectLocalidad.length==localidadPreci.length))
+        console.log("localidada precios-->",localidadPreci)
         },[show,toggleValueInArray])
     return(
     <Modal
@@ -256,7 +256,7 @@ const [neweventos,setNewEventos]=useState(
                                             </div>
                                             <div className="d-flex flex-wrap mb-2">
                                                 <div className="px-2 col-4">
-                                                    <label >PRECIO DECUNTO </label>
+                                                    <label >PRECIO DESCUENTO </label>
                                                 </div>
                                                 <input className="numero form-control col-6" value={precios.precoDescuneto}  name="precoDescuneto" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>

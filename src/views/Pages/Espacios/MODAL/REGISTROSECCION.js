@@ -167,9 +167,12 @@ const Registroseccion =(props)=>{
     
        
     }
+
+    const objeto = JSON.stringify({nombre:'Localidad nombre',Descripcion:'Consultar que descricion--- donde estara ubicado?',espacios:[...ListaFilas]})
     
 useEffect(()=>{
-   // console.log(filass)
+    console.log( objeto  )
+    console.log(filass)
     console.log(ListaMesa)
     console.log(ListaFilas)
 },[show]) 
@@ -180,7 +183,7 @@ useEffect(()=>{
     onHide={()=>setShowToast(false)}
     >
         <Modal.Header closeButton>
-    <Modal.Title>Registro de Espacio</Modal.Title>
+    <Modal.Title>Registro de Localidad</Modal.Title>
          </Modal.Header>
             <Modal.Body> 
             <div className='container-fluid row p-0'>

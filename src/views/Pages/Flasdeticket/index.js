@@ -20,17 +20,19 @@ import Footer from "views/Components/Footer/Footer";
 import { DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { GetMetodo } from "utils/CarritoLocalStorang";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import Modalterminos from "./Modalterminos";
+import ModalLogin from "./ModalLogin";
+import Tikes from "../../Pages/Dasboarsubcri/Tickes";
+import PerfilPage from "../Perfil";
 
 
 const IndexFlas = () => {
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
   const [efectShow, efectiOpShow] = useState(false);
-
-  const [mensajeToast,SetMesnajeToast]=useState("");
-  const [estadoToast,SetEstadoToast]=useState("")
-  const [colorToast,setColroToast]=useState("");
+  const [userauth,setUserauth]=useState(clienteInfo())
+  const [seleccion,SetSeleccion]=useState("");
   const [showToast,setShowToast]=useState(false);
   const [Toastestado,setDatoToas]=useState({
     show:false,
@@ -38,18 +40,16 @@ const IndexFlas = () => {
     color:'',
     estado:'',
   })
+  const [showLogin,setShowLogin]=useState(false)
   
 
-
+console.log(userauth)
 
   const [modalPago, setModalPago] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
   const handleClosefectivo = () => efectShow(false)
-
-
-
   const handleContinuar = () => {
     setShow(false)
     setDetalle(true)
@@ -101,7 +101,7 @@ const IndexFlas = () => {
     if (popUp == null || typeof(popUp)=='undefined') {
         //  popUp.close();     
       setDatoToas({ show:true,
-        message:'Por favor habilite las ventanas emergentes antes de continuar',
+        message:'Por favor habilite las ventanas emergentes antes de continuar y actualice la pagina',
         color:'bg-danger',
         estado:'Mensaje importante',
       })
@@ -138,20 +138,32 @@ const IndexFlas = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-auto  d-md-flex">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">Inicio</a>
+                <a className="nav-link active" aria-current="page" href="#" onClick={()=>SetSeleccion("")}>Inicio</a>
               </li>
-              <li className="nav-item active" aria-current="page">
+              <li className="nav-item active" aria-current="page" onClick={()=>SetSeleccion("")}>
                 <a className=" nav-link" href="#nuevoseventos">Eventos</a>
               </li>
               <li className="nav-item active" aria-current="page">
                 <a className="nav-link " href="#nuevoseventos">Comprar</a>
               </li>
-              <li className="  nav-item">
-                {true?<a className=" btn btn-outline-light  " href="#"> Mi Cuenta <i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
+              {userauth?
+              <li className="nav-item active" aria-current="page" onClick={()=>SetSeleccion("Datos")}>
+                <a className="nav-link " >Mis datos</a>
+              </li>:""
+              }
+              {userauth?
+              <li className="nav-item active" aria-current="page" onClick={()=>SetSeleccion("Tickets")}>
+                <a className="nav-link " href="#">Mis Tickets</a>
+              </li>:""
+              }
+               {!userauth?<li className="  nav-item">
+               <a className=" btn btn-outline-light  " href="#" onClick={()=>setShowLogin(true)}> Mi Cuenta <i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
                   <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
-                </svg></i> </a>:""}
-              </li>
+                </svg></i> </a>
+              </li>:<li className="  nav-item">
+               <a className=" btn btn-outline-light  " href="#" onClick={()=>setShowLogin(true)}> Salir <i className="fa fa-close"></i> </a>
+              </li>}
             </ul>
             <ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-1   justify-content-center ">
               <li className="  nav-item">
@@ -162,6 +174,10 @@ const IndexFlas = () => {
         </div>
       </nav>
       {/* header */}
+      <ModalLogin
+      showLogin={showLogin}
+      setShowLogin={setShowLogin}
+      />
       <div className="container-fluid  p-0">
         <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '400px', backgroundImage: `url(${header})` }}>
           <div className="container w-100 h-100 px-0">
@@ -177,6 +193,8 @@ const IndexFlas = () => {
       </div>
 
       {/* carrusel */}
+
+      {seleccion==""?
       <div className="container  mt-n7">
         <div className="container p-3">
           <div className="row  flex-wrap-reverse justify-content-center">
@@ -260,9 +278,10 @@ const IndexFlas = () => {
           </div>
         </div>
 
-      </div>
+      </div>:""}
       {/* eventos */}
-      <div className="container " id="nuevoseventos">
+      {seleccion==""?
+        <div className="container " id="nuevoseventos">
         <div className="container p-3">
           <div className="row flex-wrap-reverse justify-content-center">
             <div className="col-12 col-lg-9">
@@ -316,7 +335,11 @@ const IndexFlas = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>:""}
+
+      {seleccion=="Tickets"? <div className="container p-2"> <Tikes/></div>:""}
+      {seleccion=="Datos"? <div className="container p-2"><PerfilPage/></div>:""}
+
       {/* flotter*/}
       <Footer logofla={logofla} />
       <ModalCarrito

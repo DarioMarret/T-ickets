@@ -21,6 +21,89 @@ function PerfilPage() {
         <div className="section-image" data-image="../../assets/img/bg5.jpg">
           {/* you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " */}
           <Container>
+          <Row>
+          <Col lg="3" sm="6" >
+            <Card className="card-stats ">
+              <Card.Body>
+                <Row className="">
+                  <Col xs="5">
+                    <div className="icon-big text-center ">
+                      <i className="nc-icon nc-headphones-2 text-warning"></i>
+                    </div>
+                  </Col>
+                  <Col xs="7">
+                    <div className="numbers">
+                      <p className="card-category">Boletos</p>
+                      <Card.Title as="h4">150</Card.Title>
+                    </div>
+                  </Col>
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                <div className="stats">
+                  <i className="fas fa-music mr-1"></i>
+                  Boletos
+                </div>
+              </Card.Footer>
+            </Card>
+          </Col>
+          <Col lg="3" sm="6">
+            <Card className="card-stats">
+              <Card.Body>
+                <Row>
+                  <Col xs="5">
+                    <div className="icon-big text-center ">
+                      <i className="nc-icon nc-cart-simple text-success"></i>
+                    </div>
+                  </Col>
+                  <Col xs="7">
+                    <div className="numbers">
+                      <p className="card-category">Compras</p>
+                      <Card.Title as="h4">$ 1,345</Card.Title>
+                    </div>
+                  </Col>
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                <div className="stats">
+                  <i className="far fa-calendar-alt mr-1"></i>
+                  Total Compras
+                </div>
+              </Card.Footer>
+            </Card>
+          </Col>
+          <Col lg="6" sm="6">
+            <Card className="card-stats">
+              <Card.Body>
+                <Row>
+                <Col xs="7">
+                    <div className="">
+                    <Card.Title as="h4">Datos </Card.Title>
+                      <p className="card-category">Nombre de usuario </p>
+                      
+                    </div>
+                  </Col>
+                  <Col xs="5">
+                    <div className="icon-big text-center ">
+                      <i className="nc-icon nc-satisfied text-danger"></i>
+                    </div>
+                  </Col>
+                 
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                <div className="stats">
+                  <i className="far fa-clock mr-1"></i>
+                  Hora de inicio Sección 26/09/2022 19:00
+                </div>
+              </Card.Footer>
+            </Card>
+          </Col>
+         
+        </Row>
             <Row>
               <Col md="8" sm="6">
               
