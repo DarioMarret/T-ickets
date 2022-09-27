@@ -3,8 +3,9 @@ import { Modal, Spinner,InputGroup } from "react-bootstrap"
 import { GetMetodo } from 'utils/CarritoLocalStorang';
 import { Envio } from 'utils/constantes';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
-import { DatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
+import { DatosUsuariosLocalStorag,getCliente } from 'utils/DatosUsuarioLocalStorag';
 import { getCedula } from 'utils/DatosUsuarioLocalStorag';
+import { ValidarWhatsapp,GuardarDatosdelComprador ,EnviarmensajeWhastapp} from 'utils/Query';
 
 function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
@@ -18,7 +19,7 @@ function ModalDetalle(props) {
         check2: false,
         check3: false
     });
-    const [checked, setChecked] = useState(false)
+    const [clienteauth, setChecked] = useState(true)
 
     const [spinervi, setspiner] = useState("d-none")
     const [hidecomision, sethideComision] = useState("d-none")
@@ -50,10 +51,37 @@ function ModalDetalle(props) {
         }
 
     }
-    function handlePago() {
-        if(validarEmail(datosPerson.email)){
+   async function handlePago() { 
+        if(!clienteauth){
+     const numero =await ValidarWhatsapp()
+        if(numero==null){
+            setDatoToas({ show:true,
+                message:'Ingrese un nuemro Válido',
+                color:'bg-danger',
+                estado:'Numero de Whatsapp inválido',
+              })
+             return false
+            }
+        else if(validarEmail(datosPerson.email)){
+        const {success,message} = await GuardarDatosdelComprador()        
+        if(success){      
+        localStorage.setItem(DatosUsuariocliente, JSON.stringify(datos))
         setDetalle(!showDetalle)
         setModalPago(true)}
+        else{
+            setDatoToas({ show:true,
+              message:"Ingrese un correo diferente o inicie sección",
+              color:'bg-danger',
+              estado:"Correo "+datos.email+" Duplicado",
+            })
+          }
+    
+        }
+        }
+        else{
+            setDetalle(!showDetalle)
+            setModalPago(true)
+        }
     }
 
     async function handelchange(e) {
@@ -111,8 +139,16 @@ function ModalDetalle(props) {
         })
     }
     function validarEmail(valor) {
-       let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;       
-        if (emailRegex.test(valor) ){
+        let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;     
+        if(datosPerson.whatsapp.length!=10 && datosPerson.whatsapp.substring(0,1)!=0){
+            setDatoToas({ show:true,
+                message:'Ingrese un formato de Whatsapp válido',
+                color:'bg-danger',
+                estado:'Numero de Whatsapp inválido',
+              })
+            return false 
+        }         
+       else if (emailRegex.test(valor) ){
          return true
         } else {
             setDatoToas({ show:true,
@@ -134,9 +170,11 @@ function ModalDetalle(props) {
 
 useEffect(() => {
     let datosPersonal = getDatosUsuariosLocalStorag()
+    let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
-    console.log("metodo",metodoPago)
-    console.log(datosPerson)
+    //console.log("metodo",metodoPago)
+   // console.log(datosPerson)
+    if(clineteLogeado==null){
     if (datosPersonal !== null) {
         setPerson({
             ...datosPerson,
@@ -160,9 +198,26 @@ useEffect(() => {
         name: datosPersonal ? datosPersonal.name : '',
         whatsapp: datosPersonal ? datosPersonal.whatsapp : '',
         cedula: datosPersonal ? datosPersonal.cedula : '',
+        envio:datosPersonal ? datosPersonal.envio : '',
         metodoPago: metodoPago,       
         direccion: datosPersonal ? datosPersonal.direccion : ''
     })
+    setChecked(false)
+}else{
+    setPerson({
+    ...datosPerson,
+    email: clineteLogeado ? clineteLogeado.email : '',
+    name: clineteLogeado ? clineteLogeado.name : '',
+    whatsapp: clineteLogeado ? clineteLogeado.whatsapp : '',
+    cedula: clineteLogeado ? clineteLogeado.cedula : '',
+    metodoPago: metodoPago,       
+    direccion: clineteLogeado ? clineteLogeado.direccion : '',
+    envio: clineteLogeado? clineteLogeado.envio:''
+})
+setChecked(true)
+
+}
+   
     let mostrarcomision = GetMetodo()
     const mostrar= mostrarcomision!="Tarjeta"? "d-none":""
     sethideComision(mostrar)
@@ -208,6 +263,7 @@ return (
                             className="numero form-control form-control-sm"
                             id="dni"
                             maxLength={10}
+                            disabled={clienteauth}
                             name='cedula'
                             value={datosPerson.cedula}
                             onChange={(e) => handelchange(e.target)}
@@ -218,7 +274,7 @@ return (
                         <input type="text"
                             className="form-control form-control-sm"
                             id="name"
-
+                            disabled={clienteauth}
                             name="name"
                             value={datosPerson.name}
                             onChange={(e) => hanbleDatos(e)}
@@ -229,8 +285,9 @@ return (
                     <div className="col-6 col-sm-6 d-flex flex-column">
                         <span>Forma de envío:</span>
                         <div>
-                            <select className="form-select"                             
-                            value={datosPerson.envio || ''} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
+                            <select className="form-select"     
+                            disabled={clienteauth}                        
+                            value={datosPerson.envio} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
                                 {
                                     Envio.map((item, index) => {
                                         return (
@@ -248,6 +305,7 @@ return (
                             className="form-control form-control-sm"
                             id="email"
                             name='email'
+                            disabled={clienteauth}
                             required
                             value={datosPerson.email}
                             onChange={(e) => hanbleDatos(e)}
@@ -262,6 +320,7 @@ return (
                             minLength={10}
                             maxLength={10}
                             required
+                            disabled={clienteauth}
                             value={datosPerson.whatsapp}
                             onChange={(e) => hanbleDatos(e)}
                             placeholder="Ingrese su whatsapp o numero de contacto"
@@ -276,6 +335,7 @@ return (
                             name="direccion"
                             maxLength={255}
                             required
+                            disabled={clienteauth}
                             value={datosPerson.direccion}
                             onChange={(e) => hanbleDatos(e)}
                             placeholder="Ingrese su direccion"

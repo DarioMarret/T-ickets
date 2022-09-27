@@ -17,15 +17,15 @@ import ModalReport from "views/Components/MODAL/ModalReporte";
 import ModalEfectivo from "views/Components/MODAL/Modalefectivo";
 import TOAST from "views/Components/TOAST";
 import Footer from "views/Components/Footer/Footer";
-import { DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import { DatosUsuariocliente,Salircliente } from "utils/constantes";
 import { GetMetodo } from "utils/CarritoLocalStorang";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
 import Tikes from "../../Pages/Dasboarsubcri/Tickes";
 import PerfilPage from "../Perfil";
-import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
-import { GuardarDatosdelComprador } from "utils/Query";
+import { getDatosUsuariosLocalStorag,getCliente } from "utils/DatosUsuarioLocalStorag";
+import { GuardarDatosdelComprador ,ValidarWhatsapp} from "utils/Query";
 
 
 
@@ -33,7 +33,7 @@ const IndexFlas = () => {
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
   const [efectShow, efectiOpShow] = useState(false);
-  const [userauth,setUserauth]=useState(clienteInfo())
+  const [userauth,setUserauth]=useState(false)
   const [seleccion,SetSeleccion]=useState("");
   const [showToast,setShowToast]=useState(false);
   const [Toastestado,setDatoToas]=useState({
@@ -62,35 +62,59 @@ const IndexFlas = () => {
   }
   const handelReporShow= async () =>{
    let datos = await getDatosUsuariosLocalStorag()
-   // console.log(datos)
+   let nuemro = await ValidarWhatsapp()
+   let clineteLogeado = await getCliente()       
+   console.log(nuemro)
+    try {  
+      if(clineteLogeado==null){
+     if( nuemro==null ){ 
+          setDatoToas({ show:true,
+            message:"Ingrese un numero de Whatsapp",
+            color:'bg-danger',
+            estado:"Numero "+datos.whatsapp+" Invalido",
+          })    
+      return }
 
-    try {
-   
-     
-      const {success,message} = await GuardarDatosdelComprador()        
-      if(success){
+      else{const {success,message} = await GuardarDatosdelComprador()        
+      if(success){      
+      localStorage.setItem(DatosUsuariocliente, JSON.stringify(datos))
       setrepShow(true)
       setDetalle(false)
     }
-      else{
+    else{
         setDatoToas({ show:true,
-          message:"Ingrese un correo diferente",
+          message:"Ingrese un correo diferente o inicie sección",
           color:'bg-danger',
           estado:"Correo "+datos.email+" Duplicado",
         })
-
+      }}
+    }else{
+        setrepShow(true)
+      setDetalle(false)
       }
     } catch (error) {
-      console.log("Error---",error)
-      
-    }
-
-    
+      setDatoToas({ show:true,
+        message:"Verifique su conexión o intente mas tarde",
+        color:'bg-danger',
+        estado:"Hubo un error",
+      })  
+      console.log("Error---",error)      
+    }    
   }
   const handelefctivorShow= async() =>{
     let datos = await getDatosUsuariosLocalStorag()
-    // console.log(datos) 
-     try {          
+    let clineteLogeado = await getCliente()
+    let nuemro = await ValidarWhatsapp()
+   // console.log(nuemro)
+     try {  
+      if(clineteLogeado==null) { 
+        if(nuemro==null){ 
+          setDatoToas({ show:true,
+            message:"Ingrese un número de Whatsapp válido",
+            color:'bg-danger',
+            estado:"Número "+datos.whatsapp+" Inválido",
+          })    
+          return false}      
        const {success,message} = await GuardarDatosdelComprador()        
        if(success){
         efectiOpShow(true)
@@ -98,12 +122,20 @@ const IndexFlas = () => {
      }
        else{
          setDatoToas({ show:true,
-           message:"Ingrese un correo diferente",
+           message:"Inicie sesión o Ingrese un correo diferente ",
            color:'bg-danger',
            estado:"Correo "+datos.email+" Duplicado",
          }) 
+       }}else{
+        efectiOpShow(true)
+        setDetalle(false)
        }
      } catch (error) {
+      setDatoToas({ show:true,
+        message:"Verifique su conexión o intente mas tarde",
+        color:'bg-danger',
+        estado:"Hubo un error",
+      })  
        console.log("Error---",error)
        
      }
@@ -153,6 +185,8 @@ const IndexFlas = () => {
     metodoPago: '',
     envio: '',
     direccion: '',
+    edad:'',
+    fecha:''
   })
   ////Fin de comentario
 
@@ -171,7 +205,9 @@ const IndexFlas = () => {
      } 
 
     let datosPersonal = getDatosUsuariosLocalStorag()
+    let clineteLogeado =  getCliente()       
     let metodoPago = GetMetodo()
+    if(clineteLogeado==null){
     if (datosPersonal !== null) {
       setPerson({
         ...datosPerson,
@@ -180,9 +216,29 @@ const IndexFlas = () => {
         whatsapp: datosPersonal.whatsapp,
         cedula: datosPersonal.cedula,
         metodoPago: metodoPago,
-        envio: datosPersonal.envio
+        envio: datosPersonal.envio,
+        fecha:datosPersonal.fecha_nacimiento,
+        direccion: datosPersonal.direccion,
+        edad: datosPersonal.edad
       })
+      setUserauth(false)
+    }}else{
+      setPerson({
+        ...datosPerson,
+        email: clineteLogeado.email,
+        name: clineteLogeado.name,
+        whatsapp: clineteLogeado.whatsapp,
+        cedula: clineteLogeado.cedula,
+        metodoPago: metodoPago,
+        envio: clineteLogeado.envio,
+        direccion: clineteLogeado.direccion,
+        fecha:clineteLogeado.fecha_nacimiento,
+        edad: clineteLogeado.edad
+      })
+      setUserauth(true)
+      
     }
+   
   }, [])
 
   return (
@@ -223,7 +279,7 @@ const IndexFlas = () => {
                   <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
                 </svg></i> </a>
               </li>:<li className="  nav-item">
-               <a className=" btn btn-outline-light  " href="#" onClick={()=>setShowLogin(true)}> Salir <i className="fa fa-close"></i> </a>
+               <a className=" btn btn-outline-light  " href="#" onClick={()=>Salircliente()}> Salir <i className="fa fa-window-close"></i> </a>
               </li>}
             </ul>
             <ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-1   justify-content-center ">
@@ -237,6 +293,7 @@ const IndexFlas = () => {
       {/* header */}
       <ModalLogin
       showLogin={showLogin}
+      setUserauth={setUserauth}
       setShowLogin={setShowLogin}
       />
       <div className="container-fluid  p-0">
@@ -398,11 +455,11 @@ const IndexFlas = () => {
         </div>
       </div>:""}
 
-      {seleccion=="Tickets"? <div className="container p-2"> <Tikes/></div>:""}
-      {seleccion=="Datos"? <div className="container p-2"><PerfilPage/></div>:""}
+      {userauth && seleccion=="Tickets"? <div className="container p-2"> <Tikes/></div>:""}
+      {userauth && seleccion=="Datos"? <div className="container p-2"><PerfilPage datosPerson={datosPerson}/></div>:""}
 
       {/* flotter*/}
-      <Footer logofla={logofla} />
+      <Footer  logofla={logofla} />
       <ModalCarrito
         show={show} handleClose={handleClose}
         handleContinuar={handleContinuar}

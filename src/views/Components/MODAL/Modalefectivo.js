@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Modal} from "react-bootstrap";
-import {ReportarEfectivoCompra} from "../../../utils/Query";
+import {ReportarEfectivoCompra,EnviarmensajeWhastapp} from "../../../utils/Query";
 
 const ModalEfectivo =(props)=>{
   const {efectShow,handleefectivoClose,handleClosefectivo,
@@ -9,8 +9,12 @@ const ModalEfectivo =(props)=>{
    
    async  function  Guardarcompraefectivo(){
         try {
+         
          const data =await ReportarEfectivoCompra()
          const {success} =data
+         const mensaje =await EnviarmensajeWhastapp()
+         const {message} =mensaje
+        
          //handleefectivoClose()
        
         if(success){
@@ -19,7 +23,7 @@ const ModalEfectivo =(props)=>{
         setDatoToas({ 
           message:'En breve uno de nuestros colaboradores se comunicará con usted',
           color:'bg-success',
-          estado:'Datos Guardados',
+          estado:""+message,
         })}
        
          //console.log(data)

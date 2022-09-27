@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, {useEffect,useState} from "react";
+import { getCliente } from "utils/DatosUsuarioLocalStorag";
 // react-bootstrap components
 import {
   Badge,
@@ -14,7 +14,33 @@ import {
   Col
 } from "react-bootstrap";
 
-function PerfilPage() {
+function PerfilPage(props) {
+  const { datosPerson}=props
+
+  const [datosPersons, setPerson] = useState({
+    cedula: '',
+    name: '',
+    email: '',
+    whatsapp: '',
+    metodoPago: '',
+    envio: '',
+    direccion: '',
+    edad:'',
+    fecha:''
+  })
+   function handelchange(e){
+    setPerson({
+      ...datosPersons,
+      [e.name]:e.value
+    })
+
+   }
+  useEffect(()=>{
+    setPerson({
+      ...datosPerson
+    })
+
+  },[datosPerson])
   return (
     <>
       <Container fluid>
@@ -34,7 +60,7 @@ function PerfilPage() {
                   <Col xs="7">
                     <div className="numbers">
                       <p className="card-category">Boletos</p>
-                      <Card.Title as="h4">150</Card.Title>
+                      <Card.Title as="h4">0</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -60,7 +86,7 @@ function PerfilPage() {
                   <Col xs="7">
                     <div className="numbers">
                       <p className="card-category">Compras</p>
-                      <Card.Title as="h4">$ 1,345</Card.Title>
+                      <Card.Title as="h4">$0</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -80,8 +106,9 @@ function PerfilPage() {
                 <Row>
                 <Col xs="7">
                     <div className="">
-                    <Card.Title as="h4">Datos </Card.Title>
-                      <p className="card-category">Nombre de usuario </p>
+                    <Card.Title as="h4">Bienvenido </Card.Title>
+                      <p className="card-category"> 
+                      {datosPerson? datosPerson.name:''}</p>
                       
                     </div>
                   </Col>
@@ -119,8 +146,10 @@ function PerfilPage() {
                           <Form.Group>
                             <label>Nombres</label>
                             <Form.Control                              
-                              placeholder="Username"
-                              name="nombre"
+                              placeholder="name"
+                              value={datosPersons.name}
+                              onChange={(e)=>handelchange(e.target)}
+                              name="name"
                               type="text"
                             ></Form.Control>
                           </Form.Group>
@@ -133,6 +162,8 @@ function PerfilPage() {
                             <Form.Control                            
                               disabled
                               placeholder=""
+                              value={datosPersons.cedula}
+                              onChange={(e)=>handelchange(e.target)}
                               name="cedula"
                               type="text"
                             ></Form.Control>
@@ -145,8 +176,10 @@ function PerfilPage() {
                             </label>
                             <Form.Control
                               disabled
+                              value={datosPersons.email}
+                              onChange={(e)=>handelchange(e.target)}
                               placeholder=""
-                              name="correo"
+                              name="email"
                               type="email"
                             ></Form.Control>
                           </Form.Group>
@@ -160,6 +193,8 @@ function PerfilPage() {
                             <label>Whatsapp </label>
                             <Form.Control
                               name="whatsapp"
+                              value={datosPersons.whatsapp}
+                              onChange={(e)=>handelchange(e.target)}
                               placeholder=""
                               type="text"
                             ></Form.Control>
@@ -170,6 +205,8 @@ function PerfilPage() {
                             <label>Dirección</label>
                             <Form.Control
                             name="direccion"
+                            value={datosPersons.direccion}
+                            onChange={(e)=>handelchange(e.target)}
                               placeholder=""
                               type="text"
                             ></Form.Control>
@@ -182,6 +219,8 @@ function PerfilPage() {
                             <label>Fecha de nacimiento</label>
                             <Form.Control
                             name="fecha"
+                              value={datosPersons.fecha}
+                              onChange={(e)=>handelchange(e.target)}
                               type="date"                             
                               rows="4"
                             ></Form.Control>
@@ -192,6 +231,7 @@ function PerfilPage() {
                             <label>Edad</label>
                             <Form.Control
                             disabled
+                            value={datosPersons.edad}
                             name="edad"
                               type="text"                             
                               rows="4"

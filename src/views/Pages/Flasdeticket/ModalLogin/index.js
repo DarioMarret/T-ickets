@@ -1,21 +1,23 @@
 import React ,{useEffect,useState}from "react";
 import { Modal,Container,Toast } from "react-bootstrap";
+import { useHistory } from "react-router";
+import { Host } from "utils/constantes";
 import axios from "axios";
 import logo from "../../../../assets/imagen/flash.png";
 const ModalLogin =(props)=>{
-    const {showLogin ,setShowLogin}=props
-
+    const {showLogin ,setShowLogin,setUserauth}=props
+  let histoty = useHistory()
     const [message, setmessage] = useState("");
     const [showtoas, setShowToas] = useState(false);
     const [credenciales, setnombre] = useState({
-      username: '',
+      email: '',
       password: '',
     });
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (credenciales.email !== '' && credenciales.password !== '') {
         try {      
-            const { data, status } = await axios.post("https://43d5-45-187-2-162.sa.ngrok.io/api/v1/auth_admin", credenciales, {
+            const { data, status } = await axios.post(Host+"auth_suscriptor", credenciales, {
               headers: {
                 'Authorization': 'Basic YWRtaW46YWRtaW4='
               }
@@ -23,8 +25,10 @@ const ModalLogin =(props)=>{
             const { success, tocken } = data
             if (success) {
               console.log("success-->",success)
-              setDatosUser(tocken)             
-              history.push('/admin')
+             // localStorage.setItem(DatosUsuariocliente, JSON.stringify(datos))
+             // setDatosUser(tocken)             
+             
+           
             }
            else {
             setShowToas(true)
@@ -32,13 +36,17 @@ const ModalLogin =(props)=>{
             console.log("mensage de alvertencia")
           }
         } catch (error) {
+          setShowToas(true)
           setmessage("Hubo un error intente de nuevo o verifique mas tarde")
+          //setUserauth(true)
+         // histoty.push("/")
+
           console.log("error Logincredet-->",error)
         }
-        setShowToas(true)
+        
       }
-      setmessage("Complete los campos requeridos")
-      setShowToas(true)
+     //setmessage("Complete los campos requeridos")
+      //setShowToas(true)
     };
     const handleChange = (target) => {
         const { name, value } = target
@@ -46,12 +54,13 @@ const ModalLogin =(props)=>{
           ...credenciales,
           [name]: value
         })
-        // console.log(credenciales)
+       
       }
 
 
 
     useEffect(()=>{
+
 
     },[showLogin])
 
@@ -83,8 +92,8 @@ const ModalLogin =(props)=>{
                       <div className="input-group-prepend">
                         <span className="input-group-text"><i className="fa fa-envelope"></i></span>
                       </div>
-                      <input id="username" type="text" className="form-control"
-                        name="username"
+                      <input id="email" type="text" className="form-control"
+                        name="email"
                         value={credenciales.username}
                         onChange={(e) => handleChange(e.target)}
                         placeholder="Usuario"  />

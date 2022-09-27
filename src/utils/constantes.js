@@ -2,11 +2,19 @@ export const CarritoTicket = "CarritoTicket:"
 export const DetalleLocalStorang = "DetalleLocalStorang"
 export const DatosUsuarioLocalStorang = "DatosUsuarioLocalStorang"
 export const DatoTokenusuario= "DatoTokenusuario";
-export const Host = "https://a8e1-45-187-2-162.sa.ngrok.io/"
+export const DatosUsuariocliente="DatoCliente";
+export const Whatsappnumero ="WhastappValido";
+//export const Host = "https://a8e1-45-187-2-162.sa.ngrok.io/"
+export const Host = "  https://rec.netbot.ec/pdfqr/api/v1/"
 
 export const Valores = "Costos"
 export const Metodos = "Metodo-pago"
- 
+ export function Salircliente(){
+    localStorage.removeItem(DatosUsuariocliente)
+    localStorage.removeItem(DatosUsuarioLocalStorang)
+    localStorage.removeItem(CarritoTicket)
+    localStorage.removeItem(Whatsappnumero)
+ }
 
 export const Envio = [
     {

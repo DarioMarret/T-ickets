@@ -1,4 +1,4 @@
-import { DatosUsuarioLocalStorang,DatoTokenusuario,Host } from "./constantes"
+import { DatosUsuarioLocalStorang,DatoTokenusuario,Host,DatosUsuariocliente,Whatsappnumero } from "./constantes"
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 export const DatosUsuariosLocalStorag = (data) => {
@@ -14,13 +14,24 @@ export const getDatosUsuariosLocalStorag = () => {
         return null
     }
 }
+export function getCliente() {    
+        let data = JSON.parse(localStorage.getItem(DatosUsuariocliente))
+        if(data !== null){
+            return  data
+        }else{
+            return null
+        }
+
+    
+}
 export async function getCedula(cedula) {
     try {
 
         const { data } = await axios.get(Host+"cedula/"+cedula)   
-        const {success} =data  
-        if (success) {
-            return data.data;
+        //const {success} =data  
+       // console.log(data)
+        if (data.ok) {
+            return data.message;
         } else {
             return false
         }
@@ -39,8 +50,6 @@ export function setDatosUser(data) {
         // return {'estado':false,'error':error}        
     }
 }
-
-
 export function getUsuario() {
     try {
         const data = localStorage.getItem(DatoTokenusuario)

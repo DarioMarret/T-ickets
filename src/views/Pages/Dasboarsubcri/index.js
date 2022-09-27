@@ -6,8 +6,6 @@ import { VectorMap } from "react-jvectormap";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Badge } from "@mui/material";
-
-
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
 import { MonthPicker } from "@mui/x-date-pickers/MonthPicker";
 import { PickersDay } from "@mui/x-date-pickers";
