@@ -212,7 +212,7 @@ function Table({ columns, data }) {
                       options={pageSelectData.map((prop, key) => {
                         return {
                           value: key,
-                          label: "Page " + (key + 1),
+                          label: "Pag " + (key + 1),
                         };
                       })}
                       placeholder="Choose Page"
@@ -231,7 +231,7 @@ function Table({ columns, data }) {
                       options={numberOfRowsData.map((prop) => {
                         return {
                           value: prop,
-                          label: prop + " rows",
+                          label: prop + " fila",
                         };
                       })}
                       placeholder="Choose Rows"

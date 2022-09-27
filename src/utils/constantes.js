@@ -2,6 +2,7 @@ export const CarritoTicket = "CarritoTicket:"
 export const DetalleLocalStorang = "DetalleLocalStorang"
 export const DatosUsuarioLocalStorang = "DatosUsuarioLocalStorang"
 export const DatoTokenusuario= "DatoTokenusuario";
+export const Host = "https://a8e1-45-187-2-162.sa.ngrok.io/"
 
 export const Valores = "Costos"
 export const Metodos = "Metodo-pago"

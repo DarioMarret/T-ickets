@@ -19,12 +19,14 @@ import TOAST from "views/Components/TOAST";
 import Footer from "views/Components/Footer/Footer";
 import { DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { GetMetodo } from "utils/CarritoLocalStorang";
-import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
 import Tikes from "../../Pages/Dasboarsubcri/Tickes";
 import PerfilPage from "../Perfil";
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import { GuardarDatosdelComprador } from "utils/Query";
+
 
 
 const IndexFlas = () => {
@@ -43,13 +45,13 @@ const IndexFlas = () => {
   const [showLogin,setShowLogin]=useState(false)
   
 
-console.log(userauth)
+//console.log(userauth)
 
   const [modalPago, setModalPago] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
-  const handleClosefectivo = () => efectShow(false)
+  const handleClosefectivo = () => efectiOpShow(false)
   const handleContinuar = () => {
     setShow(false)
     setDetalle(true)
@@ -58,18 +60,77 @@ console.log(userauth)
     setDetalle(false)
     setShow(true)
   }
-  const handelReporShow=() =>{
-    setrepShow(true)
-    setDetalle(false)
+  const handelReporShow= async () =>{
+   let datos = await getDatosUsuariosLocalStorag()
+   // console.log(datos)
+
+    try {
+   
+     
+      const {success,message} = await GuardarDatosdelComprador()        
+      if(success){
+      setrepShow(true)
+      setDetalle(false)
+    }
+      else{
+        setDatoToas({ show:true,
+          message:"Ingrese un correo diferente",
+          color:'bg-danger',
+          estado:"Correo "+datos.email+" Duplicado",
+        })
+
+      }
+    } catch (error) {
+      console.log("Error---",error)
+      
+    }
+
+    
   }
-  const handlereportColse = () => {
-    setrepShow(false)
-    setDetalle(true)
+  const handelefctivorShow= async() =>{
+    let datos = await getDatosUsuariosLocalStorag()
+    // console.log(datos) 
+     try {          
+       const {success,message} = await GuardarDatosdelComprador()        
+       if(success){
+        efectiOpShow(true)
+        setDetalle(false)
+     }
+       else{
+         setDatoToas({ show:true,
+           message:"Ingrese un correo diferente",
+           color:'bg-danger',
+           estado:"Correo "+datos.email+" Duplicado",
+         }) 
+       }
+     } catch (error) {
+       console.log("Error---",error)
+       
+     }
+    
+  }
+  const handlereportColse =async () => {
+    let datos = await getDatosUsuariosLocalStorag()
+    // console.log(datos) 
+     try {          
+       const {success,message} = await GuardarDatosdelComprador()        
+       if(success){       
+        setrepShow(false)
+        setDetalle(true)
+     }
+       else{
+         setDatoToas({ show:true,
+           message:"Ingrese un correo diferente",
+           color:'bg-danger',
+           estado:"Correo "+datos.email+" Duplicado",
+         }) 
+       }
+     } catch (error) {
+       console.log("Error---",error)
+       
+     }
   };
-  const handelefctivorShow=() =>{
-    efectiOpShow(true)
-    setDetalle(false)
-  }
+  
   const handleefectivoClose =()=> {
     efectiOpShow(false)
     setDetalle(true)
@@ -128,7 +189,7 @@ console.log(userauth)
     <>
          
       <nav className="navbar navbar-expand-lg justify-content-between navbar-dark bg-black fixed-top py-3">
-        <div className="container-fluid col-lg-7    d-flex justify-content-between">
+        <div className="container-fluid col-lg-8    d-flex justify-content-between">
           <a className="navbar-brand " aria-label="TICKETS" href="#">
             <img src={icon} className="img-fluid" style={{ height: '50px' }} alt="" />
           </a>
@@ -148,12 +209,12 @@ console.log(userauth)
               </li>
               {userauth?
               <li className="nav-item active" aria-current="page" onClick={()=>SetSeleccion("Datos")}>
-                <a className="nav-link " >Mis datos</a>
+                <a className="nav-link " >Datos</a>
               </li>:""
               }
               {userauth?
               <li className="nav-item active" aria-current="page" onClick={()=>SetSeleccion("Tickets")}>
-                <a className="nav-link " href="#">Mis Tickets</a>
+                <a className="nav-link " href="#">Tickets</a>
               </li>:""
               }
                {!userauth?<li className="  nav-item">

@@ -126,7 +126,7 @@ function Dashboardsub() {
          
         </Row>
        <Row>
-        <Col md="12" sm="6" xl="4" className="pb-2">
+        <Col md="12" sm="6" xl="6" xs="4" className="pb-2">
         <div className="header text-center ">
         <LocalizationProvider dateAdapter={AdapterMoment} >
         <StaticDatePicker

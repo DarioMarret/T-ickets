@@ -1,6 +1,7 @@
 import axios from "axios"
 import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
 import { GetValores,GetMetodo } from "./CarritoLocalStorang"
+import { Host } from "./constantes"
 /**
  * 
  * @returns {
@@ -25,7 +26,36 @@ if(datosPersonal!=null && valores!=null )   {
         return  data.data
         }
 }
+export const GuardarDatosdelComprador =async()=>{
+    let datosPerson = getDatosUsuariosLocalStorag()
+    let metodo = GetMetodo()
+    let datos ={
+        cedula:datosPerson.cedula,
+        direccion:datosPerson.direccion,
+        discapacidad:datosPerson.discapacidad,
+        edad:datosPerson.edad,
+        email:datosPerson.email,
+        genero:datosPerson.genero,
+        name:datosPerson.name,
+        sexo:datosPerson.sexo,
+        telefono:datosPerson.whatsapp,      
+    }
+    const {data}= await axios.post("https://a8e1-45-187-2-162.sa.ngrok.io/suscripcion",
+        datos
+    )
+  //  console.log(datos,data)
+    return data
+    
+}
+export const EnviarWhastapp =async()=>{
+    let datosPerson = getDatosUsuariosLocalStorag()
+    const validcero = datosPerson.substring(0,1)
+    const validanumero = datosPerson.substring(1,10)
+   // https://rec.netbot.ec/api_whatsapp_qr/api/send_whatsapp
+   // https://rec.netbot.ec/api_whatsapp_qr/api/validarNumero
+   // if()
 
+}
 /**
  * 
  * @returns {
@@ -33,6 +63,7 @@ if(datosPersonal!=null && valores!=null )   {
  * }
  */
 /*
+
 export const CrearLinkPagoPayPhone = async () => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let valores = GetValores()
@@ -51,6 +82,8 @@ export const CrearLinkPagoPayPhone = async () => {
 Guradar compra y crear usuario Reportar deposito no genera link de pago
 @parms codigo:codigo del deposito
 */
+
+
 export const ReportarDepositoCompra= async(codigo)=>{
     let datosPersonal = getDatosUsuariosLocalStorag()
     let valores = GetValores()
@@ -72,13 +105,16 @@ export const ReportarDepositoCompra= async(codigo)=>{
 export const ReportarEfectivoCompra= async()=>{
     let datosPersonal = getDatosUsuariosLocalStorag()
     let valores = GetValores()
-    console.log({datosPersonal, valores})
-   /* const {data} = await axios.post("endpoit-de-deposito",{        
+    let metodo = GetMetodo()
+ //   console.log({datosPersonal, valores})
+const {data} = await axios.post(Host+"pago_medio",{        
         datosPersonal,
-        valores
+        valores,
+        metodo
     })
+    console.log(data)
     return data;
-   */   
+     
 }
 export const listarusauriosregistrados=()=>{
     /*

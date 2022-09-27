@@ -1,4 +1,4 @@
-import { DatosUsuarioLocalStorang,DatoTokenusuario } from "./constantes"
+import { DatosUsuarioLocalStorang,DatoTokenusuario,Host } from "./constantes"
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 export const DatosUsuariosLocalStorag = (data) => {
@@ -17,10 +17,10 @@ export const getDatosUsuariosLocalStorag = () => {
 export async function getCedula(cedula) {
     try {
 
-        const { data } = await axios.get("https://rec.netbot.ec/pdfqr/api/v1/cedula/"+cedula)
-        const { message, portal } = data;
-        if (message.name) {
-            return message;
+        const { data } = await axios.get(Host+"cedula/"+cedula)   
+        const {success} =data  
+        if (success) {
+            return data.data;
         } else {
             return false
         }

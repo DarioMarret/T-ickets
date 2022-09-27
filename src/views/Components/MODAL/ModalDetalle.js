@@ -57,20 +57,19 @@ function ModalDetalle(props) {
     }
 
     async function handelchange(e) {
+        let metodoPago = GetMetodo()
         const { value, name } = e;
 
         setPerson({
             ...datosPerson,
             [name]: value
         })
-
         if (name === "cedula" && value.length == 10) {
             setspiner("")
             const datos = await getCedula(value)
-            if (datos.name) {
-                DatosUsuariosLocalStorag({ ...datos, cedula: value,envio:datosPerson.envio,whatsapp:datosPerson.whatsapp })
-                const { name, email, direccion } = datos
-                console.log(datos)
+            const  {name, email, direccion} =datos
+            if (name) {
+                DatosUsuariosLocalStorag({ ...datos, cedula: value,envio:datosPerson.envio,whatsapp:datosPerson.whatsapp })            
                 setPerson({
                     ...datosPerson,
                     email: email? email:'',
@@ -78,7 +77,8 @@ function ModalDetalle(props) {
                     cedula: value,
                     direccion: direccion? direccion:'',
                     envio:datosPerson.envio,
-                    whatsapp:datosPerson.whatsapp
+                    whatsapp:datosPerson.whatsapp,
+                    metodoPago:metodoPago
                 })
                 setspiner("d-none")
             } else {
@@ -96,6 +96,7 @@ function ModalDetalle(props) {
                     estado:'No se encontraron datos',
                   })
             }
+            
         }
     }
     function hanbleDatos(e) {
@@ -135,6 +136,7 @@ useEffect(() => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let metodoPago = GetMetodo()
     console.log("metodo",metodoPago)
+    console.log(datosPerson)
     if (datosPersonal !== null) {
         setPerson({
             ...datosPerson,

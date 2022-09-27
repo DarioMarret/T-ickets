@@ -10,16 +10,19 @@ const ModalEfectivo =(props)=>{
    async  function  Guardarcompraefectivo(){
         try {
          const data =await ReportarEfectivoCompra()
+         const {success} =data
          //handleefectivoClose()
-        /*
-        setShow(true)
-        setDatoToas({ 
-          message:'funciona',
-          color:'bg-danger',
-          estado:'sinproblemas',
-        })*/
        
-         console.log(data)
+        if(success){
+          handleClosefectivo()
+        //setShow(true)
+        setDatoToas({ 
+          message:'En breve uno de nuestros colaboradores se comunicará con usted',
+          color:'bg-success',
+          estado:'Datos Guardados',
+        })}
+       
+         //console.log(data)
         } catch (error) {
           console.log(error)
           

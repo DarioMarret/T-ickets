@@ -9,7 +9,7 @@ function Footer(props) {
                     <div className="row text-center p-2">
                         <div className="col-12 col-lg-3">
                             <li className=" unlisted nav-item" href="#!" aria-label="terminos"><a className="nav-link text-white" role="link"
-                                href="">Quiénes Somos</a> </li>
+                                href="#!">Quiénes Somos</a> </li>
                         </div>
                         <div className="col-12 col-lg-3">
                             <li className="unlisted nav-item" data-toggle="modal" data-target="#terminosModalModal" aria-label="terminos"><a
@@ -17,11 +17,11 @@ function Footer(props) {
                             </li>
                         </div>
                         <div className="col-12 col-lg-3">
-                            <li className="unlisted nav-item" href="#!" aria-label="terminos"><a className="nav-link text-white" role="link"
-                                href="">Puntos de venta</a> </li>
+                            <li className="unlisted nav-item"  aria-label="terminos"><a className="nav-link text-white" role="link"
+                                href="#!">Puntos de venta</a> </li>
                         </div>
                         <div className="col-12 col-lg-3">
-                            <li className="unlisted nav-item" href="#!" aria-label="terminos"><a className="nav-link text-white" role="link"
+                            <li className="unlisted nav-item"  aria-label="terminos"><a className="nav-link text-white" role="link"
                                 href="https://api.whatsapp.com/send/?phone=593983832112&text&type=phone_number&app_absent=0"
                                 target="_blank">Contáctanos</a> </li>
                         </div>
@@ -30,7 +30,7 @@ function Footer(props) {
                 <div className="container border border-bottom mb-3"></div>
                 <div className="container-fluid   d-flex justify-content-center">
                     <div className=" mb-4 ">
-                        <a rel="stylesheet" className="btn btn-outline-light " aria-label="facebook"
+                        <a rel="stylesheet" className="btn btn-outline-light mx-1" aria-label="facebook"
                             href="https://www.facebook.com/FlashThe2022" target="_blank" role="button">
                             <i className="fab fa-facebook"></i>
                         </a>
