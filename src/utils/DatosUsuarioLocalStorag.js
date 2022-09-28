@@ -28,10 +28,9 @@ export async function getCedula(cedula) {
     try {
 
         const { data } = await axios.get(Host+"cedula/"+cedula)   
-        //const {success} =data  
-       // console.log(data)
-        if (data.ok) {
-            return data.message;
+        const {success} =data  
+        if (success) {
+            return data.data;
         } else {
             return false
         }

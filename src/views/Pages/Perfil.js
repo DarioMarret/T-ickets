@@ -1,5 +1,7 @@
 import React, {useEffect,useState} from "react";
 import { getCliente } from "utils/DatosUsuarioLocalStorag";
+import moment from "moment";
+import 'moment-timezone'
 // react-bootstrap components
 import {
   Badge,
@@ -18,15 +20,13 @@ function PerfilPage(props) {
   const { datosPerson}=props
 
   const [datosPersons, setPerson] = useState({
-    cedula: '',
-    name: '',
-    email: '',
-    whatsapp: '',
-    metodoPago: '',
-    envio: '',
-    direccion: '',
-    edad:'',
-    fecha:''
+    ciudad :  '',
+    email  : '',
+     enable :   '',
+    fechaCreacion : '',
+    id :  48,  movil : '',
+    nombreCompleto :'',
+    hora:''
   })
    function handelchange(e){
     setPerson({
@@ -36,8 +36,17 @@ function PerfilPage(props) {
 
    }
   useEffect(()=>{
+    let datos =getCliente()
     setPerson({
-      ...datosPerson
+      ciudad : datos.ciudad,
+      email  : datos.email,
+       enable :   datos.enable,
+      fechaCreacion : datos.fechaCreacion,
+      id :  datos.id,  
+      movil : datos.movil,
+      name :datos.nombreCompleto,
+      hora: datos.hora
+
     })
 
   },[datosPerson])
@@ -100,7 +109,7 @@ function PerfilPage(props) {
               </Card.Footer>
             </Card>
           </Col>
-          <Col lg="6" sm="6">
+          <Col lg="6" sm="12">
             <Card className="card-stats">
               <Card.Body>
                 <Row>
@@ -124,7 +133,7 @@ function PerfilPage(props) {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-clock mr-1"></i>
-                  Hora de inicio Sección 26/09/2022 19:00
+                  Hora de inicio {moment(datosPerson.hora).format('DD MMMM YYYY hh:mm:ss')}
                 </div>
               </Card.Footer>
             </Card>
@@ -132,7 +141,7 @@ function PerfilPage(props) {
          
         </Row>
             <Row>
-              <Col md="8" sm="6">
+              <Col md="8" sm="12">
               
                   <Card>
                     <Card.Header>
@@ -192,8 +201,8 @@ function PerfilPage(props) {
                           <Form.Group>
                             <label>Whatsapp </label>
                             <Form.Control
-                              name="whatsapp"
-                              value={datosPersons.whatsapp}
+                              name="movil"
+                              value={datosPersons.movil}
                               onChange={(e)=>handelchange(e.target)}
                               placeholder=""
                               type="text"
@@ -204,8 +213,8 @@ function PerfilPage(props) {
                           <Form.Group>
                             <label>Dirección</label>
                             <Form.Control
-                            name="direccion"
-                            value={datosPersons.direccion}
+                            name="ciudad"
+                            value={datosPersons.ciudad}
                             onChange={(e)=>handelchange(e.target)}
                               placeholder=""
                               type="text"

@@ -3,6 +3,8 @@ import { Modal,Container,Toast } from "react-bootstrap";
 import { useHistory } from "react-router";
 import { Host } from "utils/constantes";
 import axios from "axios";
+import { DatosUsuariocliente } from "utils/constantes";
+
 import logo from "../../../../assets/imagen/flash.png";
 const ModalLogin =(props)=>{
     const {showLogin ,setShowLogin,setUserauth}=props
@@ -14,19 +16,34 @@ const ModalLogin =(props)=>{
       password: '',
     });
     const handleSubmit = async (event) => {
+     
+
         event.preventDefault();
+        var username = 'boleteria';
+        var password = 'boleteria'
+    
+        const token = `${username}:${password}`;
+        const encodedToken = await btoa(username + ':' + password);
+        console.log(encodedToken)
+       
         if (credenciales.email !== '' && credenciales.password !== '') {
         try {      
-            const { data, status } = await axios.post(Host+"auth_suscriptor", credenciales, {
-              headers: {
-                'Authorization': 'Basic YWRtaW46YWRtaW4='
+          console.log(credenciales,encodedToken)
+            const { data } = await axios.post(Host+"api/v1/auth_suscriptor", credenciales, {
+              headers: {                
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
               }
             })
-            const { success, tocken } = data
-            if (success) {
-              console.log("success-->",success)
-             // localStorage.setItem(DatosUsuariocliente, JSON.stringify(datos))
-             // setDatosUser(tocken)             
+            console.log("respuesta-->",data.data)
+           //const { success, tocken } = data
+            if (data.data) {
+              var hoy = new Date();
+              let client ={
+                ...data.data,hora:hoy
+              }
+             localStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
+             setUserauth(true)
+             setShowLogin(false)
              
            
             }

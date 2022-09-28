@@ -17,9 +17,9 @@ import ModalReport from "views/Components/MODAL/ModalReporte";
 import ModalEfectivo from "views/Components/MODAL/Modalefectivo";
 import TOAST from "views/Components/TOAST";
 import Footer from "views/Components/Footer/Footer";
-import { DatosUsuariocliente,Salircliente } from "utils/constantes";
+import { DatosUsuariocliente } from "utils/constantes";
 import { GetMetodo } from "utils/CarritoLocalStorang";
-import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { useHistory } from "react-router";
 import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
 import Tikes from "../../Pages/Dasboarsubcri/Tickes";
@@ -30,10 +30,11 @@ import { GuardarDatosdelComprador ,ValidarWhatsapp} from "utils/Query";
 
 
 const IndexFlas = () => {
+  let history = useHistory()
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
   const [efectShow, efectiOpShow] = useState(false);
-  const [userauth,setUserauth]=useState(false)
+  const [userauth,setUserauth]=useState(true)
   const [seleccion,SetSeleccion]=useState("");
   const [showToast,setShowToast]=useState(false);
   const [Toastestado,setDatoToas]=useState({
@@ -59,6 +60,10 @@ const IndexFlas = () => {
   const handleDetalleColse = () => {
     setDetalle(false)
     setShow(true)
+  }
+  const salir=()=>{
+    localStorage.removeItem(DatosUsuariocliente)
+    history.push("/")
   }
   const handelReporShow= async () =>{
    let datos = await getDatosUsuariosLocalStorag()
@@ -279,7 +284,7 @@ const IndexFlas = () => {
                   <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
                 </svg></i> </a>
               </li>:<li className="  nav-item">
-               <a className=" btn btn-outline-light  " href="#" onClick={()=>Salircliente()}> Salir <i className="fa fa-window-close"></i> </a>
+               <a className=" btn btn-outline-light  " href="#" onClick={salir}> Salir <i className="fa fa-window-close"></i> </a>
               </li>}
             </ul>
             <ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-1   justify-content-center ">
