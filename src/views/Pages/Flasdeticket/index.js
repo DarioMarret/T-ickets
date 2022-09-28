@@ -34,7 +34,7 @@ const IndexFlas = () => {
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
   const [efectShow, efectiOpShow] = useState(false);
-  const [userauth,setUserauth]=useState(true)
+  const [userauth,setUserauth]=useState(false)
   const [seleccion,SetSeleccion]=useState("");
   const [showToast,setShowToast]=useState(false);
   const [Toastestado,setDatoToas]=useState({
@@ -487,7 +487,6 @@ const IndexFlas = () => {
         handelefctivorShow={handelefctivorShow}
         setModalPago={setModalPago}        
         setDatoToas={setDatoToas}
-        userauth={userauth}
       />
 
       {

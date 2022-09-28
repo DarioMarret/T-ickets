@@ -11,7 +11,7 @@ function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
         listaPrecio, listarCarritoDetalle,
         setModalPago, handelReporShow, handelefctivorShow,
-        setDetalle,setDatoToas,userauth
+        setDetalle,setDatoToas
     } = props
 
     const [actualState, changeCheckState] = useState({
@@ -19,7 +19,7 @@ function ModalDetalle(props) {
         check2: false,
         check3: false
     });
-    const [clienteauth, setChecked] = useState(true)
+    const [clienteauth, setChecked] = useState(false)
 
     const [spinervi, setspiner] = useState("d-none")
     const [hidecomision, sethideComision] = useState("d-none")
@@ -181,7 +181,7 @@ useEffect(() => {
     //console.log("metodo",metodoPago)
    // console.log(datosPerson)
     if(clineteLogeado==null){
-    if (datosPersonal !== null) {
+    if (datosPersonal != null) {
         setPerson({
             ...datosPerson,
             direccion: datosPersonal.direccion,
@@ -197,6 +197,7 @@ useEffect(() => {
             ['metodoPago']: metodoPago,
             direccion: datosPersonal.direccion,
         })
+        setChecked(false)
     }
     setPerson({
         ...datosPerson,
@@ -210,6 +211,7 @@ useEffect(() => {
     })
     setChecked(false)
 }else{
+    setChecked(true)
     setPerson({
     ...datosPerson,
     email: clineteLogeado ? clineteLogeado.email : '',
@@ -221,7 +223,7 @@ useEffect(() => {
     envio:datosPersonal ? datosPersonal.envio : '',
     metodoPago: metodoPago, 
 })
-setChecked(true)
+
 DatosUsuariosLocalStorag({
     ...datosPerson,
     ['metodoPago']: metodoPago,
@@ -236,6 +238,7 @@ DatosUsuariosLocalStorag({
     let mostrarcomision = GetMetodo()
     const mostrar= mostrarcomision!="Tarjeta"? "d-none":""
     sethideComision(mostrar)
+    console.log(clienteauth)
 }, [showDetalle, actualState])
 return (
     <Modal
@@ -426,7 +429,7 @@ return (
                 </div>
                 <div className="row pb-3">
                     <div className="col-12 col-lg-10 text-end d-flex flex-column  ">
-                        <div className={"d-flex text-end  flex-wrap-reverse "+userauth?"  d-none":""}>
+                        <div className={"d-flex text-end  flex-wrap-reverse "+!clienteauth?" ":""}>
                             <div className="col-10 text-end">
                                 <p style={{ fontSize: "0.7em" }}>Acepto los <strong>Términos y condiciones</strong> emitidas por
                                     FlahsTheTikest</p>
@@ -441,7 +444,7 @@ return (
                             </div>
                         </div>
 
-                        <div className={"d-flex text-end  flex-wrap-reverse "+userauth?"  d-none":""}>
+                        <div className="d-flex text-end  flex-wrap-reverse ">
                             <div className="col-10 d-flex text-end">
                                 <p style={{ fontSize: "0.7em" }}>
                                     Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
@@ -457,7 +460,7 @@ return (
                                 />
                             </div>
                         </div>
-                        <div className={"d-flex text-end  flex-wrap-reverse "+userauth?"  d-none":""}>
+                        {!clienteauth?<div className="d-flex text-end  flex-wrap-reverse ">
                             <div className="col-10 d-flex text-end">
                             <strong>
                                 <p style={{ fontSize: "0.8em" }}>
@@ -472,12 +475,12 @@ return (
                                     name="check3" type="checkbox"
                                     onChange={(e) => handleCheckboxChange(e.target)} />
                             </div>
-                        </div>
+                        </div>:""}
 
                     </div>
                     <div className="col-12 col-lg-2 text-center align-items-end ">
                         {
-                         !userauth && datosPerson.metodoPago == "Tarjeta" ?
+                         !clienteauth && datosPerson.metodoPago == "Tarjeta" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                     onClick={handlePago}
@@ -485,7 +488,7 @@ return (
                                     <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
                         }
                         {
-                         !userauth &&   datosPerson.metodoPago == "Efectivo" ?
+                         !clienteauth &&   datosPerson.metodoPago == "Efectivo" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                     onClick={()=>{if(validarEmail(datosPerson.email)){handelefctivorShow()}}}
@@ -493,7 +496,7 @@ return (
                                     <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                         }
                         {
-                          !userauth &&  datosPerson.metodoPago == "Deposito" ?
+                          !clienteauth &&  datosPerson.metodoPago == "Deposito" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                     onClick={()=>{ if(validarEmail(datosPerson.email)){handelReporShow()} }}
@@ -501,14 +504,14 @@ return (
                                     <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                         }
                                                 {
-                          !userauth &&  !datosPerson.metodoPago ?
+                          !clienteauth &&  !datosPerson.metodoPago ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={true}
                                 >
                                     <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                         }
                          {
-                         userauth && datosPerson.metodoPago == "Tarjeta" ?
+                         clienteauth && datosPerson.metodoPago == "Tarjeta" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={!(datosPerson.envio!='')}
                                     onClick={handlePago}
@@ -516,7 +519,7 @@ return (
                                     <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
                         }
                         {
-                         userauth &&   datosPerson.metodoPago == "Efectivo" ?
+                         clienteauth &&   datosPerson.metodoPago == "Efectivo" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                 disabled={!(datosPerson.envio!='')}
                                     onClick={()=>{if(validarEmail(datosPerson.email)){handelefctivorShow()}}}
@@ -524,7 +527,7 @@ return (
                                     <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                         }
                         {
-                          userauth &&  datosPerson.metodoPago == "Deposito" ?
+                          clienteauth &&  datosPerson.metodoPago == "Deposito" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                 disabled={!(datosPerson.envio!='')}
                                     onClick={()=>{ if(validarEmail(datosPerson.email)){handelReporShow()} }}
