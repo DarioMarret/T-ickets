@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // react-bootstrap components
 import {
@@ -128,6 +128,7 @@ function Example() {
       };
     })
   );
+  const [tiketslist,setTikes]=useState([])
   return (
     <>
     {/*<ReactTable
@@ -176,13 +177,13 @@ function Example() {
       
       className="-striped -highlight success-pagination"
     /> */}
-    <div className="card card-primary card-outline text-left">
+    <div className="card card-primary card-outline text-left " style={{minHeight:'250px'}} >
                             <div className="card-header">
                                 Tikets 
                             </div>
-                            <div className="card-body">
+                            <div className="card-body table-responsive">
 
-                                <table className="table table-hover text-center">
+                                <table className="table table-hover text-center ">
                                     <thead>
                                         <tr>
                                         <th scope="col">Concierto</th>
@@ -195,42 +196,36 @@ function Example() {
                                         </tr>
                                     </thead>
                                     <tbody>
+                                      {
+                                        tiketslist.length>0?
+                                        tiketslist.map((e,i)=>{
+                                            return(
+                                              <tr>
+                                              <th scope="row">{e.concierto}</th>
+                                              <td>{e.cantidad}</td>
+                                              <td>{e.valor}</td>
+                                             
+                                              <td> {e.localidad} </td>
+                                              <td><span className="badge me-1 bg-success text-white">{e.estado}</span></td>
+                                              <td>
+                                              <a className="btn btn-primary btn-sm mx-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
+                                              <a className="btn btn-primary btn-sm mx-1"  data-toggle="tooltip" title="Enviar"><i className="fa fa-paper-plane"></i></a> 
+                                       
+                                              </td>
+                                          </tr>
+                                            )
+                                        }): 
                                         <tr>
-                                            <th scope="row">Evento 1</th>
-                                            <td>1</td>
-                                            <td>Otto</td>
-                                           
-                                            <td>$12</td>
-                                            <td><span className="badge me-1 bg-success text-white">Emitido</span></td>
-                                            <td>
-                                            <a className="btn btn-primary btn-sm mx-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                            <a className="btn btn-primary btn-sm mx-1"  data-toggle="tooltip" title="Enviar"><i className="fa fa-paper-plane"></i></a> 
-                                     
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Evento 2</th>
-                                            <td>2</td>
-                                            <td>Thornton</td>                                            
-                                            <td>$12</td>
-                                            <td><span className="badge me-1 bg-danger text-white">Usado</span></td>
-                                            <td>
-                                            <a className="btn btn-primary btn-sm mx-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                            <a className="btn btn-primary btn-sm mx-1"  data-toggle="tooltip" title="Enviar"><i className="fa fa-paper-plane"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Evento 3</th>
-                                            <td>3</td>
-                                            <td>Thornton</td>
-                                            
-                                            <td>$10</td>
-                                            <td><span className="badge me-1 bg-dark text-white">Anulado</span></td>
-                                            <td >
-                                            <a className="btn btn-primary btn-sm mx-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                            <a className="btn btn-primary btn-sm mx-1"  data-toggle="tooltip" title="Enviar"><i className="fa fa-paper-plane"></i></a> 
-                                         </td>
-                                        </tr>
+                                        <th scope="row"></th>
+                                        <th scope="row"></th>
+                                        <td >No hay datos</td>
+                                        <th scope="row"></th>
+                                        <th scope="row"></th> 
+                                        <th scope="row"></th>
+                                      </tr>
+                                      }
+                                       
+                                       
                                     </tbody>
                                 </table>
                             </div>

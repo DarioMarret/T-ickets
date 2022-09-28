@@ -10,14 +10,14 @@ const ModalEfectivo =(props)=>{
    async  function  Guardarcompraefectivo(){
         try {
          
-         const data =await ReportarEfectivoCompra()
-         const {success} =data
+      //   const data =await ReportarEfectivoCompra()
+       //  const {success} =data
          const mensaje =await EnviarmensajeWhastapp()
          const {message} =mensaje
         
          //handleefectivoClose()
        
-        if(success){
+        if(message!=null){
           handleClosefectivo()
         //setShow(true)
         setDatoToas({ 

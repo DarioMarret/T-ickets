@@ -11,7 +11,7 @@ function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
         listaPrecio, listarCarritoDetalle,
         setModalPago, handelReporShow, handelefctivorShow,
-        setDetalle,setDatoToas
+        setDetalle,setDatoToas,userauth
     } = props
 
     const [actualState, changeCheckState] = useState({
@@ -23,6 +23,7 @@ function ModalDetalle(props) {
 
     const [spinervi, setspiner] = useState("d-none")
     const [hidecomision, sethideComision] = useState("d-none")
+    const [validationfrom,setValidation]=useState("")
 
     const [datosPerson, setPerson] = useState({
         cedula: '',
@@ -65,14 +66,14 @@ function ModalDetalle(props) {
         else if(validarEmail(datosPerson.email)){
         const {success,message} = await GuardarDatosdelComprador()        
         if(success){      
-        localStorage.setItem(DatosUsuariocliente, JSON.stringify(datos))
+        localStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
         setDetalle(!showDetalle)
         setModalPago(true)}
         else{
             setDatoToas({ show:true,
               message:"Ingrese un correo diferente o inicie sección",
               color:'bg-danger',
-              estado:"Correo "+datos.email+" Duplicado",
+              estado:"Correo "+datosPerson.email+" Duplicado",
             })
           }
     
@@ -95,9 +96,9 @@ function ModalDetalle(props) {
         if (name === "cedula" && value.length == 10) {
             setspiner("")
             const datos = await getCedula(value)
-            const  {name, email, direccion} =datos
+            const  {name, email, direccion,whatsapp} =datos
             if (name) {
-                DatosUsuariosLocalStorag({ ...datos, cedula: value,envio:datosPerson.envio,whatsapp:datosPerson.whatsapp })            
+                DatosUsuariosLocalStorag({ ...datos, cedula: value,envio:datosPerson.envio,whatsapp:'' })            
                 setPerson({
                     ...datosPerson,
                     email: email? email:'',
@@ -105,12 +106,11 @@ function ModalDetalle(props) {
                     cedula: value,
                     direccion: direccion? direccion:'',
                     envio:datosPerson.envio,
-                    whatsapp:datosPerson.whatsapp,
+                    whatsapp:'',
                     metodoPago:metodoPago
                 })
                 setspiner("d-none")
             } else {
-                
                 setPerson({
                     ...datosPerson,
                     email: '',
@@ -141,6 +141,7 @@ function ModalDetalle(props) {
     function validarEmail(valor) {
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;     
         if(datosPerson.whatsapp.length!=10 && datosPerson.whatsapp.substring(0,1)!=0){
+            setValidation("was-validated")
             setDatoToas({ show:true,
                 message:'Ingrese un formato de Whatsapp válido',
                 color:'bg-danger',
@@ -151,6 +152,11 @@ function ModalDetalle(props) {
        else if (emailRegex.test(valor) ){
          return true
         } else {
+            setValidation("was-validated")
+            setPerson({
+                ...datosPerson,
+                email:''
+            })
             setDatoToas({ show:true,
                 message:'Campos inconpletos o Formato de correo inválido ',
                 color:'bg-danger',
@@ -207,14 +213,23 @@ useEffect(() => {
     setPerson({
     ...datosPerson,
     email: clineteLogeado ? clineteLogeado.email : '',
-    name: clineteLogeado ? clineteLogeado.name : '',
-    whatsapp: clineteLogeado ? clineteLogeado.whatsapp : '',
+    name: clineteLogeado ? clineteLogeado.nombreCompleto : '',
+    whatsapp: clineteLogeado ? clineteLogeado.movil : '',
     cedula: clineteLogeado ? clineteLogeado.cedula : '',
     metodoPago: metodoPago,       
-    direccion: clineteLogeado ? clineteLogeado.direccion : '',
-    envio: clineteLogeado? clineteLogeado.envio:''
+    direccion: clineteLogeado ? clineteLogeado.ciudad : '',
+    envio:datosPersonal ? datosPersonal.envio : '',
+    metodoPago: metodoPago, 
 })
 setChecked(true)
+DatosUsuariosLocalStorag({
+    ...datosPerson,
+    ['metodoPago']: metodoPago,
+    name: clineteLogeado ? clineteLogeado.nombreCompleto : '',
+    envio:datosPersonal ? datosPersonal.envio : '',
+    whatsapp: clineteLogeado ? clineteLogeado.movil : '',
+})
+
 
 }
    
@@ -245,103 +260,107 @@ return (
                             data-backdrop="static" data-keyboard="false">CANCELAR COMPRA</button>
                     </div>
                 </div>
-                <div className="row container-fluid">
-                    <div className="col-6 col-sm-6 d-flex flex-column">
-                        <span>Forma de Pago:</span>
-                        <input type="text"
-                            className="form-control form-control-sm"
-                            name="metodoPago"
-                            value={datosPerson.metodoPago}
-                            id="formaPago" disabled={true}
-                            placeholder="forma de pago Selecionada"
-                        />
-                        <div className="col-12 border border-bottom mb-3"></div>
-                        
+                    <form className={validationfrom}>
 
-                        <span>Cedula DNI:</span>
-                        <input type="text"
-                            className="numero form-control form-control-sm"
-                            id="dni"
-                            maxLength={10}
-                            disabled={clienteauth}
-                            name='cedula'
-                            value={datosPerson.cedula}
-                            onChange={(e) => handelchange(e.target)}
-                            placeholder="Ingrese su numero de identificacion"
-                        />
+                                    <div className="row container-fluid">
+                                        <div className="col-6 col-sm-6 d-flex flex-column">
+                                            <span>Forma de Pago:</span>
+                                            <input type="text"
+                                                className="form-control form-control-sm"
+                                                name="metodoPago"
+                                                value={datosPerson.metodoPago}
+                                                id="formaPago" disabled={true}
+                                                placeholder="forma de pago Selecionada"
+                                            />
+                                            <div className="col-12 border border-bottom mb-3"></div>
+                                            
 
-                        <span>Nombre Completo:</span>
-                        <input type="text"
-                            className="form-control form-control-sm"
-                            id="name"
-                            disabled={clienteauth}
-                            name="name"
-                            value={datosPerson.name}
-                            onChange={(e) => hanbleDatos(e)}
+                                            <span>Cedula DNI:</span>
+                                            <input type="text"
+                                                className="numero form-control form-control-sm"
+                                                id="dni"
+                                                maxLength={10}
+                                                disabled={clienteauth}
+                                                name='cedula'
+                                                value={datosPerson.cedula}
+                                                onChange={(e) => handelchange(e.target)}
+                                                placeholder="Ingrese su numero de identificacion"
+                                            />
 
-                            placeholder="Ingrese su nombre completo"
-                        />
-                    </div>
-                    <div className="col-6 col-sm-6 d-flex flex-column">
-                        <span>Forma de envío:</span>
-                        <div>
-                            <select className="form-select"     
-                            disabled={clienteauth}                        
-                            value={datosPerson.envio} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
-                                {
-                                    Envio.map((item, index) => {
-                                        return (
-                                            <option key={index} value={item.value}>{item.envio}</option>
-                                        )
-                                    })
-                                }
-                            </select>
-                        </div>
+                                            <span>Nombre Completo:</span>
+                                            <input type="text"
+                                                className="form-control form-control-sm"
+                                                id="name"
+                                                disabled={(clienteauth && datosPerson.name!=' ')}
+                                                name="name"
+                                                value={datosPerson.name}
+                                                onChange={(e) => hanbleDatos(e)}
 
-                        <div className="col-12 border border-bottom mb-3"></div>
+                                                placeholder="Ingrese su nombre completo"
+                                            />
+                                        </div>
+                                        <div className="col-6 col-sm-6 d-flex flex-column">
+                                            <span>Forma de envío:</span>
+                                            <div>
+                                                <select className="form-select"      required
+                                                                       
+                                                value={datosPerson.envio} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
+                                                    {
+                                                        Envio.map((item, index) => {
+                                                            return (
+                                                                <option key={index} value={item.value}>{item.envio}</option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
 
-                        <span>Correo:</span>
-                        <input type="email"
-                            className="form-control form-control-sm"
-                            id="email"
-                            name='email'
-                            disabled={clienteauth}
-                            required
-                            value={datosPerson.email}
-                            onChange={(e) => hanbleDatos(e)}
-                            placeholder="Ingrese su correo electronico"
-                        />
+                                            <div className="col-12 border border-bottom mb-3"></div>
 
-                        <span>Whatsapp Contacto:</span>
-                        <input type="text"
-                            className="numero form-control form-control-sm"
-                            id="whatsapp"
-                            name="whatsapp"
-                            minLength={10}
-                            maxLength={10}
-                            required
-                            disabled={clienteauth}
-                            value={datosPerson.whatsapp}
-                            onChange={(e) => hanbleDatos(e)}
-                            placeholder="Ingrese su whatsapp o numero de contacto"
-                        />
+                                            <span>Correo:</span>
+                                            <input type="email"
+                                                className="form-control form-control-sm"
+                                                id="email"
+                                                name='email'
+                                                disabled={(clienteauth && datosPerson.email!='')}
+                                                required
+                                                value={datosPerson.email}
+                                                onChange={(e) => hanbleDatos(e)}
+                                                placeholder="Ingrese su correo electronico"
+                                            />
 
-                    </div>
-                    <div className="col-12 col-sm-12 d-flex flex-column">
-                        <span>Direccion:</span>
-                        <input type="text"
-                            className="form-control form-control-sm"
-                            id="direccion"
-                            name="direccion"
-                            maxLength={255}
-                            required
-                            disabled={clienteauth}
-                            value={datosPerson.direccion}
-                            onChange={(e) => hanbleDatos(e)}
-                            placeholder="Ingrese su direccion"
-                        />
-                    </div>
-                </div>
+                                            <span>Whatsapp Contacto:</span>
+                                            <input type="text"
+                                                className="numero form-control form-control-sm"
+                                                id="whatsapp"
+                                                name="whatsapp"
+                                                minLength={10}
+                                                maxLength={10}
+                                                required
+                                                disabled={(clienteauth && datosPerson.whatsapp!='')}
+                                                value={datosPerson.whatsapp}
+                                                onChange={(e) => hanbleDatos(e)}
+                                                placeholder="Ingrese su whatsapp o numero de contacto"
+                                            />
+
+                                        </div>
+                                        <div className="col-12 col-sm-12 d-flex flex-column">
+                                            <span>Direccion:</span>
+                                            <input type="text"
+                                                className="form-control form-control-sm"
+                                                id="direccion"
+                                                name="direccion"
+                                                maxLength={255}
+                                                required
+                                                disabled={(clienteauth && datosPerson.direccion!='')}
+                                                value={datosPerson.direccion}
+                                                onChange={(e) => hanbleDatos(e)}
+                                                placeholder="Ingrese su direccion"
+                                            />
+                                        </div>
+                                    </div>
+                                    
+                    </form>
                 <div className="container table-responsive">
                     <table className="resumen-table table ">
                         <thead>
@@ -407,7 +426,7 @@ return (
                 </div>
                 <div className="row pb-3">
                     <div className="col-12 col-lg-10 text-end d-flex flex-column  ">
-                        <div className="d-flex text-end  flex-wrap-reverse">
+                        <div className={"d-flex text-end  flex-wrap-reverse "+userauth?"  d-none":""}>
                             <div className="col-10 text-end">
                                 <p style={{ fontSize: "0.7em" }}>Acepto los <strong>Términos y condiciones</strong> emitidas por
                                     FlahsTheTikest</p>
@@ -422,7 +441,7 @@ return (
                             </div>
                         </div>
 
-                        <div className="d-flex text-end  flex-wrap-reverse">
+                        <div className={"d-flex text-end  flex-wrap-reverse "+userauth?"  d-none":""}>
                             <div className="col-10 d-flex text-end">
                                 <p style={{ fontSize: "0.7em" }}>
                                     Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
@@ -438,7 +457,7 @@ return (
                                 />
                             </div>
                         </div>
-                        <div className="d-flex text-end  flex-wrap-reverse">
+                        <div className={"d-flex text-end  flex-wrap-reverse "+userauth?"  d-none":""}>
                             <div className="col-10 d-flex text-end">
                             <strong>
                                 <p style={{ fontSize: "0.8em" }}>
@@ -458,7 +477,7 @@ return (
                     </div>
                     <div className="col-12 col-lg-2 text-center align-items-end ">
                         {
-                            datosPerson.metodoPago == "Tarjeta" ?
+                         !userauth && datosPerson.metodoPago == "Tarjeta" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                     onClick={handlePago}
@@ -466,7 +485,7 @@ return (
                                     <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
                         }
                         {
-                            datosPerson.metodoPago == "Efectivo" ?
+                         !userauth &&   datosPerson.metodoPago == "Efectivo" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                     onClick={()=>{if(validarEmail(datosPerson.email)){handelefctivorShow()}}}
@@ -474,7 +493,7 @@ return (
                                     <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                         }
                         {
-                            datosPerson.metodoPago == "Deposito" ?
+                          !userauth &&  datosPerson.metodoPago == "Deposito" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                     onClick={()=>{ if(validarEmail(datosPerson.email)){handelReporShow()} }}
@@ -482,12 +501,39 @@ return (
                                     <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                         }
                                                 {
-                            !datosPerson.metodoPago ?
+                          !userauth &&  !datosPerson.metodoPago ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={true}
                                 >
                                     <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                         }
+                         {
+                         userauth && datosPerson.metodoPago == "Tarjeta" ?
+                                <button id="pagarcuenta" className="btn btn-primary"
+                                    disabled={!(datosPerson.envio!='')}
+                                    onClick={handlePago}
+                                >
+                                    <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
+                        }
+                        {
+                         userauth &&   datosPerson.metodoPago == "Efectivo" ?
+                                <button id="pagarcuenta" className="btn btn-primary"
+                                disabled={!(datosPerson.envio!='')}
+                                    onClick={()=>{if(validarEmail(datosPerson.email)){handelefctivorShow()}}}
+                                >
+                                    <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
+                        }
+                        {
+                          userauth &&  datosPerson.metodoPago == "Deposito" ?
+                                <button id="pagarcuenta" className="btn btn-primary"
+                                disabled={!(datosPerson.envio!='')}
+                                    onClick={()=>{ if(validarEmail(datosPerson.email)){handelReporShow()} }}
+                                >
+                                    <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
+                        }
+                                                
+                             
+                       
 
                     </div>
                 </div>

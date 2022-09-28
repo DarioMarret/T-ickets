@@ -16,8 +16,7 @@ import {
   Col
 } from "react-bootstrap";
 
-function PerfilPage(props) {
-  const { datosPerson}=props
+function PerfilPage() {
 
   const [datosPersons, setPerson] = useState({
     ciudad :  '',
@@ -25,7 +24,7 @@ function PerfilPage(props) {
      enable :   '',
     fechaCreacion : '',
     id :  48,  movil : '',
-    nombreCompleto :'',
+    name :'',
     hora:''
   })
    function handelchange(e){
@@ -38,18 +37,18 @@ function PerfilPage(props) {
   useEffect(()=>{
     let datos =getCliente()
     setPerson({
-      ciudad : datos.ciudad,
-      email  : datos.email,
-       enable :   datos.enable,
-      fechaCreacion : datos.fechaCreacion,
-      id :  datos.id,  
-      movil : datos.movil,
-      name :datos.nombreCompleto,
-      hora: datos.hora
+      ciudad :datos? datos.ciudad:'',
+      email  :datos? datos.email:'',
+       enable : datos?  datos.enable:'',
+      fechaCreacion : datos?datos.fechaCreacion:'',
+      id :  datos?datos.id:'',  
+      movil :datos? datos.movil:'',
+      name :datos?datos.nombreCompleto:'',
+      hora:datos? datos.hora:''
 
     })
 
-  },[datosPerson])
+  },[])
   return (
     <>
       <Container fluid>
@@ -117,7 +116,7 @@ function PerfilPage(props) {
                     <div className="">
                     <Card.Title as="h4">Bienvenido </Card.Title>
                       <p className="card-category"> 
-                      {datosPerson? datosPerson.name:''}</p>
+                      {datosPersons? datosPersons.name:''}</p>
                       
                     </div>
                   </Col>
@@ -133,7 +132,7 @@ function PerfilPage(props) {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-clock mr-1"></i>
-                  Hora de inicio {moment(datosPerson.hora).format('DD MMMM YYYY hh:mm:ss')}
+                  Hora de inicio {moment(datosPersons.hora).format('DD MMMM YYYY hh:mm:ss')}
                 </div>
               </Card.Footer>
             </Card>
@@ -169,7 +168,7 @@ function PerfilPage(props) {
                           <Form.Group>
                             <label>Cédula </label>
                             <Form.Control                            
-                              disabled
+                              
                               placeholder=""
                               value={datosPersons.cedula}
                               onChange={(e)=>handelchange(e.target)}

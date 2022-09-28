@@ -11,6 +11,7 @@ const ModalLogin =(props)=>{
   let histoty = useHistory()
     const [message, setmessage] = useState("");
     const [showtoas, setShowToas] = useState(false);
+    const [showtoass, setShowToass] = useState(false);
     const [credenciales, setnombre] = useState({
       email: '',
       password: '',
@@ -19,51 +20,42 @@ const ModalLogin =(props)=>{
      
 
         event.preventDefault();
-        var username = 'boleteria';
-        var password = 'boleteria'
-    
-        const token = `${username}:${password}`;
-        const encodedToken = await btoa(username + ':' + password);
-        console.log(encodedToken)
-       
+        
         if (credenciales.email !== '' && credenciales.password !== '') {
         try {      
-          console.log(credenciales,encodedToken)
-            const { data } = await axios.post(Host+"api/v1/auth_suscriptor", credenciales, {
+         // console.log(credenciales,encodedToken)
+            const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_suscriptor", credenciales, {
               headers: {                
+                'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
               }
             })
-            console.log("respuesta-->",data.data)
            //const { success, tocken } = data
             if (data.data) {
               var hoy = new Date();
               let client ={
                 ...data.data,hora:hoy
               }
-             localStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
+            localStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
              setUserauth(true)
              setShowLogin(false)
-             
+             setShowToass(true)
+             setmessage("Bienvenido "+ credenciales.email)
            
             }
            else {
             setShowToas(true)
-            setmessage("Hubo un error")
+            setmessage("Correo o contraseña invalido")
             console.log("mensage de alvertencia")
           }
         } catch (error) {
           setShowToas(true)
-          setmessage("Hubo un error intente de nuevo o verifique mas tarde")
-          //setUserauth(true)
-         // histoty.push("/")
-
+          setmessage("Hubo un error Verifique correo y contraseña e intente de nuevo")
+        
           console.log("error Logincredet-->",error)
         }
         
-      }
-     //setmessage("Complete los campos requeridos")
-      //setShowToas(true)
+      }    
     };
     const handleChange = (target) => {
         const { name, value } = target
@@ -157,6 +149,24 @@ const ModalLogin =(props)=>{
       <small></small>
     </Toast.Header>
         <Toast.Body className="bg-danger text-white" >{message} </Toast.Body>
+      </Toast>
+
+      <Toast
+        onClose={() => setShowToass(false)} show={showtoass} delay={3000} autohide
+        className="top-center"
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          zIndex: 10000
+        }}
+      >
+       <Toast.Header>
+      <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
+      <strong className="mr-auto">Inicio Exitoso </strong>
+      <small></small>
+    </Toast.Header>
+        <Toast.Body className="bg-success text-white" >{message} </Toast.Body>
       </Toast>
         </>
     )

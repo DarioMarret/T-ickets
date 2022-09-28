@@ -3,7 +3,7 @@ import React from 'react';
 function Footer(props) {
     const { logofla } = props;
     return (
-        <div className=" container-fluid h-55 bg-black">
+        <div className=" container-fluid h-55 bg-black footer-fluid">
             <div className=" container-fluid ">
                 <div className="container  justify-content-center p-2">
                     <div className="row text-center p-2">

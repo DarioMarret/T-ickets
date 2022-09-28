@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import logo from "../../assets/img/logo-t-ickets.png";
+import { Host } from "utils/constantes";
 // react-bootstrap components
 import {
   Badge,
@@ -62,7 +63,7 @@ function RegisterPage() {
       ...registro,
       [name]: value
     })
-    console.log(value)
+    //console.log(value)
   }
   React.useEffect(() => {
     (async () => {
@@ -70,14 +71,15 @@ function RegisterPage() {
     })()
   }, [registro])
   const Perfils = async () => {
-    const { data } = await axios.get("https://43d5-45-187-2-162.sa.ngrok.io/api/v1/listar_roles", {
+    const { data } = await axios.get(Host+"api/v1/listar_roles", {
       headers: {
-        'Authorization': 'Basic YWRtaW46YWRtaW4='
+        'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
       }
     })
     if (!data.success) return
     setRoles(data.data)
-    // console.log("Perfils-->",data)
+     console.log("Perfils-->",data)
   }
   const Consulcedula = async () => {
 
@@ -86,15 +88,16 @@ function RegisterPage() {
     try {
       setSpiner("");
       setCedulaapi("d-none");
-      const res = await axios.get("https://rec.netbot.ec/pdfqr/api/v1/cedula/"+consulta)
-      const { data } = await res
+      const res = await axios.get(Host+"/cedula/"+consulta) 
+      
+      const { data } =  res
       const { message } = data
 
       /* if (!respons.portal) {
          setSpiner("d-none");
          setCedulaapi("");
        }*/
-      setregistro(message)
+      setregistro(data.data)
       console.log(registro.name)
       setSpiner("d-none");
       setCedulaapi("");
@@ -143,8 +146,9 @@ function RegisterPage() {
                             <span className="input-group-text"><i className="fas fa-address-card"></i></span>
                           </div>
 
-                          <input id="cedula" type="text"
+                          <input id="cedula" type="text" 
                             className="form-control" name="cedula"
+                            value={registro.cedula}
                             onChange={(e) => hanbleOnchange(e.target)}
                             placeholder="Numero de cédula" />
 

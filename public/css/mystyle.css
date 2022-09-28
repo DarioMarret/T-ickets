@@ -34,3 +34,11 @@ table.vertical-align>tbody>tr>td {
 .comp {
   background-color: rgba(125, 128, 131, 0.897) !important;
 }
+.footer-fluid {
+  position:fixed;
+  left:0px;
+  bottom:0px;
+ 
+  width:100%;
+  
+}

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 //import { CrearLinkPagoPayPhone } from 'utils/Query';
-import { GenerarLinkPagoMedios } from 'utils/Query';
+import { GenerarLinkPagoMedios,EnviarEmail,EnviarmensajeWhastapp } from 'utils/Query';
 import {LimpiarLocalStore} from '../../../utils/CarritoLocalStorang';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
+import { GetMetodo } from '../../../utils/CarritoLocalStorang';
 // import ButtonPago from '../PayPhone/ButtonPago';
 import { Spinner } from 'react-bootstrap';
 
@@ -41,12 +42,13 @@ function ModalPago(props) {
     async function CrearPagoMedio() {
         setSpiner("")
         const data = await GenerarLinkPagoMedios()
-
+        
         if (data.status === 200) {
             popUp(data.data.url)               
             setEstadoFrame(!estadoFrame)
             setSpiner("d-none")
             setModalPago(false)
+            
         }
         setSpiner("d-none")
     }
@@ -65,23 +67,7 @@ function ModalPago(props) {
                
         LimpiarLocalStore()
     }
-    /*function popUp1() {
-        var popUp = window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
-       
-        if (popUp == null || typeof(popUp)=='undefined') {     
-        console.log("error")
-            setDatoToas({ show:true,
-                message:'Por favor habilite las ventanas emergentes, e intente nuevamente',
-                color:'bg-danger',
-                estado:'Mensaje importante',
-              })
-         } else{
-         popUp.focus()
-        //LimpiarLocalStore()
-    }
-    }*/
-
-   
+    
     return (
         <div
             style={{

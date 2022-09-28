@@ -14,13 +14,15 @@ export const GenerarLinkPagoMedios = async () => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let valores = GetValores()
     let metodo = GetMetodo()
-    console.log("se esta generando")    
+    console.log("se esta generando")  
+   
 if(datosPersonal!=null && valores!=null )   {
           const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio",{
         datosPersonal,
         valores,
         metodo
         })
+        const envios= datosPersonal.envio=="correo"? await EnviarEmail() : await EnviarmensajeWhastapp() 
         return  data.data
         }
 }
@@ -64,29 +66,32 @@ export const EnviarmensajeWhastapp=async ()=>{
     let datosPerson = getDatosUsuariosLocalStorag()   
     let from = localStorage.getItem(Whatsappnumero)
     Produ = getVerTienda()
-    let datos = auth!=null? auth:datosPerson
-    message = "Hola soy "+datos.name+" con cédula "+datos.cedula
+    let datos = auth!=null? auth:datosPerson    
+    console.log(datos.nombreCompleto)
+    !auth!=null?  message = "Hola soy "+auth.nombreCompleto+" con cédula "+auth.movil: message = "Hola soy "+datosPerson.name+" con cédula "+datosPerson.whatsapp
     message = message + " seleccione "
     Produ!=null? Produ.map((e,i)=>{
-        //console.log(e)
         message= message+" la cantidad de "+ e.cantidad+" asiento para el concierto "+ e.nombreConcierto + " de la localidad  " + e.localidad+ ", "
 
     }):''
+    console.log(from)
     message = message+" podria contactarse comgigo para terminar el proceso de compra"
-    //console.log("mensaje a enviar---> ",message)   
-    const {data}= await axios.post("https://rec.netbot.ec/api_whatsapp_qr/api/send_whatsapp",{
+    console.log("mensaje a enviar---> ",message)   
+   /* const {data}= await axios.post("https://rec.netbot.ec/api_whatsapp_qr/api/send_whatsapp",{
         from:from,
-        message:message,
+        mensaje:message,
         link:null
-    })
+    })*/
+    console.log("mensaje -->",message)
     
-    return data
+    return message
 }
 export const EnviarEmail=async()=>{
     let auth = getCliente()
     let datosPerson = getDatosUsuariosLocalStorag()   
     let datos = auth!=null? auth:datosPerson
-    message = "Hola soy "+datos.name+" con cédula "+datos.cedula
+   
+    message = "Hola soy "+!datos.nombreCompleto?datos.name:datos.nombreCompleto+" con cédula "+!datos.movil?datos.cedula:datos.movil
     message = message + " seleccione "
     Produ!=null? Produ.map((e,i)=>{
         //console.log(e)

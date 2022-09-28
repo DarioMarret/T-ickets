@@ -124,7 +124,7 @@ function Dashboardsub() {
          
         </Row>
        <Row>
-        <Col md="12" sm="6" xl="6" xs="4" className="pb-2">
+        <Col md="8" sm="12" xl="6" xs="12" className="pb-2">
         <div className="header text-center ">
         <LocalizationProvider dateAdapter={AdapterMoment} >
         <StaticDatePicker
@@ -143,13 +143,17 @@ function Dashboardsub() {
          // console.log(moment(DayComponentProps.key).format('MM/DD/YYYY'))
 
         // fechas.some(event => event.date ===  DayComponentProps.key).format('MM/DD/YYYY'));
-          const isDate = DayComponentProps.key=== "Thu Sep 29 2022 00:00:00 GMT-0500";
+          const isDate =moment(DayComponentProps.key).format('MM/DD/YYYY')=== moment("Thu Sep 29 2022 00:00:00 GMT-0500").format('MM/DD/YYYY');
             return(
               <Badge key={day.toString()}
               overlap="circular"
-              badgeContent={isDate? '✨' :''}              
+              badgeContent={isDate? '' :''}              
               >
+             
                 <PickersDay {...DayComponentProps}/>
+                <span hidden={!isDate} className="position-absolute bottom-0 start-50 translate-middle p-1 bg-danger border border-light rounded-circle">
+                  <span className="visually-hidden">New alerts</span>
+                </span>
                
               </Badge>
               

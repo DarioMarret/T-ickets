@@ -18,13 +18,13 @@ import ModalEfectivo from "views/Components/MODAL/Modalefectivo";
 import TOAST from "views/Components/TOAST";
 import Footer from "views/Components/Footer/Footer";
 import { DatosUsuariocliente } from "utils/constantes";
-import { GetMetodo } from "utils/CarritoLocalStorang";
+import { GetMetodo ,getVerTienda} from "utils/CarritoLocalStorang";
 import { useHistory } from "react-router";
 import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
 import Tikes from "../../Pages/Dasboarsubcri/Tickes";
 import PerfilPage from "../Perfil";
-import { getDatosUsuariosLocalStorag,getCliente } from "utils/DatosUsuarioLocalStorag";
+import { getDatosUsuariosLocalStorag,getCliente, } from "utils/DatosUsuarioLocalStorag";
 import { GuardarDatosdelComprador ,ValidarWhatsapp} from "utils/Query";
 
 
@@ -63,6 +63,7 @@ const IndexFlas = () => {
   }
   const salir=()=>{
     localStorage.removeItem(DatosUsuariocliente)
+    localStorage.removeItem(getDatosUsuariosLocalStorag)
     history.push("/")
   }
   const handelReporShow= async () =>{
@@ -121,7 +122,7 @@ const IndexFlas = () => {
           })    
           return false}      
        const {success,message} = await GuardarDatosdelComprador()        
-       if(success){
+       if(!success){
         efectiOpShow(true)
         setDetalle(false)
      }
@@ -141,14 +142,11 @@ const IndexFlas = () => {
         color:'bg-danger',
         estado:"Hubo un error",
       })  
-       console.log("Error---",error)
-       
-     }
-    
+       console.log("Error---",error)      
+     }    
   }
   const handlereportColse =async () => {
     let datos = await getDatosUsuariosLocalStorag()
-    // console.log(datos) 
      try {          
        const {success,message} = await GuardarDatosdelComprador()        
        if(success){       
@@ -181,7 +179,6 @@ const IndexFlas = () => {
   })
   
   const [listarCarritoDetalle, setListarCarritoDetalle] = useState([])
-///Esta parte la mande al modal de detalle para poder validar el boton pagar
   const [datosPerson, setPerson] = useState({
     cedula: '',
     name: '',
@@ -193,8 +190,6 @@ const IndexFlas = () => {
     edad:'',
     fecha:''
   })
-  ////Fin de comentario
-
   useEffect(() => {
    // window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
     var popUp = window.open('url', '', 'options');
@@ -227,7 +222,9 @@ const IndexFlas = () => {
         edad: datosPersonal.edad
       })
       setUserauth(false)
-    }}else{
+    }
+    setUserauth(false)
+  }else{
       setPerson({
         ...datosPerson,
         email: clineteLogeado.email,
@@ -266,7 +263,11 @@ const IndexFlas = () => {
                 <a className=" nav-link" href="#nuevoseventos">Eventos</a>
               </li>
               <li className="nav-item active" aria-current="page">
-                <a className="nav-link " href="#nuevoseventos">Comprar</a>
+                <a className="nav-link " href="#" onClick={()=>getVerTienda().length>0?handleDetalleColse():""}>Comprar
+                {getVerTienda().length>0? <span className="position-absolute bottom-0 start-50 translate-middle p-1 bg-danger border border-light rounded-circle">
+                  <span className="visually-hidden">New alerts</span>
+                </span>:""}
+                </a>
               </li>
               {userauth?
               <li className="nav-item active" aria-current="page" onClick={()=>SetSeleccion("Datos")}>
@@ -486,6 +487,7 @@ const IndexFlas = () => {
         handelefctivorShow={handelefctivorShow}
         setModalPago={setModalPago}        
         setDatoToas={setDatoToas}
+        userauth={userauth}
       />
 
       {
