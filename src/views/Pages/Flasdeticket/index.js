@@ -122,7 +122,7 @@ const IndexFlas = () => {
           })    
           return false}      
        const {success,message} = await GuardarDatosdelComprador()        
-       if(!success){
+       if(success){
         efectiOpShow(true)
         setDetalle(false)
      }
@@ -368,7 +368,7 @@ const IndexFlas = () => {
                     <div className="row">
                       <div className="col-1 me-5"><a href="#nuevoseventos" aria-label="icon-star"
                         className="btn btn-dark icon-star p-3 rounded-6"></a></div>
-                      <div className="col-8">
+                      <div className="col-8 col-sm">
                         <h1 style={{ fontSize: '1.1em' }}>La ultima mision 2k </h1>
                         <span style={{ fontSize: '1.0em' }}>10/09/2022, Guayaquil</span>
 
@@ -379,7 +379,7 @@ const IndexFlas = () => {
                     <div className="row">
                       <div className="col-1 me-5"><a href="#nuevoseventos" aria-label="icon-star"
                         className="btn btn-dark icon-star p-3 rounded-6"></a></div>
-                      <div className="col-8">
+                      <div className="col-8 col-sm">
                         <h1 style={{ fontSize: '1.1em' }}>Pimpinela</h1>
                         <span style={{ fontSize: '1.0em' }}>28/10/2022, Guayaquil</span>
                       </div>
@@ -390,7 +390,7 @@ const IndexFlas = () => {
                       <div className="col-1 me-5">
                         <a href="#nuevoseventos" aria-label="icon-star" className="btn btn-dark icon-star p-3 rounded-6"></a>
                       </div>
-                      <div className="col-8">
+                      <div className="col-8 col-sm">
                         <h1 style={{ fontSize: '1.1em' }}>Pimpinela</h1>
                         <span style={{ fontSize: '1.0em' }}>29/09/2022, Cuenca</span>
                       </div>

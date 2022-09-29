@@ -143,7 +143,7 @@ function ModalCarrito(props) {
         listarCheck()
         let data = GetValores()
         setListaPrecio(data)
-        setTotal(GetValores().total)
+        setTotal(GetValores().subtotal)
     }, [timer,show])
 
 

@@ -67,11 +67,11 @@ function RegisterPage() {
   }
   React.useEffect(() => {
     (async () => {
-      //await Perfils()
+      await Perfils()
     })()
   }, [registro])
   const Perfils = async () => {
-    const { data } = await axios.get(Host+"api/v1/listar_roles", {
+    const { data } = await axios.get(Host+"api/v1/listas_suscriptor", {
       headers: {
         'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -113,11 +113,7 @@ function RegisterPage() {
     //console.log(numero)
 
   }
-  useEffect(() => {
-    (async () => {
-      // await Perfils()
-    })()
-  }, [])
+ 
 
   return (
     <>
@@ -137,7 +133,7 @@ function RegisterPage() {
                       <img src={logo} className="mb-4 img-fluid" style={{ height: '80px' }} alt="" />
                     </div>
 
-
+                    
                     <div className="row">
                       <div className="col-md-8">
 
@@ -153,8 +149,8 @@ function RegisterPage() {
                             placeholder="Numero de cédula" />
 
                           <div className="input-group-append">
-                            <button className={"btn btn-primary  " + cedulaapi} onClick={Consulcedula} ><i className="fas fa-search"></i></button>
-                            <button className={"btn btn-primary  " + spiner} ><i className="spinner-border spinner-border-sm" ></i></button>
+                            <button className={"input-group-text btn-primary h-auto " + cedulaapi} onClick={Consulcedula} ><i className="fas fa-search"></i></button>
+                            <button className={"input-group-text  btn-primary  " + spiner} ><i className="spinner-border spinner-border-sm" ></i></button>
                           </div>
 
                         </div>
@@ -180,8 +176,10 @@ function RegisterPage() {
 
                           </div>
                         </div>
+                        </div>
+                        <div className="row">
 
-                        <div className="col-md-6">
+                        <div className="col-12 col-md-6">
                           <div className="input-group mb-3">
                             <div className="input-group-prepend">
                               <span className="input-group-text"><i className="fas fa-birthday-cake"></i></span>
@@ -197,8 +195,7 @@ function RegisterPage() {
 
                           </div>
                         </div>
-
-                        <div className="col-md-6">
+                        <div className="col-12 col-md-6">
                           <div className="input-group mb-3">
                             <div className="input-group-prepend">
                               <span className="input-group-text"><i className="fas fa-sort-numeric-up-alt"></i></span>
@@ -212,7 +209,8 @@ function RegisterPage() {
 
                           </div>
                         </div>
-                      </div>
+                        </div>
+                       
 
                       <div className="row">
                         <div className="col-md-6">

@@ -1,4 +1,5 @@
 import { CarritoTicket, Metodos,DatosUsuarioLocalStorang } from "./constantes"
+import {getDatosUsuariosLocalStorag}from "./DatosUsuarioLocalStorag"
 
 let PViten = []
 export function TiendaIten(producto) {
@@ -113,9 +114,9 @@ export function GetCantidades() {
 
 ///subtotaltotal 
 //metodo de pago
-export function GetValores() {
+export function GetValores() {    
     let tag = JSON.parse(localStorage.getItem(CarritoTicket));
-    var valor = 0;
+    var valor = 0;  
     var subtotal = 0;
     var comision = 0;
     var descrption = ""
@@ -135,16 +136,17 @@ export function GetValores() {
                 comision += tienda.cantidad
             }
 
-        })
-        valor = subtotal + comision;
+        })        
+        valor =subtotal + comision;       
         let precios = {
             total: valor.toFixed(2)*5/100+valor,
             comision:comision.toFixed(2),
-            comision_bancaria: valor.toFixed(2)*5/100,
+            comision_bancaria:  valor.toFixed(2)*5/100,
             subtotal: subtotal.toFixed(2),
             description: descrption,
-            // envio: "Email" || "whatsapp"
-        }
+            envio: getDatosUsuariosLocalStorag().envio 
+        }          
+       
         return precios
     } else {
         return {

@@ -15,36 +15,18 @@
 
 */
 import Dashboard from "views/Dashboard.js";
-import Buttons from "views/Components/Buttons.js";
-import GridSystem from "views/Components/GridSystem.js";
-import Panels from "views/Components/Panels.js";
-import SweetAlert from "views/Components/SweetAlertPage.js";
-import Notifications from "views/Components/Notifications.js";
-import Icons from "views/Components/Icons.js";
-import Typography from "views/Components/Typography.js";
-import RegularForms from "views/Forms/RegularForms.js";
-import ExtendedForms from "views/Forms/ExtendedForms.js";
-import ValidationForms from "views/Forms/ValidationForms.js";
-import Wizard from "views/Forms/Wizard/Wizard.js";
-import RegularTables from "views/Tables/RegularTables.js";
-import ExtendedTables from "views/Tables/ExtendedTables.js";
-import ReactTables from "views/Tables/ReactTables.js";
-import GoogleMaps from "views/Maps/GoogleMaps.js";
-import FullScreenMap from "views/Maps/FullScreenMap.js";
-import VectorMap from "views/Maps/VectorMap.js";
-import Charts from "views/Charts.js";
-import Calendar from "views/Calendar.js";
 import UserPage from "views/Pages/UserPage.js";
 import LoginPage from "views/Pages/LoginPage.js";
 import RegisterPage from "views/Pages/RegisterPage.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
-import Misdatos from "views/Pages/Misdatos.js";
 import Ticket from "views/Pages/Tickets.js";
 import Espacios from "views/Pages/Espacios";
 import Eventos from "views/Pages/Evento";
 import PerfilPage from "views/Pages/Perfil";
 import Dashboardsub from "views/Pages/Dasboarsubcri/index.js";
 import Reactabla from "views/Pages/Dasboarsubcri/Tickes.js";
+import SuscritorViews from "views/Pages/Suscriptores";
+import UsersView from "views/Pages/Usuarios";
 
 var routes = [
   {
@@ -83,7 +65,7 @@ var routes = [
   name: "Info",
   icon: "nc-icon nc-badge",
   component: PerfilPage,
-  permiso:["superadmin","subscriptor"]},
+  permiso:["superadmin","super_admin"]},
  
   {
     path:"/tickets",
@@ -91,7 +73,7 @@ var routes = [
     name:"Mis Tickets",
     icon:"nc-icon nc-tag-content",
     component:Ticket,
-    permiso:["superadmin","subscriptor"]
+    permiso:["superadmin","super_admin"]
 
   },
   {
@@ -100,7 +82,7 @@ var routes = [
     name:"Espacios",
     icon:"nc-icon nc-map-big",
     component:Espacios,
-    permiso:["superadmin","subscriptor"]
+    permiso:["superadmin","super_admin"]
   },
   {
     path:"/eventos",
@@ -108,15 +90,31 @@ var routes = [
     name:"Eventos",
     icon:"nc-icon nc-paper-2",
     component:Eventos,
-    permiso:["superadmin","subscriptor"]
+    permiso:["superadmin","super_admin"]
   }, 
+  {
+    path:"/suscritor",
+    layout:"/admin",
+    name:"Suscriptores",
+    icon:"nc-icon nc-mobile",
+    component:SuscritorViews,
+    permiso:["superadmin","super_admin"]
+  }, 
+  {
+    path:"/usuario",
+    layout:"/admin",
+    name:"Usuarios",
+    icon:"nc-icon nc-single-02",
+    component:UsersView,
+    permiso:["superadmin","super_admin"]
+  },
   {
     path:"/referidos",
     layout:"/admin",
     name:"Referido",
     icon:"nc-icon nc-notification-70",
     component:Eventos,
-    permiso:["superadmin","subscriptor"]
+    permiso:["superadmin","super_admin"]
   },
   
   {
@@ -133,14 +131,6 @@ var routes = [
     name:"Sorteos",
     icon:"nc-icon nc-controller-modern",
     component:Eventos,
-    permiso:["superadmin","subscriptor"]
-  },
-  {
-    path:"/Tabla",
-    layout:"/admin",
-    name:"Tabla",
-    icon:" fas fa-dice",
-    component:Reactabla,
     permiso:["superadmin","subscriptor"]
   },
   {

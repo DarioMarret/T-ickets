@@ -19,6 +19,7 @@ function ModalDetalle(props) {
         check2: false,
         check3: false
     });
+    const [valorTotal,SetValor]=useState(0)
     const [clienteauth, setChecked] = useState(false)
 
     const [spinervi, setspiner] = useState("d-none")
@@ -179,7 +180,9 @@ useEffect(() => {
     let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
     //console.log("metodo",metodoPago)
+    let valor = parseFloat( listaPrecio.subtotal) + parseFloat(listaPrecio.comision)
    // console.log(datosPerson)
+   SetValor(valor)
     if(clineteLogeado==null){
     if (datosPersonal != null) {
         setPerson({
@@ -238,7 +241,7 @@ DatosUsuariosLocalStorag({
     let mostrarcomision = GetMetodo()
     const mostrar= mostrarcomision!="Tarjeta"? "d-none":""
     sethideComision(mostrar)
-    console.log(clienteauth)
+    
 }, [showDetalle, actualState])
 return (
     <Modal
@@ -421,7 +424,7 @@ return (
                             <h4 className="comision-boleto text-end">${listaPrecio.comision_bancaria} </h4>
                         </div>
                         <div className="container  ">
-                            <h4 className="total-text"> ${listaPrecio.total} </h4>
+                            <h4 className="total-text"> ${GetMetodo()==="Tarjeta"? listaPrecio.total:valorTotal.toFixed(2)} </h4>
                         </div>
 
                     </div>
