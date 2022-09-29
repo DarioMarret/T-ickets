@@ -429,7 +429,7 @@ return (
                 </div>
                 <div className="row pb-3">
                     <div className="col-12 col-lg-10 text-end d-flex flex-column  ">
-                        <div className={"d-flex text-end  flex-wrap-reverse "+!clienteauth?" ":""}>
+                    {!clienteauth? <div className="d-flex text-end  flex-wrap-reverse ">
                             <div className="col-10 text-end">
                                 <p style={{ fontSize: "0.7em" }}>Acepto los <strong>Términos y condiciones</strong> emitidas por
                                     FlahsTheTikest</p>
@@ -442,9 +442,9 @@ return (
                                     onChange={(e) => handleCheckboxChange(e.target)}
                                     type="checkbox" />
                             </div>
-                        </div>
+                        </div>:"" }
 
-                        <div className="d-flex text-end  flex-wrap-reverse ">
+                        {!clienteauth?<div className="d-flex text-end  flex-wrap-reverse ">
                             <div className="col-10 d-flex text-end">
                                 <p style={{ fontSize: "0.7em" }}>
                                     Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
@@ -459,7 +459,7 @@ return (
                                     onChange={(e) => handleCheckboxChange(e.target)}
                                 />
                             </div>
-                        </div>
+                        </div>:"" }
                         {!clienteauth?<div className="d-flex text-end  flex-wrap-reverse ">
                             <div className="col-10 d-flex text-end">
                             <strong>

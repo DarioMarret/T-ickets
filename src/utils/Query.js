@@ -75,7 +75,7 @@ export const EnviarmensajeWhastapp=async ()=>{
 
     }):''
     console.log(from)
-    message = message+" podria contactarse comgigo para terminar el proceso de compra"
+    message = message+" podría contactarse conmigo para terminar el proceso de compra"
     console.log("mensaje a enviar---> ",message)   
    /* const {data}= await axios.post("https://rec.netbot.ec/api_whatsapp_qr/api/send_whatsapp",{
         from:from,

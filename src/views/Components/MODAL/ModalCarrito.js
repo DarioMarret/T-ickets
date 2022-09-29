@@ -297,7 +297,7 @@ function ModalCarrito(props) {
                                         Tarjeta
                                     </label>
                                 </div>
-                                <div className="form-check d-none">
+                                <div className="form-check ">
                                     <input className="form-check-input" type="radio"
                                         checked={checked.Deposito == "Deposito" ? true : false}
                                         onChange={(e) => handelMetodopago(e.target, "Deposito")}
