@@ -203,20 +203,8 @@ const SuscritorViews =()=>{
 
                                           )
                                         }):
-                                      ""}
-                                        
-                                       {/* <tr>
-                                            <th scope="row">Evento 3</th>
-                                            <td>3</td>
-                                            <td>Thornton</td>
-                                            <td><span className="badge me-1 bg-dark text-white">Anulado</span></td>
-                                            <td><a href="#">Descargar</a></td>
-                                            <td >
-                                            <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                                <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver mapa"><i className="fa fa-sitemap"></i></a>
-                                                <a className="btn btn-primary btn-sm px-1"  data-toggle="tooltip" title="Ver mapa"><i className="fa fa-edit"></i></a>
-                                             </td>
-                                       </tr>*/}
+                                        <tr></tr>  } 
+                                       
                                     </tbody>
                                 </table>
                             </div>

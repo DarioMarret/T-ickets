@@ -49,3 +49,11 @@ export const CrearUser =async (parms)=>{
     })
     return data
 }
+export const Loginadmin=async(parms)=>{
+    const {data}= await axios.post(Host+"",parms,{
+        headers:{
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='   
+        }
+    })
+}

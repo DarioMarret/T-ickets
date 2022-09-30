@@ -256,7 +256,7 @@ function ModalCarrito(props) {
                                                 </tr>
                                             )
                                         })
-                                        : null
+                                        : ""
                                 }
                             </tbody>
                         </table>

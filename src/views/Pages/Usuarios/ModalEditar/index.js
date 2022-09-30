@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 
 import { Modal } from "react-bootstrap";
 import { GetRoles,EditUser,CrearUser } from "utils/Querypanel";
 
 const EditaruserView =(props)=>{
+  let history = useHistory()
     const {editShow,SetModalEdit,datosuser,estado,roles}=props
     const [validate,setValidate]= useState("")
   //  const [roles, setRoles] = React.useState([])
     const [datos,setDatos]=useState({
         name:'',
-        permiso:'',
+        perfil:'',
         username:'',
         email:'',
         password:'',
@@ -27,53 +29,87 @@ const EditaruserView =(props)=>{
         "name":datos.name,
         "email":datos.email,
         "username":datos.username,      
-        "perfil":datos.permiso,
+        "perfil":datos.perfil,
         "new_password":datos.password
     }
-    console.log(Object.values(params).every((d)=>d))
+    
+   // console.log(Object.values(params).every((d)=>d))
 
-    if(!Object.values(params).every((d)=>d)) setValidate("was-validated")  
-    if(Object.values(params).every((d)=>d)) console.log("paso")
-   // const editados= await EditUser(datos.id)
+    if(!Object.values(params).every((d)=>d)) {setValidate("was-validated")  }
+    else{
+   // console.log(params)
+    try {
+      const editados= await EditUser(datos.id,params)
+      const {success,message} =editados
+      if(success){
+       //alert(message)
+       SetModalEdit(false)
+       location.reload()
+     //  history.push("/admin/usuario")
+      }   
+    } catch (error) {
+      
+    }}
 
+
+              
     }
     async function Crearuser(){
         let params ={
             "name":datos.name,
             "email":datos.email,
             "username":datos.username,      
-            "perfil":datos.permiso,
-            "new_password":datos.password
-        }
+            "perfil":datos.perfil,
+            "password":datos.password
+        }     
         
-        if(!Object.values(params).every((d)=>d)) setValidate("was-validated")  
-        if(Object.values(params).every((d)=>d)) {
-        setValidate("")
+        if(!Object.values(params).every((d)=>d)){ 
+          setValidate("was-validated")  
+          return true }
+        else {
+        try {
+          setValidate("")
        const useradd=await CrearUser(params)
-       console.log(useradd)
-
+          const {success,message} =useradd
+          if(success){
+           
+            SetModalEdit(false)
+            history.push("/admin/usuario")
+          }                
+        } catch (error) {
+          console.log(error)          
+        }
     }
 
     }
     
 
     useEffect(()=>{
-      
+      setDatos({
+        name:'',
+        perfil:'',
+        username:'',
+        email:'',
+        password:'',
+        id:'',
+
+      })
      
         setValidate("")  
         if(estado=="update"){
+        //console.log(datosuser)
         setDatos({
             ...datos,
             name:datosuser.name,
-            permiso:datosuser.perfil,
+            perfil:datosuser.perfil,
             email:datosuser.email,
-            
-            username:datosuser.username
+            username:datosuser.username,
+            id:datosuser.id
             })       }
             else{
                 setDatos({                   
                     name:'',
-                    permiso:roles.length>0?roles[0].roles:'',
+                    perfil:roles.length>0?roles[0].roles:'',
                     username:'',
                     email:'',
                     password:'',
@@ -155,7 +191,8 @@ const EditaruserView =(props)=>{
                 <div className="col-md-6">
                 <label className="form-label"><b>Permiso</b></label>
                         
-                     <select className="form-control" defaultValue={datos.permiso} name="perfil" onChange={(e)=>handelchnge(e.target)}>
+                     <select className="form-control" required value={datos.perfil} name="perfil" onChange={(e)=>handelchnge(e.target)}>
+                     <option  value={""}></option>
                         {roles.length>0?
                         roles.map((e,i)=>{
                             return(
