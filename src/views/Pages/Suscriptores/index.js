@@ -1,14 +1,25 @@
 import React ,{useEffect,useState}from "react";
 import { Card,Col,Row ,Modal } from "react-bootstrap";
-import { GetSuscritores } from "utils/Querypanel";
+import { GetSuscritores,EliminarSuscrito } from "utils/Querypanel";
 import ModalSuscritoView from "./ModalSuscritor";
+import { Button } from "reactstrap";
+
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 const SuscritorViews =()=>{
     const[show,setshow] = useState(false)
     const [suscritores,setsuscritor]=useState([])
     const[suscritor,setSuscri]=useState({})
+    
+    const [estado,setEstado] =useState("")
 
+    const [alert,setAlert] = React.useState(null)
+    const newsuscrito=()=>{
+      setEstado("")
+    setshow(true)}
     const selelccionasuscrito=(e)=>{
+      
+      setEstado("update")
       setSuscri(e)
       setshow(true)
     }
@@ -25,16 +36,81 @@ const SuscritorViews =()=>{
     console.log(error)
   }
  }
+ const Eliminasucrito=async(id)=>{
+  try {
+    const elimna = await EliminarSuscrito(id)
+    let lista =suscritores.filter(e=>e.id!=id) 
+    const { success,message} =elimna
+     if(success){
+    setsuscritor(lista)         
+    successDelete()
+  }
+    
+  } catch (error) {
+    console.log(error)
+    
+  }
 
+ }
+ const successAlert = (e) => {
+  setAlert(
+    <SweetAlert
+      warning
+      style={{ display: "block", marginTop: "-100px" }}
+      title="Estas Seguro?"
+      onConfirm={() => Eliminasucrito(e)}
+      onCancel={() => cancelDetele()}
+      confirmBtnBsStyle="success"
+      cancelBtnBsStyle="danger"
+      confirmBtnText="Confirmar"
+      cancelBtnText="Cancelar"
+      showCancel
+    >
+      Esta seguro de eliminar este Suscritor
+    </SweetAlert>
+  );
+};
+const successDelete = () => {
+  setAlert(
+    <SweetAlert
+      success
+      style={{ display: "block", marginTop: "-100px" }}
+      title="Eliminado!"
+      onConfirm={() => hideAlert()}
+      onCancel={() => hideAlert()}
+      confirmBtnBsStyle="success"
+    >
+      El suscritor se elimino correctamenta
+    </SweetAlert>
+  );
+};
+const cancelDetele = () => {
+  setAlert(
+    <SweetAlert
+      danger
+      style={{ display: "block", marginTop: "-100px" }}
+      title="Cancelado"
+      onConfirm={() => hideAlert()}
+      onCancel={() => hideAlert()}
+      confirmBtnBsStyle="success"
+    >
+     Se a cancelado la acción 
+    </SweetAlert>
+  );
+};
+const hideAlert = () => {
+  setAlert(null);
+};
  React.useEffect(() => {
   (async () => {
     await nuevoevento()
   })()
 }, [])
-
+ 
     return(
         <div className="container-fluid">
 
+      {alert}
             
           <Row>
           <Col lg="3" sm="6">
@@ -161,7 +237,7 @@ const SuscritorViews =()=>{
                     <div className="col-md-12">
                         
 
-                        <button  className="btn btn-success" onClick={nuevoevento}><i className="mr-2 fa fa-plus"></i> Nuevo Suscritores</button>
+                        <button  className="btn btn-success" onClick={newsuscrito}><i className="mr-2 fa fa-plus"></i> Nuevo Suscritores</button>
 
                         <br/><br/>
 
@@ -196,9 +272,27 @@ const SuscritorViews =()=>{
                                             <td>{e.fechaCreacion} </td>
                                             <td>{e.enable==1?<span className="badge me-1 bg-dark text-white">Anulado</span>:<span className="badge me-1 bg-success text-white">Activo</span>}</td>
                                             <td >
-                                            <a className="btn btn-primary btn-sm mx-1" data-toggle="tooltip" title="Ver suscritor" ><i className="fa fa-eye"></i></a>
-                                            <a className="btn btn-primary btn-sm mx-1"  data-toggle="tooltip" title="editar suscritor" onClick={()=>selelccionasuscrito(e)}><i className="fa fa-edit"></i></a>
-                                             </td>
+
+                                            
+                                      <Button
+                                          onClick={() => successAlert(e.id)}
+                                          variant="danger"
+                                          size="sm"
+                                          className="text-danger btn-link like"
+                                        >
+                                          <i className="fa fa-trash" />
+                                        </Button>
+                                        <Button
+                                          onClick={()=>selelccionasuscrito(e)}
+                                          variant="info"
+                                          size="sm"
+                                          className="text-info btn-link like"
+                                        >
+                                          <i className="fa fa-edit" />
+                                        </Button>
+                                       
+                                      
+                                          </td>
                                        </tr>
 
                                           )
@@ -214,6 +308,7 @@ const SuscritorViews =()=>{
                 <ModalSuscritoView
                 show={show}
                 setshow={setshow}
+                estado={estado}
                 datosperson={suscritor}
                 />
                

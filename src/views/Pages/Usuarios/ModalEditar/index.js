@@ -6,7 +6,7 @@ import { GetRoles,EditUser,CrearUser } from "utils/Querypanel";
 
 const EditaruserView =(props)=>{
   let history = useHistory()
-    const {editShow,SetModalEdit,datosuser,estado,roles}=props
+    const {editShow,SetModalEdit,datosuser,estado,roles,reloadpage}=props
     const [validate,setValidate]= useState("")
   //  const [roles, setRoles] = React.useState([])
     const [datos,setDatos]=useState({
@@ -43,9 +43,11 @@ const EditaruserView =(props)=>{
       const {success,message} =editados
       if(success){
        //alert(message)
+      // await ListarUsuarios()
+      reloadpage()
        SetModalEdit(false)
-       location.reload()
-     //  history.push("/admin/usuario")
+      
+      
       }   
     } catch (error) {
       
@@ -72,7 +74,7 @@ const EditaruserView =(props)=>{
        const useradd=await CrearUser(params)
           const {success,message} =useradd
           if(success){
-           
+            reloadpage()
             SetModalEdit(false)
             history.push("/admin/usuario")
           }                

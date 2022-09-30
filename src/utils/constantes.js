@@ -1,7 +1,7 @@
 export const CarritoTicket = "CarritoTicket:"
 export const DetalleLocalStorang = "DetalleLocalStorang"
 export const DatosUsuarioLocalStorang = "DatosUsuarioLocalStorang"
-export const DatoTokenusuario= "DatoTokenusuario";
+export const DatoTokenusuario= "SeccionToken";
 export const DatosUsuariocliente="DatoCliente";
 export const Whatsappnumero ="WhastappValido";
 //export const Host = "https://a8e1-45-187-2-162.sa.ngrok.io/"

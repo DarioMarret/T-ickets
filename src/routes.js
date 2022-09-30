@@ -25,8 +25,11 @@ import Eventos from "views/Pages/Evento";
 import PerfilPage from "views/Pages/Perfil";
 import Dashboardsub from "views/Pages/Dasboarsubcri/index.js";
 import Reactabla from "views/Pages/Dasboarsubcri/Tickes.js";
+import ValidationForms from "views/Forms/ValidationForms.js";
 import SuscritorViews from "views/Pages/Suscriptores";
 import UsersView from "views/Pages/Usuarios";
+
+import SweetAlert from "views/Components/SweetAlertPage.js";
 
 var routes = [
   {
@@ -35,7 +38,7 @@ var routes = [
     name: "Inicio",
     icon: "nc-icon nc-chart-pie-35",
     component: Dashboard,
-    permiso:["superadmin","subscriptor"]
+    permiso:["super_admin","subscriptor"]
   },
   {
     path: "/inicio",
@@ -64,7 +67,7 @@ var routes = [
   layout: "/admin",
   name: "Info",
   icon: "nc-icon nc-badge",
-  component: PerfilPage,
+  component: UserPage,
   permiso:["superadmin","super_admin"]},
  
   {
@@ -100,6 +103,7 @@ var routes = [
     component:SuscritorViews,
     permiso:["superadmin","super_admin"]
   }, 
+  
   {
     path:"/usuario",
     layout:"/admin",
@@ -123,7 +127,7 @@ var routes = [
     name:"Influencer",
     icon:"nc-icon nc-note-03",
     component:Eventos,
-    permiso:["superadmin","subscriptor"]
+    permiso:["superadmin","super_admin"]
   },
   {
     path:"/sorteos",
@@ -131,7 +135,7 @@ var routes = [
     name:"Sorteos",
     icon:"nc-icon nc-controller-modern",
     component:Eventos,
-    permiso:["superadmin","subscriptor"]
+    permiso:["superadmin","super_admin"]
   },
   {
     collapse: true,
@@ -139,7 +143,7 @@ var routes = [
     name: "Pages",
     state: "openPages",
     icon: "nc-icon nc-puzzle-10",
-    permiso:["superadmin","subscriptor"],
+    permiso:["super_admin"],
     views: [
       {
         path: "/user-page",

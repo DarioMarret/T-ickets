@@ -1,10 +1,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
-import {clienteInfo} from "../../utils/localstore";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 
 import imagen5 from "assets/imagen/logo-tickets.png"
- //import {clienteInfo} from "../../utils" ;
+
 // react-bootstrap components
 import {
   Badge,
@@ -23,20 +23,18 @@ import {
 } from "react-bootstrap";
 
 function Sidebar({ routes, image, background }) {
+  let user = clienteInfo()
+ 
   // to check for active links and opened collapses
-  /*const [user, setuser] = React.useState(() => {
-    const user = clienteInfo()
-    const parse = JSON.parse(user);
-    return parse || "no user";
-})*/
-const usuario ="superadmin";
-  let location = useLocation();
+   let location = useLocation();
   // this is for the user collapse
   const [userCollapseState, setUserCollapseState] = React.useState(false);
   // this is for the rest of the collapses
   const [state, setState] = React.useState({});
   React.useEffect(() => {
     setState(getCollapseStates(routes));
+    //const user = clienteInfo()
+   // console.log(user)
   }, []);
   // this creates the intial state of this component based on the collapse routes
   // that it gets through routes prop
@@ -72,7 +70,10 @@ const usuario ="superadmin";
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
      // console.log(prop.permiso.every(e=>e!="admin"))
-      if(prop.permiso!=null && prop.permiso.every(e=>e!=usuario) ){
+     if(prop.name==null){
+      return null
+     }
+      if(prop.permiso!=null && prop.permiso.every(e=>e!=user.perfil) ){
         return null
 
       }
@@ -144,7 +145,7 @@ const usuario ="superadmin";
           <div className="logo">
             <a
               className="simple-text logo-mini nav-link"
-              href="http://www.creative-tim.com"
+              href="/admin/inicio"
             >
               <div className="logo-img">
                 <img
@@ -155,7 +156,7 @@ const usuario ="superadmin";
             </a>
             <a
               className="simple-text logo-normal nav-link"
-              href="http://www.creative-tim.com"
+              href="/admin/inicio"
             >
               Flash ticket
             </a>
@@ -182,7 +183,7 @@ const usuario ="superadmin";
              </div>*/}
           <div className="user">
             <div className="photo">
-              {/*<img alt="..." src={require("assets/img/default-avatar.png")} />*/}
+              <img alt="..." src={require("assets/img/default-avatar.png")} />
             </div>
             <div className="info">
               <a
@@ -196,7 +197,7 @@ const usuario ="superadmin";
                 aria-expanded={userCollapseState}
               >
                 <span>
-                Nombre del usuario <b className="caret"></b>
+               {user.username} <b className="caret"></b>
                 </span>
               </a>
               <Collapse id="collapseExample" in={userCollapseState}>
@@ -208,8 +209,8 @@ const usuario ="superadmin";
                         href="user-page"
                         
                       >
-                        <span className="sidebar-mini">MP</span>
-                        <span className="sidebar-normal">My Profile</span>
+                        <span className="sidebar-mini">MD</span>
+                        <span className="sidebar-normal">Mis Datos</span>
                       </a>
                     </li>
                     <li>

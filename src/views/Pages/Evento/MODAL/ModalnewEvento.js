@@ -107,9 +107,9 @@ const [neweventos,setNewEventos]=useState(
         }
 
     useEffect(()=>{
-        console.log("evento",neweventos)
+       // console.log("evento",neweventos)
        //console.log(!(selectLocalidad.length==localidadPreci.length))
-        console.log("localidada precios-->",localidadPreci)
+        //console.log("localidada precios-->",localidadPreci)
         },[show,toggleValueInArray])
     return(
     <Modal

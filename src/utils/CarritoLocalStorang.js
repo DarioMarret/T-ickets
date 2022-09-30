@@ -144,7 +144,7 @@ export function GetValores() {
             comision_bancaria:  valor.toFixed(2)*5/100,
             subtotal: subtotal.toFixed(2),
             description: descrption,
-            envio: getDatosUsuariosLocalStorag().envio 
+            //envio: getDatosUsuariosLocalStorag().envio 
         }          
        
         return precios

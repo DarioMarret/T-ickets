@@ -10,7 +10,7 @@ const ModalEfectivo =(props)=>{
    async  function  Guardarcompraefectivo(){
         try {
          
-      //   const data =await ReportarEfectivoCompra()
+      //  const data =await ReportarEfectivoCompra()
        //  const {success} =data
          const mensaje =await EnviarmensajeWhastapp()
          const {message} =mensaje

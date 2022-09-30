@@ -2,6 +2,9 @@ import React, {useEffect,useState} from "react";
 import { getCliente } from "utils/DatosUsuarioLocalStorag";
 import moment from "moment";
 import 'moment-timezone'
+import { CancelarSubscriptor } from "utils/Querypanel";
+import { DatosUsuarioLocalStorang } from "utils/constantes";
+import SweetAlert from 'react-bootstrap-sweetalert';
 // react-bootstrap components
 import {
   Badge,
@@ -17,13 +20,14 @@ import {
 } from "react-bootstrap";
 
 function PerfilPage() {
-
+  const [alert,setAlert] = React.useState(null)
   const [datosPersons, setPerson] = useState({
     ciudad :  '',
     email  : '',
-     enable :   '',
+    enable :   '',
     fechaCreacion : '',
-    id :  48,  movil : '',
+    id :  48,  
+    movil : '',
     name :'',
     hora:''
   })
@@ -34,6 +38,76 @@ function PerfilPage() {
     })
 
    }
+   async function Eliminasucrito(){
+    console.log(datosPersons.email)
+    try {
+    
+      if(datosPersons.email!=''){
+      const cancelar = await CancelarSubscriptor(datosPersons.email)
+      const {success}=cancelar
+      console.log(cancelar)
+      if(success){
+      localStorage.removeItem(DatosUsuarioLocalStorang)
+      location.reload()
+    }
+    }
+    } catch (error) {
+      
+    }
+
+  }
+
+   const successAlert = () => {
+    setAlert(
+      <SweetAlert
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Estas Seguro?"
+        onConfirm={() => Eliminasucrito()}
+        onCancel={() => cancelDetele()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText="Confirmar"
+        cancelBtnText="Cancelar"
+        showCancel
+      >
+        Esta seguro de cancelar su suscripción 
+      </SweetAlert>
+    );
+  };
+  const successDelete = () => {
+    setAlert(
+      <SweetAlert
+        success
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Eliminado!"
+        onConfirm={() => hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+      >
+        El suscritor se elimino correctamenta
+      </SweetAlert>
+    );
+  };
+  const cancelDetele = () => {
+    setAlert(
+      <SweetAlert
+        danger
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Cancelado"
+        onConfirm={() => hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+      >
+       Se a cancelado la acción 
+      </SweetAlert>
+    );
+  };
+  const hideAlert = () => {
+    setAlert(null);
+  };
+
+
   useEffect(()=>{
     let datos =getCliente()
     setPerson({
@@ -52,6 +126,7 @@ function PerfilPage() {
   return (
     <>
       <Container fluid>
+      {alert}
         <div className="section-image" data-image="../../assets/img/bg5.jpg">
           {/* you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " */}
           <Container>
@@ -108,11 +183,12 @@ function PerfilPage() {
               </Card.Footer>
             </Card>
           </Col>
+          
           <Col lg="6" sm="12">
             <Card className="card-stats">
               <Card.Body>
                 <Row>
-                <Col xs="7">
+                <Col xl="5"xs="12">
                     <div className="">
                     <Card.Title as="h4">Bienvenido </Card.Title>
                       <p className="card-category"> 
@@ -120,10 +196,19 @@ function PerfilPage() {
                       
                     </div>
                   </Col>
-                  <Col xs="5">
+                  <Col xs="4">
                     <div className="icon-big text-center ">
                       <i className="nc-icon nc-satisfied text-danger"></i>
                     </div>
+                  </Col>
+                  <Col  xl="3" xs="6">
+                    <button
+                      className="btn btn-danger"
+                      onClick={successAlert}
+                    >                     
+                    Cancelar suscripción                  
+                    </button>
+                    
                   </Col>
                  
                 </Row>

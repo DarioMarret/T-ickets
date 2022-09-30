@@ -1,5 +1,6 @@
 import React from "react";
-import { useLocation } from "react-router";
+import { useLocation,useHistory } from "react-router";
+import { removeDatosUsuario } from "utils/DatosUsuarioLocalStorag";
 // react-bootstrap components
 import {
   Badge,
@@ -20,7 +21,12 @@ import {
 
 function AdminNavbar() {
   let location = useLocation();
+  let history =useHistory();
   const [collapseOpen, setCollapseOpen] = React.useState(false);
+  function salir(){
+    removeDatosUsuario()
+    history.push("auth/login")
+  }
   return (
     <>
       <Navbar expand="lg">
@@ -66,9 +72,9 @@ function AdminNavbar() {
                 role="search"
               >
                 <InputGroup>
-                  <i className="nc-icon nc-zoom-split"></i>
+                  <i className="nc-icon nc-zoom-split mx-1"></i>
                   <Form.Control
-                    defaultValue=""
+                   className="form-control"
                     placeholder="Search..."
                     type="text"
                   ></Form.Control>
@@ -84,7 +90,9 @@ function AdminNavbar() {
                 >
                   <i className="nc-icon nc-planet"></i>
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
+                <Dropdown.Menu
+                 alignRight
+                >
                   <Dropdown.Item
                     href="#pablo"
                     onClick={(e) => e.preventDefault()}
@@ -128,7 +136,9 @@ function AdminNavbar() {
                   <span className="notification">5</span>
                   <span className="d-lg-none">Notification</span>
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
+                <Dropdown.Menu
+                 alignRight
+                >
                   <Dropdown.Item
                     href="#pablo"
                     onClick={(e) => e.preventDefault()}
@@ -205,7 +215,7 @@ function AdminNavbar() {
                   <Dropdown.Item
                     className="text-danger"
                     href="#pablo"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={(e) => salir()}
                   >
                     <i className="nc-icon nc-button-power"></i>
                     Log out

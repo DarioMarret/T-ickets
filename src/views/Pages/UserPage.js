@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { CancelarSubscriptor } from "utils/Querypanel";
 
+import SweetAlert from 'react-bootstrap-sweetalert';
 // react-bootstrap components
 import {
   Badge,
@@ -14,15 +17,102 @@ import {
   Col
 } from "react-bootstrap";
 
+
 function UserPage() {
+  let user= clienteInfo()
+  const [alert,setAlert] = React.useState(null)
+  const [datos,setDatosUser]=useState({
+    id: '', 
+    username:'', 
+    name: '', 
+    email: '', 
+    perfil: ''
+      })
+
+      async function Eliminasucrito(){
+        try {
+          if(datos.email!=''){
+          const cancelar = await CancelarSubscriptor(datos.email)
+          const {success}=cancelar
+          if(success){
+
+          localStorage.removeItem(DatosUsuarioLocalStorang)
+          location.reload()
+        }
+        }
+        } catch (error) {
+          
+        }
+
+      }
+     function handelchange(){
+      setDatosUser({
+        ...datos,
+        [e.name]:e.value,
+      })
+     } 
+     const successAlert = (e) => {
+      setAlert(
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Estas Seguro?"
+          onConfirm={() => Eliminasucrito()}
+          onCancel={() => cancelDetele()}
+          confirmBtnBsStyle="success"
+          cancelBtnBsStyle="danger"
+          confirmBtnText="Confirmar"
+          cancelBtnText="Cancelar"
+          showCancel
+        >
+          Esta seguro de cancelar su suscripción 
+        </SweetAlert>
+      );
+    };
+    const successDelete = () => {
+      setAlert(
+        <SweetAlert
+          success
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Eliminado!"
+          onConfirm={() => hideAlert()}
+          onCancel={() => hideAlert()}
+          confirmBtnBsStyle="success"
+        >
+          El suscritor se elimino correctamenta
+        </SweetAlert>
+      );
+    };
+    const cancelDetele = () => {
+      setAlert(
+        <SweetAlert
+          danger
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Cancelado"
+          onConfirm={() => hideAlert()}
+          onCancel={() => hideAlert()}
+          confirmBtnBsStyle="success"
+        >
+         Se a cancelado la acción 
+        </SweetAlert>
+      );
+    };
+    const hideAlert = () => {
+      setAlert(null);
+    };
+      useEffect(()=>{
+        console.log(user)
+        setDatosUser(user)
+      },[])
   return (
     <>
       <Container fluid>
+      {alert}
         <div className="section-image" data-image="../../assets/img/bg5.jpg">
           {/* you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " */}
           <Container>
-            <Row>
-              <Col md="8" sm="6">
+            <Row className="d-flex flex-wrap-reverse ">
+              <Col md="8" sm="12">
                 <Form action="" className="form" method="">
                   <Card>
                     <Card.Header>
@@ -34,11 +124,10 @@ function UserPage() {
                       <Row>
                         <Col className="pr-1" md="5">
                           <Form.Group>
-                            <label>Company (disabled)</label>
+                            <label>Nombre</label>
                             <Form.Control
-                              defaultValue="Creative Code Inc."
-                              disabled
-                              placeholder="Company"
+                             value={datos.name}
+                             onChange={(e)=>handelchange(e.target)}
                               type="text"
                             ></Form.Control>
                           </Form.Group>
@@ -47,8 +136,10 @@ function UserPage() {
                           <Form.Group>
                             <label>Username</label>
                             <Form.Control
-                              defaultValue="michael23"
+                              
                               placeholder="Username"
+                              value={datos.username}
+                              onChange={(e)=>handelchange(e.target)}
                               type="text"
                             ></Form.Control>
                           </Form.Group>
@@ -61,6 +152,8 @@ function UserPage() {
                             <Form.Control
                               placeholder="Email"
                               type="email"
+                              value={datos.email}
+                              onChange={(e)=>handelchange(e.target)}
                             ></Form.Control>
                           </Form.Group>
                         </Col>
@@ -167,7 +260,7 @@ function UserPage() {
                   </Card.Header>
                   <Card.Body>
                     <div className="author">
-                      <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                      <a href="#pablo" className="nav-link" onClick={(e) => e.preventDefault()}>
                         <img
                           alt="..."
                           className="avatar border-gray"

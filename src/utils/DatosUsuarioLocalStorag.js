@@ -42,7 +42,7 @@ export async function getCedula(cedula) {
 //estas funciones las Agrege en caso de uso dee usuario loggeado
 export function setDatosUser(data) {
     try {
-        localStorage.setItem(DatoTokenusuario, data)
+        sessionStorage.setItem(DatoTokenusuario, data)
         return true
     } catch (error) {
         console.log(error)
@@ -51,7 +51,8 @@ export function setDatosUser(data) {
 }
 export function getUsuario() {
     try {
-        const data = localStorage.getItem(DatoTokenusuario)
+        const data = sessionStorage.getItem(DatoTokenusuario)
+     //   console.log(data)
         return  data;
 
     } catch (error) {
@@ -61,13 +62,15 @@ export function getUsuario() {
 }
 export function removeDatosUsuario() {
     try {
-        localStorage.removeItem(DatoTokenusuario)
+        sessionStorage.removeItem(DatoTokenusuario)
     } catch (error) {
 
     }
 }
 export function clienteInfo() {
+    
     let user = getUsuario();
+    //console.log(jwtDecode(user))
     if (user) {
         return jwtDecode(user)
     } else {

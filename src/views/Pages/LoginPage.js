@@ -6,6 +6,7 @@ import logo from "../../assets/img/logo-t-ickets.png";
 import logoportal from "../../assets/portada-login.png";
 import { getCedula } from 'utils/DatosUsuarioLocalStorag';
 import { setDatosUser } from "utils/DatosUsuarioLocalStorag";
+import { Loginadmin } from "utils/Querypanel";
 import {Badge, Button,Card,Form,Navbar,Nav,Toast,Container,Col,Row} from "react-bootstrap";
 function LoginPage() {
   const history = useHistory();
@@ -55,22 +56,18 @@ function LoginPage() {
     event.preventDefault();
     if (credenciales.email !== '' && credenciales.password !== '') {
     try {      
-        const { data, status } = await axios.post("https://43d5-45-187-2-162.sa.ngrok.io/api/v1/auth_admin", credenciales, {
-          headers: {
-            'Authorization': 'Basic YWRtaW46YWRtaW4='
-          }
-        })
-        const { success, tocken } = data
+      const data= await Loginadmin(credenciales)      
+        const { success, token } = data
         if (success) {
-          console.log("success-->",success)
-          setDatosUser(tocken)
-          //setShow(true)
-          //setmessage("Inicio de session exitoso")
-          history.push('/admin')
+          //console.log("success-->",data)
+          setDatosUser(token)
+          setShow(true)
+          setmessage("Inicio de session exitoso")
+          history.push('/admin/inicio')
         }
        else {
         setShow(true)
-        setmessage("Hubo un error")
+        setmessage("Usuario o contraeña incorrecta")
         console.log("mensage de alvertencia")
       }
     } catch (error) {
@@ -145,6 +142,15 @@ function LoginPage() {
         </div>
         <div>
         </div>
+        <div
+          className="full-page-background"
+          style={{
+            background:'#00000',
+            backgroundImage:
+              "url(" + require("assets/img/full-screen-image-2.jpg") + ")"
+            
+          }}
+        ></div>
       </div>
       <Toast
         onClose={() => setShow(false)} show={show} delay={4000} autohide

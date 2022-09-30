@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { getCliente,clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
@@ -12,12 +13,13 @@ import Indexflas from "../src/views/Pages/Flasdeticket"
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 
+
 root.render(
   <BrowserRouter>
     <Switch>
       
-      <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-      <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
+      <Route path="/auth" render={(props) => !clienteInfo()?<AuthLayout {...props} />:<Redirect from="/" to="/admin/inicio"  />} />
+      <Route path="/admin" render={(props) => clienteInfo()? <AdminLayout {...props} />:<Redirect from="/" to="/auth/login"  />} />
       <Route path="/panel" render={(props)=> <Subcr {...props}/> }/>
       <Route path="/flastick" render={()=><Indexflas/>}/>
     

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 // react-bootstrap components
 import {
-  Badge,
+ 
   Button,
   Card,
   Navbar,
@@ -12,6 +12,7 @@ import {
   Dropdown,
   Form,
 } from "react-bootstrap";
+import Badge from 'react-bootstrap/Badge'
 
 function FixedPlugin({
   setSidebarImageParent,
@@ -30,7 +31,7 @@ function FixedPlugin({
       <div className="fixed-plugin">
         <Dropdown className="show-dropdown">
           <Dropdown.Toggle>
-            <i className="fas fa-cogs fa-2x"></i>
+            <i className="fas fa-cogs -2x"></i>
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <li className="header-title">Sidebar Style</li>
@@ -81,13 +82,14 @@ function FixedPlugin({
             </li>
            <li className="adjustments-line d-flex align-items-center">
               <p className="pt-0 mr-auto">Filters</p>
-              <div>
-                {backgroundColors.map((prop, key) => (
+              <div >
+                
+                {backgroundColors.map((prop, key) => (                
                   <Badge
                     key={key}
                     variant={prop}
                     onClick={() => setSidebarBackgroundParent(prop)}
-                    className={prop === backgroundColor ? "active" : "active"}
+                    className={prop === backgroundColor ? "active" : ""}
                   ></Badge> 
                 ))}
               </div>

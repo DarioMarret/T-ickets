@@ -1,7 +1,9 @@
-import React from "react";
+import React ,{useEffect}from "react";
 // react component used to create charts
 import ChartistGraph from "react-chartist";
+import { DatoTokenusuario } from "utils/constantes";
 // react components used to create a SVG / Vector map
+import { getCliente } from "utils/DatosUsuarioLocalStorag";
 import { VectorMap } from "react-jvectormap";
 
 // react-bootstrap components
@@ -22,6 +24,8 @@ import {
 } from "react-bootstrap";
 
 function Dashboard() {
+  useEffect(()=>{
+ },[])
   return (
     <>
       <Container fluid>

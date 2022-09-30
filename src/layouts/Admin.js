@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route,Redirect } from "react-router-dom";
 // react-bootstrap components
 import {
   Badge,
@@ -22,6 +22,7 @@ import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import SubcritorNavbar from "components/Navbars/SubcritoNavbar";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 //import routes from "routesub.js"
 // dinamically create dashboard routes
 import routes from "routes.js";
@@ -32,12 +33,13 @@ import image3 from "assets/img/full-screen-image-3.jpg";
 import image4 from "assets/img/full-screen-image-4.jpg";
 
 function Admin() {
+  let user =clienteInfo()
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("black");
   //aqui valido las rutas que deben admitirse segun el permiso
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if(prop.permiso!=null && prop.permiso.every(e=>e!="superadmin") ){
+      if(prop.permiso!=null && prop.permiso.every(e=>e!=user.perfil) ){
         return null
 
       }
@@ -69,7 +71,15 @@ function Admin() {
         <div className="main-panel">
           <AdminNavbar />
           <div className="content">
-            <Switch>{getRoutes(routes)}</Switch>
+            <Switch>
+              {getRoutes(routes)}
+             {/* <Route path="/admin/usuario/:id" render={()=><Indexflas/>}/>
+             <Route path="/admin/*" component={NotFound} />
+             */}
+             
+
+              </Switch>
+          
           </div>
           {/*<AdminFooter />*/}
           <div
@@ -87,7 +97,7 @@ function Admin() {
         backgroundColors={[
           "black",
           "azure",
-          "bg-success",
+          "green",
           "orange",
           "red",
           "purple",
