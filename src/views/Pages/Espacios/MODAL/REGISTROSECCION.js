@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal,ProgressBar,OverlayTrigger,Tooltip} from "react-bootstrap"
+import MesasView from 'views/Pages/Mesas';
 
 
 const Registroseccion =(props)=>{
@@ -21,7 +22,7 @@ const Registroseccion =(props)=>{
         sillas:''
     })
     const [Mesass,setMesass]=useState({
-        me_cantidad:'',
+        me_cantidad:'todas',
         me_inicial:'',
         mesas:'',
         me_sillas:''
@@ -100,11 +101,11 @@ const Registroseccion =(props)=>{
             ListadeMesas=ListaMesa
             console.log(ListadeMesas)
             let interar = parseInt(Mesass.me_sillas);     
-                 if(Mesass.mesas==="Todas"){
+                 if(Mesass.mesas==="todas"){
                      console.log(interar)              
                      for(i=0; i< ListadeMesas.length; i++){            
                          ListadeMesas[i]["sillas"]=interar;
-                         ListadeMesas[i]["asientos"]=[]
+                         //ListadeMesas[i]["asientos"]=[]
                       const nummesa =ListadeMesas[i]["mesa"]                
                          for(f=0; f< interar; f++ ){                               
                              ListadeMesas[i]["asientos"][f]={silla:nummesa+"-s-"+f,estado:"disponible"};                         
@@ -171,8 +172,8 @@ const Registroseccion =(props)=>{
     const objeto = JSON.stringify({nombre:'Localidad nombre',Descripcion:'Consultar que descricion--- donde estara ubicado?',espacios:[...ListaFilas]})
     
 useEffect(()=>{
-    console.log( objeto  )
-    console.log(filass)
+   // console.log( objeto  )
+   //console.log(Mesass)
     console.log(ListaMesa)
     console.log(ListaFilas)
 },[show]) 
@@ -365,12 +366,13 @@ useEffect(()=>{
                                                                     </div> 
                                                                     <select className="form-control " aria-label="Selecione Mesa" name="mesas" 
                                                                     value={Mesass.mesas}
-                                                                    onChange={(e)=>handelchangeMesa(e.target)} id="numero_columna" >                                                                   
-                                                                        <option value={"Todas"} >Todas</option>
+                                                                    onChange={(e)=>handelchangeMesa(e.target)} id="numero_columna" >  
+                                                                     <option  ></option>                                                                 
+                                                                        <option value={"todas"} >Todas</option>
                                                                         {ListaMesa.length>0?
                                                                         ListaMesa.map((e,i)=>{
                                                                             return(
-                                                                            <option value={e.mesa} >{e.mesa}</option>
+                                                                            <option key={i} value={e.mesa} >{e.mesa}</option>
                                                                             )
                                                                         })
                                                                         :""}
@@ -390,12 +392,10 @@ useEffect(()=>{
                                                                     onChange={(e)=>handelchangeMesa(e.target)}
                                                                     id="numero_silla" >
                                                                     <option ></option>
-                                                                    <option >4</option>
-                                                                    <option >6</option>
-                                                                    <option >8</option>
-                                                                    <option >10</option>
-                                                                    <option >12</option>
-                                                                    <option >14</option>                                                         
+                                                                    <option value={4} >4</option>
+                                                                    <option value={6} >6</option>
+                                                                    <option  value={8}>8</option>
+                                                                    <option value={10}>10</option>                                                                                                                          
                                                                     </select>
                                                                 </div>
                                                             </div>   :""}    
@@ -523,8 +523,18 @@ useEffect(()=>{
                 <div className='d-flex pb-2' style={{overflowX:'auto',overflowY:'hide'}}>
                 {
                 ListaMesa.length>0?
-
                 ListaMesa.map((e,i)=>{
+                   
+                    return(
+                        <div key={i}>
+                            <MesasView
+                        status={e.asientos.length}
+                         text={i}/> 
+                        </div>
+                        
+                    )
+                })
+               /* ListaMesa.map((e,i)=>{
                     return(                        
                     <OverlayTrigger key={"tolti"+i} placement='bottom' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length>0?e.asientos.length:"0"}</Tooltip>}>
                             <span className="d-inline-block " disabled >
@@ -535,7 +545,7 @@ useEffect(()=>{
                     </OverlayTrigger>
                        
                     )
-                })
+                })*/
                 :""
 
 
