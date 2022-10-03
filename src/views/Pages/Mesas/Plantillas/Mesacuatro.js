@@ -1,53 +1,53 @@
 import React from "react";
+import { Stylesilla } from "./style";
 const MesacuatroView =({text})=>{
     return(
         <div className=""  style={{padding: '0.7px'}}>
               <div className="d-flex px-1">
-                <div className=" "  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                <div style={Stylesilla.asientos}>
                 </div>
                 
-                <div className=" "  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                <div style={Stylesilla.asientos}>
                 </div>
-                <div className=" "  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                <div style={Stylesilla.asientos}>
                 </div>
-                <div className=" "  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                <div style={Stylesilla.asientos}>
                 </div>
               </div>
         
               <div className=" d-flex  align-items-center">
-                <div className="d-flex flex-column">
-                  <a className={"sillas bg-success "+text+"-s-0"}  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                <div className="d-flex flex-column align-items-center">
+                  <a className={text+"-s-0 sillas bg-success "}  style={Stylesilla.asientos}>
                   </a>          
                  
-                  <a className={"sillas bg-success "+text+"-s-1"}  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                  <a className={text+"-s-1 sillas bg-success "}  style={Stylesilla.asientos}>
                   </a>
                 </div>
-                <div className={text +"  Mesa bg-success d-flex p-1"} style={{height:'40px',width:'50px',borderRadius:'5px',alignItems:'center',justifyContent:'center'}}>
+                <div className={text +"  Mesa bg-success d-flex p-1"} style={Stylesilla.mesas}>
                 {text}
                 </div>
                 
-                <div className="d-flex flex-column">
-                  <a className={"sillas bg-danger "+text+"-s-2"}  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                <div className="d-flex flex-column align-items-center">
+                  <a className={text+"-s-2 sillas bg-danger "}  style={Stylesilla.asientos}>
                   </a>         
-                  <a className={"sillas bg-success "+text+"-s-3"} style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                  <a className={text+"-s-3 sillas bg-success "} style={Stylesilla.asientos}>
                   </a>
                 </div>
               </div>
         
               <div className="d-flex px-1 ">
-                <div className=" "  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                <div  style={Stylesilla.asientos}>
                 </div>
-                <div className=" "  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                <div   style={Stylesilla.asientos}>
                 </div>
-                <div className=" "  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                <div  style={Stylesilla.asientos}>
                 </div>
-                <div className=" "  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+                <div  style={Stylesilla.asientos}>
                 </div>
               </div>  
             </div> 
-
-
         )
+       
 
 }
 

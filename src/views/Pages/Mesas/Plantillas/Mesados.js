@@ -8,7 +8,7 @@ const MesadosView =({text})=>{
           
             <div   style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}></div>
           
-            <a className={"sillas bg-success "+text+"-s-0"}  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+            <a className={text+"-s-1 sillas bg-success "}  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
           </a>
           <div  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
           </div>
@@ -40,7 +40,7 @@ const MesadosView =({text})=>{
           
             <div   style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}></div>
           
-          <a className={"sillas bg-success "+text+"-s-1"}  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
+          <a className={text+"-s-1 sillas bg-success "}  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
           </a>
           <div  style={{margin:'0.7',height:'15px',width:'15px',borderRadius:'5px'}}>
           </div>

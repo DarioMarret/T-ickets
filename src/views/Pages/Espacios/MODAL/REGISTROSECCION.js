@@ -10,6 +10,7 @@ const Registroseccion =(props)=>{
     let i=0
     let f=1
     let g=0
+    const [sillaarray,setSilla]=useState([])
     const [tabactivo,setTabactive]=useState({
         tab1:'',
         tab2:'d-none',
@@ -176,64 +177,97 @@ const Registroseccion =(props)=>{
     }
 
     const objeto = JSON.stringify({nombre:'Localidad nombre',Descripcion:'Consultar que descricion--- donde estara ubicado?',espacios:[...ListaFilas]})
-    var arrayList = [];
-    function toggleValueInArray(array, value) {
+    
+    //let arrayList = [];
+    function toggleValueInArray(value) {
+        let array =sillaarray
         var index = array.findIndex(obj => obj.silla==value.silla);
-      //var index = array.indexOf(value);
-      if (index == -1) {
-        array.push(value);
+      //var index = array.indexOf(value);     
+      if (index === -1) {
+        array.push(value);    
       } else {
         do {
           array.splice(index, 1);
-          index = array.indexOf(value);
+          index = array.indexOf(value);      
         } while (index != -1);
       }
-      console.log(arrayList) 
+      setSilla(array) 
+      console.log(array)
     }
     $(document).on('click','a.sillas',function (e){
+        e.preventDefault();
+    if(this.classList.contains("bg-success")){
         if(!this.classList.contains('bg-danger')){
-        this.classList.toggle('bg-success')
-        this.classList.toggle('bg-secondary')
-        !this.classList.contains('bg-danger')? toggleValueInArray(arrayList,{"fila":this.classList[1].split("-")[0],"silla":this.classList[1]}):''
-       // $("div.Mesa").removeClass("bg-secondary").addClass("bg-success")
-       
-    }      
-       })
-      $(document).on('click','div.Mesa',function(e){     
-        let fila ; 
-       if(this.classList.contains('bg-success')){     
+       this.classList.remove('bg-success')
+        this.classList.remove('sillas')
+        this.classList.add('bg-secondary')
+        this.classList.add('asiento')
+       // console.log(this.classList[0].split("-")[0])
+        toggleValueInArray({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
+       // $("div.Mesa").removeClass("bg-secondary").addClass("bg-success")       
+         }      
+         return
+       }
+        
+    })
+    $(document).on('click','a.asiento',function (e){
+        e.preventDefault();
+    if(this.classList.contains("bg-secondary")){
+    if(!this.classList.contains('bg-danger')){
+        this.classList.remove('bg-secondary')
+        this.classList.remove('asiento')
+        this.classList.add('bg-success')
+        this.classList.add('sillas')        
+       // console.log(this.classList[0].split("-")[0])
+        toggleValueInArray({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
+       // $("div.Mesa").removeClass("bg-secondary").addClass("bg-success")       
+         }      
+         return
+       }
+        
+    })
+    $(document).on('click','div.Mesa',function(e){     
+        e.preventDefault();
+        let fila =e.target.getAttribute('class').split(" ")[0]
+          
         this.classList.replace('bg-success','bg-secondary');
-         for(i=0;i<10;i++){
-             fila =e.target.getAttribute('class').split(" ")[0]
-             var puesto =e.target.getAttribute('class').split(" ")[0]+'-s-'+i;
-            if(!$("."+puesto).hasClass('btn-danger')){
-                $("a").hasClass(''+puesto)?  $("a."+puesto).removeClass("bg-success").addClass("bg-secondary"):''
-                $("a").hasClass(''+puesto)? toggleValueInArray(arrayList,{"fila":fila,"silla":puesto}):''
+        this.classList.replace('Mesa','Sillas')
+         for(i=0;i<10;i++){             
+             var puesto =fila+'-s-'+i;            
+            if(!$("."+puesto).hasClass('bg-danger') && $("."+puesto).hasClass('bg-success')){
+                $("a."+puesto).removeClass("bg-success").removeClass("sillas").addClass("bg-secondary").addClass("asiento")   
+                $("a").hasClass(''+puesto)? toggleValueInArray({"fila":fila,"silla":puesto}):''
             }
-           
-         }}
-         else{
-            this.classList.replace('bg-secondary','bg-success');
-     
-             for(i=0;i<10;i++){
-                fila =e.target.getAttribute('class').split(" ")[0]
-                 var puesto =e.target.getAttribute('class').split(" ")[0]+'-s-'+i;
-                 if(!$("."+puesto).hasClass('btn-danger') ){
-                    $("a").hasClass(''+puesto)?  $("a."+puesto).removeClass("bg-secondary").addClass("bg-success"):''
-                    $("a").hasClass(''+puesto)? toggleValueInArray(arrayList,{"fila":fila,"silla":puesto}):''
-                }
-               
-             }
-
-         }
- 
+            /*else if(!$("."+puesto).hasClass('bg-danger') && !$("."+puesto).hasClass('bg-success')){
+                this.classList.replace('bg-secondary','bg-success');
+                $("a."+puesto).removeClass("bg-secondary").removeClass("asiento").addClass("bg-success").addClass("sillas")   
+                $("a").hasClass(''+puesto)? toggleValueInArray({"fila":fila,"silla":puesto}):''
+            }*/         
+         }       
      })
-  
+     $(document).on('click','div.Sillas',function(e){     
+        e.preventDefault();
+        let fila =e.target.getAttribute('class').split(" ")[0]
+          
+        this.classList.replace('bg-secondary','bg-success');
+        this.classList.replace('Sillas','Mesa')
+         for(i=0;i<10;i++){             
+             var puesto =fila+'-s-'+i;            
+             if(!$("."+puesto).hasClass('bg-danger') && !$("."+puesto).hasClass('bg-success')){              
+                $("a."+puesto).removeClass("bg-secondary").removeClass("asiento").addClass("bg-success").addClass("sillas")   
+                $("a").hasClass(''+puesto)? toggleValueInArray({"fila":fila,"silla":puesto}):''
+            }   
+         }       
+     })
+ 
 useEffect(()=>{
-   // console.log( objeto  )
-   //console.log(Mesass)
+  setTabactive({
+            tab1:'',
+            tab2:'d-none',
+            tab3:'d-none'
+        })
     console.log(ListaMesa)
-    console.log(ListaFilas)
+    console.log(sillaarray)
     
   
     
@@ -569,10 +603,10 @@ useEffect(()=>{
             </div>:""}
             <div className={"col-sm-12  text-center "+ tabactivo.tab2 } >
 
-                <div className='col-12 pb-3'>                   
+                {/*<div className='col-12 pb-3'>                   
                     {  ListaMesa.length>0 ?
                     <div className="d-flex flex-column  mx-1 bg-primary text-white shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'100px',width:'150px'}} >                      
-                        {SillasMesas.sillas+" Tienen" || ''}  {SillasMesas.cantidad ||''}
+                        {sillaarray? sillaarray.length:''}
                     </div>:""
                     }                  
                     { ListaMesa.length>0?"":
@@ -582,7 +616,7 @@ useEffect(()=>{
                     }
                     
 
-                </div>
+                </div>*/}
 
 
 
