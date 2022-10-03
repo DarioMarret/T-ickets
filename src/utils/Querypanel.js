@@ -112,7 +112,7 @@ export const CrearSuscritor= async(parms)=>{
 export const CancelarSubscriptor= async(id)=>{
     console.log("query",id)   
     const {data} = await axios.put("https://rec.netbot.ec/ms_login/api/v1/cancelation_suscriptor/"+id,{ 
-        headers:{
+        headers:{            
             'Content-Type':'application/json',
             'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }

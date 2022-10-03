@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal,ProgressBar,OverlayTrigger,Tooltip} from "react-bootstrap"
 import MesasView from 'views/Pages/Mesas';
-
+import './estilosilla.css'
 
 const Registroseccion =(props)=>{
     const {show,setShowToast} =props
@@ -105,7 +105,7 @@ const Registroseccion =(props)=>{
                      console.log(interar)              
                      for(i=0; i< ListadeMesas.length; i++){            
                          ListadeMesas[i]["sillas"]=interar;
-                         //ListadeMesas[i]["asientos"]=[]
+                        ListadeMesas[i]["asientos"]=[]
                       const nummesa =ListadeMesas[i]["mesa"]                
                          for(f=0; f< interar; f++ ){                               
                              ListadeMesas[i]["asientos"][f]={silla:nummesa+"-s-"+f,estado:"disponible"};                         
@@ -114,9 +114,13 @@ const Registroseccion =(props)=>{
                      SetSillasmes({sillas:"Todas",cantidad:interar})            
                      setMesas([])                  
                      setFilasSillas(ListadeMesas)
-                     setMesas(ListadeMesas)               
+                     setMesas(ListadeMesas)    
+                     console.log("nueva lista",ListadeMesas)           
                      setFilasSillas([])     
-                 
+                      setMesass({...Mesass,
+                        me_sillas:'',
+                        mesas:''
+                    })
                  }else{
                      let sillas=[]
                      let interarr = parseInt(Mesass.me_sillas);
@@ -124,7 +128,9 @@ const Registroseccion =(props)=>{
                      var index = ListadeMesas.findIndex(obj => obj.mesa==Mesass.mesas);
                     // console.log(index,ListadeMesas[index])
                      setMesass({...Mesass,
-                        me_sillas:''})
+                        me_sillas:'',
+                        mesas:''
+                    })
                      for(g=0; g< interarr;g++){                    
                          numero=1+g                   
                          sillas[g]={silla:"-s-"+numero,estado:"disponible"}                  
@@ -170,12 +176,72 @@ const Registroseccion =(props)=>{
     }
 
     const objeto = JSON.stringify({nombre:'Localidad nombre',Descripcion:'Consultar que descricion--- donde estara ubicado?',espacios:[...ListaFilas]})
-    
+    var arrayList = [];
+    function toggleValueInArray(array, value) {
+        var index = array.findIndex(obj => obj.silla==value.silla);
+      //var index = array.indexOf(value);
+      if (index == -1) {
+        array.push(value);
+      } else {
+        do {
+          array.splice(index, 1);
+          index = array.indexOf(value);
+        } while (index != -1);
+      }
+      console.log(arrayList) 
+    }
+    $(document).on('click','a.sillas',function (e){
+        if(!this.classList.contains('bg-danger')){
+        this.classList.toggle('bg-success')
+        this.classList.toggle('bg-secondary')
+        !this.classList.contains('bg-danger')? toggleValueInArray(arrayList,{"fila":this.classList[1].split("-")[0],"silla":this.classList[1]}):''
+       // $("div.Mesa").removeClass("bg-secondary").addClass("bg-success")
+       
+    }      
+       })
+      $(document).on('click','div.Mesa',function(e){     
+        let fila ; 
+       if(this.classList.contains('bg-success')){     
+        this.classList.replace('bg-success','bg-secondary');
+         for(i=0;i<10;i++){
+             fila =e.target.getAttribute('class').split(" ")[0]
+             var puesto =e.target.getAttribute('class').split(" ")[0]+'-s-'+i;
+            if(!$("."+puesto).hasClass('btn-danger')){
+                $("a").hasClass(''+puesto)?  $("a."+puesto).removeClass("bg-success").addClass("bg-secondary"):''
+                $("a").hasClass(''+puesto)? toggleValueInArray(arrayList,{"fila":fila,"silla":puesto}):''
+            }
+           
+         }}
+         else{
+            this.classList.replace('bg-secondary','bg-success');
+     
+             for(i=0;i<10;i++){
+                fila =e.target.getAttribute('class').split(" ")[0]
+                 var puesto =e.target.getAttribute('class').split(" ")[0]+'-s-'+i;
+                 if(!$("."+puesto).hasClass('btn-danger') ){
+                    $("a").hasClass(''+puesto)?  $("a."+puesto).removeClass("bg-secondary").addClass("bg-success"):''
+                    $("a").hasClass(''+puesto)? toggleValueInArray(arrayList,{"fila":fila,"silla":puesto}):''
+                }
+               
+             }
+
+         }
+ 
+     })
+  
 useEffect(()=>{
    // console.log( objeto  )
    //console.log(Mesass)
     console.log(ListaMesa)
     console.log(ListaFilas)
+    
+  
+    
+  
+  
+ 
+    
+
 },[show]) 
     return(
     <Modal 
@@ -529,7 +595,7 @@ useEffect(()=>{
                         <div key={i}>
                             <MesasView
                         status={e.asientos.length}
-                         text={i}/> 
+                         text={e.mesa}/> 
                         </div>
                         
                     )
