@@ -3,7 +3,7 @@ import { Stylesilla } from "./style";
 const MesacuatroView =({text})=>{
     return(
         <div className=""  style={{padding: '0.7px'}}>
-              <div className="d-flex px-1">
+              <div className="d-flex">
                 <div style={Stylesilla.asientos}>
                 </div>
                 
@@ -35,7 +35,7 @@ const MesacuatroView =({text})=>{
                 </div>
               </div>
         
-              <div className="d-flex px-1 ">
+              <div className="d-flex  ">
                 <div  style={Stylesilla.asientos}>
                 </div>
                 <div   style={Stylesilla.asientos}>

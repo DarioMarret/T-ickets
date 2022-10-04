@@ -127,7 +127,7 @@ function Table({ columns, data }) {
   }, [setHiddenColumns, columns]);
   return (
     <>
-      <div className="ReactTable -striped -highlight primary-pagination">
+      <div className="ReactTable   primary-pagination">
         <div className="pagination-top">
          
         </div>
@@ -191,7 +191,7 @@ function Table({ columns, data }) {
                 type="button"
                 onClick={() => previousPage()}
                 disabled={!canPreviousPage}
-                className="-btn"
+                className="-btn "
               >
                 Anterior
               </button>

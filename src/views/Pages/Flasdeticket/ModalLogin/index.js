@@ -6,9 +6,13 @@ import axios from "axios";
 import { DatosUsuariocliente } from "utils/constantes";
 
 import logo from "../../../../assets/imagen/flash.png";
+import { useSelector,useDispatch } from "react-redux";
+import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
+
 const ModalLogin =(props)=>{
     const {showLogin ,setShowLogin,setUserauth}=props
   let histoty = useHistory()
+  const  usedispatch = useDispatch()
     const [message, setmessage] = useState("");
     const [showtoas, setShowToas] = useState(false);
     const [showtoass, setShowToass] = useState(false);
@@ -17,8 +21,7 @@ const ModalLogin =(props)=>{
       password: '',
     });
     const handleSubmit = async (event) => {
-     
-
+   
         event.preventDefault();
         
         if (credenciales.email !== '' && credenciales.password !== '') {
@@ -30,29 +33,36 @@ const ModalLogin =(props)=>{
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
               }
             })
+                                                           
            //const { success, tocken } = data
             if (data.data) {
               var hoy = new Date();
               let client ={
-                ...data.data,hora:hoy
+                direccion:data.data.ciudad,
+                email:data.data.email,
+                name:data.data.nombreCompleto,
+                whatsapp:data.data.movil,hora: String(hoy),
+                id:data.data.id,
+                fechaCreacion:data.data.fechaCreacion
               }
             localStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
+            usedispatch(addususcritor({...client}))
              setUserauth(true)
              setShowLogin(false)
              setShowToass(true)
-             setmessage("Bienvenido "+ credenciales.email)
+             setmessage("Bienvenido ")
            
             }
            else {
             setShowToas(true)
             setmessage("Correo o contraseña invalido")
-            console.log("mensage de alvertencia")
+            //console.log("mensage de alvertencia")
           }
         } catch (error) {
           setShowToas(true)
           setmessage("Hubo un error Verifique correo y contraseña e intente de nuevo")
         
-          console.log("error Logincredet-->",error)
+          //console.log("error Logincredet-->",error)
         }
         
       }    
@@ -63,11 +73,7 @@ const ModalLogin =(props)=>{
           ...credenciales,
           [name]: value
         })
-       
-      }
-
-
-
+       }
     useEffect(()=>{
 
 
@@ -96,7 +102,7 @@ const ModalLogin =(props)=>{
                   <div className="container text-center">
                     <img src={logo} className="mb-4 img-fluid " style={{ height: '80px' ,color:'black'}} alt="" />
                   </div>
-                  <form  onSubmit={(e) => handleSubmit(e)}  method="post">
+                  <form  onSubmit={(e) => handleSubmit(e)}  >
                     <div className="input-group mb-4">
                       <div className="input-group-prepend">
                         <span className="input-group-text"><i className="fa fa-envelope"></i></span>

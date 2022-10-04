@@ -117,7 +117,7 @@ function UserPage() {
                   <Card>
                     <Card.Header>
                       <Card.Header>
-                        <Card.Title as="h4">Edit Profile</Card.Title>
+                        <Card.Title as="h4">Datos</Card.Title>
                       </Card.Header>
                     </Card.Header>
                     <Card.Body>
@@ -159,34 +159,12 @@ function UserPage() {
                         </Col>
                       </Row>
                       <Row>
-                        <Col className="pr-1" md="6">
-                          <Form.Group>
-                            <label>First Name</label>
-                            <Form.Control
-                              defaultValue="Mike"
-                              placeholder="Company"
-                              type="text"
-                            ></Form.Control>
-                          </Form.Group>
-                        </Col>
-                        <Col className="pl-1" md="6">
-                          <Form.Group>
-                            <label>Last Name</label>
-                            <Form.Control
-                              defaultValue="Andrew"
-                              placeholder="Last Name"
-                              type="text"
-                            ></Form.Control>
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
                         <Col md="12">
                           <Form.Group>
-                            <label>Address</label>
+                            <label>Ciudad</label>
                             <Form.Control
-                              defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                              placeholder="Home Address"
+                              defaultValue="Bld  nr. 8 Bl 1, Sc 1, Ap 09"
+                              placeholder=""
                               type="text"
                             ></Form.Control>
                           </Form.Group>
@@ -195,10 +173,10 @@ function UserPage() {
                       <Row>
                         <Col className="pr-1" md="4">
                           <Form.Group>
-                            <label>City</label>
+                            <label>Celulars</label>
                             <Form.Control
-                              defaultValue="Mike"
-                              placeholder="City"
+                              defaultValue="0985552819"
+                              placeholder=""
                               type="text"
                             ></Form.Control>
                           </Form.Group>
@@ -226,11 +204,12 @@ function UserPage() {
                       <Row>
                         <Col md="12">
                           <Form.Group>
-                            <label>About Me</label>
+                            <label>Password</label>
                             <Form.Control
                               cols="80"
-                              defaultValue="Mike"
-                              placeholder="Here can be your description"
+                              defaultValue=""
+                              type="password"
+                              placeholder=""
                               rows="4"
                             ></Form.Control>
                           </Form.Group>
@@ -241,7 +220,7 @@ function UserPage() {
                         type="submit"
                         variant="info"
                       >
-                        Update Profile
+                        actualizar
                       </Button>
                       <div className="clearfix"></div>
                     </Card.Body>
@@ -266,18 +245,18 @@ function UserPage() {
                           className="avatar border-gray"
                           src={require("assets/img/default-avatar.png")}
                         ></img>
-                        <Card.Title as="h5">Tania Keatley</Card.Title>
+                        <Card.Title as="h5">{datos.name}</Card.Title>
                       </a>
-                      <p className="card-description">michael24</p>
+                      <p className="card-description">{datos.username}</p>
                     </div>
                     <p className="card-description text-center">
-                      Hey there! As you can see, <br></br>
-                      it is already looking great.
+                      Hey Bienvenido! puedes actualizar tus datos <br></br>
+                      en el formulario.
                     </p>
                   </Card.Body>
                   <Card.Footer>
-                    <hr></hr>
-                    <div className="button-container text-center">
+                
+                    {/*     <hr></hr> <div className="button-container text-center">
                       <Button
                         className="btn-simple btn-icon"
                         href="#pablo"
@@ -302,7 +281,7 @@ function UserPage() {
                       >
                         <i className="fab fa-google-plus-square"></i>
                       </Button>
-                    </div>
+                    </div>*/}
                   </Card.Footer>
                 </Card>
               </Col>

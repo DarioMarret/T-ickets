@@ -69,8 +69,6 @@ function ModalCarrito(props) {
     function QuitarDelcarrito(localidad) {
         EliminarByStora(localidad)
         setTimer(!timer)
-        //const carritos = listarCarrito.filter(e=>e.localidad!=localidad)
-        //setListarCarrito(carritos)
         if (localidad === "A ESA - GENERAL") {
             setEstado({
                 ...estado,
@@ -86,16 +84,12 @@ function ModalCarrito(props) {
 
             })
         }
-        /*cantidad_1: 0,
-        cantidad_2: 0,
-        valorGeneral: 30,
-        valorPregerencial: 50,
-        localidades_1: "A ESA - GENERAL",
-        localidades_2: "PEGA LA VUELTA - PREFERENCIAL",*/
+        
     }
 
     function CargarValores() {
         var canti = GetCantidades()
+       
         setCantidad(canti)
     }
 
@@ -142,6 +136,7 @@ function ModalCarrito(props) {
         CargarValores()
         listarCheck()
         let data = GetValores()
+       
         setListaPrecio(data)
         setTotal(GetValores().subtotal)
     }, [timer,show])
@@ -256,7 +251,7 @@ function ModalCarrito(props) {
                                                 </tr>
                                             )
                                         })
-                                        : ""
+                                        : <tr></tr>
                                 }
                             </tbody>
                         </table>

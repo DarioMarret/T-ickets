@@ -10,6 +10,10 @@ const Registroseccion =(props)=>{
     let i=0
     let f=1
     let g=0
+    const [localidaname,setLocalidad]=useState({
+        nombre:'',
+        description:''
+    })
     const [sillaarray,setSilla]=useState([])
     const [tabactivo,setTabactive]=useState({
         tab1:'',
@@ -175,6 +179,12 @@ const Registroseccion =(props)=>{
     
        
     }
+    function handelchangelocalidad(e){
+        setLocalidad({
+            ...localidaname,
+            [e.name]:e.value
+        })
+    }
 
     const objeto = JSON.stringify({nombre:'Localidad nombre',Descripcion:'Consultar que descricion--- donde estara ubicado?',espacios:[...ListaFilas]})
     
@@ -268,14 +278,6 @@ useEffect(()=>{
         })
     console.log(ListaMesa)
     console.log(sillaarray)
-    
-  
-    
-  
-  
- 
-    
-
 },[show]) 
     return(
     <Modal 
@@ -321,7 +323,10 @@ useEffect(()=>{
                                                             <div className="input-group-prepend">
                                                                 <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                             </div>
-                                                            <input type="text" className="form-control" id="nombre" placeholder="Ingrese el nombre del espacio" />
+                                                            <input type="text" className="form-control" id="nombre" name="nombre"
+                                                            value={localidaname.nombre}
+                                                            onChange={(e)=>handelchangelocalidad(e.target)}
+                                                            placeholder="Ingrese el nombre del espacio" />
                                                                                                         </div>                            
                                                     </div>
                                                 </div>
@@ -333,7 +338,10 @@ useEffect(()=>{
                                                             <div className="input-group-prepend">
                                                                 <span className="input-group-text"><i className="fas fa-quote-right"></i></span>
                                                             </div>
-                                                            <input type="text" className="form-control" id="descripcion" placeholder="Ingresa una descripción de la seccion" />
+                                                            <input type="text" className="form-control" id="descripcion"name="description"
+                                                            value={localidaname.description}
+                                                            onChange={(e)=>handelchangelocalidad(e.target)}
+                                                            placeholder="Ingresa una descripción de la seccion" />
                                                             
                                                                                                         </div>
                                                     </div>
@@ -401,7 +409,7 @@ useEffect(()=>{
                                                                         {ListaFilas.length>0?
                                                                                 ListaFilas.map((elem,i)=>{
                                                                                     return(  
-                                                                                    <option value={elem.fila}>{elem.fila}</option>
+                                                                                    <option key={i} value={elem.fila}>{elem.fila}</option>
                                                                                     )
                                                                                   
                                                                                 }) :""     }
@@ -492,6 +500,7 @@ useEffect(()=>{
                                                                     onChange={(e)=>handelchangeMesa(e.target)}
                                                                     id="numero_silla" >
                                                                     <option ></option>
+                                                                    <option value={2} >2</option>
                                                                     <option value={4} >4</option>
                                                                     <option value={6} >6</option>
                                                                     <option  value={8}>8</option>

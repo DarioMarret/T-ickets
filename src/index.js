@@ -10,21 +10,22 @@ import AuthLayout from "layouts/Auth.js";
 import AdminLayout from "layouts/Admin.js";
 import Subcr from "layouts/Subsc";
 import Indexflas from "../src/views/Pages/Flasdeticket"
+import { store } from "StoreRedux/store";
+import {Provider} from 'react-redux';
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
+/*<Route path="/panel" render={(props)=> <Subcr {...props}/> }/>*/
 
 
 root.render(
+  <Provider store={store}>
   <BrowserRouter>
-    <Switch>
-      
+    <Switch>      
       <Route path="/auth" render={(props) => !clienteInfo()?<AuthLayout {...props} />:<Redirect from="/" to="/admin/inicio"  />} />
       <Route path="/admin" render={(props) => clienteInfo()? <AdminLayout {...props} />:<Redirect from="/" to="/auth/login"  />} />
-      <Route path="/panel" render={(props)=> <Subcr {...props}/> }/>
-      <Route path="/flastick" render={()=><Indexflas/>}/>
-    
+      <Route path="/flastick" render={()=><Indexflas/>}/>    
       <Redirect from="/" to="/flastick"  />
       <Route path="*" to="/" />
     </Switch>
   </BrowserRouter>
+  </Provider>
 );

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Spinner,InputGroup } from "react-bootstrap"
 import { GetMetodo } from 'utils/CarritoLocalStorang';
-import { Envio } from 'utils/constantes';
+import { Envio ,DatosUsuariocliente} from 'utils/constantes';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import { DatosUsuariosLocalStorag,getCliente } from 'utils/DatosUsuarioLocalStorag';
 import { getCedula } from 'utils/DatosUsuarioLocalStorag';
 import { ValidarWhatsapp,GuardarDatosdelComprador ,EnviarmensajeWhastapp} from 'utils/Query';
+
+import {useDispatch} from "react-redux";
+import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
 
 function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
@@ -13,7 +16,7 @@ function ModalDetalle(props) {
         setModalPago, handelReporShow, handelefctivorShow,
         setDetalle,setDatoToas
     } = props
-
+    const usedispatch =useDispatch()
     const [actualState, changeCheckState] = useState({
         check1: false,
         check2: false,
@@ -66,10 +69,14 @@ function ModalDetalle(props) {
             }
         else if(validarEmail(datosPerson.email)){
         const {success,message} = await GuardarDatosdelComprador()        
-        if(success){      
-        localStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
+        if(success){ 
+          localStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
+
+        usedispatch(addususcritor({...datosPerson}))
         setDetalle(!showDetalle)
-        setModalPago(true)}
+        setModalPago(true)
+        
+    }
         else{
             setDatoToas({ show:true,
               message:"Ingrese un correo diferente o inicie sección",
@@ -84,6 +91,11 @@ function ModalDetalle(props) {
             setDetalle(!showDetalle)
             setModalPago(true)
         }
+    }
+    function abrirPago(){
+        localStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
+        setDetalle(!showDetalle)
+        setModalPago(true)
     }
 
     async function handelchange(e) {
@@ -179,10 +191,11 @@ useEffect(() => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
+    //let precios.
     //console.log("metodo",metodoPago)
-    let valor = parseFloat( listaPrecio.subtotal) + parseFloat(listaPrecio.comision)
+    //let valor = parseFloat( listaPrecio.subtotal) + parseFloat(listaPrecio.comision)
    // console.log(datosPerson)
-   SetValor(valor)
+   //SetValor(valor)
     if(clineteLogeado==null){
     if (datosPersonal != null) {
         setPerson({
@@ -218,11 +231,11 @@ useEffect(() => {
     setPerson({
     ...datosPerson,
     email: clineteLogeado ? clineteLogeado.email : '',
-    name: clineteLogeado ? clineteLogeado.nombreCompleto : '',
-    whatsapp: clineteLogeado ? clineteLogeado.movil : '',
+    name: clineteLogeado ? clineteLogeado.name : '',
+    whatsapp: clineteLogeado ? clineteLogeado.whatsapp : '',
     cedula: clineteLogeado ? clineteLogeado.cedula : '',
     metodoPago: metodoPago,       
-    direccion: clineteLogeado ? clineteLogeado.ciudad : '',
+    direccion: clineteLogeado ? clineteLogeado.direccion : '',
     envio:datosPersonal ? datosPersonal.envio : '',
     metodoPago: metodoPago, 
 })
@@ -230,14 +243,14 @@ useEffect(() => {
 DatosUsuariosLocalStorag({
     ...datosPerson,
     ['metodoPago']: metodoPago,
-    name: clineteLogeado ? clineteLogeado.nombreCompleto : '',
-    envio:datosPersonal ? datosPersonal.envio : '',
-    whatsapp: clineteLogeado ? clineteLogeado.movil : '',
+    email: clineteLogeado ? clineteLogeado.email : '',
+    name: clineteLogeado ? clineteLogeado.name : '',
+    whatsapp: clineteLogeado ? clineteLogeado.whatsapp : '',
+    cedula: clineteLogeado ? clineteLogeado.cedula : '',         
+    direccion: clineteLogeado ? clineteLogeado.direccion : '',
+    envio:datosPersonal ? datosPersonal.envio : '',    
 })
-
-
-}
-   
+} 
     let mostrarcomision = GetMetodo()
     const mostrar= mostrarcomision!="Tarjeta"? "d-none":""
     sethideComision(mostrar)
@@ -424,7 +437,7 @@ return (
                             <h4 className="comision-boleto text-end">${listaPrecio.comision_bancaria} </h4>
                         </div>
                         <div className="container  ">
-                            <h4 className="total-text"> ${GetMetodo()==="Tarjeta"? listaPrecio.total:valorTotal.toFixed(2)} </h4>
+                            <h4 className="total-text"> ${GetMetodo()==="Tarjeta"? listaPrecio.total:( parseFloat(listaPrecio.subtotal ) +parseFloat(listaPrecio.comision) ).toFixed(2)} </h4>
                         </div>
 
                     </div>
@@ -517,7 +530,7 @@ return (
                          clienteauth && datosPerson.metodoPago == "Tarjeta" ?
                                 <button id="pagarcuenta" className="btn btn-primary"
                                     disabled={!(datosPerson.envio!='')}
-                                    onClick={handlePago}
+                                    onClick={abrirPago}
                                 >
                                     <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
                         }

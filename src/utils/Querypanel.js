@@ -99,7 +99,7 @@ export const EliminarSuscrito =async(id)=>{
  * Crear nuevo suscritor
  */
 export const CrearSuscritor= async(parms)=>{
-    console.log(parms)
+   // console.log(parms)
     const {data}= await axios.post(Host+"api/v1/crear_suscriptor",parms,{
         headers:{
             'Content-Type':'application/json',
@@ -110,7 +110,7 @@ export const CrearSuscritor= async(parms)=>{
     return data
 }
 export const CancelarSubscriptor= async(id)=>{
-    console.log("query",id)   
+   // console.log("query",id)   
     const {data} = await axios.put("https://rec.netbot.ec/ms_login/api/v1/cancelation_suscriptor/"+id,{ 
         headers:{            
             'Content-Type':'application/json',

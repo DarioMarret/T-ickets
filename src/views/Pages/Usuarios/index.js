@@ -39,7 +39,10 @@ const UsersView=()=>{
             const data = await GetUserList()
           //  console.log(data)
             if(data.users.length>0){
-                setRoles(Roles.data) 
+              let dato =Roles.data.map((e,i)=>{
+                return{"value":e.roles,"label":e.roles}
+                 })
+                setRoles(dato) 
                 setListauser(data.users)
             }
         } catch (error) {

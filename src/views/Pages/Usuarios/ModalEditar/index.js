@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-
-import { Modal } from "react-bootstrap";
+import Autocomplete from '@mui/material/Autocomplete';
+import { Modal,Toast } from "react-bootstrap";
 import { GetRoles,EditUser,CrearUser } from "utils/Querypanel";
+import InputGroup from 'react-bootstrap/InputGroup';
 
+import Select from "react-select";
 const EditaruserView =(props)=>{
+  const options = ['Option 1', 'Option 2'];
   let history = useHistory()
     const {editShow,SetModalEdit,datosuser,estado,roles,reloadpage}=props
     const [validate,setValidate]= useState("")
-  //  const [roles, setRoles] = React.useState([])
+    const [message, setmessage] = useState("");
+    const [showtoas, setShowToas] = useState(false);
     const [datos,setDatos]=useState({
         name:'',
         perfil:'',
@@ -24,6 +28,10 @@ const EditaruserView =(props)=>{
         })
             
     }
+    let dato =roles.map((e,i)=>{
+      return{"value":e.roles,"label":e.roles}
+       })
+       console.log(dato)
    async function Editar(){
     let params ={
         "name":datos.name,
@@ -35,9 +43,9 @@ const EditaruserView =(props)=>{
     
    // console.log(Object.values(params).every((d)=>d))
 
-    if(!Object.values(params).every((d)=>d)) {setValidate("was-validated")  }
+    if(datos.password.length<7 ||!Object.values(params).every((d)=>d)) {setValidate("was-validated")  }
     else{
-   // console.log(params)
+    console.log(params)
     try {
       const editados= await EditUser(datos.id,params)
       const {success,message} =editados
@@ -50,6 +58,10 @@ const EditaruserView =(props)=>{
       
       }   
     } catch (error) {
+      
+      setValidate("was-validated")
+      setShowToas(true)
+      setmessage("Hubo un error Verifique  que el correo no este duplicado")
       
     }}
 
@@ -79,6 +91,9 @@ const EditaruserView =(props)=>{
             history.push("/admin/usuario")
           }                
         } catch (error) {
+          setValidate("was-validated")
+      setShowToas(true)
+      setmessage("Hubo un error Verifique  que el correo no este duplicado")
           console.log(error)          
         }
     }
@@ -120,7 +135,11 @@ const EditaruserView =(props)=>{
 
             }
     },[editShow])
-
+const inputSelect =()=>{
+  <div>
+    
+  </div>
+}
 
     return(
         <>
@@ -150,6 +169,9 @@ const EditaruserView =(props)=>{
                               className="form-control"
                               name="name" 
                               required />
+                             <div className="invalid-feedback">
+                                Ingeres un nombre
+                          </div>
                 </div>
                 </div>
                      </div>
@@ -168,6 +190,9 @@ const EditaruserView =(props)=>{
                               className="form-control"
                               name="email" 
                               required />
+                              <div className="invalid-feedback">
+                                 Ingrese un correo
+                          </div>
 
                 </div>
                 </div>
@@ -187,6 +212,9 @@ const EditaruserView =(props)=>{
                               className="form-control"
                               name="username" 
                               required />
+                              <div className="invalid-feedback">
+                              Ingrese  un usuario
+                      </div>
 
                 </div>
                 </div>
@@ -196,17 +224,22 @@ const EditaruserView =(props)=>{
                      <select className="form-control" required value={datos.perfil} name="perfil" onChange={(e)=>handelchnge(e.target)}>
                      <option  value={""}></option>
                         {roles.length>0?
+                       
                         roles.map((e,i)=>{
                             return(
-                            <option key={e.id+"index"+i} value={e.roles}>{e.roles}</option>
+                            <option key={"index"+i} value={e.value}>{e.value}</option>
                             )
                         })
                         :
                         ""    
                     }
                      </select>
-                                                   
-
+                     <div className="invalid-feedback">
+                                  Seleccione un Permiso
+                          </div>
+                         
+                                      
+                          
                
                 </div>
 
@@ -223,8 +256,12 @@ const EditaruserView =(props)=>{
                             onChange={(e)=>handelchnge(e.target)}
                               type="password"
                               className="form-control"
+                              minLength={7}
                               name="password" 
                               required />
+                          <div className="invalid-feedback">
+                                  La contraseña debe ser mayor de 7 caracteres
+                          </div>
 
                 </div>
                 </div>
@@ -245,6 +282,23 @@ const EditaruserView =(props)=>{
         </Modal.Body>
       
         </Modal>
+        <Toast
+        onClose={() => setShowToas(false)} show={showtoas} delay={4000} autohide
+        className="top-center"
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          zIndex: 10000
+        }}
+      >
+       <Toast.Header>
+      <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
+      <strong className="mr-auto">Hubo un error </strong>
+      <small></small>
+    </Toast.Header>
+        <Toast.Body className="bg-danger text-white" >{message} </Toast.Body>
+      </Toast>
         </>
 
     )

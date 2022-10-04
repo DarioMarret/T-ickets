@@ -26,11 +26,15 @@ import Tikes from "../../Pages/Dasboarsubcri/Tickes";
 import PerfilPage from "../Perfil";
 import { getDatosUsuariosLocalStorag,getCliente, } from "utils/DatosUsuarioLocalStorag";
 import { GuardarDatosdelComprador ,ValidarWhatsapp} from "utils/Query";
-
-
+import { useSelector,useDispatch } from "react-redux";
+import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
+import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
 
 const IndexFlas = () => {
-  let history = useHistory()
+  let usedispatch = useDispatch();
+  let history = useHistory();
+  const userauthi= useSelector((state)=>state.SuscritorSlice)
+  
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
   const [efectShow, efectiOpShow] = useState(false);
@@ -64,7 +68,9 @@ const IndexFlas = () => {
   const salir=()=>{
     localStorage.removeItem(DatosUsuariocliente)
     localStorage.removeItem(getDatosUsuariosLocalStorag)
-    history.push("/")
+    usedispatch(deletesuscrito({...userauthi}))
+    SetSeleccion("")
+    //history.push("/")
   }
   const handelReporShow= async () =>{
    let datos = await getDatosUsuariosLocalStorag()
@@ -83,7 +89,9 @@ const IndexFlas = () => {
 
       else{const {success,message} = await GuardarDatosdelComprador()        
       if(success){      
+       
       localStorage.setItem(DatosUsuariocliente, JSON.stringify(datos))
+      usedispatch(addususcritor({...datos}))
       setrepShow(true)
       setDetalle(false)
     }
@@ -123,6 +131,8 @@ const IndexFlas = () => {
           return false}      
        const {success,message} = await GuardarDatosdelComprador()        
        if(success){
+        localStorage.setItem(DatosUsuariocliente, JSON.stringify(datos))
+        usedispatch(addususcritor({...datos}))
         efectiOpShow(true)
         setDetalle(false)
      }
@@ -142,11 +152,13 @@ const IndexFlas = () => {
         color:'bg-danger',
         estado:"Hubo un error",
       })  
-       console.log("Error---",error)      
+      // console.log("Error---",error)      
      }    
   }
   const handlereportColse =async () => {
-    let datos = await getDatosUsuariosLocalStorag()
+    setrepShow(false)
+    setDetalle(true)
+    /*let datos = await getDatosUsuariosLocalStorag()
      try {          
        const {success,message} = await GuardarDatosdelComprador()        
        if(success){       
@@ -163,8 +175,13 @@ const IndexFlas = () => {
      } catch (error) {
        console.log("Error---",error)
        
-     }
+     }*/
   };
+  const closedeposito=()=>{
+    setrepShow(false)
+        setDetalle(true)
+
+  }
   
   const handleefectivoClose =()=> {
     efectiOpShow(false)
@@ -191,7 +208,7 @@ const IndexFlas = () => {
     fecha:''
   })
   useEffect(() => {
-   // window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
+    // window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
     var popUp = window.open('url', '', 'options');
     if (popUp == null || typeof(popUp)=='undefined') {
         //  popUp.close();     
@@ -237,9 +254,11 @@ const IndexFlas = () => {
         fecha:clineteLogeado.fecha_nacimiento,
         edad: clineteLogeado.edad
       })
+      usedispatch(addususcritor({...clineteLogeado}))
       setUserauth(true)
       
     }
+    
    
   }, [])
 
@@ -269,17 +288,17 @@ const IndexFlas = () => {
                 </span>:""}
                 </a>
               </li>
-              {userauth?
+              {userauthi.login?
               <li className="nav-item active" aria-current="page" onClick={()=>SetSeleccion("Datos")}>
                 <a className="nav-link " >Datos</a>
               </li>:""
               }
-              {userauth?
+              {userauthi.login?
               <li className="nav-item active" aria-current="page" onClick={()=>SetSeleccion("Tickets")}>
                 <a className="nav-link " href="#">Tickets</a>
               </li>:""
               }
-               {!userauth?<li className="  nav-item">
+               {!userauthi.login?<li className="  nav-item">
                <a className=" btn btn-outline-light  " href="#" onClick={()=>setShowLogin(true)}> Mi Cuenta <i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
                   <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
@@ -461,8 +480,8 @@ const IndexFlas = () => {
         </div>
       </div>:""}
 
-      {userauth && seleccion=="Tickets"? <div className="container p-2"> <Tikes/></div>:""}
-      {userauth && seleccion=="Datos"? <div className="container p-2"><PerfilPage datosPerson={datosPerson}/></div>:""}
+      {userauthi.login && seleccion=="Tickets"? <div className="container p-2"> <Tikes/></div>:""}
+      {userauthi.login && seleccion=="Datos"? <div className="container p-2"><PerfilPage datosPerson={datosPerson}/></div>:""}
 
       {/* flotter*/}
       <Footer  logofla={logofla} />

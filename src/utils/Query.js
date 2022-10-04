@@ -1,7 +1,7 @@
 import axios from "axios"
 import { getDatosUsuariosLocalStorag ,getCliente} from "./DatosUsuarioLocalStorag"
 import { GetValores,GetMetodo,getVerTienda } from "./CarritoLocalStorang"
-import { Host ,Whatsappnumero} from "./constantes"
+import { Host ,Whatsappnumero,DatosUsuariocliente} from "./constantes"
 /**
  * 
  * @returns {
@@ -43,6 +43,7 @@ export const GuardarDatosdelComprador =async()=>{
     const {data}= await axios.post(Host+"suscripcion",
         datos
     )
+    
     return data
     
 }

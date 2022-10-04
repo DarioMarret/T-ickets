@@ -1,4 +1,4 @@
-import { CarritoTicket, Metodos,DatosUsuarioLocalStorang } from "./constantes"
+import { CarritoTicket, Metodos,DatosUsuarioLocalStorang,Valorcarrito } from "./constantes"
 import {getDatosUsuariosLocalStorag}from "./DatosUsuarioLocalStorag"
 
 let PViten = []
@@ -144,8 +144,9 @@ export function GetValores() {
             comision_bancaria:  valor.toFixed(2)*5/100,
             subtotal: subtotal.toFixed(2),
             description: descrption,
-            //envio: getDatosUsuariosLocalStorag().envio 
-        }          
+            envio: getDatosUsuariosLocalStorag()? getDatosUsuariosLocalStorag().envio:''
+        }         
+        localStorage.setItem(Valorcarrito,JSON.stringify(precios) )
        
         return precios
     } else {

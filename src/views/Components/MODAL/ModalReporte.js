@@ -17,11 +17,11 @@ const Reporte =(props) => {
       if(codigo.length>4){
         try {
           const info = await ReportarDepositoCompra(codigo)
-         /* setDatoToas({ show:true,
+          setDatoToas({ show:true,
             message:'En breve uno de nuestros colaboradores se comunicar con usted',
             color:'bg-success',
             estado:'Se a Guardado exitosamente su reporte',
-          })*/
+          })
          
           console.log(info)
         } catch (error) {

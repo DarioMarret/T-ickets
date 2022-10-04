@@ -34,7 +34,7 @@ function nuevoevento(){
                             <h5 className="modal-title" id="espacioModal">Registrar espacio</h5>
                         </div>
 
-                                    <form  method="POST">
+                                    <form  >
                                         <div className="modal-body">
                                 <div className="row">
                                     <div className="col-sm-12">
@@ -102,7 +102,7 @@ function nuevoevento(){
                                         <td>dedededede</td>
                                         <td>
                                             <div className="btn-group" role="group" aria-label="Basic example">
-                                                <button onClick={AgregasSillasMesa} className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></button>
+                                                <a onClick={AgregasSillasMesa} className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></a>
                                             </div>
                                         </td>
                                     </tr>
@@ -112,7 +112,7 @@ function nuevoevento(){
                                         <td>dedededede</td>
                                         <td>
                                             <div className="btn-group" role="group" aria-label="Basic example">
-                                                <button onClick={AgregasSillasMesa} className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></button>
+                                                <a onClick={AgregasSillasMesa} className="btn btn-primary  btn-sm"><i className="fa fa-edit"></i></a>
                                             </div>
                                         </td>
                                     </tr>
@@ -122,7 +122,7 @@ function nuevoevento(){
                                         <td>dedededede</td>
                                         <td>
                                             <div className="btn-group" role="group" aria-label="Basic example">
-                                                <button onClick={AgregasSillasMesa} className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></button>
+                                                <a onClick={AgregasSillasMesa} className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></a>
                                             </div>
                                         </td>
                                     </tr>

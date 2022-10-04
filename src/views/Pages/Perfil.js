@@ -4,6 +4,9 @@ import moment from "moment";
 import 'moment-timezone'
 import { CancelarSubscriptor } from "utils/Querypanel";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
+import { useDispatch,useSelector } from "react-redux";
+import { deletesuscrito,addususcritor } from "StoreRedux/Slice/SuscritorSlice";
+
 import SweetAlert from 'react-bootstrap-sweetalert';
 // react-bootstrap components
 import {
@@ -20,13 +23,15 @@ import {
 } from "react-bootstrap";
 
 function PerfilPage() {
+  const usedispatch=useDispatch()
+  const userauthi= useSelector((state)=>state.SuscritorSlice)
   const [alert,setAlert] = React.useState(null)
   const [datosPersons, setPerson] = useState({
     ciudad :  '',
     email  : '',
     enable :   '',
     fechaCreacion : '',
-    id :  48,  
+    id :  0,  
     movil : '',
     name :'',
     hora:''
@@ -39,7 +44,7 @@ function PerfilPage() {
 
    }
    async function Eliminasucrito(){
-    console.log(datosPersons.email)
+    //console.log(datosPersons.email)
     try {
     
       if(datosPersons.email!=''){
@@ -47,12 +52,13 @@ function PerfilPage() {
       const {success}=cancelar
       console.log(cancelar)
       if(success){
+        usedispatch(deletesuscrito({...userauthi}))
       localStorage.removeItem(DatosUsuarioLocalStorang)
       location.reload()
     }
     }
     } catch (error) {
-      
+      Error()
     }
 
   }
@@ -103,6 +109,20 @@ function PerfilPage() {
       </SweetAlert>
     );
   };
+  const Error = () => {
+    setAlert(
+      <SweetAlert
+        danger
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Hubo un error"
+        onConfirm={() => hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+      >
+      Intente mas tarde 
+      </SweetAlert>
+    );
+  };
   const hideAlert = () => {
     setAlert(null);
   };
@@ -111,13 +131,13 @@ function PerfilPage() {
   useEffect(()=>{
     let datos =getCliente()
     setPerson({
-      ciudad :datos? datos.ciudad:'',
+      ciudad :datos? datos.direccion:'',
       email  :datos? datos.email:'',
        enable : datos?  datos.enable:'',
       fechaCreacion : datos?datos.fechaCreacion:'',
       id :  datos?datos.id:'',  
-      movil :datos? datos.movil:'',
-      name :datos?datos.nombreCompleto:'',
+      movil :datos? datos.whatsapp:'',
+      name :datos?datos.name:'',
       hora:datos? datos.hora:''
 
     })
