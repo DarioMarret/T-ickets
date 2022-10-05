@@ -123,7 +123,7 @@ const UseridView=()=>{
     },[])
     return(
         <>
-           <LocalidadesView/>
+          
     {alert}
         <div>
             <div className="d-flex justify-content-end align-items-end pb-2" >
@@ -268,7 +268,7 @@ const UseridView=()=>{
             <div className="col-md-12">
             <div className="card card-primary card-outline text-left">
                             <div className="card-header">
-                               Usuario
+                               Lista 
                             </div>
                             <div className="card-body table-responsive">
                             <table className="table table-hover text-center ">

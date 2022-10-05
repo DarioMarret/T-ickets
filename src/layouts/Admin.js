@@ -72,13 +72,8 @@ function Admin() {
           <AdminNavbar />
           <div className="content">
             <Switch>
-              {getRoutes(routes)}
-             {/* <Route path="/admin/usuario/:id" render={()=><Indexflas/>}/>
-             <Route path="/admin/*" component={NotFound} />
-             */}
-             
-
-              </Switch>
+              {getRoutes(routes)}                       
+            </Switch>
           
           </div>
           {/*<AdminFooter />*/}

@@ -311,12 +311,12 @@ const IndexFlas = () => {
           </div>
         </div>
       </nav>
-      {/* header */}
       <ModalLogin
       showLogin={showLogin}
       setUserauth={setUserauth}
       setShowLogin={setShowLogin}
       />
+      {/* header */}     
       <div className="container-fluid  p-0">
         <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '400px', backgroundImage: `url(${header})` }}>
           <div className="container w-100 h-100 px-0">
@@ -330,7 +330,6 @@ const IndexFlas = () => {
         </div>
 
       </div>
-
       {/* carrusel */}
 
       {seleccion==""?
@@ -481,8 +480,10 @@ const IndexFlas = () => {
 
       {/* flotter*/}
       <Footer  logofla={logofla} />
+
       <ModalCarrito
-        show={show} handleClose={handleClose}
+        show={show} 
+        handleClose={handleClose}
         handleContinuar={handleContinuar}
         listaPrecio={listaPrecio}
         setListaPrecio={setListaPrecio}

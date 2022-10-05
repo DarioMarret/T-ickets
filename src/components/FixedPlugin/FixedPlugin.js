@@ -31,7 +31,7 @@ function FixedPlugin({
       <div className="fixed-plugin">
         <Dropdown className="show-dropdown">
           <Dropdown.Toggle>
-            <i className="fas fa-cogs -2x"></i>
+            <i className="fas fa-cogs fa-2x"></i>
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <li className="header-title">Sidebar Style</li>

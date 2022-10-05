@@ -175,11 +175,7 @@ return(
                         </span>
                         Cancelar suscriptor
             </Button>
-                </div>
-                
-            
-
-
+                </div>               
             </div>
           <Row>
           <Col lg="3" sm="6" >
@@ -239,7 +235,7 @@ return(
             <Card className="card-stats">
               <Card.Body>
                 <Row>
-                <Col xl="6"xs="12">
+                <Col xl="6"xs="6">
                     <div className="">
                     <Card.Title as="h4">Suscritor </Card.Title>
                       <p className="card-category"> 
@@ -282,70 +278,68 @@ return(
          
         </Row>
             
-        <div className="row">
+                                <div className="row">
 
                 
                
               
-<div className="col-md-12">
-         
-            <div className="card card-primary card-outline text-left">
-                            <div className="card-header">
-                               Tickets
-                            </div>
-                            <div className="card-body table-responsive">
+                                  <div className="col-md-12">
+                                
+                                    <div className="card card-primary card-outline text-left">
+                                                    <div className="card-header">
+                                                    Tickets
+                                                    </div>
+                                                    <div className="card-body table-responsive">
 
-                            <table className="table table-hover text-center ">
-                                    <thead>
-                                        <tr>
-                                        <th scope="col">Concierto</th>
-                                            <th scope="col">Cantidad</th>
-                                            
-                                            <th scope="col">Localidad</th>
-                                            <th scope="col">Valor</th>
-                                            <th scope="col">Estado</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                      {
-                                        suscritores.length>0?
-                                        suscritores.map((e,i)=>{
-                                            return(
-                                              <tr>
-                                              <th scope="row">{e.concierto}</th>
-                                              <td>{e.cantidad}</td>
-                                              <td>{e.valor}</td>
-                                             
-                                              <td> {e.localidad} </td>
-                                              <td><span className="badge me-1 bg-success text-white">{e.estado}</span></td>
-                                              <td>
-                                              <a className="btn btn-primary btn-sm mx-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                              <a className="btn btn-primary btn-sm mx-1"  data-toggle="tooltip" title="Enviar"><i className="fa fa-paper-plane"></i></a> 
-                                       
-                                              </td>
-                                          </tr>
-                                            )
-                                        }): 
-                                        <tr>
-                                        <th scope="row"></th>
-                                        <th scope="row"></th>
-                                        <td >No hay datos</td>
-                                        <th scope="row"></th>
-                                        <th scope="row"></th> 
-                                        <th scope="row"></th>
-                                      </tr>
-                                      }
-                                       
-                                       
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        </div>
-                        </div>
-            
-        </div>
+                                                    <table className="table table-hover text-center ">
+                                                            <thead>
+                                                                <tr>
+                                                                <th scope="col">Concierto</th>
+                                                                    <th scope="col">Cantidad</th>
+                                                                    
+                                                                    <th scope="col">Localidad</th>
+                                                                    <th scope="col">Valor</th>
+                                                                    <th scope="col">Estado</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            {
+                                                                suscritores.length>0?
+                                                                suscritores.map((e,i)=>{
+                                                                    return(
+                                                                    <tr>
+                                                                    <th scope="row">{e.concierto}</th>
+                                                                    <td>{e.cantidad}</td>
+                                                                    <td>{e.valor}</td>
+                                                                    
+                                                                    <td> {e.localidad} </td>
+                                                                    <td><span className="badge me-1 bg-success text-white">{e.estado}</span></td>
+                                                                    <td>
+                                                                    <a className="btn btn-primary btn-sm mx-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
+                                                                    <a className="btn btn-primary btn-sm mx-1"  data-toggle="tooltip" title="Enviar"><i className="fa fa-paper-plane"></i></a> 
+                                                            
+                                                                    </td>
+                                                                </tr>
+                                                                    )
+                                                                }): 
+                                                                <tr>
+                                                                <th scope="row"></th>
+                                                                <th scope="row"></th>
+                                                                <td >No hay datos</td>
+                                                                <th scope="row"></th>
+                                                                <th scope="row"></th> 
+                                                                <th scope="row"></th>
+                                                            </tr>
+                                                            }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
         <ModalSuscritoView
                 show={show}
                 setshow={setshow}

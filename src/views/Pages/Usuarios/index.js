@@ -3,12 +3,14 @@ import { useHistory } from "react-router";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { GetUserList,GetRoles,EliminaUser } from "utils/Querypanel";
 import EditaruserView from "./ModalEditar";
-import { Button } from "react-bootstrap";
+import { Button,Row,Col,Card } from "react-bootstrap";
 import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
-
+import moment from "moment";
+import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
 const UsersView=()=>{
+  const[fecha,setFecha]=useState(new Date())
   let history= useHistory()
   let user = clienteInfo()
     const [listUsuarios,setListauser]=useState([])
@@ -157,6 +159,115 @@ const UsersView=()=>{
             
     
     {alert}
+    <Row>
+          <Col lg="3" sm="6" >
+            <Card className="card-stats ">
+              <Card.Body>
+                <Row className="">
+                  <Col xs="5">
+                    <div className="icon-big text-center ">
+                      <i className="nc-icon nc-square-pin text-warning"></i>
+                    </div>
+                  </Col>
+                  <Col xs="7">
+                    <div className="numbers">
+                      <p className="card-category">Eventos Globales</p>
+                      <Card.Title as="h4">0</Card.Title>
+                    </div>
+                  </Col>
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                <div className="stats">
+                  <i className="fas fa-calendar-alt mr-1"></i>
+                  Actualizado {moment(fecha).format('DD MMMM YYYY ')}
+                </div>
+              </Card.Footer>
+            </Card>
+          </Col>
+          <Col lg="3" sm="6">
+            <Card className="card-stats">
+              <Card.Body>
+                <Row>
+                  <Col xs="5">
+                    <div className="icon-big text-center ">
+                      <i className="nc-icon nc-money-coins text-success"></i>
+                    </div>
+                  </Col>
+                  <Col xs="7">
+                    <div className="numbers">
+                      <p className="card-category">Recaudaciones Globales</p>
+                      <Card.Title as="h4">0</Card.Title>
+                    </div>
+                  </Col>
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                <div className="stats">
+                  <i className="far fa-calendar-alt mr-1"></i>
+                  Actualizado {moment(fecha).format('DD MMMM YYYY ')}
+                </div>
+              </Card.Footer>
+            </Card>
+          </Col>
+          <Col lg="3" sm="6">
+            <Card className="card-stats">
+              <Card.Body>
+                <Row>
+                  <Col xs="5">
+                    <div className="icon-big text-center ">
+                      <i className="nc-icon nc-notification-70 text-danger"></i>
+                    </div>
+                  </Col>
+                  <Col xs="7">
+                    <div className="numbers">
+                      <p className="card-category">Tickets Globales</p>
+                      <Card.Title as="h4">0</Card.Title>
+                    </div>
+                  </Col>
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                <div className="stats">
+                  <i className="far fa-calendar-alt mr-1"></i>
+                 Actualizado {moment(fecha).format('DD MMMM YYYY ')}
+                </div>
+              </Card.Footer>
+            </Card>
+          </Col>
+          <Col lg="3" sm="6">
+            <Card className="card-stats">
+              <Card.Body>
+                <Row>
+                  <Col xs="4">
+                    <div className="icon-big text-center ">
+                      <i className="nc-icon nc-circle-09 text-info"></i>
+                    </div>
+                  </Col>
+                  <Col xs="8">
+                    <div className="numbers">
+                      <p className="card-category">Total de usuarios</p>
+                      <Card.Title as="h4">{listUsuarios.length?listUsuarios.length:0}</Card.Title>
+                    </div>
+                  </Col>
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                <div className="stats">
+                  <i className="far fa-calendar-alt mr-1"></i>
+                  Actualizado {moment(fecha).format('DD MMMM YYYY ')}
+                </div>
+              </Card.Footer>
+            </Card>
+          </Col>
+          
+         
+         
+        </Row>
           <div className="row">        
               <div className="col-md-12">
                   <button  className="btn btn-success"onClick={Crearuser} ><i className="mr-2 fa fa-plus"></i> Nuevo Usuario</button>

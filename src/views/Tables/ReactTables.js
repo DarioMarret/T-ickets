@@ -14,7 +14,8 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-
+import Box from '@mui/material/Box';
+import { DataGrid,esES } from '@mui/x-data-grid';
 // core components
 import ReactTable from "components/ReactTable/ReactTable.js";
 
@@ -64,6 +65,50 @@ const dataTable = [
 ];
 
 function ReactTables() {
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 90 },
+    {
+      field: 'firstName',
+      headerName: 'First name',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'lastName',
+      headerName: 'Last name',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'age',
+      headerName: 'Age',
+      type: 'number',
+      width: 110,
+      editable: true,
+    },
+    {
+      field: 'fullName',
+      headerName: 'Full name',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160,
+      valueGetter: (params) =>
+        `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+    },
+  ];
+  
+  const rows = [
+    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
+    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
+    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
+    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
+    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
+    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
+    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
+    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
+    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+  ];
+  
   const [data, setData] = React.useState(
     dataTable.map((prop, key) => {
       return {
@@ -150,26 +195,19 @@ function ReactTables() {
       <Container fluid>
         <Row>
           <Col md="12">
+          <Box sx={{ height: 400, width: '100%' }}>
+            <DataGrid localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+              rows={rows}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              
+              experimentalFeatures={{ newEditingApi: false }}
+            />
+          </Box>
             <h4 className="title">React Table</h4>
             <p className="category">
-              A powerful react plugin handcrafted by our friends from{" "}
-              <a
-                href="https://react-table.tanstack.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                react-table
-              </a>
-              . It is a highly flexible tool, based upon the foundations of
-              progressive enhancement on which you can add advanced interaction
-              controls. Please check out their{" "}
-              <a
-                href="https://react-table.tanstack.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                full documentation.
-              </a>
+             
             </p>
             <Card>
               <Card.Body>
@@ -179,22 +217,35 @@ function ReactTables() {
                     {
                       Header: "Name",
                       accessor: "name",
+                      isVisible: true,
+                      sortable: false,
+                      filterable: false,
                     },
                     {
                       Header: "Position",
                       accessor: "position",
+                      isVisible: true,
+                      sortable: false,
+                      filterable: false,
                     },
                     {
                       Header: "Office",
                       accessor: "office",
+                      isVisible: true,
+                      sortable: false,
+                      filterable: false,
                     },
                     {
                       Header: "Age",
                       accessor: "age",
+                      isVisible: true,
+                      sortable: false,
+                      filterable: false,
                     },
                     {
                       Header: "Actions",
                       accessor: "actions",
+                      isVisible: true,
                       sortable: false,
                       filterable: false,
                     },

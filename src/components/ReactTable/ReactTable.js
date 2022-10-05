@@ -8,6 +8,7 @@ import {
   usePagination,
 } from "react-table";
 import classnames from "classnames";
+
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from "match-sorter";
 // react plugin used to create DropdownMenu for selecting items
@@ -24,7 +25,8 @@ function DefaultColumnFilter({
 
   return (
     <FormGroup>
-      <Input
+      <Input 
+      className="text-center"
         placeholder={`Buscar ${count} items...`}
         type="text"
         onChange={(e) => {
@@ -131,14 +133,14 @@ function Table({ columns, data }) {
         <div className="pagination-top">
          
         </div>
-        <table {...getTableProps()} className="rt-table">
-          <thead className="rt-thead -header">
+        <table {...getTableProps()} className="rt-table ">
+          <thead className="rt-thead -header  text-center">
             {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()} className="rt-tr">
+              <tr {...headerGroup.getHeaderGroupProps()} className="rt-tr ">
                 {headerGroup.headers.map((column, key) => (
                   <th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className={classnames("rt-th rt-resizable-header", {
+                    className={classnames("rt-th rt-resizable-header text-center", {
                       "-cursor-pointer": headerGroup.headers.length - 1 !== key,
                       "-sort-asc": column.isSorted && !column.isSortedDesc,
                       "-sort-desc": column.isSorted && column.isSortedDesc,
@@ -160,7 +162,7 @@ function Table({ columns, data }) {
               </tr>
             ))}
           </thead>
-          <tbody {...getTableBodyProps()} className="rt-tbody">
+          <tbody {...getTableBodyProps()} className="rt-tbody text-center ">
             {page.map((row, i) => {
               prepareRow(row);
               return (

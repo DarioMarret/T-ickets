@@ -25,7 +25,7 @@ import Eventos from "views/Pages/Evento";
 import PerfilPage from "views/Pages/Perfil";
 import Dashboardsub from "views/Pages/Dasboarsubcri/index.js";
 import Reactabla from "views/Pages/Dasboarsubcri/Tickes.js";
-import ValidationForms from "views/Forms/ValidationForms.js";
+import ReactTables from "views/Tables/ReactTables.js";
 import SuscritorViews from "views/Pages/Suscriptores";
 import UsersView from "views/Pages/Usuarios";
 import SuscritoridView from "views/Pages/Suscriptores/Suscritorid";
@@ -145,7 +145,7 @@ var routes = [
     layout:"/admin",
     name:"Sorteos",
     icon:"nc-icon nc-controller-modern",
-    component:Eventos,
+    component:ReactTables,
     permiso:["superadmin","super_admin"]
   },
   {
