@@ -58,7 +58,7 @@ function PerfilPage() {
     }
     }
     } catch (error) {
-      Error()
+      console.log(error)
     }
 
   }

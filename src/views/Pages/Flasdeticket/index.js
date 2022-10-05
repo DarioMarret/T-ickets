@@ -255,13 +255,9 @@ const IndexFlas = () => {
         edad: clineteLogeado.edad
       })
       usedispatch(addususcritor({...clineteLogeado}))
-      setUserauth(true)
-      
-    }
-    
-   
-  }, [])
-
+      setUserauth(true)      
+    }   
+  },[])
   return (
     <>
          

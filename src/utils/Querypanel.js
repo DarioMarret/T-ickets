@@ -1,5 +1,6 @@
 import axios from "axios"
-import { Host } from "./constantes"
+import { Host,DatoTokenusuario } from "./constantes"
+
 /**Listar Suscritorea */
 export const GetSuscritores = async ()=>{    
     const { data } = await axios.get(Host+"api/v1/listas_suscriptor", {
@@ -114,9 +115,10 @@ export const CancelarSubscriptor= async(id)=>{
     const {data} = await axios.put("https://rec.netbot.ec/ms_login/api/v1/cancelation_suscriptor/"+id,{ 
         headers:{            
             'Content-Type':'application/json',
-            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==',
+           // 'X-XSRF-TOKEN': `${sessionStorage.getItem(DatoTokenusuario)}`
         }
     })
-    console.log("query",data)
+  //console.log("query",data)
     return data
 }

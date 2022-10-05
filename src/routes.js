@@ -28,8 +28,8 @@ import Reactabla from "views/Pages/Dasboarsubcri/Tickes.js";
 import ValidationForms from "views/Forms/ValidationForms.js";
 import SuscritorViews from "views/Pages/Suscriptores";
 import UsersView from "views/Pages/Usuarios";
-
-import SweetAlert from "views/Components/SweetAlertPage.js";
+import SuscritoridView from "views/Pages/Suscriptores/Suscritorid";
+import UseridView from "views/Pages/Usuarios/Usuarioid";
 
 var routes = [
   {
@@ -68,8 +68,20 @@ var routes = [
   name: "Info",
   icon: "nc-icon nc-badge",
   component: UserPage,
-  permiso:["superadmin","super_admin"]},
- 
+  permiso:["superadmin","super_admin"]
+},
+  { 
+    path:"/suscritor/:id",
+    layout:"/admin",
+    component:SuscritoridView,
+    permiso:["superadmin","super_admin"]
+  }, 
+  { 
+    path:"/usuario/:id",
+    layout:"/admin",
+    component:UseridView,
+    permiso:["superadmin","super_admin"]
+  }, 
   {
     path:"/tickets",
     layout:"/admin",
@@ -102,8 +114,7 @@ var routes = [
     icon:"nc-icon nc-mobile",
     component:SuscritorViews,
     permiso:["superadmin","super_admin"]
-  }, 
-  
+  },   
   {
     path:"/usuario",
     layout:"/admin",

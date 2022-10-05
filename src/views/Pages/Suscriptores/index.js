@@ -3,10 +3,11 @@ import { Card,Col,Row ,Modal } from "react-bootstrap";
 import { GetSuscritores,EliminarSuscrito } from "utils/Querypanel";
 import ModalSuscritoView from "./ModalSuscritor";
 import { Button } from "reactstrap";
-
+import { useHistory } from "react-router";
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 const SuscritorViews =()=>{
+  let usehistory=useHistory()
     const[show,setshow] = useState(false)
     const [suscritores,setsuscritor]=useState([])
     const[suscritor,setSuscri]=useState({})
@@ -245,7 +246,7 @@ const hideAlert = () => {
                             <div className="card-header">
                                 Suscritos
                             </div>
-                            <div className="card-body">
+                            <div className="card-body table-responsive">
 
                                 <table className="table table-hover text-center">
                                     <thead>
@@ -274,22 +275,30 @@ const hideAlert = () => {
                                             <td >
 
                                             
-                                      <Button
+                                      {/*<Button
                                           onClick={() => successAlert(e.id)}
                                           variant="danger"
                                           size="sm"
                                           className="text-danger btn-link like"
                                         >
                                           <i className="fa fa-trash" />
-                                        </Button>
+                                        </Button>*/}
                                         <Button
+                                         onClick={()=>usehistory.push("/admin/suscritor/"+e.id+"")}
+                                          variant="danger"
+                                          size="sm"
+                                          className="text-danger btn-link like"
+                                        >
+                                          <i className="fa fa-eye" />
+                                        </Button>
+                                        {/*<Button
                                           onClick={()=>selelccionasuscrito(e)}
                                           variant="info"
                                           size="sm"
                                           className="text-info btn-link like"
                                         >
                                           <i className="fa fa-edit" />
-                                        </Button>
+                                        </Button>*/}
                                        
                                       
                                           </td>

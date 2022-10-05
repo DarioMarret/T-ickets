@@ -101,7 +101,7 @@ function UserPage() {
       setAlert(null);
     };
       useEffect(()=>{
-        console.log(user)
+       // console.log(user)
         setDatosUser(user)
       },[])
   return (

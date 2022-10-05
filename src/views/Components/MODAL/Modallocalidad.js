@@ -92,11 +92,13 @@ const LocalidadesView =(props)=>{
     return(
     <>
     <Modal 
+    show={true}
     fullscreen={true}
     >
-        <Modal.Body>
-
-        </Modal.Body>
+       <Modal.Header closeButton>
+          <Modal.Title>Modal</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Modal body content</Modal.Body>
 
     </Modal>
     </>)

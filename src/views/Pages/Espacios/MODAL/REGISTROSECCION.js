@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal,ProgressBar,OverlayTrigger,Tooltip} from "react-bootstrap"
 import MesasView from 'views/Pages/Mesas';
-import './estilosilla.css'
 
 const Registroseccion =(props)=>{
     const {show,setShowToast} =props
@@ -75,10 +74,13 @@ const Registroseccion =(props)=>{
                 let interarr = parseInt(filass.sillas);
                 var numero=0
                 var index = ListadeFilas.findIndex(obj => obj.fila==filass.fila);
+                var letra = ListadeFilas[index].fila
+                ListadeFilas[index].sillas=interarr
                 for(g=0; g< interarr;g++){                    
                     numero=1+g                   
-                    sillas[g]={silla:"-s-"+numero,estado:"disponible"}                  
+                    sillas[g]={silla:letra+"-s-"+numero,estado:"disponible"}                  
                 }
+                
                 ListadeFilas[index].asientos=[...sillas]
               
                
@@ -132,16 +134,18 @@ const Registroseccion =(props)=>{
                      var numero=0
                      var index = ListadeMesas.findIndex(obj => obj.mesa==Mesass.mesas);
                     // console.log(index,ListadeMesas[index])
+                    var letra = ListadeMesas[index].mesa
                      setMesass({...Mesass,
                         me_sillas:'',
                         mesas:''
                     })
                      for(g=0; g< interarr;g++){                    
                          numero=1+g                   
-                         sillas[g]={silla:"-s-"+numero,estado:"disponible"}                  
+                         sillas[g]={silla:letra+"-s-"+numero,estado:"disponible"}                  
                      }
+                     ListadeMesas[index].sillas=interarr
                      ListadeMesas[index].asientos=[...sillas]
-                     SetSillasmes({sillas:Mesass.mesas,cantidad:interarr})    
+                     SetSillasmes({sillas:letra,cantidad:interarr})    
                     /* setMesass({...Mesass,
                         me_sillas:interarr})*/
                      
@@ -168,7 +172,7 @@ const Registroseccion =(props)=>{
             [e.name]:e.value
         })
         SetSillasmes({sillas:'',cantidad:''})
-        console.log(Mesass)
+        //console.log(Mesass)
     }
     function handelchange(e){
         setFilass({
@@ -276,6 +280,7 @@ useEffect(()=>{
             tab2:'d-none',
             tab3:'d-none'
         })
+        console.log(ListaFilas)
     console.log(ListaMesa)
     console.log(sillaarray)
 },[show]) 
@@ -569,7 +574,7 @@ useEffect(()=>{
             </div>
             
             {ListaFilas.length>0?
-                <div className={"col-sm-12 text-center "+ tabactivo.tab1 } style={{ height:'450px', overflowY: 'scroll',overflowX: 'scroll',}}>
+                <div className={"col-sm-12 text-center "+ tabactivo.tab1 } style={{ height:'400px', overflowY: 'auto',overflowX: 'auto',}}>
             { ListaFilas.length>0?
 
             ListaFilas.map((e,i)=>{
@@ -610,7 +615,7 @@ useEffect(()=>{
           
              
             </div>:""}
-            <div className={"col-sm-12  text-center "+ tabactivo.tab2 } >
+            <div className={"col-sm-12  text-center "+ tabactivo.tab2 }  >
 
                 {/*<div className='col-12 pb-3'>                   
                     {  ListaMesa.length>0 ?
@@ -629,11 +634,10 @@ useEffect(()=>{
 
 
 
-                <div className='d-flex pb-2' style={{overflowX:'auto',overflowY:'hide'}}>
+                <div className='d-flex  pb-2' style={{overflowX:'auto',overflowY:'hide'}}>
                 {
                 ListaMesa.length>0?
-                ListaMesa.map((e,i)=>{
-                   
+                ListaMesa.map((e,i)=>{                   
                     return(
                         <div key={i}>
                             <MesasView

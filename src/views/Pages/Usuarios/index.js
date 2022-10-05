@@ -27,9 +27,7 @@ const UsersView=()=>{
     const Crearuser=()=>{
         setEstado("")           
         SetModalEdit(true)
-
     }
-   
     async function ListarUsuarios(){
         try {
             
@@ -169,7 +167,7 @@ const UsersView=()=>{
                       <div className="card-header">
                          Usuarios
                       </div>
-                      <div className="card-body">
+                      <div className="card-body table-responsive">
 
                           <table className="table table-hover text-center">
                               <thead>
@@ -197,21 +195,21 @@ const UsersView=()=>{
                                       <td >
                                      
                                       <Button
-                                          onClick={() => successAlert(e.id)}
+                                          onClick={() => history.push("/admin/usuario/"+e.id)}
                                           variant="danger"
                                           size="sm"
                                           className="text-danger btn-link like"
                                         >
-                                          <i className="fa fa-trash" />
+                                          <i className="fa fa-eye" />
                                         </Button>
-                                        <Button
+                                        {/*<Button
                                           onClick={()=>cerraredit(e)}
                                           variant="info"
                                           size="sm"
                                           className="text-info btn-link like"
                                         >
                                           <i className="fa fa-edit" />
-                                        </Button>
+                                        </Button>*/}
                                        
                                       
                                       

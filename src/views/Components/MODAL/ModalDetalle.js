@@ -287,7 +287,7 @@ return (
                                             <input type="text"
                                                 className="form-control form-control-sm"
                                                 name="metodoPago"
-                                                value={datosPerson.metodoPago}
+                                                value={datosPerson.metodoPago?datosPerson.metodoPago:'' }
                                                 id="formaPago" disabled={true}
                                                 placeholder="forma de pago Selecionada"
                                             />
@@ -301,7 +301,7 @@ return (
                                                 maxLength={10}
                                                 disabled={clienteauth}
                                                 name='cedula'
-                                                value={datosPerson.cedula}
+                                                value={datosPerson.cedula?datosPerson.cedula:''}
                                                 onChange={(e) => handelchange(e.target)}
                                                 placeholder="Ingrese su numero de identificacion"
                                             />
@@ -312,7 +312,7 @@ return (
                                                 id="name"
                                                 disabled={(clienteauth && datosPerson.name!=' ')}
                                                 name="name"
-                                                value={datosPerson.name}
+                                                value={datosPerson.name?datosPerson.name:''}
                                                 onChange={(e) => hanbleDatos(e)}
 
                                                 placeholder="Ingrese su nombre completo"
@@ -323,7 +323,7 @@ return (
                                             <div>
                                                 <select className="form-select"      required
                                                                        
-                                                value={datosPerson.envio} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
+                                                value={datosPerson.envio?datosPerson.envio:''} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
                                                     {
                                                         Envio.map((item, index) => {
                                                             return (
@@ -343,7 +343,7 @@ return (
                                                 name='email'
                                                 disabled={(clienteauth && datosPerson.email!='')}
                                                 required
-                                                value={datosPerson.email}
+                                                value={datosPerson.email?datosPerson.email:''}
                                                 onChange={(e) => hanbleDatos(e)}
                                                 placeholder="Ingrese su correo electronico"
                                             />
@@ -357,7 +357,7 @@ return (
                                                 maxLength={10}
                                                 required
                                                 disabled={(clienteauth && datosPerson.whatsapp!='')}
-                                                value={datosPerson.whatsapp}
+                                                value={datosPerson.whatsapp?datosPerson.whatsapp:''}
                                                 onChange={(e) => hanbleDatos(e)}
                                                 placeholder="Ingrese su whatsapp o numero de contacto"
                                             />
@@ -372,7 +372,7 @@ return (
                                                 maxLength={255}
                                                 required
                                                 disabled={(clienteauth && datosPerson.direccion!='')}
-                                                value={datosPerson.direccion}
+                                                value={datosPerson.direccion?datosPerson.direccion:''}
                                                 onChange={(e) => hanbleDatos(e)}
                                                 placeholder="Ingrese su direccion"
                                             />
@@ -405,7 +405,7 @@ return (
                                             </tr>
                                         )
                                     })
-                                    : null
+                                    :  <tr></tr>
                             }
                         </tbody>
                     </table>

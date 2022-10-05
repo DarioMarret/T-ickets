@@ -28,10 +28,7 @@ const EditaruserView =(props)=>{
         })
             
     }
-    let dato =roles.map((e,i)=>{
-      return{"value":e.roles,"label":e.roles}
-       })
-       console.log(dato)
+
    async function Editar(){
     let params ={
         "name":datos.name,
@@ -40,9 +37,7 @@ const EditaruserView =(props)=>{
         "perfil":datos.perfil,
         "new_password":datos.password
     }
-    
-   // console.log(Object.values(params).every((d)=>d))
-
+  
     if(datos.password.length<7 ||!Object.values(params).every((d)=>d)) {setValidate("was-validated")  }
     else{
     console.log(params)
@@ -50,9 +45,7 @@ const EditaruserView =(props)=>{
       const editados= await EditUser(datos.id,params)
       const {success,message} =editados
       if(success){
-       //alert(message)
-      // await ListarUsuarios()
-      reloadpage()
+      location.reload()
        SetModalEdit(false)
       
       
@@ -98,9 +91,7 @@ const EditaruserView =(props)=>{
         }
     }
 
-    }
-    
-
+    }   
     useEffect(()=>{
       setDatos({
         name:'',
@@ -110,8 +101,7 @@ const EditaruserView =(props)=>{
         password:'',
         id:'',
 
-      })
-     
+      })     
         setValidate("")  
         if(estado=="update"){
         //console.log(datosuser)
@@ -144,7 +134,9 @@ const inputSelect =()=>{
     return(
         <>
         <Modal
-        show={editShow}        
+        show={editShow}       
+        
+        
         onHide={()=>SetModalEdit(false)}
 >
         <Modal.Header closeButton>
