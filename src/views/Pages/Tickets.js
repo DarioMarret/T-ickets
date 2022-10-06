@@ -1,13 +1,75 @@
-import React from "react";
-
-
-
+import React, { useEffect, useState } from "react";
+import { ListarTikets } from "utils/Querypanel";
+import ReactTable from "components/ReactTable/ReactTable.js";
+import { Button } from "react-bootstrap";
 const EventosViews =()=>{
+    const [TiktesList,setTikes]=useState([])
+        async function ConsultarTikets(){
+            try {
+                const Datos = await ListarTikets()
+                const infor = Datos.data.map((e,i)=>{
+                    return {
+                        id: e.id,
+                        nombre: e.nombre,
+                        cedula: e.cedula,
+                        celular:e.celular,
+                        fecha:e.actual,
+                        ciudad: e.cuidadconcert,
+                        concierto: e.nombreconcert,
+                        protocolo:e.protocol,
+                        link:e.link,
+                        qr:e.qr,
+                        actions: (
+                            <div className="container actions-right pl-2">                             
+                              <Button
+                                onClick={() => {
+                                  let obj = e.id;
+                                  alert(
+                                    "Se selecciono a: " +e.nombre + " Tabla de prueba"
+                                  );
+                                }}
+                                variant="warning"
+                                size="sm"
+                                className="text-warning btn-link edit"
+                              >
+                                <i className="fa fa-edit" />
+                              </Button>{" "}
+                              
+                              <Button
+                                variant="danger"
+                                size="sm"
+                                className="btn-link remove text-danger"
+                              >
+                                <i className="fa fa-times" />
+                              </Button>{" "}
+                            
+                            </div>
+                          ),
+                       
+                      };
+                })
+                setTikes(infor)
+            } catch (error) {
+                console.log(error)
+                
+            }
+         
+        }
+       
+
+    useEffect(()=>{
+        (async()=>{
+            await ConsultarTikets()
+        })()
+       // console.log(TiktesList)
+
+    },[])
 return(
     <div className="container-fluid">
                 
 <div className="row">
     <div className="col-md-12">
+      
         <div className="card text-left">
             <div className="card-header">
                 Mis Tickets
@@ -26,8 +88,71 @@ return(
                       </div>
                     </div>
                   </div>
+                  <ReactTable
+      data={TiktesList}
+     
+      columns={[
+        {
+          Header: "Nombre",
+          accessor: "nombre",
+          isVisible: true,
+        },
+        {
+          Header: "Cédula",
+          accessor: "cedula",
+          isVisible: true,
+        },
+        {
+          Header: "Fecha",
+          accessor: "fecha",
+          isVisible: true,
+        },
+        {
+          Header: "Lugar",
+          accessor: "ciudad",
+          isVisible: true
+          
+        },
+        {
+          Header: "Concierto",
+          accessor: "concierto",
+          isVisible: true
+          
+        }, {
+            Header: "Protocolo",
+            accessor: "protocolo",
+            isVisible: true
+            
+          },
+           {
+            Header: "Qr",
+            accessor: "qr",
+            isVisible: true
+            
+          }, {
+            Header: "Link",
+            accessor: "link",
+            isVisible: true
+            
+          },
+        {
+          Header: "Acciones",
+          accessor: "actions",
+          isVisible: true,
+          sortable: false,
+          filterable: false,
+        },
+      ]}     
+      
+      
+      
+      /*
+        You can choose between primary-pagination, info-pagination, success-pagination, warning-pagination, danger-pagination or none - which will make the pagination buttons gray
+      
+      className="-striped -highlight success-pagination"*/
+    /> 
 
-                <table className="table table-hover text-center">
+                {/*<table className="table table-hover text-center">
                     <thead>
                         <tr>
                             <th scope="col">Evento</th>
@@ -60,7 +185,7 @@ return(
                             <td><a href="#">Descargar</a></td>
                         </tr>
                     </tbody>
-                </table>
+                </table>*/}
             </div>
         </div>
     </div>

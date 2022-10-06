@@ -21,7 +21,7 @@ const ModalLogin =(props)=>{
       password: '',
     });
     const handleSubmit = async (event) => {
-   
+      var hoy = new Date();
         event.preventDefault();
         
         if (credenciales.email !== '' && credenciales.password !== '') {
@@ -36,15 +36,12 @@ const ModalLogin =(props)=>{
                                                            
            //const { success, tocken } = data
             if (data.data) {
-              var hoy = new Date();
-              console.log(data)
-              let client ={
-                direccion:data.data.ciudad,
-                email:data.data.email,
-                name:data.data.nombreCompleto,
-                whatsapp:data.data.movil,hora: String(hoy),
-                id:data.data.id,
-                fechaCreacion:data.data.fechaCreacion
+              
+              let client={
+               cedula:data.data.cedula, direccion:data.data.ciudad, whatsapp:data.data.movil,
+               telefono:data.data.movil, name:data.data.nombreCompleto,
+               email:data.data.email, hora: String(hoy),
+               enable:data.data.enable,id:data.data.id,         
               }
             localStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
             usedispatch(addususcritor({...client}))

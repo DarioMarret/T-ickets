@@ -12,8 +12,9 @@ export const Host = "https://rec.netbot.ec/ms_login/"
 export const Valores = "Costos"
 export const Metodos = "Metodo-pago"
  export function Salircliente(){
-    localStorage.removeItem(DatosUsuariocliente)
-    localStorage.removeItem(DatosUsuarioLocalStorang)
+   // localStorage.removeItem(DatosUsuariocliente)
+ //   localStorage.removeItem(DatosUsuarioLocalStorang)
+    localStorage.removeItem(Valorcarrito)
     localStorage.removeItem(CarritoTicket)
     localStorage.removeItem(Whatsappnumero)
  }

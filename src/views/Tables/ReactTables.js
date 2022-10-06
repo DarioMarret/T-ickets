@@ -89,7 +89,7 @@ function ReactTables() {
     {
       field: 'fullName',
       headerName: 'Full name',
-      description: 'This column has a value getter and is not sortable.',
+      description: 'Esta columna no es ordenable',
       sortable: false,
       width: 160,
       valueGetter: (params) =>

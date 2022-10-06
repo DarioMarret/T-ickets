@@ -85,7 +85,7 @@ var routes = [
   {
     path:"/tickets",
     layout:"/admin",
-    name:"Mis Tickets",
+    name:"Tickets",
     icon:"nc-icon nc-tag-content",
     component:Ticket,
     permiso:["superadmin","super_admin"]

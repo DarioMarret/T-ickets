@@ -1,38 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import {Modal} from "react-bootstrap";
+import { Salircliente } from 'utils/constantes';
 import {ReportarEfectivoCompra,EnviarmensajeWhastapp} from "../../../utils/Query";
 
 const ModalEfectivo =(props)=>{
-  const {efectShow,handleefectivoClose,handleClosefectivo,
-    setDatoToas
-  } =props;
+  const {efectShow,handleefectivoClose,efectiOpShow,setDatoToas}=props;
    
    async  function  Guardarcompraefectivo(){
         try {
-         
-      //  const data =await ReportarEfectivoCompra()
-       //  const {success} =data
          const mensaje =await ReportarEfectivoCompra()
-         const {message} =mensaje
-        
-         //handleefectivoClose()
-       console.log(mensaje)
-        if(message!=null){
-          handleClosefectivo()
-        //setShow(true)
+         const numero = await EnviarmensajeWhastapp(null)
+         const {msg} =mensaje
+        if(msg!=null){
+          efectiOpShow(false)
+          Salircliente()
         setDatoToas({ 
           message:'En breve uno de nuestros colaboradores se comunicará con usted',
           color:'bg-success',
-          estado:""+message,
-        })}
-       
-         //console.log(data)
+          estado:""+msg,
+        })}     
         } catch (error) {
-          console.log(error)
-          console.log(error)
-          
-        }
-      
+          console.log(error)  
+        }      
     }
     useEffect(()=>{
     },[efectShow])

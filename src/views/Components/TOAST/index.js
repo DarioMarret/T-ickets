@@ -10,12 +10,12 @@ const ViewToas =(props) =>{
         <>
         
         <Toast
-        onClose={() => setDatoToas({...Toastestado,show:false})} show={Toastestado.show} delay={10000} autohide
+        onClose={() => setDatoToas({...Toastestado,show:false})} show={Toastestado.show} delay={8000} autohide
         className="top-center"
         style={{
             position: 'fixed',
             top: 10,
-            right: '5%',
+            right: 10,
             zIndex: 10000,
         }}>
        <Toast.Header>

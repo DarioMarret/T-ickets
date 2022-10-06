@@ -253,6 +253,7 @@ const hideAlert = () => {
                                         <tr>
                                             
                                             <th scope="col">Nombres</th>
+                                            <th scope="col">Cédula</th>
                                             <th scope="col">Email</th>
                                             <th scope="col">Dirección</th>                                            
                                             <th scope="col">Teléfono</th>
@@ -267,15 +268,15 @@ const hideAlert = () => {
                                           return(
                                             <tr key={e.id+""+i}>
                                             <td >{e.nombreCompleto}</td>
+                                            <td>{e.cedula}</td>
                                             <td>{e.email}</td>
                                             <td>{e.ciudad}</td>
                                             <td>{e.movil} </td>
                                             <td>{e.fechaCreacion} </td>
                                             <td>{e.enable==1?<span className="badge me-1 bg-dark text-white">Anulado</span>:<span className="badge me-1 bg-success text-white">Activo</span>}</td>
-                                            <td >
-
-                                            
-                                      {/*<Button
+                                            <th >   
+                                              
+                                                 {/*<Button
                                           onClick={() => successAlert(e.id)}
                                           variant="danger"
                                           size="sm"
@@ -299,9 +300,10 @@ const hideAlert = () => {
                                         >
                                           <i className="fa fa-edit" />
                                         </Button>*/}
-                                       
-                                      
-                                          </td>
+                                                
+                                                                                   
+                                     
+                                          </th>
                                        </tr>
 
                                           )

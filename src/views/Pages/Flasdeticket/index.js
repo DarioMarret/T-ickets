@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Carousel } from "react-bootstrap";
 import header from "../../../assets/header.jpeg";
 import logofla from "../../../assets/logo-flashthetickets.png";
@@ -24,11 +25,12 @@ import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
 import Tikes from "../../Pages/Dasboarsubcri/Tickes";
 import PerfilPage from "../Perfil";
-import { getDatosUsuariosLocalStorag,getCliente, } from "utils/DatosUsuarioLocalStorag";
+import { getDatosUsuariosLocalStorag,getCliente, DatosUsuariosLocalStorag} from "utils/DatosUsuarioLocalStorag";
 import { GuardarDatosdelComprador ,ValidarWhatsapp} from "utils/Query";
 import { useSelector,useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
+import { Authsucrito } from "utils/Query";
 
 const IndexFlas = () => {
   let usedispatch = useDispatch();
@@ -56,7 +58,6 @@ const IndexFlas = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
-  const handleClosefectivo = () => efectiOpShow(false)
   const handleContinuar = () => {
     setShow(false)
     setDetalle(true)
@@ -75,8 +76,9 @@ const IndexFlas = () => {
   const handelReporShow= async () =>{
    let datos = await getDatosUsuariosLocalStorag()
    let nuemro = await ValidarWhatsapp()
+   let user ={email:datos.email,password:datos.cedula}
    let clineteLogeado = await getCliente()       
-   console.log(nuemro)
+   //console.log(nuemro)
     try {  
       if(clineteLogeado==null){
      if( nuemro==null ){ 
@@ -89,9 +91,18 @@ const IndexFlas = () => {
 
       else{const {success,message} = await GuardarDatosdelComprador()        
       if(success){      
-       
-      localStorage.setItem(DatosUsuariocliente, JSON.stringify(datos))
-      usedispatch(addususcritor({...datos}))
+        const { data } = await Authsucrito(user)
+        var hoy = new Date();
+        let users={
+          ...datos,
+         cedula:data.cedula, direccion:data.ciudad, whatsapp:data.movil,
+         telefono:data.movil, name:data.nombreCompleto,
+         email:data.email, hora: String(hoy),
+         enable:data.enable,id:data.id,         
+        }
+        DatosUsuariosLocalStorag({...datos,...users})
+        localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+        usedispatch(addususcritor({users}))
       setrepShow(true)
       setDetalle(false)
     }
@@ -117,9 +128,9 @@ const IndexFlas = () => {
   }
   const handelefctivorShow= async() =>{
     let datos = await getDatosUsuariosLocalStorag()
+    let user ={email:datos.email,password:datos.cedula}
     let clineteLogeado = await getCliente()
     let nuemro = await ValidarWhatsapp()
-   // console.log(nuemro)
      try {  
       if(clineteLogeado==null) { 
         if(nuemro==null){ 
@@ -129,11 +140,21 @@ const IndexFlas = () => {
             estado:"Número "+datos.whatsapp+" Inválido",
           })    
           return false}      
-       const {success,message} = await GuardarDatosdelComprador()        
-       console.log(success,message)
+       const {success,message} = await GuardarDatosdelComprador()      
+      
        if(success){
-        localStorage.setItem(DatosUsuariocliente, JSON.stringify(datos))
-        usedispatch(addususcritor({...datos}))
+        const { data } = await Authsucrito(user)
+        var hoy = new Date();
+        let users={
+          ...datos,
+         cedula:data.cedula, direccion:data.ciudad, whatsapp:data.movil,
+         telefono:data.movil, name:data.nombreCompleto,
+         email:data.email, hora: String(hoy),
+         enable:data.enable,id:data.id,         
+        }
+        DatosUsuariosLocalStorag({...datos,...users})
+        localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+        usedispatch(addususcritor({users}))
         efectiOpShow(true)
         setDetalle(false)
      }
@@ -148,6 +169,7 @@ const IndexFlas = () => {
         setDetalle(false)
        }
      } catch (error) {
+      console.log(error)
       setDatoToas({ show:true,
         message:"Verifique su conexión o intente mas tarde",
         color:'bg-danger',
@@ -159,24 +181,6 @@ const IndexFlas = () => {
   const handlereportColse =async () => {
     setrepShow(false)
     setDetalle(true)
-    /*let datos = await getDatosUsuariosLocalStorag()
-     try {          
-       const {success,message} = await GuardarDatosdelComprador()        
-       if(success){       
-        setrepShow(false)
-        setDetalle(true)
-     }
-       else{
-         setDatoToas({ show:true,
-           message:"Ingrese un correo diferente",
-           color:'bg-danger',
-           estado:"Correo "+datos.email+" Duplicado",
-         }) 
-       }
-     } catch (error) {
-       console.log("Error---",error)
-       
-     }*/
   };
   const closedeposito=()=>{
     setrepShow(false)
@@ -477,7 +481,7 @@ const IndexFlas = () => {
       </div>:""}
 
       {userauthi.login && seleccion=="Tickets"? <div className="container p-2"> <Tikes/></div>:""}
-      {userauthi.login && seleccion=="Datos"? <div className="container p-2"><PerfilPage datosPerson={datosPerson}/></div>:""}
+      {userauthi.login && seleccion=="Datos"? <div className="container p-2"><PerfilPage datosPerson={datosPerson} setDatoToas={setDatoToas}  /></div>:""}
 
       {/* flotter*/}
       <Footer  logofla={logofla} />
@@ -520,7 +524,7 @@ const IndexFlas = () => {
       <ModalEfectivo
       efectShow={efectShow}
       handleefectivoClose={handleefectivoClose}
-      handleClosefectivo={handleClosefectivo}  
+      efectiOpShow={efectiOpShow}  
       
       setDatoToas={setDatoToas}
       />

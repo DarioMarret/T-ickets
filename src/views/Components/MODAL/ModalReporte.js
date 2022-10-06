@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {Modal ,Container} from 'react-bootstrap';
+import { Salircliente } from 'utils/constantes';
 import metodos from "../../../assets/Banco_Internacional_Ecuador.png";
-import {ReportarDepositoCompra} from "../../../utils/Query";
+import {ReportarDepositoCompra,EnviarmensajeWhastapp} from "../../../utils/Query";
 
 
 const Reporte =(props) => {
     const { repShop, handlereportColse,
-      setDatoToas
+      setDatoToas,setrepShow
      } = props
     const [codigo,setCodigo] = useState("") 
    
@@ -17,17 +18,37 @@ const Reporte =(props) => {
       if(codigo.length>4){
         try {
           const info = await ReportarDepositoCompra(codigo)
+          const mensajes = await EnviarmensajeWhastapp(codigo)
+            const {msg} =info
+            console.log(info)
+            if(msg!=null){
+              Salircliente()
           setDatoToas({ show:true,
             message:'En breve uno de nuestros colaboradores se comunicar con usted',
             color:'bg-success',
-            estado:'Se a Guardado exitosamente su reporte',
+            estado:'Se ha Guardado exitosamente su reporte',
           })
-         
-          console.log(info)
+          setrepShow(false)
+        }else{
+          setDatoToas({ show:true,
+            message:'Hubo un error',
+            color:'bg-success',
+            estado:'',
+          })
+        }
+          
+          //console.log(mensajes)
         } catch (error) {
           console.log(error)
         }
        
+      }else{
+        setDatoToas({ show:true,
+          message:'La longitud del código debe ser mayor a 4 dígitos',
+          color:'bg-danger',
+          estado:'Formato ',
+        })
+
       }
     }   
    
@@ -56,11 +77,12 @@ const Reporte =(props) => {
 
       <div className="d-flex flex-wrap">
         <div className="col-12 col-sm-6 d-flex flex-column p-3">
-          <select className="form-control " name="banco"  aria-label="Selecione el Banco">             
-            <option selected value={" Banco Internacional"}> Banco Internacional</option>            
+          <select className="form-control " name="banco" defaultValue={"Banco Internacional"}  aria-label="Selecione el Banco">             
+            <option  value="Banco Internacional"> Banco Internacional</option>            
           </select>
           <label >Numero de Control</label>
           <input className="form-control" type="text" name="control" 
+          value={codigo?codigo:''}
           onChange={(e)=>handelchange(e)}
           />
         </div>

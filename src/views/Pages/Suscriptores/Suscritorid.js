@@ -27,7 +27,7 @@ const SuscritoridView=()=>{
           if(suscritoid.email!=''){
           const cancelar = await CancelarSubscriptor(suscritoid.email)
           const {success}=cancelar
-          console.log(cancelar)
+          //console.log(cancelar)
           if(success){
             history.push("/admin/suscritor")
         }
@@ -66,7 +66,7 @@ const SuscritoridView=()=>{
         cancelBtnText="Cancelar"
         showCancel
       >
-        Esta seguro de cancelar su suscripción 
+        Esta seguro de {suscritoid.enable==0?" Cancelar Suscripción ":"Habilitar Suscripción"}
       </SweetAlert>
     );
   };
@@ -169,11 +169,11 @@ return(
             <Button className="btn-wd btn-outline mr-1"
                         onClick={successAlert}
                         type="button"
-                        variant="danger">
+                        variant={suscritoid.enable==0?"danger":"success"}>
                         <span className="btn-label">
                           <i className="fas fa-trash"></i>
                         </span>
-                        Cancelar suscriptor
+                       {suscritoid.enable==0?" Cancelar Suscripción ":"Habilitar Suscripción"}
             </Button>
                 </div>               
             </div>

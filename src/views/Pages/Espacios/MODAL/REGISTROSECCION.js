@@ -436,7 +436,7 @@ useEffect(()=>{
                                                         <div className="row">
                                                         
                                                         <div className="col-sm-5">
-                                                                <label className="form-label"><b> Fila</b></label>
+                                                                <label className="form-label"><b># de Mesas</b></label>
                                                                 <div className="input-group mb-3">
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>

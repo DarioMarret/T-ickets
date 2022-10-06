@@ -207,11 +207,11 @@ function Example() {
                                              
                                               <td> {e.localidad} </td>
                                               <td><span className="badge me-1 bg-success text-white">{e.estado}</span></td>
-                                              <td>
+                                              <th>
                                               <a className="btn btn-primary btn-sm mx-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
                                               <a className="btn btn-primary btn-sm mx-1"  data-toggle="tooltip" title="Enviar"><i className="fa fa-paper-plane"></i></a> 
                                        
-                                              </td>
+                                              </th>
                                           </tr>
                                             )
                                         }): 

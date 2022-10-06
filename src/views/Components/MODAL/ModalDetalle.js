@@ -5,7 +5,7 @@ import { Envio ,DatosUsuariocliente} from 'utils/constantes';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import { DatosUsuariosLocalStorag,getCliente } from 'utils/DatosUsuarioLocalStorag';
 import { getCedula } from 'utils/DatosUsuarioLocalStorag';
-import { ValidarWhatsapp,GuardarDatosdelComprador ,EnviarmensajeWhastapp} from 'utils/Query';
+import { ValidarWhatsapp,GuardarDatosdelComprador ,EnviarmensajeWhastapp,Authsucrito} from 'utils/Query';
 
 import {useDispatch} from "react-redux";
 import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
@@ -57,6 +57,8 @@ function ModalDetalle(props) {
 
     }
    async function handlePago() { 
+    let user ={email:datosPerson.email,password:datosPerson.cedula}
+    let datos = getDatosUsuariosLocalStorag()
         if(!clienteauth){
      const numero =await ValidarWhatsapp()
         if(numero==null){
@@ -69,10 +71,16 @@ function ModalDetalle(props) {
             }
         else if(validarEmail(datosPerson.email)){
         const {success,message} = await GuardarDatosdelComprador()        
-        if(success){ 
-          localStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
-
-        usedispatch(addususcritor({...datosPerson}))
+        if(success){             
+        //localStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
+        //usedispatch(addususcritor({...datosPerson}))
+        const { data } = await Authsucrito(user)
+        var hoy = new Date();
+        let users={...datos, cedula:data.cedula, direccion:data.ciudad, whatsapp:data.movil,telefono:data.movil, name:data.nombreCompleto,
+         email:data.email, hora: String(hoy),enable:data.enable,id:data.id,metodoPago: datosPerson.metodoPago,envio: datosPerson.envio,}
+        DatosUsuariosLocalStorag({users})
+        localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+        usedispatch(addususcritor({users}))
         setDetalle(!showDetalle)
         setModalPago(true)
         

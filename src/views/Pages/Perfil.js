@@ -1,11 +1,13 @@
 import React, {useEffect,useState} from "react";
 import { getCliente } from "utils/DatosUsuarioLocalStorag";
+import { DatosUsuariocliente } from "utils/constantes";
 import moment from "moment";
 import 'moment-timezone'
-import { CancelarSubscriptor } from "utils/Querypanel";
+import { CancelarSubscriptor,EditarSuscrito } from "utils/Querypanel";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
 import { useDispatch,useSelector } from "react-redux";
 import { deletesuscrito,addususcritor } from "StoreRedux/Slice/SuscritorSlice";
+import { GetSuscritores } from "utils/Querypanel";
 
 import SweetAlert from 'react-bootstrap-sweetalert';
 // react-bootstrap components
@@ -22,20 +24,25 @@ import {
   Col
 } from "react-bootstrap";
 
-function PerfilPage() {
+function PerfilPage(props) {
+  const  {setDatoToas}=props
   const usedispatch=useDispatch()
   const userauthi= useSelector((state)=>state.SuscritorSlice)
   const [alert,setAlert] = React.useState(null)
+  const [validate,setValidate]= useState("")
   const [datosPersons, setPerson] = useState({
-    ciudad :  '',
-    email  : '',
-    enable :   '',
-    fechaCreacion : '',
-    id :  0,  
-    movil : '',
-    name :'',
-    hora:''
+    cedula: '',
+    direccion: '',
+    whatsapp: '',
+    telefono: '',
+    name: '',
+    email: '',
+    hora: '',
+    enable: 0,
+    id: 0,
+    new_password:''
   })
+  
    function handelchange(e){
     setPerson({
       ...datosPersons,
@@ -44,25 +51,68 @@ function PerfilPage() {
 
    }
    async function Eliminasucrito(){
-    //console.log(datosPersons.email)
-    try {
-    
+    try {    
       if(datosPersons.email!=''){
       const cancelar = await CancelarSubscriptor(datosPersons.email)
+      const datos = await GetSuscritores()
       const {success}=cancelar
-      console.log(cancelar)
+     // console.log(cancelar)
       if(success){
-        usedispatch(deletesuscrito({...userauthi}))
-      localStorage.removeItem(DatosUsuarioLocalStorang)
-      location.reload()
+        const dato = datos.users.filter((e)=>e.id==datosPersons.id) 
+        let users ={...datosPersons, enable:dato[0].enable}
+        var msg=dato[0].enable==0?'se Cancelo':'se Habilito'
+        setPerson({...users})
+        usedispatch(addususcritor({users}))
+        localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+        hideAlert()
+        setDatoToas({  show:true,
+          message:"Suscripción actualizada con éxito "+msg,
+          color:'bg-success',
+          estado:'Actualizado',})
     }
     }
     } catch (error) {
+      setDatoToas({  show:true,
+        message:'Hubo un error, verifique su conexión o intente mas tarde',
+        color:'bg-danger',
+        estado:'Error',})
       console.log(error)
     }
+  }
+  async function Actualizar(){
+    let Datos ={
+      "nombreCompleto":datosPersons.name,
+      "email":datosPersons.email,
+      "new_password":datosPersons.new_password,
+      "movil":datosPersons.whatsapp,
+      "ciudad":datosPersons.ciudad
+    }
+    if(datosPersons.new_password.length<6){
+      setValidate("was-validated") 
+      return }
+    try {
+      setValidate("") 
+     /* const editar = await EditarSuscrito(datosPersons.id,Datos)
+      const {success} =editar
+      if(success){
+      usedispatch(addususcritor({datosPersons}))
+      localStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPersons))
+      setDatoToas({  show:true,
+        message:'Datos actualizados con éxito',
+        color:'bg-success',
+        estado:'Actualizado',})
+      }*/
+    } catch (error) {
+      setDatoToas({  show:true,
+        message:'Hubo un error, verifique su conexión o intente mas tarde',
+        color:'bg-danger',
+        estado:'Error',})
+      console.log("Error al Actualizar-->",error)
+      
+    }
+    
 
   }
-
    const successAlert = () => {
     setAlert(
       <SweetAlert
@@ -129,18 +179,23 @@ function PerfilPage() {
 
 
   useEffect(()=>{
-    let datos =getCliente()
-    setPerson({
-      ciudad :datos? datos.direccion:'',
-      email  :datos? datos.email:'',
-       enable : datos?  datos.enable:'',
-      fechaCreacion : datos?datos.fechaCreacion:'',
-      id :  datos?datos.id:'',  
-      movil :datos? datos.whatsapp:'',
-      name :datos?datos.name:'',
-      hora:datos? datos.hora:''
-
-    })
+  
+    (async()=>{
+      let info =getCliente()
+    
+      try {
+        const suscrito = await GetSuscritores()
+        console.log()
+      const dato = suscrito.users.filter((e)=>e.id==info.id) 
+      setPerson({...info,new_password:'',enable:dato[0].enable})
+     // console.log({...info,new_password:'',enable:dato[0].enable})
+      //console.log(dato)
+      } catch (error) {
+        console.log(error)
+        
+      }      
+    })()
+    
 
   },[])
   return (
@@ -172,7 +227,7 @@ function PerfilPage() {
                 <hr></hr>
                 <div className="stats">
                   <i className="fas fa-music mr-1"></i>
-                  Boletos
+                  Total Boletos
                 </div>
               </Card.Footer>
             </Card>
@@ -223,10 +278,10 @@ function PerfilPage() {
                   </Col>
                   <Col  xl="3" xs="6">
                     <button
-                      className="btn btn-danger"
+                      className={datosPersons.enable==1?" btn-success ":" btn-danger "+" btn "}
                       onClick={successAlert}
                     >                     
-                    Cancelar suscripción                  
+                   {datosPersons.enable==0?"Cancelar suscripción":"Habilitar suscripción"}                 
                     </button>
                     
                   </Col>
@@ -245,7 +300,7 @@ function PerfilPage() {
          
         </Row>
             <Row>
-              <Col md="8" sm="12">
+              <Col md="12" sm="12" xl="8">
               
                   <Card>
                     <Card.Header>
@@ -254,12 +309,14 @@ function PerfilPage() {
                       </Card.Header>
                     </Card.Header>
                     <Card.Body>
+                    <form className={validate}>                      
                     <Row>
                     <Col className="p-2" md="12">
                           <Form.Group>
                             <label>Nombres</label>
                             <Form.Control                              
                               placeholder="name"
+                              required
                               value={datosPersons.name}
                               onChange={(e)=>handelchange(e.target)}
                               name="name"
@@ -273,8 +330,9 @@ function PerfilPage() {
                           <Form.Group>
                             <label>Cédula </label>
                             <Form.Control                            
-                              
+                               required
                               placeholder=""
+                              disabled
                               value={datosPersons.cedula}
                               onChange={(e)=>handelchange(e.target)}
                               name="cedula"
@@ -305,8 +363,9 @@ function PerfilPage() {
                           <Form.Group>
                             <label>Whatsapp </label>
                             <Form.Control
-                              name="movil"
-                              value={datosPersons.movil}
+                              name="whatsapp"
+                              required
+                              value={datosPersons.whatsapp}
                               onChange={(e)=>handelchange(e.target)}
                               placeholder=""
                               type="text"
@@ -317,8 +376,8 @@ function PerfilPage() {
                           <Form.Group>
                             <label>Dirección</label>
                             <Form.Control
-                            name="ciudad"
-                            value={datosPersons.ciudad}
+                            name="direccion"
+                            value={datosPersons.direccion}
                             onChange={(e)=>handelchange(e.target)}
                               placeholder=""
                               type="text"
@@ -327,140 +386,32 @@ function PerfilPage() {
                         </Col>
                       </Row>                                        
                       <Row>
-                        <Col md="6" className="pr-1 pl-1">
+                      <Col className="pr-1 pl-1" md="12">
                           <Form.Group>
-                            <label>Fecha de nacimiento</label>
+                            <label>Nueva Contraseña</label>
                             <Form.Control
-                            name="fecha"
-                              value={datosPersons.fecha}
+                              name="new_password"
+                              placeholder=""
+                              required
+                              minLength={6}
+                              type="password"
+                              value={datosPersons.new_password}
                               onChange={(e)=>handelchange(e.target)}
-                              type="date"                             
-                              rows="4"
-                            ></Form.Control>
-                          </Form.Group>
-                        </Col>
-                        <Col className="pr-1 pl-1" md="6">
-                        <Form.Group>
-                            <label>Edad</label>
-                            <Form.Control
-                            disabled
-                            value={datosPersons.edad}
-                            name="edad"
-                              type="text"                             
-                              rows="4"
                             ></Form.Control>
                           </Form.Group>
                         </Col>
                       </Row>
+                      </form>
                       <button
-                        className="btn-fill pull-right btn btn-success"     
-                             
-                      >
-                       Actualizar
+                       
+                       onClick={ Actualizar}
+                        className="btn-fill pull-right btn btn-success">
+                          Actualizar
                       </button>
                       <div className="clearfix"></div>
                     </Card.Body>
                   </Card>
-               
               </Col>
-              <Col md="4">
-              
-                  <Card>
-                    <Card.Header>
-                     CAMBIAR CONTRASEÑA
-                    </Card.Header>
-                    <Card.Body>
-                    <Row>
-                        <Col className="pr-1 pl-1" md="12">
-                          <Form.Group>
-                            <label>Contraseña Actual</label>
-                            <Form.Control
-                              name="contraseña"
-                              placeholder=""
-                              type="password"
-                            ></Form.Control>
-                          </Form.Group>
-                        </Col>
-                        <Col className="pr-1 pl-1" md="12">
-                          <Form.Group>
-                            <label>Nueva Contraseña</label>
-                            <Form.Control
-                              name="newcontraseña"
-                              placeholder=""
-                              type="password"
-                            ></Form.Control>
-                          </Form.Group>
-                        </Col>
-                    </Row>
-                    <button className="btn-fill pull-right btn btn-success">
-                       Actualizar
-                    </button>
-                      <div className="clearfix"></div>
-                     
-                    </Card.Body>
-
-                  </Card>
-               
-
-              </Col>
-              {/*<Col md="4">
-                <Card className="card-user">
-                  <Card.Header className="no-padding">
-                    <div className="card-image">
-                      <img
-                        alt="..."
-                        src={require("assets/img/full-screen-image-3.jpg")}
-                      ></img>
-                    </div>
-                  </Card.Header>
-                  <Card.Body>
-                    <div className="author">
-                      <a href="#pablo" className=" nav-link" onClick={(e) => e.preventDefault()}>
-                        <img
-                          alt="..."
-                          className="avatar border-gray"
-                          src={require("assets/img/default-avatar.png")}
-                        ></img>
-                        <Card.Title as="h5">Tania Keatley</Card.Title>
-                      </a>
-                      <p className="card-description">michael24</p>
-                    </div>
-                    <p className="card-description text-center">
-                      Hey there! As you can see, <br></br>
-                      it is already looking great.
-                    </p>
-                  </Card.Body>
-                  <Card.Footer>
-                    <hr></hr>
-                    <div className="button-container text-center">
-                      <Button
-                        className="btn-simple btn-icon"
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                        variant="link"
-                      >
-                        <i className="fab fa-facebook-square"></i>
-                      </Button>
-                      <Button
-                        className="btn-simple btn-icon"
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                        variant="link"
-                      >
-                        <i className="fab fa-twitter"></i>
-                      </Button>
-                      <Button
-                        className="btn-simple btn-icon"
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                        variant="link"
-                      >
-                        <i className="fab fa-google-plus-square"></i>
-                      </Button>
-                    </div>
-                  </Card.Footer>
-                </Card>
-              </Col>*/}
             </Row>
           </Container>
         </div>

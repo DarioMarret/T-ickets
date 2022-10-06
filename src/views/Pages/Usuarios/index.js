@@ -303,9 +303,8 @@ const UsersView=()=>{
                                       <td>{e.username}</td>
                                       <td>{e.perfil} </td>
                                       <td>{e.fecha_creacion} </td>
-                                      <td >
-                                     
-                                      <Button
+                                      <th>                                     
+                                        <Button
                                           onClick={() => history.push("/admin/usuario/"+e.id)}
                                           variant="danger"
                                           size="sm"
@@ -321,10 +320,7 @@ const UsersView=()=>{
                                         >
                                           <i className="fa fa-edit" />
                                         </Button>*/}
-                                       
-                                      
-                                      
-                                       </td>
+                                        </th>
                                  </tr>
 
                                     )

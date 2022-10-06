@@ -1,7 +1,7 @@
 import axios from "axios"
 import { getDatosUsuariosLocalStorag ,getCliente} from "./DatosUsuarioLocalStorag"
 import { GetValores,GetMetodo,getVerTienda } from "./CarritoLocalStorang"
-import { Host ,Whatsappnumero,DatosUsuariocliente} from "./constantes"
+import { Host ,Whatsappnumero,DatosUsuariocliente, Valores} from "./constantes"
 /**
  * 
  * @returns {
@@ -10,6 +10,15 @@ import { Host ,Whatsappnumero,DatosUsuariocliente} from "./constantes"
  * }
  * 
  */
+ export const Authsucrito =async(parms)=>{
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_suscriptor", parms, {
+              headers: {                
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+              }
+            })
+    return data
+}
 export const GenerarLinkPagoMedios = async () => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let concierto= getVerTienda()
@@ -23,24 +32,29 @@ if(datosPersonal!=null && valores!=null )   {
         valores,
         metodo,
         concierto
-        })
+        },{
+            headers: {                
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+          })
         //const envios= datosPersonal.envio=="correo"? await EnviarEmail() : await EnviarmensajeWhastapp() 
         return  data.data
         }
 }
 export const GuardarDatosdelComprador =async()=>{
-    let auth = getCliente()
+   
     let datosPerson = getDatosUsuariosLocalStorag()    
     let datos ={
-        cedula:auth==null?datosPerson.cedula: auth.cedula,
-        ciudad:auth==null?datosPerson.direccion: auth.direccion,
-        discapacidad:auth==null?datosPerson.discapacidad: auth.discapacidad,
-        edad:auth==null?datosPerson.edad: auth.edad,
-        email:auth==null?datosPerson.email: auth.email,
-        genero:auth==null?datosPerson.genero: auth.genero,
-        nombreCompleto:auth==null?datosPerson.name: auth.name,
-        sexo:auth==null?datosPerson.sexo: auth.sexo,
-        movil:auth==null?datosPerson.whatsapp: auth.whatsapp,    
+        cedula:datosPerson.cedula,
+        ciudad:datosPerson.direccion,
+        discapacidad:datosPerson.discapacidad,
+        edad:datosPerson.edad,
+        email:datosPerson.email,
+        genero:datosPerson.genero,
+        nombreCompleto:datosPerson.name,
+        sexo:datosPerson.sexo,
+        movil:datosPerson.whatsapp,    
         password:  datosPerson.cedula
     }
     const {data}= await axios.post(Host+"api/v1/crear_suscriptor",
@@ -60,7 +74,7 @@ export const ValidarWhatsapp =async()=>{
     const validanumero = datosPerson.whatsapp.substring(1,10)    
     const {data}= await axios.post("https://rec.netbot.ec/api_whatsapp_qr/api/validarNumero",{from: "593"+validanumero})
         if(data.msg!=null){
-            console.log(data)
+          //  console.log(data)
             localStorage.setItem(Whatsappnumero, data.msg["_serialized"])        
         return data.msg
         }else{
@@ -70,97 +84,46 @@ export const ValidarWhatsapp =async()=>{
 }
 let Produ=[]
 let message 
-export const EnviarmensajeWhastapp=async ()=>{
-    let auth = getCliente()
+export const EnviarmensajeWhastapp=async (parms)=>{   
+    let valores = GetValores() 
     let datosPerson = getDatosUsuariosLocalStorag()   
+    let lista = "593"+datosPerson.whatsapp+"@c.us"
     let from = localStorage.getItem(Whatsappnumero)
-    Produ = getVerTienda()
-    let datos = auth!=null? auth:datosPerson    
-    console.log(datos.nombreCompleto)
-    !auth!=null?  message = "Hola soy "+auth.nombreCompleto+" con cédula "+auth.movil: message = "Hola soy "+datosPerson.name+" con cédula "+datosPerson.whatsapp
+    Produ = getVerTienda()      
+   let codigo = parms!=null?"y por lo cual Deposite la cantidad de $"+ (parseFloat(valores.comision)+parseFloat(valores.subtotal)).toFixed(2) +" con Código de depósito  "+parms:" "
+    message =  message = "Hola soy "+datosPerson.name+" con cédula "+datosPerson.whatsapp 
     message = message + " seleccione "
     Produ!=null? Produ.map((e,i)=>{
         message= message+" la cantidad de "+ e.cantidad+" asiento para el concierto "+ e.nombreConcierto + " de la localidad  " + e.localidad+ ", "
-
     }):''
-    console.log(from)
-    message = message+" podría contactarse conmigo para terminar el proceso de compra"
-    console.log("mensaje a enviar---> ",message)   
+    message = message + codigo +" podría contactarse conmigo para terminar el proceso de compra"
+    //console.log("mensaje a enviar---> ",message)   
    /* const {data}= await axios.post("https://rec.netbot.ec/api_whatsapp_qr/api/send_whatsapp",{
         from:from,
         mensaje:message,
         link:null
     })*/
-    console.log("mensaje -->",message)
-    
+    console.log("mensaje -->",message)    
     return message
 }
-export const EnviarEmail=async()=>{
-    let auth = getCliente()
-    let datosPerson = getDatosUsuariosLocalStorag()   
-    let datos = auth!=null? auth:datosPerson
-   
-    message = "Hola soy "+!datos.nombreCompleto?datos.name:datos.nombreCompleto+" con cédula "+!datos.movil?datos.cedula:datos.movil
-    message = message + " seleccione "
-    Produ!=null? Produ.map((e,i)=>{
-        //console.log(e)
-        message= message+" la cantidad de "+ e.cantidad+" asiento para el concierto "+ e.nombreConcierto + " de la localidad  " + e.localidad+ ", "
-
-    }):''
-    const {data} =await axios.post("",{
-        from:datos.email,
-        message:message,
-        link:null
-    })
-
-    return data
-
-
-}
-/**
- * 
- * @returns {
- * data
- * }
- */
-/*
-
-export const CrearLinkPagoPayPhone = async () => {
-    let datosPersonal = getDatosUsuariosLocalStorag()
-    let valores = GetValores()
-    console.log("CrearLinkPagoPayPhone-----",{ datosPersonal,valores})
-    console.log(valores)
-    console.log(datosPersonal)
-    if(datosPersonal!=null&& valore!=null)   {
-    const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_payphone",{
-        datosPersonal,
-        valores
-    })
-    return  data
-     }
-}*
-/* 
-Guradar compra y crear usuario Reportar deposito no genera link de pago
-@parms codigo:codigo del deposito
-*/
-
-
-export const ReportarDepositoCompra= async(codigo)=>{
+export const ReportarDepositoCompra= async(transaccion)=>{
     let datosPersonal = getDatosUsuariosLocalStorag()   
     let concierto= getVerTienda()
     let valores = GetValores()
     let metodo = GetMetodo()
-    console.log("se esta generando")  
-    console.log({codigo,
-        datosPersonal,
-        valores})
-   /* const {data} = await axios.post("endpoit-de-deposito",{
-        codigo,
-        datosPersonal,
-        valores,metodo
-    })
+   // console.log("se esta generando")  
+   const {data} = await axios.post(Host+"pago_medio",{
+       datosPersonal,
+        valores,
+        metodo,
+        concierto,
+        "transaccion":transaccion},{headers:{
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='  
+        }}
+    )
     return data;
-   */
+   
       
 }
 /* *
@@ -171,14 +134,18 @@ export const ReportarEfectivoCompra= async()=>{
     let concierto= getVerTienda()
     let valores = GetValores()
     let metodo = GetMetodo()
-    //let dato = auth==null?datosPersonal :auth
-    console.log({datosPersonal,concierto,valores,metodo})
+  //console.log({datosPersonal,concierto,valores,metodo})
 const {data} = await axios.post(Host+"pago_medio",{        
     datosPersonal,
         valores,
         concierto,
-        metodo,
-    })
+        metodo, },{
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='  
+            }
+        }
+    )
     return data;
-    //return true
-}
+    
+    }
