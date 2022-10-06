@@ -12,11 +12,11 @@ const ModalEfectivo =(props)=>{
          
       //  const data =await ReportarEfectivoCompra()
        //  const {success} =data
-         const mensaje =await EnviarmensajeWhastapp()
+         const mensaje =await ReportarEfectivoCompra()
          const {message} =mensaje
         
          //handleefectivoClose()
-       
+       console.log(mensaje)
         if(message!=null){
           handleClosefectivo()
         //setShow(true)
@@ -28,6 +28,7 @@ const ModalEfectivo =(props)=>{
        
          //console.log(data)
         } catch (error) {
+          console.log(error)
           console.log(error)
           
         }

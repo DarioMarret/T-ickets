@@ -29,7 +29,7 @@ const SuscritoridView=()=>{
           const {success}=cancelar
           console.log(cancelar)
           if(success){
-          location.reload()
+            history.push("/admin/suscritor")
         }
         }
         } catch (error) {

@@ -37,6 +37,7 @@ const ModalLogin =(props)=>{
            //const { success, tocken } = data
             if (data.data) {
               var hoy = new Date();
+              console.log(data)
               let client ={
                 direccion:data.data.ciudad,
                 email:data.data.email,

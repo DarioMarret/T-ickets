@@ -192,9 +192,9 @@ const Registroseccion =(props)=>{
 
     const objeto = JSON.stringify({nombre:'Localidad nombre',Descripcion:'Consultar que descricion--- donde estara ubicado?',espacios:[...ListaFilas]})
     
-    //let arrayList = [];
+    let array = [];
     function toggleValueInArray(value) {
-        let array =sillaarray
+       
         var index = array.findIndex(obj => obj.silla==value.silla);
       //var index = array.indexOf(value);     
       if (index === -1) {
@@ -252,11 +252,6 @@ const Registroseccion =(props)=>{
                 $("a."+puesto).removeClass("bg-success").removeClass("sillas").addClass("bg-secondary").addClass("asiento")   
                 $("a").hasClass(''+puesto)? toggleValueInArray({"fila":fila,"silla":puesto}):''
             }
-            /*else if(!$("."+puesto).hasClass('bg-danger') && !$("."+puesto).hasClass('bg-success')){
-                this.classList.replace('bg-secondary','bg-success');
-                $("a."+puesto).removeClass("bg-secondary").removeClass("asiento").addClass("bg-success").addClass("sillas")   
-                $("a").hasClass(''+puesto)? toggleValueInArray({"fila":fila,"silla":puesto}):''
-            }*/         
          }       
      })
      $(document).on('click','div.Sillas',function(e){     

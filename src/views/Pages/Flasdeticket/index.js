@@ -130,6 +130,7 @@ const IndexFlas = () => {
           })    
           return false}      
        const {success,message} = await GuardarDatosdelComprador()        
+       console.log(success,message)
        if(success){
         localStorage.setItem(DatosUsuariocliente, JSON.stringify(datos))
         usedispatch(addususcritor({...datos}))

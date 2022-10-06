@@ -12,6 +12,7 @@ import { Host ,Whatsappnumero,DatosUsuariocliente} from "./constantes"
  */
 export const GenerarLinkPagoMedios = async () => {
     let datosPersonal = getDatosUsuariosLocalStorag()
+    let concierto= getVerTienda()
     let valores = GetValores()
     let metodo = GetMetodo()
     console.log("se esta generando")  
@@ -20,9 +21,10 @@ if(datosPersonal!=null && valores!=null )   {
           const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio",{
         datosPersonal,
         valores,
-        metodo
+        metodo,
+        concierto
         })
-        const envios= datosPersonal.envio=="correo"? await EnviarEmail() : await EnviarmensajeWhastapp() 
+        //const envios= datosPersonal.envio=="correo"? await EnviarEmail() : await EnviarmensajeWhastapp() 
         return  data.data
         }
 }
@@ -31,17 +33,23 @@ export const GuardarDatosdelComprador =async()=>{
     let datosPerson = getDatosUsuariosLocalStorag()    
     let datos ={
         cedula:auth==null?datosPerson.cedula: auth.cedula,
-        direccion:auth==null?datosPerson.direccion: auth.direccion,
+        ciudad:auth==null?datosPerson.direccion: auth.direccion,
         discapacidad:auth==null?datosPerson.discapacidad: auth.discapacidad,
         edad:auth==null?datosPerson.edad: auth.edad,
         email:auth==null?datosPerson.email: auth.email,
         genero:auth==null?datosPerson.genero: auth.genero,
-        name:auth==null?datosPerson.name: auth.name,
+        nombreCompleto:auth==null?datosPerson.name: auth.name,
         sexo:auth==null?datosPerson.sexo: auth.sexo,
-        telefono:auth==null?datosPerson.whatsapp: auth.whatsapp,      
+        movil:auth==null?datosPerson.whatsapp: auth.whatsapp,    
+        password:  datosPerson.cedula
     }
-    const {data}= await axios.post(Host+"suscripcion",
-        datos
+    const {data}= await axios.post(Host+"api/v1/crear_suscriptor",
+        datos,{
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='  
+            }
+        }
     )
     
     return data
@@ -138,15 +146,18 @@ Guradar compra y crear usuario Reportar deposito no genera link de pago
 
 
 export const ReportarDepositoCompra= async(codigo)=>{
-    let datosPersonal = getDatosUsuariosLocalStorag()
+    let datosPersonal = getDatosUsuariosLocalStorag()   
+    let concierto= getVerTienda()
     let valores = GetValores()
+    let metodo = GetMetodo()
+    console.log("se esta generando")  
     console.log({codigo,
         datosPersonal,
         valores})
    /* const {data} = await axios.post("endpoit-de-deposito",{
         codigo,
         datosPersonal,
-        valores
+        valores,metodo
     })
     return data;
    */
@@ -156,16 +167,18 @@ export const ReportarDepositoCompra= async(codigo)=>{
 *Guardar la compra y crear usuario no genera link de pago
 */
 export const ReportarEfectivoCompra= async()=>{
-    let auth = getCliente()
-    let datosPersonal = getDatosUsuariosLocalStorag()
+    let datosPersonal = getDatosUsuariosLocalStorag()   
+    let concierto= getVerTienda()
     let valores = GetValores()
     let metodo = GetMetodo()
-    let dato = auth==null?datosPersonal :auth
-/*const {data} = await axios.post(Host+"pago_medio",{        
-         dato,
+    //let dato = auth==null?datosPersonal :auth
+    console.log({datosPersonal,concierto,valores,metodo})
+const {data} = await axios.post(Host+"pago_medio",{        
+    datosPersonal,
         valores,
-        metodo
+        concierto,
+        metodo,
     })
-    return data;*/
-    return true
+    return data;
+    //return true
 }

@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 
+import icon from "assets/imagen/logo_Flash.png";
+
 import imagen5 from "assets/imagen/logo-tickets.png"
 
 // react-bootstrap components
@@ -148,17 +150,17 @@ function Sidebar({ routes, image, background }) {
               href="/admin/inicio"
             >
               <div className="logo-img">
-                <img
+                {/*<img
                   src={require("assets/img/logo.svg").default}
                   alt="react-logo"
-                />
+                />/*/}
               </div>
             </a>
             <a
               className="simple-text logo-normal nav-link"
               href="/admin/inicio"
             >
-              Flash ticket
+             <img src={icon} className="img-fluid" style={{ height: '50px' }} alt="" />
             </a>
           </div>
           {/*<div className="logo">
