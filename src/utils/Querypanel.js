@@ -224,7 +224,7 @@ export const EliminarLocalidad = async(parms)=>{
 }
 /** Error500 */
 export const FiltrarConcierto = async(parms)=>{
-    const {data}= await axios.post(Host+"api/v1/filtrar_concierto",{"nombreconcert":parms},{
+    const {data}= await axios.post("https://rec.netbot.ec/ms_login/api/v1/filtrar_concierto",{"nombreconcert":parms},{
         headers:{            
             'Content-Type':'application/json',
             'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      

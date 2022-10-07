@@ -37,7 +37,7 @@ const EventosViews =()=>{
                 const filtered = Filtrar.filter(({nombre}, index) => !ids.includes(nombre, index + 1))
                 setEvento(filtered)
                 const concierto = infor.filter(e => e.concierto == filtered[0].nombre)
-                setTikes(concierto)
+               // setTikes(concierto)
                
                
               await  Concietos(filtered[0].nombre)
@@ -51,7 +51,23 @@ const EventosViews =()=>{
         async function Concietos (e){ 
           try {
               const datos= await FiltrarConcierto(e)
-              console.log(datos)            
+              const infor = datos.map((e,i)=>{
+                return {
+                    id: e.id,
+                    nombre: e.nombre,
+                    cedula: e.cedula,
+                    celular:e.celular,
+                    fecha:e.actual,
+                    ciudad: e.cuidadconcert,
+                    concierto: e.nombreconcert,
+                    protocolo:e.protocol,
+                    link:e.link,
+                    qr:e.qr,
+                   
+                  };
+            })
+              setTikes(infor)
+            //  console.log(datos)            
           } catch (error) {
             console.log(error)
           }
@@ -80,7 +96,7 @@ return(
             <Swiper navigation={true}   modules={[Navigation]} 
           
            
-           onSlideChange={async (swiperCore) => {
+           onSlideChange={ async (swiperCore) => {
              const {
                activeIndex,
                snapIndex,
@@ -89,9 +105,10 @@ return(
              } = swiperCore;
              console.log(Evento[realIndex].nombre)
              var arraycopia = DatosGlobal
-             const concierto = arraycopia.filter(e => e.concierto == Evento[realIndex].nombre)
+             //const concierto = arraycopia.filter(e => e.concierto == Evento[realIndex].nombre)
+              Concietos(Evento[realIndex].nombre)
            //  console.log(DatosGlobal)
-             setTikes(concierto)
+             //setTikes(concierto)
             // console.log(Evento[realIndex]) 
             // console.log({ activeIndex, snapIndex, previousIndex, realIndex });
          }}
