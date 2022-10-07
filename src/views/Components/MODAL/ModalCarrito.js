@@ -149,8 +149,12 @@ function ModalCarrito(props) {
                 onHide={handleClose}
                 size="lg"
             >
-                <Modal.Header closeButton>
+                <Modal.Header >
                     <h5 className="modal-title text-center justify-content-center">LOCALIDADES</h5>
+                    <button type="button" className="close"
+                        onClick={handleClose}>
+                        ×
+                    </button>
                 </Modal.Header>
                 <Modal.Body>
                     <Table>

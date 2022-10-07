@@ -59,7 +59,11 @@ const Reporte =(props) => {
                 onHide={handlereportColse}
                 size="lg"
                 >
-    <Modal.Header closeButton >
+    <Modal.Header  >
+    <button type="button" className="close"
+                        onClick={handlereportColse}>
+                        ×
+                    </button>
                     
                 </Modal.Header>
                 <Modal.Body>

@@ -270,8 +270,11 @@ return (
         onHide={handleDetalleColse}
         size="lg"
     >
-        <Modal.Header closeButton>
-
+        <Modal.Header >
+        <button type="button" className="close"
+                        onClick={handleDetalleColse}>
+                        ×
+                    </button>
         </Modal.Header>
 
         <Modal.Body>

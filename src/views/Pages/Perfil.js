@@ -278,10 +278,10 @@ function PerfilPage(props) {
                   </Col>
                   <Col  xl="3" xs="6">
                     <button
-                      className={datosPersons.enable==1?" btn-success ":" btn-danger "+" btn "}
+                      className={datosPersons.enable==1?" btn-success ":" btn-danger "}
                       onClick={successAlert}
                     >                     
-                   {datosPersons.enable==0?"Cancelar suscripción":"Habilitar suscripción"}                 
+                   {datosPersons.enable==1?"Habilitar suscripción":"Cancelar suscripción"}                 
                     </button>
                     
                   </Col>

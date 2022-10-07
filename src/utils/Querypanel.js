@@ -126,3 +126,89 @@ export const ListarTikets=async()=>{
     const {data} =await axios.get("https://rec.netbot.ec/pdfqr/api/v1/szchat/listar/")
     return data
 }
+export const ListarConcierto =async(parms)=>{
+    const {data}= await axios.post(Host+"api/v1/filtrar_concierto",parms,{
+        headers:{            
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      
+                              
+         }   
+    })
+    return data
+}
+
+export const GuardarEspacio = async(parms)=>{
+    const {data}=await axios.post(Host+"api/v1/gusdar_espacio",parms,{
+        headers:{            
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      
+                              
+         }
+    })
+    return data
+}
+
+export const ListarEspacios = async ()=>{
+    const {data}=await axios.get(Host+"api/v1/listar_espacios",{
+        headers:{            
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      
+                              
+         }
+    })
+    return data
+}
+export const EliminarEspacios = async (parms)=>{
+    const {data}= await axios.delete(Host+"api/v1/eliminar_espacio",parms,{
+        headers:{
+            '':'',
+            '':''
+        }
+    })
+    return data
+}
+export const ActualizarEspacio = async (parms)=>{
+    const {data}= await axios.put(Host+"api/v1/actualizar_espacio",parms,{
+        headers:{
+            '':'',
+            '':''
+        }
+    })
+    return data
+}
+export const GuardarLocalidad = async (parms)=>{
+    const {data}= await axios.post(Host+"api/v1/guardar_localidad",parms,{
+        headers:{
+            '':'',
+
+        }
+    })
+    return data
+}
+export const ListarLocalidad  = async ()=>{
+    const {data} = await axios.get(Host+"api/v1/listar_localidades",{
+        header:{
+            '':''
+        }
+    })
+    return data
+}
+export const AptualizarLocalida = async(parms)=>{
+    const {data}= await axios.put(Host+"api/v1/listar_localidades",parms,{
+        headers:{
+            '':'',
+        }
+    })
+    return data
+}
+export const EliminarLocalidad = async(parms)=>{
+    const {data}= await axios.delete(Host+"api/v1/eliminar_localidad",parms,{
+        headers:{
+            '':'',
+        }
+    })
+    return data
+}
+export const FiltrarConcierto = async(parms)=>{
+    const {data}= await axios.post(Host+"api/v1/filtrar_concierto")
+}

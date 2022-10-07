@@ -31,7 +31,11 @@ const ModalEfectivo =(props)=>{
         show={efectShow}
         onHide={handleefectivoClose}
         >       
-        <Modal.Header closeButton>
+        <Modal.Header >
+        <button type="button" className="close"
+                        onClick={handleefectivoClose}>
+                        ×
+                    </button>
         </Modal.Header>
         <Modal.Body>
         <div className="container pt-5">

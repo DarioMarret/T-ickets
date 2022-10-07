@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Modal,ProgressBar,OverlayTrigger,Tooltip} from "react-bootstrap"
+import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button} from "react-bootstrap"
 import MesasView from 'views/Pages/Mesas';
 
 const Registroseccion =(props)=>{
-    const {show,setShowToast} =props
+    const {show,setShowToast,datosEs} =props
     let ListadeFilas=[]
     let ListadeMesas=[]
     let i=0
@@ -270,6 +270,7 @@ const Registroseccion =(props)=>{
      })
  
 useEffect(()=>{
+    console.log("modal",datosEs)
   setTabactive({
             tab1:'',
             tab2:'d-none',
@@ -283,10 +284,18 @@ useEffect(()=>{
     <Modal 
     show={show}
     size='lg'
+    fullscreen={true}
+    
+    animation={true} 
     onHide={()=>setShowToast(false)}
     >
-        <Modal.Header closeButton>
-    <Modal.Title>Registro de Localidad</Modal.Title>
+        <Modal.Header   >
+    <Modal.Title>Registro de Localidad en {datosEs?datosEs.nombre:''} </Modal.Title>
+    <button type="button" className="close"
+                        onClick={()=>setShowToast(false)}>
+                        ×
+                    </button>
+
          </Modal.Header>
             <Modal.Body> 
             <div className='container-fluid row p-0'>
@@ -429,13 +438,48 @@ useEffect(()=>{
 
                                     </div>
                                     <div className="tab-pane  container" id="mesas">
-                                                    <div className="mt-4 row">
+                                                    <div className=" row">
                                                             
                                                         </div>
 
                                                         <div className="row">
+                                                        <div className='row col-12'>
+                                                        <div className='col-12 col-md-5'>
+                                                        <label className="form-label"><b># de Filas</b></label>
+                                                                <div className="input-group mb-3">
+                                                                    <div className="input-group-prepend">
+                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
+                                                                    </div>
+                                                                    <input type="number" name="me_cantidad" id="me_cantidad"
+                                                                    onChange={(e)=>handelchangeMesa(e.target)}
+                                                                     className="form-control" placeholder="10" />
+                                                        </div>
                                                         
-                                                        <div className="col-sm-5">
+
+                                                        </div>
+                                                        <div className='col-12 col-md-5'>
+                                                        <label className="form-label"><b>Número inicial</b></label>
+                                                                <div className="input-group mb-3">
+                                                                    <div className="input-group-prepend">
+                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
+                                                                    </div>
+                                                                    <input type="text" name="me_cantidad" id="me_cantidad"
+                                                                    onChange={(e)=>handelchangeMesa(e.target)}
+                                                                     className="form-control" placeholder="10" />
+                                                        </div>
+                                                        
+
+                                                        </div>
+                                                        <div className='col-12 col-md-2'>
+                                                        
+                                                                <button   className="btn btn-info" >Agregar</button>
+                                                            
+
+                                                        </div>
+
+                                                        </div>
+                                                        <div className='row'>
+                                                        <div className="col-12 col-md-5">
                                                                 <label className="form-label"><b># de Mesas</b></label>
                                                                 <div className="input-group mb-3">
                                                                     <div className="input-group-prepend">
@@ -448,7 +492,7 @@ useEffect(()=>{
                                                             </div>
 
 
-                                                            <div className="col-sm-5">
+                                                            <div className="col-12 col-md-5">
                                                                 <label className="form-label"><b>Número inicial</b></label>
                                                                 <div className="input-group mb-3">
                                                                     <div className="input-group-prepend">
@@ -460,13 +504,14 @@ useEffect(()=>{
                                                                                                                         </div>
                                                             </div>
 
-                                                            <div className="col-sm-2 text-left">
-                                                                <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
-                                                                <button   className="btn btn-info" onClick={GenerMesas}><i className="fa fa-plus"></i></button>
+                                                            <div className="col-12 col-md-2 text-left">
+                                                                 <button   className="btn btn-info" onClick={GenerMesas}>Agregar</button>
                                                             </div>
+                                                        </div>
+                                                        <div className='row'>
                                                             {
                                                             ListaMesa.length>0?
-                                                            <div className="col-sm-5">
+                                                            <div className="col-12 col-md-5">
                                                                 <label className="form-label"><b> Mesas</b></label>
                                                                 <div className="input-group mb-3">
                                                                     <div className="input-group-prepend">
@@ -489,8 +534,8 @@ useEffect(()=>{
                                                             </div>:""}
                                                             {
                                                             ListaMesa.length>0?
-                                                            <div className="col-sm-5">
-                                                                <label className="form-label"><b>Sillas </b></label>
+                                                            <div className="col-12 col-md-5">
+                                                                <label className="form-label"><b># de Sillas </b></label>
                                                                 <div className="input-group mb-3">
                                                                 <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
@@ -508,27 +553,15 @@ useEffect(()=>{
                                                                     </select>
                                                                 </div>
                                                             </div>   :""}    
-                                                            {
-                                                                ListaMesa.length>0?                                         
-                                                            <div className="col-sm-2 d-none">
-                                                            <label className="form-label"><b> Sillas</b></label>
-                                                         
-                                                                <div className="input-group mb-3">
-                                                                  <div className="">
-                                                                        <span className="input-group-text"><i className="fa fa-tablet"></i> 0</span>
-                                                                    </div>
-                                                             </div>  
-                                                                
-                                                
-
-                                                            </div>:""}
+                                                            
                                                             {
                                                                 ListaMesa.length>0?
-                                                            <div className="col-sm-2 text-left">
+                                                            <div className="col-md-2 text-left">
                                                                 <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
                                                                 <button  className="btn btn-info" onClick={AgregasSillasMesa}>Agrega</button>
                                                             
                                                             </div>:""}
+                                                            </div>
                                                         
                                                             
                                                             

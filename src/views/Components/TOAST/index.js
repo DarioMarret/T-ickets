@@ -21,7 +21,12 @@ const ViewToas =(props) =>{
        <Toast.Header>
         <div className={Toastestado.color+" rounded-3"} style={{width:'20px',height:'20px',}}></div>
         <strong className="mr-auto  px-1">{Toastestado.estado} </strong>
-      <small></small>
+      <small></small> 
+      <button type="button" className="close"
+                       onClick={()=>setDatoToas({...Toastestado,show:false})} >
+                        ×
+                    </button>
+
     </Toast.Header>
         <Toast.Body className={ Toastestado.color +" text-white"} >{Toastestado.message}</Toast.Body>
         </Toast>
