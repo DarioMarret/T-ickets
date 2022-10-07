@@ -1,9 +1,11 @@
-import React,{useState} from "react"
+import React,{useEffect, useState} from "react"
 import { Modal } from "react-bootstrap"
-import { GuardarEspacio } from "utils/Querypanel"
+import { GuardarEspacio,ActualizarEspacio } from "utils/Querypanel"
 const NewEspacioView =(props)=>{
-    const {showNuevo,SetShownuev}=props
+    const {showNuevo,SetShownuev,localidaname,estado}=props
+    
     const [espacio,setEspacio]=useState({
+         id:'',
         nombre: '',
         descripcion: ''
       })
@@ -12,12 +14,16 @@ const NewEspacioView =(props)=>{
             ...espacio,
             [e.name]:e.value}
         )
-        console.log(e)
+        //console.log(e)
   
      }
      async function Guardar(){
+        let datos ={
+            nombre: espacio.nombre,
+        descripcion: espacio.descripcion
+        }
     
-        if(!Object.values(espacio).every(e=>e)) return
+        if(!Object.values(datos).every(e=>e)) return
         try {
           const espaci = await GuardarEspacio(espacio)
           const {success}= espaci
@@ -29,6 +35,22 @@ const NewEspacioView =(props)=>{
           
         }
        } 
+    async function Editar(){
+        try{
+            const actualiza = await ActualizarEspacio(espacio)
+            const {success}= actualiza
+            if(success){
+            console.log(actualiza)
+            alert("no hubo error")}
+        }catch(error){
+            console.log("error")
+
+        }
+    }
+       useEffect(()=>{
+        setEspacio({...localidaname})
+
+       },[showNuevo])
     return(
         <Modal
         show={showNuevo}
@@ -37,7 +59,7 @@ const NewEspacioView =(props)=>{
                
                     <div className="modal-content ">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="espacioModal">Registrar espacio</h5>
+                            <h5 className="modal-title" id="espacioModal">{estado!=""? "Actualizar espacio":"Registar espacio"}</h5>
                             <button type="button" className="close"
                         onClick={()=>SetShownuev(false)}>
                         ×
@@ -73,6 +95,7 @@ const NewEspacioView =(props)=>{
                                             </div>
                                             <textarea className="form-control"
                                              name="descripcion" id="descripcion"
+                                             value={espacio.descripcion}
                                              onChange={(e)=>handelchange(e.target)} cols="30" rows="4"  placeholder="Ingresa una descripción del espacio"></textarea>
                                                                         </div>
                                     </div>
@@ -81,9 +104,13 @@ const NewEspacioView =(props)=>{
                             <div className="modal-footer">
                                 
                                 <button type="button" className="btn btn-secondary close-btn" data-dismiss="modal">Salir</button>
+                                                       {estado=="update"? <button 
+                                                        onClick={Editar}
+                                                        className="btn btn-primary close-modal" >Editar</button>:
                                                         <button 
                                                         onClick={Guardar}
                                                         className="btn btn-primary close-modal" >Grabar</button>
+                                                        }
                                                 </div>
                         
                     </div> 

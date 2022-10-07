@@ -1,26 +1,22 @@
 import React, {useEffect,useState} from  "react";
-import Modalregistroespacio from "./MODAL/REGISTROSECCION.js";
-import { GuardarEspacio,ListarEspacios } from "utils/Querypanel.js";
+import Modalregistroespacio from "./MODAL/Registrolocalidad.js";
+import { EliminarEspacios,ListarEspacios } from "utils/Querypanel.js";
 import { Row,Col,Card } from "react-bootstrap";
 import NewEspacioView from "./MODAL/NuevoEspacio.js";
+import SweetAlert from 'react-bootstrap-sweetalert';
 import axios from "axios";
 
 
 const EventosViews =()=>{
-  const [localidaname,setLocalidad]=useState({
-    nombre:'',
-    description:''
-})
-    const [show,setShowToast] =useState(false)
-    const [showNuevo,SetShownuev]=useState(false)
-    
-    const [listaEsp,setListaEspa]=useState([])
+  const [localidaname,setLocalidad]=useState({id:'',nombre:'', descripcion:''})
+  const [estado,SetEstado]=useState("")
+  const [alert,setAlert] = React.useState(null)
+  const [show,setShowToast] =useState(false)
+  const [showNuevo,SetShownuev]=useState(false)
+  const [listaEsp,setListaEspa]=useState([])
    
-   let ListadeFilas=[]
-   let Listasillas=[] 
-   let i=0
-   let f=0
   function  AgregasSillasMesa(e){
+   
     setLocalidad(e)
    
     
@@ -33,8 +29,20 @@ async function Lista (){
   if(success){
     setListaEspa(data) }
 }
-function nuevoevento(){
-    setShowToast(true)
+ async function Elimnar(e){
+  try {
+    const elimonado= await EliminarEspacios(e)
+    console.log(elimonado)
+    
+  } catch (error) {
+    console.log(error)
+    
+  }
+ }
+function Editar(e,estado){
+    SetEstado(estado)
+    setLocalidad({...e})
+    SetShownuev(true)
    }
    
    
@@ -46,10 +54,60 @@ function nuevoevento(){
      
        
     },[])
+    const successAlert = (e) => {
+      setAlert(
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Estas Seguro?"
+          onConfirm={() => Elimnar(e)}
+          onCancel={() => cancelDetele()}
+          confirmBtnBsStyle="success"
+          cancelBtnBsStyle="danger"
+          confirmBtnText="Confirmar"
+          cancelBtnText="Cancelar"
+          showCancel
+        >Esta seguro de eliminar este Espacio
+        </SweetAlert>
+      );
+    };
+    const successDelete = () => {
+      setAlert(
+        <SweetAlert
+          success
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Eliminado!"
+          onConfirm={() => hideAlert()}
+          onCancel={() => hideAlert()}
+          confirmBtnBsStyle="success"
+        >
+          El usuario se elimino correctamenta
+        </SweetAlert>
+      );
+    };
+    const cancelDetele = () => {
+      setAlert(
+        <SweetAlert
+          danger
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Cancelado"
+          onConfirm={() => hideAlert()}
+          onCancel={() => hideAlert()}
+          confirmBtnBsStyle="success"
+        >
+         Se a cancelado la acción 
+        </SweetAlert>
+      );
+    };
+   
+    const hideAlert = () => {
+      setAlert(null);
+    };
+    
  
     return(
         <div className="container-fluid">
-              
+           {alert}   
           <Row>
           <Col lg="3" sm="6">
             <Card className="card-stats">
@@ -165,7 +223,7 @@ function nuevoevento(){
                 <div>
                 </div>
                 <div className="col-md-12">
-                <button  className="btn btn-success" onClick={()=> SetShownuev(true)} ><i className="mr-2 fa fa-plus"></i> Nuevo espacio  </button>
+                <button  className="btn btn-success" onClick={()=> Editar({id:'',nombre:'', description:''},"")} ><i className="mr-2 fa fa-plus"></i> Nuevo espacio  </button>
                
 
                     <br/><br/>
@@ -193,11 +251,14 @@ function nuevoevento(){
                                          <th scope="row">{e.id}</th>
                                         <td>{e.nombre}</td>
                                         <td> {e.descripcion} </td>
-                                        <td>
-                                            <div className="btn-group" role="group" aria-label="Basic example">
-                                                <a   onClick={()=>AgregasSillasMesa(e)}className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></a>
-                                            </div>
-                                        </td>
+                                        <th>
+                                            
+                                                <a   onClick={()=>AgregasSillasMesa(e)}className="btn btn-primary btn-sm"><i className="fa fa-eye"></i></a>    
+                                          
+                                                <a onClick={()=>successAlert(e.nombre)} className="btn btn-primary btn-sm"> <i className="fa fa-trash"></i></a>
+                                                <a onClick={()=> Editar(e,"update")} className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></a>
+                                            
+                                        </th>
 
                                       </tr>
                                     )
@@ -218,9 +279,11 @@ function nuevoevento(){
            datosEs={localidaname}
             setShowToast={setShowToast}            
             /> 
+           {/* Modal regitra y actualiza */}
             <NewEspacioView
             showNuevo={showNuevo}
-          
+            localidaname={localidaname}
+            estado={estado}
             SetShownuev={SetShownuev}
             
             />     

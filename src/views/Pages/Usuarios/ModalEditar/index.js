@@ -213,7 +213,7 @@ const inputSelect =()=>{
                 <div className="col-md-6">
                 <label className="form-label"><b>Permiso</b></label>
                         
-                     <select className="form-control" required value={datos.perfil} name="perfil" onChange={(e)=>handelchnge(e.target)}>
+                     <select  className="form-control" value={datos.perfil} name="perfil" onChange={(e)=>handelchnge(e.target)}>
                      <option  value={""}></option>
                         {roles.length>0?
                        
@@ -223,7 +223,7 @@ const inputSelect =()=>{
                             )
                         })
                         :
-                        ""    
+                        ""   
                     }
                      </select>
                      <div className="invalid-feedback">

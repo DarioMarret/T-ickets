@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button} from "react-bootstrap"
+import { GuardarLocalidad } from 'utils/Querypanel';
 import MesasView from 'views/Pages/Mesas';
-
+import MesacerView from 'views/Pages/Mesas/Plantillas/Mesacer';
+import Accordion from 'react-bootstrap/Accordion';
 const Registroseccion =(props)=>{
     const {show,setShowToast,datosEs} =props
+    let ejemplo =[1,2,3,4,5]
     let ListadeFilas=[]
     let ListadeMesas=[]
     let i=0
@@ -183,6 +186,18 @@ const Registroseccion =(props)=>{
     
        
     }
+    async function AgregaLocalidad(){
+        try {
+            const agrega = await GuardarLocalidad({"espacio":datosEs.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
+           console.log(agrega)
+            console.log({espacio:datosEs.nombre,description:localidaname.description,nombre:localidaname.nombre,mesas_array:JSON.stringify({Typo:'fila',datos: ListaFilas})})
+            
+        } catch (error) {
+            console.log(error)
+            
+        }
+
+    }
     function handelchangelocalidad(e){
         setLocalidad({
             ...localidaname,
@@ -190,84 +205,9 @@ const Registroseccion =(props)=>{
         })
     }
 
-    const objeto = JSON.stringify({nombre:'Localidad nombre',Descripcion:'Consultar que descricion--- donde estara ubicado?',espacios:[...ListaFilas]})
     
-    let array = [];
-    function toggleValueInArray(value) {
-       
-        var index = array.findIndex(obj => obj.silla==value.silla);
-      //var index = array.indexOf(value);     
-      if (index === -1) {
-        array.push(value);    
-      } else {
-        do {
-          array.splice(index, 1);
-          index = array.indexOf(value);      
-        } while (index != -1);
-      }
-      setSilla(array) 
-      console.log(array)
-    }
-    $(document).on('click','a.sillas',function (e){
-        e.preventDefault();
-    if(this.classList.contains("bg-success")){
-        if(!this.classList.contains('bg-danger')){
-       this.classList.remove('bg-success')
-        this.classList.remove('sillas')
-        this.classList.add('bg-secondary')
-        this.classList.add('asiento')
-       // console.log(this.classList[0].split("-")[0])
-        toggleValueInArray({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
-       // $("div.Mesa").removeClass("bg-secondary").addClass("bg-success")       
-         }      
-         return
-       }
-        
-    })
-    $(document).on('click','a.asiento',function (e){
-        e.preventDefault();
-    if(this.classList.contains("bg-secondary")){
-    if(!this.classList.contains('bg-danger')){
-        this.classList.remove('bg-secondary')
-        this.classList.remove('asiento')
-        this.classList.add('bg-success')
-        this.classList.add('sillas')        
-       // console.log(this.classList[0].split("-")[0])
-        toggleValueInArray({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
-       // $("div.Mesa").removeClass("bg-secondary").addClass("bg-success")       
-         }      
-         return
-       }
-        
-    })
-    $(document).on('click','div.Mesa',function(e){     
-        e.preventDefault();
-        let fila =e.target.getAttribute('class').split(" ")[0]
-          
-        this.classList.replace('bg-success','bg-secondary');
-        this.classList.replace('Mesa','Sillas')
-         for(i=0;i<10;i++){             
-             var puesto =fila+'-s-'+i;            
-            if(!$("."+puesto).hasClass('bg-danger') && $("."+puesto).hasClass('bg-success')){
-                $("a."+puesto).removeClass("bg-success").removeClass("sillas").addClass("bg-secondary").addClass("asiento")   
-                $("a").hasClass(''+puesto)? toggleValueInArray({"fila":fila,"silla":puesto}):''
-            }
-         }       
-     })
-     $(document).on('click','div.Sillas',function(e){     
-        e.preventDefault();
-        let fila =e.target.getAttribute('class').split(" ")[0]
-          
-        this.classList.replace('bg-secondary','bg-success');
-        this.classList.replace('Sillas','Mesa')
-         for(i=0;i<10;i++){             
-             var puesto =fila+'-s-'+i;            
-             if(!$("."+puesto).hasClass('bg-danger') && !$("."+puesto).hasClass('bg-success')){              
-                $("a."+puesto).removeClass("bg-secondary").removeClass("asiento").addClass("bg-success").addClass("sillas")   
-                $("a").hasClass(''+puesto)? toggleValueInArray({"fila":fila,"silla":puesto}):''
-            }   
-         }       
-     })
+    
+  
  
 useEffect(()=>{
     console.log("modal",datosEs)
@@ -438,135 +378,37 @@ useEffect(()=>{
 
                                     </div>
                                     <div className="tab-pane  container" id="mesas">
-                                                    <div className=" row">
-                                                            
-                                                        </div>
-
-                                                        <div className="row">
-                                                        <div className='row col-12'>
-                                                        <div className='col-12 col-md-5'>
-                                                        <label className="form-label"><b># de Filas</b></label>
-                                                                <div className="input-group mb-3">
-                                                                    <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div>
-                                                                    <input type="number" name="me_cantidad" id="me_cantidad"
-                                                                    onChange={(e)=>handelchangeMesa(e.target)}
-                                                                     className="form-control" placeholder="10" />
-                                                        </div>
-                                                        
-
-                                                        </div>
-                                                        <div className='col-12 col-md-5'>
-                                                        <label className="form-label"><b>Número inicial</b></label>
-                                                                <div className="input-group mb-3">
-                                                                    <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div>
-                                                                    <input type="text" name="me_cantidad" id="me_cantidad"
-                                                                    onChange={(e)=>handelchangeMesa(e.target)}
-                                                                     className="form-control" placeholder="10" />
-                                                        </div>
-                                                        
-
-                                                        </div>
-                                                        <div className='col-12 col-md-2'>
-                                                        
-                                                                <button   className="btn btn-info" >Agregar</button>
-                                                            
-
-                                                        </div>
-
-                                                        </div>
-                                                        <div className='row'>
-                                                        <div className="col-12 col-md-5">
-                                                                <label className="form-label"><b># de Mesas</b></label>
-                                                                <div className="input-group mb-3">
-                                                                    <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div>
-                                                                    <input type="number" name="me_cantidad" id="me_cantidad"
-                                                                    onChange={(e)=>handelchangeMesa(e.target)}
-                                                                     className="form-control" placeholder="10" />
-                                                                                                                        </div>
-                                                            </div>
+                                    <Accordion defaultActiveKey="0" flush>
+                                        <Accordion.Item eventKey="0">
+                                            <Accordion.Header>Accordion Item #1</Accordion.Header>
+                                            <Accordion.Body>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                                            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                            aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                            culpa qui officia deserunt mollit anim id est laborum.
+                                            </Accordion.Body>
+                                        </Accordion.Item>
+                                        <Accordion.Item eventKey="1">
+                                            <Accordion.Header>Accordion Item #2</Accordion.Header>
+                                            <Accordion.Body>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                                            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                            aliquip ex ea commodo consequat. Duis aute irure dolor in
+                                            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                            culpa qui officia deserunt mollit anim id est laborum.
+                                            </Accordion.Body>
+                                        </Accordion.Item>
+                                        </Accordion>  
+                                                    
 
 
-                                                            <div className="col-12 col-md-5">
-                                                                <label className="form-label"><b>Número inicial</b></label>
-                                                                <div className="input-group mb-3">
-                                                                    <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div>
-                                                                    <input type="text" name="me_inicial" 
-                                                                    onChange={(e)=>handelchangeMesa(e.target)}
-                                                                    className="form-control" id="numero_partida" placeholder="10" />
-                                                                                                                        </div>
-                                                            </div>
 
-                                                            <div className="col-12 col-md-2 text-left">
-                                                                 <button   className="btn btn-info" onClick={GenerMesas}>Agregar</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className='row'>
-                                                            {
-                                                            ListaMesa.length>0?
-                                                            <div className="col-12 col-md-5">
-                                                                <label className="form-label"><b> Mesas</b></label>
-                                                                <div className="input-group mb-3">
-                                                                    <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div> 
-                                                                    <select className="form-control " aria-label="Selecione Mesa" name="mesas" 
-                                                                    value={Mesass.mesas}
-                                                                    onChange={(e)=>handelchangeMesa(e.target)} id="numero_columna" >  
-                                                                     <option  ></option>                                                                 
-                                                                        <option value={"todas"} >Todas</option>
-                                                                        {ListaMesa.length>0?
-                                                                        ListaMesa.map((e,i)=>{
-                                                                            return(
-                                                                            <option key={i} value={e.mesa} >{e.mesa}</option>
-                                                                            )
-                                                                        })
-                                                                        :""}
-                                                                    </select>
-                                                                </div>                                                                
-                                                            </div>:""}
-                                                            {
-                                                            ListaMesa.length>0?
-                                                            <div className="col-12 col-md-5">
-                                                                <label className="form-label"><b># de Sillas </b></label>
-                                                                <div className="input-group mb-3">
-                                                                <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div>
-                                                                    <select className="form-control " aria-label="Selecione Mesa" name="me_sillas" 
-                                                                    value={Mesass.me_sillas}
-                                                                    onChange={(e)=>handelchangeMesa(e.target)}
-                                                                    id="numero_silla" >
-                                                                    <option ></option>
-                                                                    <option value={2} >2</option>
-                                                                    <option value={4} >4</option>
-                                                                    <option value={6} >6</option>
-                                                                    <option  value={8}>8</option>
-                                                                    <option value={10}>10</option>                                                                                                                          
-                                                                    </select>
-                                                                </div>
-                                                            </div>   :""}    
-                                                            
-                                                            {
-                                                                ListaMesa.length>0?
-                                                            <div className="col-md-2 text-left">
-                                                                <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
-                                                                <button  className="btn btn-info" onClick={AgregasSillasMesa}>Agrega</button>
-                                                            
-                                                            </div>:""}
-                                                            </div>
-                                                        
-                                                            
-                                                            
-                                                            
-                                                        </div>
+
 
                                                     </div>
                                     <div className="tab-pane container" id="correlativos">
@@ -602,6 +444,7 @@ useEffect(()=>{
             </div>
             
             {ListaFilas.length>0?
+            <div className='conatiner'>
                 <div className={"col-sm-12 text-center "+ tabactivo.tab1 } style={{ height:'400px', overflowY: 'auto',overflowX: 'auto',}}>
             { ListaFilas.length>0?
 
@@ -640,58 +483,45 @@ useEffect(()=>{
 
             })                           
              :""}
-          
-             
+          </div>
+          <div className='d-flex justify-content-end pt-2'>
+          <button className='btn btn-success float-rigth' onClick={AgregaLocalidad}>Guardar</button>
+          </div>
+            
             </div>:""}
             <div className={"col-sm-12  text-center "+ tabactivo.tab2 }  >
 
-                {/*<div className='col-12 pb-3'>                   
-                    {  ListaMesa.length>0 ?
-                    <div className="d-flex flex-column  mx-1 bg-primary text-white shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'100px',width:'150px'}} >                      
-                        {sillaarray? sillaarray.length:''}
-                    </div>:""
-                    }                  
-                    { ListaMesa.length>0?"":
-                    <div className="d-flex   mx-1 bg-primary text-white shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'100px',width:'150px'}} >
-                          No hay Mesas Creadas
-                    </div>
-                    }
-                    
-
-                </div>*/}
+                
 
 
 
-                <div className='d-flex  pb-2' style={{overflowX:'auto',overflowY:'hide'}}>
-                {
-                ListaMesa.length>0?
-                ListaMesa.map((e,i)=>{                   
+<div className={"col-sm-12 text-center " } style={{ height:'400px', overflowY: 'auto',overflowX: 'auto',}}>
+            {ListaMesa.length>0?
+                ejemplo.map((e,index)=>{
                     return(
-                        <div key={i}>
-                            <MesasView
-                        status={e.asientos.length}
-                         text={e.mesa}/> 
+                    <div className='d-flex  px-3 align-items-center' key={index}>
+                        <div className='d-flex pb-2'>
+                        <MesacerView
+                        text={index}                       
+                        />
                         </div>
                         
-                    )
-                })
-               /* ListaMesa.map((e,i)=>{
-                    return(                        
-                    <OverlayTrigger key={"tolti"+i} placement='bottom' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length>0?e.asientos.length:"0"}</Tooltip>}>
-                            <span className="d-inline-block " disabled >
-                            <div className="d-flex   mx-1 bg-primary text-white shadow-md  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'50px',width:'50px'}} >
-                                {e.mesa} 
-                            </div> 
-                            </span>
-                    </OverlayTrigger>
-                       
-                    )
-                })*/
-                :""
+                     <div className='d-flex  pb-2' style={{overflowX:'auto',overflowY:'hide'}}>
+                    {ListaMesa.map((e,i)=>{                   
+                        return(
+                            <div key={i}>
+                                <MesasView
+                            status={e.asientos.length}
+                             text={e.mesa+""+index}/> 
+                            </div>
+                            
+                        )
+                    })}
+                    </div>
+                    </div>)
 
-
-                }
-                </div>
+                }):""}
+            </div>
             </div>
             <div className={"container-fluid col-sm-12 "+ tabactivo.tab3 } >
            

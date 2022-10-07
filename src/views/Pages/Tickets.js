@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { ListarTikets } from "utils/Querypanel";
+import { ListarTikets ,FiltrarConcierto} from "utils/Querypanel";
 import ReactTable from "components/ReactTable/ReactTable.js";
 import { Button } from "react-bootstrap";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
 const EventosViews =()=>{
     const [TiktesList,setTikes]=useState([])
+    const [DatosGlobal,setDatosGloabl]=useState([])
+    const [Evento,setEvento]=useState([])
+    const [slidetitem,SetSlidet]=useState([])
         async function ConsultarTikets(){
             try {
                 const Datos = await ListarTikets()
@@ -19,49 +26,44 @@ const EventosViews =()=>{
                         protocolo:e.protocol,
                         link:e.link,
                         qr:e.qr,
-                        actions: (
-                            <div className="container actions-right pl-2">                             
-                              <Button
-                                onClick={() => {
-                                  let obj = e.id;
-                                  alert(
-                                    "Se selecciono a: " +e.nombre + " Tabla de prueba"
-                                  );
-                                }}
-                                variant="warning"
-                                size="sm"
-                                className="text-warning btn-link edit"
-                              >
-                                <i className="fa fa-edit" />
-                              </Button>{" "}
-                              
-                              <Button
-                                variant="danger"
-                                size="sm"
-                                className="btn-link remove text-danger"
-                              >
-                                <i className="fa fa-times" />
-                              </Button>{" "}
-                            
-                            </div>
-                          ),
                        
                       };
                 })
-                setTikes(infor)
+                setDatosGloabl(infor)
+                const Filtrar = Datos.data.map((e,i)=>{
+                  return {nombre:e.nombreconcert,ciudad:e.cuidadconcert,fecha:e.actual}
+                })
+                const ids = Filtrar.map(o => o.nombre)
+                const filtered = Filtrar.filter(({nombre}, index) => !ids.includes(nombre, index + 1))
+                setEvento(filtered)
+                const concierto = infor.filter(e => e.concierto == filtered[0].nombre)
+                setTikes(concierto)
+               
+               
+              await  Concietos(filtered[0].nombre)
             } catch (error) {
                 console.log(error)
                 
             }
          
         }
+
+        async function Concietos (e){ 
+          try {
+              const datos= await FiltrarConcierto(e)
+              console.log(datos)            
+          } catch (error) {
+            console.log(error)
+          }
+
+        }
        
 
     useEffect(()=>{
         (async()=>{
-            await ConsultarTikets()
+           await ConsultarTikets()
         })()
-       // console.log(TiktesList)
+        console.log(slidetitem)
 
     },[])
 return(
@@ -72,22 +74,62 @@ return(
       
         <div className="card text-left">
             <div className="card-header">
-                Mis Tickets
+                Eventos y Tickets
             </div>
             <div className="card-body">
-
-                <div className="collapse.show container mt-4 px-0" id="collapseExample">
+            <Swiper navigation={true}   modules={[Navigation]} 
+          
+           
+           onSlideChange={async (swiperCore) => {
+             const {
+               activeIndex,
+               snapIndex,
+               previousIndex,
+               realIndex,
+             } = swiperCore;
+             console.log(Evento[realIndex].nombre)
+             var arraycopia = DatosGlobal
+             const concierto = arraycopia.filter(e => e.concierto == Evento[realIndex].nombre)
+           //  console.log(DatosGlobal)
+             setTikes(concierto)
+            // console.log(Evento[realIndex]) 
+            // console.log({ activeIndex, snapIndex, previousIndex, realIndex });
+         }}
+              onSwiper={e => {
+                const {
+                  activeIndex,
+                  snapIndex,
+                  previousIndex,
+                  realIndex,
+                } =e
+                console.log(Evento[realIndex]) 
+              }}
+            //onSwiper={swiper =>{ console.log(swiper)}}
+            className="mySwiper">
+              {Evento.length>0?
+              Evento.map((e,i)=>{
+                return(
+                  <SwiperSlide key={i}>
+                  <div className=" container mt-4 px-0">
                     <div className="card card-body rounded-7 py-5">
                       <div className="container">
-                        <h1 style={{fontSize: '1.6em'}}><span id="artista" className="fw-bold">Daddy Yankee</span> | <span id="tour">Tour Legendaddy</span></h1>
+                        <h1 style={{fontSize: '1.6em'}}><span id="artista" className="fw-bold">{e.nombre}</span> </h1>
                         <div className="col-12 border border-bottom my-3"></div>
                         <p style={{fontSize: '1.2em'}}><b>Fecha:</b><span id="fechaEvento"> Miercoles 28-10-2022</span></p>
                         <p style={{fontSize: '1.2em'}}><b>Lugar:</b><span id="lugarEvento"> Estadio Alberto Spencer</span></p>
-                        <p style={{fontSize: '1.2em'}}><b>Hora:</b><span id="horaEvento"> 22:30</span></p>
-                        <a  className="btn btn-primary fw-bold px-3 py-2 rounded-6">Comprar Entrada</a>
+                        <p style={{fontSize: '1.2em'}}><b>Hora:</b><span id="horaEvento"> 22:30</span></p>                       
                       </div>
                     </div>
                   </div>
+                  </SwiperSlide>
+                )
+              })
+              :""}
+       
+      </Swiper>
+                
+
+    
                   <ReactTable
       data={TiktesList}
      
@@ -135,13 +177,7 @@ return(
             isVisible: true
             
           },
-        {
-          Header: "Acciones",
-          accessor: "actions",
-          isVisible: true,
-          sortable: false,
-          filterable: false,
-        },
+        
       ]}     
       
       

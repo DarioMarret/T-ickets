@@ -158,28 +158,37 @@ export const ListarEspacios = async ()=>{
     })
     return data
 }
+/** Verificar error 500 internal server error */
 export const EliminarEspacios = async (parms)=>{
-    const {data}= await axios.delete(Host+"api/v1/eliminar_espacio",parms,{
-        headers:{
-            '':'',
-            '':''
-        }
+    const {data}= await axios.delete(Host+"api/v1/eliminar_espacio",{
+        'id':""+parms
+    },{
+        headers:{            
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      
+                              
+         }
     })
     return data
 }
 export const ActualizarEspacio = async (parms)=>{
     const {data}= await axios.put(Host+"api/v1/actualizar_espacio",parms,{
-        headers:{
-            '':'',
-            '':''
-        }
+        headers:{            
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      
+                              
+         }
     })
     return data
 }
+/** Error 500 */
 export const GuardarLocalidad = async (parms)=>{
+    console.log(parms)
     const {data}= await axios.post(Host+"api/v1/guardar_localidad",parms,{
         headers:{
-            '':'',
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      
+                        
 
         }
     })
@@ -188,7 +197,9 @@ export const GuardarLocalidad = async (parms)=>{
 export const ListarLocalidad  = async ()=>{
     const {data} = await axios.get(Host+"api/v1/listar_localidades",{
         header:{
-            '':''
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      
+                        
         }
     })
     return data
@@ -196,7 +207,9 @@ export const ListarLocalidad  = async ()=>{
 export const AptualizarLocalida = async(parms)=>{
     const {data}= await axios.put(Host+"api/v1/listar_localidades",parms,{
         headers:{
-            '':'',
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      
+                        
         }
     })
     return data
@@ -209,6 +222,14 @@ export const EliminarLocalidad = async(parms)=>{
     })
     return data
 }
+/** Error500 */
 export const FiltrarConcierto = async(parms)=>{
-    const {data}= await axios.post(Host+"api/v1/filtrar_concierto")
+    const {data}= await axios.post(Host+"api/v1/filtrar_concierto",{"nombreconcert":parms},{
+        headers:{            
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      
+                              
+         }
+    })
+    return data
 }
