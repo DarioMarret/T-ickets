@@ -5,7 +5,7 @@ import { Row,Col,Card } from "react-bootstrap";
 import NewEspacioView from "./MODAL/NuevoEspacio.js";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import axios from "axios";
-
+import RegistroViwstab from "./MODAL/Registrodos.js";
 
 const EventosViews =()=>{
   const [localidaname,setLocalidad]=useState({id:'',nombre:'', descripcion:''})
@@ -274,12 +274,19 @@ function Editar(e,estado){
                     </div>
                 </div>
             </div>
-            <Modalregistroespacio
+            
+           {/* 
+           <Modalregistroespacio
             show={show}
            datosEs={localidaname}
             setShowToast={setShowToast}            
             /> 
-           {/* Modal regitra y actualiza */}
+           
+           Modal regitra y actualiza */}
+            <RegistroViwstab
+            show={show}           
+             setShowToast={setShowToast}            
+             /> 
             <NewEspacioView
             showNuevo={showNuevo}
             localidaname={localidaname}

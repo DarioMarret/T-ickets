@@ -1,13 +1,16 @@
 import React,{useState,useEffect} from "react"
-import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button} from "react-bootstrap"
+import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button,Form} from "react-bootstrap"
 import { GuardarLocalidad } from 'utils/Querypanel';
 import MesasView from 'views/Pages/Mesas';
 import MesacerView from 'views/Pages/Mesas/Plantillas/Mesacer';
+import { Letras } from "utils/constantes";
 import Accordion from 'react-bootstrap/Accordion';
 const TabdosView =()=>{
     let ejemplo =[1,2,3,4,5]
     let ListadeMesas=[]
     const [ListaMesa,setMesas]=useState([])
+    const [listaFilasConsillas,setFilasSillas]=useState([])
+
     const [Mesass,setMesass]=useState({
         me_cantidad:'todas',
         me_inicial:'',
@@ -24,7 +27,10 @@ const TabdosView =()=>{
     })
     
     const AgregarFilas=()=>{
-
+        const data = Letras.slice(0,8).map((e,i)=>{
+            return {Fila:e,data:[]}
+        })
+            console.log(data)
     }
     const AgregasSillasMesa =()=>{
        
@@ -34,11 +40,11 @@ const TabdosView =()=>{
             let interar = parseInt(Mesass.me_sillas);     
                  if(Mesass.mesas==="todas"){
                      console.log(interar)              
-                     for(i=0; i< ListadeMesas.length; i++){            
+                     for(var i=0; i< ListadeMesas.length; i++){            
                          ListadeMesas[i]["sillas"]=interar;
                         ListadeMesas[i]["asientos"]=[]
                       const nummesa =ListadeMesas[i]["mesa"]                
-                         for(f=0; f< interar; f++ ){                               
+                         for(var f=0; f< interar; f++ ){                               
                              ListadeMesas[i]["asientos"][f]={silla:nummesa+"-s-"+f,estado:"disponible"};                         
                          }                   
                      }   
@@ -63,7 +69,7 @@ const TabdosView =()=>{
                         me_sillas:'',
                         mesas:''
                     })
-                     for(g=0; g< interarr;g++){                    
+                     for(var g=0; g< interarr;g++){                    
                          numero=1+g                   
                          sillas[g]={silla:letra+"-s-"+numero,estado:"disponible"}                  
                      }
@@ -87,7 +93,7 @@ const TabdosView =()=>{
             const numeroinicofilas= Mesass.me_inicial.replace(/[^0-9]+/g, "");        
             const repeticiones =parseInt(numeroinicofilas) + parseInt(Mesass.me_cantidad)
           //  console.log(repeticiones)
-            for(i= numeroinicofilas; i < repeticiones; i++){
+            for(var i= numeroinicofilas; i < repeticiones; i++){
                 ListadeMesas.push({mesa:letrafilas+""+i,sillas:0,asientos:[]});        
             }}
             setMesas(ListadeMesas)
@@ -108,10 +114,12 @@ const TabdosView =()=>{
         })
     }
     
-
+    useEffect(()=>{
+            AgregarFilas()
+    },[])
     return(
         <>
-        <div className="d-flex">
+        <div className="d-flex flex-column">
             <div className="row col-12 pt-2">
                          <div className="col-sm-5">
                                         <div className="card">
@@ -150,77 +158,109 @@ const TabdosView =()=>{
                                         </div>
                          </div>
                          <div className="col-sm-7  container" id="mesas">
-                        <Accordion defaultActiveKey="0" flush>
+                        <Accordion  flush>
                                  <Accordion.Item eventKey="0">
-                                    < Accordion.Header>Accordion Item #1</Accordion.Header>
+                                    < Accordion.Header>Agregar Fila</Accordion.Header>
                                         <Accordion.Body>
-                                                    <div className='row col-12'>
-                                                        <div className='col-12 col-md-5'>
-                                                        <label className="form-label"><b># de Filas</b></label>
+                                                    <div className='row'>
+                                                    <div className="row col-12 col-sm-12 col-md-12 col-lg-6">
+                                                        <div className='col-12 col-md-6'>
+                                                        <label className="form-label"><b>Filas </b></label>
                                                                 <div className="input-group mb-3">
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div>
-                                                                    <input type="number" name="me_cantidad" id="me_cantidad"
-                                                                    onChange={(e)=>handelchangeMesa(e.target)}
-                                                                     className="form-control" placeholder="10" />
+                                                                    <input 
+                                                                    className="form-control" 
+                                                                    type="number"
+                                                                    min={1}
+                                                                    max={27}
+                                                                    />
                                                         </div>
                                                         
 
                                                         </div>
-                                                        <div className='col-12 col-md-5'>
-                                                        <label className="form-label"><b>Número inicial</b></label>
-                                                                <div className="input-group mb-3">
-                                                                    <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div>
-                                                                    <input type="text" name="me_cantidad" id="me_cantidad"
-                                                                    onChange={(e)=>handelchangeMesa(e.target)}
-                                                                     className="form-control" placeholder="10" />
-                                                        </div>
                                                         
-
-                                                        </div>
-                                                        <div className='col-12 col-md-2'>
-                                                        
-                                                                <button   className="btn btn-info" >Agregar</button>
+                                                        <div className='col-12 col-md-6'>
+                                                        <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
+                                                                <button   className="btn btn-info" >Crear fila</button>
                                                             
 
                                                         </div>
+                                                    </div>
+                                                    <div className="row col-12 col-sm-12 col-md-12 col-lg-6">
+                                                    <div className='col-12 col-md-6'>
+                                                        <label className="form-label"><b>Filas </b></label>
+                                                                <div className="input-group mb-3">
+                                                                    <div className="input-group-prepend">
+                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
+                                                                    </div>
+                                                                    <input 
+                                                                    className="form-control" 
+                                                                    type="number"
+                                                                    min={1}
+                                                                    max={27}
+                                                                    />
+                                                        </div>
+                                                        
 
                                                         </div>
+                                                        
+                                                        <div className='col-12 col-md-6'>
+                                                        <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
+                                                                <button   className="btn btn-info" >Agregar fila</button>
+                                                            
+
+                                                        </div>
+                                                    </div>
+
+                                                        </div>
+                                                      
                                             </Accordion.Body>
                                  </Accordion.Item>
                                         <Accordion.Item eventKey="1">
-                                            <Accordion.Header>Accordion Item #2</Accordion.Header>
+                                            <Accordion.Header>Agergar Mesas</Accordion.Header>
                                             <Accordion.Body>
                                             <div className='row'>
-                                                        <div className="col-12 col-md-5">
-                                                                <label className="form-label"><b># de Mesas</b></label>
+                                                        <div className="col-12 col-sm-12 col-md-12 col-lg-5">
+                                                                <label className="form-label"><b>Filas</b></label>
                                                                 <div className="input-group mb-3">
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div>
-                                                                    <input type="number" name="me_cantidad" id="me_cantidad"
+                                                                    <Form.Select  className="form-control" >
+                                                                    <option  value=""></option>
+                                                                        {Letras.length>0?
+                                                                    
+                                                                    Letras.map((e,i)=>{
+                                                                            return(
+                                                                            <option key={"op"+i} value={e}>{e}</option>
+                                                                            )
+                                                                        })
+                                                                        : 
+                                                                        ""   
+                                                                    }
+                                                                    </Form.Select>
+                                                            
+                                                                    {/*<input type="number" name="me_cantidad" id="me_cantidad"
                                                                     onChange={(e)=>handelchangeMesa(e.target)}
-                                                                     className="form-control" placeholder="10" />
-                                                                                                                        </div>
+                                                                className="form-control" placeholder="10" />*/}
                                                             </div>
-
-
-                                                            <div className="col-12 col-md-5">
-                                                                <label className="form-label"><b>Número inicial</b></label>
+                                                            </div>
+                                                            <div className="col-12 col-sm-12 col-md-12 col-lg-5">
+                                                                <label className="form-label"><b># de  Mesas x Fila</b></label>
                                                                 <div className="input-group mb-3">
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div>
-                                                                    <input type="text" name="me_inicial" 
+                                                                    <input type="number" name="me_inicial" 
                                                                     onChange={(e)=>handelchangeMesa(e.target)}
                                                                     className="form-control" id="numero_partida" placeholder="10" />
                                                                                                                         </div>
                                                             </div>
 
                                                             <div className="col-12 col-md-2 text-left">
+                                                            <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
                                                                  <button   className="btn btn-info" onClick={GenerMesas}>Agregar</button>
                                                             </div>
                                                         </div>
@@ -228,6 +268,7 @@ const TabdosView =()=>{
                                         </Accordion.Item>
                                 <Accordion.Item eventKey="2">
                                     <Accordion.Header>
+                                        Agregar sillas </Accordion.Header>
                                         <Accordion.Body>
                                         <div className='row'>
                                                             {
@@ -286,14 +327,14 @@ const TabdosView =()=>{
 
                                         </Accordion.Body>
 
-                                    </Accordion.Header>
+                                    
                                 </Accordion.Item>
                            </Accordion>                            
                 </div>
             </div>
             
             <div className="col-sm-12  text-center ">
-            <div className="col-sm-12 text-center "  style={{ height:'400px', overflowY: 'auto',overflowX: 'auto',}}>
+            <div className="col-sm-12 text-center "  style={{ height:'400px', overflowY: 'hide',overflowX: 'auto',}}>
             {ListaMesa.length>0?
                 ejemplo.map((e,index)=>{
                     return(
@@ -304,7 +345,7 @@ const TabdosView =()=>{
                         />
                         </div>
                         
-                     <div className='d-flex  pb-2' style={{overflowX:'auto',overflowY:'hide'}}>
+                     <div className='d-flex  pb-2' >
                     {ListaMesa.map((e,i)=>{                   
                         return(
                             <div key={i}>

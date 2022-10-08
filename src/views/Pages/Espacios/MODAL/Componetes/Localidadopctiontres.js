@@ -12,7 +12,7 @@ const TabtresView=()=>{
         })
     }
    return( <>
-    <div className="d-flex">
+    <div className="d-flex flex-column">
     <div className='row col-12 pt-2'>
     <div className="col-sm-5">
                                         <div className="card">

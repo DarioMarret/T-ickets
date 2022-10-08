@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from "react"
 import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button} from "react-bootstrap"
 const TabunoView=()=>{
+    let ListadeFilas=[]
     const [nmobretabuno,setLocalidad]=useState({
         nombre:'',
         description:''
@@ -13,12 +14,13 @@ const TabunoView=()=>{
 
     })
     const [ListaFilas,setFilas]=useState([])
+    const [listaFilasConsillas,setFilasSillas]=useState([])
     const GeneraFilas=()=>{
         if(filass.inicial!=" "&& filass.cantidad!=" " ){
         const letrafilas = filass.inicial.replace(/[0-9]+/g, "")
         const numeroinicofilas= filass.inicial.replace(/[^0-9]+/g, "");        
         const repeticiones =parseInt(numeroinicofilas) + parseInt(filass.cantidad)      
-        for(i= numeroinicofilas; i < repeticiones; i++){
+        for(var i= numeroinicofilas; i < repeticiones; i++){
             ListadeFilas.push({fila:letrafilas+""+i,sillas:0,asientos:[]});        
         }}
         setFilas(ListadeFilas)       
@@ -31,11 +33,11 @@ const TabunoView=()=>{
            
             if(filass.fila==="Todas"){
                
-                for(i=0; i< ListadeFilas.length; i++){            
+                for(var i=0; i< ListadeFilas.length; i++){            
                     ListadeFilas[i]["sillas"]=interar;
                     ListadeFilas[i]["asientos"]=[]
                  const numfila =ListadeFilas[i]["fila"]                
-                    for(f=0; f< interar; f++ ){                               
+                    for(var f=0; f< interar; f++ ){                               
                         ListadeFilas[i]["asientos"][f]={silla:numfila+"-s-"+f,estado:"disponible"};                         
                     }                   
                 }               
@@ -51,7 +53,7 @@ const TabunoView=()=>{
                 var index = ListadeFilas.findIndex(obj => obj.fila==filass.fila);
                 var letra = ListadeFilas[index].fila
                 ListadeFilas[index].sillas=interarr
-                for(g=0; g< interarr;g++){                    
+                for(var g=0; g< interarr;g++){                    
                     numero=1+g                   
                     sillas[g]={silla:letra+"-s-"+numero,estado:"disponible"}                  
                 }
@@ -65,14 +67,22 @@ const TabunoView=()=>{
             }
          }         
      }
+     function handelchange(e){
+        setFilass({
+            ...filass,
+            [e.name]:e.value    
+ 
+        }) }
     function handelchangelocalidad(e){
         setLocalidad({
-            ...localidaname,
+            ...nmobretabuno,
             [e.name]:e.value
         })
+
     }
+    
    return( <>
-    <div className="d-flex">
+    <div className="d-flex flex-column">
     <div className='row col-12 pt-2'>
     <div className="col-sm-5">
                                         <div className="card">
@@ -110,71 +120,127 @@ const TabunoView=()=>{
                                             </div>
                                         </div>
                                     </div>
-                                                     <div className=" col-sm-7 row">
-                                                            <div className="col-sm-6">
-                                                                <label className="form-label"><b>Cantidad de asientos</b></label>
+                                    <div className=" col-sm-7 row">
+                                    <div className="col-sm-5">
+                                                                <label className="form-label"><b>Cantidad de filas</b></label>
                                                                 <div className="input-group mb-3">
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div>
-                                                                    <input type="number" className="form-control" id="nc_ca" placeholder="100" />
+                                                                    <input type="number" minLength={1} name="cantidad" 
+                                                                    value={filass.cantidad }
+                                                                    className="form-control" id="cantidad"
+                                                                    onChange={(e)=> handelchange(e.target)}
+                                                                     placeholder="10" />
                                                                                                                         </div>
-                                                            </div>
+                                     </div>
 
-                                                            <div className="col-sm-6">
-                                                                <label className="form-label"><b>Primer número</b></label>
+
+                                                            <div className="col-sm-5">
+                                                                <label className="form-label"><b>Número inicial</b></label>
                                                                 <div className="input-group mb-3">
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div>
-                                                                    <input type="number" className="form-control" id="nc_nombre" placeholder="100" />
+                                                                    <input type="text" 
+                                                                    name="inicial" 
+                                                                    value={filass.inicial }
+                                                                    onChange={(e)=> handelchange(e.target)}
+                                                                    className="form-control" id="numero_inicial" 
+                                                                    placeholder="10" />
                                                                                                                         </div>
                                                             </div>
-                                                        </div>
+
+                                                            <div className="col-sm-2 text-left">
+                                                                <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
+                                                                <button   className="btn btn-info" onClick={GeneraFilas}><i className="fa fa-plus"></i></button>
+                                                            </div>
+                                                             <div className="col-sm-5"> 
+                                                            <div className="input-group mb-3">                                                                   
+                                                            <div className="input-group-prepend">
+                                                             <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
+                                                             </div>
+                                                                    <input type="text" name="sillas" className="form-control" 
+                                                                    id="sillas" 
+                                                                    value={filass.sillas}
+                                                                    onChange={(e)=>handelchange(e.target)}
+                                                                    placeholder="# Sillas" />
+                                                            </div>
+                                                             </div>
+                                                             <div className="col-sm-5">
+                                                            <div className="input-group mb-3">
+                                                            <div className="input-group-prepend">
+                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
+                                                                    </div>
+                                                                    <select className="form-control " value={filass.fila}  name='fila' aria-label="Selecione Fila" onChange={(e)=>handelchange(e.target)} >
+                                                                    <option >Seleccione una opcion</option>
+                                                                        <option value={"Todas"}>Todas</option>
+                                                                        {ListaFilas.length>0?
+                                                                                ListaFilas.map((elem,i)=>{
+                                                                                    return(  
+                                                                                    <option key={i} value={elem.fila}>{elem.fila}</option>
+                                                                                    )
+                                                                                  
+                                                                                }) :""     }
+                                                                    </select>
+                                                                    
+                                                            </div>
+                                                            </div>
+                                                            <div className="col-sm-2">
+                                                            <button className="btn btn-success" onClick={AgregasSillasFila} >
+                                                                    Agregar
+                                                                </button>
+                                                                </div>                                                              
+                                                                
+                                                            </div>
                                                         </div>
 
-           <div className={"container-fluid col-sm-12 " } >
-           
-           <div className=' d-flex flex-wrap '>
-               <div className='col-3'>
-                   <h3>
-                       General 
-                   </h3>
-               </div>
-               <div className='col-7'>
-               <ProgressBar 
-               style={{height:'40px'}}
-               >                  
-                  <ProgressBar variant="danger"  now={50} key={1} />
-                   <ProgressBar  variant="success" label={"500 "} now={450} key={2} />                    
-               </ProgressBar>
-               </div>
-               <div className='col-2'>
-               <button className='btn btn-primary' ><i className='fa fa-edit'></i> </button>
-               </div>
-           </div>
-           <div className='d-flex flex-wrap'>
-               <div className='col-3'>
-                   <h3>
-                       Vip 
-                   </h3>
-               </div>
-               <div className='col-7'>
-               <ProgressBar 
-               style={{height:'40px'}}
-               >                  
-                   <ProgressBar variant="danger"  now={50} key={1} />
-                   <ProgressBar  variant="success" label={"500 "} now={450} key={2} />                  
-               </ProgressBar>
-               </div>
-               <div className='col-2'>
-               <button className='btn btn-primary' ><i className='fa fa-edit'></i> </button>
-               </div>
-           </div>
-               
+                                                        {ListaFilas.length>0?
+            <div className='conatiner col-12'>
+                <div className={" col-sm-12 text-center " } style={{ height:'400px', overflowY: 'auto',overflowX: 'auto',}}>
+            { ListaFilas.length>0?
+
+            ListaFilas.map((e,i)=>{
+                
+                {                    
+            return(
+                <div className='d-flex  px-3 p-1  align-items-center ' key={"lista"+i}>
+                      <OverlayTrigger placement='right' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length>0?e.asientos.length:""}</Tooltip>}>
+                      <span className="d-inline-block " disabled >
+                      <div className="d-flex   mx-1 bg-primary text-white  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'50px',width:'50px'}} >
+                                {e.fila} 
+                     </div> 
+                </span>
+                    </OverlayTrigger>
+                
+                                                                 
+                {e.asientos.length>0?
+                   <div className=' d-flex p-1 justify-content-center align-items-center ' >                    
+                     {e.asientos.map((silla,index)=>{
+                        return(
+                        <div key={"silla"+index}  className='d-flex   mx-1 bg-success   rounded-5 text-center  justify-content-center align-items-center ' style={{ height:'50px', width:'50px'}} >
+                        <div className={'px-3 '+ silla.silla} >
+                            {index}
+                        </div>  
+                        </div>    )                    
+                     })}
+                     </div>:""}
+
+                   
+                  
+                 </div>
+                 
+                 )}               
+              
+
+            })                           
+             :""}
+          </div>
+          <div className='d-flex justify-content-end pt-2'>
+         
+          </div>
             
-
-           </div>
+            </div>:""}
 
     </div>
     </>)

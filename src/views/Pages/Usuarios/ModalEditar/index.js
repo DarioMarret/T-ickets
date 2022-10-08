@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import Autocomplete from '@mui/material/Autocomplete';
-import { Modal,Toast } from "react-bootstrap";
+import { Modal,Toast,Form } from "react-bootstrap";
 import { GetRoles,EditUser,CrearUser } from "utils/Querypanel";
 import InputGroup from 'react-bootstrap/InputGroup';
 
@@ -213,7 +213,7 @@ const inputSelect =()=>{
                 <div className="col-md-6">
                 <label className="form-label"><b>Permiso</b></label>
                         
-                     <select  className="form-control" value={datos.perfil} name="perfil" onChange={(e)=>handelchnge(e.target)}>
+                      <Form.Select  className="form-control" value={datos.perfil} name="perfil" onChange={(e)=>handelchnge(e.target)}>
                      <option  value={""}></option>
                         {roles.length>0?
                        
@@ -225,7 +225,7 @@ const inputSelect =()=>{
                         :
                         ""   
                     }
-                     </select>
+                     </Form.Select>
                      <div className="invalid-feedback">
                                   Seleccione un Permiso
                           </div>
