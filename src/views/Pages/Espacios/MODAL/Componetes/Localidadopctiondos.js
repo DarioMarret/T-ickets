@@ -3,14 +3,22 @@ import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button,Form} from "react-boots
 import { GuardarLocalidad } from 'utils/Querypanel';
 import MesasView from 'views/Pages/Mesas';
 import MesacerView from 'views/Pages/Mesas/Plantillas/Mesacer';
+import Select from "react-select";
 import { Letras } from "utils/constantes";
 import Accordion from 'react-bootstrap/Accordion';
 const TabdosView =()=>{
     let ejemplo =[1,2,3,4,5]
     let ListadeMesas=[]
+    const [FilasLocalidad,SetFilaLocalidad]=useState([])
+    const [Mesas,SetMesasLocalidad]=useState([])
     const [ListaMesa,setMesas]=useState([])
-    const [listaFilasConsillas,setFilasSillas]=useState([])
 
+    const [selet,Fila]=useState([])
+
+
+    const [listaFilasConsillas,setFilasSillas]=useState([])
+    const [singleSelect, setSingleSelect] = React.useState("");
+    const [multipleSelect, setMultipleSelect] = React.useState("");
     const [Mesass,setMesass]=useState({
         me_cantidad:'todas',
         me_inicial:'',
@@ -25,12 +33,22 @@ const TabdosView =()=>{
         nombre:'',
         description:''
     })
-    
+    function cambiaFila(value){
+        setSingleSelect(value)
+        var index = FilasLocalidad.filter(obj => obj.Fila==value)
+       // console.log(index)
+        SetMesasLocalidad(index[0].Mesas)
+    }
     const AgregarFilas=()=>{
         const data = Letras.slice(0,8).map((e,i)=>{
-            return {Fila:e,data:[]}
+            return {Fila:e,Mesas:[]}
         })
-            console.log(data)
+       const datos= data.map((e,i)=>{
+            return{value:e.Fila,label:e.Fila}
+        })
+        Fila(datos)
+        SetFilaLocalidad(data)
+            console.log(datos)
     }
     const AgregasSillasMesa =()=>{
        
@@ -116,6 +134,7 @@ const TabdosView =()=>{
     
     useEffect(()=>{
             AgregarFilas()
+            
     },[])
     return(
         <>
@@ -166,24 +185,21 @@ const TabdosView =()=>{
                                                     <div className="row col-12 col-sm-12 col-md-12 col-lg-6">
                                                         <div className='col-12 col-md-6'>
                                                         <label className="form-label"><b>Filas </b></label>
-                                                                <div className="input-group mb-3">
-                                                                    <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div>
-                                                                    <input 
+                                                                   
+                                                                    <Form.Control 
                                                                     className="form-control" 
                                                                     type="number"
                                                                     min={1}
                                                                     max={27}
                                                                     />
-                                                        </div>
+                                                        
                                                         
 
                                                         </div>
                                                         
                                                         <div className='col-12 col-md-6'>
                                                         <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
-                                                                <button   className="btn btn-info" >Crear fila</button>
+                                                                <button   className="btn btn-info" >Crear</button>
                                                             
 
                                                         </div>
@@ -191,24 +207,22 @@ const TabdosView =()=>{
                                                     <div className="row col-12 col-sm-12 col-md-12 col-lg-6">
                                                     <div className='col-12 col-md-6'>
                                                         <label className="form-label"><b>Filas </b></label>
-                                                                <div className="input-group mb-3">
-                                                                    <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div>
-                                                                    <input 
+                                                              
+                                                                    
+                                                                    <Form.Control 
                                                                     className="form-control" 
                                                                     type="number"
                                                                     min={1}
                                                                     max={27}
                                                                     />
-                                                        </div>
+                                                        
                                                         
 
                                                         </div>
                                                         
                                                         <div className='col-12 col-md-6'>
                                                         <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
-                                                                <button   className="btn btn-info" >Agregar fila</button>
+                                                                <button   className="btn btn-info" >Agregar</button>
                                                             
 
                                                         </div>
@@ -218,46 +232,66 @@ const TabdosView =()=>{
                                                       
                                             </Accordion.Body>
                                  </Accordion.Item>
-                                        <Accordion.Item eventKey="1">
+                                       { FilasLocalidad.length>0? 
+                                       <Accordion.Item eventKey="1">
                                             <Accordion.Header>Agergar Mesas</Accordion.Header>
                                             <Accordion.Body>
                                             <div className='row'>
-                                                        <div className="col-12 col-sm-12 col-md-12 col-lg-5">
+                                                        <div className="col-12 col-sm-12 col-md-12 col-lg-6">
                                                                 <label className="form-label"><b>Filas</b></label>
-                                                                <div className="input-group mb-3">
-                                                                    <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div>
-                                                                    <Form.Select  className="form-control" >
-                                                                    <option  value=""></option>
-                                                                        {Letras.length>0?
-                                                                    
-                                                                    Letras.map((e,i)=>{
-                                                                            return(
-                                                                            <option key={"op"+i} value={e}>{e}</option>
-                                                                            )
+                                                                                                                                   
+                                                                    <Select
+                                                                        className="react-select primary"
+                                                                        classNamePrefix="react-select"
+                                                                        name="singleSelect"
+                                                                        value={singleSelect}
+                                                                        onChange={(value) =>setSingleSelect(value)}
+                                                                        options={[
+                                                                        {
+                                                                            value: "",
+                                                                            label: "Seleccione una Opcion",
+                                                                            isDisabled: true,
+                                                                        },
+                                                                        {
+                                                                            value: "todas",
+                                                                            label: "Todas",                                                                            
+                                                                        },
+                                                                        ...FilasLocalidad.map((e,i)=>{
+                                                                            return{value:e.Fila,label:e.Fila}
                                                                         })
-                                                                        : 
-                                                                        ""   
-                                                                    }
-                                                                    </Form.Select>
+                                                                       
+                                                                        ]}
+                                                                        placeholder="Seleccione "
+                                                                    />
                                                             
-                                                                    {/*<input type="number" name="me_cantidad" id="me_cantidad"
+                                                                   {/* <input type="number" name="me_cantidad" id="me_cantidad"
+                                                                    value={Mesass.me_cantidad}
                                                                     onChange={(e)=>handelchangeMesa(e.target)}
                                                                 className="form-control" placeholder="10" />*/}
+                                                            
                                                             </div>
+                                                            <div className="col-12 col-sm-12 col-md-12 col-lg-4">
+                                                                <label className="form-label"><b># de  Mesas x Fila</b></label>
+                                                                   
+                                                                                                                     
+                                                                    <Form.Control type="number" name="me_inicial" 
+                                                                    value={Mesass.me_inicial}
+                                                                    onChange={(e)=>handelchangeMesa(e.target)}
+                                                                    className="form-control" id="numero_partida" placeholder="10" />
+                                                                                                                        
                                                             </div>
-                                                            <div className="col-12 col-sm-12 col-md-12 col-lg-5">
+                                                            {/*<div className="col-12 col-sm-12 col-md-12 col-lg-5">
                                                                 <label className="form-label"><b># de  Mesas x Fila</b></label>
                                                                 <div className="input-group mb-3">
                                                                     <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                                     </div>
-                                                                    <input type="number" name="me_inicial" 
+                                                                    <input type="text" name="me_inicial" 
+                                                                    value={Mesass.me_inicial}
                                                                     onChange={(e)=>handelchangeMesa(e.target)}
                                                                     className="form-control" id="numero_partida" placeholder="10" />
                                                                                                                         </div>
-                                                            </div>
+                                                            </div>*/}
 
                                                             <div className="col-12 col-md-2 text-left">
                                                             <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
@@ -265,12 +299,72 @@ const TabdosView =()=>{
                                                             </div>
                                                         </div>
                                             </Accordion.Body>
-                                        </Accordion.Item>
+                                        </Accordion.Item>:''}
+                                { FilasLocalidad.length>0?
                                 <Accordion.Item eventKey="2">
                                     <Accordion.Header>
                                         Agregar sillas </Accordion.Header>
                                         <Accordion.Body>
-                                        <div className='row'>
+                                        <div className='row  '> 
+                                        <div className="d-flex px-0 flex-column col-9">
+                                        <div className="col-12">
+                                        <label className="form-label"><b>Selecciona Fila</b></label>
+                                        <Select
+                                        className="react-select primary"
+                                        classNamePrefix="react-select"
+                                        name="singleSelect"
+                                        value={singleSelect}
+                                        onChange={(value) => cambiaFila(value.value)}
+                                        options={[
+                                            {
+                                                value: "",
+                                                label: "Seleccione una Opcion",
+                                                isDisabled: true,
+                                            },
+                                            {
+                                                value: "todas",
+                                                label: "Todas",                                                                            
+                                            },
+                                            ...FilasLocalidad.map((e,i)=>{
+                                                return{value:e.Fila,label:e.Fila}
+                                            })
+                                           
+                                            ]}
+                                        placeholder="Single Select"
+                                    />
+                                        </div>
+                                        <div className="col-12">
+                                        <label className="form-label"><b>Selecciona Mesa</b></label>
+                                        <Select
+                                            className="react-select info"
+                                            classNamePrefix="react-select"
+                                            placeholder="Choose City"
+                                            name="multipleSelect"
+                                            closeMenuOnSelect={false}
+                                            isMulti
+                                            value={multipleSelect}
+                                            onChange={(value) => setMultipleSelect(value)
+                                                
+                                            }
+                                            options={[
+                                            {
+                                                value: "",
+                                                label: "Multiple Mesas",
+                                                isDisabled: true,
+                                            },
+                                           ...Mesas.map((e,i)=>{
+                                                return{value:e.Mesas,label:e.Mesas}
+                                            })
+                                            ]}
+                                        />
+                                        </div>
+                                            
+                                        </div>      
+                                        <div className="col-3">
+                                        <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
+                                        <button   className="btn btn-info" onClick={GenerMesas}>Agregar</button>                                                           
+                                        </div>                                    
+                                            {/*
                                                             {
                                                             ListaMesa.length>0?
                                                             <div className="col-12 col-md-5">
@@ -322,13 +416,13 @@ const TabdosView =()=>{
                                                                 <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
                                                                 <button  className="btn btn-info" onClick={AgregasSillasMesa}>Agrega</button>
                                                             
-                                                            </div>:""}
-                                                </div>
+                                                            </div>:""}*/}
+                                        </div>
 
                                         </Accordion.Body>
 
                                     
-                                </Accordion.Item>
+                                </Accordion.Item>:''}
                            </Accordion>                            
                 </div>
             </div>

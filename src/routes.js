@@ -21,6 +21,10 @@ import RegisterPage from "views/Pages/RegisterPage.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 import Ticket from "views/Pages/Tickets.js";
 import Espacios from "views/Pages/Espacios";
+import RegularForms from "views/Forms/RegularForms.js";
+import ExtendedForms from "views/Forms/ExtendedForms.js";
+import ValidationForms from "views/Forms/ValidationForms.js";
+import Wizard from "views/Forms/Wizard/Wizard.js";
 import Eventos from "views/Pages/Evento";
 import PerfilPage from "views/Pages/Perfil";
 import Dashboardsub from "views/Pages/Dasboarsubcri/index.js";
@@ -185,6 +189,43 @@ var routes = [
         component: LockScreenPage
       }
     ]
-  }
+  },
+  {
+    collapse: true,
+    path: "/forms",
+    name: "Forms",
+    state: "openForms",
+    icon: "nc-icon nc-notes",
+    views: [
+      {
+        path: "/regular-forms",
+        layout: "/admin",
+        name: "Regular Forms",
+        mini: "RF",
+        component: RegularForms
+      },
+      {
+        path: "/extended-forms",
+        layout: "/admin",
+        name: "Extended Forms",
+        mini: "EF",
+        component: ExtendedForms
+      },
+      {
+        path: "/validation-forms",
+        layout: "/admin",
+        name: "Validation Forms",
+        mini: "VF",
+        component: ValidationForms
+      },
+      {
+        path: "/wizard",
+        layout: "/admin",
+        name: "Wizard",
+        mini: "W",
+        component: Wizard
+      }
+    ]
+  },
 ];
 export default routes;
