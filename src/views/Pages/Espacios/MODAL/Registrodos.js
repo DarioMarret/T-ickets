@@ -42,10 +42,10 @@ const RegistroViwstab =(props)=>{
             </div>
             <div className="tab-content col-sm-12">
                                     <div className="tab-pane active container " id="filas">
-                                    <TabunoViews/>
+                                    <TabunoViews  />
                                     </div>
                                     <div className="tab-pane  container " id="mesas">
-                                    <TabdosViews/>
+                                    <TabdosViews  show={show}/>
 
                                     </div>
                                     <div className="tab-pane  container " id="correlativos">

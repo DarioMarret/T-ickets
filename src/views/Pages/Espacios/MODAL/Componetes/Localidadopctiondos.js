@@ -6,18 +6,28 @@ import MesacerView from 'views/Pages/Mesas/Plantillas/Mesacer';
 import Select from "react-select";
 import { Letras } from "utils/constantes";
 import Accordion from 'react-bootstrap/Accordion';
-const TabdosView = () => {
+const TabdosView = (props) => {
+     
+    
     let ejemplo = [1, 2, 3, 4, 5]
     let ListadeMesas = []
     const [FilasLocalidad, SetFilaLocalidad] = useState([])
     const [Mesas, SetMesasLocalidad] = useState([])
+
+
+
+    const [listaFilasConsillas, setFilasSillas] = useState([])
+    const [visible,SetVisible]=useState(false)
+
+
+    
     const [ListaMesa, setMesas] = useState([])
     const [selet, Fila] = useState([])
-    const [listaFilasConsillas, setFilasSillas] = useState([])
-    const [singleSelect, setSingleSelect] = React.useState("");
-
-    const [singleSelecttwo, setSingleSelectwo] = React.useState("");
-    const [multipleSelect, setMultipleSelect] = React.useState("");
+   
+    const [singleSelect, setSingleSelect] = React.useState({value: "",label: "",});
+    const [singleSelecttwo, setSingleSelectwo] = React.useState({value: "",label: "",});
+    const [multipleSelect, setMultipleSelect] = React.useState({value: "",label: "",});
+    const [singleSelecttres, setSingleSelectres] = React.useState({value: "",label: "",});
     const [Mesass, setMesass] = useState({
         me_cantidad: 'todas',
         me_inicial: '',
@@ -35,94 +45,139 @@ const TabdosView = () => {
     })
     function cambiaFila(value) {
         setSingleSelectwo(value)
-        var index = FilasLocalidad.filter(obj => obj.Fila == value)
-        // console.log(index)
-        SetMesasLocalidad(index[0].Mesas)
+        var index = FilasLocalidad.filter(obj => obj.Fila == value.value)
+        //console.log(index)
+        setMultipleSelect("")
+       
+        SetMesasLocalidad(index.length>0? [...index[0].Mesas]:[])
     }
     const AgregarFilas = () => {
         const data = Letras.slice(0, 8).map((e, i) => {
             return { Fila: e, Mesas: [] }
         })
+        SetFilaLocalidad(data)
         const datos = data.map((e, i) => {
             return { value: e.Fila, label: e.Fila }
         })
-        Fila(datos)
-        SetFilaLocalidad(data)
+        Fila(datos)        
+        setSingleSelect("")
+
+    }
+    const AgregasMesas = () => {
+        if(singleSelect.value!="" &&  singleSelect.value=="Todas" && Mesass.me_inicial !=""){
+            ListadeMesas = FilasLocalidad
+            let sillas = []           
+           for(var i=0;i<ListadeMesas.length;i++){
+            //console.log(i)
+            var letra = ListadeMesas[i].Fila
+                    for(var f=0; f< Mesass.me_inicial; f++){        
+                        sillas[f] ={ mesa: letra + "" + f, sillas: 0, asientos: [] }                       
+                    }
+                    ListadeMesas[i].Mesas=[...sillas]
+            }
+            console.log(ListadeMesas)  
+            SetFilaLocalidad([])
+            setTimeout(function(){
+                SetFilaLocalidad(ListadeMesas)   
+                setSingleSelect({value: "",label: "",})
+            },90);
+                           
+        }else if(singleSelect.value!="" && Mesass.me_inicial !=""){
+            ListadeMesas = FilasLocalidad
+            SetFilaLocalidad([])
+            let sillas = []
+            var index = ListadeMesas.findIndex(obj => obj.Fila == singleSelect.value);
+             console.log(index, ListadeMesas[index].Fila)
+           var letra = ListadeMesas[index].Fila
+            const repeticiones =  parseInt(Mesass.me_inicial)           
+            for (var i = 0; i < repeticiones; i++) {
+                sillas.push({ mesa: letra + "" + i, sillas: repeticiones, asientos: [] });
+            }
+            ListadeMesas[index].Mesas=[...sillas]
+            console.log(ListadeMesas)            
+            setTimeout(function(){
+                SetFilaLocalidad(ListadeMesas)
+                setSingleSelect({value: "",label: "",})
+            },90);
+        }
 
     }
     const AgregasSillasMesa = () => {
-
-    }
-    /*const AgregasSillasMesa = () => {
-
-        /*if (Mesass.mesas != "" && Mesass.me_sillas != "") {
-            ListadeMesas = ListaMesa
-            console.log(ListadeMesas)
-            let interar = parseInt(Mesass.me_sillas);
-            if (Mesass.mesas === "todas") {
-                console.log(interar)
-                for (var i = 0; i < ListadeMesas.length; i++) {
-                    ListadeMesas[i]["sillas"] = interar;
-                    ListadeMesas[i]["asientos"] = []
-                    const nummesa = ListadeMesas[i]["mesa"]
-                    for (var f = 0; f < interar; f++) {
-                        ListadeMesas[i]["asientos"][f] = { silla: nummesa + "-s-" + f, estado: "disponible" };
-                    }
-                }
-                SetSillasmes({ sillas: "Todas", cantidad: interar })
-                setMesas([])
-                setFilasSillas(ListadeMesas)
-                setMesas(ListadeMesas)
-                console.log("nueva lista", ListadeMesas)
-                setFilasSillas([])
-                setMesass({
-                    ...Mesass,
-                    me_sillas: '',
-                    mesas: ''
-                })
-            } else {
-                let sillas = []
-                let interarr = parseInt(Mesass.me_sillas);
-                var numero = 0
-                var index = ListadeMesas.findIndex(obj => obj.mesa == Mesass.mesas);
-                // console.log(index,ListadeMesas[index])
-                var letra = ListadeMesas[index].mesa
-                setMesass({
-                    ...Mesass,
-                    me_sillas: '',
-                    mesas: ''
-                })
-                for (var g = 0; g < interarr; g++) {
-                    numero = 1 + g
-                    sillas[g] = { silla: letra + "-s-" + numero, estado: "disponible" }
-                }
-                ListadeMesas[index].sillas = interarr
-                ListadeMesas[index].asientos = [...sillas]
-                SetSillasmes({ sillas: letra, cantidad: interarr })
-                /* setMesass({...Mesass,
-                    me_sillas:interarr})
-
-                setMesas([...ListadeMesas])
-
+         //Todas las filas Todas las mesas
+         if(multipleSelect.value=="Todas"&& singleSelecttwo.value=="Todas"&& singleSelecttres.value!=""){ 
+        ListadeMesas = FilasLocalidad
+        for(var i=0;i<ListadeMesas.length;i++){           
+                 
+            for(var j=0;j<ListadeMesas[i].Mesas.length;j++){
+                //console.log( ListadeMesas[i].Mesas[j].mesa)
+                 //aqui poner la cantidad de sillas 
+                 ListadeMesas[i].Mesas[j].sillas=parseInt(singleSelecttres.value)
+                for(var f=0; f< parseInt(singleSelecttres.value) ; f++ ){                               
+                    ListadeMesas[i].Mesas[j]["asientos"][f]={silla:ListadeMesas[i].Mesas[j].mesa+"-s-"+f,estado:"disponible"};                         
+                }  
             }
-
-
-        }*
-
-    }**/
-    const GenerMesas = () => {
-        /*if (Mesass.me_inicial != " " && Mesass.me_cantidad != " ") {
-            const letrafilas = Mesass.me_inicial.replace(/[0-9]+/g, "")
-            const numeroinicofilas = Mesass.me_inicial.replace(/[^0-9]+/g, "");
-            const repeticiones = parseInt(numeroinicofilas) + parseInt(Mesass.me_cantidad)
-            //  console.log(repeticiones)
-            for (var i = numeroinicofilas; i < repeticiones; i++) {
-                ListadeMesas.push({ mesa: letrafilas + "" + i, sillas: 0, asientos: [] });
-            }
+           // console.log(ListadeMesas[i].Mesas)           
         }
-        setMesas(ListadeMesas)
-        //console.log(ListadeMesas)*/
+       console.log(ListadeMesas)
+       SetFilaLocalidad([])
+            setTimeout(function(){
+                SetFilaLocalidad(ListadeMesas)   
+                setSingleSelectwo({value: "",label: "",})
+       setMultipleSelect({value: "",label: "",})
+       setSingleSelectres({value: "",label: "",})
+            },90);
+       
+    }else if(multipleSelect.value!=""&& singleSelecttwo.value!=""&& multipleSelect.value=="Todas"&& singleSelecttwo.value!="Todas"&& singleSelecttres.value!=""){
+         //Fila especifica Todas las mesas   
+         console.log(multipleSelect.value,singleSelecttwo.value,singleSelecttres.value) 
+       ListadeMesas = FilasLocalidad
+        console.log(ListadeMesas)        
+        var index = ListadeMesas.findIndex(obj => obj.Fila==singleSelecttwo.value);       
+        let fila = ListadeMesas[index].Mesas
+        if(fila.length>0)
+        {for(var i=0;  i< fila.length; i++){
+                var numfila =fila[i].mesa
+                //aqui poner la cantidad de sillas 
+            for(var f=0; f< parseInt(singleSelecttres.value); f++ ){                               
+                fila[i]["asientos"][f]={silla:numfila+"-s-"+f,estado:"disponible"};                         
+            }  
+         }
+         ListadeMesas[index].Mesas=fila
+         console.log(ListadeMesas)
+         SetFilaLocalidad([])
+            setTimeout(function(){
+                SetFilaLocalidad(ListadeMesas)   
+                setSingleSelectwo({value: "",label: "",})
+       setMultipleSelect({value: "",label: "",})
+       setSingleSelectres({value: "",label: "",})
+            },90);
+        }
+        }else if(multipleSelect.value!=""&& singleSelecttwo.value!=""&& multipleSelect.value!="Todas"&& singleSelecttwo.value!="Todas"&& singleSelecttres.value!=""){
+
+         //Fila especifica mesa especifica 
+         ListadeMesas = FilasLocalidad
+         var index = ListadeMesas.findIndex(obj => obj.Fila==singleSelecttwo.value); 
+         var fila = ListadeMesas[index].Mesas.findIndex(obj => obj.mesa==multipleSelect.value); 
+         var numfila = "A0"
+         for(var f=0; f< parseInt(singleSelecttres.value); f++ ){                               
+            ListadeMesas[index].Mesas[fila]["asientos"][f]={silla:numfila+"-s-"+f,estado:"disponible"};                         
+        }  
+        console.log(ListadeMesas)
+        SetFilaLocalidad([])
+            setTimeout(function(){
+                SetFilaLocalidad(ListadeMesas)   
+                setSingleSelectwo({value: "",label: "",})
+       setMultipleSelect({value: "",label: "",})
+       setSingleSelectres({value: "",label: "",})
+            },90);
+
     }
+        
+
+
+
+    }
+    
     function handelchangeMesa(e) {
         setMesass({
             ...Mesass,
@@ -247,7 +302,7 @@ const TabdosView = () => {
                                                             isDisabled: true,
                                                         },
                                                         {
-                                                            value: "todas",
+                                                            value: "Todas",
                                                             label: "Todas",
                                                         },
                                                         ...FilasLocalidad.map((e, i) => {
@@ -289,7 +344,7 @@ const TabdosView = () => {
 
                                             <div className="col-12 col-md-2 text-left">
                                                 <label className="form-label" style={{ color: 'white' }}><b>.</b></label><br />
-                                                <button className="btn btn-info" onClick={GenerMesas}>Agregar</button>
+                                                <button className="btn btn-info" onClick={AgregasMesas}>Agregar</button>
                                             </div>
                                         </div>
                                     </Accordion.Body>
@@ -300,15 +355,15 @@ const TabdosView = () => {
                                         Agregar sillas </Accordion.Header>
                                     <Accordion.Body>
                                         <div className='row  '>
-                                            <div className="d-flex px-0 flex-column col-9">
+                                            <div className="d-flex px-0 flex-column col-6">
                                                 <div className="col-12">
-                                                    <label className="form-label"><b>Selecciona Fila</b></label>
+                                                    <label className="form-label"><b>Seleccione Fila</b></label>
                                                     <Select
                                                         className="react-select primary"
                                                         classNamePrefix="react-select"
-                                                        name="singleSelect"
+                                                        name="singleSelecttwo"
                                                         value={singleSelecttwo}
-                                                        onChange={(value) => cambiaFila(value.value)}
+                                                        onChange={(value) => cambiaFila(value)}
                                                         options={[
                                                             {
                                                                 value: "",
@@ -316,7 +371,7 @@ const TabdosView = () => {
                                                                 isDisabled: true,
                                                             },
                                                             {
-                                                                value: "todas",
+                                                                value: "Todas",
                                                                 label: "Todas",
                                                             },
                                                             ...FilasLocalidad.map((e, i) => {
@@ -324,7 +379,7 @@ const TabdosView = () => {
                                                             })
 
                                                         ]}
-                                                        placeholder="Single Select"
+                                                        placeholder="Selecione"
                                                     />
                                                 </div>
                                                 <div className="col-12">
@@ -332,10 +387,9 @@ const TabdosView = () => {
                                                     <Select
                                                         className="react-select info"
                                                         classNamePrefix="react-select"
-                                                        placeholder="Choose City"
+                                                        placeholder="Mesas"
                                                         name="multipleSelect"
-                                                        closeMenuOnSelect={false}
-                                                        isMulti
+                                                        
                                                         value={multipleSelect}
                                                         onChange={(value) => setMultipleSelect(value)
 
@@ -343,74 +397,70 @@ const TabdosView = () => {
                                                         options={[
                                                             {
                                                                 value: "",
-                                                                label: "Multiple Mesas",
+                                                                label: "Seleccione Mesa",
                                                                 isDisabled: true,
                                                             },
+                                                            FilasLocalidad? {
+                                                                value: "Todas",
+                                                                label: "Todas",
+                                                               
+                                                            }:{
+                                                                value: "",
+                                                                label: "Todas",
+                                                                isDisabled: true,                                                               
+                                                            },
                                                             ...Mesas.map((e, i) => {
-                                                                return { value: e.Mesas, label: e.Mesas }
+                                                                return { value: e.mesa, label: e.mesa }
                                                             })
                                                         ]}
                                                     />
                                                 </div>
 
                                             </div>
-                                            <div className="col-3">
+                                            <div className="col-6">
+                                                <div className="col-12 ">
+                                                                <label className="form-label"><b># de Sillas </b></label>                                                                
+                                                                <Select  className="react-select primary"
+                                                        classNamePrefix="react-select"
+                                                        name="singleSelecttres"
+                                                        value={singleSelecttres}
+                                                        onChange={(value) => setSingleSelectres(value)}
+                                                        options={[
+                                                            {
+                                                                value: "",
+                                                                label: "Seleccione una Opcion",
+                                                                isDisabled: true,
+                                                            },
+                                                            {
+                                                                value: 2,
+                                                                label: "2 Sillas",
+                                                            },
+                                                            {
+                                                                value: 4,
+                                                                label: "4 Sillas",
+                                                            },
+                                                            {
+                                                                value: 6,
+                                                                label: "6 Sillas",
+                                                            },
+                                                            {
+                                                                value: 8,
+                                                                label: "8 Sillas",
+                                                            },{
+                                                                value: 10,
+                                                                label: "10 Sillas",
+                                                            },
+
+                                                        ]}
+                                                        placeholder="Selecione"/>
+                                                                
+                                                 </div> 
+                                                 <div className="col-12 ">
                                                 <label className="form-label" style={{ color: 'white' }}><b>.</b></label><br />
-                                                <button className="btn btn-info" onClick={GenerMesas}>Agregar</button>
+                                                <button className="btn btn-info"  onClick={AgregasSillasMesa}>Agregar</button>
+                                                </div> 
                                             </div>
-                                            {/*
-                                                            {
-                                                            ListaMesa.length>0?
-                                                            <div className="col-12 col-md-5">
-                                                                <label className="form-label"><b> Mesas</b></label>
-                                                                <div className="input-group mb-3">
-                                                                    <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div> 
-                                                                    <select className="form-control " aria-label="Selecione Mesa" name="mesas" 
-                                                                    value={Mesass.mesas}
-                                                                    onChange={(e)=>handelchangeMesa(e.target)} id="numero_columna" >  
-                                                                     <option  ></option>                                                                 
-                                                                        <option value={"todas"} >Todas</option>
-                                                                        {ListaMesa.length>0?
-                                                                        ListaMesa.map((e,i)=>{
-                                                                            return(
-                                                                            <option key={i} value={e.mesa} >{e.mesa}</option>
-                                                                            )
-                                                                        })
-                                                                        :""}
-                                                                    </select>
-                                                                </div>                                                                
-                                                            </div>:""}
-                                                            {
-                                                            ListaMesa.length>0?
-                                                            <div className="col-12 col-md-5">
-                                                                <label className="form-label"><b># de Sillas </b></label>
-                                                                <div className="input-group mb-3">
-                                                                <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div>
-                                                                    <select className="form-control " aria-label="Selecione Mesa" name="me_sillas" 
-                                                                    value={Mesass.me_sillas}
-                                                                    onChange={(e)=>handelchangeMesa(e.target)}
-                                                                    id="numero_silla" >
-                                                                    <option ></option>
-                                                                    <option value={2} >2</option>
-                                                                    <option value={4} >4</option>
-                                                                    <option value={6} >6</option>
-                                                                    <option  value={8}>8</option>
-                                                                    <option value={10}>10</option>                                                                                                                          
-                                                                    </select>
-                                                                </div>
-                                                            </div>   :""}    
-                                                            
-                                                            {
-                                                                ListaMesa.length>0?
-                                                            <div className="col-md-2 text-left">
-                                                                <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
-                                                                <button  className="btn btn-info" onClick={AgregasSillasMesa}>Agrega</button>
-                                                            
-                                                            </div>:""}*/}
+                                            
                                         </div>
 
                                     </Accordion.Body>
@@ -423,7 +473,35 @@ const TabdosView = () => {
 
                 <div className="col-sm-12  text-center ">
                     <div className="col-sm-12 text-center " style={{ height: '400px', overflowY: 'hide', overflowX: 'auto', }}>
-                        {ListaMesa.length > 0 ?
+                        {
+                        FilasLocalidad.length>0?
+                        FilasLocalidad.map((e,index)=>{
+                            return(
+                                <div className='d-flex  px-3 align-items-center' key={index}>
+                                        <div className='d-flex pb-2'>
+                                            <MesacerView
+                                                text={e.Fila}
+                                            />
+                                        </div>
+                                        <div className='d-flex  pb-2' >
+                                            {e.Mesas.length>0?
+                                            e.Mesas.map((e, i) => {
+                                                return (
+                                                    <div key={i}>
+                                                        <MesasView
+                                                            status={e.asientos.length}
+                                                            text={e.mesa} />
+                                                    </div>
+
+                                                )
+                                            }):''}
+                                        </div>
+                                </div>
+
+                            )
+                        }):''
+                        }
+                        {/*.length > 0 ?
                             ejemplo.map((e, index) => {
                                 return (
                                     <div className='d-flex  px-3 align-items-center' key={index}>
@@ -447,7 +525,7 @@ const TabdosView = () => {
                                         </div>
                                     </div>)
 
-                            }) : ""}
+                            }) : ""*/}
                     </div>
                 </div>
 
