@@ -34,6 +34,7 @@ import SuscritorViews from "views/Pages/Suscriptores";
 import UsersView from "views/Pages/Usuarios";
 import SuscritoridView from "views/Pages/Suscriptores/Suscritorid";
 import UseridView from "views/Pages/Usuarios/Usuarioid";
+import TablasEjemplos from "views/Tables/Tablaejemplo";
 
 var routes = [
   {
@@ -42,7 +43,7 @@ var routes = [
     name: "Inicio",
     icon: "nc-icon nc-chart-pie-35",
     component: Dashboard,
-    permiso:["super_admin","subscriptor"]
+    permiso: ["super_admin", "subscriptor"]
   },
   {
     path: "/inicio",
@@ -50,107 +51,109 @@ var routes = [
     name: "inicio",
     icon: "nc-icon nc-layers-3",
     component: Dashboardsub,
-    permiso:["admin"]
+    permiso: ["admin"]
   },
-  { 
-  path: "/datos",
-  layout: "/admin",
-  name: "Datos",
-  icon: "nc-icon nc-satisfied",
-  component: PerfilPage,
-  permiso:["admin"]},
-  { 
+  {
+    path: "/datos",
+    layout: "/admin",
+    name: "Datos",
+    icon: "nc-icon nc-satisfied",
+    component: PerfilPage,
+    permiso: ["admin"]
+  },
+  {
     path: "/tickets",
     layout: "/admin",
     name: "Tickets",
     icon: "nc-icon nc-notification-70",
     component: Reactabla,
-    permiso:["admin"]},
-  { 
-  path: "/perfil",
-  layout: "/admin",
-  name: "Info",
-  icon: "nc-icon nc-badge",
-  component: UserPage,
-  permiso:["superadmin","super_admin"]
-},
-  { 
-    path:"/suscritor/:id",
-    layout:"/admin",
-    component:SuscritoridView,
-    permiso:["superadmin","super_admin"]
-  }, 
-  { 
-    path:"/usuario/:id",
-    layout:"/admin",
-    component:UseridView,
-    permiso:["superadmin","super_admin"]
-  }, 
+    permiso: ["admin"]
+  },
   {
-    path:"/tickets",
-    layout:"/admin",
-    name:"Tickets",
-    icon:"nc-icon nc-tag-content",
-    component:Ticket,
-    permiso:["superadmin","super_admin"]
+    path: "/tablaejm",
+    layout: "/admin",
+    name: "tablaejm",
+    icon: "nc-icon nc-badge",
+    component: TablasEjemplos,
+    permiso: ["superadmin", "super_admin"]
+  },
+  {
+    path: "/suscritor/:id",
+    layout: "/admin",
+    component: SuscritoridView,
+    permiso: ["superadmin", "super_admin"]
+  },
+  {
+    path: "/usuario/:id",
+    layout: "/admin",
+    component: UseridView,
+    permiso: ["superadmin", "super_admin"]
+  },
+  {
+    path: "/tickets",
+    layout: "/admin",
+    name: "Tickets",
+    icon: "nc-icon nc-tag-content",
+    component: Ticket,
+    permiso: ["superadmin", "super_admin"]
 
   },
   {
-    path:"/espacios",
-    layout:"/admin",
-    name:"Espacios",
-    icon:"nc-icon nc-map-big",
-    component:Espacios,
-    permiso:["superadmin","super_admin"]
+    path: "/espacios",
+    layout: "/admin",
+    name: "Espacios",
+    icon: "nc-icon nc-map-big",
+    component: Espacios,
+    permiso: ["superadmin", "super_admin"]
   },
   {
-    path:"/eventos",
-    layout:"/admin",
-    name:"Eventos",
-    icon:"nc-icon nc-paper-2",
-    component:Eventos,
-    permiso:["superadmin","super_admin"]
-  }, 
-  {
-    path:"/suscritor",
-    layout:"/admin",
-    name:"Suscriptores",
-    icon:"nc-icon nc-mobile",
-    component:SuscritorViews,
-    permiso:["superadmin","super_admin"]
-  },   
-  {
-    path:"/usuario",
-    layout:"/admin",
-    name:"Usuarios",
-    icon:"nc-icon nc-single-02",
-    component:UsersView,
-    permiso:["superadmin","super_admin"]
+    path: "/eventos",
+    layout: "/admin",
+    name: "Eventos",
+    icon: "nc-icon nc-paper-2",
+    component: Eventos,
+    permiso: ["superadmin", "super_admin"]
   },
   {
-    path:"/referidos",
-    layout:"/admin",
-    name:"Referido",
-    icon:"nc-icon nc-notification-70",
-    component:Eventos,
-    permiso:["superadmin","super_admin"]
-  },
-  
-  {
-    path:"/influencer",
-    layout:"/admin",
-    name:"Influencer",
-    icon:"nc-icon nc-note-03",
-    component:Eventos,
-    permiso:["superadmin","super_admin"]
+    path: "/suscritor",
+    layout: "/admin",
+    name: "Suscriptores",
+    icon: "nc-icon nc-mobile",
+    component: SuscritorViews,
+    permiso: ["superadmin", "super_admin"]
   },
   {
-    path:"/sorteos",
-    layout:"/admin",
-    name:"Sorteos",
-    icon:"nc-icon nc-controller-modern",
-    component:ReactTables,
-    permiso:["superadmin","super_admin"]
+    path: "/usuario",
+    layout: "/admin",
+    name: "Usuarios",
+    icon: "nc-icon nc-single-02",
+    component: UsersView,
+    permiso: ["superadmin", "super_admin"]
+  },
+  {
+    path: "/referidos",
+    layout: "/admin",
+    name: "Referido",
+    icon: "nc-icon nc-notification-70",
+    component: Eventos,
+    permiso: ["superadmin", "super_admin"]
+  },
+
+  {
+    path: "/influencer",
+    layout: "/admin",
+    name: "Influencer",
+    icon: "nc-icon nc-note-03",
+    component: Eventos,
+    permiso: ["superadmin", "super_admin"]
+  },
+  {
+    path: "/sorteos",
+    layout: "/admin",
+    name: "Sorteos",
+    icon: "nc-icon nc-controller-modern",
+    component: ReactTables,
+    permiso: ["superadmin", "super_admin"]
   },
   {
     collapse: true,
@@ -158,7 +161,7 @@ var routes = [
     name: "Pages",
     state: "openPages",
     icon: "nc-icon nc-puzzle-10",
-    permiso:["super_admin"],
+    permiso: ["super_admin"],
     views: [
       {
         path: "/user-page",

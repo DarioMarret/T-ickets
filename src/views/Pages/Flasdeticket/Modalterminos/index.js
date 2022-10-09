@@ -6,7 +6,7 @@ const Modalterminos=()=>{
         <div className="modal fade" id="terminosModalModal"  role="dialog" aria-labelledby="erminosModalModalLabel"
         aria-hidden="true">
              <div className="modal-dialog   modal-lg" role="document">
-      <div className="terminos  bg-black modal-content  ">
+      <div className="terminos  modal-content  ">
         <div className="modal-header">
           <h5 className="modal-title text-center justify-content-center ">TÉRMINOS Y CONDICIONES</h5>
           <button type="button"style={{color:'white'}} className=" close" data-dismiss="modal" aria-label="Close">
