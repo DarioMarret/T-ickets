@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import MaterialReactTable from 'material-react-table';
+import DataTable from 'react-data-table-component';
 import { Box, Button } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { ListarTikets } from 'utils/Querypanel';
-import {Row}from 'react-bootstrap'
+import {Row,Container}from 'react-bootstrap'
+import CustomMaterialPagination from './CustomMaterialPagination';
+import { width } from '@mui/system';
 
 
 const TablasEjemplos = () => {
@@ -12,46 +15,104 @@ const TablasEjemplos = () => {
         {
             accessorKey: 'id',
             header: 'ID',
-            size: 40,
+            
         },
         {
             accessorKey: 'nombre',
             header: 'Nombre',
-            size: 120,
+            flex: 1,
+            muiTableHeadCellProps:{xs:{ display:'none'},md:{display: 'none'}}
         },
         {
             accessorKey: 'cedula',
             header: 'Cédula',
-            size: 120,
+            flex: 1
         },
         {
             accessorKey: 'fecha',
             header: 'Company',
-            size: 300,
+            flex: 1
         },
         {
             accessorKey: 'ciudad',
             header: 'Ciudad',
+            render:(rowData)=>(
+                rowData.ciudad),
+            cellStyle:width==="xs"?{
+                width:"100%",
+                display:"flex",
+                flexDirection:"column",
+                borderBottom:0,
+                        }:{},
         },
         {
             accessorKey: 'concierto',
             header: 'Concierto',
-            size: 220,
+            flex: 1
         },
         {
             accessorKey: 'protocolo',
             header: 'Protocolo',
-            size: 220,
+            flex: 1
         },
         {
             accessorKey: 'link',
             header: 'Link',
-            size: 220,
+            flex: 1
+
         },
         {
             accessorKey: 'qr',
             header: 'codigo QR',
-            size: 220,
+            flex: 1
+        },
+    ];
+    const columnsdos = [
+        {
+            name: 'id',
+            selector: row=>row.id,
+           
+        },
+        {
+            name: 'nombre',
+            selector: row=>row.nombre,
+        },
+        {
+            name: 'cedula',
+            selector: row=>row.cedula,
+           
+        },
+        {
+            name: 'fecha',
+            selector: row=>row.fecha,
+            
+        },
+        {
+            name: 'ciudad',
+            selector: row=>row.ciudad,
+            hide: 'md',
+        },
+        {
+            name: 'concierto',
+            selector: row=>row.concierto,
+            hide: 'md',
+            
+        },
+        {
+            name: 'protocolo',
+            selector: row=>row.protocolo,
+            hide: 'md',
+        },
+        {
+            name: 'link',
+            selector: row=>row.link,
+            sortable: true,
+
+        },
+        {
+            name: 'qr',
+            selector: row=>row.qr,
+            sortable: true,
         },
     ];
     async function ConsultarTikets() {
@@ -79,13 +140,17 @@ const TablasEjemplos = () => {
         }
 
     }
+    const paginationComponentOptions = {
+        rowsPerPageText: 'Filas por página',
+        rangeSeparatorText: 'de',
+        selectAllRowsItem: true,
+        selectAllRowsItemText: 'Todos',
+    };
     useEffect(() => {
         (async () => {
             await ConsultarTikets()
         })()
-        $(document).ready( function () {
-                $('#Table').DataTable();
-            } );
+        
 
     }, [])
     return (
@@ -96,7 +161,7 @@ const TablasEjemplos = () => {
                             <div className="card-header">
                                 Suscritos
                             </div>
-                            <div className="card-body table-responsive">
+                            <div className="table-responsive">
                 <MaterialReactTable
                     columns={columns}
                     data={data}
@@ -155,40 +220,12 @@ const TablasEjemplos = () => {
                                 Suscritos
                             </div>
                             <div className="card-body table-responsive">
-                <table id="Table">
-                    <thead>
-                        <tr>
-                            <th>
-                                Nombre
-                            </th>
-                            <th>
-                                Cedula
-                            </th>
-                            <th>
-                                Link
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.length>0 ?
-                            data.map((e, i) => {
-                                return (
-                                    <tr>
-                                        <td>{e.cedulas}</td>
-                                        <td>{e.cedulas}</td>
-                                        <td>{e.cedulas}</td>
-
-                                    </tr>
-                                )
-                            }) : ''
-                        }
-                        <tr>
-                            <td>
-
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                            <DataTable
+                            columns={columnsdos}
+                            data={data}
+                            pagination 
+                            paginationComponentOptions={CustomMaterialPagination} 
+                            />
                  </div>
               </div>
             </Row>
