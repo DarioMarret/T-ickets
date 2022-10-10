@@ -32,7 +32,7 @@ const TabdosView = (props) => {
         me_cantidad: 'todas',
         me_inicial: '',
         mesas: '',
-        me_sillas: ''
+        filas: 1
     })
     const [SillasMesas, SetSillasmes] = useState({
         Fila: '',
@@ -52,7 +52,8 @@ const TabdosView = (props) => {
         SetMesasLocalidad(index.length>0? [...index[0].Mesas]:[])
     }
     const AgregarFilas = () => {
-        const data = Letras.slice(0, 8).map((e, i) => {
+        let fila = parseInt(Mesass.filas)-1
+        const data = Letras.slice(0, fila).map((e, i) => {
             return { Fila: e, Mesas: [] }
         })
         SetFilaLocalidad(data)
@@ -70,8 +71,9 @@ const TabdosView = (props) => {
            for(var i=0;i<ListadeMesas.length;i++){
             //console.log(i)
             var letra = ListadeMesas[i].Fila
-                    for(var f=0; f< Mesass.me_inicial; f++){        
-                        sillas[f] ={ mesa: letra + "" + f, sillas: 0, asientos: [] }                       
+                    for(var f=0; f< parseInt( Mesass.me_inicial); f++){    
+                       let valor= parseInt(f)+1    
+                        sillas[f] ={ mesa: letra + "" +valor , sillas: 0, asientos: [] }                       
                     }
                     ListadeMesas[i].Mesas=[...sillas]
             }
@@ -89,9 +91,10 @@ const TabdosView = (props) => {
             var index = ListadeMesas.findIndex(obj => obj.Fila == singleSelect.value);
              console.log(index, ListadeMesas[index].Fila)
            var letra = ListadeMesas[index].Fila
-            const repeticiones =  parseInt(Mesass.me_inicial)           
+            const repeticiones =  parseInt(Mesass.me_inicial)          
             for (var i = 0; i < repeticiones; i++) {
-                sillas.push({ mesa: letra + "" + i, sillas: repeticiones, asientos: [] });
+                let valor= parseInt(f)+1 
+                sillas.push({ mesa: letra + "" + valor, sillas: repeticiones, asientos: [] });
             }
             ListadeMesas[index].Mesas=[...sillas]
             console.log(ListadeMesas)            
@@ -106,14 +109,11 @@ const TabdosView = (props) => {
          //Todas las filas Todas las mesas
          if(multipleSelect.value=="Todas"&& singleSelecttwo.value=="Todas"&& singleSelecttres.value!=""){ 
         ListadeMesas = FilasLocalidad
-        for(var i=0;i<ListadeMesas.length;i++){           
-                 
-            for(var j=0;j<ListadeMesas[i].Mesas.length;j++){
-                //console.log( ListadeMesas[i].Mesas[j].mesa)
-                 //aqui poner la cantidad de sillas 
-                 ListadeMesas[i].Mesas[j].sillas=parseInt(singleSelecttres.value)
-                for(var f=0; f< parseInt(singleSelecttres.value) ; f++ ){                               
-                    ListadeMesas[i].Mesas[j]["asientos"][f]={silla:ListadeMesas[i].Mesas[j].mesa+"-s-"+f,estado:"disponible"};                         
+        for(var i=0;i<ListadeMesas.length;i++){
+            for(var j=0;j<ListadeMesas[i].Mesas.length;j++){            
+                for(var f=0; f< parseInt(singleSelecttres.value) ; f++ ){                   
+                    let valor= parseInt(f)+1             
+                    ListadeMesas[i].Mesas[j]["asientos"][f]={silla:ListadeMesas[i].Mesas[j].mesa+"-s-"+valor,estado:"disponible"};                         
                 }  
             }
            // console.log(ListadeMesas[i].Mesas)           
@@ -138,8 +138,9 @@ const TabdosView = (props) => {
         {for(var i=0;  i< fila.length; i++){
                 var numfila =fila[i].mesa
                 //aqui poner la cantidad de sillas 
-            for(var f=0; f< parseInt(singleSelecttres.value); f++ ){                               
-                fila[i]["asientos"][f]={silla:numfila+"-s-"+f,estado:"disponible"};                         
+            for(var f=0; f< parseInt(singleSelecttres.value); f++ ){   
+                let valor= parseInt(f)+1                              
+                fila[i]["asientos"][f]={silla:numfila+"-s-"+valor,estado:"disponible"};                         
             }  
          }
          ListadeMesas[index].Mesas=fila
@@ -159,8 +160,9 @@ const TabdosView = (props) => {
          var index = ListadeMesas.findIndex(obj => obj.Fila==singleSelecttwo.value); 
          var fila = ListadeMesas[index].Mesas.findIndex(obj => obj.mesa==multipleSelect.value); 
          var numfila = "A0"
-         for(var f=0; f< parseInt(singleSelecttres.value); f++ ){                               
-            ListadeMesas[index].Mesas[fila]["asientos"][f]={silla:numfila+"-s-"+f,estado:"disponible"};                         
+         for(var f=0; f< parseInt(singleSelecttres.value); f++ ){    
+            let valor= parseInt(f)+1                            
+            ListadeMesas[index].Mesas[fila]["asientos"][f]={silla:numfila+"-s-"+valor,estado:"disponible"};                         
         }  
         console.log(ListadeMesas)
         SetFilaLocalidad([])
@@ -193,7 +195,7 @@ const TabdosView = (props) => {
     }
 
     useEffect(() => {
-        AgregarFilas()
+       // AgregarFilas()
 
     }, [])
     return (
@@ -233,6 +235,9 @@ const TabdosView = (props) => {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="d-flex text-end ju">
+                                                <button className="btn btn-success">Guardar</button>
+                                                </div>
                             </div>
                         </div>
                     </div>
@@ -249,36 +254,22 @@ const TabdosView = (props) => {
                                                 <Form.Control
                                                     className="form-control"
                                                     type="number"
+                                                    name="filas"
                                                     min={1}
-                                                    max={27}
+                                                    max={28}
+                                                    value={Mesass.filas}
+                                                    onChange={(e)=>handelchangeMesa(e.target)}
                                                 />
-
-
-
                                             </div>
 
                                             <div className='col-12 col-md-6'>
                                                 <label className="form-label" style={{ color: 'white' }}><b>.</b></label><br />
-                                                <button className="btn btn-info" >Crear</button>
+                                                <button className="btn btn-info"  onClick={AgregarFilas}>Crear</button>
 
 
                                             </div>
                                         </div>
-                                        <div className="row col-12 col-sm-12 col-md-12 col-lg-6">
-                                            <div className='col-12 col-md-6'>
-                                                <label className="form-label"><b>Filas </b></label>
-                                                <Form.Control
-                                                    className="form-control"
-                                                    type="number"
-                                                    min={1}
-                                                    max={27}
-                                                />
-                                            </div>
-                                            <div className='col-12 col-md-6'>
-                                                <label className="form-label" style={{ color: 'white' }}><b>.</b></label><br />
-                                                <button className="btn btn-info" >Agregar</button>
-                                            </div>
-                                        </div>
+                                    
                                     </div>
                                 </Accordion.Body>
                             </Accordion.Item>
@@ -313,14 +304,10 @@ const TabdosView = (props) => {
                                                     placeholder="Seleccione "
                                                 />
 
-                                                {/* <input type="number" name="me_cantidad" id="me_cantidad"
-                                                                    value={Mesass.me_cantidad}
-                                                                    onChange={(e)=>handelchangeMesa(e.target)}
-                                                                className="form-control" placeholder="10" />*/}
 
                                             </div>
                                             <div className="col-12 col-sm-12 col-md-12 col-lg-4">
-                                                <label className="form-label"><b># de  Mesas x Fila</b></label>
+                                                <label className="form-label"><b>Mesas x Fila</b></label>
 
 
                                                 <Form.Control type="number" name="me_inicial"
@@ -329,18 +316,7 @@ const TabdosView = (props) => {
                                                     className="form-control" id="numero_partida" placeholder="10" />
 
                                             </div>
-                                            {/*<div className="col-12 col-sm-12 col-md-12 col-lg-5">
-                                                                <label className="form-label"><b># de  Mesas x Fila</b></label>
-                                                                <div className="input-group mb-3">
-                                                                    <div className="input-group-prepend">
-                                                                        <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                                                    </div>
-                                                                    <input type="text" name="me_inicial" 
-                                                                    value={Mesass.me_inicial}
-                                                                    onChange={(e)=>handelchangeMesa(e.target)}
-                                                                    className="form-control" id="numero_partida" placeholder="10" />
-                                                                                                                        </div>
-                                                            </div>*/}
+                                          
 
                                             <div className="col-12 col-md-2 text-left">
                                                 <label className="form-label" style={{ color: 'white' }}><b>.</b></label><br />

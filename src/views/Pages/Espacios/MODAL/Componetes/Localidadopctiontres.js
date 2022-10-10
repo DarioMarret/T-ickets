@@ -29,7 +29,7 @@ const TabtresView=()=>{
                                                             onChange={(e)=>handelchangelocalidad(e.target)}
                                                             placeholder="Ingrese el nombre del espacio" />
                                                                                                         </div>                            
-                                                    </div>
+                                                    </div> 
                                                 </div>
                             
                                                 <div className="row">
@@ -46,6 +46,9 @@ const TabtresView=()=>{
                                                             
                                                                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div className="d-flex text-end ju">
+                                                <button className="btn btn-success">Guardar</button>
                                                 </div>
                                             </div>
                                         </div>

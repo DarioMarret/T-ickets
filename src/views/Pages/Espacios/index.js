@@ -1,4 +1,9 @@
 import React, {useEffect,useState} from  "react";
+import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import { Box, Button, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Edit,Delete,Visibility } from '@mui/icons-material';
 import Modalregistroespacio from "./MODAL/Registrolocalidad.js";
 import { EliminarEspacios,ListarEspacios } from "utils/Querypanel.js";
 import { Row,Col,Card } from "react-bootstrap";
@@ -6,6 +11,7 @@ import NewEspacioView from "./MODAL/NuevoEspacio.js";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import axios from "axios";
 import RegistroViwstab from "./MODAL/Registrodos.js";
+import { columns } from "utils/ColumnTabla.js";
 
 const EventosViews =()=>{
   const [localidaname,setLocalidad]=useState({id:'',nombre:'', descripcion:''})
@@ -229,47 +235,54 @@ function Editar(e,estado){
                     <br/><br/>
 
                     <div className="card card-primary card-outline text-left">
-                        <div className="card-header">
+                        <div className="card-header pb-3">
                             Eventos
                         </div>
-                        <div className="card-body">
+                        <div className="">
 
-                            <table className="table table-hover text-center">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Nombre</th>
-                                        <th scope="col">Descripcion</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                  {listaEsp.length>0?
-                                  listaEsp.map((e,i)=>{
-                                    return(
-                                      <tr>
-                                         <th scope="row">{e.id}</th>
-                                        <td>{e.nombre}</td>
-                                        <td> {e.descripcion} </td>
-                                        <th>
-                                            
-                                                <a   onClick={()=>AgregasSillasMesa(e)}className="btn btn-primary btn-sm"><i className="fa fa-eye"></i></a>    
-                                          
-                                                <a onClick={()=>successAlert(e.nombre)} className="btn btn-primary btn-sm"> <i className="fa fa-trash"></i></a>
-                                                <a onClick={()=> Editar(e,"update")} className="btn btn-primary btn-sm"><i className="fa fa-edit"></i></a>
-                                            
-                                        </th>
-
-                                      </tr>
-                                    )
-                                  })                                 
-                                
-                                :''}
-                                    
-                                    
-                                   
-                                </tbody>
-                            </table>
+                            
+                            <MaterialReactTable
+                    columns={columns}
+                    data={listaEsp}                  
+                    initialState={
+                      {
+                        columnVisibility:{id:false}
+                      }
+                    }
+                    muiTableBodyProps={{
+                      sx:{ columnVisibility:{id:false}}
+                    }}
+                   enableRowActions
+                    renderRowActions={({ row }) => (
+                        <Box sx={{ display: 'flex' }}>
+                           <IconButton 
+                          color="success"  
+                          onClick={()=>AgregasSillasMesa(row.original)}                        
+                          >
+                            <Visibility/>
+                          </IconButton>
+                          <IconButton 
+                          color="primary" 
+                          onClick={()=> Editar(row.original,"update")}                         
+                          >
+                            <Edit/>
+                          </IconButton>
+                          <IconButton  
+                          color="error"
+                          onClick={()=>successAlert(row.original.nombre)}
+                          >
+                          <Delete/>
+                          </IconButton>
+                          
+                        </Box>
+                      )}
+                    
+                    
+                    
+                    localization={MRT_Localization_ES }
+                    
+                />
+                      
                         </div>
                     </div>
                 </div>
@@ -285,7 +298,8 @@ function Editar(e,estado){
            Modal regitra y actualiza */}
             <RegistroViwstab
             show={show}           
-             setShowToast={setShowToast}            
+             setShowToast={setShowToast}
+             localidaname={localidaname}            
              /> 
             <NewEspacioView
             showNuevo={showNuevo}

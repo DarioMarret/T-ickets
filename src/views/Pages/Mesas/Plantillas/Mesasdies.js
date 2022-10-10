@@ -7,20 +7,20 @@ const MesadiesView =({text})=>{
                 <div className=" "   style={Stylesilla.asientos}>
                 </div>
                 
-                <a className={text+"-s-0 sillas bg-success "}  style={Stylesilla.asientos}></a>
+                <a className={text+"-s-1 sillas bg-success "}  style={Stylesilla.asientos}></a>
                 
-                <a  className={text+"-s-1 sillas bg-success "}   style={Stylesilla.asientos}>
+                <a  className={text+"-s-2 sillas bg-success "}   style={Stylesilla.asientos}>
                 </a>
-                <a  className={text+"-s-2 sillas bg-success "}  style={Stylesilla.asientos}>
+                <a  className={text+"-s-3 sillas bg-success "}  style={Stylesilla.asientos}>
                 </a>
               </div>
         
               <div className=" d-flex  align-items-center">
                 <div className="d-flex flex-column">
-                <a className={text+"-s-3 sillas bg-success"}   style={Stylesilla.asientos}>
+                <a className={text+"-s-4 sillas bg-success"}   style={Stylesilla.asientos}>
                   </a>          
                  
-                  <a className={text+"-s-4 sillas bg-success "}   style={Stylesilla.asientos}>
+                  <a className={text+"-s-5 sillas bg-success "}   style={Stylesilla.asientos}>
                   </a>
                 </div>
                 <div className={text +"  Mesa bg-success d-flex p-1"}  style={Stylesilla.mesas}>
@@ -28,9 +28,9 @@ const MesadiesView =({text})=>{
                 </div>
                 
                 <div className="d-flex flex-column">
-                <a className={text+"-s-5 sillas bg-success "}   style={Stylesilla.asientos}>
+                <a className={text+"-s-6 sillas bg-success "}   style={Stylesilla.asientos}>
                   </a>         
-                  <a className={text+"-s-6 sillas bg-success "}   style={Stylesilla.asientos}>
+                  <a className={text+"-s-7 sillas bg-success "}   style={Stylesilla.asientos}>
                   </a>
                 </div>
               </div>
@@ -38,11 +38,11 @@ const MesadiesView =({text})=>{
               <div className="d-flex ">
                 <div style={Stylesilla.asientos}>
                 </div>
-                <a className={text+"-s-7 sillas bg-success "}   style={Stylesilla.asientos}>
+                <a className={text+"-s-8 sillas bg-success "}   style={Stylesilla.asientos}>
                 </a>
-                <a className={text+"-s-8 sillas bg-success"}  style={Stylesilla.asientos}>
+                <a className={text+"-s-9 sillas bg-success"}  style={Stylesilla.asientos}>
                 </a>
-                <a className={text+"-s-9 sillas bg-success "}   style={Stylesilla.asientos}>
+                <a className={text+"-s-10 sillas bg-success "}   style={Stylesilla.asientos}>
                 </a>
               </div>  
             </div> 

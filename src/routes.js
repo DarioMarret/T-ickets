@@ -70,14 +70,6 @@ var routes = [
     permiso: ["admin"]
   },
   {
-    path: "/tablaejm",
-    layout: "/admin",
-    name: "tablaejm",
-    icon: "nc-icon nc-badge",
-    component: TablasEjemplos,
-    permiso: ["superadmin", "super_admin"]
-  },
-  {
     path: "/suscritor/:id",
     layout: "/admin",
     component: SuscritoridView,

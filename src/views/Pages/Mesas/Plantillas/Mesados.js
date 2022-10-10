@@ -41,7 +41,7 @@ const MesadosView =({text})=>{
           
             <div    style={Stylesilla.asientos}></div>
           
-          <a className={text+"-s-1 sillas bg-success "}   style={Stylesilla.asientos}>
+          <a className={text+"-s-2 sillas bg-success "}   style={Stylesilla.asientos}>
           </a>
           <div   style={Stylesilla.asientos}>
           </div>

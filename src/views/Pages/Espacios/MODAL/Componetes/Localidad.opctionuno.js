@@ -1,6 +1,8 @@
 import React,{useEffect,useState} from "react"
 import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button} from "react-bootstrap"
-const TabunoView=()=>{
+import { GuardarLocalidad } from "utils/Querypanel"
+const TabunoView=(props)=>{
+    const {localidaname}=props
     let ListadeFilas=[]
     const [nmobretabuno,setLocalidad]=useState({
         nombre:'',
@@ -37,8 +39,9 @@ const TabunoView=()=>{
                     ListadeFilas[i]["sillas"]=interar;
                     ListadeFilas[i]["asientos"]=[]
                  const numfila =ListadeFilas[i]["fila"]                
-                    for(var f=0; f< interar; f++ ){                               
-                        ListadeFilas[i]["asientos"][f]={silla:numfila+"-s-"+f,estado:"disponible"};                         
+                    for(var f=0; f< interar; f++ ){       
+                        numero=1+f                        
+                        ListadeFilas[i]["asientos"][f]={silla:numfila+"-s-"+numero,estado:"disponible"};                         
                     }                   
                 }               
                 setFilas([])                  
@@ -80,6 +83,22 @@ const TabunoView=()=>{
         })
 
     }
+    async function AgregaLocalidad(){
+        if(nmobretabuno.nombre=="" || nmobretabuno.description==""|| ListaFilas.length>0) {alert("Complete los datos y localidad creada") }
+        else{
+        try {
+            console.log({"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
+     
+        //  const agrega = await GuardarLocalidad({"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
+      //    console.log(agrega)
+               
+        } catch (error) {
+            console.log(error)
+            
+        }}
+
+    }
+    console.log(ListaFilas)
     
    return( <>
     <div className="d-flex flex-column">
@@ -117,6 +136,10 @@ const TabunoView=()=>{
                                                                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div className="d-flex text-end ju">
+                                                <button onClick={AgregaLocalidad} className="btn btn-success">Guardar</button>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -217,10 +240,11 @@ const TabunoView=()=>{
                 {e.asientos.length>0?
                    <div className=' d-flex p-1 justify-content-center align-items-center ' >                    
                      {e.asientos.map((silla,index)=>{
+                        let numero = index+1
                         return(
                         <div key={"silla"+index}  className='d-flex   mx-1 bg-success   rounded-5 text-center  justify-content-center align-items-center ' style={{ height:'50px', width:'50px'}} >
                         <div className={'px-3 '+ silla.silla} >
-                            {index}
+                            {numero}
                         </div>  
                         </div>    )                    
                      })}

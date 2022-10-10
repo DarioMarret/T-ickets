@@ -9,7 +9,7 @@ const MesaseisView =({text})=>{
                 
                   <div style={Stylesilla.asientos}></div>
                 
-                  <a className={text+"-s-0 sillas bg-success "}   style={Stylesilla.asientos}>
+                  <a className={text+"-s-1 sillas bg-success "}   style={Stylesilla.asientos}>
                 </a>
                 <div   style={Stylesilla.asientos}>
                 </div>
@@ -17,10 +17,10 @@ const MesaseisView =({text})=>{
         
               <div className=" d-flex  align-items-center">
                 <div className="d-flex flex-column">
-                <a className={text+"-s-1 sillas bg-success "}  style={Stylesilla.asientos}>
+                <a className={text+"-s-2 sillas bg-success "}  style={Stylesilla.asientos}>
                   </a>          
                  
-                  <a className={text+"-s-2 sillas bg-success "}   style={Stylesilla.asientos}>
+                  <a className={text+"-s-3 sillas bg-success "}   style={Stylesilla.asientos}>
                   </a>
                 </div>
                 <div className={text +" Mesa bg-success d-flex  p-1" } style={Stylesilla.mesas}>
@@ -28,9 +28,9 @@ const MesaseisView =({text})=>{
                 </div>
                 
                 <div className="d-flex flex-column">
-                <a className={text+"-s-3 sillas bg-success "}   style={Stylesilla.asientos}>
+                <a className={text+"-s-4 sillas bg-success "}   style={Stylesilla.asientos}>
                   </a>         
-                  <a className={text+"-s-4 sillas bg-success "}   style={Stylesilla.asientos}>
+                  <a className={text+"-s-5 sillas bg-success "}   style={Stylesilla.asientos}>
                   </a>
                 </div>
               </div>
