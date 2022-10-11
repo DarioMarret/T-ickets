@@ -6,8 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import { Edit,Delete } from '@mui/icons-material';
 import { ListarLocalidad } from '../../../../../utils/Querypanel';
 import { columnespacio } from 'utils/ColumnTabla';
+import { EliminarLocalidad } from '../../../../../utils/Querypanel';
+import { useSelector,useDispatch } from 'react-redux';
+import { addLocalidad,deleteloclidad } from 'StoreRedux/Slice/SuscritorSlice';
 const LocalidadesagreViews=(props)=>{
-    const{localidaname,show}=props
+  let usedispatch=useDispatch()
+    const{localidaname,show,SetDataloca}=props
   //  console.log(localidaname)
   const [datas,setData]=useState([])
   async function ObtenLocalidad(){    
@@ -24,6 +28,46 @@ const {success,data}=datos
      } catch (error) {   
       console.log(error)
      }
+  }
+  async function Eliminar(parms){
+    try {
+      //const accion = await EliminarLocalidad(parms)
+    //  const {success}=accion
+      //if(success){
+       //await ObtenLocalidad()
+       alert("Localidad Eliminada")
+      //}
+    } catch (error) {
+      
+    }
+  }
+  function Editar(parms){
+    let tipo = JSON.parse(parms.mesas_array)
+    console.log(tipo.Typo)
+    if(tipo.Typo=="fila"){
+    SetDataloca({typo:'fila',
+        nombre:parms.nombre,
+        description:parms.descripcion,
+        id:parms.id,
+        array:tipo.datos})
+  console.log(parms)
+    $("#listas").removeClass("active")
+   $("#filas").addClass("active")
+   $('[href*="filas"]').addClass('active');
+   $('[href*="listas"]').removeClass('active');   
+  }else{
+    SetDataloca({typo:'mesa',
+    nombre:parms.nombre,
+    description:parms.descripcion,
+    id:parms.id,
+    array:tipo.datos})
+console.log(parms)
+$("#listas").removeClass("active")
+$("#mesas").addClass("active")
+$('[href*="mesas"]').addClass('active');
+$('[href*="listas"]').removeClass('active');  
+
+  }
   }
 
     useEffect(()=>{
@@ -77,12 +121,14 @@ const {success,data}=datos
                     renderRowActions={({ row }) => (
                         <Box sx={{ display: 'flex' }}>
                           <IconButton 
-                          color="primary"                          
+                          color="primary"  
+                          onClick={()=>Editar(row.original)}
                           >
                             <Edit/>
                           </IconButton>
                           <IconButton  
                           color="error"
+                          onClick={()=>Eliminar(row.original.id)}
                           >
                           <Delete/>
                           </IconButton>

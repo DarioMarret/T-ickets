@@ -2,11 +2,13 @@ import React,{useEffect,useState} from "react"
 import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button} from "react-bootstrap"
 import { GuardarLocalidad } from "utils/Querypanel"
 const TabunoView=(props)=>{
-    const {localidaname}=props
+    const {localidaname,datalocalidad,SetDataloca}=props
+   
     let ListadeFilas=[]
     const [nmobretabuno,setLocalidad]=useState({
         nombre:'',
-        description:''
+        description:'',
+        id:''
     })
     const [filass,setFilass]=useState({
         cantidad:'',
@@ -84,21 +86,35 @@ const TabunoView=(props)=>{
 
     }
     async function AgregaLocalidad(){
-        if(nmobretabuno.nombre=="" || nmobretabuno.description==""|| ListaFilas.length>0) {alert("Complete los datos y localidad creada") }
+        if(nmobretabuno.nombre=="" || nmobretabuno.description==""|| ListaFilas.length<0) {alert("Complete los datos y localidad creada") }
         else{
         try {
-            console.log({"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
-     
-        //  const agrega = await GuardarLocalidad({"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
-      //    console.log(agrega)
-               
+            console.log({"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})}) 
         } catch (error) {
             console.log(error)
             
         }}
 
     }
+    async function actualizalocalidad (){
+        console.log({"id":nmobretabuno.id,"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
+     
+
+    }
     console.log(ListaFilas)
+    useEffect(()=>{
+        if(datalocalidad.typo=="fila"){
+            console.log("Filas",datalocalidad)
+            setLocalidad({
+                nombre:datalocalidad.nombre,
+                description:datalocalidad.description,
+                id:datalocalidad.id
+            })
+            setFilas(datalocalidad.array)
+        }
+       
+
+    },[datalocalidad])
     
    return( <>
     <div className="d-flex flex-column">
@@ -136,8 +152,9 @@ const TabunoView=(props)=>{
                                                                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="d-flex text-end ju">
-                                                <button onClick={AgregaLocalidad} className="btn btn-success">Guardar</button>
+                                                <div className="d-flex row">
+                                               {nmobretabuno.id!==""? <button onClick={actualizalocalidad}  className="btn btn-primary col-12">Actualizar</button>:''}
+                                                <button onClick={AgregaLocalidad} className="btn btn-success col-12">Guardar</button>
                                                 </div>
                                                 
                                             </div>
@@ -170,7 +187,7 @@ const TabunoView=(props)=>{
                                                                     value={filass.inicial }
                                                                     onChange={(e)=> handelchange(e.target)}
                                                                     className="form-control" id="numero_inicial" 
-                                                                    placeholder="10" />
+                                                                    placeholder="A1" />
                                                                                                                         </div>
                                                             </div>
 
@@ -179,6 +196,7 @@ const TabunoView=(props)=>{
                                                                 <button   className="btn btn-info" onClick={GeneraFilas}><i className="fa fa-plus"></i></button>
                                                             </div>
                                                              <div className="col-sm-5"> 
+                                                             <label className="form-label"><b>Sillas x fila</b></label>
                                                             <div className="input-group mb-3">                                                                   
                                                             <div className="input-group-prepend">
                                                              <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
@@ -191,6 +209,7 @@ const TabunoView=(props)=>{
                                                             </div>
                                                              </div>
                                                              <div className="col-sm-5">
+                                                             <label className="form-label"><b>Filas</b></label>
                                                             <div className="input-group mb-3">
                                                             <div className="input-group-prepend">
                                                                         <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
@@ -210,6 +229,7 @@ const TabunoView=(props)=>{
                                                             </div>
                                                             </div>
                                                             <div className="col-sm-2">
+                                                            <label className="form-label" style={{color:'white'}}><b>.</b></label><br/>
                                                             <button className="btn btn-success" onClick={AgregasSillasFila} >
                                                                     Agregar
                                                                 </button>

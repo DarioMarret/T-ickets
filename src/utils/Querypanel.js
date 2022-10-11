@@ -217,7 +217,8 @@ export const AptualizarLocalida = async(parms)=>{
 export const EliminarLocalidad = async(parms)=>{
     const {data}= await axios.delete(Host+"api/v1/eliminar_localidad",parms,{
         headers:{
-            '':'',
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='    
         }
     })
     return data

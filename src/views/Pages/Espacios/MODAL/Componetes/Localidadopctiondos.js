@@ -7,7 +7,7 @@ import Select from "react-select";
 import { Letras } from "utils/constantes";
 import Accordion from 'react-bootstrap/Accordion';
 const TabdosView = (props) => {
-     
+     const{datalocalidad,SetDataloca,localidanames}=props
     
     let ejemplo = [1, 2, 3, 4, 5]
     let ListadeMesas = []
@@ -41,7 +41,8 @@ const TabdosView = (props) => {
     })
     const [localidaname, setLocalidad] = useState({
         nombre: '',
-        description: ''
+        description: '',
+        id:''
     })
     function cambiaFila(value) {
         setSingleSelectwo(value)
@@ -193,11 +194,31 @@ const TabdosView = (props) => {
             [e.name]: e.value
         })
     }
+    async function agregaLocaliad(){
+        console.log({"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: ListaMesa})})
+     
 
-    useEffect(() => {
-       // AgregarFilas()
+    }
+    async function actualizalocalidad (){
+        console.log({"id":localidaname.id,"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: ListaMesa})})
+     
 
-    }, [])
+    }
+
+    useEffect(()=>{
+        if(datalocalidad.typo=="mesas"){
+          
+           
+            setLocalidad({
+                nombre:datalocalidad.nombre,
+                description:datalocalidad.description,
+                id:datalocalidad.id
+            })
+          //  setMesas(datalocalidad.array)
+        }
+       
+
+    },[datalocalidad])
     return (
         <>
             <div className="d-flex flex-column">
@@ -235,8 +256,11 @@ const TabdosView = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="d-flex text-end ju">
-                                                <button className="btn btn-success">Guardar</button>
+                                
+                                <div className="d-flex text-end row">
+                                {localidaname.id!==""? <button   className="btn btn-primary col-12">Actualizar</button>:''}
+                                             
+                                                <button className="btn btn-success" onClick={agregaLocaliad}>Guardar</button>
                                                 </div>
                             </div>
                         </div>
