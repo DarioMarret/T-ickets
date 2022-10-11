@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
 import {Modal} from "react-bootstrap"
 import TabtresView from './Componetes/Localidadopctiontres'
-import TabunoViews from './Componetes/Localidad.opctionuno'
+import TabunoViews from './Componetes/Localidadopctionuno'
 import TabdosViews from './Componetes/Localidadopctiondos'
 import LocalidadesagreViews from "./Componetes/Localidadopcioncuatro"
+import MapadelocalidadViews from "./Componetes/Localidadopctioncinco"
 const RegistroViwstab =(props)=>{
     const {show,setShowToast,localidaname} =props
     //console.log(localidaname)
@@ -60,7 +61,7 @@ const RegistroViwstab =(props)=>{
                                                          >Localidades Agregadas</a>
                                                     </li>
                                                     <li className="nav-item">
-                                                        <a className="nav-link" data-toggle="tab" href="#"                                                        
+                                                        <a className="nav-link" data-toggle="tab" href="#mapa"                                                        
                                                          >Diseñar Mapa</a>
                                                     </li>
                                                 
@@ -83,7 +84,7 @@ const RegistroViwstab =(props)=>{
                                     </div>
                                     <div className="tab-pane  container " id="correlativos">
                                     <TabtresView
-                                    localidaname={localidaname}
+                                    espacioname={localidaname}
                                     datalocalidad={datalocalidad}
                                     SetDataloca={SetDataloca}
                                     />
@@ -94,6 +95,13 @@ const RegistroViwstab =(props)=>{
                                     <LocalidadesagreViews
                                      show={show}
                                      SetDataloca={SetDataloca}
+                                    localidaname={localidaname} />
+
+                                    </div> 
+                                    <div className="tab-pane  container-fluid " id="mapa">
+                                    <MapadelocalidadViews
+                                     show={show}
+                                    
                                     localidaname={localidaname} />
 
                                     </div> 

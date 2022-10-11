@@ -11,6 +11,7 @@ const TabdosView = (props) => {
     
     let ejemplo = [1, 2, 3, 4, 5]
     let ListadeMesas = []
+    //array de la localidad
     const [FilasLocalidad, SetFilaLocalidad] = useState([])
     const [Mesas, SetMesasLocalidad] = useState([])
 
@@ -20,7 +21,7 @@ const TabdosView = (props) => {
     const [visible,SetVisible]=useState(false)
 
 
-    
+    //lista para selecionar mesa especifica
     const [ListaMesa, setMesas] = useState([])
     const [selet, Fila] = useState([])
    
@@ -195,18 +196,32 @@ const TabdosView = (props) => {
         })
     }
     async function agregaLocaliad(){
-        console.log({"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: ListaMesa})})
+        if(localidaname.nombre=="" || localidaname.description==""|| ListaMesa.length<0) {alert("Complete los datos y localidad creada") }
+       else{
+         try {
+            const guarda = await GuardarLocalidad({"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
+            console.log(guarda)
+            if(guarda.success){
+                console.log({"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
+       
+            }
+           
+        } catch (error) {
+            
+        }
+        
+    }
      
 
     }
     async function actualizalocalidad (){
-        console.log({"id":localidaname.id,"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: ListaMesa})})
+        console.log({"id":localidaname.id,"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
      
 
     }
 
     useEffect(()=>{
-        if(datalocalidad.typo=="mesas"){
+        if(datalocalidad.typo=="mesa"){
           
            
             setLocalidad({
@@ -214,7 +229,8 @@ const TabdosView = (props) => {
                 description:datalocalidad.description,
                 id:datalocalidad.id
             })
-          //  setMesas(datalocalidad.array)
+            console.log(datalocalidad)
+            SetFilaLocalidad(  datalocalidad.array)
         }
        
 

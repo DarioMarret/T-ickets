@@ -89,6 +89,10 @@ const TabunoView=(props)=>{
         if(nmobretabuno.nombre=="" || nmobretabuno.description==""|| ListaFilas.length<0) {alert("Complete los datos y localidad creada") }
         else{
         try {
+            const guardad = await GuardarLocalidad({"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
+          if(guardad.success){
+            alert("localidad Guardada")
+          }
             console.log({"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})}) 
         } catch (error) {
             console.log(error)

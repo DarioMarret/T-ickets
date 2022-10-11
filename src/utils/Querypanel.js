@@ -214,16 +214,20 @@ export const AptualizarLocalida = async(parms)=>{
     })
     return data
 }
+/**50 */
 export const EliminarLocalidad = async(parms)=>{
-    const {data}= await axios.delete(Host+"api/v1/eliminar_localidad",parms,{
+    console.log(parms)
+   
+    const {data}= await axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_localidad",{"id":parms},{
         headers:{
             'Content-Type':'application/json',
-            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='    
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==' 
         }
     })
+    console.log(data)
     return data
 }
-/** Error500 */
+
 export const FiltrarConcierto = async(parms)=>{
     const {data}= await axios.post("https://rec.netbot.ec/ms_login/api/v1/filtrar_concierto",{"nombreconcert":parms},{
         headers:{            

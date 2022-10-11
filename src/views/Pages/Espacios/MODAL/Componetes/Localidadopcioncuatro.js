@@ -30,14 +30,18 @@ const {success,data}=datos
      }
   }
   async function Eliminar(parms){
+    console.log(parms)
+  
     try {
-      //const accion = await EliminarLocalidad(parms)
-    //  const {success}=accion
-      //if(success){
-       //await ObtenLocalidad()
+      const accion = await EliminarLocalidad(parms)
+      const {success}=accion
+      if(success){
+       await ObtenLocalidad()
        alert("Localidad Eliminada")
-      //}
+      }
     } catch (error) {
+      console.log(error)
+      alert(error)
       
     }
   }
