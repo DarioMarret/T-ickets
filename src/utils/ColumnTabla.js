@@ -30,10 +30,71 @@ export const columns = [
     accessorKey:'espacio',
     header:'Espacio'
   },
+{
+    accessorKey:'tipo',
+    header:'Tipo'
+  },
   {
   accessorKey:'mesas_array',
   header:'Array',
   enableHiding:false
   },
 
+  ]
+  export const Columnasubcrito=[
+    {
+      accessorKey: 'id',
+      header: 'ID',      
+      enableHiding:false
+    },
+    { accessorKey:'nombreCompleto',
+    header:'Nombre'
+  },
+  {
+    accessorKey:'cedula',
+    header:'Cédula'
+  },{
+    accessorKey:'email',
+    header:'Email'
+  },
+  {
+  accessorKey:'movil',
+  header:'Télefono',
+  },
+  {
+    accessorKey:'ciudad',
+    header:'Dirección',
+    },
+
+  ]
+  export const columnusuarios=[
+    {
+      accessorKey: 'id',
+      header: 'ID',      
+      enableHiding:false
+    },
+    {
+      accessorKey: 'username',
+      header: 'Username',
+    },
+    {
+      accessorKey: 'name',
+      header: 'Nombre',
+    },
+    {
+      accessorKey: 'email',
+      header: 'Email',
+    },
+    ,
+    {
+      accessorKey: 'perfil',
+      header: 'Perfil',
+
+    },{
+      accessorKey:'fecha_creacion',
+      header:'Fecha de Registro'
+    },{
+      accessorKey:'password',
+      header:'Fecha '
+    }
   ]

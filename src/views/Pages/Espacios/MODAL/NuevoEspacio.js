@@ -40,8 +40,8 @@ const NewEspacioView =(props)=>{
             const actualiza = await ActualizarEspacio(espacio)
             const {success}= actualiza
             if(success){
-            console.log(actualiza)
-            alert("no hubo error")}
+           
+            SetShownuev(false)}
         }catch(error){
             console.log("error")
 

@@ -181,7 +181,7 @@ export const ActualizarEspacio = async (parms)=>{
     })
     return data
 }
-/** Error 500 */
+
 export const GuardarLocalidad = async (parms)=>{
     console.log(parms)
     const {data}= await axios.post(Host+"api/v1/guardar_localidad",parms,{
@@ -218,11 +218,14 @@ export const AptualizarLocalida = async(parms)=>{
 export const EliminarLocalidad = async(parms)=>{
     console.log(parms)
    
-    const {data}= await axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_localidad",{"id":parms},{
-        headers:{
+    const {data}= await  axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_localidad",{
+        "id": "4"
+      },{
+        headers:{            
             'Content-Type':'application/json',
-            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==' 
-        }
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      
+                              
+         }
     })
     console.log(data)
     return data

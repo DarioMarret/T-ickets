@@ -1,10 +1,16 @@
 import React ,{useEffect,useState}from "react";
-import { Card,Col,Row ,Modal } from "react-bootstrap";
+import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import { Box, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Edit,Delete,Visibility } from '@mui/icons-material';
+import { Card,Col,Row  } from "react-bootstrap";
 import { GetSuscritores,EliminarSuscrito } from "utils/Querypanel";
 import ModalSuscritoView from "./ModalSuscritor";
 import { Button } from "reactstrap";
 import { useHistory } from "react-router";
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { Columnasubcrito } from "utils/ColumnTabla";
 
 const SuscritorViews =()=>{
   let usehistory=useHistory()
@@ -246,9 +252,41 @@ const hideAlert = () => {
                             <div className="card-header">
                                 Suscritos
                             </div>
-                            <div className="card-body table-responsive">
-
-                                <table className="table table-hover text-center">
+                            <div className="">
+                            <MaterialReactTable
+                                    columns={Columnasubcrito}
+                                    data={suscritores}
+                                  
+                                    muiTableProps={{
+                                      sx:{
+                                        tableLayout:'fixed'
+                                      }
+                                    }}
+                                    initialState={
+                                      {
+                                        columnVisibility:{id:false}
+                                      }
+                                    }            
+                                    enableRowActions
+                                    renderRowActions={({ row }) => (
+                                        <Box sx={{ display: 'flex' }}>
+                                          <IconButton 
+                                          color="primary"  
+                                          onClick={()=>usehistory.push("/admin/suscritor/"+row.original.id+"")}
+                                          >
+                                            <Visibility/>
+                                          </IconButton>
+                                         
+                                          
+                                        </Box>
+                                      )}
+                                    positionToolbarAlertBanner="bottom"
+                                  
+                                    localization={MRT_Localization_ES }
+                                    
+                                />
+                                      
+                                {/*<table className="table table-hover text-center">
                                     <thead>
                                         <tr>
                                             
@@ -283,7 +321,7 @@ const hideAlert = () => {
                                           className="text-danger btn-link like"
                                         >
                                           <i className="fa fa-trash" />
-                                        </Button>*/}
+                                        </Button}
                                         <Button
                                          onClick={()=>usehistory.push("/admin/suscritor/"+e.id+"")}
                                           variant="danger"
@@ -299,7 +337,7 @@ const hideAlert = () => {
                                           className="text-info btn-link like"
                                         >
                                           <i className="fa fa-edit" />
-                                        </Button>*/}
+                                        </Button>}
                                                 
                                                                                    
                                      
@@ -311,7 +349,7 @@ const hideAlert = () => {
                                         <tr></tr>  } 
                                        
                                     </tbody>
-                                </table>
+                                </table>*/}
                             </div>
                         </div>
                     </div>

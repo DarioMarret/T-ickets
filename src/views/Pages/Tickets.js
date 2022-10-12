@@ -99,7 +99,7 @@ const EventosViews =()=>{
              },
              {
                  accessorKey: 'fecha',
-                 header: 'Company',
+                 header: 'Fecha',
                  
              },
              {
@@ -137,7 +137,7 @@ const EventosViews =()=>{
           decimalSeparator: '.',
           showLabels: true,
           useBom: true,
-          filename: 'Datos',
+          filename: 'Ticket vendidos',
           useKeysAsHeaders: false,
           headers: columns.map((c) => c.header),
         };
@@ -145,18 +145,15 @@ const EventosViews =()=>{
         const csvExporter = new ExportToCsv(csvOptions);
         const handleExportRows = (rows) => {
           csvExporter.generateCsv(rows.map((row) => row.original));
-        };
-      
+        };      
         const handleExportData = () => {
           csvExporter.generateCsv(data);
         };
-
     useEffect(()=>{
         (async()=>{
            await ConsultarTikets()
         })()
         console.log(slidetitem)
-
     },[])
 return(
     <div className="container-fluid">

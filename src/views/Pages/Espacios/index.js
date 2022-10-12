@@ -36,6 +36,7 @@ async function Lista (){
     setListaEspa(data) }
 }
  async function Elimnar(e){
+  console.log(e)
   try {
     const elimonado= await EliminarEspacios(e)
     console.log(elimonado)
@@ -59,7 +60,7 @@ function Editar(e,estado){
       })()
      
        
-    },[])
+    },[showNuevo])
     const successAlert = (e) => {
       setAlert(
         <SweetAlert

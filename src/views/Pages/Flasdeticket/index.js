@@ -169,9 +169,9 @@ const IndexFlas = () => {
         setDetalle(false)
        }
      } catch (error) {
-      console.log(error)
+      //console.log(error)
       setDatoToas({ show:true,
-        message:"Verifique su conexión o intente mas tarde",
+        message:"Hubo un error correo duplicado o verifique su conexión",
         color:'bg-danger',
         estado:"Hubo un error",
       })  

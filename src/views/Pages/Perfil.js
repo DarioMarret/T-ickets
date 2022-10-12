@@ -60,13 +60,13 @@ function PerfilPage(props) {
       if(success){
         const dato = datos.users.filter((e)=>e.id==datosPersons.id) 
         let users ={...datosPersons, enable:dato[0].enable}
-        var msg=dato[0].enable==0?'se Cancelo':'se Habilito'
+        var msg=dato[0].enable!=0?'se Cancelo':'se Habilito'
         setPerson({...users})
         usedispatch(addususcritor({users}))
         localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
         hideAlert()
         setDatoToas({  show:true,
-          message:"Suscripción actualizada con éxito "+msg,
+          message:"Suscripción actualizada con éxito, "+msg,
           color:'bg-success',
           estado:'Actualizado',})
     }
@@ -281,7 +281,7 @@ function PerfilPage(props) {
                       className={datosPersons.enable==1?" btn-success ":" btn-danger "}
                       onClick={successAlert}
                     >                     
-                   {datosPersons.enable==1?"Habilitar suscripción":"Cancelar suscripción"}                 
+                   {datosPersons.enable!==1?"Habilitar suscripción":"Cancelar suscripción"}                 
                     </button>
                     
                   </Col>

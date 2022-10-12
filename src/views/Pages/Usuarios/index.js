@@ -1,11 +1,15 @@
 import React,{useEffect,useState} from "react";
+import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import { Box, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Edit,Delete,Visibility } from '@mui/icons-material';
+import { columnusuarios } from "utils/ColumnTabla";
 import { useHistory } from "react-router";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { GetUserList,GetRoles,EliminaUser } from "utils/Querypanel";
 import EditaruserView from "./ModalEditar";
 import { Button,Row,Col,Card } from "react-bootstrap";
-import IconButton from '@mui/material/IconButton';
-import Icon from '@mui/material/Icon';
 import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
@@ -85,8 +89,8 @@ const UsersView=()=>{
        
       })()
       
-
-  },[])
+console.log(listUsuarios)
+  },[]) 
   
  
   const successAlert = (e) => {
@@ -278,6 +282,37 @@ const UsersView=()=>{
                       <div className="card-header">
                          Usuarios
                       </div>
+                     { /*<MaterialReactTable
+                                    columns={columnusuarios}
+                                    data={[]}
+                                  
+                                    muiTableProps={{
+                                      sx:{
+                                        tableLayout:'fixed'
+                                      }
+                                    }}
+                                    initialState={
+                                      {
+                                        columnVisibility:{id:false}
+                                      }
+                                    }            
+                                    enableRowActions
+                                    renderRowActions={({ row }) => (
+                                        <Box sx={{ display: 'flex' }}>
+                                          <IconButton 
+                                          color="primary"  
+                                           >
+                                            <Visibility/>
+                                          </IconButton>
+                                         
+                                          
+                                        </Box>
+                                      )}
+                                    positionToolbarAlertBanner="bottom"
+                                  
+                                    localization={MRT_Localization_ES }
+                                    
+                                />*/}
                       <div className="card-body table-responsive">
 
                           <table className="table table-hover text-center">

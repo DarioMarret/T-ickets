@@ -21,8 +21,12 @@ const {success,data}=datos
 
       if(success){
       const filtrado = data.filter(e => e.espacio == localidaname.nombre)
-      console.log(filtrado)
-      setData(filtrado)
+      const obten = filtrado.map((e,i)=>{
+        let dato = JSON.parse( e.mesas_array)      
+        return {...e,tipo:dato.Typo}
+      })
+      console.log("localidada",obten)
+      setData(obten)
      }
      
      } catch (error) {   
@@ -30,10 +34,11 @@ const {success,data}=datos
      }
   }
   async function Eliminar(parms){
-    console.log(parms)
-  
+   
+    let id ={"id":3}
+    console.log({"id":parms})
     try {
-      const accion = await EliminarLocalidad(parms)
+      const accion = await EliminarLocalidad({"id":parms})
       const {success}=accion
       if(success){
        await ObtenLocalidad()
@@ -43,7 +48,7 @@ const {success,data}=datos
       console.log(error)
       alert(error)
       
-    }
+    } 
   }
   function Editar(parms){
     let tipo = JSON.parse(parms.mesas_array)
@@ -115,22 +120,6 @@ $('[href*="listas"]').removeClass('active');
                     muiTableBodyProps={{
                       sx:{ columnVisibility:{nombre:false}}
                     }}
-                    renderDetailPanel={({row})=>(
-                      <Box 
-                      sx={{
-                        display:'flex flex-column',
-                        margin:'auto',
-                        gridTemplateColumns:'1fr 1fr',
-                        width:'100%',
-                      }}
-                      >
-                        <Typography>Array Localidad :{ JSON.stringify(row.original.mesas_array)} </Typography>
-                        
-                        
-                        
-
-                      </Box>
-                    )}
                    
                     enableRowActions
                     renderRowActions={({ row }) => (
