@@ -15,7 +15,13 @@ const EcenarioEstaView =()=>{
     <div className="central d-flex flex-column">
       
       <div className="divicion  d-flex flex-wrap justify-content-center" >
-        <div className="izquierda border rounded-4 bg-light mx-1" style={{height: '5rem', width:'20rem'}}></div>
+        <div className="izquierda border rounded-4 bg-light mx-1" style={{height: '5rem', width:'20rem'}}>
+
+        <select>
+      <option>primera</option>
+      </select>
+        </div>
+        
         </div>
       <div className="consola  d-flex flex-column p-2">
         <div >
@@ -28,6 +34,9 @@ const EcenarioEstaView =()=>{
             <div className="derecha border-top  border-right border-left bg-light" style={{height: '4rem', width: '7.5rem', borderTopLeftRadius: '5px'}}></div>
           </div>   
           <div className="ecenario  pb-2 px-2 border-bottom  border-right border-left bg-light" style={{height: '5rem', width: '20rem'}}>
+          <select>
+      <option>primera</option>
+      </select>
           </div>
         </div>
          
@@ -35,12 +44,16 @@ const EcenarioEstaView =()=>{
       </div>
       <div className="px-2">
         <div className=" border rounded-4 bg-light " style={{height: '5rem', width: '20rem'}}>
-        ultimo
+        <select>
+      <option>primera</option>
+      </select>
         </div>
       </div>
-      <div className="px-2">
+      <div className="px-2 pt-1">
         <div className=" border rounded-4 bg-light " style={{height: '5rem', width: '20rem'}}>
-        ultimo
+        <select>
+      <option>primera</option>
+      </select>
         </div>
       </div>
       

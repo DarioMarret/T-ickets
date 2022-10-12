@@ -20,14 +20,12 @@ console.log("localidades",localidaname)
                
                 <MiniEcenariosView/>
                 <hr></hr>
-               <EcenarioEstandar/>
-               <hr></hr>
-                <EcenarioGradoView/>
-                <hr></hr>
-                <EcenarioEstaView/>
+             
+               
                
             </div>
-            <div className="col-12 col-sm-8 h-100">              
+            <div className="col-12 col-sm-8 d-flex  justify-content-center align-items-center bg-primary"> 
+            <EcenarioEstandar/>             
             </div>
         </div>
         </>

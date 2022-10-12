@@ -72,6 +72,7 @@ const RegistroViwstab =(props)=>{
                                     <TabunoViews localidaname={localidaname}
                                     datalocalidad={datalocalidad}
                                     SetDataloca={SetDataloca}
+                                    setShowToast={setShowToast}
                                      />
                                     </div>
                                     <div className="tab-pane  container " id="mesas">
@@ -79,6 +80,7 @@ const RegistroViwstab =(props)=>{
                                     localidanames={localidaname}
                                     datalocalidad={datalocalidad}
                                     SetDataloca={SetDataloca}
+                                    setShowToast={setShowToast}
                                     />
 
                                     </div>
@@ -87,6 +89,7 @@ const RegistroViwstab =(props)=>{
                                     espacioname={localidaname}
                                     datalocalidad={datalocalidad}
                                     SetDataloca={SetDataloca}
+                                    setShowToast={setShowToast}
                                     />
 
                                     </div>
@@ -95,6 +98,7 @@ const RegistroViwstab =(props)=>{
                                     <LocalidadesagreViews
                                      show={show}
                                      SetDataloca={SetDataloca}
+                                     datalocalidad={datalocalidad}
                                     localidaname={localidaname} />
 
                                     </div> 

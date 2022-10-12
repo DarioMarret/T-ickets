@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from "react"
 import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button} from "react-bootstrap"
+import { AptualizarLocalida } from "utils/Querypanel"
 import { GuardarLocalidad } from "utils/Querypanel"
 const TabunoView=(props)=>{
     const {localidaname,datalocalidad,SetDataloca}=props
@@ -91,6 +92,11 @@ const TabunoView=(props)=>{
         try {
             const guardad = await GuardarLocalidad({"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
           if(guardad.success){
+            SetDataloca({typo:'',
+                    nombre:'',
+                    description:'',
+                    id:'',
+                    array:''})
             alert("localidad Guardada")
           }
             console.log({"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})}) 
@@ -101,8 +107,23 @@ const TabunoView=(props)=>{
 
     }
     async function actualizalocalidad (){
-        console.log({"id":nmobretabuno.id,"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
-     
+        if(nmobretabuno.nombre=="" || nmobretabuno.description==""|| ListaFilas.length<0) {alert("Complete los datos y localidad creada") }
+        else{ try {
+            const actualiza = await AptualizarLocalida({"id":nmobretabuno.id,"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
+            if(actualiza.success){
+                SetDataloca({typo:'',
+                    nombre:'',
+                    description:'',
+                    id:'',
+                    array:''})
+                alert("datos actualizados")
+            console.log({"id":nmobretabuno.id,"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
+     }
+            
+        } catch (error) {
+            
+        } }
+       
 
     }
     console.log(ListaFilas)

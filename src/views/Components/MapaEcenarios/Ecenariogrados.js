@@ -5,22 +5,32 @@ return(
    <div className="d-flex   " style={{width:'90%'}}> 
   <div className="d-flex flex-column align-items-center">
     <div>
-      <p className="border bg-light  rounded-4" style={{width:' 20rem',height:' 6rem'}}></p>
+      <p className="border bg-light  rounded-4" style={{width:' 20rem',height:' 6rem'}}>
+      <select>
+      <option>primera</option>
+      </select>
+      </p>
     </div>
     <div >
       <p className="border bg-light rounded-4  " style={{width:' 20rem',height:' 6rem'}}>
-      arriba
+      <select>
+      <option>primera</option>
+      </select>
       </p>
     </div>
     <div className="centro d-flex">
       <div className="px-1">
         <p className="centro border bg-light  rounded-4" style={{width:' 5rem',height:' 20rem'}}>
-          ssss
+        <select>
+      <option>primera</option>
+      </select>
         </p>
       </div>
       <div className="px-1">
         <p className="centro  border bg-light rounded-4" style={{width:' 5rem',height:' 20rem'}}>
-          izquierd
+        <select>
+      <option>primera</option>
+      </select>
         </p>
       </div>
       <div className="px-1">
@@ -30,24 +40,32 @@ return(
       </div>
      <div className="px-1">
       <p className="centro border bg-light rounded-4" style={{width:' 5rem',height:' 20rem'}}>
-        derch
+      <select>
+      <option>primera</option>
+      </select>
       </p>
      </div>
       <div>
         <div className="centro  border bg-light rounded-4" style={{width:' 5rem',height:' 20rem'}}>
-          derecha
+        <select>
+      <option>primera</option>
+      </select>
         </div>
       </div>
       
     </div>
     <div>
       <p className="border bg-light  rounded-4" style={{width:' 20rem',height:' 6rem'}}>
-        idemtif
+      <select>
+      <option>primera</option>
+      </select>
       </p>
     </div>
     <div className=" ">
       <p className="border bg-light rounded-4 p-1" style={{width:' 20rem',height:' 6rem'}}>
-      ide
+      <select>
+      <option>primera</option>
+      </select>
       </p>
     </div>
   </div>

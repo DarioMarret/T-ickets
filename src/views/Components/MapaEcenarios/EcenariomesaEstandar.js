@@ -12,13 +12,23 @@ return(
       
       <div className="d-flex ">
         <div className="izquierda rounded-4 border bg-light" style={{height:' 28rem', width:'5.6rem'}}>
-          izquierda
+        <select>
+      <option>primera</option>
+      </select>
         </div>
         <div className="central d-flex flex-column">
           
           <div className="divicion  d-flex flex-wrap justify-content-center" >
-            <div className="izquierda border rounded-4 bg-light mx-1" style={{height:' 5rem', width:'9.9rem'}}></div>
-            <div className="derecha border rounded-4 bg-light" style={{height:' 5rem', width:'9.9rem'}}></div>
+            <div className="izquierda border rounded-4 bg-light mx-1" style={{height:' 5rem', width:'9.9rem'}}>
+            <select>
+      <option>primera</option>
+      </select>
+            </div>
+            <div className="derecha border rounded-4 bg-light" style={{height:' 5rem', width:'9.9rem'}}>
+            <select>
+      <option>primera</option>
+      </select>
+            </div>
           </div>
           <div className="consola  d-flex flex-column p-2">
             <div >
@@ -36,7 +46,9 @@ return(
         
         
               <div className="ecenario  pb-2 px-2 border-bottom  border-right border-left bg-light" style={{height: '5rem' ,width: '20rem'}}>
-                
+              <select>
+      <option>primera</option>
+      </select>
               </div>
             </div>
             
@@ -44,19 +56,25 @@ return(
           </div>
           <div className="p-2">
             <div className=" border rounded-4 bg-light " style={{height: '5rem' ,width: '20rem'}}>
-            ultimo
+            <select>
+      <option>primera</option>
+      </select>
             </div>
           </div>
           <div className="p-2">
             <div className=" border rounded-4 bg-light " style={{height: '5rem' ,width: '20rem'}}>
-            ultimo
+            <select>
+      <option>primera</option>
+      </select>
             </div>
           </div>
           
          </div>
          <div className="">
           <div className=" derecha rounded-4 border bg-light" style={{height:' 28rem', width:'5.6rem'}}>
-            derecha
+          <select>
+      <option>primera</option>
+      </select>
           </div>
          </div>
          
@@ -64,7 +82,9 @@ return(
       </div>
       <div className="px-2 pt-1">
         <div className=" rounded-4 border bg-light" style={{height:' 5rem', width:'31.3rem'}}>
-           abajo
+        <select>
+      <option>primera</option>
+      </select>
         </div>
       </div>
   </div>

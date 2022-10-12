@@ -130,17 +130,19 @@ const EventosViews =()=>{
              },
          ] ,
          [],)
-
+//
          const csvOptions = {
           fieldSeparator: ',',
           quoteStrings: '"',
           decimalSeparator: '.',
           showLabels: true,
           useBom: true,
+          filename: 'Datos',
           useKeysAsHeaders: false,
           headers: columns.map((c) => c.header),
         };
         
+        const csvExporter = new ExportToCsv(csvOptions);
         const handleExportRows = (rows) => {
           csvExporter.generateCsv(rows.map((row) => row.original));
         };

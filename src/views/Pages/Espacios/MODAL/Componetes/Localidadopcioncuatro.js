@@ -11,7 +11,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import { addLocalidad,deleteloclidad } from 'StoreRedux/Slice/SuscritorSlice';
 const LocalidadesagreViews=(props)=>{
   let usedispatch=useDispatch()
-    const{localidaname,show,SetDataloca}=props
+    const{localidaname,show,SetDataloca,datalocalidad}=props
   //  console.log(localidaname)
   const [datas,setData]=useState([])
   async function ObtenLocalidad(){    
@@ -59,7 +59,7 @@ const {success,data}=datos
    $("#filas").addClass("active")
    $('[href*="filas"]').addClass('active');
    $('[href*="listas"]').removeClass('active');   
-  }else{
+  }else if(tipo.Typo=="mesa"){
     SetDataloca({typo:'mesa',
     nombre:parms.nombre,
     description:parms.descripcion,
@@ -69,6 +69,17 @@ console.log(parms)
 $("#listas").removeClass("active")
 $("#mesas").addClass("active")
 $('[href*="mesas"]').addClass('active');
+$('[href*="listas"]').removeClass('active');  
+
+  }else if(tipo.Typo=="correlativo"){
+    SetDataloca({typo:'correlativo',
+    nombre:parms.nombre,
+    description:parms.descripcion,
+    id:parms.id,
+    array:tipo.datos})
+    $("#listas").removeClass("active")
+$("#correlativos").addClass("active")
+$('[href*="correlativos"]').addClass('active');
 $('[href*="listas"]').removeClass('active');  
 
   }
@@ -81,7 +92,7 @@ $('[href*="listas"]').removeClass('active');
      
 
 
-    },[show])
+    },[datalocalidad])
     return(
 
 

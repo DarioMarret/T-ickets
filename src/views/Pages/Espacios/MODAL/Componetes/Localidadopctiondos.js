@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Modal, ProgressBar, OverlayTrigger, Tooltip, Button, Form } from "react-bootstrap"
-import { GuardarLocalidad } from 'utils/Querypanel';
+import { GuardarLocalidad ,AptualizarLocalida} from 'utils/Querypanel';
 import MesasView from 'views/Pages/Mesas';
 import MesacerView from 'views/Pages/Mesas/Plantillas/Mesacer';
 import Select from "react-select";
@@ -93,9 +93,10 @@ const TabdosView = (props) => {
             var index = ListadeMesas.findIndex(obj => obj.Fila == singleSelect.value);
              console.log(index, ListadeMesas[index].Fila)
            var letra = ListadeMesas[index].Fila
+           console.log(letra)
             const repeticiones =  parseInt(Mesass.me_inicial)          
             for (var i = 0; i < repeticiones; i++) {
-                let valor= parseInt(f)+1 
+                let valor= parseInt(i)+1 
                 sillas.push({ mesa: letra + "" + valor, sillas: repeticiones, asientos: [] });
             }
             ListadeMesas[index].Mesas=[...sillas]
@@ -202,11 +203,22 @@ const TabdosView = (props) => {
             const guarda = await GuardarLocalidad({"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
             console.log(guarda)
             if(guarda.success){
+                SetDataloca({typo:'',
+                    nombre:'',
+                    description:'',
+                    id:'',
+                    array:''})
+                alert("Localidad Guardada")
+                SetFilaLocalidad([])
+                setLocalidad({nombre: '',
+                description: '',
+                id:''})
                 console.log({"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
        
             }
            
         } catch (error) {
+            console.log(error)
             
         }
         
@@ -215,8 +227,30 @@ const TabdosView = (props) => {
 
     }
     async function actualizalocalidad (){
-        console.log({"id":localidaname.id,"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
-     
+        if(localidaname.nombre=="" || localidaname.description==""|| ListaMesa.length<0) {alert("Complete los datos y localidad creada") }
+        else{
+            try {
+                const actualiza =await AptualizarLocalida({"id":localidaname.id,"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
+               
+                if(actualiza.success){
+                    SetDataloca({typo:'',
+                    nombre:'',
+                    description:'',
+                    id:'',
+                    array:''})
+                    SetFilaLocalidad([])
+                    setLocalidad({nombre: '',
+                    description: '',
+                    id:''})
+                    alert("Localidad actualizada")
+                }
+                //console.log({"id":localidaname.id,"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
+           
+                
+            } catch (error) {
+                console.log(error)
+            }
+            }
 
     }
 
@@ -274,7 +308,7 @@ const TabdosView = (props) => {
                                 </div>
                                 
                                 <div className="d-flex text-end row">
-                                {localidaname.id!==""? <button   className="btn btn-primary col-12">Actualizar</button>:''}
+                                {localidaname.id!==""? <button   className="btn btn-primary col-12" onClick={actualizalocalidad}>Actualizar</button>:''}
                                              
                                                 <button className="btn btn-success" onClick={agregaLocaliad}>Guardar</button>
                                                 </div>

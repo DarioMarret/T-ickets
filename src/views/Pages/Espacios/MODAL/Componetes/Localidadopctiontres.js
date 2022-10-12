@@ -1,4 +1,5 @@
 import React,{useEffect,useState} from "react"
+import { GuardarLocalidad,AptualizarLocalida } from "utils/Querypanel"
 import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button} from "react-bootstrap"
 const TabtresView=(props)=>{
 
@@ -15,24 +16,56 @@ const TabtresView=(props)=>{
             ...localidaname,
             [e.name]:e.value
         })
-        console.log({[e.name]:e.value})
+    }
+    async function Actualiza(){
+        if(localidaname.id!=""&& localidaname.nombre!="" ){
+            try {
+                const actualiza = await AptualizarLocalida({"id":localidaname.id,"espacio":espacioname.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'correlativo',datos: {cantidad:localidaname.cantidad,inicio:localidaname.inicio}})})
+                if(actualiza.success){
+                    SetDataloca({typo:'',
+                    nombre:'',
+                    description:'',
+                    id:'',
+                    array:''})
+                    alert("localidad actualizada")
+                }
+            } catch (error) {
+                console.log(error)
+            }
+
+        }
     }
 async function Guardar(){
     if(localidaname.nombre!="" && localidaname.description!="" && localidaname.cantidad!="" && localidaname.inicio!=""){
-    console.log({"espacio":espacioname.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'correlativo',datos: {cantidad:localidaname.cantidad,inicio:localidaname.inicio}})}) 
+        try {
+
+            const guardar = await GuardarLocalidad({"espacio":espacioname.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'correlativo',datos: {cantidad:localidaname.cantidad,inicio:localidaname.inicio}})})
+            if(guardar.success){
+                SetDataloca({typo:'',
+                    nombre:'',
+                    description:'',
+                    id:'',
+                    array:''})
+            console.log({"espacio":espacioname.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'correlativo',datos: {cantidad:localidaname.cantidad,inicio:localidaname.inicio}})}) 
+                alert("Guardar")
+        }
+            
+        } catch (error) {
+            console.log(error)            
+        }
      }else{
         alert("verifique la informacion ingresada")
      }
 }
     useEffect(()=>{
         if(datalocalidad.typo=="correlativo"){
-            console.log("Relativo",datalocalidad)
+            //console.log("Relativo",datalocalidad,datalocalidad.array.cantidad)
             setLocalidad({
                 nombre:datalocalidad.nombre,
                 description:datalocalidad.description,
                 id:datalocalidad.id,
-                cantidad:datalocalidad.datos["cantidad"],
-                inicio:datalocalidad.datos["inicio"]                
+                cantidad:datalocalidad.array.cantidad?datalocalidad.array.cantidad:'',
+                inicio:datalocalidad.array.inicio?datalocalidad.array.inicio:''                
             })
            
         }
@@ -74,7 +107,8 @@ async function Guardar(){
                                                     </div>
                                                 </div>
                                                 <div className="d-flex text-end row">
-                                                <button className="btn btn-primary col-12">Actualizar</button>
+                                                {datalocalidad.typo=="correlativo"?
+                                                <button className="btn btn-primary col-12" onClick={Actualiza}>Actualizar</button>:''}
                                                 <button className="btn btn-success col-12" onClick={Guardar}>Guardar</button>
                                                 </div>
                                             </div>
