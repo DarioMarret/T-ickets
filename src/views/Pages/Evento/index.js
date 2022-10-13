@@ -1,7 +1,7 @@
 import React ,{useEffect,useState}from "react";
 import { Card,Col,Row ,Modal } from "react-bootstrap";
 import ModalNewEvento from "./MODAL/ModalnewEvento";
-
+import {ListarLocalidad,ListarEspacios } from "utils/Querypanel.js";
 const EventosViews =()=>{
     const[show,setShow] = useState(false)
   const [espacio,setEspacio]=useState([])
@@ -9,9 +9,7 @@ const EventosViews =()=>{
  function nuevoevento(){
   setShow(true)
 
- }
-   
-   
+ }  
     return(
         <div className="container-fluid">
 

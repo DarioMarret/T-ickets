@@ -1,12 +1,28 @@
 import React,{useEffect,useState} from "react";
 import {Modal,Alert,OverlayTrigger,Tooltip} from "react-bootstrap"
 import { Localidades } from "utils/constantes";
-
+import {ListarLocalidad,ListarEspacios } from "utils/Querypanel.js";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 const ModalNewEvento =(props)=>{
     const {show,Setshow} = props;
+    let user =clienteInfo()
     const [alertnone,showAlernone]= useState("d-none")
+    const [espacios,setListaEspa]=useState([])
     //Array donde se crearan las localidades con sus precios
     const [localidadPreci,setPreLocalidad]=useState([])
+    const [localidad,setLocalidades]=useState([])
+    const [localidadfiltrada,setFiltra]=useState([])
+    async function Lista (){
+        const datos =await ListarLocalidad()
+  const cargarLista = await ListarEspacios() 
+
+  const{success,data}= cargarLista
+  console.log(data)
+  if(success){
+    setListaEspa(data) 
+    setLocalidades(datos.data)
+}
+}
     function toggleValueInArray(array, value) {
         //copia de array de localidades
         let ArrayCopia=array;
@@ -26,6 +42,7 @@ const ModalNewEvento =(props)=>{
       precoDescuneto:'',
       HabilitarCortesia:''})
     }
+    
     $(document).ready(function() {
         $(".numero").keypress(function(e) {
           var n = (e = e || window.event).keyCode || e.which,
@@ -63,9 +80,9 @@ const [neweventos,setNewEventos]=useState(
   const [selectLocalidad,setLocalidad]=useState([])
         function handelchange(e){
             if(e.value!=""){
-            var index = Localidades.findIndex(obj => obj.id==e.value);
+            var index = localidad.filter(obj => obj.espacio==e.value);
                 console.log(Localidades[index])
-                setLocalidad(Localidades[index].localidad)
+                setLocalidad(index)
                 setNewEventos({...neweventos,espacio_id:e.value})
                 setPreLocalidad([])  
                 setPrecios({Localidades:'',
@@ -107,10 +124,13 @@ const [neweventos,setNewEventos]=useState(
         }
 
     useEffect(()=>{
+        (async ()=>{
+            await Lista()
+        })()
        // console.log("evento",neweventos)
        //console.log(!(selectLocalidad.length==localidadPreci.length))
-        //console.log("localidada precios-->",localidadPreci)
-        },[show,toggleValueInArray])
+        //console.log("localidada precios-->",localidadPreci)toggleValueInArray
+        },[show])
     return(
     <Modal
     show={show}
@@ -164,9 +184,9 @@ const [neweventos,setNewEventos]=useState(
                                                 </div>
                                                 <select className="form-control" name="localidad" onChange={(e)=>handelchange(e.target)} placeholder="Seleccione localidad">
                                                     <option value={""}>Seleccione espacio</option>
-                                                    {Localidades.map((e,i)=>{
+                                                    {espacios.map((e,i)=>{
                                                     return(
-                                                    <option value={e.id} key={i+"n"+e.id}>{e.nombre}</option>
+                                                    <option value={e.nombre} key={i+"n"+e.id}>{e.nombre}</option>
                                                     )
                                                     })}
                                                     
@@ -195,11 +215,11 @@ const [neweventos,setNewEventos]=useState(
                                         </div>
                                             
                                             
-                                            <div className="input-group mb-3 ">
+                                            <div className="input-group mb-3 d-none">
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text"><i className="fa fa-dollar-sign"></i></span>
                                                 </div>
-                                                <input disabled={true} type="text" className="form-control" id="user_id"  placeholder="usuario que creo el evento"/>
+                                                <input disabled={true} type="text" className="d-none form-control" id="user_id"  placeholder="usuario que creo el evento"/>
                                             </div>
                                         {
                                           selectLocalidad.length?  

@@ -23,9 +23,9 @@ import AdminFooter from "components/Footers/AdminFooter.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import SubcritorNavbar from "components/Navbars/SubcritoNavbar";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-//import routes from "routesub.js"
+import routes from "routesub.js"
 // dinamically create dashboard routes
-import routes from "routes.js";
+//import routes from "routes.js";
 //import routes from "routesinicial
 import image1 from "assets/img/full-screen-image-1.jpg";
 import image2 from "assets/img/full-screen-image-2.jpg";
@@ -73,8 +73,7 @@ function Admin() {
           <div className="content">
             <Switch>
               {getRoutes(routes)}                       
-            </Switch>
-          
+            </Switch> 
           </div>
           {/*<AdminFooter />*/}
           <div
@@ -85,7 +84,7 @@ function Admin() {
           />
         </div>
       </div>
-      <FixedPlugin
+      {/*<FixedPlugin
         setSidebarImageParent={(value) => setSidebarImage(value)}
         sidebarDefaultImage={sidebarImage}
         sidebarImages={[image1, image2, image3, image4]}
@@ -99,7 +98,7 @@ function Admin() {
         ]}
         backgroundColor={sidebarBackground}
         setSidebarBackgroundParent={(value) => setSidebarBackground(value)}
-      />
+      />*/}
     </>
   );
 }

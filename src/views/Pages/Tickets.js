@@ -5,7 +5,7 @@ import DataTable from 'react-data-table-component';
 import { Box, Button, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { Edit,Delete } from '@mui/icons-material';
+import { Edit,Delete,Share } from '@mui/icons-material';
 import {Row,Container}from 'react-bootstrap'
 import { ListarTikets ,FiltrarConcierto} from "utils/Querypanel";
 import { ExportToCsv } from 'export-to-csv';
@@ -245,7 +245,7 @@ return(
                         width:'100%',
                       }}
                       >
-                        {console.log(row.original)}
+                       
                         <Typography>ciudad : {row.original.ciudad} </Typography>
                         <Typography>Concierto : {row.original.concierto} </Typography>
                         <Typography>Protocolo : {row.original.protocolo} </Typography>                        
@@ -260,12 +260,14 @@ return(
                     renderRowActions={({ row }) => (
                         <Box sx={{ display: 'flex' }}>
                           <IconButton 
-                          color="primary"                          
+                          color="success"     
+                          arial-label="Enviar"                     
                           >
-                            <Edit/>
+                            <Share/>
                           </IconButton>
                           <IconButton  
                           color="error"
+                          aria-label="Bloquear" 
                           >
                           <Delete/>
                           </IconButton>
@@ -284,8 +286,7 @@ return(
                       >
                         <Button
                           color="primary"
-                          //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-                          onClick={handleExportData}
+                           onClick={handleExportData}
                           startIcon={<FileDownloadIcon />}
                           
                         >
@@ -293,7 +294,6 @@ return(
                         </Button>
                         <Button
                           disabled={table.getPrePaginationRowModel().rows.length === 0}
-                          //export all rows, including from the next page, (still respects filtering and sorting)
                           onClick={() =>
                             handleExportRows(table.getPrePaginationRowModel().rows)
                           }
@@ -305,7 +305,6 @@ return(
                         </Button>
                         <Button
                           disabled={table.getRowModel().rows.length === 0}
-                          //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
                           onClick={() => handleExportRows(table.getRowModel().rows)}
                           startIcon={<FileDownloadIcon />}
                           
@@ -316,8 +315,7 @@ return(
                           disabled={
                             !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
                           }
-                          //only export selected rows
-                          onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
+                           onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
                           startIcon={<FileDownloadIcon />}
                           
                         >
