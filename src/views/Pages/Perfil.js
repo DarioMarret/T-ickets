@@ -187,6 +187,7 @@ function PerfilPage(props) {
         const suscrito = await GetSuscritores()
         console.log()
       const dato = suscrito.users.filter((e)=>e.id==info.id) 
+      console.log(dato)
       setPerson({...info,new_password:'',enable:dato[0].enable})
      // console.log({...info,new_password:'',enable:dato[0].enable})
       //console.log(dato)
@@ -281,7 +282,7 @@ function PerfilPage(props) {
                       className={datosPersons.enable==1?" btn-success ":" btn-danger "}
                       onClick={successAlert}
                     >                     
-                   {datosPersons.enable!==1?"Habilitar suscripción":"Cancelar suscripción"}                 
+                   {datosPersons.enable==1?"Habilitar suscripción":"Cancelar suscripción"}                 
                     </button>
                     
                   </Col>

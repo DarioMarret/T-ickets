@@ -100,6 +100,7 @@ const IndexFlas = () => {
          email:data.email, hora: String(hoy),
          enable:data.enable,id:data.id,         
         }
+        
         DatosUsuariosLocalStorag({...datos,...users})
         localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
         usedispatch(addususcritor({users}))
@@ -152,6 +153,7 @@ const IndexFlas = () => {
          email:data.email, hora: String(hoy),
          enable:data.enable,id:data.id,         
         }
+        console.log(users)
         DatosUsuariosLocalStorag({...datos,...users})
         localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
         usedispatch(addususcritor({users}))

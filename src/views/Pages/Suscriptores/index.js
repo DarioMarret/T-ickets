@@ -36,6 +36,7 @@ const SuscritorViews =()=>{
     const  data  = await GetSuscritores()
    // console.log(data.users.length>0)
     if(data.users.length>0){
+      console.log(data.users)
       setsuscritor(data.users)
 
     }

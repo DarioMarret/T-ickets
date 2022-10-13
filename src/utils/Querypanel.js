@@ -218,9 +218,7 @@ export const AptualizarLocalida = async(parms)=>{
 export const EliminarLocalidad = async(parms)=>{
     console.log(parms)
    
-    const {data}= await  axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_localidad",{
-        "id": "4"
-      },{
+    const {data}= await  axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_localidad/"+parms,{
         headers:{            
             'Content-Type':'application/json',
             'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      

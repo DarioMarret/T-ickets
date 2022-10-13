@@ -3,7 +3,7 @@ import { GuardarLocalidad,AptualizarLocalida } from "utils/Querypanel"
 import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button} from "react-bootstrap"
 const TabtresView=(props)=>{
 
-    const {datalocalidad,espacioname}=props
+    const {datalocalidad,espacioname,SetDataloca}=props
     const [localidaname,setLocalidad]=useState({
         nombre:'',
         description:'',
@@ -18,7 +18,7 @@ const TabtresView=(props)=>{
         })
     }
     async function Actualiza(){
-        if(localidaname.id!=""&& localidaname.nombre!="" ){
+        if(localidaname.id!=""&& localidaname.nombre!="" && localidaname.cantidad!="" && localidaname.inicio!=""){
             try {
                 const actualiza = await AptualizarLocalida({"id":localidaname.id,"espacio":espacioname.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'correlativo',datos: {cantidad:localidaname.cantidad,inicio:localidaname.inicio}})})
                 if(actualiza.success){
@@ -27,12 +27,21 @@ const TabtresView=(props)=>{
                     description:'',
                     id:'',
                     array:''})
+                    setLocalidad({
+                        nombre:'',
+                        description:'',
+                        cantidad:0,
+                        inicio:0,
+                        id:'',
+                    })
                     alert("localidad actualizada")
                 }
             } catch (error) {
                 console.log(error)
             }
 
+        }else{
+            alert("complete la cantidad")
         }
     }
 async function Guardar(){
@@ -54,7 +63,7 @@ async function Guardar(){
             console.log(error)            
         }
      }else{
-        alert("verifique la informacion ingresada")
+        alert("verifique todos los campos")
      }
 }
     useEffect(()=>{
@@ -123,6 +132,7 @@ async function Guardar(){
                                                                     </div>
                                                                     <input type="number" className="form-control" 
                                                                     name="cantidad"
+                                                                    value={localidaname.cantidad}
                                                                     onChange={(e)=>handelchangelocalidad(e.target)}
                                                                     id="cantidad" placeholder="100" />
                                                                                                                         </div>
@@ -136,6 +146,7 @@ async function Guardar(){
                                                                     </div>
                                                                     <input type="number" className="form-control"
                                                                     name="inicio"
+                                                                    value={localidaname.inicio}
                                                                     onChange={(e)=>handelchangelocalidad(e.target)}
                                                                     id="inicio" placeholder="100" />
                                                                                                                         </div>

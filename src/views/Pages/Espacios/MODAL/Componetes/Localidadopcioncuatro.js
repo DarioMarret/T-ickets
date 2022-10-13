@@ -34,11 +34,9 @@ const {success,data}=datos
      }
   }
   async function Eliminar(parms){
-   
-    let id ={"id":3}
     console.log({"id":parms})
     try {
-      const accion = await EliminarLocalidad({"id":parms})
+      const accion = await EliminarLocalidad(parms)
       const {success}=accion
       if(success){
        await ObtenLocalidad()

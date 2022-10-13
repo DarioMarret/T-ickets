@@ -1,3 +1,4 @@
+import { Box, Typography } from '@mui/material';
 export const columns = [
     {
       accessorKey: 'id',
@@ -64,6 +65,21 @@ export const columns = [
   {
     accessorKey:'ciudad',
     header:'Dirección',
+    },{
+      accessorKey:'enable',
+      header:'Estado',
+      Cell: ({ cell, column }) => (
+        <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+          sx={{
+            backgroundColor: cell.getValue()==0?'green':'red' ,
+          }}
+        >
+          {cell.getValue()==0?'Habiliado':'Anulado'}
+        </Box>
+      ),
     },
 
   ]
