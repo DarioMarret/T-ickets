@@ -160,9 +160,7 @@ export const ListarEspacios = async ()=>{
 }
 /** Verificar error 500 internal server error */
 export const EliminarEspacios = async (parms)=>{
-    const {data}= await axios.delete(Host+"api/v1/eliminar_espacio",{
-        'id':""+parms
-    },{
+    const {data}= await axios.delete(Host+"api/v1/eliminar_espacio/"+parms,{
         headers:{            
             'Content-Type':'application/json',
             'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      

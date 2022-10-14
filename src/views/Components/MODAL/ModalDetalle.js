@@ -118,6 +118,7 @@ function ModalDetalle(props) {
             setspiner("")
             const datos = await getCedula(value)
             const  {name, email, direccion,whatsapp} =datos
+            console.log(datos)
             if (name) {
                 DatosUsuariosLocalStorag({ ...datos, cedula: value,envio:datosPerson.envio,whatsapp:'' })            
                 setPerson({

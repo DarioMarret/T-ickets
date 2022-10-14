@@ -39,8 +39,9 @@ async function Lista (){
   console.log(e)
   try {
     const elimonado= await EliminarEspacios(e)
+    if(elimonado.success){
     console.log(elimonado)
-    
+    }
   } catch (error) {
     console.log(error)
     
@@ -270,7 +271,7 @@ function Editar(e,estado){
                           </IconButton>
                           <IconButton  
                           color="error"
-                          onClick={()=>successAlert(row.original.nombre)}
+                          onClick={()=>successAlert(row.original.id)}
                           >
                           <Delete/>
                           </IconButton>

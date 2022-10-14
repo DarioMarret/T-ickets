@@ -409,7 +409,7 @@ const IndexFlas = () => {
                   <li className="unlisted mt-3">
                     <div className="row">
                       <div className="col-1 me-5">
-                        <a href="#nuevoseventos" aria-label="icon-star" className="btn btn-dark icon-star p-3 rounded-6"></a>
+                        <a href="#nuevoseventos" aria-label="star" className="btn btn-dark icon-star p-3 rounded-6"></a>
                       </div>
                       <div className="col-8 col-sm">
                         <h1 style={{ fontSize: '1.1em' }}>Pimpinela</h1>

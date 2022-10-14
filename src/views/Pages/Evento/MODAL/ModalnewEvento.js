@@ -3,6 +3,7 @@ import {Modal,Alert,OverlayTrigger,Tooltip} from "react-bootstrap"
 import { Localidades } from "utils/constantes";
 import {ListarLocalidad,ListarEspacios } from "utils/Querypanel.js";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import axios from "axios";
 const ModalNewEvento =(props)=>{
     const {show,Setshow} = props;
     let user =clienteInfo()
@@ -42,6 +43,64 @@ const ModalNewEvento =(props)=>{
       precoDescuneto:'',
       HabilitarCortesia:''})
     }
+    // PROCESO  ACTIVO - CANCELADO
+    let defauldata ={
+        "nombreConcierto": "Aesa1222",
+        "fechaConcierto": "10-11-2022",
+        "horaConcierto": "09:09:pm",
+        "lugarConcierto": "santo domingo",
+        "cuidadConcert": "santo domingo",
+        "descripcionConcierto": "ejemlo",
+        "imagenConcierto": "lonk ejemplo",
+        "idUsuario": "12",
+        "LocalodadPrecios": [
+          {
+            "localodad": "viene",
+            "precio_normal": "1",
+            "precio_discapacidad": "2",
+            "precio_tarjeta": "3",
+            "precio_descuento": "4",
+            "habilitar_cortesia": "5"
+          },
+          {
+            "localodad": "va",
+            "precio_normal": "1",
+            "precio_discapacidad": "2",
+            "precio_tarjeta": "3",
+            "precio_descuento": "4",
+            "habilitar_cortesia": "5"
+          }
+        ]
+      }
+     async function gaurdaPrueba(){
+        try {
+            const data = await axios.post("https://rec.netbot.ec/ms_login/crearevento",defauldata,{
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==' 
+                }
+            })
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+            
+        }
+
+      }
+      async function Listar(){
+
+        try {
+            const {data} = await axios.get("https://rec.netbot.ec/ms_login/listareventos/PROCESO",{
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==' 
+                }
+            })
+            console.log(data)
+        } catch (error) {
+            
+        }
+      }
     
     $(document).ready(function() {
         $(".numero").keypress(function(e) {
@@ -126,6 +185,7 @@ const [neweventos,setNewEventos]=useState(
     useEffect(()=>{
         (async ()=>{
             await Lista()
+            await  Listar()
         })()
        // console.log("evento",neweventos)
        //console.log(!(selectLocalidad.length==localidadPreci.length))
@@ -298,7 +358,7 @@ const [neweventos,setNewEventos]=useState(
                                     </div>
                                 </div>
                                 <div className="modal-footer"> 
-                                <button type="button" className="btn btn-secondary close-btn" data-dismiss="modal">Salir</button>
+                                <button type="button" className="btn btn-secondary close-btn" onClick={gaurdaPrueba}>Salir</button>
                                 {selectLocalidad.length>0&&selectLocalidad.length!=localidadPreci.length?
                                  <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button>:
                                  ""}     
