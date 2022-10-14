@@ -114,3 +114,23 @@ export const columns = [
       header:'Fecha '
     }
   ]
+  export const Columnevento=[
+    
+    { 
+    accessorKey:'nombreConcierto',
+    header:'Evento',  
+  },
+  {
+    accessorKey:'lugarConcierto',
+    header:'Lugar'
+  },
+  {
+  accessorKey:'fechaConcierto',
+  header:'Fecha',
+    size:50
+  },{
+    accessorKey:'horaConcierto',
+    header:'Hora',
+    size:50
+  }
+  ]

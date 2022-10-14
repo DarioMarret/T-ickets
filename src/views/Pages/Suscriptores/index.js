@@ -117,9 +117,7 @@ const hideAlert = () => {
  
     return(
         <div className="container-fluid">
-
-      {alert}
-            
+          {alert}            
           <Row>
           <Col lg="3" sm="6">
             <Card className="card-stats">
@@ -226,18 +224,7 @@ const hideAlert = () => {
             </Card>
           </Col>
                           </Row>
-
-
-
-
-
-
-
-
-
-
-
-                <div className="row">
+               <div className="row">
 
                 
                
@@ -284,73 +271,8 @@ const hideAlert = () => {
                                     positionToolbarAlertBanner="bottom"
                                   
                                     localization={MRT_Localization_ES }
-                                    
-                                />
-                                      
-                                {/*<table className="table table-hover text-center">
-                                    <thead>
-                                        <tr>
-                                            
-                                            <th scope="col">Nombres</th>
-                                            <th scope="col">Cédula</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Dirección</th>                                            
-                                            <th scope="col">Teléfono</th>
-                                            <th scope="Col">Fecha de Registro </th>
-                                            <th scope="col">Estado</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                      {suscritores.length>0?
-                                        suscritores.map((e,i)=>{
-                                          return(
-                                            <tr key={e.id+""+i}>
-                                            <td >{e.nombreCompleto}</td>
-                                            <td>{e.cedula}</td>
-                                            <td>{e.email}</td>
-                                            <td>{e.ciudad}</td>
-                                            <td>{e.movil} </td>
-                                            <td>{e.fechaCreacion} </td>
-                                            <td>{e.enable==1?<span className="badge me-1 bg-dark text-white">Anulado</span>:<span className="badge me-1 bg-success text-white">Activo</span>}</td>
-                                            <th >   
-                                              
-                                                 {/*<Button
-                                          onClick={() => successAlert(e.id)}
-                                          variant="danger"
-                                          size="sm"
-                                          className="text-danger btn-link like"
-                                        >
-                                          <i className="fa fa-trash" />
-                                        </Button}
-                                        <Button
-                                         onClick={()=>usehistory.push("/admin/suscritor/"+e.id+"")}
-                                          variant="danger"
-                                          size="sm"
-                                          className="text-danger btn-link like"
-                                        >
-                                          <i className="fa fa-eye" />
-                                        </Button>
-                                        {/*<Button
-                                          onClick={()=>selelccionasuscrito(e)}
-                                          variant="info"
-                                          size="sm"
-                                          className="text-info btn-link like"
-                                        >
-                                          <i className="fa fa-edit" />
-                                        </Button>}
-                                                
-                                                                                   
-                                     
-                                          </th>
-                                       </tr>
-
-                                          )
-                                        }):
-                                        <tr></tr>  } 
-                                       
-                                    </tbody>
-                                </table>*/}
+                                />                                     
+                      
                             </div>
                         </div>
                     </div>

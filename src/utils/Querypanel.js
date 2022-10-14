@@ -1,4 +1,5 @@
 import axios from "axios"
+import { id } from "date-fns/locale"
 import { Host } from "./constantes"
 
 /**Listar Suscritorea */
@@ -234,6 +235,42 @@ export const FiltrarConcierto = async(parms)=>{
             'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='      
                               
          }
+    })
+    return data
+}
+export const GuardarEvento = async(parms)=>{
+    const {data} = await axios.post(Host+"crearevento",parms,{
+        headers:{
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==' 
+        }
+    })
+    return data;
+}
+export const ListarEventos =  async(parms)=>{
+    const {data} = await axios.get(Host+"listareventos/"+parms,{
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==' 
+                }
+            })
+    return data;
+}
+export const EliminarEvento = async(parm)=>{
+    const {data} = await axios.delete(Host+"eliminarevento/"+parm,{
+        header:{
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+        }
+    })
+    return data
+}
+export const EliminareventoLocalidad= async(parm,id)=>{
+    const {data}= await axios.delete(Host+"eliminarevento/"+parm+"/"+id,{
+        headers:{
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+        }
     })
     return data
 }

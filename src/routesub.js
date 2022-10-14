@@ -27,6 +27,7 @@ import ValidationForms from "views/Forms/ValidationForms.js";
 import Wizard from "views/Forms/Wizard/Wizard.js";
 import Eventos from "views/Pages/Evento";
 import PerfilPage from "views/Pages/Perfil";
+import EventoEspecifico from "views/Pages/Evento/MODAL/Evetoespecifico";
 import Dashboardsub from "views/Pages/Dasboarsubcri/index.js";
 import Reactabla from "views/Pages/Dasboarsubcri/Tickes.js";
 import ReactTables from "views/Tables/ReactTables.js";
@@ -71,6 +72,7 @@ var routes = [
         component: Eventos,
         permiso: ["superadmin", "super_admin"]
       },
+      
       {
         path: "/Diseñar-Ticket",
         layout: "/admin",
@@ -80,17 +82,23 @@ var routes = [
         permiso: ["superadmin", "super_admin"]
       }
     ]
+  },  
+  {
+    path: "/Eventos/:id",
+    layout: "/admin",
+    component: EventoEspecifico,
+    permiso: ["superadmin", "super_admin"]
+  },
+  {
+    path: "/usuarios/:id",
+    layout: "/admin",
+    component: UseridView,
+    permiso: ["superadmin", "super_admin"]
   },
   {
     path: "/suscritor/:id",
     layout: "/admin",
     component: SuscritoridView,
-    permiso: ["superadmin", "super_admin"]
-  },
-  {
-    path: "/usuario/:id",
-    layout: "/admin",
-    component: UseridView,
     permiso: ["superadmin", "super_admin"]
   },
   {
@@ -109,6 +117,7 @@ var routes = [
         component: UsersView,
         permiso: ["superadmin", "super_admin"]
       },
+   
       {
         path: "/suscritor",
         layout: "/admin",
@@ -117,6 +126,7 @@ var routes = [
         component: SuscritorViews,
         permiso: ["superadmin", "super_admin"]
       },
+      
       {
         path: "/notificacion",
         layout: "/admin",

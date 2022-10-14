@@ -275,8 +275,11 @@ const TabunoView=(props)=>{
                 <div className='d-flex  px-3 p-1  align-items-center ' key={"lista"+i}>
                       <OverlayTrigger placement='right' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length>0?e.asientos.length:""}</Tooltip>}>
                       <span className="d-inline-block " disabled >
-                      <div className="d-flex   mx-1 bg-primary text-white  rounded-5 text-center  justify-content-center align-items-center" style={{ height:'50px',width:'50px'}} >
-                                {e.fila} 
+                      <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height:'30px',width:'30px'}} >
+                     <div className="d-flex justify-content-center">
+                     <span style={{fontSize:'0.7em'}}>    {e.fila} </span>
+                     </div>
+                     
                      </div> 
                 </span>
                     </OverlayTrigger>
@@ -287,9 +290,11 @@ const TabunoView=(props)=>{
                      {e.asientos.map((silla,index)=>{
                         let numero = index+1
                         return(
-                        <div key={"silla"+index}  className='d-flex   mx-1 bg-success   rounded-5 text-center  justify-content-center align-items-center ' style={{ height:'50px', width:'50px'}} >
-                        <div className={'px-3 '+ silla.silla} >
-                            {numero}
+                        <div key={"silla"+index}  className='d-flex   mx-1 bg-success   rounded-5 text-center  justify-content-center align-items-center ' style={{ height:'30px', width:'30px'}} >
+                        <div className={'px-3 '+ silla.silla +'d-flex   text-white justify-content-center  '} >
+                        <div className="d-flex justify-content-center">
+                     <span style={{fontSize:'0.7em'}}>    {numero} </span>
+                     </div>
                         </div>  
                         </div>    )                    
                      })}

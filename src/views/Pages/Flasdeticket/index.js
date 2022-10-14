@@ -430,7 +430,9 @@ const IndexFlas = () => {
         <div className="container p-3">
           <div className="row flex-wrap-reverse justify-content-center">
             <div className="col-12 col-lg-9">
+            
               <div className="row mx-auto p-0">
+                  {/**Recordatorio aqui se ralizara el map para alimnetar los eventos */}
                 <div className="col-12 col-lg-6 mx-auto my-5" id="evento2">
                   <a className="" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false"
                     aria-controls="collapseExample2">
@@ -454,7 +456,8 @@ const IndexFlas = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-12 col-lg-6 mx-auto my-5" id="evento4">
+                {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
+                <div className="col-12 col-lg-6 mx-auto my-5" >
                   <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
                     aria-controls="collapseExample">
                     <div className="container  px-0">

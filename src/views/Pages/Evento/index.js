@@ -1,19 +1,115 @@
 import React ,{useEffect,useState}from "react";
 import { Card,Col,Row ,Modal } from "react-bootstrap";
 import ModalNewEvento from "./MODAL/ModalnewEvento";
-import {ListarLocalidad,ListarEspacios } from "utils/Querypanel.js";
+import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import { Box, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Edit,Delete,Visibility } from '@mui/icons-material';
+import {ListarLocalidad,ListarEspacios,ListarEventos } from "utils/Querypanel.js";
+import SweetAlert from 'react-bootstrap-sweetalert';
+import { Columnevento } from "utils/ColumnTabla";
+import { EliminarEvento } from "utils/Querypanel";
+import { useHistory } from "react-router";
+
 const EventosViews =()=>{
-    const[show,setShow] = useState(false)
-  const [espacio,setEspacio]=useState([])
+  let history = useHistory()
+  const[show,setShow] = useState(false)
+  const [eventoslist,setEventos]=useState([])
+  const [alert,setAlert] = React.useState(null)
 
  function nuevoevento(){
   setShow(true)
-
  }  
-    return(
-        <div className="container-fluid">
+  
+ async function GetEventos(){
+  try {
+    const lista = await ListarEventos("PROCESO")
+    if(lista.success){
+      let arr = []
+      arr.push(lista.data)
+      setEventos(arr)
+      console.log(arr)
+    }
+   // console.log(lista)
+  } catch (error) {
+    
+  }
+ }
+ async function Elimna(e){
+  try {
+    /*
+   const elimina = await EliminarEvento(e)*/
+   console.log(e)
+   successDelete()
+   
+  } catch (error) {
+    
+  }
+ }
 
-            
+
+ const successAlert = (e) => {
+  setAlert(
+    <SweetAlert
+      warning
+      style={{ display: "block", marginTop: "-100px" }}
+      title="Estas Seguro?"
+      onConfirm={() => Elimna(e)}
+      onCancel={() => cancelDetele()}
+      confirmBtnBsStyle="success"
+      cancelBtnBsStyle="danger"
+      confirmBtnText="Confirmar"
+      cancelBtnText="Cancelar"
+      showCancel
+    >
+      Esta seguro de eliminar este evento
+    </SweetAlert>
+  );
+};
+const successDelete = () => {
+  setAlert(
+    <SweetAlert
+      success
+      style={{ display: "block", marginTop: "-100px" }}
+      title="Eliminado!"
+      onConfirm={() => hideAlert()}
+      onCancel={() => hideAlert()}
+      confirmBtnBsStyle="success"
+    >
+      El evento se elimino correctamenta
+    </SweetAlert>
+  );
+};
+const cancelDetele = () => {
+  setAlert(
+    <SweetAlert
+      danger
+      style={{ display: "block", marginTop: "-100px" }}
+      title="Cancelado"
+      onConfirm={() => hideAlert()}
+      onCancel={() => hideAlert()}
+      confirmBtnBsStyle="success"
+    >
+     Se a cancelado la acción 
+    </SweetAlert>
+  );
+};
+const hideAlert = () => {
+  setAlert(null);
+};
+
+ useEffect(()=>{
+        (async()=>{
+          await GetEventos()
+                
+        })()
+
+ },[show])
+    return(
+      
+        <div className="container-fluid">
+          {alert}
           <Row>
           <Col lg="3" sm="6">
             <Card className="card-stats">
@@ -119,87 +215,74 @@ const EventosViews =()=>{
               </Card.Footer>
             </Card>
           </Col>
-                          </Row>
-
-
-
-
-
-
-
-
-
-
-
-                <div className="row">
-
-                
-               
-              
+          </Row>
+          <div className="row">             
                     <div className="col-md-12">
-                        
-
                         <button  className="btn btn-success" onClick={nuevoevento}><i className="mr-2 fa fa-plus"></i> Nuevo evento</button>
-
                         <br/><br/>
-
                         <div className="card card-primary card-outline text-left">
                             <div className="card-header">
                                 Eventos
-                            </div>
-                            <div className="card-body">
-
-                                <table className="table table-hover text-center">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Descripcion</th>
-                                            <th scope="col">Fecha</th>
-                                            <th scope="col">Lugar</th>
-                                            <th scope="col">Estado</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">Evento 1</th>
-                                            <td>1</td>
-                                            <td>Otto</td>
-                                            <td><span className="badge me-1 bg-success text-white">Emitido</span></td>
-                                            <td><a href="#">Descargar</a></td>
-                                            <td>
-                                            <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                                <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver mapa"><i className="fa fa-sitemap"></i></a>
-                                                <a className="btn btn-primary btn-sm px-1"  data-toggle="tooltip" title="Ver mapa"><i className="fa fa-edit"></i></a>
-                                            
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Evento 2</th>
-                                            <td>2</td>
-                                            <td>Thornton</td>
-                                            <td><span className="badge me-1 bg-danger text-white">Usado</span></td>
-                                            <td><a href="#">Descargar</a></td>
-                                            <td>
-                                            <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                                <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver mapa"><i className="fa fa-sitemap"></i></a>
-                                                <a className="btn btn-primary btn-sm px-1"  data-toggle="tooltip" title="Ver mapa"><i className="fa fa-edit"></i></a>
-                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Evento 3</th>
-                                            <td>3</td>
-                                            <td>Thornton</td>
-                                            <td><span className="badge me-1 bg-dark text-white">Anulado</span></td>
-                                            <td><a href="#">Descargar</a></td>
-                                            <td >
-                                            <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                                <a className="btn btn-primary btn-sm px-1" data-toggle="tooltip" title="Ver mapa"><i className="fa fa-sitemap"></i></a>
-                                                <a className="btn btn-primary btn-sm px-1"  data-toggle="tooltip" title="Ver mapa"><i className="fa fa-edit"></i></a>
-                                             </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            </div>                            
+                            <div className="">
+                            <MaterialReactTable
+                                    columns={Columnevento}
+                                    data={eventoslist}                                  
+                                    muiTableProps={{
+                                      sx:{
+                                        tableLayout:'flex'
+                                      }
+                                    }}                                           
+                                    enableRowActions
+                                    renderDetailPanel={({row})=>(
+                                      <Box 
+                                      sx={{
+                                        display: 'grid',
+                                        margin: 'auto',
+                                        gridTemplateColumns: '1fr 1fr',
+                                        width: '100%',
+                                      }}
+                                      >
+                                       
+                                        <Typography>Estado : {row.original.estado} </Typography>
+                                        <Typography>Ciudad : {row.original.cuidadConcert} </Typography>
+                                        <Typography>Descripción : {row.original.descripcionConcierto} </Typography>                        
+                                        <Typography>Total Localidad : {row.original.LocalodadPrecios.length} </Typography>                        
+                                      
+                                        
+                
+                                      </Box>
+                                    )}
+                                    renderRowActions={({ row }) => (
+                                      <Box sx={{ display: 'flex' }}>
+                                      <IconButton 
+                                      color="success"     
+                                      arial-label="Enviar"                     
+                                      >
+                                        <Edit/>
+                                      </IconButton>
+                                      <IconButton  
+                                      color="error"
+                                      aria-label="Bloquear" 
+                                      onClick={()=>successAlert(row.original.codigoEvento)}
+                                      >
+                                      <Delete/>
+                                      </IconButton>
+                                      <IconButton  
+                                      color="primary"
+                                      aria-label="Ver" 
+                                      onClick={()=>history.push("/admin/Eventos/"+row.original.codigoEvento)}
+                                      >
+                                      <Visibility/>
+                                      </IconButton>
+                                      
+                                      
+                                    </Box>                                  
+                                      )}
+                                    positionToolbarAlertBanner="bottom"                                  
+                                    localization={MRT_Localization_ES }                                    
+                                />
+                                
                             </div>
                         </div>
                     </div>

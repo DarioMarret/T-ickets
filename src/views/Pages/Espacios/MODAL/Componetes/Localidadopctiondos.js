@@ -113,7 +113,8 @@ const TabdosView = (props) => {
          if(multipleSelect.value=="Todas"&& singleSelecttwo.value=="Todas"&& singleSelecttres.value!=""){ 
         ListadeMesas = FilasLocalidad
         for(var i=0;i<ListadeMesas.length;i++){
-            for(var j=0;j<ListadeMesas[i].Mesas.length;j++){            
+            for(var j=0;j<ListadeMesas[i].Mesas.length;j++){  
+                ListadeMesas[i].Mesas[j]["sillas"]=singleSelecttres.value    
                 for(var f=0; f< parseInt(singleSelecttres.value) ; f++ ){                   
                     let valor= parseInt(f)+1             
                     ListadeMesas[i].Mesas[j]["asientos"][f]={silla:ListadeMesas[i].Mesas[j].mesa+"-s-"+valor,estado:"disponible"};                         
@@ -139,6 +140,7 @@ const TabdosView = (props) => {
         let fila = ListadeMesas[index].Mesas
         if(fila.length>0)
         {for(var i=0;  i< fila.length; i++){
+            fila[i]["asientos"]=[]
                 var numfila =fila[i].mesa
                 //aqui poner la cantidad de sillas 
             for(var f=0; f< parseInt(singleSelecttres.value); f++ ){   
@@ -163,7 +165,9 @@ const TabdosView = (props) => {
          var index = ListadeMesas.findIndex(obj => obj.Fila==singleSelecttwo.value); 
          var fila = ListadeMesas[index].Mesas.findIndex(obj => obj.mesa==multipleSelect.value); 
          var numfila = "A0"
-         for(var f=0; f< parseInt(singleSelecttres.value); f++ ){    
+         ListadeMesas[index].Mesas[fila]["asientos"]=[]
+         for(var f=0; f< parseInt(singleSelecttres.value); f++ ){   
+            
             let valor= parseInt(f)+1                            
             ListadeMesas[index].Mesas[fila]["asientos"][f]={silla:numfila+"-s-"+valor,estado:"disponible"};                         
         }  

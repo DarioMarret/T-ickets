@@ -3,8 +3,9 @@ import {Modal,Alert,OverlayTrigger,Tooltip} from "react-bootstrap"
 import { Localidades } from "utils/constantes";
 import {ListarLocalidad,ListarEspacios,GuardarEvento } from "utils/Querypanel.js";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-const ModalNewEvento =(props)=>{
-    const {show,Setshow} = props;
+import axios from "axios";
+const Modalupdate=(props)=>{
+    const {show,Setshow,evento} = props;
     let user =clienteInfo()
     
     const [alertnone,showAlernone]= useState("d-none")
@@ -14,9 +15,9 @@ const ModalNewEvento =(props)=>{
     const [localidad,setLocalidades]=useState([])
     const [localidadfiltrada,setFiltra]=useState([])
     async function Lista (){
-        const datos =await ListarLocalidad()
+    const datos =await ListarLocalidad()
   const cargarLista = await ListarEspacios() 
-
+   
   const{success,data}= cargarLista
   console.log(data)
   if(success){
@@ -27,15 +28,16 @@ const ModalNewEvento =(props)=>{
     function toggleValueInArray(array, value) {
         //copia de array de localidades
         let ArrayCopia=array;
-        
-        var index = ArrayCopia.findIndex(obj => obj.localodad==value.localodad);      
+        console.log("datos",value,array)
+        var index = ArrayCopia.findIndex(obj => obj.id==value.id);     
+         
       if (index == -1) {
         ArrayCopia.push(value);
       } else {
         ArrayCopia[index]={...value}     
       }
       //se agrega las localidades 
-      //console.log(ArrayCopia)
+     console.log("copia mutada",ArrayCopia)
       setPreLocalidad(ArrayCopia)
       setPrecios({localodad:'',
       precio_normal:'',
@@ -44,57 +46,9 @@ const ModalNewEvento =(props)=>{
       precio_descuento:'',
       habilitar_cortesia:''})
     }
-    // PROCESO  ACTIVO - CANCELADO
-    let defauldata2 ={
-        "nombreConcierto": "Aesa1222",
-        "fechaConcierto": "10-11-2022",
-        "horaConcierto": "09:09:pm",
-        "lugarConcierto": "santo domingo",
-        "cuidadConcerto": "santo domingo",
-        "descripcionConcierto": "ejemlo",
-        "imagenConcierto": "lonk ejemplo",
-        "idUsuario": "12",
-        "LocalodadPrecios": [
-          {
-            "localodad": "viene",
-            "precio_normal": "1",
-            "precio_discapacidad": "2",
-            "precio_tarjeta": "3",
-            "precio_descuento": "4",
-            "habilitar_cortesia": "5"
-          },
-          {
-            "localodad": "va",
-            "precio_normal": "1",
-            "precio_discapacidad": "2",
-            "precio_tarjeta": "3",
-            "precio_descuento": "4",
-            "habilitar_cortesia": "5"
-          }
-        ]
-      }
-     async function gaurdaPrueba(){
-        let defauldata ={
-            ...neweventos,
-            "LocalodadPrecios": [
-                ...localidadPreci
-            ]
-          }
-          console.log(defauldata)
-        try {
-            const data = await GuardarEvento(defauldata)
-            console.log(data)
-            if(data.success){
-                alert("datos guardados")
-                Setshow(false)
-            }
-            
-        } catch (error) {
-            console.log(error)
-            
-        }
+   
 
-      }
+   
     
     
     $(document).ready(function() {
@@ -113,7 +67,7 @@ const ModalNewEvento =(props)=>{
                 cuidadConcert:'',
                 descripcionConcierto:'',
                 imagenConcierto:'',
-                fechacreacion:'22-22-2022',
+                fechacreacion:'',
                 idUsuario:""+user.id,
                 })
  function handelchangeComposeventos(e){
@@ -132,39 +86,33 @@ const ModalNewEvento =(props)=>{
          precio_discapacidad:'',
          precio_tarjeta:'',
          precio_descuento:'',
+         id: '',
+         localodad: '',
          habilitar_cortesia:''}
   )
   const [selectLocalidad,setLocalidad]=useState([])
        
   function handelchange(e){
-            if(e.value!=""){
-            var index = localidad.filter(obj => obj.espacio==e.value);
-                console.log(index)
-                setLocalidad(index)
-                setPreLocalidad([])  
-                setPrecios({localodad:'',
-                precio_normal:'',
-                precio_discapacidad:'',
-                precio_tarjeta:'',
-                precio_descuento:'',
-                habilitar_cortesia:''})     
-                }else{setLocalidad([])}
+            
             
         }  
         function soloSelectespacio(e){
-            var index = localidadPreci.findIndex(obj => obj.localodad==e.value);
-            console.log(index,localidadPreci[index])
+            let array = selectLocalidad
+            var index = array.findIndex(obj => obj.localodad==e.value);
+            console.log(array)
+            console.log(array[index])
+         //   console.log(index,array[index])
             setPrecios({
-                precio_normal:localidadPreci[index]?localidadPreci[index].precio_normal:'',
-                precio_discapacidad:localidadPreci[index]?localidadPreci[index].precio_discapacidad:'',
-                precio_tarjeta:localidadPreci[index]?localidadPreci[index].precio_tarjeta:'',
-                precio_descuento:localidadPreci[index]?localidadPreci[index].precio_descuento:'',
-                habilitar_cortesia:localidadPreci[index]?localidadPreci[index].habilitar_cortesia:'',
-                [e.name]:e.value,               
-            })
-            //console.log(e.value)
+                precio_normal:array[index]?array[index].precio_normal:'',
+                precio_discapacidad:array[index]?array[index].precio_discapacidad:'',
+                precio_tarjeta:array[index]?array[index].precio_tarjeta:'',
+                precio_descuento:array[index]?array[index].precio_descuento:'',
+                habilitar_cortesia:array[index]?array[index].habilitar_cortesia:'',
+                id: array[index]?array[index].id:'',
+                localodad: array[index]?array[index].localodad:'',          
+            })           
             
-            //console.log(localidadPreci[index],localidadPreci)
+            //console.log(array[index],localidadPreci)
         }
         function handelchangeLocalidad(e){
             setPrecios({
@@ -173,7 +121,7 @@ const ModalNewEvento =(props)=>{
             })          
         }
         function Agregarprecios(){
-            toggleValueInArray(localidadPreci,precios)
+            toggleValueInArray(selectLocalidad,precios)
             showAlernone("")
             setTimeout(() => {
                 showAlernone("d-none")
@@ -183,9 +131,21 @@ const ModalNewEvento =(props)=>{
 
     useEffect(()=>{
         (async ()=>{
-            await Lista()
+           // await Lista()
            // await  Listar()
         })()
+        setNewEventos(
+            {nombreConcierto:evento.nombreConcierto?evento.nombreConcierto:'',
+            fechaConcierto:evento.fechaConcierto?evento.fechaConcierto:'',
+            horaConcierto:'',
+            lugarConcierto:'',
+            cuidadConcert:'',
+            descripcionConcierto:'',
+            imagenConcierto:'',
+            fechacreacion:'',
+            idUsuario:""+user.id,
+            })
+        setLocalidad(evento.LocalodadPrecios)
       //  console.log("evento",neweventos)
        //console.log(!(selectLocalidad.length==localidadPreci.length))
        // console.log("localidada precios-->",localidadPreci)//toggleValueInArray
@@ -197,7 +157,7 @@ const ModalNewEvento =(props)=>{
     onHide={()=>Setshow(false)}
     >
         <Modal.Header closeButton> 
-           <Modal.Title>Registro Nuevo Evento</Modal.Title> 
+           <Modal.Title>Editar</Modal.Title> 
         </Modal.Header>
          <Modal.Body>      
                     <div className="modal-body">
@@ -279,13 +239,13 @@ const ModalNewEvento =(props)=>{
                                                                             </div>
                                         </div>
                                         <div className="col-12 col-md-12">
-                                        <label className="form-label">Descripcion </label>
+                                        <label className="form-label">Descriptión </label>
                                         <div className="input-group mb-3">
                                         
                                                 <input type="text" name="descripcionConcierto" className="form-control "
                                                 onChange={(e)=>handelchangeComposeventos(e.target)}
                                                 value={neweventos.descripcionConcierto}
-                                                id="descripcionConcierto"  placeholder="Descriptión del concierto"/>
+                                                id="descripcionConcierto"  placeholder="Imagen del concierto"/>
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text"></span>
                                                 </div>
@@ -315,8 +275,7 @@ const ModalNewEvento =(props)=>{
                                                 </div>
                                                 <input disabled={true} type="text" className="d-none form-control" id="user_id"  placeholder="usuario que creo el evento"/>
                                             </div>
-                                        {
-                                          selectLocalidad.length?  
+                                       
                                         <div className="col-12">
 
                                             <h3>Precios de Localidades </h3>
@@ -330,7 +289,7 @@ const ModalNewEvento =(props)=>{
                                                     {selectLocalidad.map((e,i)=>{
                                                         <option></option>
                                                         return(
-                                                            <option value={e.nombre} key={i+"op"+e.nombre}>{e.nombre}</option>
+                                                            <option value={e.localodad} key={i+"op"+e.localodad}>{e.localodad}</option>
                                                         )
                                                     })
 
@@ -340,11 +299,11 @@ const ModalNewEvento =(props)=>{
                                                 </select>                                              
                                             </div>
                                             <div className="col-4">
-                                                <button className="numero btn btn-success" onClick={(e)=>Agregarprecios()} disabled={!Object.values(precios).every((e)=>e)} >  Agregar precios</button>
+                                                <button className="numero btn btn-success" onClick={(e)=>Agregarprecios()} disabled={!Object.values(precios).every((e)=>e)} >  Actualizar precios</button>
                                             </div>
                                             <div className="col-6">
                                             <Alert className={alertnone} variant="success">
-                                                 Precios Agregados a la Localidad
+                                                 Precios actualizados a la Localidad
                                                
                                                 </Alert>
 
@@ -381,7 +340,7 @@ const ModalNewEvento =(props)=>{
                                                 <input className="numero form-control col-6" value={precios.habilitar_cortesia?precios.habilitar_cortesia:0} name="habilitar_cortesia" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
 
-                                        </div>:""}
+                                        </div>
 
 
 
@@ -393,20 +352,7 @@ const ModalNewEvento =(props)=>{
                                 </div>
                                 <div className="modal-footer"> 
                                 <button type="button" className="btn btn-secondary close-btn" >Salir</button>
-                                {selectLocalidad.length>0&&selectLocalidad.length!=localidadPreci.length?
-                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar1</button>:
-                                 ""}     
-                                 {!selectLocalidad.length>0&&Object.values(neweventos).every(e=>e)?
-                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar2</button>:
-                                 ""
-
-                                 }   
-                                 {selectLocalidad.length>0&&selectLocalidad.length==localidadPreci.length?                       
-                                <button disabled={ !Object.values(neweventos).every(e=>e)} 
-                               onClick={gaurdaPrueba}
-                                className="btn btn-primary close-modal float-rigth">Grabar3</button>
-                                :
-                                 ""} 
+                              
                      </div>
                                          
             
@@ -419,4 +365,4 @@ const ModalNewEvento =(props)=>{
     </Modal>)
 
 }
-export default ModalNewEvento
+export default Modalupdate
