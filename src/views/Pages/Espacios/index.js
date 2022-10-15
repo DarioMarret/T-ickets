@@ -258,13 +258,13 @@ function Editar(e,estado){
                     renderRowActions={({ row }) => (
                         <Box sx={{ display: 'flex' }}>
                            <IconButton 
-                          color="success"  
+                          color="primary"  
                           onClick={()=>AgregasSillasMesa(row.original)}                        
                           >
                             <Visibility/>
                           </IconButton>
                           <IconButton 
-                          color="primary" 
+                          color="success" 
                           onClick={()=> Editar(row.original,"update")}                         
                           >
                             <Edit/>

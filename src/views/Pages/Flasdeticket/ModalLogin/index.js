@@ -86,7 +86,10 @@ const ModalLogin =(props)=>{
         centered    
          >
         <Modal.Header closeButton className="d-flex text-center">
-          
+        <button type="button" className="close"
+                        onClick={()=>setShowLogin(false)}>
+                        ×
+                    </button>
                 
             </Modal.Header>
             <Modal.Body>

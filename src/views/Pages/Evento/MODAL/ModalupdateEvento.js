@@ -158,9 +158,6 @@ console.log(e.value)
             idUsuario:""+user.id,
             })
         setLocalidad(evento.LocalodadPrecios)
-      //  console.log("evento",neweventos)
-       //console.log(!(selectLocalidad.length==localidadPreci.length))
-       // console.log("localidada precios-->",localidadPreci)//toggleValueInArray
         },[show])
     return(
     <Modal
@@ -168,8 +165,12 @@ console.log(e.value)
     size='lg'
     onHide={()=>Setshow(false)}
     >
-        <Modal.Header closeButton> 
-           <Modal.Title>Editar</Modal.Title> 
+        <Modal.Header > 
+           <h5>Editar</h5> 
+           <button type="button" className="close"
+                        onClick={()=>Setshow(false)}>
+                        ×
+                    </button>
         </Modal.Header>
          <Modal.Body>      
                     <div className="modal-body">

@@ -9,10 +9,12 @@ import { columnespacio } from 'utils/ColumnTabla';
 import { EliminarLocalidad } from '../../../../../utils/Querypanel';
 import { useSelector,useDispatch } from 'react-redux';
 import { addLocalidad,deleteloclidad } from 'StoreRedux/Slice/SuscritorSlice';
+import SweetAlert from 'react-bootstrap-sweetalert';
+
 const LocalidadesagreViews=(props)=>{
   let usedispatch=useDispatch()
     const{localidaname,show,SetDataloca,datalocalidad}=props
-  //  console.log(localidaname)
+    const [alert,setAlert] = React.useState(null)
   const [datas,setData]=useState([])
   async function ObtenLocalidad(){    
      try {
@@ -40,7 +42,7 @@ const {success,data}=datos
       const {success}=accion
       if(success){
        await ObtenLocalidad()
-       alert("Localidad Eliminada")
+       successDelete()
       }
     } catch (error) {
       console.log(error)
@@ -93,14 +95,62 @@ $('[href*="listas"]').removeClass('active');
         await ObtenLocalidad()
       })()
      
-
-
     },[datalocalidad])
+    const successAlert = (e) => {
+      setAlert(
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Estas Seguro?"
+          onConfirm={() => Eliminar(e)}
+          onCancel={() => cancelDetele()}
+          confirmBtnBsStyle="success"
+          cancelBtnBsStyle="danger"
+          confirmBtnText="Confirmar"
+          cancelBtnText="Cancelar"
+          showCancel
+        >
+          Esta seguro de eliminar esta localidad
+        </SweetAlert>
+      );
+    };
+    const successDelete = () => {
+      setAlert(
+        <SweetAlert
+          success
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Eliminado!"
+          onConfirm={() => hideAlert()}
+          onCancel={() => hideAlert()}
+          confirmBtnBsStyle="success"
+        >
+          La Localidad se elimino correctamenta
+        </SweetAlert>
+      );
+    };
+    const cancelDetele = () => {
+      setAlert(
+        <SweetAlert
+          danger
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Cancelado"
+          onConfirm={() => hideAlert()}
+          onCancel={() => hideAlert()}
+          confirmBtnBsStyle="success"
+        >
+         Se a cancelado la acción 
+        </SweetAlert>
+      );
+    };
+    const hideAlert = () => {
+      setAlert(null);
+    };
+    
     return(
 
 
     <div className="container-fluid">
-     
+      {alert}
  <MaterialReactTable
                     columns={columnespacio}
                     data={datas}
@@ -130,7 +180,7 @@ $('[href*="listas"]').removeClass('active');
                           </IconButton>
                           <IconButton  
                           color="error"
-                          onClick={()=>Eliminar(row.original.id)}
+                          onClick={()=>successAlert(row.original.id)}
                           >
                           <Delete/>
                           </IconButton>

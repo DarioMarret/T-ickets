@@ -196,8 +196,12 @@ const ModalNewEvento =(props)=>{
     size='lg'
     onHide={()=>Setshow(false)}
     >
-        <Modal.Header closeButton> 
+        <Modal.Header > 
            <Modal.Title>Registro Nuevo Evento</Modal.Title> 
+           <button type="button" className="close"
+                        onClick={()=>Setshow(false)}>
+                        ×
+                    </button>
         </Modal.Header>
          <Modal.Body>      
                     <div className="modal-body">

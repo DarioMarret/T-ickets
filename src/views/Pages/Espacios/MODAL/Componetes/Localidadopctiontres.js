@@ -159,7 +159,7 @@ async function Guardar(){
            <div className=' d-flex flex-wrap '>
                <div className='col-3'>
                    <h3>
-                       General 
+                       {localidaname.nombre} 
                    </h3>
                </div>
                <div className='col-7'>

@@ -256,12 +256,6 @@ const hideAlert = () => {
                                     )}
                                     renderRowActions={({ row }) => (
                                       <Box sx={{ display: 'flex' }}>
-                                      <IconButton 
-                                      color="success"     
-                                      arial-label="Enviar"                     
-                                      >
-                                        <Edit/>
-                                      </IconButton>
                                       <IconButton  
                                       color="error"
                                       aria-label="Bloquear" 
