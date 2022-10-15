@@ -119,7 +119,7 @@ const ModalNewEvento =(props)=>{
  function handelchangeComposeventos(e){
     //console.log(e.files)
     //console.log(e.value)
-    if(e.name=="imagen") {setNewEventos({...neweventos,imagen:e.value?e.value:''})}
+    if(e.name=="imagenConcierto") {setNewEventos({...neweventos,imagenConcierto:e.value?e.value:''})}
     else{setNewEventos({
         ...neweventos,
         [e.name]:e.value,
@@ -274,7 +274,7 @@ const ModalNewEvento =(props)=>{
                                                 <input type="text" name="cuidadConcert" className="form-control "
                                                 value={neweventos.cuidadConcert}
                                                 onChange={(e)=>handelchangeComposeventos(e.target)}
-                                                id="cuidadConcert"  placeholder="Imagen del concierto"/>
+                                                id="cuidadConcert"  placeholder="ciudad del concierto"/>
                                                
                                                                             </div>
                                         </div>
@@ -392,7 +392,7 @@ const ModalNewEvento =(props)=>{
                                     </div>
                                 </div>
                                 <div className="modal-footer"> 
-                                <button type="button" className="btn btn-secondary close-btn" >Salir</button>
+                                <button type="button" className="btn btn-secondary close-btn" onClick={gaurdaPrueba}>Salir</button>
                                 {selectLocalidad.length>0&&selectLocalidad.length!=localidadPreci.length?
                                  <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar1</button>:
                                  ""}     

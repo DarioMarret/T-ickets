@@ -67,7 +67,7 @@ var routes = [
       {
         path: "/Evento",
         layout: "/admin",
-        name: "Crear Evento",
+        name: "Evento",
         mini: "*",
         component: Eventos,
         permiso: ["superadmin", "super_admin"]

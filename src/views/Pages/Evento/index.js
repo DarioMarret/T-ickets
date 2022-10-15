@@ -27,6 +27,7 @@ const EventosViews =()=>{
     const lista = await ListarEventos("PROCESO")
     if(lista.success){
       let arr = []
+      console.log(lista)
       arr.push(lista.data)
       setEventos(arr)
       console.log(arr)

@@ -1,9 +1,9 @@
 import React,{useEffect,useState} from "react";
 import {Modal,Alert,OverlayTrigger,Tooltip} from "react-bootstrap"
 import { Localidades } from "utils/constantes";
-import {ListarLocalidad,ListarEspacios,GuardarEvento } from "utils/Querypanel.js";
+import {ListarLocalidad,ListarEspacios,GuardarEvento, ActualizarLocalidad } from "utils/Querypanel.js";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-import axios from "axios";
+import moment from "moment";
 const Modalupdate=(props)=>{
     const {show,Setshow,evento} = props;
     let user =clienteInfo()
@@ -16,15 +16,15 @@ const Modalupdate=(props)=>{
     const [localidadfiltrada,setFiltra]=useState([])
     async function Lista (){
     const datos =await ListarLocalidad()
-  const cargarLista = await ListarEspacios() 
+    const cargarLista = await ListarEspacios() 
    
-  const{success,data}= cargarLista
-  console.log(data)
-  if(success){
-    setListaEspa(data) 
-    setLocalidades(datos.data)
-}
-}
+            const{success,data}= cargarLista
+            console.log(data)
+            if(success){
+                setListaEspa(data) 
+                setLocalidades(datos.data)
+            }
+            }
     function toggleValueInArray(array, value) {
         //copia de array de localidades
         let ArrayCopia=array;
@@ -35,9 +35,7 @@ const Modalupdate=(props)=>{
         ArrayCopia.push(value);
       } else {
         ArrayCopia[index]={...value}     
-      }
-      //se agrega las localidades 
-     console.log("copia mutada",ArrayCopia)
+      }     
       setPreLocalidad(ArrayCopia)
       setPrecios({localodad:'',
       precio_normal:'',
@@ -71,13 +69,13 @@ const Modalupdate=(props)=>{
                 idUsuario:""+user.id,
                 })
  function handelchangeComposeventos(e){
-    //console.log(e.files)
-    //console.log(e.value)
-    if(e.name=="imagen") {setNewEventos({...neweventos,imagen:e.value?e.value:''})}
+    if(e.name=="imagenConcierto") {setNewEventos({...neweventos,imagen:e.value?e.value:''})}
     else{setNewEventos({
         ...neweventos,
         [e.name]:e.value,
-    })}
+    })
+console.log(e.value)
+}
 
  }
   const [precios,setPrecios]=useState(
@@ -101,7 +99,6 @@ const Modalupdate=(props)=>{
             var index = array.findIndex(obj => obj.localodad==e.value);
             console.log(array)
             console.log(array[index])
-         //   console.log(index,array[index])
             setPrecios({
                 precio_normal:array[index]?array[index].precio_normal:'',
                 precio_discapacidad:array[index]?array[index].precio_discapacidad:'',
@@ -111,8 +108,6 @@ const Modalupdate=(props)=>{
                 id: array[index]?array[index].id:'',
                 localodad: array[index]?array[index].localodad:'',          
             })           
-            
-            //console.log(array[index],localidadPreci)
         }
         function handelchangeLocalidad(e){
             setPrecios({
@@ -128,21 +123,38 @@ const Modalupdate=(props)=>{
               }, "1500")
            
         }
+      async function Actualizar(){
+        console.log(evento.codigoEvento)
+        let guarda ={
+            ...neweventos,
+            estado:"PROCESO",
+            "LocalodadPrecios": localidadPreci
+        }
+       // console.log(guarda)
+        try {
+           const actualiza = await ActualizarLocalidad(evento.codigoEvento,guarda)
+           console.log(actualiza)
+            
+        } catch (error) {
+            console.log(error)
+        }
+           
+        }
 
     useEffect(()=>{
         (async ()=>{
            // await Lista()
            // await  Listar()
         })()
+       console.log(evento)
         setNewEventos(
             {nombreConcierto:evento.nombreConcierto?evento.nombreConcierto:'',
-            fechaConcierto:evento.fechaConcierto?evento.fechaConcierto:'',
-            horaConcierto:'',
-            lugarConcierto:'',
-            cuidadConcert:'',
-            descripcionConcierto:'',
-            imagenConcierto:'',
-            fechacreacion:'',
+            fechaConcierto:evento.fechaConcierto?new Date(evento.fechaConcierto).toISOString().slice(0, 10):'',
+            horaConcierto:evento.horaConcierto?evento.horaConcierto:'',
+            lugarConcierto:evento.lugarConcierto?evento.lugarConcierto:'',
+            cuidadConcert:evento.cuidadConcert?evento.cuidadConcert:'',
+            descripcionConcierto:evento.descripcionConcierto?evento.descripcionConcierto:'',
+            imagenConcierto:evento.imagenConcierto?evento.imagenConcierto:'',
             idUsuario:""+user.id,
             })
         setLocalidad(evento.LocalodadPrecios)
@@ -186,31 +198,18 @@ const Modalupdate=(props)=>{
                                                                             </div>
                                         </div>
                                         <div className="col-12 col-md-6">
-                                        <div className="input-group mb-3">
+                                        <label className="form-label">Hora</label>
+                                        <div className="input-group mb-3"> 
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text"><i className="fa fa-clock"></i></span>
                                                 </div>
                                                 <input type="time" className="form-control" id="horaConcierto" name="horaConcierto"
-                                                value={neweventos.horaConcierto}
+                                                value={moment(neweventos.horaConcierto, ["h:mm A"]).format("HH:mm")}
                                                 onChange={(e)=>handelchangeComposeventos(e.target)}
                                                  placeholder="hora del evento"/>
                                                                             </div>
                                         </div>
-                                        <div className="col-12 col-md-6">
-                                        <div className="input-group mb-3">
-                                                <div className="input-group-prepend">
-                                                    <span className="input-group-text"><i className="fa fa-map"></i></span>
-                                                </div>
-                                                <select className="form-control" name="localidad" onChange={(e)=>handelchange(e.target)} placeholder="Seleccione localidad">
-                                                    <option value={""}>Seleccione espacio</option>
-                                                    {espacios.map((e,i)=>{
-                                                    return(
-                                                    <option value={e.nombre} key={i+"n"+e.id}>{e.nombre}</option>
-                                                    )
-                                                    })}                                                   
-                                                </select>
-                                            </div>
-                                        </div>
+                                        
                                         
                                         <div className="col-12 col-md-6">
                                         <label className="form-label">Lugar</label>
@@ -238,7 +237,7 @@ const Modalupdate=(props)=>{
                                                
                                                                             </div>
                                         </div>
-                                        <div className="col-12 col-md-12">
+                                        <div className="col-12 col-md-6">
                                         <label className="form-label">Descriptión </label>
                                         <div className="input-group mb-3">
                                         
@@ -351,7 +350,7 @@ const Modalupdate=(props)=>{
                                     </div>
                                 </div>
                                 <div className="modal-footer"> 
-                                <button type="button" className="btn btn-secondary close-btn" >Salir</button>
+                                <button type="button" className="btn btn-secondary close-btn" onClick={Actualizar} >Salir</button>
                               
                      </div>
                                          

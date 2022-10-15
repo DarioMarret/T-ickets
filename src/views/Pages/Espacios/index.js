@@ -61,7 +61,7 @@ function Editar(e,estado){
       })()
      
        
-    },[showNuevo])
+    },[showNuevo,show])
     const successAlert = (e) => {
       setAlert(
         <SweetAlert

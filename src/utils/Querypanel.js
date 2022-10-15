@@ -274,3 +274,12 @@ export const EliminareventoLocalidad= async(parm,id)=>{
     })
     return data
 }
+export const ActualizarLocalidad= async(id,parms)=>{
+    const {data} = await axios.put(Host+"actualizarevento/"+id,parms,{
+        header:{
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+        }
+    })
+    return data
+}
