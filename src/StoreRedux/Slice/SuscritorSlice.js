@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState={
     subscritor:{},
     login:false,
-    localidad:{},
+    localidad:{},    
 }
 
 const  SubscritorSlice = createSlice({

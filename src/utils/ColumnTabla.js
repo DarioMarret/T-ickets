@@ -134,3 +134,24 @@ export const columns = [
     size:50
   }
   ]
+  export  const columnsTicket = [
+      
+       {
+           accessorKey: 'nombre',
+           header: 'Nombre',
+       },
+       {
+           accessorKey: 'cedula',
+           header: 'Cédula',
+           
+       },
+       {
+           accessorKey: 'fecha',
+           header: 'Fecha',
+           
+       },
+       {
+           accessorKey: 'ciudad',
+           header: 'Ciudad',      
+       },       
+   ]

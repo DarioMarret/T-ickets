@@ -1,11 +1,14 @@
 import React,{useEffect,useState} from "react";
 import {Modal,Alert,OverlayTrigger,Tooltip} from "react-bootstrap"
-import { Localidades } from "utils/constantes";
 import {ListarLocalidad,ListarEspacios,GuardarEvento, ActualizarLocalidad } from "utils/Querypanel.js";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { useDispatch,useSelector } from "react-redux";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import moment from "moment";
 const Modalupdate=(props)=>{
     const {show,Setshow,evento} = props;
+    let usedispatch= useDispatch()
+    
     let user =clienteInfo()
     
     const [alertnone,showAlernone]= useState("d-none")
@@ -68,32 +71,22 @@ const Modalupdate=(props)=>{
                 fechacreacion:'',
                 idUsuario:""+user.id,
                 })
- function handelchangeComposeventos(e){
-    if(e.name=="imagenConcierto") {setNewEventos({...neweventos,imagen:e.value?e.value:''})}
-    else{setNewEventos({
-        ...neweventos,
-        [e.name]:e.value,
-    })
-console.log(e.value)
-}
-
+ function handelchangeComposeventos(e){   
+                setNewEventos({
+                    ...neweventos,
+                    [e.name]:e.value,
+                })
  }
-  const [precios,setPrecios]=useState(
-         {localodad:'',
+  const [precios,setPrecios]=useState({localodad:'',
          precio_normal:'',
          precio_discapacidad:'',
          precio_tarjeta:'',
          precio_descuento:'',
          id: '',
          localodad: '',
-         habilitar_cortesia:''}
-  )
+         habilitar_cortesia:''})
   const [selectLocalidad,setLocalidad]=useState([])
        
-  function handelchange(e){
-            
-            
-        }  
         function soloSelectespacio(e){
             let array = selectLocalidad
             var index = array.findIndex(obj => obj.localodad==e.value);
@@ -120,21 +113,22 @@ console.log(e.value)
             showAlernone("")
             setTimeout(() => {
                 showAlernone("d-none")
-              }, "1500")
-           
+              }, "1500")           
         }
       async function Actualizar(){
-        console.log(evento.codigoEvento)
+       // console.log(Object.values(neweventos).every((d) => d))
+        console.log(neweventos)
         let guarda ={
             ...neweventos,
             estado:"PROCESO",
             "LocalodadPrecios": localidadPreci
         }
-       // console.log(guarda)
+        console.log(guarda)
         try {
-           const actualiza = await ActualizarLocalidad(evento.codigoEvento,guarda)
-           console.log(actualiza)
-            
+        const actualiza = await ActualizarLocalidad(evento.codigoEvento,guarda)
+         console.log(actualiza)
+         Setshow(false)
+         usedispatch(setToastes({show:true,message:'Datos de eventos Actalizados',color:'bg-success', estado:'Actualizado'}))            
         } catch (error) {
             console.log(error)
         }
@@ -234,21 +228,23 @@ console.log(e.value)
                                                 <input type="text" name="cuidadConcert" className="form-control "
                                                 value={neweventos.cuidadConcert}
                                                 onChange={(e)=>handelchangeComposeventos(e.target)}
-                                                id="cuidadConcert"  placeholder="Imagen del concierto"/>
+                                                id="cuidadConcert"  placeholder="Ciudad "/>
                                                
                                                                             </div>
                                         </div>
                                         <div className="col-12 col-md-6">
                                         <label className="form-label">Descriptión </label>
                                         <div className="input-group mb-3">
-                                        
+                                        <div className="input-group-prepend">
+                                                    <span className="input-group-text">
+                                                    <i className="fa fa-bookmark"></i>
+                                                    </span>
+                                                </div>
                                                 <input type="text" name="descripcionConcierto" className="form-control "
                                                 onChange={(e)=>handelchangeComposeventos(e.target)}
                                                 value={neweventos.descripcionConcierto}
-                                                id="descripcionConcierto"  placeholder="Imagen del concierto"/>
-                                                <div className="input-group-prepend">
-                                                    <span className="input-group-text"></span>
-                                                </div>
+                                                id="descripcionConcierto"  placeholder="Descriptión del concierto"/>
+                                                
                                                                             </div>
                                         </div>
                                         
@@ -351,7 +347,8 @@ console.log(e.value)
                                     </div>
                                 </div>
                                 <div className="modal-footer"> 
-                                <button type="button" className="btn btn-secondary close-btn" onClick={Actualizar} >Salir</button>
+                                <button type="button" className="btn btn-secondary close-btn" onClick={Actualizar} >Salir</button> 
+                                <button className="btn btn-success" disabled={!Object.values(neweventos).every((d) => d)} onClick={Actualizar}>Editar</button>
                               
                      </div>
                                          

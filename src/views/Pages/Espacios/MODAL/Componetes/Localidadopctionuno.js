@@ -24,9 +24,9 @@ const TabunoView=(props)=>{
         if(filass.inicial!=" "&& filass.cantidad!=" " ){
         const letrafilas = filass.inicial.replace(/[0-9]+/g, "")
         const numeroinicofilas= filass.inicial.replace(/[^0-9]+/g, "");        
-        const repeticiones =parseInt(numeroinicofilas) + parseInt(filass.cantidad)      
+        const repeticiones =parseInt(numeroinicofilas) + parseInt(filass.cantidad)    
         for(var i= numeroinicofilas; i < repeticiones; i++){
-            ListadeFilas.push({fila:letrafilas+""+i,sillas:0,asientos:[]});        
+            ListadeFilas.push({fila:letrafilas+""+i,rotar:'',anchor:'30px',top:'',left:'',rigth:'',bottom:'',sillas:0,asientos:[]});        
         }}
         setFilas(ListadeFilas)       
     }
@@ -44,7 +44,7 @@ const TabunoView=(props)=>{
                  const numfila =ListadeFilas[i]["fila"]                
                     for(var f=0; f< interar; f++ ){       
                         numero=1+f                        
-                        ListadeFilas[i]["asientos"][f]={silla:numfila+"-s-"+numero,estado:"disponible"};                         
+                        ListadeFilas[i]["asientos"][f]={silla:numfila+"-s-"+numero,estado:"disponible",anchor:'30px',marginRight:'',marginLeft:'1px'};                         
                     }                   
                 }               
                 setFilas([])                  
@@ -61,7 +61,7 @@ const TabunoView=(props)=>{
                 ListadeFilas[index].sillas=interarr
                 for(var g=0; g< interarr;g++){                    
                     numero=1+g                   
-                    sillas[g]={silla:letra+"-s-"+numero,estado:"disponible"}                  
+                    sillas[g]={silla:letra+"-s-"+numero,estado:"disponible",anchor:'30px',marginRight:'',marginLeft:'1px'}                  
                 }
                 
                 ListadeFilas[index].asientos=[...sillas]
@@ -272,31 +272,43 @@ const TabunoView=(props)=>{
                 
                 {                    
             return(
-                <div className='d-flex  px-3 p-1  align-items-center ' key={"lista"+i}>
+                <div className='d-flex  px-3 p-1 justify-content-ce ' key={"lista"+i}>
                       <OverlayTrigger placement='right' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length>0?e.asientos.length:""}</Tooltip>}>
                       <span className="d-inline-block " disabled >
-                      <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height:'30px',width:'30px'}} >
+                      <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height:e.anchor,width:e.anchor}} >
                      <div className="d-flex justify-content-center">
                      <span style={{fontSize:'0.7em'}}>    {e.fila} </span>
                      </div>
                      
                      </div> 
                 </span>
-                    </OverlayTrigger>
-                
-                                                                 
-                {e.asientos.length>0?
-                   <div className=' d-flex p-1 justify-content-center align-items-center ' >                    
-                     {e.asientos.map((silla,index)=>{
-                        let numero = index+1
-                        return(
-                        <div key={"silla"+index}  className='d-flex   mx-1 bg-success   rounded-5 text-center  justify-content-center align-items-center ' style={{ height:'30px', width:'30px'}} >
+                    </OverlayTrigger>  
+                    {/*
+                        <div key={"silla"+index}  className='d-flex  bg-success   rounded-5 text-center  justify-content-center align-items-center '
+                         style={{ height:'30px', width:'30px',marginLeft:silla.marginLeft,marginRight:index==4&&i>0?'130px':'1px' }} >
                         <div className={'px-3 '+ silla.silla +'d-flex   text-white justify-content-center  '} >
                         <div className="d-flex justify-content-center">
                      <span style={{fontSize:'0.7em'}}>    {numero} </span>
                      </div>
                         </div>  
-                        </div>    )                    
+                        </div>  
+                    
+                    */}                         
+                {e.asientos.length>0?
+                   <div className=' d-flex px-1  align-items-stretch '  style={{width:'100%'}}>                    
+                     {e.asientos.map((silla,index,arr)=>{                                      
+                        let numero = index+1
+                        return(
+                        <div key={"silla"+index}  className='d-flex  bg-success   rounded-5 text-center  justify-content-center align-items-center '
+                         style={{ height:silla.anchor, width:silla.anchor,marginLeft:silla.marginLeft,marginRight:silla.marginRight }} >
+                        <div className={'px-3 '+ silla.silla +'d-flex   text-white justify-content-center  '} >
+                        <div className="d-flex justify-content-center">
+                     <span style={{fontSize:'0.7em'}}>    {numero} </span>
+                     </div>
+                        </div>  
+                        </div>
+                        
+                        )                    
                      })}
                      </div>:""}
 

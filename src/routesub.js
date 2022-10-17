@@ -37,6 +37,7 @@ import SuscritoridView from "views/Pages/Suscriptores/Suscritorid";
 import UseridView from "views/Pages/Usuarios/Usuarioid";
 import TablasEjemplos from "views/Tables/Tablaejemplo";
 import AjustesView from "views/Pages/Ajustes";
+import EsquemaViews from "views/Pages/Esquemas";
 
 var routes = [
   {
@@ -237,6 +238,13 @@ var routes = [
     permiso: ["superadmin", "super_admin"]
     
   },
+  {
+    path:"/Pruebamapa",
+    layout:"/admin",
+    name:"Prueba",
+    component:EsquemaViews,
+    permiso:["",""]
+  }
   
   
  

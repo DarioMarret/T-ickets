@@ -23,7 +23,7 @@ const MesaseisView =({text})=>{
                   <a className={text+"-s-3 sillas bg-success "}   style={Stylesilla.asientos}>
                   </a>
                 </div>
-                <div className={text +" Mesa bg-success d-flex  p-1" } style={Stylesilla.mesas}>
+                <div className={text +" Mesa bg-success txt-white d-flex  p-1" } style={Stylesilla.mesas}>
                 {text}
                 </div>
                 

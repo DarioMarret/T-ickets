@@ -76,6 +76,7 @@ const ModalNewEvento =(props)=>{
      async function gaurdaPrueba(){
         let defauldata ={
             ...neweventos,
+            estado:"PROCESO",
             "LocalodadPrecios": [
                 ...localidadPreci
             ]
@@ -113,7 +114,7 @@ const ModalNewEvento =(props)=>{
                 cuidadConcert:'',
                 descripcionConcierto:'',
                 imagenConcierto:'',
-                fechacreacion:'22-22-2022',
+                fechacreacion:'',
                 idUsuario:""+user.id,
                 })
  function handelchangeComposeventos(e){

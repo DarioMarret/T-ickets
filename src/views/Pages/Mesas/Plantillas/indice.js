@@ -1,6 +1,6 @@
 import React from "react";
 import { Stylesilla } from "./style";
-const MesacerView =({text})=>{
+const MesaiView =({text})=>{
     return(
         <div  style={{padding: '0.7px'}}>
         <div className="d-flex">
@@ -23,7 +23,7 @@ const MesacerView =({text})=>{
             <div style={Stylesilla.asientos}>
             </div>   
           </div>
-          <div className="bg-success txt-white d-flex p-1"  style={Stylesilla.mesas}>
+          <div className="bg-primary txt-white d-flex p-1"  style={Stylesilla.mesas}>
           {text}
           </div>
           
@@ -52,4 +52,4 @@ const MesacerView =({text})=>{
 
 }
 
-export default MesacerView;
+export default MesaiView;

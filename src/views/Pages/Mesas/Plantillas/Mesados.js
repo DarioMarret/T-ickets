@@ -23,7 +23,7 @@ const MesadosView =({text})=>{
             <div  style={Stylesilla.asientos}>
             </div>   
           </div>
-          <div className={text +"  Mesa bg-success d-flex p-1"}   style={Stylesilla.mesas}>
+          <div className={text +"  Mesa bg-success txt-white d-flex p-1"}   style={Stylesilla.mesas}>
           {text}
           </div>
           

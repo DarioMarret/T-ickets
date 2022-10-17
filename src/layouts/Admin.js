@@ -31,6 +31,7 @@ import image1 from "assets/img/full-screen-image-1.jpg";
 import image2 from "assets/img/full-screen-image-2.jpg";
 import image3 from "assets/img/full-screen-image-3.jpg";
 import image4 from "assets/img/full-screen-image-4.jpg";
+import ToastViews from "views/Components/TOAST/toast";
 
 function Admin() {
   let user =clienteInfo()
@@ -99,6 +100,8 @@ function Admin() {
         backgroundColor={sidebarBackground}
         setSidebarBackgroundParent={(value) => setSidebarBackground(value)}
       />*/}
+      <ToastViews/>
+
     </>
   );
 }

@@ -10,6 +10,7 @@ import {Row,Container}from 'react-bootstrap'
 import { ListarTikets ,FiltrarConcierto} from "utils/Querypanel";
 import { ExportToCsv } from 'export-to-csv';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { columnsTicket } from 'utils/ColumnTabla';
 import { Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -80,58 +81,7 @@ const EventosViews =()=>{
           }
 
         }
-        const columns = useMemo(
-          ()=>[
-             {
-                 accessorKey: 'id',
-                 header: '',
-                 enableHiding:false,
-                 
-             },
-             {
-                 accessorKey: 'nombre',
-                 header: 'Nombre',
-             },
-             {
-                 accessorKey: 'cedula',
-                 header: 'Cédula',
-                 
-             },
-             {
-                 accessorKey: 'fecha',
-                 header: 'Fecha',
-                 
-             },
-             {
-                 accessorKey: 'ciudad',
-                 header: 'Ciudad',
-                 
-             },
-             {
-                 accessorKey: 'concierto',
-                 header: 'Concierto',
-                 enableHiding:false,
-             },
-             {
-                 accessorKey: 'protocolo',
-                 header: 'Protocolo',
-                 enableHiding:false,
-             },
-             {
-                 accessorKey: 'link',
-                 header: 'Link',
-                 enableHiding:false,
-     
-             },
-             {
-                 accessorKey: 'qr',
-                 header: 'codigo QR',
-                 enableHiding:false,
-             },
-         ] ,
-         [],)
-//
-         const csvOptions = {
+        const csvOptions = {
           fieldSeparator: ',',
           quoteStrings: '"',
           decimalSeparator: '.',
@@ -139,7 +89,7 @@ const EventosViews =()=>{
           useBom: true,
           filename: 'Ticket vendidos',
           useKeysAsHeaders: false,
-          headers: columns.map((c) => c.header),
+          
         };
         
         const csvExporter = new ExportToCsv(csvOptions);
@@ -147,7 +97,7 @@ const EventosViews =()=>{
           csvExporter.generateCsv(rows.map((row) => row.original));
         };      
         const handleExportData = () => {
-          csvExporter.generateCsv(data);
+          csvExporter.generateCsv(TiktesList);
         };
     useEffect(()=>{
         (async()=>{
@@ -220,29 +170,24 @@ return(
                 
 
       <MaterialReactTable
-                    columns={columns}
+                    columns={columnsTicket}
                     data={TiktesList}
                     enableRowSelection
                     muiTableProps={{
                       sx:{
                         tableLayout:'flex'
                       }
-                    }}
-                    initialState={
-                      {
-                        columnVisibility:{id:false,ciudad:false,concierto:false,protocol:false,link:false,qr:false}
-                      }
-                    }
+                    }}                   
                     muiTableBodyProps={{
                       sx:{ columnVisibility:{nombre:false}}
                     }}
                     renderDetailPanel={({row})=>(
                       <Box 
                       sx={{
-                        display:'flex flex-column',
-                        margin:'auto',
-                        gridTemplateColumns:'1fr 1fr',
-                        width:'100%',
+                        display: 'grid',
+                        margin: 'auto',
+                        gridTemplateColumns: '1fr 1fr',
+                        width: '100%',
                       }}
                       >
                        
@@ -270,14 +215,13 @@ return(
                           aria-label="Bloquear" 
                           >
                           <Delete/>
-                          </IconButton>
-                          
+                          </IconButton>                          
                         </Box>
                       )}
                     positionToolbarAlertBanner="bottom"
                     displayColumnDefOptions={{
                         'mrt-row-numbers': {
-                          enableHiding: true, //now row numbers are hidable too
+                          enableHiding: true, 
                         },
                       }}
                     renderTopToolbarCustomActions={({ table }) => (
@@ -286,9 +230,9 @@ return(
                       >
                         <Button
                           color="primary"
+                          disabled={table.getPrePaginationRowModel().rows.length === 0}
                            onClick={handleExportData}
-                          startIcon={<FileDownloadIcon />}
-                          
+                          startIcon={<FileDownloadIcon />}                          
                         >
                           Export Todos los Datos
                         </Button>
@@ -296,28 +240,22 @@ return(
                           disabled={table.getPrePaginationRowModel().rows.length === 0}
                           onClick={() =>
                             handleExportRows(table.getPrePaginationRowModel().rows)
-                          }
-              
-                          startIcon={<FileDownloadIcon />}
-                          
+                          }              
+                          startIcon={<FileDownloadIcon />}          
                         >
                           Export Todas las filas
                         </Button>
                         <Button
                           disabled={table.getRowModel().rows.length === 0}
                           onClick={() => handleExportRows(table.getRowModel().rows)}
-                          startIcon={<FileDownloadIcon />}
-                          
+                          startIcon={<FileDownloadIcon />}                          
                         >
                           Export Filas de página
                         </Button>
                         <Button
-                          disabled={
-                            !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-                          }
+                          disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()}
                            onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-                          startIcon={<FileDownloadIcon />}
-                          
+                          startIcon={<FileDownloadIcon />}                          
                         >
                           Export Fila Seleccionada
                         </Button>

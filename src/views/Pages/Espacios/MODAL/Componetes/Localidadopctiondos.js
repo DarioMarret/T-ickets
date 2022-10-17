@@ -3,9 +3,11 @@ import { Modal, ProgressBar, OverlayTrigger, Tooltip, Button, Form } from "react
 import { GuardarLocalidad ,AptualizarLocalida} from 'utils/Querypanel';
 import MesasView from 'views/Pages/Mesas';
 import MesacerView from 'views/Pages/Mesas/Plantillas/Mesacer';
+import MesaiView from "views/Pages/Mesas/Plantillas/indice";
 import Select from "react-select";
 import { Letras } from "utils/constantes";
 import Accordion from 'react-bootstrap/Accordion';
+
 const TabdosView = (props) => {
      const{datalocalidad,SetDataloca,localidanames}=props
     
@@ -218,17 +220,12 @@ const TabdosView = (props) => {
                 description: '',
                 id:''})
                 console.log({"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
-       
             }
            
         } catch (error) {
             console.log(error)
-            
         }
-        
-    }
-     
-
+    }    
     }
     async function actualizalocalidad (){
         if(localidaname.nombre=="" || localidaname.description==""|| ListaMesa.length<0) {alert("Complete los datos y localidad creada") }
@@ -533,7 +530,7 @@ const TabdosView = (props) => {
                             return(
                                 <div className='d-flex  px-3 align-items-center' key={index}>
                                         <div className='d-flex pb-2'>
-                                            <MesacerView
+                                            <MesaiView
                                                 text={e.Fila}
                                             />
                                         </div>
