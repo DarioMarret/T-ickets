@@ -243,7 +243,7 @@ var routes = [
     layout:"/admin",
     name:"Prueba",
     component:EsquemaViews,
-    permiso:["",""]
+    permiso: ["superadmin", "super_admin"]
   }
   
   

@@ -256,9 +256,7 @@ const Modalupdate=(props)=>{
                                                 <input type="file" accept="image/*" name="imagenConcierto" className="form-control "
                                                 onChange={(e)=>handelchangeComposeventos(e.target)}
                                                 id="imagenConcierto"  placeholder="Imagen del concierto"/>
-                                                <div className="input-group-prepend">
-                                                    <span className="input-group-text"></span>
-                                                </div>
+                                                
                                                                             </div>
                                         </div>
 

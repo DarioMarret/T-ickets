@@ -85,7 +85,7 @@ const ModalLogin =(props)=>{
         aria-labelledby="contained-modal-title-vcenter"
         centered    
          >
-        <Modal.Header closeButton className="d-flex text-center">
+        <Modal.Header  className="d-flex text-center">
         <button type="button" className="close"
                         onClick={()=>setShowLogin(false)}>
                         ×
