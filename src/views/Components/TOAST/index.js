@@ -11,6 +11,7 @@ const ViewToas =(props) =>{
         
         <Toast
         onClose={() => setDatoToas({...Toastestado,show:false})} show={Toastestado.show} delay={8000} autohide
+       
         className="top-center"
         style={{
             position: 'fixed',
@@ -18,7 +19,7 @@ const ViewToas =(props) =>{
             right: 10,
             zIndex: 10000,
         }}>
-       <Toast.Header>
+       <Toast.Header closeButton={false}>
         <div className={Toastestado.color+" rounded-3"} style={{width:'20px',height:'20px',}}></div>
         <strong className="mr-auto  px-1">{Toastestado.estado} </strong>
       <small></small> 
@@ -28,7 +29,7 @@ const ViewToas =(props) =>{
                     </button>
 
     </Toast.Header>
-        <Toast.Body className={ Toastestado.color +" text-white"} >{Toastestado.message}</Toast.Body>
+        <Toast.Body className={ Toastestado.color +" text-white"} > {Toastestado.message}</Toast.Body>
         </Toast>
         </>
     )

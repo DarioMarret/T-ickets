@@ -17,7 +17,7 @@ const AjustesView =()=>{
         <div className="border rounded-circle d-flex flex-column justify-content-center bg-white shadow-md  align-items-center"
         style={Stylestheme.img}
         >
-            <i class="bi bi-people fa-3x"></i>
+            <i className="bi bi-people fa-3x"></i>
             <h6>Gestión personal </h6>
         </div>
       </div>
@@ -26,7 +26,7 @@ const AjustesView =()=>{
         style={Stylestheme.img}
         >
           
-          <i class="bi  fa-3x"></i>
+          <i className="bi  fa-3x"></i>
             <h6>Facturación Electrónica </h6>
         </div>
       </div>
@@ -42,7 +42,7 @@ const AjustesView =()=>{
         <div className="border rounded-circle d-flex flex-column justify-content-center bg-white shadow-md  align-items-center"
         style={Stylestheme.img}
         >
-            <i class="bi bi-receipt fa-3x"></i>
+            <i className="bi bi-receipt fa-3x"></i>
             <h6>Faturas</h6>
         </div>
       </div>
@@ -50,7 +50,7 @@ const AjustesView =()=>{
         <div className="border rounded-circle d-flex flex-column justify-content-center bg-white shadow-md  align-items-center"
         style={Stylestheme.img}
         >
-          <i class="bi bi-dropbox fa-3x"></i>
+          <i className="bi bi-dropbox fa-3x"></i>
             <h6>Cloud</h6>
         </div>
       </div>
@@ -66,7 +66,7 @@ const AjustesView =()=>{
         <div className="border rounded-circle d-flex flex-column justify-content-center bg-white shadow-md  align-items-center"
         style={Stylestheme.img}
         >
-            <i class="fas fa-envelope fa-3x" aria-hidden="true"></i>
+            <i className="fas fa-envelope fa-3x" aria-hidden="true"></i>
 
             <h6>Plantilla Configuracón</h6>
         </div>

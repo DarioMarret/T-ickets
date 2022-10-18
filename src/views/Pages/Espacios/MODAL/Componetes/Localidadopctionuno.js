@@ -2,9 +2,11 @@ import React,{useEffect,useState} from "react"
 import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button} from "react-bootstrap"
 import { AptualizarLocalida } from "utils/Querypanel"
 import { GuardarLocalidad } from "utils/Querypanel"
+import { useDispatch } from "react-redux"
+import { setToastes } from "StoreRedux/Slice/ToastSlice"
 const TabunoView=(props)=>{
     const {localidaname,datalocalidad,SetDataloca}=props
-   
+   let usedispatch= useDispatch()
     let ListadeFilas=[]
     const [nmobretabuno,setLocalidad]=useState({
         nombre:'',
@@ -87,7 +89,10 @@ const TabunoView=(props)=>{
 
     }
     async function AgregaLocalidad(){
-        if(nmobretabuno.nombre=="" || nmobretabuno.description==""|| ListaFilas.length<0) {alert("Complete los datos y localidad creada") }
+        if(nmobretabuno.nombre=="" || nmobretabuno.description==""|| ListaFilas.length<0) {
+            usedispatch(setToastes({show:true,message:'Complete todos los datos antes de guaradar',color:'bg-danger', estado:'Datos incompletos'}))     
+           // alert("Complete los datos y localidad creada")
+        }
         else{
         try {
             const guardad = await GuardarLocalidad({"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})})
@@ -97,7 +102,8 @@ const TabunoView=(props)=>{
                     description:'',
                     id:'',
                     array:''})
-            alert("localidad Guardada")
+                    usedispatch(setToastes({show:true,message:'Complete todos los datos antes de guaradar',color:'bg-danger', estado:'Datos incompletos'})) 
+          //  alert("localidad Guardada")
           }
             console.log({"espacio":localidaname.nombre,"descripcion":nmobretabuno.description,"nombre":nmobretabuno.nombre,"mesas_array":JSON.stringify({Typo:'fila',datos: ListaFilas})}) 
         } catch (error) {

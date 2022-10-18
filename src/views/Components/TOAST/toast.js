@@ -1,5 +1,6 @@
 import React from "react";
 import { Toast } from "react-bootstrap";
+import ToastContainer from 'react-bootstrap/ToastContainer';
 import { useDispatch,useSelector } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 const ToastViews =() => {
@@ -13,6 +14,7 @@ const ToastViews =() => {
     return (<>
     <Toast
         onClose={cerrar} show={selector.show} delay={8000} autohide
+        
         className="top-center"
         style={{
             position: 'fixed',
@@ -20,7 +22,7 @@ const ToastViews =() => {
             right: 10,
             zIndex: 10000,
         }}>
-       <Toast.Header>
+       <Toast.Header closeButton={false}>
         <div className={selector.color+" rounded-3"} style={{width:'20px',height:'20px',}}></div>
         <strong className="mr-auto  px-1">{selector.estado} </strong>
       <small></small> 

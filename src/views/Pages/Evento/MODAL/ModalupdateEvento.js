@@ -17,6 +17,18 @@ const Modalupdate=(props)=>{
     const [localidadPreci,setPreLocalidad]=useState([])
     const [localidad,setLocalidades]=useState([])
     const [localidadfiltrada,setFiltra]=useState([])
+    /*informacion de los enventos nuevos */
+    const [neweventos,setNewEventos]=useState(
+        {nombreConcierto:'',
+        fechaConcierto:'',
+        horaConcierto:'',
+        lugarConcierto:'',
+        cuidadConcert:'',
+        descripcionConcierto:'',
+        imagenConcierto:'',
+        fechacreacion:'',
+        idUsuario:""+user.id,
+        })
     async function Lista (){
     const datos =await ListarLocalidad()
     const cargarLista = await ListarEspacios() 
@@ -59,18 +71,7 @@ const Modalupdate=(props)=>{
           (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })     
       });
-                /*informacion de los enventos nuevos */
-            const [neweventos,setNewEventos]=useState(
-                {nombreConcierto:'',
-                fechaConcierto:'',
-                horaConcierto:'',
-                lugarConcierto:'',
-                cuidadConcert:'',
-                descripcionConcierto:'',
-                imagenConcierto:'',
-                fechacreacion:'',
-                idUsuario:""+user.id,
-                })
+                
  function handelchangeComposeventos(e){   
                 setNewEventos({
                     ...neweventos,
@@ -130,6 +131,7 @@ const Modalupdate=(props)=>{
          Setshow(false)
          usedispatch(setToastes({show:true,message:'Datos de eventos Actalizados',color:'bg-success', estado:'Actualizado'}))            
         } catch (error) {
+            usedispatch(setToastes({show:true,message:""+error,color:'bg-danger', estado:'Error'}))
             console.log(error)
         }
            
@@ -148,6 +150,7 @@ const Modalupdate=(props)=>{
             lugarConcierto:evento.lugarConcierto?evento.lugarConcierto:'',
             cuidadConcert:evento.cuidadConcert?evento.cuidadConcert:'',
             descripcionConcierto:evento.descripcionConcierto?evento.descripcionConcierto:'',
+            fechaCreacion:evento.fechaCreacion?evento.fechaCreacion:'',
             imagenConcierto:evento.imagenConcierto?evento.imagenConcierto:'',
             idUsuario:""+user.id,
             })
@@ -270,7 +273,7 @@ const Modalupdate=(props)=>{
                                                 <input disabled={true} type="text" className="d-none form-control" id="user_id"  placeholder="usuario que creo el evento"/>
                                             </div>
                                        
-                                        <div className="col-12">
+                                       {/* <div className="col-12">
 
                                             <h3>Precios de Localidades </h3>
                                             <div className="d-flex flex-wrap">
@@ -334,7 +337,7 @@ const Modalupdate=(props)=>{
                                                 <input className="numero form-control col-6" value={precios.habilitar_cortesia?precios.habilitar_cortesia:0} name="habilitar_cortesia" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
 
-                                        </div>
+                                        </div>*/}
 
 
 
@@ -345,7 +348,7 @@ const Modalupdate=(props)=>{
                                     </div>
                                 </div>
                                 <div className="modal-footer"> 
-                                <button type="button" className="btn btn-secondary close-btn" onClick={Actualizar} >Salir</button> 
+                                <button type="button" className=" btn btn-secondary close-btn" onClick={Actualizar} >Salir</button> 
                                 <button className="btn btn-success" disabled={!Object.values(neweventos).every((d) => d)} onClick={Actualizar}>Editar</button>
                               
                      </div>

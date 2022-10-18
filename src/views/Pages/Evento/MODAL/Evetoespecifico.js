@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { Accordion } from "react-bootstrap"
-import { ListarEventos } from "utils/Querypanel"
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Button, Typography } from '@mui/material';
@@ -10,17 +9,30 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { Edit,Delete,Share } from '@mui/icons-material';
 import { ExportToCsv } from 'export-to-csv';
 import { columnsTicket } from "utils/ColumnTabla";
-import { EliminareventoLocalidad } from "utils/Querypanel"
+import { EliminareventoLocalidad,listarpreciolocalidad,ListarEventos } from "utils/Querypanel"
 import Modalupdate from "./ModalupdateEvento"
 import { useDispatch,useSelector } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import PreciosViews from "./ModalPrecios";
 
 const EventoEspecifico=()=>{
     let {id} =useParams()
     let usedispatch= useDispatch()
    
     const[show,setShow] = useState(false)
+  //  let {showpr,setShowpr,valores}= prop
+    
+    const [showpr,setShowpr]=useState(false)
     const [precios,SetPrecios]=useState([])
+    const [valores,setvalores]=useState({localodad:'',
+    precio_normal:'',
+    precio_discapacidad:'',
+    precio_tarjeta:'',
+    precio_descuento:'',
+    codigoEvento: "",
+    id: '',
+    localodad: '',
+    habilitar_cortesia:''})
     const [evento,SetEvento] = useState({
         id: '',
         nombreConcierto: '',
@@ -42,13 +54,24 @@ const EventoEspecifico=()=>{
        console.log(elimnar,e,f)
 
     }
+    function EditarPrecios(e){
+      setvalores({...e})
+     // console.log(e)
+      setShowpr(true)
+    }
     async function Evento(){
         try {
             const cargar = await ListarEventos("PROCESO")
-            if(cargar.success){ SetEvento({...cargar.data})
-            SetPrecios(cargar.data.LocalodadPrecios)
+            const precio = await listarpreciolocalidad(id)
+
+            if(cargar.success){ 
+              let datos = cargar.data.filter((e)=>e.codigoEvento==id)
+              //console.log(datos[0])
+              SetEvento({...datos[0],LocalodadPrecios:precio.data})
+            SetPrecios(precio.data)
         }
         } catch (error) {
+          dispatch(setToastes({show:true,message:'Hubo un error en el procceso',color:'bg-danger', estado:'Error'})) 
             
         }
     }
@@ -75,6 +98,11 @@ const EventoEspecifico=()=>{
     },[show])
         return(
             <>
+            <PreciosViews
+            showpr={showpr}
+            setShowpr={setShowpr}
+            valores={valores}
+            />
             <div className="conatiner row">
             <div className="row mx-auto p-0">
                 <div className="col-12 col-md-6 col-lg-4 col-xl-4 mx-auto my-5" id="evento2">
@@ -102,7 +130,7 @@ const EventoEspecifico=()=>{
                         {precios.length>0?
                         precios.map((e,i)=>{
                             return(
-                                <Accordion.Item eventKey={i} key={i}>
+                            <Accordion.Item eventKey={i} key={i}>
                             <Accordion.Header>Localidad: {e.localodad}</Accordion.Header>
                             <Accordion.Body>
                                 <div className="d-flex flex-row  justify-content-between">
@@ -137,14 +165,13 @@ const EventoEspecifico=()=>{
                                     <button className="btn btn-danger"
                                     onClick={()=>Eliminar(e.codigoEvento,e.id)}
                                     >Eliminar </button>
-                                    <button className="d-none btn btn-success">Editar </button>
+                                    <button className="btn btn-success" onClick={()=>EditarPrecios(e)}>Editar </button>
                                 </div>
                                 </div>
                                 
                           
                             </Accordion.Body>
-                        </Accordion.Item>
-                       
+                        </Accordion.Item>                      
 
                             )
                         })

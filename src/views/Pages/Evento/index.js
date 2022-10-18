@@ -11,9 +11,12 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { Columnevento } from "utils/ColumnTabla";
 import { EliminarEvento } from "utils/Querypanel";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 
 const EventosViews =()=>{
   let history = useHistory()
+  let dispatch = useDispatch()
   const[show,setShow] = useState(false)
   const [eventoslist,setEventos]=useState([])
   const [alert,setAlert] = React.useState(null)
@@ -27,25 +30,36 @@ const EventosViews =()=>{
     const lista = await ListarEventos("PROCESO")
     if(lista.success){
       let arr = []
-      console.log(lista)
-      arr.push(lista.data)
-      setEventos(arr)
-      console.log(arr)
+      //console.log(lista)
+      //arr.push(lista.data)
+      setEventos(lista.data)
+      //console.log(arr)
     }
    // console.log(lista)
   } catch (error) {
     
   }
  }
- async function Elimna(e){
+ async function Elimna(e){  
+  let {codigo,fecha}=e
+  var f1 = new Date(fecha); 
+var fhoy = new Date();
+//console.log(fecha,(f1>fhoy));
+if(f1<fhoy){ 
+  hideAlert()
+   dispatch(setToastes({show:true,message:'El evento ya no se puede elimnar',color:'bg-danger', estado:'Error'})) }
+else
   try {
-    /*
-   const elimina = await EliminarEvento(e)*/
-   console.log(e)
-   successDelete()
-   
-  } catch (error) {
     
+   const elimina = await EliminarEvento(codigo)
+   const lista = await ListarEventos("PROCESO")
+   if(elimina.success){
+    setEventos(lista.data)
+   successDelete()
+   dispatch(setToastes({show:true,message:'Evento Eliminado con éxito',color:'bg-success', estado:'Correcto'})) 
+  }      
+  } catch (error) {
+    dispatch(setToastes({show:true,message:'Hubo un error en el procceso',color:'bg-danger', estado:'Error'})) 
   }
  }
 
@@ -248,7 +262,7 @@ const hideAlert = () => {
                                         <Typography>Estado : {row.original.estado} </Typography>
                                         <Typography>Ciudad : {row.original.cuidadConcert} </Typography>
                                         <Typography>Descripción : {row.original.descripcionConcierto} </Typography>                        
-                                        <Typography>Total Localidad : {row.original.LocalodadPrecios.length} </Typography>                        
+                                                           
                                       
                                         
                 
@@ -259,7 +273,7 @@ const hideAlert = () => {
                                       <IconButton  
                                       color="error"
                                       aria-label="Bloquear" 
-                                      onClick={()=>successAlert(row.original.codigoEvento)}
+                                      onClick={()=>successAlert({codigo:row.original.codigoEvento,fecha:row.original.fechaConcierto})}
                                       >
                                       <Delete/>
                                       </IconButton>

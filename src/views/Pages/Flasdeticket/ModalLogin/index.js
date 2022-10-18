@@ -150,10 +150,14 @@ const ModalLogin =(props)=>{
           zIndex: 10000
         }}
       >
-       <Toast.Header>
+       <Toast.Header closeButton={false}>
       <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
       <strong className="mr-auto">Hubo un error </strong>
       <small></small>
+      <button type="button" className="close"
+                       onClick={()=>setShowToas({...Toastestado,show:false})} >
+                        ×
+                    </button>
     </Toast.Header>
         <Toast.Body className="bg-danger text-white" >{message} </Toast.Body>
       </Toast>
@@ -173,7 +177,7 @@ const ModalLogin =(props)=>{
       <strong className="mr-auto">Inicio Exitoso </strong>
       <small></small>
     </Toast.Header>
-        <Toast.Body className="bg-success text-white" >{message} </Toast.Body>
+        <Toast.Body className="bg-success text-white" > Aqui trabajo {message} </Toast.Body>
       </Toast>
         </>
     )

@@ -256,6 +256,16 @@ export const ListarEventos =  async(parms)=>{
             })
     return data;
 }
+export const listarpreciolocalidad = async(parms)=>{
+    const {data} = await axios.get(Host+"ListaPreciosLocalidades/"+parms,{
+        header:{
+            'Content-Type':'application/json',
+            'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==' 
+
+        }
+    })
+    return data;
+}
 export const EliminarEvento = async(parm)=>{
     const {data} = await axios.delete(Host+"eliminarevento/"+parm,{
         header:{
