@@ -20,10 +20,10 @@ const PreciosViews =(prop) => {
     }
     useEffect(()=>{
         if(valores){
-            setPrecios({...valores})
+                   setPrecios({...valores})
         }
 
-    },[])
+    },[showpr])
 
     return(
         <>
@@ -43,7 +43,7 @@ const PreciosViews =(prop) => {
             <Modal.Body>
             <div className="col-12">
 
-                        <h3>Localidades </h3>                      
+                        <h3>Localidad:{precios.localodad} </h3>                      
 
                         <div className="row">
                         <div className="d-flex flex-wrap col-12 col-md-6">
@@ -84,18 +84,31 @@ const PreciosViews =(prop) => {
                             
                             </div>
                         </div>
-                        </div>
-                        <div className="d-flex flex-wrap mb-2">
-                            <div className="px-2 col-4">
+                        <div className="d-flex flex-wrap mb-2 col-12 col-md-6">
+                            
                                 <label >PRECIO DESCUENTO </label>
+                                <div className="input-group mb-3">                           
+                         <div className="input-group-prepend">
+                         <span className="input-group-text">
+                                                    <i className="fa fa-dollar"></i>
+                                                    </span>
+                                                </div>
+                            <input className="numero form-control" value={precios.precio_descuento?precios.precio_descuento:0}  name="precio_descuento" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                             </div>
-                            <input className="numero form-control col-6" value={precios.precio_descuento?precios.precio_descuento:0}  name="precio_descuento" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                         </div>
-                        <div className="d-flex flex-wrap mb-2">
-                            <div className="px-2 col-4">
+                        </div>
+                       
+                        <div className="d-flex flex-wrap mb-2 col-12">
+                            
                                 <label >HABILITAR CORTESIA </label>
-                            </div>
-                            <input className="numero form-control col-6" value={precios.habilitar_cortesia?precios.habilitar_cortesia:0} name="habilitar_cortesia" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                                <div className="input-group mb-3">                           
+                         <div className="input-group-prepend">
+                         <span className="input-group-text">
+                                                    <i className="fa fa-dollar"></i>
+                                                    </span>
+                                                </div>
+                            <input className="numero form-control " value={precios.habilitar_cortesia?precios.habilitar_cortesia:0} name="habilitar_cortesia" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                        </div>
                         </div>
 
                         </div>
