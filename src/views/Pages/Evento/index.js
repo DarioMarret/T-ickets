@@ -116,13 +116,10 @@ const hideAlert = () => {
 
  useEffect(()=>{
         (async()=>{
-          await GetEventos()
-                
+          await GetEventos()                
         })()
-
  },[show])
-    return(
-      
+    return(      
         <div className="container-fluid">
           {alert}
           <Row>

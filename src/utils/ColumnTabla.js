@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography,Chip } from '@mui/material';
 export const columns = [
     {
       accessorKey: 'id',
@@ -43,11 +43,7 @@ export const columns = [
 
   ]
   export const Columnasubcrito=[
-    {
-      accessorKey: 'id',
-      header: 'ID',      
-      enableHiding:false
-    },
+   
     { accessorKey:'nombreCompleto',
     header:'Nombre'
   },
@@ -68,28 +64,16 @@ export const columns = [
     },{
       accessorKey:'enable',
       header:'Estado',
+      size:100,
       Cell: ({ cell, column }) => (
-        <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-          sx={{
-            backgroundColor: cell.getValue()==0?'green':'red' ,
-          }}
-        >
-          {cell.getValue()==0?'Habiliado':'Anulado'}
-        </Box>
+        <Chip label={cell.getValue()==0?'Habiliado':'Anulado'} color={cell.getValue()==0?'success':'error'}/>
+      
       ),
     },
 
   ]
-  export const columnusuarios=[
-    {
-      accessorKey: 'id',
-      header: 'ID',      
-      enableHiding:false
-    },
-    {
+  export const Columnusuarios=[
+        {
       accessorKey: 'username',
       header: 'Username',
     },
@@ -101,18 +85,15 @@ export const columns = [
       accessorKey: 'email',
       header: 'Email',
     },
-    ,
     {
       accessorKey: 'perfil',
       header: 'Perfil',
 
-    },{
+    },    
+    {
       accessorKey:'fecha_creacion',
-      header:'Fecha de Registro'
-    },{
-      accessorKey:'password',
-      header:'Fecha '
-    }
+      header:'Fecha de Registro',
+    },
   ]
   export const Columnevento=[
     
@@ -154,4 +135,32 @@ export const columns = [
            accessorKey: 'ciudad',
            header: 'Ciudad',      
        },       
+   ]
+   //cantidad fecha description estado
+   export const ColumnaUsuarioid=[
+    {
+      accessorKey: "activity",
+      header:"Actividad"
+    },
+    { 
+      accessorKey:"cantidad",
+      header:"Cantidad"
+    },
+    {
+      accessorKey:"fecha",
+      header:"Fecha",
+    },
+    {
+      accessorKey:"description",
+      header:"Description",
+    },
+    {
+      accessorKey:"estado",
+      header:"Estado",
+      size:50,
+      Cell: ({ cell, column }) => (
+        <Chip label={cell.getValue()==0?'Habiliado':'Anulado'} color={cell.getValue()==0?'success':'error'}/>
+      
+      ),
+    },
    ]

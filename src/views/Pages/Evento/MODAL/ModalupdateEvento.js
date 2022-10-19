@@ -5,6 +5,7 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useDispatch,useSelector } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import moment from "moment";
+import { Obtenerlinkimagen } from "utils/Querypanel";
 const Modalupdate=(props)=>{
     const {show,Setshow,evento} = props;
     let usedispatch= useDispatch()
@@ -13,10 +14,6 @@ const Modalupdate=(props)=>{
     
     const [alertnone,showAlernone]= useState("d-none")
     const [espacios,setListaEspa]=useState([])
-    //Array donde se crearan las localidades con sus precios
-    const [localidadPreci,setPreLocalidad]=useState([])
-    const [localidad,setLocalidades]=useState([])
-    const [localidadfiltrada,setFiltra]=useState([])
     /*informacion de los enventos nuevos */
     const [neweventos,setNewEventos]=useState(
         {nombreConcierto:'',
@@ -29,6 +26,15 @@ const Modalupdate=(props)=>{
         fechacreacion:'',
         idUsuario:""+user.id,
         })
+        const [precios,setPrecios]=useState({localodad:'',
+         precio_normal:0,
+         precio_discapacidad:0,
+         precio_tarjeta:0,
+         precio_descuento:0,
+         id: '',
+         localodad: '',
+         habilitar_cortesia:0})
+  const [selectLocalidad,setLocalidad]=useState([])
     async function Lista (){
     const datos =await ListarLocalidad()
     const cargarLista = await ListarEspacios() 
@@ -37,13 +43,13 @@ const Modalupdate=(props)=>{
             console.log(data)
             if(success){
                 setListaEspa(data) 
-                setLocalidades(datos.data)
+               // setLocalidades(datos.data)
             }
             }
-    function toggleValueInArray(array, value) {
+    function toggleValueInArray( value) {
         //copia de array de localidades
-        let ArrayCopia=array;
-        console.log("datos",value,array)
+        let ArrayCopia=selectLocalidad;
+        console.log("datos",value,selectLocalidad)
         var index = ArrayCopia.findIndex(obj => obj.id==value.id);     
          
       if (index == -1) {
@@ -51,13 +57,14 @@ const Modalupdate=(props)=>{
       } else {
         ArrayCopia[index]={...value}     
       }     
-      setPreLocalidad(ArrayCopia)
+      setLocalidad(ArrayCopia)
+      console.log(ArrayCopia)
       setPrecios({localodad:'',
-      precio_normal:'',
-      precio_discapacidad:'',
-      precio_tarjeta:'',
-      precio_descuento:'',
-      habilitar_cortesia:''})
+      precio_normal:0,
+      precio_discapacidad:0,
+      precio_tarjeta:0,
+      precio_descuento:0,
+      habilitar_cortesia:0})
     }
    
 
@@ -73,20 +80,23 @@ const Modalupdate=(props)=>{
       });
                 
  function handelchangeComposeventos(e){   
+    
+    if(e.name=="imagenConcierto"){
+       /* img = new Image();
+        var objectUrl = _URL.createObjectURL(e.files[0]);
+        img.onload = function () {
+            
+            alert(this.width + " " + this.height);
+            
+        };*/
+       // console.log(e.files[0])
+        setNewEventos({...neweventos,imagenConcierto:e.files[0]?e.files[0]:''})}else{
                 setNewEventos({
                     ...neweventos,
                     [e.name]:e.value,
-                })
+                })}
  }
-  const [precios,setPrecios]=useState({localodad:'',
-         precio_normal:'',
-         precio_discapacidad:'',
-         precio_tarjeta:'',
-         precio_descuento:'',
-         id: '',
-         localodad: '',
-         habilitar_cortesia:''})
-  const [selectLocalidad,setLocalidad]=useState([])
+  
        
         function soloSelectespacio(e){
             let array = selectLocalidad
@@ -110,39 +120,62 @@ const Modalupdate=(props)=>{
             })          
         }
         function Agregarprecios(){
-            toggleValueInArray(selectLocalidad,precios)
+            toggleValueInArray(precios)
             showAlernone("")
             setTimeout(() => {
                 showAlernone("d-none")
               }, "1500")           
         }
       async function Actualizar(){
-       // console.log(Object.values(neweventos).every((d) => d))
-        console.log(neweventos)
-        let guarda ={
-            ...neweventos,
-            estado:"PROCESO",
-            "LocalodadPrecios": localidadPreci
-        }
-        console.log(guarda)
-        try {
-        const actualiza = await ActualizarLocalidad(evento.codigoEvento,guarda)
-         console.log(actualiza)
-         Setshow(false)
-         usedispatch(setToastes({show:true,message:'Datos de eventos Actalizados',color:'bg-success', estado:'Actualizado'}))            
-        } catch (error) {
-            usedispatch(setToastes({show:true,message:""+error,color:'bg-danger', estado:'Error'}))
-            console.log(error)
-        }
+            if(neweventos.imagenConcierto==evento.imagenConcierto){
+                console.log(neweventos)
+                let guarda ={
+                    ...neweventos,
+                    estado:"PROCESO",
+                    "LocalodadPrecios":selectLocalidad
+                }
+                console.log(guarda)
+            try {
+            const actualiza = await ActualizarLocalidad(evento.codigoEvento,guarda)
+                // console.log(actualiza)
+                if(actualiza.success){
+                Setshow(false)
+                usedispatch(setToastes({show:true,message:'Datos del evento Actalizados',color:'bg-success', estado:'Actualizado'}))  }
+                else{
+                    usedispatch(setToastes({show:true,message:'Hubo un error no se actualizaron los datos',color:'bg-danger', estado:'Error  '}))  
+                }          
+                } catch (error) {
+                    usedispatch(setToastes({show:true,message:""+error,color:'bg-danger', estado:'Error'}))
+                    console.log(error)
+                }
+            }else{
+                try{
+                    const link = await Obtenerlinkimagen(neweventos.imagenConcierto)
+                    if(link==null) return
+                    let info ={
+                        ...neweventos,
+                        imagenConcierto:link,
+                        estado:"PROCESO",
+                        "LocalodadPrecios":selectLocalidad
+                    }
+                    const actualiza = await ActualizarLocalidad(evento.codigoEvento,info)
+                    if(actualiza.success){
+                        Setshow(false)
+                        usedispatch(setToastes({show:true,message:'Datos de evento Actalizados',color:'bg-success', estado:'Actualizado'}))  }
+                        else{
+                        usedispatch(setToastes({show:true,message:'Hubo un error no se actualizaron los datos',color:'bg-danger', estado:'Error  '}))  
+                        }  
+                }catch(error){
+                    usedispatch(setToastes({show:true,message:""+error,color:'bg-danger', estado:'Error'}))
+                    console.log(error)
+
+                }
+
+                }
            
         }
 
     useEffect(()=>{
-        (async ()=>{
-           // await Lista()
-           // await  Listar()
-        })()
-       console.log(evento)
         setNewEventos(
             {nombreConcierto:evento.nombreConcierto?evento.nombreConcierto:'',
             fechaConcierto:evento.fechaConcierto?new Date(evento.fechaConcierto).toISOString().slice(0, 10):'',
@@ -155,6 +188,8 @@ const Modalupdate=(props)=>{
             idUsuario:""+user.id,
             })
         setLocalidad(evento.LocalodadPrecios)
+        console.log(neweventos)
+        console.log(Object.values(neweventos).every((d) => d))
         },[show])
     return(
     <Modal
@@ -253,7 +288,7 @@ const Modalupdate=(props)=>{
                                         
 
                                         <div className="col-12 col-md-12">
-                                        <label className="form-label">Seleccione una imagen</label>
+                                        <label className="form-label">Seleccione una imagen{neweventos.imagenConcierto?"":""}</label> 
                                         <div className="input-group mb-3">
                                         
                                                 <input type="file" accept="image/*" name="imagenConcierto" className="form-control "
@@ -266,14 +301,9 @@ const Modalupdate=(props)=>{
                                         </div>
                                             
                                             
-                                            <div className="input-group mb-3 d-none">
-                                                <div className="input-group-prepend">
-                                                    <span className="input-group-text"><i className="fa fa-dollar-sign"></i></span>
-                                                </div>
-                                                <input disabled={true} type="text" className="d-none form-control" id="user_id"  placeholder="usuario que creo el evento"/>
-                                            </div>
+                                            
                                        
-                                       {/* <div className="col-12">
+                                        <div className="col-12">
 
                                             <h3>Precios de Localidades </h3>
                                             <div className="d-flex flex-wrap">
@@ -310,34 +340,34 @@ const Modalupdate=(props)=>{
                                                 <div className="px-2 col-4">
                                                     <label >PRECIO NORMAL</label>
                                                 </div>
-                                                <input className="numero form-control col-6" value={precios.precio_normal?precios.precio_normal:0} name="precio_normal" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                                                <input className="numero form-control col-6"  value={precios.precio_normal} name="precio_normal" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
                                             <div className="d-flex flex-wrap mb-2">
                                                 <div className="px-2 col-4">
                                                     <label >PRECIO DISCAPACIDA</label>
                                                 </div>
-                                                <input className="numero form-control col-6" value={precios.precio_discapacidad?precios.precio_discapacidad:0} name="precio_discapacidad" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                                                <input className="numero form-control col-6"  value={precios.precio_discapacidad} name="precio_discapacidad" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
                                             <div className="d-flex flex-wrap mb-2">
                                                 <div className="px-2 col-4">
                                                     <label >PRECIO TC/TD </label>
                                                 </div>
-                                                <input className="numero form-control col-6" value={precios.precio_tarjeta?precios.precio_tarjeta:0} name="precio_tarjeta" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                                                <input className="numero form-control col-6"  value={precios.precio_tarjeta} name="precio_tarjeta" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
                                             <div className="d-flex flex-wrap mb-2">
                                                 <div className="px-2 col-4">
                                                     <label >PRECIO DESCUENTO </label>
                                                 </div>
-                                                <input className="numero form-control col-6" value={precios.precio_descuento?precios.precio_descuento:0}  name="precio_descuento" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                                                <input className="numero form-control col-6"value={precios.precio_descuento}  name="precio_descuento" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
                                             <div className="d-flex flex-wrap mb-2">
                                                 <div className="px-2 col-4">
                                                     <label >HABILITAR CORTESIA </label>
                                                 </div>
-                                                <input className="numero form-control col-6" value={precios.habilitar_cortesia?precios.habilitar_cortesia:0} name="habilitar_cortesia" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                                                <input className="numero form-control col-6" value={precios.habilitar_cortesia} name="habilitar_cortesia" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
 
-                                        </div>*/}
+                                        </div>
 
 
 
@@ -347,8 +377,8 @@ const Modalupdate=(props)=>{
 
                                     </div>
                                 </div>
-                                <div className="modal-footer"> 
-                                <button type="button" className=" btn btn-secondary close-btn" onClick={Actualizar} >Salir</button> 
+                                <div className="d-flex modal-footer justify-content-end align-items-end"> 
+                                <button type="button" className=" btn d-none btn-secondary close-btn" >Salir</button> 
                                 <button className="btn btn-success" disabled={!Object.values(neweventos).every((d) => d)} onClick={Actualizar}>Editar</button>
                               
                      </div>

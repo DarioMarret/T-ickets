@@ -249,17 +249,12 @@ const hideAlert = () => {
                                       sx:{
                                         tableLayout:'fixed'
                                       }
-                                    }}
-                                    initialState={
-                                      {
-                                        columnVisibility:{id:false}
-                                      }
-                                    }            
+                                    }}                                        
                                     enableRowActions
                                     renderRowActions={({ row }) => (
                                         <Box sx={{ display: 'flex' }}>
                                           <IconButton 
-                                          color="primary"  
+                                          color="error"  
                                           onClick={()=>usehistory.push("/admin/suscritor/"+row.original.id+"")}
                                           >
                                             <Visibility/>

@@ -293,3 +293,17 @@ export const ActualizarLocalidad= async(id,parms)=>{
     })
     return data
 }
+export const Obtenerlinkimagen = async (parm)=>{
+    try {
+        const fordata = new FormData();
+    fordata.append('image', parm);
+        const {data} = await axios.post("https://codigomarret.online/api/img",fordata)
+    if(!data.success) return null
+    return data.link
+        
+    } catch (error) {
+        return null
+        
+    }
+    
+}

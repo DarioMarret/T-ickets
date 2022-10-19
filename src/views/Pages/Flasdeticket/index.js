@@ -23,7 +23,7 @@ import { GetMetodo ,getVerTienda} from "utils/CarritoLocalStorang";
 import { useHistory } from "react-router";
 import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
-import Tikes from "../../Pages/Dasboarsubcri/Tickes";
+import Tikes from "../Susbcritorpage/Tickes";
 import PerfilPage from "../Perfil";
 import { getDatosUsuariosLocalStorag,getCliente, DatosUsuariosLocalStorag} from "utils/DatosUsuarioLocalStorag";
 import { GuardarDatosdelComprador ,ValidarWhatsapp} from "utils/Query";

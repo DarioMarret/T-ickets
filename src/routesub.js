@@ -28,8 +28,8 @@ import Wizard from "views/Forms/Wizard/Wizard.js";
 import Eventos from "views/Pages/Evento";
 import PerfilPage from "views/Pages/Perfil";
 import EventoEspecifico from "views/Pages/Evento/MODAL/Evetoespecifico";
-import Dashboardsub from "views/Pages/Dasboarsubcri/index.js";
-import Reactabla from "views/Pages/Dasboarsubcri/Tickes.js";
+import Dashboardsub from "views/Pages/Susbcritorpage/index.js";
+import Reactabla from "views/Pages/Susbcritorpage/Tickes.js";
 import ReactTables from "views/Tables/ReactTables.js";
 import SuscritorViews from "views/Pages/Suscriptores";
 import UsersView from "views/Pages/Usuarios";
@@ -65,6 +65,12 @@ var routes = [
         component: Espacios,
         permiso: ["superadmin", "super_admin"]
       },
+  {
+    path: "/usuario/:id",
+    layout: "/admin",
+    component: UseridView,
+    permiso: ["superadmin", "super_admin"]
+  },
       {
         path: "/Evento",
         layout: "/admin",
@@ -88,12 +94,6 @@ var routes = [
     path: "/Eventos/:id",
     layout: "/admin",
     component: EventoEspecifico,
-    permiso: ["superadmin", "super_admin"]
-  },
-  {
-    path: "/usuarios/:id",
-    layout: "/admin",
-    component: UseridView,
     permiso: ["superadmin", "super_admin"]
   },
   {

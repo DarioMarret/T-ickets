@@ -52,6 +52,7 @@ const EventoEspecifico=()=>{
        const elimnar = await EliminareventoLocalidad(e,f)
         
        console.log(elimnar,e,f)
+       await Evento()
 
     }
     function EditarPrecios(e){
@@ -103,12 +104,16 @@ const EventoEspecifico=()=>{
             setShowpr={setShowpr}
             valores={valores}
             />
+            <div className="d-flex justify-content-end">
+              <button className="btn btn-outline-warning">{evento.estado=="PROCESO"?'ACTIVAR':'CANCELAR'}</button>
+
+            </div>
             <div className="conatiner row">
             <div className="row mx-auto p-0">
                 <div className="col-12 col-md-6 col-lg-4 col-xl-4 mx-auto my-5" id="evento2">
                   <p>
                     <div className="container rounded-7 shadow-md px-0">
-                      <img src={'http://localhost:3000/static/media/gpiminel.7e0ffaa26c9a5de2f66a.jpeg'} className="img-fluid rounded-7 shadow-md " alt="" />
+                      <img src={evento.imagenConcierto?evento.imagenConcierto:''} className="img-fluid rounded-7 shadow-md " alt="" />
                     </div>
                   </p>
                   <div className=" container mt-4 px-0" id="collapseExample2">
@@ -121,6 +126,9 @@ const EventoEspecifico=()=>{
                         <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
                        <p                           
                           className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => setShow(true)} >Editar</p>
+                   
+                   <p className="btn mx-1 btn-warning fw-bold px-3 py-2 rounded-6" >{evento.estado=="PROCESO"?'Activar':''}</p>
+                   
                       </div>
                     </div>
                   </div>
@@ -163,9 +171,9 @@ const EventoEspecifico=()=>{
                                 </div>
                                 <div className="d-flex flex-column ">
                                     <button className="btn btn-danger"
-                                    onClick={()=>Eliminar(e.codigoEvento,e.id)}
+                                    onClick={()=>Eliminar(e.codigoEvento,e.localodad)}
                                     >Eliminar </button>
-                                    <button className="btn btn-success" onClick={()=>EditarPrecios(e)}>Editar </button>
+                                    {/*<button className="btn btn-success" onClick={()=>EditarPrecios(e)}>Editar </button>*/}
                                 </div>
                                 </div>
                                 

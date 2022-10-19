@@ -4,7 +4,7 @@ import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit,Delete,Visibility } from '@mui/icons-material';
-import { columnusuarios } from "utils/ColumnTabla";
+import { Columnusuarios,Columnasubcrito } from "utils/ColumnTabla";
 import { useHistory } from "react-router";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { GetUserList,GetRoles,EliminaUser } from "utils/Querypanel";
@@ -279,28 +279,24 @@ console.log(listUsuarios)
                   <br/><br/>
 
                   <div className="card card-primary card-outline text-left">
-                      <div className="card-header">
+                      <div className="card-header mb-1">
                          Usuarios
                       </div>
-                     { /*<MaterialReactTable
-                                    columns={columnusuarios}
-                                    data={[]}
+                     <MaterialReactTable
+                                    columns={Columnusuarios}
+                                    data={listUsuarios}
                                   
                                     muiTableProps={{
                                       sx:{
                                         tableLayout:'fixed'
                                       }
-                                    }}
-                                    initialState={
-                                      {
-                                        columnVisibility:{id:false}
-                                      }
-                                    }            
+                                    }}                                             
                                     enableRowActions
                                     renderRowActions={({ row }) => (
                                         <Box sx={{ display: 'flex' }}>
                                           <IconButton 
-                                          color="primary"  
+                                          color="error"  
+                                          onClick={() => history.push("/admin/usuario/"+row.original.id)}
                                            >
                                             <Visibility/>
                                           </IconButton>
@@ -312,8 +308,8 @@ console.log(listUsuarios)
                                   
                                     localization={MRT_Localization_ES }
                                     
-                                />*/}
-                      <div className="card-body table-responsive">
+                                />
+                    {/* <div className="card-body table-responsive">
 
                           <table className="table table-hover text-center">
                               <thead>
@@ -347,14 +343,7 @@ console.log(listUsuarios)
                                         >
                                           <i className="fa fa-eye" />
                                         </Button>
-                                        {/*<Button
-                                          onClick={()=>cerraredit(e)}
-                                          variant="info"
-                                          size="sm"
-                                          className="text-info btn-link like"
-                                        >
-                                          <i className="fa fa-edit" />
-                                        </Button>*/}
+                                        
                                         </th>
                                  </tr>
 
@@ -364,7 +353,7 @@ console.log(listUsuarios)
                                 
                               </tbody>
                           </table>
-                      </div>
+                      </div>*/}
                   </div>
               </div>
           </div>

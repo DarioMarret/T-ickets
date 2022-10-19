@@ -1,4 +1,9 @@
 import React,{useState, useEffect} from "react";
+import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import { Box, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Edit,Delete,Visibility } from '@mui/icons-material';
 import { Row,Col,Card ,Container,Button} from "react-bootstrap";
 import { useParams, useHistory } from "react-router";
 import { CancelarSubscriptor ,GetSuscritores} from "utils/Querypanel";
@@ -7,6 +12,7 @@ import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { EliminarSuscrito } from "utils/Querypanel";
+import { columnsTicket } from "utils/ColumnTabla";
 const SuscritoridView=()=>{
     let {id} = useParams()   
     let history =useHistory()
@@ -286,10 +292,36 @@ return(
                                   <div className="col-md-12">
                                 
                                     <div className="card card-primary card-outline text-left">
-                                                    <div className="card-header">
+                                                    <div className="card-header mb-1">
                                                     Tickets
                                                     </div>
-                                                    <div className="card-body table-responsive">
+                                    <MaterialReactTable
+                                    columns={columnsTicket}
+                                    data={[]}
+                                  
+                                    muiTableProps={{
+                                      sx:{
+                                        tableLayout:'fixed'
+                                      }
+                                    }}
+                                            
+                                    enableRowActions
+                                    renderRowActions={({ row }) => (
+                                        <Box sx={{ display: 'flex' }}>
+                                          <IconButton 
+                                          color="error"  
+                                            >
+                                            <Delete/>
+                                          </IconButton>
+                                         
+                                          
+                                        </Box>
+                                      )}
+                                    positionToolbarAlertBanner="bottom"
+                                  
+                                    localization={MRT_Localization_ES }
+                                />   
+                                                  {/*  <div className="card-body table-responsive">
 
                                                     <table className="table table-hover text-center ">
                                                             <thead>
@@ -334,7 +366,7 @@ return(
                                                             }
                                                             </tbody>
                                                         </table>
-                                                    </div>
+                                                    </div>*/}
                                                 </div>
                                         </div>
                                     </div>

@@ -139,10 +139,14 @@ const inputSelect =()=>{
         
         onHide={()=>SetModalEdit(false)}
 >
-        <Modal.Header closeButton>
+        <Modal.Header >
             <h5>
             {estado=="update"?" Editar usuario":"Crear nuevo Usuario"}
             </h5>
+            <button type="button" className="close"
+                        onClick={()=>SetModalEdit(false)}>
+                        ×
+                    </button>
         </Modal.Header>
         <Modal.Body>
             <div className="container">

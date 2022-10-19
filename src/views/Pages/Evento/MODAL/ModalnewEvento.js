@@ -3,6 +3,7 @@ import {Modal,Alert,OverlayTrigger,Tooltip} from "react-bootstrap"
 import { Localidades } from "utils/constantes";
 import {ListarLocalidad,ListarEspacios,GuardarEvento } from "utils/Querypanel.js";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { Obtenerlinkimagen } from "utils/Querypanel";
 const ModalNewEvento =(props)=>{
     const {show,Setshow} = props;
     let user =clienteInfo()
@@ -74,18 +75,22 @@ const ModalNewEvento =(props)=>{
         ]
       }
      async function gaurdaPrueba(){
-        let defauldata ={
-            ...neweventos,
-            estado:"PROCESO",
-            "LocalodadPrecios": [
-                ...localidadPreci
-            ]
-          }
-          console.log(defauldata)
+      
+          console.log(neweventos)
         try {
-            const data = await GuardarEvento(defauldata)
+            const data = await Obtenerlinkimagen(neweventos.imagenConcierto)
+            if(data==null) return
+            let defauldata ={
+                ...neweventos,
+                imagenConcierto:data,
+                estado:"PROCESO",
+                "LocalodadPrecios": [
+                    ...localidadPreci
+                ]
+              }
+              const evento = await GuardarEvento(defauldata)
             console.log(data)
-            if(data.success){
+          if(evento.success){
                 alert("datos guardados")
                 Setshow(false)
             }
@@ -113,25 +118,28 @@ const ModalNewEvento =(props)=>{
                 lugarConcierto:'',
                 cuidadConcert:'',
                 descripcionConcierto:'',
-                imagenConcierto:'',
-                fechacreacion:'',
+                imagenConcierto:'',                
                 idUsuario:""+user.id,
                 })
  function handelchangeComposeventos(e){
-    //console.log(e.files)
+    
     //console.log(e.value)
-    if(e.name=="imagenConcierto") {setNewEventos({...neweventos,imagenConcierto:e.value?e.value:''})}
+    if(e.name=="imagenConcierto") {
+       // console.log(e.files[0].name)
+        setNewEventos({...neweventos,imagenConcierto:e.files[0]?e.files[0]:''})}
     else{setNewEventos({
         ...neweventos,
         [e.name]:e.value,
     })}
+
+    console.log(neweventos)
 
  }
   const [precios,setPrecios]=useState(
          {localodad:'',
          precio_normal:'',
          precio_discapacidad:'',
-         precio_tarjeta:'',
+         precio_tarjeta:'', 
          precio_descuento:'',
          habilitar_cortesia:''}
   )
@@ -144,11 +152,11 @@ const ModalNewEvento =(props)=>{
                 setLocalidad(index)
                 setPreLocalidad([])  
                 setPrecios({localodad:'',
-                precio_normal:'',
-                precio_discapacidad:'',
-                precio_tarjeta:'',
-                precio_descuento:'',
-                habilitar_cortesia:''})     
+                precio_normal:0,
+                precio_discapacidad:0,
+                precio_tarjeta:0,
+                precio_descuento:0,
+                habilitar_cortesia:0})     
                 }else{setLocalidad([])}
             
         }  
@@ -156,11 +164,11 @@ const ModalNewEvento =(props)=>{
             var index = localidadPreci.findIndex(obj => obj.localodad==e.value);
             console.log(index,localidadPreci[index])
             setPrecios({
-                precio_normal:localidadPreci[index]?localidadPreci[index].precio_normal:'',
-                precio_discapacidad:localidadPreci[index]?localidadPreci[index].precio_discapacidad:'',
-                precio_tarjeta:localidadPreci[index]?localidadPreci[index].precio_tarjeta:'',
-                precio_descuento:localidadPreci[index]?localidadPreci[index].precio_descuento:'',
-                habilitar_cortesia:localidadPreci[index]?localidadPreci[index].habilitar_cortesia:'',
+                precio_normal:localidadPreci[index]?localidadPreci[index].precio_normal:0, 
+                precio_discapacidad:localidadPreci[index]?localidadPreci[index].precio_discapacidad:0,
+                precio_tarjeta:localidadPreci[index]?localidadPreci[index].precio_tarjeta:0,
+                precio_descuento:localidadPreci[index]?localidadPreci[index].precio_descuento:0,
+                habilitar_cortesia:localidadPreci[index]?localidadPreci[index].habilitar_cortesia:0,
                 [e.name]:e.value,               
             })
             //console.log(e.value)
@@ -187,7 +195,9 @@ const ModalNewEvento =(props)=>{
             await Lista()
            // await  Listar()
         })()
-      //  console.log("evento",neweventos)
+        // console.log("evento",neweventos)
+        //console.log("",Object.values(neweventos))
+       // console.log(Object.values(neweventos).every(e=>e ))
        //console.log(!(selectLocalidad.length==localidadPreci.length))
        // console.log("localidada precios-->",localidadPreci)//toggleValueInArray
         },[show])
@@ -357,31 +367,31 @@ const ModalNewEvento =(props)=>{
                                                 <div className="px-2 col-4">
                                                     <label >PRECIO NORMAL</label>
                                                 </div>
-                                                <input className="numero form-control col-6" value={precios.precio_normal?precios.precio_normal:0} name="precio_normal" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                                                <input className="numero form-control col-6" value={precios.precio_normal} name="precio_normal" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
                                             <div className="d-flex flex-wrap mb-2">
                                                 <div className="px-2 col-4">
                                                     <label >PRECIO DISCAPACIDA</label>
                                                 </div>
-                                                <input className="numero form-control col-6" value={precios.precio_discapacidad?precios.precio_discapacidad:0} name="precio_discapacidad" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                                                <input className="numero form-control col-6" value={precios.precio_discapacidad} name="precio_discapacidad" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
                                             <div className="d-flex flex-wrap mb-2">
                                                 <div className="px-2 col-4">
                                                     <label >PRECIO TC/TD </label>
                                                 </div>
-                                                <input className="numero form-control col-6" value={precios.precio_tarjeta?precios.precio_tarjeta:0} name="precio_tarjeta" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                                                <input className="numero form-control col-6" value={precios.precio_tarjeta} name="precio_tarjeta" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
                                             <div className="d-flex flex-wrap mb-2">
                                                 <div className="px-2 col-4">
                                                     <label >PRECIO DESCUENTO </label>
                                                 </div>
-                                                <input className="numero form-control col-6" value={precios.precio_descuento?precios.precio_descuento:0}  name="precio_descuento" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                                                <input className="numero form-control col-6" value={precios.precio_descuento}  name="precio_descuento" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
                                             <div className="d-flex flex-wrap mb-2">
                                                 <div className="px-2 col-4">
                                                     <label >HABILITAR CORTESIA </label>
                                                 </div>
-                                                <input className="numero form-control col-6" value={precios.habilitar_cortesia?precios.habilitar_cortesia:0} name="habilitar_cortesia" onChange={(e)=>handelchangeLocalidad(e.target)}/>
+                                                <input className="numero form-control col-6" value={precios.habilitar_cortesia} name="habilitar_cortesia" onChange={(e)=>handelchangeLocalidad(e.target)}/>
                                             </div>
 
                                         </div>:""}
@@ -394,22 +404,21 @@ const ModalNewEvento =(props)=>{
 
                                     </div>
                                 </div>
-                                <div className="modal-footer"> 
-                                <button type="button" className="btn btn-secondary close-btn" onClick={gaurdaPrueba}>Salir</button>
+                                <div className="d-flex modal-footer justify-content-end align-items-end"> 
+                                <button type="button" className="btn d-none btn-secondary close-btn" >Salir</button>
                                 {selectLocalidad.length>0&&selectLocalidad.length!=localidadPreci.length?
-                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar1</button>:
+                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button>:
                                  ""}     
                                  {!selectLocalidad.length>0&&Object.values(neweventos).every(e=>e)?
-                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar2</button>:
-                                 ""
-
-                                 }   
+                                 <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button>:
+                                 ""}   
                                  {selectLocalidad.length>0&&selectLocalidad.length==localidadPreci.length?                       
                                 <button disabled={ !Object.values(neweventos).every(e=>e)} 
                                onClick={gaurdaPrueba}
-                                className="btn btn-primary close-modal float-rigth">Grabar3</button>
+                                className="btn btn-primary close-modal float-rigth">Grabar</button>
                                 :
                                  ""} 
+                                 
                      </div>
                                          
             

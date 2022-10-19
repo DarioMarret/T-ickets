@@ -1,10 +1,15 @@
 import React,{useEffect,useState} from "react";
-import { Modal,Row,Col ,Card,Button} from "react-bootstrap";
+import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import { Box, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Edit,Delete,Visibility } from '@mui/icons-material';
+import { Row,Col ,Card,Button} from "react-bootstrap";
 import { useParams } from "react-router";
 import { GetUserList,GetRoles } from "utils/Querypanel";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"; 
 import EditaruserView from "./ModalEditar";
-import LocalidadesView from "views/Components/MODAL/Modallocalidad";
+import { ColumnaUsuarioid } from "utils/ColumnTabla";
 import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
@@ -14,7 +19,8 @@ const UseridView=()=>{
     let {id} =useParams()
     const [alert,setAlert] = React.useState(null)
     const [editShow,SetModalEdit]=useState(false)
-  
+   // console.log(id)
+  //console.log("Estado dentro")
     const [roles, setRoles] = useState([])
     const [datauser,setDatauser]=useState({
         name:'',
@@ -23,11 +29,8 @@ const UseridView=()=>{
         email:'',
         password:'',        
     })
-        const cerraredit=()=>{
-      
-        
+        const cerraredit=()=>{    
         SetModalEdit(true)
-       // console.log(e)
     }
     async function ListarUsuarios(){
         try {
@@ -270,7 +273,35 @@ const UseridView=()=>{
                             <div className="card-header">
                                Lista 
                             </div>
-                            <div className="card-body table-responsive">
+                            <MaterialReactTable
+                                    columns={ColumnaUsuarioid}
+                                    data={[]}
+                                  
+                                    muiTableProps={{
+                                      sx:{
+                                        tableLayout:'fixed'
+                                      }
+                                    }}
+                                            
+                                    enableRowActions
+                                    renderRowActions={({ row }) => (
+                                        <Box sx={{ display: 'flex' }}>
+                                          <IconButton 
+                                          color="error"  
+                                            >
+                                            <Delete/>
+                                          </IconButton>
+                                         
+                                          
+                                        </Box>
+                                      )}
+                                    positionToolbarAlertBanner="bottom"
+                                  
+                                    localization={MRT_Localization_ES }
+                                />   
+
+
+                           { /*<div className="card-body table-responsive">
                             <table className="table table-hover text-center ">
                                     <thead>
                                         <tr>
@@ -294,7 +325,7 @@ const UseridView=()=>{
                                       </tr>  
                                     </tbody>
                                 </table>
-                            </div>
+                            </div>*/}
                         </div>
 
             </div>
