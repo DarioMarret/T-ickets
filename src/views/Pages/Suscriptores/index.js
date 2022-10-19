@@ -34,9 +34,8 @@ const SuscritorViews =()=>{
  const nuevoevento = async ()=>{
   try {
     const  data  = await GetSuscritores()
-   // console.log(data.users.length>0)
     if(data.users.length>0){
-      console.log(data.users)
+    //  console.log(data.users)
       setsuscritor(data.users)
 
     }
@@ -258,9 +257,7 @@ const hideAlert = () => {
                                           onClick={()=>usehistory.push("/admin/suscritor/"+row.original.id+"")}
                                           >
                                             <Visibility/>
-                                          </IconButton>
-                                         
-                                          
+                                          </IconButton>                                        
                                         </Box>
                                       )}
                                     positionToolbarAlertBanner="bottom"

@@ -277,7 +277,7 @@ const hideAlert = () => {
                                       <IconButton  
                                       color="primary"
                                       aria-label="Ver" 
-                                      onClick={()=>history.push("/admin/Eventos/"+row.original.codigoEvento)}
+                                      onClick={()=>history.push("/admin/Evento/"+row.original.codigoEvento)}
                                       >
                                       <Visibility/>
                                       </IconButton>

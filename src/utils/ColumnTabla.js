@@ -1,4 +1,5 @@
 import { Box, Typography,Chip } from '@mui/material';
+import { Badge } from 'react-bootstrap';
 export const columns = [
     {
       accessorKey: 'id',
@@ -43,13 +44,14 @@ export const columns = [
 
   ]
   export const Columnasubcrito=[
-   
-    { accessorKey:'nombreCompleto',
+  {
+    accessorKey:'nombreCompleto',
     header:'Nombre'
   },
   {
     accessorKey:'cedula',
-    header:'Cédula'
+    header:'Cédula',
+    size:100,
   },{
     accessorKey:'email',
     header:'Email'
@@ -66,8 +68,7 @@ export const columns = [
       header:'Estado',
       size:100,
       Cell: ({ cell, column }) => (
-        <Chip label={cell.getValue()==0?'Habiliado':'Anulado'} color={cell.getValue()==0?'success':'error'}/>
-      
+        <Badge bg={cell.getValue()==0?'success':'danger'}>{cell.getValue()==0?'Habiliado':'Anulado'}</Badge>  
       ),
     },
 

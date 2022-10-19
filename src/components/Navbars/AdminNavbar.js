@@ -82,7 +82,7 @@ function AdminNavbar() {
               </Form>
               </Nav>*/}
             <Nav navbar>
-              <Dropdown as={Nav.Item}>
+              <Dropdown >
                 <Dropdown.Toggle
                   as={Nav.Link}
                   id="dropdown-165516306"
@@ -91,7 +91,8 @@ function AdminNavbar() {
                   <i className="nc-icon nc-planet"></i>
                 </Dropdown.Toggle>
                 <Dropdown.Menu
-                 alignRight
+                   align="end"
+                
                 >
                   <Dropdown.Item
                     href="#pablo"
@@ -126,7 +127,7 @@ function AdminNavbar() {
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-              <Dropdown as={Nav.Item}>
+              <Dropdown >
                 <Dropdown.Toggle
                   as={Nav.Link}
                   id="dropdown-414718872"
@@ -136,8 +137,8 @@ function AdminNavbar() {
                   <span className="notification">5</span>
                   <span className="d-lg-none">Notification</span>
                 </Dropdown.Toggle>
-                <Dropdown.Menu
-                 alignRight
+                <Dropdown.Menu                 
+                   align="end"
                 >
                   <Dropdown.Item
                   >
@@ -165,7 +166,7 @@ function AdminNavbar() {
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-              <Dropdown as={Nav.Item}>
+              <Dropdown >
                 <Dropdown.Toggle
                   as={Nav.Link}
                   id="dropdown-41471887333"
@@ -174,8 +175,7 @@ function AdminNavbar() {
                   <i className="nc-icon nc-bullet-list-67"></i>
                 </Dropdown.Toggle>
                 <Dropdown.Menu
-                  alignRight
-                  aria-labelledby="navbarDropdownMenuLink"
+                  align="end"
                 >
                   
                   

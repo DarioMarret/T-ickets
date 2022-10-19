@@ -82,15 +82,21 @@ const Modalupdate=(props)=>{
  function handelchangeComposeventos(e){   
     
     if(e.name=="imagenConcierto"){
-       /* img = new Image();
-        var objectUrl = _URL.createObjectURL(e.files[0]);
-        img.onload = function () {
-            
-            alert(this.width + " " + this.height);
-            
-        };*/
-       // console.log(e.files[0])
-        setNewEventos({...neweventos,imagenConcierto:e.files[0]?e.files[0]:''})}else{
+        let img = new Image()
+        img.src = window.URL.createObjectURL(e.files[0])
+        img.onload = () => {
+         
+           if(img.width<750 || img.height<500 ){
+            e.value=""
+            usedispatch(setToastes({show:true,message:'Las dimensión de la imagen no es validad, necesita un alto de 500px y un ancchominimo de 750px',color:'bg-warning', estado:'Advertencia'})) }
+           else setNewEventos({...neweventos,imagenConcierto:e.files[0]?e.files[0]:''})
+        }
+        img.onerror = () => {
+            setNewEventos({...neweventos,imagenConcierto:''})
+
+        }      
+        
+        }else{
                 setNewEventos({
                     ...neweventos,
                     [e.name]:e.value,
@@ -188,8 +194,8 @@ const Modalupdate=(props)=>{
             idUsuario:""+user.id,
             })
         setLocalidad(evento.LocalodadPrecios)
-        console.log(neweventos)
-        console.log(Object.values(neweventos).every((d) => d))
+     //   console.log(neweventos)
+       // console.log(Object.values(neweventos).every((d) => d))
         },[show])
     return(
     <Modal
@@ -198,7 +204,7 @@ const Modalupdate=(props)=>{
     onHide={()=>Setshow(false)}
     >
         <Modal.Header > 
-           <h5>Editar</h5> 
+           <h5>Editar datos del Evento</h5> 
            <button type="button" className="close"
                         onClick={()=>Setshow(false)}>
                         ×

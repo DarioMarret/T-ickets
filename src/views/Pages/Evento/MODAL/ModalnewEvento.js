@@ -19,7 +19,7 @@ const ModalNewEvento =(props)=>{
   const cargarLista = await ListarEspacios() 
 
   const{success,data}= cargarLista
-  console.log(data)
+  //console.log(data)
   if(success){
     setListaEspa(data) 
     setLocalidades(datos.data)

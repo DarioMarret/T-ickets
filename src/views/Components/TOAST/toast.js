@@ -13,13 +13,13 @@ const ToastViews =() => {
 
     return (<>
     <Toast
-        onClose={cerrar} show={selector.show} delay={8000} autohide
+        onClose={cerrar} show={selector.show} delay={6500} autohide
         
         className="top-center"
         style={{
             position: 'fixed',
             top: 10,
-            right: 10,
+            right: 25,
             zIndex: 10000,
         }}>
        <Toast.Header closeButton={false}>

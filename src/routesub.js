@@ -50,6 +50,12 @@ var routes = [
     
   },
   {
+    path: "/Evento/:id",   
+    layout: "/admin",
+    component: EventoEspecifico,
+    permiso: ["superadmin", "super_admin"]
+  },
+  {
     collapse: true,
     path: "/Getion",
     name: "Gestion de Eventos",
@@ -79,7 +85,7 @@ var routes = [
         component: Eventos,
         permiso: ["superadmin", "super_admin"]
       },
-      
+     
       {
         path: "/Diseñar-Ticket",
         layout: "/admin",
@@ -90,15 +96,12 @@ var routes = [
       }
     ]
   },  
-  {
-    path: "/Eventos/:id",
-    layout: "/admin",
-    component: EventoEspecifico,
-    permiso: ["superadmin", "super_admin"]
-  },
+  
   {
     path: "/suscritor/:id",
+    state: "openCliente",
     layout: "/admin",
+   
     component: SuscritoridView,
     permiso: ["superadmin", "super_admin"]
   },
