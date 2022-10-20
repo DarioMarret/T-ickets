@@ -197,7 +197,7 @@ const Modalupdate=(props)=>{
      //   console.log(neweventos)
        // console.log(Object.values(neweventos).every((d) => d))
         },[show])
-    return(
+    return( 
     <Modal
     show={show}
     size='lg'

@@ -72,6 +72,9 @@ const EventoEspecifico=()=>{
     }
     async function Evento(){
         try {
+          // tres consultas para verificar si exites ACTIVO DESACTIVO CANCALADO y unir las respuestas 
+          //validar en los dos lados evento especifico y global
+          //hacer plantilla de boleto 
             const cargar = await ListarEventos("PROCESO")
             const precio = await listarpreciolocalidad(id)
             if(cargar.success){ 
