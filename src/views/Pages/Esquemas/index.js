@@ -3,6 +3,8 @@ import { array } from "prop-types"
 import React, { useEffect,useState } from "react"
 import { Accordion } from "react-bootstrap"
 import { ListarLocalidad } from "utils/Querypanel"
+import Codigo from "../../../../src/assets/imagen/codigobarra.png"
+import Imagen from "../../../../src/assets/imagen/Concert.png"
 const EsquemaViews=()=>{
 
     let marginLetf=''
@@ -79,13 +81,13 @@ const EsquemaViews=()=>{
             color:color,
             nombre:titel
          }
-         mapa.push(agrega)
+    /*     mapa.push(agrega)
          $('#ingreso').append(
             "<div class='espacio "+ titel +"  d-flex justify-content-center align-items-center border border-dark' style='position:relative; height:"+alto+"px;" +
            "width:"+ancho+"px; background:"+color+
            "'><h5 style='font-size:1.5em; color:#ffff' >"+titel+"</h5>   </div>")
            setDatosMap(mapa)
-        // console.log(form)
+        // console.log(form)*/
      }
      const SubmitLocalidad =e=>{
         e.preventDefault();
@@ -153,7 +155,17 @@ const EsquemaViews=()=>{
             })
         }
      }
-    
+    const [styletiket,setSttyle]=useState({
+        bgticketespaciouni:'#D5583D'
+    })
+    function handelChangeuno(e){
+        setSttyle({
+            ...styletiket,
+            [e.name]:e.value
+        })
+      //  console.log(e.value)
+
+    }
      useEffect(()=>{
         ( async()=>{
             await ObtenLocalidad()
@@ -165,139 +177,190 @@ const EsquemaViews=()=>{
     return (
         <>
         <div className="container-fluid">
-            <div className="row">
+            <div className="row  flex-wrap-reverse  ">
 
-                <div className="col-12 col-md-4">
+                <div className="col-12 col-md-4 ">
                 <Accordion  defaultActiveKey="0" flush>
                       
                                 <Accordion.Item eventKey={0} >
-                            <Accordion.Header> Agregar Espacio o localidad </Accordion.Header>
+                            <Accordion.Header> Seccion 1 de ticket </Accordion.Header>
                             <Accordion.Body>
                             <div className="container-fluid row">        
-                    <h5>Agraga Espacio</h5>   
-                    <form className="container-fluid row" onSubmit={SubmitEspacio} >        
-                    <div className="col-6"> 
-                    <label>Ancho</label>
-                    <input className="form-control" 
-                    defaultValue={50}
-                    minLength="50"
-                    type="number"
-                    name="ancho" />
-                    </div>
-                    <div className="col-6">
-                    <label>Alto</label>
-                    <input className="form-control" 
-                    defaultValue={50}
-                    name="alto"
-                    minLength={50}
-                    type="number"
-                    />
-                    </div>
-                    <div className="col-2">
-                    <label>Color</label>
-                    <input 
-                    className="form-control form-control-color"
-                    type="color" 
-                    name="color"
-                    />
-                    </div>
-                    <div className="col-10">
-                    <label>Nombre</label>
-                    <input className="form-control"
-                    placeholder="Ecenario.. consola.. tarima.."
-                    name="titel" />
-                    </div>
-                    <div className="pt-1">      
-                    <label className="text-white">*</label>              
-                    <button type="submit" className="btn btn-success col-12" >Agregar Espacio</button>
-                    </div>    
-                    </form> 
-                    </div>
-                    <div className="container row">
-                        <div className="pt-2">
-                            <h5>Agregar localidad</h5>
-                        </div>
-                        <div className="col-7 pb-1">
-                            
-                            <select className="form-control" name="localidad"
-                            onChange={ChangerSelect}
-                            >
-                                <option value=""></option>
-                                {localidad.length>0?
-                                localidad.map((item, i) => {
-                                    return (
-                                    <option key={i} value={item.id} >{item.nombre}</option>)
-                                })
-                                :''}
-                            </select>
-                        </div>
-                        <div className="col-5">
-                            <button type="click" className="btn btn-success col-12" onClick={AgregagaLocalidad} >Agregar</button>
-                        </div>
-                        
-                    </div>  
-                                
-                          
+                            <h5>Editar fondo</h5>   
+                            <form className="container-fluid row" onSubmit={SubmitEspacio} >      
+                            <div className="col-2">
+                            <label>Color</label>
+                            <input 
+                            className="form-control form-control-color"
+                            type="color" 
+                            name="bgticketespaciouni"
+                            value={styletiket.bgticketespaciouni}
+                            onChange={(e) =>handelChangeuno(e.target) }
+                            />
+                            </div>
+                            <div className="col-10">
+                            <label>Nombre</label>
+                            <input className="form-control"
+                            placeholder=""
+                            name="titel" />
+                            </div>
+                            <div className="pt-1">      
+                            <label className="text-white">*</label>              
+                            <button type="submit" className="btn btn-success col-12" >Agregar Espacio</button>
+                            </div>    
+                            </form> 
+                            </div>                  
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1">
                             <Accordion.Header>
-                                Opciones
+                                Seccion 2 del ticket
                             </Accordion.Header>
                             <Accordion.Body>
                                 <div className="row">
-                                <div className="col-12">
+                                    <div className="col-12">
                                         <h5 >Elemnto Seleccionado</h5>
-
-                                    </div>
-                                    <div className="col-6">
-                                        <label>Espaciar izquierda</label>
-                                        <input 
-                                         type="number"
-                                         className="form-control"/>
-                                    </div>
-                                    <div className="col-6">
-                                        <label>Mover Arriba </label>
-                                        <input 
-                                        type="number"
-                                        className="form-control"/>                                        
-                                    </div>
-                                    <div className="col-6">
-                                        <label>Mober Abajo</label>
-                                        <input type="number" 
-                                        minLength={1}
-                                        className="form-control"                                       
-                                        />
-                                    </div>
-                                    <div className="col-6">
-                                        <label>Rotar </label>
-                                        <input 
-                                        type="number"
-                                        minLength={1}
-                                        maxLength={10}     
-                                        className="form-control"                                  
-                                        />
                                     </div>
                                 </div>
                             </Accordion.Body>
                         </Accordion.Item>
-                        </Accordion>                
-                    
-                    <div className="row">
-                        </div>                                  
+                        </Accordion>                                 
+                                                   
                 </div>
-                <div className="col-12  col-md-8">
+                <div className="col-12  col-md-8 p-0 mb-1">
                     <div >
                         <div className="d-flex flex-wrap justify-content-between">
-                        <h5>Seleccion: {elemtoselet.nombre}</h5>
-                        <h5>Tipo: {elemtoselet.tipo} </h5>
+                        <h5>Pantilla Ticket</h5>
                         
-                        <button className="btn btn-danger" onClick={Quitar} >Quitar</button>
+                        
+                       
                         </div>
                         
                     </div>
                    
-                    <div id="ingreso" style={{position:'absolute'}} className="container-fluid border p-1 ">
+                    <div  className="d-flex justify-content-center container-fluid p-2 ">
+                        <div className="shadow-md d-flex flex-row" style={{height:'18.0em',width:"70em",
+                        
+                    }}>                           
+                                <div className="d-flex justify-content-center align-items-center" style={{
+                                    height:'100%',width:'70%',      
+                                    position:"relative",                           
+                                    borderTopLeftRadius:'5px', 
+                                    borderBottomLeftRadius:'5px' }}> 
+                                    <div className="d-flex justify-content-center align-items-center " 
+                                    style={{width:'100%', 
+                                    zIndex:1,
+                                    borderBottomLeftRadius:'5px' ,
+                                    borderTopLeftRadius:'5px',
+                                    backgroundColor:styletiket.bgticketespaciouni,
+                                    backgroundImage:`url(${Imagen})`,
+                                    opacity: 0.6,
+                                    height:'100%',}}>                                       
+                                    </div>
+                                    <div 
+                                        style={{
+                                            position:"absolute",
+                                            zIndex:2,
+                                            width:"90%",
+                                            height:"90%",
+                                        }}
+                                        >
+                                            
+                                            <div>
+                                                <h4 
+                                                style={{
+                                                    position:'relative',
+                                                    top:'20px',
+                                                    left:"20px",
+                                                    fontSize:"1.6em",
+                                                    fontFamily:"Fantasy",
+                                                    textTransform:"uppercase"
+                                                }}>
+                                                    titulo de ticket
+                                                </h4>                                                
+                                            </div>
+                                            <div className="d-flex flex-column" style={{
+                                                position:"absolute",
+                                                bottom:"15px",
+                                                left:"35px",
+                                            }}>
+                                                <small style={{
+                                                    fontSize:"1.0em",
+                                                    fontFamily:'fantasy'
+                                                }}>
+                                                   Descripción  breve en el boleto 
+                                                  
+                                                </small>
+                                                <small class="" style={{
+                                                    fontSize:'0.82em',
+                                                    
+                                            }}>
+                                                  <strong> Descripción más breve del boleto
+                                                  </strong>
+                                                  </small>
+
+                                            </div>
+                                            <div 
+                                            style={{
+                                                position:"absolute",
+                                                bottom:"15px",
+                                                left:"35px",
+                                            }}>
+                                            
+                                                <i className="bi bi-qr-code fa-3x"
+                                               ></i>
+
+                                            </div>
+                                           
+
+                                        </div>
+                                </div>
+                                <div className="d-flex justify-content-start  align-items-center " style={{                               
+                                 height:'100%',width:'30%',      
+                                borderLeftColor:'black', 
+                                borderLeftStyle:'dashed',
+                                }}>
+                                    <div className="bg-danger p-1 d-flex justify-content-center bg-light align-items-center" style={{
+                                        height:'100%', 
+                                    width:'100%',
+                                   
+                                    
+                                    }}>
+                                        <div className="d-flex flex-column text-center   txt-dark   ">
+
+                                            <div className="d-flex flex-column justify-content-between align-items-lg-stretch p-3" >
+                                                <h5 style={{fontSize:"1.2em",
+                                                fontFamily:'Fantasy',
+                                                textTransform:'uppercase'                                            
+                                            }}>Evento Ticket</h5>
+                                                <h5 style={{fontSize:'1.0em',
+                                             fontFamily:'Century Gothic'}}>Numero 32</h5>
+                                           </div>
+                                            <div className=" d-flex flex-column justify-content-between align-items-lg-stretch p-3" >
+                                            <small class="text-muted" style={{
+                                                    fontSize:'0.82em'                                                    
+                                                    }}>$32</small>
+                                                <h5 style={{
+                                                    fontSize:"1.2em", 
+                                                    fontFamily:'Fantasy',
+                                                    textTransform:'uppercase'}}>Vip entre pass </h5>
+                                                <small class="text-muted" style={{
+                                                    fontSize:'0.82em',
+                                                    
+                                            }}>22/12/22</small>
+                                                <small class="text-muted" style={{
+                                                    fontSize:'0.82em'
+                                                    
+                                                    }}>21:36</small>
+                                            </div>
+                                            <i className="bi bi-qr-code-scan fa-2x"></i>
+                                                
+                                            
+                                        </div>
+                                            
+                                    </div>
+                                </div>                            
+                        </div> 
                     </div>                
                 </div> 
 
@@ -307,4 +370,5 @@ const EsquemaViews=()=>{
 
     )
 }
+
 export default EsquemaViews

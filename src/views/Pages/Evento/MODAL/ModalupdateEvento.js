@@ -294,7 +294,7 @@ const Modalupdate=(props)=>{
                                         
 
                                         <div className="col-12 col-md-12">
-                                        <label className="form-label">Seleccione una imagen{neweventos.imagenConcierto?"":""}</label> 
+                                        <label className="form-label"> {neweventos.imagenConcierto?"Hay una imagen Cargada ":"Seleccione una imagen"}</label> 
                                         <div className="input-group mb-3">
                                         
                                                 <input type="file" accept="image/*" name="imagenConcierto" className="form-control "
@@ -384,8 +384,7 @@ const Modalupdate=(props)=>{
                                     </div>
                                 </div>
                                 <div className="d-flex modal-footer justify-content-end align-items-end"> 
-                                <button type="button" className=" btn d-none btn-secondary close-btn" >Salir</button> 
-                                <button className="btn btn-success" disabled={!Object.values(neweventos).every((d) => d)} onClick={Actualizar}>Editar</button>
+                                <button className="btn btn-success" disabled={!Object.values(neweventos).every((d) => d)} onClick={Actualizar}>Actualizar</button>
                               
                      </div>
                                          

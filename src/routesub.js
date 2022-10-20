@@ -242,11 +242,11 @@ var routes = [
     
   },
   {
-    path:"/Pruebamapa",
+    path:"/Pruebaticke",
     layout:"/admin",
     name:"Prueba",
     component:EsquemaViews,
-    permiso: ["", ""]
+    permiso: ["superadmin", "super_admin"]
   }
   
   

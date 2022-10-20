@@ -309,7 +309,7 @@ const ModalNewEvento =(props)=>{
                                         
 
                                         <div className="col-12 col-md-12">
-                                        <label className="form-label">Seleccione una imagen</label>
+                                        <label className="form-label">{neweventos.imagenConcierto?"Hay una imagen Cargada ":"Seleccione una imagen"}</label>
                                         <div className="input-group mb-3">
                                         
                                                 <input type="file" accept="image/*" name="imagenConcierto" className="form-control "

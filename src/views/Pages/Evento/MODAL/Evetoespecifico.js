@@ -26,7 +26,7 @@ const EventoEspecifico=()=>{
     const [alert,setAlert] = useState(null)    
     const [showpr,setShowpr]=useState(false)
     const [precios,SetPrecios]=useState([])
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     const [valores,setvalores]=useState({localodad:'',
     precio_normal:'',
     precio_discapacidad:'',
@@ -72,15 +72,16 @@ const EventoEspecifico=()=>{
     }
     async function Evento(){
         try {
-          // tres consultas para verificar si exites ACTIVO DESACTIVO CANCALADO y unir las respuestas 
-          //validar en los dos lados evento especifico y global
-          //hacer plantilla de boleto 
             const cargar = await ListarEventos("PROCESO")
+            const activo = await ListarEventos("ACTIVO")
+            const cancela = await ListarEventos("CANCELADO")
             const precio = await listarpreciolocalidad(id)
             if(cargar.success){ 
               let datos = cargar.data.filter((e)=>e.codigoEvento==id)
+              let datosactivos = activo.data.filter((e)=>e.codigoEvento==id)
+              let datoscancelado =  cancela.data.filter((e)=>e.codigoEvento==id)
               //console.log(datos[0])
-              SetEvento({...datos[0],LocalodadPrecios:precio.data})
+              SetEvento({...datos[0],...datosactivos[0],...datoscancelado[0],LocalodadPrecios:precio.data})
             SetPrecios(precio.data)            
         }
         } catch (error) {
@@ -181,7 +182,7 @@ const cancelDetele = () => {
 let color = {
   "ACTIVO":"success",
   "PROCESO":"secondary",
-  "CANCELAR":"dager"
+  "CANCELADO":"danger"
 }
 const hideAlert = () => {
   setAlert(null);
@@ -199,7 +200,7 @@ const hideAlert = () => {
               <div className="d-flex flex-row">
               <button className="btn btn-warning txt-white" onClick={()=>successAlert("ACTIVO")} >ACTIVAR </button>
               <button className="btn btn-secondary txt-white mx-1" onClick={()=>successAlert("PROCESO")} >PROCESO</button>
-              {evento.codigoEvento!="CANCELAR"?<button className="btn btn-danger txt-white mx-1" onClick={()=>successAlert("CANCELADO")} >Cancelar</button>:""}
+              {evento.codigoEvento!="CANCELAR"?<button className="btn btn-danger txt-white mx-1" onClick={()=>successAlert("CANCELADO")} >CANCELAR</button>:""}
               </div>
 
             </div>

@@ -31,6 +31,8 @@ import { useSelector,useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
 import { Authsucrito } from "utils/Query";
+import { cargarEventoActivo } from "utils/Querypanelsigui";
+import { Dias } from "utils/constantes";
 
 const IndexFlas = () => {
   let usedispatch = useDispatch();
@@ -214,8 +216,26 @@ const IndexFlas = () => {
     edad:'',
     fecha:''
   })
+  const [eventoslist,setEventos]=useState([])
   useEffect(() => {
     // window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
+  /*
+  //Cargar eventos Activos mayores a la fecha actual
+    const evento =  async ()=>{
+      try {
+        const data = await cargarEventoActivo()    
+        console.log(data) 
+        const filtro = data!=null?data.filter((e)=>new Date(e.fechaConcierto)>new Date()):[]
+        const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto)? 1 : -1 ;
+        if(data!=null) setEventos(filtro.sort(sorter))
+        else if(data==null) setEventos([])
+      } catch (error) {
+        console.log(error)
+        
+      }
+        
+    }
+    evento()*/
     var popUp = window.open('url', '', 'options');
     if (popUp == null || typeof(popUp)=='undefined') {
         //  popUp.close();     
@@ -456,6 +476,34 @@ const IndexFlas = () => {
                     </div>
                   </div>
                 </div>
+                {/*eventoslist.length>0?
+                  eventoslist.map((e,i)=>{
+                    return(
+                      <div className="col-12 col-lg-6 mx-auto my-5" id={"evento"+e.id} key={i}>
+                  <a className="" data-bs-toggle="collapse" href={"#collapseid"+e.id} role="button" aria-expanded="false"
+                    aria-controls="collapseExample2">
+                    <div className="container rounded-7 shadow-md px-0">
+                      <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
+                    </div>
+                  </a>
+                  <div className="collapse container mt-4 px-0" id={"collapseid"+e.id}>
+                    <div className="card card-body rounded-7 py-5">
+                      <div className="container">
+                        <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">{e.nombreConcierto}</span> </h1>
+                        <h4 style={{ fontSize: '1.4em' }}><span id="tour">{e.descripcionConcierto} </span></h4>
+                        <div className="col-12 border border-bottom my-3"></div>
+                        <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{Dias[new Date(e.fechaConcierto).getDay()]}  {e.fechaConcierto}</span></p>
+                        <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{e.lugarConcierto}</span></p>
+                        <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}</span></p>
+                     {true? <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"                          
+                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => handleShow()} >Comprar Entrada</p>:""}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                    )
+                  })
+                :''*/}
                 {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
                 <div className="col-12 col-lg-6 mx-auto my-5" >
                   <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"

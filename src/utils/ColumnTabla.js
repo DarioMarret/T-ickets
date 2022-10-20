@@ -96,11 +96,23 @@ export const columns = [
       header:'Fecha de Registro',
     },
   ]
+  let color = {
+    "ACTIVO":"success",
+    "PROCESO":"secondary",
+    "CANCELADO":"danger"
+  }
   export const Columnevento=[
     
     { 
     accessorKey:'nombreConcierto',
     header:'Evento',  
+  },
+  {
+    accessorKey:'estado',
+    header:'Estado',
+    Cell:({cell,column}) => (
+      <Badge bg={color[cell.getValue()]} >{cell.getValue()}</Badge>
+    ),
   },
   {
     accessorKey:'lugarConcierto',
