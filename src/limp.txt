@@ -1,175 +1,28 @@
+ /* 
+      https://superal.github.io/canvas2image/canvas2image.js
+https://html2canvas.hertzen.com/dist/html2canvas.min.js
+https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
+      $(function() { 
+        $("#crearimagen").click(function() { 
+            html2canvas($("#elcontenido"), {
+                onrendered: function(canvas) {
+                    theCanvas = canvas;
+                    document.body.appendChild(canvas);
 
-    <div class="sillas px-1" style="padding: 0.4;">
-      <div class="d-flex ">
-        <div class=" " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        
-          <div   style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;"></div>
-        
-        <a class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </a>
-        <div class="" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-      </div>
+                    /*
+                    canvas.toBlob(function(blob) {
+                      saveAs(blob, "Dashboard.png"); 
+                    });
+                    
+                }
+            });
+        });
+    });*/
+     $(document).ready(function(){
 
-      <div class=" d-flex align-items-center">
-        <div class="d-flex flex-column">
-          <a class="bg-success " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>          
-         
-          <a class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>
-        </div>
-        <div class="bg-danger" style="height: 50px; width: 50px; border-radius: 5px;"></div>
-        
-        <div class="d-flex flex-column">
-          <a class="bg-success " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>         
-          <a class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>
-        </div>
-      </div>
-
-      <div class="d-flex ">
-        <a class=" " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </a>
-        <div  style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        <a class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </a>
-        <div style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-      </div>  
-    </div>
-
-    <div class="sillas px-1" style="padding: 0.4;">
-      <div class="d-flex ">
-        <div class=" " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        
-          <div   style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;"></div>
-        
-        <div style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        <div class="" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-      </div>
-
-      <div class=" d-flex  align-items-center">
-        <div class="d-flex flex-column">
-          <a class="bg-success " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>          
-         
-          <a class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>
-        </div>
-        <div class="bg-danger" style="height: 50px; width: 50px; border-radius: 5px;"></div>
-        
-        <div class="d-flex flex-column">
-          <a class="bg-success " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>         
-          <a class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>
-        </div>
-      </div>
-
-      <div class="d-flex ">
-        <a class=" " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </a>
-        <div  style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        <div  style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        <div style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-      </div>  
-    </div>
-
-    <div class="sillas px-1" style="padding: 0.4;">
-      <div class="d-flex ">
-        <div class="" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        
-          <a  class=" bg-success"   style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;"></a>
-        
-        <div class="" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        
-        <a class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </a>
-      </div>
-
-      <div class=" d-flex  align-items-center">
-        <div class="d-flex flex-column">
-          <a class="bg-success " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>          
-         
-          <a class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>
-        </div>
-        <div class="bg-danger" style="height: 50px; width: 50px; border-radius: 5px;"></div>
-        
-        <div class="d-flex flex-column">
-          <a class="bg-success " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>         
-          <a class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </a>
-        </div>
-      </div>
-
-      <div class="d-flex ">
-        <a class=" " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </a>
-        <a class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </a>
-        <div class="" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        <a class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </a>
-      </div>  
-    </div>
-
-   
-    <div class="sillas12 px-1" style="padding: 0.4;">
-      <div class="d-flex ">
-        <div class=" " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        <div class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        <div class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        <div class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-      </div>
-      <div class="d-flex  align-items-center">
-        <div class="d-flex flex-column">
-          <div class="bg-success " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </div>
-          <div class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </div>
-         
-          <div class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </div>
-        </div>
-        <div class="bg-danger d-flex align-items-center justify-content-center" style="height: 50px; width: 50px; border-radius: 5px;">f</div>
-        <div class="d-flex flex-column">
-          <div class="bg-success " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </div>
-          <div class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </div>
-          
-          <div class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-          </div>
-        </div>
-      </div>
-      <div class="d-flex ">
-        <div class=" " style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        <div class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        <div class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-        <div class="bg-success" style="margin: 0.7; height: 15px; width: 15px; border-radius: 5px;">
-        </div>
-      </div>  
-    </div>
+$("#crear-imagen").click(function() {
+          html2canvas($('#content-img')[0]).then(function(canvas) {
+          return Canvas2Image.saveAsPNG(canvas);
+          $(".response").append(canvas);
+   });
+  });

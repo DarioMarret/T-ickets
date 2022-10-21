@@ -5,6 +5,7 @@ import { Accordion } from "react-bootstrap"
 import { ListarLocalidad } from "utils/Querypanel"
 import Codigo from "../../../../src/assets/imagen/codigobarra.png"
 import Imagen from "../../../../src/assets/imagen/Concert.png"
+import Form from 'react-bootstrap/Form';
 const EsquemaViews=()=>{
 
     let marginLetf=''
@@ -63,7 +64,7 @@ const EsquemaViews=()=>{
             marginRight:'',            
         }       
         $('#ingreso').append(
-            "<div class='bg-success border border-dark' style='position:relative; height:"+50+"px;" +
+            "<div className='bg-success border border-dark' style='position:relative; height:"+50+"px;" +
            "width:100px;'></div>")
      }
      function AgregagaLocalidad(){
@@ -83,7 +84,7 @@ const EsquemaViews=()=>{
          }
     /*     mapa.push(agrega)
          $('#ingreso').append(
-            "<div class='espacio "+ titel +"  d-flex justify-content-center align-items-center border border-dark' style='position:relative; height:"+alto+"px;" +
+            "<div className='espacio "+ titel +"  d-flex justify-content-center align-items-center border border-dark' style='position:relative; height:"+alto+"px;" +
            "width:"+ancho+"px; background:"+color+
            "'><h5 style='font-size:1.5em; color:#ffff' >"+titel+"</h5>   </div>")
            setDatosMap(mapa)
@@ -103,19 +104,19 @@ const EsquemaViews=()=>{
        console.log(arry)
        if(typo=="fila") return
        $( "div" ).remove("."+id )
-       $('#ingreso').append("<div id='"+id+"' class='localidad  "+id +" "+nombre+" border border-dark  ' style='position:relative; height:fit-content;width:fit-content;'></div>")
-       let incrustar ="<div class='localidad  "+nombre+"  bg-danger ' style='position:relative; padding:2px;'>"
+       $('#ingreso').append("<div id='"+id+"' className='localidad  "+id +" "+nombre+" border border-dark  ' style='position:relative; height:fit-content;width:fit-content;'></div>")
+       let incrustar ="<div className='localidad  "+nombre+"  bg-danger ' style='position:relative; padding:2px;'>"
        arry.datos.map((e,i)=>{
-        incrustar = "<div class='d-flex  px-3 p-1 justify-content-ce '>"
-        incrustar = incrustar + "<span class='d-inline-block' disabled >"
-        incrustar = incrustar + "<div class='d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  ' style='height:"+e.anchor+";width:"+e.anchor+"' >"
+        incrustar = "<div className='d-flex  px-3 p-1 justify-content-ce '>"
+        incrustar = incrustar + "<span className='d-inline-block' disabled >"
+        incrustar = incrustar + "<div className='d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  ' style='height:"+e.anchor+";width:"+e.anchor+"' >"
         incrustar = incrustar + " <div className='d-flex justify-content-center'>"
         incrustar= incrustar + "<span style='font-size:0.7em;'>   "+e.fila+" </span></div></div></span>"
-        incrustar= incrustar +"<div class=' d-flex px-1  align-items-stretch '>"
+        incrustar= incrustar +"<div className=' d-flex px-1  align-items-stretch '>"
         
         e.asientos.map((elm,ind)=>{
             let numero = ind +1
-            incrustar = incrustar + "<div  class='"+elm.estado+"  "+elm.silla+" d-flex  bg-success   rounded-5 text-center  justify-content-center align-items-center '"
+            incrustar = incrustar + "<div  className='"+elm.estado+"  "+elm.silla+" d-flex  bg-success   rounded-5 text-center  justify-content-center align-items-center '"
             incrustar = incrustar + "style='height:"+elm.anchor+";width:"+elm.anchor+";margin-left:"+elm.marginLeft+";margin-right:"+elm.marginRight+"; ' >"
             incrustar = incrustar + " <div className='"+ elm.silla +" d-flex px-3  text-white justify-content-center  ' >"
             incrustar = incrustar + " <div className='d-flex justify-content-center'>"
@@ -156,21 +157,45 @@ const EsquemaViews=()=>{
         }
      }
     const [styletiket,setSttyle]=useState({
-        bgticketespaciouni:'#D5583D'
+        bgticketespaciouni:'#D5583D',
+        opacity:0.6,
+        textcolor:'#000000',
+        imagen:Imagen,
+        mensaje:'Mensaje breve',
+        orientacio:'mixed',
+        rotar:'',
+    })
+    const [stylecompro,setComprobante]=useState({
+        backgroundColor:''
     })
     function handelChangeuno(e){
-        setSttyle({
+        if(e.name=="opacity") {
+            let valor = parseInt(e.value)/100
+            setSttyle({...styletiket,opacity:valor})}
+        else if(e.name=="imagen"){
+            const primerArchivo = archivos[0];
+            // Lo convertimos a un objeto de tipo objectURL
+            const objectURL = URL.createObjectURL(primerArchivo);
+        }
+        else setSttyle({
             ...styletiket,
             [e.name]:e.value
         })
       //  console.log(e.value)
 
     }
-     useEffect(()=>{
-        ( async()=>{
-            await ObtenLocalidad()
-        })()
+       var element = document.getElementById('tickets');
 
+     useEffect(()=>{
+                var opt = {
+            margin:       1,
+            filename:     'myfile.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'l' }
+          };
+       // html2pdf(element,opt); 
+     
      },[])
 
 
@@ -185,11 +210,12 @@ const EsquemaViews=()=>{
                                 <Accordion.Item eventKey={0} >
                             <Accordion.Header> Seccion 1 de ticket </Accordion.Header>
                             <Accordion.Body>
-                            <div className="container-fluid row">        
+                            <div className="container-fluid row ">        
                             <h5>Editar fondo</h5>   
-                            <form className="container-fluid row" onSubmit={SubmitEspacio} >      
-                            <div className="col-2">
-                            <label>Color</label>
+                            <form className="container-fluid row " onSubmit={SubmitEspacio} >      
+                            <div className="col-md-6">
+                                <label className="form-label">Color de fondo</label>
+                                
                             <input 
                             className="form-control form-control-color"
                             type="color" 
@@ -198,16 +224,60 @@ const EsquemaViews=()=>{
                             onChange={(e) =>handelChangeuno(e.target) }
                             />
                             </div>
-                            <div className="col-10">
-                            <label>Nombre</label>
-                            <input className="form-control"
-                            placeholder=""
-                            name="titel" />
+                            <div className="col-md-6">
+                                <label  className="form-label">Color de letra</label>
+                                <input 
+                            className="form-control form-control-color"
+                            type="color" 
+                            name="textcolor"
+                            value={styletiket.textcolor}
+                            onChange={(e) =>handelChangeuno(e.target) }
+                            />
                             </div>
-                            <div className="pt-1">      
-                            <label className="text-white">*</label>              
-                            <button type="submit" className="btn btn-success col-12" >Agregar Espacio</button>
-                            </div>    
+                            
+                            <div className="col-12 ">
+                            <Form.Label>Opacidad de Fondo</Form.Label>
+                            <Form.Range 
+                            name="opacity"
+                            min={30}
+                            max={75}
+                            value={styletiket.opacity*100}
+                            onChange={(e)=>handelChangeuno(e.target)}
+                            />
+                            </div>
+                            <div className="col-12 col-md-12">
+                            <label>mensaje</label>
+                            <input className="form-control"
+                            value={styletiket.mensaje}
+                            onChange={(e)=>handelChangeuno(e.target)}
+                            maxLength={50}
+                            name="mensaje" />
+                            </div>
+                            {/*<div className="Col-12">
+                                <label   className="form-label">Orientación de mensaje</label>
+                                <select value={styletiket.orientacio} name="orientacio" onChange={(e)=>handelChangeuno} className="form-control" >
+                                <option value={'mixed'}>Vertical</option>
+                                <option value={""}>Horizontal</option>
+                                </select>
+                            </div>*/}
+                            <div className="col-12" >
+                                <label>Imegen</label>
+                                <input className="form-control" type="file" accept="image/*"
+                                name="imagen" />
+                            </div>
+                            <div className="col-4 col-md-4">
+                                <label className="form-label" >rotar qr</label>
+                                <input 
+                                className="form-control"
+                                type="number"
+                                name="rotar"
+                                value={styletiket.rotar}
+                                min={0}
+                                max={390}
+                                onChange={(e)=>handelChangeuno(e.target)}
+                                />
+                            </div>
+                             
                             </form> 
                             </div>                  
                             </Accordion.Body>
@@ -238,13 +308,17 @@ const EsquemaViews=()=>{
                         
                     </div>
                    
-                    <div  className="d-flex justify-content-center container-fluid p-2 ">
-                        <div className="shadow-md d-flex flex-row" style={{height:'18.0em',width:"70em",
-                        
-                    }}>                           
+                    <div  className=" d-flex justify-content-center container-fluid ">
+                    
+                        <div id="tickets"  className="border  d-flex flex-row" 
+                        style={{height:'275px',
+                        width:"800px",
+                        borderTopLeftRadius:"5px",
+                        borderBottomLeftRadius:"5px",}}
+                        >                           
                                 <div className="d-flex justify-content-center align-items-center" style={{
-                                    height:'100%',width:'70%',      
-                                    position:"relative",                           
+                                    height:'100%',width:'70%',
+                                    position:'relative',    
                                     borderTopLeftRadius:'5px', 
                                     borderBottomLeftRadius:'5px' }}> 
                                     <div className="d-flex justify-content-center align-items-center " 
@@ -253,19 +327,29 @@ const EsquemaViews=()=>{
                                     borderBottomLeftRadius:'5px' ,
                                     borderTopLeftRadius:'5px',
                                     backgroundColor:styletiket.bgticketespaciouni,
-                                    backgroundImage:`url(${Imagen})`,
-                                    opacity: 0.6,
+                                    backgroundImage:`url(${styletiket.imagen})`,
+                                    opacity: styletiket.opacity,
+                                    
                                     height:'100%',}}>                                       
                                     </div>
-                                    <div 
-                                        style={{
-                                            position:"absolute",
-                                            zIndex:2,
-                                            width:"90%",
-                                            height:"90%",
-                                        }}
-                                        >
-                                            
+                                    <div style={{position:"absolute",zIndex:2,width:"90%",height:"90%",}}>  
+                                    <div
+                                            style={{
+                                                position: "absolute",
+                                                top: '70px',
+                                                right: "70px",
+                                               
+                                            }}
+                                            >
+                                                <img  
+                                                src={""}
+                                                className="img-fluid" 
+                                                style={{
+                                                    height: "50px",
+                                                }}
+                                                />
+
+                                            </div>                                          
                                             <div>
                                                 <h4 
                                                 style={{
@@ -274,6 +358,7 @@ const EsquemaViews=()=>{
                                                     left:"20px",
                                                     fontSize:"1.6em",
                                                     fontFamily:"Fantasy",
+                                                    color:styletiket.textcolor,
                                                     textTransform:"uppercase"
                                                 }}>
                                                     titulo de ticket
@@ -281,44 +366,53 @@ const EsquemaViews=()=>{
                                             </div>
                                             <div className="d-flex flex-column" style={{
                                                 position:"absolute",
-                                                bottom:"15px",
-                                                left:"35px",
+                                                bottom:"25px",
+                                                left:"25px",
                                             }}>
                                                 <small style={{
                                                     fontSize:"1.0em",
-                                                    fontFamily:'fantasy'
+                                                    fontFamily:'fantasy',
+                                                    color:styletiket.textcolor,
                                                 }}>
                                                    Descripción  breve en el boleto 
                                                   
                                                 </small>
-                                                <small class="" style={{
+                                                <small className="" style={{
                                                     fontSize:'0.82em',
-                                                    
+                                                    color:styletiket.textcolor,                                                    
                                             }}>
                                                   <strong> Descripción más breve del boleto
                                                   </strong>
                                                   </small>
 
                                             </div>
-                                            <div 
-                                            style={{
-                                                position:"absolute",
-                                                bottom:"15px",
-                                                left:"35px",
-                                            }}>
-                                            
-                                                <i className="bi bi-qr-code fa-3x"
-                                               ></i>
-
+                                         
+                                            <div style={{position:"absolute",top:"15px",right:"35px",color:styletiket.textcolor,
+                                        transform: "rotate("+styletiket.rotar+"deg)",  }}>
+                                                  <i className="bi bi-qr-code fa-3x"></i>
                                             </div>
-                                           
-
+                                            <div className="d-flex flex-wrap" style={{position:"absolute",bottom:"5px",
+                                            right:"15px",color:styletiket.textcolor,
+                                            fontFamily:'Brush Script MT',                                           
+                                            fontSize:"1.3em",
+                                            writingMode:"sideways-lr",
+                                            textOrientation: 'mixed',
+                                                                          
+                                        }}>
+                                            <small 
+                                                                                        >                                                
+                                        #{styletiket.mensaje} 
+                                            </small>
+                                            </div>                                          
                                         </div>
                                 </div>
                                 <div className="d-flex justify-content-start  align-items-center " style={{                               
                                  height:'100%',width:'30%',      
+                                 position:"relative",
                                 borderLeftColor:'black', 
                                 borderLeftStyle:'dashed',
+                                borderTopRightRadius:"5px",
+                                borderBottomRightRadius:"5px",
                                 }}>
                                     <div className="bg-danger p-1 d-flex justify-content-center bg-light align-items-center" style={{
                                         height:'100%', 
@@ -337,23 +431,23 @@ const EsquemaViews=()=>{
                                              fontFamily:'Century Gothic'}}>Numero 32</h5>
                                            </div>
                                             <div className=" d-flex flex-column justify-content-between align-items-lg-stretch p-3" >
-                                            <small class="text-muted" style={{
+                                            <small className="text-muted" style={{
                                                     fontSize:'0.82em'                                                    
                                                     }}>$32</small>
                                                 <h5 style={{
                                                     fontSize:"1.2em", 
                                                     fontFamily:'Fantasy',
                                                     textTransform:'uppercase'}}>Vip entre pass </h5>
-                                                <small class="text-muted" style={{
+                                                <small className="text-muted" style={{
                                                     fontSize:'0.82em',
                                                     
                                             }}>22/12/22</small>
-                                                <small class="text-muted" style={{
-                                                    fontSize:'0.82em'
+                                                <small className="text-muted" style={{
+                                                    fontSize:'0.82em',
                                                     
                                                     }}>21:36</small>
                                             </div>
-                                            <i className="bi bi-qr-code-scan fa-2x"></i>
+                                            <i style={{transform: "rotate("+styletiket.rotar+"deg)",  }} className="bi bi-qr-code-scan fa-2x"></i>
                                                 
                                             
                                         </div>
@@ -361,6 +455,7 @@ const EsquemaViews=()=>{
                                     </div>
                                 </div>                            
                         </div> 
+                       
                     </div>                
                 </div> 
 

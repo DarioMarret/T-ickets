@@ -70,7 +70,3 @@ export const Dias ={
     5:"Sabado",
     6:"Domingo",
 }
-
-export const Fechas=[
-    
-]

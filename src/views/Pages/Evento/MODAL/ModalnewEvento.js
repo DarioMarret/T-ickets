@@ -4,6 +4,8 @@ import { Localidades } from "utils/constantes";
 import {ListarLocalidad,ListarEspacios,GuardarEvento } from "utils/Querypanel.js";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { Obtenerlinkimagen } from "utils/Querypanel";
+import { useDispatch } from "react-redux";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 const ModalNewEvento =(props)=>{
     const {show,Setshow} = props;
     let user =clienteInfo()
@@ -125,8 +127,22 @@ const ModalNewEvento =(props)=>{
     
     //console.log(e.value)
     if(e.name=="imagenConcierto") {
+        let img = new Image()
+        img.src = window.URL.createObjectURL(e.files[0])
+        img.onload = () => {
+         
+           if(img.width<750 || img.height<500 ){
+            e.value=""
+            usedispatch(setToastes({show:true,message:'Las dimensión de la imagen no es validad, necesita un alto de 500px y un ancho minimo de 750px',color:'bg-warning', estado:'Advertencia'})) }
+           else setNewEventos({...neweventos,imagenConcierto:e.files[0]?e.files[0]:''})
+        }
+        img.onerror = () => {
+            setNewEventos({...neweventos,imagenConcierto:''})
+
+        } 
        // console.log(e.files[0].name)
-        setNewEventos({...neweventos,imagenConcierto:e.files[0]?e.files[0]:''})}
+       // setNewEventos({...neweventos,imagenConcierto:e.files[0]?e.files[0]:''})
+    }
     else{setNewEventos({
         ...neweventos,
         [e.name]:e.value,
