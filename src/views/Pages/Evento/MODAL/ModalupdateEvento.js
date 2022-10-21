@@ -247,9 +247,7 @@ const Modalupdate=(props)=>{
                                                 onChange={(e)=>handelchangeComposeventos(e.target)}
                                                  placeholder="hora del evento"/>
                                                                             </div>
-                                        </div>
-                                        
-                                        
+                                        </div>                                     
                                         <div className="col-12 col-md-6">
                                         <label className="form-label">Lugar</label>
                                         <div className="input-group mb-3">

@@ -1,0 +1,17 @@
+#mask1 {
+    
+
+     background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    mask-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/sun.svg');
+    mask-size:80px;
+    mask-repeat: no-repeat;
+    mask-position: center;
+
+    -webkit-mask-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/sun.svg');
+    -webkit-mask-size: 80px;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+  }

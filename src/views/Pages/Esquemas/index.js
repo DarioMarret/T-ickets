@@ -3,9 +3,11 @@ import { array } from "prop-types"
 import React, { useEffect,useState } from "react"
 import { Accordion } from "react-bootstrap"
 import { ListarLocalidad } from "utils/Querypanel"
-import Codigo from "../../../../src/assets/imagen/codigobarra.png"
-import Imagen from "../../../../src/assets/imagen/Concert.png"
+import Codigo from "../../../../src/assets/imagen/flash.png"
+import Imagen from "../../../../src/assets/imagen/logo_Flash.png"
 import Form from 'react-bootstrap/Form';
+import './index.css'
+
 const EsquemaViews=()=>{
 
     let marginLetf=''
@@ -161,6 +163,7 @@ const EsquemaViews=()=>{
         opacity:0.6,
         textcolor:'#000000',
         imagen:Imagen,
+        imagenmask:'',
         mensaje:'Mensaje breve',
         orientacio:'mixed',
         rotar:'',
@@ -173,28 +176,57 @@ const EsquemaViews=()=>{
             let valor = parseInt(e.value)/100
             setSttyle({...styletiket,opacity:valor})}
         else if(e.name=="imagen"){
-            const primerArchivo = archivos[0];
-            // Lo convertimos a un objeto de tipo objectURL
+            const primerArchivo = e.files[0];
             const objectURL = URL.createObjectURL(primerArchivo);
+            console.log(objectURL)
+            setSttyle({...styletiket,
+                [e.name]:objectURL
+            })
+        }else if(e.name=="imagenmask"){
+            const primerArchivo = e.files[0];
+            const objectURL = "http://localhost:3000/" + URL.createObjectURL(primerArchivo);
+            console.log(objectURL)
+            setSttyle({...styletiket,
+                [e.name]:objectURL
+            })
         }
         else setSttyle({
             ...styletiket,
             [e.name]:e.value
         })
-      //  console.log(e.value)
-
     }
-       var element = document.getElementById('tickets');
-
-     useEffect(()=>{
-                var opt = {
+       
+       function GenerarPDF(){
+        var element = document.getElementById('tickets');
+        var opt = {
             margin:       1,
             filename:     'myfile.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2 },
             jsPDF:        { unit: 'in', format: 'letter', orientation: 'l' }
           };
-       // html2pdf(element,opt); 
+        html2pdf(element,opt); 
+
+       }
+       //convertir base 64 para que renderise imagen en pdf
+       function encodeImageFileAsURL(element) {
+        var file = element.files[0];
+        var reader = new FileReader();
+        reader.onloadend = function() {
+          console.log('RESULT', reader.result)
+        }
+        reader.readAsDataURL(file);
+      }
+     useEffect(()=>{
+        var element = document.getElementById('tickets');
+        var opt = {
+            margin:       1,
+            filename:     'myfile.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'l' }
+          };
+       // html2pdf(element,opt);     
      
      },[])
 
@@ -202,6 +234,9 @@ const EsquemaViews=()=>{
     return (
         <>
         <div className="container-fluid">
+            <div className="d-flex justify-content-end">
+                <button className="btn btn-success" onClick={GenerarPDF} > Generar PDF </button>
+            </div>
             <div className="row  flex-wrap-reverse  ">
 
                 <div className="col-12 col-md-4 ">
@@ -261,12 +296,34 @@ const EsquemaViews=()=>{
                                 </select>
                             </div>*/}
                             <div className="col-12" >
-                                <label>Imegen</label>
-                                <input className="form-control" type="file" accept="image/*"
+                                <label className="form-label">Agregar imagen de fondo</label>
+                                <input className="form-control mb-1" type="file" accept="image/gif, image/jpeg, image/png"
+                                onChange={(e)=>handelChangeuno(e.target)}
                                 name="imagen" />
+                                <button className="btn btn-danger float-end"
+                                onClick={()=> setSttyle({...styletiket,imagen:''})}
+                                > Quitar fondo </button>
                             </div>
+                            <div className="col-12" >
+                                <label className="form-label">Agregar imagen al sticker</label>
+                                <input className="form-control mb-1" type="file"    
+                                name="imagenmask"
+                                accept="image/gif, image/jpeg, image/png"
+                                onChange={(e)=>handelChangeuno(e.target)}
+                                />
+                                <button className="btn btn-danger float-end"
+                                onClick={()=> setSttyle({...styletiket,imagenmask:''})}
+                                > Quitar sticker </button>
+                            </div>
+                            {/*<div className="col-12">
+                                <label className="form-label">Mover </label>
+                                <Form.Range
+                                name="iquierdaderecha"
+                                min={30}
+                                max={75}/>
+                                </div>*/}
                             <div className="col-4 col-md-4">
-                                <label className="form-label" >rotar qr</label>
+                                <label className="form-label" >rotar qr </label>
                                 <input 
                                 className="form-control"
                                 type="number"
@@ -328,28 +385,35 @@ const EsquemaViews=()=>{
                                     borderTopLeftRadius:'5px',
                                     backgroundColor:styletiket.bgticketespaciouni,
                                     backgroundImage:`url(${styletiket.imagen})`,
-                                    opacity: styletiket.opacity,
-                                    
+                                    backgroundSize:'contain ',
+                                    opacity: styletiket.opacity,                                    
                                     height:'100%',}}>                                       
                                     </div>
                                     <div style={{position:"absolute",zIndex:2,width:"90%",height:"90%",}}>  
-                                    <div
+                                   { 
+                                   styletiket.imagenmask?
+                                   <div id="mask1"
                                             style={{
                                                 position: "absolute",
-                                                top: '70px',
+                                                top: '85px',
+                                                opacity:'0.6',     
                                                 right: "70px",
-                                               
+                                                height:'120px'  
+                                                                                       
                                             }}
                                             >
                                                 <img  
-                                                src={""}
+                                                src={styletiket.imagenmask}
+                                                
                                                 className="img-fluid" 
                                                 style={{
-                                                    height: "50px",
+                                                    height: "80px",        
+                                                                                         
+                                                    
                                                 }}
                                                 />
 
-                                            </div>                                          
+                                            </div> :''   }                                      
                                             <div>
                                                 <h4 
                                                 style={{
@@ -363,6 +427,32 @@ const EsquemaViews=()=>{
                                                 }}>
                                                     titulo de ticket
                                                 </h4>                                                
+                                            </div>
+                                            <div className="d-flex flex-row" style={{
+                                                position:"absolute",
+                                                top:"90px",
+                                                left:"35px"
+                                            }}>
+                                                <div className="d-flex flex-column justify-content-center align-items-center border mx-2" style={{
+                                                    height:"70px",
+                                                    width:"70px",
+                                                    borderStyle:'dashed',
+                                                }}>
+                                                    <small style={{color:styletiket.textcolor}}><strong> Fila A2 </strong></small>
+                                                    <h5 style={{color:styletiket.textcolor}}>
+                                                    S2
+                                                    </h5>
+                                                </div>
+                                                <div className="d-flex flex-column justify-content-center align-items-center border" style={{
+                                                    height:"70px",
+                                                    width:"70px",
+                                                    borderStyle:"dashed",
+                                                }}>
+                                                    <small style={{color:styletiket.textcolor}}></small>
+                                                    <h5 style={{color:styletiket.textcolor}}></h5>
+                                                </div>
+
+
                                             </div>
                                             <div className="d-flex flex-column" style={{
                                                 position:"absolute",
@@ -408,7 +498,7 @@ const EsquemaViews=()=>{
                                 </div>
                                 <div className="d-flex justify-content-start  align-items-center " style={{                               
                                  height:'100%',width:'30%',      
-                                 position:"relative",
+                                 position:"relative",                                 
                                 borderLeftColor:'black', 
                                 borderLeftStyle:'dashed',
                                 borderTopRightRadius:"5px",
