@@ -248,7 +248,7 @@ export const GuardarEvento = async(parms)=>{
     return data;
 }
 export const ListarEventos =  async(parms)=>{
-    const {data} = await axios.get(Host+"listareventos/"+parms,{
+    const {data} = await axios.get(Host+"listareventos/",{
                 headers:{
                     'Content-Type':'application/json',
                     'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==' 

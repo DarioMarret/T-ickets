@@ -35,7 +35,7 @@ import SuscritorViews from "views/Pages/Suscriptores";
 import UsersView from "views/Pages/Usuarios";
 import SuscritoridView from "views/Pages/Suscriptores/Suscritorid";
 import UseridView from "views/Pages/Usuarios/Usuarioid";
-import TablasEjemplos from "views/Tables/Tablaejemplo";
+import Viesvg from "views/Pages/Svgviewa"
 import AjustesView from "views/Pages/Ajustes";
 import EsquemaViews from "views/Pages/Esquemas";
 
@@ -246,6 +246,13 @@ var routes = [
     layout:"/admin",
     name:"Prueba",
     component:EsquemaViews,
+    permiso: ["superadmin", "super_admin"]
+  },
+  {
+    path:"/Pruebasvg",
+    layout:"/admin",
+    name:"PruSvgeba",
+    component:Viesvg,
     permiso: ["superadmin", "super_admin"]
   }
   

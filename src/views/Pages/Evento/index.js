@@ -29,13 +29,13 @@ const EventosViews =()=>{
   try {
  
     const lista = await ListarEventos("PROCESO")
-    const activo = await ListarEventos("ACTIVO")
-    const cancela = await ListarEventos("CANCELADO")
+   // const activo = await ListarEventos("ACTIVO")
+   // const cancela = await ListarEventos("CANCELADO")
     if(lista.success){
       let arr = []
       //console.log(lista)
       //arr.push(lista.data)
-      setEventos([...lista.data,...activo.data,...cancela.data])
+      setEventos([...lista.data])
      // setEventos(lista.data)
       //console.log(arr)
     }
@@ -57,10 +57,10 @@ else
     
    const elimina = await EliminarEvento(codigo)
    const lista = await ListarEventos("PROCESO")
-   const activo = await ListarEventos("ACTIVO")
-   const cancela = await ListarEventos("CANCELADO")
+   //const activo = await ListarEventos("ACTIVO")
+  // const cancela = await ListarEventos("CANCELADO")
    if(elimina.success){
-    setEventos([...lista.data,...activo.data,...cancela.data])
+    setEventos([...lista.data])
     //console.log([...activo.data,...cancela.data])
    successDelete()
    dispatch(setToastes({show:true,message:'Evento Eliminado con éxito',color:'bg-success', estado:'Correcto'})) 

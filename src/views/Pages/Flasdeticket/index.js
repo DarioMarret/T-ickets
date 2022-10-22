@@ -179,7 +179,6 @@ const IndexFlas = () => {
         color:'bg-danger',
         estado:"Hubo un error",
       })  
-      // console.log("Error---",error)      
      }    
   }
   const handlereportColse =async () => {
@@ -219,7 +218,7 @@ const IndexFlas = () => {
   const [eventoslist,setEventos]=useState([])
   useEffect(() => {
     // window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
-  /*
+  
   //Cargar eventos Activos mayores a la fecha actual
     const evento =  async ()=>{
       try {
@@ -235,7 +234,7 @@ const IndexFlas = () => {
       }
         
     }
-    evento()*/
+    evento()
     var popUp = window.open('url', '', 'options');
     if (popUp == null || typeof(popUp)=='undefined') {
         //  popUp.close();     
@@ -476,7 +475,7 @@ const IndexFlas = () => {
                     </div>
                   </div>
                 </div>
-                {/*eventoslist.length>0?
+                {eventoslist.length>0?
                   eventoslist.map((e,i)=>{
                     return(
                       <div className="col-12 col-lg-6 mx-auto my-5" id={"evento"+e.id} key={i}>
@@ -503,7 +502,7 @@ const IndexFlas = () => {
                 </div>
                     )
                   })
-                :''*/}
+                :''}
                 {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
                 <div className="col-12 col-lg-6 mx-auto my-5" >
                   <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"

@@ -72,16 +72,16 @@ const EventoEspecifico=()=>{
     }
     async function Evento(){
         try {
-            const cargar = await ListarEventos("PROCESO")
-            const activo = await ListarEventos("ACTIVO")
-            const cancela = await ListarEventos("CANCELADO")
+            const cargar = await ListarEventos()
+           // const activo = await ListarEventos("ACTIVO")
+           // const cancela = await ListarEventos("CANCELADO")
             const precio = await listarpreciolocalidad(id)
             if(cargar.success){ 
               let datos = cargar.data.filter((e)=>e.codigoEvento==id)
-              let datosactivos = activo.data.filter((e)=>e.codigoEvento==id)
-              let datoscancelado =  cancela.data.filter((e)=>e.codigoEvento==id)
+               //let datosactivos = activo.data.filter((e)=>e.codigoEvento==id)
+              //let datoscancelado =  cancela.data.filter((e)=>e.codigoEvento==id)
               //console.log(datos[0])
-              SetEvento({...datos[0],...datosactivos[0],...datoscancelado[0],LocalodadPrecios:precio.data})
+              SetEvento({...datos[0],LocalodadPrecios:precio.data})
             SetPrecios(precio.data)            
         }
         } catch (error) {

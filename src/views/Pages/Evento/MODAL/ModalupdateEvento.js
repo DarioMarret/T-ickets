@@ -88,6 +88,7 @@ const Modalupdate=(props)=>{
          
            if(img.width<750 || img.height<500 ){
             e.value=""
+            setNewEventos({...neweventos,imagenConcierto:''})
             usedispatch(setToastes({show:true,message:'Las dimensión de la imagen no es validad, necesita un alto de 500px y un ancho minimo de 750px',color:'bg-warning', estado:'Advertencia'})) }
            else setNewEventos({...neweventos,imagenConcierto:e.files[0]?e.files[0]:''})
         }
