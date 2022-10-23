@@ -216,7 +216,26 @@ const EsquemaViews=()=>{
           console.log('RESULT', reader.result)
         }
         reader.readAsDataURL(file);
-      }
+      }/*
+$( function() { 
+    // ''containment'' para definir que estará siempre dentro de #contenedor
+    $( "div.mover" ).draggable({ drag: function(){
+            var offset = $(this).offset();
+            var xPos = offset.left;
+            var yPos = offset.top;
+            $('#posX').text('x: ' + xPos);
+            $('#posY').text('y: ' + yPos);
+        },
+        containment: "#contenedor"});
+  
+  } );*/
+
+
+$( function() { 
+    // ''containment'' para definir que estará siempre dentro de #contenedor
+    $( "div.mover" ).draggable({ containment: "#seccionuno"});
+   
+  } );
      useEffect(()=>{
         var element = document.getElementById('tickets');
         var opt = {
@@ -373,7 +392,7 @@ const EsquemaViews=()=>{
                         borderTopLeftRadius:"5px",
                         borderBottomLeftRadius:"5px",}}
                         >                           
-                                <div className="d-flex justify-content-center align-items-center" style={{
+                                <div id="seccionuno" className="d-flex justify-content-center align-items-center" style={{
                                     height:'100%',width:'70%',
                                     position:'relative',    
                                     borderTopLeftRadius:'5px', 
@@ -477,7 +496,7 @@ const EsquemaViews=()=>{
 
                                             </div>
                                          
-                                            <div style={{position:"absolute",top:"15px",right:"35px",color:styletiket.textcolor,
+                                            <div className="mover" style={{position:"absolute",top:"15px",right:"35px",color:styletiket.textcolor,
                                         transform: "rotate("+styletiket.rotar+"deg)",  }}>
                                                   <i className="bi bi-qr-code fa-3x"></i>
                                             </div>
@@ -496,7 +515,7 @@ const EsquemaViews=()=>{
                                             </div>                                          
                                         </div>
                                 </div>
-                                <div className="d-flex justify-content-start  align-items-center " style={{                               
+                                <div id="secciondos" className="d-flex justify-content-start  align-items-center " style={{                               
                                  height:'100%',width:'30%',      
                                  position:"relative",                                 
                                 borderLeftColor:'black', 
