@@ -146,18 +146,8 @@ const EsquemaViews=()=>{
      })*/
      $(document).on("click","div.disponible",function(){
         console.log(this.classList)
-        $("."+this.classList).css({"background-color": "yellow", "font-size": "200%"});
-
+         $("."+this.classList).css({"background-color": "yellow", "font-size": "200%"});
      })
-     const Quitar=()=>{
-        if(elemtoselet.nombre!=""){
-            $( "div" ).remove("."+elemtoselet.nombre )
-            setElemnto({
-                nombre:"",
-                tipo:"",
-            })
-        }
-     }
     const [styletiket,setSttyle]=useState({
         bgticketespaciouni:'#D5583D',
         opacity:0.6,
@@ -167,6 +157,8 @@ const EsquemaViews=()=>{
         mensaje:'Mensaje breve',
         orientacio:'mixed',
         rotar:'',
+        topqr:'',
+        
     })
     const [stylecompro,setComprobante]=useState({
         backgroundColor:''
@@ -176,19 +168,18 @@ const EsquemaViews=()=>{
             let valor = parseInt(e.value)/100
             setSttyle({...styletiket,opacity:valor})}
         else if(e.name=="imagen"){
-            const primerArchivo = e.files[0];
-            const objectURL = URL.createObjectURL(primerArchivo);
-            console.log(objectURL)
-            setSttyle({...styletiket,
-                [e.name]:objectURL
-            })
+            //const primerArchivo = e.files[0];
+           encodeImageFileAsURL(e)
+           // const objectURL = URL.createObjectURL(primerArchivo);
+           // console.log(objectURL)
+          //  setSttyle({...styletiket,
+          //      [e.name]:objectURL
+           // })
         }else if(e.name=="imagenmask"){
-            const primerArchivo = e.files[0];
-            const objectURL = "http://localhost:3000/" + URL.createObjectURL(primerArchivo);
-            console.log(objectURL)
-            setSttyle({...styletiket,
-                [e.name]:objectURL
-            })
+          //  const primerArchivo = e.files[0];
+          //  const objectURL =  URL.createObjectURL(primerArchivo);
+           // console.log(objectURL)
+            encodeImageFileAsURL(e)
         }
         else setSttyle({
             ...styletiket,
@@ -213,29 +204,38 @@ const EsquemaViews=()=>{
         var file = element.files[0];
         var reader = new FileReader();
         reader.onloadend = function() {
-          console.log('RESULT', reader.result)
+            setSttyle({...styletiket,
+                [element.name]:reader.result
+            })
         }
         reader.readAsDataURL(file);
-      }/*
-$( function() { 
-    // ''containment'' para definir que estará siempre dentro de #contenedor
-    $( "div.mover" ).draggable({ drag: function(){
-            var offset = $(this).offset();
-            var xPos = offset.left;
-            var yPos = offset.top;
-            $('#posX').text('x: ' + xPos);
-            $('#posY').text('y: ' + yPos);
-        },
-        containment: "#contenedor"});
-  
-  } );*/
+      }
 
 
-$( function() { 
-    // ''containment'' para definir que estará siempre dentro de #contenedor
-    $( "div.mover" ).draggable({ containment: "#seccionuno"});
-   
-  } );
+      $(function(){
+        var sPositions = localStorage.positions || "{}",
+            positions = JSON.parse(sPositions);
+        $.each(positions, function (id, pos) {
+            $("#" + id).css(pos)
+        })
+        $("div.mover").draggable({
+            containment: "#seccionuno",
+            scroll: false,
+            stop: function (event, ui) {
+                positions[event.target.id] = ui.position
+                localStorage.positions = JSON.stringify(positions)
+            }
+        });
+        $(".moverdos").draggable({
+            containment:"#secciondos",
+            scroll:false,
+            stop:function (event, ui) {
+                positions[event.target.id]=ui.position
+                localStorage.positions = JSON.stringify(positions)
+            }
+        })
+        });
+
      useEffect(()=>{
         var element = document.getElementById('tickets');
         var opt = {
@@ -323,7 +323,7 @@ $( function() {
                                 onClick={()=> setSttyle({...styletiket,imagen:''})}
                                 > Quitar fondo </button>
                             </div>
-                            <div className="col-12" >
+                            {/*<div className="col-12" >
                                 <label className="form-label">Agregar imagen al sticker</label>
                                 <input className="form-control mb-1" type="file"    
                                 name="imagenmask"
@@ -334,7 +334,7 @@ $( function() {
                                 onClick={()=> setSttyle({...styletiket,imagenmask:''})}
                                 > Quitar sticker </button>
                             </div>
-                            {/*<div className="col-12">
+                            <div className="col-12">
                                 <label className="form-label">Mover </label>
                                 <Form.Range
                                 name="iquierdaderecha"
@@ -426,12 +426,9 @@ $( function() {
                                                 
                                                 className="img-fluid" 
                                                 style={{
-                                                    height: "80px",        
-                                                                                         
-                                                    
+                                                    height: "80px",  
                                                 }}
                                                 />
-
                                             </div> :''   }                                      
                                             <div>
                                                 <h4 
@@ -447,7 +444,7 @@ $( function() {
                                                     titulo de ticket
                                                 </h4>                                                
                                             </div>
-                                            <div className="d-flex flex-row" style={{
+                                            <div id="asiento"  className="d-flex flex-row mover" style={{
                                                 position:"absolute",
                                                 top:"90px",
                                                 left:"35px"
@@ -482,9 +479,9 @@ $( function() {
                                                     fontSize:"1.0em",
                                                     fontFamily:'fantasy',
                                                     color:styletiket.textcolor,
-                                                }}>
+                                                }}> 
                                                    Descripción  breve en el boleto 
-                                                  
+                                                   
                                                 </small>
                                                 <small className="" style={{
                                                     fontSize:'0.82em',
@@ -496,20 +493,16 @@ $( function() {
 
                                             </div>
                                          
-                                            <div className="mover" style={{position:"absolute",top:"15px",right:"35px",color:styletiket.textcolor,
-                                        transform: "rotate("+styletiket.rotar+"deg)",  }}>
+                                            <div id="codigo" className="mover" style={{position:"absolute",top:15,left:300,color:styletiket.textcolor,transform: "rotate("+styletiket.rotar+"deg)",  }}>
                                                   <i className="bi bi-qr-code fa-3x"></i>
                                             </div>
-                                            <div className="d-flex flex-wrap" style={{position:"absolute",bottom:"5px",
-                                            right:"15px",color:styletiket.textcolor,
-                                            fontFamily:'Brush Script MT',                                           
-                                            fontSize:"1.3em",
-                                            writingMode:"sideways-lr",
-                                            textOrientation: 'mixed',
-                                                                          
+                                            <div id="mensaje" className="mover d-flex flex-wrap" style={{position:"absolute",
+                                            top:200,left:275,color:styletiket.textcolor,
+                                            fontFamily:'Brush Script MT',  
+                                            width:200,                                         
+                                            fontSize:"1.4em",                                                                          
                                         }}>
-                                            <small 
-                                                                                        >                                                
+                                            <small>                                                
                                         #{styletiket.mensaje} 
                                             </small>
                                             </div>                                          
@@ -523,7 +516,7 @@ $( function() {
                                 borderTopRightRadius:"5px",
                                 borderBottomRightRadius:"5px",
                                 }}>
-                                    <div className="bg-danger p-1 d-flex justify-content-center bg-light align-items-center" style={{
+                                    <div  className="bg-danger p-1 d-flex justify-content-center bg-light align-items-center" style={{
                                         height:'100%', 
                                     width:'100%',
                                    
@@ -556,7 +549,7 @@ $( function() {
                                                     
                                                     }}>21:36</small>
                                             </div>
-                                            <i style={{transform: "rotate("+styletiket.rotar+"deg)",  }} className="bi bi-qr-code-scan fa-2x"></i>
+                                            <i id="codigoqr"  style={{transform: "rotate("+styletiket.rotar+"deg)",  }} className="bi bi-qr-code-scan fa-2x moverdos"></i>
                                                 
                                             
                                         </div>

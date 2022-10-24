@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Carousel } from "react-bootstrap";
 import header from "../../../assets/header.jpeg";
 import logofla from "../../../assets/logo-flashthetickets.png";
@@ -33,6 +32,7 @@ import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
 import { Authsucrito } from "utils/Query";
 import { cargarEventoActivo } from "utils/Querypanelsigui";
 import { Dias } from "utils/constantes";
+import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 
 const IndexFlas = () => {
   let usedispatch = useDispatch();
@@ -44,7 +44,8 @@ const IndexFlas = () => {
   const [efectShow, efectiOpShow] = useState(false);
   const [userauth,setUserauth]=useState(false)
   const [seleccion,SetSeleccion]=useState("");
-  const [showToast,setShowToast]=useState(false);
+  const [showshop, handleClosesop]=useState(false);
+  const [datos,setDatoscon]=useState([])
   const [Toastestado,setDatoToas]=useState({
     show:false,
     message:'',
@@ -55,7 +56,11 @@ const IndexFlas = () => {
   
 
 //console.log(userauth)
+ const abrir=(e)=>{
+  setDatoscon(e)
+  handleClosesop(true)
 
+ }
   const [modalPago, setModalPago] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false)
@@ -266,6 +271,7 @@ const IndexFlas = () => {
       })
       setUserauth(false)
     }
+
     setUserauth(false)
   }else{
       setPerson({
@@ -286,7 +292,11 @@ const IndexFlas = () => {
   },[])
   return (
     <>
-         
+         <ModalCarritov
+         showshop={showshop}
+         handleClosesop={ handleClosesop}
+         datos={datos}
+         />
       <nav className="navbar navbar-expand-lg justify-content-between navbar-dark bg-black fixed-top py-3">
         <div className="container-fluid col-lg-8    d-flex justify-content-between">
           <a className="navbar-brand " aria-label="TICKETS" href="#">
@@ -495,7 +505,7 @@ const IndexFlas = () => {
                         <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{e.lugarConcierto}</span></p>
                         <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}</span></p>
                      {true? <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"                          
-                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => handleShow()} >Comprar Entrada</p>:""}
+                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => abrir(e)} >Comprar Entrada</p>:""}
                       </div>
                     </div>
                   </div>
@@ -568,8 +578,7 @@ const IndexFlas = () => {
       <ModalReport 
       repShop={repShop}
       setrepShow={setrepShow}
-      handlereportColse={handlereportColse}  
-      setShow={setShowToast}
+      handlereportColse={handlereportColse}        
       setDatoToas={setDatoToas}
       
        />  

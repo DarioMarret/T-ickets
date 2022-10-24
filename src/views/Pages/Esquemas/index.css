@@ -15,3 +15,9 @@
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center;
   }
+  .mover:hover{
+    cursor: pointer;
+  }
+  .moverdos:hover{
+    cursor: pointer;
+  }

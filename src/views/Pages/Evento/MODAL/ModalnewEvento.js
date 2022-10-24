@@ -319,11 +319,9 @@ const ModalNewEvento =(props)=>{
                                                 id="descripcionConcierto"  placeholder="Descriptión del concierto"/>
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text"></span>
-                                                </div>
+                                                </div>    
                                                                             </div>
-                                        </div>
-                                        
-
+                                        </div>                               
                                         <div className="col-12 col-md-12">
                                         <label className="form-label">{neweventos.imagenConcierto?"Hay una imagen Cargada ":"Seleccione una imagen"}</label>
                                         <div className="input-group mb-3">
@@ -331,8 +329,7 @@ const ModalNewEvento =(props)=>{
                                                 <input type="file" accept="image/*" name="imagenConcierto" className="form-control "
                                                 onChange={(e)=>handelchangeComposeventos(e.target)}
                                                 id="imagenConcierto"  placeholder="Imagen del concierto"/>
-                                                
-                                                                            </div>
+                                        </div>
                                         </div>
 
                                         </div>
