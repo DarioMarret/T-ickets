@@ -9,7 +9,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 const ModalNewEvento =(props)=>{
     const {show,Setshow} = props;
     let user =clienteInfo()
-    
+    let usedispatch = useDispatch()
     const [alertnone,showAlernone]= useState("d-none")
     const [espacios,setListaEspa]=useState([])
     //Array donde se crearan las localidades con sus precios
@@ -28,17 +28,17 @@ const ModalNewEvento =(props)=>{
 }
 }
     function toggleValueInArray(array, value) {
-        //copia de array de localidades
+       //copia de array de localidades
         let ArrayCopia=array;
-        
-        var index = ArrayCopia.findIndex(obj => obj.localodad==value.localodad);      
+        let arr = selectLocalidad        
+        var index = ArrayCopia.findIndex(obj => obj.localodad==value.localodad);   
+        var i = arr.findIndex(obj => obj.nombre==value.localodad);   
+      //console.log(arr[i])
       if (index == -1) {
-        ArrayCopia.push(value);
+        ArrayCopia.push({...value,identificador:arr[i].id,tipo:arr[i].mesas_array});
       } else {
         ArrayCopia[index]={...value}     
       }
-      //se agrega las localidades 
-      //console.log(ArrayCopia)
       setPreLocalidad(ArrayCopia)
       setPrecios({localodad:'',
       precio_normal:'',
@@ -46,9 +46,9 @@ const ModalNewEvento =(props)=>{
       precio_tarjeta:'',
       precio_descuento:'',
       habilitar_cortesia:''})
+      console.log(ArrayCopia)
     }
-    // PROCESO  ACTIVO - CANCELADO
-    let defauldata2 ={
+   let defauldata2 ={
         "nombreConcierto": "Aesa1222",
         "fechaConcierto": "10-11-2022",
         "horaConcierto": "09:09:pm",
@@ -85,20 +85,24 @@ const ModalNewEvento =(props)=>{
             let defauldata ={
                 ...neweventos,
                 imagenConcierto:data,
+                codigo:neweventos.autorizacion=="preventa"?'preventa': neweventos.codigo,
                 estado:"PROCESO",
                 "LocalodadPrecios": [
                     ...localidadPreci
                 ]
               }
               const evento = await GuardarEvento(defauldata)
-            console.log(data)
+           // console.log(data)
           if(evento.success){
-                alert("datos guardados")
+            usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
+               
+            //alert("datos guardados")
                 Setshow(false)
             }
             
         } catch (error) {
             console.log(error)
+            usedispatch(setToastes({ show: true, message: 'No se guardaron los datos del evento', color: 'bg-danger', estado: 'Hubo un error' }))
             
         }
 
@@ -120,6 +124,8 @@ const ModalNewEvento =(props)=>{
                 lugarConcierto:'',
                 cuidadConcert:'',
                 descripcionConcierto:'',
+                codigo:'',
+                autorizacion:'',
                 imagenConcierto:'',                
                 idUsuario:""+user.id,
                 })
@@ -140,8 +146,12 @@ const ModalNewEvento =(props)=>{
             setNewEventos({...neweventos,imagenConcierto:''})
 
         } 
-       // console.log(e.files[0].name)
-       // setNewEventos({...neweventos,imagenConcierto:e.files[0]?e.files[0]:''})
+    }else if(e.name=="autorizacion"){
+        setNewEventos({
+            ...neweventos,
+            [e.name]:e.value,
+            codigo: e.value=="preventa"?'preventa':'',
+        })
     }
     else{setNewEventos({
         ...neweventos,
@@ -309,6 +319,38 @@ const ModalNewEvento =(props)=>{
                                                
                                                                             </div>
                                         </div>
+                                        <div className="col-12 col-md-6" >
+                                            <label className="form-label">
+                                                estado legal
+                                            </label>
+                                            <select className="form-control" value={neweventos.autorizacion}  name="autorizacion" onChange={(e)=>handelchangeComposeventos(e.target)} >
+                                            <option value=""></option>
+                                                <option value="Autorizacion">Autorizacion del sri</option>
+                                                <option value="preventa">Preventa</option>
+                                            </select>
+                                            </div> 
+                                            {neweventos.autorizacion!="Autorizacion"?
+                                        
+                                                 <div className="col-12 col-md-6" >
+                                                 <label className="form-label">
+                                                     Ingrese autorización
+                                                 </label>
+                                                <input  
+                                                disabled={true}
+                                                className="form-control" value={"preventa"}
+                                                onChange={(e)=>handelchangeComposeventos(e.target)}
+                                                name="codigo"/>
+                                                 </div> :
+                                                 <div className="col-12 col-md-6" >
+                                                 <label className="form-label">
+                                                     Ingrese autorización
+                                                 </label>
+                                                <input className="form-control" name="codigo"
+                                                value={neweventos.codigo}
+                                                 onChange={(e)=>handelchangeComposeventos(e.target)}
+                                                />
+                                                 </div> 
+                                            }
                                         <div className="col-12 col-md-12">
                                         <label className="form-label">Descripcion </label>
                                         <div className="input-group mb-3">
@@ -321,7 +363,8 @@ const ModalNewEvento =(props)=>{
                                                     <span className="input-group-text"></span>
                                                 </div>    
                                                                             </div>
-                                        </div>                               
+                                        </div>          
+                                                           
                                         <div className="col-12 col-md-12">
                                         <label className="form-label">{neweventos.imagenConcierto?"Hay una imagen Cargada ":"Seleccione una imagen"}</label>
                                         <div className="input-group mb-3">
@@ -331,6 +374,7 @@ const ModalNewEvento =(props)=>{
                                                 id="imagenConcierto"  placeholder="Imagen del concierto"/>
                                         </div>
                                         </div>
+                                        
 
                                         </div>
                                             

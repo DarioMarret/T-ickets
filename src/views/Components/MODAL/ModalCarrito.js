@@ -148,7 +148,7 @@ function ModalCarrito(props) {
                 show={show}
                 onHide={handleClose}
                 size="lg"
-                fullscreen={true}
+                
             >
                 <Modal.Header >
                     <h5 className="modal-title text-center justify-content-center">LOCALIDADES</h5>
@@ -158,7 +158,7 @@ function ModalCarrito(props) {
                     </button>
                 </Modal.Header>
                 <div >
-                <Modal.Body className='col-8'>
+                <Modal.Body className='col-12'>
                     <Table>
                         <thead className="bg-secondary text-black">
                             <tr className='text-'>

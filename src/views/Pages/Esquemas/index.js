@@ -98,39 +98,7 @@ const EsquemaViews=()=>{
        //const {ancho,alto,color,titel} = Object.fromEntries(form.entries())
 
      }
-    // $("p").css({"background-color": "yellow", "font-size": "200%"});
-     const ChangerSelect=e=>{
-        let arr = localidad
-        let index  = arr.findIndex(a=>a.id==e.target.value)
-        let {id, nombre,arry,typo} = arr[index]
-       console.log(arry)
-       if(typo=="fila") return
-       $( "div" ).remove("."+id )
-       $('#ingreso').append("<div id='"+id+"' className='localidad  "+id +" "+nombre+" border border-dark  ' style='position:relative; height:fit-content;width:fit-content;'></div>")
-       let incrustar ="<div className='localidad  "+nombre+"  bg-danger ' style='position:relative; padding:2px;'>"
-       arry.datos.map((e,i)=>{
-        incrustar = "<div className='d-flex  px-3 p-1 justify-content-ce '>"
-        incrustar = incrustar + "<span className='d-inline-block' disabled >"
-        incrustar = incrustar + "<div className='d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  ' style='height:"+e.anchor+";width:"+e.anchor+"' >"
-        incrustar = incrustar + " <div className='d-flex justify-content-center'>"
-        incrustar= incrustar + "<span style='font-size:0.7em;'>   "+e.fila+" </span></div></div></span>"
-        incrustar= incrustar +"<div className=' d-flex px-1  align-items-stretch '>"
-        
-        e.asientos.map((elm,ind)=>{
-            let numero = ind +1
-            incrustar = incrustar + "<div  className='"+elm.estado+"  "+elm.silla+" d-flex  bg-success   rounded-5 text-center  justify-content-center align-items-center '"
-            incrustar = incrustar + "style='height:"+elm.anchor+";width:"+elm.anchor+";margin-left:"+elm.marginLeft+";margin-right:"+elm.marginRight+"; ' >"
-            incrustar = incrustar + " <div className='"+ elm.silla +" d-flex px-3  text-white justify-content-center  ' >"
-            incrustar = incrustar + " <div className='d-flex justify-content-center'>"
-            incrustar = incrustar + " <span style='font-size:0.7em;'>   "+ numero+" </span> </div></div></div>"       
-        })
-        incrustar = incrustar + "</div></div>"        
-        $("#"+id).append(incrustar)
-       
-       })
-
-
-     }
+    
 
      $(document).on("click","div.espacio",function(){
         //console.log(this.classList)

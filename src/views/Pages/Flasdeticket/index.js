@@ -295,6 +295,7 @@ const IndexFlas = () => {
          <ModalCarritov
          showshop={showshop}
          handleClosesop={ handleClosesop}
+         handleContinuar={handleContinuar}
          datos={datos}
          />
       <nav className="navbar navbar-expand-lg justify-content-between navbar-dark bg-black fixed-top py-3">

@@ -2,12 +2,13 @@ import React,{useEffect,useState} from "react"
 import { Modal } from "react-bootstrap" 
 import { Metodos } from 'utils/constantes'
 import { listarpreciolocalidad } from "utils/Querypanel"
+import { TiendaIten , GetValores,getVerTienda, EliminarByStora } from "utils/CarritoLocalStorang"
 import mapa from '../../../assets/img/mapa.png'
 
 
 
 const  ModalCarritoView=(prop)=>{
-    const{showshop, handleClosesop ,datos}=prop
+    const{showshop, handleClosesop,handleContinuar,datos}=prop
     const [precios,setPrecios]=useState([])
     const [detalle,setDetalle]=useState([])
     const [timer, setTimer] = useState(false)
@@ -21,7 +22,7 @@ const  ModalCarritoView=(prop)=>{
         Tarjeta: "",
         Deposito: "",
     })
-    console.log(datos)
+   // console.log(datos)
     const [check, setCheck] = useState(true)
     function handelMetodopago(target, value) {
         setChecked({
@@ -36,13 +37,26 @@ const  ModalCarritoView=(prop)=>{
         var index = arr.findIndex(obj => obj.id==e.id);
 
         var ind = arr.includes(index=>index.id==e.id)
+        let producto = {
+            cantidad: 1,
+            localidad:e.localodad,
+            id:e.id,
+            fila: 0,
+            valor: e.precio_normal,
+            nombreConcierto: "GIRA 40 ANIVERSARIO",
+        }
+        TiendaIten(producto)
         setDetalle([])
   if (index == -1) {
-    let nuevo = {id:e.id, name:e.localodad,valor:e.precio_normal, cantidad:1}
+    let nuevo = {id:e.id, localidad:e.localodad,valor:e.precio_normal, cantidad:1}
     arr.push(nuevo);
    // console.log(arr)
-    setDetalle(arr)
+ //  cosole.log(nuevo)
+    setDetalle(getVerTienda())
     setTimer(!timer)
+    let data = GetValores()
+   // console.log(data)
+
   } else {
     
    
@@ -51,52 +65,65 @@ const  ModalCarritoView=(prop)=>{
     arr[index].valor = suma.toFixed(2)
      arr[index].cantidad=cantidad
    
-    setDetalle(arr)
+    setDetalle(getVerTienda())
+    let data = GetValores()
     setTimer(!timer)
-   // console.log(arr)
+    //console.log(data)
 
   }
     }
     function restaprecio(e){
         let arr = detalle        
         var index = arr.findIndex(obj => obj.id==e.id);
-        
-       
-       // console.log( Object.values(arr[index]).every(d=>d))
+        let producto = {
+            cantidad: -1,
+            localidad:e.localodad,
+           
+            fila: 0,
+            valor: e.precio_normal,
+            nombreConcierto: "GIRA 40 ANIVERSARIO",
+        }
+        TiendaIten(producto)
         setDetalle([])
         if (index != -1) {
-            
-            let suma=     parseFloat(arr[index].valor) - parseFloat(e.precio_normal) 
+        let suma=     parseFloat(arr[index].valor) - parseFloat(e.precio_normal) 
         let cantidad = arr[index].cantidad - 1    
         arr[index].valor = suma.toFixed(2)
          arr[index].cantidad=cantidad
          if(cantidad>0){
-         setDetalle(arr)
+         setDetalle(getVerTienda())
          setTimer(!timer)
+         let data = GetValores()
+         console.log(data)
+
         }else if(cantidad==0){
         let array = detalle   
-       // console.log("Elimina",e)
         let filtro = array.filter(obj=>obj.id!=e.id)
-        setDetalle(filtro)
+        setDetalle(getVerTienda())
         setTimer(!timer)
-    }
-    
-        }else{
-            setDetalle(arr)
+        let data = GetValores()
+        console.log(data)
+
+    }   }else{
+            setDetalle(getVerTienda())
         }
       }
     function Eliminar(e){
-        let array = detalle
-        setDetalle([])
-        console.log("Elimina",e)
+       // let array = detalle
+       // e.localidad 
+        EliminarByStora(e.localidad )
+        setDetalle(getVerTienda())
+      //  setDetalle([])
+      /*  console.log("Elimina",e)
         let filtro = array.filter(obj=>obj.id!=e.id)
-        setDetalle(filtro)
+        setDetalle(filtro)*/
     }
    
     useEffect(()=>{
         (async()=>{
             await lista()
         })()
+        setDetalle(getVerTienda())
 
     },[showshop])
     return (
@@ -154,6 +181,7 @@ const  ModalCarritoView=(prop)=>{
                                 </div>
                                 </div>
                                 <div className="d-flex justify-content-center  flex-row  col-12 col-md-3" role="cell">{e.precio_normal}</div>
+                                
                                 <div className="flex-row justify-content-center px-3 col-12 col-md-2" role="cell">
                                     <div className="d-flex flex-row justify-content-center ">
                                 <p className="resta input-group-text  " onClick={()=>restaprecio(e)} ><i className="fa fa-minus"></i></p>
@@ -190,8 +218,9 @@ const  ModalCarritoView=(prop)=>{
                             <tr>
                     <div className="row text-center header" role="rowgroup">
                         <div className="first col-12 col-md-3" role="columnheader">LOCALIDAD</div>
-                        <div className="col-12 col-md-3" role="columnheader">PRECIO</div>
-                        <div className=" col-12 col-md-3" role="columnheader">CANTIDAD</div>
+                        <div className="col-12 col-md-2" role="columnheader">Asineto</div>
+                        <div className="col-12 col-md-2" role="columnheader">PRECIO</div>
+                        <div className=" col-12 col-md-2" role="columnheader">CANTIDAD</div>
                         <div className=" col-12 col-md-3" role="columnheader">CARACTERISTICA</div>
                         </div>
                         </tr>
@@ -201,11 +230,12 @@ const  ModalCarritoView=(prop)=>{
                                 detalle.length>0?
                                 detalle.map((e,i)=>{
                                     return(
-                                        <tr className="flex-table row" role="rowgroup">
+                                        <tr className="flex-table row" role="rowgroup" key={i}>
                                             <div className="flex-row first text-center 
-                             col-12 col-md-3" role="cell">{e.name}</div>
-                            <div className="flex-row  text-center col-12 col-md-3">${e.valor}</div>
-                            <div className="flex-row  text-center  col-12 col-md-3">{e.cantidad}</div>
+                             col-12 col-md-3" role="cell">{e.localidad}</div>
+                             <div className="flex-row  text-center col-12 col-md-2">{e.fila}</div>
+                            <div className="flex-row  text-center col-12 col-md-2">${e.valor * e.cantidad}</div>
+                            <div className="flex-row  text-center  col-12 col-md-2">{e.cantidad}</div>
                              <div className="flex-row  text-center 
                              col-12 col-md-3">
                              <button className="btn btn-danger" onClick={()=>Eliminar(e)} >
@@ -281,11 +311,15 @@ const  ModalCarritoView=(prop)=>{
                                     fontSize: '2rem',
                                     fontWeight: 'bold',
                                 }}
-                                className="px-1 total-detalle"> $0.00{/*Total != 0 ? "$" + Total : null*/}</h4>
+                                className="px-1 total-detalle"> {GetValores()? "$" + GetValores().subtotal : null}</h4>
 
                     </div>
                     <div className="">
-                    <button className="btn btn-primary" disabled={check} >continuar</button>
+                        { detalle.length>0?
+                            <button className="btn btn-primary" disabled={check } onClick={handleContinuar}>continuar</button>:
+                            <button className="btn btn-primary" disabled={true} >continuar</button>
+                        }
+                    
                     </div>
 
                 

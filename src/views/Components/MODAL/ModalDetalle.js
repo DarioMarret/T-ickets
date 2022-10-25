@@ -270,6 +270,7 @@ return (
         show={showDetalle}
         onHide={handleDetalleColse}
         size="lg"
+        fullscreen={'lg-down'}
     >
         <Modal.Header >
         <button type="button" className="close"
@@ -294,7 +295,7 @@ return (
                     <form className={validationfrom}>
 
                                     <div className="row container-fluid">
-                                        <div className="col-6 col-sm-6 d-flex flex-column">
+                                        <div className="col-12 col-sm-6 d-flex flex-column">
                                             <span>Forma de Pago:</span>
                                             <input type="text"
                                                 className="form-control form-control-sm"
@@ -330,7 +331,7 @@ return (
                                                 placeholder="Ingrese su nombre completo"
                                             />
                                         </div>
-                                        <div className="col-6 col-sm-6 d-flex flex-column">
+                                        <div className="col-12 col-sm-6 d-flex flex-column">
                                             <span>Forma de envío:</span>
                                             <div>
                                                 <select className="form-select"      required
@@ -438,7 +439,7 @@ return (
                             <h4>Total:</h4>
                         </div>
                     </div>
-                    <div className="col-sm col-lg-2  text-end align-items-end flex-column ">
+                    <div className="col-6 col-sm text-end align-items-end flex-column ">
                         <div className="container ">
                             <h4 className="subtotal">${listaPrecio.subtotal} </h4>
                         </div>
