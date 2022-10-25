@@ -57,7 +57,7 @@ else
     
    const elimina = await EliminarEvento(codigo)
    const lista = await ListarEventos("PROCESO")
-   //const activo = await ListarEventos("ACTIVO")
+   //const activo = await ListarEventos("ACTIVO") 
   // const cancela = await ListarEventos("CANCELADO")
    if(elimina.success){
     setEventos([...lista.data])

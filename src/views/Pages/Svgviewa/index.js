@@ -20,7 +20,7 @@ const Viewssvg = () => {
                 //setAttribute("href", "https://www.w3schools.com")
                // console.log("aqui")
             })
-        })
+        }) 
     
 
     },[])

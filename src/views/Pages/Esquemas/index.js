@@ -515,7 +515,7 @@ const EsquemaViews=()=>{
                                 borderLeftStyle:'dashed',
                                 borderTopRightRadius:"5px",
                                 borderBottomRightRadius:"5px",
-                                }}>
+                                }}> 
                                     <div  className="bg-danger p-1 d-flex justify-content-center bg-light align-items-center" style={{
                                         height:'100%', 
                                     width:'100%',
