@@ -1,5 +1,7 @@
+import { array } from "prop-types"
 import React, { useEffect, useState } from "react"
 import { ListarLocalidad } from "utils/Querypanel"
+import { insertLocalidad } from "utils/Localidadmap"
 import "./isvg.css"
 const Viewssvg = () => {    
     const [localidadmap,setselection]=useState({
@@ -20,56 +22,84 @@ const Viewssvg = () => {
         setLocalidad(obtent.data)
 
     }
-    
-
-   $(document).on("click","path.none",function(){
-    if(localidadmap.name==""){ 
-       // alert("Eliga una localidad")
-     return}
-    else{
-    let copia = mapa
-    var index = copia.findIndex(obj => obj.path==this.getAttribute('id'));
-
+    function agergaraALarray(values){
+       let array = mapa
+            var index = array.findIndex(obj => obj.path==values.path);
+          if (index == -1) {
+            array.push(values);
+          } 
+         
+          localStorage.mapa = JSON.stringify(array)
+          setmapa(array)
+          console.log(array) 
+          //console.log(nuevocolor(array,values))
+        }
+   
+     
+            $(".none").click(function(e){
+               
+                if(localidadmap.name==""){ 
+                    // alert("Eliga una localidad")
+                  return}
+                 else{
+                 let copia = mapa
+                 
+             
+               
+                                let agrega={
+                                 path:this.getAttribute('id'),
+                                 id:localidadmap.name,
+                                 fill:localidadmap.color,
+                                }  
+                                console.log(agrega)
+                         copia.push({
+                            path:this.getAttribute('id'),
+                            id:localidadmap.name,
+                            fill:localidadmap.color,
+                           }  )
+                         localidadmap.name? this.removeAttribute("class","none"):''
+                         localidadmap.name?  this.setAttribute("fill",""+localidadmap.color):''
+                         //localidadmap.name?  this.setAttribute("class","seleccion") :''
+                          setmapa(copia)
+                         console.log(copia)
+                         localStorage.mapa = JSON.stringify(copia)
+                        }
+                  // localStorage.mapa = JSON.stringify(filtro)
+                 
+                
+                })
+                $(document).on("click","path.seleccion",function(){
+                    let copia = mapa
+                    let filtro = copia.filter((e)=>e.path!= this.getAttribute('id'))
+                    this.removeAttribute("fill")
+                         var b =this.getBBox()
+                      //  console.log(localidadmap.color)      
+                          this.removeAttribute("class","seleccion")       
+                          this.setAttribute("class","none")   
+                          this.getAttribute('id')? setmapa(filtro):''  
+                          this.getAttribute('id')?  localStorage.mapa = JSON.stringify(filtro):''
+                 })
   
-                   let agrega={
-                    path:this.getAttribute('id'),
-                    id:localidadmap.name,
-                    fill:localidadmap.color,
-                   }  
-                   console.log(agrega)
-            this.getAttribute('id')&& (index == -1)? copia.push(agrega):''
-            localidadmap.name? this.removeAttribute("class","none"):''
-            localidadmap.name?  this.setAttribute("fill",""+localidadmap.color):''
-            localidadmap.name?  this.setAttribute("class","seleccion") :''
-            this.getAttribute('id')&& (index == -1)?  setmapa(copia):''
-           }
-    })
-    $(document).on("click","path.seleccion",function(){
-        let copia = mapa
-        let filtro = copia.filter((e)=>e.path!= this.getAttribute('id'))
-        this.removeAttribute("fill")
-             var b =this.getBBox()
-          //  console.log(localidadmap.color)      
-              this.removeAttribute("class","seleccion")       
-              this.setAttribute("class","none")   
-              this.getAttribute('id')? setmapa(filtro):''  
-              this.getAttribute('id')?  localStorage.mapa = JSON.stringify(filtro):''
-     })
-     console.log(mapa)
+   
+     
+     
     useEffect(()=>{
         (async()=>{
             await GetLocalidad()
         })()
-      /*  var paths = document.querySelectorAll("path, rect, circle, ellipse, line, polyline, polygon");
+      
+
+        /*var paths = document.querySelectorAll("path, rect, circle, ellipse, line, polyline, polygon");
     
        paths.forEach(e=>{
+        let color = localidadmap.color
             e.addEventListener('click',function(e){
              //   console.log(this.getAttribute("class"))
                 if(this.getAttribute("class")=="none"){
                 var b =this.getBBox()
                  this.removeAttribute("class","none")
-                 this.setAttribute("fill", localidadmap.color)
-                 console.log("deberia pintar", localidadmap.color)
+                 this.setAttribute("fill", color)
+                 console.log("deberia pintar",color)
                
             }else if(this.getAttribute("class")!="none"){
                 this.removeAttribute("fill")
@@ -77,9 +107,7 @@ const Viewssvg = () => {
                 console.log("no deberia pintar", this.getAttribute("class"))
             }
             })
-        })*/
-
-        
+        })
 
         
         //agregar id y class
@@ -110,7 +138,7 @@ const Viewssvg = () => {
                             { localidad.length>0?
                               localidad.map((e,i)=>{
                                 return(
-                                    <option key={i} value={e.id} >{e.nombre}</option>
+                                    <option key={i} value={e.nombre} >{e.nombre}</option>
                                 )
                               }):''
                             }
