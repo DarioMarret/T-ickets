@@ -27,7 +27,7 @@ const {success,data}=datos
         let dato = JSON.parse( e.mesas_array)      
         return {...e,tipo:dato.Typo}
       })
-      console.log("localidada",obten)
+      //console.log("localidada",obten)
       setData(obten)
      }
      

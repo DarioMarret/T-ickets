@@ -141,7 +141,7 @@ const TabunoView = (props) => {
 
 
     }
-    console.log(ListaFilas)
+  //  console.log(ListaFilas)
     useEffect(() => {
         if (datalocalidad.typo == "fila") {
             console.log("Filas", datalocalidad)

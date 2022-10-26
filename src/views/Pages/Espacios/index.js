@@ -31,7 +31,7 @@ const EventosViews =()=>{
 async function Lista (){
   const cargarLista = await ListarEspacios()
   const{success,data}= cargarLista
-  console.log(data)
+//  console.log(data)
   if(success){
     setListaEspa(data) }
 }

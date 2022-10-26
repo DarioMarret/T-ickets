@@ -1,6 +1,12 @@
 .none{
-    fill:rgb(148, 152, 152)
+    fill:rgb(148, 152, 152);
+    cursor: pointer;
   }
-  path{
+
+  .seleccion{
+    
+    cursor: no-drop;
+  }
+  .precios{
     cursor: pointer;
   }

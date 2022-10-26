@@ -1,14 +1,16 @@
 import { array } from "prop-types"
 import React, { useEffect, useState } from "react"
 import { ListarLocalidad } from "utils/Querypanel"
-import { insertLocalidad } from "utils/Localidadmap"
+import { insertLocalidad,getMapacolor ,getLocalidadmapa} from "utils/Localidadmap"
+
 import "./isvg.css"
 const Viewssvg = () => {    
     const [localidadmap,setselection]=useState({
         name:"",
-        color:'#30A05E',
+        color:'#A12121',
     })
     const [mapa,setmapa]=useState([])
+    const [lista,setLsita]=useState([])
     const [localidad,setLocalidad]=useState([])
    
     function handelChange (e){
@@ -16,99 +18,107 @@ const Viewssvg = () => {
             ...localidadmap,
             [e.name]:e.value
         })
-    }
-    async function GetLocalidad(){
-        let obtent = await ListarLocalidad()
-        setLocalidad(obtent.data)
 
     }
-    function agergaraALarray(values){
-       let array = mapa
-            var index = array.findIndex(obj => obj.path==values.path);
-          if (index == -1) {
-            array.push(values);
-          } 
-         
-          localStorage.mapa = JSON.stringify(array)
-          setmapa(array)
-          console.log(array) 
-          //console.log(nuevocolor(array,values))
+    
+
+    function agergaraALarray(dato,id,color){
+       let array = lista       
+      // let nuevo = mapa
+     // console.log(array)
+            var index = array.findIndex(obj => obj.path==dato);
+          if (index == -1) { 
+            array.push({path:dato,id:id, fill:color});
+            
+          } else {
+            do {
+              array.splice(index, 1);
+             index = array.indexOf({path:dato,id:id, fill:color});
+            } while (index != -1);
+          }
+          setLsita(array)
+        //  console.log("mpap?",nuevo) 
+        insertLocalidad(array,{path:dato,id:id, fill:color})
+        cargarcolores()
+        listadecolores()
+        
         }
-   
-     
-            $(".none").click(function(e){
-               
-                if(localidadmap.name==""){ 
-                    // alert("Eliga una localidad")
-                  return}
-                 else{
-                 let copia = mapa
-                 
-             
-               
-                                let agrega={
-                                 path:this.getAttribute('id'),
-                                 id:localidadmap.name,
-                                 fill:localidadmap.color,
-                                }  
-                                console.log(agrega)
-                         copia.push({
-                            path:this.getAttribute('id'),
-                            id:localidadmap.name,
-                            fill:localidadmap.color,
-                           }  )
-                         localidadmap.name? this.removeAttribute("class","none"):''
-                         localidadmap.name?  this.setAttribute("fill",""+localidadmap.color):''
-                         //localidadmap.name?  this.setAttribute("class","seleccion") :''
-                          setmapa(copia)
-                         console.log(copia)
-                         localStorage.mapa = JSON.stringify(copia)
+        
+        function cargarcolores (){
+            let colores = getMapacolor()
+            colores.length>0? setLsita(colores):''
+            colores.length>0? colores.map((e,i)=>{
+                $("#"+e.path).attr("class","seleccion")               
+                $("#"+e.path).attr("fill",e.fill,"class","seleccion")        
+            }):''
+        }
+                 $(document).on("click",".none",function(){
+                let co = document.getElementById("color").value;
+                let id = document.getElementById("name").value;
+                if(this.classList.contains('none')){
+                    if(id.trim()=== "") {
+                    return  }
+                    else
+                agergaraALarray(this.getAttribute('id'),id,co)   
+                          this.removeAttribute("class","none")       
+                          this.setAttribute("class","seleccion")   
                         }
-                  // localStorage.mapa = JSON.stringify(filtro)
-                 
-                
-                })
-                $(document).on("click","path.seleccion",function(){
-                    let copia = mapa
-                    let filtro = copia.filter((e)=>e.path!= this.getAttribute('id'))
-                    this.removeAttribute("fill")
-                         var b =this.getBBox()
-                      //  console.log(localidadmap.color)      
-                          this.removeAttribute("class","seleccion")       
-                          this.setAttribute("class","none")   
-                          this.getAttribute('id')? setmapa(filtro):''  
-                          this.getAttribute('id')?  localStorage.mapa = JSON.stringify(filtro):''
+                 })
+                $(document).on("click",".seleccion",function(){
+                 if(this.classList.contains('seleccion')){
+                    this.removeAttribute("fill")   
+                    agergaraALarray(this.getAttribute('id'),'','')
+                    this.removeAttribute("class","seleccion")   
+                    this.setAttribute("class","none")                             
+                        } 
                  })
   
    
-     
-     
+                 async function GetLocalidad(){
+                    let obtent = await ListarLocalidad()
+                    setLocalidad(obtent.data)
+                    let nuevo = obtent.data.map((e,i)=>{
+                        return{ id:e.id, nombre:e.nombre,color:''}
+                    })
+                    setmapa(obtent.data.map((e,i)=>{
+                        return{ id:e.id, nombre:e.nombre,color:''}
+                    }))
+                    //console.log("localidades",nuevo)
+                    localStorage.localidad = JSON.stringify(obtent.data)
+                    cargarcolores()   
+                }
+                async function listadecolores(){
+                    let nuevo = getLocalidadmapa()
+                  //  console.log("Function mapa",nuevo)
+                    let colores = getMapacolor()
+                    const valorDuplicadas = [];
+                    nuevo.length>0 && colores.length>0 ? colores.forEach(p => {
+                            if(valorDuplicadas.findIndex(pd => pd.id === p.id) === -1) {       
+                             let index =nuevo.findIndex((e)=>parseInt(e.id)=== parseInt(p.id))
+                                valorDuplicadas.push({id:p.id,nombre:nuevo[index]?nuevo[index].nombre:'',color:p.fill});
+                            }
+                            }):''     
+                    nuevo.length>0 && colores.length>0 ? nuevo.map((L)=>{
+                            if(valorDuplicadas.findIndex((e)=>parseInt(e.id)=== parseInt(L.id))!=-1){
+                                L.color=valorDuplicadas[valorDuplicadas.findIndex((e)=>parseInt(e.id)=== parseInt(L.id))].color;
+                                return L
+                            }else{
+                                return L
+                            }
+                            }):''
+                            console.log("mutado",nuevo)  
+
+                         // console.log("duplicado",valorDuplicadas)
+                          nuevo.length>0 && colores.length>0?setmapa(nuevo) :''
+                          nuevo.length>0 && colores.length>0? localStorage.localidad = JSON.stringify(nuevo):''
+                }
     useEffect(()=>{
         (async()=>{
             await GetLocalidad()
+            listadecolores()
+            
         })()
-      
-
-        /*var paths = document.querySelectorAll("path, rect, circle, ellipse, line, polyline, polygon");
-    
-       paths.forEach(e=>{
-        let color = localidadmap.color
-            e.addEventListener('click',function(e){
-             //   console.log(this.getAttribute("class"))
-                if(this.getAttribute("class")=="none"){
-                var b =this.getBBox()
-                 this.removeAttribute("class","none")
-                 this.setAttribute("fill", color)
-                 console.log("deberia pintar",color)
-               
-            }else if(this.getAttribute("class")!="none"){
-                this.removeAttribute("fill")
-                this.setAttribute("class", "none")
-                console.log("no deberia pintar", this.getAttribute("class"))
-            }
-            })
-        })
-
+       
         
         //agregar id y class
    /* $(paths).each(function(index){ 
@@ -120,6 +130,7 @@ const Viewssvg = () => {
      
 
     },[])
+   
 
     return (
         <>
@@ -129,8 +140,8 @@ const Viewssvg = () => {
                     <div className="row">
                         <div className="col-8">
                         <label className="form-label">Selecione localidad elija el color de la Localidad </label>
-                        <select className="form-control" value={localidadmap.name} name="name"  onChange={(e)=>handelChange(e.target)}>
-                            <option >
+                        <select className="form-control" value={localidadmap.name} name="name" id="name"  onChange={(e)=>handelChange(e.target)}>
+                            <option value="">
                             
                             </option>
                             
@@ -138,7 +149,7 @@ const Viewssvg = () => {
                             { localidad.length>0?
                               localidad.map((e,i)=>{
                                 return(
-                                    <option key={i} value={e.nombre} >{e.nombre}</option>
+                                    <option key={i} value={e.id} >{e.nombre}</option>
                                 )
                               }):''
                             }
@@ -148,7 +159,7 @@ const Viewssvg = () => {
                         <label className="form-label" >.</label>
                         <input
                         className="form-control form-control-color"
-                        value={localidadmap.color} name="color" 
+                        value={localidadmap.color} name="color" id="color"
                         type="color" 
                         onChange={(e) => handelChange(e.target)}
                         />
@@ -160,8 +171,19 @@ const Viewssvg = () => {
                 </form>
 
             </div>
-            <div className=" d-flex flex- text-center justify-content-center col-12 col-md-6">
-                <div className="d-flex">
+            <div className=" d-flex flex-column text-center justify-content-center col-12 col-md-6">
+                <div className="d-flex flex-wrap justify-content-center  pb-5">
+                            {mapa.length>0?
+                            mapa.map((elm, i) => {
+                                
+                                return(
+                                    <div className="d-flex flex-row px-3 precios" key={i}  >
+                                        <div  className="mx-1  rounded-4" style={{height:20,width:20,backgroundColor:elm.color}}></div>
+                                        <span>{elm.nombre}</span>
+                                    </div>
+                                )
+                            }):''
+                            }
 
                 </div>
                 
