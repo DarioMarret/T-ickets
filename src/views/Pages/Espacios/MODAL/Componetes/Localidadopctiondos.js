@@ -16,20 +16,14 @@ const TabdosView = (props) => {
     //array de la localidad
     const [FilasLocalidad, SetFilaLocalidad] = useState([])
     const [Mesas, SetMesasLocalidad] = useState([])
-
-
-
     const [listaFilasConsillas, setFilasSillas] = useState([])
     const [visible,SetVisible]=useState(false)
-
-
     //lista para selecionar mesa especifica
     const [ListaMesa, setMesas] = useState([])
     const [selet, Fila] = useState([])
-   
     const [singleSelect, setSingleSelect] = React.useState({value: "",label: "",});
     const [singleSelecttwo, setSingleSelectwo] = React.useState({value: "",label: "",});
-    const [multipleSelect, setMultipleSelect] = React.useState({value: "",label: "",});
+    const [multipleSelect, setMultipleSelect] = React.useState({value:"",label: "",});
     const [singleSelecttres, setSingleSelectres] = React.useState({value: "",label: "",});
     const [Mesass, setMesass] = useState({
         me_cantidad: 'todas',
@@ -156,17 +150,20 @@ const TabdosView = (props) => {
             setTimeout(function(){
                 SetFilaLocalidad(ListadeMesas)   
                 setSingleSelectwo({value: "",label: "",})
-       setMultipleSelect({value: "",label: "",})
+       setMultipleSelect({value:"",label: "",})
        setSingleSelectres({value: "",label: "",})
             },90);
         }
-        }else if(multipleSelect.value!=""&& singleSelecttwo.value!=""&& multipleSelect.value!="Todas"&& singleSelecttwo.value!="Todas"&& singleSelecttres.value!=""){
+        }
+        else if(multipleSelect.value!=undefined && singleSelecttwo.value!=undefined && multipleSelect.value!="Todas"&& singleSelecttwo.value!="Todas"&& singleSelecttres.value!=undefined ){
 
          //Fila especifica mesa especifica 
          ListadeMesas = FilasLocalidad
          var index = ListadeMesas.findIndex(obj => obj.Fila==singleSelecttwo.value); 
          var fila = ListadeMesas[index].Mesas.findIndex(obj => obj.mesa==multipleSelect.value); 
-         var numfila = "A0"
+         var numfila =singleSelecttwo
+         multipleSelect
+         console.log(multipleSelect.value,singleSelecttwo.value)
          ListadeMesas[index].Mesas[fila]["asientos"]=[]
          for(var f=0; f< parseInt(singleSelecttres.value); f++ ){   
             
@@ -182,19 +179,15 @@ const TabdosView = (props) => {
        setSingleSelectres({value: "",label: "",})
             },90);
 
-    }
-        
-
-
-
-    }
-    
+        }else{
+            alert("Seleciones todas las opciones")
+        }      
+    }   
     function handelchangeMesa(e) {
         setMesass({
             ...Mesass,
             [e.name]: e.value
         })
-        // SetSillasmes({ sillas: '', cantidad: '' })
     }
     function handelchangelocalidad(e) {
         setLocalidad({
@@ -439,8 +432,7 @@ const TabdosView = (props) => {
                                                         className="react-select info"
                                                         classNamePrefix="react-select"
                                                         placeholder="Mesas"
-                                                        name="multipleSelect"
-                                                        
+                                                        name="multipleSelect"                                                        
                                                         value={multipleSelect}
                                                         onChange={(value) => setMultipleSelect(value)
 
@@ -541,47 +533,19 @@ const TabdosView = (props) => {
                                                     <div key={i}>
                                                         <MesasView
                                                             status={e.asientos.length}
-                                                            text={e.mesa} />
+                                                            text={e.mesa} 
+                                                            list={e.asientos}/>
                                                     </div>
 
                                                 )
                                             }):''}
                                         </div>
                                 </div>
-
                             )
                         }):''
                         }
-                        {/*.length > 0 ?
-                            ejemplo.map((e, index) => {
-                                return (
-                                    <div className='d-flex  px-3 align-items-center' key={index}>
-                                        <div className='d-flex pb-2'>
-                                            <MesacerView
-                                                text={index}
-                                            />
-                                        </div>
-
-                                        <div className='d-flex  pb-2' >
-                                            {ListaMesa.map((e, i) => {
-                                                return (
-                                                    <div key={i}>
-                                                        <MesasView
-                                                            status={e.asientos.length}
-                                                            text={e.mesa + "" + index} />
-                                                    </div>
-
-                                                )
-                                            })}
-                                        </div>
-                                    </div>)
-
-                            }) : ""*/}
-                    </div>
+                      </div>
                 </div>
-
-
-
             </div>
         </>
     )

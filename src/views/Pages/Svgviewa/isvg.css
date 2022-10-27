@@ -1,6 +1,9 @@
-.none{
+#estandar path.none{
     fill:rgb(148, 152, 152);
     cursor: pointer;
+  }
+  .opciones path {
+     fill: rgb(148, 152, 152);
   }
 
   .seleccion{

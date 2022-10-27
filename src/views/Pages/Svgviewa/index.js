@@ -174,17 +174,15 @@ const Viewssvg = () => {
             <div className=" d-flex flex-column text-center justify-content-center col-12 col-md-6">
                 <div className="d-flex flex-wrap justify-content-center  pb-5">
                             {mapa.length>0?
-                            mapa.map((elm, i) => {
-                                
+                            mapa.map((elm, i) => {                                
                                 return(
-                                    <div className="d-flex flex-row px-3 precios" key={i}  >
+                                    <div className="d-flex flex-row px-3 precios align-items-center" key={i}  >
                                         <div  className="mx-1  rounded-4" style={{height:20,width:20,backgroundColor:elm.color}}></div>
                                         <span>{elm.nombre}</span>
                                     </div>
                                 )
                             }):''
                             }
-
                 </div>
                 
                 <div className=" d-flex text-center justify-content-center" style={{width:'100%'}}>

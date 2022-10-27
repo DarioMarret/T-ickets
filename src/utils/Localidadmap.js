@@ -1,5 +1,3 @@
-
-
 export function insertLocalidad(mapa,datos) {
     let nuevo = mapa.map((e,i)=>{
         if (datos.id == e.id) {
@@ -11,9 +9,6 @@ export function insertLocalidad(mapa,datos) {
         }
     })
     localStorage.mapa = JSON.stringify(nuevo)
-
-
-
 }
 export function getMapacolor(){
     try {
@@ -25,7 +20,6 @@ export function getMapacolor(){
     } catch (error) {
         console.log(error)
     }
-
 }
 export function getLocalidadmapa(){
     try{
@@ -33,8 +27,8 @@ export function getLocalidadmapa(){
         if (item != null) {
             return item
         }else return[]
-
     }catch(error){
         console.log(error)
     }
 }
+

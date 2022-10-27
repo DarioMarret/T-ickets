@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
-import {clienteInfo} from "../../utils/localstore";
+
 import imagen5 from "assets/imagen/logo-tickets.png"
  //import {clienteInfo} from "../../utils" ;
 // react-bootstrap components

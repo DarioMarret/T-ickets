@@ -1,6 +1,6 @@
 import React from "react";
 import { Stylesilla } from "./style";
-const MesaseisView =({text})=>{
+const MesaseisView =({text,list})=>{
     return(
         <div  style={{padding: '0.7px'}}>
               <div className="d-flex ">

@@ -17,8 +17,7 @@ import ModalReport from "views/Components/MODAL/ModalReporte";
 import ModalEfectivo from "views/Components/MODAL/Modalefectivo";
 import TOAST from "views/Components/TOAST";
 import Footer from "views/Components/Footer/Footer";
-import { DatosUsuariocliente } from "utils/constantes";
-import { GetMetodo ,getVerTienda} from "utils/CarritoLocalStorang";
+import { GetMetodo ,getVerTienda,LimpiarLocalStore} from "utils/CarritoLocalStorang";
 import { useHistory } from "react-router";
 import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
@@ -30,15 +29,16 @@ import { useSelector,useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
 import { Authsucrito } from "utils/Query";
+import { listarpreciolocalidad } from "utils/Querypanel";
 import { cargarEventoActivo } from "utils/Querypanelsigui";
-import { Dias } from "utils/constantes";
+import { Dias,DatosUsuariocliente,Eventoid } from "utils/constantes";
 import ModalCarritov from "views/Components/MODAL/ModalCarritov";
-
+import SweetAlert from "react-bootstrap-sweetalert";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
   const userauthi= useSelector((state)=>state.SuscritorSlice)
-  
+  const [precios,setPrecios]=useState([])
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
   const [efectShow, efectiOpShow] = useState(false);
@@ -53,14 +53,62 @@ const IndexFlas = () => {
     estado:'',
   })
   const [showLogin,setShowLogin]=useState(false)
-  
+  const [alert, setAlert] = React.useState(null);
 
 //console.log(userauth)
- const abrir=(e)=>{
-  setDatoscon(e)
-  handleClosesop(true)
-
+ const abrir= async (e)=>{
+  let id = localStorage.getItem(Eventoid)
+  if(id!=null && id!=e.codigoEvento){
+    successAlert(e)
+    }
+  else{
+    try{
+    let obten = await listarpreciolocalidad(e.codigoEvento)
+    if(obten.data.length>0){  
+    localStorage.eventoid= e.codigoEvento 
+    
+    setPrecios(obten.data)
+      console.log(obten)
+      setDatoscon(e)
+      handleClosesop(true)}
+      }catch(err){
+        console.log(err)
+      }
+      
+  }
  }
+ const borrar = async (e)=>{
+  LimpiarLocalStore()
+  let obten = await listarpreciolocalidad(e.codigoEvento)
+  localStorage.eventoid= e.codigoEvento
+  if(obten.data.length>0){
+      setPrecios(obten.data)
+      console.log(obten)
+    setDatoscon(e)
+    hideAlert()
+    handleClosesop(true)}
+ }
+ const successAlert = (e) => {
+  setAlert(
+    <SweetAlert
+      warning
+      style={{ display: "block", marginTop: "-100px" }}
+      title="Tiene un una compra pendiente"
+      onConfirm={() => borrar(e)}
+      onCancel={() => hideAlert()}
+      confirmBtnBsStyle="success"
+      cancelBtnBsStyle="danger"
+      confirmBtnText="Si, Continuar"
+      cancelBtnText="Cancelar"
+      showCancel
+    >
+      Desea borrar los datos y continuar 
+    </SweetAlert>
+  );
+};
+const hideAlert = () => {
+  setAlert(null);
+};
   const [modalPago, setModalPago] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false)
@@ -296,8 +344,12 @@ const IndexFlas = () => {
          showshop={showshop}
          handleClosesop={ handleClosesop}
          handleContinuar={handleContinuar}
+         setListarCarritoDetalle={setListarCarritoDetalle}
          datos={datos}
+         precios={precios}
+         setListaPrecio={setListaPrecio}
          />
+         {alert}
       <nav className="navbar navbar-expand-lg justify-content-between navbar-dark bg-black fixed-top py-3">
         <div className="container-fluid col-lg-8    d-flex justify-content-between">
           <a className="navbar-brand " aria-label="TICKETS" href="#">

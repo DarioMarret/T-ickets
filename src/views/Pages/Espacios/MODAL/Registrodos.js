@@ -32,6 +32,7 @@ const RegistroViwstab =(props)=>{
          //setLocalidad(filtrado)
          //setmapa(obten)
          localStorage.localidad = JSON.stringify(obten)
+         localStorage.localidadrespaldo = JSON.stringify(obten)
         
         }
         

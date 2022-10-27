@@ -2,19 +2,17 @@ import React,{useEffect,useState} from "react"
 import { Modal } from "react-bootstrap" 
 import { Metodos } from 'utils/constantes'
 import { listarpreciolocalidad } from "utils/Querypanel"
-import { TiendaIten , GetValores,getVerTienda, EliminarByStora } from "utils/CarritoLocalStorang"
+import { TiendaIten , GetValores,getVerTienda, EliminarByStora, } from "utils/CarritoLocalStorang"
 import mapa from '../../../assets/img/mapa.png'
 
 
 
 const  ModalCarritoView=(prop)=>{
-    const{showshop, handleClosesop,handleContinuar,datos}=prop
-    const [precios,setPrecios]=useState([])
+    const{showshop, handleClosesop,handleContinuar,precios,setListaPrecio,setListarCarritoDetalle,datos}=prop
     const [detalle,setDetalle]=useState([])
     const [timer, setTimer] = useState(false)
     const lista =async ()=>{
         let precios = await listarpreciolocalidad(datos.codigoEvento)
-        console.log(precios)
         setPrecios(precios.data)
     }
     const [checked, setChecked] = useState({
@@ -22,21 +20,19 @@ const  ModalCarritoView=(prop)=>{
         Tarjeta: "",
         Deposito: "",
     })
-   // console.log(datos)
     const [check, setCheck] = useState(true)
     function handelMetodopago(target, value) {
         setChecked({
             [target.name]: value,
-        })
-       
+        })       
         localStorage.setItem(Metodos, value)
         setCheck(false)
     }
     function agregar(e){
         let arr = detalle        
         var index = arr.findIndex(obj => obj.id==e.id);
-
-        var ind = arr.includes(index=>index.id==e.id)
+        
+        //var ind = arr.includes(index=>index.id==e.id)
         let producto = {
             cantidad: 1,
             localidad:e.localodad,
@@ -83,11 +79,12 @@ const  ModalCarritoView=(prop)=>{
             valor: e.precio_normal,
             nombreConcierto: "GIRA 40 ANIVERSARIO",
         }
-        TiendaIten(producto)
+
+      
         setDetalle([])
         if (index != -1) {
         let suma=     parseFloat(arr[index].valor) - parseFloat(e.precio_normal) 
-        let cantidad = arr[index].cantidad - 1    
+        let cantidad = arr[index].cantidad   
         arr[index].valor = suma.toFixed(2)
          arr[index].cantidad=cantidad
          if(cantidad>0){
@@ -95,17 +92,18 @@ const  ModalCarritoView=(prop)=>{
          setTimer(!timer)
          let data = GetValores()
          console.log(data)
-
+         cantidad>=1? TiendaIten(producto):''
         }else if(cantidad==0){
-        let array = detalle   
+        let array = detalle    
         let filtro = array.filter(obj=>obj.id!=e.id)
         setDetalle(getVerTienda())
         setTimer(!timer)
         let data = GetValores()
         console.log(data)
-
+        setTimer(!timer)
     }   }else{
             setDetalle(getVerTienda())
+            setTimer(!timer)
         }
       }
     function Eliminar(e){
@@ -120,12 +118,14 @@ const  ModalCarritoView=(prop)=>{
     }
    
     useEffect(()=>{
-        (async()=>{
+        /*(async()=>{
             await lista()
-        })()
+        })()*/
         setDetalle(getVerTienda())
+        setListarCarritoDetalle(getVerTienda())
+        setListaPrecio(GetValores())
 
-    },[showshop])
+    },[showshop,timer])
     return (
         <>
        {/* <div className="bg-danger" style={{
@@ -145,7 +145,7 @@ const  ModalCarritoView=(prop)=>{
             fullscreen={true}            
         >
             <Modal.Header >
-                <h5 className="modal-title text-center justify-content-center">LOCALIDADES</h5>
+                <h5 className="modal-title text-center justify-content-center">Boleteria</h5>
                 <button type="button" className="close"  onClick={()=>handleClosesop()} >
                     ×
                 </button>
@@ -155,104 +155,137 @@ const  ModalCarritoView=(prop)=>{
                 <div className="d-flex flex-wrap-reverse" >
                 <div className="col-12 col-lg-8" >
                     <div>
-                <table className=" table table-striped display cell-border">
-                    <thead className="bg-secondary text-black flex-table row">
-                        <tr>
-                    <div className="row text-center header" >
-                        <div className="first col-12 col-md-3" >LOCALIDAD</div>
-                        <div className="col-12 col-md-3" role="columnheader">PRECIO</div>
-                        <div className=" col-12 col-md-3" role="columnheader">Agrega</div>
-                        <div className=" col-12 col-md-3" role="columnheader">CARACTERISTICA</div>
-                        </div>
-                        </tr>
-                    </thead>
+                <div className=" table table-striped  ">
+                      <div className="bg-secondary p-1 d-none d-sm-block text-black flex-table row" role="rowgroup">
+                            <div className="row text-center header" role="rowgroup">
+                            <div className="flex-row text-center col-4" role="columnheader">Localidad</div>
+                        
+                            <div className="flex-row  text-center col-2 col-md-2" role="columnheader">Precio</div>
+                            <div className="flex-row  text-center col-2 col-md-2" role="columnheader">Cantidad</div>
+                            <div className="flex-row  text-center col-2 col-md-3" role="columnheader">Características</div>
+                            </div>                       
+                            </div>
+                            <div className="bg-secondary p-1 text-black flex-table row d-block d-sm-none" >                                
+                                <h4>LOCALIDADES</h4>                            
+                            </div>
                    
                    
-                    <tbody className="text-center "style={{maxHeight:'250px' ,overflowY:'auto',overflowY:'hidden' }}>
+                    <div className="text-center list-group-flush "style={{maxHeight:'250px' ,overflowY:'auto',overflowX:'hidden' }}>
                     { precios.length>0?
                     precios.map((e,i)=>{
                         return(
-                            <tr className="flex-table row"key={i}  role="rowgroup">
-                            <div className="flex-row first text-center 
-                             col-12 col-md-4"  role="cell">
+                            <div className="d-flex row list-group-item" key={i} >
+                              <div className="flex-row  d-none d-sm-block    first text-center col-4"  role="cell">
                                 <div className="d-flex justify-content-center align-items-baseline  ">
                                 <div className="rounded-3 px-2" style={{ backgroundColor: 'brown', width: '30px', height: '20px' }}></div>
                                     <p className="px-2 " style={{ fontSize: '1em' }}>{e.localodad}</p>
                                 </div>
                                 </div>
-                                <div className="d-flex justify-content-center  flex-row  col-12 col-md-3" role="cell">{e.precio_normal}</div>
-                                
-                                <div className="flex-row justify-content-center px-3 col-12 col-md-2" role="cell">
-                                    <div className="d-flex flex-row justify-content-center ">
-                                <p className="resta input-group-text  " onClick={()=>restaprecio(e)} ><i className="fa fa-minus"></i></p>
-                                        <input size="4" disabled={true}
+                                <div className="d-flex justify-content-center  d-none d-sm-block   flex-row  col-6 col-md-3" role="cell">{e.precio_normal}</div>
+                                <div className="flex-row d-none d-sm-block  d-none d-sm-block  justify-content-center px-3 col-12 col-md-2" role="cell">
+                                <div className="d-flex  flex-row justify-content-center  ">
+                                        <p className="resta input-group-text  " onClick={()=>restaprecio(e)} ><i className="fa fa-minus"></i></p>
+                                       {/* <input size="4" disabled={true}
                                         
                                             type="text" style={{
                                                 width: '50px!important',
                                                 alignItems: 'center',
                                                 textAlign: 'center',
-                                            }} className="form-control d-none form-control-sm" />
+                                            }} className="form-control d-none form-control-sm" />*/}
 
-                                        <p className="suma input-group-text " onClick={()=>agregar(e)}><i className="fa fa-plus"></i></p>
-                                        </div>
-
+                                        <p className="suma input-group-text mx-1" onClick={()=>agregar(e)}><i className="fa fa-plus"></i></p>
                                 </div>
-                                <div className="flex-row d-flex justify-content-center col-12 col-md-3" role="cell">
+                                </div>
+                                <div className="flex-row d-flex  d-none d-sm-block  justify-content-center col-12 col-md-3" role="cell">
                                 <p className="px-2 " style={{ fontSize: ' 1em' }}>tipo</p>
-                                </div>
-                            </tr>
-                            
-                             
+                                </div>      
+                                <div className=" col-6 d-block d-sm-none col-6 d-flex flex-row ">
+                                                        <div className="d-flex flex-column ">
+                                                        <h5 className="card-title">{e.localodad}</h5>
+                                                      
+                                                        <p className="card-subtitle">precio ${e.precio_normal}</p>
+                                                        <p className="card-subtitle">Tipo </p>
+                                                        </div>
+                                                    </div>
+                                            <div className="col-6 d-block d-sm-none text-center d-flex justify-content-end align-items-center">
+                                                    <p className="resta input-group-text  " onClick={()=>restaprecio(e)} ><i className="fa fa-minus"></i></p>
+                                                            {/*<input size="4" disabled={true}
+                                                                type="text" style={{
+                                                                    width: '50px!important',
+                                                                    alignItems: 'center',
+                                                                    textAlign: 'center',
+                                                                }} className="form-control d-none form-control-sm" />*/}
+                                                    <p className="suma input-group-text " onClick={()=>agregar(e)}><i className="fa fa-plus"></i></p>
+                                            </div>
+                            </div>
                         )
                     })
-                    :<tr></tr> }
-                    </tbody>              
+                    :''}
+                    </div>              
                     
                   
-                </table>
                 </div>
-                <div className="d-none d-sm-block  ">
-                        <table className="detalles-resumen table table-striped display cell-border"
+                </div>
+                <div className="  ">
+                        <div className="detalles-resumen  "
                         >
-                            <thead className="bg-secondary text-black flex-table row" role="rowgroup">
-                            <tr>
-                    <div className="row text-center header" role="rowgroup">
-                        <div className="first col-12 col-md-3" role="columnheader">LOCALIDAD</div>
-                        <div className="col-12 col-md-2" role="columnheader">Asineto</div>
-                        <div className="col-12 col-md-2" role="columnheader">PRECIO</div>
-                        <div className=" col-12 col-md-2" role="columnheader">CANTIDAD</div>
-                        <div className=" col-12 col-md-3" role="columnheader">CARACTERISTICA</div>
-                        </div>
-                        </tr>
-                            </thead>
-                            <tbody className="text-center "style={{maxHeight:'250px' ,overflowY:'auto',overflowY:'hidden' }}>
+                            <div className="bg-secondary p-2 d-none d-sm-block text-black flex-table row" role="rowgroup">
+                            
+                            <div className="row text-center header" role="rowgroup">
+                            <div className="flex-row text-center col-2 col-md-3" role="columnheader">Localidad</div>
+                            <div className=" flex-row  text-center col-2 col-md-2" role="columnheader">Asiento</div>
+                            <div className="flex-row  text-center col-2 col-md-2" role="columnheader">Precio</div>
+                            <div className="flex-row  text-center col-2 col-md-2" role="columnheader">Cantidad</div>
+                            <div className="flex-row  text-center col-2 col-md-3" role="columnheader">Características</div>
+                            </div>
+                       
+                            </div>
+                            <div className="bg-secondary p-1 text-black flex-table row d-block d-sm-none " >
+                                
+                                    <h4>AGRAGADOS</h4>
+                                
+                            </div>
+                            <div className="text-center px-2  list-group-flush"style={{maxHeight:'250px'  ,overflowY:'auto',overflowX:'hidden' }}>
                             {
                                 detalle.length>0?
                                 detalle.map((e,i)=>{
                                     return(
-                                        <tr className="flex-table row" role="rowgroup" key={i}>
-                                            <div className="flex-row first text-center 
-                             col-12 col-md-3" role="cell">{e.localidad}</div>
-                             <div className="flex-row  text-center col-12 col-md-2">{e.fila}</div>
-                            <div className="flex-row  text-center col-12 col-md-2">${e.valor * e.cantidad}</div>
-                            <div className="flex-row  text-center  col-12 col-md-2">{e.cantidad}</div>
-                             <div className="flex-row  text-center 
-                             col-12 col-md-3">
-                             <button className="btn btn-danger" onClick={()=>Eliminar(e)} >
+                                        <div className="d-flex flex-table row list-group-item" role="rowgroup" key={"items"+i}>
+                                            <div className="flex-row first text-center d-none d-sm-block col-3 col-md-3" role="cell">{e.localidad}</div>
+                             <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>
+                            <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">${e.valor * e.cantidad}</div>
+                            <div className="flex-row d-none d-sm-block text-center  col-2 col-md-2">{e.cantidad}</div>
+                             <div className="flex-row d-none d-sm-block  text-center 
+                             col-3 col-md-3">
+                             <button className="btn btn-danger" onClick={()=>Eliminar(e)} >                                                            Eliminar
+                                                        </button>
+                                                    </div>
+                                                    <div className=" col-6 d-block d-sm-none col-6 d-flex flex-row ">
+                                                        <div className="d-flex flex-column ">
+                                                        <h5 className="card-title">{e.localidad}</h5>
+                                                        <p className="card-subtitle">fila {e.fila}</p>
+                                                        <p className="card-subtitle">Valor ${e.valor * e.cantidad}</p>
+                                                        <p className="card-subtitle">Cantidad {e.cantidad}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-6 d-block d-sm-none text-center d-flex justify-content-end align-items-center"
+
+                                                    >
+                                                        <button className="btn btn-danger" onClick={()=>Eliminar(e)} >
                                                             Eliminar
                                                         </button>
                                                     </div>
+                                                    
+                                                    {/*<hr className=" border bg-dark" style={{height:'1px',marginLeft:0,marginRight:0 }} ></hr>*/}
 
-                                        </tr>
+                                        </div>
                                     )
                                 })
                                 :''
 
                             }
-                            
-                               
-                            </tbody>
-                        </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="d-none d-sm-block col-lg-4">

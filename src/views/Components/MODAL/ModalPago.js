@@ -52,7 +52,7 @@ function ModalPago(props) {
         }
         setSpiner("d-none")
     }
-    async function CrearLinkPayPhone() {
+  /*  async function CrearLinkPayPhone() {
         setSpiner("")
         const data = await CrearLinkPagoPayPhone()
         if (data.success) {
@@ -61,7 +61,7 @@ function ModalPago(props) {
             setSpiner("d-none")
         }
         setSpiner("d-none")
-    }
+    }*/
     function popUp(URL) {
         window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
                

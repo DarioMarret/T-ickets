@@ -13,7 +13,8 @@ export function TiendaIten(producto) {
                     iten.cantidad++
                     return iten; // restorna la cantidad actualizada
                 }
-                if (producto.cantidad == -1) {
+                if (producto.cantidad == -1 ){ 
+                   
                     iten.cantidad--
                     return iten; // restorna la cantidad actualizada
                 }
@@ -26,13 +27,22 @@ export function TiendaIten(producto) {
         let array = JSON.parse(localStorage.getItem(CarritoTicket))
         return array
     } else {
-        //Agregamos a la tienda
+        //Agregamos a la tienda 
         localStorage.setItem(CarritoTicket, JSON.stringify([...PViten, producto]))
         let array = JSON.parse(localStorage.getItem(CarritoTicket))
         return array
     }
 }
-
+export function TiendaSillas(producto){
+    VerTienda()   
+        //Agregamos a la tienda 
+        localStorage.setItem(CarritoTicket, JSON.stringify([...PViten, producto]))
+        let array = JSON.parse(localStorage.getItem(CarritoTicket))
+        return array
+}
+export function ElimnarSilla(){
+    
+}
 function VerTienda() {
     try {
         let iten = JSON.parse(localStorage.getItem(CarritoTicket));

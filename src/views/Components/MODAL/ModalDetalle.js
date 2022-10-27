@@ -292,9 +292,9 @@ return (
                             data-backdrop="static" data-keyboard="false">CANCELAR COMPRA</button>
                     </div>
                 </div>
-                    <form className={validationfrom}>
+                    <div className={"container-fluid row "+validationfrom } >
 
-                                    <div className="row container-fluid">
+                                    
                                         <div className="col-12 col-sm-6 d-flex flex-column">
                                             <span>Forma de Pago:</span>
                                             <input type="text"
@@ -331,7 +331,7 @@ return (
                                                 placeholder="Ingrese su nombre completo"
                                             />
                                         </div>
-                                        <div className="col-12 col-sm-6 d-flex flex-column">
+                                        <div className="col-6 col-sm-6 d-flex flex-column">
                                             <span>Forma de envío:</span>
                                             <div>
                                                 <select className="form-select"      required
@@ -390,10 +390,10 @@ return (
                                                 placeholder="Ingrese su direccion"
                                             />
                                         </div>
-                                    </div>
+                                  
                                     
-                    </form>
-                <div className="container table-responsive">
+                    </div>
+                <div className="container-fluid table-responsive">
                     <table className="resumen-table table ">
                         <thead>
                             <tr className="text-black">

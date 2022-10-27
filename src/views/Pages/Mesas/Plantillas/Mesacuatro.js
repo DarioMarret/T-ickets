@@ -1,6 +1,6 @@
 import React from "react";
 import { Stylesilla } from "./style";
-const MesacuatroView =({text})=>{
+const MesacuatroView =({text,list})=>{
     return(
         <div className=""  style={{padding: '0.7px'}}>
               <div className="d-flex">
@@ -28,7 +28,7 @@ const MesacuatroView =({text})=>{
                 </div>
                 
                 <div className="d-flex flex-column align-items-center">
-                  <a className={text+"-s-3 sillas bg-danger "}  style={Stylesilla.asientos}>
+                  <a className={text+"-s-3 sillas bg-success "}  style={Stylesilla.asientos}>
                   </a>         
                   <a className={text+"-s-4 sillas bg-success "} style={Stylesilla.asientos}>
                   </a>
