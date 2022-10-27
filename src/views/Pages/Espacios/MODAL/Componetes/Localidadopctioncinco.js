@@ -11,11 +11,12 @@ import Ecenariotres from "../../../../../assets/Ecenarios/ecenariotres.JPG"
 import Ecenariocuatro from "../../../../../assets/Ecenarios/ecenariocuatro.JPG"
 import { insertLocalidad,getMapacolor ,getLocalidadmapa} from "utils/Localidadmap"
 const MapadelocalidadViews=(props)=>{
-    const {localidaname}=props
+    const {localidaname,mapaset}=props
     const [localidadmap,setselection]=useState({
         name:"",
         color:'#A12121',
     })
+    const[timer,settimer]=useState(false)
 
     const [mapa,setmapa]=useState([])
     const [lista,setLsita]=useState([])
@@ -29,27 +30,9 @@ const MapadelocalidadViews=(props)=>{
             [e.name]:e.value
         })
     }
-    async function ObtenLocalidad(){    
-        try {
-         const datos =await ListarLocalidad()
-   const {success,data}=datos
-   
-         if(success){
-         const filtrado = data.filter(e => e.espacio == localidaname.nombre)
-         const obten = filtrado.map((e,i)=>{
-           let dato = JSON.parse( e.mesas_array)      
-           return {...e,tipo:dato.Typo}
-         })
-         //console.log("localidada",obten)
-         console.log(obten)
-        // setData(obten)
-        }
-        
-        } catch (error) {   
-         console.log(error)
-        }
-     }
+  
     function agergaraALarray(dato,id,color){
+        settimer(!timer)
         let array = lista       
        // let nuevo = mapa
       // console.log(array)
@@ -67,11 +50,35 @@ const MapadelocalidadViews=(props)=>{
          //  console.log("mpap?",nuevo) 
          insertLocalidad(array,{path:dato,id:id, fill:color})
          cargarcolores()
-         listadecolores()
+        
          
          }
-    async function listadecolores(){
+   
+
+    $(document).on("click",".none",function(){
+        let co = document.getElementById("color").value;
+        let id = document.getElementById("name").value;
+        if(this.classList.contains('none')){
+            if(id.trim()=== "") {
+            return  }
+            else
+        agergaraALarray(this.getAttribute('id'),id,co)   
+                  this.removeAttribute("class","none")       
+                  this.setAttribute("class","seleccion")   
+                }
+         })
+    $(document).on("click",".seleccion",function(){
+            if(this.classList.contains('seleccion')){
+               this.removeAttribute("fill")   
+               agergaraALarray(this.getAttribute('id'),'','')
+               this.removeAttribute("class","seleccion")   
+               this.setAttribute("class","none")                             
+                   } 
+     })
+
+      function listadecolores(){
         let nuevo = getLocalidadmapa()
+     //   setmapa([]) 
       //  console.log("Function mapa",nuevo)
         let colores = getMapacolor()
         const valorDuplicadas = [];
@@ -83,33 +90,48 @@ const MapadelocalidadViews=(props)=>{
                 }):''     
         nuevo.length>0 && colores.length>0 ? nuevo.map((L)=>{
                 if(valorDuplicadas.findIndex((e)=>parseInt(e.id)=== parseInt(L.id))!=-1){
+                    $("#precios"+L.id).css('background', valorDuplicadas[valorDuplicadas.findIndex((e)=>parseInt(e.id)=== parseInt(L.id))].color);
+                    // console.log("existe",L.id,valorDuplicadas[valorDuplicadas.findIndex((e)=>parseInt(e.id)=== parseInt(L.id))].color)
                     L.color=valorDuplicadas[valorDuplicadas.findIndex((e)=>parseInt(e.id)=== parseInt(L.id))].color;
                     return L
                 }else{
+                   $("#"+L.id).attr("background-color",'')  
+                  console.log("no")
                     return L
                 }
                 }):''
-                console.log("mutado",nuevo)  
+               // console.log("ver",nuevo)  
+           
 
              // console.log("duplicado",valorDuplicadas)
-              nuevo.length>0 && colores.length>0?setmapa(nuevo) :''
-              nuevo.length>0 && colores.length>0? localStorage.localidad = JSON.stringify(nuevo):''
+             localStorage.localidad = JSON.stringify(nuevo)
+             setTimeout(function(){
+                setmapa(nuevo) 
+            },90);
+             
+              
     }
-
-
 
     function cargarcolores (){
         let colores = getMapacolor()
         colores.length>0? setLsita(colores):''
         colores.length>0? colores.map((e,i)=>{
             $("#"+e.path).attr("class","seleccion")               
-            $("#"+e.path).attr("fill",e.fill,"class","seleccion")        
+            $("#"+e.path).attr("fill",e.fill,"class","seleccion")   
+           
+           // document.getElementById("#precios"+e.id).style.backgroundColor  = e.color;  
+          //  $("#precios"+e.id).css("background-color",e.color)     
         }):''
+        listadecolores()
+
     }
         
         useEffect(()=>{
-        console.log("localidades",localidaname)
-        },[])
+       
+       cargarcolores()
+        
+        listadecolores()
+        },[mapaset,timer])
 
     return(
         <>
@@ -148,65 +170,58 @@ const MapadelocalidadViews=(props)=>{
                
                
             </div>
-            <div className="container-fluid col-12 col-sm-8 d-flex flex-column  bg-success"style={{height:'auto',width:'100%',overflowX:'auto'}}> 
-            <div className="d-flex justify-content-end">         
-                <form>
-                <div className="row">
-                <div className="col-12 col-md-12">
-                                    <div className="input-group mb-3">
-                                        <label className="form-label">Selecione Localidad </label>
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
-                                        </div>
-                                        <select className="form-control" value={localidadmap.name} name="name" id="name"  onChange={(e)=>handelChange(e.target)}>
-                                            <option value="">
-                                            
-                                            </option>
-                                            
-                                        
-                                            { /*localidad.length>0?
-                                            localidad.map((e,i)=>{
-                                                return(
-                                                    <option key={i} value={e.id} >{e.nombre}</option>
-                                                )
-                                            }):''*/
-                                            }
-                                        </select>
-                                         </div>
-                                </div>
-                        <div className="col-sm-12">
-                            <div className="row">
-                                
-                                <div className="col-12 col-md-6">
-                                    <div className="input-group mb-3">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text"><i className="fa fa-calendar"></i></span>
-                                        </div>
-                                        <input className="form-control" id="color" name="color"
-                                         type="color" 
-                                             />
-                                    </div>
-                                </div>                              
-
-                            </div>
-
-
-
-
-
-
-
+            <div className="container-fluid col-12 col-sm-8 d-flex flex-column "style={{height:'auto',width:'100%',overflowX:'auto'}}> 
+            <div className="d-flex justify-content-center align-items-center">         
+                
+                
+                        <div className="col-6">
+                        <label className="form-label">Selecione localidad  </label>
+                        <select className="form-control" value={localidadmap.name} name="name" id="name"  onChange={(e)=>handelChange(e.target)}>
+                            <option value="">
+                            
+                            </option>
+                            
+                           
+                            { mapa.length>0?
+                              mapa.map((e,i)=>{
+                                return(
+                                    <option key={i} value={e.id} >{e.nombre}</option>
+                                )
+                              }):''
+                            }
+                        </select>
                         </div>
-
-
-
-                </div>
-                <div className="d-flex modal-footer justify-content-end align-items-end">
-                    <button className="btn btn-success" disabled={true} >Guardar </button>
-
-                </div>
-                </form>
+                        <div className="col-sm">
+                        <label className="form-label" >.</label>
+                        <input
+                        className="form-control form-control-color"
+                        value={localidadmap.color} name="color" id="color"
+                        type="color" 
+                        onChange={(e) => handelChange(e.target)}
+                        />
+                        </div>
+                        <div className="col-sm" >
+                            
+                            <button className="btn btn-primary">Guardar </button></div>
+                        
+                        
+                    
+                
             </div>
+            <div className="d-flex flex-wrap justify-content-center  pb-5">
+                            {mapa.length>0?
+                            mapa.map((elm, i) => {
+                                //console.log("recor",elm)
+                                return(
+                                    <div  className="d-flex flex-row px-3 precios" key={i}  >
+                                        <div id={"precios"+elm.id} className="mx-1  rounded-4" style={{height:20,width:20}}></div>
+                                        <span>{elm.nombre}</span>
+                                    </div>
+                                )
+                            }):''
+                            }
+
+                </div>
             <div className="d-flex justify-content-center" >
             {estadio=="estandar"?<svg version="1.0" xmlns="http://www.w3.org/2000/svg"   style={{width:'90%'}}
                  width="1024.000000pt"  viewBox="0 0 1024.000000 768.000000"

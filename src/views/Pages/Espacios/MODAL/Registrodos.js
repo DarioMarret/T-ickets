@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import {Modal} from "react-bootstrap"
+import { ListarLocalidad } from "utils/Querypanel"
 import TabtresView from './Componetes/Localidadopctiontres'
 import TabunoViews from './Componetes/Localidadopctionuno'
 import TabdosViews from './Componetes/Localidadopctiondos'
@@ -8,6 +9,7 @@ import MapadelocalidadViews from "./Componetes/Localidadopctioncinco"
 const RegistroViwstab =(props)=>{
     const {show,setShowToast,localidaname} =props
     //console.log(localidaname)
+    const[mapaset,setMapas]=useState(false)
     const [datalocalidad,SetDataloca]=useState({
         id:'',
         typo:'',
@@ -15,7 +17,32 @@ const RegistroViwstab =(props)=>{
         description:'',
         array:[]
     })
+    async function ObtenLocalidad(){    
+        try {
+         const datos =await ListarLocalidad()
+   const {success,data}=datos
+   
+         if(success){
+         const filtrado = data.filter(e => e.espacio == localidaname.nombre)
+         const obten = filtrado.map((e,i)=>{
+           let dato = JSON.parse( e.mesas_array)      
+           return {id:e.id,nombre:e.nombre,tipo:dato.Typo,color:''}
+         })
+         //console.log("localidada",obten)
+         //setLocalidad(filtrado)
+         //setmapa(obten)
+         localStorage.localidad = JSON.stringify(obten)
+        
+        }
+        
+        } catch (error) {   
+         console.log(error)
+        }
+     }
     useEffect(()=>{
+        (async()=>{
+            await ObtenLocalidad()
+        })()
         SetDataloca({ 
             id:'',
             typo:'',
@@ -61,7 +88,8 @@ const RegistroViwstab =(props)=>{
                                                          >Localidades Agregadas</a>
                                                     </li>
                                                     <li className="nav-item">
-                                                        <a className="nav-link" data-toggle="tab" href="#mapa"                                                        
+                                                        <a className="nav-link" data-toggle="tab" href="#mapa"   
+                                                        onClick={()=>setMapas(!mapaset)}                                                     
                                                          >Diseñar Mapa</a>
                                                     </li>
                                                 
@@ -105,7 +133,7 @@ const RegistroViwstab =(props)=>{
                                     <div className="tab-pane  container-fluid " id="mapa">
                                     <MapadelocalidadViews
                                      show={show}
-                                    
+                                     mapaset={mapaset}
                                     localidaname={localidaname} />
 
                                     </div> 
