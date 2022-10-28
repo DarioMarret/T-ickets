@@ -1,8 +1,10 @@
 import React,{useEffect,useState} from "react"
 import { GuardarLocalidad,AptualizarLocalida } from "utils/Querypanel"
 import { Modal,ProgressBar,OverlayTrigger,Tooltip,Button} from "react-bootstrap"
+import { useDispatch } from "react-redux"
+import { setToastes } from "StoreRedux/Slice/ToastSlice"
 const TabtresView=(props)=>{
-
+    let usedispatch = useDispatch()
     const {datalocalidad,espacioname,SetDataloca}=props
     const [localidaname,setLocalidad]=useState({
         nombre:'',
@@ -34,14 +36,17 @@ const TabtresView=(props)=>{
                         inicio:0,
                         id:'',
                     })
-                    alert("localidad actualizada")
+                    usedispatch(setToastes({ show: true, message: 'Localidad actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))            
                 }
             } catch (error) {
+                usedispatch(setToastes({ show: true, message: 'Hubo un error intente de nuevo', color: 'bg-danger', estado: 'Error' }))
+                  
                 console.log(error)
             }
 
         }else{
-            alert("complete la cantidad")
+            usedispatch(setToastes({ show: true, message: 'Compete todos los campo', color: 'bg-warning', estado: 'Campos vacíos' }))
+
         }
     }
 async function Guardar(){
@@ -55,21 +60,20 @@ async function Guardar(){
                     description:'',
                     id:'',
                     array:''})
-            console.log({"espacio":espacioname.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'correlativo',datos: {cantidad:localidaname.cantidad,inicio:localidaname.inicio}})}) 
-                alert("Guardar")
+                    usedispatch(setToastes({ show: true, message: 'Localidad creada correctamente', color: 'bg-success', estado: 'Datos guadados' }))              
         }
             
         } catch (error) {
+            usedispatch(setToastes({ show: true, message: 'Hubo un error intente de nuevoa mas tarde', color: 'bg-success', estado: 'Datos guadados' }))
             console.log(error)            
         }
      }else{
-        alert("verifique todos los campos")
+        usedispatch(setToastes({ show: true, message: 'complete todos los campos requeridos', color: 'bg-warning', estado: 'Advertencia' }))
      }
 }
     useEffect(()=>{
         if(datalocalidad.typo=="correlativo"){
-            //console.log("Relativo",datalocalidad,datalocalidad.array.cantidad)
-            setLocalidad({
+             setLocalidad({
                 nombre:datalocalidad.nombre,
                 description:datalocalidad.description,
                 id:datalocalidad.id,

@@ -28,7 +28,7 @@ const RegistroViwstab =(props)=>{
            let dato = JSON.parse( e.mesas_array)      
            return {id:e.id,nombre:e.nombre,tipo:dato.Typo,color:''}
          })
-         //console.log("localidada",obten)
+         console.log("localidada",obten)
          //setLocalidad(filtrado)
          //setmapa(obten)
          localStorage.localidad = JSON.stringify(obten)
@@ -51,7 +51,7 @@ const RegistroViwstab =(props)=>{
             description:'',
             array:[]
         })
-    },[show])
+    },[show,datalocalidad])
 
     return(
         <>
@@ -135,6 +135,9 @@ const RegistroViwstab =(props)=>{
                                     <MapadelocalidadViews
                                      show={show}
                                      mapaset={mapaset}
+                                     datalocalidad={datalocalidad}
+                                    SetDataloca={SetDataloca}
+                                    ObtenLocalidad={ObtenLocalidad}
                                     localidaname={localidaname} />
 
                                     </div> 

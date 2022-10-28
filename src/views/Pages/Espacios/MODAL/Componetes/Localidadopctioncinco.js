@@ -13,7 +13,7 @@ import { Form } from "react-bootstrap"
 import SweetAlert from "react-bootstrap-sweetalert";
 import { insertLocalidad,getMapacolor ,getLocalidadmapa} from "utils/Localidadmap"
 const MapadelocalidadViews=(props)=>{
-    const {localidaname,mapaset}=props
+    const {localidaname,mapaset,SetDataloca,ObtenLocalidad,datalocalidad}=props
     const [alert, setAlert] = React.useState(null);
     const [localidadmap,setselection]=useState({
         name:"",
@@ -127,8 +127,12 @@ const MapadelocalidadViews=(props)=>{
         listadecolores()
     }
         useEffect(()=>{
+           /* (async ()=>{
+                await ObtenLocalidad()
+            })()*/
+            console.log(mapaset)
        cargarcolores()
-        },[mapaset,timer,estadio])
+        },[mapaset])
 
 
         const successAlert = () => {

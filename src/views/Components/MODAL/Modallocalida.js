@@ -7,7 +7,7 @@ import { useDispatch,useSelector } from "react-redux"
 import { addSillas,deleteSillas,clearSillas } from "StoreRedux/Slice/sillasSlice"
 import "./localidas.css"
 const LocalidadmapViews=(props)=>{
-    const {precios,Tipo,} = props
+    const {precios,showMapa,handleClosesop,setMapashow} = props
     const usedispatch = useDispatch()
     const seleccion= useSelector((state)=>state.sillasSlice)
     const [sillaarray,setSilla]=useState([])
@@ -19,7 +19,10 @@ const LocalidadmapViews=(props)=>{
         tipo:'',
         nombre:''
     })
-    
+    function cerrar(){
+        handleClosesop(true)
+        setMapashow(flase)
+    }
     function toggleValueInArray(value) {
         let array =sillaarray
         var index = array.findIndex(obj => obj.silla==value.silla);
@@ -47,8 +50,9 @@ const LocalidadmapViews=(props)=>{
           
            return {...e,tipo:dato.Typo,mesas_array:dato.datos}
          })
-         console.log("localidada",obten[0])
+        // console.log("localidada",obten[0])
          setEspacios(obten[0])
+         
         } 
         
         } catch (error) {   
@@ -79,51 +83,79 @@ const LocalidadmapViews=(props)=>{
         this.classList.add('disponible')
        // console.log(this.classList[0].split("-")[0])
       // console.log({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
-       usedispatch(deleteSillas({"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"disponible"}))
-       // toggleValueInArray({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
-       // $("div.Mesa").removeClass("bg-secondary").addClass("bg-success")       
+       usedispatch(deleteSillas({"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"disponible"}))  
          }      
          return
        }        
     })
-    $(document).on('click','div.cargados',function(){
+    $(document).on('click','li.cargados',function(){
         if(!this.classList.contains('disponible')){
         //this.classList.remove('seleccionado')       // this.classList.remove('sillas')
         //this.classList.add('disponible')
-        $( "."+this.classList[0]).removeClass( "seleccionado" ).addClass( "disponible" );
+        espacios.tipo!=""&&espacios.tipo=="mesa"?  $( "a."+this.classList[0]).removeClass( "seleccionado" ).addClass( "disponible" ):
+        $( "div."+this.classList[0]).removeClass( "seleccionado" ).addClass( "disponible" )
         usedispatch(deleteSillas({"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"borrar"}))}
     })
-    $(document).ready(function () {
-        seleccion.sillasSelecionadas>0? 
-        seleccion.sillasSelecionadas.map((e)=>{
-            $( "."+e.silla).removeClass( "disponible" ).addClass( "seleccionado" );
-        })
-        :''
-    })
+            $(document).on('click','a.disponible',function(){
+                if(!this.classList.contains('seleccionado')){
+                    this.classList.remove('disponible')       // this.classList.remove('sillas')
+                    this.classList.add('seleccionado')
+                    // console.log(this.classList[0].split("-")[0])
+                    //console.log({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
+                    usedispatch(addSillas({"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"seleccionado"}))
+                    // toggleValueInArray({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
+                    // $("div.Mesa").removeClass("bg-secondary").addClass("bg-success")       
+                    }      
+                    return
+            })
+            $(document).on("click","a.seleccionado",function(){
+                    if(!this.classList.contains('disponible')){
+                this.classList.remove('seleccionado')       // this.classList.remove('sillas')
+                    this.classList.add('disponible')
+                // console.log(this.classList[0].split("-")[0])
+                // console.log({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
+                usedispatch(deleteSillas({"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"disponible"}))  
+                    }      
+                    return        
+            })
+
+   
+    function cerrar(){
+        setMapashow(false)
+        handleClosesop(true)
+    }
+    
     useEffect(()=>{
         (async()=>{
             await ObtenLocalidad()
+            await  seleccion.sillasSelecionadas>0? 
+         seleccion.sillasSelecionadas.map((e)=>{
+             $( "div."+e.silla).removeClass( "disponible" ).addClass( "seleccionado" );
+         })
+         :'' 
         })()
+        
 
-    },[])
+    },[showMapa])
 
     return (
         <>
         <Modal 
-        show={true}
+        show={showMapa}
         size="lg"
         fullscreen={'lg-down'}
+        onHide={cerrar}
         >
             <Modal.Header>
             <h5 className="modal-title text-center justify-content-center">localidad</h5>
-                <button type="button" className="close"   >
+                <button type="button" className="close"  onClick={cerrar} >
                     ×
                 </button>
             </Modal.Header>
             <Modal.Body>
-                <div className='conatiner-fluid col-12'>
+               <div className='conatiner-fluid col-12'>
                     <div className="row "> 
-                    <div className="col-12 d-flex justify-content-center align-items-center" style={{height: "350px"}}>
+                    <div className="col-12 d-flex justify-content-center align-items-center" style={{maxHeight: "250px"}}>
                     <svg version="1.0" className="opciones" xmlns="http://www.w3.org/2000/svg"
           width="90%" height="90%" viewBox="0 0 1024.000000 768.000000"
         preserveAspectRatio="xMidYMid meet">
@@ -979,9 +1011,52 @@ const LocalidadmapViews=(props)=>{
         </g>
                     </svg>
                     </div>
-                    <div className="col-12 pt-1">
+                    
+                    <div className="col-12 d-flex  flex-wrap  ">
+                                                <div  className="d-flex precios flex-row  p-2  align-items-center" >
+                                                    <div className="d-flex   mx-1 bg-success text-white justify-content-center align-items-center rounded-5  " style={{ height:'30px',width:'30px' }} >
+                                                        <div className="d-flex justify-content-center">
+                                                            <span style={{ fontSize: '0.7em' }}>    </span>
+                                                        </div>
+                                                    </div> 
+                                                    <span>Disponibles.<span className="text-white">...</span></span>
+                                                </div>
+                                                
+                                                <div  className="d-flex precios flex-row  p-2  align-items-center" >
+                                                    <div className="d-flex   mx-1 bg-warning text-white justify-content-center align-items-center rounded-5  " style={{ height:'30px',width:'30px' }} >
+                                                        <div className="d-flex justify-content-center">
+                                                            <span style={{ fontSize: '0.7em' }}>    </span>
+                                                        </div>
+                                                    </div> 
+                                                    <span>Reservado.</span>
+                                                </div>
+                                                <div  className="d-flex precios flex-row  p-2  align-items-center" >
+                                                    <div className="d-flex   mx-1 bg-secondary text-white justify-content-center align-items-center rounded-5  " style={{ height:'30px',width:'30px' }} >
+                                                        <div className="d-flex justify-content-center">
+                                                            <span style={{ fontSize: '0.7em' }}>    </span>
+                                                        </div>
+                                                    </div> 
+                                                    <span>Seleccionado.</span>
+                                                </div>
+                                                <div  className="d-flex precios flex-row p-2  align-items-center" >
+                                                    <div className="d-flex   mx-1 bg-dark text-white justify-content-center align-items-center rounded-5  " style={{ height:'30px',width:'30px' }} >
+                                                        <div className="d-flex justify-content-center">
+                                                            <span style={{ fontSize: '0.7em' }}>    </span>
+                                                        </div>
+                                                    </div> 
+                                                    <span>Ocupados.</span>
+                                                </div>
+                                                
+                                            </div>
+
+
+                   
+                        
+
+
+                    <div className="col-12 pt-1">                            
                         {espacios.tipo=="fila"?
-                    <div  style={{ height: '600px', overflowY: 'auto', overflowX: 'auto', }}>
+                        <div  style={{ maxHeight: '550px', overflowY: 'auto', overflowX: 'auto', }}>
                         {espacios.mesas_array.length > 0 ?
                             espacios.mesas_array.map((e, i) => {
                                 {
@@ -996,7 +1071,8 @@ const LocalidadmapViews=(props)=>{
                                                 </span>      
                                                 <div className=' d-flex px-1  align-items-stretch ' style={{ width: '100%' }}>
                                                     {e.asientos.map((silla, index) => {
-                                                        
+                                                        //let mira= seleccion.sillasSelecionadas
+                                                        // $( "."+elm.silla).removeClass( "disponible" ).addClass( "seleccionado" ); 
                                                         let numero = index + 1
                                                         return (
                                                             <div key={"silla" + index} className={silla.silla +'  d-flex  ' + silla.estado +  '  rounded-5 text-center  justify-content-center align-items-center '}
@@ -1037,12 +1113,12 @@ const LocalidadmapViews=(props)=>{
                         </div>
 
                          </div>
-                        <h4>Nuevos</h4>
+                       
                         {
                         espacios.mesas_array.length>0?  
                         espacios.mesas_array.map((e,index)=>{
                             return(
-                                <div className='d-flex  px-3 align-items-center' key={index}>
+                                <div className='d-flex  PX-1 align-items-center' key={index}>
                                         <div className='d-flex pb-2'>
                                             <MesaiView
                                                 text={e.Fila}
@@ -1073,29 +1149,31 @@ const LocalidadmapViews=(props)=>{
 
                     </div>
                    
-                </div>            
+                    </div>            
 
 
             </Modal.Body>
             <Modal.Footer>
-                <div className="row  justify-content-between p-2" style={{height:'200px',width:'100%'}} >
-                    <div className="col-9 ">
-                        <h5>Sillas Selecionadas</h5>
-                        <div className="d-flex flex-wrap" style={{ height: '170px', overflowY: 'auto', overflowX: 'hide', }}>   
+               <div className="row border-top justify-content-between p-2" style={{height:'188px',width:'90%'}} >
+                    <div className="col-10 ">
+                    {espacios.tipo=="mesa"?<h5>Numero de mesas y sillas seleccionadas</h5>:<h5>Sillas y Filas Selecionadas</h5>}
+                        <div className="d-flex flex-wrap" style={{ height: '100px', overflowY: 'auto', overflowX: 'hide', }}>   
                         {
                             seleccion.sillasSelecionadas.length>0?
                             seleccion.sillasSelecionadas.map((elm,id)=>
-                            {
-                                return(
-                                    <div key={id}  className={elm.silla+'  d-flex cargados  rounded-5  bg-success justify-content-center align-items-center '}
-                                     style={{ height: '40px', width: '50px', margin: '1px' }} >
+                            {                   
+                                espacios.tipo!=""&&espacios.tipo=="mesa"? $( "a."+elm.silla).removeClass( "disponible" ).addClass( "seleccionado" ):  $( "div."+elm.silla).removeClass( "disponible" ).addClass( "seleccionado" )            
+
+                             return(
+                                    <li key={id}  className={elm.silla+'  d-flex cargados  rounded-5  bg-success justify-content-center align-items-center '}
+                                     style={{ height: '50px', width: '50px', margin: '1px' }} >
                                                                 <div className={'d-flex   text-white justify-content-center  '} >
-                                                                    <div className="d-flex justify-content-center">
-                                                                        <span style={{ fontSize: '0.7em' }}>{elm.silla.replace("-", " ")}</span>
+                                                                    <div className="d-flex justify-content-center text-center p-2">
+                                                                        <span style={{ fontSize: '0.9em' }}>{elm.silla.replace("-", " ")}</span>
                                                                     </div>
                                                                 </div>
-                              </div>
-                                )
+                                    </li>
+                                    )
 
                             }):''
 
@@ -1104,9 +1182,9 @@ const LocalidadmapViews=(props)=>{
                               
                         </div>
                     </div>
-                    <div className="col-3 d-flex align-items-center" >
+                    <div className="col-2 d-flex align-items-center justify-content-end" >
                         <div>
-                            <button className="btn btn-success " onClick={()=>usedispatch(clearSillas({}))} > Agregar </button>
+                            <button className="btn btn-primary " onClick={()=>usedispatch(clearSillas({}))} > <i className="fa fa-plus" ></i> </button>
                         </div>
 
                     </div>

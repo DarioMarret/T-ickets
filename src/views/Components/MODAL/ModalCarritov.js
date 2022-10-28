@@ -8,7 +8,7 @@ import mapa from '../../../assets/img/mapa.png'
 
 
 const  ModalCarritoView=(prop)=>{
-    const{showshop, handleClosesop,handleContinuar,precios,setListaPrecio,setListarCarritoDetalle,datos}=prop
+    const{showshop, handleClosesop,handleContinuar,setMapashow,precios,setListaPrecio,setListarCarritoDetalle,datos}=prop
     const [detalle,setDetalle]=useState([])
     const [timer, setTimer] = useState(false)
     const lista =async ()=>{
@@ -115,6 +115,10 @@ const  ModalCarritoView=(prop)=>{
       /*  console.log("Elimina",e)
         let filtro = array.filter(obj=>obj.id!=e.id)
         setDetalle(filtro)*/
+    }
+    function abrirlocalidad(){
+        setMapashow(true)
+        handleClosesop(false)
     }
    
     useEffect(()=>{
@@ -290,7 +294,7 @@ const  ModalCarritoView=(prop)=>{
                 </div>
                 <div className="d-none d-sm-block col-lg-4">
 
-                    <img className="img-fluid" src={mapa}/>
+                    <img className="img-fluid" onClick={abrirlocalidad} src={mapa}/>
 
                 </div>
                 </div>

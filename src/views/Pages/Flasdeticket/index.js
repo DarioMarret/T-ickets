@@ -110,6 +110,7 @@ const IndexFlas = () => {
 const hideAlert = () => {
   setAlert(null);
 };
+  const [showMapa,setMapashow]= useState(false);
   const [modalPago, setModalPago] = useState(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false)
@@ -122,6 +123,7 @@ const hideAlert = () => {
     setDetalle(false)
     setShow(true)
   }
+ 
   const salir=()=>{
     localStorage.removeItem(DatosUsuariocliente)
     localStorage.removeItem(getDatosUsuariosLocalStorag)
@@ -341,6 +343,11 @@ const hideAlert = () => {
   },[])
   return (
     <>
+    <LocalidadmapViews
+         handleClosesop={handleClosesop}
+         showMapa={showMapa}
+         setMapashow={setMapashow}
+         />
          <ModalCarritov
          showshop={showshop}
          handleClosesop={ handleClosesop}
@@ -349,8 +356,9 @@ const hideAlert = () => {
          datos={datos}
          precios={precios}
          setListaPrecio={setListaPrecio}
+         setMapashow={setMapashow}
          />
-         <LocalidadmapViews/>
+         
          {alert}
       <nav className="navbar navbar-expand-lg justify-content-between navbar-dark bg-black fixed-top py-3">
         <div className="container-fluid col-lg-8    d-flex justify-content-between">

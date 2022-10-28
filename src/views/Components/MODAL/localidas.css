@@ -11,6 +11,10 @@ a.ocupado{
 a.reservado{
     background-color: #ffc107;
 }
+a.seleccionado{
+    background-color: #6c757d;
+    cursor: pointer;
+}
 div.disponible{
     background-color: #198754;
     cursor: pointer;

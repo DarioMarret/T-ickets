@@ -11,28 +11,16 @@ const MesaiView =({text})=>{
           
           <div   style={Stylesilla.asientos}>
           </div>
-          <div  style={Stylesilla.asientos}>
-          </div>
+          
         </div>
   
         <div className=" d-flex  align-items-center">
-          <div className="d-flex flex-column">
-            <div style={Stylesilla.asientos}>
-            </div>          
-           
-            <div style={Stylesilla.asientos}>
-            </div>   
-          </div>
+          
           <div className="bg-primary txt-white d-flex p-1"  style={Stylesilla.mesas}>
           {text}
           </div>
           
-          <div className="d-flex flex-column">
-          <div style={Stylesilla.asientos}>
-            </div>           
-            <div style={Stylesilla.asientos}>
-            </div>   
-          </div>
+          
         </div>
   
         <div className="d-flex ">
@@ -42,8 +30,7 @@ const MesaiView =({text})=>{
             <div   style={Stylesilla.asientos}></div>
           
             <div   style={Stylesilla.asientos}></div>
-          <div  style={Stylesilla.asientos}>
-          </div>
+          
         </div>
       </div> 
 
