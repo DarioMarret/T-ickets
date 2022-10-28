@@ -106,19 +106,20 @@ const TabunoView = (props) => {
                         id: '',
                         array: ''
                     })
-                    usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guaradar', color: 'bg-danger', estado: 'Datos incompletos' }))
+                    usedispatch(setToastes({ show: true, message: 'Localidad creada correctamente', color: 'bg-success', estado: 'Datos guardados' }))
                     //  alert("localidad Guardada")
                 }
                 console.log({ "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
             } catch (error) {
                 console.log(error)
-
             }
         }
 
     }
     async function actualizalocalidad() {
-        if (nmobretabuno.nombre == "" || nmobretabuno.description == "" || ListaFilas.length < 0) { alert("Complete los datos y localidad creada") }
+        if (nmobretabuno.nombre == "" || nmobretabuno.description == "" || ListaFilas.length < 0 || !filass.sillas>40) {           
+            usedispatch(setToastes({ show: true, message: 'Complete todos los datos y verifique no sobrepasar el limite de 39 sillas', color: 'bg-danger', estado: 'Datos incompletos' }))       
+            }
         else {
             try {
                 const actualiza = await AptualizarLocalida({ "id": nmobretabuno.id, "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
@@ -130,11 +131,13 @@ const TabunoView = (props) => {
                         id: '',
                         array: ''
                     })
-                    alert("datos actualizados")
-                    console.log({ "id": nmobretabuno.id, "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
-                }
+                    usedispatch(setToastes({ show: true, message: 'Localidad actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
+                                  }
 
             } catch (error) {
+                 usedispatch(setToastes({ show: true, message: 'Hubo un error, Complete todos los datos y verifique no sobrepasar el limite de 39 sillas', color: 'bg-danger', estado: 'Datos incompletos' }))
+                             
+                console.log(error)
 
             }
         }
@@ -144,7 +147,7 @@ const TabunoView = (props) => {
   //  console.log(ListaFilas)
     useEffect(() => {
         if (datalocalidad.typo == "fila") {
-            console.log("Filas", datalocalidad)
+           // console.log("Filas", datalocalidad)
             setLocalidad({
                 nombre: datalocalidad.nombre,
                 description: datalocalidad.description,
@@ -241,9 +244,10 @@ const TabunoView = (props) => {
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                             </div>
-                            <input type="text" name="sillas" className="form-control"
+                            <input type="number" name="sillas" className="form-control"
                                 id="sillas"
                                 value={filass.sillas}
+                                max={39}                                
                                 onChange={(e) => handelchange(e.target)}
                                 placeholder="# Sillas" />
                         </div>

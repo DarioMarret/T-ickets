@@ -2,6 +2,14 @@
     fill:rgb(148, 152, 152);
     cursor: pointer;
   }
+  #grado path{
+    fill:rgb(148, 152, 152);
+    cursor: pointer;
+  }
+  svg.opciones{
+    fill:rgb(148, 152, 152);
+    cursor: pointer;
+  }
   .opciones path {
      fill: rgb(148, 152, 152);
   }

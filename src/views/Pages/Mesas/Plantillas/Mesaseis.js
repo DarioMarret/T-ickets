@@ -1,6 +1,10 @@
 import React from "react";
 import { Stylesilla } from "./style";
 const MesaseisView =({text,list})=>{
+  function Estado(e){
+    var index = list.findIndex(obj => obj.silla==e);
+    return list[index].estado  
+  }
     return(
         <div  style={{padding: '0.7px'}}>
               <div className="d-flex ">
@@ -9,7 +13,7 @@ const MesaseisView =({text,list})=>{
                 
                   <div style={Stylesilla.asientos}></div>
                 
-                  <a className={text+"-s-1 sillas bg-success "}   style={Stylesilla.asientos}>
+                  <a className={text+"-s-1 sillas   " + Estado(text+"-s-1")}   style={Stylesilla.asientos}>
                 </a>
                 <div   style={Stylesilla.asientos}>
                 </div>
@@ -17,20 +21,20 @@ const MesaseisView =({text,list})=>{
         
               <div className=" d-flex  align-items-center">
                 <div className="d-flex flex-column">
-                <a className={text+"-s-2 sillas bg-success "}  style={Stylesilla.asientos}>
+                <a className={text+"-s-2 sillas   "+ Estado(text+"-s-2")}  style={Stylesilla.asientos}>
                   </a>          
                  
-                  <a className={text+"-s-3 sillas bg-success "}   style={Stylesilla.asientos}>
+                  <a className={text+"-s-3 sillas   "+ Estado(text+"-s-3")}   style={Stylesilla.asientos}>
                   </a>
                 </div>
-                <div className={text +" Mesa bg-success txt-white d-flex  p-1" } style={Stylesilla.mesas}>
+                <div className={text +" Mesa  txt-white d-flex  p-1" } style={Stylesilla.mesas}>
                 {text}
                 </div>
                 
                 <div className="d-flex flex-column">
-                <a className={text+"-s-4 sillas bg-success "}   style={Stylesilla.asientos}>
+                <a className={text+"-s-4 sillas   "+ Estado(text+"-s-4")}   style={Stylesilla.asientos}>
                   </a>         
-                  <a className={text+"-s-5 sillas bg-success "}   style={Stylesilla.asientos}>
+                  <a className={text+"-s-5 sillas   "+ Estado(text+"-s-5")}   style={Stylesilla.asientos}>
                   </a>
                 </div>
               </div>
@@ -41,7 +45,7 @@ const MesaseisView =({text,list})=>{
           
             <div style={Stylesilla.asientos}></div>
           
-            <a className={text+"-s-5 sillas bg-success "}  style={Stylesilla.asientos}>
+            <a className={text+"-s-6 sillas   "+ Estado(text+"-s-6")}  style={Stylesilla.asientos}>
           </a>
           <div style={Stylesilla.asientos}>
           </div>

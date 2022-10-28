@@ -34,6 +34,7 @@ import { cargarEventoActivo } from "utils/Querypanelsigui";
 import { Dias,DatosUsuariocliente,Eventoid } from "utils/constantes";
 import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
+import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
@@ -349,6 +350,7 @@ const hideAlert = () => {
          precios={precios}
          setListaPrecio={setListaPrecio}
          />
+         <LocalidadmapViews/>
          {alert}
       <nav className="navbar navbar-expand-lg justify-content-between navbar-dark bg-black fixed-top py-3">
         <div className="container-fluid col-lg-8    d-flex justify-content-between">
