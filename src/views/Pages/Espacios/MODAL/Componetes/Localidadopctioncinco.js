@@ -5,12 +5,15 @@ import EcenarioEstandar from "views/Components/MapaEcenarios/EcenariomesaEstanda
 import EcenarioGradoView from "views/Components/MapaEcenarios/Ecenariogrados"
 import MiniEcenariosView from "views/Components/MapaEcenarios/MiniEcenarios"
 import { ListarLocalidad } from "utils/Querypanel"
+import { Host } from "utils/constantes"
 import Ecenariouno from "../../../../../assets/Ecenarios/ecenariouno.JPG"
 import Ecenariodos from "../../../../../assets/Ecenarios/ecenariodos.JPG"
 import Ecenariotres from "../../../../../assets/Ecenarios/ecenariotres.JPG"
 import Ecenariocuatro from "../../../../../assets/Ecenarios/ecenariocuatro.JPG"
 import { Form } from "react-bootstrap"
 import SweetAlert from "react-bootstrap-sweetalert";
+import axios from "axios"
+
 import { insertLocalidad,getMapacolor ,getLocalidadmapa} from "utils/Localidadmap"
 const MapadelocalidadViews=(props)=>{
     const {localidaname,mapaset,SetDataloca,ObtenLocalidad,datalocalidad}=props
@@ -62,13 +65,32 @@ const MapadelocalidadViews=(props)=>{
            },90);
               
        }
-      let ejemplo=   {
-            
-            "mapasvg":estadio,
-            "pathmap":getMapacolor(),
-            "localidade":getLocalidadmapa(),
+      let ejemplo={            
+            "mapasvg":"estadio22",
+            "nombre_espacio":localidaname.nombre,
+            "pathmap":JSON.stringify(getMapacolor()),
+            "localidad":JSON.stringify(getLocalidadmapa()),
           }
-
+    const GuardarMapa = async () =>{
+        try {
+            let datos = JSON.stringify(ejemplo)
+            console.log(datos)
+            const {data} = await axios.post(Host+"guardarMapa",ejemplo,{ 
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+            })
+            console.log(data)
+            
+        } catch (error) {
+            console.log(error)
+            
+        }
+            
+        }
+   
+          
     $(document).on("click",".none",function(){
         let co = document.getElementById("color").value;
         let id = document.getElementById("name").value;
@@ -141,7 +163,7 @@ const MapadelocalidadViews=(props)=>{
                 warning
                 style={{ display: "block", marginTop: "-100px" }}
                 title="Confirmar"
-                onConfirm={() => console.log(ejemplo)}
+                onConfirm={() => GuardarMapa()}
                 onCancel={() => hideAlert()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"

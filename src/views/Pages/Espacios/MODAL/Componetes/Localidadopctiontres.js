@@ -82,6 +82,7 @@ async function Guardar(){
             })
            
         }
+        console.log(datalocalidad)
     },[datalocalidad])
    return( <>
     <div className="d-flex flex-column">
