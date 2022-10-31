@@ -30,7 +30,7 @@ import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
 import { Authsucrito } from "utils/Query";
 import { listarpreciolocalidad } from "utils/Querypanel";
-import { cargarEventoActivo } from "utils/Querypanelsigui";
+import { cargarEventoActivo,cargarMapa } from "utils/Querypanelsigui";
 import { Dias,DatosUsuariocliente,Eventoid } from "utils/constantes";
 import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -39,7 +39,11 @@ const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
   const userauthi= useSelector((state)=>state.SuscritorSlice)
-  const [precios,setPrecios]=useState([])
+  const [precios,setPrecios]=useState({
+    precios: [],
+    pathmapa:[],
+    mapa:''
+  })
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
   const [efectShow, efectiOpShow] = useState(false);
@@ -65,10 +69,25 @@ const IndexFlas = () => {
   else{
     try{
     let obten = await listarpreciolocalidad(e.codigoEvento)
+    let localidades = await cargarMapa()
     if(obten.data.length>0){  
-    localStorage.eventoid= e.codigoEvento 
+        let mapa = localidades.data.filter((e)=>e.nombre_espacio==e.lugarConcierto)
+        let localidad  = JSON.parse(mapa[0].localidad)
+        let path = JSON.parse(mapa[0].pathmap)
+        let newprecios = obten.data.map((e,i)=>{
+        let color = localidad.filter((f,i)=>f.NOMBR == e.localodad)
+        e.color=color[0].color,
+        e.idcolor=color[0].id
+        return e
+      })
+      let nuevosdatos={
+        precios: newprecios,
+        pathmapa:path,
+        mapa:mapa[0].nombre_mapa
+      }
+      localStorage.eventoid= e.codigoEvento 
     
-    setPrecios(obten.data)
+    setPrecios(nuevosdatos)
       console.log(obten)
       setDatoscon(e)
       handleClosesop(true)}

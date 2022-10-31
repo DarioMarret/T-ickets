@@ -1,24 +1,17 @@
 import React, { useEffect,useState } from "react"
 import EcenarioDefView from "views/Components/MapaEcenarios/Ecenariodefalt"
 import EcenarioEstaView from "views/Components/MapaEcenarios/Ecenarioestandar"
-import EcenarioEstandar from "views/Components/MapaEcenarios/EcenariomesaEstandar"
-import EcenarioGradoView from "views/Components/MapaEcenarios/Ecenariogrados"
-import MiniEcenariosView from "views/Components/MapaEcenarios/MiniEcenarios"
-import { ListarLocalidad } from "utils/Querypanel"
+import { cargarMapa,eliminaMapa,guardarMapar,editarMapa } from "utils/Querypanelsigui"
 import { Host } from "utils/constantes"
-import Ecenariouno from "../../../../../assets/Ecenarios/ecenariouno.JPG"
-import Ecenariodos from "../../../../../assets/Ecenarios/ecenariodos.JPG"
-import Ecenariotres from "../../../../../assets/Ecenarios/ecenariotres.JPG"
-import Ecenariocuatro from "../../../../../assets/Ecenarios/ecenariocuatro.JPG"
 import { Form } from "react-bootstrap"
 import SweetAlert from "react-bootstrap-sweetalert";
 import axios from "axios"
-
 import { insertLocalidad,getMapacolor ,getLocalidadmapa} from "utils/Localidadmap"
 const MapadelocalidadViews=(props)=>{
     const {localidaname,mapaset,SetDataloca,ObtenLocalidad,datalocalidad}=props
     const [alert, setAlert] = React.useState(null);
     const [localidadmap,setselection]=useState({
+        id:'',
         name:"",
         color:'#A12121',
     })
@@ -50,6 +43,24 @@ const MapadelocalidadViews=(props)=>{
          insertLocalidad(array,{path:dato,id:id, fill:color})
          cargarcolores()       
          }
+       async  function cargardatosMapa(){        
+        try {
+            let map = await cargarMapa()
+            let datos = map.filter((e)=>e.nombre_espacio==localidaname.nombre)
+            if(datos){
+                localStorage.mapa= JSON.parse(datos[0].pathmap)
+                localStorage.localidad = JSON.parse(datos[0].localidad)
+                SetSelecion(datos[0].nombre_mapa)
+                setmapa(JSON.parse(datos[0].localidad))
+                setselection({...localidadmap,id:datos[0].id})
+            }
+            
+    
+        } catch (error) {
+            
+        }
+
+         }
          function GetLocalidad(e){
             localStorage.removeItem("mapa")
            setselection({
@@ -65,31 +76,38 @@ const MapadelocalidadViews=(props)=>{
            },90);
               
        }
-      let ejemplo={            
-            "mapasvg":"estadio22",
+     
+    const GuardarMapa = async () =>{
+         let valores={            
+            "mapasvg":estadio,
             "nombre_espacio":localidaname.nombre,
             "pathmap":JSON.stringify(getMapacolor()),
             "localidad":JSON.stringify(getLocalidadmapa()),
           }
-    const GuardarMapa = async () =>{
         try {
-            let datos = JSON.stringify(ejemplo)
-            console.log(datos)
-            const {data} = await axios.post(Host+"guardarMapa",ejemplo,{ 
-            headers:{
-                'Content-Type':'application/json',
-                'Authorization':'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            if(localidadmap.id!=""){
+                let datos = await guardarMapar(valores)
+                console.log("guardado",datos)
             }
-            })
-            console.log(data)
-            
+            else{
+                let updatedatos = await editarMapa({...valores,id:localidadmap.id})
+                console.log("actualizado",updatedatos)
+            }
         } catch (error) {
             console.log(error)
             
         }
             
         }
-   
+    const EliminarMapa= async ()=>{
+            try{
+                let eliminar = await eliminaMapa(localidadmap.id)
+                console.log("eliminado",eliminar)
+            }catch(error){
+                console.log(error)
+            }
+
+    }   
           
     $(document).on("click",".none",function(){
         let co = document.getElementById("color").value;
@@ -149,12 +167,13 @@ const MapadelocalidadViews=(props)=>{
         listadecolores()
     }
         useEffect(()=>{
-           /* (async ()=>{
-                await ObtenLocalidad()
-            })()*/
+            (async ()=>{
+                await cargardatosMapa()
+                cargarcolores()
+            })()
             console.log(mapaset)
-       cargarcolores()
-        },[mapaset])
+       
+        },[mapaset,localidaname])
 
 
         const successAlert = () => {
@@ -167,11 +186,29 @@ const MapadelocalidadViews=(props)=>{
                 onCancel={() => hideAlert()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
-                confirmBtnText="Si, Guardar"
+                confirmBtnText={"Si, "+localidadmap.id?"Actualizar":"Guardar"}
                 cancelBtnText="Cancelar"
                 showCancel
               >
-                Estas seguro de guardar la Asignación del mapa
+                Estas seguro de {localidadmap.id?"Actualizar":"guardar"} la Asignación del mapa
+              </SweetAlert>
+            );
+          };
+          const successElimna = () => {
+            setAlert(
+              <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                title="Confirmar"
+                onConfirm={() => EliminarMapa()}
+                onCancel={() => hideAlert()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                confirmBtnText="Si, Elimniar"
+                cancelBtnText="Cancelar"
+                showCancel
+              >
+                Estas seguro de eliminar el mapa creado
               </SweetAlert>
             );
           };
@@ -2000,17 +2037,6 @@ const MapadelocalidadViews=(props)=>{
                                             
                                                     <div className="col-6">
                                                     <label className="form-label">Selecione localidad  </label>
-                                                    {/*<select className="form-control" value={localidadmap.name} name="name" id="name"  onChange={(e)=>handelChange(e.target)}>
-                                                        <option value="">
-                                                        </option>
-                                                        { mapa.length>0?
-                                                        mapa.map((e,i)=>{
-                                                            return(
-                                                                <option key={i} value={e.id} >{e.nombre}</option>
-                                                            )
-                                                        }):''
-                                                        }
-                                                    </select>*/}
                                                     <Form.Select  className="form-control" value={localidadmap.name} name="name" id="name"  onChange={(e)=>handelChange(e.target)}>
                                                         <option  value={""}></option>
                                                             {mapa.length>0?
@@ -2035,8 +2061,19 @@ const MapadelocalidadViews=(props)=>{
                                                     />
                                                     </div>
                                                     <div className="col-sm d-flex flex-column" >
-                                                    <label className="form-label text-white " >.</label> 
-                                                        <button className="btn btn-primary"  onClick={successAlert} >Guardar </button></div>
+                                                        <div>
+                                                    <label className="form-label text-white " >.</label>
+                                                    {localidadmap.id? 
+                                                        <button className="btn btn-primary"  onClick={successAlert} >Guardar </button>
+                                                        :<button className="btn btn-primary">Actualizar </button> }
+                                                        </div>
+                                                        <div>
+                                                            <label className="form-label text-white" >.</label>
+                                                            {localidadmap.id?
+                                                            <button className="btn btn-danger"onClick={successElimna}>Eliminar</button>:''}
+
+                                                        </div>
+                                                        </div>
                                         </div>
                                         <div className="d-flex flex-wrap justify-content-center  p-3 ">
                                                         {mapa.length>0?

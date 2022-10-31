@@ -142,7 +142,7 @@ const EventoEspecifico=()=>{
       cancelBtnText="Cancelar"
       showCancel
     >
-      Esta seguro de actualizar el estado de este evento
+      Esta deacuerdo en actualizar el estado de este evento
     </SweetAlert>
   );
 };
@@ -160,7 +160,7 @@ const successAlertElimna =(e,i)=>{
       cancelBtnText="Cancelar"
       showCancel
     >
-      Esta seguro de Eliminar esta Localidad
+      Esta de acuerdo en Eliminar esta Localidad
     </SweetAlert>
   );
 }

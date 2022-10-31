@@ -205,7 +205,7 @@ const Modalupdate = (props) => {
                 idUsuario: "" + user.id,
             })
         setLocalidad(evento.LocalodadPrecios)
-        //   console.log(neweventos)
+           console.log(neweventos)
         // console.log(Object.values(neweventos).every((d) => d))
     }, [show])
     return (
