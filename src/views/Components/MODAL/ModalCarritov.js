@@ -3,9 +3,13 @@ import { Modal } from "react-bootstrap"
 import { Metodos } from 'utils/constantes'
 import { listarpreciolocalidad } from "utils/Querypanel"
 import { TiendaIten , GetValores,getVerTienda, EliminarByStora, } from "utils/CarritoLocalStorang"
+import { useDispatch,useSelector } from "react-redux"
+import { cargarmapa,settypo ,filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice"
 import mapa from '../../../assets/img/mapa.png'
 const  ModalCarritoView=(prop)=>{
     const{showshop, handleClosesop,handleContinuar,setMapashow,precios,setListaPrecio,setListarCarritoDetalle,datos}=prop
+    let usedispatch= useDispatch()
+    let sleccionlocalidad = useSelector((state)=>state.mapaLocalSlice)
     const [detalle,setDetalle]=useState([])
     const [timer, setTimer] = useState(false)
     const lista =async ()=>{
@@ -117,7 +121,6 @@ const  ModalCarritoView=(prop)=>{
         setMapashow(true)
         handleClosesop(false)
     }
-   
     useEffect(()=>{
         /*(async()=>{
             await lista()
@@ -125,13 +128,41 @@ const  ModalCarritoView=(prop)=>{
         setDetalle(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
         setListaPrecio(GetValores())
-        
-        precios.pathmapa.length>0? colores.map((e,i)=>{
-            $("#"+e.path).attr("fill",e.color,"class",e.color)  
-            $("#"+e.path).addClass("class","seleccion")            
-        }):''
-
+       // console.log(precios.pathmapa)
+      
+          precios.pathmapa.length>0? precios.pathmapa.map((e,i)=>{
+            $("#"+e.path).attr("class",e.id+"  disponible " + e.tipo )
+             $("#"+e.path).attr("fill",e.fill)   
+          //  $("#"+e.path).attr("fill",e.fill,"class",e.id )  
+            //$("#"+e.path).addClass("class","seleccion") 
+           // console.log("deveria pintar")        
+       }):''
     },[showshop,timer])
+   /* $(document).on('click','path.disponible',function(){        
+        let consulta = precios.precios.filter((F)=>F.idcolor== this.classList[0])
+        let color = precios.pathmapa
+        let mapa = precios.mapa
+        console.log(consulta)
+      
+    })*/
+
+    const path = document.querySelectorAll('path.disponible')
+
+    path.forEach(E=>{
+        E.addEventListener("click",function(){
+            let consulta = precios.precios.filter((F)=>F.idcolor== this.classList[0])
+        let color = precios.pathmapa.filter((E)=>E.id== consulta[0].idcolor)
+        let filtro = sleccionlocalidad.localidades.filter((G)=>G.nombre==consulta[0].localodad)
+        let espacio = JSON.parse(filtro[0].mesas_array)
+        usedispatch(cargarmapa(color))
+        usedispatch(settypo({nombre:precios.mapa,typo:consulta[0].tipo,precio: {...consulta[0]}}))
+        usedispatch(filtrarlocali(espacio.datos))
+        abrirlocalidad()       
+        })
+    })
+
+
+
     return (
         <>
        {/* <div className="bg-danger" style={{
@@ -144,10 +175,8 @@ const  ModalCarritoView=(prop)=>{
         <Modal
             show={showshop}          
             size="lg"
-
             style={{height: "100%",width: "100%"}}
-            fullscreen={true}            
-        >
+            fullscreen={true}>
             <Modal.Header >
                 <h5 className="modal-title text-center justify-content-center">Boleteria</h5>
                 <button type="button" className="close"  onClick={()=>handleClosesop()} >
@@ -181,7 +210,7 @@ const  ModalCarritoView=(prop)=>{
                             <div className="d-flex row list-group-item" key={i} >
                               <div className="flex-row  d-none d-sm-block    first text-center col-4"  role="cell">
                                 <div className="d-flex justify-content-center align-items-baseline  ">
-                                <div className="rounded-3 px-2" style={{ backgroundColor: 'brown', width: '30px', height: '20px' }}></div>
+                                <div className="rounded-3 px-2" style={{ backgroundColor: e.color, width: '30px', height: '20px' }}></div>
                                     <p className="px-2 " style={{ fontSize: '1em' }}>{e.localodad}</p>
                                 </div>
                                 </div>
@@ -297,7 +326,7 @@ const  ModalCarritoView=(prop)=>{
                   {/*<img className="img-fluid" onClick={abrirlocalidad} src={mapa}/>*/}
                     <div className="d-flex justify-content-center" >
                                       
-                                        <svg version="1.0" id="estandar" xmlns="http://www.w3.org/2000/svg"   style={{width:'90%',height:'auto'}}
+                                    {showshop?     <svg version="1.0" id="estandar" xmlns="http://www.w3.org/2000/svg"   style={{width:'90%',height:'auto'}}
                                             width="1024.000000pt"  viewBox="0 0 1024.000000 768.000000"
                                             preserveAspectRatio="xMidYMid meet"
                                             >
@@ -1021,8 +1050,27 @@ const  ModalCarritoView=(prop)=>{
                             15 -11 0 -20 -4 -20 -10 0 -5 -4 -10 -10 -10 -14 0 -13 23 2 38 17 17 43 15
                             59 -4z" id="178" className="none"></path><path d="M7560 830 c0 -42 3 -50 19 -50 22 0 35 37 25 75 -4 16 -13 25 -25 25
                             -16 0 -19 -8 -19 -50z" id="179" className="none"></path></g>
-                </svg>
-                </div>
+                                    </svg>:''}
+                    </div>
+                    <div className="d-flex flex-wrap justify-content-center  p-3 ">
+                                                        {precios.precios.length>0?
+                                                        precios.precios.map((elm, i) => {
+                                                            
+                                                            return(
+                                                                <div  className="d-flex flex-row px-3 precios align-items-center" key={i}  >
+                                                                    <div id={"precios"+elm.id} className="mx-1  rounded-4" style={{height:40,width:40,backgroundColor:elm.color}}></div>
+                                                                    <div className="d-flex flex-column justify-content-center align-items-center" >
+                                                                        <span>{elm.localodad}</span>
+                                                                        <span> $ {elm.precio_normal}</span>
+                                                                    </div>
+                                                                    
+
+                                                                </div>
+                                                            )
+                                                        }):''
+                                                        }
+
+                                            </div>
                 </div>
                 </div>
                

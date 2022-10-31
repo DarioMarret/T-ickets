@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": true,
   "prettier.bracketSameLine": true,
-  "prettier.resolveGlobalModules": true
+  "prettier.resolveGlobalModules": true,
+  "editor.formatOnPaste": true
 }

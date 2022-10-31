@@ -28,8 +28,9 @@ import { GuardarDatosdelComprador ,ValidarWhatsapp} from "utils/Query";
 import { useSelector,useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
+import { cargalocalidad } from "StoreRedux/Slice/mapaLocalSlice";
 import { Authsucrito } from "utils/Query";
-import { listarpreciolocalidad } from "utils/Querypanel";
+import { listarpreciolocalidad,ListarLocalidad } from "utils/Querypanel";
 import { cargarEventoActivo,cargarMapa } from "utils/Querypanelsigui";
 import { Dias,DatosUsuariocliente,Eventoid } from "utils/constantes";
 import ModalCarritov from "views/Components/MODAL/ModalCarritov";
@@ -69,15 +70,24 @@ const IndexFlas = () => {
   else{
     try{
     let obten = await listarpreciolocalidad(e.codigoEvento)
+    const listalocal = await  ListarLocalidad()    
+        
+ //   console.log(obten)
     let localidades = await cargarMapa()
+   
     if(obten.data.length>0){  
-        let mapa = localidades.data.filter((e)=>e.nombre_espacio==e.lugarConcierto)
+        let mapa = localidades.data.filter((L)=>L.nombre_espacio==e.lugarConcierto)
+        let mapalocal= listalocal.data.filter((K)=>K.espacio==e.lugarConcierto)
+        usedispatch(cargalocalidad([...mapalocal]))
+     //    console.log( mapa)
         let localidad  = JSON.parse(mapa[0].localidad)
         let path = JSON.parse(mapa[0].pathmap)
+        
         let newprecios = obten.data.map((e,i)=>{
-        let color = localidad.filter((f,i)=>f.NOMBR == e.localodad)
-        e.color=color[0].color,
+        let color = localidad.filter((f,i)=>f.nombre == e.localodad)
+        e.color=color[0].color
         e.idcolor=color[0].id
+        e.typo= color[0].tipo
         return e
       })
       let nuevosdatos={
@@ -85,10 +95,11 @@ const IndexFlas = () => {
         pathmapa:path,
         mapa:mapa[0].nombre_mapa
       }
+     // console.log(nuevosdatos)
       localStorage.eventoid= e.codigoEvento 
     
     setPrecios(nuevosdatos)
-      console.log(obten)
+     // console.log(obten)
       setDatoscon(e)
       handleClosesop(true)}
       }catch(err){
@@ -297,11 +308,15 @@ const hideAlert = () => {
   //Cargar eventos Activos mayores a la fecha actual
     const evento =  async ()=>{
       try {
-        const data = await cargarEventoActivo()    
+        const data = await cargarEventoActivo()
+        
         console.log(data) 
         const filtro = data!=null?data.filter((e)=>new Date(e.fechaConcierto)>new Date()):[]
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto)? 1 : -1 ;
-        if(data!=null) setEventos(filtro.sort(sorter))
+        if(data!=null){
+           setEventos(filtro.sort(sorter))
+            
+          }
         else if(data==null) setEventos([])
       } catch (error) {
         console.log(error)

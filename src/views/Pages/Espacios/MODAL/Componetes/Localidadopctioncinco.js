@@ -46,13 +46,18 @@ const MapadelocalidadViews=(props)=>{
        async  function cargardatosMapa(){        
         try {
             let map = await cargarMapa()
-            let datos = map.filter((e)=>e.nombre_espacio==localidaname.nombre)
+            let datos = map.data.filter((e)=>e.nombre_espacio==localidaname.nombre)
+            console.log(map)
+            console.log("mapa",datos)
             if(datos){
-                localStorage.mapa= JSON.parse(datos[0].pathmap)
-                localStorage.localidad = JSON.parse(datos[0].localidad)
+                localStorage.mapa= datos[0].pathmap
+                localStorage.localidad =datos[0].localidad
                 SetSelecion(datos[0].nombre_mapa)
                 setmapa(JSON.parse(datos[0].localidad))
                 setselection({...localidadmap,id:datos[0].id})
+            }else{
+                console.log(localStorage.localidadrespaldo)
+                //localStorage.localidadrespaldo
             }
             
     
@@ -64,6 +69,7 @@ const MapadelocalidadViews=(props)=>{
          function GetLocalidad(e){
             localStorage.removeItem("mapa")
            setselection({
+            ...localidadmap,
                name:"",
                color:'#A12121'})
            setmapa([])
@@ -85,12 +91,13 @@ const MapadelocalidadViews=(props)=>{
             "localidad":JSON.stringify(getLocalidadmapa()),
           }
         try {
-            if(localidadmap.id!=""){
+            if(localidadmap.id==""){
                 let datos = await guardarMapar(valores)
                 console.log("guardado",datos)
             }
             else{
-                let updatedatos = await editarMapa({...valores,id:localidadmap.id})
+                console.log("editar",{...valores,id:localidadmap.id})
+                let updatedatos = await editarMapa({...valores,id:localidadmap.id.toString()})
                 console.log("actualizado",updatedatos)
             }
         } catch (error) {
@@ -171,7 +178,7 @@ const MapadelocalidadViews=(props)=>{
                 await cargardatosMapa()
                 cargarcolores()
             })()
-            console.log(mapaset)
+            //console.log(mapaset)
        
         },[mapaset,localidaname])
 
@@ -2060,12 +2067,12 @@ const MapadelocalidadViews=(props)=>{
                                                     onChange={(e) => handelChange(e.target)}
                                                     />
                                                     </div>
-                                                    <div className="col-sm d-flex flex-column" >
+                                                    <div className="col-sm d-flex flex-column align-items-center" >
                                                         <div>
                                                     <label className="form-label text-white " >.</label>
-                                                    {localidadmap.id? 
-                                                        <button className="btn btn-primary"  onClick={successAlert} >Guardar </button>
-                                                        :<button className="btn btn-primary">Actualizar </button> }
+                                                    {!localidadmap.id? 
+                                                        <button className="btn btn-primary"  onClick={successAlert} >Guardar </button>:
+                                                        <button className="btn btn-primary" onClick={successAlert}>Actualizar </button> }
                                                         </div>
                                                         <div>
                                                             <label className="form-label text-white" >.</label>

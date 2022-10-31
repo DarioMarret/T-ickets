@@ -469,7 +469,7 @@ const EsquemaViews=()=>{
                                             fontFamily:'Brush Script MT',  
                                             width:200,                                         
                                             fontSize:"1.4em",                                                                          
-                                        }}>
+                                        }}>  
                                             <small>                                                
                                         #{styletiket.mensaje} 
                                             </small>
