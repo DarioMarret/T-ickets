@@ -1,9 +1,28 @@
 import React from "react";
 import { Stylesilla } from "./style";
+import { useSelector } from "react-redux";
 const MesaseisView =({text,list})=>{
-  function Estado(e){
+  let nombre = localStorage.getItem("seleccionmapa")
+   const seleccion= useSelector((state)=>state.sillasSlice.sillasSelecionadas.filter((e)=>e.localidad==nombre))
+   
+     let silla = seleccion
+      // console.log(silla)
+     function checkAvailability(arr, val) {
+    return arr.some(function(arrVal) {
+      //console.log(val,arrVal.silla)
+        return val === arrVal.silla;
+    });
+}  
+  function Estado(e){  
+    if(silla.length>0){
+      //let valor = 
+    //console.log(checkAvailability(seleccion,e))
+      //var index = ;
+      var index = list.findIndex(obj => obj.silla==e);
+    return  checkAvailability(seleccion,e)? silla[silla.findIndex(obj => obj.silla==e)].estado:list[index].estado 
+  }
     var index = list.findIndex(obj => obj.silla==e);
-    return list[index].estado  
+    return  list[index].estado  
   }
     return(
         <div  style={{padding: '0.7px'}}>

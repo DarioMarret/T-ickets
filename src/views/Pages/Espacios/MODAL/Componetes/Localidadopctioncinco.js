@@ -126,16 +126,16 @@ const MapadelocalidadViews = (props) => {
 
         $(document).on("click", ".none", function () {
                 let co = document.getElementById("color").value;
-                let id = document.getElementById("name").value;
+                let id = document.getElementById("name").value; 
+                
                 if (this.classList.contains('none')) {
-                        if (id.trim() === "") {
-                                return
-                        }
-                        else
-                                agergaraALarray(this.getAttribute('id'), id, co)
+                        
+                        console.log(this.getAttribute('id'), id, co)
+                         agergaraALarray(this.getAttribute('id'), id, co)
                         this.removeAttribute("class", "none")
                         this.setAttribute("class", "seleccion")
                 }
+                return
         })
         $(document).on("click", ".seleccion", function () {
                 if (this.classList.contains('seleccion')) {

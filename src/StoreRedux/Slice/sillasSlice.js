@@ -3,6 +3,14 @@ const initialState={
       sillasSelecionadas:[],
     }
     const sorter = (a, b) => a.fila > b.fila? 1 : -1 ;
+    function filtrarPodato(obj) {
+    if ('id' in obj && typeof(obj.id) === 'number' && !isNaN(obj.id)) {
+        return true;
+    } else {
+        entradasInvalidas++;
+        return false;
+    }
+    }
 const  sillasSlice = createSlice({
     name:'sillasSlice',
     initialState,
@@ -10,8 +18,8 @@ const  sillasSlice = createSlice({
         addSillas:(state,action)=>{           
             state.sillasSelecionadas=[...state.sillasSelecionadas,action.payload]
         },
-        deleteSillas:(state,action)=>{
-            state.sillasSelecionadas= state.sillasSelecionadas.filter((item)=>item.silla != action.payload.silla);
+        deleteSillas:(state,action)=>{ 
+            state.sillasSelecionadas= state.sillasSelecionadas.filter((item)=>item.seleccionmapa != action.payload.localidad+"-"+action.payload.silla );
         },  
         setSilas:(state,action)=>{
             let copia = state.sillasSelecionadas.findIndex((item)=>item.silla==action.payload.silla);

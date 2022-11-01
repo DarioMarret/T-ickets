@@ -6,6 +6,7 @@ import TabunoViews from './Componetes/Localidadopctionuno'
 import TabdosViews from './Componetes/Localidadopctiondos'
 import LocalidadesagreViews from "./Componetes/Localidadopcioncuatro"
 import MapadelocalidadViews from "./Componetes/Localidadopctioncinco"
+import OpctionLocalidadView from "./Componetes/Localidadoptionseis"
 const RegistroViwstab =(props)=>{
     const {show,setShowToast,localidaname} =props
     //console.log(localidaname)
@@ -89,6 +90,10 @@ const RegistroViwstab =(props)=>{
                                                          >Localidades Agregadas</a>
                                                     </li>
                                                     <li className="nav-item">
+                                                        <a className="nav-link" data-toggle="tab" href="#seleclocalidad"                                                        
+                                                         >Seleccionar locación</a>
+                                                    </li>
+                                                    <li className="nav-item">
                                                         <a className="nav-link" data-toggle="tab" href="#mapa"   
                                                         onClick={()=>setMapas(!mapaset)}                                                     
                                                          >Diseñar Mapa</a>
@@ -120,8 +125,8 @@ const RegistroViwstab =(props)=>{
                                     SetDataloca={SetDataloca}
                                     setShowToast={setShowToast}
                                     />
-
                                     </div>
+                                   
                                     
                                     <div className="tab-pane  container " id="listas">
                                     <LocalidadesagreViews
@@ -131,6 +136,9 @@ const RegistroViwstab =(props)=>{
                                     localidaname={localidaname} />
 
                                     </div> 
+                                     <div className="tab-pane container" id="seleclocalidad" >
+                                        <OpctionLocalidadView/>
+                                    </div>
                                     <div className="tab-pane  container-fluid " id="mapa">
                                     <MapadelocalidadViews
                                      show={show}

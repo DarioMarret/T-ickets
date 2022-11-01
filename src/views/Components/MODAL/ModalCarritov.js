@@ -12,10 +12,6 @@ const  ModalCarritoView=(prop)=>{
     let sleccionlocalidad = useSelector((state)=>state.mapaLocalSlice)
     const [detalle,setDetalle]=useState([])
     const [timer, setTimer] = useState(false)
-    const lista =async ()=>{
-        let precios = await listarpreciolocalidad(datos.codigoEvento)
-        setPrecios(precios.data)
-    }
     const [checked, setChecked] = useState({
         Efectivo: "",
         Tarjeta: "",
@@ -157,6 +153,8 @@ const  ModalCarritoView=(prop)=>{
         usedispatch(cargarmapa(color))
         usedispatch(settypo({nombre:precios.mapa,typo:consulta[0].tipo,precio: {...consulta[0]}}))
         usedispatch(filtrarlocali(espacio.datos))
+        localStorage.seleccionmapa= JSON.stringify(consulta[0])
+
         abrirlocalidad()       
         })
     })

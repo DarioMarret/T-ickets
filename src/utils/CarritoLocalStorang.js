@@ -1,7 +1,8 @@
-import { CarritoTicket, Metodos,DatosUsuarioLocalStorang,Valorcarrito } from "./constantes"
+import { CarritoTicket, Metodos,DatosUsuarioLocalStorang,Valorcarrito,listaasiento } from "./constantes"
 import {getDatosUsuariosLocalStorag}from "./DatosUsuarioLocalStorag"
 
 let PViten = []
+let PVsilla = []
 export function TiendaIten(producto) {
     VerTienda()
     const existe = PViten.some(iten => iten.localidad === producto.localidad)
@@ -40,9 +41,7 @@ export function TiendaSillas(producto){
         let array = JSON.parse(localStorage.getItem(CarritoTicket))
         return array
 }
-export function ElimnarSilla(){
-    
-}
+
 function VerTienda() {
     try {
         let iten = JSON.parse(localStorage.getItem(CarritoTicket));
@@ -120,6 +119,91 @@ export function GetCantidades() {
         }
     }
 }
+export function AgregarAsiento(sillas) {
+    VerSillas()
+    PVsilla.push(sillas) 
+    localStorage.setItem(listaasiento,JSON.stringify(PVsilla))
+    Filterduplicados()
+}
+export function EliminarSillas(silla){
+    VerSillas()
+    let nuevo = PVsilla.filter((e)=>{return e.seleccionmapa!=silla.localidad+"-"+silla.silla})
+    console.log(nuevo)
+     localStorage.setItem(listaasiento, JSON.stringify(nuevo));
+}
+
+ function Filterduplicados(){
+    VerSillas()
+    VerTienda()
+    const valorDuplicadas = [];
+                PVsilla.length > 0? PVsilla.forEach((p ,i)=> {
+                        if (valorDuplicadas.findIndex(pd => pd.localidad === p.localidad) === -1) {
+                            
+                                valorDuplicadas.push({ localidad: p.localidad,fila: '',nombreConcierto:p.nombreConcierto,valor:p.valor, cantidad: 1});
+                              
+                            }
+                        else{
+                            valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].cantidad = parseInt(valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].cantidad) +1;
+                            valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].fila = parseInt(valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].fila) +1;
+                            valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].valor = parseFloat(valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].valor);
+                        }
+                }) : ''
+            localStorage.sillaspalco= JSON.stringify(valorDuplicadas)
+            valorDuplicadas.length>0? valorDuplicadas.forEach((e,i)=>{
+                if(PViten.findIndex(item=>item.localidad===e.localidad)===-1){
+                    PViten.push({ localidad: e.localidad,fila: e.fila,nombreConcierto:e.nombreConcierto,valor:e.valor, cantidad: 1})
+                }else{
+                    PViten[PViten.findIndex(item=>item.localidad===e.localidad)].cantidad= e.cantidad
+                    PViten[PViten.findIndex(item=>item.localidad===e.localidad)].valor= e.valor
+                }
+            }):''
+            localStorage.setItem(CarritoTicket, JSON.stringify(PViten))
+
+}
+function TiendaItendos(producto) {
+    VerTienda()
+    const existe = PViten.some(iten => iten.localidad === producto.localidad)
+    if (existe) {
+        //Actualizar Cantidad
+        const Product = PViten.map(iten => {
+            if (iten.localidad === producto.localidad) {
+                if (producto.cantidad == 1) {
+                    iten.cantidad++
+                    return iten; // restorna la cantidad actualizada
+                }
+                if (producto.cantidad == -1 ){ 
+                   
+                    iten.cantidad--
+                    return iten; // restorna la cantidad actualizada
+                }
+            } else {
+                return iten //retorna la objetos que no son actualizado
+            }
+        })
+        PViten = [...Product];
+        localStorage.setItem(CarritoTicket, JSON.stringify(PViten))
+        let array = JSON.parse(localStorage.getItem(CarritoTicket))
+        return array
+    } else {
+        //Agregamos a la tienda 
+        localStorage.setItem(CarritoTicket, JSON.stringify([...PViten, producto]))
+        let array = JSON.parse(localStorage.getItem(CarritoTicket))
+        return array
+    }
+}
+
+function VerSillas(){
+     try {
+        let iten = JSON.parse(localStorage.getItem(listaasiento));
+        if (iten !== null) {            
+            PVsilla= iten
+        }
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
 
 
 ///subtotaltotal 

@@ -5,117 +5,83 @@ import { ListarLocalidad } from "utils/Querypanel"
 import { Modal } from "react-bootstrap"
 import { useDispatch,useSelector } from "react-redux"
 import { addSillas,deleteSillas,clearSillas } from "StoreRedux/Slice/sillasSlice"
+import { EliminarSillas,AgregarAsiento } from "utils/CarritoLocalStorang"
 import "./localidas.css"
 const LocalidadmapViews=(props)=>{
     const {precios,showMapa,handleClosesop,setMapashow} = props
+    let nombre = JSON.parse( localStorage.getItem("seleccionmapa"))
     const usedispatch = useDispatch()
-    const seleccion= useSelector((state)=>state.sillasSlice)
-    const mapath = useSelector((state)=>state.mapaLocalSlice)
+    
+    console.log(nombre)
+    const seleccion= useSelector((state)=>state.sillasSlice.sillasSelecionadas.filter((e)=>e.localidad== nombre.localodad ))
+    let mapath = useSelector((state)=>state.mapaLocalSlice)
     const [sillaarray,setSilla]=useState([])
     const [espacios,setEspacios]=useState({
-        descripcion:'',
-        espacio:"",
+        descripcion:'',espacio:"",id:'',tipo:'',nombre:'',
         mesas_array:[],
-        id:'',
-        tipo:'',
-        nombre:''
     })
     function cerrar(){
         handleClosesop(true)
-        setMapashow(flase)
+        setMapashow(flase) 
     }
-    function toggleValueInArray(value) {
-        let array =sillaarray
-        var index = array.findIndex(obj => obj.silla==value.silla);
-      //var index = array.indexOf(value);     
-      if (index === -1) {
-        array.push(value);    
-      } else {
-        do {
-          array.splice(index, 1);
-          index = array.indexOf(value);      
-        } while (index != -1);
-      }
-      setSilla(array) 
-      console.log(array)
-    }
-    async function ObtenLocalidad(){    
-        try {
-         const datos =await ListarLocalidad()
-   const {success,data}=datos
    
-         if(success){
-         const filtrado = data.filter(e => e.nombre == "Palco - Sillas")
-         const obten = filtrado.map((e,i)=>{
-           let dato = JSON.parse( e.mesas_array)      
-          
-           return {...e,tipo:dato.Typo,mesas_array:dato.datos}
-         })
-        // console.log("localidada",obten[0])
-         setEspacios(obten[0])
-         
-        } 
-        
-        } catch (error) {   
-         console.log(error)
-        }
-     }
-     $(document).on('click','div.disponible',function (e){
-        e.preventDefault();
-    if(this.classList.contains("disponible")){
-        if(!this.classList.contains('seleccionado')){
-       this.classList.remove('disponible')       // this.classList.remove('sillas')
-        this.classList.add('seleccionado')
-       // console.log(this.classList[0].split("-")[0])
-        //console.log({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
-       usedispatch(addSillas({"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"seleccionado"}))
-       // toggleValueInArray({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
-       // $("div.Mesa").removeClass("bg-secondary").addClass("bg-success")       
-         }      
-         return
-       }
-        
-    })
-    $(document).on('click','div.seleccionado',function (e){
-        e.preventDefault();
-    if(this.classList.contains("seleccionado")){
-        if(!this.classList.contains('disponible')){
-       this.classList.remove('seleccionado')       // this.classList.remove('sillas')
-        this.classList.add('disponible')
-       // console.log(this.classList[0].split("-")[0])
-      // console.log({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
-       usedispatch(deleteSillas({"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"disponible"}))  
-         }      
-         return
-       }        
-    })
-    $(document).on('click','li.cargados',function(){
-        if(!this.classList.contains('disponible')){
-        //this.classList.remove('seleccionado')       // this.classList.remove('sillas')
-        //this.classList.add('disponible')
-        espacios.tipo!=""&&espacios.tipo=="mesa"?  $( "a."+this.classList[0]).removeClass( "seleccionado" ).addClass( "disponible" ):
-        $( "div."+this.classList[0]).removeClass( "seleccionado" ).addClass( "disponible" )
-        usedispatch(deleteSillas({"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"borrar"}))}
-    })
-            $(document).on('click','a.disponible',function(){
+   
+            $(document).on('click','div.disponible',function (e){
+                e.preventDefault();             
+            if(this.classList.contains("disponible")){
                 if(!this.classList.contains('seleccionado')){
-                    this.classList.remove('disponible')       // this.classList.remove('sillas')
+                this.classList.remove('disponible')       
+                this.classList.add('seleccionado')
+                  let nombres = JSON.parse( localStorage.getItem("seleccionmapa"))
+                console.log("nuevo",{nombres})
+                AgregarAsiento({"localidad":nombres.localodad,"nombreConcierto":"","valor":nombres.precio_normal,"seleccionmapa":nombres.localodad+"-"+this.classList[0],"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"seleccionado"})
+                usedispatch(addSillas({"localidad":nombres.localodad,"nombreConcierto":"","valor":nombres.precio_normal,"seleccionmapa":nombres.localodad+"-"+this.classList[0],"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"seleccionado"}))
+                }      
+                return
+            }
+                
+            })
+            $(document).on('click','div.seleccionado',function (e){
+                e.preventDefault();                
+            if(this.classList.contains("seleccionado")){
+            if(!this.classList.contains('disponible')){
+            this.classList.remove('seleccionado')       
+            this.classList.add('disponible')
+             let nombres = JSON.parse( localStorage.getItem("seleccionmapa"))
+                console.log("nuevo",{nombres})
+            EliminarSillas({"localidad":nombres.localodad,"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"disponible"})
+            usedispatch(deleteSillas({"localidad":nombres.localodad,"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"disponible"}))  
+                }      
+                return
+            }        
+            })
+            $(document).on('click','li.cargados',function(){                
+                if(!this.classList.contains('disponible')){
+                $( "div."+this.classList[0]).removeClass( "seleccionado" ).addClass( "disponible" )
+                 let nombres = JSON.parse( localStorage.getItem("seleccionmapa"))
+                console.log("nuevo",{nombres})
+                EliminarSillas({"localidad":nombres.localodad,"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"disponible"})
+                usedispatch(deleteSillas({"localidad":nombres.localodad,"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"borrar"}))}
+            })
+            $(document).on('click','a.disponible',function(){
+                
+                if(!this.classList.contains('seleccionado')){
+                    this.classList.remove('disponible')      
                     this.classList.add('seleccionado')
-                    // console.log(this.classList[0].split("-")[0])
-                    //console.log({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
-                    usedispatch(addSillas({"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"seleccionado"}))
-                    // toggleValueInArray({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
-                    // $("div.Mesa").removeClass("bg-secondary").addClass("bg-success")       
-                    }      
+                     let nombres = JSON.parse( localStorage.getItem("seleccionmapa"))
+                console.log("nuevo",{nombres})
+                    AgregarAsiento({"localidad":nombres.localodad,"valor":nombres.precio_normal,"seleccionmapa":nombres.localodad+"-"+this.classList[0],"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"seleccionado"})
+                    usedispatch(addSillas({"localidad":nombres.localodad,"valor":nombres.precio_normal,"seleccionmapa":nombres.localodad+"-"+this.classList[0],"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"seleccionado"}))                   }      
                     return
             })
-            $(document).on("click","a.seleccionado",function(){
-                    if(!this.classList.contains('disponible')){
-                this.classList.remove('seleccionado')       // this.classList.remove('sillas')
+            $(document).on("click","a.seleccionado",function(){                
+                if(!this.classList.contains('disponible')){
+                this.classList.remove('seleccionado')     
                     this.classList.add('disponible')
-                // console.log(this.classList[0].split("-")[0])
-                // console.log({"fila":this.classList[0].split("-")[0],"silla":this.classList[0]})
-                usedispatch(deleteSillas({"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"disponible"}))  
+                     let nombres = JSON.parse( localStorage.getItem("seleccionmapa"))
+                console.log("nuevo",{nombres})
+                    EliminarSillas({"localidad":nombres.localodad,"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"disponible"})
+                    usedispatch(deleteSillas({"localidad":nombres.localodad,"fila":this.classList[0].split("-")[0],"silla":this.classList[0],"estado":"disponible"}))  
                     }      
                     return        
             })
@@ -127,8 +93,9 @@ const LocalidadmapViews=(props)=>{
     }
     
     useEffect(()=>{
-         seleccion.sillasSelecionadas>0? 
-         seleccion.sillasSelecionadas.map((e)=>{
+        let selct = seleccion
+         selct.length>0? 
+         selct.map((e)=>{
              $( "div."+e.silla).removeClass( "disponible" ).addClass( "seleccionado" );
          })
          :''
@@ -159,7 +126,7 @@ const LocalidadmapViews=(props)=>{
             <Modal.Body>
                <div className='conatiner-fluid col-12'>
                     <div className="row "> 
-                    <div className="col-12 d-flex  aling-items-end">
+                    <div className="col-12 d-flex  flex-column">
                             <h5>{mapath.precio.localodad}</h5>
                             <h6 className="px-1">$ {mapath.precio.precio_normal} </h6>
                         </div>
@@ -936,7 +903,7 @@ const LocalidadmapViews=(props)=>{
 
                     <div className="col-12 pt-1">                            
                         {mapath.precio.typo=="fila"?
-                        <div  style={{ maxHeight: '550px', overflowY: 'auto', overflowX: 'auto', }}>
+                        <div  style={{ maxHeight: '550px', minHeight:'250px' ,overflowY: 'auto', overflowX: 'auto', }}>
                         {mapath.localidadespecica.length > 0 ?
                             mapath.localidadespecica.map((e, i) => {
                                 {
@@ -951,7 +918,7 @@ const LocalidadmapViews=(props)=>{
                                                 </span>      
                                                 <div className=' d-flex px-1  align-items-stretch ' style={{ width: '100%' }}>
                                                     {e.asientos.map((silla, index) => {
-                                                        //let mira= seleccion.sillasSelecionadas
+                                                        //let mira= seleccion
                                                         // $( "."+elm.silla).removeClass( "disponible" ).addClass( "seleccionado" ); 
                                                         let numero = index + 1
                                                         return (
@@ -981,7 +948,7 @@ const LocalidadmapViews=(props)=>{
                         </div>:''}
                     
                     {mapath.precio.typo==="mesa"?
-                    <div className="col-sm-12 text-center " style={{ height: '600px', overflowY: 'hide', overflowX: 'auto', }}>
+                    <div className="col-sm-12 text-center " style={{ height: '550px', minHeight:'250px',overflowY: 'auto', overflowX: 'auto', }}>
                          <div className='d-flex  px-3 align-items-center' >
                          <div className='d-flex align-itmes-center pb-2' style={{width:'80px'}}>
                             <h5>Filas</h5>
@@ -1036,13 +1003,13 @@ const LocalidadmapViews=(props)=>{
             <Modal.Footer>
                <div className="row border-top justify-content-between p-2" style={{height:'188px',width:'90%'}} >
                     <div className="col-10 ">
-                    {espacios.tipo=="mesa"?<h5>Numero de mesas y sillas seleccionadas</h5>:<h5>Sillas y Filas Selecionadas</h5>}
+                    {mapath.precio.typo=="mesa"?<h5>Numero de mesas y sillas seleccionadas</h5>:<h5>Sillas y Filas Selecionadas</h5>}
                         <div className="d-flex flex-wrap" style={{ height: '100px', overflowY: 'auto', overflowX: 'hide', }}>   
                         {
-                            seleccion.sillasSelecionadas.length>0?
-                            seleccion.sillasSelecionadas.map((elm,id)=>
+                            seleccion.length>0?
+                            seleccion.map((elm,id)=>
                             {                   
-                                espacios.tipo!=""&&espacios.tipo=="mesa"? $( "a."+elm.silla).removeClass( "disponible" ).addClass( "seleccionado" ):  $( "div."+elm.silla).removeClass( "disponible" ).addClass( "seleccionado" )            
+                               // espacios.tipo!=""&&espacios.tipo=="mesa"? $( "a."+elm.silla).removeClass( "disponible" ).addClass( "seleccionado" ):  $( "div."+elm.silla).removeClass( "disponible" ).addClass( "seleccionado" )            
 
                              return(
                                     <li key={id}  className={elm.silla+'  d-flex cargados  rounded-5  bg-success justify-content-center align-items-center '}
