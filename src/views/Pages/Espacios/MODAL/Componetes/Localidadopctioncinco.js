@@ -25,6 +25,7 @@ const MapadelocalidadViews = (props) => {
                         ...localidadmap,
                         [e.name]: e.value
                 })
+                console.log(e.name)
         }
         function agergaraALarray(dato, id, color) {
                 settimer(!timer)
@@ -124,27 +125,7 @@ const MapadelocalidadViews = (props) => {
 
         }
 
-        $(document).on("click", ".none", function () {
-                let co = document.getElementById("color").value;
-                let id = document.getElementById("name").value; 
-                
-                if (this.classList.contains('none')) {
-                        
-                        console.log(this.getAttribute('id'), id, co)
-                         agergaraALarray(this.getAttribute('id'), id, co)
-                        this.removeAttribute("class", "none")
-                        this.setAttribute("class", "seleccion")
-                }
-                return
-        })
-        $(document).on("click", ".seleccion", function () {
-                if (this.classList.contains('seleccion')) {
-                        this.removeAttribute("fill")
-                        agergaraALarray(this.getAttribute('id'), '', '')
-                        this.removeAttribute("class", "seleccion")
-                        this.setAttribute("class", "none")
-                }
-        })
+       
 
         function listadecolores() {
                 let nuevo = getLocalidadmapa()
@@ -182,6 +163,27 @@ const MapadelocalidadViews = (props) => {
                 }) : ''
                 listadecolores()
         }
+         $(document).on("click", ".none", function () {
+                let co = document.getElementById("color").value;
+               
+                
+                if (this.classList.contains('none')) {
+                         let id = document.getElementById("names").value; 
+                        console.log(localidadmap.name,"-",id)
+                         agergaraALarray(this.getAttribute('id'), id, co)
+                        this.removeAttribute("class", "none")
+                        this.setAttribute("class", "seleccion")
+                }
+                return
+        })
+        $(document).on("click", ".seleccion", function () {
+                if (this.classList.contains('seleccion')) {
+                        this.removeAttribute("fill")
+                        agergaraALarray(this.getAttribute('id'), '', '')
+                        this.removeAttribute("class", "seleccion")
+                        this.setAttribute("class", "none")
+                }
+        })
         useEffect(() => {
                 (async () => {
                         await cargardatosMapa()
@@ -2053,7 +2055,7 @@ const MapadelocalidadViews = (props) => {
 
                                                 <div className="col-6">
                                                         <label className="form-label">Selecione localidad  </label>
-                                                        <Form.Select className="form-control" value={localidadmap.name} name="name" id="name" onChange={(e) => handelChange(e.target)}>
+                                                        <Form.Select className="form-control" value={localidadmap.name} name="name" id="names" onChange={(e) => handelChange(e.target)}>
                                                                 <option value={""}></option>
                                                                 {mapa.length > 0 ?
 

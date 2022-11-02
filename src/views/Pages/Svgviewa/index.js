@@ -114,7 +114,7 @@ const Viewssvg = () => {
                 }*/
               
     useEffect(()=>{
-          const paths = document.querySelectorAll("rect , path, polygon ")
+         /* const paths = document.querySelectorAll("rect , path, polygon ")
                 paths.forEach(e=>{
                     e.addEventListener("click",function(){
                         this.classList.add("none")    

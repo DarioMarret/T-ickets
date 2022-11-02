@@ -5,7 +5,7 @@ const OpctionLocalidadView =()=>{
         <>
         <div className="row">
             <div className="col-4" >
-                 <Form.Select className="form-control"  name="name" id="name">
+                 <Form.Select className="form-control"  name="tres" id="tres">
                                                                 <option value={""}></option>
                                                                 
                                                                 <option value={"estadio monumental"}>Estadio monumental</option>
