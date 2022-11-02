@@ -91,9 +91,10 @@ const TabunoView = (props) => {
 
     }
     async function AgregaLocalidad() {
-        if (nmobretabuno.nombre == "" || nmobretabuno.description == "" || ListaFilas.length < 0) {
+        if (nmobretabuno.nombre == "" || nmobretabuno.description == "" || ListaFilas.length < 0 || !filass.sillas>40) {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guaradar', color: 'bg-danger', estado: 'Datos incompletos' }))
             // alert("Complete los datos y localidad creada")
+            return
         }
         else {
             try {
@@ -119,7 +120,8 @@ const TabunoView = (props) => {
     async function actualizalocalidad() {
         if (nmobretabuno.nombre == "" || nmobretabuno.description == "" || ListaFilas.length < 0 || !filass.sillas>40) {           
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos y verifique no sobrepasar el limite de 39 sillas', color: 'bg-danger', estado: 'Datos incompletos' }))       
-            }
+            return
+        }
         else {
             try {
                 const actualiza = await AptualizarLocalida({ "id": nmobretabuno.id, "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })

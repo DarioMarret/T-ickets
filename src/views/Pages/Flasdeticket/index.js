@@ -78,8 +78,6 @@ const IndexFlas = () => {
     if(obten.data.length>0){  
         let mapa = localidades.data.filter((L)=>L.nombre_espacio==e.lugarConcierto)
         let mapalocal= listalocal.data.filter((K)=>K.espacio==e.lugarConcierto)
-        usedispatch(cargalocalidad([...mapalocal]))
-     //    console.log( mapa)
         let localidad  = JSON.parse(mapa[0].localidad)
         let path = JSON.parse(mapa[0].pathmap)
         
@@ -90,9 +88,23 @@ const IndexFlas = () => {
         e.typo= color[0].tipo
         return e
       })
+      let colornuevo = mapalocal.map((L)=>{
+          if(newprecios.findIndex(e=>e.idcolor==L.id) != -1){
+            return L
+          }
+        })
+       let pathnuevo = path.map((L)=>{
+          if(newprecios.findIndex(e=>e.idcolor==L.id) != -1){
+            return L
+          }
+        })
+        
+        //console.log(pathnuevo.filter((e)=>e!=undefined))
+       // console.log()
+        usedispatch(cargalocalidad([...colornuevo.filter((e)=>e!=undefined)]))
       let nuevosdatos={
         precios: newprecios,
-        pathmapa:path,
+        pathmapa:pathnuevo.filter((e)=>e!=undefined),
         mapa:mapa[0].nombre_mapa
       }
      // console.log(nuevosdatos)

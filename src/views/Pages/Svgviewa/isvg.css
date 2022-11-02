@@ -1,29 +1,33 @@
 #estandar path.none{
-    fill:rgb(148, 152, 152);
-    cursor: pointer;
+    fill:rgb(148, 152, 152);    
   }
-  #grado path{
+    polygon.none {
+      fill: rgb(148, 152, 152);
+  
+    }
+    rect.none{
+      fill:rgb(148, 152, 152)
+    }
+    #grado{
     fill:rgb(148, 152, 152);
     cursor: pointer;
   }
   svg.opciones{
     fill:rgb(148, 152, 152);
-    cursor: pointer;
   }
-  .opciones path {
+   path.opciones {
      fill: rgb(148, 152, 152);
   }
-
-  .seleccion{
-    
-    cursor: no-drop;
-  }
+path.mapas{
+  fill: rgb(148, 152, 152);
+}
+ 
   .precios{
     cursor: pointer;
   }
- svg.str2 {stroke:#FEFEFE;stroke-width:20}
-         svg.str1 {stroke:#E6E7E8;stroke-width:20}
-                svg.str0 {stroke:#373435;stroke-width:7.62}
-                svg.fil0 {fill:none}
-                svg.fil2 {fill:#373435;fill-rule:nonzero}
-         svg.fil1 {fill:#373435;fill-rule:nonzero}
+ /*.str2 {stroke:#FEFEFE;stroke-width:20}
+    .str1 {stroke:#E6E7E8;stroke-width:20}
+    .str0 {stroke:#373435;stroke-width:7.62}
+    .fil0 {fill:none}
+    .fil2 {fill:#373435;fill-rule:nonzero}
+    .fil1 {fill:#373435;fill-rule:nonzero}*/

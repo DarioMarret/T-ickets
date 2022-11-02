@@ -139,11 +139,7 @@ $('[href*="listas"]').removeClass('active');
                     columns={columnespacio}
                     data={datas}
                    
-                    muiTableProps={{
-                      sx:{
-                        tableLayout:'flex'
-                      }
-                    }}
+                    
                     initialState={
                       {
                         columnVisibility:{mesas_array:false}

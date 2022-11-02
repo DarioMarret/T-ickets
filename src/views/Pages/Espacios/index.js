@@ -40,6 +40,8 @@ async function Lista (){
   try {
     const elimonado= await EliminarEspacios(e)
     if(elimonado.success){
+    await  Lista()
+    hideAlert()
     console.log(elimonado)
     }
   } catch (error) {

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react"
 import { Modal } from "react-bootstrap"
 import { GuardarEspacio, ActualizarEspacio } from "utils/Querypanel"
 import { useDispatch } from "react-redux"
+import { setToastes } from "StoreRedux/Slice/ToastSlice"
 const NewEspacioView = (props) => {
     const { showNuevo, SetShownuev, localidaname, estado } = props
+    let usedispatch = useDispatch()
 
     const [espacio, setEspacio] = useState({
         id: '',
@@ -30,11 +32,13 @@ const NewEspacioView = (props) => {
             const espaci = await GuardarEspacio(espacio)
             const { success } = espaci
             if (success) {
-                alert("Espacio Guardado")
+                usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
+          
+              //  alert("Espacio Guardado")
             }
         } catch (error) {
             console.log(error)
-
+            usedispatch(setToastes({ show: true, message: 'Hubo un error intente nuevamente', color: 'bg-error', estado: 'Error' }))
         }
     }
     async function Editar() {

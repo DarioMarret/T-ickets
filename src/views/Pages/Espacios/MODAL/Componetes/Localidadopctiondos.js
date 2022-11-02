@@ -7,10 +7,12 @@ import MesaiView from "views/Pages/Mesas/Plantillas/indice";
 import Select from "react-select";
 import { Letras } from "utils/constantes";
 import Accordion from 'react-bootstrap/Accordion';
+import { useDispatch } from "react-redux";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 
 const TabdosView = (props) => {
      const{datalocalidad,SetDataloca,localidanames}=props
-    
+    let usedispatch = useDispatch()
     let ejemplo = [1, 2, 3, 4, 5]
     let ListadeMesas = []
     //array de la localidad
@@ -196,11 +198,14 @@ const TabdosView = (props) => {
         })
     }
     async function agregaLocaliad(){
-        if(localidaname.nombre=="" || localidaname.description==""|| ListaMesa.length<0) {alert("Complete los datos y localidad creada") }
+        if(localidaname.nombre=="" || localidaname.description==""|| ListaMesa.length<0) {
+              usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guardar', color: 'bg-warning', estado: 'Advertencia' }))
+            return
+         }
        else{
          try {
             const guarda = await GuardarLocalidad({"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
-            console.log(guarda)
+           // console.log(guarda)
             if(guarda.success){
                 SetDataloca({typo:'',
                     nombre:'',
@@ -212,7 +217,7 @@ const TabdosView = (props) => {
                 setLocalidad({nombre: '',
                 description: '',
                 id:''})
-                console.log({"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
+               // console.log({"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
             }
            
         } catch (error) {
@@ -221,11 +226,13 @@ const TabdosView = (props) => {
     }    
     }
     async function actualizalocalidad (){
-        if(localidaname.nombre=="" || localidaname.description==""|| ListaMesa.length<0) {alert("Complete los datos y localidad creada") }
+        if(localidaname.nombre=="" || localidaname.description==""|| ListaMesa.length<0) {
+             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guardar', color: 'bg-warning', estado: 'Advertencia' }))
+            return
+        }
         else{
             try {
                 const actualiza =await AptualizarLocalida({"id":localidaname.id,"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
-               
                 if(actualiza.success){
                     SetDataloca({typo:'',
                     nombre:'',
@@ -236,7 +243,7 @@ const TabdosView = (props) => {
                     setLocalidad({nombre: '',
                     description: '',
                     id:''})
-                    alert("Localidad actualizada")
+                    usedispatch(setToastes({ show: true, message: 'Localidad actualizada correctamente', color: 'bg-success', estado: 'Actializado' }))
                 }
                 //console.log({"id":localidaname.id,"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
            

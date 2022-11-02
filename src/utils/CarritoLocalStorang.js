@@ -138,9 +138,8 @@ export function EliminarSillas(silla){
     const valorDuplicadas = [];
                 PVsilla.length > 0? PVsilla.forEach((p ,i)=> {
                         if (valorDuplicadas.findIndex(pd => pd.localidad === p.localidad) === -1) {
-                            
-                                valorDuplicadas.push({ localidad: p.localidad,fila: '',nombreConcierto:p.nombreConcierto,valor:p.valor, cantidad: 1});
-                              
+                            valorDuplicadas.push({ localidad: p.localidad,fila: '',localidaEspacio:p.localidaEspacio,nombreConcierto:p.nombreConcierto,valor:p.valor, cantidad: 1});
+                            //console.log(p)
                             }
                         else{
                             valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].cantidad = parseInt(valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].cantidad) +1;
@@ -151,45 +150,21 @@ export function EliminarSillas(silla){
             localStorage.sillaspalco= JSON.stringify(valorDuplicadas)
             valorDuplicadas.length>0? valorDuplicadas.forEach((e,i)=>{
                 if(PViten.findIndex(item=>item.localidad===e.localidad)===-1){
-                    PViten.push({ localidad: e.localidad,fila: e.fila,nombreConcierto:e.nombreConcierto,valor:e.valor, cantidad: 1})
+                    PViten.push({ localidad: e.localidad,fila: e.fila,localidaEspacio:e.localidaEspacio,nombreConcierto:e.nombreConcierto,valor:e.valor, cantidad: 1})
                 }else{
                     PViten[PViten.findIndex(item=>item.localidad===e.localidad)].cantidad= e.cantidad
                     PViten[PViten.findIndex(item=>item.localidad===e.localidad)].valor= e.valor
                 }
             }):''
-            localStorage.setItem(CarritoTicket, JSON.stringify(PViten))
+           PViten.length>0? localStorage.setItem(CarritoTicket, JSON.stringify(PViten)):''
 
 }
-function TiendaItendos(producto) {
-    VerTienda()
-    const existe = PViten.some(iten => iten.localidad === producto.localidad)
-    if (existe) {
-        //Actualizar Cantidad
-        const Product = PViten.map(iten => {
-            if (iten.localidad === producto.localidad) {
-                if (producto.cantidad == 1) {
-                    iten.cantidad++
-                    return iten; // restorna la cantidad actualizada
-                }
-                if (producto.cantidad == -1 ){ 
-                   
-                    iten.cantidad--
-                    return iten; // restorna la cantidad actualizada
-                }
-            } else {
-                return iten //retorna la objetos que no son actualizado
-            }
-        })
-        PViten = [...Product];
-        localStorage.setItem(CarritoTicket, JSON.stringify(PViten))
-        let array = JSON.parse(localStorage.getItem(CarritoTicket))
-        return array
-    } else {
-        //Agregamos a la tienda 
-        localStorage.setItem(CarritoTicket, JSON.stringify([...PViten, producto]))
-        let array = JSON.parse(localStorage.getItem(CarritoTicket))
-        return array
-    }
+export  function EliminarSillaLocal(silla) {
+      VerSillas()
+       let nuevo = PVsilla.filter(e=>e.localidad!=silla)
+       //console.log( PVsilla.filter((item)=>item.localidad != silla ))
+       localStorage.setItem(listaasiento, JSON.stringify(nuevo));
+
 }
 
 function VerSillas(){

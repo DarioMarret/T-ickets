@@ -21,12 +21,12 @@ const  sillasSlice = createSlice({
         deleteSillas:(state,action)=>{ 
             state.sillasSelecionadas= state.sillasSelecionadas.filter((item)=>item.seleccionmapa != action.payload.localidad+"-"+action.payload.silla );
         },  
-        setSilas:(state,action)=>{
+        setSillas:(state,action)=>{
             let copia = state.sillasSelecionadas.findIndex((item)=>item.silla==action.payload.silla);
             state.sillasSelecionadas[copia] = action.payload;
         },
         clearSillas:(state,action)=>{
-            state.sillasSelecionadas=[]
+            state.sillasSelecionadas=state.sillasSelecionadas.filter((item)=>item.localidad != action.payload.localidad );
         }      
     }
 

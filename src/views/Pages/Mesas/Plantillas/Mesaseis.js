@@ -2,8 +2,9 @@ import React from "react";
 import { Stylesilla } from "./style";
 import { useSelector } from "react-redux";
 const MesaseisView =({text,list})=>{
-  let nombre = localStorage.getItem("seleccionmapa")
-   const seleccion= useSelector((state)=>state.sillasSlice.sillasSelecionadas.filter((e)=>e.localidad==nombre))
+  let nombre = JSON.parse( localStorage.getItem("seleccionmapa"))
+ // console.log(nombre)
+   const seleccion= useSelector((state)=>state.sillasSlice.sillasSelecionadas.filter((e)=>e.localidad==nombre.localodad))
    
      let silla = seleccion
       // console.log(silla)

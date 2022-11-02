@@ -2,9 +2,10 @@ import React,{useEffect,useState} from "react"
 import { Modal } from "react-bootstrap" 
 import { Metodos } from 'utils/constantes'
 import { listarpreciolocalidad } from "utils/Querypanel"
-import { TiendaIten , GetValores,getVerTienda, EliminarByStora, } from "utils/CarritoLocalStorang"
+import { TiendaIten , GetValores,getVerTienda, EliminarByStora, EliminarSillaLocal } from "utils/CarritoLocalStorang"
 import { useDispatch,useSelector } from "react-redux"
 import { cargarmapa,settypo ,filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice"
+import { clearSillas } from "StoreRedux/Slice/sillasSlice"
 import mapa from '../../../assets/img/mapa.png'
 const  ModalCarritoView=(prop)=>{
     const{showshop, handleClosesop,handleContinuar,setMapashow,precios,setListaPrecio,setListarCarritoDetalle,datos}=prop
@@ -61,8 +62,6 @@ const  ModalCarritoView=(prop)=>{
     setDetalle(getVerTienda())
     let data = GetValores()
     setTimer(!timer)
-    //console.log(data)
-
   }
     }
     function restaprecio(e){
@@ -104,23 +103,16 @@ const  ModalCarritoView=(prop)=>{
         }
       }
     function Eliminar(e){
-       // let array = detalle
-       // e.localidad 
+        usedispatch(clearSillas(e)) 
         EliminarByStora(e.localidad )
+        EliminarSillaLocal(e.localidad )               
         setDetalle(getVerTienda())
-      //  setDetalle([])
-      /*  console.log("Elimina",e)
-        let filtro = array.filter(obj=>obj.id!=e.id)
-        setDetalle(filtro)*/
     }
     function abrirlocalidad(){
         setMapashow(true)
         handleClosesop(false)
     }
     useEffect(()=>{
-        /*(async()=>{
-            await lista()
-        })()*/
         setDetalle(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
         setListaPrecio(GetValores())
@@ -129,19 +121,20 @@ const  ModalCarritoView=(prop)=>{
           precios.pathmapa.length>0? precios.pathmapa.map((e,i)=>{
             $("#"+e.path).attr("class",e.id+"  disponible " + e.tipo )
              $("#"+e.path).attr("fill",e.fill)   
-          //  $("#"+e.path).attr("fill",e.fill,"class",e.id )  
-            //$("#"+e.path).addClass("class","seleccion") 
-           // console.log("deveria pintar")        
        }):''
     },[showshop,timer])
-   /* $(document).on('click','path.disponible',function(){        
-        let consulta = precios.precios.filter((F)=>F.idcolor== this.classList[0])
-        let color = precios.pathmapa
-        let mapa = precios.mapa
-        console.log(consulta)
-      
-    })*/
+ 
 
+    function Abririlocalfirt(e){
+        let color = precios.pathmapa.filter((E)=>E.id== e.idcolor)
+        let filtro = sleccionlocalidad.localidades.filter((G)=>G.nombre==e.localodad)
+        let espacio = JSON.parse(filtro[0].mesas_array)
+        usedispatch(cargarmapa(color))
+        usedispatch(settypo({nombre:precios.mapa,typo:e.tipo,precio: {...e}}))
+        usedispatch(filtrarlocali(espacio.datos))
+        localStorage.seleccionmapa= JSON.stringify(e)
+        abrirlocalidad()
+    }
     const path = document.querySelectorAll('path.disponible')
 
     path.forEach(E=>{
@@ -185,7 +178,7 @@ const  ModalCarritoView=(prop)=>{
             <Modal.Body  >
                 <div className="d-flex flex-wrap-reverse" >
                 <div className="col-12 col-lg-8" >
-                    <div>
+                    {/*<div>
                 <div className=" table table-striped  ">
                       <div className="bg-secondary p-1 d-none d-sm-block text-black flex-table row" role="rowgroup">
                             <div className="row text-center header" role="rowgroup">
@@ -216,15 +209,7 @@ const  ModalCarritoView=(prop)=>{
                                 <div className="flex-row d-none d-sm-block  d-none d-sm-block  justify-content-center px-3 col-12 col-md-2" role="cell">
                                 <div className="d-flex  flex-row justify-content-center  ">
                                         <p className="resta input-group-text  " onClick={()=>restaprecio(e)} ><i className="fa fa-minus"></i></p>
-                                       {/* <input size="4" disabled={true}
-                                        
-                                            type="text" style={{
-                                                width: '50px!important',
-                                                alignItems: 'center',
-                                                textAlign: 'center',
-                                            }} className="form-control d-none form-control-sm" />*/}
-
-                                        <p className="suma input-group-text mx-1" onClick={()=>agregar(e)}><i className="fa fa-plus"></i></p>
+                                                                             <p className="suma input-group-text mx-1" onClick={()=>agregar(e)}><i className="fa fa-plus"></i></p>
                                 </div>
                                 </div>
                                 <div className="flex-row d-flex  d-none d-sm-block  justify-content-center col-12 col-md-3" role="cell">
@@ -240,12 +225,7 @@ const  ModalCarritoView=(prop)=>{
                                                     </div>
                                             <div className="col-6 d-block d-sm-none text-center d-flex justify-content-end align-items-center">
                                                     <p className="resta input-group-text  " onClick={()=>restaprecio(e)} ><i className="fa fa-minus"></i></p>
-                                                            {/*<input size="4" disabled={true}
-                                                                type="text" style={{
-                                                                    width: '50px!important',
-                                                                    alignItems: 'center',
-                                                                    textAlign: 'center',
-                                                                }} className="form-control d-none form-control-sm" />*/}
+                                                           
                                                     <p className="suma input-group-text " onClick={()=>agregar(e)}><i className="fa fa-plus"></i></p>
                                             </div>
                             </div>
@@ -256,7 +236,7 @@ const  ModalCarritoView=(prop)=>{
                     
                   
                 </div>
-                </div>
+                </div>*/}
                 <div className="  ">
                         <div className="detalles-resumen  "
                         >
@@ -264,10 +244,10 @@ const  ModalCarritoView=(prop)=>{
                             
                             <div className="row text-center header" role="rowgroup">
                             <div className="flex-row text-center col-2 col-md-3" role="columnheader">Localidad</div>
-                            <div className=" flex-row  text-center col-2 col-md-2" role="columnheader">Asiento</div>
-                            <div className="flex-row  text-center col-2 col-md-2" role="columnheader">Precio</div>
+                            {/*<div className=" flex-row  text-center col-2 col-md-2" role="columnheader">Asiento</div>*/}
+                            <div className="flex-row  text-center col-2 col-md-2" role="columnheader">Total</div>
                             <div className="flex-row  text-center col-2 col-md-2" role="columnheader">Cantidad</div>
-                            <div className="flex-row  text-center col-2 col-md-3" role="columnheader">Características</div>
+                            <div className="flex-row  text-center col-2 col-md-3" role="columnheader">Acciones</div>
                             </div>
                        
                             </div>
@@ -276,20 +256,20 @@ const  ModalCarritoView=(prop)=>{
                                     <h4>AGRAGADOS</h4>
                                 
                             </div>
-                            <div className="text-center px-2  list-group-flush"style={{maxHeight:'250px'  ,overflowY:'auto',overflowX:'hidden' }}>
+                            <div className=" px-2  list-group-flush"style={{maxHeight:'250px'  ,overflowY:'auto',overflowX:'hidden' }}>
                             {
                                 detalle.length>0?
                                 detalle.map((e,i)=>{
                                     return(
                                         <div className="d-flex flex-table row list-group-item" role="rowgroup" key={"items"+i}>
                                             <div className="flex-row first text-center d-none d-sm-block col-3 col-md-3" role="cell">{e.localidad}</div>
-                             <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>
+                            {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
                             <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">${e.valor * e.cantidad}</div>
                             <div className="flex-row d-none d-sm-block text-center  col-2 col-md-2">{e.cantidad}</div>
                              <div className="flex-row d-none d-sm-block  text-center 
                              col-3 col-md-3">
-                             <button className="btn btn-danger" onClick={()=>Eliminar(e)} >                                                            Eliminar
-                                                        </button>
+                             <button className="btn btn-danger" onClick={()=>Eliminar(e)} >Eliminar</button>
+                            <button className="btn btn-primary mx-1" onClick={()=>Abririlocalfirt(e.localidaEspacio)} > Ver </button>
                                                     </div>
                                                     <div className=" col-6 d-block d-sm-none col-6 d-flex flex-row ">
                                                         <div className="d-flex flex-column ">
@@ -305,6 +285,7 @@ const  ModalCarritoView=(prop)=>{
                                                         <button className="btn btn-danger" onClick={()=>Eliminar(e)} >
                                                             Eliminar
                                                         </button>
+                                                         <button className="btn btn-primary mx-1" onClick={()=>Abririlocalfirt(e.localidaEspacio)} > Ver </button>
                                                     </div>
                                                     
                                                     {/*<hr className=" border bg-dark" style={{height:'1px',marginLeft:0,marginRight:0 }} ></hr>*/}
@@ -319,7 +300,7 @@ const  ModalCarritoView=(prop)=>{
                         </div>
                     </div>
                 </div>
-                <div className="d-none d-sm-block col-lg-4">
+                <div className="col-12 col-lg-4 ">
 
                   {/*<img className="img-fluid" onClick={abrirlocalidad} src={mapa}/>*/}
                     <div className="d-flex justify-content-center" >
@@ -491,7 +472,7 @@ const  ModalCarritoView=(prop)=>{
                             0 8 -34 8 -75z m120 55 c34 -34 21 -122 -19 -133 -20 -5 -61 17 -61 34 0 13
                             28 11 32 -3 5 -14 38 -4 38 12 0 5 -10 10 -23 10 -45 0 -64 52 -31 84 21 21
                             40 20 64 -4z" id="27" className="none"></path><path d="M4531 5497 c-15 -19 -3 -49 18 -45 9 2 16 13 16 27 0 29 -17 37 -34
-                            18z" fill="red" className="none" id="28"></path><path d="M4790 5460 l0 -680 335 0 335 0 0 680 0 680 -335 0 -335 0 0 -680z
+                            18z"  className="none" id="28"></path><path d="M4790 5460 l0 -680 335 0 335 0 0 680 0 680 -335 0 -335 0 0 -680z
                             m250 -5 c0 -60 -3 -75 -15 -75 -11 0 -15 12 -15 50 0 40 -3 48 -15 44 -8 -4
                             -15 -3 -15 2 0 11 41 54 52 54 4 0 8 -34 8 -75z m124 53 c18 -25 8 -51 -33
                             -85 l-26 -22 38 -1 c20 0 37 -4 37 -10 0 -5 -25 -10 -55 -10 -50 0 -55 2 -46
@@ -620,7 +601,7 @@ const  ModalCarritoView=(prop)=>{
                             m110 0 c0 -60 -3 -75 -15 -75 -11 0 -15 12 -15 50 0 40 -3 48 -15 44 -8 -4
                             -15 -3 -15 2 0 11 41 54 52 54 4 0 8 -34 8 -75z m120 26 c0 -30 5 -52 13 -55
                             10 -5 10 -7 0 -12 -7 -3 -13 -12 -13 -20 0 -8 -7 -14 -15 -14 -8 0 -15 7 -15
-                            15 0 10 -10 15 -30 15 -16 0 -30 5 -30 11 0 15 69 109 81 109 5 0 9 -22 9 -49z" fill="red" className="none" id="58"></path><path d="M2160 4600 c-9 -16 -8 -20 5 -20 8 0 15 9 15 20 0 11 -2 20 -5 20 -2
+                            15 0 10 -10 15 -30 15 -16 0 -30 5 -30 11 0 15 69 109 81 109 5 0 9 -22 9 -49z"  className="none" id="58"></path><path d="M2160 4600 c-9 -16 -8 -20 5 -20 8 0 15 9 15 20 0 11 -2 20 -5 20 -2
                             0 -9 -9 -15 -20z" id="59" className="none"></path><path d="M7856 4785 c-323 -140 -594 -256 -602 -259 -12 -4 -8 -17 16 -62 16
                             -31 35 -74 42 -95 l11 -39 629 0 628 0 0 108 c0 84 -8 147 -34 278 -30 145
                             -74 292 -95 316 -3 3 -271 -108 -595 -247z m84 -210 c0 -60 -3 -75 -15 -75
@@ -657,12 +638,12 @@ const  ModalCarritoView=(prop)=>{
                             m520 51 c6 -8 10 -23 9 -33 -1 -10 1 -26 6 -36 4 -10 3 -29 -4 -43 -9 -20 -17
                             -25 -43 -22 -17 2 -36 11 -42 20 -15 24 3 37 19 14 16 -21 45 -15 45 9 0 9
                             -10 19 -22 24 l-22 8 22 12 c26 14 28 29 7 38 -9 3 -22 -2 -29 -12 -9 -13 -15
-                            -15 -20 -6 -20 31 49 56 74 27z" id="67" fill="red" className="none"></path><path d="M4910 4405 l0 -275 505 0 505 0 0 275 0 275 -505 0 -505 0 0 -275z
+                            -15 -20 -6 -20 31 49 56 74 27z" id="67"  className="none"></path><path d="M4910 4405 l0 -275 505 0 505 0 0 275 0 275 -505 0 -505 0 0 -275z
                             m547 50 c8 -22 -4 -30 -22 -15 -16 13 -45 7 -45 -10 0 -5 10 -10 23 -10 30 0
-                            47 -18 47 -51 0 -34 -23 -53 -55 -45 -43 11 -58 92 -24 133 16 18 68 17 76 -2z" fill="red" id="68" className="none"></path><path d="M5394 4386 c-8 -21 13 -46 32 -39 20 8 13 47 -9 51 -9 2 -20 -4 -23
+                            47 -18 47 -51 0 -34 -23 -53 -55 -45 -43 11 -58 92 -24 133 16 18 68 17 76 -2z"  id="68" className="none"></path><path d="M5394 4386 c-8 -21 13 -46 32 -39 20 8 13 47 -9 51 -9 2 -20 -4 -23
                             -12z" id="69" className="none"></path><path d="M5940 4405 l0 -275 470 0 470 0 0 275 0 275 -470 0 -470 0 0 -275z
                             m509 31 c30 -64 -32 -148 -77 -103 -19 20 -8 35 13 17 12 -10 18 -10 30 0 22
-                            18 18 28 -9 23 -18 -4 -29 2 -41 21 -16 24 -16 28 -1 52 23 35 66 30 85 -10z" id="70" fill="red" className="none"></path><path d="M6387 4443 c-12 -12 -7 -41 7 -46 19 -7 40 18 32 38 -6 15 -28 20
+                            18 18 28 -9 23 -18 -4 -29 2 -41 21 -16 24 -16 28 -1 52 23 35 66 30 85 -10z" id="70"  className="none"></path><path d="M6387 4443 c-12 -12 -7 -41 7 -46 19 -7 40 18 32 38 -6 15 -28 20
                             -39 8z" id="71" className="none"></path><path d="M2710 3830 l0 -670 520 0 520 0 0 670 0 670 -520 0 -520 0 0 -670z
                             m442 373 c2 -36 7 -49 21 -51 14 -3 17 4 17 42 0 33 4 46 14 46 10 0 16 -14
                             18 -42 2 -35 7 -43 23 -43 17 0 20 8 23 48 2 33 7 47 18 47 11 0 14 -15 14
@@ -712,11 +693,11 @@ const  ModalCarritoView=(prop)=>{
                             -41 63z" id="81" className="none"></path><path d="M3910 3830 l0 -280 495 0 495 0 0 280 0 280 -495 0 -495 0 0 -280z
                             m521 60 c28 -16 23 -50 -13 -87 l-32 -33 32 0 c18 0 32 -4 32 -10 0 -5 -22
                             -10 -50 -10 -27 0 -50 4 -50 8 0 4 19 27 41 51 39 40 40 44 25 59 -16 16 -18
-                            16 -31 -2 -20 -27 -39 -16 -20 12 18 24 36 28 66 12z" id="82" fill="red" className="none"></path><path d="M4913 3998 c4 -62 7 -188 7 -281 l0 -167 498 2 497 3 3 278 2 277
+                            16 -31 -2 -20 -27 -39 -16 -20 12 18 24 36 28 66 12z" id="82"  className="none"></path><path d="M4913 3998 c4 -62 7 -188 7 -281 l0 -167 498 2 497 3 3 278 2 277
                             -506 0 -507 0 6 -112z m547 -108 c0 -5 -13 -10 -30 -10 -20 0 -30 -5 -30 -15
                             0 -9 9 -15 25 -15 17 0 29 -8 37 -25 24 -54 -54 -103 -86 -53 -15 24 1 36 18
                             13 18 -25 49 -13 44 17 -2 19 -8 23 -36 20 -34 -2 -35 -1 -26 47 6 28 10 31
-                            45 31 22 0 39 -4 39 -10z" id="83" fill="red" className="none"></path>
+                            45 31 22 0 39 -4 39 -10z" id="83"  className="none"></path>
                             <path d="M1660 3583 l0 -233 415 0 415 0 0 103 0 102 -165 -3 -165 -3 0 130 0
                             130 -250 3 -250 3 0 -232z m160 -38 c0 -60 -3 -75 -15 -75 -11 0 -15 12 -15
                             50 0 40 -3 48 -15 44 -8 -4 -15 -3 -15 2 0 11 41 54 52 54 4 0 8 -34 8 -75z
@@ -736,14 +717,14 @@ const  ModalCarritoView=(prop)=>{
                             -16 0 -21 -5 -18 -22z" id="90" className="none"></path><path d="M3938 3533 l-28 -4 0 -280 0 -279 500 0 500 0 0 178 c0 99 -3 227 -7
                             285 l-6 107 -466 -1 c-256 -1 -478 -4 -493 -6z m492 -288 c0 -60 -3 -75 -15
                             -75 -11 0 -15 12 -15 51 0 41 -3 50 -15 45 -8 -3 -15 -1 -15 5 0 11 40 48 53
-                            49 4 0 7 -34 7 -75z" id="91" fill="red" className="none"></path><path d="M5053 3533 l-133 -4 0 -279 0 -280 500 0 500 0 0 285 0 285 -367 -2
+                            49 4 0 7 -34 7 -75z" id="91"  className="none"></path><path d="M5053 3533 l-133 -4 0 -279 0 -280 500 0 500 0 0 285 0 285 -367 -2
                             c-203 -1 -428 -4 -500 -5z m397 -257 c0 -26 5 -47 13 -50 10 -5 10 -7 0 -12
                             -7 -3 -13 -14 -13 -25 0 -25 -20 -25 -27 1 -4 14 -14 20 -34 20 -16 0 -29 3
-                            -29 7 0 15 66 103 78 103 8 0 12 -15 12 -44z" id="92" fill="red" className="none"></path><path d="M5402 3250 c-10 -17 -10 -20 3 -20 8 0 15 9 15 20 0 11 -1 20 -3 20
+                            -29 7 0 15 66 103 78 103 8 0 12 -15 12 -44z" id="92"  className="none"></path><path d="M5402 3250 c-10 -17 -10 -20 3 -20 8 0 15 9 15 20 0 11 -1 20 -3 20
                             -1 0 -8 -9 -15 -20z" id="93" className="none"></path><path d="M5940 3255 l0 -285 470 0 470 0 -2 283 -3 282 -467 3 -468 2 0 -285z
                             m512 60 c3 -3 -8 -31 -24 -61 -15 -31 -28 -63 -28 -70 0 -8 -4 -14 -10 -14
                             -15 0 -12 35 5 77 19 45 19 43 -10 43 -16 0 -25 6 -25 15 0 11 11 15 43 15 24
-                            0 46 -2 49 -5z" id="94" fill="red" className="none"></path><path d="M505 3243 c5 -189 12 -282 30 -392 14 -79 26 -145 28 -148 5 -4 767
+                            0 46 -2 49 -5z" id="94"  className="none"></path><path d="M505 3243 c5 -189 12 -282 30 -392 14 -79 26 -145 28 -148 5 -4 767
                             144 774 151 3 3 -4 58 -16 123 -12 65 -21 142 -21 171 l0 52 90 0 90 0 0 145
                             0 145 -491 0 -490 0 6 -247z m365 -53 c12 -23 3 -45 -30 -75 l-22 -20 28 -5
                             c45 -8 34 -25 -18 -28 -60 -4 -64 15 -12 62 25 23 35 39 31 50 -8 20 -36 21
@@ -791,7 +772,7 @@ const  ModalCarritoView=(prop)=>{
                             -47 75 0 25 6 52 12 60 16 20 54 19 70 -1z m114 0 c22 -21 20 -28 -14 -68
                             l-31 -35 27 -3 c15 -2 29 -9 32 -15 3 -9 -12 -13 -52 -13 -31 0 -56 2 -56 5 0
                             3 19 26 41 50 25 28 39 51 35 60 -7 19 -35 19 -42 0 -7 -18 -24 -20 -24 -2 0
-                            35 56 50 84 21z" id="103" fill="red" className="none"></path><path d="M7086 2194 c-14 -37 -3 -94 19 -94 15 0 25 22 25 55 0 33 -10 55 -25
+                            35 56 50 84 21z" id="103"  className="none"></path><path d="M7086 2194 c-14 -37 -3 -94 19 -94 15 0 25 22 25 55 0 33 -10 55 -25
                             55 -7 0 -16 -7 -19 -16z" id="104" className="none"></path><path d="M2190 2760 c-195 -82 -363 -153 -372 -157 -15 -7 -14 -16 18 -86 63
                             -143 200 -369 259 -427 l54 -54 53 49 c132 122 538 523 538 532 0 5 -12 20
                             -26 34 -35 32 -91 119 -126 197 -15 34 -32 62 -36 62 -4 -1 -167 -68 -362
@@ -825,14 +806,14 @@ const  ModalCarritoView=(prop)=>{
                             0 19 -9 30 -20z m-120 -65 c0 -43 -4 -75 -10 -75 -5 0 -10 24 -10 54 0 49 -2
                             54 -20 49 -11 -3 -20 -1 -20 5 0 10 39 41 53 41 4 1 7 -33 7 -74z m250 67 c0
                             -4 -7 -18 -16 -31 -9 -13 -22 -41 -28 -63 -7 -21 -16 -38 -22 -36 -14 4 -5 48
-                            16 86 l19 32 -34 0 c-19 0 -35 5 -35 10 0 6 23 10 50 10 28 0 50 -3 50 -8z" id="111" fill="red" className="none"></path><path d="M3732 2178 c2 -39 7 -53 18 -53 11 0 16 14 18 53 3 47 1 52 -18 52
+                            16 86 l19 32 -34 0 c-19 0 -35 5 -35 10 0 6 23 10 50 10 28 0 50 -3 50 -8z" id="111"  className="none"></path><path d="M3732 2178 c2 -39 7 -53 18 -53 11 0 16 14 18 53 3 47 1 52 -18 52
                             -19 0 -21 -5 -18 -52z" id="112" className="none"></path><path d="M4100 2190 l0 -680 340 0 340 0 0 680 0 680 -340 0 -340 0 0 -680z
                             m382 31 c20 -52 -8 -121 -48 -121 -45 0 -64 115 -23 143 27 20 58 10 71 -22z
                             m108 4 c0 -8 -4 -15 -10 -15 -5 0 -10 5 -10 10 0 6 -9 10 -20 10 -11 0 -20 -2
                             -20 -4 0 -2 -3 -11 -6 -19 -4 -11 1 -13 20 -10 50 10 74 -40 39 -79 -36 -40
                             -83 -8 -83 57 0 42 14 69 40 77 20 7 50 -9 50 -27z m-240 -51 c0 -56 -3 -75
                             -12 -72 -8 3 -14 26 -16 56 -2 40 -6 50 -18 45 -22 -8 -17 13 9 30 12 9 25 16
-                            30 16 4 1 7 -33 7 -75z" id="113" fill="red" className="none"></path><path d="M4416 2215 c-10 -27 -7 -60 7 -79 12 -16 14 -16 26 -3 18 22 10 91
+                            30 16 4 1 7 -33 7 -75z" id="113"  className="none"></path><path d="M4416 2215 c-10 -27 -7 -60 7 -79 12 -16 14 -16 26 -3 18 22 10 91
                             -10 95 -9 2 -19 -4 -23 -13z" id="114" className="none"></path><path d="M4532 2153 c2 -17 9 -28 18 -28 9 0 16 11 18 28 3 22 -1 27 -18 27
                             -17 0 -21 -5 -18 -27z" id="115" className="none"></path><path d="M4790 2190 l0 -680 335 0 335 0 0 680 0 680 -335 0 -335 0 0 -680z
                             m380 24 c19 -57 -5 -114 -49 -114 -42 0 -59 116 -20 143 30 21 56 10 69 -29z
@@ -840,13 +821,13 @@ const  ModalCarritoView=(prop)=>{
                             -7 -18 6 3 29 33 36 43 23 43 -58z m240 66 c0 -5 -13 -10 -30 -10 -21 0 -30
                             -5 -30 -16 0 -8 5 -12 10 -9 18 11 60 -24 60 -49 0 -33 -33 -60 -65 -52 -25 7
                             -43 31 -31 43 3 3 14 -1 23 -9 24 -21 43 -12 43 19 0 24 -2 25 -36 18 -35 -6
-                            -36 -5 -30 17 3 13 6 31 6 41 0 13 9 17 40 17 22 0 40 -4 40 -10z" id="116" fill="red" className="none"></path><path d="M5106 2215 c-19 -50 7 -112 33 -81 18 21 10 90 -10 94 -9 2 -19 -4
+                            -36 -5 -30 17 3 13 6 31 6 41 0 13 9 17 40 17 22 0 40 -4 40 -10z" id="116"  className="none"></path><path d="M5106 2215 c-19 -50 7 -112 33 -81 18 21 10 90 -10 94 -9 2 -19 -4
                             -23 -13z" id="117" className="none"></path><path d="M5480 2190 l0 -680 340 0 340 0 0 680 0 680 -340 0 -340 0 0 -680z
                             m385 13 l10 -41 34 49 c18 27 37 46 42 43 5 -3 9 -25 9 -49 0 -25 5 -46 13
                             -49 10 -5 10 -7 0 -12 -7 -3 -13 -14 -13 -25 0 -25 -20 -25 -27 0 -6 22 -73
                             36 -73 14 0 -12 -30 -33 -49 -33 -43 0 -59 116 -20 144 33 23 62 6 74 -41z
                             m-135 -29 c0 -56 -3 -75 -12 -72 -8 3 -14 26 -16 56 -2 40 -6 50 -18 45 -22
-                            -8 -17 13 9 30 12 9 25 16 30 16 4 1 7 -33 7 -75z" id="118" fill="red" className="none"></path><path d="M5796 2215 c-10 -27 -7 -60 7 -79 12 -16 14 -16 26 -3 18 22 10 91
+                            -8 -17 13 9 30 12 9 25 16 30 16 4 1 7 -33 7 -75z" id="118"  className="none"></path><path d="M5796 2215 c-10 -27 -7 -60 7 -79 12 -16 14 -16 26 -3 18 22 10 91
                             -10 95 -9 2 -19 -4 -23 -13z" id="119" className="none"></path><path d="M5912 2180 c-10 -17 -10 -20 3 -20 8 0 15 9 15 20 0 11 -1 20 -3 20
                             -1 0 -8 -9 -15 -20z" id="120" className="none"></path><path d="M6170 2190 l0 -680 300 0 300 0 0 680 0 680 -300 0 -300 0 0 -680z
                             m330 50 c39 -39 17 -140 -30 -140 -47 0 -69 101 -30 140 11 11 25 20 30 20 6
@@ -855,7 +836,7 @@ const  ModalCarritoView=(prop)=>{
                             -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 -9 15 -20 15 -11 0 -20 -4 -20 -10
                             0 -5 -7 -10 -15 -10 -21 0 -18 16 6 34 32 22 64 6 65 -32z m-236 -37 c0 -43
                             -4 -75 -10 -75 -5 0 -10 24 -10 54 0 49 -2 54 -20 49 -11 -3 -20 -1 -20 5 0
-                            10 39 41 53 41 4 1 7 -33 7 -74z" id="121" fill="red" className="none"></path><path d="M6446 2200 c-7 -36 9 -83 27 -78 7 3 13 26 15 56 3 46 1 52 -16 52
+                            10 39 41 53 41 4 1 7 -33 7 -74z" id="121"  className="none"></path><path d="M6446 2200 c-7 -36 9 -83 27 -78 7 3 13 26 15 56 3 46 1 52 -16 52
                             -14 0 -21 -9 -26 -30z" id="122" className="none"></path><path d="M6802 2818 l-21 -33 35 -3 c20 -2 38 -1 41 1 2 3 -5 19 -15 36 l-19
                             32 -21 -33z" id="123" className="none"></path><path d="M2555 2405 c-212 -208 -385 -380 -385 -384 0 -37 309 -256 485 -344
                             l70 -35 205 499 c113 275 206 503 208 508 1 4 -17 16 -40 27 -36 16 -82 46
@@ -1050,12 +1031,12 @@ const  ModalCarritoView=(prop)=>{
                             -16 0 -19 -8 -19 -50z" id="179" className="none"></path></g>
                                     </svg>:''}
                     </div>
-                    <div className="d-flex flex-wrap justify-content-center  p-3 ">
+                    <div className="d-flex col-12 flex-wrap justify-content-center  p-3 ">
                                                         {precios.precios.length>0?
                                                         precios.precios.map((elm, i) => {
                                                             
                                                             return(
-                                                                <div  className="d-flex flex-row px-3 precios align-items-center" key={i}  >
+                                                                <div  className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={()=>Abririlocalfirt(elm)} key={i}  >
                                                                     <div id={"precios"+elm.id} className="mx-1  rounded-4" style={{height:40,width:40,backgroundColor:elm.color}}></div>
                                                                     <div className="d-flex flex-column justify-content-center align-items-center" >
                                                                         <span>{elm.localodad}</span>

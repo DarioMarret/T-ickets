@@ -15,6 +15,7 @@ const ModalNewEvento =(props)=>{
     //Array donde se crearan las localidades con sus precios
     const [localidadPreci,setPreLocalidad]=useState([])
     const [localidad,setLocalidades]=useState([])
+    const [inputdisable,setinput]=useState(false)
     const [localidadfiltrada,setFiltra]=useState([])
     async function Lista (){
         const datos =await ListarLocalidad()
@@ -77,8 +78,8 @@ const ModalNewEvento =(props)=>{
         ]
       }
      async function gaurdaPrueba(){
-      
-          console.log(neweventos)
+      setinput(true)
+          
         try {
             const data = await Obtenerlinkimagen(neweventos.imagenConcierto)
             if(data==null) return
@@ -95,7 +96,7 @@ const ModalNewEvento =(props)=>{
            // console.log(data)
           if(evento.success){
             usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
-               
+               setinput(false)
             //alert("datos guardados")
                 Setshow(false)
             }
@@ -103,7 +104,7 @@ const ModalNewEvento =(props)=>{
         } catch (error) {
             console.log(error)
             usedispatch(setToastes({ show: true, message: 'No se guardaron los datos del evento', color: 'bg-danger', estado: 'Hubo un error' }))
-            
+            setinput(false)
         }
 
       }
@@ -157,9 +158,6 @@ const ModalNewEvento =(props)=>{
         ...neweventos,
         [e.name]:e.value,
     })}
-
-    console.log(neweventos)
-
  }
   const [precios,setPrecios]=useState(
          {localodad:'',
@@ -188,7 +186,7 @@ const ModalNewEvento =(props)=>{
         }  
         function soloSelectespacio(e){
             var index = localidadPreci.findIndex(obj => obj.localodad==e.value);
-            console.log(index,localidadPreci[index])
+          //  console.log(index,localidadPreci[index])
             setPrecios({
                 precio_normal:localidadPreci[index]?localidadPreci[index].precio_normal:0, 
                 precio_discapacidad:localidadPreci[index]?localidadPreci[index].precio_discapacidad:0,
@@ -250,7 +248,7 @@ const ModalNewEvento =(props)=>{
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                                 </div>
-                                                <input type="text" className="form-control" id="nombreConcierto" name="nombreConcierto"
+                                                <input type="text"  className="form-control" id="nombreConcierto" name="nombreConcierto"
                                                 value={neweventos.nombreConcierto}
                                                 onChange={(e)=>handelchangeComposeventos(e.target)}
                                                 placeholder="Nombre del evento" />
@@ -469,12 +467,19 @@ const ModalNewEvento =(props)=>{
                                  {!selectLocalidad.length>0&&Object.values(neweventos).every(e=>e)?
                                  <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button>:
                                  ""}   
-                                 {selectLocalidad.length>0&&selectLocalidad.length==localidadPreci.length?                       
+                                 {selectLocalidad.length>0&&selectLocalidad.length==localidadPreci.length&&!inputdisable?                       
                                 <button disabled={ !Object.values(neweventos).every(e=>e)} 
                                onClick={gaurdaPrueba}
                                 className="btn btn-primary close-modal float-rigth">Grabar</button>
                                 :
                                  ""} 
+                                 {inputdisable?
+                                 <button className="btn btn-primary" disabled={true} >
+                                    <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                    Guardando</button>
+                                 :''
+
+                                 }
                                  
                      </div>
                                          
