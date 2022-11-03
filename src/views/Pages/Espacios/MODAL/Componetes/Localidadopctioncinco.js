@@ -95,7 +95,7 @@ const MapadelocalidadViews = (props) => {
 
         const GuardarMapa = async () => {
                 let valores = {
-                        "mapasvg": estadio+"5",
+                        "mapasvg": estadio,
                         "nombre_espacio": localidaname.nombre,
                         "pathmap": JSON.stringify(getMapacolor()),
                         "localidad": JSON.stringify(getLocalidadmapa()),

@@ -171,6 +171,8 @@ const ModalNewEvento =(props)=>{
        
   function handelchange(e){
             if(e.value!=""){
+                console.log(e)
+                console.log(localidad)
             var index = localidad.filter(obj => obj.espacio==e.value);
                 console.log(index)
                 setLocalidad(index)
@@ -186,6 +188,7 @@ const ModalNewEvento =(props)=>{
         }  
         function soloSelectespacio(e){
             var index = localidadPreci.findIndex(obj => obj.localodad==e.value);
+           var dato= espacios.filter(D=>D.id==e.id)
           //  console.log(index,localidadPreci[index])
             setPrecios({
                 precio_normal:localidadPreci[index]?localidadPreci[index].precio_normal:0, 
@@ -193,6 +196,7 @@ const ModalNewEvento =(props)=>{
                 precio_tarjeta:localidadPreci[index]?localidadPreci[index].precio_tarjeta:0,
                 precio_descuento:localidadPreci[index]?localidadPreci[index].precio_descuento:0,
                 habilitar_cortesia:localidadPreci[index]?localidadPreci[index].habilitar_cortesia:0,
+                nombre:dato[0].nombre,
                 [e.name]:e.value,               
             })
             //console.log(e.value)
@@ -284,7 +288,7 @@ const ModalNewEvento =(props)=>{
                                                     <option value={""}>Seleccione espacio</option>
                                                     {espacios.map((e,i)=>{
                                                     return(
-                                                    <option value={e.nombre} key={i+"n"+e.id}>{e.nombre}</option>
+                                                    <option value={e.id} key={i+"n"+e.id}>{e.nombre}</option>
                                                     )
                                                     })}                                                   
                                                 </select>

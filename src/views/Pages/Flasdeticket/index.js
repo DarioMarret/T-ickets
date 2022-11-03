@@ -71,10 +71,9 @@ const IndexFlas = () => {
     try{
     let obten = await listarpreciolocalidad(e.codigoEvento)
     const listalocal = await  ListarLocalidad()    
-        
- //   console.log(obten)
     let localidades = await cargarMapa()
    
+    console.log(localidades)
     if(obten.data.length>0){  
         let mapa = localidades.data.filter((L)=>L.nombre_espacio==e.lugarConcierto)
         let mapalocal= listalocal.data.filter((K)=>K.espacio==e.lugarConcierto)
