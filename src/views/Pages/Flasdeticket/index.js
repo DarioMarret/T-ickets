@@ -76,12 +76,15 @@ const IndexFlas = () => {
     console.log(localidades)
     if(obten.data.length>0){  
         let mapa = localidades.data.filter((L)=>L.nombre_espacio==e.lugarConcierto)
+       
         let mapalocal= listalocal.data.filter((K)=>K.espacio==e.lugarConcierto)
         let localidad  = JSON.parse(mapa[0].localidad)
         let path = JSON.parse(mapa[0].pathmap)
-        
+         
         let newprecios = obten.data.map((e,i)=>{
         let color = localidad.filter((f,i)=>f.nombre == e.localodad)
+        console.log("1",localidad)
+        console.log("2",color)
         e.color=color[0].color
         e.idcolor=color[0].id
         e.typo= color[0].tipo

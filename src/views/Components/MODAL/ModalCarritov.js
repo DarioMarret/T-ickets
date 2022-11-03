@@ -177,7 +177,7 @@ const  ModalCarritoView=(prop)=>{
 
             <Modal.Body  >
                 <div className="d-flex flex-wrap-reverse" >
-                <div className="col-12 col-lg-8" >
+                <div className="col-12 col-lg-6" >
                     {/*<div>
                 <div className=" table table-striped  ">
                       <div className="bg-secondary p-1 d-none d-sm-block text-black flex-table row" role="rowgroup">
@@ -300,7 +300,7 @@ const  ModalCarritoView=(prop)=>{
                         </div>
                     </div>
                 </div>
-                <div className="col-12 col-lg-4 ">
+                <div className="col-12 col-lg-6 ">
 
                   {/*<img className="img-fluid" onClick={abrirlocalidad} src={mapa}/>*/}
                     <div className="d-flex justify-content-center" >
