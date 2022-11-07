@@ -127,9 +127,21 @@ export function AgregarAsiento(sillas) {
 }
 export function EliminarSillas(silla){
     VerSillas()
+     VerTienda()
     let nuevo = PVsilla.filter((e)=>{return e.seleccionmapa!=silla.localidad+"-"+silla.silla})
-    console.log(nuevo)
+    const isBelowThreshold = (currentValue) => currentValue.localidad ==silla.localidad;
+   // console.log( nuevo.filter(isBelowThreshold))
+    if(nuevo.filter(isBelowThreshold).length==0){
+        let iten = JSON.parse(localStorage.getItem(CarritoTicket));
+    let Cost = []
+    Cost = iten.filter(tienda => tienda.localidad !== silla.localidad)
+    localStorage.setItem(CarritoTicket, JSON.stringify(Cost));
      localStorage.setItem(listaasiento, JSON.stringify(nuevo));
+     Filterduplicados()
+    return getVerTienda()
+    }else
+    localStorage.setItem(listaasiento, JSON.stringify(nuevo));
+    return Filterduplicados()
 }
 
  function Filterduplicados(){
@@ -157,14 +169,13 @@ export function EliminarSillas(silla){
                 }
             }):''
            PViten.length>0? localStorage.setItem(CarritoTicket, JSON.stringify(PViten)):''
+         //  PViten.length>0? console.log( PViten):''
 
 }
-export  function EliminarSillaLocal(silla) {
+export  function EliminarSillaLocal(silla) {    
       VerSillas()
-       let nuevo = PVsilla.filter(e=>e.localidad!=silla)
-       //console.log( PVsilla.filter((item)=>item.localidad != silla ))
+       let nuevo = PVsilla.filter(e=>e.localidad!=silla)      
        localStorage.setItem(listaasiento, JSON.stringify(nuevo));
-
 }
 
 function VerSillas(){

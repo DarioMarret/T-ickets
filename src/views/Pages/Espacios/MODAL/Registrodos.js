@@ -43,7 +43,7 @@ const RegistroViwstab =(props)=>{
      }
     useEffect(()=>{
         (async()=>{
-            await ObtenLocalidad()
+            //await ObtenLocalidad()
         })()
         SetDataloca({ 
             id:'',

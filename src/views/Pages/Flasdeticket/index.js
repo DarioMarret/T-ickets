@@ -30,6 +30,7 @@ import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
 import { cargalocalidad } from "StoreRedux/Slice/mapaLocalSlice";
 import { Authsucrito } from "utils/Query";
+import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
 import { listarpreciolocalidad, ListarLocalidad } from "utils/Querypanel";
 import { cargarEventoActivo, cargarMapa } from "utils/Querypanelsigui";
 import { Dias, DatosUsuariocliente, Eventoid } from "utils/constantes";

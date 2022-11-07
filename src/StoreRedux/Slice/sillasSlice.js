@@ -27,9 +27,12 @@ const  sillasSlice = createSlice({
         },
         clearSillas:(state,action)=>{
             state.sillasSelecionadas=state.sillasSelecionadas.filter((item)=>item.localidad != action.payload.localidad );
-        }      
+        },
+        borrarseleccion:(state,action)=>{
+            state.sillasSelecionadas=action.payload.vacio
+        }
     }
 
 })
-export const { addSillas ,deleteSillas,clearSillas} =sillasSlice.actions;
+export const { addSillas ,deleteSillas,clearSillas,borrarseleccion} =sillasSlice.actions;
 export default sillasSlice.reducer

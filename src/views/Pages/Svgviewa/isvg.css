@@ -22,9 +22,20 @@ path.mapas{
   fill: rgb(148, 152, 152);
 }
  
-  .precios{
+  .precios:hover{
     cursor: pointer;
+    transform: scale(1.1);
   }
+    polygon.disponible:hover{
+     transform: scale(1.02);
+     }
+         rect.diponible:hover{
+          transform: scale(1.02);
+         }
+         
+         path.disponible:hover {
+           transform: scale(1.02);
+         }
  /*.str2 {stroke:#FEFEFE;stroke-width:20}
     .str1 {stroke:#E6E7E8;stroke-width:20}
     .str0 {stroke:#373435;stroke-width:7.62}
