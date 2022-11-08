@@ -132,6 +132,7 @@ const IndexFlas = () => {
         mapa: ''
       })
       LimpiarLocalStore()
+      usedispatch(borrarseleccion({ vacio: [] }))
       let obten = await listarpreciolocalidad(e.codigoEvento)
       const listalocal = await ListarLocalidad()
       let localidades = await cargarMapa()
