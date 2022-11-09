@@ -243,7 +243,7 @@ const hideAlert = () => {
                                     <h5 >
                                         Precio normal : {e.precio_normal}
                                     </h5>
-                                </div>
+                                </div> 
                                 <div>
                                     <h5>
                                         Precio discapacida : {e.precio_discapacidad}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Modal } from "react-bootstrap"
 import { Metodos } from 'utils/constantes'
-import SvgselectView from "views/Pages/Svgviewa/Svgseleccion.js"
+import SvgselectView from "views/Pages/Svgviewa/svgseleccion.js"
 import { listarpreciolocalidad } from "utils/Querypanel"
 import { TiendaIten, GetValores, getVerTienda, EliminarByStora, EliminarSillaLocal } from "utils/CarritoLocalStorang"
 import { useDispatch, useSelector } from "react-redux"
@@ -173,7 +173,7 @@ const ModalCarritoView = (prop) => {
                 fullscreen={true}>
                 <Modal.Header >
                     <h5 className="modal-title text-center justify-content-center">Boleteria</h5>
-                    <button type="button" className="close" onClick={() => handleClosesop()} >
+                    <button type="button" className="close" onClick={() => handleClosesop(false)} >
                         ×
                     </button>
                 </Modal.Header>
@@ -246,22 +246,20 @@ const ModalCarritoView = (prop) => {
                             </div>
                         </div>
                         <div className="col-12 col-lg-6 ">
-
-                            {/*<img className="img-fluid" onClick={abrirlocalidad} src={mapa}/>*/}
                             <div className="d-flex justify-content-center" >
 
                                 {showshop ? 
                                 <SvgselectView text={precios.mapa}/>
                                 : ''}
                             </div>
-                            <div className="d-flex col-12 flex-wrap justify-content-between p-3 ">
+                            <div className="d-flex col-12 flex-wrap justify-content-center p-3 ">
                                 {precios.precios.length > 0 ?
                                     precios.precios.map((elm, i) => {
 
                                         return (
                                             <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                 <div id={"precios" + elm.id} className="mx-1  rounded-4" style={{ height: 30, width: 30, backgroundColor: elm.color }}></div>
-                                                <div className="row" style={{alignItems:'stretch',lineHeight:'1',minWidth:'160px'}} >
+                                                <div className="row" style={{alignItems:'stretch',lineHeight:'1',minWidth:'150px',maxWidth:'150px'}} >
                                                     <span className="pb-0" >{elm.localodad}</span>
                                                     <span className="pt-0" >${elm.precio_normal}</span>
                                                 </div>

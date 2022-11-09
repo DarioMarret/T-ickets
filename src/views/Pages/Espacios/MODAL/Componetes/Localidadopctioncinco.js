@@ -95,7 +95,7 @@ const MapadelocalidadViews = (props) => {
 
                 } catch (error) {
 
-                }
+                } 
 
         }
        async function GetLocalidad(e) {

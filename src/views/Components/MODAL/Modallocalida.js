@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import MesaiView from "views/Pages/Mesas/Plantillas/indice"
 import MesasView from "views/Pages/Mesas"
-import SVGView from "views/Pages/Svgviewa/Svgoptio";
+import SVGView from "views/Pages/Svgviewa/svgoptio.js";
 import { Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility } from '@mui/icons-material';

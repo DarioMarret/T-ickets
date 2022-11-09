@@ -42,7 +42,7 @@ function Footer(props) {
                 </div>
                 <div className="container-fluid d-flex align-items-center justify-content-center flex-column">
                     <div className="mb-4 text-white text-center">
-                        <p><span style={{ fontSize: '0.7em' }}> COPYRIGHT © 2022 FLASH THE TICKETS - TODOS LOS DERECHOS RESERVADOS</span>
+                        <p><span style={{ fontSize: '0.7em' }}> COPYRIGHT © 2022 TICKETS ECUADOR S.A - TODOS LOS DERECHOS RESERVADOS</span>
                         </p>
                     </div>
                     <div className=" d-flex justify-content-center">

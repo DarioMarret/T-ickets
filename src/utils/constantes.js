@@ -9,6 +9,7 @@ export const Eventoid="eventoid";
 export const listaasiento="asientosList";
 //export const Host = "https://a8e1-45-187-2-162.sa.ngrok.io/"
 export const Host = "https://rec.netbot.ec/ms_login/"
+//                   https://rec.netbot.ec/
 //export const Host = "  https://rec.netbot.ec/pdfqr/api/v1/"
 
 export const Valores = "Costos"

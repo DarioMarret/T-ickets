@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import header from "../../../assets/header.jpeg";
-import logofla from "../../../assets/logo-flashthetickets.png";
-import principal from "../../../assets/imagen/pimpinelag.jpeg";
-import secundaria from "../../../assets/imagen/lamision.jpeg";
-import tercero from "../../../assets/imagen/eventoprincip.jpeg"
-import icon from "../../../assets/imagen/logo_Flash.png";
+import logofla from "../../../assets/imagen/LOGO-WEB.png";
+import principal from "../../../assets/imagen/carrusel.png";
+import secundaria from "../../../assets/imagen/carrusel.png";
+import tercero from "../../../assets/imagen/carrusel.png"
+import icon from "../../../assets/imagen/50pixeles.png";
 import evento from "../../../assets/imagen/gpiminel.jpeg";
 import valla from "../../../assets/imagen/valla-proximo-evento.png";
 import "../../../assets/css/animate.css";
@@ -33,7 +33,7 @@ import { Authsucrito } from "utils/Query";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
 import { listarpreciolocalidad, ListarLocalidad } from "utils/Querypanel";
 import { cargarEventoActivo, cargarMapa } from "utils/Querypanelsigui";
-import { Dias, DatosUsuariocliente, Eventoid } from "utils/constantes";
+import { Dias, DatosUsuariocliente, Eventoid ,listaasiento} from "utils/constantes";
 import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
@@ -133,6 +133,7 @@ const IndexFlas = () => {
       })
       LimpiarLocalStore()
       usedispatch(borrarseleccion({ vacio: [] }))
+      localStorage.setItem(listaasiento,JSON.stringify([]))
       let obten = await listarpreciolocalidad(e.codigoEvento)
       const listalocal = await ListarLocalidad()
       let localidades = await cargarMapa()
@@ -214,12 +215,12 @@ const IndexFlas = () => {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
   const handleContinuar = () => {
-    setShow(false)
+    handleClosesop(false)
     setDetalle(true)
   }
   const handleDetalleColse = () => {
     setDetalle(false)
-    setShow(true)
+    handleClosesop(true)
   }
 
   const salir = () => {
@@ -477,7 +478,7 @@ const IndexFlas = () => {
       <nav className="navbar navbar-expand-lg justify-content-between navbar-dark bg-black fixed-top py-3">
         <div className="container-fluid col-lg-8    d-flex justify-content-between">
           <a className="navbar-brand " aria-label="TICKETS" href="#">
-            <img src={icon} className="img-fluid" style={{ height: '50px' }} alt="" />
+            <img src={icon} className="img-fluid" style={{ height: 'auto' }} alt="" />
           </a>
           <button className="navbar-toggler justify-content-end " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -491,7 +492,7 @@ const IndexFlas = () => {
                 <a className=" nav-link" href="#nuevoseventos">Eventos</a>
               </li>
               <li className="nav-item active" aria-current="page">
-                <a className="nav-link " href="#" onClick={() => getVerTienda().length > 0 ? handleDetalleColse() : ""}>Comprar
+                <a className="nav-link " href="#" onClick={() => getVerTienda().length > 0 ? handleClosesop(true) : ""}>Comprar
                   {getVerTienda().length > 0 ? <span className="position-absolute bottom-0 start-50 translate-middle p-1 bg-danger border border-light rounded-circle">
                     <span className="visually-hidden">New alerts</span>
                   </span> : ""}
@@ -531,26 +532,52 @@ const IndexFlas = () => {
       />
       {/* header */}
       <div className="container-fluid  p-0">
-        <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '400px', backgroundImage: `url(${header})` }}>
-          <div className="container w-100 h-100 px-0">
-            <div className="container btn-group-vertical  h-100 text-center px-0">
-              <h1 className="text-white mx-auto" style={{ fontSize: '3.5em' }}><img src={logofla} className="img-fluid" style={{ height: '150px' }} alt="" /></h1>
-              <p className="mx-auto text-white d-none" style={{ fontSize: '1.2em' }}><b>Compra</b> tu entrada <b>fácil, rápido</b> y
-                <b>seguro</b>
-              </p>
-            </div>
-          </div>
-        </div>
+       
+               
+                <Carousel className="carousel-inner   carousel-fade" slide={false}>
+                  <Carousel.Item interval={2800}>
+                    <img
+                      className="d-block w-100"
+                      src={principal}
+                      alt="First slide"
+                    />
+                    <Carousel.Caption>
+
+                    </Carousel.Caption>
+                  </Carousel.Item>
+                  <Carousel.Item interval={2800}>
+                    <img
+                      className="d-block w-100"
+                      src={secundaria}
+                      alt="Second slide"
+                    />
+                    <Carousel.Caption>
+
+                    </Carousel.Caption>
+                  </Carousel.Item>
+                  <Carousel.Item interval={2800}>
+                    <img
+                      className="d-block w-100"
+                      src={tercero}
+                      alt="Third slide"
+                    />
+                    <Carousel.Caption>
+                    </Carousel.Caption>
+                  </Carousel.Item>
+                </Carousel>
+
+
+              
 
       </div>
       {/* carrusel */}
 
-      {seleccion == "" ?
+      {/*seleccion == "" ?
         <div className="container  mt-n7">
           <div className="container p-3">
             <div className="row  flex-wrap-reverse justify-content-center">
               <div className="col-12 col-lg-6">
-                {/*<!--Carousel-->*/}
+                {/*<!--Carousel-->}
                 <Carousel className="carousel-inner rounded-7   carousel-fade" slide={false}>
                   <Carousel.Item interval={2800}>
                     <img
@@ -629,7 +656,7 @@ const IndexFlas = () => {
             </div>
           </div>
 
-        </div> : ""}
+        </div> : ""*/}
       {/* eventos */}
       {seleccion == "" ?
         <div className="container " id="nuevoseventos">
@@ -638,30 +665,7 @@ const IndexFlas = () => {
               <div className="col-12 col-lg-9">
 
                 <div className="row mx-auto p-0">
-                  {/**Recordatorio aqui se ralizara el map para alimnetar los eventos */}
-                  <div className="col-12 col-lg-6 mx-auto my-5" id="evento2">
-                    <a className="" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false"
-                      aria-controls="collapseExample2">
-                      <div className="container rounded-7 shadow-md px-0">
-                        <img src={evento} className="img-fluid rounded-7 shadow-md " alt="" />
-                      </div>
-                    </a>
-                    <div className="collapse container mt-4 px-0" id="collapseExample2">
-                      <div className="card card-body rounded-7 py-5">
-                        <div className="container">
-                          <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">Grupo Pimpinela</span> </h1>
-                          <h4 style={{ fontSize: '1.4em' }}><span id="tour">Gira 40 Aniversario </span></h4>
-                          <div className="col-12 border border-bottom my-3"></div>
-                          <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> Viernes 28-10-2022</span></p>
-                          <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">Coliseo Voltaire Paladines
-                            Polo</span></p>
-                          <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> 21:00</span></p>
-                          {true ? <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                            className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => handleShow()} >Comprar Entrada</p> : ""}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  {/**Recordatorio aqui se ralizara el map para alimnetar los eventos*/}                  
                   {eventoslist.length > 0 ?
                     eventoslist.map((e, i) => {
                       return (

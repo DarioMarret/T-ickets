@@ -5,7 +5,7 @@ import { Host } from "utils/constantes";
 import axios from "axios";
 import { DatosUsuariocliente } from "utils/constantes";
 
-import logo from "../../../../assets/imagen/flash.png";
+import logo from "../../../../assets/imagen/logo-inicio.png";
 import { useSelector,useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 
