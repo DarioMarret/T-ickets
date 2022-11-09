@@ -3,7 +3,7 @@ import { Carousel } from "react-bootstrap";
 import header from "../../../assets/header.jpeg";
 import logofla from "../../../assets/imagen/LOGO-WEB.png";
 import principal from "../../../assets/imagen/carrusel.png";
-import secundaria from "../../../assets/imagen/carrusel.png";
+import secundaria from "../../../assets/imagen/segundo.jpeg";
 import tercero from "../../../assets/imagen/carrusel.png"
 import icon from "../../../assets/imagen/50pixeles.png";
 import evento from "../../../assets/imagen/gpiminel.jpeg";
@@ -475,7 +475,7 @@ const IndexFlas = () => {
       />
 
       {alert}
-      <nav className="navbar navbar-expand-lg justify-content-between navbar-dark bg-black fixed-top py-3">
+       <nav className="navbar navbar-expand-lg  justify-content-between bg-black  py-3">
         <div className="container-fluid col-lg-8    d-flex justify-content-between">
           <a className="navbar-brand " aria-label="TICKETS" href="#">
             <img src={icon} className="img-fluid" style={{ height: 'auto' }} alt="" />
