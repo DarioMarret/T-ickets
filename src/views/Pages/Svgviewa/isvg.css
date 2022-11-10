@@ -1,42 +1,55 @@
-#estandar path.none{
-    fill:rgb(148, 152, 152);    
-  }
-    polygon.none {
-      fill: rgb(148, 152, 152);
-  
-    }
-    rect.none{
-      fill:rgb(148, 152, 152)
-    }
-    #grado{
-    fill:rgb(148, 152, 152);
-    cursor: pointer;
-  }
-  svg.opciones{
-    fill:rgb(148, 152, 152);
-  }
-   path.opciones {
-     fill: rgb(148, 152, 152);
-  }
-path.mapas{
+#estandar path.none {
   fill: rgb(148, 152, 152);
 }
- 
-  .precios:hover{
-    cursor: pointer;
-    transform: scale(1.1);
-  }
-    polygon.disponible:hover{
-     transform: scale(1.02);
-     }
-         rect.diponible:hover{
-          transform: scale(1.02);
-         }
-         
-         path.disponible:hover {
-           transform: scale(1.02);
-         }
- /*.str2 {stroke:#FEFEFE;stroke-width:20}
+
+polygon.none {
+  fill: rgb(148, 152, 152);
+
+}
+
+:root {
+  --swiper-navigation-color: #02275f;
+}
+
+rect.none {
+  fill: rgb(148, 152, 152)
+}
+
+#grado {
+  fill: rgb(148, 152, 152);
+  cursor: pointer;
+}
+
+svg.opciones {
+  fill: rgb(148, 152, 152);
+}
+
+path.opciones {
+  fill: rgb(148, 152, 152);
+}
+
+path.mapas {
+  fill: rgb(148, 152, 152);
+}
+
+.precios:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+polygon.disponible:hover {
+  transform: scale(1.02);
+}
+
+rect.diponible:hover {
+  transform: scale(1.02);
+}
+
+path.disponible:hover {
+  transform: scale(1.02);
+}
+
+/*.str2 {stroke:#FEFEFE;stroke-width:20}
     .str1 {stroke:#E6E7E8;stroke-width:20}
     .str0 {stroke:#373435;stroke-width:7.62}
     .fil0 {fill:none}

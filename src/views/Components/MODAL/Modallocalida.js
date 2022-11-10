@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react"
 import MesaiView from "views/Pages/Mesas/Plantillas/indice"
 import MesasView from "views/Pages/Mesas"
 import SVGView from "views/Pages/Svgviewa/svgoptio.js";
-import { Box, Typography } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import { Edit, Delete, Visibility } from '@mui/icons-material';
+import { TiendaIten, getVerTienda } from "utils/CarritoLocalStorang";
 import { Modal } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { addSillas, deleteSillas, clearSillas } from "StoreRedux/Slice/sillasSlice"
@@ -14,7 +12,7 @@ const LocalidadmapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow } = props
     let nombre = JSON.parse(localStorage.getItem("seleccionmapa"))
     const usedispatch = useDispatch()
-
+    const [detalle, setDetalle] = useState([])
     //console.log(nombre)
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
     let mapath = useSelector((state) => state.mapaLocalSlice)
@@ -26,6 +24,40 @@ const LocalidadmapViews = (props) => {
     function cerrar() {
         handleClosesop(true)
         setMapashow(flase)
+    }
+    function agregar() {
+        let producto = {
+            cantidad: 1,
+            localidad: mapath.precio.localodad,
+            localidaEspacio: mapath.precio,
+            id: mapath.precio.id,
+            fila: 0,
+            valor: mapath.precio.precio_normal,
+            nombreConcierto: "GIRA 40 ANIVERSARIO",
+        }
+        TiendaIten(producto)
+        setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
+        // console.log(getVerTienda().filter(e => e.id == mapath.precio.id))
+    }
+    function restaprecio() {
+        let producto = {
+            cantidad: -1,
+            localidad: mapath.precio.localodad,
+            localidaEspacio: mapath.precio,
+            id: mapath.precio.id,
+            fila: 0,
+            valor: mapath.precio.precio_normal,
+            nombreConcierto: "GIRA 40 ANIVERSARIO",
+        }
+        TiendaIten(producto)
+        setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
+
+    }
+    function Eliminar(e) {
+        // usedispatch(clearSillas(e))
+        EliminarByStora(e.localidad)
+        //  EliminarSillaLocal(e.localidad)
+        setDetalle([])
     }
 
 
@@ -98,6 +130,11 @@ const LocalidadmapViews = (props) => {
     }
 
     useEffect(() => {
+        let nuevo = getVerTienda().filter((e) => e.id == mapath.precio.id)
+        console.log(nuevo)
+        mapath.pathmap.typo == "correlativo" ? setDetalle([]) : ''
+        console.log(mapath.precio.id, "aqui", getVerTienda().filter(e => e.id == mapath.precio.id))
+
         let selct = seleccion
         selct.length > 0 ?
             selct.map((e) => {
@@ -119,7 +156,7 @@ const LocalidadmapViews = (props) => {
             $("#mapas" + e.path).removeAttr("class")
             //console.log("#1"+e.path)        
         }) : ''
-        console.log(mapath)
+
 
     }, [showMapa])
 
@@ -145,7 +182,7 @@ const LocalidadmapViews = (props) => {
                                 <h6 className="px-1">$ {mapath.precio.precio_normal} </h6>
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center" style={{ maxHeight: "250px" }}>
-                                {showMapa ? <SVGView text={mapath.nombre}/> : ''}
+                                {showMapa ? <SVGView text={mapath.nombre} /> : ''}
                             </div>
 
                             {mapath.precio.typo != "correlativo" ?
@@ -176,7 +213,7 @@ const LocalidadmapViews = (props) => {
                                         <span>Seleccionado.</span>
                                     </div>
                                     <div className="d-flex precios flex-row p-2  align-items-center" >
-                                        <div className="d-flex   mx-1 bg-dark text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
+                                        <div className="d-flex   mx-1 bg-danger text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
                                                 <span style={{ fontSize: '0.7em' }}>    </span>
                                             </div>
@@ -278,11 +315,14 @@ const LocalidadmapViews = (props) => {
                                 {mapath.precio.typo === "correlativo" ?
                                     <div className="d-flex flex-wrap justify-content-center align-items-center">
                                         <div className="text-center d-flex justify-content-end align-items-center">
-                                            <button className="resta btn btn-danger rounded-7 ">
+                                            <button className="resta btn btn-danger rounded-7 "
+                                                onClick={restaprecio}
+                                            >
                                                 <i className="fa fa-minus"></i>
                                             </button>
                                             <hr className="mx-2" ></hr>
-                                            <button className="suma btn btn-success rounded-7" >
+                                            <button className="suma btn btn-success rounded-7"
+                                                onClick={agregar} >
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
@@ -300,32 +340,56 @@ const LocalidadmapViews = (props) => {
 
                 </Modal.Body>
                 <Modal.Footer className="" >
-                    <div className=" container-fluid    border-top justify-content-between p-3" style={{ height: '188px', width: '100%' }} >
-                        {mapath.precio.typo != "correlativo" ? <div className="col-12 ">
-                            {mapath.precio.typo == "mesa" ? <h5>Numero de mesas y sillas seleccionadas</h5> : <h5>Sillas y Filas Selecionadas</h5>}
-                            <div className="d-flex flex-wrap" style={{ height: '150px', overflowY: 'auto', overflowX: 'hide', }}>
-                                {
-                                    seleccion.length > 0 ?
-                                        seleccion.map((elm, id) => {
-                                            return (
-                                                <li key={id} className={elm.silla + '  d-flex cargados  rounded-5  bg-success justify-content-center align-items-center '}
-                                                    style={{ height: '50px', width: '50px', margin: '1px' }} >
-                                                    <div className={'d-flex   text-white justify-content-center  '} >
-                                                        <div className="d-flex flex-column justify-content-center text-center p-2">
-                                                            <span style={{ fontSize: '0.9em' }}>{elm.silla.replace("-", " ").split(" ")[0]}</span>
-                                                            <span style={{ fontSize: '0.9em' }}>{elm.silla.replace("-", " ").split(" ")[1]}</span>
+                    <div className=" container-fluid  text-dark  border-top justify-content-between p-3" style={{ height: '188px', width: '100%' }} >
+                        {mapath.precio.typo != "correlativo" ?
+                            <div className="col-12 ">
+                                {mapath.precio.typo == "mesa" ? <h5>Numero de mesas y sillas seleccionadas</h5> : <h5>Sillas y Filas Selecionadas</h5>}
+                                <div className="d-flex flex-wrap" style={{ height: '150px', overflowY: 'auto', overflowX: 'hide', }}>
+                                    {
+                                        seleccion.length > 0 ?
+                                            seleccion.map((elm, id) => {
+                                                return (
+                                                    <li key={id} className={elm.silla + '  d-flex cargados  rounded-5  bg-success justify-content-center align-items-center '}
+                                                        style={{ height: '50px', width: '50px', margin: '1px' }} >
+                                                        <div className={'d-flex   text-white justify-content-center  '} >
+                                                            <div className="d-flex flex-column justify-content-center text-center p-2">
+                                                                <span style={{ fontSize: '0.9em' }}>{elm.silla.replace("-", " ").split(" ")[0]}</span>
+                                                                <span style={{ fontSize: '0.9em' }}>{elm.silla.replace("-", " ").split(" ")[1]}</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                            )
+                                                    </li>
+                                                )
 
-                                        }) : ''
+                                            }) : ''
 
-                                }
+                                    }
 
 
-                            </div>
-                        </div> : ''}
+                                </div>
+                            </div> : <div>
+
+
+                            </div>}
+                        <div>
+                            {
+                                mapath.precio.typo === "correlativo" && detalle.length > 0 ?
+                                    detalle.map((e, i) => {
+                                        return (
+                                            <div className="d-flex flex-table row " role="rowgroup" key={"items" + i}>
+                                                <div className="flex-row first text-center col-3 col-md-3" role="cell">{e.localidad}</div>
+                                                {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
+                                                <div className="flex-row   text-center col-2 col-md-2">${e.valor * e.cantidad}</div>
+                                                <div className="flex-row  text-center  col-2 col-md-2">{e.cantidad}</div>
+                                                <div className="flex-row  text-center col-3 col-md-3">
+                                                    <button className="btn btn-danger" onClick={() => Eliminar(e)} >Eliminar</button>
+
+                                                </div>
+                                            </div>
+                                        )
+                                    }) : ''
+                            }
+                        </div>
+
                         <div className="col-2 d-none d-flex align-items-center justify-content-end" >
                             <div>
                                 <button className="btn btn-primary " onClick={() => usedispatch(clearSillas({}))} > <i className="fa fa-plus" ></i> </button>
