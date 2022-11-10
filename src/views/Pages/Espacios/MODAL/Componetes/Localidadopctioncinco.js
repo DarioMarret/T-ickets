@@ -133,13 +133,13 @@ const MapadelocalidadViews = (props) => {
                 }
                 try {
                         if (localidadmap.id == '') {
-                                let datos = await guardarMapar(valores)
+                               let datos = await guardarMapar(valores)
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Guardadas correctamente', color: 'bg-success', estado: 'Datos Guardado' }))
                                 console.log(datos)
                                 hideAlert()
                         }
                         else {
-                                let updatedatos = await editarMapa({ ...valores, id: localidadmap.id.toString() })
+                               let updatedatos = await editarMapa({ ...valores, id: localidadmap.id.toString() })
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
                                 console.log(updatedatos)
                                 hideAlert()

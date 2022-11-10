@@ -9,6 +9,5 @@ export const store = configureStore({
         ToastSlice: ToastSlice,
         sillasSlice: sillasSlice,
         mapaLocalSlice, mapaLocalSlice,
-    },
-    devTools: true,
+    }
 })

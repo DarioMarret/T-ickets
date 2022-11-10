@@ -8,7 +8,8 @@ export function insertLocalidad(mapa,datos) {
             return e 
         }
     })
-    localStorage.mapa = JSON.stringify(nuevo)
+    
+    localStorage.mapa = JSON.stringify(nuevo.filter(e=>e.path !=null))
 }
 export function getMapacolor(){
     try {

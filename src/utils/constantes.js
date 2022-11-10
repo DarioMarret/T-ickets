@@ -7,11 +7,11 @@ export const Valorcarrito="Valorescarro";
 export const Whatsappnumero ="WhastappValido";
 export const Eventoid="eventoid";
 export const listaasiento="asientosList";
+export const concierto="consierto";
+export const seleccionmapa="seleccionmapa";
+export const sillaspalco="sillaspalco";
 //export const Host = "https://a8e1-45-187-2-162.sa.ngrok.io/"
-export const Host = "https://rec.netbot.ec/ms_login/"
-//                   https://rec.netbot.ec/
-//export const Host = "  https://rec.netbot.ec/pdfqr/api/v1/"
-
+export const Host = "https://rec.netbot.ec/ms_login/";
 export const Valores = "Costos"
 export const Metodos = "Metodo-pago"
  export function Salircliente(){
@@ -43,27 +43,7 @@ export const Envio = [
     }
 ]
 export const Letras =["A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-export const Localidades=[
-    {
-        id:1,
-        nombre:"Estadio uno",
-        localidad:[
-            {nombre:"General"},
-            {nombre:"Vip"},
-            {nombre:"General Vip"}
-        ]        
-    },
-    {
-        id:2,
-        nombre:"Estadio dos",
-        localidad:[
-            {nombre:"Normal Vip"},
-            {nombre:"Vip Normal"},
-            {nombre:"Vip General"}
-        ]        
-    },
 
-]
 export const Dias ={   
     0:"Lunes",
     1:"Martes",
@@ -73,6 +53,24 @@ export const Dias ={
     5:"Sabado",
     6:"Domingo",
 }
+export const Provincias=[
+    {
+        provincia:"Guayas",
+        ciudades :["Guayaquil","Duran","Samborondón"]
+    },
+    {
+        provincia:"Manabí",
+        ciudades:["Portoviejo","manata"]
+    },
+    {
+        provincia:"Esmeralda",
+        ciudades:["Quininde"]
+    }
+
+]
+
+
+
 export const plantilla = [
     {
         "nombre":"estandar",

@@ -331,7 +331,7 @@ return (
                                                 placeholder="Ingrese su nombre completo"
                                             />
                                         </div>
-                                        <div className="col-6 col-sm-6 d-flex flex-column">
+                                        <div className="col-12 col-sm-6 d-flex flex-column">
                                             <span>Forma de envío:</span>
                                             <div>
                                                 <select className="form-select"      required

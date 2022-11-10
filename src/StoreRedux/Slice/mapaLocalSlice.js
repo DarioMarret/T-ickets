@@ -29,8 +29,15 @@ const  mapaLocalSlice = createSlice({
         filtrarlocali:(state,action)=>{
             state.localidadespecica= action.payload
         },
+        clearMapa:(state,action)=>{
+            state.pathmap=[]
+            state.localidades=[]
+            state.localidadespecica=[]
+            state.nombre=''
+            state.precio={}
+        }
     }
 
 })
-export const { cargarmapa,settypo,clearmapa,cargalocalidad,filtrarlocali} =mapaLocalSlice.actions;
+export const { cargarmapa,settypo,clearmapa,cargalocalidad,filtrarlocali,clearMapa} =mapaLocalSlice.actions;
 export default mapaLocalSlice.reducer  

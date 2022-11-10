@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useRef} from "react";
 import { Carousel } from "react-bootstrap";
 import header from "../../../assets/header.jpeg";
 import logofla from "../../../assets/imagen/LOGO-WEB.png";
@@ -17,7 +17,7 @@ import ModalReport from "views/Components/MODAL/ModalReporte";
 import ModalEfectivo from "views/Components/MODAL/Modalefectivo";
 import TOAST from "views/Components/TOAST";
 import Footer from "views/Components/Footer/Footer";
-import { GetMetodo, getVerTienda, LimpiarLocalStore } from "utils/CarritoLocalStorang";
+import { GetMetodo, getVerTienda, LimpiarLocalStore,Limpiarseleccion } from "utils/CarritoLocalStorang";
 import { useHistory } from "react-router";
 import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
@@ -28,7 +28,7 @@ import { GuardarDatosdelComprador, ValidarWhatsapp } from "utils/Query";
 import { useSelector, useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
-import { cargalocalidad } from "StoreRedux/Slice/mapaLocalSlice";
+import { cargalocalidad ,clearMapa} from "StoreRedux/Slice/mapaLocalSlice";
 import { Authsucrito } from "utils/Query";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
 import { listarpreciolocalidad, ListarLocalidad } from "utils/Querypanel";
@@ -37,6 +37,17 @@ import { Dias, DatosUsuariocliente, Eventoid, listaasiento } from "utils/constan
 import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectFade, Navigation, Pagination,Autoplay } from "swiper";
+import moment from "moment";
+import 'moment-timezone'
+import 'moment/locale/es'; 
+require('moment/locale/es.js')
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/effect-coverflow";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
@@ -60,9 +71,49 @@ const IndexFlas = () => {
     estado: '',
   })
   const [showLogin, setShowLogin] = useState(false)
-  const [alert, setAlert] = React.useState(null);
-
-  //console.log(userauth)
+  const [alert, setAlert] = useState(null);
+  const [intervalo, setcrono] = useState("")
+  const datatime = useRef(null); 
+    
+    function velocidad() {    
+        let timer=0
+        var tiempo = 60 * 3
+        timer = tiempo
+        var minutos = 0, segundos = 0;
+        datatime.current  = setInterval(function () {
+            minutos = parseInt(timer / 60, 10);
+            segundos = parseInt(timer % 60, 10);
+            minutos = minutos < 10 ? "0" + minutos : minutos;
+            segundos = segundos < 10 ? "0" + segundos : segundos;
+            if (timer === 0) {
+                clearInterval(datatime.current);
+                setDatoToas({show: true,message: 'Su tiempo de compra a finalizado',color: 'bg-danger',estado: 'Mensaje importante',})
+                handleClosesop(false)
+                setMapashow(false)
+                setDetalle(false)            
+                Limpiarseleccion()  
+                usedispatch(clearMapa())
+            }
+            else {
+              setcrono(minutos + ":" + segundos)
+                if (--timer < 0) {
+                    timer = tiempo;
+                }  
+            }
+        }, 1000);
+    }
+    function detenervelocidad() {
+     handleClosesop(false)
+    clearInterval(datatime.current);
+    console.log(datatime.current)
+  }
+function abrircarro(){
+  handleClosesop(true)
+  velocidad()
+}
+   
+    
+     
   const abrir = async (e) => {
     let id = localStorage.getItem(Eventoid)
 
@@ -75,18 +126,14 @@ const IndexFlas = () => {
         const listalocal = await ListarLocalidad()
         let localidades = await cargarMapa()
         localStorage.consierto = e.nombreConcierto
-        console.log(localidades)
+        //console.log(localidades)
         if (obten.data.length > 0) {
           let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-
           let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
           let localidad = JSON.parse(mapa[0].localidad)
           let path = JSON.parse(mapa[0].pathmap)
-
           let newprecios = obten.data.map((e, i) => {
             let color = localidad.filter((f, i) => f.nombre == e.localodad)
-            // console.log("1", localidad)
-            // console.log("2", color)
             e.color = color[0].color
             e.idcolor = color[0].id
             e.typo = color[0].tipo
@@ -102,22 +149,17 @@ const IndexFlas = () => {
               return L
             }
           })
-
-          //console.log(pathnuevo.filter((e)=>e!=undefined))
-          // console.log()
           usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
           let nuevosdatos = {
             precios: newprecios,
             pathmapa: pathnuevo.filter((e) => e != undefined),
             mapa: mapa[0].nombre_mapa
           }
-          // console.log(nuevosdatos)
           localStorage.eventoid = e.codigoEvento
-
           setPrecios(nuevosdatos)
-          // console.log(obten)
           setDatoscon(e)
           handleClosesop(true)
+           velocidad()
         }
       } catch (err) {
         console.log(err)
@@ -182,6 +224,7 @@ const IndexFlas = () => {
         // console.log(obten)
         setDatoscon(e)
         handleClosesop(true)
+         velocidad()
         hideAlert()
       }
 
@@ -384,27 +427,19 @@ const IndexFlas = () => {
     fecha: ''
   })
   const [eventoslist, setEventos] = useState([])
-  useEffect(() => {
-    // window.open("https://www.google.com/", 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
-
-    //Cargar eventos Activos mayores a la fecha actual
+  useEffect(()=>{
     const evento = async () => {
       try {
         const data = await cargarEventoActivo()
-
-        console.log(data)
-        const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto) > new Date()) : []
+        const filtro = data != null ? data.filter((e) => moment(e.fechaConcierto+" "+e.horaConcierto ).format('DD MMMM YYYY h:mm') >=  moment().format('DD MMMM YYYY h:mm') ) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         if (data != null) {
           setEventos(filtro.sort(sorter))
-
         }
         else if (data == null) setEventos([])
       } catch (error) {
         console.log(error)
-
       }
-
     }
     evento()
     var popUp = window.open('url', '', 'options');
@@ -439,7 +474,6 @@ const IndexFlas = () => {
         })
         setUserauth(false)
       }
-
       setUserauth(false)
     } else {
       setPerson({
@@ -467,22 +501,24 @@ const IndexFlas = () => {
       />
       <ModalCarritov
         showshop={showshop}
-        handleClosesop={handleClosesop}
+        handleClosesop={detenervelocidad}
+        detener={handleClosesop}
         handleContinuar={handleContinuar}
         setListarCarritoDetalle={setListarCarritoDetalle}
         datos={datos}
         precios={precios}
+        intervalo={intervalo}
         setListaPrecio={setListaPrecio}
         setMapashow={setMapashow}
       />
 
       {alert}
-      <nav className="navbar navbar-expand-lg  justify-content-between bg-black  py-3">
+      <nav className="navbar navbar-expand-lg  justify-content-between navbar-dark bg-black  py-3">
         <div className="container-fluid col-lg-8    d-flex justify-content-between">
           <a className="navbar-brand " aria-label="TICKETS" href="#">
             <img src={icon} className="img-fluid" style={{ height: 'auto' }} alt="" />
           </a>
-          <button className="navbar-toggler justify-content-end " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button className="navbar-toggler justify-content-center " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -494,7 +530,7 @@ const IndexFlas = () => {
                 <a className=" nav-link" href="#nuevoseventos">Eventos</a>
               </li>
               <li className="nav-item active" aria-current="page">
-                <a className="nav-link " href="#" onClick={() => getVerTienda().length > 0 ? handleClosesop(true) : ""}>Comprar
+                <a className="nav-link " href="#" onClick={() => getVerTienda().length > 0 ? abrircarro() : ""}>Comprar
                   {getVerTienda().length > 0 ? <span className="position-absolute bottom-0 start-50 translate-middle p-1 bg-danger border border-light rounded-circle">
                     <span className="visually-hidden">New alerts</span>
                   </span> : ""}
@@ -534,9 +570,76 @@ const IndexFlas = () => {
       />
       {/* header */}
       <div className="container-fluid  p-0">
+        <Swiper
+        className="AnimatedSlides"
+        effect={"fade"}
+        loop={true}
+        autoHeight={true}
+        navigation={true}
+        autoplay={{
+          delay: 3500,
+          disableOnInteraction: true,
+        }}
+        coverflowEffect={{
+                       rotate: 0,
+                       stretch: 0,
+                       depth: 150,
+                       modifier: 2,
+                       slideShadows: true,
+                     }}
+                   
+                     onSwiper={(swiper) => {
+                     }}                   
+                      modules={[Autoplay,EffectFade, Navigation, Pagination]}>
+                     <SwiperSlide >
+                      <div style={{widows:"100%",height:"400"}}>
+                          <div style={{height:"400px", width:"100%",position:"relative",
+                             backgroundPosition: "center",
+                             backgroundImage:"url('" + principal + "')",
+                             backgroundRepeat: "no-repeat",backgroundSize: "cover",
+                             }}>
+                            <div style={{position:"absolute",bottom:50,left:100 }}>
+                                  <div className="d-flex flex-column text-white" >
+                                    <h4 style={{ fontFamily:'fantasy',}}>Description de la imagen 1 </h4>
+                                    <h6 style={{ fontFamily:'fantasy',}}>
+                                      Subdescriotion
+                                    </h6>
+                                     <button className="btn btn-success">Ver lista</button>
+                                  </div>        
+                            </div> 
+
+                        </div>
+                          
+                            
+                        </div>                            
+                                                          
+                           </SwiperSlide>
+                           <SwiperSlide >
+                            <div style={{widows:"100%",height:"400"}}>
+                             <div style={{height:"400px", width:"100%",position:"relative",
+                             backgroundPosition: "center",
+                             backgroundImage:"url('" + secundaria + "')",
+                             backgroundRepeat: "no-repeat",backgroundSize: "cover",
+                            
+                             }}>
+                                 <div style={{position:"absolute",bottom:50,left:100 }}>
+                                  <div className="d-flex flex-column text-white" >
+                                    <h4 style={{ fontFamily:'fantasy',}}>Description de la imagen 2 </h4>
+                                    <h6 style={{ fontFamily:'fantasy',}}>
+                                      Subdescriotion
+                                    </h6>
+                                     <button className="btn btn-success">Ver lista</button> 
+
+                                  </div>
+                                    
+                                 </div>   
+                              </div>
+                            </div>
+                           </SwiperSlide>
+                   </Swiper>
 
 
-        <Carousel className="carousel-inner   carousel-fade" slide={false}>
+      { /* <Carousel className="carousel-inner   carousel-fade" slide={false}>
           <Carousel.Item interval={2800}>
             <img
               className="d-block w-100"
@@ -566,7 +669,7 @@ const IndexFlas = () => {
             <Carousel.Caption>
             </Carousel.Caption>
           </Carousel.Item>
-        </Carousel>
+        </Carousel>*/}
 
 
 

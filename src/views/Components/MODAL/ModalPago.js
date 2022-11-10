@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 //import { CrearLinkPagoPayPhone } from 'utils/Query';
 import { GenerarLinkPagoMedios,EnviarEmail,EnviarmensajeWhastapp } from 'utils/Query';
-import {LimpiarLocalStore} from '../../../utils/CarritoLocalStorang';
+import {LimpiarLocalStore, Limpiarseleccion} from '../../../utils/CarritoLocalStorang';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import { GetMetodo } from '../../../utils/CarritoLocalStorang';
-// import ButtonPago from '../PayPhone/ButtonPago';
 import { Spinner } from 'react-bootstrap';
+import { clearMapa } from 'StoreRedux/Slice/mapaLocalSlice';
+import { useDispatch, useSelector } from "react-redux"
+
 
 function ModalPago(props) {
     const { setModalPago, modalPago,setDatoToas } = props
+    let usedispatch = useDispatch();
     const [spinerst, setSpiner] = useState("d-none")
     const [estadoFrame, setEstadoFrame] = useState(false)
     const [url, setUrl] = useState('')
@@ -32,8 +35,7 @@ function ModalPago(props) {
                 name: datosPersonal.name,
                 whatsapp: datosPersonal.whatsapp,
                 envio: datosPersonal.envio,
-                cedula: datosPersonal.cedula,
-                
+                cedula: datosPersonal.cedula,               
             })         
         }
         setCargar(!cargar)
@@ -63,9 +65,10 @@ function ModalPago(props) {
         setSpiner("d-none")
     }*/
     function popUp(URL) {
-        window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
-               
+        window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");     
         LimpiarLocalStore()
+        Limpiarseleccion()
+        usedispatch(clearMapa())
     }
     
     return (
@@ -95,7 +98,6 @@ function ModalPago(props) {
                     alignItems: 'center',
                 }}
             >
-
                 <div style={{
                     display: 'flex',
                     flexDirection: 'column',

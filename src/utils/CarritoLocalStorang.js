@@ -1,4 +1,9 @@
-import { CarritoTicket, Metodos, DatosUsuarioLocalStorang, Valorcarrito, listaasiento } from "./constantes"
+import { CarritoTicket, Metodos, 
+    DatosUsuarioLocalStorang, 
+    Valorcarrito, listaasiento,
+    sillaspalco,seleccionmapa,
+    concierto,Eventoid
+} from "./constantes"
 import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
 
 let PViten = []
@@ -192,11 +197,6 @@ function VerSillas() {
     }
 
 }
-
-
-
-///subtotaltotal 
-//metodo de pago
 export function GetValores() {
     let tag = JSON.parse(localStorage.getItem(CarritoTicket));
     var valor = 0;
@@ -241,14 +241,19 @@ export function GetValores() {
     }
 }
 
-export function GetPrecio() {
-
-}
 export function LimpiarLocalStore() {
     localStorage.removeItem(CarritoTicket)
     localStorage.removeItem(DatosUsuarioLocalStorang)
     localStorage.removeItem(Metodos)
-
+    
+}
+export function Limpiarseleccion(){
+    localStorage.removeItem(sillaspalco)
+    //localStorage.removeItem(Eventoid)
+    // localStorage.removeItem(seleccionmapa)
+    //localStorage.removeItem(concierto)
+    localStorage.removeItem(listaasiento)
+    localStorage.removeItem(CarritoTicket)
 }
 
 

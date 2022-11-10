@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     sillasSelecionadas: [],
-    seleccioncorrelativo: [],
 }
 const sorter = (a, b) => a.fila > b.fila ? 1 : -1;
 function filtrarPodato(obj) {
@@ -29,11 +28,14 @@ const sillasSlice = createSlice({
         clearSillas: (state, action) => {
             state.sillasSelecionadas = state.sillasSelecionadas.filter((item) => item.localidad != action.payload.localidad);
         },
+        cargarsilla:(state, action) => {
+            state.sillasSelecionadas= action.payload
+        },
         borrarseleccion: (state, action) => {
-            state.sillasSelecionadas = action.payload.vacio
+            state.sillasSelecionadas = []
         }
     }
 
 })
-export const { addSillas, deleteSillas, clearSillas, borrarseleccion } = sillasSlice.actions;
+export const { addSillas, deleteSillas, clearSillas, borrarseleccion,cargarsilla } = sillasSlice.actions;
 export default sillasSlice.reducer

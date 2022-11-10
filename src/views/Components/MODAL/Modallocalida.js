@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import MesaiView from "views/Pages/Mesas/Plantillas/indice"
 import MesasView from "views/Pages/Mesas"
 import SVGView from "views/Pages/Svgviewa/svgoptio.js";
-import { TiendaIten, getVerTienda } from "utils/CarritoLocalStorang";
+import { TiendaIten, getVerTienda,EliminarByStora } from "utils/CarritoLocalStorang";
 import { Modal } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { addSillas, deleteSillas, clearSillas } from "StoreRedux/Slice/sillasSlice"
@@ -13,14 +13,8 @@ const LocalidadmapViews = (props) => {
     let nombre = JSON.parse(localStorage.getItem("seleccionmapa"))
     const usedispatch = useDispatch()
     const [detalle, setDetalle] = useState([])
-    //console.log(nombre)
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
     let mapath = useSelector((state) => state.mapaLocalSlice)
-    const [sillaarray, setSilla] = useState([])
-    const [espacios, setEspacios] = useState({
-        descripcion: '', espacio: "", id: '', tipo: '', nombre: '',
-        mesas_array: [],
-    })
     function cerrar() {
         handleClosesop(true)
         setMapashow(flase)
@@ -37,7 +31,6 @@ const LocalidadmapViews = (props) => {
         }
         TiendaIten(producto)
         setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
-        // console.log(getVerTienda().filter(e => e.id == mapath.precio.id))
     }
     function restaprecio() {
         let producto = {
@@ -54,9 +47,7 @@ const LocalidadmapViews = (props) => {
 
     }
     function Eliminar(e) {
-        // usedispatch(clearSillas(e))
         EliminarByStora(e.localidad)
-        //  EliminarSillaLocal(e.localidad)
         setDetalle([])
     }
 
@@ -83,7 +74,6 @@ const LocalidadmapViews = (props) => {
                 this.classList.remove('seleccionado')
                 this.classList.add('disponible')
                 let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
-                //console.log("nuevo",{nombres})
                 EliminarSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
                 usedispatch(deleteSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" }))
             }
@@ -94,7 +84,7 @@ const LocalidadmapViews = (props) => {
         if (!this.classList.contains('disponible')) {
             $("div." + this.classList[0]).removeClass("seleccionado").addClass("disponible")
             let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
-            console.log("nuevo", { nombres })
+            //console.log("nuevo", { nombres })
             EliminarSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
             usedispatch(deleteSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "borrar" }))
         }
@@ -104,8 +94,7 @@ const LocalidadmapViews = (props) => {
         if (!this.classList.contains('seleccionado')) {
             this.classList.remove('disponible')
             this.classList.add('seleccionado')
-            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
-            //console.log("nuevo",{nombres})
+            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))            
             AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
             usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
         }
@@ -115,8 +104,7 @@ const LocalidadmapViews = (props) => {
         if (!this.classList.contains('disponible')) {
             this.classList.remove('seleccionado')
             this.classList.add('disponible')
-            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
-            //console.log("nuevo", { nombres })
+            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))            
             EliminarSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
             usedispatch(deleteSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" }))
         }
@@ -130,8 +118,7 @@ const LocalidadmapViews = (props) => {
     }
 
     useEffect(() => {
-        let nuevo = getVerTienda().filter((e) => e.id == mapath.precio.id)
-        getVerTienda().filter((e) => e.id == mapath.precio.id) ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
+        getVerTienda().filter((e) => e.id == mapath.precio.id).length>0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
 
         let selct = seleccion
         selct.length > 0 ?
@@ -139,20 +126,9 @@ const LocalidadmapViews = (props) => {
                 $("div." + e.silla).removeClass("disponible").addClass("seleccionado");
             })
             : ''
-        /* mapath.pathmap.length>0?mapath.pathmap.map((elm,i)=>{
-             
-                 //$("#"+elm.path).attr("class",elm.id)
-                 $("#1"+elm.path).css({"fill": ""+elm.fill+" !important" });
-                 $("#1"+elm.path).attr("fill",elm.fill)   
-                 console.log(elm)
-         }):''*/
         mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
-            //$("#1"+e.path).attr("class","  disponible "  )
-            //  $("#1"+e.path).css({"color": ""+e.fill+" !important" });
             $("#mapas" + e.path).attr("fill", e.fill)
-            //  $("#"+e.path).attr("fill",e.fill,"class",e.id )  
             $("#mapas" + e.path).removeAttr("class")
-            //console.log("#1"+e.path)        
         }) : ''
 
 
@@ -338,7 +314,7 @@ const LocalidadmapViews = (props) => {
 
                 </Modal.Body>
                 <Modal.Footer className="" >
-                    <div className=" container-fluid  text-dark  border-top justify-content-between p-3" style={{ height: '188px', width: '100%' }} >
+                    <div className=" container-fluid  text-dark  border-top justify-content-between p-3" style={{ maxHeight: '188px', width: '100%' }} >
                         {mapath.precio.typo != "correlativo" ?
                             <div className="col-12 ">
                                 {mapath.precio.typo == "mesa" ? <h5>Numero de mesas y sillas seleccionadas</h5> : <h5>Sillas y Filas Selecionadas</h5>}
@@ -373,14 +349,13 @@ const LocalidadmapViews = (props) => {
                                 mapath.precio.typo === "correlativo" && detalle.length > 0 ?
                                     detalle.map((e, i) => {
                                         return (
-                                            <div className="d-flex flex-table row " role="rowgroup" key={"items" + i}>
+                                            <div className="d-flex flex-table row justify-content-center " role="rowgroup" key={"items" + i}>
                                                 <div className="flex-row first text-center col-3 col-md-3" role="cell">{e.localidad}</div>
                                                 {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
                                                 <div className="flex-row   text-center col-2 col-md-2">${e.valor * e.cantidad}</div>
                                                 <div className="flex-row  text-center  col-2 col-md-2">{e.cantidad}</div>
                                                 <div className="flex-row  text-center col-3 col-md-3">
                                                     <button className="btn btn-danger" onClick={() => Eliminar(e)} >Eliminar</button>
-
                                                 </div>
                                             </div>
                                         )
