@@ -19,7 +19,7 @@ const ModalCarritoView = (prop) => {
         Tarjeta: "",
         Deposito: "",
     })
-   // console.log(precios)
+    // console.log(precios)
     const [check, setCheck] = useState(true)
     function handelMetodopago(target, value) {
         setChecked({
@@ -105,6 +105,10 @@ const ModalCarritoView = (prop) => {
             setTimer(!timer)
         }
     }
+    var data;
+    var evento;
+    var totaldetalle = 0;
+
     function Eliminar(e) {
         usedispatch(clearSillas(e))
         EliminarByStora(e.localidad)
@@ -115,11 +119,41 @@ const ModalCarritoView = (prop) => {
         setMapashow(true)
         handleClosesop(false)
     }
+    var data;
+    var evento;
+    var totaldetalle = 0;
+    function cronometro() {
+
+
+
+
+        display = document.querySelector('#cronometro')
+        var tiempo = 60 * 10
+        var timer = tiempo, minutos = 0, segundos = 0;
+        data = setInterval(function () {
+            minutos = parseInt(timer / 60, 10);
+            segundos = parseInt(timer % 60, 10);
+            minutos = minutos < 10 ? "0" + minutos : minutos;
+            segundos = segundos < 10 ? "0" + segundos : segundos;
+            if (timer === 0) {
+                clearInterval(data);
+                display.textContent = "00:00";
+                Swal.fire('info', 'su tiempo a terminado', 'info')
+            }
+            else {
+                display.textContent = minutos + ":" + segundos;
+                if (--timer < 0) {
+                    timer = tiempo;
+                }  //clearInterval(data);Swal.fire('SU TIEMPO SE TERMINO') 
+            }
+        }, 1000);
+    }
     useEffect(() => {
         setDetalle(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
         setListaPrecio(GetValores())
         // console.log(precios.pathmapa)
+        //cronometro()
 
         precios.pathmapa.length > 0 ? precios.pathmapa.map((e, i) => {
             $("#" + e.path).attr("class", e.id + "  disponible " + e.tipo)
@@ -181,7 +215,7 @@ const ModalCarritoView = (prop) => {
                 <Modal.Body  >
                     <div className="d-flex flex-wrap-reverse" >
                         <div className="col-12 col-lg-6" >
-                            
+
                             <div className="  ">
                                 <div className="detalles-resumen  "
                                 >
@@ -211,7 +245,7 @@ const ModalCarritoView = (prop) => {
                                                             {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
                                                             <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">${e.valor * e.cantidad}</div>
                                                             <div className="flex-row d-none d-sm-block text-center  col-2 col-md-2">{e.cantidad}</div>
-                                                            <div className="flex-row d-none d-sm-block  text-center 
+                                                            <div className="d-flex flex-row d-none d-sm-block  text-center 
                              col-3 col-md-3">
                                                                 <button className="btn btn-danger" onClick={() => Eliminar(e)} >Eliminar</button>
                                                                 <button className="btn btn-primary mx-1" onClick={() => Abririlocalfirt(e.localidaEspacio)} > Ver </button>
@@ -248,9 +282,9 @@ const ModalCarritoView = (prop) => {
                         <div className="col-12 col-lg-6 ">
                             <div className="d-flex justify-content-center" >
 
-                                {showshop ? 
-                                <SvgselectView text={precios.mapa}/>
-                                : ''}
+                                {showshop ?
+                                    <SvgselectView text={precios.mapa} />
+                                    : ''}
                             </div>
                             <div className="d-flex col-12 flex-wrap justify-content-center p-3 ">
                                 {precios.precios.length > 0 ?
@@ -259,7 +293,7 @@ const ModalCarritoView = (prop) => {
                                         return (
                                             <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                 <div id={"precios" + elm.id} className="mx-1  rounded-4" style={{ height: 30, width: 30, backgroundColor: elm.color }}></div>
-                                                <div className="row" style={{alignItems:'stretch',lineHeight:'1',minWidth:'150px',maxWidth:'150px'}} >
+                                                <div className="row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '150px', maxWidth: '150px' }} >
                                                     <span className="pb-0" >{elm.localodad}</span>
                                                     <span className="pt-0" >${elm.precio_normal}</span>
                                                 </div>

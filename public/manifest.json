@@ -1,9 +1,9 @@
 {
-  "short_name": "LBD",
-  "name": "Light",
+  "short_name": "Ticket",
+  "name": "Ticket",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "icono-tickets.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }

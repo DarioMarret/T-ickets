@@ -10,5 +10,5 @@ export const store = configureStore({
         sillasSlice: sillasSlice,
         mapaLocalSlice, mapaLocalSlice,
     },
-    devTools: false,
+    devTools: true,
 })

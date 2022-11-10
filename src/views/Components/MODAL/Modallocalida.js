@@ -33,7 +33,7 @@ const LocalidadmapViews = (props) => {
             id: mapath.precio.id,
             fila: 0,
             valor: mapath.precio.precio_normal,
-            nombreConcierto: "GIRA 40 ANIVERSARIO",
+            nombreConcierto: localStorage.getItem("consierto"),
         }
         TiendaIten(producto)
         setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
@@ -47,7 +47,7 @@ const LocalidadmapViews = (props) => {
             id: mapath.precio.id,
             fila: 0,
             valor: mapath.precio.precio_normal,
-            nombreConcierto: "GIRA 40 ANIVERSARIO",
+            nombreConcierto: localStorage.getItem("consierto"),
         }
         TiendaIten(producto)
         setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
@@ -69,8 +69,8 @@ const LocalidadmapViews = (props) => {
                 this.classList.add('seleccionado')
                 let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
                 //console.log("nuevo",{nombres})
-                AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": "", "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": "", "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+                AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+                usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
             }
             return
         }
@@ -106,8 +106,8 @@ const LocalidadmapViews = (props) => {
             this.classList.add('seleccionado')
             let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
             //console.log("nuevo",{nombres})
-            AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-            usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+            AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+            usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
         }
         return
     })
@@ -131,9 +131,7 @@ const LocalidadmapViews = (props) => {
 
     useEffect(() => {
         let nuevo = getVerTienda().filter((e) => e.id == mapath.precio.id)
-        console.log(nuevo)
-        mapath.pathmap.typo == "correlativo" ? setDetalle([]) : ''
-        console.log(mapath.precio.id, "aqui", getVerTienda().filter(e => e.id == mapath.precio.id))
+        getVerTienda().filter((e) => e.id == mapath.precio.id) ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
 
         let selct = seleccion
         selct.length > 0 ?

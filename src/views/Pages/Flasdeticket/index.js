@@ -33,7 +33,7 @@ import { Authsucrito } from "utils/Query";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
 import { listarpreciolocalidad, ListarLocalidad } from "utils/Querypanel";
 import { cargarEventoActivo, cargarMapa } from "utils/Querypanelsigui";
-import { Dias, DatosUsuariocliente, Eventoid ,listaasiento} from "utils/constantes";
+import { Dias, DatosUsuariocliente, Eventoid, listaasiento } from "utils/constantes";
 import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
@@ -65,6 +65,7 @@ const IndexFlas = () => {
   //console.log(userauth)
   const abrir = async (e) => {
     let id = localStorage.getItem(Eventoid)
+
     if (id != null && id != e.codigoEvento) {
       successAlert(e)
     }
@@ -73,7 +74,7 @@ const IndexFlas = () => {
         let obten = await listarpreciolocalidad(e.codigoEvento)
         const listalocal = await ListarLocalidad()
         let localidades = await cargarMapa()
-
+        localStorage.consierto = e.nombreConcierto
         console.log(localidades)
         if (obten.data.length > 0) {
           let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
@@ -133,8 +134,9 @@ const IndexFlas = () => {
       })
       LimpiarLocalStore()
       usedispatch(borrarseleccion({ vacio: [] }))
-      localStorage.setItem(listaasiento,JSON.stringify([]))
+      localStorage.setItem(listaasiento, JSON.stringify([]))
       let obten = await listarpreciolocalidad(e.codigoEvento)
+      localStorage.consierto = e.nombreConcierto
       const listalocal = await ListarLocalidad()
       let localidades = await cargarMapa()
       localStorage.eventoid = e.codigoEvento
@@ -475,7 +477,7 @@ const IndexFlas = () => {
       />
 
       {alert}
-       <nav className="navbar navbar-expand-lg  justify-content-between bg-black  py-3">
+      <nav className="navbar navbar-expand-lg  justify-content-between bg-black  py-3">
         <div className="container-fluid col-lg-8    d-flex justify-content-between">
           <a className="navbar-brand " aria-label="TICKETS" href="#">
             <img src={icon} className="img-fluid" style={{ height: 'auto' }} alt="" />
@@ -532,42 +534,42 @@ const IndexFlas = () => {
       />
       {/* header */}
       <div className="container-fluid  p-0">
-       
-               
-                <Carousel className="carousel-inner   carousel-fade" slide={false}>
-                  <Carousel.Item interval={2800}>
-                    <img
-                      className="d-block w-100"
-                      src={principal}
-                      alt="First slide"
-                    />
-                    <Carousel.Caption>
-
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                  <Carousel.Item interval={2800}>
-                    <img
-                      className="d-block w-100"
-                      src={secundaria}
-                      alt="Second slide"
-                    />
-                    <Carousel.Caption>
-
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                  <Carousel.Item interval={2800}>
-                    <img
-                      className="d-block w-100"
-                      src={tercero}
-                      alt="Third slide"
-                    />
-                    <Carousel.Caption>
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                </Carousel>
 
 
-              
+        <Carousel className="carousel-inner   carousel-fade" slide={false}>
+          <Carousel.Item interval={2800}>
+            <img
+              className="d-block w-100"
+              src={principal}
+              alt="First slide"
+            />
+            <Carousel.Caption>
+
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={2800}>
+            <img
+              className="d-block w-100"
+              src={secundaria}
+              alt="Second slide"
+            />
+            <Carousel.Caption>
+
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={2800}>
+            <img
+              className="d-block w-100"
+              src={tercero}
+              alt="Third slide"
+            />
+            <Carousel.Caption>
+            </Carousel.Caption>
+          </Carousel.Item>
+        </Carousel>
+
+
+
 
       </div>
       {/* carrusel */}
@@ -665,7 +667,7 @@ const IndexFlas = () => {
               <div className="col-12 col-lg-9">
 
                 <div className="row mx-auto p-0">
-                  {/**Recordatorio aqui se ralizara el map para alimnetar los eventos*/}                  
+                  {/**Recordatorio aqui se ralizara el map para alimnetar los eventos*/}
                   {eventoslist.length > 0 ?
                     eventoslist.map((e, i) => {
                       return (
