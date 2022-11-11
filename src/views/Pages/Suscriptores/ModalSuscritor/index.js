@@ -39,10 +39,7 @@ const ModalSuscritoView=(props)=>{
           const editados= await EditarSuscrito(datos.id,parms)
           const {success,message} =editados
           if(success){
-          // alert("paso")
-        //   await ListarUsuarios()// reloadpage()
-         location.reload()
-          // SetModalEdit(false)         
+         location.reload()  
           }   
         } catch (error) {
           console.log(error)
@@ -69,14 +66,11 @@ const ModalSuscritoView=(props)=>{
           console.log(useradd)
           if(success){
             location.reload()
-          //  SetModalEdit(false)
-          //  history.push("/admin/usuario")
           }                
         } catch (error) {
           setValidate("was-validated")
           setShowToas(true)
           setmessage("Hubo un error Verifique  que el correo no este duplicado")
-         // console.log(error)          
         }
     }
 

@@ -4,7 +4,7 @@ export const ProvinciasMap = [
         mapas:[
             {
             "nombre":"estandar",
-            "ciudad":"Guayaquil",
+            "ciudad":"Duran",
             "description":"alberto spencer",
             "plantilla": <svg version="1.0" className="opciones" xmlns="http://www.w3.org/2000/svg"
                                     width="90%" height="90%" viewBox="0 0 1024.000000 768.000000"

@@ -757,7 +757,9 @@ const SVGView = ({text}) => {
                                                                 <polygon className="cuadro" points="1690,13603 7781,13603 7781,14068 1690,14068 " />
 
                                                         </g>
-        </svg>
+        </svg>,
+        "esplanada":<svg className="opciones" width="90%" height="90%" xmlns="http://www.w3.org/2000/svg"  version="1.1" viewBox="0 0 21000 21000"
+        ></svg>
     }
     return (
         plantilla[text]

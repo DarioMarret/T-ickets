@@ -64,12 +64,7 @@ const IndexFlas = () => {
   const [seleccion, SetSeleccion] = useState("");
   const [showshop, handleClosesop] = useState(false);
   const [datos, setDatoscon] = useState([])
-  const [Toastestado, setDatoToas] = useState({
-    show: false,
-    message: '',
-    color: '',
-    estado: '',
-  })
+  const [Toastestado, setDatoToas] = useState({show: false,message: '',color: '', estado: '',})
   const [showLogin, setShowLogin] = useState(false)
   const [alert, setAlert] = useState(null);
   const [intervalo, setcrono] = useState("")
@@ -92,7 +87,10 @@ const IndexFlas = () => {
                 setMapashow(false)
                 setDetalle(false)            
                 Limpiarseleccion()  
-                usedispatch(clearMapa())
+                LimpiarLocalStore()
+                localStorage.removeItem("asientosList")
+                usedispatch(clearMapa({}))
+                usedispatch(borrarseleccion({estado:"seleccionado"}))
             }
             else {
               setcrono(minutos + ":" + segundos)

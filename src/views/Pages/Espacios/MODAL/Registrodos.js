@@ -137,7 +137,11 @@ const RegistroViwstab =(props)=>{
 
                                     </div> 
                                      <div className="tab-pane container" id="seleclocalidad" >
-                                        <OpctionLocalidadView/>
+                                        <OpctionLocalidadView
+                                        localidaname={localidaname}
+                                        datalocalidad={datalocalidad}
+                                        SetDataloca={SetDataloca}
+                                        />
                                     </div>
                                     <div className="tab-pane  container-fluid " id="mapa">
                                     <MapadelocalidadViews

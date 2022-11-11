@@ -32,7 +32,7 @@ const sillasSlice = createSlice({
             state.sillasSelecionadas= action.payload
         },
         borrarseleccion: (state, action) => {
-            state.sillasSelecionadas = []
+            state.sillasSelecionadas = state.sillasSelecionadas.filter((item)=>item.estado!=action.payload.estado);
         }
     }
 

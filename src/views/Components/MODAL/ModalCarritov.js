@@ -19,6 +19,12 @@ const ModalCarritoView = (prop) => {
         Tarjeta: "",
         Deposito: "",
     })
+     const [listaPrecio, ListaPrecioset] = useState({
+    total: 0,
+    subtotal: 0,
+    comision: 0,
+    comision_bancaria: 0
+  })
     const [check, setCheck] = useState(true)
     function handelMetodopago(target, value) {
         setChecked({
@@ -27,82 +33,6 @@ const ModalCarritoView = (prop) => {
         localStorage.setItem(Metodos, value)
         setCheck(false)
     }
-    function agregar(e) {
-        let arr = detalle
-        var index = arr.findIndex(obj => obj.id == e.id);
-        let producto = {
-            cantidad: 1,
-            localidad: e.localodad,
-            id: e.id,
-            fila: 0,
-            valor: e.precio_normal,
-            nombreConcierto: "GIRA 40 ANIVERSARIO",
-        }
-        TiendaIten(producto)
-        setDetalle([])
-        if (index == -1) {
-            let nuevo = { id: e.id, localidad: e.localodad, valor: e.precio_normal, cantidad: 1 }
-            arr.push(nuevo);
-            // console.log(arr)
-            //  cosole.log(nuevo)
-            setDetalle(getVerTienda())
-            setTimer(!timer)
-            let data = GetValores()
-            // console.log(data)
-
-        } else {
-
-
-            let suma = parseFloat(arr[index].valor) + parseFloat(e.precio_normal)
-            let cantidad = arr[index].cantidad + 1
-            arr[index].valor = suma.toFixed(2)
-            arr[index].cantidad = cantidad
-
-            setDetalle(getVerTienda())
-            let data = GetValores()
-            setTimer(!timer)
-        }
-    }
-    function restaprecio(e) {
-        let arr = detalle
-        var index = arr.findIndex(obj => obj.id == e.id);
-        let producto = {
-            cantidad: -1,
-            localidad: e.localodad,
-
-            fila: 0,
-            valor: e.precio_normal,
-            nombreConcierto: "GIRA 40 ANIVERSARIO",
-        }
-
-
-        setDetalle([])
-        if (index != -1) {
-            let suma = parseFloat(arr[index].valor) - parseFloat(e.precio_normal)
-            let cantidad = arr[index].cantidad
-            arr[index].valor = suma.toFixed(2)
-            arr[index].cantidad = cantidad
-            if (cantidad > 0) {
-                setDetalle(getVerTienda())
-                setTimer(!timer)
-                let data = GetValores()
-                console.log(data)
-                cantidad >= 1 ? TiendaIten(producto) : ''
-            } else if (cantidad == 0) {
-                let array = detalle
-                let filtro = array.filter(obj => obj.id != e.id)
-                setDetalle(getVerTienda())
-                setTimer(!timer)
-                let data = GetValores()
-                console.log(data)
-                setTimer(!timer)
-            }
-        } else {
-            setDetalle(getVerTienda())
-            setTimer(!timer)
-        }
-    }
-
     function Eliminar(e) {
         usedispatch(clearSillas(e))
         EliminarByStora(e.localidad)
@@ -116,18 +46,20 @@ const ModalCarritoView = (prop) => {
     
     useEffect(() => {
         setDetalle(getVerTienda())
+        //console.log(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
-        setListaPrecio(GetValores())
+        ListaPrecioset(GetValores())
         let asientos = JSON.parse( localStorage.getItem("asientosList"))
+        //console.log(asientos)
        asientos!=null? usedispatch(cargarsilla(asientos)) : ''
         // console.log(precios.pathmapa)
        
-
+        console.log("veces")
         precios.pathmapa.length > 0 ? precios.pathmapa.map((e, i) => {
             $("#" + e.path).attr("class", e.id + "  disponible " + e.tipo)
             $("#" + e.path).attr("fill", e.fill)
         }) : ''
-    }, [showshop, timer])
+    }, [showshop])
 
 
     function Abririlocalfirt(e) {
@@ -216,21 +148,23 @@ const ModalCarritoView = (prop) => {
                                         <h4>AGRAGADOS</h4>
 
                                     </div>
-                                    <div className=" px-2  list-group-flush" style={{ maxHeight: '250px', overflowY: 'auto', overflowX: 'hidden' }}>
+                                    <div className=" px-2  list-group-flush" style={{ maxHeight: '500px', overflowY: 'auto', overflowX: 'hidden' }}>
                                         {
                                             detalle.length > 0 ?
                                                 detalle.map((e, i) => {
                                                     return (
                                                         <div className="d-flex flex-table row list-group-item" role="rowgroup" key={"items" + i}>
-                                                            <div className="flex-row first text-center d-none d-sm-block col-3 col-md-3" role="cell">{e.localidad}</div>
+                                                            <div className="flex-row first  d-none d-sm-block col-3 col-md-3" role="cell">{e.localidad}</div>
                                                             {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
                                                             <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">${e.valor * e.cantidad}</div>
                                                             <div className="flex-row d-none d-sm-block text-center  col-2 col-md-2">{e.cantidad}</div>
-                                                            <div className="d-flex flex-wrap d-none d-sm-block  text-center col-3 col-md-3">
+                                                            <div className="d-flex d-none d-sm-block   text-center justify-content-end align-items-center col-3 col-md-3">
                                                                 <button className="btn btn-danger" onClick={() => Eliminar(e)} >
-                                                                    <i className=""></i>
-                                                                    Eliminar</button>
-                                                                <button className="btn btn-primary mx-1" onClick={() => Abririlocalfirt(e.localidaEspacio)} > Ver </button>
+                                                                    <i className="fa fa-trash"></i>
+                                                                    </button>
+                                                                <button className="btn btn-primary mx-1" onClick={() => Abririlocalfirt(e.localidaEspacio)} > 
+                                                                <i className="fa fa-eye"></i>
+                                                                 </button>
                                                             </div>
                                                             <div className=" col-6 d-block d-sm-none col-6 d-flex flex-row ">
                                                                 <div className="d-flex flex-column ">
@@ -244,9 +178,9 @@ const ModalCarritoView = (prop) => {
 
                                                             >
                                                                 <button className="btn btn-danger" onClick={() => Eliminar(e)} >
-                                                                    Eliminar
+                                                                     <i className="fa fa-trash"></i>
                                                                 </button>
-                                                                <button className="btn btn-primary mx-1" onClick={() => Abririlocalfirt(e.localidaEspacio)} > Ver </button>
+                                                                <button className="btn btn-primary mx-1" onClick={() => Abririlocalfirt(e.localidaEspacio)} >  <i className="fa fa-eye"></i></button>
                                                             </div>
 
                                                             {/*<hr className=" border bg-dark" style={{height:'1px',marginLeft:0,marginRight:0 }} ></hr>*/}
@@ -262,7 +196,7 @@ const ModalCarritoView = (prop) => {
                             </div>
                         </div>
                         <div className="col-12 col-lg-6 ">
-                            <div className="d-flex justify-content-center" >
+                            <div className="d-flex justify-content-center"  style={{height:"200px"}}>
 
                                 {showshop ?
                                     <SvgselectView text={precios.mapa} />
@@ -336,7 +270,7 @@ const ModalCarritoView = (prop) => {
                                 fontSize: '2rem',
                                 fontWeight: 'bold',
                             }}
-                            className="px-1 total-detalle"> {GetValores() ? "$" + GetValores().subtotal : null}</h4>
+                            className="px-1 total-detalle"> {listaPrecio.subtotal ? "$" + listaPrecio.subtotal : null}</h4>
 
                     </div>
                     <div className="">
@@ -346,14 +280,8 @@ const ModalCarritoView = (prop) => {
                         }
 
                     </div>
-
-
-
                 </Modal.Footer>
-
             </Modal>
-
-
         </>
     )
 }

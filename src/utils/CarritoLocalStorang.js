@@ -132,37 +132,32 @@ export function AgregarAsiento(sillas) {
     PVsilla.push(sillas)
     localStorage.setItem(listaasiento, JSON.stringify(PVsilla))
     Filterduplicados()
+    
 }
-export function EliminarSillas(silla) {
-    VerSillas()
-    VerTienda()
+export function EliminarSillas(silla) {   
     let nuevo = PVsilla.filter((e) => { return e.seleccionmapa != silla.localidad + "-" + silla.silla })
     const isBelowThreshold = (currentValue) => currentValue.localidad == silla.localidad;
-    // console.log( nuevo.filter(isBelowThreshold))
     if (nuevo.filter(isBelowThreshold).length == 0) {
         let iten = JSON.parse(localStorage.getItem(CarritoTicket));
         let Cost = []
-        Cost = iten.filter(tienda => tienda.localidad !== silla.localidad)
+        Cost = iten.filter(tienda => tienda.localidad != silla.localidad)
+        console.log("Aqui", Cost)
+        console.log(nuevo)
         localStorage.setItem(CarritoTicket, JSON.stringify(Cost));
         localStorage.setItem(listaasiento, JSON.stringify(nuevo));
-        Filterduplicados()
-        return getVerTienda()
     } else
         localStorage.setItem(listaasiento, JSON.stringify(nuevo));
-    return Filterduplicados()
 }
-
+ let valorDuplicadas = [];
 function Filterduplicados() {
     VerSillas()
-    VerTienda()
-    const valorDuplicadas = [];
+    VerTienda()  
     PVsilla.length > 0 ? PVsilla.forEach((p, i) => {
         if (valorDuplicadas.findIndex(pd => pd.localidad === p.localidad) === -1) {
             valorDuplicadas.push({ localidad: p.localidad, fila: '', localidaEspacio: p.localidaEspacio, nombreConcierto: p.nombreConcierto, valor: p.valor, cantidad: 1 });
-            //console.log(p)
         }
         else {
-            valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].cantidad = parseInt(valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].cantidad) + 1;
+            //valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].cantidad = parseInt(valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].cantidad) + 1;
             valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].fila = parseInt(valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].fila) + 1;
             valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].valor = parseFloat(valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].valor);
         }
@@ -172,18 +167,19 @@ function Filterduplicados() {
         if (PViten.findIndex(item => item.localidad === e.localidad) === -1) {
             PViten.push({ localidad: e.localidad, fila: e.fila, localidaEspacio: e.localidaEspacio, nombreConcierto: e.nombreConcierto, valor: e.valor, cantidad: 1 })
         } else {
-            PViten[PViten.findIndex(item => item.localidad === e.localidad)].cantidad = e.cantidad
+            let cantidad = PVsilla.filter(f=>f.localidad==e.localidad).length  
+            //console.log(cantidad)
+            PViten[PViten.findIndex(item => item.localidad === e.localidad)].cantidad = cantidad
             PViten[PViten.findIndex(item => item.localidad === e.localidad)].valor = e.valor
         }
     }) : ''
     PViten.length > 0 ? localStorage.setItem(CarritoTicket, JSON.stringify(PViten)) : ''
-    //  PViten.length>0? console.log( PViten):''
-
 }
 export function EliminarSillaLocal(silla) {
     VerSillas()
     let nuevo = PVsilla.filter(e => e.localidad != silla)
     localStorage.setItem(listaasiento, JSON.stringify(nuevo));
+    Filterduplicados()
 }
 
 function VerSillas() {
@@ -191,6 +187,8 @@ function VerSillas() {
         let iten = JSON.parse(localStorage.getItem(listaasiento));
         if (iten !== null) {
             PVsilla = iten
+        }else{
+            PViten = []
         }
     } catch (error) {
         console.log(error)
@@ -242,6 +240,10 @@ export function GetValores() {
 }
 
 export function LimpiarLocalStore() {
+    PVsilla=[]
+    PViten=[]
+    valorDuplicadas=[]
+    //console.log(PVsilla)
     localStorage.removeItem(CarritoTicket)
     localStorage.removeItem(DatosUsuarioLocalStorang)
     localStorage.removeItem(Metodos)

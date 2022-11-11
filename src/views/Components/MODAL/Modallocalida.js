@@ -13,7 +13,7 @@ const LocalidadmapViews = (props) => {
     let nombre = JSON.parse(localStorage.getItem("seleccionmapa"))
     const usedispatch = useDispatch()
     const [detalle, setDetalle] = useState([])
-    const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
+    const seleccion =  useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
     let mapath = useSelector((state) => state.mapaLocalSlice)
     function cerrar() {
         handleClosesop(true)
@@ -27,7 +27,7 @@ const LocalidadmapViews = (props) => {
             id: mapath.precio.id,
             fila: 0,
             valor: mapath.precio.precio_normal,
-            nombreConcierto: localStorage.getItem("consierto"),
+            nombreConcierto: localStorage.getItem("consierto")? localStorage.getItem("consierto"):'',
         }
         TiendaIten(producto)
         setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
@@ -56,9 +56,10 @@ const LocalidadmapViews = (props) => {
         e.preventDefault();
         if (this.classList.contains("disponible")) {
             if (!this.classList.contains('seleccionado')) {
+                let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
-                let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
+               console.log("veces div disponible")
                 //console.log("nuevo",{nombres})
                 AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                 usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
@@ -71,9 +72,11 @@ const LocalidadmapViews = (props) => {
         e.preventDefault();
         if (this.classList.contains("seleccionado")) {
             if (!this.classList.contains('disponible')) {
+                  let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
                 this.classList.remove('seleccionado')
                 this.classList.add('disponible')
-                let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
+                 //console.log("veces div seleccionado")
+              
                 EliminarSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
                 usedispatch(deleteSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" }))
             }
@@ -82,19 +85,24 @@ const LocalidadmapViews = (props) => {
     })
     $(document).on('click', 'li.cargados', function () {
         if (!this.classList.contains('disponible')) {
-            $("div." + this.classList[0]).removeClass("seleccionado").addClass("disponible")
             let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
+            $("div." + this.classList[0]).removeClass("seleccionado").addClass("disponible")
+            
+            console.log("veces div cargados")
             //console.log("nuevo", { nombres })
             EliminarSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
             usedispatch(deleteSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "borrar" }))
         }
+        return
     })
     $(document).on('click', 'a.disponible', function () {
 
         if (!this.classList.contains('seleccionado')) {
+            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))         
+            console.log("veces a")
             this.classList.remove('disponible')
             this.classList.add('seleccionado')
-            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))            
+               
             AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
             usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
         }
@@ -333,12 +341,8 @@ const LocalidadmapViews = (props) => {
                                                         </div>
                                                     </li>
                                                 )
-
                                             }) : ''
-
                                     }
-
-
                                 </div>
                             </div> : <div>
 

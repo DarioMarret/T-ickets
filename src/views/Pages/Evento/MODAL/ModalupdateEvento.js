@@ -142,13 +142,13 @@ const Modalupdate = (props) => {
     }
     async function Actualizar() {
         if (neweventos.imagenConcierto == evento.imagenConcierto) {
-            console.log(neweventos)
+          //  console.log(neweventos)
             let guarda = {
                 ...neweventos,
                 estado: "PROCESO",
                 "LocalodadPrecios": selectLocalidad
             }
-            console.log(guarda)
+           // console.log(guarda)
             try {
                 const actualiza = await ActualizarLocalidad(evento.codigoEvento, guarda)
                 // console.log(actualiza)
@@ -205,7 +205,7 @@ const Modalupdate = (props) => {
                 idUsuario: "" + user.id,
             })
         setLocalidad(evento.LocalodadPrecios)
-           console.log(neweventos)
+         //  console.log(neweventos)
         // console.log(Object.values(neweventos).every((d) => d))
     }, [show])
     return (

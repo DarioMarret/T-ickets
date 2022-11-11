@@ -9,6 +9,7 @@ import { columnespacio } from 'utils/ColumnTabla';
 import { EliminarLocalidad } from '../../../../../utils/Querypanel';
 import { useSelector,useDispatch } from 'react-redux';
 import { addLocalidad,deleteloclidad } from 'StoreRedux/Slice/SuscritorSlice';
+import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 const LocalidadesagreViews=(props)=>{
@@ -46,7 +47,7 @@ const {success,data}=datos
       }
     } catch (error) {
       console.log(error)
-      alert(error)
+      //alert(error)
       
     } 
   }
@@ -150,9 +151,10 @@ $('[href*="listas"]').removeClass('active');
                     }}
                    
                     enableRowActions
-                    renderRowActions={({ row }) => (
-                        <Box sx={{ display: 'flex' }}>
-                          <IconButton 
+                    renderRowActions={({ row }) =>(
+                        <Box >
+                          <div className={row.original.id?'d-flex flex-row':''}>
+                            <IconButton 
                           color="primary"  
                           onClick={()=>Editar(row.original)}
                           >
@@ -164,11 +166,17 @@ $('[href*="listas"]').removeClass('active');
                           >
                           <Delete/>
                           </IconButton>
+                          </div>
+                          
                           
                         </Box>
                       )}
                     positionToolbarAlertBanner="bottom"
-                   
+                   displayColumnDefOptions={{
+                        'mrt-row-numbers': {
+                          enableHiding: true, 
+                        },
+                      }}
                     localization={MRT_Localization_ES }
                     
                 />

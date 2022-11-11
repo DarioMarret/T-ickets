@@ -93,7 +93,7 @@ const TabunoView = (props) => {
     async function AgregaLocalidad() {
         if (nmobretabuno.nombre == "" || nmobretabuno.description == "" || ListaFilas.length < 0 || !filass.sillas>40) {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guaradar', color: 'bg-danger', estado: 'Datos incompletos' }))
-            // alert("Complete los datos y localidad creada")
+         
             return
         }
         else {
@@ -108,9 +108,8 @@ const TabunoView = (props) => {
                         array: ''
                     })
                     usedispatch(setToastes({ show: true, message: 'Localidad creada correctamente', color: 'bg-success', estado: 'Datos guardados' }))
-                    //  alert("localidad Guardada")
                 }
-                console.log({ "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
+               // console.log({ "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
             } catch (error) {
                 console.log(error)
             }

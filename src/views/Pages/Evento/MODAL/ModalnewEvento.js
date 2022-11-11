@@ -97,7 +97,6 @@ const ModalNewEvento =(props)=>{
           if(evento.success){
             usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
                setinput(false)
-            //alert("datos guardados")
                 Setshow(false)
             }
             
