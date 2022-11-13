@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react"
 import MesaiView from "views/Pages/Mesas/Plantillas/indice"
 import MesasView from "views/Pages/Mesas"
 import SVGView from "views/Pages/Svgviewa/svgoptio.js";
-import { TiendaIten, getVerTienda,EliminarByStora } from "utils/CarritoLocalStorang";
+import { TiendaIten, getVerTienda, EliminarByStora } from "utils/CarritoLocalStorang";
 import { Modal } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { addSillas, deleteSillas, clearSillas } from "StoreRedux/Slice/sillasSlice"
 import { EliminarSillas, AgregarAsiento } from "utils/CarritoLocalStorang"
 import "./localidas.css"
 const LocalidadmapViews = (props) => {
-    const { precios, showMapa, handleClosesop, setMapashow } = props
+    const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
     let nombre = JSON.parse(localStorage.getItem("seleccionmapa"))
     const usedispatch = useDispatch()
     const [detalle, setDetalle] = useState([])
-    const seleccion =  useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
+    const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
     let mapath = useSelector((state) => state.mapaLocalSlice)
     function cerrar() {
         handleClosesop(true)
@@ -27,7 +27,7 @@ const LocalidadmapViews = (props) => {
             id: mapath.precio.id,
             fila: 0,
             valor: mapath.precio.precio_normal,
-            nombreConcierto: localStorage.getItem("consierto")? localStorage.getItem("consierto"):'',
+            nombreConcierto: localStorage.getItem("consierto") ? localStorage.getItem("consierto") : '',
         }
         TiendaIten(producto)
         setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
@@ -59,7 +59,7 @@ const LocalidadmapViews = (props) => {
                 let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
-               console.log("veces div disponible")
+                console.log("veces div disponible")
                 //console.log("nuevo",{nombres})
                 AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                 usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
@@ -72,11 +72,9 @@ const LocalidadmapViews = (props) => {
         e.preventDefault();
         if (this.classList.contains("seleccionado")) {
             if (!this.classList.contains('disponible')) {
-                  let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
+                let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
                 this.classList.remove('seleccionado')
                 this.classList.add('disponible')
-                 //console.log("veces div seleccionado")
-              
                 EliminarSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
                 usedispatch(deleteSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" }))
             }
@@ -87,8 +85,7 @@ const LocalidadmapViews = (props) => {
         if (!this.classList.contains('disponible')) {
             let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
             $("div." + this.classList[0]).removeClass("seleccionado").addClass("disponible")
-            
-            console.log("veces div cargados")
+            //console.log("veces div cargados")
             //console.log("nuevo", { nombres })
             EliminarSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
             usedispatch(deleteSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "borrar" }))
@@ -96,13 +93,10 @@ const LocalidadmapViews = (props) => {
         return
     })
     $(document).on('click', 'a.disponible', function () {
-
         if (!this.classList.contains('seleccionado')) {
-            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))         
-            console.log("veces a")
+            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
             this.classList.remove('disponible')
             this.classList.add('seleccionado')
-               
             AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
             usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
         }
@@ -112,7 +106,7 @@ const LocalidadmapViews = (props) => {
         if (!this.classList.contains('disponible')) {
             this.classList.remove('seleccionado')
             this.classList.add('disponible')
-            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))            
+            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
             EliminarSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
             usedispatch(deleteSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" }))
         }
@@ -126,7 +120,7 @@ const LocalidadmapViews = (props) => {
     }
 
     useEffect(() => {
-        getVerTienda().filter((e) => e.id == mapath.precio.id).length>0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
+        getVerTienda().filter((e) => e.id == mapath.precio.id).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
 
         let selct = seleccion
         selct.length > 0 ?
@@ -151,7 +145,7 @@ const LocalidadmapViews = (props) => {
                 onHide={cerrar}
             >
                 <Modal.Header>
-                    <h5 className="modal-title text-center justify-content-center">localidad</h5>
+                    <h5 className="modal-title text-center justify-content-center">Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
                     <button type="button" className="close" onClick={cerrar} >
                         ×
                     </button>

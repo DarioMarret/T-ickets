@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Carousel } from "react-bootstrap";
 import header from "../../../assets/header.jpeg";
 import logofla from "../../../assets/imagen/LOGO-WEB.png";
@@ -17,7 +17,7 @@ import ModalReport from "views/Components/MODAL/ModalReporte";
 import ModalEfectivo from "views/Components/MODAL/Modalefectivo";
 import TOAST from "views/Components/TOAST";
 import Footer from "views/Components/Footer/Footer";
-import { GetMetodo, getVerTienda, LimpiarLocalStore,Limpiarseleccion } from "utils/CarritoLocalStorang";
+import { GetMetodo, getVerTienda, LimpiarLocalStore, Limpiarseleccion } from "utils/CarritoLocalStorang";
 import { useHistory } from "react-router";
 import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
@@ -28,7 +28,7 @@ import { GuardarDatosdelComprador, ValidarWhatsapp } from "utils/Query";
 import { useSelector, useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
-import { cargalocalidad ,clearMapa} from "StoreRedux/Slice/mapaLocalSlice";
+import { cargalocalidad, clearMapa } from "StoreRedux/Slice/mapaLocalSlice";
 import { Authsucrito } from "utils/Query";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
 import { listarpreciolocalidad, ListarLocalidad } from "utils/Querypanel";
@@ -38,10 +38,10 @@ import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectFade, Navigation, Pagination,Autoplay } from "swiper";
+import { EffectFade, Navigation, Pagination, Autoplay } from "swiper";
 import moment from "moment";
 import 'moment-timezone'
-import 'moment/locale/es'; 
+import 'moment/locale/es';
 require('moment/locale/es.js')
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -64,54 +64,60 @@ const IndexFlas = () => {
   const [seleccion, SetSeleccion] = useState("");
   const [showshop, handleClosesop] = useState(false);
   const [datos, setDatoscon] = useState([])
-  const [Toastestado, setDatoToas] = useState({show: false,message: '',color: '', estado: '',})
+  const [Toastestado, setDatoToas] = useState({ show: false, message: '', color: '', estado: '', })
   const [showLogin, setShowLogin] = useState(false)
   const [alert, setAlert] = useState(null);
   const [intervalo, setcrono] = useState("")
-  const datatime = useRef(null); 
-    
-    function velocidad() {    
-        let timer=0
-        var tiempo = 60 * 3
-        timer = tiempo
-        var minutos = 0, segundos = 0;
-        datatime.current  = setInterval(function () {
-            minutos = parseInt(timer / 60, 10);
-            segundos = parseInt(timer % 60, 10);
-            minutos = minutos < 10 ? "0" + minutos : minutos;
-            segundos = segundos < 10 ? "0" + segundos : segundos;
-            if (timer === 0) {
-                clearInterval(datatime.current);
-                setDatoToas({show: true,message: 'Su tiempo de compra a finalizado',color: 'bg-danger',estado: 'Mensaje importante',})
-                handleClosesop(false)
-                setMapashow(false)
-                setDetalle(false)            
-                Limpiarseleccion()  
-                LimpiarLocalStore()
-                localStorage.removeItem("asientosList")
-                usedispatch(clearMapa({}))
-                usedispatch(borrarseleccion({estado:"seleccionado"}))
-            }
-            else {
-              setcrono(minutos + ":" + segundos)
-                if (--timer < 0) {
-                    timer = tiempo;
-                }  
-            }
-        }, 1000);
-    }
-    function detenervelocidad() {
-     handleClosesop(false)
-    clearInterval(datatime.current);
-    console.log(datatime.current)
+  const datatime = useRef(null);
+
+  function velocidad() {
+    let timer = 0
+    var tiempo = 60 * 3
+    timer = tiempo
+    var minutos = 0, segundos = 0;
+    datatime.current = setInterval(function () {
+      minutos = parseInt(timer / 60, 10);
+      segundos = parseInt(timer % 60, 10);
+      minutos = minutos < 10 ? "0" + minutos : minutos;
+      segundos = segundos < 10 ? "0" + segundos : segundos;
+      if (timer === 0) {
+        clearInterval(datatime.current);
+        setDatoToas({ show: true, message: 'Su tiempo de compra a finalizado', color: 'bg-danger', estado: 'Mensaje importante', })
+        handleClosesop(false)
+        setMapashow(false)
+        setDetalle(false)
+        Limpiarseleccion()
+        LimpiarLocalStore()
+        localStorage.removeItem("asientosList")
+        usedispatch(clearMapa({}))
+        usedispatch(borrarseleccion({ estado: "seleccionado" }))
+      }
+      else {
+        setcrono(minutos + ":" + segundos)
+        if (--timer < 0) {
+          timer = tiempo;
+        }
+      }
+    }, 1000);
   }
-function abrircarro(){
-  handleClosesop(true)
-  velocidad()
-}
-   
-    
-     
+  function detenervelocidad() {
+    handleClosesop(false)
+    clearInterval(datatime.current)
+    setMapashow(false)
+    setDetalle(false)
+    Limpiarseleccion()
+    LimpiarLocalStore()
+    localStorage.removeItem("asientosList")
+    usedispatch(clearMapa({}))
+    usedispatch(borrarseleccion({ estado: "seleccionado" }))
+  }
+  function abrircarro() {
+    handleClosesop(true)
+    velocidad()
+  }
+
+
+
   const abrir = async (e) => {
     let id = localStorage.getItem(Eventoid)
 
@@ -157,7 +163,7 @@ function abrircarro(){
           setPrecios(nuevosdatos)
           setDatoscon(e)
           handleClosesop(true)
-           velocidad()
+          velocidad()
         }
       } catch (err) {
         console.log(err)
@@ -222,7 +228,7 @@ function abrircarro(){
         // console.log(obten)
         setDatoscon(e)
         handleClosesop(true)
-         velocidad()
+        velocidad()
         hideAlert()
       }
 
@@ -425,11 +431,11 @@ function abrircarro(){
     fecha: ''
   })
   const [eventoslist, setEventos] = useState([])
-  useEffect(()=>{
+  useEffect(() => {
     const evento = async () => {
       try {
         const data = await cargarEventoActivo()
-        const filtro = data != null ? data.filter((e) => moment(e.fechaConcierto+" "+e.horaConcierto ).format('DD MMMM YYYY h:mm') >=  moment().format('DD MMMM YYYY h:mm') ) : []
+        const filtro = data != null ? data.filter((e) => moment(e.fechaConcierto + " " + e.horaConcierto).format('DD MMMM YYYY h:mm') >= moment().format('DD MMMM YYYY h:mm')) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         if (data != null) {
           setEventos(filtro.sort(sorter))
@@ -495,6 +501,7 @@ function abrircarro(){
       <LocalidadmapViews
         handleClosesop={handleClosesop}
         showMapa={showMapa}
+        intervalo={intervalo}
         setMapashow={setMapashow}
       />
       <ModalCarritov
@@ -569,75 +576,77 @@ function abrircarro(){
       {/* header */}
       <div className="container-fluid  p-0">
         <Swiper
-        className="AnimatedSlides"
-        effect={"fade"}
-        loop={true}
-        autoHeight={true}
-        navigation={true}
-        autoplay={{
-          delay: 3500,
-          disableOnInteraction: true,
-        }}
-        coverflowEffect={{
-                       rotate: 0,
-                       stretch: 0,
-                       depth: 150,
-                       modifier: 2,
-                       slideShadows: true,
-                     }}
-                   
-                     onSwiper={(swiper) => {
-                     }}                   
-                      modules={[Autoplay,EffectFade, Navigation, Pagination]}>
-                     <SwiperSlide >
-                      <div style={{widows:"100%",height:"400"}}>
-                          <div style={{height:"400px", width:"100%",position:"relative",
-                             backgroundPosition: "center",
-                             backgroundImage:"url('" + principal + "')",
-                             backgroundRepeat: "no-repeat",backgroundSize: "cover",
-                             }}>
-                            <div style={{position:"absolute",bottom:50,left:100 }}>
-                                  <div className="d-flex flex-column text-white" >
-                                    <h4 style={{ fontFamily:'fantasy',}}>Description de la imagen 1 </h4>
-                                    <h6 style={{ fontFamily:'fantasy',}}>
-                                      Subdescriotion
-                                    </h6>
-                                     <button className="btn btn-success">Ver lista</button>
-                                  </div>        
-                            </div> 
+          className="AnimatedSlides"
+          effect={"fade"}
+          loop={true}
+          autoHeight={true}
+          navigation={true}
+          autoplay={{
+            delay: 3500,
+            disableOnInteraction: true,
+          }}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 150,
+            modifier: 2,
+            slideShadows: true,
+          }}
 
-                        </div>
-                          
-                            
-                        </div>                            
-                                                          
-                           </SwiperSlide>
-                           <SwiperSlide >
-                            <div style={{widows:"100%",height:"400"}}>
-                             <div style={{height:"400px", width:"100%",position:"relative",
-                             backgroundPosition: "center",
-                             backgroundImage:"url('" + secundaria + "')",
-                             backgroundRepeat: "no-repeat",backgroundSize: "cover",
-                            
-                             }}>
-                                 <div style={{position:"absolute",bottom:50,left:100 }}>
-                                  <div className="d-flex flex-column text-white" >
-                                    <h4 style={{ fontFamily:'fantasy',}}>Description de la imagen 2 </h4>
-                                    <h6 style={{ fontFamily:'fantasy',}}>
-                                      Subdescriotion
-                                    </h6>
-                                     <button className="btn btn-success">Ver lista</button> 
+          onSwiper={(swiper) => {
+          }}
+          modules={[Autoplay, EffectFade, Navigation, Pagination]}>
+          <SwiperSlide >
+            <div style={{ widows: "100%", height: "400" }}>
+              <div style={{
+                height: "400px", width: "100%", position: "relative",
+                backgroundPosition: "center",
+                backgroundImage: "url('" + principal + "')",
+                backgroundRepeat: "no-repeat", backgroundSize: "cover",
+              }}>
+                <div style={{ position: "absolute", bottom: 50, left: 100 }}>
+                  <div className="d-flex flex-column text-white" >
+                    <h4 style={{ fontFamily: 'fantasy', }}>Description de la imagen 1 </h4>
+                    <h6 style={{ fontFamily: 'fantasy', }}>
+                      Subdescriotion
+                    </h6>
+                    <button className="btn btn-success">Ver lista</button>
+                  </div>
+                </div>
 
-                                  </div>
-                                    
-                                 </div>   
-                              </div>
-                            </div>
-                           </SwiperSlide>
-                   </Swiper>
+              </div>
 
 
-      { /* <Carousel className="carousel-inner   carousel-fade" slide={false}>
+            </div>
+
+          </SwiperSlide>
+          <SwiperSlide >
+            <div style={{ widows: "100%", height: "400" }}>
+              <div style={{
+                height: "400px", width: "100%", position: "relative",
+                backgroundPosition: "center",
+                backgroundImage: "url('" + secundaria + "')",
+                backgroundRepeat: "no-repeat", backgroundSize: "cover",
+
+              }}>
+                <div style={{ position: "absolute", bottom: 50, left: 100 }}>
+                  <div className="d-flex flex-column text-white" >
+                    <h4 style={{ fontFamily: 'fantasy', }}>Description de la imagen 2 </h4>
+                    <h6 style={{ fontFamily: 'fantasy', }}>
+                      Subdescriotion
+                    </h6>
+                    <button className="btn btn-success">Ver lista</button>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+        </Swiper>
+
+
+        { /* <Carousel className="carousel-inner   carousel-fade" slide={false}>
           <Carousel.Item interval={2800}>
             <img
               className="d-block w-100"
@@ -845,6 +854,7 @@ function abrircarro(){
       <Modalterminos />
       <ModalDetalle
         showDetalle={showDetalle}
+        intervalo={intervalo}
         setDetalle={setDetalle}
         handleDetalleColse={handleDetalleColse}
         listaPrecio={listaPrecio}

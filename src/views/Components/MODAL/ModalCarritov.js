@@ -6,25 +6,26 @@ import { listarpreciolocalidad } from "utils/Querypanel"
 import { TiendaIten, GetValores, getVerTienda, EliminarByStora, EliminarSillaLocal } from "utils/CarritoLocalStorang"
 import { useDispatch, useSelector } from "react-redux"
 import { cargarmapa, settypo, filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice"
-import { clearSillas,cargarsilla } from "StoreRedux/Slice/sillasSlice"
-import mapa from '../../../assets/img/mapa.png'
+import { clearSillas, cargarsilla } from "StoreRedux/Slice/sillasSlice"
+import SweetAlert from 'react-bootstrap-sweetalert';
 const ModalCarritoView = (prop) => {
-    const { showshop, handleClosesop, handleContinuar, setMapashow, precios, setListaPrecio, setListarCarritoDetalle, intervalo,detener } = prop
+    const { showshop, handleClosesop, handleContinuar, setMapashow, precios, setListaPrecio, setListarCarritoDetalle, intervalo, detener } = prop
     let usedispatch = useDispatch()
     let sleccionlocalidad = useSelector((state) => state.mapaLocalSlice)
     const [detalle, setDetalle] = useState([])
+    const [alert, setAlert] = useState(null)
     const [timer, setTimer] = useState(false)
     const [checked, setChecked] = useState({
         Efectivo: "",
         Tarjeta: "",
         Deposito: "",
     })
-     const [listaPrecio, ListaPrecioset] = useState({
-    total: 0,
-    subtotal: 0,
-    comision: 0,
-    comision_bancaria: 0
-  })
+    const [listaPrecio, ListaPrecioset] = useState({
+        total: 0,
+        subtotal: 0,
+        comision: 0,
+        comision_bancaria: 0
+    })
     const [check, setCheck] = useState(true)
     function handelMetodopago(target, value) {
         setChecked({
@@ -38,22 +39,24 @@ const ModalCarritoView = (prop) => {
         EliminarByStora(e.localidad)
         EliminarSillaLocal(e.localidad)
         setDetalle(getVerTienda())
+        ListaPrecioset(GetValores())
     }
     function abrirlocalidad() {
         setMapashow(true)
         detener(false)
     }
-    
+
     useEffect(() => {
         setDetalle(getVerTienda())
         //console.log(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
         ListaPrecioset(GetValores())
-        let asientos = JSON.parse( localStorage.getItem("asientosList"))
+        console.log(GetValores())
+        let asientos = JSON.parse(localStorage.getItem("asientosList"))
         //console.log(asientos)
-       asientos!=null? usedispatch(cargarsilla(asientos)) : ''
+        asientos != null ? usedispatch(cargarsilla(asientos)) : ''
         // console.log(precios.pathmapa)
-       
+
         console.log("veces")
         precios.pathmapa.length > 0 ? precios.pathmapa.map((e, i) => {
             $("#" + e.path).attr("class", e.id + "  disponible " + e.tipo)
@@ -88,7 +91,31 @@ const ModalCarritoView = (prop) => {
             abrirlocalidad()
         })
     })
-
+    function cerrar() {
+        handleClosesop()
+        hideAlert()
+    }
+    const successAlert = () => {
+        setAlert(
+            <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                title="Estas Seguro de cerrar?"
+                onConfirm={() => cerrar()}
+                onCancel={() => hideAlert()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                confirmBtnText="Confirmar"
+                cancelBtnText="Cancelar"
+                showCancel
+            >
+                Se Borraran Todas las Localidades Seleccionadas
+            </SweetAlert>
+        );
+    };
+    const hideAlert = () => {
+        setAlert(null);
+    };
 
 
     return (
@@ -100,27 +127,28 @@ const ModalCarritoView = (prop) => {
             zIndex: 10000
         }}>
         </div>*/}
+            {alert}
             <Modal
                 show={showshop}
                 size="lg"
                 style={{ height: "100%", width: "100%" }}
                 fullscreen={true}
-                //onHide={}
-                >
-                   
+            //onHide={}
+            >
+
                 <Modal.Header >
                     <div className="d-flex justify-content-between  align-items-center " >
                         <div>
                             <h5 className="modal-title text-center justify-content-center">Boleteria -</h5>
                         </div>
-                    
-                    <div>
-                        <h5 className="modal-title text-center justify-content-center">  Tiempo restante de compra <span className="text-danger" >{intervalo}</span> </h5>
+
+                        <div>
+                            <h5 className="modal-title text-center justify-content-center">  Tiempo restante de compra <span className="text-danger" >{intervalo}</span> </h5>
+                        </div>
+
                     </div>
-                    
-                    </div>
-                    
-                    <button type="button" className="close" onClick={() => handleClosesop()} >
+
+                    <button type="button" className="close" onClick={detalle.length > 0 ? successAlert : cerrar} >
                         ×
                     </button>
                 </Modal.Header>
@@ -161,10 +189,10 @@ const ModalCarritoView = (prop) => {
                                                             <div className="d-flex d-none d-sm-block   text-center justify-content-end align-items-center col-3 col-md-3">
                                                                 <button className="btn btn-danger" onClick={() => Eliminar(e)} >
                                                                     <i className="fa fa-trash"></i>
-                                                                    </button>
-                                                                <button className="btn btn-primary mx-1" onClick={() => Abririlocalfirt(e.localidaEspacio)} > 
-                                                                <i className="fa fa-eye"></i>
-                                                                 </button>
+                                                                </button>
+                                                                <button className="btn btn-primary mx-1" onClick={() => Abririlocalfirt(e.localidaEspacio)} >
+                                                                    <i className="fa fa-eye"></i>
+                                                                </button>
                                                             </div>
                                                             <div className=" col-6 d-block d-sm-none col-6 d-flex flex-row ">
                                                                 <div className="d-flex flex-column ">
@@ -178,7 +206,7 @@ const ModalCarritoView = (prop) => {
 
                                                             >
                                                                 <button className="btn btn-danger" onClick={() => Eliminar(e)} >
-                                                                     <i className="fa fa-trash"></i>
+                                                                    <i className="fa fa-trash"></i>
                                                                 </button>
                                                                 <button className="btn btn-primary mx-1" onClick={() => Abririlocalfirt(e.localidaEspacio)} >  <i className="fa fa-eye"></i></button>
                                                             </div>
@@ -196,7 +224,7 @@ const ModalCarritoView = (prop) => {
                             </div>
                         </div>
                         <div className="col-12 col-lg-6 ">
-                            <div className="d-flex justify-content-center"  style={{height:"200px"}}>
+                            <div className="d-flex justify-content-center" style={{ height: "200px" }}>
 
                                 {showshop ?
                                     <SvgselectView text={precios.mapa} />
