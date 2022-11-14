@@ -32,9 +32,10 @@ div.grid-item:hover{
             0 1px 18px 0 rgba(0, 0, 0, 0.12),
             0 3px 5px -1px rgba(0, 0, 0, 0.4)
 }
-li.cargados{
+li.agregados{
     cursor: pointer;
 }
+
 /*div.seleccionmap{
    // background-color: #198754;
 }*/

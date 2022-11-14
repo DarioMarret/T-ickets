@@ -118,7 +118,6 @@ const ModalNewEvento = (props) => {
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
     });
-    /*informacion de los enventos nuevos */
     const [neweventos, setNewEventos] = useState(
         {
             nombreConcierto: '',
@@ -133,24 +132,38 @@ const ModalNewEvento = (props) => {
             idUsuario: "" + user.id,
         })
     function handelchangeComposeventos(e) {
-
-        //console.log(e.value)
         if (e.name == "imagenConcierto") {
             let img = new Image()
             img.src = window.URL.createObjectURL(e.files[0])
             img.onload = () => {
-
                 if (img.width < 750 || img.height < 500) {
                     e.value = ""
-                    usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 500px y un ancho minimo de 750px', color: 'bg-warning', estado: 'Advertencia' }))
+                    usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 500px y máximo 600px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
                 }
-                if (img.width > 900 || img.height > 700) usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 500px y un ancho minimo de 750px', color: 'bg-warning', estado: 'Advertencia' }))
-                else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+                if (img.width > 900 || img.height > 620) {e.value="" 
+                usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 500px y máximo 600px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
+                }else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
             }
             img.onerror = () => {
                 setNewEventos({ ...neweventos, imagenConcierto: '' })
-
             }
+        }else if(e.name=="imagenCarrusel"){
+            let imgevento =new Image()
+            imgevento.src = window.URL.createObjectURL(e.files[0])
+            imgevento.onload=()=>{
+                if(imgevento.width>1000 || imgevento.height>300){
+                    console.log(imgevento.src)
+                    usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, ', color: 'bg-warning', estado: 'Advertencia' }))
+                
+                }else if(imgevento.width<500|| imgevento.height<600){
+                      usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es valida', color: 'bg-warning', estado: 'Advertencia' }))
+                    console.log(imgevento.src)
+                }else console.log(imgevento.src)
+            }
+            imgevento.onerror = ()=>{
+                //setNewEventos({ ...neweventos, imagenConcierto: '' })
+            }
+
         } else if (e.name == "autorizacion") {
             setNewEventos({
                 ...neweventos,
@@ -199,7 +212,6 @@ const ModalNewEvento = (props) => {
     function soloSelectespacio(e) {
         var index = localidadPreci.findIndex(obj => obj.localodad == e.value);
         var dato = espacios.filter(D => D.id == e.id)
-        //  console.log(index,localidadPreci[index])
         setPrecios({
             precio_normal: localidadPreci[index] ? localidadPreci[index].precio_normal : 0,
             precio_discapacidad: localidadPreci[index] ? localidadPreci[index].precio_discapacidad : 0,
@@ -209,9 +221,6 @@ const ModalNewEvento = (props) => {
             nombre: dato[0].nombre,
             [e.name]: e.value,
         })
-        //console.log(e.value)
-
-        //console.log(localidadPreci[index],localidadPreci)
     }
     function handelchangeLocalidad(e) {
         setPrecios({
@@ -231,13 +240,7 @@ const ModalNewEvento = (props) => {
     useEffect(() => {
         (async () => {
             await Lista()
-            // await  Listar()
-        })()
-        // console.log("evento",neweventos)
-        //console.log("",Object.values(neweventos))
-        // console.log(Object.values(neweventos).every(e=>e ))
-        //console.log(!(selectLocalidad.length==localidadPreci.length))
-        // console.log("localidada precios-->",localidadPreci)//toggleValueInArray
+        })()        
     }, [show])
     return (
         <Modal
@@ -390,7 +393,9 @@ const ModalNewEvento = (props) => {
                                     <label className="form-label">selecione una imagen para el carrusel</label>
                                     <div className="input-group mb-3">
 
-                                        <input type="file" accept="image/*" name="imagenConcierto" className="form-control "
+                                        <input type="file" accept="image/*" name="imagenCarrusel" className="form-control "
+                                        onChange={(e) => handelchangeComposeventos(e.target)}
+                                        placeholder="Imagen promoción"
                                         />
                                     </div>
                                 </div>

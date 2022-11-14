@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Spinner, InputGroup } from "react-bootstrap"
-import { GetMetodo } from 'utils/CarritoLocalStorang';
+import { GetMetodo,GetValores } from 'utils/CarritoLocalStorang';
 import { Envio, DatosUsuariocliente } from 'utils/constantes';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import { DatosUsuariosLocalStorag, getCliente } from 'utils/DatosUsuarioLocalStorag';
@@ -12,7 +12,7 @@ import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
 
 function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
-        listaPrecio, listarCarritoDetalle,
+         listarCarritoDetalle,
         setModalPago, handelReporShow, handelefctivorShow,
         setDetalle, setDatoToas, intervalo
     } = props
@@ -23,7 +23,7 @@ function ModalDetalle(props) {
         check3: false
     });
     const [valorTotal, SetValor] = useState(0)
-    const [clienteauth, setChecked] = useState(false)
+    const [clienteauth, setChecked] = useState(false) 
 
     const [spinervi, setspiner] = useState("d-none")
     const [hidecomision, sethideComision] = useState("d-none")
@@ -109,7 +109,12 @@ function ModalDetalle(props) {
         setDetalle(!showDetalle)
         setModalPago(true)
     }
-
+const [listaPrecio, ListaPrecioset] = useState({
+        total: 0,
+        subtotal: 0,
+        comision: 0,
+        comision_bancaria: 0
+    })
     async function handelchange(e) {
         let metodoPago = GetMetodo()
         const { value, name } = e;
@@ -207,11 +212,7 @@ function ModalDetalle(props) {
         let datosPersonal = getDatosUsuariosLocalStorag()
         let clineteLogeado = getCliente()
         let metodoPago = GetMetodo()
-        //let precios.
-        //console.log("metodo",metodoPago)
-        //let valor = parseFloat( listaPrecio.subtotal) + parseFloat(listaPrecio.comision)
-        // console.log(datosPerson)
-        //SetValor(valor)
+         ListaPrecioset(GetValores())    
         if (clineteLogeado == null) {
             if (datosPersonal != null) {
                 setPerson({
@@ -569,6 +570,13 @@ function ModalDetalle(props) {
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={!(datosPerson.envio != '')}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
+                                    >
+                                        <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
+                            }
+                            {
+                                datosPerson.metodoPago === null ?
+                                    <button id="pagarcuenta" className="btn btn-primary"
+                                        disabled={true}                                       
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }

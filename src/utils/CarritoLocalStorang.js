@@ -180,18 +180,31 @@ function Filterduplicados() {
             PViten[PViten.findIndex(item => item.localidad === e.localidad)].valor = e.valor
         }
     }) : ''
-    console.log(PViten)
+    //console.log(PViten)
     PViten.length > 0 ? localStorage.setItem(CarritoTicket, JSON.stringify(PViten)) : ''
 }
 export function EliminarSillaLocal(silla) {
     VerSillas()
     let nuevo = PVsilla.filter(e => e.localidad != silla)
     localStorage.setItem(listaasiento, JSON.stringify(nuevo));
-    console.log(nuevo)
+    //console.log(nuevo)
     // Filterduplicados()
 }
 
 function VerSillas() {
+    try {
+        let iten = JSON.parse(localStorage.getItem(listaasiento));
+        if (iten !== null) {
+            PVsilla = iten
+        } else {
+            PViten = []
+        }
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+export function VerSillaslist() {
     try {
         let iten = JSON.parse(localStorage.getItem(listaasiento));
         if (iten !== null) {

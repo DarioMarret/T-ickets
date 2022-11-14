@@ -6,7 +6,8 @@ import { TiendaIten, getVerTienda, EliminarByStora } from "utils/CarritoLocalSto
 import { Modal } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { addSillas, deleteSillas, clearSillas } from "StoreRedux/Slice/sillasSlice"
-import { EliminarSillas, AgregarAsiento } from "utils/CarritoLocalStorang"
+import { EliminarSillas, AgregarAsiento,VerSillaslist } from "utils/CarritoLocalStorang"
+import SweetAlert from "react-bootstrap-sweetalert";
 import "./localidas.css"
 const LocalidadmapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
@@ -14,8 +15,10 @@ const LocalidadmapViews = (props) => {
     const usedispatch = useDispatch()
     const [detalle, setDetalle] = useState([])
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
+    const maximocarro= useSelector((state) => state.sillasSlice.sillasSelecionadas)
     let mapath = useSelector((state) => state.mapaLocalSlice)
-    function cerrar() {
+    const [alert, setAlert] = useState(null);
+    function cerrar() { 
         handleClosesop(true)
         setMapashow(flase)
     }
@@ -23,7 +26,7 @@ const LocalidadmapViews = (props) => {
         let producto = {
             cantidad: 1,
             localidad: mapath.precio.localodad,
-            localidaEspacio: mapath.precio,
+            localidaEspacio: mapath.precio, 
             id: mapath.precio.id,
             fila: 0,
             valor: mapath.precio.precio_normal,
@@ -50,33 +53,126 @@ const LocalidadmapViews = (props) => {
         EliminarByStora(e.localidad)
         setDetalle([])
     }
-
-
+const successAlert = (e,f) => {
+    setAlert(
+      <SweetAlert
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title={maximocarro.length===10? "Alcanzo el máximo de asientos": "Desea agregar este asiento al Carrito" }
+        onConfirm={() => maximocarro.length<10?agregalista(e,f):hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText={ maximocarro.length<10?"Si, Continuar":"Cerrar"}
+        cancelBtnText="Cancelar"
+        showCancel
+      >        
+      </SweetAlert>
+    );
+  };
+  const succesElimAlert=(e,f)=>{
+    setAlert(
+        <SweetAlert 
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Desea quitar este Asiento del carrito"
+        onConfirm={() => eliminaLista(e,f)}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText="Si, Continuar"
+        cancelBtnText="Cancelar"
+        showCancel>            
+        </SweetAlert>
+    )
+  }
+  const agregalista=(d,e)=>{
+    d.classList.remove('disponible')
+    d.classList.add('seleccionado')
+    AgregarAsiento({...e})
+    usedispatch(addSillas({...e}))
+    hideAlert()       
+  }
+  const succesElimAlertli=(e)=>{
+    setAlert(
+        <SweetAlert 
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Desea quitar este Asiento del carrito"
+        onConfirm={() => eliminaListadiv(e)}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText="Si, Continuar"
+        cancelBtnText="Cancelar"
+        showCancel>
+            
+        </SweetAlert>
+    )
+  }
+  const nuevo=(silla)=>{
+    let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
+   /* $("div." +silla.silla).removeClass("disponible").addClass("seleccionado")
+    //console.log(silla,nombres)
+   // console.log( )
+     AgregarAsiento({ 
+        "localidad": nombres.localodad, 
+        "localidaEspacio": nombres, "nombreConcierto": 
+        localStorage.getItem("consierto"), "valor": nombres.precio_normal,
+         "seleccionmapa": nombres.localodad + "-" + silla.silla, 
+         "fila": silla.silla.split("-")[0], "silla": silla.silla, 
+         "estado": "seleccionado" })
+                usedispatch(addSillas({ 
+        "localidad": nombres.localodad, 
+        "localidaEspacio": nombres, "nombreConcierto": 
+        localStorage.getItem("consierto"), "valor": nombres.precio_normal,
+         "seleccionmapa": nombres.localodad + "-" + silla.silla, 
+         "fila": silla.silla.split("-")[0], "silla": silla.silla, 
+         "estado": "seleccionado" }))*/
+               
+  }
+  const eliminaListadiv=(e)=>{
+            $("div."+e.silla).removeClass("seleccionado").addClass("disponible")
+            console.log(e)
+          //   $("div." + this.classList[0]).removeClass("seleccionado").addClass("disponible")
+            EliminarSillas({...e})
+            usedispatch(deleteSillas({...e}))
+            hideAlert()      
+          }
+  const eliminaLista=(d,e)=>{
+            d.classList.remove('seleccionado')
+            d.classList.add('disponible')
+            EliminarSillas({...e})
+            usedispatch(deleteSillas({...e}))   
+          }
+   // maximocarro.length===10?
     $(document).on('click', 'div.disponible', function (e) {
         e.preventDefault();
         if (this.classList.contains("disponible")) {
             if (!this.classList.contains('seleccionado')) {
                 let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
+                let cantidad=VerSillaslist()
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
-                console.log("veces div disponible")
-                //console.log("nuevo",{nombres})
                 AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                 usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+               
+                console.log("",cantidad)
+                //successAlert(this,{ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
             }
             return
         }
-
     })
     $(document).on('click', 'div.seleccionado', function (e) {
         e.preventDefault();
         if (this.classList.contains("seleccionado")) {
-            if (!this.classList.contains('disponible')) {
+            if (!this.classList.contains('disponible')) {              
                 let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
-                this.classList.remove('seleccionado')
-                this.classList.add('disponible')
-                EliminarSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
-                usedispatch(deleteSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" }))
+                succesElimAlert(this,{ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
+               // this.classList.remove('seleccionado')
+               // this.classList.add('disponible')
+              //  EliminarSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
+               // usedispatch(deleteSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" }))
             }
             return
         }
@@ -84,14 +180,14 @@ const LocalidadmapViews = (props) => {
     $(document).on('click', 'li.cargados', function () {
         if (!this.classList.contains('disponible')) {
             let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
-            $("div." + this.classList[0]).removeClass("seleccionado").addClass("disponible")
-            //console.log("veces div cargados")
-            //console.log("nuevo", { nombres })
-            EliminarSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
-            usedispatch(deleteSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "borrar" }))
+           succesElimAlertli({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "borrar" })
+           // $("div." + this.classList[0]).removeClass("seleccionado").addClass("disponible")
+           // EliminarSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
+            //usedispatch(deleteSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "borrar" }))
         }
         return
     })
+    
     $(document).on('click', 'a.disponible', function () {
         if (!this.classList.contains('seleccionado')) {
             let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
@@ -119,13 +215,16 @@ const LocalidadmapViews = (props) => {
         handleClosesop(true)
     }
 
+  const hideAlert = () => {
+    setAlert(null);
+  };
     useEffect(() => {
         getVerTienda().filter((e) => e.id == mapath.precio.id).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
 
         let selct = seleccion
         selct.length > 0 ?
             selct.map((e) => {
-                $("div." + e.silla).removeClass("disponible").addClass("seleccionado");
+                $("div." + e.silla).removeClass("disponible").addClass(""+e.estado);
             })
             : ''
         mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
@@ -144,16 +243,17 @@ const LocalidadmapViews = (props) => {
                 fullscreen={'lg-down'}
                 onHide={cerrar}
             >
+                  {alert}
                 <Modal.Header>
                     <h5 className="modal-title text-center justify-content-center">Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
                     <button type="button" className="close" onClick={cerrar} >
-                        ×
+                     <i className="bi bi-arrow-left"></i>
                     </button>
                 </Modal.Header>
                 <Modal.Body>
                     <div className='conatiner-fluid col-12'>
                         <div className="row ">
-                            <div className="col-12 d-flex  flex-column">
+                            <div className="col-12 d-flex  flex-column justify-content-center">
                                 <h5>{mapath.precio.localodad}</h5>
                                 <h6 className="px-1">$ {mapath.precio.precio_normal} </h6>
                             </div>
@@ -219,7 +319,10 @@ const LocalidadmapViews = (props) => {
                                                                     // $( "."+elm.silla).removeClass( "disponible" ).addClass( "seleccionado" ); 
                                                                     let numero = index + 1
                                                                     return (
-                                                                        <div key={"silla" + index} className={silla.silla + '  d-flex  ' + silla.estado + '  rounded-5 text-center  justify-content-center align-items-center '}
+                                                                        <div key={"silla" + index}
+                                                                         className={silla.silla + '  d-flex  ' + silla.estado + '  rounded-5 text-center  justify-content-center align-items-center '}
+                                                                         onClick={()=>nuevo(silla)}
+                                                                
                                                                             style={{ height: silla.anchor, width: silla.anchor, marginLeft: silla.marginLeft, marginRight: silla.marginRight }} >
                                                                             <div className={'px-3 d-flex   text-white justify-content-center  '} >
                                                                                 <div className="d-flex justify-content-center">
@@ -325,12 +428,13 @@ const LocalidadmapViews = (props) => {
                                         seleccion.length > 0 ?
                                             seleccion.map((elm, id) => {
                                                 return (
-                                                    <li key={id} className={elm.silla + '  d-flex cargados  rounded-5  bg-success justify-content-center align-items-center '}
-                                                        style={{ height: '50px', width: '50px', margin: '1px' }} >
+                                                    <li key={id} className={elm.silla + '  d-flex agregados rounded-5  bg-success justify-content-center align-items-center '}
+                                                    onClick={() =>   succesElimAlertli({ "localidad": elm.localidad, "localidaEspacio": elm.localidaEspacio, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "borrar" })}
+                                                        style={{ height: '30px', width: '60px', margin: '1px' }} >
                                                         <div className={'d-flex   text-white justify-content-center  '} >
-                                                            <div className="d-flex flex-column justify-content-center text-center p-2">
-                                                                <span style={{ fontSize: '0.9em' }}>{elm.silla.replace("-", " ").split(" ")[0]}</span>
-                                                                <span style={{ fontSize: '0.9em' }}>{elm.silla.replace("-", " ").split(" ")[1]}</span>
+                                                            <div className="d-flex  justify-content-center text-center p-2">
+                                                                <span style={{ fontSize: '0.8em' }}>{elm.silla.replace("-", " ").split(" ")[0]}</span>
+                                                                <span style={{ fontSize: '0.8em' }}> {elm.silla.replace("-", " ").split(" ")[1]}</span>
                                                             </div>
                                                         </div>
                                                     </li>

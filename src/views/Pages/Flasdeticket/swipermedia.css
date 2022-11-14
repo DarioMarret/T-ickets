@@ -1,0 +1,24 @@
+.descripciones {
+    position: absolute;
+    left: 100px;
+    bottom: 50px;
+}
+span.swiper-pagination-bullet.swiper-pagination-bullet-active {
+    background-color: #fff;
+    opacity: 1
+}
+.swiper-pagination-bullet {
+    background-color: rgba(224, 221, 221, 0.897);    
+}
+@media (max-width: 400px) {
+.descripciones {
+position: absolute;
+margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    align-items: center;
+bottom: 50;
+}
+}

@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Carousel } from "react-bootstrap";
+import {styleswiper} from "./styleswiper.js";
 import header from "../../../assets/header.jpeg";
 import logofla from "../../../assets/imagen/LOGO-WEB.png";
-import principal from "../../../assets/imagen/carrusel.png";
+import principal from "../../../assets/imagen/eventoprincip.jpeg";
 import secundaria from "../../../assets/imagen/segundo.jpeg";
-import tercero from "../../../assets/imagen/carrusel.png"
+import tercero from "../../../assets/imagen/concierto.jpeg"
 import icon from "../../../assets/imagen/50pixeles.png";
 import evento from "../../../assets/imagen/gpiminel.jpeg";
 import valla from "../../../assets/imagen/valla-proximo-evento.png";
@@ -48,6 +49,8 @@ import "swiper/css/effect-fade";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "./swipermedia.css"
+import { height } from "@mui/system";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
@@ -242,7 +245,7 @@ const IndexFlas = () => {
       <SweetAlert
         warning
         style={{ display: "block", marginTop: "-100px" }}
-        title="Tiene un una compra pendiente"
+        title="Tiene un evento ya seleccionado"
         onConfirm={() => borrar(e)}
         onCancel={() => hideAlert()}
         confirmBtnBsStyle="success"
@@ -271,20 +274,17 @@ const IndexFlas = () => {
     setDetalle(false)
     handleClosesop(true)
   }
-
   const salir = () => {
     localStorage.removeItem(DatosUsuariocliente)
     localStorage.removeItem(getDatosUsuariosLocalStorag)
     usedispatch(deletesuscrito({ ...userauthi }))
     SetSeleccion("")
-    //history.push("/")
   }
   const handelReporShow = async () => {
     let datos = await getDatosUsuariosLocalStorag()
     let nuemro = await ValidarWhatsapp()
     let user = { email: datos.email, password: datos.cedula }
     let clineteLogeado = await getCliente()
-    //console.log(nuemro)
     try {
       if (clineteLogeado == null) {
         if (nuemro == null) {
@@ -296,7 +296,6 @@ const IndexFlas = () => {
           })
           return
         }
-
         else {
           const { success, message } = await GuardarDatosdelComprador()
           if (success) {
@@ -309,7 +308,6 @@ const IndexFlas = () => {
               email: data.email, hora: String(hoy),
               enable: data.enable, id: data.id,
             }
-
             DatosUsuariosLocalStorag({ ...datos, ...users })
             localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
             usedispatch(addususcritor({ users }))
@@ -356,7 +354,6 @@ const IndexFlas = () => {
           return false
         }
         const { success, message } = await GuardarDatosdelComprador()
-
         if (success) {
           const { data } = await Authsucrito(user)
           var hoy = new Date();
@@ -367,7 +364,6 @@ const IndexFlas = () => {
             email: data.email, hora: String(hoy),
             enable: data.enable, id: data.id,
           }
-          console.log(users)
           DatosUsuariosLocalStorag({ ...datos, ...users })
           localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
           usedispatch(addususcritor({ users }))
@@ -387,7 +383,6 @@ const IndexFlas = () => {
         setDetalle(false)
       }
     } catch (error) {
-      //console.log(error)
       setDatoToas({
         show: true,
         message: "Hubo un error correo duplicado o verifique su conexión",
@@ -574,201 +569,123 @@ const IndexFlas = () => {
         setShowLogin={setShowLogin}
       />
       {/* header */}
-      <div className="container-fluid  p-0">
+      <div className="container-fluid  p-0">  
+        {/*<div className="col-12 mx-auto bg-header-boleteria" style={{ height: '400px', backgroundImage: `url(${header})` }}>
+          <div className="container w-100 h-100 px-0">
+            <div className="container btn-group-vertical  h-100 text-center px-0">
+              <h1 className="text-white mx-auto" style={{ fontSize: '3.5em' }}><img src={logofla} className="img-fluid" style={{ height: '150px' }} alt="" /></h1>
+              <p className="mx-auto text-white d-none" style={{ fontSize: '1.2em' }}><b>Compra</b> tu entrada <b>fácil, rápido</b> y
+                <b>seguro</b>
+              </p>
+            </div>
+          </div>
+        </div>*/}
         <Swiper
           className="AnimatedSlides"
-          effect={"fade"}
+         parallax={true}
           loop={true}
-          autoHeight={true}
-          navigation={true}
+          autoHeight={true}          
+          pagination={{
+          clickable: true,
+        }}
           autoplay={{
             delay: 3500,
             disableOnInteraction: true,
           }}
-          coverflowEffect={{
-            rotate: 0,
-            stretch: 0,
-            depth: 150,
-            modifier: 2,
-            slideShadows: true,
-          }}
-
-          onSwiper={(swiper) => {
-          }}
-          modules={[Autoplay, EffectFade, Navigation, Pagination]}>
+          modules={[Autoplay, EffectFade,  Pagination]}>
           <SwiperSlide >
-            <div style={{ widows: "100%", height: "400" }}>
+            <div style={{ widows: "100%", height: "400px" }}>
               <div style={{
-                height: "400px", width: "100%", position: "relative",
-                backgroundPosition: "center",
-                backgroundImage: "url('" + principal + "')",
-                backgroundRepeat: "no-repeat", backgroundSize: "cover",
-              }}>
-                <div style={{ position: "absolute", bottom: 50, left: 100 }}>
+                  backgroundImage: "url('" + principal + "')",
+                  ...styleswiper.slideimgcenter
+                }}></div>
+                <div style={{                 
+                  backgroundImage: "url('" + principal + "')", 
+                ...styleswiper.slideimg         
+                }} >
+                <div style={styleswiper.fondo }>
+                </div>
+                   <div className="descripciones">
                   <div className="d-flex flex-column text-white" >
-                    <h4 style={{ fontFamily: 'fantasy', }}>Description de la imagen 1 </h4>
-                    <h6 style={{ fontFamily: 'fantasy', }}>
-                      Subdescriotion
-                    </h6>
-                    <button className="btn btn-success">Ver lista</button>
+                    <h4 style={styleswiper.titulo}>Descripción de la imagen 1 </h4>
+                    <span style={styleswiper.subtitulo}>
+                      Sub descripción
+                    </span>
+                      <div className="">
+                        <button className="btn btn-success" 
+                         style={styleswiper.button}
+                        >Ver lista</button>
+                      </div>
                   </div>
                 </div>
-
               </div>
-
-
             </div>
-
           </SwiperSlide>
           <SwiperSlide >
-            <div style={{ widows: "100%", height: "400" }}>
+            <div style={{ widows: "100%", height: "400px" }}>
               <div style={{
-                height: "400px", width: "100%", position: "relative",
-                backgroundPosition: "center",
-                backgroundImage: "url('" + secundaria + "')",
-                backgroundRepeat: "no-repeat", backgroundSize: "cover",
-
-              }}>
-                <div style={{ position: "absolute", bottom: 50, left: 100 }}>
-                  <div className="d-flex flex-column text-white" >
-                    <h4 style={{ fontFamily: 'fantasy', }}>Description de la imagen 2 </h4>
-                    <h6 style={{ fontFamily: 'fantasy', }}>
-                      Subdescriotion
-                    </h6>
-                    <button className="btn btn-success">Ver lista</button>
-
+                  backgroundImage: "url('" + secundaria + "')",
+                  ...styleswiper.slideimgcenter
+                }}></div>
+                <div style={{                 
+                  backgroundImage: "url('" + secundaria + "')", 
+                ...styleswiper.slideimg         
+                }} >
+                <div style={styleswiper.fondo }>
+                </div>
+                <div className="descripciones">
+                   <div className="d-flex flex-column text-white" >
+                    <h4 style={styleswiper.titulo}>Descripción de la imagen 2 </h4>
+                    <span style={styleswiper.subtitulo}>
+                      Sub descripción
+                    </span>
+                      <div>
+                        <button className="btn btn-success" 
+                         style={styleswiper.button}
+                        >Ver lista</button>
+                      </div>
                   </div>
-
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide >
+            <div style={{ width: "100%", height: "400px" }}>
+              <div className="slide-image"  style={{ position:"relative",
+                  width:"100%",
+                  height:"400px",                     
+              }}>
+                <div style={{
+                  backgroundImage: "url('" + tercero + "')",
+                  ...styleswiper.slideimgcenter
+                }}></div>
+                <div style={{                 
+                  backgroundImage: "url('" + tercero + "')", 
+                ...styleswiper.slideimg         
+                }} >
+                </div>
+                <div style={styleswiper.fondo }>
+                </div>
+                   <div className="descripciones">
+                  <div className="d-flex flex-column text-white" >
+                    <h4 style={styleswiper.titulo}>Descripción de la imagen 3 </h4>
+                    <span style={styleswiper.subtitulo}>
+                      Sub descripción
+                    </span>
+                      <div className="">
+                        <button className="btn btn-success" 
+                         style={styleswiper.button}
+                        >Ver lista</button>
+                      </div>
+                  </div>
                 </div>
               </div>
             </div>
           </SwiperSlide>
         </Swiper>
+      </div>  
+         
 
-
-        { /* <Carousel className="carousel-inner   carousel-fade" slide={false}>
-          <Carousel.Item interval={2800}>
-            <img
-              className="d-block w-100"
-              src={principal}
-              alt="First slide"
-            />
-            <Carousel.Caption>
-
-            </Carousel.Caption>
-          </Carousel.Item>
-          <Carousel.Item interval={2800}>
-            <img
-              className="d-block w-100"
-              src={secundaria}
-              alt="Second slide"
-            />
-            <Carousel.Caption>
-
-            </Carousel.Caption>
-          </Carousel.Item>
-          <Carousel.Item interval={2800}>
-            <img
-              className="d-block w-100"
-              src={tercero}
-              alt="Third slide"
-            />
-            <Carousel.Caption>
-            </Carousel.Caption>
-          </Carousel.Item>
-        </Carousel>*/}
-
-
-
-
-      </div>
-      {/* carrusel */}
-
-      {/*seleccion == "" ?
-        <div className="container  mt-n7">
-          <div className="container p-3">
-            <div className="row  flex-wrap-reverse justify-content-center">
-              <div className="col-12 col-lg-6">
-                {/*<!--Carousel-->}
-                <Carousel className="carousel-inner rounded-7   carousel-fade" slide={false}>
-                  <Carousel.Item interval={2800}>
-                    <img
-                      className="d-block w-100"
-                      src={principal}
-                      alt="First slide"
-                    />
-                    <Carousel.Caption>
-
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                  <Carousel.Item interval={2800}>
-                    <img
-                      className="d-block w-100"
-                      src={secundaria}
-                      alt="Second slide"
-                    />
-                    <Carousel.Caption>
-
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                  <Carousel.Item interval={2800}>
-                    <img
-                      className="d-block w-100"
-                      src={tercero}
-                      alt="Third slide"
-                    />
-                    <Carousel.Caption>
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                </Carousel>
-
-
-              </div>
-
-
-              <div className="col-12 col-lg-3 my-3">
-                <div className="container bg-white shadow-md rounded-7 mt-5 mt-lg-0">
-                  <div className="container py-3 px-0">
-
-                    <li className="unlisted mt-3">
-                      <div className="row">
-                        <div className="col-1 me-5"><a href="#nuevoseventos" aria-label="icon-star"
-                          className="btn btn-dark icon-star p-3 rounded-6"></a></div>
-                        <div className="col-8 col-sm">
-                          <h1 style={{ fontSize: '1.1em' }}>La ultima mision 2k </h1>
-                          <span style={{ fontSize: '1.0em' }}>10/09/2022, Guayaquil</span>
-
-                        </div>
-                      </div>
-                    </li>
-                    <li className="unlisted mt-3">
-                      <div className="row">
-                        <div className="col-1 me-5"><a href="#nuevoseventos" aria-label="icon-star"
-                          className="btn btn-dark icon-star p-3 rounded-6"></a></div>
-                        <div className="col-8 col-sm">
-                          <h1 style={{ fontSize: '1.1em' }}>Pimpinela</h1>
-                          <span style={{ fontSize: '1.0em' }}>28/10/2022, Guayaquil</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="unlisted mt-3">
-                      <div className="row">
-                        <div className="col-1 me-5">
-                          <a href="#nuevoseventos" aria-label="star" className="btn btn-dark icon-star p-3 rounded-6"></a>
-                        </div>
-                        <div className="col-8 col-sm">
-                          <h1 style={{ fontSize: '1.1em' }}>Pimpinela</h1>
-                          <span style={{ fontSize: '1.0em' }}>29/09/2022, Cuenca</span>
-                        </div>
-                      </div>
-                    </li>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div> : ""*/}
       {/* eventos */}
       {seleccion == "" ?
         <div className="container " id="nuevoseventos">
@@ -833,7 +750,28 @@ const IndexFlas = () => {
               </div>
             </div>
           </div>
-        </div> : ""}
+        </div> :<div className="col-12 col-lg-6 mx-auto my-5" >
+                    <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                      aria-controls="collapseExample">
+                      <div className="container  px-0">
+                        <img src={valla} className="img-fluid  " alt="" />
+                      </div>
+                    </div>
+                    <div className="collapse container mt-4 px-0" id="collapseExample4">
+                      <div className="card card-body rounded-7 py-5">
+                        <div className="container ">
+                          <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">Proximo evento</span> </h1>
+                          <h4 style={{ fontSize: '1.4em' }}></h4>
+                          <div className="col-12 border border-bottom my-3"></div>
+                          <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">Proximamente</span></p>
+                          <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> Proximamente</span></p>
+                          <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> Proximamente</span></p>
+                          <p href="#" className="evento d-none btn btn-primary fw-bold px-3 py-2 rounded-6" id="comprar">
+                            Proximamente</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>}
 
       {userauthi.login && seleccion == "Tickets" ? <div className="container p-2"> <Tikes /></div> : ""}
       {userauthi.login && seleccion == "Datos" ? <div className="container p-2"><PerfilPage datosPerson={datosPerson} setDatoToas={setDatoToas} /></div> : ""}
@@ -857,8 +795,7 @@ const IndexFlas = () => {
         intervalo={intervalo}
         setDetalle={setDetalle}
         handleDetalleColse={handleDetalleColse}
-        listaPrecio={listaPrecio}
-        setListaPrecio={setListaPrecio}
+       
         handelReporShow={handelReporShow}
         listarCarritoDetalle={listarCarritoDetalle}
         handelefctivorShow={handelefctivorShow}
