@@ -182,8 +182,8 @@ const TabdosView = (props) => {
             }, 90);
 
         } else {
-             usedispatch(setToastes({ show: true, message: 'Complete todos los campos', color: 'bg-warning', estado: 'Advertencia' }))
-       
+            usedispatch(setToastes({ show: true, message: 'Complete todos los campos', color: 'bg-warning', estado: 'Advertencia' }))
+
         }
     }
     function handelchangeMesa(e) {
@@ -215,9 +215,9 @@ const TabdosView = (props) => {
                         id: '',
                         array: ''
                     })
-                     usedispatch(setToastes({ show: true, message: 'Localidad guardada correctamente', color: 'bg-success', estado: 'Datos Correctos' }))
-       
-                   
+                    usedispatch(setToastes({ show: true, message: 'Localidad guardada correctamente', color: 'bg-success', estado: 'Datos Correctos' }))
+
+
                     SetFilaLocalidad([])
                     setLocalidad({
                         nombre: '',

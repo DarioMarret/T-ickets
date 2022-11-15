@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Carousel } from "react-bootstrap";
-import {styleswiper} from "./styleswiper.js";
+import { styleswiper } from "./styleswiper.js";
 import header from "../../../assets/header.jpeg";
 import logofla from "../../../assets/imagen/LOGO-WEB.png";
 import principal from "../../../assets/imagen/eventoprincip.jpeg";
@@ -50,7 +50,6 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./swipermedia.css"
-import { height } from "@mui/system";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
@@ -97,9 +96,7 @@ const IndexFlas = () => {
       }
       else {
         setcrono(minutos + ":" + segundos)
-        if (--timer < 0) {
-          timer = tiempo;
-        }
+        if (--timer < 0) timer = tiempo;
       }
     }, 1000);
   }
@@ -427,6 +424,11 @@ const IndexFlas = () => {
   })
   const [eventoslist, setEventos] = useState([])
   useEffect(() => {
+    usedispatch(clearMapa({}))
+    usedispatch(borrarseleccion({ estado: "seleccionado" }))
+    Limpiarseleccion()
+    LimpiarLocalStore()
+    localStorage.removeItem("asientosList")
     const evento = async () => {
       try {
         const data = await cargarEventoActivo()
@@ -569,7 +571,7 @@ const IndexFlas = () => {
         setShowLogin={setShowLogin}
       />
       {/* header */}
-      <div className="container-fluid  p-0">  
+      <div className="container-fluid  p-0">
         {/*<div className="col-12 mx-auto bg-header-boleteria" style={{ height: '400px', backgroundImage: `url(${header})` }}>
           <div className="container w-100 h-100 px-0">
             <div className="container btn-group-vertical  h-100 text-center px-0">
@@ -582,40 +584,40 @@ const IndexFlas = () => {
         </div>*/}
         <Swiper
           className="AnimatedSlides"
-         parallax={true}
+          parallax={true}
           loop={true}
-          autoHeight={true}          
+          autoHeight={true}
           pagination={{
-          clickable: true,
-        }}
+            clickable: true,
+          }}
           autoplay={{
             delay: 3500,
             disableOnInteraction: true,
           }}
-          modules={[Autoplay, EffectFade,  Pagination]}>
+          modules={[Autoplay, EffectFade, Pagination]}>
           <SwiperSlide >
             <div style={{ widows: "100%", height: "400px" }}>
               <div style={{
-                  backgroundImage: "url('" + principal + "')",
-                  ...styleswiper.slideimgcenter
-                }}></div>
-                <div style={{                 
-                  backgroundImage: "url('" + principal + "')", 
-                ...styleswiper.slideimg         
-                }} >
-                <div style={styleswiper.fondo }>
+                backgroundImage: "url('" + principal + "')",
+                ...styleswiper.slideimgcenter
+              }}></div>
+              <div style={{
+                backgroundImage: "url('" + principal + "')",
+                ...styleswiper.slideimg
+              }} >
+                <div style={styleswiper.fondo}>
                 </div>
-                   <div className="descripciones">
+                <div className="descripciones">
                   <div className="d-flex flex-column text-white" >
                     <h4 style={styleswiper.titulo}>Descripción de la imagen 1 </h4>
                     <span style={styleswiper.subtitulo}>
                       Sub descripción
                     </span>
-                      <div className="">
-                        <button className="btn btn-success" 
-                         style={styleswiper.button}
-                        >Ver lista</button>
-                      </div>
+                    <div className="">
+                      <button className="btn btn-success"
+                        style={styleswiper.button}
+                      >Ver lista</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -624,26 +626,26 @@ const IndexFlas = () => {
           <SwiperSlide >
             <div style={{ widows: "100%", height: "400px" }}>
               <div style={{
-                  backgroundImage: "url('" + secundaria + "')",
-                  ...styleswiper.slideimgcenter
-                }}></div>
-                <div style={{                 
-                  backgroundImage: "url('" + secundaria + "')", 
-                ...styleswiper.slideimg         
-                }} >
-                <div style={styleswiper.fondo }>
+                backgroundImage: "url('" + secundaria + "')",
+                ...styleswiper.slideimgcenter
+              }}></div>
+              <div style={{
+                backgroundImage: "url('" + secundaria + "')",
+                ...styleswiper.slideimg
+              }} >
+                <div style={styleswiper.fondo}>
                 </div>
                 <div className="descripciones">
-                   <div className="d-flex flex-column text-white" >
+                  <div className="d-flex flex-column text-white" >
                     <h4 style={styleswiper.titulo}>Descripción de la imagen 2 </h4>
                     <span style={styleswiper.subtitulo}>
                       Sub descripción
                     </span>
-                      <div>
-                        <button className="btn btn-success" 
-                         style={styleswiper.button}
-                        >Ver lista</button>
-                      </div>
+                    <div>
+                      <button className="btn btn-success"
+                        style={styleswiper.button}
+                      >Ver lista</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -651,41 +653,40 @@ const IndexFlas = () => {
           </SwiperSlide>
           <SwiperSlide >
             <div style={{ width: "100%", height: "400px" }}>
-              <div className="slide-image"  style={{ position:"relative",
-                  width:"100%",
-                  height:"400px",                     
+              <div className="slide-image" style={{
+                position: "relative",
+                width: "100%",
+                height: "400px",
               }}>
                 <div style={{
                   backgroundImage: "url('" + tercero + "')",
                   ...styleswiper.slideimgcenter
                 }}></div>
-                <div style={{                 
-                  backgroundImage: "url('" + tercero + "')", 
-                ...styleswiper.slideimg         
+                <div style={{
+                  backgroundImage: "url('" + tercero + "')",
+                  ...styleswiper.slideimg
                 }} >
                 </div>
-                <div style={styleswiper.fondo }>
+                <div style={styleswiper.fondo}>
                 </div>
-                   <div className="descripciones">
+                <div className="descripciones">
                   <div className="d-flex flex-column text-white" >
                     <h4 style={styleswiper.titulo}>Descripción de la imagen 3 </h4>
                     <span style={styleswiper.subtitulo}>
                       Sub descripción
                     </span>
-                      <div className="">
-                        <button className="btn btn-success" 
-                         style={styleswiper.button}
-                        >Ver lista</button>
-                      </div>
+                    <div className="">
+                      <button className="btn btn-success"
+                        style={styleswiper.button}
+                      >Ver lista</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </SwiperSlide>
         </Swiper>
-      </div>  
-         
-
+      </div>
       {/* eventos */}
       {seleccion == "" ?
         <div className="container " id="nuevoseventos">
@@ -694,7 +695,6 @@ const IndexFlas = () => {
               <div className="col-12 col-lg-9">
 
                 <div className="row mx-auto p-0">
-                  {/**Recordatorio aqui se ralizara el map para alimnetar los eventos*/}
                   {eventoslist.length > 0 ?
                     eventoslist.map((e, i) => {
                       return (
@@ -709,10 +709,10 @@ const IndexFlas = () => {
                             <div className="card card-body rounded-7 py-5">
                               <div className="container">
                                 <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">{e.nombreConcierto}</span> </h1>
-                                <h4 style={{ fontSize: '1.4em' }}><span id="tour">{e.descripcionConcierto} </span></h4>
+                                <h4 style={{ fontSize: '1.4em', height: '55px' }}><span id="tour">{e.descripcionConcierto} </span></h4>
                                 <div className="col-12 border border-bottom my-3"></div>
                                 <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{Dias[new Date(e.fechaConcierto).getDay()]}  {e.fechaConcierto}</span></p>
-                                <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{e.lugarConcierto}</span></p>
+                                <p style={{ fontSize: '1.2em', height: "55px" }}><b>Lugar:</b><span id="lugarEvento">{e.lugarConcierto}</span></p>
                                 <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}</span></p>
                                 {true ? <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                   className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => abrir(e)} >Comprar Entrada</p> : ""}
@@ -750,28 +750,28 @@ const IndexFlas = () => {
               </div>
             </div>
           </div>
-        </div> :<div className="col-12 col-lg-6 mx-auto my-5" >
-                    <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                      aria-controls="collapseExample">
-                      <div className="container  px-0">
-                        <img src={valla} className="img-fluid  " alt="" />
-                      </div>
-                    </div>
-                    <div className="collapse container mt-4 px-0" id="collapseExample4">
-                      <div className="card card-body rounded-7 py-5">
-                        <div className="container ">
-                          <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">Proximo evento</span> </h1>
-                          <h4 style={{ fontSize: '1.4em' }}></h4>
-                          <div className="col-12 border border-bottom my-3"></div>
-                          <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">Proximamente</span></p>
-                          <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> Proximamente</span></p>
-                          <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> Proximamente</span></p>
-                          <p href="#" className="evento d-none btn btn-primary fw-bold px-3 py-2 rounded-6" id="comprar">
-                            Proximamente</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>}
+        </div> : <div className="col-12 col-lg-6 mx-auto my-5" >
+          <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
+            aria-controls="collapseExample">
+            <div className="container  px-0">
+              <img src={valla} className="img-fluid  " alt="" />
+            </div>
+          </div>
+          <div className="collapse container mt-4 px-0" id="collapseExample4">
+            <div className="card card-body rounded-7 py-5">
+              <div className="container ">
+                <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">Proximo evento</span> </h1>
+                <h4 style={{ fontSize: '1.4em' }}></h4>
+                <div className="col-12 border border-bottom my-3"></div>
+                <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">Proximamente</span></p>
+                <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> Proximamente</span></p>
+                <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> Proximamente</span></p>
+                <p href="#" className="evento d-none btn btn-primary fw-bold px-3 py-2 rounded-6" id="comprar">
+                  Proximamente</p>
+              </div>
+            </div>
+          </div>
+        </div>}
 
       {userauthi.login && seleccion == "Tickets" ? <div className="container p-2"> <Tikes /></div> : ""}
       {userauthi.login && seleccion == "Datos" ? <div className="container p-2"><PerfilPage datosPerson={datosPerson} setDatoToas={setDatoToas} /></div> : ""}
@@ -795,7 +795,7 @@ const IndexFlas = () => {
         intervalo={intervalo}
         setDetalle={setDetalle}
         handleDetalleColse={handleDetalleColse}
-       
+
         handelReporShow={handelReporShow}
         listarCarritoDetalle={listarCarritoDetalle}
         handelefctivorShow={handelefctivorShow}

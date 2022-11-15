@@ -194,8 +194,8 @@ export function EliminarSillaLocal(silla) {
 function VerSillas() {
     try {
         let iten = JSON.parse(localStorage.getItem(listaasiento));
-        if (iten !== null) {
-            PVsilla = iten
+        if (iten != null) {
+            PVsilla = iten.filter((e) => e.estado === "seleccionado")
         } else {
             PViten = []
         }
@@ -207,15 +207,35 @@ function VerSillas() {
 export function VerSillaslist() {
     try {
         let iten = JSON.parse(localStorage.getItem(listaasiento));
-        if (iten !== null) {
-            PVsilla = iten
+        if (iten != null) {
+            iten.filter((e) => e.estado === "seleccionado").map((e) => {
+                e.estado = 'ocupado'
+                return e
+            })
+            return [...iten]
         } else {
-            PViten = []
+            return []
         }
     } catch (error) {
         console.log(error)
     }
 
+}
+export function TotalSelecion() {
+    let total = 0
+    try {
+        let iten = JSON.parse(localStorage.getItem(CarritoTicket))
+        if (iten != null) {
+            iten.map((e) => {
+                total = total + e.cantidad
+            })
+            return total
+        } else {
+            return 0
+        }
+    } catch (err) {
+        console.log(err)
+    }
 }
 export function GetValores() {
     let tag = JSON.parse(localStorage.getItem(CarritoTicket));
@@ -250,7 +270,6 @@ export function GetValores() {
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : ''
         }
         localStorage.setItem(Valorcarrito, JSON.stringify(precios))
-
         return precios
     } else {
         return {
@@ -260,27 +279,19 @@ export function GetValores() {
         }
     }
 }
-
 export function LimpiarLocalStore() {
     PVsilla = []
     PViten = []
     valorDuplicadas = []
-    //console.log(PVsilla)
     localStorage.removeItem(CarritoTicket)
     localStorage.removeItem(DatosUsuarioLocalStorang)
     localStorage.removeItem(Metodos)
-
 }
 export function Limpiarseleccion() {
     localStorage.removeItem(sillaspalco)
-    //localStorage.removeItem(Eventoid)
-    // localStorage.removeItem(seleccionmapa)
-    //localStorage.removeItem(concierto)
     localStorage.removeItem(listaasiento)
     localStorage.removeItem(CarritoTicket)
 }
-
-
 export function GetMetodo() {
     let tag = localStorage.getItem(Metodos);
     if (tag !== null) {

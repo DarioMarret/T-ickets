@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Spinner, InputGroup } from "react-bootstrap"
-import { GetMetodo,GetValores } from 'utils/CarritoLocalStorang';
+import { GetMetodo, GetValores } from 'utils/CarritoLocalStorang';
 import { Envio, DatosUsuariocliente } from 'utils/constantes';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import { DatosUsuariosLocalStorag, getCliente } from 'utils/DatosUsuarioLocalStorag';
@@ -12,7 +12,7 @@ import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
 
 function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
-         listarCarritoDetalle,
+        listarCarritoDetalle,
         setModalPago, handelReporShow, handelefctivorShow,
         setDetalle, setDatoToas, intervalo
     } = props
@@ -23,7 +23,7 @@ function ModalDetalle(props) {
         check3: false
     });
     const [valorTotal, SetValor] = useState(0)
-    const [clienteauth, setChecked] = useState(false) 
+    const [clienteauth, setChecked] = useState(false)
 
     const [spinervi, setspiner] = useState("d-none")
     const [hidecomision, sethideComision] = useState("d-none")
@@ -109,7 +109,7 @@ function ModalDetalle(props) {
         setDetalle(!showDetalle)
         setModalPago(true)
     }
-const [listaPrecio, ListaPrecioset] = useState({
+    const [listaPrecio, ListaPrecioset] = useState({
         total: 0,
         subtotal: 0,
         comision: 0,
@@ -212,7 +212,7 @@ const [listaPrecio, ListaPrecioset] = useState({
         let datosPersonal = getDatosUsuariosLocalStorag()
         let clineteLogeado = getCliente()
         let metodoPago = GetMetodo()
-         ListaPrecioset(GetValores())    
+        ListaPrecioset(GetValores())
         if (clineteLogeado == null) {
             if (datosPersonal != null) {
                 setPerson({
@@ -576,7 +576,7 @@ const [listaPrecio, ListaPrecioset] = useState({
                             {
                                 datosPerson.metodoPago === null ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={true}                                       
+                                        disabled={true}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }

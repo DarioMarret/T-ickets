@@ -1,22 +1,8 @@
 import React from "react";
-import { Switch, Route,Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 // react-bootstrap components
-import {
-  Badge,
-  Button,
-  ButtonGroup,
-  Card,
-  Form,
-  InputGroup,
-  Navbar,
-  Nav,
-  Pagination,
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
-
-// core components
+import "../assets/css/animate.css";
+import "../assets/css/bootstrap.css";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
@@ -34,15 +20,13 @@ import image4 from "assets/img/full-screen-image-4.jpg";
 import ToastViews from "views/Components/TOAST/toast";
 
 function Admin() {
-  let user =clienteInfo()
+  let user = clienteInfo()
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("black");
-  //aqui valido las rutas que deben admitirse segun el permiso
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if(prop.permiso!=null && prop.permiso.every(e=>e!=user.perfil) ){
+      if (prop.permiso != null && prop.permiso.every(e => e != user.perfil)) {
         return null
-
       }
       if (prop.collapse) {
         return getRoutes(prop.views);
@@ -67,14 +51,14 @@ function Admin() {
           routes={routes}
           image={sidebarImage}
           background={sidebarBackground}
-          
+
         />
         <div className="main-panel">
           <AdminNavbar />
           <div className="content">
             <Switch>
-              {getRoutes(routes)}                       
-            </Switch> 
+              {getRoutes(routes)}
+            </Switch>
           </div>
           {/*<AdminFooter />*/}
           <div
@@ -100,7 +84,7 @@ function Admin() {
         backgroundColor={sidebarBackground}
         setSidebarBackgroundParent={(value) => setSidebarBackground(value)}
       />*/}
-      <ToastViews/>
+      <ToastViews />
 
     </>
   );

@@ -33,8 +33,8 @@ const NewEspacioView = (props) => {
             const { success } = espaci
             if (success) {
                 usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
-          
-              //  alert("Espacio Guardado")
+
+                //  alert("Espacio Guardado")
             }
         } catch (error) {
             console.log(error)

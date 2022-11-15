@@ -29,12 +29,12 @@ const MapadelocalidadViews = (props) => {
                         ...localidadmap,
                         [e.name]: e.value
                 })
-              
+
         }
         function agergaraALarray(dato, id, color) {
                 settimer(!timer)
                 let array = getMapacolor()
-               
+
                 var index = array.findIndex(obj => obj.path == dato);
                 if (index == -1) {
                         array.push({ path: dato, id: id, fill: color });
@@ -56,33 +56,34 @@ const MapadelocalidadViews = (props) => {
                         if (datos) {
                                 let localidadcolor = JSON.parse(datos[0].localidad)
                                 const filtrado = listar.data.filter(e => e.espacio == localidaname.nombre)
-                                const obten = filtrado.map((e,i)=>{
-                                        if(localidadcolor.findIndex(e=>e.id==e.id)!=-1){
-                                                let dato = JSON.parse( e.mesas_array)      
-                                return {id:e.id,nombre:e.nombre,tipo:dato.Typo,color:localidadcolor[localidadcolor.findIndex(e=>e.id==e.id)].color}
+                                const obten = filtrado.map((e, i) => {
+                                        if (localidadcolor.findIndex(e => e.id == e.id) != -1) {
+                                                let dato = JSON.parse(e.mesas_array)
+                                                return { id: e.id, nombre: e.nombre, tipo: dato.Typo, color: localidadcolor[localidadcolor.findIndex(e => e.id == e.id)].color }
                                         }
-                                        else{
-                                let dato = JSON.parse( e.mesas_array)      
-                                return {id:e.id,nombre:e.nombre,tipo:dato.Typo,color:''}}
+                                        else {
+                                                let dato = JSON.parse(e.mesas_array)
+                                                return { id: e.id, nombre: e.nombre, tipo: dato.Typo, color: '' }
+                                        }
                                 })
-                                
+
                                 SetSelecion(datos[0].nombre_mapa)
                                 localStorage.mapa = datos[0].pathmap
                                 localStorage.localidad = JSON.stringify(obten)
-                               
+
                                 setmapa(obten)
                                 setselection({ ...localidadmap, id: datos[0].id })
-                                $('[href*="mapa"]').removeClass('d-none');  
-                               
-                               //console.log("Existe")
+                                $('[href*="mapa"]').removeClass('d-none');
+
+                                //console.log("Existe")
                                 setTimeout(function () {
-                                cargarcolores()
-                                                },90)
+                                        cargarcolores()
+                                }, 90)
                         } else {
-                                const obten = filtrado.map((e,i)=>{
-                                       
-                                let dato = JSON.parse( e.mesas_array)      
-                                return {id:e.id,nombre:e.nombre,tipo:dato.Typo,color:''}
+                                const obten = filtrado.map((e, i) => {
+
+                                        let dato = JSON.parse(e.mesas_array)
+                                        return { id: e.id, nombre: e.nombre, tipo: dato.Typo, color: '' }
                                 })
                                 SetSelecion("")
                                 setmapa(obten)
@@ -91,43 +92,43 @@ const MapadelocalidadViews = (props) => {
                                         name: "",
                                         color: '#A12121',
                                 })
-                                 $('[href*="mapa"]').addClass('d-none');
-                                 //console.log("No Existe")
+                                $('[href*="mapa"]').addClass('d-none');
+                                //console.log("No Existe")
                                 setTimeout(function () {
-                                cargarcolores()
-                                                },90)
+                                        cargarcolores()
+                                }, 90)
                         }
 
 
                 } catch (error) {
-                         $('[href*="mapa"]').addClass('d-none');
+                        $('[href*="mapa"]').addClass('d-none');
 
-                } 
+                }
 
         }
-       async function GetLocalidad(e) {
-                try{
-                let listar = await ListarLocalidad()
-                
-                if(listar.data.length>0){
-                        const filtrado = listar.data.filter(e => e.espacio == localidaname.nombre)
-                         setmapa([])
-                        const obten = filtrado.map((e,i)=>{
-                        let dato = JSON.parse( e.mesas_array)      
-                        return {id:e.id,nombre:e.nombre,tipo:dato.Typo,color:''}
-                        })
-                localStorage.removeItem("mapa")
-                setselection({...localidadmap,name: "",color: '#A12121'})
-                SetSelecion(e)
+        async function GetLocalidad(e) {
+                try {
+                        let listar = await ListarLocalidad()
 
-                setTimeout(function () {
-                         setmapa(obten)
-                },90)
-               
-                }
-                }catch(error){
+                        if (listar.data.length > 0) {
+                                const filtrado = listar.data.filter(e => e.espacio == localidaname.nombre)
+                                setmapa([])
+                                const obten = filtrado.map((e, i) => {
+                                        let dato = JSON.parse(e.mesas_array)
+                                        return { id: e.id, nombre: e.nombre, tipo: dato.Typo, color: '' }
+                                })
+                                localStorage.removeItem("mapa")
+                                setselection({ ...localidadmap, name: "", color: '#A12121' })
+                                SetSelecion(e)
+
+                                setTimeout(function () {
+                                        setmapa(obten)
+                                }, 90)
+
+                        }
+                } catch (error) {
                         console.log(error)
-                }               
+                }
 
         }
 
@@ -140,13 +141,13 @@ const MapadelocalidadViews = (props) => {
                 }
                 try {
                         if (localidadmap.id == '') {
-                              //  let datos = await guardarMapar(valores)
+                                //  let datos = await guardarMapar(valores)
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Guardadas correctamente', color: 'bg-success', estado: 'Datos Guardado' }))
                                 console.log(datos)
                                 hideAlert()
                         }
                         else {
-                               let updatedatos = await editarMapa({ ...valores, id: localidadmap.id.toString() })
+                                let updatedatos = await editarMapa({ ...valores, id: localidadmap.id.toString() })
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
                                 console.log(updatedatos)
                                 hideAlert()
@@ -160,7 +161,7 @@ const MapadelocalidadViews = (props) => {
         const EliminarMapa = async () => {
                 try {
                         let eliminar = await eliminaMapa(localidadmap.id)
-                       await cargardatosMapa()
+                        await cargardatosMapa()
                         hideAlert()
                 } catch (error) {
                         console.log(error)
@@ -216,14 +217,15 @@ const MapadelocalidadViews = (props) => {
                                 return
                         }
                         else {
-                        agergaraALarray(this.getAttribute('id'), id, co)
-                        this.removeAttribute("class", "none")
-                        this.setAttribute("class", "seleccion")
-                        var t = document.createElementNS("http://www.w3.org/2000/svg","title");     
-                       t.setAttribute("id", "titel"+id)
-                        //t.setAttribute("class","card tooltip")                 
-                        t.textContent =document.getElementById("names").text;                       
-                        this.append( t);}
+                                agergaraALarray(this.getAttribute('id'), id, co)
+                                this.removeAttribute("class", "none")
+                                this.setAttribute("class", "seleccion")
+                                var t = document.createElementNS("http://www.w3.org/2000/svg", "title");
+                                t.setAttribute("id", "titel" + id)
+                                //t.setAttribute("class","card tooltip")                 
+                                t.textContent = document.getElementById("names").text;
+                                this.append(t);
+                        }
                 }
                 return
         })
@@ -233,27 +235,27 @@ const MapadelocalidadViews = (props) => {
                         agergaraALarray(this.getAttribute('id'), '', '')
                         this.removeAttribute("class", "seleccion")
                         this.setAttribute("class", "none")
-                       $( "#titel"+this.getAttribute('id') ).remove();
+                        $("#titel" + this.getAttribute('id')).remove();
                 }
         })
         useEffect(() => {
-                
+
                 (async () => {
-                        try{
-                             await cargardatosMapa()   
-                        }catch(erro){
+                        try {
+                                await cargardatosMapa()
+                        } catch (erro) {
                                 console.log(erro)
                         }
-                        
-                       
-                         
+
+
+
                 })()
-               
+
         }, [mapaset, localidaname])
 
-        const Recargarvalores =async ()=>{
+        const Recargarvalores = async () => {
                 await cargardatosMapa()
-                        cargarcolores()
+                cargarcolores()
         }
         const successAlert = () => {
                 setAlert(
@@ -299,25 +301,6 @@ const MapadelocalidadViews = (props) => {
                 <>
                         {alert}
                         <div className="d-flex flex-wrap">
-                                {/*<div className="d-flex flex-column px-1 align-items-center col-12 col-sm-4 " style={{ height: '800px', width: '100%', overflowY: 'auto' }}>
-                                       <h2>Lista de Mapas </h2>
-                                       {
-                                        plantilla.map((e,i)=>{
-                                               
-                                                return(
-                                                        <div className="border rounded-2 text-center mb-3" onClick={() => GetLocalidad(e.nombre)} key={"plantilla"+i} >
-                                                             <h4 className="text-capitalize" >{e.nombre}</h4>   
-                                                              <div >{e.plantilla}</div>  
-                                                        </div>
-                                                )
-                                        })
-                                       }
-                                       
-                                       
-
-
-
-                                </div>*/}
                                 <div className="container-fluid col-12 col-sm-8 d-flex flex-column " style={{ height: 'auto', width: '100%', overflowX: 'auto' }}>
                                         <div className="d-flex justify-content-center align-items-center pb-2">
 
@@ -332,7 +315,7 @@ const MapadelocalidadViews = (props) => {
                                                                                         <option key={"index" + i} value={e.id} >{e.nombre}</option>
                                                                                 )
                                                                         })
-                                                                        :''
+                                                                        : ''
                                                                 }
                                                         </Form.Select>
                                                 </div>
@@ -350,7 +333,7 @@ const MapadelocalidadViews = (props) => {
                                                                 <label className="form-label text-white" >.</label>
                                                                 {localidadmap.id ?
                                                                         <button className="btn btn-success" onClick={Recargarvalores}  >Recargar mapa</button> : ''}
-                                                                </div> 
+                                                        </div>
                                                         <div>
                                                                 <label className="form-label text-white " >.</label>
                                                                 {!localidadmap.id ?
@@ -361,15 +344,15 @@ const MapadelocalidadViews = (props) => {
                                                                 <label className="form-label text-white" >.</label>
                                                                 {localidadmap.id ?
                                                                         <button className="btn btn-danger" onClick={successElimna}>Eliminar</button> : ''}
-                                                               
-                                                               
+
+
                                                         </div>
                                                 </div>
                                         </div>
                                         <div className="d-flex flex-wrap justify-content-center  p-3 ">
                                                 {mapa.length > 0 ?
                                                         mapa.map((elm, i) => {
-                                                                
+
                                                                 return (
                                                                         <div className="d-flex flex-row px-3 precios align-items-center" key={i}  >
                                                                                 <div id={"precios" + elm.id} className="mx-1 border  rounded-4" style={{ height: 20, width: 20 }}></div>
@@ -381,11 +364,11 @@ const MapadelocalidadViews = (props) => {
 
                                         </div>
                                         <div className="d-flex justify-content-center" >
-                                               
-                                                 <SvgselectView text={estadio} />
-                                                
-                                                
-                                            
+
+                                                <SvgselectView text={estadio} />
+
+
+
                                                 {/*estadio=="grado"?<EcenarioGradoView localidaname={localidaname}/>:''*/}
                                         </div>
 
