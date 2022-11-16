@@ -20,6 +20,7 @@ const MesaochoView = ({ text, list }) => {
   }
   function MesaEstado(e) {
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
+    const isReserva = (currentValue) => currentValue == "reservado";
     const isOcupado = (currentValue) => currentValue == "ocupado";
     let asiento = []
     if (silla.length > 0) {
@@ -29,18 +30,18 @@ const MesaochoView = ({ text, list }) => {
           asiento[i] = obj.estado
         }) : ''
       if (asiento.length === 8) {
-        if (Object.values(asiento).every(isOcupado)) { return "bg-danger" }
-        if (Object.values(asiento).every(isSeleccion)) { return "bg-secondary" }
+        if (Object.values(asiento).every(isOcupado)) { return "mesaocupado" }
+        if (Object.values(asiento).every(isReserva)) { return "mesareserva" }
+        if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
         else
-          return 'bg-secondary'
+          return 'mesaselecion'
       }
       else {
-        return 'bg-success'
+        return 'mesadisponible'
       }
     } else {
-      return "bg-success"
+      return "mesadisponible"
     }
-
   }
   return (
     <div style={{ padding: '0.7px' }}>

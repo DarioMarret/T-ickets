@@ -1,52 +1,67 @@
-a.disponible{
+a.disponible {
     background-color: #198754;
     cursor: pointer;
 }
 
-a.ocupado{
+a.ocupado {
     background-color: #dc3545;
 }
+
 div.ocupado {
     background-color: #dc3545;
 }
-div.mesaselecion{
+
+div.mesaselecion {
     background-color: #6c757d;
     cursor: pointer;
 }
-div.mesaocupado{
+
+div.mesaocupado {
     background-color: #dc3545;
+    cursor: not-allowed;
 }
-div.mesadisponible{
+
+div.mesadisponible {
     background-color: #198754;
+    cursor: pointer;
 }
+
 div.mesareserva {
     background-color: #ffc107;
+    cursor: not-allowed;
 }
-a.reservado{
+
+a.reservado {
     background-color: #ffc107;
 }
-a.seleccionado{
+
+a.seleccionado {
     background-color: #6c757d;
     cursor: pointer;
 }
-div.disponible{
+
+div.disponible {
     background-color: #198754;
     cursor: pointer;
 }
-div.seleccionado{
+
+div.seleccionado {
     background-color: #6c757d;
     cursor: pointer;
 }
-div.grid-item{
+
+div.grid-item {
     cursor: pointer;
 }
-div.grid-item:hover{
-    transform:  scale(1.1);
+
+div.grid-item:hover {
+    transform: scale(1.1);
     box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),
-            0 1px 18px 0 rgba(0, 0, 0, 0.12),
-            0 3px 5px -1px rgba(0, 0, 0, 0.4)
+        0 1px 18px 0 rgba(0, 0, 0, 0.12),
+        0 3px 5px -1px rgba(0, 0, 0, 0.4)
 }
-li.agregados{
+
+li.agregados {
     cursor: pointer;
 }
 

@@ -294,7 +294,7 @@ const ModalCarritoView = (prop) => {
                                     checked={checked.Efectivo == "Efectivo" ? true : false}
                                     onChange={(e) => handelMetodopago(e.target, "Efectivo")}
                                 />
-                                <label className="form-check-label" >
+                                <label className="form-check-label">
                                     Efectivo
                                 </label>
                             </div>

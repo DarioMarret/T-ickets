@@ -36,8 +36,24 @@ const LocalidadmapViews = (props) => {
             TiendaIten(producto), setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
         else
             succesLimit()
-        //TiendaIten(producto)
-        //setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
+    }
+    function MesaVerifica(M, C) {
+        //  console.log(seleccion.some(e => e.seleccionmapa == "Mesas Golden-F1-A7-s-2"))
+        hideAlert()
+        for (let i = 1; i < parseInt(C) + 1; i++) {
+            let valid = seleccion.some(e => e.seleccionmapa == nombre.localodad + "-" + M + "-s-" + i)
+            if (valid) { }
+            if (TotalSelecion() != 10) {
+                AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombre.precio_normal, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" })
+                usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombre.precio_normal, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" }))
+                $("." + M + "-s-" + i).addClass('seleccionado')
+                $("." + M + "-s-" + i).removeClass('disponible')
+
+            } else {
+                succesLimit()
+            }
+        }
+
     }
     function restaprecio() {
         let producto = {
@@ -49,11 +65,8 @@ const LocalidadmapViews = (props) => {
             valor: mapath.precio.precio_normal,
             nombreConcierto: localStorage.getItem("consierto"),
         }
-
         TiendaIten(producto)
         setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
-
-
     }
     function Eliminar(e) {
         EliminarByStora(e.localidad)
@@ -61,7 +74,6 @@ const LocalidadmapViews = (props) => {
     }
     const successAlert = (e, f, c) => {
         let silla = e.replace("-", " ").split(" ")[1]
-        //console.log(mapath.precio.typo)
         setAlert(
             <SweetAlert
                 success
@@ -80,14 +92,6 @@ const LocalidadmapViews = (props) => {
                         <h4 style={{ fontSize: '0.9em' }} >
                             De la Localidad {f} En la {c}:  {e.replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
                     </div>
-                    {/*<div className={'d-flex rounded-5 mx-1  bg-success justify-content-center align-items-center '}
-                        style={{ height: '30px', width: '80px', margin: '1px' }} >
-                        <div className={'d-flex   text-white justify-content-center  '} >
-                            <div className="d-flex flex-wrap justify-content-center text-center p-2">
-                                <span className="mx-1" style={{ fontSize: '0.7em' }}>{e.replace("-", " ")}</span>
-                            </div>
-                        </div>
-                    </div>*/}
                 </div>
             </SweetAlert>
         );
@@ -141,14 +145,14 @@ const LocalidadmapViews = (props) => {
             </SweetAlert>
         )
     }
-    const Alertmesas = () => {
+    const Alertmesas = (e, f) => {
         setAlert(
             <SweetAlert
                 warning
                 style={{ display: "block", marginTop: "-100px" }}
                 title="Desea selecionar los asientos dispobles de esta mesa"
-                onConfirm={() => hideAlert()}
-                onCancel={() => cerrar()}
+                onConfirm={() => MesaVerifica(e, f)}
+                onCancel={() => hideAlert()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
@@ -174,7 +178,7 @@ const LocalidadmapViews = (props) => {
     $(document).on('click', 'div.disponible', function (e) {
         e.preventDefault();
         if (this.classList.contains("disponible")) {
-            if (!this.classList.contains('seleccionado')) {
+            if (!this.classList.contains('seleccionado') && !this.classList.contains('ocupado') && !this.classList.contains("reservado")) {
                 let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
                 if (TotalSelecion() != 10) {
                     this.classList.remove('disponible')
@@ -233,10 +237,17 @@ const LocalidadmapViews = (props) => {
 
     $(document).on("click", "div.mesadisponible", function () {
         if (!this.classList.contains("mesaselecion")) {
-            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
-
+            // let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
+            if (TotalSelecion() != 10) {
+                Alertmesas(this.classList[0], this.classList[1])
+            }
+            else
+                succesLimit()
         }
         return
+    })
+    $(document).on("click", "div.mesaselecion", function () {
+
     })
 
     function cerrar() {
