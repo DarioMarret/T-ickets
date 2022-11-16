@@ -173,7 +173,7 @@ const ModalCarritoView = (prop) => {
                                     </div>
                                     <div className="bg-secondary p-1 text-black flex-table row d-block d-sm-none " >
 
-                                        <h4>AGRAGADOS</h4>
+                                        <h4>AGREGADOS</h4>
 
                                     </div>
                                     <div className=" px-2  list-group-flush" style={{ maxHeight: '500px', overflowY: 'auto', overflowX: 'hidden' }}>

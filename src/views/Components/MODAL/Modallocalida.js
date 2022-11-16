@@ -194,10 +194,6 @@ const LocalidadmapViews = (props) => {
             if (!this.classList.contains('disponible')) {
                 let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
                 succesElimAlert(this, { "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
-                // this.classList.remove('seleccionado')
-                // this.classList.add('disponible')
-                //  EliminarSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
-                // usedispatch(deleteSillas({ "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" }))
             }
             return
         }
@@ -206,9 +202,6 @@ const LocalidadmapViews = (props) => {
         if (!this.classList.contains('disponible')) {
             let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
             succesElimAlertli({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "borrar" })
-            // $("div." + this.classList[0]).removeClass("seleccionado").addClass("disponible")
-            // EliminarSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
-            //usedispatch(deleteSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "borrar" }))
         }
         return
     })
@@ -235,7 +228,16 @@ const LocalidadmapViews = (props) => {
         }
         return
     })
-    //$(document).on("click","div.mesadisponible")
+
+
+
+    $(document).on("click", "div.mesadisponible", function () {
+        if (!this.classList.contains("mesaselecion")) {
+            let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
+
+        }
+        return
+    })
 
     function cerrar() {
         setMapashow(false)
