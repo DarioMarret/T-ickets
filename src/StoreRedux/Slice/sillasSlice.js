@@ -21,6 +21,9 @@ const sillasSlice = createSlice({
         deleteSillas: (state, action) => {
             state.sillasSelecionadas = state.sillasSelecionadas.filter((item) => item.seleccionmapa != action.payload.localidad + "-" + action.payload.silla);
         },
+        deleteMesa: (state, action) => {
+            state.sillasSelecionadas = state.sillasSelecionadas.filter((item) => item.seleccionmapa != action.payload.localidad)
+        },
         setSillas: (state, action) => {
             let copia = state.sillasSelecionadas.findIndex((item) => item.silla == action.payload.silla);
             state.sillasSelecionadas[copia] = action.payload;
@@ -28,14 +31,14 @@ const sillasSlice = createSlice({
         clearSillas: (state, action) => {
             state.sillasSelecionadas = state.sillasSelecionadas.filter((item) => item.localidad != action.payload.localidad);
         },
-        cargarsilla:(state, action) => {
-            state.sillasSelecionadas= action.payload
+        cargarsilla: (state, action) => {
+            state.sillasSelecionadas = action.payload
         },
         borrarseleccion: (state, action) => {
-            state.sillasSelecionadas = state.sillasSelecionadas.filter((item)=>item.estado!=action.payload.estado);
+            state.sillasSelecionadas = state.sillasSelecionadas.filter((item) => item.estado != action.payload.estado);
         }
     }
 
 })
-export const { addSillas, deleteSillas, clearSillas, borrarseleccion,cargarsilla } = sillasSlice.actions;
+export const { addSillas, deleteSillas, clearSillas, borrarseleccion, cargarsilla, deleteMesa } = sillasSlice.actions;
 export default sillasSlice.reducer

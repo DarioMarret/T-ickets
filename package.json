@@ -34,6 +34,7 @@
     "nouislider": "14.6.3",
     "perfect-scrollbar": "1.5.5",
     "prop-types": "15.8.1",
+    "qrcode.react": "^3.1.0",
     "qs": "^6.11.0",
     "react": ">=16.8.0",
     "react-big-calendar": "0.40.2",

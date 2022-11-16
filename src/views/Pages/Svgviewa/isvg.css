@@ -8,7 +8,7 @@ polygon.none {
 }
 
 :root {
-  --swiper-navigation-color: #02275f;
+  --swiper-navigation-color: #000000;
 }
 
 rect.none {
@@ -34,19 +34,25 @@ path.mapas {
 
 .precios:hover {
   cursor: pointer;
-  transform: scale(1.1);
+  transform: scale(1.55);
+  padding: 15px;
 }
 
 polygon.disponible:hover {
-  transform: scale(1.02);
+  transform: scale(1.01);
+  cursor: pointer;
 }
 
 rect.disponible:hover {
-  transform: scale(1.02);
+  transform: scale(1.01);
+  cursor: pointer;
+
+
 }
 
 path.disponible:hover {
-  transform: scale(1.02);
+  cursor: pointer;
+  transform: scale(1.01);
 }
 
 /*.str2 {stroke:#FEFEFE;stroke-width:20}

@@ -35,6 +35,9 @@ const EventosViews = () => {
       console.log(error)
     }
   }
+  function formatoFecha(fecha) {
+    //let fecha.split()
+  }
   async function Elimna(e) {
     let { codigo, fecha } = e
     var f1 = new Date(fecha);
@@ -46,14 +49,10 @@ const EventosViews = () => {
     }
     else
       try {
-
         const elimina = await EliminarEvento(codigo)
         const lista = await ListarEventos("PROCESO")
-        //const activo = await ListarEventos("ACTIVO") 
-        // const cancela = await ListarEventos("CANCELADO")
         if (elimina.success) {
           setEventos([...lista.data])
-          //console.log([...activo.data,...cancela.data])
           successDelete()
           dispatch(setToastes({ show: true, message: 'Evento Eliminado con éxito', color: 'bg-success', estado: 'Correcto' }))
         }
@@ -61,8 +60,6 @@ const EventosViews = () => {
         dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
       }
   }
-
-
   const successAlert = (e) => {
     setAlert(
       <SweetAlert

@@ -7,7 +7,6 @@ import principal from "../../../assets/imagen/eventoprincip.jpeg";
 import secundaria from "../../../assets/imagen/segundo.jpeg";
 import tercero from "../../../assets/imagen/concierto.jpeg"
 import icon from "../../../assets/imagen/50pixeles.png";
-import evento from "../../../assets/imagen/gpiminel.jpeg";
 import valla from "../../../assets/imagen/valla-proximo-evento.png";
 import "../../../assets/css/animate.css";
 import "../../../assets/css/bootstrap.css";
@@ -39,7 +38,9 @@ import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Skeleton } from "@mui/material";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper";
+import { Box } from "@mui/system";
 import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
@@ -50,6 +51,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./swipermedia.css"
+import { $CombinedState } from "@reduxjs/toolkit";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
@@ -93,6 +95,8 @@ const IndexFlas = () => {
         localStorage.removeItem("asientosList")
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
+        $(".Mesa").removeClass("mesaocupado").addClass("mesadisponible")
+        $(".Mesa").removeClass("mesareserva")
       }
       else {
         setcrono(minutos + ":" + segundos)
@@ -130,7 +134,6 @@ const IndexFlas = () => {
         const listalocal = await ListarLocalidad()
         let localidades = await cargarMapa()
         localStorage.consierto = e.nombreConcierto
-        //console.log(localidades)
         if (obten.data.length > 0) {
           let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
           let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
@@ -693,7 +696,6 @@ const IndexFlas = () => {
           <div className="container p-3">
             <div className="row flex-wrap-reverse justify-content-center">
               <div className="col-12 col-lg-9">
-
                 <div className="row mx-auto p-0">
                   {eventoslist.length > 0 ?
                     eventoslist.map((e, i) => {
@@ -722,7 +724,21 @@ const IndexFlas = () => {
                         </div>
                       )
                     })
-                    : ''}
+                    : <div className="col-12 col-lg-6 mx-auto my-5" >
+                      <div>
+                        <div className="container rounded-7-md px-0" style={{ height: 300 }}>
+
+                          <Skeleton variant="rounded" width="100%" height="80%" />
+                          <Box sx={{ pt: 0.5 }}>
+                            <Skeleton />
+                            <Skeleton width="60%" />
+                          </Box>
+                        </div>
+                      </div>
+
+                    </div>}
+
+
                   {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
                   <div className="col-12 col-lg-6 mx-auto my-5" >
                     <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"

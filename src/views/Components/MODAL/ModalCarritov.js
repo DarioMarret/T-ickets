@@ -41,6 +41,7 @@ const ModalCarritoView = (prop) => {
         EliminarSillaLocal(e.localidad)
         setDetalle(getVerTienda())
         ListaPrecioset(GetValores())
+        hideAlert()
     }
     function abrirlocalidad() {
         setMapashow(true)
@@ -82,7 +83,6 @@ const ModalCarritoView = (prop) => {
         abrirlocalidad()
     }
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible')
-
     path.forEach(E => {
         E.addEventListener("click", function () {
             let consulta = precios.precios.filter((F) => F.idcolor == this.classList[0])
@@ -118,20 +118,29 @@ const ModalCarritoView = (prop) => {
             </SweetAlert>
         );
     };
+    const EliminaLocalidad = (e) => {
+        setAlert(
+            <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                title="Estas Seguro?"
+                onConfirm={() => Eliminar(e)}
+                onCancel={() => hideAlert()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                confirmBtnText="Confirmar"
+                cancelBtnText="Cancelar"
+                showCancel
+            >
+                Se Borraran Todas las selecciones de esta Localidad
+            </SweetAlert>
+        );
+    }
     const hideAlert = () => {
         setAlert(null);
     };
-
-
     return (
         <>
-            {/* <div className="bg-danger" style={{
-            position: "fixed",
-            height: "100%",
-            width: "100%",
-            zIndex: 10000
-        }}>
-        </div>*/}
             {alert}
             <Modal
                 show={showshop}
@@ -142,13 +151,19 @@ const ModalCarritoView = (prop) => {
                 <Modal.Header >
                     <div className="d-flex col-6 justify-content-between  align-items-center " >
                         <div>
-                            <h5 className="modal-title text-center justify-content-center">Boleteria -</h5>
+                            <h5 className="modal-title text-center justify-content-center"
+                                style={{ fontFamily: 'fantasy' }}
+                            >Boletería </h5>
                         </div>
 
                     </div>
                     <div className=" float-end ">
                         <div>
-                            <h5 className="modal-title text-center justify-content-center">  Tiempo restante de compra <span className="text-danger" >{intervalo}</span> </h5>
+                            <h5 className="modal-title text-center justify-content-center"
+                                style={{ fontFamily: 'fantasy' }}
+                            >  Tiempo restante para la compra <span className="text-danger"
+                                style={{ fontFamily: 'fantasy' }}
+                            >{intervalo}</span> </h5>
                         </div>
                     </div>
                     <button type="button" className="close" onClick={detalle.length > 0 ? successAlert : cerrar} >
@@ -189,7 +204,7 @@ const ModalCarritoView = (prop) => {
                                                             <div className="flex-row d-none d-sm-block  text-center col-2">${e.valor * e.cantidad}</div>
                                                             <div className="flex-row d-none d-sm-block text-center  col-2">{e.cantidad}</div>
                                                             <div className="d-flex d-sm-flex flex-row d-none d-sm-block   text-center align-items-center col-sm">
-                                                                <button className="btn btn-danger  btn-sm" onClick={() => Eliminar(e)} >
+                                                                <button className="btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
                                                                     <i className="fa fa-trash fa-1x"></i>
                                                                 </button>
                                                                 <button className="btn btn-primary mx-1  btn-sm " onClick={() => Abririlocalfirt(e.localidaEspacio)} >
@@ -212,7 +227,7 @@ const ModalCarritoView = (prop) => {
                                                                 </div>
                                                             </div>
                                                             <div className=" d-block d-sm-none col-6 d-sm-flex flex-row justify-content-center align-items-center text-center">
-                                                                <button className="btn btn-danger  btn-sm" onClick={() => Eliminar(e)} >
+                                                                <button className="btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
                                                                     <i className="fa fa-trash fa-1x"></i>
                                                                 </button>
                                                                 <button className="btn btn-primary mx-1  btn-sm " onClick={() => Abririlocalfirt(e.localidaEspacio)} >
@@ -230,7 +245,7 @@ const ModalCarritoView = (prop) => {
                                                                 <div className="d-flex flex-wrap">
                                                                     {
                                                                         seleciondesillas.filter(item => item.localidad == e.localidad).length > 0 ?
-                                                                            seleciondesillas.filter(item => item.localidad == e.localidad).map((elm, id) => {
+                                                                            seleciondesillas.filter(item => item.localidad == e.localidad && item.estado == "seleccionado").map((elm, id) => {
                                                                                 return (
                                                                                     <div key={id} className={elm.silla + ' d-flex rounded-5  bg-success justify-content-center align-items-center '}
                                                                                         style={{ height: '30px', width: '60px', margin: '1px' }} >
@@ -261,7 +276,10 @@ const ModalCarritoView = (prop) => {
                             </div>
                         </div>
                         <div className="col-12 col-lg-6  p-0">
-                            <div className="d-flex justify-content-center d-none d-sm-block d-sm-flex " style={{ height: "200px" }}>
+                            <div className="d-flex flex-column text-center justify-content-center d-none d-sm-block d-sm-flex " style={{ height: "200px" }}>
+                                <h5 style={{ fontSize: '0.9em', fontFamily: 'fantasy' }} >
+                                    Seleccione la Localidad en el Mapa o Nombre
+                                </h5>
                                 {showshop ?
                                     <SvgselectView text={precios.mapa} />
                                     : ''}

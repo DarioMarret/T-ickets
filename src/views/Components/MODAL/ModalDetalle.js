@@ -73,8 +73,6 @@ function ModalDetalle(props) {
             else if (validarEmail(datosPerson.email)) {
                 const { success, message } = await GuardarDatosdelComprador()
                 if (success) {
-                    //localStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
-                    //usedispatch(addususcritor({...datosPerson}))
                     const { data } = await Authsucrito(user)
                     var hoy = new Date();
                     let users = {
@@ -86,7 +84,6 @@ function ModalDetalle(props) {
                     usedispatch(addususcritor({ users }))
                     setDetalle(!showDetalle)
                     setModalPago(true)
-
                 }
                 else {
                     setDatoToas({
@@ -96,7 +93,6 @@ function ModalDetalle(props) {
                         estado: "Correo " + datosPerson.email + " Duplicado",
                     })
                 }
-
             }
         }
         else {
@@ -281,7 +277,7 @@ function ModalDetalle(props) {
             fullscreen={'lg-down'}
         >
             <Modal.Header >
-                <h5 className="modal-title text-center justify-content-center">Tiempo restante para la compra <span className="text-danger" >{intervalo} </span></h5>
+                <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}>Tiempo restante para la compra <span className="text-danger" >{intervalo} </span></h5>
 
                 <button type="button" className="close"
                     onClick={handleDetalleColse}>
@@ -400,8 +396,6 @@ function ModalDetalle(props) {
                                 placeholder="Ingrese su direccion"
                             />
                         </div>
-
-
                     </div>
                     <div className="container-fluid table-responsive">
                         <table className="resumen-table table ">
@@ -409,7 +403,7 @@ function ModalDetalle(props) {
                                 <tr className="text-black">
                                     <th scope="col" className="text-black">CONCIENTO</th>
                                     <th className="text-black">LOCALIDAD</th>
-                                    <th className="text-black" scope="col">FILA</th>
+
                                     <th className="text-black" scope="col">ASIENTO</th>
                                     <th className="text-black" scope="col">TOTAL</th>
                                 </tr>
@@ -422,7 +416,6 @@ function ModalDetalle(props) {
                                                 <tr key={index}>
                                                     <td className="align-self-center">{item.nombreConcierto}</td>
                                                     <td className="align-self-center">{item.localidad}</td>
-                                                    <td className="align-self-center">{item.fila}</td>
                                                     <td className="align-self-center">{item.cantidad}</td>
                                                     <td className="align-self-center">${item.valor * item.cantidad}</td>
                                                 </tr>
@@ -432,7 +425,6 @@ function ModalDetalle(props) {
                                 }
                             </tbody>
                         </table>
-
                     </div>
                     <div className="row p-4 float-rigth">
                         <div className="col-6 col-lg-8 text-end d-flex align-items-end flex-column  ">

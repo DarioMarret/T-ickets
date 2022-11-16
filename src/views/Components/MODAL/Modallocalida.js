@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react"
 import MesaiView from "views/Pages/Mesas/Plantillas/indice"
 import MesasView from "views/Pages/Mesas"
 import SVGView from "views/Pages/Svgviewa/svgoptio.js";
-import { TiendaIten, getVerTienda, EliminarByStora } from "utils/CarritoLocalStorang";
+import { TiendaIten, getVerTienda, EliminarByStora, EliminarsilladeMesa } from "utils/CarritoLocalStorang";
 import { Modal } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
-import { addSillas, deleteSillas, clearSillas } from "StoreRedux/Slice/sillasSlice"
+import { addSillas, deleteSillas, clearSillas, deleteMesa } from "StoreRedux/Slice/sillasSlice"
 import { EliminarSillas, AgregarAsiento, VerSillaslist, TotalSelecion } from "utils/CarritoLocalStorang"
 import SweetAlert from "react-bootstrap-sweetalert";
 import "./localidas.css"
@@ -44,17 +44,17 @@ const LocalidadmapViews = (props) => {
             let valid = seleccion.some(e => e.seleccionmapa == nombre.localodad + "-" + M + "-s-" + i)
             if (valid) { }
             if (TotalSelecion() != 10) {
-                AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombre.precio_normal, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" })
-                usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombre.precio_normal, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" }))
-                $("." + M + "-s-" + i).addClass('seleccionado')
-                $("." + M + "-s-" + i).removeClass('disponible')
-
+                $("." + M + "-s-" + i).hasClass('disponible') ? AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombre.precio_normal, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" }) : ''
+                $("." + M + "-s-" + i).hasClass('disponible') ? usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombre.precio_normal, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" })) : ''
+                $("." + M + "-s-" + i).hasClass('disponible') ? $("." + M + "-s-" + i).addClass('seleccionado') : ''
+                $("." + M + "-s-" + i).hasClass('disponible') ? $("." + M + "-s-" + i).removeClass('disponible') : ''
             } else {
                 succesLimit()
             }
         }
-
     }
+
+
     function restaprecio() {
         let producto = {
             cantidad: -1,
@@ -133,7 +133,7 @@ const LocalidadmapViews = (props) => {
             <SweetAlert
                 warning
                 style={{ display: "block", marginTop: "-100px" }}
-                title="Has alcanzado la cantidad limite de entradas"
+                title="Has alcanzado la cantidad límite de entradas"
                 onConfirm={() => hideAlert()}
                 onCancel={() => cerrar()}
                 confirmBtnBsStyle="success"
@@ -152,7 +152,7 @@ const LocalidadmapViews = (props) => {
                 style={{ display: "block", marginTop: "-100px" }}
                 title="Desea selecionar los asientos dispobles de esta mesa"
                 onConfirm={() => MesaVerifica(e, f)}
-                onCancel={() => hideAlert()}
+                onCancel={() => cerrar()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
@@ -161,6 +161,35 @@ const LocalidadmapViews = (props) => {
                 Deseas Continuar editando la selección
             </SweetAlert>
         )
+    }
+    const Elimnamesa = (e, f) => {
+        setAlert(
+            <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                title="Desea quitar los asientos seleccionados de esta mesa"
+                onConfirm={() => eliminarmesas(e, f)}
+                onCancel={() => cerrar()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                confirmBtnText="Si, Continuar"
+                cancelBtnText="Ir al carrito"
+                showCancel>
+                Deseas Continuar editando la selección
+            </SweetAlert>
+        )
+    }
+    const eliminarmesas = (M, C) => {
+        for (let i = 1; i < parseInt(C) + 1; i++) {
+            let valid = seleccion.some(e => e.seleccionmapa == nombre.localodad + "-" + M + "-s-" + i && e.estado == "seleccionado")
+            if (valid) {
+                usedispatch(deleteSillas({ "localidad": nombre.localodad, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" }))
+                EliminarsilladeMesa({ localodad: nombre.localodad + "-" + M + "-s-" + i })
+                $("." + M + "-s-" + i).removeClass("seleccionado").addClass("disponible")
+                $("." + M).removeClass("mesadisponible").addClass("mesaselecion")
+            }
+        }
+        hideAlert()
     }
     const eliminaListadiv = (e) => {
         $("div." + e.silla).removeClass("seleccionado").addClass("disponible")
@@ -216,8 +245,8 @@ const LocalidadmapViews = (props) => {
             if (TotalSelecion() != 10) {
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
-                AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+                AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "ocupado" })
+                usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": localStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "ocupado" }))
                 successAlert(this.classList[0], nombres.localodad, "Mesa")
             } else {
                 succesLimit()
@@ -232,12 +261,8 @@ const LocalidadmapViews = (props) => {
         }
         return
     })
-
-
-
     $(document).on("click", "div.mesadisponible", function () {
         if (!this.classList.contains("mesaselecion")) {
-            // let nombres = JSON.parse(localStorage.getItem("seleccionmapa"))
             if (TotalSelecion() != 10) {
                 Alertmesas(this.classList[0], this.classList[1])
             }
@@ -247,6 +272,10 @@ const LocalidadmapViews = (props) => {
         return
     })
     $(document).on("click", "div.mesaselecion", function () {
+        if (!this.classList.contains("mesadisponible")) {
+            // console.log(this.classList[0], this.classList[1])
+            Elimnamesa(this.classList[0], this.classList[1])
+        }
 
     })
 
@@ -286,15 +315,15 @@ const LocalidadmapViews = (props) => {
             >
                 {alert}
                 <Modal.Header>
-                    <h5 className="modal-title text-center justify-content-center">Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
-                    <button type="button" className="close" onClick={cerrar} >
-                        <i className="bi bi-caret-left-fill"></i>
+                    <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
+                    <button className=" btn btn-primary" onClick={cerrar} >
+                        <i className="bi bi-caret-left-fill">  </i>Regresar
                     </button>
                 </Modal.Header>
                 <Modal.Body>
                     <div className='conatiner-fluid col-12'>
                         <div className="row ">
-                            <div className="col-12 d-flex  flex-column justify-content-center text-center">
+                            <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontFamily: 'fantasy' }}>
                                 <h5>{mapath.precio.localodad}</h5>
                                 <h6 className="px-1">$ {mapath.precio.precio_normal} </h6>
                             </div>
@@ -304,7 +333,7 @@ const LocalidadmapViews = (props) => {
 
                             {mapath.precio.typo != "correlativo" ?
                                 <div className="col-12 d-flex  flex-wrap  ">
-                                    <div className="d-flex precios flex-row  p-2  align-items-center" >
+                                    <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-success text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
                                                 <span style={{ fontSize: '0.7em' }}>    </span>
@@ -313,7 +342,7 @@ const LocalidadmapViews = (props) => {
                                         <span>Disponibles.<span className="text-white">...</span></span>
                                     </div>
 
-                                    <div className="d-flex precios flex-row  p-2  align-items-center" >
+                                    <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-warning text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
                                                 <span style={{ fontSize: '0.7em' }}>    </span>
@@ -321,7 +350,7 @@ const LocalidadmapViews = (props) => {
                                         </div>
                                         <span>Reservado.</span>
                                     </div>
-                                    <div className="d-flex precios flex-row  p-2  align-items-center" >
+                                    <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-secondary text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
                                                 <span style={{ fontSize: '0.7em' }}>    </span>
@@ -329,7 +358,7 @@ const LocalidadmapViews = (props) => {
                                         </div>
                                         <span>Seleccionado.</span>
                                     </div>
-                                    <div className="d-flex precios flex-row p-2  align-items-center" >
+                                    <div className="d-flex flex-row p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-danger text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
                                                 <span style={{ fontSize: '0.7em' }}>    </span>
