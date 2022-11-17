@@ -766,28 +766,7 @@ const IndexFlas = () => {
               </div>
             </div>
           </div>
-        </div> : <div className="col-12 col-lg-6 mx-auto my-5" >
-          <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
-            aria-controls="collapseExample">
-            <div className="container  px-0">
-              <img src={valla} className="img-fluid  " alt="" />
-            </div>
-          </div>
-          <div className="collapse container mt-4 px-0" id="collapseExample4">
-            <div className="card card-body rounded-7 py-5">
-              <div className="container ">
-                <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">Proximo evento</span> </h1>
-                <h4 style={{ fontSize: '1.4em' }}></h4>
-                <div className="col-12 border border-bottom my-3"></div>
-                <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">Proximamente</span></p>
-                <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> Proximamente</span></p>
-                <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> Proximamente</span></p>
-                <p href="#" className="evento d-none btn btn-primary fw-bold px-3 py-2 rounded-6" id="comprar">
-                  Proximamente</p>
-              </div>
-            </div>
-          </div>
-        </div>}
+        </div> : ''}
 
       {userauthi.login && seleccion == "Tickets" ? <div className="container p-2"> <Tikes /></div> : ""}
       {userauthi.login && seleccion == "Datos" ? <div className="container p-2"><PerfilPage datosPerson={datosPerson} setDatoToas={setDatoToas} /></div> : ""}

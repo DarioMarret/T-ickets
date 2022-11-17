@@ -24,8 +24,9 @@ const TabunoView = (props) => {
     const [listaFilasConsillas, setFilasSillas] = useState([])
     const GeneraFilas = () => {
         if (filass.inicial != " " && filass.cantidad != " ") {
-            const letrafilas = filass.inicial.replace(/[0-9]+/g, "")
-            const numeroinicofilas = filass.inicial.replace(/[^0-9]+/g, "");
+            const letrafilas = filass.inicial.replace(/[0-9]+/g, "") ? filass.inicial.replace(/[0-9]+/g, "") : 'F'
+            const numeroinicofilas = filass.inicial.replace(/[^0-9]+/g, "") ? filass.inicial.replace(/[^0-9]+/g, "") : 1;
+            console.log(letrafilas, numeroinicofilas)
             const repeticiones = parseInt(numeroinicofilas) + parseInt(filass.cantidad)
             for (var i = numeroinicofilas; i < repeticiones; i++) {
                 ListadeFilas.push({ fila: letrafilas + "" + i, rotar: '', anchor: '30px', top: '', left: '', rigth: '', bottom: '', sillas: 0, asientos: [] });
@@ -90,10 +91,30 @@ const TabunoView = (props) => {
         })
 
     }
+    //Valida la cantidad de sillas Por Filas 
+    function ValidarSillas() {
+        const isValido = (currentValue) => currentValue > 5;
+        let asiento = []
+        if (ListaFilas.length > 0) {
+            ListaFilas.forEach((obj, i) => {
+                asiento[i] = obj.asientos.length
+            })
+            console.log(asiento)
+            console.log(Object.values(asiento).every(isValido))
+            if (Object.values(asiento).every(isValido)) { return true }
+            else return false
+        }
+        else
+            return false
+    }
+
     async function AgregaLocalidad() {
-        if (nmobretabuno.nombre == "" || nmobretabuno.description == "" || ListaFilas.length < 0 || !filass.sillas>40) {
+        if (nmobretabuno.nombre == "" || nmobretabuno.description == "" || ListaFilas.length < 0 || !filass.sillas > 40) {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guaradar', color: 'bg-danger', estado: 'Datos incompletos' }))
-         
+            return
+        }
+        if (!ValidarSillas()) {
+            usedispatch(setToastes({ show: true, message: 'Verifica que todas las filas tengan más de 5 sillas ', color: 'bg-danger', estado: 'Hay filas sin Asientos ' }))
             return
         }
         else {
@@ -107,9 +128,9 @@ const TabunoView = (props) => {
                         id: '',
                         array: ''
                     })
+                    setFilas([])
                     usedispatch(setToastes({ show: true, message: 'Localidad creada correctamente', color: 'bg-success', estado: 'Datos guardados' }))
                 }
-               // console.log({ "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
             } catch (error) {
                 console.log(error)
             }
@@ -117,8 +138,12 @@ const TabunoView = (props) => {
 
     }
     async function actualizalocalidad() {
-        if (nmobretabuno.nombre == "" || nmobretabuno.description == "" || ListaFilas.length < 0 || !filass.sillas>40) {           
-            usedispatch(setToastes({ show: true, message: 'Complete todos los datos y verifique no sobrepasar el limite de 39 sillas', color: 'bg-danger', estado: 'Datos incompletos' }))       
+        if (nmobretabuno.nombre == "" || nmobretabuno.description == "" || ListaFilas.length < 0 || !filass.sillas > 40) {
+            usedispatch(setToastes({ show: true, message: 'Complete todos los datos y verifique no sobrepasar el limite de 39 sillas', color: 'bg-danger', estado: 'Datos incompletos' }))
+            return
+        }
+        if (!ValidarSillas()) {
+            usedispatch(setToastes({ show: true, message: 'Verifica que todas las filas tengan más de 5 sillas ', color: 'bg-danger', estado: 'Hay filas sin Asientos ' }))
             return
         }
         else {
@@ -133,11 +158,11 @@ const TabunoView = (props) => {
                         array: ''
                     })
                     usedispatch(setToastes({ show: true, message: 'Localidad actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
-                                  }
+                }
 
             } catch (error) {
-                 usedispatch(setToastes({ show: true, message: 'Hubo un error, Complete todos los datos y verifique no sobrepasar el limite de 39 sillas', color: 'bg-danger', estado: 'Datos incompletos' }))
-                             
+                usedispatch(setToastes({ show: true, message: 'Hubo un error, Complete todos los datos y verifique no sobrepasar el limite de 39 sillas', color: 'bg-danger', estado: 'Datos incompletos' }))
+
                 console.log(error)
 
             }
@@ -145,10 +170,10 @@ const TabunoView = (props) => {
 
 
     }
-  //  console.log(ListaFilas)
+    //  console.log(ListaFilas)
     useEffect(() => {
         if (datalocalidad.typo == "fila") {
-           // console.log("Filas", datalocalidad)
+            // console.log("Filas", datalocalidad)
             setLocalidad({
                 nombre: datalocalidad.nombre,
                 description: datalocalidad.description,
@@ -156,8 +181,6 @@ const TabunoView = (props) => {
             })
             setFilas(datalocalidad.array)
         }
-
-
     }, [datalocalidad])
 
     return (<>
@@ -198,7 +221,7 @@ const TabunoView = (props) => {
                             </div>
                             <div className="d-flex row">
                                 {nmobretabuno.id !== "" ? <button onClick={actualizalocalidad} className="btn btn-primary col-12">Actualizar</button> : ''}
-                                <button onClick={AgregaLocalidad} className="btn btn-success col-12">Guardar</button>
+                                {nmobretabuno.id !== "" ? '' : <button onClick={AgregaLocalidad} className="btn btn-success col-12">Guardar</button>}
                             </div>
 
                         </div>
@@ -214,6 +237,7 @@ const TabunoView = (props) => {
                             <input type="number" minLength={1} name="cantidad"
                                 value={filass.cantidad}
                                 className="form-control" id="cantidad"
+                                min={1}
                                 onChange={(e) => handelchange(e.target)}
                                 placeholder="10" />
                         </div>
@@ -228,9 +252,11 @@ const TabunoView = (props) => {
                             </div>
                             <input type="text"
                                 name="inicial"
+                                size="4"
                                 value={filass.inicial}
                                 onChange={(e) => handelchange(e.target)}
                                 className="form-control" id="numero_inicial"
+                                maxLength="2"
                                 placeholder="A1" />
                         </div>
                     </div>
@@ -248,7 +274,7 @@ const TabunoView = (props) => {
                             <input type="number" name="sillas" className="form-control"
                                 id="sillas"
                                 value={filass.sillas}
-                                max={39}                                
+                                max={39}
                                 onChange={(e) => handelchange(e.target)}
                                 placeholder="# Sillas" />
                         </div>

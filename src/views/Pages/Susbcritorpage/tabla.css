@@ -1,0 +1,7 @@
+.dataTables_paginate .page-link {
+    border-radius: 0% !important;
+}
+
+.dataTables_paginate .pagination .page-item.active .page-link {
+    background-color: blue !important;
+}

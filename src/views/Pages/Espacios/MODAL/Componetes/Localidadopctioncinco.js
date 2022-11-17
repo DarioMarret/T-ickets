@@ -303,8 +303,6 @@ const MapadelocalidadViews = (props) => {
                         <div className="d-flex flex-wrap">
                                 <div className="container-fluid col-12 col-sm-8 d-flex flex-column " style={{ height: 'auto', width: '100%', overflowX: 'auto' }}>
                                         <div className="d-flex justify-content-center align-items-center pb-2">
-
-
                                                 <div className="col-6">
                                                         <label className="form-label">Selecione localidad  </label>
                                                         <Form.Select className="form-control" value={localidadmap.name} name="name" id="names" onChange={(e) => handelChange(e.target)}>
@@ -354,7 +352,7 @@ const MapadelocalidadViews = (props) => {
                                                         mapa.map((elm, i) => {
 
                                                                 return (
-                                                                        <div className="d-flex flex-row px-3 precios align-items-center" key={i}  >
+                                                                        <div className="d-flex flex-row px-3 align-items-center" key={i}  >
                                                                                 <div id={"precios" + elm.id} className="mx-1 border  rounded-4" style={{ height: 20, width: 20 }}></div>
                                                                                 <span>{elm.nombre}</span>
                                                                         </div>

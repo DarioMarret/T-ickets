@@ -202,8 +202,6 @@ function ModalDetalle(props) {
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
     });
-
-
     useEffect(() => {
         let datosPersonal = getDatosUsuariosLocalStorag()
         let clineteLogeado = getCliente()
@@ -252,7 +250,6 @@ function ModalDetalle(props) {
                 envio: datosPersonal ? datosPersonal.envio : '',
                 metodoPago: metodoPago,
             })
-
             DatosUsuariosLocalStorag({
                 ...datosPerson,
                 ['metodoPago']: metodoPago,
@@ -267,7 +264,6 @@ function ModalDetalle(props) {
         let mostrarcomision = GetMetodo()
         const mostrar = mostrarcomision != "Tarjeta" ? "d-none" : ""
         sethideComision(mostrar)
-
     }, [showDetalle, actualState])
     return (
         <Modal

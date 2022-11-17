@@ -9,6 +9,8 @@ import { Letras } from "utils/constantes";
 import Accordion from 'react-bootstrap/Accordion';
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import { object } from "prop-types";
+import { color } from "@mui/system";
 
 const TabdosView = (props) => {
     const { datalocalidad, SetDataloca, localidanames } = props
@@ -69,7 +71,6 @@ const TabdosView = (props) => {
             ListadeMesas = FilasLocalidad
             let sillas = []
             for (var i = 0; i < ListadeMesas.length; i++) {
-                //console.log(i)
                 var letra = ListadeMesas[i].Fila
                 for (var f = 0; f < parseInt(Mesass.me_inicial); f++) {
                     let valor = parseInt(f) + 1
@@ -77,7 +78,6 @@ const TabdosView = (props) => {
                 }
                 ListadeMesas[i].Mesas = [...sillas]
             }
-            console.log(ListadeMesas)
             SetFilaLocalidad([])
             setTimeout(function () {
                 SetFilaLocalidad(ListadeMesas)
@@ -118,9 +118,8 @@ const TabdosView = (props) => {
                         ListadeMesas[i].Mesas[j]["asientos"][f] = { silla: ListadeMesas[i].Mesas[j].mesa + "-s-" + valor, estado: "disponible" };
                     }
                 }
-                // console.log(ListadeMesas[i].Mesas)           
+
             }
-            console.log(ListadeMesas)
             SetFilaLocalidad([])
             setTimeout(function () {
                 SetFilaLocalidad(ListadeMesas)
@@ -131,23 +130,20 @@ const TabdosView = (props) => {
 
         } else if (multipleSelect.value != "" && singleSelecttwo.value != "" && multipleSelect.value == "Todas" && singleSelecttwo.value != "Todas" && singleSelecttres.value != "") {
             //Fila especifica Todas las mesas   
-            console.log(multipleSelect.value, singleSelecttwo.value, singleSelecttres.value)
             ListadeMesas = FilasLocalidad
-            console.log(ListadeMesas)
             var index = ListadeMesas.findIndex(obj => obj.Fila == singleSelecttwo.value);
             let fila = ListadeMesas[index].Mesas
             if (fila.length > 0) {
                 for (var i = 0; i < fila.length; i++) {
                     fila[i]["asientos"] = []
                     var numfila = fila[i].mesa
-                    //aqui poner la cantidad de sillas 
+                    //aqui asigna la cantidad de sillas 
                     for (var f = 0; f < parseInt(singleSelecttres.value); f++) {
                         let valor = parseInt(f) + 1
                         fila[i]["asientos"][f] = { silla: numfila + "-s-" + valor, estado: "disponible" };
                     }
                 }
                 ListadeMesas[index].Mesas = fila
-                console.log(ListadeMesas)
                 SetFilaLocalidad([])
                 setTimeout(function () {
                     SetFilaLocalidad(ListadeMesas)
@@ -163,16 +159,14 @@ const TabdosView = (props) => {
             ListadeMesas = FilasLocalidad
             var index = ListadeMesas.findIndex(obj => obj.Fila == singleSelecttwo.value);
             var fila = ListadeMesas[index].Mesas.findIndex(obj => obj.mesa == multipleSelect.value);
-            var numfila = singleSelecttwo
-            multipleSelect
-            console.log(multipleSelect.value, singleSelecttwo.value)
+            var numfila = singleSelecttwo.value
             ListadeMesas[index].Mesas[fila]["asientos"] = []
             for (var f = 0; f < parseInt(singleSelecttres.value); f++) {
 
                 let valor = parseInt(f) + 1
-                ListadeMesas[index].Mesas[fila]["asientos"][f] = { silla: numfila + "-s-" + valor, estado: "disponible" };
+                ListadeMesas[index].Mesas[fila]["asientos"][f] = { silla: multipleSelect.value + "-s-" + valor, estado: "disponible" };
+                ListadeMesas[index].Mesas[fila]["sillas"] = parseInt(singleSelecttres.value)
             }
-            console.log(ListadeMesas)
             SetFilaLocalidad([])
             setTimeout(function () {
                 SetFilaLocalidad(ListadeMesas)
@@ -198,9 +192,48 @@ const TabdosView = (props) => {
             [e.name]: e.value
         })
     }
+    //valida la cantidad de Mesas por Mesa
+    function ValidarMesas() {
+        const isValido = (currentValue) => currentValue > 1;
+        let asiento = []
+        if (FilasLocalidad.length > 0) {
+            FilasLocalidad.forEach((obj, i) => { asiento[i] = obj.Mesas.length })
+            if (Object.values(asiento).every(isValido)) return true
+            else return false
+        }
+        else
+            return false
+    }
+    //validad la cantidad de sillas x mesa
+    function ValidaSillasenMesas() {
+        const isValido = (currentValue) => currentValue > 1;
+        let asiento = []
+        if (FilasLocalidad.length > 0) {
+            FilasLocalidad.map((obj, i) => {
+                obj.Mesas.map((sillas) => {
+                    asiento.push(sillas.asientos.length)
+                })
+            })
+            console.log(asiento)
+            console.log(Object.values(asiento).every(isValido))
+            if (Object.values(asiento).every(isValido)) return true
+            else return false
+
+        }
+        else return false
+
+    }
     async function agregaLocaliad() {
         if (localidaname.nombre == "" || localidaname.description == "" || ListaMesa.length < 0) {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guardar', color: 'bg-warning', estado: 'Advertencia' }))
+            return
+        }
+        if (!ValidarMesas()) {
+            usedispatch(setToastes({ show: true, message: 'Verifique que todas las Filas tengan mínimo 2 mesa', color: 'bg-danger', estado: 'Faltan Mesas' }))
+            return
+        }
+        if (!ValidaSillasenMesas()) {
+            usedispatch(setToastes({ show: true, message: 'Verifique que todas las Mesas tengan mínimo 2 sillas', color: 'bg-danger', estado: 'Faltan Sillas' }))
             return
         }
         else {
@@ -216,15 +249,12 @@ const TabdosView = (props) => {
                         array: ''
                     })
                     usedispatch(setToastes({ show: true, message: 'Localidad guardada correctamente', color: 'bg-success', estado: 'Datos Correctos' }))
-
-
                     SetFilaLocalidad([])
                     setLocalidad({
                         nombre: '',
                         description: '',
                         id: ''
                     })
-                    // console.log({"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
                 }
 
             } catch (error) {
@@ -235,6 +265,13 @@ const TabdosView = (props) => {
     async function actualizalocalidad() {
         if (localidaname.nombre == "" || localidaname.description == "" || ListaMesa.length < 0) {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guardar', color: 'bg-warning', estado: 'Advertencia' }))
+            return
+        } if (!ValidarMesas()) {
+            usedispatch(setToastes({ show: true, message: 'Verifique que todas las Filas tengan mínimo 2 mesa', color: 'bg-danger', estado: 'Faltan Mesas' }))
+            return
+        }
+        if (!ValidaSillasenMesas()) {
+            usedispatch(setToastes({ show: true, message: 'Verifique que todas las Mesas tengan mínimo 2 sillas', color: 'bg-danger', estado: 'Faltan Sillas' }))
             return
         }
         else {
@@ -256,9 +293,6 @@ const TabdosView = (props) => {
                     })
                     usedispatch(setToastes({ show: true, message: 'Localidad actualizada correctamente', color: 'bg-success', estado: 'Actializado' }))
                 }
-                //console.log({"id":localidaname.id,"espacio":localidanames.nombre,"descripcion":localidaname.description,"nombre":localidaname.nombre,"mesas_array":JSON.stringify({Typo:'mesa',datos: FilasLocalidad})})
-
-
             } catch (error) {
                 console.log(error)
             }
@@ -268,14 +302,11 @@ const TabdosView = (props) => {
 
     useEffect(() => {
         if (datalocalidad.typo == "mesa") {
-
-
             setLocalidad({
                 nombre: datalocalidad.nombre,
                 description: datalocalidad.description,
                 id: datalocalidad.id
             })
-            console.log(datalocalidad)
             SetFilaLocalidad(datalocalidad.array)
         }
 

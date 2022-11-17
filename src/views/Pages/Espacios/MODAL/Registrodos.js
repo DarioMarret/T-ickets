@@ -86,11 +86,11 @@ const RegistroViwstab = (props) => {
                                     <a className="nav-link" data-toggle="tab" href="#correlativos">Números Correlativos</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" data-toggle="tab" href="#listas"
+                                    <a className="nav-link d-none" data-toggle="tab" href="#listas"
                                     >Localidades Agregadas</a>
                                 </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" data-toggle="tab" href="#seleclocalidad"
+                                <li className="nav-item  ">
+                                    <a className="nav-link  d-none" data-toggle="tab" href="#seleclocalidad"
                                     >Seleccionar locación</a>
                                 </li>
                                 <li className="nav-item">

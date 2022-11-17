@@ -32,10 +32,12 @@ path.mapas {
   fill: rgb(148, 152, 152);
 }
 
-.precios:hover {
-  cursor: pointer;
-  transform: scale(1.55);
-  padding: 15px;
+@media (min-width: 800px) {
+  .precios:hover {
+    cursor: pointer;
+    transform: scale(1.55);
+    padding: 15px;
+  }
 }
 
 polygon.disponible:hover {
@@ -46,8 +48,6 @@ polygon.disponible:hover {
 rect.disponible:hover {
   transform: scale(1.01);
   cursor: pointer;
-
-
 }
 
 path.disponible:hover {

@@ -8,8 +8,6 @@ import { ListarLocalidad } from '../../../../../utils/Querypanel';
 import { columnespacio } from 'utils/ColumnTabla';
 import { EliminarLocalidad } from '../../../../../utils/Querypanel';
 import { useSelector, useDispatch } from 'react-redux';
-import { addLocalidad, deleteloclidad } from 'StoreRedux/Slice/SuscritorSlice';
-import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 const LocalidadesagreViews = (props) => {
@@ -21,17 +19,16 @@ const LocalidadesagreViews = (props) => {
     try {
       const datos = await ListarLocalidad()
       const { success, data } = datos
-
       if (success) {
         const filtrado = data.filter(e => e.espacio == localidaname.nombre)
         const obten = filtrado.map((e, i) => {
           let dato = JSON.parse(e.mesas_array)
           return { ...e, tipo: dato.Typo }
         })
-        //console.log("localidada",obten)
         setData(obten)
+        if (filtrado.length > 0) $('[href*="seleclocalidad"]').removeClass("d-none"), $('[href*="listas"]').removeClass("d-none")
+        else $('[href*="seleclocalidad"').addClass("d-none"), $('[href*="listas"').addClass("d-none"), $("#listas").removeClass("active")
       }
-
     } catch (error) {
       console.log(error)
     }
@@ -47,8 +44,6 @@ const LocalidadesagreViews = (props) => {
       }
     } catch (error) {
       console.log(error)
-      //alert(error)
-
     }
   }
   function Editar(parms) {

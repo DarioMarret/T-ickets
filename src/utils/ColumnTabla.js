@@ -143,10 +143,8 @@ export const columnsTicket = [
   {
     accessorKey: 'fecha',
     header: 'Fecha',
-
   },
 ]
-//cantidad fecha description estado
 export const ColumnaUsuarioid = [
   {
     accessorKey: "activity",

@@ -101,8 +101,7 @@ const EventosViews = () => {
         onConfirm={() => hideAlert()}
         onCancel={() => hideAlert()}
         confirmBtnBsStyle="success"
-      >
-        Se a cancelado la acción
+      >Se a cancelado la acción
       </SweetAlert>
     );
   };
@@ -251,14 +250,9 @@ const EventosViews = () => {
                       width: '100%',
                     }}
                   >
-
                     <Typography>Estado : {row.original.estado} </Typography>
                     <Typography>Ciudad : {row.original.cuidadConcert} </Typography>
                     <Typography>Descripción : {row.original.descripcionConcierto} </Typography>
-
-
-
-
                   </Box>
                 )}
                 renderRowActions={({ row }) => (
@@ -274,17 +268,13 @@ const EventosViews = () => {
                       color="primary"
                       aria-label="Ver"
                       onClick={() => history.push("/admin/Evento/" + row.original.codigoEvento)}
-                    >
-                      <Visibility />
+                    ><Visibility />
                     </IconButton>
-
-
                   </Box>
                 )}
                 positionToolbarAlertBanner="bottom"
                 localization={MRT_Localization_ES}
               />
-
             </div>
           </div>
         </div>

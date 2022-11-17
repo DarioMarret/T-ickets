@@ -15,8 +15,10 @@ const MesadosView = ({ text, list }) => {
       var index = list.findIndex(obj => obj.silla == e);
       return checkAvailability(seleccion, e) ? silla[silla.findIndex(obj => obj.silla == e)].estado : list[index].estado
     }
+    //console.log(e, list)
     var index = list.findIndex(obj => obj.silla == e);
-    return list[index].estado
+    // console.log(index, list[index].estado)
+    return list[index].estado ? list[index].estado : "disponible"
   }
   function MesaEstado(e) {
     const isSeleccion = (currentValue) => currentValue == "seleccionado";

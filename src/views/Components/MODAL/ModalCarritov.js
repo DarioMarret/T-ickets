@@ -50,7 +50,6 @@ const ModalCarritoView = (prop) => {
 
     useEffect(() => {
         setDetalle(getVerTienda())
-        //console.log(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
         let metodoPago = GetMetodo()
         metodoPago != null ? setChecked({
@@ -70,8 +69,6 @@ const ModalCarritoView = (prop) => {
             $("#" + e.path).attr("fill", e.fill)
         }) : ''
     }, [showshop])
-
-
     function Abririlocalfirt(e) {
         let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
         let filtro = sleccionlocalidad.localidades.filter((G) => G.nombre == e.localodad)
