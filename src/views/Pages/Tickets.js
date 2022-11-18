@@ -42,6 +42,7 @@ const EventosViews = () => {
       const ids = Filtrar.map(o => o.nombre)
       const filtered = Filtrar.filter(({ nombre }, index) => !ids.includes(nombre, index + 1))
       setEvento(filtered)
+      console.log(filtered)
       await Concietos(filtered[0].nombre)
     } catch (error) {
       console.log(error)
@@ -114,7 +115,7 @@ const EventosViews = () => {
                     previousIndex,
                     realIndex,
                   } = swiperCore;
-                  console.log(Evento[realIndex].nombre)
+                  //console.log(Evento[realIndex].no mbre)
                   var arraycopia = DatosGlobal
                   //const concierto = arraycopia.filter(e => e.concierto == Evento[realIndex].nombre)
                   Concietos(Evento[realIndex].nombre)
@@ -126,6 +127,7 @@ const EventosViews = () => {
                     previousIndex,
                     realIndex,
                   } = e
+
                 }}
                 className="mySwiper">
                 {Evento.length > 0 ?
@@ -137,9 +139,10 @@ const EventosViews = () => {
                             <div className="container">
                               <h1 style={{ fontSize: '1.6em' }}><span id="artista" className="fw-bold">{e.nombre}</span> </h1>
                               <div className="col-12 border border-bottom my-3"></div>
-                              <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> Miercoles 28-10-2022</span></p>
-                              <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> Estadio Alberto Spencer</span></p>
-                              <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> 22:30</span></p>
+
+                              <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{e.fecha.split(" ")[0]}</span></p>
+                              <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.ciudad} </span></p>
+                              <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.fecha.split(" ")[1]} </span></p>
                             </div>
                           </div>
                         </div>

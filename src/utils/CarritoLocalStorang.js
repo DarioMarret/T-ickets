@@ -2,7 +2,7 @@ import {
     CarritoTicket, Metodos,
     DatosUsuarioLocalStorang,
     Valorcarrito, listaasiento,
-    sillaspalco,
+    sillaspalco, seleccionmapa, Eventoid, concierto
 } from "./constantes"
 import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
 let PViten = []
@@ -288,6 +288,10 @@ export function Limpiarseleccion() {
     localStorage.removeItem(sillaspalco)
     localStorage.removeItem(listaasiento)
     localStorage.removeItem(CarritoTicket)
+    localStorage.removeItem(listaasiento)
+    localStorage.removeItem(seleccionmapa)
+    localStorage.removeItem(Eventoid)
+    localStorage.removeItem(concierto)
 }
 export function GetMetodo() {
     let tag = localStorage.getItem(Metodos);

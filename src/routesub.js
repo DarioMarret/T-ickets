@@ -20,6 +20,7 @@ import LoginPage from "views/Pages/LoginPage.js";
 import RegisterPage from "views/Pages/RegisterPage.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 import Ticket from "views/Pages/Tickets.js";
+import Ventas from "views/Pages/VenderTiket.js"
 import Espacios from "views/Pages/Espacios";
 import RegularForms from "views/Forms/RegularForms.js";
 import ExtendedForms from "views/Forms/ExtendedForms.js";
@@ -47,10 +48,10 @@ var routes = [
     icon: "nc-icon nc-layers-3",
     component: Dashboard,
     permiso: ["superadmin", "super_admin"]
-    
+
   },
   {
-    path: "/Evento/:id",   
+    path: "/Evento/:id",
     layout: "/admin",
     component: EventoEspecifico,
     permiso: ["superadmin", "super_admin"]
@@ -61,7 +62,7 @@ var routes = [
     name: "Gestion de Eventos",
     state: "openGestion",
     icon: "nc-icon nc-notes",
-     permiso: ["superadmin", "super_admin"],
+    permiso: ["superadmin", "super_admin"],
     views: [
       {
         path: "/Espacio",
@@ -71,12 +72,12 @@ var routes = [
         component: Espacios,
         permiso: ["superadmin", "super_admin"]
       },
-  {
-    path: "/usuario/:id",
-    layout: "/admin",
-    component: UseridView,
-    permiso: ["superadmin", "super_admin"]
-  },
+      {
+        path: "/usuario/:id",
+        layout: "/admin",
+        component: UseridView,
+        permiso: ["superadmin", "super_admin"]
+      },
       {
         path: "/Evento",
         layout: "/admin",
@@ -85,7 +86,7 @@ var routes = [
         component: Eventos,
         permiso: ["superadmin", "super_admin"]
       },
-     
+
       {
         path: "/Diseñar-Ticket",
         layout: "/admin",
@@ -95,13 +96,13 @@ var routes = [
         permiso: ["superadmin", "super_admin"]
       }
     ]
-  },  
-  
+  },
+
   {
     path: "/suscritor/:id",
     state: "openCliente",
     layout: "/admin",
-   
+
     component: SuscritoridView,
     permiso: ["superadmin", "super_admin"]
   },
@@ -121,7 +122,7 @@ var routes = [
         component: UsersView,
         permiso: ["superadmin", "super_admin"]
       },
-   
+
       {
         path: "/suscritor",
         layout: "/admin",
@@ -130,7 +131,7 @@ var routes = [
         component: SuscritorViews,
         permiso: ["superadmin", "super_admin"]
       },
-      
+
       {
         path: "/notificacion",
         layout: "/admin",
@@ -198,7 +199,7 @@ var routes = [
         permiso: ["superadmin", "super_admin"]
       }
     ]
-  },{
+  }, {
     collapse: true,
     path: "/Ventas",
     name: "Ventas",
@@ -211,7 +212,7 @@ var routes = [
         layout: "/admin",
         name: "Vender Tickets",
         mini: "*",
-        component: Ticket,
+        component: Ventas,
         permiso: ["superadmin", "super_admin"]
       },
       {
@@ -239,26 +240,26 @@ var routes = [
     icon: "nc-icon nc-settings-gear-64",
     component: AjustesView,
     permiso: ["superadmin", "super_admin"]
-    
+
   },
   {
-    path:"/Pruebaticke",
-    layout:"/admin",
-    name:"Prueba",
-    component:EsquemaViews,
+    path: "/Pruebaticke",
+    layout: "/admin",
+    name: "Prueba",
+    component: EsquemaViews,
     permiso: ["superadmin", "super_admin"]
   },
   {
-    path:"/Pruebasvg",
-    layout:"/admin",
-    name:"PruSvgeba",
-    component:Viesvg,
+    path: "/Pruebasvg",
+    layout: "/admin",
+    name: "PruSvgeba",
+    component: Viesvg,
     permiso: ["superadmin", "super_admin"]
   }
-  
-  
- 
- 
-  
+
+
+
+
+
 ];
 export default routes;

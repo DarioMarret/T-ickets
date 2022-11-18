@@ -114,7 +114,7 @@ const TabunoView = (props) => {
             return
         }
         if (!ValidarSillas()) {
-            usedispatch(setToastes({ show: true, message: 'Verifica que todas las filas tengan más de 5 sillas ', color: 'bg-danger', estado: 'Hay filas sin Asientos ' }))
+            usedispatch(setToastes({ show: true, message: 'Verifica que todas las filas tengan más de 6 sillas ', color: 'bg-danger', estado: 'Hay filas sin Asientos ' }))
             return
         }
         else {

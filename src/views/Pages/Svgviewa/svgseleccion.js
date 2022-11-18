@@ -808,7 +808,7 @@ const svgselectView = ({ text }) => {
         </svg>
     }
     return (
-        text ? plantilla[text] : ''
+        text ? plantilla[text.split("-")[0] ? text.split("-")[0] : text] : ''
     )
 
 

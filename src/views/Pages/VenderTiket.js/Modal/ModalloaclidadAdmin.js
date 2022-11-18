@@ -8,8 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { addSillas, deleteSillas, clearSillas, deleteMesa } from "StoreRedux/Slice/sillasSlice"
 import { EliminarSillas, AgregarAsiento, VerSillaslist, TotalSelecion } from "utils/CarritoLocalStorang"
 import SweetAlert from "react-bootstrap-sweetalert";
-import "./localidas.css"
-const LocalidadmapViews = (props) => {
+const ModalLocalidamapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
     let nombre = JSON.parse(localStorage.getItem("seleccionmapa"))
@@ -547,4 +546,4 @@ const LocalidadmapViews = (props) => {
 
 }
 
-export default LocalidadmapViews
+export default ModalLocalidamapViews

@@ -1,7 +1,7 @@
 import { Form } from "react-bootstrap"
 import { ProvinciasMap } from "utils/Mapassvg"
 import { useState, useEffect, useMemo } from "react"
-import { cargarMapa, guardarMapar, eliminaMapa } from "utils/Querypanelsigui"
+import { cargarMapa, guardarMapar, eliminaMapa, editarMapa } from "utils/Querypanelsigui"
 import SweetAlert from "react-bootstrap-sweetalert";
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
@@ -25,10 +25,10 @@ const OpctionLocalidadView = (props) => {
 
                         let datos = mapas.data.filter((e) => e.nombre_espacio == localidaname.nombre)
                         if (datos.length > 0) {
-                                //  console.log(datos[0])
+                                // console.log(datos[0])
                                 setMaparegistro({ ...datos[0] })
-                                filterNames(datos[0].nombre_mapa)
-                                setMapaselec(datos[0].nombre_mapa)
+                                filterNames(datos[0].nombre_mapa.split("-")[0])
+                                setMapaselec(datos[0].nombre_mapa.split("-")[0])
                                 $('[href*="mapa"]').removeClass('d-none');
                                 $("#" + datos[0].nombre_mapa).addClass("seleccionmap")
                         } else {
@@ -80,19 +80,16 @@ const OpctionLocalidadView = (props) => {
         };
         const GuardarSeleccion = async () => {
                 if (mapaselet == "") {
-                        //console.log(mapaselet);
-
                         return
                 }
                 let valores = {
-                        "mapasvg": mapaselet,
+                        "mapasvg": mapaselet + "-" + Math.random().toString(36).slice(-10),
                         "nombre_espacio": localidaname.nombre,
-                        "pathmap": JSON.stringify(mapaRegstro.pathmap),
-                        "localidad": JSON.stringify(mapaRegstro.localidad),
+                        "pathmap": JSON.stringify([]),
+                        "localidad": JSON.stringify([]),
                 }
                 try {
                         if (mapaRegstro.id == '') {
-
                                 let datos = await guardarMapar(valores)
                                 if (datos.success) {
                                         usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Guardadas correctamente', color: 'bg-success', estado: 'Datos Guardado' }))
@@ -106,7 +103,6 @@ const OpctionLocalidadView = (props) => {
                                                 array: ''
                                         })
                                         //$('[href*="mapa"]').removeClass('d-none'); 
-
                                         hideAlert()
                                 }
                                 else
@@ -115,9 +111,9 @@ const OpctionLocalidadView = (props) => {
 
                         }
                         else {
-                                let updatedatos = await editarMapa({ ...valores, id: mapaRegstro.id.toString() })
+                                let updatedatos = await editarMapa({ ...valores, id: "" + mapaRegstro.id })
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
-                                console.log(updatedatos)
+                                // console.log(updatedatos)
                                 await getMapa()
                                 hideAlert()
                                 SetDataloca({

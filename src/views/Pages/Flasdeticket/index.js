@@ -17,13 +17,13 @@ import ModalReport from "views/Components/MODAL/ModalReporte";
 import ModalEfectivo from "views/Components/MODAL/Modalefectivo";
 import TOAST from "views/Components/TOAST";
 import Footer from "views/Components/Footer/Footer";
-import { GetMetodo, getVerTienda, LimpiarLocalStore, Limpiarseleccion } from "utils/CarritoLocalStorang";
 import { useHistory } from "react-router";
 import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
 import Tikes from "../Susbcritorpage/Tickes";
 import PerfilPage from "../Perfil";
 import { getDatosUsuariosLocalStorag, getCliente, DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import { GetMetodo, getVerTienda, LimpiarLocalStore, Limpiarseleccion } from "utils/CarritoLocalStorang";
 import { GuardarDatosdelComprador, ValidarWhatsapp } from "utils/Query";
 import { useSelector, useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
@@ -51,7 +51,6 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./swipermedia.css"
-import { $CombinedState } from "@reduxjs/toolkit";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
@@ -79,6 +78,7 @@ const IndexFlas = () => {
     var tiempo = 60 * 3
     timer = tiempo
     var minutos = 0, segundos = 0;
+    console.log(datatime)
     datatime.current = setInterval(function () {
       minutos = parseInt(timer / 60, 10);
       segundos = parseInt(timer % 60, 10);
@@ -92,7 +92,6 @@ const IndexFlas = () => {
         setDetalle(false)
         Limpiarseleccion()
         LimpiarLocalStore()
-        localStorage.removeItem("asientosList")
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
         $(".Mesa").removeClass("mesaocupado").addClass("mesadisponible")
@@ -111,7 +110,6 @@ const IndexFlas = () => {
     setDetalle(false)
     Limpiarseleccion()
     LimpiarLocalStore()
-    localStorage.removeItem("asientosList")
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
   }
@@ -431,11 +429,10 @@ const IndexFlas = () => {
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     Limpiarseleccion()
     LimpiarLocalStore()
-    localStorage.removeItem("asientosList")
     const evento = async () => {
       try {
         const data = await cargarEventoActivo()
-        const filtro = data != null ? data.filter((e) => moment(e.fechaConcierto + " " + e.horaConcierto).format('DD MMMM YYYY h:mm') >= moment().format('DD MMMM YYYY h:mm')) : []
+        const filtro = data != null ? data.filter((e) => moment(e.fechaConcierto + " " + e.horaConcierto).format('DD MMMM YYYY HH:mm') > moment().format('DD MMMM YYYY HH:mm')) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         if (data != null) {
           setEventos(filtro.sort(sorter))
@@ -560,11 +557,11 @@ const IndexFlas = () => {
                 <a className=" btn btn-outline-light  " href="#" onClick={salir}> Salir <i className="fa fa-window-close"></i> </a>
               </li>}
             </ul>
-            <ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-1   justify-content-center ">
+            {/*<ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-1   justify-content-center ">
               <li className="  nav-item">
-                <a className=" btn btn-outline-light  " href="https://api.whatsapp.com/send/?phone=593983832112&amp;text&amp;type=phone_number&amp;app_absent=0" target="_blank"> 0983832112 <i className="fab fa-whatsapp fa-lg ml-1 justify-content-center"></i> </a>
+                <a className="btn btn-outline-light" href="#" > 0983832112 <i className="fab fa-whatsapp fa-lg ml-1 justify-content-center"></i> </a>
               </li>
-            </ul>
+            </ul>*/}
           </div>
         </div>
       </nav>

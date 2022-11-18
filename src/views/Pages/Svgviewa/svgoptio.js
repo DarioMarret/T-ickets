@@ -807,7 +807,7 @@ const SVGView = ({ text }) => {
         </svg>
     }
     return (
-        plantilla[text]
+        plantilla[text.split("-")[0] ? text.split("-")[0] : text]
     )
 
 

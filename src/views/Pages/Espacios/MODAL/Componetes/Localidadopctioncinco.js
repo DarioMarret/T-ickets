@@ -53,11 +53,14 @@ const MapadelocalidadViews = (props) => {
                         let listar = await ListarLocalidad()
                         let map = await cargarMapa()
                         let datos = map.data.filter((e) => e.nombre_espacio == localidaname.nombre)
+                        //console.log(map)
+                        //console.log(datos)
                         if (datos) {
                                 let localidadcolor = JSON.parse(datos[0].localidad)
                                 const filtrado = listar.data.filter(e => e.espacio == localidaname.nombre)
+                                // console.log(filtrado)
                                 const obten = filtrado.map((e, i) => {
-                                        if (localidadcolor.findIndex(e => e.id == e.id) != -1) {
+                                        if (localidadcolor > 0 && localidadcolor.findIndex(e => e.id == e.id) != -1) {
                                                 let dato = JSON.parse(e.mesas_array)
                                                 return { id: e.id, nombre: e.nombre, tipo: dato.Typo, color: localidadcolor[localidadcolor.findIndex(e => e.id == e.id)].color }
                                         }
@@ -66,22 +69,18 @@ const MapadelocalidadViews = (props) => {
                                                 return { id: e.id, nombre: e.nombre, tipo: dato.Typo, color: '' }
                                         }
                                 })
-
-                                SetSelecion(datos[0].nombre_mapa)
+                                SetSelecion(datos[0].nombre_mapa.split("-")[0])
                                 localStorage.mapa = datos[0].pathmap
                                 localStorage.localidad = JSON.stringify(obten)
-
                                 setmapa(obten)
                                 setselection({ ...localidadmap, id: datos[0].id })
                                 $('[href*="mapa"]').removeClass('d-none');
-
                                 //console.log("Existe")
                                 setTimeout(function () {
                                         cargarcolores()
                                 }, 90)
                         } else {
                                 const obten = filtrado.map((e, i) => {
-
                                         let dato = JSON.parse(e.mesas_array)
                                         return { id: e.id, nombre: e.nombre, tipo: dato.Typo, color: '' }
                                 })
@@ -101,6 +100,7 @@ const MapadelocalidadViews = (props) => {
 
 
                 } catch (error) {
+                        console.log(error)
                         $('[href*="mapa"]').addClass('d-none');
 
                 }
@@ -201,11 +201,12 @@ const MapadelocalidadViews = (props) => {
 
         function cargarcolores() {
                 let colores = getMapacolor()
+                console.log(colores)
                 colores.length > 0 ? colores.map((e, i) => {
                         $("#" + e.path).attr("class", "seleccion")
                         $("#" + e.path).attr("fill", e.fill, "class", "seleccion")
                 }) : ''
-                listadecolores()
+                colores.length > 0 ? listadecolores() : ''
         }
         $(document).on("click", ".none", function () {
                 let co = document.getElementById("color").value;
@@ -338,13 +339,7 @@ const MapadelocalidadViews = (props) => {
                                                                         <button className="btn btn-primary" onClick={successAlert} >Guardar </button> :
                                                                         <button className="btn btn-primary" onClick={successAlert}>Actualizar </button>}
                                                         </div>
-                                                        <div>
-                                                                <label className="form-label text-white" >.</label>
-                                                                {localidadmap.id ?
-                                                                        <button className="btn btn-danger" onClick={successElimna}>Eliminar</button> : ''}
 
-
-                                                        </div>
                                                 </div>
                                         </div>
                                         <div className="d-flex flex-wrap justify-content-center  p-3 ">

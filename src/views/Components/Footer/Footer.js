@@ -17,13 +17,11 @@ function Footer(props) {
                             </li>
                         </div>
                         <div className="col-12 col-lg-3">
-                            <li className="unlisted nav-item"  aria-label="terminos"><a className="nav-link text-white" role="link"
+                            <li className="unlisted nav-item" aria-label="terminos"><a className="nav-link text-white" role="link"
                                 href="#!">Puntos de venta</a> </li>
                         </div>
                         <div className="col-12 col-lg-3">
-                            <li className="unlisted nav-item"  aria-label="terminos"><a className="nav-link text-white" role="link"
-                                href="https://api.whatsapp.com/send/?phone=593983832112&text&type=phone_number&app_absent=0"
-                                target="_blank">Contáctanos</a> </li>
+                            <li className="unlisted nav-item" aria-label="terminos"><a className="nav-link text-white" role="link">Contáctanos</a> </li>
                         </div>
                     </div>
                 </div>

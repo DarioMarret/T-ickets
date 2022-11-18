@@ -97,7 +97,7 @@ const ModalCarritoView = (prop) => {
     })
     function cerrar() {
         handleClosesop()
-        hideAlert()
+        // hideAlert()
     }
     const successAlert = () => {
         setAlert(
