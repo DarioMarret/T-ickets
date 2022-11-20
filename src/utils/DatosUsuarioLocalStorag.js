@@ -1,34 +1,34 @@
-import { DatosUsuarioLocalStorang,DatoTokenusuario,Host,DatosUsuariocliente,Whatsappnumero } from "./constantes"
+import { DatosUsuarioLocalStorang, DatoTokenusuario, Host, DatosUsuariocliente, Whatsappnumero } from "./constantes"
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 export const DatosUsuariosLocalStorag = (data) => {
-    localStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(data))
+    sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(data))
     return true
 }
 
 export const getDatosUsuariosLocalStorag = () => {
-    let data = JSON.parse(localStorage.getItem(DatosUsuarioLocalStorang))
-    if(data !== null){
-        return  data
-    }else{
+    let data = JSON.parse(sessionStorage.getItem(DatosUsuarioLocalStorang))
+    if (data !== null) {
+        return data
+    } else {
         return null
     }
 }
-export function getCliente() {    
-        let data = JSON.parse(localStorage.getItem(DatosUsuariocliente))
-        if(data !== null){
-            return  data
-        }else{
-            return null
-        }
+export function getCliente() {
+    let data = JSON.parse(sessionStorage.getItem(DatosUsuariocliente))
+    if (data !== null) {
+        return data
+    } else {
+        return null
+    }
 
-    
+
 }
 export async function getCedula(cedula) {
     try {
-        const { data } = await axios.get(Host+"cedula/"+cedula)   
+        const { data } = await axios.get(Host + "cedula/" + cedula)
         console.log(data)
-        const {success} =data  
+        const { success } = data
         if (success) {
             return data.data;
         } else {
@@ -52,8 +52,8 @@ export function setDatosUser(data) {
 export function getUsuario() {
     try {
         const data = sessionStorage.getItem(DatoTokenusuario)
-     //   console.log(data)
-        return  data;
+        //   console.log(data)
+        return data;
 
     } catch (error) {
         console.log(error)
@@ -68,7 +68,7 @@ export function removeDatosUsuario() {
     }
 }
 export function clienteInfo() {
-    
+
     let user = getUsuario();
     //console.log(jwtDecode(user))
     if (user) {

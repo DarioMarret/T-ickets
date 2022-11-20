@@ -32,7 +32,7 @@ const ModalCarritoView = (prop) => {
         setChecked({
             [target.name]: value,
         })
-        localStorage.setItem(Metodos, value)
+        sessionStorage.setItem(Metodos, value)
         setCheck(false)
     }
     function Eliminar(e) {
@@ -63,7 +63,7 @@ const ModalCarritoView = (prop) => {
             Deposito: "",
         })
         ListaPrecioset(GetValores())
-        let asientos = JSON.parse(localStorage.getItem("asientosList"))
+        let asientos = JSON.parse(sessionStorage.getItem("asientosList"))
         asientos != null ? usedispatch(cargarsilla(asientos)) : ''
         precios.pathmapa.length > 0 ? precios.pathmapa.map((e, i) => {
             $("#" + e.path).attr("class", e.id + "  disponible " + e.tipo)
@@ -78,7 +78,7 @@ const ModalCarritoView = (prop) => {
         usedispatch(cargarmapa(color))
         usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
         usedispatch(filtrarlocali(espacio.datos))
-        localStorage.seleccionmapa = JSON.stringify(e)
+        sessionStorage.seleccionmapa = JSON.stringify(e)
         abrirlocalidad()
     }
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible')
@@ -91,7 +91,7 @@ const ModalCarritoView = (prop) => {
             usedispatch(cargarmapa(color))
             usedispatch(settypo({ nombre: precios.mapa, typo: consulta[0].tipo, precio: { ...consulta[0] } }))
             usedispatch(filtrarlocali(espacio.datos))
-            localStorage.seleccionmapa = JSON.stringify(consulta[0])
+            sessionStorage.seleccionmapa = JSON.stringify(consulta[0])
             abrirlocalidad()
         })
     })

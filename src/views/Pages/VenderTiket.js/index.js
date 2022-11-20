@@ -9,11 +9,13 @@ import { GuardarDatosdelComprador, ValidarWhatsapp } from "utils/Query";
 import { cargarEventoActivo, cargarMapa } from "utils/Querypanelsigui";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { cargalocalidad, clearMapa } from "StoreRedux/Slice/mapaLocalSlice";
 import { Authsucrito } from "utils/Query";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
 import { Dias, DatosUsuariocliente, Eventoid, listaasiento } from "utils/constantes";
-import ModalCarritoView from "./Modal/ModalCarritoadmin";
+import ModalCarritoView from "views/Components/MODAL/ModalCarritov";
+//import ModalCarritoView from "./Modal/ModalCarritoadmin";
 import ModalLocalidamapViews from "./Modal/ModalloaclidadAdmin"
 import ModalDetalle from "./Modal/ModalDetalle";
 import "swiper/css/effect-flip";
@@ -26,7 +28,7 @@ import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
-import { NineKOutlined } from "@mui/icons-material";
+import de from "date-fns/locale/de/index";
 require('moment/locale/es.js')
 export default function StoreTickesViews() {
     let usedispatch = useDispatch()
@@ -41,7 +43,6 @@ export default function StoreTickesViews() {
     const [intervalo, setcrono] = useState("")
     const [listaPrecio, setListaPrecio] = useState({ total: 0, subtotal: 0, comision: 0, comision_bancaria: 0 })
     const [alert, setAlert] = useState(null);
-    const datatimecarrito = useRef();
     const handleContinuar = () => {
         handleClosesop(false)
         setDetalle(true)
@@ -51,20 +52,22 @@ export default function StoreTickesViews() {
         handleClosesop(true)
     }
     const [info, setInfo] = useState({ Ticket: 0, Activos: 0, Venta: 0, })
+
+    const intervalRef = useRef(null);
     function velocidad() {
         let timer = 0
         var tiempo = 60 * 3
         timer = tiempo
         var minutos = 0, segundos = 0;
-        console.log(datatimecarrito)
-        datatimecarrito.current = setInterval(function () {
+        console.log(intervalRef)
+        intervalRef.current = setInterval(function () {
             minutos = parseInt(timer / 60, 10);
             segundos = parseInt(timer % 60, 10);
             minutos = minutos < 10 ? "0" + minutos : minutos;
             segundos = segundos < 10 ? "0" + segundos : segundos;
             if (timer === 0) {
-                clearInterval(datatimecarrito.current);
-                //setDatoToas({ show: true, message: 'El tiempo de compra a finalizado', color: 'bg-danger', estado: 'Mensaje importante', })
+                clearInterval(intervalRef.current);
+                // usese setDatoToas({ show: true, message: 'Su tiempo de compra a finalizado', color: 'bg-danger', estado: 'Mensaje importante', })
                 handleClosesop(false)
                 setMapashow(false)
                 setDetalle(false)
@@ -83,7 +86,7 @@ export default function StoreTickesViews() {
     }
     function detenervelocidad() {
         handleClosesop(false)
-        clearInterval(datatimecarrito.current)
+        clearInterval(intervalRef.current)
         setMapashow(false)
         setDetalle(false)
         Limpiarseleccion()
@@ -121,12 +124,12 @@ export default function StoreTickesViews() {
             })
             LimpiarLocalStore()
             usedispatch(borrarseleccion({ vacio: [] }))
-            localStorage.setItem(listaasiento, JSON.stringify([]))
+            sessionStorage.setItem(listaasiento, JSON.stringify([]))
             let obten = await listarpreciolocalidad(e.codigoEvento)
-            localStorage.consierto = e.nombreConcierto
+            sessionStorage.consierto = e.nombreConcierto
             const listalocal = await ListarLocalidad()
             let localidades = await cargarMapa()
-            localStorage.eventoid = e.codigoEvento
+            sessionStorage.eventoid = e.codigoEvento
             if (obten.data.length > 0) {
                 let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
 
@@ -161,13 +164,13 @@ export default function StoreTickesViews() {
                     mapa: mapa[0].nombre_mapa
                 }
                 // console.log(nuevosdatos)
-                localStorage.eventoid = e.codigoEvento
+                sessionStorage.eventoid = e.codigoEvento
 
                 setPrecios(nuevosdatos)
                 // console.log(obten)
                 setDatoscon(e)
                 handleClosesop(true)
-                velocidad()
+                //velocidad()
                 hideAlert()
             }
 
@@ -218,7 +221,7 @@ export default function StoreTickesViews() {
          return decodeHTMLEntities;
      })()*/
     const abrir = async (e) => {
-        let id = localStorage.getItem(Eventoid)
+        let id = sessionStorage.getItem(Eventoid)
 
         if (id != null && id != e.codigoEvento) {
             borrar(e)
@@ -228,7 +231,7 @@ export default function StoreTickesViews() {
             let obten = await listarpreciolocalidad(e.codigoEvento)
             const listalocal = await ListarLocalidad()
             let localidades = await cargarMapa()
-            localStorage.consierto = e.nombreConcierto
+            sessionStorage.consierto = e.nombreConcierto
             if (obten.data.length > 0) {
                 let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
                 let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
@@ -258,7 +261,7 @@ export default function StoreTickesViews() {
                     mapa: mapa[0].nombre_mapa
                 }
                 //console.log(nuevosdatos)
-                localStorage.eventoid = e.codigoEvento
+                sessionStorage.eventoid = e.codigoEvento
                 setPrecios(nuevosdatos)
                 setDatoscon(e)
                 handleClosesop(true)
@@ -299,7 +302,7 @@ export default function StoreTickesViews() {
                             enable: data.enable, id: data.id,
                         }
                         // DatosUsuariosLocalStorag({ ...datos, ...users })
-                        //   localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+                        //   sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
                         //   usedispatch(addususcritor({ users }))
                         //   setrepShow(true)
                         //   setDetalle(false)
@@ -349,7 +352,7 @@ export default function StoreTickesViews() {
                         enable: data.enable, id: data.id,
                     }
                     DatosUsuariosLocalStorag({ ...datos, ...users })
-                    localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+                    sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
                     usedispatch(addususcritor({ users }))
                     efectiOpShow(true)
                     setDetalle(false)
@@ -382,7 +385,6 @@ export default function StoreTickesViews() {
     }, [])
     return (
         <>
-            {alert}
             <ModalLocalidamapViews
                 handleClosesop={handleClosesop}
                 showMapa={showMapa}
@@ -401,18 +403,9 @@ export default function StoreTickesViews() {
                 setListaPrecio={setListaPrecio}
                 setMapashow={setMapashow}
             />
-            <ModalDetalle
-                showDetalle={showDetalle}
-                intervalo={intervalo}
-                setDetalle={setDetalle}
-                handleDetalleColse={handleDetalleColse}
 
-                handelReporShow={handelReporShow}
-                listarCarritoDetalle={listarCarritoDetalle}
-                handelefctivorShow={handelefctivorShow}
-                setModalPago={setModalPago}
-            //setDatoToas={setDatoToas}
-            />
+            {alert}
+
             <Row>
                 <Col lg="3" sm="6">
                     <Card className="card-stats">
@@ -521,9 +514,15 @@ export default function StoreTickesViews() {
             </Row>
             <Row>
                 <div className="col-12 d-flex flex-column align-items-center "  >
+
+                    <div>
+                        <button className="btn btn-success"  >empezar </button>
+                        <button className="btn btn-danger" >detener</button>
+                    </div>
+
                     <h4 style={{
                         fontFamily: 'fantasy'
-                    }} >Conciertos Activos</h4>
+                    }} > {intervalo} Conciertos Activos</h4>
                     <div className="col-8 border rounded-7">
 
                         <Swiper
@@ -585,6 +584,18 @@ export default function StoreTickesViews() {
 
 
             </Row>
+            <ModalDetalle
+                showDetalle={showDetalle}
+                intervalo={intervalo}
+                setDetalle={setDetalle}
+                handleDetalleColse={handleDetalleColse}
+
+                handelReporShow={handelReporShow}
+                listarCarritoDetalle={listarCarritoDetalle}
+                handelefctivorShow={handelefctivorShow}
+                setModalPago={setModalPago}
+            //setDatoToas={setDatoToas}
+            />
         </>
 
     )

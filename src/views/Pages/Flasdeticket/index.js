@@ -121,7 +121,7 @@ const IndexFlas = () => {
 
 
   const abrir = async (e) => {
-    let id = localStorage.getItem(Eventoid)
+    let id = sessionStorage.getItem(Eventoid)
 
     if (id != null && id != e.codigoEvento) {
       successAlert(e)
@@ -131,7 +131,7 @@ const IndexFlas = () => {
         let obten = await listarpreciolocalidad(e.codigoEvento)
         const listalocal = await ListarLocalidad()
         let localidades = await cargarMapa()
-        localStorage.consierto = e.nombreConcierto
+        sessionStorage.consierto = e.nombreConcierto
         if (obten.data.length > 0) {
           let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
           let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
@@ -160,7 +160,7 @@ const IndexFlas = () => {
             pathmapa: pathnuevo.filter((e) => e != undefined),
             mapa: mapa[0].nombre_mapa
           }
-          localStorage.eventoid = e.codigoEvento
+          sessionStorage.eventoid = e.codigoEvento
           setPrecios(nuevosdatos)
           setDatoscon(e)
           handleClosesop(true)
@@ -181,12 +181,12 @@ const IndexFlas = () => {
       })
       LimpiarLocalStore()
       usedispatch(borrarseleccion({ vacio: [] }))
-      localStorage.setItem(listaasiento, JSON.stringify([]))
+      sessionStorage.setItem(listaasiento, JSON.stringify([]))
       let obten = await listarpreciolocalidad(e.codigoEvento)
-      localStorage.consierto = e.nombreConcierto
+      sessionStorage.consierto = e.nombreConcierto
       const listalocal = await ListarLocalidad()
       let localidades = await cargarMapa()
-      localStorage.eventoid = e.codigoEvento
+      sessionStorage.eventoid = e.codigoEvento
       if (obten.data.length > 0) {
         let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
 
@@ -223,7 +223,7 @@ const IndexFlas = () => {
           mapa: mapa[0].nombre_mapa
         }
         // console.log(nuevosdatos)
-        localStorage.eventoid = e.codigoEvento
+        sessionStorage.eventoid = e.codigoEvento
 
         setPrecios(nuevosdatos)
         // console.log(obten)
@@ -273,8 +273,8 @@ const IndexFlas = () => {
     handleClosesop(true)
   }
   const salir = () => {
-    localStorage.removeItem(DatosUsuariocliente)
-    localStorage.removeItem(getDatosUsuariosLocalStorag)
+    sessionStorage.removeItem(DatosUsuariocliente)
+    sessionStorage.removeItem(getDatosUsuariosLocalStorag)
     usedispatch(deletesuscrito({ ...userauthi }))
     SetSeleccion("")
   }
@@ -307,7 +307,7 @@ const IndexFlas = () => {
               enable: data.enable, id: data.id,
             }
             DatosUsuariosLocalStorag({ ...datos, ...users })
-            localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+            sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
             usedispatch(addususcritor({ users }))
             setrepShow(true)
             setDetalle(false)
@@ -363,7 +363,7 @@ const IndexFlas = () => {
             enable: data.enable, id: data.id,
           }
           DatosUsuariosLocalStorag({ ...datos, ...users })
-          localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+          sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
           usedispatch(addususcritor({ users }))
           efectiOpShow(true)
           setDetalle(false)

@@ -80,7 +80,7 @@ function ModalDetalle(props) {
                         email: data.email, hora: String(hoy), enable: data.enable, id: data.id, metodoPago: datosPerson.metodoPago, envio: datosPerson.envio,
                     }
                     DatosUsuariosLocalStorag({ users })
-                    localStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+                    sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
                     usedispatch(addususcritor({ users }))
                     setDetalle(!showDetalle)
                     setModalPago(true)
@@ -101,7 +101,7 @@ function ModalDetalle(props) {
         }
     }
     function abrirPago() {
-        localStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
+        sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
         setDetalle(!showDetalle)
         setModalPago(true)
     }

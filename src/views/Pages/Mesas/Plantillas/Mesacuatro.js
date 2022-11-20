@@ -2,7 +2,7 @@ import React from "react";
 import { Stylesilla } from "./style";
 import { useSelector } from "react-redux";
 const MesacuatroView = ({ text, list }) => {
-  let nombre = JSON.parse(localStorage.getItem("seleccionmapa"))
+  let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
   const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
   let silla = seleccion
   function checkAvailability(arr, val) {

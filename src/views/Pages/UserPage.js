@@ -19,95 +19,95 @@ import {
 
 
 function UserPage() {
-  let user= clienteInfo()
-  const [alert,setAlert] = React.useState(null)
-  const [datos,setDatosUser]=useState({
-    id: '', 
-    username:'', 
-    name: '', 
-    email: '', 
+  let user = clienteInfo()
+  const [alert, setAlert] = React.useState(null)
+  const [datos, setDatosUser] = useState({
+    id: '',
+    username: '',
+    name: '',
+    email: '',
     perfil: ''
-      })
+  })
 
-      async function Eliminasucrito(){
-        try {
-          if(datos.email!=''){
-          const cancelar = await CancelarSubscriptor(datos.email)
-          const {success}=cancelar
-          if(success){
+  async function Eliminasucrito() {
+    try {
+      if (datos.email != '') {
+        const cancelar = await CancelarSubscriptor(datos.email)
+        const { success } = cancelar
+        if (success) {
 
-          localStorage.removeItem(DatosUsuarioLocalStorang)
+          sessionStorage.removeItem(DatosUsuarioLocalStorang)
           location.reload()
         }
-        }
-        } catch (error) {
-          
-        }
-
       }
-     function handelchange(){
-      setDatosUser({
-        ...datos,
-        [e.name]:e.value,
-      })
-     } 
-     const successAlert = (e) => {
-      setAlert(
-        <SweetAlert
-          warning
-          style={{ display: "block", marginTop: "-100px" }}
-          title="Estas Seguro?"
-          onConfirm={() => Eliminasucrito()}
-          onCancel={() => cancelDetele()}
-          confirmBtnBsStyle="success"
-          cancelBtnBsStyle="danger"
-          confirmBtnText="Confirmar"
-          cancelBtnText="Cancelar"
-          showCancel
-        >
-          Esta seguro de cancelar su suscripción 
-        </SweetAlert>
-      );
-    };
-    const successDelete = () => {
-      setAlert(
-        <SweetAlert
-          success
-          style={{ display: "block", marginTop: "-100px" }}
-          title="Eliminado!"
-          onConfirm={() => hideAlert()}
-          onCancel={() => hideAlert()}
-          confirmBtnBsStyle="success"
-        >
-          El suscritor se elimino correctamenta
-        </SweetAlert>
-      );
-    };
-    const cancelDetele = () => {
-      setAlert(
-        <SweetAlert
-          danger
-          style={{ display: "block", marginTop: "-100px" }}
-          title="Cancelado"
-          onConfirm={() => hideAlert()}
-          onCancel={() => hideAlert()}
-          confirmBtnBsStyle="success"
-        >
-         Se a cancelado la acción 
-        </SweetAlert>
-      );
-    };
-    const hideAlert = () => {
-      setAlert(null);
-    };
-      useEffect(()=>{
-       // console.log(user)
-        setDatosUser(user)
-      },[])
+    } catch (error) {
+
+    }
+
+  }
+  function handelchange() {
+    setDatosUser({
+      ...datos,
+      [e.name]: e.value,
+    })
+  }
+  const successAlert = (e) => {
+    setAlert(
+      <SweetAlert
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Estas Seguro?"
+        onConfirm={() => Eliminasucrito()}
+        onCancel={() => cancelDetele()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText="Confirmar"
+        cancelBtnText="Cancelar"
+        showCancel
+      >
+        Esta seguro de cancelar su suscripción
+      </SweetAlert>
+    );
+  };
+  const successDelete = () => {
+    setAlert(
+      <SweetAlert
+        success
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Eliminado!"
+        onConfirm={() => hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+      >
+        El suscritor se elimino correctamenta
+      </SweetAlert>
+    );
+  };
+  const cancelDetele = () => {
+    setAlert(
+      <SweetAlert
+        danger
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Cancelado"
+        onConfirm={() => hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+      >
+        Se a cancelado la acción
+      </SweetAlert>
+    );
+  };
+  const hideAlert = () => {
+    setAlert(null);
+  };
+  useEffect(() => {
+    // console.log(user)
+    setDatosUser(user)
+  }, [])
   return (
     <>
       <Container fluid>
-      {alert}
+        {alert}
         <div className="section-image" data-image="../../assets/img/bg5.jpg">
           {/* you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " */}
           <Container>
@@ -126,8 +126,8 @@ function UserPage() {
                           <Form.Group>
                             <label>Nombre</label>
                             <Form.Control
-                             value={datos.name}
-                             onChange={(e)=>handelchange(e.target)}
+                              value={datos.name}
+                              onChange={(e) => handelchange(e.target)}
                               type="text"
                             ></Form.Control>
                           </Form.Group>
@@ -136,10 +136,10 @@ function UserPage() {
                           <Form.Group>
                             <label>Username</label>
                             <Form.Control
-                              
+
                               placeholder="Username"
                               value={datos.username}
-                              onChange={(e)=>handelchange(e.target)}
+                              onChange={(e) => handelchange(e.target)}
                               type="text"
                             ></Form.Control>
                           </Form.Group>
@@ -153,7 +153,7 @@ function UserPage() {
                               placeholder="Email"
                               type="email"
                               value={datos.email}
-                              onChange={(e)=>handelchange(e.target)}
+                              onChange={(e) => handelchange(e.target)}
                             ></Form.Control>
                           </Form.Group>
                         </Col>
@@ -255,7 +255,7 @@ function UserPage() {
                     </p>
                   </Card.Body>
                   <Card.Footer>
-                
+
                     {/*     <hr></hr> <div className="button-container text-center">
                       <Button
                         className="btn-simple btn-icon"

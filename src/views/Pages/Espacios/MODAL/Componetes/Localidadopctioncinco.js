@@ -69,9 +69,9 @@ const MapadelocalidadViews = (props) => {
                                                 return { id: e.id, nombre: e.nombre, tipo: dato.Typo, color: '' }
                                         }
                                 })
-                                SetSelecion(datos[0].nombre_mapa.split("-")[0])
-                                localStorage.mapa = datos[0].pathmap
-                                localStorage.localidad = JSON.stringify(obten)
+                                SetSelecion(datos[0].nombre_mapa)
+                                sessionStorage.mapa = datos[0].pathmap
+                                sessionStorage.localidad = JSON.stringify(obten)
                                 setmapa(obten)
                                 setselection({ ...localidadmap, id: datos[0].id })
                                 $('[href*="mapa"]').removeClass('d-none');
@@ -117,7 +117,7 @@ const MapadelocalidadViews = (props) => {
                                         let dato = JSON.parse(e.mesas_array)
                                         return { id: e.id, nombre: e.nombre, tipo: dato.Typo, color: '' }
                                 })
-                                localStorage.removeItem("mapa")
+                                sessionStorage.removeItem("mapa")
                                 setselection({ ...localidadmap, name: "", color: '#A12121' })
                                 SetSelecion(e)
 
@@ -148,8 +148,9 @@ const MapadelocalidadViews = (props) => {
                         }
                         else {
                                 let updatedatos = await editarMapa({ ...valores, id: localidadmap.id.toString() })
+                                //console.log({ ...valores, id: localidadmap.id.toString() })
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
-                                console.log(updatedatos)
+                                // console.log(updatedatos)
                                 hideAlert()
                         }
                 } catch (error) {
@@ -191,7 +192,7 @@ const MapadelocalidadViews = (props) => {
                                 return L
                         }
                 }) : ''
-                localStorage.localidad = JSON.stringify(nuevo)
+                sessionStorage.localidad = JSON.stringify(nuevo)
                 setTimeout(function () {
                         setmapa(nuevo)
                 }, 90);

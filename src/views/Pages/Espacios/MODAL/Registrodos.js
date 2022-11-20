@@ -32,8 +32,8 @@ const RegistroViwstab = (props) => {
                 // console.log("localidada",obten)
                 //setLocalidad(filtrado)
                 //setmapa(obten)
-                localStorage.localidad = JSON.stringify(obten)
-                localStorage.localidadrespaldo = JSON.stringify(obten)
+                sessionStorage.localidad = JSON.stringify(obten)
+                sessionStorage.localidadrespaldo = JSON.stringify(obten)
 
             }
 

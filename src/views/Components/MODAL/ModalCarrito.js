@@ -84,12 +84,12 @@ function ModalCarrito(props) {
 
             })
         }
-        
+
     }
 
     function CargarValores() {
         var canti = GetCantidades()
-       
+
         setCantidad(canti)
     }
 
@@ -102,7 +102,7 @@ function ModalCarrito(props) {
             ...datosPerson,
             'metodo': value,
         })
-        localStorage.setItem(Metodos, value)
+        sessionStorage.setItem(Metodos, value)
         setCheck(false)
     }
 
@@ -131,15 +131,15 @@ function ModalCarrito(props) {
     })
     useEffect(() => {
         setListarCarrito(getVerTienda())
-        
+
         setListarCarritoDetalle(getVerTienda())
         CargarValores()
         listarCheck()
         let data = GetValores()
-       
+
         setListaPrecio(data)
         setTotal(GetValores().subtotal)
-    }, [timer,show])
+    }, [timer, show])
 
 
     return (
@@ -148,7 +148,7 @@ function ModalCarrito(props) {
                 show={show}
                 onHide={handleClose}
                 size="lg"
-                
+
             >
                 <Modal.Header >
                     <h5 className="modal-title text-center justify-content-center">LOCALIDADES</h5>
@@ -158,166 +158,166 @@ function ModalCarrito(props) {
                     </button>
                 </Modal.Header>
                 <div >
-                <Modal.Body className='col-12'>
-                    <Table>
-                        <thead className="bg-secondary text-black">
-                            <tr className='text-'>
-                                <th className="text-center text-black" scope="col">LOCALIDAD</th>
-                                <th className="text-center text-black" scope="col">PRECIO</th>
-                                <th className="text-center text-black" scope="col">CANTIDAD</th>
-                                <th className="text-center text-black" scope="col">CARACTERISTICA</th>
-                            </tr>
-                        </thead>
-                        <tbody className="text-center ">
-                            <tr>
-                                <td className="align-self-center">
-                                    <div className="d-flex  align-items-stretch">
-                                        <div className="rounded-3 px-2" style={{ backgroundColor: 'brown', width: '30px', height: '20px' }}>
-                                        </div>
-                                        <p className="px-2 " style={{ fontSize: '1em' }}>A ESA  - GENERAL</p>
-                                    </div>
-                                </td>
-                                <td className="align-self-center">${estado.valorGeneral}</td>
-                                <td className=" d-flex justify-content-center text-center">
-
-                                    <p className="resta input-group-text  " onClick={hanbleMenos}><i className="fa fa-minus"></i></p>
-
-                                    <input size="4" disabled={true}
-                                        value={cantidad.cantidad_1}
-                                        type="text" style={{
-                                            width: '50px!important',
-                                            alignItems: 'center',
-                                            textAlign: 'center',
-                                        }} className="form-control form-control-sm" />
-
-                                    <p className="suma input-group-text " onClick={hanbleMas} ><i className="fa fa-plus"></i></p>
-
-                                </td>
-                                <td className="align-self-center">
-                                    <p className="px-2 " style={{ fontSize: ' 1em' }}>GRADAS NO NUMERADO</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="align-self-center">
-                                    <div className="d-flex  align-items-stretch">
-                                        <div className="rounded-3  px-2"
-                                            style={{ backgroundColor: 'rgb(231, 134, 43)', width: '30px', height: '20px' }}>
-                                        </div>
-                                        <p className="px-0 " style={{ fontSize: ' 1em' }}>PEGA LA VUELTA - PREFERENCIA</p>
-                                    </div>
-                                </td>
-                                <td className="align-self-center">${estado.valorPregerencial}</td>
-                                <td className=" d-flex justify-content-center text-center">
-                                    <p className="resta input-group-text" onClick={hanbleMenosPreferencia} ><i className="fa fa-minus"></i></p>
-
-                                    <input size="4" disabled={true}
-                                        value={cantidad.cantidad_2}
-                                        style={{
-                                            width: '50px!important',
-                                            alignItems: 'center',
-                                            textAlign: 'center',
-                                        }} className="form-control form-control-sm" />
-
-                                    <p className="suma input-group-text " onClick={hanbleMasPreferencia} ><i className="fa fa-plus"></i></p>
-
-                                </td>
-                                <td className="align-self-center">
-                                    <p className="px-2 " style={{ fontSize: ' 1em' }}>GRADAS NO NUMERADO</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </Table>
-                    <div className=" table-responsive">
-                        <table className="detalles-resumen table table-striped display cell-border"
-                        >
+                    <Modal.Body className='col-12'>
+                        <Table>
                             <thead className="bg-secondary text-black">
-                                <tr>
+                                <tr className='text-'>
                                     <th className="text-center text-black" scope="col">LOCALIDAD</th>
-                                    <th className="text-center text-black" scope="col">FILA</th>
-                                    <th className="text-center text-black" scope="col">TOTAL ASIENTOS</th>
-                                    <th className="text-center text-black" scope="col">TOTAL</th>
-                                    <th className="text-center text-black" scope="col">ACCION</th>
+                                    <th className="text-center text-black" scope="col">PRECIO</th>
+                                    <th className="text-center text-black" scope="col">CANTIDAD</th>
+                                    <th className="text-center text-black" scope="col">CARACTERISTICA</th>
                                 </tr>
                             </thead>
                             <tbody className="text-center ">
-                                {
-                                    listarCarrito.length > 0 ?
-                                        listarCarrito.map((item, index) => {
-                                            return (
-                                                <tr key={index}>
-                                                    <td className="align-self-center">{item.localidad}</td>
-                                                    <td className="align-self-center">{item.fila}</td>
-                                                    <td className="align-self-center">{item.cantidad}</td>
-                                                    <td className="align-self-center">${item.valor * item.cantidad}</td>
-                                                    <td className="align-self-center">
-                                                        <button className="btn btn-danger" onClick={() => QuitarDelcarrito(item.localidad,)}>
-                                                            Eliminar
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })
-                                        : <tr></tr>
-                                }
+                                <tr>
+                                    <td className="align-self-center">
+                                        <div className="d-flex  align-items-stretch">
+                                            <div className="rounded-3 px-2" style={{ backgroundColor: 'brown', width: '30px', height: '20px' }}>
+                                            </div>
+                                            <p className="px-2 " style={{ fontSize: '1em' }}>A ESA  - GENERAL</p>
+                                        </div>
+                                    </td>
+                                    <td className="align-self-center">${estado.valorGeneral}</td>
+                                    <td className=" d-flex justify-content-center text-center">
+
+                                        <p className="resta input-group-text  " onClick={hanbleMenos}><i className="fa fa-minus"></i></p>
+
+                                        <input size="4" disabled={true}
+                                            value={cantidad.cantidad_1}
+                                            type="text" style={{
+                                                width: '50px!important',
+                                                alignItems: 'center',
+                                                textAlign: 'center',
+                                            }} className="form-control form-control-sm" />
+
+                                        <p className="suma input-group-text " onClick={hanbleMas} ><i className="fa fa-plus"></i></p>
+
+                                    </td>
+                                    <td className="align-self-center">
+                                        <p className="px-2 " style={{ fontSize: ' 1em' }}>GRADAS NO NUMERADO</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="align-self-center">
+                                        <div className="d-flex  align-items-stretch">
+                                            <div className="rounded-3  px-2"
+                                                style={{ backgroundColor: 'rgb(231, 134, 43)', width: '30px', height: '20px' }}>
+                                            </div>
+                                            <p className="px-0 " style={{ fontSize: ' 1em' }}>PEGA LA VUELTA - PREFERENCIA</p>
+                                        </div>
+                                    </td>
+                                    <td className="align-self-center">${estado.valorPregerencial}</td>
+                                    <td className=" d-flex justify-content-center text-center">
+                                        <p className="resta input-group-text" onClick={hanbleMenosPreferencia} ><i className="fa fa-minus"></i></p>
+
+                                        <input size="4" disabled={true}
+                                            value={cantidad.cantidad_2}
+                                            style={{
+                                                width: '50px!important',
+                                                alignItems: 'center',
+                                                textAlign: 'center',
+                                            }} className="form-control form-control-sm" />
+
+                                        <p className="suma input-group-text " onClick={hanbleMasPreferencia} ><i className="fa fa-plus"></i></p>
+
+                                    </td>
+                                    <td className="align-self-center">
+                                        <p className="px-2 " style={{ fontSize: ' 1em' }}>GRADAS NO NUMERADO</p>
+                                    </td>
+                                </tr>
                             </tbody>
-                        </table>
-                    </div>
-                    <div className="row justify-content-center bg-gray">
-                        <div className="col-6 d-flex  align-self-center justify-content-center">
-                            <h4
-                            style={{ 
-                                fontSize: '2rem',
-                            }}
-                            >SUBTOTAL:</h4>
-                                <h4 
-                                style={{
-                                    fontSize: '2rem',
-                                    fontWeight: 'bold',
-                                }}
-                                className="px-1 total-detalle"> {Total != 0 ? "$" + Total : null}</h4>
+                        </Table>
+                        <div className=" table-responsive">
+                            <table className="detalles-resumen table table-striped display cell-border"
+                            >
+                                <thead className="bg-secondary text-black">
+                                    <tr>
+                                        <th className="text-center text-black" scope="col">LOCALIDAD</th>
+                                        <th className="text-center text-black" scope="col">FILA</th>
+                                        <th className="text-center text-black" scope="col">TOTAL ASIENTOS</th>
+                                        <th className="text-center text-black" scope="col">TOTAL</th>
+                                        <th className="text-center text-black" scope="col">ACCION</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="text-center ">
+                                    {
+                                        listarCarrito.length > 0 ?
+                                            listarCarrito.map((item, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        <td className="align-self-center">{item.localidad}</td>
+                                                        <td className="align-self-center">{item.fila}</td>
+                                                        <td className="align-self-center">{item.cantidad}</td>
+                                                        <td className="align-self-center">${item.valor * item.cantidad}</td>
+                                                        <td className="align-self-center">
+                                                            <button className="btn btn-danger" onClick={() => QuitarDelcarrito(item.localidad,)}>
+                                                                Eliminar
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })
+                                            : <tr></tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
-                        <div className="col-sm d-flex flex-column align-items-end ">
-                            <div className="px-5">
-                                Método de pago
-                                <div className="form-check">
-                                    <input className="v-check form-check-input" type="radio"
-                                        name="Efectivo" id="Efectivo"
-                                        checked={checked.Efectivo == "Efectivo" ? true : false}
-                                        onChange={(e) => handelMetodopago(e.target, "Efectivo")}
-                                    />
-                                    <label className="form-check-label" >
-                                        Efectivo
-                                    </label>
-                                </div>
-                                <div className="form-check">
-                                    <input className="v-check form-check-input" type="radio"
-                                        checked={checked.Tarjeta == "Tarjeta" ? true : false}
-                                        onChange={(e) => handelMetodopago(e.target, "Tarjeta")}
-                                        name="Tarjeta" id="Tarjeta" />
-                                    <label className="form-check-label" >
-                                        Tarjeta
-                                    </label>
-                                </div>
-                                <div className="form-check ">
-                                    <input className="form-check-input" type="radio"
-                                        checked={checked.Deposito == "Deposito" ? true : false}
-                                        onChange={(e) => handelMetodopago(e.target, "Deposito")}
-                                        name="Deposito" id="Deposito" />
-                                    <label className="form-check-label" >
-                                        Deposito-transferencia
-                                    </label>
+                        <div className="row justify-content-center bg-gray">
+                            <div className="col-6 d-flex  align-self-center justify-content-center">
+                                <h4
+                                    style={{
+                                        fontSize: '2rem',
+                                    }}
+                                >SUBTOTAL:</h4>
+                                <h4
+                                    style={{
+                                        fontSize: '2rem',
+                                        fontWeight: 'bold',
+                                    }}
+                                    className="px-1 total-detalle"> {Total != 0 ? "$" + Total : null}</h4>
+                            </div>
+                            <div className="col-sm d-flex flex-column align-items-end ">
+                                <div className="px-5">
+                                    Método de pago
+                                    <div className="form-check">
+                                        <input className="v-check form-check-input" type="radio"
+                                            name="Efectivo" id="Efectivo"
+                                            checked={checked.Efectivo == "Efectivo" ? true : false}
+                                            onChange={(e) => handelMetodopago(e.target, "Efectivo")}
+                                        />
+                                        <label className="form-check-label" >
+                                            Efectivo
+                                        </label>
+                                    </div>
+                                    <div className="form-check">
+                                        <input className="v-check form-check-input" type="radio"
+                                            checked={checked.Tarjeta == "Tarjeta" ? true : false}
+                                            onChange={(e) => handelMetodopago(e.target, "Tarjeta")}
+                                            name="Tarjeta" id="Tarjeta" />
+                                        <label className="form-check-label" >
+                                            Tarjeta
+                                        </label>
+                                    </div>
+                                    <div className="form-check ">
+                                        <input className="form-check-input" type="radio"
+                                            checked={checked.Deposito == "Deposito" ? true : false}
+                                            onChange={(e) => handelMetodopago(e.target, "Deposito")}
+                                            name="Deposito" id="Deposito" />
+                                        <label className="form-check-label" >
+                                            Deposito-transferencia
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
+                            <div className="col-6 py-2 d-flex justify-content-center align-items-center">
+                                <button disabled={check} className="btn btn-primary fw-bold px-3 py-2 rounded-6"
+                                    onClick={() => handleContinuar()} >
+                                    CONTINUAR</button>
+                            </div>
                         </div>
-                        <div className="col-6 py-2 d-flex justify-content-center align-items-center">
-                            <button disabled={check} className="btn btn-primary fw-bold px-3 py-2 rounded-6"
-                                onClick={() => handleContinuar()} >
-                                CONTINUAR</button>
-                        </div>
+                    </Modal.Body>
+                    <div className='col-4'>
                     </div>
-                </Modal.Body>
-                <div className='col-4'>
-                </div>
                 </div>
             </Modal>
         </>
