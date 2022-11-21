@@ -419,8 +419,13 @@ const IndexFlas = () => {
   const dataendpoit = JSON.parse(localStorage.getItem("dataspedd"))
   //console.log(dataendpoit.split(";"))
   //localStorage.nuevodat = dataendpoit
-  dataendpoit.replace("{", "").replace("}", "").split(";").forEach((element, i) => {
 
+  dataendpoit.replace("{", "").replace("}", "").split(";").forEach((element, i) => {
+    if ("si es inpar o 0") {
+      //arr[i]={element.replace("s:", "").split(":")[1]:""}
+    } else if ("si es par") {
+      //arr[i-1]={element[i-1].replace("s:", "").split(":")[1]:""}
+    }
     console.log(element.replace("s:", "").split(":")[1])
   });
   //console.log(dataendpoit) 
