@@ -1,5 +1,9 @@
 import { Box, Typography, Chip } from '@mui/material';
 import { Badge } from 'react-bootstrap';
+import moment from "moment";
+import 'moment-timezone'
+import 'moment/locale/es';
+require('moment/locale/es.js')
 export const columns = [
   {
     accessorKey: 'id',
@@ -100,7 +104,8 @@ export const Columnusuarios = [
 let color = {
   "ACTIVO": "success",
   "PROCESO": "secondary",
-  "CANCELADO": "danger"
+  "CANCELADO": "danger",
+  "EXPIRO": "warning"
 }
 export const Columnevento = [
 
@@ -112,7 +117,9 @@ export const Columnevento = [
     accessorKey: 'estado',
     header: 'Estado',
     Cell: ({ cell, column }) => (
-      <Badge bg={color[cell.getValue()]} >{cell.getValue()}</Badge>
+      <Badge bg={(moment(cell.row.original.fechaConcierto + " " + cell.row.original.horaConcierto).format('DD MMMM YYYY HH:mm') > moment().format('DD MMMM YYYY HH:mm')) ? color[cell.getValue()] : color["EXPIRO"]}  >
+
+        {(moment(cell.row.original.fechaConcierto + " " + cell.row.original.horaConcierto).format('DD MMMM YYYY HH:mm') > moment().format('DD MMMM YYYY HH:mm')) ? cell.getValue() : "FINALIZO"}</Badge>
     ),
   },
   {

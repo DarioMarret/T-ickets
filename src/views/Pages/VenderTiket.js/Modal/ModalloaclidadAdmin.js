@@ -30,6 +30,7 @@ const ModalLocalidamapViews = (props) => {
             id: mapath.precio.id,
             fila: 0,
             valor: mapath.precio.precio_normal,
+            discapacidad: mapath.precio.precio_discapacidad,
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
         if (TotalSelecion() != 10)
@@ -37,6 +38,8 @@ const ModalLocalidamapViews = (props) => {
         else
             succesLimit()
     }
+
+
     function MesaVerifica(M, C) {
         //  console.log(seleccion.some(e => e.seleccionmapa == "Mesas Golden-F1-A7-s-2"))
         hideAlert()
@@ -44,8 +47,8 @@ const ModalLocalidamapViews = (props) => {
             let valid = seleccion.some(e => e.seleccionmapa == nombre.localodad + "-" + M + "-s-" + i)
             if (valid) { }
             if (TotalSelecion() != 10) {
-                $("." + M + "-s-" + i).hasClass('disponible') ? AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" }) : ''
-                $("." + M + "-s-" + i).hasClass('disponible') ? usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" })) : ''
+                $("." + M + "-s-" + i).hasClass('disponible') ? AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, "discapacidad": nombre.precio_discapacidad, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" }) : ''
+                $("." + M + "-s-" + i).hasClass('disponible') ? usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, "discapacidad": nombre.precio_discapacidad, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" })) : ''
                 $("." + M + "-s-" + i).hasClass('disponible') ? $("." + M + "-s-" + i).addClass('seleccionado') : ''
                 $("." + M + "-s-" + i).hasClass('disponible') ? $("." + M + "-s-" + i).removeClass('disponible') : ''
             } else {
@@ -221,8 +224,8 @@ const ModalLocalidamapViews = (props) => {
                 if (TotalSelecion() != 10) {
                     this.classList.remove('disponible')
                     this.classList.add('seleccionado')
-                    AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                    usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+                    AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "discapacidad": nombres.precio_discapacidad, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+                    usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "discapacidad": nombres.precio_discapacidad, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                     successAlert(this.classList[0], nombres.localodad, "Fila")
                 } else
                     succesLimit()
@@ -254,7 +257,11 @@ const ModalLocalidamapViews = (props) => {
             if (TotalSelecion() != 10) {
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
-                AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "ocupado" })
+                AgregarAsiento({
+                    "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal,
+                    "discapacidad": nombres.precio_discapacidad,
+                    "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "ocupado"
+                })
                 usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "ocupado" }))
                 successAlert(this.classList[0], nombres.localodad, "Mesa")
             } else {

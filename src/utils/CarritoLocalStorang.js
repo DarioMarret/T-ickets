@@ -2,7 +2,8 @@ import {
     CarritoTicket, Metodos,
     DatosUsuarioLocalStorang,
     Valorcarrito, listaasiento,
-    sillaspalco, seleccionmapa, Eventoid, concierto
+    sillaspalco, seleccionmapa, Eventoid, concierto,
+    DatosUsuariocliente
 } from "./constantes"
 import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
 let PViten = []
@@ -163,7 +164,7 @@ function Filterduplicados() {
     let ListadeSillas = PVsilla.filter((iten) => iten.estado == "seleccionado")
     ListadeSillas.length > 0 ? ListadeSillas.forEach((p, i) => {
         if (valorDuplicadas.findIndex(pd => pd.localidad === p.localidad) === -1) {
-            valorDuplicadas.push({ localidad: p.localidad, fila: '', localidaEspacio: p.localidaEspacio, nombreConcierto: p.nombreConcierto, valor: p.valor, cantidad: 1 });
+            valorDuplicadas.push({ localidad: p.localidad, fila: '', localidaEspacio: p.localidaEspacio, nombreConcierto: p.nombreConcierto, valor: p.valor, cantidad: 1, discapacidad: p.localidaEspacio.precio_discapacidad });
         }
         else {
             valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].fila = parseInt(valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].fila) + 1;
@@ -173,7 +174,7 @@ function Filterduplicados() {
     sessionStorage.sillaspalco = JSON.stringify(valorDuplicadas)
     valorDuplicadas.length > 0 ? valorDuplicadas.forEach((e, i) => {
         if (PViten.findIndex(item => item.localidad === e.localidad) === -1) {
-            PViten.push({ localidad: e.localidad, fila: e.fila, localidaEspacio: e.localidaEspacio, nombreConcierto: e.nombreConcierto, valor: e.valor, cantidad: 1 })
+            PViten.push({ localidad: e.localidad, fila: e.fila, localidaEspacio: e.localidaEspacio, nombreConcierto: e.nombreConcierto, valor: e.valor, cantidad: 1, discapacidad: e.localidaEspacio.precio_discapacidad })
         } else {
             let cantidad = ListadeSillas.filter(f => f.localidad == e.localidad).length
             PViten[PViten.findIndex(item => item.localidad === e.localidad)].cantidad = cantidad
@@ -234,28 +235,34 @@ export function TotalSelecion() {
         console.log(err)
     }
 }
+export function GetEstadousu() {
+    let user = JSON.parse(sessionStorage.getItem(DatosUsuarioLocalStorang))
+    if (user == null) return { discapacidad: "No" }
+    else if (user) return { discapacidad: user.discapacidad }
+}
 export function GetValores() {
     let tag = JSON.parse(sessionStorage.getItem(CarritoTicket));
+    let user = JSON.parse(sessionStorage.getItem(DatosUsuarioLocalStorang)) ? JSON.parse(sessionStorage.getItem(DatosUsuarioLocalStorang)) : { discapacidad: "No" }
     var valor = 0;
     var subtotal = 0;
     var comision = 0;
     var descrption = ""
     if (tag !== null) {
         tag.map(tienda => {
-            subtotal += tienda.valor * tienda.cantidad
+            let valores = user.discapacidad === "No" ? tienda.valor : tienda.localidaEspacio.precio_discapacidad
+            subtotal += valores * tienda.cantidad
             descrption = tienda.nombreConcierto
-            if (tienda.valor >= 101) {
+            if (valores >= 101) {
                 comision += tienda.cantidad * 2
-            } else if (tienda.valor >= 201) {
+            } else if (valores >= 201) {
                 comision += tienda.cantidad * 3
-            } else if (tienda.valor >= 301) {
+            } else if (valores >= 301) {
                 comision += tienda.cantidad * 4
-            } else if (tienda.valor >= 401) {
+            } else if (valores >= 401) {
                 comision += tienda.cantidad * 5
             } else {
                 comision += tienda.cantidad
             }
-
         })
         valor = subtotal + comision;
         let precios = {
@@ -263,7 +270,7 @@ export function GetValores() {
             comision: comision.toFixed(2),
             comision_bancaria: valor.toFixed(2) * 5 / 100,
             subtotal: subtotal.toFixed(2),
-            description: descrption,
+            description: descrption + "" + user.discapacidad,
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : ''
         }
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))
@@ -276,6 +283,7 @@ export function GetValores() {
         }
     }
 }
+
 export function LimpiarLocalStore() {
     PVsilla = []
     PViten = []

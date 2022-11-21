@@ -1,46 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Spinner, InputGroup } from "react-bootstrap"
-import { GetMetodo, GetValores } from 'utils/CarritoLocalStorang';
+import { GetMetodo, GetValores, getVerTienda } from 'utils/CarritoLocalStorang';
 import { Envio, DatosUsuariocliente } from 'utils/constantes';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import { DatosUsuariosLocalStorag, getCliente } from 'utils/DatosUsuarioLocalStorag';
 import { getCedula } from 'utils/DatosUsuarioLocalStorag';
+import { cargarEventoActivo, cargarMapa, } from "utils/Querypanelsigui";
+import { GetSuscritores, EliminarSuscrito } from "utils/Querypanel";
 import { ValidarWhatsapp, GuardarDatosdelComprador, EnviarmensajeWhastapp, Authsucrito } from 'utils/Query';
-
 import { useDispatch } from "react-redux";
 import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
+import { setToastes } from 'StoreRedux/Slice/ToastSlice';
+import { GetEstadousu } from 'utils/CarritoLocalStorang';
 
 function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
-        listarCarritoDetalle,
-        setModalPago, handelReporShow, handelefctivorShow,
-        setDetalle, setDatoToas, intervalo
+        listarCarritoDetalle, setListarCarritoDetalle,
+        setModalPago,
+        setDetalle, intervalo, pararcontador
     } = props
+    const [suscritores, setsuscritor] = useState([])
     const usedispatch = useDispatch()
-    const [actualState, changeCheckState] = useState({
-        check1: false,
-        check2: false,
-        check3: false
-    });
-    const [valorTotal, SetValor] = useState(0)
+    const [actualState, changeCheckState] = useState({ check1: false, check2: false, check3: false });
     const [clienteauth, setChecked] = useState(false)
-
     const [spinervi, setspiner] = useState("d-none")
     const [hidecomision, sethideComision] = useState("d-none")
     const [validationfrom, setValidation] = useState("")
-
     const [datosPerson, setPerson] = useState({
-        cedula: '',
-        name: '',
-        email: '',
-        whatsapp: '',
-        metodoPago: '',
-        envio: '',
-        direccion: '',
+        cedula: '', name: '', email: '', whatsapp: '',
+        metodoPago: '', envio: '', direccion: '',
     })
+    const nuevoevento = async () => {
+        try {
+            const data = await GetSuscritores()
+            if (data.users.length > 0) {
+                setsuscritor(data.users)
 
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const handleCheckboxChange = (event) => {
-
         const { name, checked } = event
         if (checked) {
             changeCheckState({
@@ -54,56 +55,6 @@ function ModalDetalle(props) {
                 [name]: false
             })
         }
-
-    }
-    async function handlePago() {
-        let user = { email: datosPerson.email, password: datosPerson.cedula }
-        let datos = getDatosUsuariosLocalStorag()
-        if (!clienteauth) {
-            const numero = await ValidarWhatsapp()
-            if (numero == null) {
-                setDatoToas({
-                    show: true,
-                    message: 'Ingrese un nuemro Válido',
-                    color: 'bg-danger',
-                    estado: 'Numero de Whatsapp inválido',
-                })
-                return false
-            }
-            else if (validarEmail(datosPerson.email)) {
-                const { success, message } = await GuardarDatosdelComprador()
-                if (success) {
-                    const { data } = await Authsucrito(user)
-                    var hoy = new Date();
-                    let users = {
-                        ...datos, cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil, telefono: data.movil, name: data.nombreCompleto,
-                        email: data.email, hora: String(hoy), enable: data.enable, id: data.id, metodoPago: datosPerson.metodoPago, envio: datosPerson.envio,
-                    }
-                    DatosUsuariosLocalStorag({ users })
-                    sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
-                    usedispatch(addususcritor({ users }))
-                    setDetalle(!showDetalle)
-                    setModalPago(true)
-                }
-                else {
-                    setDatoToas({
-                        show: true,
-                        message: "Ingrese un correo diferente o inicie sección",
-                        color: 'bg-danger',
-                        estado: "Correo " + datosPerson.email + " Duplicado",
-                    })
-                }
-            }
-        }
-        else {
-            setDetalle(!showDetalle)
-            setModalPago(true)
-        }
-    }
-    function abrirPago() {
-        sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
-        setDetalle(!showDetalle)
-        setModalPago(true)
     }
     const [listaPrecio, ListaPrecioset] = useState({
         total: 0,
@@ -113,45 +64,71 @@ function ModalDetalle(props) {
     })
     async function handelchange(e) {
         let metodoPago = GetMetodo()
+        let datosPersonal = getDatosUsuariosLocalStorag()
         const { value, name } = e;
-
         setPerson({
             ...datosPerson,
             [name]: value
         })
         if (name === "cedula" && value.length == 10) {
-            setspiner("")
-            const datos = await getCedula(value)
-            const { name, email, direccion, whatsapp } = datos
-            console.log(datos)
-            if (name) {
-                DatosUsuariosLocalStorag({ ...datos, cedula: value, envio: datosPerson.envio, whatsapp: '' })
-                setPerson({
-                    ...datosPerson,
-                    email: email ? email : '',
-                    name: name,
-                    cedula: value,
-                    direccion: direccion ? direccion : '',
-                    envio: datosPerson.envio,
-                    whatsapp: '',
-                    metodoPago: metodoPago
-                })
+            try {
+                setspiner("")
+                let infosubs = suscritores.find((e) => e.cedula == value)
+                const datos = await getCedula(value)
+                const { discapacidad } = datos
+                if (infosubs != undefined) {
+                    const { ciudad, email, movil, nombreCompleto } = infosubs
+                    setspiner("d-none")
+                    setPerson({
+                        ...datosPerson, email: email, cedula: value, direccion: ciudad, envio: datosPerson.envio,
+                        whatsapp: movil, metodoPago: metodoPago, name: nombreCompleto, metodoPago: metodoPago
+                    })
+                    DatosUsuariosLocalStorag({
+                        ...datosPersonal, email: email, cedula: value, direccion: ciudad, envio: datosPerson.envio,
+                        whatsapp: movil, metodoPago: metodoPago, name: nombreCompleto, metodoPago: metodoPago, discapacidad: discapacidad
+                    })
+                    setChecked(true)
+                    ListaPrecioset(GetValores())
+                    setListarCarritoDetalle(getVerTienda())
+                }
+                else {
+                    setChecked(false)
+                    const datos = await getCedula(value)
+                    const { name, email, direccion, discapacidad } = datos
+                    if (name) {
+                        DatosUsuariosLocalStorag({ ...datos, cedula: value, envio: datosPerson.envio, whatsapp: '' })
+                        setPerson({
+                            ...datosPerson, email: email ? email : '', name: name,
+                            cedula: value, direccion: direccion ? direccion : '',
+                            envio: datosPerson.envio, whatsapp: '', metodoPago: metodoPago, discapacidad: discapacidad
+                        })
+                        setspiner("d-none")
+                        ListaPrecioset(GetValores())
+                        setListarCarritoDetalle(getVerTienda())
+                    } else {
+                        sessionStorage.removeItem("DatosUsuarioLocalStorang")
+                        setPerson({
+                            ...datosPerson,
+                            email: '',
+                            name: '',
+                            direccion: '',
+                        })
+                        setspiner("d-none")
+                        usedispatch(setToastes({
+                            show: true,
+                            message: 'Ingrese el número de cédula correcta o intente mas tarde',
+                            color: 'bg-danger',
+                            estado: 'No se encontraron datos',
+                        }))
+                        ListaPrecioset(GetValores())
+                        setListarCarritoDetalle(getVerTienda())
+                    }
+                }
+            } catch (error) {
                 setspiner("d-none")
-            } else {
-                setPerson({
-                    ...datosPerson,
-                    email: '',
-                    name: '',
-                    direccion: '',
-                })
-                setspiner("d-none")
-                setDatoToas({
-                    show: true,
-                    message: 'Ingrese el número de cédula correcta o intente mas tarde',
-                    color: 'bg-danger',
-                    estado: 'No se encontraron datos',
-                })
+                console.log(error)
             }
+
 
         }
     }
@@ -170,12 +147,12 @@ function ModalDetalle(props) {
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         if (datosPerson.whatsapp.length != 10 && datosPerson.whatsapp.substring(0, 1) != 0) {
             setValidation("was-validated")
-            setDatoToas({
+            usedispatch(setToastes({
                 show: true,
                 message: 'Ingrese un formato de Whatsapp válido',
                 color: 'bg-danger',
                 estado: 'Numero de Whatsapp inválido',
-            })
+            }))
             return false
         }
         else if (emailRegex.test(valor)) {
@@ -186,15 +163,157 @@ function ModalDetalle(props) {
                 ...datosPerson,
                 email: ''
             })
-            setDatoToas({
+            usedispatch(setToastes({
                 show: true,
                 message: 'Campos inconpletos o Formato de correo inválido ',
                 color: 'bg-danger',
                 estado: 'Complete la información',
-            })
+            }))
             return false
         }
     }
+    function GenerarPDF() {
+        var element = document.getElementById('detalle');
+        var opt = {
+            margin: 1,
+            filename: 'Compra.pdf',
+
+            html2canvas: { scale: 2 },
+        };
+        html2pdf(element, opt);
+
+    }
+    const handelefctivorShow = async () => {
+        let datos = await getDatosUsuariosLocalStorag()
+        let nuemro = await ValidarWhatsapp()
+
+        if (clienteauth) {
+            //GenerarPDF()
+            // efectiOpShow(true)
+            console.log(nuemro)
+            usedispatch(setToastes({
+                show: true, message: "se registro la compra de Boletos", color: 'bg-success',
+                estado: 'Compra registrada ',
+            }))
+
+            pararcontador()
+            setDetalle(false)
+            return
+        } else {
+            try {
+                if (nuemro == null) {
+                    usedispatch(setToastes({
+                        show: true,
+                        message: "Ingrese un número de Whatsapp válido",
+                        color: 'bg-danger',
+                        estado: "Número " + datos.whatsapp + " Inválido",
+                    }))
+                    return false
+                }
+                const { success, message } = await GuardarDatosdelComprador()
+                if (success) {
+                    usedispatch(setToastes({ show: true, message: "Los datos del nuevo subscritor se han registrado", color: 'bg-success', estado: "Cliente registrado " }))
+                    efectiOpShow(true)
+                    setDetalle(false)
+                }
+                else {
+                    usedispatch(setToastes({
+                        show: true,
+                        message: "correo electrónico ya registrado",
+                        color: 'bg-danger',
+                        estado: "Correo " + datos.email + " Duplicado",
+                    }))
+                }
+            } catch (error) {
+                console.log(clienteauth, error)
+                usedispatch(setToastes({
+                    show: true, message: "Hubo un error correo duplicado o verifique su conexión",
+                    color: 'bg-danger', estado: "Hubo un error",
+                }))
+            }
+        }
+
+    }
+
+    async function handlePago() {
+        if (!clienteauth) {
+            const numero = await ValidarWhatsapp()
+            if (numero == null) {
+                usedispatch(setToastes({
+                    show: true,
+                    message: 'Ingrese un nuemro Válido',
+                    color: 'bg-danger',
+                    estado: 'Numero de Whatsapp inválido',
+                }))
+                return false
+            }
+            else if (validarEmail(datosPerson.email)) {
+                const { success, message } = await GuardarDatosdelComprador()
+                if (success) {
+                    setDetalle(!showDetalle)
+                    setModalPago(true)
+                }
+                else {
+                    usedispatch(setToastes({
+                        show: true,
+                        message: "Probablemente el Correo " + datosPerson.email + " ya esta registrado",
+                        color: 'bg-danger',
+                        estado: "Hubo un error intente nuevamente",
+                    }))
+                }
+            }
+        }
+        else {
+            setDetalle(!showDetalle)
+            setModalPago(true)
+        }
+    }
+    const handelReporShow = async () => {
+        let datos = await getDatosUsuariosLocalStorag()
+        let nuemro = await ValidarWhatsapp()
+        try {
+            if (!clienteauth) {
+                if (nuemro == null) {
+                    usedispatch(setToastes({
+                        show: true,
+                        message: "Ingrese un numero de Whatsapp",
+                        color: 'bg-danger',
+                        estado: "Numero " + datos.whatsapp + " Invalido",
+                    }))
+                    return
+                }
+                else {
+                    const { success, message } = await GuardarDatosdelComprador()
+                    if (success) {
+                        usedispatch(setToastes({ show: true, message: "Los datos del nuevo subscritor se han registrado", color: 'bg-success', estado: "Cliente registrado " }))
+                        setrepShow(true)
+                        setDetalle(false)
+                    }
+                    else {
+                        usedispatch(setToastes({
+                            show: true,
+                            message: "Probablemente el Correo " + datosPerson.email + " ya esta registrado",
+                            color: 'bg-danger',
+                            estado: "Hubo un error intente nuevamente",
+                        }))
+
+                    }
+                }
+            } else {
+                setrepShow(true)
+                setDetalle(false)
+            }
+        } catch (error) {
+            usedispatch(setToastes({
+                show: true,
+                message: "Verifique su conexión o intente mas tarde",
+                color: 'bg-danger',
+                estado: "Hubo un error",
+            }))
+            console.log("Error---", error)
+        }
+    }
+
     $(document).ready(function () {
         $(".numero").keypress(function (e) {
             var n = (e = e || window.event).keyCode || e.which,
@@ -203,8 +322,12 @@ function ModalDetalle(props) {
         })
     });
     useEffect(() => {
+        (async () => {
+            await nuevoevento()
+        })()
         let datosPersonal = getDatosUsuariosLocalStorag()
         let clineteLogeado = getCliente()
+        setChecked((datosPersonal) ? true : false)
         let metodoPago = GetMetodo()
         ListaPrecioset(GetValores())
         if (clineteLogeado == null) {
@@ -281,7 +404,7 @@ function ModalDetalle(props) {
                 </button>
             </Modal.Header>
 
-            <Modal.Body>
+            <Modal.Body >
 
                 <div className="container-fluid flex-wrap-reverse justify-content-center " style={{ height: "auto" }}>
                     <div className="row p-4 ">
@@ -294,169 +417,166 @@ function ModalDetalle(props) {
                                 data-backdrop="static" data-keyboard="false">CANCELAR COMPRA</button>
                         </div>
                     </div>
-                    <div className={"container-fluid row " + validationfrom} >
+                    <div id="detalle">
+                        <div className={"container-fluid row " + validationfrom} >
 
 
-                        <div className="col-12 col-sm-6 d-flex flex-column">
-                            <span>Forma de Pago:</span>
-                            <input type="text"
-                                className="form-control form-control-sm"
-                                name="metodoPago"
-                                value={datosPerson.metodoPago ? datosPerson.metodoPago : ''}
-                                id="formaPago" disabled={true}
-                                placeholder="forma de pago Selecionada"
-                            />
-                            <div className="col-12 border border-bottom mb-3"></div>
+                            <div className="col-12 col-sm-6 d-flex flex-column">
+                                <span>Forma de Pago:</span>
+                                <input type="text"
+                                    className="form-control form-control-sm"
+                                    name="metodoPago"
+                                    value={datosPerson.metodoPago ? datosPerson.metodoPago : ''}
+                                    id="formaPago" disabled={true}
+                                    placeholder="forma de pago Selecionada"
+                                />
+                                <div className="col-12 border border-bottom mb-3"></div>
 
 
-                            <span>Cedula DNI:</span>
-                            <input type="text"
-                                className="numero form-control form-control-sm"
-                                id="dni"
-                                maxLength={10}
-                                disabled={clienteauth}
-                                name='cedula'
-                                value={datosPerson.cedula ? datosPerson.cedula : ''}
-                                onChange={(e) => handelchange(e.target)}
-                                placeholder="Ingrese su numero de identificacion"
-                            />
+                                <span>Cedula DNI:</span>
+                                <input type="text"
+                                    className="numero form-control form-control-sm"
+                                    id="dni"
+                                    maxLength={10}
 
-                            <span>Nombre Completo:</span>
-                            <input type="text"
-                                className="form-control form-control-sm"
-                                id="name"
-                                disabled={(clienteauth && datosPerson.name != ' ')}
-                                name="name"
-                                value={datosPerson.name ? datosPerson.name : ''}
-                                onChange={(e) => hanbleDatos(e)}
+                                    name='cedula'
+                                    value={datosPerson.cedula ? datosPerson.cedula : ''}
+                                    onChange={(e) => handelchange(e.target)}
+                                    placeholder="Ingrese su numero de identificacion"
+                                />
 
-                                placeholder="Ingrese su nombre completo"
-                            />
+                                <span>Nombre Completo:</span>
+                                <input type="text"
+                                    className="form-control form-control-sm"
+                                    id="name"
+                                    disabled={(clienteauth && datosPerson.name != ' ')}
+                                    name="name"
+                                    value={datosPerson.name ? datosPerson.name : ''}
+                                    onChange={(e) => hanbleDatos(e)}
+                                    placeholder="Ingrese su nombre completo"
+                                />
+                            </div>
+                            <div className="col-12 col-sm-6 d-flex flex-column">
+                                <span>Forma de envío:</span>
+                                <div>
+                                    <select className="form-select" required
+
+                                        value={datosPerson.envio ? datosPerson.envio : ''} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
+                                        {
+                                            Envio.map((item, index) => {
+                                                return (
+                                                    <option key={index} value={item.value}>{item.envio}</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
+                                </div>
+                                <div className="col-12 border border-bottom mb-3"></div>
+                                <span>Correo:</span>
+                                <input type="email"
+                                    className="form-control form-control-sm"
+                                    id="email"
+                                    name='email'
+                                    disabled={(clienteauth && datosPerson.email != '')}
+                                    required
+                                    value={datosPerson.email ? datosPerson.email : ''}
+                                    onChange={(e) => hanbleDatos(e)}
+                                    placeholder="Ingrese su correo electrónico"
+                                />
+                                <span>Whatsapp Contacto:</span>
+                                <input type="text"
+                                    className="numero form-control form-control-sm"
+                                    id="whatsapp"
+                                    name="whatsapp"
+                                    minLength={10}
+                                    maxLength={10}
+                                    required
+                                    value={datosPerson.whatsapp ? datosPerson.whatsapp : ''}
+                                    onChange={(e) => hanbleDatos(e)}
+                                    placeholder="Ingrese su whatsapp o numero de contacto"
+                                />
+
+                            </div>
+                            <div className="col-12 col-sm-12 d-flex flex-column">
+                                <span>Direccion:</span>
+                                <input type="text"
+                                    className="form-control form-control-sm"
+                                    id="direccion"
+                                    name="direccion"
+                                    maxLength={255}
+                                    required
+
+                                    value={datosPerson.direccion ? datosPerson.direccion : ''}
+                                    onChange={(e) => hanbleDatos(e)}
+                                    placeholder="Ingrese su direccion"
+                                />
+                            </div>
                         </div>
-                        <div className="col-12 col-sm-6 d-flex flex-column">
-                            <span>Forma de envío:</span>
-                            <div>
-                                <select className="form-select" required
+                        <div className="container-fluid table-responsive">
+                            <table className="resumen-table table ">
+                                <thead>
+                                    <tr className="text-black">
+                                        <th scope="col" className="text-black">CONCIENTO</th>
+                                        <th className="text-black">LOCALIDAD</th>
 
-                                    value={datosPerson.envio ? datosPerson.envio : ''} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
+                                        <th className="text-black" scope="col">ASIENTO</th>
+                                        <th className="text-black" scope="col">TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                     {
-                                        Envio.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.value}>{item.envio}</option>
-                                            )
-                                        })
+                                        listarCarritoDetalle.length > 0 ?
+                                            listarCarritoDetalle.map((item, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        <td className="align-self-center">{item.nombreConcierto}</td>
+                                                        <td className="align-self-center">{item.localidad}</td>
+                                                        <td className="align-self-center">{item.cantidad}</td>
+                                                        <td className="align-self-center">${GetEstadousu().discapacidad == "No" ? item.valor * item.cantidad : item.discapacidad * item.cantidad}</td>
+                                                    </tr>
+                                                )
+                                            })
+                                            : <tr></tr>
                                     }
-                                </select>
-                            </div>
-
-                            <div className="col-12 border border-bottom mb-3"></div>
-
-                            <span>Correo:</span>
-                            <input type="email"
-                                className="form-control form-control-sm"
-                                id="email"
-                                name='email'
-                                disabled={(clienteauth && datosPerson.email != '')}
-                                required
-                                value={datosPerson.email ? datosPerson.email : ''}
-                                onChange={(e) => hanbleDatos(e)}
-                                placeholder="Ingrese su correo electronico"
-                            />
-
-                            <span>Whatsapp Contacto:</span>
-                            <input type="text"
-                                className="numero form-control form-control-sm"
-                                id="whatsapp"
-                                name="whatsapp"
-                                minLength={10}
-                                maxLength={10}
-                                required
-                                disabled={(clienteauth && datosPerson.whatsapp != '')}
-                                value={datosPerson.whatsapp ? datosPerson.whatsapp : ''}
-                                onChange={(e) => hanbleDatos(e)}
-                                placeholder="Ingrese su whatsapp o numero de contacto"
-                            />
-
+                                </tbody>
+                            </table>
                         </div>
-                        <div className="col-12 col-sm-12 d-flex flex-column">
-                            <span>Direccion:</span>
-                            <input type="text"
-                                className="form-control form-control-sm"
-                                id="direccion"
-                                name="direccion"
-                                maxLength={255}
-                                required
-                                disabled={(clienteauth && datosPerson.direccion != '')}
-                                value={datosPerson.direccion ? datosPerson.direccion : ''}
-                                onChange={(e) => hanbleDatos(e)}
-                                placeholder="Ingrese su direccion"
-                            />
-                        </div>
-                    </div>
-                    <div className="container-fluid table-responsive">
-                        <table className="resumen-table table ">
-                            <thead>
-                                <tr className="text-black">
-                                    <th scope="col" className="text-black">CONCIENTO</th>
-                                    <th className="text-black">LOCALIDAD</th>
+                        <div className="row p-4 float-rigth">
+                            <div className="col-6 col-lg-8 text-end d-flex align-items-end flex-column  ">
+                                <div>
+                                    <h4>Subtotal:</h4>
+                                </div>
+                                <div>
+                                    <p>Comision por Boleto:</p>
+                                </div>
+                                <div className={hidecomision}>
+                                    <p>Comision Bancaria:</p>
+                                </div>
+                                <div>
+                                    <h4>Total:</h4>
+                                </div>
+                            </div>
+                            <div className="col-6 col-sm text-end align-items-end flex-column ">
+                                <div className="container ">
+                                    <h4 className="subtotal">${listaPrecio.subtotal} </h4>
+                                </div>
+                                <div className="container-fluid">
+                                    <h4 className="comision-boleto text-end">${listaPrecio.comision} </h4>
+                                </div>
+                                <div className={"container-fluid " + hidecomision}>
+                                    <h4 className="comision-boleto text-end">${listaPrecio.comision_bancaria} </h4>
+                                </div>
+                                <div className="container  ">
+                                    <h4 className="total-text"> ${GetMetodo() === "Tarjeta" ? listaPrecio.total : (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)} </h4>
+                                </div>
 
-                                    <th className="text-black" scope="col">ASIENTO</th>
-                                    <th className="text-black" scope="col">TOTAL</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    listarCarritoDetalle.length > 0 ?
-                                        listarCarritoDetalle.map((item, index) => {
-                                            return (
-                                                <tr key={index}>
-                                                    <td className="align-self-center">{item.nombreConcierto}</td>
-                                                    <td className="align-self-center">{item.localidad}</td>
-                                                    <td className="align-self-center">{item.cantidad}</td>
-                                                    <td className="align-self-center">${item.valor * item.cantidad}</td>
-                                                </tr>
-                                            )
-                                        })
-                                        : <tr></tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="row p-4 float-rigth">
-                        <div className="col-6 col-lg-8 text-end d-flex align-items-end flex-column  ">
-                            <div>
-                                <h4>Subtotal:</h4>
-                            </div>
-                            <div>
-                                <p>Comision por Boleto:</p>
-                            </div>
-                            <div className={hidecomision}>
-                                <p>Comision Bancaria:</p>
-                            </div>
-                            <div>
-                                <h4>Total:</h4>
-                            </div>
-                        </div>
-                        <div className="col-6 col-sm text-end align-items-end flex-column ">
-                            <div className="container ">
-                                <h4 className="subtotal">${listaPrecio.subtotal} </h4>
-                            </div>
-                            <div className="container-fluid">
-                                <h4 className="comision-boleto text-end">${listaPrecio.comision} </h4>
-                            </div>
-                            <div className={"container-fluid " + hidecomision}>
-                                <h4 className="comision-boleto text-end">${listaPrecio.comision_bancaria} </h4>
-                            </div>
-                            <div className="container  ">
-                                <h4 className="total-text"> ${GetMetodo() === "Tarjeta" ? listaPrecio.total : (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)} </h4>
                             </div>
 
                         </div>
-
                     </div>
                     <div className="row pb-3">
                         <div className="col-12 col-lg-10 text-end d-flex flex-column  ">
-                            {!clienteauth ? <div className="d-flex text-end  flex-wrap-reverse ">
+                            {!clienteauth ? <div className="d-none d-flex text-end  flex-wrap-reverse ">
                                 <div className="col-10 text-end">
                                     <p style={{ fontSize: "0.7em" }}>Acepto los <strong>Términos y condiciones</strong> emitidas por
                                         FlahsTheTikest</p>
@@ -471,7 +591,7 @@ function ModalDetalle(props) {
                                 </div>
                             </div> : ""}
 
-                            {!clienteauth ? <div className="d-flex text-end  flex-wrap-reverse ">
+                            {!clienteauth ? <div className="d-none d-flex text-end  flex-wrap-reverse ">
                                 <div className="col-10 d-flex text-end">
                                     <p style={{ fontSize: "0.7em" }}>
                                         Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
@@ -487,7 +607,7 @@ function ModalDetalle(props) {
                                     />
                                 </div>
                             </div> : ""}
-                            {!clienteauth ? <div className="d-flex text-end  flex-wrap-reverse ">
+                            {!clienteauth ? <div className="d-none d-flex text-end  flex-wrap-reverse ">
                                 <div className="col-10 d-flex text-end">
                                     <strong>
                                         <p style={{ fontSize: "0.8em" }}>
@@ -505,14 +625,14 @@ function ModalDetalle(props) {
                             </div> : ""}
 
                         </div>
-                        <div className="col-12 col-lg-2 text-center align-items-end ">
-                            {
+                        <div className=" col-12 col-lg-12  text-end align-items-end ">
+                            { /* {
                                 !clienteauth && datosPerson.metodoPago == "Tarjeta" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                         onClick={handlePago}
                                     >
-                                        <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
+                                        <i className="fa fa-credit-card "> </i>PAGAR T</button> : ""
                             }
                             {
                                 !clienteauth && datosPerson.metodoPago == "Efectivo" ?
@@ -520,7 +640,7 @@ function ModalDetalle(props) {
                                         disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelefctivorShow() } }}
                                     >
-                                        <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
+                                        <i className="fa fa-credit-card "> </i>PAGAR E</button> : ""
                             }
                             {
                                 !clienteauth && datosPerson.metodoPago == "Deposito" ?
@@ -528,7 +648,7 @@ function ModalDetalle(props) {
                                         disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
                                     >
-                                        <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
+                                        <i className="fa fa-credit-card "> </i>PAGAR D</button> : ""
                             }
                             {
                                 !clienteauth && !datosPerson.metodoPago ?
@@ -544,29 +664,36 @@ function ModalDetalle(props) {
                                         onClick={abrirPago}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
+                            }*/}
+                            {
+                                datosPerson.metodoPago == "Tarjeta" ?
+                                    <button id="pagarcuenta" className="btn btn-primary"
+                                        disabled={!(Object.values(datosPerson).every((d) => d))}
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { handlePago() } }}
+                                    >
+                                        <i className="fa fa-credit-card mx-1"> </i>PAGAR</button> : ""
                             }
                             {
-                                clienteauth && datosPerson.metodoPago == "Efectivo" ?
+                                datosPerson.metodoPago == "Efectivo" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(datosPerson.envio != '')}
+                                        disabled={!(Object.values(datosPerson).every((d) => d))}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelefctivorShow() } }}
                                     >
-                                        <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
+                                        <i className="fa fa-credit-card mx-1"> </i>PAGAR</button> : ""
                             }
                             {
-                                clienteauth && datosPerson.metodoPago == "Deposito" ?
+                                datosPerson.metodoPago == "Deposito" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(datosPerson.envio != '')}
+                                        disabled={!(Object.values(datosPerson).every((d) => d))}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
                                     >
-                                        <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
+                                        <i className="fa fa-credit-card mx-1"> </i>PAGAR</button> : ""
                             }
                             {
                                 datosPerson.metodoPago === null ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={true}
-                                    >
-                                        <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
+                                    ><i className="fa fa-credit-card mx-1"> </i>PAGAR</button> : ""
                             }
 
 

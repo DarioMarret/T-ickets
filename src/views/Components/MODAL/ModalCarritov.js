@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { cargarmapa, settypo, filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice"
 import { clearSillas, cargarsilla } from "StoreRedux/Slice/sillasSlice"
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { GetEstadousu } from "utils/CarritoLocalStorang"
 const ModalCarritoView = (prop) => {
     const { showshop, handleClosesop, handleContinuar, setMapashow, precios, setListaPrecio, setListarCarritoDetalle, intervalo, detener } = prop
     let usedispatch = useDispatch()
@@ -200,7 +201,7 @@ const ModalCarritoView = (prop) => {
                                                                 style={{
                                                                     fontSize: "0.9em",
                                                                 }} >{e.localidad}</div>
-                                                            <div className="flex-row d-none d-sm-block  text-center col-2">${e.valor * e.cantidad}</div>
+                                                            <div className="flex-row d-none d-sm-block  text-center col-2">${GetEstadousu().discapacidad == "No" ? e.valor * e.cantidad : e.discapacidad * e.cantidad}</div>
                                                             <div className="flex-row d-none d-sm-block text-center  col-2">{e.cantidad}</div>
                                                             <div className="d-flex d-sm-flex flex-row d-none d-sm-block   text-center align-items-center col-sm">
                                                                 <button className="btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >

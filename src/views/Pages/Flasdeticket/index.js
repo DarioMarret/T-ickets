@@ -22,7 +22,7 @@ import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
 import Tikes from "../Susbcritorpage/Tickes";
 import PerfilPage from "../Perfil";
-import { getDatosUsuariosLocalStorag, getCliente, DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import { getDatosUsuariosLocalStorag, getCliente, DatosUsuariosLocalStorag, getCedula } from "utils/DatosUsuarioLocalStorag";
 import { GetMetodo, getVerTienda, LimpiarLocalStore, Limpiarseleccion } from "utils/CarritoLocalStorang";
 import { GuardarDatosdelComprador, ValidarWhatsapp } from "utils/Query";
 import { useSelector, useDispatch } from "react-redux";
@@ -117,12 +117,17 @@ const IndexFlas = () => {
     handleClosesop(true)
     velocidad()
   }
-
-
-
+  async function cedulaget() {
+    if (JSON.parse(sessionStorage.getItem(DatosUsuariosLocalStorag))) {
+      const datos = await getCedula(JSON.parse(sessionStorage.getItem(DatosUsuariosLocalStorag).cedula))
+      const { discapacidad } = datos
+      DatosUsuariosLocalStorag({
+        ...datosPerson, discapacidad: discapacidad
+      })
+    }
+  }
   const abrir = async (e) => {
     let id = sessionStorage.getItem(Eventoid)
-
     if (id != null && id != e.codigoEvento) {
       successAlert(e)
     }
@@ -396,9 +401,7 @@ const IndexFlas = () => {
   const closedeposito = () => {
     setrepShow(false)
     setDetalle(true)
-
   }
-
   const handleefectivoClose = () => {
     efectiOpShow(false)
     setDetalle(true)
@@ -410,6 +413,30 @@ const IndexFlas = () => {
     comision: 0,
     comision_bancaria: 0
   })
+
+  //localStorage.setItem("data", JSON.stringify("a:16:{s:6:\"olt_id\";s:1:\"2\";s:8:\"pon_type\";s:4:\"gpon\";s:5:\"board\";s:1:\"0\";s:4:\"port\";s:1:\"7\";s:2:\"sn\";s:12:\"HWTC3549C29C\";s:4:\"vlan\";s:3:\"100\";s:8:\"onu_type\";s:7:\"HG8240H\";s:4:\"zone\";s:22:\"PANCHO JACOME SECTOR A\";s:3:\"odb\";s:0:\"\";s:4:\"name\";s:12:\"ANDRES TAPIA\";s:18:\"address_or_comment\";s:0:\"\";s:8:\"onu_mode\";s:7:\"Routing\";s:15:\"onu_external_id\";s:4:\"1270\";s:11:\"onu_type_id\";s:2:\"50\";s:25:\"upload_speed_profile_name\";s:10:\"PLAN-SPEED\";s:27:\"download_speed_profile_name\";s:10:\"PLAN-SPEED\";}")
+  localStorage.setItem("dataspedd", JSON.stringify("{s:6:\"olt_id\";s:1:\"2\";s:8:\"pon_type\";s:4:\"gpon\";s:5:\"board\";s:1:\"0\";s:4:\"port\";s:1:\"7\";s:2:\"sn\";s:12:\"HWTC3549C29C\";s:4:\"vlan\";s:3:\"100\";s:8:\"onu_type\";s:7:\"HG8240H\";s:4:\"zone\";s:22:\"PANCHO JACOME SECTOR A\";s:3:\"odb\";s:0:\"\";s:4:\"name\";s:12:\"ANDRES TAPIA\";s:18:\"address_or_comment\";s:0:\"\";s:8:\"onu_mode\";s:7:\"Routing\";s:15:\"onu_external_id\";s:4:\"1270\";s:11:\"onu_type_id\";s:2:\"50\";s:25:\"upload_speed_profile_name\";s:10:\"PLAN-SPEED\";s:27:\"download_speed_profile_name\";s:10:\"PLAN-SPEED\";}"))
+  const dataendpoit = JSON.parse(localStorage.getItem("dataspedd"))
+  //console.log(dataendpoit.split(";"))
+  //localStorage.nuevodat = dataendpoit
+  dataendpoit.replace("{", "").replace("}", "").split(";").forEach((element, i) => {
+
+    console.log(element.replace("s:", "").split(":")[1])
+  });
+  //console.log(dataendpoit) 
+
+  //const str = dataendpoit.split(" \ ")[0]
+  //console.log
+  //const str1 = str.split(" \ ")
+  //console.log(str1)
+  //console.log(JSON.parse(str))
+  //!dataendpoit ? dataendpoit.map((e, i) => {
+  // console.log(e)
+  //}) : ''
+  //console.log()
+
+
+
 
   const [listarCarritoDetalle, setListarCarritoDetalle] = useState([])
   const [datosPerson, setPerson] = useState({
@@ -787,7 +814,7 @@ const IndexFlas = () => {
         intervalo={intervalo}
         setDetalle={setDetalle}
         handleDetalleColse={handleDetalleColse}
-
+        setListarCarritoDetalle={setListarCarritoDetalle}
         handelReporShow={handelReporShow}
         listarCarritoDetalle={listarCarritoDetalle}
         handelefctivorShow={handelefctivorShow}

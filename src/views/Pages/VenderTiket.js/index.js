@@ -14,8 +14,8 @@ import { cargalocalidad, clearMapa } from "StoreRedux/Slice/mapaLocalSlice";
 import { Authsucrito } from "utils/Query";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
 import { Dias, DatosUsuariocliente, Eventoid, listaasiento } from "utils/constantes";
-import ModalCarritoView from "views/Components/MODAL/ModalCarritov";
-//import ModalCarritoView from "./Modal/ModalCarritoadmin";
+//import ModalCarritoView from "views/Components/MODAL/ModalCarritov";
+import ModalCarritoView from "./Modal/ModalCarritoadmin";
 import ModalLocalidamapViews from "./Modal/ModalloaclidadAdmin"
 import ModalDetalle from "./Modal/ModalDetalle";
 import "swiper/css/effect-flip";
@@ -41,7 +41,6 @@ export default function StoreTickesViews() {
     const [datos, setDatoscon] = useState([])
     const [listarCarritoDetalle, setListarCarritoDetalle] = useState([])
     const [intervalo, setcrono] = useState("")
-    const [listaPrecio, setListaPrecio] = useState({ total: 0, subtotal: 0, comision: 0, comision_bancaria: 0 })
     const [alert, setAlert] = useState(null);
     const handleContinuar = () => {
         handleClosesop(false)
@@ -52,7 +51,6 @@ export default function StoreTickesViews() {
         handleClosesop(true)
     }
     const [info, setInfo] = useState({ Ticket: 0, Activos: 0, Venta: 0, })
-
     const intervalRef = useRef(null);
     function velocidad() {
         let timer = 0
@@ -67,7 +65,7 @@ export default function StoreTickesViews() {
             segundos = segundos < 10 ? "0" + segundos : segundos;
             if (timer === 0) {
                 clearInterval(intervalRef.current);
-                // usese setDatoToas({ show: true, message: 'Su tiempo de compra a finalizado', color: 'bg-danger', estado: 'Mensaje importante', })
+                usedispatch(setToastes({ show: true, message: 'El tiempo de compra a finalizado', color: 'bg-danger', estado: 'Mensaje importante', }))
                 handleClosesop(false)
                 setMapashow(false)
                 setDetalle(false)
@@ -94,24 +92,10 @@ export default function StoreTickesViews() {
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
     }
-    const successAlert = (e) => {
-        setAlert(
-            <SweetAlert
-                warning
-                style={{ display: "block", marginTop: "-100px" }}
-                title="Tiene un evento ya seleccionado"
-                onConfirm={() => borrar(e)}
-                onCancel={() => hideAlert()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                confirmBtnText="Si, Continuar"
-                cancelBtnText="Cancelar"
-                showCancel
-            >
-                Desea borrar los datos y continuar
-            </SweetAlert>
-        );
-    };
+    function pararcontador() {
+        clearInterval(intervalRef.current)
+    }
+
     const hideAlert = () => {
         setAlert(null);
     };
@@ -273,114 +257,16 @@ export default function StoreTickesViews() {
 
     }
 
-    const handelReporShow = async () => {
-        let datos = await getDatosUsuariosLocalStorag()
-        let nuemro = await ValidarWhatsapp()
-        let user = { email: datos.email, password: datos.cedula }
-        let clineteLogeado = await getCliente()
-        try {
-            if (clineteLogeado == null) {
-                if (nuemro == null) {
-                    setDatoToas({
-                        show: true,
-                        message: "Ingrese un numero de Whatsapp",
-                        color: 'bg-danger',
-                        estado: "Numero " + datos.whatsapp + " Invalido",
-                    })
-                    return
-                }
-                else {
-                    const { success, message } = await GuardarDatosdelComprador()
-                    if (success) {
-                        const { data } = await Authsucrito(user)
-                        var hoy = new Date();
-                        let users = {
-                            ...datos,
-                            cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
-                            telefono: data.movil, name: data.nombreCompleto,
-                            email: data.email, hora: String(hoy),
-                            enable: data.enable, id: data.id,
-                        }
-                        // DatosUsuariosLocalStorag({ ...datos, ...users })
-                        //   sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
-                        //   usedispatch(addususcritor({ users }))
-                        //   setrepShow(true)
-                        //   setDetalle(false)
-                    }
-                    else {
 
-                    }
-                }
-            } else {
 
-            }
-        } catch (error) {
-            setDatoToas({
-                show: true,
-                message: "Verifique su conexión o intente mas tarde",
-                color: 'bg-danger',
-                estado: "Hubo un error",
-            })
-            console.log("Error---", error)
-        }
-    }
-    const handelefctivorShow = async () => {
-        let datos = await getDatosUsuariosLocalStorag()
-        let user = { email: datos.email, password: datos.cedula }
-        let clineteLogeado = await getCliente()
-        let nuemro = await ValidarWhatsapp()
-        try {
-            if (clineteLogeado == null) {
-                if (nuemro == null) {
-                    setDatoToas({
-                        show: true,
-                        message: "Ingrese un número de Whatsapp válido",
-                        color: 'bg-danger',
-                        estado: "Número " + datos.whatsapp + " Inválido",
-                    })
-                    return false
-                }
-                const { success, message } = await GuardarDatosdelComprador()
-                if (success) {
-                    const { data } = await Authsucrito(user)
-                    var hoy = new Date();
-                    let users = {
-                        ...datos,
-                        cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
-                        telefono: data.movil, name: data.nombreCompleto,
-                        email: data.email, hora: String(hoy),
-                        enable: data.enable, id: data.id,
-                    }
-                    DatosUsuariosLocalStorag({ ...datos, ...users })
-                    sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
-                    usedispatch(addususcritor({ users }))
-                    efectiOpShow(true)
-                    setDetalle(false)
-                }
-                else {
-                    setDatoToas({
-                        show: true,
-                        message: "Inicie sesión o Ingrese un correo diferente ",
-                        color: 'bg-danger',
-                        estado: "Correo " + datos.email + " Duplicado",
-                    })
-                }
-            } else {
-                efectiOpShow(true)
-                setDetalle(false)
-            }
-        } catch (error) {
-            setDatoToas({
-                show: true,
-                message: "Hubo un error correo duplicado o verifique su conexión",
-                color: 'bg-danger',
-                estado: "Hubo un error",
-            })
-        }
-    }
     useEffect(() => {
         (async () => {
             await evento()
+
+            Limpiarseleccion()
+            LimpiarLocalStore()
+            usedispatch(clearMapa({}))
+            usedispatch(borrarseleccion({ estado: "seleccionado" }))
         })()
     }, [])
     return (
@@ -400,7 +286,6 @@ export default function StoreTickesViews() {
                 datos={datos}
                 precios={precios}
                 intervalo={intervalo}
-                setListaPrecio={setListaPrecio}
                 setMapashow={setMapashow}
             />
 
@@ -514,17 +399,10 @@ export default function StoreTickesViews() {
             </Row>
             <Row>
                 <div className="col-12 d-flex flex-column align-items-center "  >
-
-                    <div>
-                        <button className="btn btn-success"  >empezar </button>
-                        <button className="btn btn-danger" >detener</button>
-                    </div>
-
                     <h4 style={{
                         fontFamily: 'fantasy'
-                    }} > {intervalo} Conciertos Activos</h4>
+                    }} >Conciertos Activos</h4>
                     <div className="col-8 border rounded-7">
-
                         <Swiper
                             effect={"flip"}
                             grabCursor={true}
@@ -580,21 +458,15 @@ export default function StoreTickesViews() {
                     </div>
                 </div>
             </Row>
-            <Row>
-
-
-            </Row>
             <ModalDetalle
                 showDetalle={showDetalle}
                 intervalo={intervalo}
                 setDetalle={setDetalle}
                 handleDetalleColse={handleDetalleColse}
-
-                handelReporShow={handelReporShow}
                 listarCarritoDetalle={listarCarritoDetalle}
-                handelefctivorShow={handelefctivorShow}
+                pararcontador={pararcontador}
+                setListarCarritoDetalle={setListarCarritoDetalle}
                 setModalPago={setModalPago}
-            //setDatoToas={setDatoToas}
             />
         </>
 

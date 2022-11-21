@@ -13,6 +13,10 @@ import { EliminarEvento } from "utils/Querypanel";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import moment from "moment";
+import 'moment-timezone'
+import 'moment/locale/es';
+require('moment/locale/es.js')
 
 const EventosViews = () => {
   let history = useHistory()
@@ -27,8 +31,8 @@ const EventosViews = () => {
     try {
       const lista = await ListarEventos("PROCESO")
       if (lista.success) {
-        let arr = []
-        console.log(lista.data)
+        //let arr = []
+        // console.log(lista.data)
         setEventos([...lista.data.filter((e) => e.codigoEvento != "001")])
       }
     } catch (error) {
@@ -250,7 +254,9 @@ const EventosViews = () => {
                       width: '100%',
                     }}
                   >
-                    <Typography>Estado : {row.original.estado} </Typography>
+                    <Typography>Estado : {
+                      (moment(row.original.fechaConcierto + " " + row.original.horaConcierto).format('DD MMMM YYYY HH:mm') > moment().format('DD MMMM YYYY HH:mm')) ?
+                        row.original.estado : "FINALIZO"} </Typography>
                     <Typography>Ciudad : {row.original.cuidadConcert} </Typography>
                     <Typography>Descripción : {row.original.descripcionConcierto} </Typography>
                   </Box>

@@ -8,8 +8,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { cargarmapa, settypo, filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice"
 import { clearSillas, cargarsilla } from "StoreRedux/Slice/sillasSlice"
 import SweetAlert from 'react-bootstrap-sweetalert';
-export default ModalCarritoView = (prop) => {
-    const { showshop, handleClosesop, handleContinuar, setMapashow, precios, setListaPrecio, setListarCarritoDetalle, intervalo, detener } = prop
+import { GetEstadousu } from "utils/CarritoLocalStorang"
+const ModalCarritoViewadmin = (prop) => {
+    const { showshop, handleClosesop, handleContinuar, setMapashow, precios, setListarCarritoDetalle, intervalo, detener } = prop
     let usedispatch = useDispatch()
     let sleccionlocalidad = useSelector((state) => state.mapaLocalSlice)
     let seleciondesillas = useSelector((state) => state.sillasSlice.sillasSelecionadas)
@@ -50,7 +51,6 @@ export default ModalCarritoView = (prop) => {
 
     useEffect(() => {
         setDetalle(getVerTienda())
-        //console.log(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
         let metodoPago = GetMetodo()
         metodoPago != null ? setChecked({
@@ -97,7 +97,7 @@ export default ModalCarritoView = (prop) => {
     })
     function cerrar() {
         handleClosesop()
-        // hideAlert()
+        hideAlert()
     }
     const successAlert = () => {
         setAlert(
@@ -146,7 +146,6 @@ export default ModalCarritoView = (prop) => {
                 size="lg"
                 fullscreen={'lg-down'}
                 onHide={cerrar}
-            // fullscreen={true}
             >
                 <Modal.Header >
                     <div className="d-flex col-6 justify-content-between  align-items-center " >
@@ -166,7 +165,7 @@ export default ModalCarritoView = (prop) => {
                             >{intervalo}</span> </h5>
                         </div>
                     </div>
-                    <button type="button" className="close" onClick={detalle.length > 0 ? successAlert : successAlert} >
+                    <button type="button" className="close" onClick={detalle.length > 0 ? successAlert : cerrar} >
                         ×
                     </button>
                 </Modal.Header>
@@ -201,7 +200,7 @@ export default ModalCarritoView = (prop) => {
                                                                 style={{
                                                                     fontSize: "0.9em",
                                                                 }} >{e.localidad}</div>
-                                                            <div className="flex-row d-none d-sm-block  text-center col-2">${e.valor * e.cantidad}</div>
+                                                            <div className="flex-row d-none d-sm-block  text-center col-2">${GetEstadousu().discapacidad == "No" ? e.valor * e.cantidad : e.discapacidad * e.cantidad}</div>
                                                             <div className="flex-row d-none d-sm-block text-center  col-2">{e.cantidad}</div>
                                                             <div className="d-flex d-sm-flex flex-row d-none d-sm-block   text-center align-items-center col-sm">
                                                                 <button className="btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
@@ -304,7 +303,7 @@ export default ModalCarritoView = (prop) => {
                 </Modal.Body>
                 <Modal.Footer className="d-flex  p-3 border-top  justify-content-between align-items-cente">
                     <div className="d-flex flex-column">
-                        <div className="px-5">
+                        <div className="px-5 ">
                             Método de pago
                             <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
@@ -362,3 +361,5 @@ export default ModalCarritoView = (prop) => {
         </>
     )
 }
+
+export default ModalCarritoViewadmin

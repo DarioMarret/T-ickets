@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useParams } from "react-router"
+import { useParams, useHistory } from "react-router"
 import { Accordion, Badge } from "react-bootstrap"
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
@@ -25,6 +25,7 @@ require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
   let { id } = useParams()
+  let usehistory = useHistory()
   let dispatch = useDispatch()
   const [show, setShow] = useState(false)
   const [alert, setAlert] = useState(null)
@@ -93,7 +94,7 @@ const EventoEspecifico = () => {
         SetEvento({
           ...datos[0], LocalodadPrecios: precio.data,
         })
-        console.log(precio, cargar)
+        // console.log(precio, cargar)
         SetPrecios(precio.data)
       }
     } catch (error) {
@@ -208,6 +209,14 @@ const EventoEspecifico = () => {
         valores={valores}
       />
       {alert}
+      <div className="d-flex mb-1 justify-content-end align-items-end" >
+        <button className="btn btn-primary"
+          onClick={() => usehistory.push("/admin/Evento")} >
+          <i className="fa fa-arrow-left" ></i>
+          Regresar
+        </button>
+
+      </div>
       <div className="d-flex  justify-content-between  ">
         <h5 style={{ fontSize: '1.5em' }}>Evento {evento.nombreConcierto} <Badge bg={color[evento.estado ? evento.estado : "danger"]}>{evento.estado}</Badge>  </h5>
         <div className="d-flex flex-row">

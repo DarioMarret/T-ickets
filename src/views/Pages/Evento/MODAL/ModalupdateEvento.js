@@ -52,7 +52,7 @@ const Modalupdate = (props) => {
     function toggleValueInArray(value) {
         //copia de array de localidades
         let ArrayCopia = selectLocalidad;
-        console.log("datos", value, selectLocalidad)
+        // console.log("datos", value, selectLocalidad)
         var index = ArrayCopia.findIndex(obj => obj.id == value.id);
 
         if (index == -1) {
@@ -61,7 +61,7 @@ const Modalupdate = (props) => {
             ArrayCopia[index] = { ...value }
         }
         setLocalidad(ArrayCopia)
-        console.log(ArrayCopia)
+        // console.log(ArrayCopia)
         setPrecios({
             localodad: '',
             precio_normal: 0,
@@ -115,8 +115,8 @@ const Modalupdate = (props) => {
     function soloSelectespacio(e) {
         let array = selectLocalidad
         var index = array.findIndex(obj => obj.localodad == e.value);
-        console.log(array)
-        console.log(array[index])
+        // console.log(array)
+        //console.log(array[index])
         setPrecios({
             precio_normal: array[index] ? array[index].precio_normal : '',
             precio_discapacidad: array[index] ? array[index].precio_discapacidad : '',
@@ -142,13 +142,13 @@ const Modalupdate = (props) => {
     }
     async function Actualizar() {
         if (neweventos.imagenConcierto == evento.imagenConcierto) {
-          //  console.log(neweventos)
+            //  console.log(neweventos)
             let guarda = {
                 ...neweventos,
                 estado: "PROCESO",
                 "LocalodadPrecios": selectLocalidad
             }
-           // console.log(guarda)
+            // console.log(guarda)
             try {
                 const actualiza = await ActualizarLocalidad(evento.codigoEvento, guarda)
                 // console.log(actualiza)
@@ -205,7 +205,7 @@ const Modalupdate = (props) => {
                 idUsuario: "" + user.id,
             })
         setLocalidad(evento.LocalodadPrecios)
-         //  console.log(neweventos)
+        //  console.log(neweventos)
         // console.log(Object.values(neweventos).every((d) => d))
     }, [show])
     return (

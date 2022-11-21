@@ -55,8 +55,8 @@ function Example() {
         </div>
         <div className="card-body table-responsive">
 
-          {/*tiketslist.length > 0 ?
-            <TableWiev data={tiketslist} /> : ''*/}
+          {tiketslist.length > 0 ?
+            <TableWiev data={tiketslist} /> : ''}
         </div>
       </div>
     </>

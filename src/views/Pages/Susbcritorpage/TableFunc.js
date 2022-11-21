@@ -42,7 +42,6 @@ export default function TableWiev(props) {
                     { responsivePriority: 1, targets: 0 },
                     { responsivePriority: 2, targets: 4 }
                 ],
-                "dom": '<"row justify-content-between top-information"lf>rt<"row justify-content-between bottom-information"ip><"clear">',
                 destroy: true,
             }
         )
@@ -53,7 +52,7 @@ export default function TableWiev(props) {
     return (
         <div>
             <div className="col-12">
-                <table className=" responsive display nowrap table  table-bordered" width="100%" id="table1" ref={tableRef}>
+                <table className=" responsive display nowrap table  table-bordered cell-border" width="100%" id="table1" ref={tableRef}>
                 </table>
             </div>
 

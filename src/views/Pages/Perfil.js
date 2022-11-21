@@ -89,7 +89,7 @@ function PerfilPage(props) {
       "email": datosPersons.email,
       "new_password": datosPersons.new_password,
       "movil": datosPersons.whatsapp,
-      "ciudad": datosPersons.ciudad
+      "ciudad": datosPersons.direccion
     }
     if (datosPersons.new_password.length < 6) {
       setValidate("was-validated")
@@ -97,16 +97,19 @@ function PerfilPage(props) {
     }
     try {
       setValidate("")
-      /* const editar = await EditarSuscrito(datosPersons.id,Datos)
-       const {success} =editar
-       if(success){
-       usedispatch(addususcritor({datosPersons}))
-       sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPersons))
-       setDatoToas({  show:true,
-         message:'Datos actualizados con éxito',
-         color:'bg-success',
-         estado:'Actualizado',})
-       }*/
+      const editar = await EditarSuscrito(datosPersons.id, Datos)
+      console.log(Datos)
+      const { success } = editar
+      if (success) {
+        usedispatch(addususcritor({ datosPersons }))
+        sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPersons))
+        setDatoToas({
+          show: true,
+          message: 'Datos actualizados con éxito',
+          color: 'bg-success',
+          estado: 'Actualizado',
+        })
+      }
     } catch (error) {
       setDatoToas({
         show: true,

@@ -9,10 +9,11 @@ import { ValidarWhatsapp, GuardarDatosdelComprador, EnviarmensajeWhastapp, Auths
 
 import { useDispatch } from "react-redux";
 import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
+import { getVerTienda, GetEstadousu } from 'utils/CarritoLocalStorang';
 
 function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
-        listarCarritoDetalle,
+        listarCarritoDetalle, setListarCarritoDetalle,
         setModalPago, handelReporShow, handelefctivorShow,
         setDetalle, setDatoToas, intervalo
     } = props
@@ -40,7 +41,6 @@ function ModalDetalle(props) {
     })
 
     const handleCheckboxChange = (event) => {
-
         const { name, checked } = event
         if (checked) {
             changeCheckState({
@@ -122,10 +122,11 @@ function ModalDetalle(props) {
         if (name === "cedula" && value.length == 10) {
             setspiner("")
             const datos = await getCedula(value)
-            const { name, email, direccion, whatsapp } = datos
+            const { name, email, direccion, whatsapp, discapacidad } = datos
             console.log(datos)
             if (name) {
-                DatosUsuariosLocalStorag({ ...datos, cedula: value, envio: datosPerson.envio, whatsapp: '' })
+                DatosUsuariosLocalStorag({ ...datos, cedula: value, envio: datosPerson.envio, whatsapp: '', discapacidad: discapacidad })
+
                 setPerson({
                     ...datosPerson,
                     email: email ? email : '',
@@ -137,6 +138,8 @@ function ModalDetalle(props) {
                     metodoPago: metodoPago
                 })
                 setspiner("d-none")
+                ListaPrecioset(GetValores())
+                setListarCarritoDetalle(getVerTienda())
             } else {
                 setPerson({
                     ...datosPerson,
@@ -360,7 +363,7 @@ function ModalDetalle(props) {
                                 required
                                 value={datosPerson.email ? datosPerson.email : ''}
                                 onChange={(e) => hanbleDatos(e)}
-                                placeholder="Ingrese su correo electronico"
+                                placeholder="Ingrese su correo electrónico"
                             />
 
                             <span>Whatsapp Contacto:</span>
@@ -413,7 +416,7 @@ function ModalDetalle(props) {
                                                     <td className="align-self-center">{item.nombreConcierto}</td>
                                                     <td className="align-self-center">{item.localidad}</td>
                                                     <td className="align-self-center">{item.cantidad}</td>
-                                                    <td className="align-self-center">${item.valor * item.cantidad}</td>
+                                                    <td className="align-self-center">${GetEstadousu().discapacidad == "No" ? item.valor * item.cantidad : item.discapacidad * item.cantidad}</td>
                                                 </tr>
                                             )
                                         })

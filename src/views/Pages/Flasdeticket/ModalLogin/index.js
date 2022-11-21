@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Container, Toast } from "react-bootstrap";
+import { getCedula } from "utils/DatosUsuarioLocalStorag";
 import { useHistory } from "react-router";
 import { Host } from "utils/constantes";
 import axios from "axios";
@@ -8,6 +9,8 @@ import { DatosUsuariocliente } from "utils/constantes";
 import logo from "../../../../assets/imagen/logo-inicio.png";
 import { useSelector, useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
+import { da } from "date-fns/locale";
+import { DatosUsuarioLocalStorang } from "utils/constantes";
 
 const ModalLogin = (props) => {
   const { showLogin, setShowLogin, setUserauth } = props
@@ -36,14 +39,15 @@ const ModalLogin = (props) => {
 
         //const { success, tocken } = data
         if (data.data) {
-
+          const cedula = await getCedula(data.data.cedula)
           let client = {
             cedula: data.data.cedula, direccion: data.data.ciudad, whatsapp: data.data.movil,
             telefono: data.data.movil, name: data.data.nombreCompleto,
             email: data.data.email, hora: String(hoy),
             enable: data.data.enable, id: data.data.id,
+            discapacidad: cedula.discapacidad
           }
-          sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
+          sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
           usedispatch(addususcritor({ ...client }))
           setUserauth(true)
           setShowLogin(false)
@@ -57,6 +61,7 @@ const ModalLogin = (props) => {
           //console.log("mensage de alvertencia")
         }
       } catch (error) {
+        console.log(error)
         setShowToas(true)
         setmessage("Hubo un error Verifique correo y contraseña e intente de nuevo")
 

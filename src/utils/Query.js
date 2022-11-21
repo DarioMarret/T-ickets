@@ -73,7 +73,8 @@ export const ValidarWhatsapp = async () => {
     let datosPerson = getDatosUsuariosLocalStorag()
     const validanumero = datosPerson.whatsapp.substring(1, 10)
     const { data } = await axios.post("https://rec.netbot.ec/api_whatsapp_qr/api/validarNumero", { from: "593" + validanumero })
-    if (data.msg != null) {
+    console.log(validanumero, data)
+    if (data.success && data.msg != null) {
         //  console.log(data)
         sessionStorage.setItem(Whatsappnumero, data.msg["_serialized"])
         return data.msg
