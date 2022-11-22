@@ -47,6 +47,7 @@ const ModalLogin = (props) => {
             enable: data.data.enable, id: data.data.id,
             discapacidad: cedula.discapacidad
           }
+          sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
           sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
           usedispatch(addususcritor({ ...client }))
           setUserauth(true)

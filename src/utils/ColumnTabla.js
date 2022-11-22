@@ -107,6 +107,8 @@ let color = {
   "CANCELADO": "danger",
   "EXPIRO": "warning"
 }
+
+
 export const Columnevento = [
 
   {
@@ -117,9 +119,9 @@ export const Columnevento = [
     accessorKey: 'estado',
     header: 'Estado',
     Cell: ({ cell, column }) => (
-      <Badge bg={(moment(cell.row.original.fechaConcierto + " " + cell.row.original.horaConcierto).format('DD MMMM YYYY HH:mm') > moment().format('DD MMMM YYYY HH:mm')) ? color[cell.getValue()] : color["EXPIRO"]}  >
+      <Badge bg={new Date(cell.row.original.fechaConcierto + " 23:59:59") > new Date() ? color[cell.getValue()] : color["EXPIRO"]}  >
 
-        {(moment(cell.row.original.fechaConcierto + " " + cell.row.original.horaConcierto).format('DD MMMM YYYY HH:mm') > moment().format('DD MMMM YYYY HH:mm')) ? cell.getValue() : "FINALIZO"}</Badge>
+        {new Date(cell.row.original.fechaConcierto + " 23:59:59") > new Date() ? cell.getValue() : "FINALIZO"}</Badge>
     ),
   },
   {

@@ -57,6 +57,8 @@ function Wizard() {
                     title="Good job!"
                     onConfirm={() => setAlertState(null)}
                     onCancel={() => setAlertState(null)}
+                    openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                    closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                     confirmBtnBsStyle="info"
                   >
                     You clicked the finish button!

@@ -3,22 +3,25 @@
     left: 100px;
     bottom: 50px;
 }
+
 span.swiper-pagination-bullet.swiper-pagination-bullet-active {
     background-color: #fff;
     opacity: 1
 }
+
 .swiper-pagination-bullet {
-    background-color: rgba(224, 221, 221, 0.897);    
+    background-color: rgba(175, 170, 170, 0.884);
 }
+
 @media (max-width: 400px) {
-.descripciones {
-position: absolute;
-margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    text-align: center;
-    align-items: center;
-bottom: 50;
-}
+    .descripciones {
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+        align-items: center;
+        bottom: 50;
+    }
 }

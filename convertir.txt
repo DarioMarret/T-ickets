@@ -1,14 +1,28 @@
-  //localStorage.setItem("data", JSON.stringify("a:16:{s:6:\"olt_id\";s:1:\"2\";s:8:\"pon_type\";s:4:\"gpon\";s:5:\"board\";s:1:\"0\";s:4:\"port\";s:1:\"7\";s:2:\"sn\";s:12:\"HWTC3549C29C\";s:4:\"vlan\";s:3:\"100\";s:8:\"onu_type\";s:7:\"HG8240H\";s:4:\"zone\";s:22:\"PANCHO JACOME SECTOR A\";s:3:\"odb\";s:0:\"\";s:4:\"name\";s:12:\"ANDRES TAPIA\";s:18:\"address_or_comment\";s:0:\"\";s:8:\"onu_mode\";s:7:\"Routing\";s:15:\"onu_external_id\";s:4:\"1270\";s:11:\"onu_type_id\";s:2:\"50\";s:25:\"upload_speed_profile_name\";s:10:\"PLAN-SPEED\";s:27:\"download_speed_profile_name\";s:10:\"PLAN-SPEED\";}")
-  localStorage.setItem("dataspedd", JSON.stringify("{s:6:\"olt_id\";s:1:\"2\";s:8:\"pon_type\";s:4:\"gpon\";s:5:\"board\";s:1:\"0\";s:4:\"port\";s:1:\"7\";s:2:\"sn\";s:12:\"HWTC3549C29C\";s:4:\"vlan\";s:3:\"100\";s:8:\"onu_type\";s:7:\"HG8240H\";s:4:\"zone\";s:22:\"PANCHO JACOME SECTOR A\";s:3:\"odb\";s:0:\"\";s:4:\"name\";s:12:\"ANDRES TAPIA\";s:18:\"address_or_comment\";s:0:\"\";s:8:\"onu_mode\";s:7:\"Routing\";s:15:\"onu_external_id\";s:4:\"1270\";s:11:\"onu_type_id\";s:2:\"50\";s:25:\"upload_speed_profile_name\";s:10:\"PLAN-SPEED\";s:27:\"download_speed_profile_name\";s:10:\"PLAN-SPEED\";}"))
-  const dataendpoit = JSON.parse(localStorage.getItem("dataspedd"))
-  //console.log(dataendpoit.split(";"))
-  //localStorage.nuevodat = dataendpoit
-  
-  dataendpoit.replace("{", "").replace("}", "").split(";").forEach((element, i) => {
-    if("si es inpar o 0"){
-      //arr[i]={element.replace("s:", "").split(":")[1]:""}
-    }else if("si es par"){
-      //arr[i-1]={element[i-1].replace("s:", "").split(":")[1]:""}
-    }
-          console.log(element.replace("s:", "").split(":")[1])
-  });
+function creaComprobante() {
+    var opciones = {
+        orientation: 'p',
+        unit: 'mm',
+        format: [240, 300]
+    };
+
+    var doc = new jsPDF(opciones);
+
+    doc.setFontSize(10);
+    doc.text(10, 30, 'Recibo de venta de orquídeas');
+    doc.text(10, 35, 'Comprobante No.: 785654544');
+    doc.text(10, 40, 'PDV: pablito ');
+    doc.text(10, 45, 'Operador: 123654');
+    doc.text(10, 55, 'Valor: 35.00');
+    doc.text(10, 60, 'TBX: 242985290');
+    doc.text(10, 65, 'Fecha/Hora: 2022-11-11 12:28:21');
+    doc.text(10, 75, '_______________________________');
+    doc.text(10, 80, 'Recibí conforme');
+
+
+    doc.autoPrint({variant: 'non-conform'});
+
+    doc.save('comprobante.pdf');
+     doc.autoPrint();
+
+    doc.output('dataurlnewwindow', {filename: 'comprobante.pdf'});
+}

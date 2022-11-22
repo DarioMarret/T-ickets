@@ -164,6 +164,8 @@ const OpctionLocalidadView = (props) => {
                                 cancelBtnBsStyle="danger"
                                 confirmBtnText={"Si, Guardar"}
                                 cancelBtnText="Cancelar"
+                                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                                 showCancel
                         >
                                 Estas seguro de {mapaRegstro.id != '' ? "Actualizar ,perderas el registro anterior" : "guardar la Selecccion del mapa"}
@@ -182,6 +184,8 @@ const OpctionLocalidadView = (props) => {
                                 cancelBtnBsStyle="danger"
                                 confirmBtnText="Si, Elimniar"
                                 cancelBtnText="Cancelar"
+                                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                                 showCancel
                         >
                                 Estas seguro de eliminar el mapa creado

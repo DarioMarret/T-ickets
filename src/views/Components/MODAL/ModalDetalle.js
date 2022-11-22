@@ -294,7 +294,7 @@ function ModalDetalle(props) {
                         <div className="col-12 col-lg-6 d-flex justify-content-end">
 
                             <button className="btn  btn-primary" onClick={handleDetalleColse}
-                                data-backdrop="static" data-keyboard="false">CANCELAR COMPRA</button>
+                                data-backdrop="static" data-keyboard="false">  <i className="bi bi-caret-left-fill"></i>  REGRESAR</button>
                         </div>
                     </div>
                     <div className={"container-fluid row " + validationfrom} >

@@ -90,6 +90,9 @@ const IndexFlas = () => {
         handleClosesop(false)
         setMapashow(false)
         setDetalle(false)
+        efectiOpShow(false)
+        setModalPago(false)
+        setrepShow(false)
         Limpiarseleccion()
         LimpiarLocalStore()
         usedispatch(clearMapa({}))
@@ -108,24 +111,22 @@ const IndexFlas = () => {
     clearInterval(datatime.current)
     setMapashow(false)
     setDetalle(false)
+    efectiOpShow(false)
+    setModalPago(false)
+    setrepShow(false)
     Limpiarseleccion()
     LimpiarLocalStore()
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
   }
+  function para() {
+    clearInterval(datatime.current)
+  }
   function abrircarro() {
     handleClosesop(true)
     velocidad()
   }
-  async function cedulaget() {
-    if (JSON.parse(sessionStorage.getItem(DatosUsuariosLocalStorag))) {
-      const datos = await getCedula(JSON.parse(sessionStorage.getItem(DatosUsuariosLocalStorag).cedula))
-      const { discapacidad } = datos
-      DatosUsuariosLocalStorag({
-        ...datosPerson, discapacidad: discapacidad
-      })
-    }
-  }
+
   const abrir = async (e) => {
     let id = sessionStorage.getItem(Eventoid)
     if (id != null && id != e.codigoEvento) {
@@ -194,15 +195,11 @@ const IndexFlas = () => {
       sessionStorage.eventoid = e.codigoEvento
       if (obten.data.length > 0) {
         let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-
         let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
         let localidad = JSON.parse(mapa[0].localidad)
         let path = JSON.parse(mapa[0].pathmap)
-
         let newprecios = obten.data.map((e, i) => {
           let color = localidad.filter((f, i) => f.nombre == e.localodad)
-          // console.log("1", localidad)
-          // console.log("2", color)
           e.color = color[0].color
           e.idcolor = color[0].id
           e.typo = color[0].tipo
@@ -218,20 +215,14 @@ const IndexFlas = () => {
             return L
           }
         })
-
-        //console.log(pathnuevo.filter((e)=>e!=undefined))
-        // console.log()
         usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
         let nuevosdatos = {
           precios: newprecios,
           pathmapa: pathnuevo.filter((e) => e != undefined),
           mapa: mapa[0].nombre_mapa
         }
-        // console.log(nuevosdatos)
         sessionStorage.eventoid = e.codigoEvento
-
         setPrecios(nuevosdatos)
-        // console.log(obten)
         setDatoscon(e)
         handleClosesop(true)
         velocidad()
@@ -399,7 +390,7 @@ const IndexFlas = () => {
     setDetalle(true)
   };
   const closedeposito = () => {
-    setrepShow(false)
+    setModalPago(false)
     setDetalle(true)
   }
   const handleefectivoClose = () => {
@@ -413,12 +404,6 @@ const IndexFlas = () => {
     comision: 0,
     comision_bancaria: 0
   })
-
-
-
-
-
-
   const [listarCarritoDetalle, setListarCarritoDetalle] = useState([])
   const [datosPerson, setPerson] = useState({
     cedula: '',
@@ -436,11 +421,10 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     Limpiarseleccion()
-    LimpiarLocalStore()
     const evento = async () => {
       try {
         const data = await cargarEventoActivo()
-        const filtro = data != null ? data.filter((e) => moment(e.fechaConcierto + " " + e.horaConcierto).format('DD MMMM YYYY HH:mm') > moment().format('DD MMMM YYYY HH:mm')) : []
+        const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         if (data != null) {
           setEventos(filtro.sort(sorter))
@@ -453,7 +437,6 @@ const IndexFlas = () => {
     evento()
     var popUp = window.open('url', '', 'options');
     if (popUp == null || typeof (popUp) == 'undefined') {
-      //  popUp.close();     
       setDatoToas({
         show: true,
         message: 'Por favor habilite las ventanas emergentes antes de continuar y actualice la pagina',
@@ -520,6 +503,48 @@ const IndexFlas = () => {
         intervalo={intervalo}
         setListaPrecio={setListaPrecio}
         setMapashow={setMapashow}
+      />
+      <ModalCarrito
+        show={show}
+        handleClose={handleClose}
+        handleContinuar={handleContinuar}
+        listaPrecio={listaPrecio}
+        setListaPrecio={setListaPrecio}
+        setListarCarritoDetalle={setListarCarritoDetalle}
+        datosPerson={datosPerson}
+        setPerson={setPerson}
+      />
+      <ModalDetalle
+        showDetalle={showDetalle}
+        intervalo={intervalo}
+        setDetalle={setDetalle}
+        handleDetalleColse={handleDetalleColse}
+        setListarCarritoDetalle={setListarCarritoDetalle}
+        handelReporShow={handelReporShow}
+        listarCarritoDetalle={listarCarritoDetalle}
+        handelefctivorShow={handelefctivorShow}
+        setModalPago={setModalPago}
+        setDatoToas={setDatoToas}
+      />
+
+      {
+        modalPago ? <ModalPago intervalo={intervalo} detenervelocidad={detenervelocidad} para={para} closedeposito={closedeposito} setModalPago={setModalPago} modalPago={modalPago} setDatoToas={setDatoToas} /> : null
+      }
+      <ModalReport
+        repShop={repShop}
+        intervalo={intervalo}
+        setrepShow={setrepShow}
+        handlereportColse={handlereportColse}
+        setDatoToas={setDatoToas}
+        detener={detenervelocidad}
+      />
+      <ModalEfectivo
+        efectShow={efectShow}
+        handleefectivoClose={handleefectivoClose}
+        efectiOpShow={efectiOpShow}
+        intervalo={intervalo}
+        detener={detenervelocidad}
+        setDatoToas={setDatoToas}
       />
 
       {alert}
@@ -779,47 +804,9 @@ const IndexFlas = () => {
       {/* flotter*/}
       <Footer logofla={logofla} />
 
-      <ModalCarrito
-        show={show}
-        handleClose={handleClose}
-        handleContinuar={handleContinuar}
-        listaPrecio={listaPrecio}
-        setListaPrecio={setListaPrecio}
-        setListarCarritoDetalle={setListarCarritoDetalle}
-        datosPerson={datosPerson}
-        setPerson={setPerson}
-      />
+
       <Modalterminos />
-      <ModalDetalle
-        showDetalle={showDetalle}
-        intervalo={intervalo}
-        setDetalle={setDetalle}
-        handleDetalleColse={handleDetalleColse}
-        setListarCarritoDetalle={setListarCarritoDetalle}
-        handelReporShow={handelReporShow}
-        listarCarritoDetalle={listarCarritoDetalle}
-        handelefctivorShow={handelefctivorShow}
-        setModalPago={setModalPago}
-        setDatoToas={setDatoToas}
-      />
 
-      {
-        modalPago ? <ModalPago setModalPago={setModalPago} modalPago={modalPago} setDatoToas={setDatoToas} /> : null
-      }
-      <ModalReport
-        repShop={repShop}
-        setrepShow={setrepShow}
-        handlereportColse={handlereportColse}
-        setDatoToas={setDatoToas}
-
-      />
-      <ModalEfectivo
-        efectShow={efectShow}
-        handleefectivoClose={handleefectivoClose}
-        efectiOpShow={efectiOpShow}
-
-        setDatoToas={setDatoToas}
-      />
       <TOAST
 
         Toastestado={Toastestado}

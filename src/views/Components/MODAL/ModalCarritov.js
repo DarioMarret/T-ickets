@@ -113,6 +113,8 @@ const ModalCarritoView = (prop) => {
                 confirmBtnText="Confirmar"
                 cancelBtnText="Cancelar"
                 showCancel
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
             >
                 Se Borraran Todas las Localidades Seleccionadas
             </SweetAlert>
@@ -130,6 +132,8 @@ const ModalCarritoView = (prop) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Confirmar"
                 cancelBtnText="Cancelar"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >
                 Se Borraran Todas las selecciones de esta Localidad
@@ -201,7 +205,7 @@ const ModalCarritoView = (prop) => {
                                                                 style={{
                                                                     fontSize: "0.9em",
                                                                 }} >{e.localidad}</div>
-                                                            <div className="flex-row d-none d-sm-block  text-center col-2">${GetEstadousu().discapacidad == "No" ? e.valor * e.cantidad : e.discapacidad * e.cantidad}</div>
+                                                            <div className="flex-row d-none d-sm-block  text-center col-2">${GetEstadousu().discapacidad === "No" ? e.valor * e.cantidad : e.discapacidad * e.cantidad}</div>
                                                             <div className="flex-row d-none d-sm-block text-center  col-2">{e.cantidad}</div>
                                                             <div className="d-flex d-sm-flex flex-row d-none d-sm-block   text-center align-items-center col-sm">
                                                                 <button className="btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >

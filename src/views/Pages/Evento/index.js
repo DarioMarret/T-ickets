@@ -90,8 +90,7 @@ const EventosViews = () => {
         title="Eliminado!"
         onConfirm={() => hideAlert()}
         onCancel={() => hideAlert()}
-        confirmBtnBsStyle="success"
-      >
+        confirmBtnBsStyle="success">
         El evento se elimino correctamenta
       </SweetAlert>
     );

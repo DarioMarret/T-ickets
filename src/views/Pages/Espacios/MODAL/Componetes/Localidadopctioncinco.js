@@ -271,6 +271,8 @@ const MapadelocalidadViews = (props) => {
                                 cancelBtnBsStyle="danger"
                                 confirmBtnText={"Si, Guardar"}
                                 cancelBtnText="Cancelar"
+                                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                                 showCancel
                         >
                                 Estas seguro de {localidadmap.id != '' ? "Actualizar" : "guardar"} la Asignación del mapa
@@ -289,6 +291,8 @@ const MapadelocalidadViews = (props) => {
                                 cancelBtnBsStyle="danger"
                                 confirmBtnText="Si, Elimniar"
                                 cancelBtnText="Cancelar"
+                                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                                 showCancel
                         >
                                 Estas seguro de eliminar el mapa creado

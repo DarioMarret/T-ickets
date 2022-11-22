@@ -111,6 +111,8 @@ const ModalCarritoViewadmin = (prop) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Confirmar"
                 cancelBtnText="Cancelar"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >
                 Se Borraran Todas las Localidades Seleccionadas
@@ -129,6 +131,8 @@ const ModalCarritoViewadmin = (prop) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Confirmar"
                 cancelBtnText="Cancelar"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >
                 Se Borraran Todas las selecciones de esta Localidad
@@ -280,8 +284,7 @@ const ModalCarritoViewadmin = (prop) => {
                                     Seleccione la Localidad en el Mapa o Nombre
                                 </h5>
                                 {showshop ?
-                                    <SvgselectView text={precios.mapa} />
-                                    : ''}
+                                    <SvgselectView text={precios.mapa} /> : ''}
                             </div>
                             <div className="d-flex col-12 flex-wrap justify-content-between align-items-center p-0">
                                 {precios.precios.length > 0 ?
@@ -324,7 +327,7 @@ const ModalCarritoViewadmin = (prop) => {
                                     Tarjeta
                                 </label>
                             </div>
-                            <div className="form-check ">
+                            <div className="form-check">
                                 <input className="form-check-input" type="radio"
                                     checked={checked.Deposito == "Deposito" ? true : false}
                                     onChange={(e) => handelMetodopago(e.target, "Deposito")}

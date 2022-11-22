@@ -30,6 +30,7 @@ const LocalidadmapViews = (props) => {
             localidaEspacio: mapath.precio,
             id: mapath.precio.id,
             fila: 0,
+            discapacidad: mapath.precio.precio_discapacidad,
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
@@ -94,6 +95,8 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Seguir Agregando"
                 cancelBtnText="Ir al carrito"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >
                 <div className="d-flex flex-row justify-content-center text-center">
@@ -117,6 +120,8 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Cancelar"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
             </SweetAlert>
         )
@@ -133,6 +138,8 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Cancelar"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
             </SweetAlert>
         )
@@ -149,6 +156,8 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
             </SweetAlert>
@@ -166,6 +175,8 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
             </SweetAlert>
@@ -183,6 +194,8 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
             </SweetAlert>
@@ -255,8 +268,8 @@ const LocalidadmapViews = (props) => {
             if (TotalSelecion() != 10) {
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
-                AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "ocupado" })
-                usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "ocupado" }))
+                AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+                usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                 successAlert(this.classList[0], nombres.localodad, "Mesa")
             } else {
                 succesLimit()

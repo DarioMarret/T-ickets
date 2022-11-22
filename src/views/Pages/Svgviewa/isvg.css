@@ -40,6 +40,10 @@ path.mapas {
   }
 }
 
+.precios {
+  cursor: pointer;
+}
+
 polygon.disponible:hover {
   transform: scale(1.01);
   cursor: pointer;

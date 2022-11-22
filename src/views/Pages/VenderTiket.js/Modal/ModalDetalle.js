@@ -16,8 +16,8 @@ import { GetEstadousu } from 'utils/CarritoLocalStorang';
 function ModalDetalle(props) {
     const { showDetalle, handleDetalleColse,
         listarCarritoDetalle, setListarCarritoDetalle,
-        setModalPago,
-        setDetalle, intervalo, pararcontador
+        setModalPago, efectiOpShow,
+        setDetalle, intervalo, pararcontador, setrepShow
     } = props
     const [suscritores, setsuscritor] = useState([])
     const usedispatch = useDispatch()
@@ -77,6 +77,7 @@ function ModalDetalle(props) {
                 const datos = await getCedula(value)
                 const { discapacidad } = datos
                 if (infosubs != undefined) {
+                    setChecked(true)
                     const { ciudad, email, movil, nombreCompleto } = infosubs
                     setspiner("d-none")
                     setPerson({
@@ -87,7 +88,7 @@ function ModalDetalle(props) {
                         ...datosPersonal, email: email, cedula: value, direccion: ciudad, envio: datosPerson.envio,
                         whatsapp: movil, metodoPago: metodoPago, name: nombreCompleto, metodoPago: metodoPago, discapacidad: discapacidad
                     })
-                    setChecked(true)
+                    //   setChecked(true)
                     ListaPrecioset(GetValores())
                     setListarCarritoDetalle(getVerTienda())
                 }
@@ -187,16 +188,11 @@ function ModalDetalle(props) {
         let datos = await getDatosUsuariosLocalStorag()
         let nuemro = await ValidarWhatsapp()
 
-        if (clienteauth) {
+        if (suscritores.filter((e) => e.cedula == datosPerson.cedula).length > 0) {
             //GenerarPDF()
-            // efectiOpShow(true)
+            efectiOpShow(true)
             console.log(nuemro)
-            usedispatch(setToastes({
-                show: true, message: "se registro la compra de Boletos", color: 'bg-success',
-                estado: 'Compra registrada ',
-            }))
-
-            pararcontador()
+            //pararcontador()
             setDetalle(false)
             return
         } else {
@@ -236,22 +232,16 @@ function ModalDetalle(props) {
     }
 
     async function handlePago() {
-        if (!clienteauth) {
+        if (!suscritores.filter((e) => e.cedula == datosPerson.cedula).length > 0) {
+            console.log(suscritores.filter((e) => e.cedula == datosPerson.cedula))
             const numero = await ValidarWhatsapp()
-            if (numero == null) {
-                usedispatch(setToastes({
-                    show: true,
-                    message: 'Ingrese un nuemro Válido',
-                    color: 'bg-danger',
-                    estado: 'Numero de Whatsapp inválido',
-                }))
-                return false
-            }
-            else if (validarEmail(datosPerson.email)) {
+            if (validarEmail(datosPerson.email)) {
                 const { success, message } = await GuardarDatosdelComprador()
                 if (success) {
+                    // pararcontador()
                     setDetalle(!showDetalle)
                     setModalPago(true)
+
                 }
                 else {
                     usedispatch(setToastes({
@@ -264,6 +254,7 @@ function ModalDetalle(props) {
             }
         }
         else {
+            // pararcontador()
             setDetalle(!showDetalle)
             setModalPago(true)
         }
@@ -271,8 +262,10 @@ function ModalDetalle(props) {
     const handelReporShow = async () => {
         let datos = await getDatosUsuariosLocalStorag()
         let nuemro = await ValidarWhatsapp()
+        let suscritor = suscritores.filter((e) => e.cedula == datosPerson.cedula)
+        console.log(clienteauth)
         try {
-            if (!clienteauth) {
+            if (!suscritor.length > 0) {
                 if (nuemro == null) {
                     usedispatch(setToastes({
                         show: true,
@@ -300,6 +293,7 @@ function ModalDetalle(props) {
                     }
                 }
             } else {
+                //  pararcontador()
                 setrepShow(true)
                 setDetalle(false)
             }
@@ -327,7 +321,7 @@ function ModalDetalle(props) {
         })()
         let datosPersonal = getDatosUsuariosLocalStorag()
         let clineteLogeado = getCliente()
-        setChecked((datosPersonal) ? true : false)
+        setChecked(datosPersonal != null ? true : false)
         let metodoPago = GetMetodo()
         ListaPrecioset(GetValores())
         if (clineteLogeado == null) {

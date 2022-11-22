@@ -3,21 +3,18 @@ import { ListarTikets } from "utils/Querypanel";
 import { Row, Card, Col, } from "react-bootstrap";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { listarpreciolocalidad, ListarLocalidad } from "utils/Querypanel";
-import { getDatosUsuariosLocalStorag, getCliente, DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
-import { GetMetodo, getVerTienda, LimpiarLocalStore, Limpiarseleccion } from "utils/CarritoLocalStorang";
-import { GuardarDatosdelComprador, ValidarWhatsapp } from "utils/Query";
+import { LimpiarLocalStore, Limpiarseleccion } from "utils/CarritoLocalStorang";
 import { cargarEventoActivo, cargarMapa } from "utils/Querypanelsigui";
-import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
-import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { cargalocalidad, clearMapa } from "StoreRedux/Slice/mapaLocalSlice";
-import { Authsucrito } from "utils/Query";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
-import { Dias, DatosUsuariocliente, Eventoid, listaasiento } from "utils/constantes";
-//import ModalCarritoView from "views/Components/MODAL/ModalCarritov";
+import { Eventoid, listaasiento } from "utils/constantes";
 import ModalCarritoView from "./Modal/ModalCarritoadmin";
+import ModalPago from "views/Components/MODAL/ModalPago";
 import ModalLocalidamapViews from "./Modal/ModalloaclidadAdmin"
 import ModalDetalle from "./Modal/ModalDetalle";
+import ModalEfectivo from "./Modal/Modalefectivo";
+import Reporte from "./Modal/ModalDeposito";
 import "swiper/css/effect-flip";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -29,13 +26,16 @@ import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
 import de from "date-fns/locale/de/index";
+import { DatosUsuarioLocalStorang } from "utils/constantes";
 require('moment/locale/es.js')
 export default function StoreTickesViews() {
     let usedispatch = useDispatch()
     const [Eventos, setEvento] = useState([])
     const [showMapa, setMapashow] = useState(false);
     const [showshop, handleClosesop] = useState(false);
+    const [repShop, setrepShow] = useState(false);
     const [showDetalle, setDetalle] = useState(false)
+    const [efectShow, efectiOpShow] = useState(false);
     const [modalPago, setModalPago] = useState(false);
     const [precios, setPrecios] = useState({ precios: [], pathmapa: [], mapa: '' })
     const [datos, setDatoscon] = useState([])
@@ -50,6 +50,10 @@ export default function StoreTickesViews() {
         setDetalle(false)
         handleClosesop(true)
     }
+    const handleefectivoClose = () => {
+        efectiOpShow(false)
+        setDetalle(true)
+    };
     const [info, setInfo] = useState({ Ticket: 0, Activos: 0, Venta: 0, })
     const intervalRef = useRef(null);
     function velocidad() {
@@ -57,7 +61,6 @@ export default function StoreTickesViews() {
         var tiempo = 60 * 3
         timer = tiempo
         var minutos = 0, segundos = 0;
-        console.log(intervalRef)
         intervalRef.current = setInterval(function () {
             minutos = parseInt(timer / 60, 10);
             segundos = parseInt(timer % 60, 10);
@@ -69,6 +72,7 @@ export default function StoreTickesViews() {
                 handleClosesop(false)
                 setMapashow(false)
                 setDetalle(false)
+                efectShow(false)
                 Limpiarseleccion()
                 LimpiarLocalStore()
                 usedispatch(clearMapa({}))
@@ -92,10 +96,13 @@ export default function StoreTickesViews() {
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
     }
-    function pararcontador() {
+    function para() {
         clearInterval(intervalRef.current)
     }
-
+    const handlereportColse = async () => {
+        setrepShow(false)
+        setDetalle(true)
+    };
     const hideAlert = () => {
         setAlert(null);
     };
@@ -106,6 +113,7 @@ export default function StoreTickesViews() {
                 pathmapa: [],
                 mapa: ''
             })
+            sessionStorage.removeItem(DatosUsuarioLocalStorang)
             LimpiarLocalStore()
             usedispatch(borrarseleccion({ vacio: [] }))
             sessionStorage.setItem(listaasiento, JSON.stringify([]))
@@ -116,11 +124,9 @@ export default function StoreTickesViews() {
             sessionStorage.eventoid = e.codigoEvento
             if (obten.data.length > 0) {
                 let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-
                 let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
                 let localidad = JSON.parse(mapa[0].localidad)
                 let path = JSON.parse(mapa[0].pathmap)
-
                 let newprecios = obten.data.map((e, i) => {
                     let color = localidad.filter((f, i) => f.nombre == e.localodad)
                     e.color = color[0].color
@@ -138,23 +144,16 @@ export default function StoreTickesViews() {
                         return L
                     }
                 })
-
-                //console.log(pathnuevo.filter((e)=>e!=undefined))
-                // console.log()
                 usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
                 let nuevosdatos = {
                     precios: newprecios,
                     pathmapa: pathnuevo.filter((e) => e != undefined),
                     mapa: mapa[0].nombre_mapa
                 }
-                // console.log(nuevosdatos)
                 sessionStorage.eventoid = e.codigoEvento
-
                 setPrecios(nuevosdatos)
-                // console.log(obten)
                 setDatoscon(e)
                 handleClosesop(true)
-                //velocidad()
                 hideAlert()
             }
 
@@ -167,10 +166,9 @@ export default function StoreTickesViews() {
         try {
             const data = await cargarEventoActivo()
             const Datos = await ListarTikets()
-            //console.log(Datos)
-            const filtro = data != null ? data.filter((e) => moment(e.fechaConcierto + " " + e.horaConcierto).format('DD MMMM YYYY HH:mm') > moment().format('DD MMMM YYYY HH:mm')) : []
+            const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
+
             const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
-            //console.log("imprime", filtro)
             if (data != null) {
                 setEvento(filtro.sort(sorter))
                 if (Datos.data) setInfo({
@@ -185,25 +183,6 @@ export default function StoreTickesViews() {
             console.log(error)
         }
     }
-    /*var decodeEntities = (function () {
-         // this prevents any overhead from creating the object each time
-         var element = document.createElement('div');
- 
-         function decodeHTMLEntities(str) {
-             if (str && typeof str === 'string') {
-                 //aqui ya lo trae como texto
- 
-                 str = str.replace("&lt;p&gt", '');
-                 element.innerHTML = str;
-                 str = element.textContent;
-                 element.textContent = '';
-             }
- 
-             return str;
-         }
- 
-         return decodeHTMLEntities;
-     })()*/
     const abrir = async (e) => {
         let id = sessionStorage.getItem(Eventoid)
 
@@ -244,25 +223,19 @@ export default function StoreTickesViews() {
                     pathmapa: pathnuevo.filter((e) => e != undefined),
                     mapa: mapa[0].nombre_mapa
                 }
-                //console.log(nuevosdatos)
                 sessionStorage.eventoid = e.codigoEvento
                 setPrecios(nuevosdatos)
                 setDatoscon(e)
                 handleClosesop(true)
-                velocidad()
+                //velocidad()
             }
         } catch (err) {
             console.log(err)
         }
-
     }
-
-
-
     useEffect(() => {
         (async () => {
             await evento()
-
             Limpiarseleccion()
             LimpiarLocalStore()
             usedispatch(clearMapa({}))
@@ -288,9 +261,13 @@ export default function StoreTickesViews() {
                 intervalo={intervalo}
                 setMapashow={setMapashow}
             />
-
+            <ModalEfectivo
+                intervalo={intervalo}
+                efectShow={efectShow}
+                efectiOpShow={efectiOpShow}
+                handleefectivoClose={handleefectivoClose}
+            />
             {alert}
-
             <Row>
                 <Col lg="3" sm="6">
                     <Card className="card-stats">
@@ -402,7 +379,7 @@ export default function StoreTickesViews() {
                     <h4 style={{
                         fontFamily: 'fantasy'
                     }} >Conciertos Activos</h4>
-                    <div className="col-8 border rounded-7">
+                    <div className="col-8 border rounded-7 bg-black bg-opacity-10">
                         <Swiper
                             effect={"flip"}
                             grabCursor={true}
@@ -422,8 +399,8 @@ export default function StoreTickesViews() {
                             {Eventos.length > 0 ?
                                 Eventos.map((e, i) => {
                                     return (
-                                        <SwiperSlide key={i}>
-                                            <div className=" container-fluid mt-4 px-0">
+                                        <SwiperSlide key={i} >
+                                            <div className=" container-fluid  mt-4 px-0">
                                                 <div className=" card-body  py-5"
 
                                                 >
@@ -458,16 +435,33 @@ export default function StoreTickesViews() {
                     </div>
                 </div>
             </Row>
+            {
+                modalPago ? <ModalPago
+                    intervalo={intervalo}
+                    detenervelocidad={detenervelocidad}
+                    para={para}
+                    setModalPago={setModalPago} modalPago={modalPago} /> : null
+            }
             <ModalDetalle
                 showDetalle={showDetalle}
                 intervalo={intervalo}
                 setDetalle={setDetalle}
                 handleDetalleColse={handleDetalleColse}
                 listarCarritoDetalle={listarCarritoDetalle}
-                pararcontador={pararcontador}
+                pararcontador={detenervelocidad}
                 setListarCarritoDetalle={setListarCarritoDetalle}
                 setModalPago={setModalPago}
+                setrepShow={setrepShow}
+                efectiOpShow={efectiOpShow}
             />
+            <Reporte
+                intervalo={intervalo}
+                repShop={repShop}
+                pararcontador={detenervelocidad}
+                setrepShow={setrepShow}
+                handlereportColse={handlereportColse}
+            />
+
         </>
 
     )

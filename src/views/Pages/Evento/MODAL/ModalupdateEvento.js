@@ -72,10 +72,6 @@ const Modalupdate = (props) => {
         })
     }
 
-
-
-
-
     $(document).ready(function () {
         $(".numero").keypress(function (e) {
             var n = (e = e || window.event).keyCode || e.which,
@@ -85,12 +81,10 @@ const Modalupdate = (props) => {
     });
 
     function handelchangeComposeventos(e) {
-
         if (e.name == "imagenConcierto") {
             let img = new Image()
             img.src = window.URL.createObjectURL(e.files[0])
             img.onload = () => {
-
                 if (img.width < 750 || img.height < 500) {
                     e.value = ""
                     setNewEventos({ ...neweventos, imagenConcierto: '' })
@@ -100,9 +94,7 @@ const Modalupdate = (props) => {
             }
             img.onerror = () => {
                 setNewEventos({ ...neweventos, imagenConcierto: '' })
-
             }
-
         } else {
             setNewEventos({
                 ...neweventos,

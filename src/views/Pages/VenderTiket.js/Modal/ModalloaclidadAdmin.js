@@ -96,6 +96,8 @@ const ModalLocalidamapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Seguir Agregando"
                 cancelBtnText="Ir al carrito"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >
                 <div className="d-flex flex-row justify-content-center text-center">
@@ -119,6 +121,8 @@ const ModalLocalidamapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Cancelar"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
             </SweetAlert>
         )
@@ -135,6 +139,8 @@ const ModalLocalidamapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Cancelar"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
             </SweetAlert>
         )
@@ -151,6 +157,8 @@ const ModalLocalidamapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
             </SweetAlert>
@@ -185,6 +193,8 @@ const ModalLocalidamapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
+                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
             </SweetAlert>
@@ -260,9 +270,9 @@ const ModalLocalidamapViews = (props) => {
                 AgregarAsiento({
                     "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal,
                     "discapacidad": nombres.precio_discapacidad,
-                    "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "ocupado"
+                    "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado"
                 })
-                usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "ocupado" }))
+                usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                 successAlert(this.classList[0], nombres.localodad, "Mesa")
             } else {
                 succesLimit()
