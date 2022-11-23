@@ -28,7 +28,7 @@ import { GuardarDatosdelComprador, ValidarWhatsapp } from "utils/Query";
 import { useSelector, useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
-import { cargalocalidad, clearMapa } from "StoreRedux/Slice/mapaLocalSlice";
+import { cargalocalidad, clearMapa, filtrarlocali, } from "StoreRedux/Slice/mapaLocalSlice";
 import { Authsucrito } from "utils/Query";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
 import { listarpreciolocalidad, ListarLocalidad } from "utils/Querypanel";
@@ -40,6 +40,7 @@ import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Skeleton } from "@mui/material";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper";
+import ResgistroView from "./ModalLogin/registro.js";
 import { Box } from "@mui/system";
 import moment from "moment";
 import 'moment-timezone'
@@ -51,6 +52,9 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./swipermedia.css"
+import axios from "axios";
+import { Eventolocalidad } from "utils/constantes.js";
+import { seleccionmapa } from "utils/constantes.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
@@ -72,7 +76,7 @@ const IndexFlas = () => {
   const [alert, setAlert] = useState(null);
   const [intervalo, setcrono] = useState("")
   const datatime = useRef(null);
-
+  const localidadtimer = useRef(null);
   function velocidad() {
     let timer = 0
     var tiempo = 60 * 20
@@ -106,9 +110,36 @@ const IndexFlas = () => {
       }
     }, 1000);
   }
+  function filterlocal(id, consulta) {
+    let nuevo = []
+    id.forEach((elm, i) => {
+      let espacifica = JSON.parse(sessionStorage.getItem(seleccionmapa)) ? JSON.parse(sessionStorage.getItem(seleccionmapa)) : { id: null }
+      if (consulta.findIndex(f => f.id === elm) != -1) {
+        nuevo[i] = consulta[consulta.findIndex(f => f.id === elm)]
+        if (espacifica.id != null) {
+          espacifica.idcolor === consulta[consulta.findIndex(f => f.id === elm)].id ?
+            usedispatch(filtrarlocali(JSON.parse(consulta[consulta.findIndex(f => f.id === elm)].mesas_array).datos)) : ''
+        }
+      }
+    })
+    usedispatch(cargalocalidad(nuevo))
+
+  }
+  const consultarlocalidad = () => {
+    let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
+    localidadtimer.current = setInterval(function () {
+      ListarLocalidad().then(ouput => {
+        // console.log(ouput)
+        filterlocal(id, ouput.data)
+      }
+      ).catch(exit => console.log(exit))
+    }, 5000);
+  }
+
   function detenervelocidad() {
     handleClosesop(false)
     clearInterval(datatime.current)
+    clearInterval(localidadtimer.current)
     setMapashow(false)
     setDetalle(false)
     efectiOpShow(false)
@@ -160,6 +191,9 @@ const IndexFlas = () => {
               return L
             }
           })
+          sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
+            return e.id
+          }))]))
           usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
           let nuevosdatos = {
             precios: newprecios,
@@ -171,6 +205,7 @@ const IndexFlas = () => {
           setDatoscon(e)
           handleClosesop(true)
           velocidad()
+          consultarlocalidad()
         }
       } catch (err) {
         console.log(err)
@@ -514,6 +549,8 @@ const IndexFlas = () => {
         datosPerson={datosPerson}
         setPerson={setPerson}
       />
+      <ResgistroView
+        setDatoToas={setDatoToas} />
       <ModalDetalle
         showDetalle={showDetalle}
         intervalo={intervalo}

@@ -5,16 +5,19 @@ import SVGView from "views/Pages/Svgviewa/svgoptio.js";
 import { TiendaIten, getVerTienda, EliminarByStora, EliminarsilladeMesa } from "utils/CarritoLocalStorang";
 import { Modal } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
+import { filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice";
+import { ListarLocalidad } from "utils/Querypanel";
 import { addSillas, deleteSillas, clearSillas, deleteMesa } from "StoreRedux/Slice/sillasSlice"
 import { EliminarSillas, AgregarAsiento, VerSillaslist, TotalSelecion } from "utils/CarritoLocalStorang"
 import SweetAlert from "react-bootstrap-sweetalert";
 import axios from "axios";
 import "./localidas.css"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import { seleccionmapa } from "utils/constantes";
 const LocalidadmapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
-    let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
+    let nombre = JSON.parse(sessionStorage.getItem(seleccionmapa))
     const usedispatch = useDispatch()
     const [detalle, setDetalle] = useState([])
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localodad))
@@ -25,13 +28,11 @@ const LocalidadmapViews = (props) => {
         handleClosesop(true)
         setMapashow(flase)
     }
-
-    async function enviasilla() {
-        //const infor = getDatosUsuariosLocalStorag()
+    async function enviasilla(info) {
         const datos = {
-            id: "28",
+            id: info.id,
             cedula: "1314780774",
-            silla: "F1-s-9",
+            silla: info.silla,
             estado: "reservado",
         }
         try {
@@ -41,14 +42,13 @@ const LocalidadmapViews = (props) => {
                     'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                 }
             })
+            console.log(datos)
             console.log(data)
+            usedispatch(filtrarlocali(data.datos))
         } catch (error) {
             console.log(error)
         }
     }
-
-
-
     function agregar() {
         let producto = {
             cantidad: 1,
@@ -72,8 +72,8 @@ const LocalidadmapViews = (props) => {
             let valid = seleccion.some(e => e.seleccionmapa == nombre.localodad + "-" + M + "-s-" + i)
             if (valid) { }
             if (TotalSelecion() != 10) {
-                $("." + M + "-s-" + i).hasClass('disponible') ? AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" }) : ''
-                $("." + M + "-s-" + i).hasClass('disponible') ? usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, "seleccionmapa": nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" })) : ''
+                $("." + M + "-s-" + i).hasClass('disponible') ? AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" }) : ''
+                $("." + M + "-s-" + i).hasClass('disponible') ? usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" })) : ''
                 $("." + M + "-s-" + i).hasClass('disponible') ? $("." + M + "-s-" + i).addClass('seleccionado') : ''
                 $("." + M + "-s-" + i).hasClass('disponible') ? $("." + M + "-s-" + i).removeClass('disponible') : ''
             } else {
@@ -257,14 +257,17 @@ const LocalidadmapViews = (props) => {
         e.preventDefault();
         if (this.classList.contains("disponible")) {
             if (!this.classList.contains('seleccionado') && !this.classList.contains('ocupado') && !this.classList.contains("reservado")) {
-                let nombres = JSON.parse(sessionStorage.getItem("seleccionmapa"))
+                let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
                 // console.log(obtenerdatosConcierto())
                 if (TotalSelecion() != 10) {
                     this.classList.remove('disponible')
                     this.classList.add('seleccionado')
                     // enviasilla()
-                    AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                    usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+                    console.log("nuevo")
+
+                    AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+                    usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+                    enviasilla({ id: nombres.idcolor, silla: this.classList[0] })
                     successAlert(this.classList[0], nombres.localodad, "Fila")
                 } else
                     succesLimit()
@@ -276,7 +279,7 @@ const LocalidadmapViews = (props) => {
         e.preventDefault();
         if (this.classList.contains("seleccionado")) {
             if (!this.classList.contains('disponible')) {
-                let nombres = JSON.parse(sessionStorage.getItem("seleccionmapa"))
+                let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
                 succesElimAlert(this, { "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
             }
             return
@@ -284,7 +287,7 @@ const LocalidadmapViews = (props) => {
     })
     $(document).on('click', 'li.cargados', function () {
         if (!this.classList.contains('disponible')) {
-            let nombres = JSON.parse(sessionStorage.getItem("seleccionmapa"))
+            let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
             succesElimAlertli({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "borrar" })
         }
         return
@@ -292,12 +295,12 @@ const LocalidadmapViews = (props) => {
 
     $(document).on('click', 'a.disponible', function () {
         if (!this.classList.contains('seleccionado')) {
-            let nombres = JSON.parse(sessionStorage.getItem("seleccionmapa"))
+            let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
             if (TotalSelecion() != 10) {
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
-                AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+                AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+                usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                 successAlert(this.classList[0], nombres.localodad, "Mesa")
             } else {
                 succesLimit()
@@ -307,7 +310,7 @@ const LocalidadmapViews = (props) => {
     })
     $(document).on("click", "a.seleccionado", function () {
         if (!this.classList.contains('disponible')) {
-            let nombres = JSON.parse(sessionStorage.getItem("seleccionmapa"))
+            let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
 
             succesElimAlert(this, { "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
         }
@@ -325,34 +328,59 @@ const LocalidadmapViews = (props) => {
     })
     $(document).on("click", "div.mesaselecion", function () {
         if (!this.classList.contains("mesadisponible")) {
-            // console.log(this.classList[0], this.classList[1])
             Elimnamesa(this.classList[0], this.classList[1])
         }
-
     })
-
     function cerrar() {
         setMapashow(false)
         handleClosesop(true)
         hideAlert()
+        sessionStorage.removeItem(seleccionmapa)
     }
-
     const hideAlert = () => {
         setAlert(null);
-    };
+    }
+    const sillasetado = (d) => {
+        let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
+        if (d.cedula != undefined) {
+            //console.log(d)
+            return "seleccionado"
+        }
+        else return d.estado
+    }
     useEffect(() => {
         getVerTienda().filter((e) => e.id == mapath.precio.id).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
+        mapath.precio.idcolor != undefined ? ListarLocalidad().then(ouput => {
+            let asientos = []
 
+            // console.log(mapath.precio.idcolor)
+            // console.log(JSON.parse(ouput.data.filter((e) => e.id == mapath.precio.idcolor)[0].mesas_array))
+
+            let dato = JSON.parse(ouput.data.filter((e) => e.id == mapath.precio.idcolor)[0].mesas_array)
+            if (dato.Typo == "fila") {
+                //console.log(dato)
+                dato.datos.map((e, i) => {
+                    asientos[i] = [...e.asientos]
+                    //asientosconsole.log(e.asientos)
+
+                })
+                console.log(asientos)
+            }
+
+            //filterlocal(id, ouput.data)
+        }
+        ).catch(exit => console.log(exit)) : ''
         let selct = seleccion
         selct.length > 0 ?
             selct.map((e) => {
                 $("div." + e.silla).removeClass("disponible").addClass("" + e.estado);
             })
             : '';
-        mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
+        mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
             $("#mapas" + e.path).attr("fill", e.fill)
             $("#mapas" + e.path).removeAttr("class")
         }) : ''
+
 
 
     }, [showMapa])
@@ -368,7 +396,7 @@ const LocalidadmapViews = (props) => {
                 {alert}
                 <Modal.Header>
                     <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
-                    <button className=" btn btn-primary" onClick={enviasilla} >
+                    <button className=" btn btn-primary" onClick={cerrar} >
                         <i className="bi bi-caret-left-fill">  </i>Regresar
                     </button>
                 </Modal.Header>
@@ -400,7 +428,7 @@ const LocalidadmapViews = (props) => {
                                                 <span style={{ fontSize: '0.7em' }}>    </span>
                                             </div>
                                         </div>
-                                        <span>Reservado.</span>
+                                        <span>En Proceso.</span>
                                     </div>
                                     <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-secondary text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
@@ -423,7 +451,7 @@ const LocalidadmapViews = (props) => {
                             <div className="col-12 pt-1">
                                 {mapath.precio.typo == "fila" ?
                                     <div style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
-                                        {mapath.localidadespecica.length > 0 ?
+                                        {mapath.localidadespecica != undefined && mapath.localidadespecica.length > 0 ?
                                             mapath.localidadespecica.map((e, i) => {
                                                 {
                                                     return (
@@ -440,7 +468,7 @@ const LocalidadmapViews = (props) => {
                                                                     let numero = index + 1
                                                                     return (
                                                                         <div key={"silla" + index}
-                                                                            className={silla.silla + '  d-flex  ' + silla.estado + '  rounded-5 text-center  justify-content-center align-items-center '}
+                                                                            className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 text-center  justify-content-center align-items-center '}
                                                                             style={{ height: silla.anchor, width: silla.anchor, marginLeft: silla.marginLeft, marginRight: silla.marginRight }} >
                                                                             <div className={'px-3 d-flex   text-white justify-content-center  '} >
                                                                                 <div className="d-flex justify-content-center">

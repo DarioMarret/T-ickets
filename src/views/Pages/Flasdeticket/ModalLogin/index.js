@@ -10,6 +10,7 @@ import logo from "../../../../assets/imagen/logo-inicio.png";
 import { useSelector, useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { da } from "date-fns/locale";
+import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
 
 const ModalLogin = (props) => {
@@ -71,6 +72,10 @@ const ModalLogin = (props) => {
 
     }
   };
+  function regsitronew() {
+    setShowLogin(false)
+    usedispatch(setModal({ nombre: 'registro', estado: true }))
+  }
   const handleChange = (target) => {
     const { name, value } = target
     setnombre({
@@ -135,7 +140,7 @@ const ModalLogin = (props) => {
                     <button className="btn btn-primary px-4" type="submit">ENTAR</button>
                   </div>
                   <div className="col-12">
-                    <a className="btn btn-link  nav-link px-4" href="#">I forgot my password</a>
+                    <a className="btn btn-link  nav-link px-4" onClick={regsitronew} href="#">Crear Cuenta</a>
                   </div>
                 </div>
               </form>
