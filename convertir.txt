@@ -26,3 +26,9 @@ function creaComprobante() {
 
     doc.output('dataurlnewwindow', {filename: 'comprobante.pdf'});
 }
+
+
+sillas silla
+cedula:cedula
+id:de la localidad
+estado:"reservado"

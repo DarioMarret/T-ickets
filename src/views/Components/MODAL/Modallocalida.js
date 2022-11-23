@@ -8,7 +8,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { addSillas, deleteSillas, clearSillas, deleteMesa } from "StoreRedux/Slice/sillasSlice"
 import { EliminarSillas, AgregarAsiento, VerSillaslist, TotalSelecion } from "utils/CarritoLocalStorang"
 import SweetAlert from "react-bootstrap-sweetalert";
+import axios from "axios";
 import "./localidas.css"
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 const LocalidadmapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
@@ -23,6 +25,30 @@ const LocalidadmapViews = (props) => {
         handleClosesop(true)
         setMapashow(flase)
     }
+
+    async function enviasilla() {
+        //const infor = getDatosUsuariosLocalStorag()
+        const datos = {
+            id: "28",
+            cedula: "1314780774",
+            silla: "F1-s-9",
+            estado: "reservado",
+        }
+        try {
+            const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecionar_localidad", datos, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                }
+            })
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
     function agregar() {
         let producto = {
             cantidad: 1,
@@ -207,6 +233,7 @@ const LocalidadmapViews = (props) => {
             if (valid) {
                 usedispatch(deleteSillas({ "localidad": nombre.localodad, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" }))
                 EliminarsilladeMesa({ localodad: nombre.localodad + "-" + M + "-s-" + i })
+
                 $("." + M + "-s-" + i).removeClass("seleccionado").addClass("disponible")
                 $("." + M).removeClass("mesadisponible").addClass("mesaselecion")
             }
@@ -235,6 +262,7 @@ const LocalidadmapViews = (props) => {
                 if (TotalSelecion() != 10) {
                     this.classList.remove('disponible')
                     this.classList.add('seleccionado')
+                    // enviasilla()
                     AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                     successAlert(this.classList[0], nombres.localodad, "Fila")
@@ -340,7 +368,7 @@ const LocalidadmapViews = (props) => {
                 {alert}
                 <Modal.Header>
                     <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
-                    <button className=" btn btn-primary" onClick={cerrar} >
+                    <button className=" btn btn-primary" onClick={enviasilla} >
                         <i className="bi bi-caret-left-fill">  </i>Regresar
                     </button>
                 </Modal.Header>

@@ -75,7 +75,7 @@ const IndexFlas = () => {
 
   function velocidad() {
     let timer = 0
-    var tiempo = 60 * 3
+    var tiempo = 60 * 20
     timer = tiempo
     var minutos = 0, segundos = 0;
     console.log(datatime)
@@ -338,7 +338,7 @@ const IndexFlas = () => {
     let nuemro = await ValidarWhatsapp()
     try {
       if (clineteLogeado == null) {
-        if (nuemro == null) {
+        if (nuemro != null) {
           setDatoToas({
             show: true,
             message: "Ingrese un número de Whatsapp válido",
