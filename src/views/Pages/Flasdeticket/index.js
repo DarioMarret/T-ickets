@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Carousel } from "react-bootstrap";
 import { styleswiper } from "./styleswiper.js";
-import header from "../../../assets/header.jpeg";
 import logofla from "../../../assets/imagen/LOGO-WEB.png";
 import principal from "../../../assets/imagen/eventoprincip.jpeg";
 import secundaria from "../../../assets/imagen/segundo.jpeg";
@@ -33,7 +31,7 @@ import { Authsucrito } from "utils/Query";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
 import { listarpreciolocalidad, ListarLocalidad } from "utils/Querypanel";
 import { cargarEventoActivo, cargarMapa } from "utils/Querypanelsigui";
-import { Dias, DatosUsuariocliente, Eventoid, listaasiento } from "utils/constantes";
+import { Dias, DatosUsuariocliente, Eventoid, listaasiento, DatosUsuarioLocalStorang } from "utils/constantes";
 import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
@@ -41,6 +39,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Skeleton } from "@mui/material";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper";
 import ResgistroView from "./ModalLogin/registro.js";
+import { Spinner } from "react-bootstrap";
 import { Box } from "@mui/system";
 import moment from "moment";
 import 'moment-timezone'
@@ -67,7 +66,7 @@ const IndexFlas = () => {
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
   const [efectShow, efectiOpShow] = useState(false);
-  const [userauth, setUserauth] = useState(false)
+  const [spinervi, setspinervi] = useState("d-none")
   const [seleccion, SetSeleccion] = useState("");
   const [showshop, handleClosesop] = useState(false);
   const [datos, setDatoscon] = useState([])
@@ -82,7 +81,7 @@ const IndexFlas = () => {
     var tiempo = 60 * 20
     timer = tiempo
     var minutos = 0, segundos = 0;
-    console.log(datatime)
+    //console.log(datatime)
     datatime.current = setInterval(function () {
       minutos = parseInt(timer / 60, 10);
       segundos = parseInt(timer % 60, 10);
@@ -159,8 +158,10 @@ const IndexFlas = () => {
   }
 
   const abrir = async (e) => {
+    setspinervi("")
     let id = sessionStorage.getItem(Eventoid)
     if (id != null && id != e.codigoEvento) {
+      setspinervi("d-none")
       successAlert(e)
     }
     else {
@@ -204,11 +205,13 @@ const IndexFlas = () => {
           setPrecios(nuevosdatos)
           setDatoscon(e)
           handleClosesop(true)
+          setspinervi("d-none")
           velocidad()
           consultarlocalidad()
         }
       } catch (err) {
         console.log(err)
+        setspinervi("d-none")
       }
 
     }
@@ -260,6 +263,7 @@ const IndexFlas = () => {
         setPrecios(nuevosdatos)
         setDatoscon(e)
         handleClosesop(true)
+        setspinervi("d-none")
         velocidad()
         hideAlert()
       }
@@ -305,7 +309,7 @@ const IndexFlas = () => {
   }
   const salir = () => {
     sessionStorage.removeItem(DatosUsuariocliente)
-    sessionStorage.removeItem(getDatosUsuariosLocalStorag)
+    sessionStorage.removeItem(DatosUsuarioLocalStorang)
     usedispatch(deletesuscrito({ ...userauthi }))
     SetSeleccion("")
   }
@@ -499,9 +503,8 @@ const IndexFlas = () => {
           direccion: datosPersonal.direccion,
           edad: datosPersonal.edad
         })
-        setUserauth(false)
+
       }
-      setUserauth(false)
     } else {
       setPerson({
         ...datosPerson,
@@ -516,7 +519,6 @@ const IndexFlas = () => {
         edad: clineteLogeado.edad
       })
       usedispatch(addususcritor({ ...clineteLogeado }))
-      setUserauth(true)
     }
   }, [])
   return (
@@ -637,7 +639,6 @@ const IndexFlas = () => {
       </nav>
       <ModalLogin
         showLogin={showLogin}
-        setUserauth={setUserauth}
         setShowLogin={setShowLogin}
       />
       {/* header */}
@@ -843,7 +844,36 @@ const IndexFlas = () => {
 
 
       <Modalterminos />
+      <div className={spinervi}
+        style={{
+          display: 'none',
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: '1000'
+        }}
+      >
 
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: '10px',
+          padding: '10px',
+        }}>
+          <Spinner animation="border" variant="light" size='120'></Spinner>
+          <h4 className='text-light'>Cargando  evento  ...</h4>
+
+
+        </div>
+      </div>
       <TOAST
 
         Toastestado={Toastestado}

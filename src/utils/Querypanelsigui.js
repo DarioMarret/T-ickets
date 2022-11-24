@@ -1,5 +1,6 @@
 import axios from "axios"
 import { Host } from "./constantes"
+import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
 export const ActualizaEstadoLocalidad = async (id, parms) => {
     const { data } = await axios.put(Host + "actualizarevento_estado/" + id, parms, {
         header: {
@@ -76,5 +77,32 @@ export const eliminaMapa = async (parm) => {
         return data
     } catch (error) {
         return error
+    }
+}
+export const enviasilla = async (info) => {
+    let user = getDatosUsuariosLocalStorag()
+    //console.log(user)
+    const datos = {
+        id: info.id,
+        cedula: user.cedula,
+        silla: info.silla,
+        estado: "reservado",
+    }
+    // console.log(datos)
+    try {
+        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecionar_localidad", datos, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        // console.log(data)
+        // console.log(data)
+        //  usedispatch(filtrarlocali(data.datos))
+        return data.data.datos
+    } catch (error) {
+        console.log(error)
+        return { error: error, info: info }
+
     }
 }

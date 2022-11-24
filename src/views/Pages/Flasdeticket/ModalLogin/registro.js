@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { Modal } from "react-bootstrap"
+import { Modal, Spinner } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { DatosUsuariocliente } from "utils/constantes"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
@@ -9,12 +9,13 @@ import { getCedula } from "utils/DatosUsuarioLocalStorag"
 import { Authsucrito } from "utils/Query"
 import { ValidarWhatsapp } from "utils/Query"
 import { setModal } from "StoreRedux/Slice/SuscritorSlice"
+
 import logo from "../../../../assets/imagen/logo-inicio.png";
 const ResgistroView = (prop) => {
     const { setDatoToas } = prop
     let usedispatch = useDispatch()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
-    //const[spiner,setspine]
+    const [spinervi, setspine] = useState("d-none")
     const [datosPerson, setPerson] = useState({
         cedula: '',
         name: '',
@@ -129,6 +130,7 @@ const ResgistroView = (prop) => {
                             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                         }
                     })
+                    console.log(data)
                     if (data) {
                         let usuario = await getDatosUsuariosLocalStorag()
                         const { data } = Authsucrito(email, password)
@@ -142,6 +144,7 @@ const ResgistroView = (prop) => {
                         }
                         DatosUsuariosLocalStorag({ ...usuario, ...users })
                         sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+                        usedispatch(setModal({ nombre: '', estado: '' }))
                         //usedispatch(addususcritor({ users }))
                         // sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...datosPerson }))
                         //sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(datosPerson))
@@ -340,6 +343,36 @@ const ResgistroView = (prop) => {
                         </div>
 
 
+                    </div>
+                    <div className={spinervi}
+                        style={{
+                            display: 'none',
+                            position: 'fixed',
+                            top: '0',
+                            left: '0',
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            zIndex: '1000'
+                        }}
+                    >
+
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: '10px',
+                            padding: '10px',
+                        }}>
+                            <Spinner animation="border" variant="light" size='120'></Spinner>
+                            <h4 className='text-light'>Consultando datos ...</h4>
+
+
+                        </div>
                     </div>
 
                 </Modal.Body>

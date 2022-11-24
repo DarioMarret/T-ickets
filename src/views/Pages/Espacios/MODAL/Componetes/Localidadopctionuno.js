@@ -29,7 +29,7 @@ const TabunoView = (props) => {
             console.log(letrafilas, numeroinicofilas)
             const repeticiones = parseInt(numeroinicofilas) + parseInt(filass.cantidad)
             for (var i = numeroinicofilas; i < repeticiones; i++) {
-                ListadeFilas.push({ fila: letrafilas + "" + i, rotar: '', anchor: '30px', top: '', left: '', rigth: '', bottom: '', sillas: 0, asientos: [] });
+                ListadeFilas.push({ fila: letrafilas + "" + i, sillas: 0, asientos: [] });
             }
         }
         setFilas(ListadeFilas)
@@ -48,7 +48,7 @@ const TabunoView = (props) => {
                     const numfila = ListadeFilas[i]["fila"]
                     for (var f = 0; f < interar; f++) {
                         numero = 1 + f
-                        ListadeFilas[i]["asientos"][f] = { silla: numfila + "-s-" + numero, estado: "disponible", anchor: '30px', marginRight: '', marginLeft: '1px' };
+                        ListadeFilas[i]["asientos"][f] = { silla: numfila + "-s-" + numero, estado: "disponible", };
                     }
                 }
                 setFilas([])
@@ -65,7 +65,7 @@ const TabunoView = (props) => {
                 ListadeFilas[index].sillas = interarr
                 for (var g = 0; g < interarr; g++) {
                     numero = 1 + g
-                    sillas[g] = { silla: letra + "-s-" + numero, estado: "disponible", anchor: '30px', marginRight: '', marginLeft: '1px' }
+                    sillas[g] = { silla: letra + "-s-" + numero, estado: "disponible", }
                 }
 
                 ListadeFilas[index].asientos = [...sillas]
@@ -215,7 +215,6 @@ const TabunoView = (props) => {
                                             value={nmobretabuno.description}
                                             onChange={(e) => handelchangelocalidad(e.target)}
                                             placeholder="Ingresa una descripción de la seccion" />
-
                                     </div>
                                 </div>
                             </div>
@@ -223,7 +222,6 @@ const TabunoView = (props) => {
                                 {nmobretabuno.id !== "" ? <button onClick={actualizalocalidad} className="btn btn-primary col-12">Actualizar</button> : ''}
                                 {nmobretabuno.id !== "" ? '' : <button onClick={AgregaLocalidad} className="btn btn-success col-12">Guardar</button>}
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -242,8 +240,6 @@ const TabunoView = (props) => {
                                 placeholder="10" />
                         </div>
                     </div>
-
-
                     <div className="col-sm-5">
                         <label className="form-label"><b>Número inicial</b></label>
                         <div className="input-group mb-3">
@@ -260,7 +256,6 @@ const TabunoView = (props) => {
                                 placeholder="A1" />
                         </div>
                     </div>
-
                     <div className="col-sm-2 text-left">
                         <label className="form-label" style={{ color: 'white' }}><b>.</b></label><br />
                         <button className="btn btn-info" onClick={GeneraFilas}><i className="fa fa-plus"></i></button>
@@ -296,7 +291,6 @@ const TabunoView = (props) => {
 
                                     }) : ""}
                             </select>
-
                         </div>
                     </div>
                     <div className="col-sm-2">
@@ -321,7 +315,7 @@ const TabunoView = (props) => {
                                         <div className='d-flex  px-3 p-1 justify-content-ce ' key={"lista" + i}>
                                             <OverlayTrigger placement='right' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length > 0 ? e.asientos.length : ""}</Tooltip>}>
                                                 <span className="d-inline-block " disabled >
-                                                    <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: e.anchor, width: e.anchor }} >
+                                                    <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                                         <div className="d-flex justify-content-center">
                                                             <span style={{ fontSize: '0.7em' }}>    {e.fila} </span>
                                                         </div>
@@ -346,7 +340,7 @@ const TabunoView = (props) => {
                                                         let numero = index + 1
                                                         return (
                                                             <div key={"silla" + index} className='d-flex  bg-success   rounded-5 text-center  justify-content-center align-items-center '
-                                                                style={{ height: silla.anchor, width: silla.anchor, marginLeft: silla.marginLeft, marginRight: silla.marginRight }} >
+                                                                style={{ height: '30px', width: '30px', marginLeft: '1px' }} >
                                                                 <div className={'px-3 ' + silla.silla + 'd-flex   text-white justify-content-center  '} >
                                                                     <div className="d-flex justify-content-center">
                                                                         <span style={{ fontSize: '0.7em' }}>    {numero} </span>

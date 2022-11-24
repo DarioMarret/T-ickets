@@ -70,6 +70,7 @@ const ModalCarritoView = (prop) => {
             $("#" + e.path).attr("class", e.id + "  disponible " + e.tipo)
             $("#" + e.path).attr("fill", e.fill)
         }) : ''
+
     }, [showshop])
 
     function Abririlocalfirt(e) {

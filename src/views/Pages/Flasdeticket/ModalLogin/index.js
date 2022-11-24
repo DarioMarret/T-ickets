@@ -14,31 +14,29 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
 
 const ModalLogin = (props) => {
-  const { showLogin, setShowLogin, setUserauth } = props
+  const { showLogin, setShowLogin } = props
   let histoty = useHistory()
   const usedispatch = useDispatch()
   const [message, setmessage] = useState("");
   const [showtoas, setShowToas] = useState(false);
   const [showtoass, setShowToass] = useState(false);
   const [credenciales, setnombre] = useState({
-    email: '',
-    password: '',
+    username: '',
+    pass: '',
   });
   const handleSubmit = async (event) => {
     var hoy = new Date();
     event.preventDefault();
 
-    if (credenciales.email !== '' && credenciales.password !== '') {
+    if (credenciales.username !== '' && credenciales.pass !== '') {
       try {
         // console.log(credenciales,encodedToken)
-        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_suscriptor", credenciales, {
+        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_suscriptor", { email: credenciales.username, password: credenciales.pass }, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
           }
         })
-
-        //const { success, tocken } = data
         if (data.data) {
           const cedula = await getCedula(data.data.cedula)
           let client = {
@@ -51,10 +49,9 @@ const ModalLogin = (props) => {
           sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
           sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
           usedispatch(addususcritor({ ...client }))
-          setUserauth(true)
           setShowLogin(false)
           setShowToass(true)
-          setmessage("Bienvenido ")
+          setmessage("Bienvenido " + data.data.nombreCompleto)
 
         }
         else {
@@ -119,19 +116,21 @@ const ModalLogin = (props) => {
                   <div className="input-group-prepend">
                     <span className="input-group-text"><i className="fa fa-envelope"></i></span>
                   </div>
-                  <input id="email" type="text" className="form-control"
-                    name="email"
+                  <input id="username" type="text" className="form-control"
+                    name="username"
                     value={credenciales.username}
                     onChange={(e) => handleChange(e.target)}
+                    required
                     placeholder="Usuario" />
                 </div>
                 <div className="input-group mb-4">
                   <div className="input-group-prepend">
                     <span className="input-group-text"><i className="fa fa-lock"></i></span>
                   </div>
-                  <input id="password" type="password" className="form-control"
-                    name="password"
-                    value={credenciales.password}
+                  <input id="pass" type="password" className="form-control"
+                    name="pass"
+                    value={credenciales.pass}
+                    required
                     onChange={(e) => handleChange(e.target)}
                     placeholder="Contraseña" />
                 </div>
@@ -188,7 +187,7 @@ const ModalLogin = (props) => {
           <strong className="mr-auto">Inicio Exitoso </strong>
           <small></small>
         </Toast.Header>
-        <Toast.Body className="bg-success text-white" > Aqui trabajo {message} </Toast.Body>
+        <Toast.Body className="bg-success text-white" >   {message} </Toast.Body>
       </Toast>
     </>
   )

@@ -14,6 +14,7 @@ import axios from "axios";
 import "./localidas.css"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { seleccionmapa } from "utils/constantes";
+import { enviasilla } from "utils/Querypanelsigui";
 const LocalidadmapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
@@ -28,27 +29,28 @@ const LocalidadmapViews = (props) => {
         handleClosesop(true)
         setMapashow(flase)
     }
-    async function enviasilla(info) {
-        const datos = {
-            id: info.id,
-            cedula: "1314780774",
-            silla: info.silla,
-            estado: "reservado",
-        }
-        try {
-            const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecionar_localidad", datos, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                }
-            })
-            console.log(datos)
-            console.log(data)
-            usedispatch(filtrarlocali(data.datos))
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    /*  async function enviasilla(info) {
+          let user = getDatosUsuariosLocalStorag()
+          const datos = {
+              id: info.id,
+              cedula: user.cedula,
+              silla: info.silla,
+              estado: "reservado",
+          }
+          try {
+              const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecionar_localidad", datos, {
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                  }
+              })
+              console.log(datos)
+              console.log(data)
+              usedispatch(filtrarlocali(data.datos))
+          } catch (error) {
+              console.log(error)
+          }
+      }*/
     function agregar() {
         let producto = {
             cantidad: 1,
@@ -241,7 +243,7 @@ const LocalidadmapViews = (props) => {
         hideAlert()
     }
     const eliminaListadiv = (e) => {
-        $("div." + e.silla).removeClass("seleccionado").addClass("disponible")
+        e.tipo != "mesa" ? $("div." + e.silla).removeClass("seleccionado").addClass("disponible") : $("a." + e.silla).removeClass("seleccionado").addClass("disponible");
         hideAlert()
         EliminarSillas({ ...e })
         usedispatch(deleteSillas({ ...e }))
@@ -263,12 +265,20 @@ const LocalidadmapViews = (props) => {
                     this.classList.remove('disponible')
                     this.classList.add('seleccionado')
                     // enviasilla()
-                    console.log("nuevo")
-
+                    // console.log("nuevo")
+                    successAlert(this.classList[0], nombres.localodad, "Fila")
                     AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
-                    enviasilla({ id: nombres.idcolor, silla: this.classList[0] })
-                    successAlert(this.classList[0], nombres.localodad, "Fila")
+                    enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
+                        usedispatch(filtrarlocali(ouput))
+                        // console.log(ouput)
+                    }
+                    ).catch(exit => {
+
+                        console.log(exit)
+                    })
+                    // enviasilla({ id: nombres.idcolor, silla: this.classList[0] })
+
                 } else
                     succesLimit()
             }
@@ -285,13 +295,15 @@ const LocalidadmapViews = (props) => {
             return
         }
     })
-    $(document).on('click', 'li.cargados', function () {
+    /*$(document).on('click', 'li.cargados', function () {
         if (!this.classList.contains('disponible')) {
             let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
+            $("a." + this.classList[0]).removeClass("seleccionado").addClass("disponible");
+            $("a." + this.classList[0]).removeClass("seleccionado").addClass("disponible");
             succesElimAlertli({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "borrar" })
         }
         return
-    })
+    })*/
 
     $(document).on('click', 'a.disponible', function () {
         if (!this.classList.contains('seleccionado')) {
@@ -302,6 +314,11 @@ const LocalidadmapViews = (props) => {
                 AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                 usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                 successAlert(this.classList[0], nombres.localodad, "Mesa")
+                enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
+                    usedispatch(filtrarlocali(ouput))
+                    // console.log(ouput)
+                }
+                ).catch(exit => console.log(exit))
             } else {
                 succesLimit()
             }
@@ -341,35 +358,18 @@ const LocalidadmapViews = (props) => {
         setAlert(null);
     }
     const sillasetado = (d) => {
-        let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
+        const user = getDatosUsuariosLocalStorag()
+        //   let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
         if (d.cedula != undefined) {
-            //console.log(d)
-            return "seleccionado"
+            if (user != null && user.cedula == d.cedula) return "seleccionado"
+            else
+                return "reservado"
         }
         else return d.estado
     }
     useEffect(() => {
         getVerTienda().filter((e) => e.id == mapath.precio.id).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
-        mapath.precio.idcolor != undefined ? ListarLocalidad().then(ouput => {
-            let asientos = []
 
-            // console.log(mapath.precio.idcolor)
-            // console.log(JSON.parse(ouput.data.filter((e) => e.id == mapath.precio.idcolor)[0].mesas_array))
-
-            let dato = JSON.parse(ouput.data.filter((e) => e.id == mapath.precio.idcolor)[0].mesas_array)
-            if (dato.Typo == "fila") {
-                //console.log(dato)
-                dato.datos.map((e, i) => {
-                    asientos[i] = [...e.asientos]
-                    //asientosconsole.log(e.asientos)
-
-                })
-                console.log(asientos)
-            }
-
-            //filterlocal(id, ouput.data)
-        }
-        ).catch(exit => console.log(exit)) : ''
         let selct = seleccion
         selct.length > 0 ?
             selct.map((e) => {
@@ -457,7 +457,7 @@ const LocalidadmapViews = (props) => {
                                                     return (
                                                         <div className='d-flex  px-3 p-1 justify-content-ce ' key={"lista" + i}>
                                                             <span className="d-inline-block " disabled >
-                                                                <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: e.anchor, width: e.anchor }} >
+                                                                <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                                                     <div className="d-flex justify-content-center">
                                                                         <span style={{ fontSize: '0.7em' }}>    {e.fila} </span>
                                                                     </div>
@@ -469,7 +469,7 @@ const LocalidadmapViews = (props) => {
                                                                     return (
                                                                         <div key={"silla" + index}
                                                                             className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 text-center  justify-content-center align-items-center '}
-                                                                            style={{ height: silla.anchor, width: silla.anchor, marginLeft: silla.marginLeft, marginRight: silla.marginRight }} >
+                                                                            style={{ height: '30px', width: '30px', marginLeft: '1px', }} >
                                                                             <div className={'px-3 d-flex   text-white justify-content-center  '} >
                                                                                 <div className="d-flex justify-content-center">
                                                                                     <span style={{ fontSize: '0.7em' }}> {numero} </span>
@@ -496,7 +496,7 @@ const LocalidadmapViews = (props) => {
                                             </div>
                                         </div>
                                         {
-                                            mapath.localidadespecica.length > 0 ?
+                                            mapath.localidadespecica != undefined && mapath.localidadespecica.length > 0 ?
                                                 mapath.localidadespecica.map((e, index) => {
                                                     return (
                                                         <div className='d-flex  PX-1 align-items-center' key={index}>
@@ -563,7 +563,7 @@ const LocalidadmapViews = (props) => {
                                             seleccion.filter((e) => e.estado == "seleccionado").map((elm, id) => {
                                                 return (
                                                     <li key={id} className={elm.silla + '  d-flex agregados rounded-5  bg-success justify-content-center align-items-center '}
-                                                        onClick={() => succesElimAlertli({ "localidad": elm.localidad, "localidaEspacio": elm.localidaEspacio, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "borrar" })}
+                                                        onClick={() => succesElimAlertli({ "localidad": elm.localidad, tipo: mapath.precio.typo, "localidaEspacio": elm.localidaEspacio, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "borrar" })}
                                                         style={{ height: '30px', width: '80px', margin: '1px' }} >
                                                         <div className={'d-flex   text-white justify-content-center  '} >
                                                             <div className="d-flex  justify-content-center text-center p-2">

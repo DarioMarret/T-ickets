@@ -15,6 +15,7 @@ import ModalLocalidamapViews from "./Modal/ModalloaclidadAdmin"
 import ModalDetalle from "./Modal/ModalDetalle";
 import ModalEfectivo from "./Modal/Modalefectivo";
 import Reporte from "./Modal/ModalDeposito";
+import ListaSuscritor from "./Modal/Modalselectsunscritor";
 import "swiper/css/effect-flip";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -27,9 +28,11 @@ import 'moment-timezone'
 import 'moment/locale/es';
 import de from "date-fns/locale/de/index";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
+import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 require('moment/locale/es.js')
 export default function StoreTickesViews() {
     let usedispatch = useDispatch()
+    let modalshow = useSelector((state) => state.SuscritorSlice)
     const [Eventos, setEvento] = useState([])
     const [showMapa, setMapashow] = useState(false);
     const [showshop, handleClosesop] = useState(false);
@@ -162,6 +165,9 @@ export default function StoreTickesViews() {
         }
 
     }
+    const venderevento = (e) => {
+        usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
+    }
     const evento = async () => {
         try {
             const data = await cargarEventoActivo()
@@ -227,6 +233,7 @@ export default function StoreTickesViews() {
                 setPrecios(nuevosdatos)
                 setDatoscon(e)
                 handleClosesop(true)
+                usedispatch(setModal({ nombre: '', estado: '' }))
                 //velocidad()
             }
         } catch (err) {
@@ -418,7 +425,7 @@ export default function StoreTickesViews() {
                                                             <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{e.fechaConcierto}</span></p>
                                                             <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.lugarConcierto + " " + e.lugarConcierto} </span></p>
                                                             <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}  </span></p>
-                                                            <p className="btn btn-primary float-center" onClick={() => abrir(e)} > Vender entrada</p>
+                                                            <p className="btn btn-primary float-center" onClick={() => venderevento(e)} > Vender entrada</p>
                                                         </div>
                                                     </div>
 
@@ -435,6 +442,7 @@ export default function StoreTickesViews() {
                     </div>
                 </div>
             </Row>
+            {modalshow.modal.nombre == "suscritor" ? <ListaSuscritor abrir={abrir} /> : ''}
             {
                 modalPago ? <ModalPago
                     intervalo={intervalo}

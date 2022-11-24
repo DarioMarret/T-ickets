@@ -222,11 +222,7 @@ function ModalDetalle(props) {
                     cedula: datosPersonal.cedula,
                     metodoPago: metodoPago
                 })
-                DatosUsuariosLocalStorag({
-                    ...datosPersonal,
-                    ['metodoPago']: metodoPago,
-                    direccion: datosPersonal.direccion,
-                })
+
                 setChecked(false)
             }
             setPerson({
@@ -253,16 +249,7 @@ function ModalDetalle(props) {
                 envio: datosPersonal ? datosPersonal.envio : '',
                 metodoPago: metodoPago,
             })
-            DatosUsuariosLocalStorag({
-                ...datosPerson,
-                ['metodoPago']: metodoPago,
-                email: clineteLogeado ? clineteLogeado.email : '',
-                name: clineteLogeado ? clineteLogeado.name : '',
-                whatsapp: clineteLogeado ? clineteLogeado.whatsapp : '',
-                cedula: clineteLogeado ? clineteLogeado.cedula : '',
-                direccion: clineteLogeado ? clineteLogeado.direccion : '',
-                envio: datosPersonal ? datosPersonal.envio : '',
-            })
+
         }
         let mostrarcomision = GetMetodo()
         const mostrar = mostrarcomision != "Tarjeta" ? "d-none" : ""

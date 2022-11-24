@@ -12,6 +12,8 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import axios from "axios";
 import RegistroViwstab from "./MODAL/Registrodos.js";
 import { columns } from "utils/ColumnTabla.js";
+import { ListarLocalidad } from "utils/Querypanel.js";
+import { EliminarLocalidad } from "utils/Querypanel.js";
 
 const EventosViews = () => {
   const [localidaname, setLocalidad] = useState({ id: '', nombre: '', descripcion: '' })
@@ -36,13 +38,36 @@ const EventosViews = () => {
     }
   }
   async function Elimnar(e) {
+
     try {
-      const elimonado = await EliminarEspacios(e)
-      if (elimonado.success) {
-        await Lista()
-        hideAlert()
-        console.log(elimonado)
+      const listar = await ListarLocalidad()
+      if (listar.data.length) {
+        listar.data.filter((a) => a.espacio == e.nombre).map(async (element) => {
+          await EliminarLocalidad(element.id)
+        });
+        const elimonado = await EliminarEspacios(e.id)
+        if (elimonado.success) {
+          await Lista()
+          hideAlert()
+          //console.log(elimonado)
+        }
       }
+      else {
+        const elimonado = await EliminarEspacios(e.id)
+        if (elimonado.success) {
+          await Lista()
+          hideAlert()
+          // console.log(elimonado)
+        }
+      }
+
+      //console.log(listar.data.filter(a => a.espacio == e.nombre))
+      // const elimonado = await EliminarEspacios(e.id)
+      /* if (elimonado.success) {
+         await Lista()
+         hideAlert()
+         console.log(elimonado)
+       }*/
     } catch (error) {
       console.log(error)
 
@@ -272,7 +297,7 @@ const EventosViews = () => {
                     </IconButton>
                     <IconButton
                       color="error"
-                      onClick={() => successAlert(row.original.id)}
+                      onClick={() => successAlert(row.original)}
                     >
                       <Delete />
                     </IconButton>
