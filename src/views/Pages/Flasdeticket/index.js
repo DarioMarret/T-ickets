@@ -784,7 +784,7 @@ const IndexFlas = () => {
                                 <p style={{ fontSize: '1.2em', height: "55px" }}><b>Lugar:</b><span id="lugarEvento">{e.lugarConcierto}</span></p>
                                 <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}</span></p>
                                 {true ? <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                  className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => abrir(e)} >Comprar Entrada</p> : ""}
+                                  className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : setShowLogin(true)} >Comprar Entrada</p> : ""}
                               </div>
                             </div>
                           </div>
