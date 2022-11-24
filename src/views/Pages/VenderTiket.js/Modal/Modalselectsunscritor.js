@@ -21,12 +21,12 @@ export default function ListaSuscritor(prop) {
         try {
             const cedulas = await getCedula(e.cedula)
             sessionStorage.setItem("DatosUsuarioLocalStorang", JSON.stringify({ ...cedulas, ...e }))
-            /*  setTimeout(()=>{
-  
-              })*/
-            if (cedulas) {
-                abrir(modalshow.modal.estado)
-            }
+            setTimeout(() => {
+                if (cedulas) {
+                    abrir(modalshow.modal.estado)
+                }
+            }, 90)
+
 
         } catch (error) {
             console.log(error)
