@@ -342,7 +342,7 @@ const ModalLocalidamapViews = (props) => {
             >
                 {alert}
                 <Modal.Header>
-                    <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
+                    <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}> <span className="text-danger" > </span></h5>
                     <button className=" btn btn-primary" onClick={cerrar} >
                         <i className="bi bi-caret-left-fill">  </i>Regresar
                     </button>

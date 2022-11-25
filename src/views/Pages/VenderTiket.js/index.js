@@ -116,7 +116,7 @@ export default function StoreTickesViews() {
                 pathmapa: [],
                 mapa: ''
             })
-            sessionStorage.removeItem(DatosUsuarioLocalStorang)
+
             LimpiarLocalStore()
             usedispatch(borrarseleccion({ vacio: [] }))
             sessionStorage.setItem(listaasiento, JSON.stringify([]))

@@ -164,9 +164,7 @@ const ModalCarritoViewadmin = (prop) => {
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
                                 style={{ fontFamily: 'fantasy' }}
-                            >  Tiempo restante para la compra <span className="text-danger"
-                                style={{ fontFamily: 'fantasy' }}
-                            >{intervalo}</span> </h5>
+                            >   </h5>
                         </div>
                     </div>
                     <button type="button" className="close" onClick={detalle.length > 0 ? successAlert : cerrar} >

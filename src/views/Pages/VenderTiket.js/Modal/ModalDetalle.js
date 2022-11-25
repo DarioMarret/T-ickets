@@ -390,7 +390,7 @@ function ModalDetalle(props) {
             fullscreen={'lg-down'}
         >
             <Modal.Header >
-                <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}>Tiempo restante para la compra <span className="text-danger" >{intervalo} </span></h5>
+                <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}> <span className="text-danger" > </span></h5>
 
                 <button type="button" className="close"
                     onClick={handleDetalleColse}>

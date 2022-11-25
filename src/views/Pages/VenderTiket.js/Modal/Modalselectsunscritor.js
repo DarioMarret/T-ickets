@@ -20,12 +20,9 @@ export default function ListaSuscritor(prop) {
     const Vender = async (e) => {
         try {
             const cedulas = await getCedula(e.cedula)
-            sessionStorage.setItem("DatosUsuarioLocalStorang", JSON.stringify({ ...cedulas, ...e }))
-            setTimeout(() => {
-                if (cedulas) {
-                    abrir(modalshow.modal.estado)
-                }
-            }, 90)
+            sessionStorage.setItem("DatosUsuarioLocalStorang", JSON.stringify({ ...cedulas, ...e, password: '' }))
+            abrir(modalshow.modal.estado)
+            hideAlert()
 
 
         } catch (error) {
