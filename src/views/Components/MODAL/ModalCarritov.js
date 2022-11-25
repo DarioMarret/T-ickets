@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { Modal } from "react-bootstrap"
 import { Metodos } from 'utils/constantes'
 import SvgselectView from "views/Pages/Svgviewa/svgseleccion.js"
@@ -9,6 +9,8 @@ import { cargarmapa, settypo, filtrarlocali } from "StoreRedux/Slice/mapaLocalSl
 import { clearSillas, cargarsilla } from "StoreRedux/Slice/sillasSlice"
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { GetEstadousu } from "utils/CarritoLocalStorang"
+import { CarritoTicket } from "utils/constantes"
+
 const ModalCarritoView = (prop) => {
     const { showshop, handleClosesop, handleContinuar, setMapashow, precios, setListaPrecio, setListarCarritoDetalle, intervalo, detener } = prop
     let usedispatch = useDispatch()
@@ -22,6 +24,7 @@ const ModalCarritoView = (prop) => {
         Tarjeta: "",
         Deposito: "",
     })
+
     const [listaPrecio, ListaPrecioset] = useState({
         total: 0,
         subtotal: 0,
@@ -48,6 +51,17 @@ const ModalCarritoView = (prop) => {
         setMapashow(true)
         detener(false)
     }
+
+
+
+    /* window.addEventListener("beforeunload", (evento) => {
+         let carriito = JSON.parse(sessionStorage.getItem(CarritoTicket))
+         if (getVerTienda().length > 0) {
+             evento.preventDefault();
+             evento.returnValue = "";
+             return "";
+         }
+        });*/
 
     useEffect(() => {
         setDetalle(getVerTienda())

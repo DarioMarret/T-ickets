@@ -1,46 +1,49 @@
 import { ListarLocalidad } from "utils/Querypanel"
 import { AgregarAsiento } from "utils/CarritoLocalStorang"
-import { useDispatch, useSelector } from "react-redux"
-import { asientosList, concierto, Eventolocalidad } from "utils/constantes"
+import { asientosList, concierto, } from "utils/constantes"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
+
 export const Cargarsillas = (colornuevo) => {
-    let usedispatch = useDispatch()
     const user = getDatosUsuariosLocalStorag()
-    ListarLocalidad().then(ouput => {
+    return ListarLocalidad().then(ouput => {
+        // console.log(colornuevo, user)
         colornuevo.map((f) => {
-            if (ouput.data.find(ins => ins.id == f.idcolor) != undefined) {
-                if (JSON.parse(ouput.data.find(ins => ins.id == f.idcolor).mesas_array).Typo == "fila") {
-                    JSON.parse(ouput.data.find(ind => ind.id == idcolor).mesas_array).datos.map((elm) => {
-                        elm.asientos.filter(elm => elm.cedula == user.cedula).map(element => {
-                            let listsillas = JSON.parse(sessionStorage.getItem(asientosList))
-                            if (listsillas.findIndex(el => el.seleccionmapa == f.localodad + "" + element.silla) != -1) {
+            if (ouput.data.find(ins => ins.id == f.id) != undefined) {
+                if (JSON.parse(ouput.data.find(ins => ins.id == f.id).mesas_array).Typo == "fila") {
+                    //console.log(JSON.parse(ouput.data.find(ind => ind.id == f.id).mesas_array))
+                    JSON.parse(ouput.data.find(ind => ind.id == f.id).mesas_array).datos.map(filas => {
+                        filas.asientos.filter(elm => elm.cedula == user.cedula).map(element => {
+                            let listsillas = JSON.parse(sessionStorage.getItem(asientosList)) == null ? [] : JSON.parse(sessionStorage.getItem(asientosList))
+
+                            if (listsillas.findIndex(el => el.seleccionmapa == f.localodad + "-" + element.silla) == -1) {
                                 AgregarAsiento({
-                                    "localidad": f.localodad,
-                                    "localidaEspacio": f,
+                                    "localidad": f.nombre,
+                                    "localidaEspacio": f.localidaEspacio,
                                     "silla": element.silla,
                                     "fila": element.silla.split("-")[0],
-                                    "estado": element.estado,
+                                    "estado": "seleccionado",
                                     "nombreConcierto": sessionStorage.getItem(concierto),
-                                    "seleccionmapa": f.localodad + "" + element.silla,
+                                    "seleccionmapa": f.nombre + "-" + element.silla,
                                     "valor": f.precio_normal
                                 })
                             }
                         });
                     })
-                } if (JSON.parse(ouput.data.find(ins => ins.id == f.idcolor).mesas_array).Typo == "mesa") {
-                    JSON.parse(ouput.data.find(ins => ins.id == f.idcolor).mesas_array).datos.map((elm) => {
-                        elm.Mesas.map(e => {
+                }
+                if (JSON.parse(ouput.data.find(ins => ins.id == f.id).mesas_array).Typo == "mesa") {
+                    JSON.parse(ouput.data.find(ind => ind.id == f.id).mesas_array).datos.map(mesa => {
+                        mesa.Mesas.map(e => {
                             e.asientos.filter(asi => asi.cedula == user.cedula).map(sele => {
-                                let listsillas = JSON.parse(sessionStorage.getItem(asientosList))
-                                if (listsillas.findIndex(el => el.seleccionmapa == f.localodad + "" + sele.silla) != -1) {
+                                let listsillas = JSON.parse(sessionStorage.getItem(asientosList)) == null ? [] : JSON.parse(sessionStorage.getItem(asientosList))
+                                if (listsillas != null && listsillas.findIndex(el => el.seleccionmapa == f.localodad + "-" + sele.silla) == -1) {
                                     AgregarAsiento({
-                                        "localidad": f.localodad,
-                                        "localidaEspacio": f,
+                                        "localidad": f.nombre,
+                                        "localidaEspacio": f.localidaEspacio,
                                         "silla": sele.silla,
                                         "fila": sele.silla.split("-")[0],
-                                        "estado": sele.estado,
+                                        "estado": "seleccionado",
                                         "nombreConcierto": sessionStorage.getItem(concierto),
-                                        "seleccionmapa": f.localodad + "" + sele.silla,
+                                        "seleccionmapa": f.nombre + "-" + sele.silla,
                                         "valor": f.precio_normal
                                     })
                                 }
@@ -51,8 +54,12 @@ export const Cargarsillas = (colornuevo) => {
                 }
             }
         })
-        //let listsillas = JSON.parse(sessionStorage.getItem(asientosList))
+        let listsillas = JSON.parse(sessionStorage.getItem(asientosList))
+        return listsillas != null ? JSON.parse(sessionStorage.getItem(asientosList)) : []
 
     }
-    ).catch(exit => console.log(exit))
+    ).catch(exit => {
+        console.log(exit)
+        return exit
+    })
 }

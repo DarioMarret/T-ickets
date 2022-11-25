@@ -182,10 +182,15 @@ const ModalLogin = (props) => {
           zIndex: 10000
         }}
       >
-        <Toast.Header>
+        <Toast.Header closeButton={false} >
           <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
           <strong className="mr-auto">Inicio Exitoso </strong>
           <small></small>
+
+          <button type="button" className="close"
+            onClose={() => setShowToass(false)} >
+            ×
+          </button>
         </Toast.Header>
         <Toast.Body className="bg-success text-white" >   {message} </Toast.Body>
       </Toast>

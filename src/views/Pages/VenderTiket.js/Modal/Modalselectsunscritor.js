@@ -20,16 +20,13 @@ export default function ListaSuscritor(prop) {
     const Vender = async (e) => {
         try {
             const cedulas = await getCedula(e.cedula)
-            sessionStorage.setItem("DatosUsuarioLocalStorang", JSON.stringify({ ...cedulas, ...e, password: '' }))
+            DatosUsuariosLocalStorag({ ...cedulas, ...e, whatsapp: e.movil, password: '' })
+            sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...cedulas, whatsapp: e.movil, ...e, password: '' }))
             abrir(modalshow.modal.estado)
             hideAlert()
-
-
         } catch (error) {
             console.log(error)
         }
-
-        //abrir(modalshow.modal.estado)
     }
     const successAlert = (e) => {
         setAlert(
@@ -73,6 +70,7 @@ export default function ListaSuscritor(prop) {
         })
     };
 
+
     return (
         <>
             {alert}
@@ -106,7 +104,7 @@ export default function ListaSuscritor(prop) {
                                 {lista.length > 0 ?
                                     lista.map((e, i) => {
                                         return (
-                                            <div className="grid-item element-item transition list-group-item border rounded-3 mt-2 container-fluid" key={i} >
+                                            <div className="grid-item element-item transition list-group-item border rounded-5 mt-2 container-fluid" key={i} >
 
                                                 <li className=" d-flex justify-content-between align-items-center">
                                                     <div className="d-flex flex-column ">
@@ -118,9 +116,9 @@ export default function ListaSuscritor(prop) {
                                                         <span>cédula: <span className="cedula">{e.cedula} </span></span>
                                                     </div>
                                                     <div>
-                                                        <button className="btn btn-primary"
+                                                        <button className="btn   btn-outline-success"
                                                             onClick={() => successAlert(e)}>
-                                                            Ok
+                                                            <i className="fa fa-check" ></i>
 
                                                         </button>
                                                     </div>
@@ -143,7 +141,7 @@ export default function ListaSuscritor(prop) {
                 </Modal.Body>
                 <Modal.Footer className="d-flex justify-content-center">
                     <div>
-                        <button className="btn btn-primary"> CREAR SUSCRIPTOR </button>
+                        <button className="btn btn-outline-primary" onClick={() => usedispatch(setModal({ nombre: 'newsuscri', estado: '' }))} > CREAR SUSCRIPTOR </button>
                     </div>
 
                 </Modal.Footer>

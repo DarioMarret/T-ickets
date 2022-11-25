@@ -7,6 +7,7 @@ import { Modal } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { addSillas, deleteSillas, clearSillas, deleteMesa } from "StoreRedux/Slice/sillasSlice"
 import { EliminarSillas, AgregarAsiento, VerSillaslist, TotalSelecion } from "utils/CarritoLocalStorang"
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import SweetAlert from "react-bootstrap-sweetalert";
 const ModalLocalidamapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
@@ -315,6 +316,19 @@ const ModalLocalidamapViews = (props) => {
     const hideAlert = () => {
         setAlert(null);
     };
+
+    const sillasetado = (d) => {
+        const user = getDatosUsuariosLocalStorag()
+        if (d.cedula != undefined) {
+            if (user != null && user.cedula == d.cedula) return "seleccionado"
+            else
+                return "reservado"
+        }
+        else
+            return d.estado
+
+    }
+
     useEffect(() => {
         getVerTienda().filter((e) => e.id == mapath.precio.id).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
 
@@ -404,7 +418,7 @@ const ModalLocalidamapViews = (props) => {
                                                     return (
                                                         <div className='d-flex  px-3 p-1 justify-content-ce ' key={"lista" + i}>
                                                             <span className="d-inline-block " disabled >
-                                                                <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: e.anchor, width: e.anchor }} >
+                                                                <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                                                     <div className="d-flex justify-content-center">
                                                                         <span style={{ fontSize: '0.7em' }}>    {e.fila} </span>
                                                                     </div>
@@ -415,8 +429,8 @@ const ModalLocalidamapViews = (props) => {
                                                                     let numero = index + 1
                                                                     return (
                                                                         <div key={"silla" + index}
-                                                                            className={silla.silla + '  d-flex  ' + silla.estado + '  rounded-5 text-center  justify-content-center align-items-center '}
-                                                                            style={{ height: silla.anchor, width: silla.anchor, marginLeft: silla.marginLeft, marginRight: silla.marginRight }} >
+                                                                            className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 text-center  justify-content-center align-items-center '}
+                                                                            style={{ height: '30px', width: '30px', marginLeft: '1px', marginRight: silla.marginRight }} >
                                                                             <div className={'px-3 d-flex   text-white justify-content-center  '} >
                                                                                 <div className="d-flex justify-content-center">
                                                                                     <span style={{ fontSize: '0.7em' }}> {numero} </span>

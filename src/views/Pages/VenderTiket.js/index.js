@@ -3,33 +3,37 @@ import { ListarTikets } from "utils/Querypanel";
 import { Row, Card, Col, } from "react-bootstrap";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { listarpreciolocalidad, ListarLocalidad } from "utils/Querypanel";
-import { LimpiarLocalStore, Limpiarseleccion } from "utils/CarritoLocalStorang";
+import { LimpiarLocalStore, Limpiarseleccion, getVerTienda } from "utils/CarritoLocalStorang";
 import { cargarEventoActivo, cargarMapa } from "utils/Querypanelsigui";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { cargalocalidad, clearMapa } from "StoreRedux/Slice/mapaLocalSlice";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
 import { Eventoid, listaasiento } from "utils/constantes";
 import ModalCarritoView from "./Modal/ModalCarritoadmin";
+import { Cargarsillas } from "views/Components/MODAL/cargarsillas";
 import ModalPago from "views/Components/MODAL/ModalPago";
 import ModalLocalidamapViews from "./Modal/ModalloaclidadAdmin"
 import ModalDetalle from "./Modal/ModalDetalle";
 import ModalEfectivo from "./Modal/Modalefectivo";
 import Reporte from "./Modal/ModalDeposito";
+import ModalSuscritoView from "../Suscriptores/ModalSuscritor";
 import ListaSuscritor from "./Modal/Modalselectsunscritor";
 import "swiper/css/effect-flip";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/effect-cards";
 import { EffectFlip, Pagination, Navigation, EffectCards } from "swiper";
-import SweetAlert from "react-bootstrap-sweetalert";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
-import de from "date-fns/locale/de/index";
-import { DatosUsuarioLocalStorang } from "utils/constantes";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import { cargarsilla } from "StoreRedux/Slice/sillasSlice";
+import { seleccionmapa } from "utils/constantes";
+import { Eventolocalidad } from "utils/constantes";
+import { filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice";
 require('moment/locale/es.js')
+
 export default function StoreTickesViews() {
     let usedispatch = useDispatch()
     let modalshow = useSelector((state) => state.SuscritorSlice)
@@ -59,35 +63,34 @@ export default function StoreTickesViews() {
     };
     const [info, setInfo] = useState({ Ticket: 0, Activos: 0, Venta: 0, })
     const intervalRef = useRef(null);
-    function velocidad() {
-        let timer = 0
-        var tiempo = 60 * 3
-        timer = tiempo
-        var minutos = 0, segundos = 0;
+
+    const closedeposito = () => {
+        setModalPago(false)
+        setDetalle(true)
+    }
+    function filterlocal(id, consulta) {
+        let nuevo = []
+        id.forEach((elm, i) => {
+            let espacifica = JSON.parse(sessionStorage.getItem(seleccionmapa)) ? JSON.parse(sessionStorage.getItem(seleccionmapa)) : { id: null }
+            if (consulta.findIndex(f => f.id === elm) != -1) {
+                nuevo[i] = consulta[consulta.findIndex(f => f.id === elm)]
+                if (espacifica.id != null) {
+                    espacifica.idcolor === consulta[consulta.findIndex(f => f.id === elm)].id ?
+                        usedispatch(filtrarlocali(JSON.parse(consulta[consulta.findIndex(f => f.id === elm)].mesas_array).datos)) : ''
+                }
+            }
+        })
+        usedispatch(cargalocalidad(nuevo))
+
+    }
+    const consultarlocalidad = () => {
+        let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
         intervalRef.current = setInterval(function () {
-            minutos = parseInt(timer / 60, 10);
-            segundos = parseInt(timer % 60, 10);
-            minutos = minutos < 10 ? "0" + minutos : minutos;
-            segundos = segundos < 10 ? "0" + segundos : segundos;
-            if (timer === 0) {
-                clearInterval(intervalRef.current);
-                usedispatch(setToastes({ show: true, message: 'El tiempo de compra a finalizado', color: 'bg-danger', estado: 'Mensaje importante', }))
-                handleClosesop(false)
-                setMapashow(false)
-                setDetalle(false)
-                efectShow(false)
-                Limpiarseleccion()
-                LimpiarLocalStore()
-                usedispatch(clearMapa({}))
-                usedispatch(borrarseleccion({ estado: "seleccionado" }))
-                $(".Mesa").removeClass("mesaocupado").addClass("mesadisponible")
-                $(".Mesa").removeClass("mesareserva")
+            ListarLocalidad().then(ouput => {
+                filterlocal(id, ouput.data)
             }
-            else {
-                setcrono(minutos + ":" + segundos)
-                if (--timer < 0) timer = tiempo;
-            }
-        }, 1000);
+            ).catch(exit => console.log(exit))
+        }, 2000);
     }
     function detenervelocidad() {
         handleClosesop(false)
@@ -139,6 +142,11 @@ export default function StoreTickesViews() {
                 })
                 let colornuevo = mapalocal.map((L) => {
                     if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+                        L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)]
+                        L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
+                        L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
+                        L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
+                        L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
                         return L
                     }
                 })
@@ -147,6 +155,9 @@ export default function StoreTickesViews() {
                         return L
                     }
                 })
+                sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
+                    return e.id
+                }))]))
                 usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
                 let nuevosdatos = {
                     precios: newprecios,
@@ -156,8 +167,19 @@ export default function StoreTickesViews() {
                 sessionStorage.eventoid = e.codigoEvento
                 setPrecios(nuevosdatos)
                 setDatoscon(e)
-                handleClosesop(true)
+                consultarlocalidad()
                 hideAlert()
+                Cargarsillas(colornuevo.filter((e) => e != undefined)).then(elem => {
+                    usedispatch(cargarsilla(elem))
+                    setTimeout(() => {
+
+                        handleClosesop(true)
+                        getVerTienda()
+                    }, 90)
+                }).catch(err => {
+                    console.log(err)
+
+                })
             }
 
         } catch (err) {
@@ -194,9 +216,9 @@ export default function StoreTickesViews() {
 
         if (id != null && id != e.codigoEvento) {
             borrar(e)
+            usedispatch(setModal({ nombre: '', estado: '' }))
         }
         try {
-            borrar(e)
             let obten = await listarpreciolocalidad(e.codigoEvento)
             const listalocal = await ListarLocalidad()
             let localidades = await cargarMapa()
@@ -215,6 +237,11 @@ export default function StoreTickesViews() {
                 })
                 let colornuevo = mapalocal.map((L) => {
                     if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+                        L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)]
+                        L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
+                        L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
+                        L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
+                        L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
                         return L
                     }
                 })
@@ -223,6 +250,9 @@ export default function StoreTickesViews() {
                         return L
                     }
                 })
+                sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
+                    return e.id
+                }))]))
                 usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
                 let nuevosdatos = {
                     precios: newprecios,
@@ -232,13 +262,45 @@ export default function StoreTickesViews() {
                 sessionStorage.eventoid = e.codigoEvento
                 setPrecios(nuevosdatos)
                 setDatoscon(e)
-                handleClosesop(true)
-                usedispatch(setModal({ nombre: '', estado: '' }))
-                //velocidad()
+
+                consultarlocalidad()
+                Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
+                    handleClosesop(true)
+                    usedispatch(cargarsilla(outp))
+
+                    usedispatch(setModal({ nombre: '', estado: '' }))
+
+                }).catch(err => {
+                    console.log(err)
+                })
+
             }
         } catch (err) {
             console.log(err)
         }
+    }
+    window.onbeforeunload = preguntarAntesDeSalir;
+
+    function preguntarAntesDeSalir() {
+        var bPreguntar = (getVerTienda().length > 0)
+        var respuesta;
+
+        if (bPreguntar) {
+            respuesta = window.confirm('¿Seguro que quieres salir?');
+
+            if (respuesta) {
+                window.onunload = function () {
+                    this.preventDefault()
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+    function cerrnewsuscr(e) {
+        usedispatch(setModal({ nombre: e, estado: '' }))
+
     }
     useEffect(() => {
         (async () => {
@@ -273,6 +335,20 @@ export default function StoreTickesViews() {
                 efectShow={efectShow}
                 efectiOpShow={efectiOpShow}
                 handleefectivoClose={handleefectivoClose}
+            />
+            <ModalSuscritoView
+                show={modalshow.modal.nombre == "newsuscri" ? true : false}
+                setshow={cerrnewsuscr}
+                estado={""}
+                datosperson={{
+                    ciudad: "",
+                    email: "",
+                    enable: 0,
+                    fechaCreacion: "",
+                    id: 0,
+                    movil: "",
+                    nombreCompleto: ""
+                }}
             />
             {alert}
             <Row>
@@ -442,12 +518,13 @@ export default function StoreTickesViews() {
                     </div>
                 </div>
             </Row>
-            {modalshow.modal.nombre == "suscritor" ? <ListaSuscritor abrir={abrir} /> : ''}
+            {modalshow.modal.nombre == "suscritor" || modalshow.modal.nombre == false ? <ListaSuscritor abrir={abrir} /> : ''}
             {
                 modalPago ? <ModalPago
                     intervalo={intervalo}
                     detenervelocidad={detenervelocidad}
                     para={para}
+                    closedeposito={closedeposito}
                     setModalPago={setModalPago} modalPago={modalPago} /> : null
             }
             <ModalDetalle

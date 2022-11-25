@@ -161,7 +161,7 @@ let valorDuplicadas = [];
 function Filterduplicados() {
     VerSillas()
     VerTienda()
-    let ListadeSillas = PVsilla.filter((iten) => iten.estado == "reservado")
+    let ListadeSillas = PVsilla.filter((iten) => iten.estado == "reservado" || iten.estado == "seleccionado")
     ListadeSillas.length > 0 ? ListadeSillas.forEach((p, i) => {
         if (valorDuplicadas.findIndex(pd => pd.localidad === p.localidad) === -1) {
             valorDuplicadas.push({ localidad: p.localidad, fila: '', localidaEspacio: p.localidaEspacio, nombreConcierto: p.nombreConcierto, valor: p.valor, cantidad: 1, discapacidad: p.localidaEspacio.precio_discapacidad });

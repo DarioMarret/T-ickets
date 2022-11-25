@@ -24,3 +24,21 @@ function obtenervariables() {
   });
   return variables
 }
+/*window.onbeforeunload = preguntarAntesDeSalir;
+function preguntarAntesDeSalir() {
+  var respuesta;
+  var bPreguntar = (JSON.parse(sessionStorage.getItem("CarritoTicket:")) != null && JSON.parse(sessionStorage.getItem("CarritoTicket:")).length > 0)
+  if (bPreguntar) {
+    respuesta = window.confirm('¿Seguro que quieres salir?');
+
+    if (respuesta) {
+
+      window.onunload = function () {
+        alert("confirm")
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+}*/

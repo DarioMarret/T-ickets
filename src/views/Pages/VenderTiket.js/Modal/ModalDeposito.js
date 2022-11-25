@@ -115,7 +115,7 @@ const Reporte = (props) => {
                         <div className="container ">
                             <div className='d-flex col-12 justify-content-end align-items-center' >
 
-                                <div><button className='btn btn-primary' onClick={handlereportColse} >  <i className="bi bi-caret-left-fill"></i>  Regresar</button></div>
+                                <div><button className='btn btn-primary' onClick={succesAlert} >  <i className="bi bi-caret-left-fill"></i>  Regresar</button></div>
                             </div>
                             <div className="d-flex flex-wrap justify-content-center align-items-center" >
                                 <div className='d-flex flex-column text-center justify-content-center align-items-center'>

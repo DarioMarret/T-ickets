@@ -178,7 +178,6 @@ function ModalDetalle(props) {
         var opt = {
             margin: 1,
             filename: 'Compra.pdf',
-
             html2canvas: { scale: 2 },
         };
         html2pdf(element, opt);
@@ -187,73 +186,20 @@ function ModalDetalle(props) {
     const handelefctivorShow = async () => {
         let datos = await getDatosUsuariosLocalStorag()
         let nuemro = await ValidarWhatsapp()
-
-        if (suscritores.filter((e) => e.cedula == datosPerson.cedula).length > 0) {
+        if (nuemro == null) {
             //GenerarPDF()
             efectiOpShow(true)
-            console.log(nuemro)
+            //console.log(nuemro)
             //pararcontador()
             setDetalle(false)
             return
-        } else {
-            try {
-                if (nuemro == null) {
-                    usedispatch(setToastes({
-                        show: true,
-                        message: "Ingrese un número de Whatsapp válido",
-                        color: 'bg-danger',
-                        estado: "Número " + datos.whatsapp + " Inválido",
-                    }))
-                    return false
-                }
-                const { success, message } = await GuardarDatosdelComprador()
-                if (success) {
-                    usedispatch(setToastes({ show: true, message: "Los datos del nuevo subscritor se han registrado", color: 'bg-success', estado: "Cliente registrado " }))
-                    efectiOpShow(true)
-                    setDetalle(false)
-                }
-                else {
-                    usedispatch(setToastes({
-                        show: true,
-                        message: "correo electrónico ya registrado",
-                        color: 'bg-danger',
-                        estado: "Correo " + datos.email + " Duplicado",
-                    }))
-                }
-            } catch (error) {
-                console.log(clienteauth, error)
-                usedispatch(setToastes({
-                    show: true, message: "Hubo un error correo duplicado o verifique su conexión",
-                    color: 'bg-danger', estado: "Hubo un error",
-                }))
-            }
         }
 
     }
 
     async function handlePago() {
-        if (!suscritores.filter((e) => e.cedula == datosPerson.cedula).length > 0) {
-            console.log(suscritores.filter((e) => e.cedula == datosPerson.cedula))
-            const numero = await ValidarWhatsapp()
-            if (validarEmail(datosPerson.email)) {
-                const { success, message } = await GuardarDatosdelComprador()
-                if (success) {
-                    // pararcontador()
-                    setDetalle(!showDetalle)
-                    setModalPago(true)
-
-                }
-                else {
-                    usedispatch(setToastes({
-                        show: true,
-                        message: "Probablemente el Correo " + datosPerson.email + " ya esta registrado",
-                        color: 'bg-danger',
-                        estado: "Hubo un error intente nuevamente",
-                    }))
-                }
-            }
-        }
-        else {
+        let nuemro = await ValidarWhatsapp()
+        if (nuemro == null) {
             // pararcontador()
             setDetalle(!showDetalle)
             setModalPago(true)
@@ -261,38 +207,12 @@ function ModalDetalle(props) {
     }
     const handelReporShow = async () => {
         let datos = await getDatosUsuariosLocalStorag()
-        let nuemro = await ValidarWhatsapp()
-        let suscritor = suscritores.filter((e) => e.cedula == datosPerson.cedula)
-        console.log(clienteauth)
-        try {
-            if (!suscritor.length > 0) {
-                if (nuemro == null) {
-                    usedispatch(setToastes({
-                        show: true,
-                        message: "Ingrese un numero de Whatsapp",
-                        color: 'bg-danger',
-                        estado: "Numero " + datos.whatsapp + " Invalido",
-                    }))
-                    return
-                }
-                else {
-                    const { success, message } = await GuardarDatosdelComprador()
-                    if (success) {
-                        usedispatch(setToastes({ show: true, message: "Los datos del nuevo subscritor se han registrado", color: 'bg-success', estado: "Cliente registrado " }))
-                        setrepShow(true)
-                        setDetalle(false)
-                    }
-                    else {
-                        usedispatch(setToastes({
-                            show: true,
-                            message: "Probablemente el Correo " + datosPerson.email + " ya esta registrado",
-                            color: 'bg-danger',
-                            estado: "Hubo un error intente nuevamente",
-                        }))
 
-                    }
-                }
-            } else {
+        // let suscritor = suscritores.filter((e) => e.cedula == datosPerson.cedula)
+        //   console.log(clienteauth)
+        try {
+            let nuemro = await ValidarWhatsapp()
+            if (nuemro == null) {
                 //  pararcontador()
                 setrepShow(true)
                 setDetalle(false)
@@ -336,11 +256,11 @@ function ModalDetalle(props) {
                     cedula: datosPersonal.cedula,
                     metodoPago: metodoPago
                 })
-                DatosUsuariosLocalStorag({
-                    ...datosPersonal,
-                    ['metodoPago']: metodoPago,
-                    direccion: datosPersonal.direccion,
-                })
+                /* DatosUsuariosLocalStorag({
+                     ...datosPersonal,
+                     ['metodoPago']: metodoPago,
+                     direccion: datosPersonal.direccion,
+                 })*/
                 setChecked(false)
             }
             setPerson({
@@ -367,16 +287,16 @@ function ModalDetalle(props) {
                 envio: datosPersonal ? datosPersonal.envio : '',
                 metodoPago: metodoPago,
             })
-            DatosUsuariosLocalStorag({
-                ...datosPerson,
-                ['metodoPago']: metodoPago,
-                email: clineteLogeado ? clineteLogeado.email : '',
-                name: clineteLogeado ? clineteLogeado.name : '',
-                whatsapp: clineteLogeado ? clineteLogeado.whatsapp : '',
-                cedula: clineteLogeado ? clineteLogeado.cedula : '',
-                direccion: clineteLogeado ? clineteLogeado.direccion : '',
-                envio: datosPersonal ? datosPersonal.envio : '',
-            })
+            /* DatosUsuariosLocalStorag({
+                 ...datosPerson,
+                 ['metodoPago']: metodoPago,
+                 email: clineteLogeado ? clineteLogeado.email : '',
+                 name: clineteLogeado ? clineteLogeado.name : '',
+                 whatsapp: clineteLogeado ? clineteLogeado.whatsapp : '',
+                 cedula: clineteLogeado ? clineteLogeado.cedula : '',
+                 direccion: clineteLogeado ? clineteLogeado.direccion : '',
+                 envio: datosPersonal ? datosPersonal.envio : '',
+             })*/
         }
         let mostrarcomision = GetMetodo()
         const mostrar = mostrarcomision != "Tarjeta" ? "d-none" : ""
@@ -432,7 +352,7 @@ function ModalDetalle(props) {
                                     className="numero form-control form-control-sm"
                                     id="dni"
                                     maxLength={10}
-
+                                    disabled={true}
                                     name='cedula'
                                     value={datosPerson.cedula ? datosPerson.cedula : ''}
                                     onChange={(e) => handelchange(e.target)}
@@ -620,45 +540,6 @@ function ModalDetalle(props) {
 
                         </div>
                         <div className=" col-12 col-lg-12  text-end align-items-end ">
-                            { /* {
-                                !clienteauth && datosPerson.metodoPago == "Tarjeta" ?
-                                    <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
-                                        onClick={handlePago}
-                                    >
-                                        <i className="fa fa-credit-card "> </i>PAGAR T</button> : ""
-                            }
-                            {
-                                !clienteauth && datosPerson.metodoPago == "Efectivo" ?
-                                    <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { handelefctivorShow() } }}
-                                    >
-                                        <i className="fa fa-credit-card "> </i>PAGAR E</button> : ""
-                            }
-                            {
-                                !clienteauth && datosPerson.metodoPago == "Deposito" ?
-                                    <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
-                                    >
-                                        <i className="fa fa-credit-card "> </i>PAGAR D</button> : ""
-                            }
-                            {
-                                !clienteauth && !datosPerson.metodoPago ?
-                                    <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={true}
-                                    >
-                                        <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
-                            }
-                            {
-                                clienteauth && datosPerson.metodoPago == "Tarjeta" ?
-                                    <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(datosPerson.envio != '')}
-                                        onClick={abrirPago}
-                                    >
-                                        <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
-                            }*/}
                             {
                                 datosPerson.metodoPago == "Tarjeta" ?
                                     <button id="pagarcuenta" className="btn btn-primary"

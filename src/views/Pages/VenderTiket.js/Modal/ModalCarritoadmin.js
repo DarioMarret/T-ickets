@@ -9,9 +9,12 @@ import { cargarmapa, settypo, filtrarlocali } from "StoreRedux/Slice/mapaLocalSl
 import { clearSillas, cargarsilla } from "StoreRedux/Slice/sillasSlice"
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { GetEstadousu } from "utils/CarritoLocalStorang"
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 const ModalCarritoViewadmin = (prop) => {
     const { showshop, handleClosesop, handleContinuar, setMapashow, precios, setListarCarritoDetalle, intervalo, detener } = prop
     let usedispatch = useDispatch()
+    // let user = getDatosUsuariosLocalStorag()
+
     let sleccionlocalidad = useSelector((state) => state.mapaLocalSlice)
     let seleciondesillas = useSelector((state) => state.sillasSlice.sillasSelecionadas)
     const [detalle, setDetalle] = useState([])
@@ -156,7 +159,7 @@ const ModalCarritoViewadmin = (prop) => {
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
                                 style={{ fontFamily: 'fantasy' }}
-                            >Boletería </h5>
+                            >Boletería  cliente : {getDatosUsuariosLocalStorag() != null ? getDatosUsuariosLocalStorag().nombreCompleto : ''}</h5>
                         </div>
 
                     </div>

@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Modal, Toast } from "react-bootstrap";
 import { getCedula } from "utils/DatosUsuarioLocalStorag";
 import { EditarSuscrito, CrearSuscritor } from "utils/Querypanel";
+import { useDispatch, useSelector } from "react-redux";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 const ModalSuscritoView = (props) => {
   const { show, datosperson, setshow, estado } = props
+  let usedispatch = useDispatch()
   const [validate, setValidate] = useState("")
   const [message, setmessage] = useState("");
   const [showtoas, setShowToas] = useState(false);
@@ -58,24 +61,43 @@ const ModalSuscritoView = (props) => {
       "movil": datos.movil,
       "ciudad": datos.ciudad
     }
-
-    if (!Object.values(params).every((d) => d) && !(numeroid.length != 10 || /^\s+$/.test(numeroid))) {
+    //console.log(params)
+    if (!(numeroid.length == 10 || /^\s+$/.test(numeroid))) {
       setValidate("was-validated")
+      return true
+    }
+    if (!Object.values(params).every((d) => d)) {
+      setValidate("was-validated")
+      return true
+    }
+    if (datos.new_password.length < 7) {
+      setValidate("was-validated")
+
       return true
     }
     else {
       try {
+        console.log("crea")
         setValidate("")
         const useradd = await CrearSuscritor(params)
         const { success, message } = useradd
-        console.log(useradd)
+        // console.log(useradd)
         if (success) {
           location.reload()
         }
       } catch (error) {
         setValidate("was-validated")
-        setShowToas(true)
-        setmessage("Hubo un error Verifique  que el correo o cédula no este duplicado")
+        //console.log(error)
+        setDatos({
+          nombreCompleto: '',
+          email: '',
+          movil: '',
+          ciudad: '',
+          new_password: '',
+          id: ''
+        })
+        usedispatch(setToastes({ show: true, message: 'Hubo un error Verifique  que el correo o cédula no este duplicado', color: 'bg-danger', estado: 'Advertencia' }))
+
       }
     }
 
@@ -83,17 +105,16 @@ const ModalSuscritoView = (props) => {
   }
   const cedulachange = async (e) => {
     if (e.length == 10) {
-      //console.log(e)
       try {
         let info = await getCedula(e)
         if (info != false)
-          console.log(info)
-        setDatos({
-          ...datos,
-          nombreCompleto: info.name,
-          email: info.email,
-          ciudad: info.direccion,
-        })
+          // console.log(info)
+          setDatos({
+            ...datos,
+            nombreCompleto: info.name,
+            email: info.email,
+            ciudad: info.direccion,
+          })
 
       } catch (error) {
 
@@ -101,6 +122,13 @@ const ModalSuscritoView = (props) => {
     }
 
   }
+  $(document).ready(function () {
+    $(".numero").keypress(function (e) {
+      var n = (e = e || window.event).keyCode || e.which,
+        t = -1 != "0123456789".indexOf(String.fromCharCode(n));
+      (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
+    })
+  });
   useEffect(() => {
     setValidate("")
 
@@ -155,7 +183,7 @@ const ModalSuscritoView = (props) => {
                     </div>
                     <input id="cedula"
                       type="text"
-                      className="form-control"
+                      className="form-control numero"
                       onChange={(e) => cedulachange(e.target.value)}
                       disabled={estado == "update" ? true : false}
                       value={datosperson.cedula}
@@ -296,23 +324,6 @@ const ModalSuscritoView = (props) => {
       </Modal>
 
 
-      <Toast
-        onClose={() => setShowToas(false)} show={showtoas} delay={4000} autohide
-        className="top-center"
-        style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          zIndex: 10000
-        }}
-      >
-        <Toast.Header>
-          <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
-          <strong className="mr-auto">Hubo un error </strong>
-          <small></small>
-        </Toast.Header>
-        <Toast.Body className="bg-danger text-white" >{message} </Toast.Body>
-      </Toast>
     </>
   )
 

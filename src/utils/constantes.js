@@ -7,6 +7,7 @@ export const Valorcarrito = "Valorescarro";
 export const Whatsappnumero = "WhastappValido";
 export const Eventoid = "eventoid";
 export const listaasiento = "asientosList";
+export const asientosList = "asientosList";
 export const concierto = "consierto";
 export const seleccionmapa = "seleccionmapa";
 export const sillaspalco = "sillaspalco";

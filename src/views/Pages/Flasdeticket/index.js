@@ -24,6 +24,7 @@ import { getDatosUsuariosLocalStorag, getCliente, DatosUsuariosLocalStorag, getC
 import { GetMetodo, getVerTienda, LimpiarLocalStore, Limpiarseleccion } from "utils/CarritoLocalStorang";
 import { GuardarDatosdelComprador, ValidarWhatsapp } from "utils/Query";
 import { useSelector, useDispatch } from "react-redux";
+import { Cargarsillas } from "views/Components/MODAL/cargarsillas.js";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
 import { cargalocalidad, clearMapa, filtrarlocali, } from "StoreRedux/Slice/mapaLocalSlice";
@@ -41,7 +42,6 @@ import { EffectFade, Navigation, Pagination, Autoplay } from "swiper";
 import ResgistroView from "./ModalLogin/registro.js";
 import { Spinner } from "react-bootstrap";
 import { Box } from "@mui/system";
-import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
 require('moment/locale/es.js')
@@ -54,6 +54,7 @@ import "./swipermedia.css"
 import axios from "axios";
 import { Eventolocalidad } from "utils/constantes.js";
 import { seleccionmapa } from "utils/constantes.js";
+import { cargarsilla } from "StoreRedux/Slice/sillasSlice.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
@@ -113,6 +114,7 @@ const IndexFlas = () => {
     let nuevo = []
     id.forEach((elm, i) => {
       let espacifica = JSON.parse(sessionStorage.getItem(seleccionmapa)) ? JSON.parse(sessionStorage.getItem(seleccionmapa)) : { id: null }
+
       if (consulta.findIndex(f => f.id === elm) != -1) {
         nuevo[i] = consulta[consulta.findIndex(f => f.id === elm)]
         if (espacifica.id != null) {
@@ -124,15 +126,34 @@ const IndexFlas = () => {
     usedispatch(cargalocalidad(nuevo))
 
   }
+  window.onbeforeunload = preguntarAntesDeSalir;
+
+  function preguntarAntesDeSalir() {
+    var bPreguntar = (getVerTienda().length > 0)
+    var respuesta;
+
+    if (bPreguntar) {
+      // window.confirm('¿Seguro que quieres salir?');
+      respuesta = window.confirm('¿Seguro que quieres salir?');
+
+      if (respuesta) {
+        window.onunload = function () {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    }
+  }
   const consultarlocalidad = () => {
     let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
     localidadtimer.current = setInterval(function () {
       ListarLocalidad().then(ouput => {
-        // console.log(ouput)
+
         filterlocal(id, ouput.data)
       }
       ).catch(exit => console.log(exit))
-    }, 5000);
+    }, 2000);
   }
 
   function detenervelocidad() {
@@ -184,6 +205,11 @@ const IndexFlas = () => {
           })
           let colornuevo = mapalocal.map((L) => {
             if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+              L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)]
+              L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
+              L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
+              L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
+              L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
               return L
             }
           })
@@ -204,10 +230,18 @@ const IndexFlas = () => {
           sessionStorage.eventoid = e.codigoEvento
           setPrecios(nuevosdatos)
           setDatoscon(e)
-          handleClosesop(true)
-          setspinervi("d-none")
-          velocidad()
+
           consultarlocalidad()
+          Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
+            handleClosesop(true)
+            setspinervi("d-none")
+            velocidad()
+            usedispatch(cargarsilla(outp))
+
+          }).catch(err => {
+            console.log(err)
+          })
+
         }
       } catch (err) {
         console.log(err)
@@ -297,8 +331,6 @@ const IndexFlas = () => {
   const [showMapa, setMapashow] = useState(false);
   const [modalPago, setModalPago] = useState(false);
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
   const handleContinuar = () => {
     handleClosesop(false)
     setDetalle(true)
@@ -541,7 +573,7 @@ const IndexFlas = () => {
         setListaPrecio={setListaPrecio}
         setMapashow={setMapashow}
       />
-      <ModalCarrito
+      { /* <ModalCarrito
         show={show}
         handleClose={handleClose}
         handleContinuar={handleContinuar}
@@ -550,7 +582,7 @@ const IndexFlas = () => {
         setListarCarritoDetalle={setListarCarritoDetalle}
         datosPerson={datosPerson}
         setPerson={setPerson}
-      />
+      />*/}
       <ResgistroView
         setDatoToas={setDatoToas} />
       <ModalDetalle

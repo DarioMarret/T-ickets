@@ -6,15 +6,14 @@ import { TiendaIten, getVerTienda, EliminarByStora, EliminarsilladeMesa } from "
 import { Modal } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice";
-import { ListarLocalidad } from "utils/Querypanel";
 import { addSillas, deleteSillas, clearSillas, deleteMesa } from "StoreRedux/Slice/sillasSlice"
 import { EliminarSillas, AgregarAsiento, VerSillaslist, TotalSelecion } from "utils/CarritoLocalStorang"
 import SweetAlert from "react-bootstrap-sweetalert";
-import axios from "axios";
 import "./localidas.css"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { seleccionmapa } from "utils/constantes";
 import { enviasilla } from "utils/Querypanelsigui";
+import { CarritoTicket } from "utils/constantes";
 const LocalidadmapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
@@ -29,28 +28,7 @@ const LocalidadmapViews = (props) => {
         handleClosesop(true)
         setMapashow(flase)
     }
-    /*  async function enviasilla(info) {
-          let user = getDatosUsuariosLocalStorag()
-          const datos = {
-              id: info.id,
-              cedula: user.cedula,
-              silla: info.silla,
-              estado: "reservado",
-          }
-          try {
-              const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecionar_localidad", datos, {
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                  }
-              })
-              console.log(datos)
-              console.log(data)
-              usedispatch(filtrarlocali(data.datos))
-          } catch (error) {
-              console.log(error)
-          }
-      }*/
+
     function agregar() {
         let producto = {
             cantidad: 1,
@@ -68,7 +46,6 @@ const LocalidadmapViews = (props) => {
             succesLimit()
     }
     function MesaVerifica(M, C) {
-        //  console.log(seleccion.some(e => e.seleccionmapa == "Mesas Golden-F1-A7-s-2"))
         hideAlert()
         for (let i = 1; i < parseInt(C) + 1; i++) {
             let valid = seleccion.some(e => e.seleccionmapa == nombre.localodad + "-" + M + "-s-" + i)
@@ -83,8 +60,6 @@ const LocalidadmapViews = (props) => {
             }
         }
     }
-
-
     function restaprecio() {
         let producto = {
             cantidad: -1,
@@ -102,14 +77,6 @@ const LocalidadmapViews = (props) => {
         EliminarByStora(e.localidad)
         setDetalle([])
     }
-    const obtenerdatosConcierto = () => {
-        let datos = mapath
-        console.log(datos)
-        if (Object.values(datos.precio).every(e => e)) return datos.precio
-        else return datos.precio
-    }
-    // obtenerdatosConcierto()
-
     const successAlert = (e, f, c) => {
         let silla = e.replace("-", " ").split(" ")[1]
         setAlert(
@@ -359,7 +326,6 @@ const LocalidadmapViews = (props) => {
     }
     const sillasetado = (d) => {
         const user = getDatosUsuariosLocalStorag()
-        //   let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
         if (d.cedula != undefined) {
             if (user != null && user.cedula == d.cedula) return "seleccionado"
             else
@@ -367,15 +333,18 @@ const LocalidadmapViews = (props) => {
         }
         else return d.estado
     }
+
+
+
+
+
     useEffect(() => {
         getVerTienda().filter((e) => e.id == mapath.precio.id).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
-
         let selct = seleccion
         selct.length > 0 ?
             selct.map((e) => {
                 $("div." + e.silla).removeClass("disponible").addClass("" + e.estado);
-            })
-            : '';
+            }) : '';
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
             $("#mapas" + e.path).attr("fill", e.fill)
             $("#mapas" + e.path).removeAttr("class")
@@ -451,7 +420,7 @@ const LocalidadmapViews = (props) => {
                             <div className="col-12 pt-1">
                                 {mapath.precio.typo == "fila" ?
                                     <div style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
-                                        {mapath.localidadespecica != undefined && mapath.localidadespecica.length > 0 ?
+                                        {mapath.localidadespecica.length > 0 ?
                                             mapath.localidadespecica.map((e, i) => {
                                                 {
                                                     return (
@@ -496,7 +465,7 @@ const LocalidadmapViews = (props) => {
                                             </div>
                                         </div>
                                         {
-                                            mapath.localidadespecica != undefined && mapath.localidadespecica.length > 0 ?
+                                            mapath.localidadespecica.length > 0 ?
                                                 mapath.localidadespecica.map((e, index) => {
                                                     return (
                                                         <div className='d-flex  PX-1 align-items-center' key={index}>
