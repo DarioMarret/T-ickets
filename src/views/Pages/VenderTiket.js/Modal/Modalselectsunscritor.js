@@ -45,7 +45,6 @@ export default function ListaSuscritor(prop) {
                 showCancel
             >
                 Con el Suscriptor de cédula # {e.cedula}
-
             </SweetAlert >
         )
     }

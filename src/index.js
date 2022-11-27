@@ -26,8 +26,8 @@ root.render(
       <Switch>
         <Route path="/auth" render={(props) => !clienteInfo() ? <AuthLayout {...props} /> : <Redirect from="/" to="/admin/inicio" />} />
         <Route path="/admin" render={(props) => clienteInfo() ? <AdminLayout {...props} /> : <Redirect from="/" to="/auth/login" />} />
-        <Route path="/flastick" render={() => <Indexflas />} />
-        <Redirect from="/" to="/flastick" />
+        <Route path="/ticket" render={() => <Indexflas />} />
+        <Redirect from="/" to="/ticket" />
         <Route path="*" to="/" />
       </Switch>
     </BrowserRouter>

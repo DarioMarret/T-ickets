@@ -15,7 +15,7 @@ const ResgistroView = (prop) => {
     const { setDatoToas } = prop
     let usedispatch = useDispatch()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
-    const [spinervi, setspine] = useState("d-none")
+    const [spinervi, seTspine] = useState("d-none")
     const [datosPerson, setPerson] = useState({
         cedula: '',
         name: '',
@@ -30,23 +30,23 @@ const ResgistroView = (prop) => {
 
     async function hanbleOnchange(e) {
         const usuario = getDatosUsuariosLocalStorag()
+        seTspine("")
         setPerson({
             ...datosPerson,
             [e.target.name]: e.target.value
         })
         if (e.target.name === "cedula" && e.target.value.length == 10) {
             // console.log("nuevo")
-            // setspiner("")
             try {
                 const datos = await getCedula(e.target.value)
                 const { name, email, direccion, whatsapp, discapacidad } = datos
                 console.log(datos)
                 if (name) {
+                    seTspine("d-none")
                     setPerson({
                         nombreCompleto: datosPerson.name,
                         whatsapp: datosPerson.movil, ...datos
                     })
-
                     DatosUsuariosLocalStorag({
                         ...usuario,
                         ...datos
@@ -54,6 +54,7 @@ const ResgistroView = (prop) => {
 
                 }
                 else {
+                    seTspine("")
                     setPerson({
                         ...datosPerson,
                         cedula: '',
@@ -206,6 +207,7 @@ const ResgistroView = (prop) => {
                                                             value={datosPerson.cedula}
                                                             minLength={0}
                                                             maxLength={10}
+
                                                             onChange={(e) => hanbleOnchange(e)}
                                                             placeholder="cédula" required />
 

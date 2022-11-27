@@ -29,11 +29,11 @@ function Footer(props) {
                 <div className="container-fluid   d-flex justify-content-center">
                     <div className=" mb-4 ">
                         <a rel="stylesheet" className="btn btn-outline-light mx-1" aria-label="facebook"
-                            href="https://www.facebook.com/FlashThe2022" target="_blank" role="button">
+                            href="#!" target="_blank" role="button">
                             <i className="fab fa-facebook"></i>
                         </a>
                         <a className="btn btn-outline-light" aria-label="fa-instagram"
-                            href="https://www.instagram.com/flashthetickets/" target="_blank" role="button">
+                            href="#!" target="_blank" role="button">
                             <i className="fab fa-instagram"></i>
                         </a>
                     </div>

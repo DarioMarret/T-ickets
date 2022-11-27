@@ -24,6 +24,7 @@ function obtenervariables() {
   });
   return variables
 }
+obtenervariables()
 /*window.onbeforeunload = preguntarAntesDeSalir;
 function preguntarAntesDeSalir() {
   var respuesta;
