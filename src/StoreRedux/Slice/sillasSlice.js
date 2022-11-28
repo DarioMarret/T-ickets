@@ -7,7 +7,7 @@ function filtrarPodato(obj) {
     if ('id' in obj && typeof (obj.id) === 'number' && !isNaN(obj.id)) {
         return true;
     } else {
-        entradasInvalidas++;
+        //   entradasInvalidas++;
         return false;
     }
 }
