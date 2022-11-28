@@ -59,6 +59,7 @@ const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
   const userauthi = useSelector((state) => state.SuscritorSlice)
+  let modal = useSelector((state) => state.SuscritorSlice.modal)
   const [precios, setPrecios] = useState({
     precios: [],
     pathmapa: [],
@@ -535,7 +536,6 @@ const IndexFlas = () => {
           direccion: datosPersonal.direccion,
           edad: datosPersonal.edad
         })
-
       }
     } else {
       setPerson({
@@ -583,8 +583,8 @@ const IndexFlas = () => {
         datosPerson={datosPerson}
         setPerson={setPerson}
       />*/}
-      <ResgistroView
-        setDatoToas={setDatoToas} />
+      {modal.nombre == "registro" ? <ResgistroView
+        setDatoToas={setDatoToas} /> : ''}
       <ModalDetalle
         showDetalle={showDetalle}
         intervalo={intervalo}
@@ -635,13 +635,13 @@ const IndexFlas = () => {
               <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("")}>
                 <a className=" nav-link" href="#nuevoseventos">Eventos</a>
               </li>
-              <li className="nav-item active" aria-current="page">
+              {/* <li className="nav-item active" aria-current="page">
                 <a className="nav-link " href="#" onClick={() => getVerTienda().length > 0 ? abrircarro() : ""}>Comprar
                   {getVerTienda().length > 0 ? <span className="position-absolute bottom-0 start-50 translate-middle p-1 bg-danger border border-light rounded-circle">
                     <span className="visually-hidden">New alerts</span>
                   </span> : ""}
                 </a>
-              </li>
+              </li>*/}
               {userauthi.login ?
                 <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("Datos")}>
                   <a className="nav-link " >Datos</a>

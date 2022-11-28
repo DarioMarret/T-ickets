@@ -37,8 +37,9 @@ const MesacuatroView = ({ text, list }) => {
   }
   function MesaEstado(e) {
     let asiento = list.map(function (k) {
-      return [k.estado];
+      return k.estado;
     });
+    // console.log(Object.values(asiento))
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
     const isOcupado = (currentValue) => currentValue == "ocupado";
     const isReserva = (currentValue) => currentValue == "reservado";

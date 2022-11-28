@@ -193,6 +193,7 @@ export default function StoreTickesViews() {
     const evento = async () => {
         try {
             const data = await cargarEventoActivo()
+            console.log(data)
             const Datos = await ListarTikets()
             const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
 

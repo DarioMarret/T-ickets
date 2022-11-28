@@ -25,3 +25,8 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active {
         bottom: 50;
     }
 }
+
+.iti__selected-flag {
+    background-color: #dee2e6 !important;
+
+}

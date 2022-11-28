@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { Modal, Spinner } from "react-bootstrap"
+import { Modal, Spinner, Form } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { DatosUsuariocliente } from "utils/constantes"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
@@ -9,7 +9,7 @@ import { getCedula } from "utils/DatosUsuarioLocalStorag"
 import { Authsucrito } from "utils/Query"
 import { ValidarWhatsapp } from "utils/Query"
 import { setModal } from "StoreRedux/Slice/SuscritorSlice"
-
+import intlTelInput from 'intl-tel-input';
 import logo from "../../../../assets/imagen/logo-inicio.png";
 const ResgistroView = (prop) => {
     const { setDatoToas } = prop
@@ -17,64 +17,57 @@ const ResgistroView = (prop) => {
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     const [spinervi, seTspine] = useState("d-none")
     const [datosPerson, setPerson] = useState({
-        cedula: '',
-        name: '',
-        email: '',
-        edad: '',
-        movil: '',
-        discapacidad: '',
-        genero: '',
-        direccion: '',
-        password: '',
+        cedula: '', name: '', email: '', edad: '', movil: '', discapacidad: '', genero: '', direccion: '', password: '',
     })
+    const [code, setCode] = useState("cedula")
 
     async function hanbleOnchange(e) {
         const usuario = getDatosUsuariosLocalStorag()
-        seTspine("")
+
         setPerson({
             ...datosPerson,
             [e.target.name]: e.target.value
         })
         if (e.target.name === "cedula" && e.target.value.length == 10) {
-            // console.log("nuevo")
-            try {
-                const datos = await getCedula(e.target.value)
-                const { name, email, direccion, whatsapp, discapacidad } = datos
-                console.log(datos)
-                if (name) {
-                    seTspine("d-none")
-                    setPerson({
-                        nombreCompleto: datosPerson.name,
-                        whatsapp: datosPerson.movil, ...datos
-                    })
-                    DatosUsuariosLocalStorag({
-                        ...usuario,
-                        ...datos
-                    })
-
-                }
-                else {
+            if (code == "cedula") {
+                try {
                     seTspine("")
-                    setPerson({
-                        ...datosPerson,
-                        cedula: '',
-                    })
-                    DatosUsuariosLocalStorag({
-                        email: '',
-                        edad: '',
-                        movil: '',
-                        discapacidad: '',
-                        genero: '',
-                        direccion: '',
-                        password: '',
-                    })
+                    const datos = await getCedula(e.target.value)
+                    const { name, email, direccion, whatsapp, discapacidad } = datos
+                    // console.log(datos)
+                    if (name) {
+                        seTspine("d-none")
+                        setPerson({
+                            nombreCompleto: datosPerson.name,
+                            whatsapp: datosPerson.movil, ...datos
+                        })
+                        DatosUsuariosLocalStorag({
+                            ...usuario,
+                            ...datos
+                        })
+                    }
+                    else {
+                        seTspine("d-none")
+                        setPerson({
+                            ...datosPerson,
+                            whatsapp: '',
+                            movil: '',
+                            cedula: '',
+                        })
+
+                        DatosUsuariosLocalStorag({
+                            email: '',
+                            edad: '',
+                            movil: '',
+                            discapacidad: '',
+                            genero: '',
+                            direccion: '',
+                            password: '',
+                        })
+                    }
+                } catch (error) {
+                    seTspine("d-none")
                 }
-
-                //  sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
-
-
-            } catch (error) {
-
             }
 
         }
@@ -87,18 +80,20 @@ const ResgistroView = (prop) => {
 
     }
     async function Registeruser(e) {
+        const form = new FormData(e.target)
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         e.preventDefault();
+        const { nombreCompleto, email, password, movil, ciudad, cedula } = Object.fromEntries(form.entries())
+        //console.log(movil)
         let datos = {
             nombreCompleto: datosPerson.name,
             email: datosPerson.email,
             password: datosPerson.password,
-            movil: datosPerson.movil,
+            movil: movil,
             ciudad: datosPerson.direccion,
             cedula: datosPerson.cedula
         }
-        const form = new FormData(e.target)
-        const { nombreCompleto, email, password, movil, ciudad, cedula } = Object.fromEntries(form.entries())
+
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
             console.log(Object.values(Object.fromEntries(form.entries())).some(e => e))
             return
@@ -107,7 +102,7 @@ const ResgistroView = (prop) => {
             console.log(emailRegex.test(email))
             return
         }
-        if (password.length < 7) {
+        if (password.length < 7 & movil.length != 9) {
             console.log("aqui")
             return
         }
@@ -119,7 +114,7 @@ const ResgistroView = (prop) => {
                         show: true,
                         message: "Ingrese un numero de Whatsapp",
                         color: 'bg-danger',
-                        estado: "Numero " + datosPerson.movil + " Invalido",
+                        estado: "Numero " + movil + " Invalido",
                     })
                     console.log("AQUI")
                     return
@@ -139,7 +134,7 @@ const ResgistroView = (prop) => {
                         let users = {
                             ...usuario,
                             cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
-                            telefono: data.movil, name: data.nombreCompleto,
+                            telefono: movil, name: data.nombreCompleto,
                             email: data.email, hora: String(hoy),
                             enable: data.enable, id: data.id,
                         }
@@ -166,7 +161,45 @@ const ResgistroView = (prop) => {
                 t = -1 != "0123456789".indexOf(String.fromCharCode(n));
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
+        const phoneInputField = document.querySelector("#movil");
+        intlTelInput(phoneInputField, {
+
+            initialCountry: "ec",
+            separateDialCode: true,
+            autoHideDialCode: false,
+            nationalMode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+
+        })
+
     });
+
+    useEffect(() => {
+        /*(function () {
+            const phoneInputField = document.getElementById("#phone");
+            const id = phoneInputField.getAttribute('id');
+
+            const input = document.querySelector("#phone");
+            intlTelInput(phoneInputField, {
+                utilsScript:
+                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+
+            })
+
+        })()*/
+        /*  phoneInputField ? window.intlTelInput(phoneInputField, {
+              utilsScript:
+                  "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+          }) : ''*/
+
+        /*scrollingElement.addEventListener("scroll", function () {
+            var e = document.createEvent('Event');
+            e.initEvent("scroll", true, true);
+            window.dispatchEvent(e);
+        });*/
+
+    }, [modal.nombre == "registro" ? true : false])
     return (
         <>
             <Modal
@@ -190,31 +223,52 @@ const ResgistroView = (prop) => {
                         <div className="container-fluid row "  >
                             <div className="col-12 p-0 d-flex flex-column">
                                 <div>
-
                                     <form className="" onSubmit={(e) => Registeruser(e)} method="post">
-
                                         <div className="row">
-                                            <div className="d-flex justify-content-center" >
-                                                <div className="col-md-8">
-                                                    <div className="input-group mb-3">
-                                                        <div className="input-group-prepend">
-                                                            <span className="input-group-text"><i className="fa fa-search"></i></span>
-                                                        </div>
 
+                                            <div className="col-lg-4">
+                                                <div className=" input-group mb-3" >
+                                                    <div className="input-group-prepend">
+                                                        <span className="input-group-text"></span>
+                                                    </div>
+                                                    <Form.Select className="form-control" value={code} onChange={(e) => setCode(e.target.value)} name="perfil" >
+                                                        <option value={"cedula"}>Cédula ecuatoriana</option>
+                                                        <option value={"extranjera"}>Cédula extranjera</option>
+                                                        <option value={"pasaporte"}>Pasaporte</option>
+                                                    </Form.Select>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-8">
+                                                <div className="input-group mb-3">
+                                                    <div className="input-group-prepend">
+                                                        <span className="input-group-text"><i className="fa fa-search"></i></span>
+                                                    </div>
+
+                                                    {code == "cedula" ?
                                                         <input id="cedula" type="text"
                                                             className="form-control numero"
                                                             name="cedula"
                                                             value={datosPerson.cedula}
-                                                            minLength={0}
+                                                            minLength={10}
                                                             maxLength={10}
 
                                                             onChange={(e) => hanbleOnchange(e)}
                                                             placeholder="cédula" required />
+                                                        : <input id="cedula" type="text"
+                                                            className="form-control numero"
+                                                            name="cedula"
+                                                            value={datosPerson.cedula}
+                                                            minLength={0}
 
-                                                    </div>
+
+                                                            onChange={(e) => hanbleOnchange(e)}
+                                                            placeholder="cédula" required />
+
+                                                    }
                                                 </div>
+
                                             </div>
-                                            <div className="col-md-12">
+                                            <div className="col-lg-12">
                                                 <div className="input-group mb-3">
                                                     <div className="input-group-prepend">
                                                         <span className="input-group-text"><i className="fa fa-user"></i></span>
@@ -223,7 +277,7 @@ const ResgistroView = (prop) => {
                                                     <input type="text"
                                                         className="form-control"
                                                         id="name"
-
+                                                        disabled={(code == "cedula")}
                                                         name="name"
                                                         value={datosPerson.name}
                                                         onChange={(e) => hanbleOnchange(e)}
@@ -239,29 +293,32 @@ const ResgistroView = (prop) => {
                                         <div className="row">
 
 
-                                            <div className="col-md-6">
-                                                <div className="input-group mb-3">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text"><i className="fab fa-whatsapp"></i></span>
-                                                    </div>
+                                            <div className="col-12 col-lg-6  ">
+                                                <div className="input-group mb-3  px-0 d-flex justify-content-center  ">
 
                                                     <input
-                                                        className="numero form-control"
-                                                        id="movil"
-                                                        name="movil"
+                                                        name="movil" type="tel"
+                                                        className=" inptFielsd form-control " id="movil"
+
                                                         minLength={10}
                                                         maxLength={10}
                                                         required
-                                                        value={datosPerson.movil}
-                                                        onChange={(e) => hanbleOnchange(e)}
-                                                        placeholder="Ingrese su número de whatsapp" />
+
+                                                        placeholder="999 999 999" />
+
+                                                    <span className="input-group-text">
+
+                                                        <i className="fab fa-whatsapp"></i>
+                                                    </span>
+
                                                     <div className="invalid-feedback">
                                                         Ingrese un numero de Whatsapp
 
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-12 col-md-6">
+
+                                            <div className="col-12 col-lg-6">
                                                 <div className="input-group mb-3" >
                                                     <div className=" input-group-prepend">
                                                         <span className=" input-group-text"> <i className="fa fa-map-marker"></i> </span>
@@ -283,11 +340,12 @@ const ResgistroView = (prop) => {
                                                 </div>
 
                                             </div>
+
                                         </div>
 
 
                                         <div className="row">
-                                            <div className="col-md-6">
+                                            <div className="col-lg-6">
                                                 <div className="input-group mb-3">
                                                     <div className="input-group-prepend">
                                                         <span className="input-group-text"><i className="fa fa-envelope"></i></span>
@@ -304,7 +362,7 @@ const ResgistroView = (prop) => {
 
                                                 </div>
                                             </div>
-                                            <div className="col-md-6" >
+                                            <div className="col-lg-6" >
                                                 <div className="input-group mb-3">
                                                     <div className="input-group-prepend">
                                                         <span className="input-group-text"><i className="fas fa-key"></i></span>
@@ -331,13 +389,46 @@ const ResgistroView = (prop) => {
 
 
                                         <div className="row">
-                                            <div className="col-md-12">
+                                            <div className="col-lg-12">
                                                 <button className="btn btn-block btn-success" type="submit">Crear Cuenta</button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
 
+
+                            </div>
+                            <div className="col-12  text-start d-flex flex-column  ">
+                                <div className="d-flex text-start  flex-wrap-reverse ">
+                                    <div className="col-12 ">
+                                        <p style={{ fontSize: "0.7em" }}>Acepto los <strong>Términos y condiciones</strong> emitidas por
+                                            t-icket</p>
+                                    </div>
+
+                                </div>
+
+                                <div className="d-flex   flex-wrap-reverse ">
+                                    <div className="col-12 d-flex d-none">
+                                        <p style={{ fontSize: "0.7em" }}>
+                                            Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
+                                            realizada la compra , caso contrario no podra retirar los boletos duros sin opcion a
+                                            rembolso
+                                        </p>
+                                    </div>
+                                </div>
+
+
+                                <div className="d-flex ">
+                                    <div className="col-12 d-flex ">
+                                        <strong>
+                                            <p style={{ fontSize: "0.8em" }}>
+                                                <strong> Acepto que se crea mi cuenta de usuario en el portal de flasthetickets, la misma que contiene mis datos persoanales, así como los
+                                                    datos de mis compras, tambien recibir las promociones por ese mismo medio.</strong>
+                                            </p>
+                                        </strong>
+                                    </div>
+
+                                </div>
 
                             </div>
 

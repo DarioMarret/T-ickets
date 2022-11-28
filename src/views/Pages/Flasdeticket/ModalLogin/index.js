@@ -18,7 +18,7 @@ const ModalLogin = (props) => {
   let histoty = useHistory()
   const usedispatch = useDispatch()
   const [message, setmessage] = useState("");
-  const [showtoas, setShowToas] = useState(false);
+  const [show, setShowToas] = useState(false);
   const [showtoass, setShowToass] = useState(false);
   const [credenciales, setnombre] = useState({
     username: '',
@@ -31,13 +31,14 @@ const ModalLogin = (props) => {
     if (credenciales.username !== '' && credenciales.pass !== '') {
       try {
         // console.log(credenciales,encodedToken)
-        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_suscriptor", { email: credenciales.username, password: credenciales.pass }, {
+        const { data } = await axios.post(Host + "api/v1/auth_suscriptor", { email: credenciales.username, password: credenciales.pass }, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
           }
         })
-        if (data.data) {
+        //  console.log(data)
+        if (data.success) {
           const cedula = await getCedula(data.data.cedula)
           let client = {
             cedula: data.data.cedula, direccion: data.data.ciudad, whatsapp: data.data.movil,
@@ -56,7 +57,7 @@ const ModalLogin = (props) => {
         }
         else {
           setShowToas(true)
-          setmessage("Correo o contraseña invalido")
+          setmessage(data.message)
           //console.log("mensage de alvertencia")
         }
       } catch (error) {
@@ -151,15 +152,15 @@ const ModalLogin = (props) => {
         </Modal.Body>
       </Modal>
       <Toast
-        onClose={() => setShowToas(false)} show={showtoas} delay={4000} autohide
+        onClose={() => setShowToas(false)} show={show} delay={4000} autohide
         className="top-center"
         style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          zIndex: 10000
-        }}
-      >
+          position: 'fixed',
+          top: 60,
+          left: '50%',
+          transform: 'translate(-50 %, -50 %)',
+          zIndex: 10000,
+        }}>
         <Toast.Header closeButton={false}>
           <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
           <strong className="mr-auto">Hubo un error </strong>
@@ -173,15 +174,15 @@ const ModalLogin = (props) => {
       </Toast>
 
       <Toast
-        onClose={() => setShowToass(false)} show={showtoass} delay={3000} autohide
+        onClose={() => setShowToass(false)} show={showtoass} delay={3500} autohide
         className="top-center"
         style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          zIndex: 10000
-        }}
-      >
+          position: 'fixed',
+          top: 60,
+          left: '50%',
+          transform: 'translate(-50 %, -50 %)',
+          zIndex: 10000,
+        }}>
         <Toast.Header closeButton={false} >
           <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
           <strong className="mr-auto">Inicio Exitoso </strong>

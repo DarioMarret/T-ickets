@@ -28,6 +28,7 @@ const MesadosView = ({ text, list }) => {
     let asiento = list.map(function (k) {
       return [k.estado];
     });
+
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
     const isOcupado = (currentValue) => currentValue == "ocupado";
     const isReserva = (currentValue) => currentValue == "reservado";

@@ -493,7 +493,7 @@ function ModalDetalle(props) {
                             {!clienteauth ? <div className="d-none d-flex text-end  flex-wrap-reverse ">
                                 <div className="col-10 text-end">
                                     <p style={{ fontSize: "0.7em" }}>Acepto los <strong>Términos y condiciones</strong> emitidas por
-                                        FlahsTheTikest</p>
+                                        t-icket</p>
                                 </div>
                                 <div className="px-3">
                                     <input className="form-check-input terminoscheck"
@@ -525,7 +525,7 @@ function ModalDetalle(props) {
                                 <div className="col-10 d-flex text-end">
                                     <strong>
                                         <p style={{ fontSize: "0.8em" }}>
-                                            <strong> Acepto que se crea mi cuenta de usuario en el portal de flasthetickets, la misma que contiene mis datos persoanales, así como los
+                                            <strong> Acepto que se cree mi cuenta de usuario en el portal de flasthetickets, la misma que contiene mis datos persoanales, así como los
                                                 datos de mis compras, tambien recibir las promociones por ese mismo medio.</strong>
                                         </p>
                                     </strong>

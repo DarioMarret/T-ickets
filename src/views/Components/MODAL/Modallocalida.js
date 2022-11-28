@@ -333,11 +333,16 @@ const LocalidadmapViews = (props) => {
         }
         else return d.estado
     }
-
-
-
-
-
+    $(document).ready(function () {
+        let disponible = document.querySelectorAll("div.disponible, a.disponible")
+        let reservado = document.querySelectorAll("div.reservado, a.reservado")
+        let seleccion = document.querySelectorAll("div.seleccionado, a.seleccionado")
+        let ocupado = document.querySelectorAll("div.ocupado, a.ocupado")
+        $("#disponible").text(disponible.length)
+        $("#ocupado").text(ocupado.length)
+        $("#reservado").text(reservado.length)
+        $("#seleccionado").text(seleccion.length)
+    })
     useEffect(() => {
         getVerTienda().filter((e) => e.id == mapath.precio.id).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
         let selct = seleccion
@@ -361,6 +366,7 @@ const LocalidadmapViews = (props) => {
                 size="lg"
                 fullscreen={'lg-down'}
                 onHide={cerrar}
+                className="rounded-7"
             >
                 {alert}
                 <Modal.Header>
@@ -380,21 +386,26 @@ const LocalidadmapViews = (props) => {
                                 {showMapa ? <SVGView text={mapath.nombre} /> : ''}
                             </div>
 
-                            {mapath.precio.typo != "correlativo" ?
+                            {showMapa && mapath.precio.typo != "correlativo" ?
                                 <div className="col-12 d-flex  flex-wrap  ">
                                     <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-success text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
+
                                             <div className="d-flex justify-content-center">
-                                                <span style={{ fontSize: '0.7em' }}>    </span>
+                                                <span style={{ fontSize: '0.7em' }} id="disponible" >  0   </span>
                                             </div>
                                         </div>
-                                        <span>Disponibles.<span className="text-white">...</span></span>
+                                        <div className="d-flex flex-column justify-content-center align-items-center">
+                                            <span>Disponibles.<span className="text-white">...</span></span>
+
+                                        </div>
+
                                     </div>
 
                                     <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-warning text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
-                                                <span style={{ fontSize: '0.7em' }}>    </span>
+                                                <span style={{ fontSize: '0.7em' }} id="reservado">   0 </span>
                                             </div>
                                         </div>
                                         <span>En Proceso.</span>
@@ -402,7 +413,7 @@ const LocalidadmapViews = (props) => {
                                     <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-secondary text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
-                                                <span style={{ fontSize: '0.7em' }}>    </span>
+                                                <span style={{ fontSize: '0.7em' }} id="seleccionado" >   0 </span>
                                             </div>
                                         </div>
                                         <span>Seleccionado.</span>
@@ -410,7 +421,7 @@ const LocalidadmapViews = (props) => {
                                     <div className="d-flex flex-row p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-danger text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
-                                                <span style={{ fontSize: '0.7em' }}>    </span>
+                                                <span style={{ fontSize: '0.7em' }} id="ocupado" >   0 </span>
                                             </div>
                                         </div>
                                         <span>Ocupados.</span>
@@ -418,7 +429,7 @@ const LocalidadmapViews = (props) => {
 
                                 </div> : ''}
                             <div className="col-12 pt-1">
-                                {mapath.precio.typo == "fila" ?
+                                {showMapa && mapath.precio.typo == "fila" ?
                                     <div style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
                                         {mapath.localidadespecica.length > 0 ?
                                             mapath.localidadespecica.map((e, i) => {
@@ -437,7 +448,7 @@ const LocalidadmapViews = (props) => {
                                                                     let numero = index + 1
                                                                     return (
                                                                         <div key={"silla" + index}
-                                                                            className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 text-center  justify-content-center align-items-center '}
+                                                                            className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 sillasfila text-center  justify-content-center align-items-center '}
                                                                             style={{ height: '30px', width: '30px', marginLeft: '1px', }} >
                                                                             <div className={'px-3 d-flex   text-white justify-content-center  '} >
                                                                                 <div className="d-flex justify-content-center">
@@ -454,7 +465,7 @@ const LocalidadmapViews = (props) => {
                                             })
                                             : ""}
                                     </div> : ''}
-                                {mapath.precio.typo === "mesa" ?
+                                {showMapa && mapath.precio.typo === "mesa" ?
                                     <div className="col-sm-12 text-center " style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
                                         <div className='d-flex  px-3 align-items-center' >
                                             <div className='d-flex align-itmes-center pb-2' style={{ width: '80px' }}>
