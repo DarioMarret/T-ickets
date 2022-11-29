@@ -128,7 +128,7 @@ const ModalCarritoView = (prop) => {
                 confirmBtnText="Confirmar"
                 cancelBtnText="Cancelar"
                 showCancel
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
             >
                 Se Borraran Todas las Localidades Seleccionadas
@@ -147,7 +147,7 @@ const ModalCarritoView = (prop) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Confirmar"
                 cancelBtnText="Cancelar"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >
@@ -327,16 +327,6 @@ const ModalCarritoView = (prop) => {
                             Método de pago
                             <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
-                                    name="Efectivo" id="Efectivo"
-                                    checked={checked.Efectivo == "Efectivo" ? true : false}
-                                    onChange={(e) => handelMetodopago(e.target, "Efectivo")}
-                                />
-                                <label className="form-check-label">
-                                    Efectivo
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input className="v-check form-check-input" type="radio"
                                     checked={checked.Tarjeta == "Tarjeta" ? true : false}
                                     onChange={(e) => handelMetodopago(e.target, "Tarjeta")}
                                     name="Tarjeta" id="Tarjeta" />
@@ -353,6 +343,17 @@ const ModalCarritoView = (prop) => {
                                     Deposito-transferencia
                                 </label>
                             </div>
+                            <div className="form-check">
+                                <input className="v-check form-check-input" type="radio"
+                                    name="Efectivo" id="Efectivo"
+                                    checked={checked.Efectivo == "Efectivo" ? true : false}
+                                    onChange={(e) => handelMetodopago(e.target, "Efectivo")}
+                                />
+                                <label className="form-check-label">
+                                    Efectivo
+                                </label>
+                            </div>
+
                         </div>
                     </div>
                     <div className="d-flex flex-column" >

@@ -53,6 +53,7 @@
     "react-datetime": "3.1.1",
     "react-dom": "^18.2.0",
     "react-jvectormap": "0.0.16",
+    "react-loader-spinner": "^5.3.4",
     "react-notification-alert": "0.0.13",
     "react-phone-number-input": "^3.2.12",
     "react-redux": "^8.0.4",

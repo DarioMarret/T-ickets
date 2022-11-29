@@ -13,7 +13,6 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 // react-bootstrap components
 import {
   Badge,
-  Button,
   Card,
   Form,
   InputGroup,
@@ -23,6 +22,8 @@ import {
   Row,
   Col
 } from "react-bootstrap";
+import { display } from "@mui/system";
+import { Button } from "@mui/material";
 
 function PerfilPage(props) {
   const { setDatoToas } = props
@@ -211,6 +212,7 @@ function PerfilPage(props) {
   }, [])
   return (
     <>
+
       <Container fluid>
         {alert}
         <div className="section-image" data-image="../../assets/img/bg5.jpg">
@@ -274,7 +276,7 @@ function PerfilPage(props) {
                 <Card className="card-stats">
                   <Card.Body>
                     <Row>
-                      <Col xl="5" xs="12">
+                      <Col xl="12" xs="8">
                         <div className="">
                           <Card.Title as="h4">Bienvenido </Card.Title>
                           <p className="card-category">
@@ -287,15 +289,7 @@ function PerfilPage(props) {
                           <i className="nc-icon nc-satisfied text-danger"></i>
                         </div>
                       </Col>
-                      <Col xl="3" xs="6">
-                        <button
-                          className={datosPersons.enable == 1 ? " btn-success " : " btn-danger "}
-                          onClick={successAlert}
-                        >
-                          {datosPersons.enable == 1 ? "Habilitar suscripción" : "Cancelar suscripción"}
-                        </button>
 
-                      </Col>
 
                     </Row>
                   </Card.Body>
@@ -426,7 +420,35 @@ function PerfilPage(props) {
             </Row>
           </Container>
         </div>
+
+
+
       </Container>
+      <div className="container-fluid p-0" style={{
+        position: 'sticky',
+        bottom: 10,
+        justifyContent: 'end',
+        display: 'inline-block',
+
+      }} >
+        <div className="d-flex justify-content-end align-items-end">
+          <button className={" border rounded-5  px-3  txt-white"}
+            onClick={successAlert}
+            style={{
+              height: '40px',
+              backgroundColor: datosPersons.enable == 1 ? "#198754" : "#198754"
+            }}>
+
+            {datosPersons.enable == 1 ? "Habilitar suscripción" : "Cancelar suscripción"}
+          </button>
+
+
+        </div>
+
+
+
+
+      </div>
     </>
   );
 }

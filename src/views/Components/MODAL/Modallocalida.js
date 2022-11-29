@@ -90,7 +90,7 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Seguir Agregando"
                 cancelBtnText="Ir al carrito"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >
@@ -115,7 +115,7 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Cancelar"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
             </SweetAlert>
@@ -133,7 +133,7 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Cancelar"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
             </SweetAlert>
@@ -151,7 +151,7 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
@@ -170,7 +170,7 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
@@ -189,7 +189,7 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
@@ -237,6 +237,7 @@ const LocalidadmapViews = (props) => {
                     AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                     enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
+                        //console.log(ouput)
                         usedispatch(filtrarlocali(ouput))
                         // console.log(ouput)
                     }
@@ -405,7 +406,7 @@ const LocalidadmapViews = (props) => {
                                     <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-warning text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
-                                                <span style={{ fontSize: '0.7em' }} id="reservado">   0 </span>
+                                                <span style={{ fontSize: '0.7em', color: 'black' }} id="reservado">   0 </span>
                                             </div>
                                         </div>
                                         <span>En Proceso.</span>

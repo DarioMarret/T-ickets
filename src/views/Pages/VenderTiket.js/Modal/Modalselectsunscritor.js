@@ -8,6 +8,14 @@ import { Form } from "react-bootstrap"
 import SweetAlert from "react-bootstrap-sweetalert"
 import { getCedula } from "utils/DatosUsuarioLocalStorag"
 import { DatosUsuariocliente } from "utils/constantes"
+import { setToastes } from "StoreRedux/Slice/ToastSlice"
+import { Authsucrito } from "utils/Query"
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
+import axios from "axios"
+import { ValidarWhatsapp } from "utils/Query"
+import { Host } from "utils/constantes"
+import { MagnifyingGlass } from "react-loader-spinner"
+//import{R}
 
 export default function ListaSuscritor(prop) {
     const { abrir } = prop
@@ -38,8 +46,9 @@ export default function ListaSuscritor(prop) {
         }
     }*/
     const VenderTickest = async () => {
+        let cedula = getDatosUsuariosLocalStorag()
         try {
-            const cedulas = await getCedula(datos.cedula)
+            const cedulas = await getCedula(cedula.cedula)
             DatosUsuariosLocalStorag({ ...cedulas, ...datos, whatsapp: datos.movil, password: '' })
             sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...cedulas, whatsapp: datos.movil, ...datos, password: '' }))
             abrir(modalshow.modal.estado)
@@ -49,21 +58,67 @@ export default function ListaSuscritor(prop) {
             console.log(error)
         }
     }
-    const CrearUSuario = () => {
+    const CrearUSuario = async () => {
+        let usuarios = getDatosUsuariosLocalStorag()
         let datosend = {
             nombreCompleto: datos.nombreCompleto,
             ciudad: datos.ciudad,
             email: datos.email,
-            movil: datos.movil,
+            movil: $("#movil").val(),
             password: datos.password,
             cedula: $("#cedula").val()
         }
-        console.log(datosend, Object.values(datosend).every(e => e))
+        console.log(datosend, datos)
+        DatosUsuariosLocalStorag({ ...usuarios, ...datos, whatsapp: $("#movil").val(), })
         if (Object.values(datosend).every(e => e)) {
-            console.log("registro")
+            let numero = await ValidarWhatsapp()
+            if (numero != null) {
+                usedispatch(setToastes({
+                    show: true,
+                    message: "Número de whatsapp " + $("#movil").val(),
+                    color: 'bg-danger', estado: 'Whatsapp erroneo'
+                }))
+                return
+            }
+            else {
+                try {
+                    const registro = await axios.post(Host + "api/v1/crear_suscriptor", datosend, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                        }
+                    })
+                    console.log(registro.data.success)
+                    if (registro.data.success) {
+                        usedispatch(setToastes({
+                            show: true,
+                            message: "Usuario " + datosend.nombreCompleto + " creado correctamente",
+                            color: 'bg-success',
+                            estado: "Inicio Exitoso",
+                        }))
+                        successAlert()
+                    }
+
+                } catch (error) {
+                    usedispatch(setToastes({
+                        show: true,
+                        message: "Cédula o email ya registrado",
+                        color: 'bg-danger',
+                        estado: "Huboo un error ",
+                    }))
+                    console.log(error)
+
+                }
+
+            }
         }
         else {
-            console.log("nuevo")
+            usedispatch(setToastes({
+                show: true,
+                message: 'Complete toda la información ',
+                color: 'bg-danger', estado: 'Campos vacíos'
+            }))
+            //console.log("nuevo")
             /// document.getElementById("register").classList.add("needs-validation")
         }
 
@@ -80,11 +135,11 @@ export default function ListaSuscritor(prop) {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, continuar"
                 cancelBtnText="Cancelar"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >
-                Con el Suscriptor de cédula # {datos.cedula}
+                Con el Suscriptor de cédula # {$("#cedula").val()}
             </SweetAlert >
         )
     }
@@ -100,14 +155,21 @@ export default function ListaSuscritor(prop) {
     }, [modalshow.modal.nombre == "suscritor" ? true : ''])
 
     const filterNames = async (nombre) => {
-        if (nombre.length == 10) {
+        if (code == "cedula" && nombre.length == 10) {
+            $("#search").removeClass("d-none")
+            //console.log(lista.find(e => e.cedula == nombre))
             if (lista.find(e => e.cedula == nombre) != null) {
                 setDausuario({ ...lista.find(e => e.cedula == nombre), whatsapp: lista.find(e => e.cedula == nombre).movil, password: '', resgistro: true })
+
+                //   console.log(lista.find(e => e.cedula == nombre))
                 //console.log({ ...lista.find(e => e.cedula == nombre), discapacidad: cedula.discapacidad, password: '' })
                 $('#movil').val(lista.find(e => e.cedula == nombre).movil)
+                $("#search").addClass("d-none")
+
+                return
             } else {
                 let cedula = await getCedula(nombre)
-                console.log(cedula)
+                //console.log(cedula)
                 if (cedula) {
                     setDausuario({
                         nombreCompleto: cedula.name,
@@ -115,9 +177,11 @@ export default function ListaSuscritor(prop) {
                         email: '',
                         whatsapp: '', password: '', resgistro: false
                     })
+                    DatosUsuariosLocalStorag({ ...cedula })
+                    sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...cedula }))
                     $('#movil').val("")
-
-                } else
+                    $("#search").addClass("d-none")
+                } else {
                     setDausuario({
                         nombreCompleto: '',
                         ciudad: '',
@@ -125,7 +189,15 @@ export default function ListaSuscritor(prop) {
                         movil: '',
                         resgistro: false
                     })
-                $('#movil').val("")
+                    usedispatch(setToastes({
+                        show: true,
+                        message: 'Intente nuevamente o cambie el metodo de identificación ',
+                        color: 'bg-warning text-black',
+                        estado: 'No hubo coincidencia'
+                    }))
+                    $("#search").addClass("d-none")
+                    $('#movil').val("")
+                }
             }
         } else if (nombre.length == 0) {
             setDausuario({
@@ -143,9 +215,10 @@ export default function ListaSuscritor(prop) {
         intlTelInput(phoneInputField, {
             initialCountry: "ec",
             separateDialCode: true,
-            autoHideDialCode: false,
-            nationalMode: false,
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            nationalMode: true,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+
         })
 
     });
@@ -161,6 +234,8 @@ export default function ListaSuscritor(prop) {
             {alert}
             <Modal
                 show={modalshow.modal.nombre == "suscritor" ? true : ''}
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
                 size="lg"
             >
                 <Modal.Header  >
@@ -180,7 +255,6 @@ export default function ListaSuscritor(prop) {
                                     type="text"
                                 >
                                 </Form.Control>
-
                             </div>
                         </div>
                         <div className="container-fluid row "  >
@@ -189,13 +263,14 @@ export default function ListaSuscritor(prop) {
                                     <h2> CONSULTAR CLIENTE </h2>
                                 </div>
                                 <div>
-                                    <form id="register" className=" needs-validation  " novalidate onSubmit={(e) => e.preventDefault()}  >
+                                    <form id="register" className=" needs-validation  " onSubmit={(e) => e.preventDefault()}  >
                                         <div className="row">
-
                                             <div className="col-4">
                                                 <div className=" input-group mb-3" >
                                                     <div className="input-group-prepend">
-                                                        <span className="input-group-text"></span>
+                                                        <span className="input-group-text">
+                                                            <i className="fa fa-address-card"></i>
+                                                        </span>
                                                     </div>
                                                     <Form.Select className="form-control" defaultValue={"cedula"} value={code} onChange={(e) => setCode(e.target.value)} >
                                                         <option value={"cedula"}>Cédula ecuatoriana</option>
@@ -213,16 +288,13 @@ export default function ListaSuscritor(prop) {
                                                         className="form-control numero"
                                                         name="cedula"
                                                         minLength={10}
-                                                        maxLength={10}
+                                                        maxLength={code == "cedula" ? 10 : 20}
                                                         onChange={(e) => filterNames(e.target.value)}
-
                                                         placeholder={(code == "cedula") ? "Ingrese cédula" : "Ingrese su número de identificación"} required />
-
                                                 </div>
-
                                             </div>
                                             <div className="col-2" >
-                                                {!datos.resgistro ? <button className="btn btn-success" onClick={CrearUSuario} > Crear</button> :
+                                                {!datos.resgistro ? <button className="btn btn-success" onClick={CrearUSuario} > CREAR </button> :
                                                     <button className="btn btn-primary" onClick={successAlert} > <i className=" fa fa-check-circle"></i> </button>}
                                             </div>
                                             <div className="col-lg-12">
@@ -230,7 +302,6 @@ export default function ListaSuscritor(prop) {
                                                     <div className="input-group-prepend">
                                                         <span className="input-group-text"><i className="fa fa-user"></i></span>
                                                     </div>
-
                                                     <input type="text"
                                                         className="form-control"
                                                         id="nombreCompleto"
@@ -251,14 +322,12 @@ export default function ListaSuscritor(prop) {
 
 
                                             <div className="col-12 col-lg-6  ">
-                                                <div className="input-group mb-3  px-0 d-flex justify-content-center  fle">
+                                                <div className="input-group mb-3  px-0 d-flex justify-content-center ">
 
                                                     <input
                                                         name="movil" type="tel"
-                                                        className=" inptFielsd form-control " id="movil"
-
-                                                        minLength={10}
-                                                        maxLength={10}
+                                                        className="m-0 inptFielsd form-control " id="movil"
+                                                        size={100}
                                                         required
 
                                                         placeholder="999 999 999" />
@@ -343,11 +412,7 @@ export default function ListaSuscritor(prop) {
 
 
 
-                                        <div className="row d-none">
-                                            <div className="col-lg-12">
-                                                <button className="btn btn-block btn-success" type="submit">Crear Cuenta</button>
-                                            </div>
-                                        </div>
+
                                     </form>
                                 </div>
 
@@ -396,13 +461,52 @@ export default function ListaSuscritor(prop) {
                     </div>
 
                 </Modal.Body>
+
                 <Modal.Footer className="d-flex justify-content-center">
                     <div className="d-none">
                         <button className="btn btn-outline-primary" onClick={() => usedispatch(setModal({ nombre: 'newsuscri', estado: '' }))} > CREAR SUSCRIPTOR </button>
                     </div>
 
                 </Modal.Footer>
+                <div id="search" className="d-none"
+                    style={{
+                        display: 'none',
+                        position: 'fixed',
+                        top: '0',
+                        left: '0',
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: '1000'
+
+                    }} >
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: '10px',
+                        padding: '10px',
+                    }}>
+
+                        <MagnifyingGlass
+                            visible={true}
+                            height="80"
+                            width="80"
+                            ariaLabel="MagnifyingGlass-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="MagnifyingGlass-wrapper"
+                            glassColor='#c0efff'
+                            color='green'
+                        />
+                    </div>
+
+                </div>
             </Modal>
+
 
         </>
     )

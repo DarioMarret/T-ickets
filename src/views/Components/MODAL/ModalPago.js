@@ -67,7 +67,7 @@ function ModalPago(props) {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Continuar"
                 cancelBtnText="Salir y Borrar"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >

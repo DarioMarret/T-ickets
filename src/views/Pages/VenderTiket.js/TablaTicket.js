@@ -10,7 +10,7 @@ export default function TableTikwtWiev(props) {
     const tableRef = useRef()
     const tableName = "table1"
     useEffect(() => {
-        console.log(props.data)
+        //    console.log(props.data)
         const table = $(`#${tableName}`).DataTable(
             {
                 data: props.data,
@@ -45,8 +45,8 @@ export default function TableTikwtWiev(props) {
     return (
         <div>
             <div className="col-12">
-                <table className=" responsive display nowrap " width="100%" id="table1" ref={tableRef}>
-                </table>
+                {/*   <table className=" responsive display nowrap " width="100%" id="table1" ref={tableRef}>
+                </table>*/}
 
             </div>
 

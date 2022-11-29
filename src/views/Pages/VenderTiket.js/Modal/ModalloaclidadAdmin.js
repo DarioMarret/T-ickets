@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { addSillas, deleteSillas, clearSillas, deleteMesa } from "StoreRedux/Slice/sillasSlice"
 import { EliminarSillas, AgregarAsiento, VerSillaslist, TotalSelecion } from "utils/CarritoLocalStorang"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import { enviasilla } from "utils/Querypanelsigui";
 import SweetAlert from "react-bootstrap-sweetalert";
 const ModalLocalidamapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
@@ -97,7 +98,7 @@ const ModalLocalidamapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Seguir Agregando"
                 cancelBtnText="Ir al carrito"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >
@@ -122,7 +123,7 @@ const ModalLocalidamapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Cancelar"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
             </SweetAlert>
@@ -140,7 +141,7 @@ const ModalLocalidamapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Cancelar"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
             </SweetAlert>
@@ -158,7 +159,7 @@ const ModalLocalidamapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
@@ -194,7 +195,7 @@ const ModalLocalidamapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
@@ -238,6 +239,15 @@ const ModalLocalidamapViews = (props) => {
                     AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "discapacidad": nombres.precio_discapacidad, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, "discapacidad": nombres.precio_discapacidad, "seleccionmapa": nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                     successAlert(this.classList[0], nombres.localodad, "Fila")
+                    enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
+                        console.log(ouput)
+                        usedispatch(filtrarlocali(ouput))
+                        // console.log(ouput)
+                    }
+                    ).catch(exit => {
+
+                        console.log(exit)
+                    })
                 } else
                     succesLimit()
             }
@@ -328,6 +338,16 @@ const ModalLocalidamapViews = (props) => {
             return d.estado
 
     }
+    $(document).ready(function () {
+        let disponible = document.querySelectorAll("div.disponible, a.disponible")
+        let reservado = document.querySelectorAll("div.reservado, a.reservado")
+        let seleccion = document.querySelectorAll("div.seleccionado, a.seleccionado")
+        let ocupado = document.querySelectorAll("div.ocupado, a.ocupado")
+        $("#disponible").text(disponible.length)
+        $("#ocupado").text(ocupado.length)
+        $("#reservado").text(reservado.length)
+        $("#seleccionado").text(seleccion.length)
+    })
 
     useEffect(() => {
         getVerTienda().filter((e) => e.id == mapath.precio.id).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
@@ -377,7 +397,7 @@ const ModalLocalidamapViews = (props) => {
                                     <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-success text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
-                                                <span style={{ fontSize: '0.7em' }}>    </span>
+                                                <span id="disponible" style={{ fontSize: '0.7em' }}>    </span>
                                             </div>
                                         </div>
                                         <span>Disponibles.<span className="text-white">...</span></span>
@@ -386,7 +406,7 @@ const ModalLocalidamapViews = (props) => {
                                     <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-warning text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
-                                                <span style={{ fontSize: '0.7em' }}>    </span>
+                                                <span id="reservado" style={{ fontSize: '0.7em' }}>    </span>
                                             </div>
                                         </div>
                                         <span>Reservado.</span>
@@ -394,7 +414,7 @@ const ModalLocalidamapViews = (props) => {
                                     <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-secondary text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
-                                                <span style={{ fontSize: '0.7em' }}>    </span>
+                                                <span id="seleccionado" style={{ fontSize: '0.7em' }}>    </span>
                                             </div>
                                         </div>
                                         <span>Seleccionado.</span>
@@ -402,7 +422,7 @@ const ModalLocalidamapViews = (props) => {
                                     <div className="d-flex flex-row p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-danger text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
                                             <div className="d-flex justify-content-center">
-                                                <span style={{ fontSize: '0.7em' }}>    </span>
+                                                <span id="ocupado" style={{ fontSize: '0.7em' }}>    </span>
                                             </div>
                                         </div>
                                         <span>Ocupados.</span>

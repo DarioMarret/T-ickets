@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { QRCodeCanvas } from 'qrcode.react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { Edit, Delete, FileDownload, Share } from '@mui/icons-material';
@@ -42,7 +42,7 @@ const EventosViews = () => {
       const ids = Filtrar.map(o => o.nombre)
       const filtered = Filtrar.filter(({ nombre }, index) => !ids.includes(nombre, index + 1))
       setEvento(filtered)
-      console.log(filtered)
+      //  console.log(filtered)
       await Concietos(filtered[0].nombre)
     } catch (error) {
       console.log(error)
@@ -194,21 +194,32 @@ const EventosViews = () => {
                 enableRowActions
                 renderRowActions={({ row }) => (
                   <Box sx={{ display: 'flex' }}>
-                    <IconButton
-                      color="success"
-                      arial-label="Enviar"
-                    >
-                      <a href={row.original.link}
-                        target="_blank"
+                    <Tooltip title="Ver Ticket" placement="top">
+                      <IconButton
+                        color="success"
+                        arial-label="Enviar"
                       >
-                        <FileDownload />
-                      </a>
-                    </IconButton>
-                    <IconButton
-                      color="error"
-                      aria-label="Bloquear">
-                      <Delete />
-                    </IconButton>
+                        <a href={row.original.link}
+                          target="_blank"
+                        >
+                          <FileDownload />
+                        </a>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Ver Ticket" placement="top">
+                      <IconButton
+                        color="error"
+                        aria-label="Bloquear">
+                        <Delete />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Ceder ticket" placement='top'>
+                      <IconButton
+                        color='secondary'
+                      >
+                        <Share />
+                      </IconButton>
+                    </Tooltip>
                   </Box>
                 )}
                 positionToolbarAlertBanner="bottom"

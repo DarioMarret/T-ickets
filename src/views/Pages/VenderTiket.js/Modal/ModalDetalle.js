@@ -377,12 +377,19 @@ function ModalDetalle(props) {
 
                                         value={datosPerson.envio ? datosPerson.envio : ''} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
                                         {
+
+
+
+
+
                                             Envio.map((item, index) => {
                                                 return (
                                                     <option key={index} value={item.value}>{item.envio}</option>
                                                 )
                                             })
+
                                         }
+                                        <option value={"fisico"}>{"Boleto Fisico"}</option>
                                     </select>
                                 </div>
                                 <div className="col-12 border border-bottom mb-3"></div>

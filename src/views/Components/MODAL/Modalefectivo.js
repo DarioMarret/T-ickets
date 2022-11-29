@@ -42,7 +42,7 @@ const ModalEfectivo = (props) => {
         cancelBtnBsStyle="danger"
         confirmBtnText="Completar  Compra"
         cancelBtnText="Anular Compra"
-        openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
         showCancel
       >

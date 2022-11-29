@@ -539,6 +539,9 @@ const EsquemaViews = () => {
                             </div>
 
                         </div>
+                        <div className="print border">
+
+                        </div>
                     </div>
 
                 </div>

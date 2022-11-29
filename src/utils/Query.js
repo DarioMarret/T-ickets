@@ -71,7 +71,9 @@ export const GuardarDatosdelComprador = async () => {
 }
 export const ValidarWhatsapp = async () => {
     let datosPerson = getDatosUsuariosLocalStorag()
-    const validanumero = datosPerson.whatsapp.substring(1, 10)
+    let nuemero = datosPerson.whatsapp
+    const validanumero = nuemero.length == 10 ? nuemero.substring(1, 10) : nuemero
+    // console.log(validanumero)
     const { data } = await axios.post("https://rec.netbot.ec/api_whatsapp_qr/api/validarNumero", { from: "593" + validanumero })
     console.log(validanumero, data)
     if (data.success && data.msg != null) {

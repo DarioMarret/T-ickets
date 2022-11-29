@@ -83,7 +83,7 @@ const Reporte = (props) => {
                 confirmBtnText="Si, Borrar"
                 cancelBtnText="Cancelar"
                 showCancel
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
             >
                 Desea borrar los datos y continuar

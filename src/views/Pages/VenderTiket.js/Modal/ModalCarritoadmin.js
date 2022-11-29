@@ -114,7 +114,7 @@ const ModalCarritoViewadmin = (prop) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Confirmar"
                 cancelBtnText="Cancelar"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >
@@ -134,7 +134,7 @@ const ModalCarritoViewadmin = (prop) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Confirmar"
                 cancelBtnText="Cancelar"
-                openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >

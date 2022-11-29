@@ -11,6 +11,8 @@ import { ValidarWhatsapp } from "utils/Query"
 import { setModal } from "StoreRedux/Slice/SuscritorSlice"
 import intlTelInput from 'intl-tel-input';
 import logo from "../../../../assets/imagen/logo-inicio.png";
+import { Whatsappnumero } from "utils/constantes"
+import { Triangle } from "react-loader-spinner"
 const ResgistroView = (prop) => {
     const { setDatoToas } = prop
     let usedispatch = useDispatch()
@@ -49,10 +51,7 @@ const ResgistroView = (prop) => {
                     else {
                         seTspine("d-none")
                         setPerson({
-                            ...datosPerson,
-                            whatsapp: '',
-                            movil: '',
-                            cedula: '',
+                            cedula: '', name: '', email: '', edad: '', movil: '', discapacidad: '', genero: '', direccion: '', password: '',
                         })
 
                         DatosUsuariosLocalStorag({
@@ -63,6 +62,12 @@ const ResgistroView = (prop) => {
                             genero: '',
                             direccion: '',
                             password: '',
+                        })
+                        setDatoToas({
+                            show: true,
+                            message: "Vuelva a interntarlo o cambie de metodo de identificación",
+                            color: 'bg-danger',
+                            estado: "No hubo coincidencia de cédula",
                         })
                     }
                 } catch (error) {
@@ -80,11 +85,13 @@ const ResgistroView = (prop) => {
 
     }
     async function Registeruser(e) {
+        let info = getDatosUsuariosLocalStorag()
         const form = new FormData(e.target)
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         e.preventDefault();
         const { nombreCompleto, email, password, movil, ciudad, cedula } = Object.fromEntries(form.entries())
-        //console.log(movil)
+        sessionStorage.setItem(Whatsappnumero, movil)
+        console.log(movil)
         let datos = {
             nombreCompleto: datosPerson.name,
             email: datosPerson.email,
@@ -93,13 +100,26 @@ const ResgistroView = (prop) => {
             ciudad: datosPerson.direccion,
             cedula: datosPerson.cedula
         }
+        DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
 
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
             console.log(Object.values(Object.fromEntries(form.entries())).some(e => e))
+            setDatoToas({
+                show: true,
+                message: "Falta datos por completar",
+                color: 'bg-danger',
+                estado: "Complete toda la información",
+            })
             return
         }
         if (!emailRegex.test(email)) {
             console.log(emailRegex.test(email))
+            setDatoToas({
+                show: true,
+                message: "Fromato de correo Erroneo",
+                color: 'bg-danger',
+                estado: "Email " + email + " Invalido",
+            })
             return
         }
         if (password.length < 7 & movil.length != 9) {
@@ -140,20 +160,28 @@ const ResgistroView = (prop) => {
                         }
                         DatosUsuariosLocalStorag({ ...usuario, ...users })
                         sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+                        setDatoToas({
+                            show: true,
+                            message: "Bienvenido" + data.nombreCompleto,
+                            color: 'bg-sussecc',
+                            estado: "Inicio Exitoso",
+                        })
                         usedispatch(setModal({ nombre: '', estado: '' }))
                         //usedispatch(addususcritor({ users }))
                         // sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...datosPerson }))
                         //sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(datosPerson))
 
                     }
+                    //console.log(Object.values(Object.fromEntries(form.entries())))
                 }
 
             } catch (error) {
 
+                console.log(error)
             }
 
         }
-        console.log(Object.values(Object.fromEntries(form.entries())))
+
     }
     $(document).ready(function () {
         $(".numero").keypress(function (e) {
@@ -163,11 +191,9 @@ const ResgistroView = (prop) => {
         })
         const phoneInputField = document.querySelector("#movil");
         intlTelInput(phoneInputField, {
-
             initialCountry: "ec",
             separateDialCode: true,
-            autoHideDialCode: false,
-            nationalMode: false,
+            nationalMode: true,
             utilsScript:
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
 
@@ -175,31 +201,6 @@ const ResgistroView = (prop) => {
 
     });
 
-    useEffect(() => {
-        /*(function () {
-            const phoneInputField = document.getElementById("#phone");
-            const id = phoneInputField.getAttribute('id');
-
-            const input = document.querySelector("#phone");
-            intlTelInput(phoneInputField, {
-                utilsScript:
-                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-
-            })
-
-        })()*/
-        /*  phoneInputField ? window.intlTelInput(phoneInputField, {
-              utilsScript:
-                  "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-          }) : ''*/
-
-        /*scrollingElement.addEventListener("scroll", function () {
-            var e = document.createEvent('Event');
-            e.initEvent("scroll", true, true);
-            window.dispatchEvent(e);
-        });*/
-
-    }, [modal.nombre == "registro" ? true : false])
     return (
         <>
             <Modal
@@ -229,7 +230,10 @@ const ResgistroView = (prop) => {
                                             <div className="col-lg-4">
                                                 <div className=" input-group mb-3" >
                                                     <div className="input-group-prepend">
-                                                        <span className="input-group-text"></span>
+                                                        <span className="input-group-text">
+                                                            <i className="fa fa-address-card"></i>
+
+                                                        </span>
                                                     </div>
                                                     <Form.Select className="form-control" value={code} onChange={(e) => setCode(e.target.value)} name="perfil" >
                                                         <option value={"cedula"}>Cédula ecuatoriana</option>
@@ -300,8 +304,7 @@ const ResgistroView = (prop) => {
                                                         name="movil" type="tel"
                                                         className=" inptFielsd form-control " id="movil"
 
-                                                        minLength={10}
-                                                        maxLength={10}
+
                                                         required
 
                                                         placeholder="999 999 999" />
@@ -408,7 +411,7 @@ const ResgistroView = (prop) => {
                                 </div>
 
                                 <div className="d-flex   flex-wrap-reverse ">
-                                    <div className="col-12 d-flex d-none">
+                                    <div className="col-12 d-flex ">
                                         <p style={{ fontSize: "0.7em" }}>
                                             Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
                                             realizada la compra , caso contrario no podra retirar los boletos duros sin opcion a
@@ -461,7 +464,15 @@ const ResgistroView = (prop) => {
                             borderRadius: '10px',
                             padding: '10px',
                         }}>
-                            <Spinner animation="border" variant="light" size='120'></Spinner>
+                            <Triangle
+                                height="80"
+                                width="80"
+                                color="#4fa94d"
+                                ariaLabel="triangle-loading"
+                                wrapperStyle={{}}
+                                wrapperClassName=""
+                                visible={true}
+                            />
                             <h4 className='text-light'>Consultando datos ...</h4>
 
 

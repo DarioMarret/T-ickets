@@ -70,7 +70,7 @@ const Reporte = (props) => {
         cancelBtnBsStyle="danger"
         confirmBtnText="Completar  Compra"
         cancelBtnText="Anular Compra"
-        openAnim={{ name: 'showSweetAlert', duration: 500 }}
+
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
         showCancel
       >
@@ -110,7 +110,7 @@ const Reporte = (props) => {
                   <h3 className="modal-title pb-3 ">PARA DEPOSITO O TRANSFERENCIA</h3>
                   <img src={metodos} className="img-fluid" style={{ width: '300px' }} alt="" />
                   <h3>Numero de Cuenta</h3>
-                  <h3> <strong>1500618760</strong> </h3>
+                  <h3> <strong></strong> </h3>
                 </div>
 
 
