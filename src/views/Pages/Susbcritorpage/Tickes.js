@@ -3,15 +3,19 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Button } from "react-bootstrap";
 import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload } from '@mui/icons-material';
-import { GetUserList, GetRoles } from "utils/Querypanel.js";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { QRCodeCanvas } from 'qrcode.react';
+import { useDispatch, useSelector } from "react-redux";
+import { setModal } from "StoreRedux/Slice/SuscritorSlice.js";
 import { columnsTicket } from "utils/ColumnTabla";
 import TableWiev from "./TableFunc.js"
 import { ListarTikets } from "utils/Querypanel.js";
+import CederView from "./Modal/CederView.js";
+import ToastViews from "views/Components/TOAST/toast.js";
 function Example() {
+  let usedispatch = useDispatch()
+
   const [data, setData] = React.useState([]);
   const [tiketslist, setTikes] = useState([])
 
@@ -55,7 +59,7 @@ function Example() {
 
   }
   const [alert, setAlert] = useState(null)
-
+  const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })), hideAlert() }
   const successAlert = (e) => {
 
     setAlert(
@@ -63,7 +67,7 @@ function Example() {
         info
         style={{ display: "block", marginTop: "-100px" }}
         title={"Estas Seguro?"}
-        onConfirm={() => hideAlert()}
+        onConfirm={() => abrirceder(e)}
         onCancel={() => hideAlert()}
         confirmBtnBsStyle="success"
         cancelBtnBsStyle="danger"
@@ -96,6 +100,7 @@ function Example() {
   return (
     <>
       {alert}
+      <CederView />
       <div className="card card-primary card-outline text-left " style={{ minHeight: '250px' }} >
         <div className="card-header pb-2">
           Tikets
@@ -133,10 +138,6 @@ function Example() {
                   <QRCodeCanvas value={row.original.qr} />
                 </Typography>
                 <Typography>Protocolo : {row.original.protocolo} </Typography>
-
-
-
-
               </Box>
             )}
 
@@ -165,7 +166,7 @@ function Example() {
                 <Tooltip title="Ceder ticket" placement="top-start">
                   <IconButton
                     color='secondary'
-                    onClick={() => successAlert(row.original.link)}
+                    onClick={() => successAlert(row.original)}
                   >
                     <Share />
                   </IconButton>
@@ -186,6 +187,7 @@ function Example() {
             <TableWiev data={tiketslist} /> : ''*/}
         </div>
       </div>
+      <ToastViews />
     </>
   );
 }

@@ -202,7 +202,7 @@ const MapadelocalidadViews = (props) => {
 
         function cargarcolores() {
                 let colores = getMapacolor()
-                console.log(colores)
+                //  console.log(colores)
                 colores.length > 0 ? colores.map((e, i) => {
                         $("#" + e.path).attr("class", "seleccion")
                         $("#" + e.path).attr("fill", e.fill, "class", "seleccion")

@@ -5,25 +5,22 @@ import { useHistory } from "react-router";
 import { Host } from "utils/constantes";
 import axios from "axios";
 import { DatosUsuariocliente } from "utils/constantes";
-
 import logo from "../../../../assets/imagen/logo-inicio.png";
 import { useSelector, useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
-import { da } from "date-fns/locale";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 
 const ModalLogin = (props) => {
-  const { showLogin, setShowLogin } = props
+  const { showLogin, setShowLogin, abrir } = props
   let histoty = useHistory()
+  let Modalstatus = useSelector((state) => state.SuscritorSlice.modal)
   const usedispatch = useDispatch()
   const [message, setmessage] = useState("");
   const [show, setShowToas] = useState(false);
   const [showtoass, setShowToass] = useState(false);
-  const [credenciales, setnombre] = useState({
-    username: '',
-    pass: '',
-  });
+  const [credenciales, setnombre] = useState({ username: '', pass: '', });
   const handleSubmit = async (event) => {
     var hoy = new Date();
     event.preventDefault();
@@ -50,9 +47,11 @@ const ModalLogin = (props) => {
           sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
           sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
           usedispatch(addususcritor({ ...client }))
-          setShowLogin(false)
           setShowToass(true)
           setmessage("Bienvenido " + data.data.nombreCompleto)
+          Modalstatus.estado != null ? abrir(Modalstatus.estado) : ''
+
+          usedispatch(setModal({ nombre: '', estado: '' }))
 
         }
         else {
@@ -72,7 +71,7 @@ const ModalLogin = (props) => {
   };
   function regsitronew() {
     setShowLogin(false)
-    usedispatch(setModal({ nombre: 'registro', estado: true }))
+    usedispatch(setModal({ nombre: 'registro', estado: Modalstatus.estado }))
   }
   const handleChange = (target) => {
     const { name, value } = target
@@ -84,19 +83,19 @@ const ModalLogin = (props) => {
   useEffect(() => {
 
 
-  }, [showLogin])
+  }, [Modalstatus.nombre == "loginpage" ? true : false])
 
   return (
     <>
       <Modal
-        show={showLogin}
+        show={Modalstatus.nombre == "loginpage" ? true : false}
         onHide={() => setShowLogin(false)}
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
         <Modal.Header className="d-flex text-center">
           <button type="button" className="close"
-            onClick={() => setShowLogin(false)}>
+            onClick={() => usedispatch(setModal({ nombre: '', estado: '' }))}>
             ×
           </button>
 

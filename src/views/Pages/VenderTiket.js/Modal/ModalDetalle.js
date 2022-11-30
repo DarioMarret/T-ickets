@@ -307,7 +307,7 @@ function ModalDetalle(props) {
             show={showDetalle}
             onHide={handleDetalleColse}
             size="lg"
-            fullscreen={'lg-down'}
+            fullscreen={'md-down'}
         >
             <Modal.Header >
                 <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}> <span className="text-danger" > </span></h5>

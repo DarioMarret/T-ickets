@@ -151,7 +151,7 @@ const ModalCarritoViewadmin = (prop) => {
             <Modal
                 show={showshop}
                 size="lg"
-                fullscreen={'lg-down'}
+                fullscreen={'md-down'}
                 onHide={cerrar}
             >
                 <Modal.Header >

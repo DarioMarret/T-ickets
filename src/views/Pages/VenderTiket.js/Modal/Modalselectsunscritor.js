@@ -187,6 +187,8 @@ export default function ListaSuscritor(prop) {
                         ciudad: '',
                         email: '',
                         movil: '',
+                        resgistro: '',
+                        password: '',
                         resgistro: false
                     })
                     usedispatch(setToastes({
@@ -205,6 +207,8 @@ export default function ListaSuscritor(prop) {
                 ciudad: '',
                 email: '',
                 movil: '',
+                resgistro: '',
+                password: '',
                 resgistro: false
             })
             $('#movil').val("")
@@ -272,7 +276,7 @@ export default function ListaSuscritor(prop) {
                                                             <i className="fa fa-address-card"></i>
                                                         </span>
                                                     </div>
-                                                    <Form.Select className="form-control" defaultValue={"cedula"} value={code} onChange={(e) => setCode(e.target.value)} >
+                                                    <Form.Select className="form-control" value={code} onChange={(e) => setCode(e.target.value)} >
                                                         <option value={"cedula"}>Cédula ecuatoriana</option>
                                                         <option value={"extranjera"}>Cédula extranjera</option>
                                                         <option value={"pasaporte"}>Pasaporte</option>
@@ -364,8 +368,6 @@ export default function ListaSuscritor(prop) {
                                             </div>
 
                                         </div>
-
-
                                         <div className="row">
                                             <div className="col-lg-6">
                                                 <div className="input-group mb-3">

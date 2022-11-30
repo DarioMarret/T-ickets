@@ -371,7 +371,7 @@ const ModalLocalidamapViews = (props) => {
             <Modal
                 show={showMapa}
                 size="lg"
-                fullscreen={'lg-down'}
+                fullscreen={'md-down'}
                 onHide={cerrar}
             >
                 {alert}

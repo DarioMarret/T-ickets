@@ -64,8 +64,11 @@ const ModalEfectivo = (props) => {
         onHide={succesAlert}
       >
         <Modal.Header >
-
-          <button type="button" className="close"
+          <div className='d-flex justify-content-between w-100' >
+            <h5 className="modal-title text-center justify-content-center align-items-center" style={{ fontFamily: 'fantasy', fontSize: '1.2em' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
+            <div><button className='btn btn-outline-danger rounded-7' onClick={handleefectivoClose} >  <i className="bi bi-caret-left-fill"></i>  </button></div>
+          </div>
+          <button type="button" className="close "
             onClick={succesAlert}>
             ×
           </button>
@@ -73,23 +76,25 @@ const ModalEfectivo = (props) => {
         <Modal.Body>
           <div className="container pt-5">
             <div className="d-flex flex-column " >
-              <div className='d-flex justify-content-between align-items-center' >
-                <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy', fontSize: '1.2em' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
-                <div><button className='btn btn-primary' onClick={handleefectivoClose} >  <i className="bi bi-caret-left-fill"></i>  Regresar</button></div>
-              </div>
+
 
               <h3 className='text-center'> Puede terminar la compra en: </h3>
               <div className="container d-flex flex-column p-3">
-                <div className="col-12  d-flex  p-1">
-                  <h6 > <i className="fa fa-map "> </i> <strong> Mall del SOL</strong>  </h6>
+                <div className="col-12 border rounded-6 p-2  d-flex m-1  justify-content-center  align-items-center  ">
+                  <div >
+                    <h6 className=''> <i className="fa fa-map "> </i> <strong> Mall del SOL</strong>  </h6>
+                  </div>
                 </div>
-                <div className="col-12  d-flex  p-1">
-                  <h6 > <i className="fa fa-map "> </i> <strong> Mall del SUR</strong> </h6>
+                <div className="col-12  d-flex  p-2 border rounded-6  m-1 justify-content-center">
+                  <div>
+
+                    <h6 > <i className="fa fa-map "> </i> <strong> Mall del SUR</strong> </h6>
+                  </div>
                 </div>
-                <div className="col-12  d-flex  p-1">
+                <div className="col-12  d-flex  border rounded-6 m-1 p-2 justify-content-center  align-items-end">
                   <h6 > <i className="fa fa-map "> </i> <strong> De Mujeres </strong></h6>
                 </div>
-                <div className="col-12  d-flex  justify-content-between  p-1">
+                <div className="col-12  d-flex  justify-content-center  p-1 mt-2">
 
                   <button className="btn btn-primary col-12  "
                     onClick={Guardarcompraefectivo}

@@ -8,6 +8,7 @@ import { Spinner } from 'react-bootstrap';
 import { clearMapa } from 'StoreRedux/Slice/mapaLocalSlice';
 import { borrarseleccion } from 'StoreRedux/Slice/sillasSlice';
 import { useDispatch, useSelector } from "react-redux"
+import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 
@@ -83,8 +84,10 @@ function ModalPago(props) {
         const data = await GenerarLinkPagoMedios()
 
         if (data.status === 200) {
-            popUp(data.data.url)
-            setEstadoFrame(!estadoFrame)
+            usedispatch(setModal({ nombre: 'pago', estado: data.data.url }))
+            console.log(data.data.url)
+            //   popUp(data.data.url)
+            /// setEstadoFrame(!estadoFrame)
             setSpiner("d-none")
             setModalPago(false)
 

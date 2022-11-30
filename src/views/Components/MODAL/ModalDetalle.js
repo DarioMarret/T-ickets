@@ -171,17 +171,7 @@ function ModalDetalle(props) {
     }
     function validarEmail(valor) {
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-        if (datosPerson.whatsapp.length != 10 && datosPerson.whatsapp.substring(0, 1) != 0) {
-            setValidation("was-validated")
-            setDatoToas({
-                show: true,
-                message: 'Ingrese un formato de Whatsapp válido',
-                color: 'bg-danger',
-                estado: 'Numero de Whatsapp inválido',
-            })
-            return false
-        }
-        else if (emailRegex.test(valor)) {
+        if (emailRegex.test(valor)) {
             return true
         } else {
             setValidation("was-validated")
@@ -260,7 +250,7 @@ function ModalDetalle(props) {
             show={showDetalle}
             onHide={handleDetalleColse}
             size="lg"
-            fullscreen={'lg-down'}
+            fullscreen={'md-down'}
         >
             <Modal.Header >
                 <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}>Tiempo restante para la compra <span className="text-danger" >{intervalo} </span></h5>
@@ -361,7 +351,7 @@ function ModalDetalle(props) {
                                 minLength={10}
                                 maxLength={10}
                                 required
-                                disabled={(clienteauth && datosPerson.whatsapp != '')}
+                                disabled={true}
                                 value={datosPerson.whatsapp ? datosPerson.whatsapp : ''}
                                 onChange={(e) => hanbleDatos(e)}
                                 placeholder="Ingrese su whatsapp o numero de contacto"

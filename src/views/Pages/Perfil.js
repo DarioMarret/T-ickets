@@ -8,11 +8,22 @@ import { DatosUsuarioLocalStorang } from "utils/constantes";
 import { useDispatch, useSelector } from "react-redux";
 import { deletesuscrito, addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { GetSuscritores } from "utils/Querypanel";
-
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Badge, Tooltip } from "@mui/material";
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
+import { MonthPicker } from "@mui/x-date-pickers/MonthPicker";
+import { PickersDay } from "@mui/x-date-pickers";
+import TextField from '@mui/material/TextField';
+// react component used to creat
+// react-bootstrap components
+const today = new Date();
+const y = today.getFullYear();
+const m = today.getMonth();
+const d = today.getDate() + 2;
 import SweetAlert from 'react-bootstrap-sweetalert';
 // react-bootstrap components
 import {
-  Badge,
   Card,
   Form,
   InputGroup,
@@ -24,6 +35,7 @@ import {
 } from "react-bootstrap";
 import { display } from "@mui/system";
 import { Button } from "@mui/material";
+import { cargarEventoActivo } from "utils/Querypanelsigui";
 
 function PerfilPage(props) {
   const { setDatoToas } = props
@@ -31,6 +43,8 @@ function PerfilPage(props) {
   const userauthi = useSelector((state) => state.SuscritorSlice)
   const [alert, setAlert] = React.useState(null)
   const [validate, setValidate] = useState("")
+  const [value, setValue] = React.useState(Date(y, m, d));
+  const [Eventos, setEventos] = useState([])
   const [datosPersons, setPerson] = useState({
     cedula: '',
     direccion: '',
@@ -170,25 +184,24 @@ function PerfilPage(props) {
       </SweetAlert>
     );
   };
-  const Error = () => {
-    setAlert(
-      <SweetAlert
-        danger
-        style={{ display: "block", marginTop: "-100px" }}
-        title="Hubo un error"
-        onConfirm={() => hideAlert()}
-        onCancel={() => hideAlert()}
-        confirmBtnBsStyle="success"
-      >
-        Intente mas tarde
-      </SweetAlert>
-    );
-  };
   const hideAlert = () => {
     setAlert(null);
   };
 
-
+  const evento = async () => {
+    try {
+      const data = await cargarEventoActivo()
+      const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
+      const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
+      if (data != null) {
+        console.log(filtro.sort(sorter))
+        setEventos(filtro.sort(sorter))
+      }
+      else if (data == null) setEventos([])
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
 
     (async () => {
@@ -206,7 +219,9 @@ function PerfilPage(props) {
         console.log(error)
 
       }
+      await evento()
     })()
+
 
 
   }, [])
@@ -218,93 +233,154 @@ function PerfilPage(props) {
         <div className="section-image" data-image="../../assets/img/bg5.jpg">
           {/* you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " */}
           <Container>
-            <Row>
-              <Col lg="3" sm="6" >
-                <Card className="card-stats ">
-                  <Card.Body>
-                    <Row className="">
-                      <Col xs="5">
-                        <div className="icon-big text-center ">
-                          <i className="nc-icon nc-headphones-2 text-warning"></i>
-                        </div>
-                      </Col>
-                      <Col xs="7">
-                        <div className="numbers">
-                          <p className="card-category">Boletos</p>
-                          <Card.Title as="h4">0</Card.Title>
-                        </div>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                  <Card.Footer>
-                    <hr></hr>
-                    <div className="stats">
-                      <i className="fas fa-music mr-1"></i>
-                      Total Boletos
-                    </div>
-                  </Card.Footer>
-                </Card>
-              </Col>
-              <Col lg="3" sm="6">
-                <Card className="card-stats">
-                  <Card.Body>
-                    <Row>
-                      <Col xs="5">
-                        <div className="icon-big text-center ">
-                          <i className="nc-icon nc-cart-simple text-success"></i>
-                        </div>
-                      </Col>
-                      <Col xs="7">
-                        <div className="numbers">
-                          <p className="card-category">Compras</p>
-                          <Card.Title as="h4">$0</Card.Title>
-                        </div>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                  <Card.Footer>
-                    <hr></hr>
-                    <div className="stats">
-                      <i className="far fa-calendar-alt mr-1"></i>
-                      Total Compras
-                    </div>
-                  </Card.Footer>
-                </Card>
-              </Col>
-
+            <Row className="d-flex justify-content-center">
               <Col lg="6" sm="12">
-                <Card className="card-stats">
-                  <Card.Body>
-                    <Row>
-                      <Col xl="12" xs="8">
-                        <div className="">
-                          <Card.Title as="h4">Bienvenido </Card.Title>
-                          <p className="card-category">
-                            {datosPersons ? datosPersons.name : ''}</p>
+                <Row>
+                  <Col lg="12" sm="12">
+                    <Card className="card-stats">
+                      <Card.Body>
+                        <Row>
+                          <Col xl="8" xs="8">
+                            <div className="">
+                              <Card.Title as="h5">Bienvenido </Card.Title>
+                              <p className="card-category" >
+                                {datosPersons ? datosPersons.name : ''}</p>
 
+                            </div>
+                          </Col>
+                          <Col xs="4">
+                            <div className="icon-big text-center ">
+                              <i className="nc-icon nc-satisfied text-danger"></i>
+                            </div>
+                          </Col>
+
+
+                        </Row>
+                      </Card.Body>
+                      <Card.Footer>
+                        <hr></hr>
+                        <div className="stats" >
+                          <i className="far fa-clock mr-1"></i>
+                          {moment(datosPersons.hora).format('DD MMMM YYYY hh:mm')}
                         </div>
-                      </Col>
-                      <Col xs="4">
-                        <div className="icon-big text-center ">
-                          <i className="nc-icon nc-satisfied text-danger"></i>
+                      </Card.Footer>
+                    </Card>
+                  </Col>
+                  <Col lg="6" sm="12" >
+                    <Card className="card-stats ">
+                      <Card.Body>
+                        <Row className="">
+                          <Col xs="5">
+                            <div className="icon-big text-center ">
+                              <i className="nc-icon nc-headphones-2 text-warning"></i>
+                            </div>
+                          </Col>
+                          <Col xs="7">
+                            <div className="numbers">
+                              <p className="card-category">Boletos</p>
+                              <Card.Title as="h4">0</Card.Title>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                      <Card.Footer>
+                        <hr></hr>
+                        <div className="stats">
+                          <i className="fas fa-music mr-1"></i>
+                          Total Boletos
                         </div>
-                      </Col>
+                      </Card.Footer>
+                    </Card>
+                  </Col>
+                  <Col lg="6" sm="12">
+                    <Card className="card-stats">
+                      <Card.Body>
+                        <Row>
+                          <Col xs="5">
+                            <div className="icon-big text-center ">
+                              <i className="nc-icon nc-cart-simple text-success"></i>
+                            </div>
+                          </Col>
+                          <Col xs="7">
+                            <div className="numbers">
+                              <p className="card-category">Compras</p>
+                              <Card.Title as="h4">$0</Card.Title>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                      <Card.Footer>
+                        <hr></hr>
+                        <div className="stats">
+                          <i className="far fa-calendar-alt mr-1"></i>
+                          Total Compras
+                        </div>
+                      </Card.Footer>
+                    </Card>
+                  </Col>
 
 
-                    </Row>
-                  </Card.Body>
-                  <Card.Footer>
-                    <hr></hr>
-                    <div className="stats">
-                      <i className="far fa-clock mr-1"></i>
-                      Hora de inicio {moment(datosPersons.hora).format('DD MMMM YYYY hh:mm:ss')}
-                    </div>
-                  </Card.Footer>
-                </Card>
+                </Row>
+
               </Col>
+              <Col lg="6" sm="12">
+                <Card className="card-stats" style={{ maxHeight: '310px' }} >
+                  <LocalizationProvider dateAdapter={AdapterMoment} >
+                    <StaticDatePicker
 
+                      orientation="landscape"
+                      label={"Nuevos Eventos"}
+                      openTo="day"
+                      value={value}
+                      minDate={new Date()}
+                      hideTabs={false} componentsProps={{
+                        actionBar: {
+                          actions: [''],
+                        },
+                      }}
+                      minDateTime={today}
+                      renderDay={(day, value, DayComponentProps) => {
+                        // console.log(moment(DayComponentProps.key).format('MM/DD/YYYY'))
+                        const isDate = Eventos.some(event => moment(event.fechaConcierto).format('MM/DD/YYYY') === moment(DayComponentProps.key).format('MM/DD/YYYY'));
+                        const info = Eventos.find(event => moment(event.fechaConcierto).format('MM/DD/YYYY') === moment(DayComponentProps.key).format('MM/DD/YYYY'))
+                        //console.log(day.toString())
+
+                        return (
+
+                          <Tooltip key={day.toString()} title={isDate ? info.nombreConcierto : 'sin evento'} placement="top">
+                            <Badge
+                              overlap="circular"
+                              badgeContent={isDate ? '' : ''}
+                            >
+
+                              <PickersDay {...DayComponentProps} />
+                              <span hidden={!isDate} className="position-absolute bottom-0 start-50 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                <span className="visually-hidden">New alerts</span>
+                              </span>
+
+                            </Badge>
+                          </Tooltip>
+
+                        )
+
+                      }
+
+                      }
+                      // shouldDisableDate={isWeekend}
+                      onChange={(newValue) => {
+                        setValue(newValue);
+                      }}
+
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
+
+                </Card>
+
+              </Col>
             </Row>
-            <Row>
+
+            <Row className="d-flex justify-content-center">
               <Col md="12" sm="12" xl="8">
 
                 <Card>

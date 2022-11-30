@@ -55,6 +55,9 @@ import axios from "axios";
 import { Eventolocalidad } from "utils/constantes.js";
 import { seleccionmapa } from "utils/constantes.js";
 import { cargarsilla } from "StoreRedux/Slice/sillasSlice.js";
+import { setModal } from "StoreRedux/Slice/SuscritorSlice.js";
+import Iframe from "views/Components/IFrame/Iframe.js";
+import ModalConfima from "views/Components/MODAL/Modalconfirmacion.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   let history = useHistory();
@@ -80,7 +83,7 @@ const IndexFlas = () => {
   const localidadtimer = useRef(null);
   function velocidad() {
     let timer = 0
-    var tiempo = 60 * 20
+    var tiempo = 60 * 10
     timer = tiempo
     var minutos = 0, segundos = 0;
     //console.log(datatime)
@@ -102,6 +105,7 @@ const IndexFlas = () => {
         LimpiarLocalStore()
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
+        usedispatch(setModal({ nombre: '', estado: '' }))
         $(".Mesa").removeClass("mesaocupado").addClass("mesadisponible")
         $(".Mesa").removeClass("mesareserva")
       }
@@ -133,7 +137,7 @@ const IndexFlas = () => {
     var bPreguntar = (getVerTienda().length > 0)
     var respuesta;
 
-    if (bPreguntar) {
+    if (modal.nombre != "pago" && bPreguntar) {
       // window.confirm('¿Seguro que quieres salir?');
       respuesta = window.confirm('¿Seguro que quieres salir?');
 
@@ -573,17 +577,8 @@ const IndexFlas = () => {
         setListaPrecio={setListaPrecio}
         setMapashow={setMapashow}
       />
-      { /* <ModalCarrito
-        show={show}
-        handleClose={handleClose}
-        handleContinuar={handleContinuar}
-        listaPrecio={listaPrecio}
-        setListaPrecio={setListaPrecio}
-        setListarCarritoDetalle={setListarCarritoDetalle}
-        datosPerson={datosPerson}
-        setPerson={setPerson}
-      />*/}
       {modal.nombre == "registro" ? <ResgistroView
+        abrir={abrir}
         setDatoToas={setDatoToas} /> : ''}
       <ModalDetalle
         showDetalle={showDetalle}
@@ -653,7 +648,7 @@ const IndexFlas = () => {
                 </li> : ""
               }
               {!userauthi.login ? <li className="  nav-item">
-                <a className=" btn btn-outline-light  " href="#" onClick={() => setShowLogin(true)}> Mi Cuenta <i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
+                <a className=" btn btn-outline-light  " href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
                   <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
                 </svg></i> </a>
@@ -672,6 +667,7 @@ const IndexFlas = () => {
       <ModalLogin
         showLogin={showLogin}
         setShowLogin={setShowLogin}
+        abrir={abrir}
       />
       {/* header */}
       <div className="container-fluid  p-0">
@@ -817,7 +813,7 @@ const IndexFlas = () => {
                                 <p style={{ fontSize: '1.2em', height: "55px" }}><b>Lugar:</b><span id="lugarEvento">{e.lugarConcierto}</span></p>
                                 <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}</span></p>
                                 {true ? <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                  className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : setShowLogin(true)} >Comprar Entrada</p> : ""}
+                                  className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >Comprar Entrada</p> : ""}
                               </div>
                             </div>
                           </div>
@@ -876,6 +872,7 @@ const IndexFlas = () => {
 
 
       <Modalterminos />
+      <ModalConfima />
       <div className={spinervi}
         style={{
           display: 'none',
@@ -912,6 +909,12 @@ const IndexFlas = () => {
         setDatoToas={setDatoToas}
       />
 
+      {modal.nombre == "pago" ? <Iframe
+        setEstadoFrame={modal.nombre == "pago" ? true : false}
+        url={modal.estado}
+        intervalo={intervalo}
+        detener={detenervelocidad}
+      /> : ''}
 
     </>
 

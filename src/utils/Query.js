@@ -11,12 +11,14 @@ import { Host, Whatsappnumero, DatosUsuariocliente, Valores } from "./constantes
  * 
  */
 export const Authsucrito = async (parms) => {
+    //console.log(parms)
     const { data } = await axios.post(Host + "api/v1/auth_suscriptor", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     })
+    // console.log(data)
     return data
 }
 export const GenerarLinkPagoMedios = async () => {

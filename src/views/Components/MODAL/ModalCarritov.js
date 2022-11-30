@@ -72,11 +72,8 @@ const ModalCarritoView = (prop) => {
             Efectivo: metodoPago == "Efectivo" ? "Efectivo" : "",
             Tarjeta: metodoPago == "Tarjeta" ? "Tarjeta" : "",
             Deposito: metodoPago == "Deposito" ? "Deposito" : "",
-        }) : setChecked({
-            Efectivo: "",
-            Tarjeta: "",
-            Deposito: "",
-        })
+        }) : handelMetodopago({ name: 'Tarjeta' }, "Tarjeta"), setCheck(false)
+
         ListaPrecioset(GetValores())
         let asientos = JSON.parse(sessionStorage.getItem("asientosList"))
         asientos != null ? usedispatch(cargarsilla(asientos)) : ''
@@ -164,7 +161,7 @@ const ModalCarritoView = (prop) => {
             <Modal
                 show={showshop}
                 size="lg"
-                fullscreen={'lg-down'}
+                fullscreen={'md-down'}
             // fullscreen={true}
             >
                 <Modal.Header >

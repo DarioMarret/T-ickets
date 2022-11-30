@@ -365,7 +365,7 @@ const LocalidadmapViews = (props) => {
             <Modal
                 show={showMapa}
                 size="lg"
-                fullscreen={'lg-down'}
+                fullscreen={'md-down'}
                 onHide={cerrar}
                 className="rounded-7"
             >

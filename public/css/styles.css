@@ -46,6 +46,9 @@ body {
   list-style: none;
 }
 
+.MuiPickersToolbar-penIconButton {
+  visibility: hidden
+}
 
 .bg-azul1 {
   background: var(--bg-azul1);

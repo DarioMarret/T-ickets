@@ -57,7 +57,7 @@ const UsersView = () => {
 
   }
   function reloadpage() {
-    console.log("se creo")
+    // console.log("se creo")
     location.reload()
     //history.push("/admin/usuario")
   }

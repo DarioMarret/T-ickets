@@ -14,7 +14,7 @@ import logo from "../../../../assets/imagen/logo-inicio.png";
 import { Whatsappnumero } from "utils/constantes"
 import { Triangle } from "react-loader-spinner"
 const ResgistroView = (prop) => {
-    const { setDatoToas } = prop
+    const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     const [spinervi, seTspine] = useState("d-none")
@@ -90,8 +90,9 @@ const ResgistroView = (prop) => {
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         e.preventDefault();
         const { nombreCompleto, email, password, movil, ciudad, cedula } = Object.fromEntries(form.entries())
+        // console.log(password)
         sessionStorage.setItem(Whatsappnumero, movil)
-        console.log(movil)
+        //console.log(movil)
         let datos = {
             nombreCompleto: datosPerson.name,
             email: datosPerson.email,
@@ -129,7 +130,7 @@ const ResgistroView = (prop) => {
         else {
             try {
                 let nuemro = await ValidarWhatsapp()
-                if (nuemro == null) {
+                if (nuemro != null) {
                     setDatoToas({
                         show: true,
                         message: "Ingrese un numero de Whatsapp",
@@ -140,17 +141,17 @@ const ResgistroView = (prop) => {
                     return
                 }
                 else {
-                    const { data } = axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
+                    const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                         }
                     })
-                    console.log(data)
-                    if (data) {
-                        let usuario = await getDatosUsuariosLocalStorag()
-                        const { data } = Authsucrito(email, password)
+                    if (registro.data.success) {
+                        let usuario = getDatosUsuariosLocalStorag()
+                        const { data } = await Authsucrito({ email: email, password: password },)
                         var hoy = new Date();
+                        // console.log(data)
                         let users = {
                             ...usuario,
                             cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
@@ -163,7 +164,7 @@ const ResgistroView = (prop) => {
                         setDatoToas({
                             show: true,
                             message: "Bienvenido" + data.nombreCompleto,
-                            color: 'bg-sussecc',
+                            color: 'bg-success',
                             estado: "Inicio Exitoso",
                         })
                         usedispatch(setModal({ nombre: '', estado: '' }))
@@ -208,11 +209,11 @@ const ResgistroView = (prop) => {
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
                 size='lg'
-                onHide={() => usedispatch(setModal({ nombre: '', estado: '' }))}
+                onHide={() => usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))}
             >
                 <Modal.Header>
                     <button type="button" className="close"
-                        onClick={() => usedispatch(setModal({ nombre: '', estado: '' }))}>
+                        onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))}>
                         ×
                     </button>
                 </Modal.Header>
@@ -298,27 +299,20 @@ const ResgistroView = (prop) => {
 
 
                                             <div className="col-12 col-lg-6  ">
-                                                <div className="input-group mb-3  px-0 d-flex justify-content-center  ">
+                                                <div className="input-group mb-3  px-0 d-flex justify-content-center ">
 
                                                     <input
                                                         name="movil" type="tel"
-                                                        className=" inptFielsd form-control " id="movil"
-
-
+                                                        className="m-0 inptFielsd form-control " id="movil"
+                                                        size={100}
                                                         required
 
                                                         placeholder="999 999 999" />
 
-                                                    <span className="input-group-text">
 
-                                                        <i className="fab fa-whatsapp"></i>
-                                                    </span>
 
-                                                    <div className="invalid-feedback">
-                                                        Ingrese un numero de Whatsapp
-
-                                                    </div>
                                                 </div>
+
                                             </div>
 
                                             <div className="col-12 col-lg-6">
