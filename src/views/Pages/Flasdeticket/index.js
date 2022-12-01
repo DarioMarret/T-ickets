@@ -6,16 +6,15 @@ import secundaria from "../../../assets/imagen/segundo.jpeg";
 import tercero from "../../../assets/imagen/concierto.jpeg"
 import icon from "../../../assets/imagen/50pixeles.png";
 import valla from "../../../assets/imagen/valla-proximo-evento.png";
+import imgno from "../../../assets/imagen/nones.png"
 import "../../../assets/css/animate.css";
 import "../../../assets/css/bootstrap.css";
-import ModalCarrito from "views/Components/MODAL/ModalCarrito";
 import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalPago from "views/Components/MODAL/ModalPago";
 import ModalReport from "views/Components/MODAL/ModalReporte";
 import ModalEfectivo from "views/Components/MODAL/Modalefectivo";
 import TOAST from "views/Components/TOAST";
 import Footer from "views/Components/Footer/Footer";
-import { useHistory } from "react-router";
 import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
 import Tikes from "../Susbcritorpage/Tickes";
@@ -51,7 +50,6 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./swipermedia.css"
-import axios from "axios";
 import { Eventolocalidad } from "utils/constantes.js";
 import { seleccionmapa } from "utils/constantes.js";
 import { cargarsilla } from "StoreRedux/Slice/sillasSlice.js";
@@ -60,7 +58,6 @@ import Iframe from "views/Components/IFrame/Iframe.js";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
-  let history = useHistory();
   const userauthi = useSelector((state) => state.SuscritorSlice)
   let modal = useSelector((state) => state.SuscritorSlice.modal)
   const [precios, setPrecios] = useState({
@@ -790,22 +787,28 @@ const IndexFlas = () => {
       {seleccion == "" ?
         <div className="container " id="nuevoseventos">
           <div className="container p-3">
-            <div className="row flex-wrap-reverse justify-content-center">
+            <div className="row flex-wrap-reverse justify-content-center" id="accordion">
               <div className="col-12 col-lg-9">
                 <div className="row mx-auto p-0">
                   {eventoslist.length > 0 ?
                     eventoslist.map((e, i) => {
                       return (
                         <div className="col-12 col-lg-6 mx-auto my-5" id={"evento" + e.id} key={i}>
-                          <a className="" data-bs-toggle="collapse" href={"#collapseid" + e.id} role="button" aria-expanded="false"
-                            aria-controls="collapseExample2">
+                          <a id={"headingThree" + e.id} className="collapsed" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
+                          >
                             <div className="container rounded-7 shadow-md px-0">
-                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
+                              <img src={!e.imagenConcierto ? e.imagenConcierto : "https://placehold.co/600x400@3x.png"} className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
                           </a>
-                          <div className="collapse container mt-4 px-0" id={"collapseid" + e.id}>
-                            <div className="card card-body rounded-7 py-5">
-                              <div className="container">
+                          <div className="collapse container mt-4 px-0"
+                            style={{
+                              position: 'relative',
+
+                              width: 700
+                            }}
+                            aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">
+                            <div className="card d-flex flex-row card-body rounded-7 py-5">
+                              <div className="container col-6">
                                 <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">{e.nombreConcierto}</span> </h1>
                                 <h4 style={{ fontSize: '1.4em', height: '55px' }}><span id="tour">{e.descripcionConcierto} </span></h4>
                                 <div className="col-12 border border-bottom my-3"></div>
@@ -814,6 +817,9 @@ const IndexFlas = () => {
                                 <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}</span></p>
                                 {true ? <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                   className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >Comprar Entrada</p> : ""}
+                              </div>
+                              <div className="container col-6 rounded-7  px-0">
+                                <img src={!e.imagenConcierto ? e.imagenConcierto : "https://placehold.co/600x400@3x.png"} className="img-fluid rounded-7 shadow-md " alt="" />
                               </div>
                             </div>
                           </div>
@@ -872,7 +878,10 @@ const IndexFlas = () => {
 
 
       <Modalterminos />
-      <ModalConfima />
+      <ModalConfima
+        setrepShow={setrepShow}
+        pararcontador={detenervelocidad}
+      />
       <div className={spinervi}
         style={{
           display: 'none',

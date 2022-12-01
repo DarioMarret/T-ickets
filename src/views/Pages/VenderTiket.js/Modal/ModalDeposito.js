@@ -8,11 +8,12 @@ import { ReportarDepositoCompra, EnviarmensajeWhastapp } from 'utils/Query';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { useDispatch, useSelector } from 'react-redux';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
+import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 const Reporte = (props) => {
-    const { repShop,
-        setrepShow, intervalo, handlereportColse, pararcontador
+    const { repShop, handlereportColse,
+        setDatoToas, setrepShow, detener, intervalo,
     } = props
-    const usedispatch = useDispatch()
+    let usedispatch = useDispatch()
     const [codigo, setCodigo] = useState("")
     const [alert, setAlert] = useState(null)
     function handelchange(e) {
@@ -23,33 +24,28 @@ const Reporte = (props) => {
             try {
                 const info = await ReportarDepositoCompra(codigo)
                 const mensajes = await EnviarmensajeWhastapp(codigo)
-                //const { msg } = info
+                const { msg } = info
                 console.log(info)
                 if (msg != null) {
                     Salircliente()
                     usedispatch(setToastes({
-                        show: true, message: 'En breve uno de nuestros colaboradores se comunicar con usted',
-                        color: 'bg-success', estado: 'Se ha Guardado exitosamente su reporte',
+                        show: true,
+                        message: 'En breve uno de nuestros colaboradores se comunicar con usted',
+                        color: 'bg-success',
+                        estado: 'Se ha Guardado exitosamente su reporte',
                     }))
                     setrepShow(false)
-                    pararcontador()
                 } else {
                     usedispatch(setToastes({
                         show: true,
-                        message: 'Verifique que el numero de transaccion ',
+                        message: 'Hubo un error',
                         color: 'bg-danger',
-                        estado: 'Hubo un error',
+                        estado: '',
                     }))
                 }
+                //console.log(mensajes)
             } catch (error) {
                 console.log(error)
-
-                usedispatch(setToastes({
-                    show: true,
-                    message: 'Compruebe su conexión e intente mas tarde',
-                    color: 'bg-danger',
-                    estado: 'Hubo un erro ',
-                }))
             }
 
         } else {
@@ -57,108 +53,101 @@ const Reporte = (props) => {
                 show: true,
                 message: 'La longitud del código debe ser mayor a 4 dígitos',
                 color: 'bg-danger',
-                estado: 'Formato',
+                estado: 'Formato ',
             }))
-
 
         }
     }
-    function borrar() {
+    const cerrar = () => {
         setrepShow(false)
-        setAlert(null)
-    }
-    const hideAlert = () => {
-        setAlert(null)
+        detener()
+        hideAlert()
     }
     const succesAlert = () => {
         setAlert(
             <SweetAlert
                 warning
                 style={{ display: "block", marginTop: "-100px" }}
-                title="Esta seguro de cancelar la venta"
-                onConfirm={() => borrar()}
-                onCancel={() => hideAlert()}
+                title={"Esta seguro de querer salir  "}
+                onConfirm={() => hideAlert()}
+                onCancel={() => cerrar()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
-                confirmBtnText="Si, Borrar"
-                cancelBtnText="Cancelar"
-                showCancel
-
+                confirmBtnText="Completar  Compra"
+                cancelBtnText="Anular Compra"
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                showCancel
             >
-                Desea borrar los datos y continuar
-
+                Se borraran todos los datos Seleccionados
             </SweetAlert>
-
         )
     }
-
+    const hideAlert = () => {
+        setAlert(null)
+    }
+    function Confirmar() {
+        usedispatch(setModal({ nombre: 'confirmar', estado: '' }))
+        setrepShow(false)
+    }
 
     return (
         <>
             {alert}
             <Modal
                 show={repShop}
-                size="lg"
+                onHide={succesAlert}
             >
                 <Modal.Header  >
-                    <h6>{intervalo} </h6>
-                    <button type="button" className="close"
-                        onClick={succesAlert}
-                    >
-                        ×
-                    </button>
-
+                    <div className='d-flex col-12 justify-content-between align-items-center' >
+                        <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy', fontSize: '1.2em' }}><span className="text-danger" > </span></h5>
+                        <div><button className='btn btn-primary' onClick={handlereportColse} style={{ fontSize: '0.7em' }} >  <i className="bi bi-caret-left-fill"></i>  Regresar</button></div>
+                    </div>
                 </Modal.Header>
                 <Modal.Body>
-                    <Container>
-                        <div className="container ">
-                            <div className='d-flex col-12 justify-content-end align-items-center' >
+                    <div className="container-fluid px-0">
 
-                                <div><button className='btn btn-primary' onClick={succesAlert} >  <i className="bi bi-caret-left-fill"></i>  Regresar</button></div>
+                        <div className="d-flex flex-wrap px-0 justify-content-center align-items-center" >
+                            <div className='d-flex px-0'>
+
+                                <h5 className="modal-title pb-3 px-0 text-center " style={{ fontSize: '0.7em' }}>Para completar la compra, deberá transferir el valor total  a nombre de:
+                                    <strong>TICKETSECUADOR S.A.</strong>   RUC No. <strong>0993377293001</strong>, a una de las siguientes cuentas:</h5>
+
                             </div>
-                            <div className="d-flex flex-wrap justify-content-center align-items-center" >
-                                <div className='d-flex flex-column text-center justify-content-center align-items-center'>
-                                    <h3 className="modal-title pb-3 ">PARA DEPOSITO O TRANSFERENCIA</h3>
-                                    <img src={metodos} className="img-fluid" style={{ width: '300px' }} alt="" />
-                                    <h3>Numero de Cuenta</h3>
-                                    <h3> <strong>1500618760</strong> </h3>
-                                </div>
-
-
-
-                                <div className="d-flex flex-wrap">
-                                    <div className="col-12 col-sm-6 d-flex flex-column p-3">
-                                        <select className="form-control " name="banco" defaultValue={"Banco Internacional"} aria-label="Selecione el Banco">
-                                            <option value="Banco Internacional"> Banco Internacional</option>
-                                        </select>
-                                        <label >Numero de Control</label>
-                                        <input className="form-control" type="text" name="control"
-                                            value={codigo ? codigo : ''}
-                                            onChange={(e) => handelchange(e)}
-                                        />
-                                    </div>
-                                    <div className="col-12 col-sm-6 d-flex flex-column p-3 align-items-end" >
-                                        <h5 >LUEGO DE REALIZAR LA TRANSACCIÓN
-                                            POR FAVOR REPORTAR EL PAGO
-                                        </h5>
-
-                                        <button className="btn btn-danger col-6 float-end"
-                                            onClick={reportarComprobante}
-                                        >
-                                            Reportar Pago
-                                        </button>
-
+                            <div className='d-fex border rounded-5' style={{ width: '90%' }}>
+                                <div className='d-flex flex-column  '>
+                                    <div className='  m-2'>
+                                        <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO DE GUAYAQUIL: 248875 </h4>
                                     </div>
 
+                                    <div className='m-2' >
+                                        <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO PICHINCHA: 248875 </h4>
+                                    </div>
+                                    <div className='m-2'>
+                                        <h4 style={{ fontSize: '0.7em' }}>
+                                            CUENTA CORRIENTE BANCO PRODUBANCO: 248875
+                                        </h4>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div className=' container d-flex   px-0 mx-0 justify-content-between ' style={{ width: '90%' }}>
+                                <div className=''>
+                                    <button className='btn btn-success m-2 ' style={{ fontSize: '0.7em' }} onClick={Confirmar} > CONFRIMAR DEPOSITO </button>
+
+                                </div>
+                                <div>
+                                    <button className='btn  btn-danger m-2' style={{ fontSize: '0.7em' }} onClick={succesAlert}> CANCELAR COMPRA </button>
                                 </div>
                             </div>
-
                         </div>
 
-                    </Container>
+                    </div>
+
+
 
                 </Modal.Body>
+
             </Modal>
         </>)
 

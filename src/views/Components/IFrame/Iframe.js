@@ -15,6 +15,7 @@ function Iframe(props) {
         renderWidth()
     }, [width, height])
 
+
     function renderWidth() {
         if (width < 630) {
             return "100%"

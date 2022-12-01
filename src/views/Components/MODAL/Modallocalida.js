@@ -431,7 +431,7 @@ const LocalidadmapViews = (props) => {
                                 </div> : ''}
                             <div className="col-12 pt-1">
                                 {showMapa && mapath.precio.typo == "fila" ?
-                                    <div style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
+                                    <div className="section" style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
                                         {mapath.localidadespecica.length > 0 ?
                                             mapath.localidadespecica.map((e, i) => {
                                                 {

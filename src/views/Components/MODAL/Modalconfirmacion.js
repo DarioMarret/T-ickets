@@ -2,12 +2,18 @@ import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { Form } from "react-bootstrap";
-const ModalConfima = () => {
+const ModalConfima = (prop) => {
+    const { setrepShow, pararcontador } = prop
     let usedispatch = useDispatch()
 
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     function cerrar() {
         usedispatch(setModal({ nombre: '', estado: '' }))
+        setrepShow(true)
+    }
+    function confirmar() {
+        usedispatch(setModal({ nombre: '', estado: '' }))
+        pararcontador()
     }
 
 
@@ -23,7 +29,9 @@ const ModalConfima = () => {
                         </h3>
 
                     </div>
-                    <div className="d-none float-left">
+                    <div className=" float-left "
+                        style={{ marginTop: '-45px' }}
+                    >
                         <button type="button" className="  text-light"
                             onClick={cerrar}
                         >
@@ -48,15 +56,15 @@ const ModalConfima = () => {
                             <h5 style={{ fontSize: '1.0em' }}>
                                 Ingrese el número de comprobante de la transferencia
                             </h5>
-                            <input className=" form-control" />
+                            <input className=" form-control"
+                                type={"number"}
+                            />
                         </div>
                         <div className="p-1" >
-
                             <h5 style={{ fontSize: '1.0em' }}>
                                 Adjuntar Comprobante ( imagen jpg ó png)
                             </h5>
                             <input type="file" accept="image/*" className="form-control" />
-
                         </div>
 
                     </div>
@@ -64,7 +72,7 @@ const ModalConfima = () => {
                 <Modal.Footer>
                     <div className="d-flex container justify-content-center ">
                         <div>
-                            <button className=" btn p-2 btn-success">Confirmar Transferencia</button>
+                            <button className=" btn p-2 btn-success" onClick={confirmar}>Confirmar Transferencia</button>
                         </div>
 
                     </div>

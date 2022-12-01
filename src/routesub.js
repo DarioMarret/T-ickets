@@ -39,6 +39,7 @@ import UseridView from "views/Pages/Usuarios/Usuarioid";
 import Viesvg from "views/Pages/Svgviewa"
 import AjustesView from "views/Pages/Ajustes";
 import EsquemaViews from "views/Pages/Esquemas";
+import NoticiasJs from "views/Pages/Noticias.js";
 
 var routes = [
   {
@@ -49,6 +50,14 @@ var routes = [
     component: Dashboard,
     permiso: ["superadmin", "super_admin"]
 
+  },
+  {
+    path: "/Noticias",
+    name: "Noticias",
+    layout: "/admin",
+    component: NoticiasJs,
+    icon: " nc-icon nc-notification-70",
+    permiso: ["superadmin", "super_admin"]
   },
   {
     path: "/Evento/:id",
@@ -106,6 +115,8 @@ var routes = [
     component: SuscritoridView,
     permiso: ["superadmin", "super_admin"]
   },
+
+
   {
     collapse: true,
     path: "/clientes",

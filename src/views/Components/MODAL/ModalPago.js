@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 //import { CrearLinkPagoPayPhone } from 'utils/Query';
+import Pagos from "../../../assets/imagen/pagosmedios.jpeg"
 import { GenerarLinkPagoMedios, EnviarEmail, EnviarmensajeWhastapp } from 'utils/Query';
 import { LimpiarLocalStore, Limpiarseleccion } from '../../../utils/CarritoLocalStorang';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import { GetMetodo } from '../../../utils/CarritoLocalStorang';
-import { Spinner } from 'react-bootstrap';
+import { Modal, Spinner } from 'react-bootstrap';
 import { clearMapa } from 'StoreRedux/Slice/mapaLocalSlice';
 import { borrarseleccion } from 'StoreRedux/Slice/sillasSlice';
 import { useDispatch, useSelector } from "react-redux"
@@ -113,60 +114,79 @@ function ModalPago(props) {
     }
 
     return (
-        <div
-            style={{
-                display: 'none',
-                position: 'fixed',
-                top: '0',
-                left: '0',
-                width: '100%',
-                height: '100%',
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: '1000'
-            }}
-        >
+        <>
             {alert}
-            <div
-                style={{
-                    backgroundColor: 'white',
-                    borderRadius: '10px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-start',
-                    padding: '20px',
-                    alignItems: 'center',
-                }}
+            <Modal
+                show={true}
             >
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    border: '3px solid #000000',
-                    borderRadius: '10px',
-                    padding: '10px',
-                }}>
+                <Modal.Header className=" d-flex  rounded-top-4   bg-dark pb-2
+                 justify-content-between align-items-center">
+                    <div className="d-flex flex-lg-row pb-2 container justify-content-between text-center" >
 
-                    <div className='d-flex justify-content-end'>
-                        <button className='btn btn-primary' onClick={closedeposito} > <i className="bi bi-caret-left-fill"></i>  Regresar  </button>
+
+                        <h5 className=' text-white' style={{ fontFamily: 'fantasy', fontSize: '1.37em' }}>{intervalo ? "Tiempo restante para la compra" : ""}  </h5>
+                        <h5 style={{ fontFamily: 'fantasy', fontSize: '1.7em' }}><span className=' text-danger' > {intervalo ? intervalo : ""} </span> </h5>
+
+
+                        <div><button className='close text-light' onClick={closedeposito} >x</button></div>
+
                     </div>
-                    <div className='d-flex flex-column pb-3' style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                        <h6 style={{ fontFamily: 'fantasy', fontSize: '1.2em' }}>{intervalo ? "Tiempo restante" : ""} <span className='text-danger' > {intervalo ? intervalo : ""} </span>  </h6>
-                        <strong>
-                            <span style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>Una vez confirmado el pago se enviara los boletos a :
+
+
+                </Modal.Header>
+                <Modal.Body>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+
+                    }}>
+
+
+                        <div className='d-flex flex-column pb-3' style={{ textAlign: '', fontWeight: '' }}>
+
+                            <h5 style={{ fontSize: '1.1em', textTransform: '' }}>Una vez realizado el pago los boletos seran enviados a:
+                            </h5>
+
+
+
+                            <span className=' pt-2' style={{ fontWeight: '', fontSize: '1.1em' }}>
+                                {datosPerson.envio != "whatsapp" ? "Correo: " : "Whastapp: "}     <span>{datosPerson.envio != "whatsapp" ? datosPerson.email : datosPerson.whatsapp}</span>
+
                             </span>
+                        </div>
 
-                        </strong>
-                        <strong>
-                            <span className='text-primary pt-2' style={{ fontWeight: 'bold', fontSize: '1.4em' }}>
-                                {datosPerson.envio != "whatsapp" ? datosPerson.email : datosPerson.whatsapp}
+                        {/* //PAGO CON PAGO MEDIO */}
+                        <label className='' htmlFor="pagoMedio"
+                            style={{
+                                textAlign: 'center',
+                            }}
+                        >
+                            <div className='px-0'
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    padding: '5px',
+                                    cursor: 'pointer'
+                                }}
+                                onClick={CrearPagoMedio}
+                            >
+                                {/**
+                             * 
+                             * https://codigomarret.online/img/whatsapp image 2022-09-18 at 15.12.28.jpeg
+                             */}
+                                <img className=' image-fluid'
+                                    src={Pagos}
+                                    width={420}
+                                    alt="Pagos medios"
+                                />
+                            </div>
+                        </label>
 
-                            </span></strong>
-                    </div>
 
-                    {/* //PAGO CON PAGO MEDIO */}
-                    <label className='pt-3' htmlFor="pagoMedio"
+                        {/* //PAGO CON PAYPHONE */}
+                        {/*<label htmlFor="payPhone"
                         style={{
                             textAlign: 'center',
                         }}
@@ -180,23 +200,149 @@ function ModalPago(props) {
                                 padding: '10px',
                                 cursor: 'pointer'
                             }}
-                            onClick={CrearPagoMedio}
+                            onClick={() => CrearLinkPayPhone()}
                         >
-                            {/**
-                             * 
-                             * https://codigomarret.online/img/whatsapp image 2022-09-18 at 15.12.28.jpeg
-                             */}
                             <img
-                                src="https://upload.wikimedia.org/wikipedia/commons/9/91/PayPhoneLogoVertical2.png"
-                                width={340}
+                                src="https://codigomarret.online/img/payphone.jpeg"
+                                width={300}
                                 alt="Pagos medios"
                             />
                         </div>
-                    </label>
+                        {/* 
+                    <ButtonPago cargar={cargar} /> }
+                    </label> */}
+                        <div className='d-flex  justify-content-center'>
+                            <div className=' container d-flex   px-0 mx-0 justify-content-between ' style={{ width: '90%' }}>
+                                <div className='px-'>
+                                    <button className='btn btn-primary btn-lg   ' style={{ fontSize: '' }} onClick={CrearPagoMedio}  >  SEGUIR
+                                        <span className='  text-primary '></span>
+                                    </button>
+
+                                </div>
+                                <div>
+                                    <button className='btn  btn-outline-primary btn-lg ' style={{ fontSize: '' }} onClick={succesAlert}> ELIMINAR  </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='d-none'
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'flex-end',
+                                width: '100%',
+                                height: '100%',
+                            }}
+                        >
+                            <div>
+                                <button type="button" className='btn btn-primary btn-lg'
+                                >
 
 
-                    {/* //PAGO CON PAYPHONE */}
-                    {/*<label htmlFor="payPhone"
+                                </button>
+                            </div>
+
+                            <button className='btn  btn-outline-primary btn-sm'
+
+                                onClick={succesAlert}
+                            >CANCELAR</button>
+                        </div>
+
+                    </div>
+
+                </Modal.Body>
+                <Modal.Footer>
+
+                </Modal.Footer>
+            </Modal>
+            <div className='d-none'
+                style={{
+                    display: 'none',
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: '1000'
+                }}
+            >
+                {alert}
+                <div
+                    style={{
+                        backgroundColor: 'white',
+                        borderRadius: '10px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
+                        padding: '20px',
+                        alignItems: 'center',
+                    }}
+                >
+                    <div className='d-flex h-25 bg-azul1'>
+
+                    </div>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        border: '3px solid #000000',
+                        borderRadius: '10px',
+                        padding: '10px',
+                    }}>
+
+                        <div className='d-flex justify-content-end'>
+                            <button className='btn btn-primary' onClick={closedeposito} > <i className="bi bi-caret-left-fill"></i>  Regresar  </button>
+                        </div>
+                        <div className='d-flex flex-column pb-3' style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                            <h6 style={{ fontFamily: 'fantasy', fontSize: '1.2em' }}>{intervalo ? "Tiempo restante" : ""} <span className=' text-secondary ' > {intervalo ? intervalo : ""} </span>  </h6>
+                            <strong>
+                                <span style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>Una vez confirmado el pago se enviara los boletos a :
+                                </span>
+
+                            </strong>
+                            <strong>
+                                <span className='text-primary pt-2' style={{ fontWeight: 'bold', fontSize: '1.4em' }}>
+                                    {datosPerson.envio != "whatsapp" ? datosPerson.email : datosPerson.whatsapp}
+
+                                </span></strong>
+                        </div>
+
+                        {/* //PAGO CON PAGO MEDIO */}
+                        <label className='pt-3' htmlFor="pagoMedio"
+                            style={{
+                                textAlign: 'center',
+                            }}
+                        >
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    padding: '10px',
+                                    cursor: 'pointer'
+                                }}
+                                onClick={CrearPagoMedio}
+                            >
+                                {/**
+                             * 
+                             * https://codigomarret.online/img/whatsapp image 2022-09-18 at 15.12.28.jpeg
+                             */}
+                                <img
+                                    src={Pagos}
+                                    width={340}
+                                    alt="Pagos medios"
+                                />
+                            </div>
+                        </label>
+
+
+                        {/* //PAGO CON PAYPHONE */}
+                        {/*<label htmlFor="payPhone"
                         style={{
                             textAlign: 'center',
                         }}
@@ -223,63 +369,63 @@ function ModalPago(props) {
                     </label> */}
 
 
-                    <div
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-end',
+                                alignItems: 'flex-end',
+                                width: '100%',
+                                height: '100%',
+                            }}
+                        >
+                            <button className='btn btn-primary text-white'
+                                style={{
+                                    border: 'none',
+                                    borderRadius: '10px',
+                                    padding: '10px',
+
+                                }}
+                                onClick={succesAlert}
+                            >Cancelar</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <div className={spinerst}
                         style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'flex-end',
-                            alignItems: 'flex-end',
+                            display: 'none',
+                            position: 'fixed',
+                            top: '0',
+                            left: '0',
                             width: '100%',
                             height: '100%',
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            zIndex: '1000'
                         }}
                     >
-                        <button className='btn btn-primary text-white'
-                            style={{
-                                border: 'none',
-                                borderRadius: '10px',
-                                padding: '10px',
 
-                            }}
-                            onClick={succesAlert}
-                        >Cancelar</button>
-                    </div>
-
-                </div>
-            </div>
-            <div>
-                <div className={spinerst}
-                    style={{
-                        display: 'none',
-                        position: 'fixed',
-                        top: '0',
-                        left: '0',
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'rgba(0,0,0,0.5)',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: '1000'
-                    }}
-                >
-
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: '10px',
-                        padding: '10px',
-                    }}>
-                        <Spinner animation="border" variant="light" size='120'></Spinner>
-                        <h4 className='text-light'>Generando Link de Pago</h4>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: '10px',
+                            padding: '10px',
+                        }}>
+                            <Spinner animation="border" variant="light" size='120'></Spinner>
+                            <h4 className='text-light'>Generando Link de Pago</h4>
 
 
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {/* {
+                {/* {
                 estadoFrame ?
                     <Iframe
                         setEstadoFrame={setEstadoFrame}
@@ -288,7 +434,8 @@ function ModalPago(props) {
                     : null
 
             } */}
-        </div>
+            </div>
+        </>
     );
 }
 

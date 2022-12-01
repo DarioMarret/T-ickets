@@ -146,17 +146,35 @@ const ModalEfectivo = (props) => {
 
                             <h3 className='text-center'> VALOR EFECTIVO </h3>
                             <div className="container d-flex flex-column  text-center p-3">
-                                <div className=" d-flex justify-content-center  text-center p-1">
+                                <div className="row  d-flex justify-content-center  border rounded-6 m-1 p-2">
+                                    <div className='col-6 d-flex justify-content-end align-content-end'>
+                                        <h6 >Subtotal  </h6>
+                                    </div>
+                                    <div className='col-6 d-flex align-content-end' >
+                                        <h6 > <strong>${GetValores().subtotal}</strong>  </h6>
+                                    </div>
 
+                                </div>
+                                <div className="row  d-flex justify-content-center  border rounded-6 m-1 p-2">
+                                    <div className='col-6 d-flex justify-content-end align-content-end'>
+                                        <h6 >Comision  </h6>
+                                    </div>
+                                    <div className='col-6 d-flex align-content-end' >
+                                        <h6 > <strong>${GetValores().comision}</strong> </h6>
+                                    </div>
 
-                                    <h6 >Subtotal <strong>${GetValores().subtotal}</strong>  </h6>
                                 </div>
-                                <div className="d-flex justify-content-center text-center  p-1">
-                                    <h6 >Comision <strong>${GetValores().comision}</strong> </h6>
+                                <div className="row  d-flex justify-content-center  border rounded-6 m-1 p-2">
+                                    <div className='col-6 d-flex justify-content-end align-content-end'>
+                                        <h6 >Total  </h6>
+                                    </div>
+                                    <div className='col-6 d-flex align-content-end' >
+                                        <h6 >  <strong> ${GetMetodo() === "Tarjeta" ? GetValores().total : (parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)).toFixed(2)}  </strong></h6>
+
+                                    </div>
+
                                 </div>
-                                <div className=" d-flex justify-content-center  p-1">
-                                    <h6 >Total  <strong> ${GetMetodo() === "Tarjeta" ? GetValores().total : (parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)).toFixed(2)}  </strong></h6>
-                                </div>
+
                                 <div className="d-flex justify-content-center pt-3  p-1">
 
                                     <button className="btn btn-primary 

@@ -178,7 +178,10 @@ const ModalCarritoView = (prop) => {
                             <h5 className="modal-title text-center justify-content-center"
                                 style={{ fontFamily: 'fantasy' }}
                             >  Tiempo restante para la compra <span className="text-danger"
-                                style={{ fontFamily: 'fantasy' }}
+                                style={{
+                                    fontFamily: 'fantasy',
+                                    fontSize: '1.3em'
+                                }}
                             >{intervalo}</span> </h5>
                         </div>
                     </div>
@@ -188,8 +191,8 @@ const ModalCarritoView = (prop) => {
                 </Modal.Header>
                 <Modal.Body  >
                     <div className="d-flex flex-wrap-reverse p-0 container-fluid"  >
-                        <div className="col-12 col-lg-6" >
-                            <div className="  ">
+                        <div className="col-12  col-lg-6" >
+                            <div className=" pt-2 ">
                                 <div className="detalles-resumen"
                                 >
                                     <div className="bg-secondary d-none p-2 d-sm-block text-black flex-table row" role="rowgroup">
@@ -291,24 +294,26 @@ const ModalCarritoView = (prop) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 col-lg-6  p-0">
-                            <div className="d-flex flex-column text-center justify-content-center d-none d-sm-block d-sm-flex " style={{ height: "200px" }}>
-                                <h5 style={{ fontSize: '0.9em', fontFamily: 'fantasy' }} >
-                                    Seleccione la Localidad en el Mapa o Nombre
+                        <div className="col-12 col-lg-6 border rounded-5   p-0">
+                            <div className="d-flex flex-column justify-content-center text-center    justify-content-center d-sm-flex " style={{ height: "400px" }}>
+                                <h5 style={{ fontSize: '', fontFamily: 'fantasy' }} >
+                                    SELECCIONE LA LOCALIDAD EN EL MAPA O NOMBRE
                                 </h5>
-                                {showshop ?
-                                    <SvgselectView text={precios.mapa} />
-                                    : ''}
+                                <div>
+                                    {showshop ?
+                                        <SvgselectView text={precios.mapa} />
+                                        : ''}
+                                </div>
                             </div>
-                            <div className="d-flex col-12 flex-wrap justify-content-between align-items-center p-0">
+                            <div className="d-flex   col-12 flex-wrap pb-2 justify-content-between align-items-center p-0">
                                 {precios.precios.length > 0 ?
                                     precios.precios.map((elm, i) => {
                                         return (
                                             <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
-                                                <div id={"precios" + elm.id} className="mx-1  rounded-4" style={{ height: 25, width: 25, backgroundColor: elm.color }}></div>
-                                                <div className="row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '120px', maxWidth: '120px' }} >
-                                                    <span className="pb-0" style={{ fontFamily: 'cursive,bold,fantasy', fontSize: '0.7em' }} >{elm.localodad}</span>
-                                                    <span className="pt-0" style={{ fontFamily: 'cursive,bold,fantasy', fontSize: '0.7em' }} >${elm.precio_normal}</span>
+                                                <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 10, width: 10, backgroundColor: elm.color }}></div>
+                                                <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '0', minWidth: '120px', maxWidth: '120px' }} >
+                                                    <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >{elm.localodad} </span>
+                                                    <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >${elm.precio_normal} </span>
                                                 </div>
                                             </div>
                                         )
@@ -340,7 +345,7 @@ const ModalCarritoView = (prop) => {
                                     Deposito-transferencia
                                 </label>
                             </div>
-                            <div className="form-check">
+                            <div className=" d-none form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     name="Efectivo" id="Efectivo"
                                     checked={checked.Efectivo == "Efectivo" ? true : false}
@@ -353,10 +358,11 @@ const ModalCarritoView = (prop) => {
 
                         </div>
                     </div>
-                    <div className="d-flex flex-column" >
+                    <div className="d-flex flex-row  align-items-center" >
                         <h4
                             style={{
                                 fontSize: '1.8rem',
+
                             }}
                         >SUBTOTAL:</h4>
                         <h4
@@ -364,7 +370,7 @@ const ModalCarritoView = (prop) => {
                                 fontSize: '1.7rem',
                                 fontWeight: 'bold',
                             }}
-                            className="px-1 total-detalle"> {listaPrecio.subtotal ? "$" + listaPrecio.subtotal : null}</h4>
+                            className="px-1 text-danger total-detalle"> {listaPrecio.subtotal ? "$" + listaPrecio.subtotal : null}</h4>
 
                     </div>
                     <div className="">

@@ -13,6 +13,7 @@ import intlTelInput from 'intl-tel-input';
 import logo from "../../../../assets/imagen/logo-inicio.png";
 import { Whatsappnumero } from "utils/constantes"
 import { Triangle } from "react-loader-spinner"
+import { addususcritor } from "StoreRedux/Slice/SuscritorSlice"
 const ResgistroView = (prop) => {
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
@@ -21,6 +22,7 @@ const ResgistroView = (prop) => {
     const [datosPerson, setPerson] = useState({
         cedula: '', name: '', email: '', edad: '', movil: '', discapacidad: '', genero: '', direccion: '', password: '',
     })
+    const [nedvalida, sedtValida] = useState("")
     const [code, setCode] = useState("cedula")
 
     async function hanbleOnchange(e) {
@@ -36,12 +38,21 @@ const ResgistroView = (prop) => {
                     seTspine("")
                     const datos = await getCedula(e.target.value)
                     const { name, email, direccion, whatsapp, discapacidad } = datos
-                    // console.log(datos)
+                    //console.log(datos)
                     if (name) {
+
                         seTspine("d-none")
                         setPerson({
-                            nombreCompleto: datosPerson.name,
-                            whatsapp: datosPerson.movil, ...datos
+                            nombreCompleto: name,
+                            whatsapp: '', ...datos,
+                            direccion: '',
+                            email: ''
+                        })
+                        setDatoToas({
+                            show: true,
+                            message: "Encontrado: " + name,
+                            color: 'bg-success',
+                            estado: "Hubo una coincidencia, Complete los datos restantes ",
                         })
                         DatosUsuariosLocalStorag({
                             ...usuario,
@@ -84,11 +95,14 @@ const ResgistroView = (prop) => {
         }
 
     }
+
     async function Registeruser(e) {
+
+        e.preventDefault();
+        sedtValida("was-validated")
         let info = getDatosUsuariosLocalStorag()
         const form = new FormData(e.target)
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-        e.preventDefault();
         const { nombreCompleto, email, password, movil, ciudad, cedula } = Object.fromEntries(form.entries())
         // console.log(password)
         sessionStorage.setItem(Whatsappnumero, movil)
@@ -99,7 +113,8 @@ const ResgistroView = (prop) => {
             password: datosPerson.password,
             movil: movil,
             ciudad: datosPerson.direccion,
-            cedula: datosPerson.cedula
+            cedula: datosPerson.cedula,
+            envio: ''
         }
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
 
@@ -114,7 +129,7 @@ const ResgistroView = (prop) => {
             return
         }
         if (!emailRegex.test(email)) {
-            console.log(emailRegex.test(email))
+            // console.log(emailRegex.test(email))
             setDatoToas({
                 show: true,
                 message: "Fromato de correo Erroneo",
@@ -151,13 +166,13 @@ const ResgistroView = (prop) => {
                         let usuario = getDatosUsuariosLocalStorag()
                         const { data } = await Authsucrito({ email: email, password: password },)
                         var hoy = new Date();
-                        // console.log(data)
                         let users = {
                             ...usuario,
                             cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
                             telefono: movil, name: data.nombreCompleto,
                             email: data.email, hora: String(hoy),
                             enable: data.enable, id: data.id,
+                            envio: ''
                         }
                         DatosUsuariosLocalStorag({ ...usuario, ...users })
                         sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
@@ -168,16 +183,20 @@ const ResgistroView = (prop) => {
                             estado: "Inicio Exitoso",
                         })
                         usedispatch(setModal({ nombre: '', estado: '' }))
-                        //usedispatch(addususcritor({ users }))
-                        // sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...datosPerson }))
-                        //sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(datosPerson))
-
+                        usedispatch(addususcritor({ users }))
                     }
-                    //console.log(Object.values(Object.fromEntries(form.entries())))
                 }
 
             } catch (error) {
 
+                document.getElementById("cedula").classList.add("is-invalid")
+                document.getElementById("email").classList.add("is-invalid")
+                setDatoToas({
+                    show: true,
+                    message: "Verifique Correo o cédula ya registrados",
+                    color: 'bg-danger',
+                    estado: "Hubo un error",
+                })
                 console.log(error)
             }
 
@@ -225,7 +244,7 @@ const ResgistroView = (prop) => {
                         <div className="container-fluid row "  >
                             <div className="col-12 p-0 d-flex flex-column">
                                 <div>
-                                    <form className="" onSubmit={(e) => Registeruser(e)} method="post">
+                                    <form className={nedvalida} onSubmit={(e) => Registeruser(e)} method="post" >
                                         <div className="row">
 
                                             <div className="col-lg-4">
@@ -258,7 +277,7 @@ const ResgistroView = (prop) => {
                                                             maxLength={10}
 
                                                             onChange={(e) => hanbleOnchange(e)}
-                                                            placeholder="cédula" required />
+                                                            placeholder="cédula" />
                                                         : <input id="cedula" type="text"
                                                             className="form-control numero"
                                                             name="cedula"
@@ -267,9 +286,12 @@ const ResgistroView = (prop) => {
 
 
                                                             onChange={(e) => hanbleOnchange(e)}
-                                                            placeholder="cédula" required />
+                                                            placeholder="cédula" />
 
                                                     }
+                                                    < div className="invalid-feedback">
+                                                        identificación registrada o inválida
+                                                    </div>
                                                 </div>
 
                                             </div>
@@ -285,8 +307,9 @@ const ResgistroView = (prop) => {
                                                         disabled={(code == "cedula")}
                                                         name="name"
                                                         value={datosPerson.name}
+                                                        required
                                                         onChange={(e) => hanbleOnchange(e)}
-                                                        placeholder="Ingrese su nombre completo" required />
+                                                        placeholder="Ingrese su nombre completo" />
                                                     <div className="invalid-feedback">
                                                         Ingrese sus nombres
 
@@ -305,8 +328,6 @@ const ResgistroView = (prop) => {
                                                         name="movil" type="tel"
                                                         className="m-0 inptFielsd form-control " id="movil"
                                                         size={100}
-                                                        required
-
                                                         placeholder="999 999 999" />
 
 
@@ -351,10 +372,10 @@ const ResgistroView = (prop) => {
                                                     <input id="email" type="email" className="form-control" name="email"
                                                         value={datosPerson.email}
                                                         onChange={(e) => hanbleOnchange(e)}
+                                                        required
                                                         placeholder="Email" />
                                                     <div className="invalid-feedback">
-                                                        Correo incompleto
-
+                                                        Correo registrado o inválido
                                                     </div>
 
                                                 </div>

@@ -107,12 +107,12 @@ const Reporte = (props) => {
         </Modal.Header>
         <Modal.Body>
 
-          <div className="container-fluid ">
+          <div className="container-fluid px-0">
 
-            <div className="d-flex flex-wrap justify-content-center align-items-center" >
-              <div className='d-flex '>
+            <div className="d-flex flex-wrap px-0 justify-content-center align-items-center" >
+              <div className='d-flex px-0'>
 
-                <h5 className="modal-title pb-3 " style={{ fontSize: '0.7em' }}>Para completar la compra, deberá transferir el valor total <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> {intervalo}</strong> </span> Minutos a nombre de:
+                <h5 className="modal-title pb-3 px-0 text-center " style={{ fontSize: '0.7em' }}>Para completar la compra, deberá transferir el valor total <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> {intervalo}</strong> </span> Minutos a nombre de:
                   <strong>TICKETSECUADOR S.A.</strong>   RUC No. <strong>0993377293001</strong>, a una de las siguientes cuentas:</h5>
 
               </div>
@@ -134,7 +134,7 @@ const Reporte = (props) => {
                 </div>
 
               </div>
-              <div className=' container d-flex   p-0 justify-content-between '>
+              <div className=' container d-flex   px-0 mx-0 justify-content-between ' style={{ width: '90%' }}>
                 <div className=''>
                   <button className='btn btn-success m-2 ' style={{ fontSize: '0.7em' }} onClick={Confirmar} > CONFRIMAR DEPOSITO </button>
 
@@ -142,36 +142,7 @@ const Reporte = (props) => {
                 <div>
                   <button className='btn  btn-danger m-2' style={{ fontSize: '0.7em' }} onClick={succesAlert}> CANCELAR COMPRA </button>
                 </div>
-
               </div>
-
-
-
-              {/*<div className="d-flex flex-wrap">
-                  <div className="col-12 col-sm-6 d-flex flex-column p-3">
-                    <select className="form-control " name="banco" defaultValue={"Banco Internacional"} aria-label="Selecione el Banco">
-                      <option value="Banco Internacional"> Banco Internacional</option>
-                    </select>
-                    <label >Numero de Control</label>
-                    <input className="form-control" type="text" name="control"
-                      value={codigo ? codigo : ''}
-                      onChange={(e) => handelchange(e)}
-                    />
-                  </div>
-                  <div className="col-12 col-sm-6 d-flex flex-column p-3 align-items-end" >
-                    <h5 >LUEGO DE REALIZAR LA TRANSACCIÓN
-                      POR FAVOR REPORTAR EL PAGO
-                    </h5>
-
-                    <button className="btn btn-danger col-6 float-end"
-                      onClick={reportarComprobante}
-                    >
-                      Reportar Pago
-                    </button>
-
-                  </div>
-
-                </div>*/}
             </div>
 
           </div>

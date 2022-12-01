@@ -60,11 +60,7 @@ const ModalCarritoViewadmin = (prop) => {
             Efectivo: metodoPago == "Efectivo" ? "Efectivo" : "",
             Tarjeta: metodoPago == "Tarjeta" ? "Tarjeta" : "",
             Deposito: metodoPago == "Deposito" ? "Deposito" : "",
-        }) : setChecked({
-            Efectivo: "",
-            Tarjeta: "",
-            Deposito: "",
-        })
+        }) : handelMetodopago({ name: 'Efectivo' }, "Efectivo"), setCheck(false)
         ListaPrecioset(GetValores())
         let asientos = JSON.parse(sessionStorage.getItem("asientosList"))
         asientos != null ? usedispatch(cargarsilla(asientos)) : ''

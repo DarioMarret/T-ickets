@@ -5,15 +5,19 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { Box, Button, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { Edit, Delete, FileDownload, Share } from '@mui/icons-material';
+import { Edit, Delete, FileDownload, Share, Send } from '@mui/icons-material';
 import { ListarTikets, FiltrarConcierto } from "utils/Querypanel";
 import { ExportToCsv } from 'export-to-csv';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { columnsTicket } from 'utils/ColumnTabla';
+import { useDispatch, useSelector } from 'react-redux';
+import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 import { Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
+import CederView from './Susbcritorpage/Modal/CederView';
 const EventosViews = () => {
+  let usedispatch = useDispatch()
   const [TiktesList, setTikes] = useState([])
   const [DatosGlobal, setDatosGloabl] = useState([])
   const [Evento, setEvento] = useState([])
@@ -90,6 +94,7 @@ const EventosViews = () => {
   const handleExportData = () => {
     csvExporter.generateCsv(TiktesList);
   };
+  const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })) }
   useEffect(() => {
     (async () => {
       await ConsultarTikets()
@@ -98,7 +103,7 @@ const EventosViews = () => {
   }, [])
   return (
     <div className="container-fluid">
-
+      <CederView />
       <div className="row">
         <div className="col-md-12">
 
@@ -206,7 +211,7 @@ const EventosViews = () => {
                         </a>
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Ver Ticket" placement="top">
+                    <Tooltip title="Borrar" placement="top">
                       <IconButton
                         color="error"
                         aria-label="Bloquear">
@@ -215,9 +220,10 @@ const EventosViews = () => {
                     </Tooltip>
                     <Tooltip title="Ceder ticket" placement='top'>
                       <IconButton
-                        color='secondary'
+                        color='success'
+                        onClick={() => abrirceder(row.original)}
                       >
-                        <Share />
+                        <Send />
                       </IconButton>
                     </Tooltip>
                   </Box>

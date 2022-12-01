@@ -32,6 +32,7 @@ import { cargarsilla } from "StoreRedux/Slice/sillasSlice";
 import { seleccionmapa } from "utils/constantes";
 import { Eventolocalidad } from "utils/constantes";
 import { filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice";
+import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -528,6 +529,12 @@ export default function StoreTickesViews() {
                     closedeposito={closedeposito}
                     setModalPago={setModalPago} modalPago={modalPago} /> : null
             }
+            <ModalConfima
+                setrepShow={setrepShow}
+                pararcontador={detenervelocidad}
+                detener={detenervelocidad}
+
+            />
             <ModalDetalle
                 showDetalle={showDetalle}
                 intervalo={intervalo}
@@ -545,6 +552,7 @@ export default function StoreTickesViews() {
                 repShop={repShop}
                 pararcontador={detenervelocidad}
                 setrepShow={setrepShow}
+                detener={detenervelocidad}
                 handlereportColse={handlereportColse}
             />
 

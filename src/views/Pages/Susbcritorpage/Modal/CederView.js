@@ -40,19 +40,22 @@ const CederView = () => {
 
         )
     }
-    const hideAlert = () => setAlert(null)
+    const hideAlert = () => {
+        setAlert(null)
+        usedispatch(setModal({ nombre: '', estado: '' }))
+    }
     const filterNames = async () => {
         let nombre = $('#cedula').val()
-        console.log(nombre)
-        if (nombre.length >= 10) {
+        //  console.log(nombre)
+        if (nombre.trim().length >= 10) {
             $("#search").removeClass("d-none")
-            console.log(lista.find(e => e.cedula == nombre || e.email == nombre))
+            //console.log(lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()))
             //console.log(lista.find(e => e.cedula == nombre))
-            if (lista.find(e => e.cedula == nombre || e.email == nombre) != null) {
-                setDausuario({ ...lista.find(e => e.cedula == nombre || e.email == nombre), whatsapp: lista.find(e => e.cedula == nombre || e.email == nombre).movil, password: '', resgistro: true })
+            if (lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()) != null) {
+                setDausuario({ ...lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()), whatsapp: lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()).movil, password: '', resgistro: true })
 
 
-                $('#movil').val(lista.find(e => e.cedula == nombre || e.email == nombre).movil)
+                $('#movil').val(lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()).movil)
                 $("#search").addClass("d-none")
                 return
             } else {
@@ -129,30 +132,17 @@ const CederView = () => {
                                 <div>
                                     <form id="register" className=" needs-validation  " onSubmit={(e) => e.preventDefault()}  >
                                         <div className="row d-flex justify-content-center">
-                                            <div className="col-4 d-none">
-                                                <div className=" input-group mb-3" >
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text">
-                                                            <i className="fa fa-address-card"></i>
-                                                        </span>
-                                                    </div>
-                                                    <Form.Select className="form-control" >
-                                                        <option value={"cedula"}>Cédula ecuatoriana</option>
-                                                        <option value={"extranjera"}>Cédula extranjera</option>
-                                                        <option value={"pasaporte"}>Pasaporte</option>
-                                                    </Form.Select>
-                                                </div>
-                                            </div>
+
                                             <div className="col-9">
                                                 <div className="input-group mb-3">
 
                                                     <input id="cedula" type="text"
-                                                        className="form-control numero"
+                                                        className="form-control "
                                                         name="cedula"
                                                         minLength={10}
                                                         maxLength={20}
 
-                                                        placeholder={"Ingrese correo electrónico"} />
+                                                        placeholder={"Ingrese correo electrónico o cédula"} />
                                                     <div className="input-group-prepend">
                                                         <button className="input-group-text  btn-primary" onClick={filterNames} ><i className="fa fa-search"></i></button>
                                                     </div>

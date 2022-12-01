@@ -68,7 +68,7 @@ export default function ListaSuscritor(prop) {
             password: datos.password,
             cedula: $("#cedula").val()
         }
-        console.log(datosend, datos)
+        // console.log(datosend, datos)
         DatosUsuariosLocalStorag({ ...usuarios, ...datos, whatsapp: $("#movil").val(), })
         if (Object.values(datosend).every(e => e)) {
             let numero = await ValidarWhatsapp()
@@ -159,7 +159,16 @@ export default function ListaSuscritor(prop) {
             $("#search").removeClass("d-none")
             //console.log(lista.find(e => e.cedula == nombre))
             if (lista.find(e => e.cedula == nombre) != null) {
-                setDausuario({ ...lista.find(e => e.cedula == nombre), whatsapp: lista.find(e => e.cedula == nombre).movil, password: '', resgistro: true })
+                setDausuario({
+                    nombreCompleto: lista.find(e => e.cedula == nombre).nombreCompleto,
+                    ciudad: lista.find(e => e.cedula == nombre).ciudad,
+                    email: lista.find(e => e.cedula == nombre).email,
+                    movil: lista.find(e => e.cedula == nombre).movil,
+                    resgistro: lista.find(e => e.cedula == nombre).registro,
+                    password: '',
+                    whatsapp: lista.find(e => e.cedula == nombre).movil, password: '', resgistro: true
+                })
+
 
                 //   console.log(lista.find(e => e.cedula == nombre))
                 //console.log({ ...lista.find(e => e.cedula == nombre), discapacidad: cedula.discapacidad, password: '' })
@@ -171,9 +180,10 @@ export default function ListaSuscritor(prop) {
                 let cedula = await getCedula(nombre)
                 //console.log(cedula)
                 if (cedula) {
+
                     setDausuario({
                         nombreCompleto: cedula.name,
-                        ciudad: cedula.ciudad,
+                        ciudad: cedula.direccion,
                         email: '',
                         whatsapp: '', password: '', resgistro: false
                     })
@@ -216,16 +226,16 @@ export default function ListaSuscritor(prop) {
     }
     $(document).ready(function () {
         const phoneInputField = document.querySelector("#movil");
-        intlTelInput(phoneInputField, {
+        modalshow.modal.nombre == "suscritor" ? intlTelInput(phoneInputField, {
             initialCountry: "ec",
             separateDialCode: true,
             nationalMode: true,
             utilsScript:
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
 
-        })
+        }) : ''
 
-    });
+    })
 
     const handelChange = e => {
         setDausuario({
@@ -351,7 +361,7 @@ export default function ListaSuscritor(prop) {
                                                     </div>
                                                     <input type="text"
                                                         className="form-control form-control-sm"
-                                                        id="direccion"
+                                                        id="ciudad"
                                                         name="ciudad"
                                                         maxLength={255}
                                                         required

@@ -3,7 +3,7 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload } from '@mui/icons-material';
+import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send } from '@mui/icons-material';
 import SweetAlert from "react-bootstrap-sweetalert";
 import { QRCodeCanvas } from 'qrcode.react';
 import { useDispatch, useSelector } from "react-redux";
@@ -165,10 +165,10 @@ function Example() {
                 </Tooltip>
                 <Tooltip title="Ceder ticket" placement="top-start">
                   <IconButton
-                    color='secondary'
+                    color='success'
                     onClick={() => successAlert(row.original)}
                   >
-                    <Share />
+                    <Send />
                   </IconButton>
                 </Tooltip>
               </Box>

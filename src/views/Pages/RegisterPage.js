@@ -25,7 +25,7 @@ function RegisterPage() {
     email: '',
     username: '',
     password: '',
-    fecha:'',
+    fecha: '',
     email: '',
     edad: '',
   })
@@ -40,21 +40,21 @@ function RegisterPage() {
     e.preventDefault();
     console.log(registro)
     if (registro.name !== '' || registro.password !== '' || registro.username !== '') {
-     try {
+      try {
         const { data } = await axios.post("https://43d5-45-187-2-162.sa.ngrok.io/api/v1/crear_user", registro, {
-      headers: {
-        'Authorization': 'Basic YWRtaW46YWRtaW4='
-      }
-    })
-    console.log("registro-->", data)
+          headers: {
+            'Authorization': 'Basic YWRtaW46YWRtaW4='
+          }
+        })
+        console.log("registro-->", data)
       } catch (error) {
         console.log(error)
         setShow(true)
-        
+
       }
-    
-  }
-  setShow(true)
+
+    }
+    setShow(true)
   }
 
   function hanbleOnchange(target) {
@@ -71,15 +71,15 @@ function RegisterPage() {
     })()
   }, [registro])
   const Perfils = async () => {
-    const { data } = await axios.get(Host+"api/v1/listas_suscriptor", {
+    const { data } = await axios.get(Host + "api/v1/listas_suscriptor", {
       headers: {
         'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+        'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
       }
     })
     if (!data.success) return
     setRoles(data.data)
-     console.log("Perfils-->",data)
+    console.log("Perfils-->", data)
   }
   const Consulcedula = async () => {
 
@@ -88,9 +88,9 @@ function RegisterPage() {
     try {
       setSpiner("");
       setCedulaapi("d-none");
-      const res = await axios.get(Host+"/cedula/"+consulta) 
-      
-      const { data } =  res
+      const res = await axios.get(Host + "/cedula/" + consulta)
+
+      const { data } = res
       const { message } = data
 
       /* if (!respons.portal) {
@@ -113,7 +113,7 @@ function RegisterPage() {
     //console.log(numero)
 
   }
- 
+
 
   return (
     <>
@@ -133,7 +133,7 @@ function RegisterPage() {
                       <img src={logo} className="mb-4 img-fluid" style={{ height: '80px' }} alt="" />
                     </div>
 
-                    
+
                     <div className="row">
                       <div className="col-md-8">
 
@@ -142,7 +142,7 @@ function RegisterPage() {
                             <span className="input-group-text"><i className="fas fa-address-card"></i></span>
                           </div>
 
-                          <input id="cedula" type="text" 
+                          <input id="cedula" type="text"
                             className="form-control" name="cedula"
                             value={registro.cedula}
                             onChange={(e) => hanbleOnchange(e.target)}
@@ -158,7 +158,7 @@ function RegisterPage() {
                       </div>
                     </div>
 
-                    <form onSubmit={(e)=>Registeruser(e)} method="post">
+                    <form onSubmit={(e) => Registeruser(e)} method="post">
 
                       <div className="row">
                         <div className="col-md-12">
@@ -176,8 +176,8 @@ function RegisterPage() {
 
                           </div>
                         </div>
-                        </div>
-                        <div className="row">
+                      </div>
+                      <div className="row">
 
                         <div className="col-12 col-md-6">
                           <div className="input-group mb-3">
@@ -188,9 +188,9 @@ function RegisterPage() {
                             <input id="fecha_nacimiento"
                               type="date"
                               className="form-control"
-                              name="fecha_nacimiento" 
+                              name="fecha_nacimiento"
                               value={registro.fecha || ''}
-                              onChange={(e)=>hanbleOnchange(e.target)}
+                              onChange={(e) => hanbleOnchange(e.target)}
                               required />
 
                           </div>
@@ -205,12 +205,12 @@ function RegisterPage() {
                               type=""
                               className="form-control" name="edad" placeholder="Edad"
                               value={registro.edad}
-                              onChange={(e) => hanbleOnchange(e.target)}/>
+                              onChange={(e) => hanbleOnchange(e.target)} />
 
                           </div>
                         </div>
-                        </div>
-                       
+                      </div>
+
 
                       <div className="row">
                         <div className="col-md-6">
@@ -232,10 +232,10 @@ function RegisterPage() {
                               <span className="input-group-text"><i className="fab fa-whatsapp"></i></span>
                             </div>
 
-                            <input id="username" type="username" className="form-control" 
-                            name="username"
-                            onChange={(e=>hanbleOnchange(e.target))} 
-                            placeholder="Ingrese su numero de whatsapp" />
+                            <input id="username" type="username" className="form-control"
+                              name="username"
+                              onChange={(e => hanbleOnchange(e.target))}
+                              placeholder="Ingrese su numero de whatsapp" />
                           </div>
                         </div>
                       </div>
@@ -246,11 +246,11 @@ function RegisterPage() {
                               <span className="input-group-text"><i className="fa fa-lock"></i></span>
                             </div>
                             <input id="password" type="password" className="form-control"
-                            name="password"
-                            onChange={(e)=>hanbleOnchange(e.target)}
-                            placeholder="Password"  />
+                              name="password"
+                              onChange={(e) => hanbleOnchange(e.target)}
+                              placeholder="Password" />
                           </div>
-                        </div>                       
+                        </div>
                       </div>
 
                       <div className="row">
@@ -273,7 +273,7 @@ function RegisterPage() {
             </div>
           </Container>
 
-          
+
         </div>
         <div
           className="full-page-background"
@@ -289,7 +289,7 @@ function RegisterPage() {
           top: 10,
           right: 10,
           zIndex: 4,
-          
+
         }}
       >
         <Toast.Header>

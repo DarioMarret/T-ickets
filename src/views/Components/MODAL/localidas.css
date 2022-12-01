@@ -85,6 +85,34 @@ li.agregados {
     padding: 0;
 }
 
+
+
+/*body {*/
+/*scrollbar-width: thin;
+    /* "auto" or "thin" */
+/*  scrollbar-color: blue orange;
+    /* scroll thumb and track */
+/*}*/
+
+/*
+.section {
+    scrollbar-width: thin;
+    scrollbar-color: blue orange;
+}
+.section::-webkit-scrollbar {
+    width: 12px;
+}
+.section::-webkit-scrollbar-track {
+    background: orange;
+}
+
+.section::-webkit-scrollbar-thumb {
+    background-color: blue;
+    border-radius: 20px;
+    border: 3px solid orange;
+}
+
+*/
 /*div.seleccionmap{
    // background-color: #198754;
 }*/
