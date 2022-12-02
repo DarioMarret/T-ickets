@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styleswiper } from "./styleswiper.js";
-import logofla from "../../../assets/imagen/LOGO-WEB.png";
-import principal from "../../../assets/imagen/eventoprincip.jpeg";
-import secundaria from "../../../assets/imagen/segundo.jpeg";
-import tercero from "../../../assets/imagen/concierto.jpeg"
-import icon from "../../../assets/imagen/50pixeles.png";
-import valla from "../../../assets/imagen/valla-proximo-evento.png";
-import imgno from "../../../assets/imagen/nones.png"
+import { pasados, carrusel } from "./imagenstatctic.js";
+let { icon, valla, principal, secundaria, tercero, logofla, mapa, portal } = carrusel
+import { useSelector, useDispatch } from "react-redux";
+import { todossiler } from "./Modalterminos/silder.js";
+let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
 import "../../../assets/css/animate.css";
 import "../../../assets/css/bootstrap.css";
 import ModalDetalle from "views/Components/MODAL/ModalDetalle";
@@ -14,24 +12,17 @@ import ModalPago from "views/Components/MODAL/ModalPago";
 import ModalReport from "views/Components/MODAL/ModalReporte";
 import ModalEfectivo from "views/Components/MODAL/Modalefectivo";
 import TOAST from "views/Components/TOAST";
-import Footer from "views/Components/Footer/Footer";
+import Footer from "views/Components/Footer";
 import Modalterminos from "./Modalterminos";
 import ModalLogin from "./ModalLogin";
 import Tikes from "../Susbcritorpage/Tickes";
 import PerfilPage from "../Perfil";
 import { getDatosUsuariosLocalStorag, getCliente, DatosUsuariosLocalStorag, getCedula } from "utils/DatosUsuarioLocalStorag";
 import { GetMetodo, getVerTienda, LimpiarLocalStore, Limpiarseleccion } from "utils/CarritoLocalStorang";
-import { GuardarDatosdelComprador, ValidarWhatsapp } from "utils/Query";
-import { useSelector, useDispatch } from "react-redux";
-import { Cargarsillas } from "views/Components/MODAL/cargarsillas.js";
-import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
-import { deletesuscrito } from "StoreRedux/Slice/SuscritorSlice";
-import { cargalocalidad, clearMapa, filtrarlocali, } from "StoreRedux/Slice/mapaLocalSlice";
-import { Authsucrito } from "utils/Query";
-import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
+import { GuardarDatosdelComprador, ValidarWhatsapp, Authsucrito } from "utils/Query";
 import { listarpreciolocalidad, ListarLocalidad } from "utils/Querypanel";
 import { cargarEventoActivo, cargarMapa } from "utils/Querypanelsigui";
-import { Dias, DatosUsuariocliente, Eventoid, listaasiento, DatosUsuarioLocalStorang } from "utils/constantes";
+import { Dias, DatosUsuariocliente, Eventoid, listaasiento, DatosUsuarioLocalStorang, Eventolocalidad, seleccionmapa } from "utils/constantes";
 import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
@@ -50,10 +41,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./swipermedia.css"
-import { Eventolocalidad } from "utils/constantes.js";
-import { seleccionmapa } from "utils/constantes.js";
-import { cargarsilla } from "StoreRedux/Slice/sillasSlice.js";
-import { setModal } from "StoreRedux/Slice/SuscritorSlice.js";
+
 import Iframe from "views/Components/IFrame/Iframe.js";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion.js";
 const IndexFlas = () => {
@@ -614,7 +602,7 @@ const IndexFlas = () => {
       <nav className="navbar navbar-expand-lg  justify-content-between navbar-dark bg-black  py-3">
         <div className="container-fluid col-lg-8    d-flex justify-content-between">
           <a className="navbar-brand " aria-label="TICKETS" href="#">
-            <img src={icon} className="img-fluid" style={{ height: 'auto' }} alt="" />
+            <img src={icon} className="img-fluid" style={{ height: '50px' }} alt="" />
           </a>
           <button className="navbar-toggler justify-content-center " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -667,7 +655,9 @@ const IndexFlas = () => {
         abrir={abrir}
       />
       {/* header */}
-      <div className="container-fluid  p-0">
+      <div className="container-fluid  pt-2 px-0" style={{
+        minHeight: '300px'
+      }}>
         {/*<div className="col-12 mx-auto bg-header-boleteria" style={{ height: '400px', backgroundImage: `url(${header})` }}>
           <div className="container w-100 h-100 px-0">
             <div className="container btn-group-vertical  h-100 text-center px-0">
@@ -679,7 +669,7 @@ const IndexFlas = () => {
           </div>
         </div>*/}
         <Swiper
-          className="AnimatedSlides"
+          className="AnimatedSlides "
           parallax={true}
           loop={true}
           autoHeight={true}
@@ -691,7 +681,7 @@ const IndexFlas = () => {
             disableOnInteraction: true,
           }}
           modules={[Autoplay, EffectFade, Pagination]}>
-          <SwiperSlide >
+          {/*<SwiperSlide >
             <div style={{ widows: "100%", height: "400px" }}>
               <div style={{
                 backgroundImage: "url('" + principal + "')",
@@ -746,6 +736,47 @@ const IndexFlas = () => {
                 </div>
               </div>
             </div>
+          </SwiperSlide>*/}
+          <SwiperSlide >
+            <div style={{ width: "100%", height: "400px" }}>
+              <div className="slide-image" style={{
+                position: "relative",
+                width: "100%",
+                height: "400px",
+              }}>
+
+                <div style={{
+                  backgroundImage: "url('" + principal + "')",
+                  ...styleswiper.slideimg
+                }} >
+                </div>
+                <div style={styleswiper.fondo}>
+                </div>
+                <div className="descripciones w-25">
+
+                  <div className="d-flex flex-column text-white" >
+                    <div className="py-3 row d-flex align-items-center   p-0">
+
+                      <i class="fa fa-volume-off fa-3x  col-2 ">  </i>
+                      <h5 className="col-10 px-0"
+                        style={{
+                          fontSize: '0.9em'
+                        }}
+                      >NOMBRE -  <span className=" text-danger font-weight-bold"> PRECENCIAL </span> </h5>
+                    </div>
+                    <h4 className=" " style={styleswiper.titulo}>Descripción de la imagen 2 </h4>
+                    <span style={styleswiper.subtitulo}>
+                      Sub descripción
+                    </span>
+                    <div className="pt-2 ">
+                      <button className="btn border rounded-1  btn-lg btn-outline-light "
+                        style={styleswiper.button}
+                      >VER MÁS</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </SwiperSlide>
           <SwiperSlide >
             <div style={{ width: "100%", height: "400px" }}>
@@ -754,10 +785,48 @@ const IndexFlas = () => {
                 width: "100%",
                 height: "400px",
               }}>
+
                 <div style={{
-                  backgroundImage: "url('" + tercero + "')",
-                  ...styleswiper.slideimgcenter
-                }}></div>
+                  backgroundImage: "url('" + secundaria + "')",
+                  ...styleswiper.slideimg
+                }} >
+                </div>
+                <div style={styleswiper.fondo}>
+                </div>
+                <div className="descripciones w-25">
+
+                  <div className="d-flex flex-column text-white" >
+                    <div className="py-3 row d-flex align-items-center   p-0">
+
+                      <i class="fa fa-volume-off fa-3x  col-2 ">  </i>
+                      <h5 className="col-10 px-0"
+                        style={{
+                          fontSize: '0.9em'
+                        }}
+                      >NOMBRE -  <span className=" text-danger font-weight-bold"> PRECENCIAL </span> </h5>
+                    </div>
+                    <h4 className=" " style={styleswiper.titulo}>Descripción de la imagen 2 </h4>
+                    <span style={styleswiper.subtitulo}>
+                      Sub descripción
+                    </span>
+                    <div className="pt-2 ">
+                      <button className="btn border rounded-1  btn-lg btn-outline-light "
+                        style={styleswiper.button}
+                      >VER MÁS</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide >
+            <div style={{ width: "100%", height: "400px" }}>
+              <div className="slide-image" style={{
+                position: "relative",
+                width: "100%",
+                height: "400px",
+              }}>
+
                 <div style={{
                   backgroundImage: "url('" + tercero + "')",
                   ...styleswiper.slideimg
@@ -765,16 +834,26 @@ const IndexFlas = () => {
                 </div>
                 <div style={styleswiper.fondo}>
                 </div>
-                <div className="descripciones">
+                <div className="descripciones w-25">
+
                   <div className="d-flex flex-column text-white" >
-                    <h4 style={styleswiper.titulo}>Descripción de la imagen 3 </h4>
+                    <div className="py-3 row d-flex align-items-center   p-0">
+
+                      <i class="fa fa-volume-off fa-3x  col-2 ">  </i>
+                      <h5 className="col-10 px-0"
+                        style={{
+                          fontSize: '0.9em'
+                        }}
+                      >NOMBRE -  <span className=" text-danger font-weight-bold"> PRECENCIAL </span> </h5>
+                    </div>
+                    <h4 className=" " style={styleswiper.titulo}>Descripción de la imagen 3 </h4>
                     <span style={styleswiper.subtitulo}>
                       Sub descripción
                     </span>
-                    <div className="">
-                      <button className="btn btn-success"
+                    <div className="pt-2 ">
+                      <button className="btn border rounded-1  btn-lg btn-outline-light "
                         style={styleswiper.button}
-                      >Ver lista</button>
+                      >VER MÁS</button>
                     </div>
                   </div>
                 </div>
@@ -785,48 +864,58 @@ const IndexFlas = () => {
       </div>
       {/* eventos */}
       {seleccion == "" ?
-        <div className="container " id="nuevoseventos">
+        <div className="container-fluid " id="nuevoseventos">
           <div className="container p-3">
             <div className="row flex-wrap-reverse justify-content-center" id="accordion">
               <div className="col-12 col-lg-9">
-                <div className="row mx-auto p-0">
+                <div className="row  p-0">
                   {eventoslist.length > 0 ?
                     eventoslist.map((e, i) => {
                       return (
-                        <div className="col-12 col-lg-6 mx-auto my-5" id={"evento" + e.id} key={i}>
+                        <div className="col-12 mx-auto my-3" id={"evento" + e.id} key={i}>
                           <a id={"headingThree" + e.id} className="collapsed" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7 shadow-md px-0">
-                              <img src={!e.imagenConcierto ? e.imagenConcierto : "https://placehold.co/600x400@3x.png"} className="img-fluid rounded-7 shadow-md " alt="" />
+                              <img src={!e.imagenConcierto ? e.imagenConcierto : portal} className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
                           </a>
-                          <div className="collapse container mt-4 px-0"
-                            style={{
-                              position: 'relative',
+                          <div className="collapse container mt-4 px-0" aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">
+                            <div className="card row d-flex flex-row card-body rounded-7 py-5">
+                              <div className="container col-12 col-md-6">
+                                <div className="d-flex flex-column justify-content-between ">
+                                  <div >
+                                    <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">{e.nombreConcierto}</span> </h1>
+                                    <h4 style={{ fontSize: '1.4em', }}><span id="tour">{e.descripcionConcierto} </span></h4>
+                                    <div className="col-12 border border-bottom my-3"></div>
+                                    <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                      <p style={{ fontSize: '1.0em' }}><b>Fecha:<span id="fechaEvento">{Dias[new Date(e.fechaConcierto).getDay()]}  {e.fechaConcierto} </span></b></p>
+                                      <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                        <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><b>Hora:<span id="horaEvento"> {e.horaConcierto}</span></b></p>
+                                      </div>
+                                      <p className="" style={{ fontSize: '1.0em', }}><b>Lugar:<span id="lugarEvento">{e.lugarConcierto}</span></b></p>
 
-                              width: 700
-                            }}
-                            aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">
-                            <div className="card d-flex flex-row card-body rounded-7 py-5">
-                              <div className="container col-6">
-                                <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">{e.nombreConcierto}</span> </h1>
-                                <h4 style={{ fontSize: '1.4em', height: '55px' }}><span id="tour">{e.descripcionConcierto} </span></h4>
-                                <div className="col-12 border border-bottom my-3"></div>
-                                <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{Dias[new Date(e.fechaConcierto).getDay()]}  {e.fechaConcierto}</span></p>
-                                <p style={{ fontSize: '1.2em', height: "55px" }}><b>Lugar:</b><span id="lugarEvento">{e.lugarConcierto}</span></p>
-                                <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}</span></p>
-                                {true ? <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                  className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >Comprar Entrada</p> : ""}
+                                      <div className="col-12 border border-bottom mb-3"></div>
+                                      <div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="d-flex  justify-content-center pt-3">
+                                    <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
+                                      className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >Comprar Entrada</p>
+                                  </div>
+                                </div>
+
+
                               </div>
-                              <div className="container col-6 rounded-7  px-0">
-                                <img src={!e.imagenConcierto ? e.imagenConcierto : "https://placehold.co/600x400@3x.png"} className="img-fluid rounded-7 shadow-md " alt="" />
+                              <div className="container col-12 col-md-6 rounded-7  px-0">
+                                <img src={!e.imagenConcierto ? e.imagenConcierto : mapa} className="img-fluid rounded-7 shadow-md " alt="" />
                               </div>
                             </div>
                           </div>
                         </div>
                       )
                     })
-                    : <div className="col-12 col-lg-6 mx-auto my-5" >
+                    : <div className="col-12  mx-auto my-5" >
                       <div>
                         <div className="container rounded-7-md px-0" style={{ height: 300 }}>
 
@@ -842,7 +931,7 @@ const IndexFlas = () => {
 
 
                   {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
-                  <div className="col-12 col-lg-6 mx-auto my-5" >
+                  <div className=" d-none col-12 col-lg-6 mx-auto my-5" >
                     <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
                       aria-controls="collapseExample">
                       <div className="container  px-0">
@@ -868,7 +957,45 @@ const IndexFlas = () => {
               </div>
             </div>
           </div>
+          <div className="container p-3 d-none d-md-none  d-xl-block">
+            <div className="row d-flex justify-content-center " >
+              <div className="col-12 col-lg-9 px-0 ">
+                <div className="row mx-auto bg-gradient d-flex justify-content-center px-0 ">
+                  <h4 >
+                    <b> EVENTOS PASADOS</b>
+                  </h4>
+                  <div className="row d-flex justify-content-center  " >
+                    {
+                      [...pasados].map((element, index) => {
+                        return (
+                          <div className="col-12 col-sm-6 col-md-4 px-1" key={index} >
+                            <div
+                              className="  rounded-7   "
+                              style={{
+                                height: '150px', width: '100%',
+                                backgroundImage: "url('" + element + "')",
+                                backgroundSize: 'cover',
+                                backgroundRepeat: "no-repeat",
+                              }}
+
+                            >
+
+                            </div>
+
+                          </div>
+                        )
+                      })
+
+                    }
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div> : ''}
+
 
       {userauthi.login && seleccion == "Tickets" ? <div className="container p-2"> <Tikes /></div> : ""}
       {userauthi.login && seleccion == "Datos" ? <div className="container p-2"><PerfilPage datosPerson={datosPerson} setDatoToas={setDatoToas} /></div> : ""}
