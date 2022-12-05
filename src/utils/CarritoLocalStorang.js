@@ -88,7 +88,7 @@ export function EliminarSillas(silla) {
         let Cost = []
         Cost = iten.filter(tienda => tienda.localidad != silla.localidad)
         // console.log("Aqui", Cost)
-        console.log(nuevo)
+        //   console.log(nuevo)
         sessionStorage.setItem(CarritoTicket, JSON.stringify(Cost));
         sessionStorage.setItem(listaasiento, JSON.stringify(nuevo));
         Filterduplicados()
@@ -101,7 +101,7 @@ export function EliminarSillas(silla) {
 export function EliminarsilladeMesa(silla) {
     VerSillas()
     let ListadeSillas = PVsilla.filter((iten) => iten.seleccionmapa != silla.localodad)
-    console.log(ListadeSillas)
+    // console.log(ListadeSillas)
     sessionStorage.setItem(listaasiento, JSON.stringify(ListadeSillas));
     Filterduplicados()
     //getVerTienda()

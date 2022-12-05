@@ -84,7 +84,6 @@ function Admin() {
         backgroundColor={sidebarBackground}
         setSidebarBackgroundParent={(value) => setSidebarBackground(value)}
       />*/}
-      <ToastViews />
 
     </>
   );

@@ -109,7 +109,7 @@ function Example() {
           <MaterialReactTable
             columns={columnsTicket}
             data={tiketslist}
-            enableRowSelection
+
             muiTableProps={{
               sx: {
                 tableLayout: 'flex'
@@ -187,7 +187,6 @@ function Example() {
             <TableWiev data={tiketslist} /> : ''*/}
         </div>
       </div>
-      <ToastViews />
     </>
   );
 }

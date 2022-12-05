@@ -71,21 +71,10 @@ li.agregados {
     cursor: pointer;
 }
 
-@media (min-width: 992px) {
-    .modal-content {
-        border-radius: 15px !important;
-    }
+
+.link-light {
+    cursor: pointer;
 }
-
-.modal-fullscreen-md-down {
-    padding: 0;
-}
-
-.modal-fullscreen {
-    padding: 0;
-}
-
-
 
 /*body {*/
 /*scrollbar-width: thin;

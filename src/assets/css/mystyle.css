@@ -34,3 +34,19 @@ table.vertical-align>tbody>tr>td {
 .comp {
   background-color: rgba(125, 128, 131, 0.897) !important;
 }
+
+@media (min-width: 992px) {
+  .modal-content {
+    border-radius: 15px !important;
+  }
+}
+
+.modal-fullscreen-md-down {
+  padding: 0;
+  width: 100%;
+}
+
+.modal-fullscreen {
+  padding: 0;
+  height: 100%;
+}

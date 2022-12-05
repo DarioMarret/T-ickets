@@ -5,8 +5,7 @@ let { icon, valla, principal, secundaria, tercero, logofla, mapa, portal } = car
 import { useSelector, useDispatch } from "react-redux";
 import { todossiler } from "./Modalterminos/silder.js";
 let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
-import "../../../assets/css/animate.css";
-import "../../../assets/css/bootstrap.css";
+
 import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalPago from "views/Components/MODAL/ModalPago";
 import ModalReport from "views/Components/MODAL/ModalReporte";
@@ -41,7 +40,8 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./swipermedia.css"
-
+import "../../../assets/css/animate.css";
+import "../../../assets/css/bootstrap.css";
 import Iframe from "views/Components/IFrame/Iframe.js";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion.js";
 const IndexFlas = () => {
@@ -478,6 +478,8 @@ const IndexFlas = () => {
     fecha: ''
   })
   const [eventoslist, setEventos] = useState([])
+
+
   useEffect(() => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
@@ -507,7 +509,6 @@ const IndexFlas = () => {
     } else {
       popUp.close();
     }
-
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
@@ -541,6 +542,21 @@ const IndexFlas = () => {
       })
       usedispatch(addususcritor({ ...clineteLogeado }))
     }
+    /* (function (s, z, c, h, a, t) {
+       s.webchat = s.webchat || function () {
+         (s.webchat.q = s.webchat.q || []).push(arguments);
+       };
+       t = z.createElement(c),
+         a = z.getElementsByTagName(c)[0]; t.async = 1;
+       t.src = 'https://comnet.sz.chat/webchat/v2/webchat.js';
+       a.parentNode.insertBefore(t, a);
+       s.webchat('cid', '638bd42eabbe9a001766f854');
+       s.webchat('host', h);
+     })(window, document, 'script', 'https://comnet.sz.chat');
+ 
+     window.addEventListener("message", function (event) {
+       if (event.origin !== 'https://comnet.sz.chat') return;
+     }, false)*/
   }, [])
   return (
     <>
@@ -615,13 +631,7 @@ const IndexFlas = () => {
               <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("")}>
                 <a className=" nav-link" href="#nuevoseventos">Eventos</a>
               </li>
-              {/* <li className="nav-item active" aria-current="page">
-                <a className="nav-link " href="#" onClick={() => getVerTienda().length > 0 ? abrircarro() : ""}>Comprar
-                  {getVerTienda().length > 0 ? <span className="position-absolute bottom-0 start-50 translate-middle p-1 bg-danger border border-light rounded-circle">
-                    <span className="visually-hidden">New alerts</span>
-                  </span> : ""}
-                </a>
-              </li>*/}
+
               {userauthi.login ?
                 <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("Datos")}>
                   <a className="nav-link " >Datos</a>
@@ -641,11 +651,7 @@ const IndexFlas = () => {
                 <a className=" btn btn-outline-light  " href="#" onClick={salir}> Salir <i className="fa fa-window-close"></i> </a>
               </li>}
             </ul>
-            {/*<ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-1   justify-content-center ">
-              <li className="  nav-item">
-                <a className="btn btn-outline-light" href="#" > 0983832112 <i className="fab fa-whatsapp fa-lg ml-1 justify-content-center"></i> </a>
-              </li>
-            </ul>*/}
+
           </div>
         </div>
       </nav>
@@ -658,16 +664,7 @@ const IndexFlas = () => {
       <div className="container-fluid  pt-2 px-0" style={{
         minHeight: '300px'
       }}>
-        {/*<div className="col-12 mx-auto bg-header-boleteria" style={{ height: '400px', backgroundImage: `url(${header})` }}>
-          <div className="container w-100 h-100 px-0">
-            <div className="container btn-group-vertical  h-100 text-center px-0">
-              <h1 className="text-white mx-auto" style={{ fontSize: '3.5em' }}><img src={logofla} className="img-fluid" style={{ height: '150px' }} alt="" /></h1>
-              <p className="mx-auto text-white d-none" style={{ fontSize: '1.2em' }}><b>Compra</b> tu entrada <b>fácil, rápido</b> y
-                <b>seguro</b>
-              </p>
-            </div>
-          </div>
-        </div>*/}
+
         <Swiper
           className="AnimatedSlides "
           parallax={true}
@@ -681,185 +678,67 @@ const IndexFlas = () => {
             disableOnInteraction: true,
           }}
           modules={[Autoplay, EffectFade, Pagination]}>
-          {/*<SwiperSlide >
-            <div style={{ widows: "100%", height: "400px" }}>
-              <div style={{
-                backgroundImage: "url('" + principal + "')",
-                ...styleswiper.slideimgcenter
-              }}></div>
-              <div style={{
-                backgroundImage: "url('" + principal + "')",
-                ...styleswiper.slideimg
-              }} >
-                <div style={styleswiper.fondo}>
-                </div>
-                <div className="descripciones">
-                  <div className="d-flex flex-column text-white" >
-                    <h4 style={styleswiper.titulo}>Descripción de la imagen 1 </h4>
-                    <span style={styleswiper.subtitulo}>
-                      Sub descripción
-                    </span>
-                    <div className="">
-                      <button className="btn btn-success"
-                        style={styleswiper.button}
-                      >Ver lista</button>
+
+          {
+            [principal, secundaria, tercero].map((element, index) => {
+              return (
+                <SwiperSlide key={index}>
+                  <div style={{ width: "100%", height: "400px" }}>
+                    <div className="slide-image" style={{
+                      position: "relative",
+                      width: "100%",
+                      height: "400px",
+                    }}>
+
+                      <div style={{
+                        backgroundImage: "url('" + element + "')",
+                        ...styleswiper.slideimg
+                      }} >
+                      </div>
+                      <div style={styleswiper.fondo}>
+                      </div>
+                      <div className="descripciones ">
+
+                        <div className="d-flex  flex-column text-white" >
+                          <div className="py-3 d-none d-sm-block   ">
+                            <div className=" row d-flex  align-items-center p-1">
+                              <i className="fa fa-volume-off fa-3x  col-2 ">  </i>
+                              <h5 className="col-10 px-0 pt-2"
+                                style={{
+                                  fontSize: '0.9em'
+                                }}
+                              >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
+                            </div>
+
+                          </div>
+                          <div className="d-block d-sm-none" >
+                            <div className="d-flex flex-row justify-content-center text-center">
+                              <i className="fa fa-volume-off fa-1x"> </i>
+                              <h5 className=" px-0"
+                                style={{
+                                  fontSize: '0.9em'
+                                }}
+                              >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
+                            </div>
+                          </div>
+                          <h4 className=" " style={styleswiper.titulo}>Descripción de la imagen  </h4>
+                          <span style={styleswiper.subtitulo}>
+                            Sub descripción
+                          </span>
+                          <div className="pt-2 ">
+                            <button className="btn border rounded-1  btn-lg btn-outline-light "
+                              style={styleswiper.button}
+                            >VER MÁS</button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide >
-            <div style={{ widows: "100%", height: "400px" }}>
-              <div style={{
-                backgroundImage: "url('" + secundaria + "')",
-                ...styleswiper.slideimgcenter
-              }}></div>
-              <div style={{
-                backgroundImage: "url('" + secundaria + "')",
-                ...styleswiper.slideimg
-              }} >
-                <div style={styleswiper.fondo}>
-                </div>
-                <div className="descripciones">
-                  <div className="d-flex flex-column text-white" >
-                    <h4 style={styleswiper.titulo}>Descripción de la imagen 2 </h4>
-                    <span style={styleswiper.subtitulo}>
-                      Sub descripción
-                    </span>
-                    <div>
-                      <button className="btn btn-success"
-                        style={styleswiper.button}
-                      >Ver lista</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>*/}
-          <SwiperSlide >
-            <div style={{ width: "100%", height: "400px" }}>
-              <div className="slide-image" style={{
-                position: "relative",
-                width: "100%",
-                height: "400px",
-              }}>
+                </SwiperSlide>
+              )
+            })
+          }
 
-                <div style={{
-                  backgroundImage: "url('" + principal + "')",
-                  ...styleswiper.slideimg
-                }} >
-                </div>
-                <div style={styleswiper.fondo}>
-                </div>
-                <div className="descripciones w-25">
-
-                  <div className="d-flex flex-column text-white" >
-                    <div className="py-3 row d-flex align-items-center   p-0">
-
-                      <i class="fa fa-volume-off fa-3x  col-2 ">  </i>
-                      <h5 className="col-10 px-0"
-                        style={{
-                          fontSize: '0.9em'
-                        }}
-                      >NOMBRE -  <span className=" text-danger font-weight-bold"> PRECENCIAL </span> </h5>
-                    </div>
-                    <h4 className=" " style={styleswiper.titulo}>Descripción de la imagen 2 </h4>
-                    <span style={styleswiper.subtitulo}>
-                      Sub descripción
-                    </span>
-                    <div className="pt-2 ">
-                      <button className="btn border rounded-1  btn-lg btn-outline-light "
-                        style={styleswiper.button}
-                      >VER MÁS</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide >
-            <div style={{ width: "100%", height: "400px" }}>
-              <div className="slide-image" style={{
-                position: "relative",
-                width: "100%",
-                height: "400px",
-              }}>
-
-                <div style={{
-                  backgroundImage: "url('" + secundaria + "')",
-                  ...styleswiper.slideimg
-                }} >
-                </div>
-                <div style={styleswiper.fondo}>
-                </div>
-                <div className="descripciones w-25">
-
-                  <div className="d-flex flex-column text-white" >
-                    <div className="py-3 row d-flex align-items-center   p-0">
-
-                      <i class="fa fa-volume-off fa-3x  col-2 ">  </i>
-                      <h5 className="col-10 px-0"
-                        style={{
-                          fontSize: '0.9em'
-                        }}
-                      >NOMBRE -  <span className=" text-danger font-weight-bold"> PRECENCIAL </span> </h5>
-                    </div>
-                    <h4 className=" " style={styleswiper.titulo}>Descripción de la imagen 2 </h4>
-                    <span style={styleswiper.subtitulo}>
-                      Sub descripción
-                    </span>
-                    <div className="pt-2 ">
-                      <button className="btn border rounded-1  btn-lg btn-outline-light "
-                        style={styleswiper.button}
-                      >VER MÁS</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide >
-            <div style={{ width: "100%", height: "400px" }}>
-              <div className="slide-image" style={{
-                position: "relative",
-                width: "100%",
-                height: "400px",
-              }}>
-
-                <div style={{
-                  backgroundImage: "url('" + tercero + "')",
-                  ...styleswiper.slideimg
-                }} >
-                </div>
-                <div style={styleswiper.fondo}>
-                </div>
-                <div className="descripciones w-25">
-
-                  <div className="d-flex flex-column text-white" >
-                    <div className="py-3 row d-flex align-items-center   p-0">
-
-                      <i class="fa fa-volume-off fa-3x  col-2 ">  </i>
-                      <h5 className="col-10 px-0"
-                        style={{
-                          fontSize: '0.9em'
-                        }}
-                      >NOMBRE -  <span className=" text-danger font-weight-bold"> PRECENCIAL </span> </h5>
-                    </div>
-                    <h4 className=" " style={styleswiper.titulo}>Descripción de la imagen 3 </h4>
-                    <span style={styleswiper.subtitulo}>
-                      Sub descripción
-                    </span>
-                    <div className="pt-2 ">
-                      <button className="btn border rounded-1  btn-lg btn-outline-light "
-                        style={styleswiper.button}
-                      >VER MÁS</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
         </Swiper>
       </div>
       {/* eventos */}
@@ -882,8 +761,8 @@ const IndexFlas = () => {
                           <div className="collapse container mt-4 px-0" aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">
                             <div className="card row d-flex flex-row card-body rounded-7 py-5">
                               <div className="container col-12 col-md-6">
-                                <div className="d-flex flex-column justify-content-between ">
-                                  <div >
+                                <div className="d-flex row  btn-group-vertical ">
+                                  <div className="col-12" >
                                     <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">{e.nombreConcierto}</span> </h1>
                                     <h4 style={{ fontSize: '1.4em', }}><span id="tour">{e.descripcionConcierto} </span></h4>
                                     <div className="col-12 border border-bottom my-3"></div>
@@ -899,13 +778,27 @@ const IndexFlas = () => {
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="d-flex  justify-content-center pt-3">
+                                  <div className="col-12 h-50 w-100"
+                                    style={{
+                                      height: 100,
+                                      width: '100%'
+                                    }} >
+                                    <div>
+                                      <div className="row" style={{ alignItems: 'stretch', lineHeight: '1', }} >
+                                        <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><b>Espacio de los auspiciaste<span id="horaEvento"></span></b></p>
+                                      </div>
+                                      <div className="col-12 border border-bottom mb-3"></div>
+                                    </div>
+                                  </div>
+                                  <div className=" col-12 text-center  pt-3"
+                                    style={{
+                                      bottom: 10,
+                                    }}
+                                  >
                                     <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                       className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >Comprar Entrada</p>
                                   </div>
                                 </div>
-
-
                               </div>
                               <div className="container col-12 col-md-6 rounded-7  px-0">
                                 <img src={!e.imagenConcierto ? e.imagenConcierto : mapa} className="img-fluid rounded-7 shadow-md " alt="" />

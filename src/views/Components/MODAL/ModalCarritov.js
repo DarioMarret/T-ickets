@@ -191,8 +191,8 @@ const ModalCarritoView = (prop) => {
                 </Modal.Header>
                 <Modal.Body  >
                     <div className="d-flex flex-wrap-reverse p-0 container-fluid"  >
-                        <div className="col-12  col-lg-6" >
-                            <div className=" pt-2 ">
+                        <div className="col-12 pt-0  col-lg-6" >
+                            <div className="  ">
                                 <div className="detalles-resumen"
                                 >
                                     <div className="bg-secondary d-none p-2 d-sm-block text-black flex-table row" role="rowgroup">
@@ -216,20 +216,21 @@ const ModalCarritoView = (prop) => {
                                                 detalle.map((e, i) => {
                                                     return (
                                                         <div className="d-flex flex-table row list-group-item" role="rowgroup" key={"items" + i}>
+
                                                             <div className="flex-row first  d-none d-sm-block col-sm p-0"
                                                                 style={{
                                                                     fontSize: "0.9em",
                                                                 }} >{e.localidad}</div>
-                                                            <div className="flex-row d-none d-sm-block  text-center col-2">${GetEstadousu().discapacidad === "No" ? e.valor * e.cantidad : e.discapacidad * e.cantidad}</div>
-                                                            <div className="flex-row d-none d-sm-block text-center  col-2">{e.cantidad}</div>
-                                                            <div className="d-flex d-sm-flex flex-row d-none d-sm-block   text-center align-items-center col-sm">
-                                                                <button className="btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
+                                                            <div className="  d-none d-sm-block  flex-row text-center col-2">${GetEstadousu().discapacidad === "No" ? e.valor * e.cantidad : e.discapacidad * e.cantidad}</div>
+                                                            <div className=" d-none d-sm-block flex-row  text-center  col-2">{e.cantidad}</div>
+                                                            <div className=" d-none d-sm-block d-flex d-sm-flex flex-row    text-center align-items-center col-sm">
+                                                                <button className=" d-none d-sm-block  btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
                                                                     <i className="fa fa-trash fa-1x"></i>
                                                                 </button>
-                                                                <button className="btn btn-primary mx-1  btn-sm " onClick={() => Abririlocalfirt(e.localidaEspacio)} >
+                                                                <button className=" d-none d-sm-block btn btn-primary mx-1  btn-sm " onClick={() => Abririlocalfirt(e.localidaEspacio)} >
                                                                     <i className="fa fa-edit"></i>
                                                                 </button>
-                                                                {seleciondesillas.filter(item => item.localidad == e.localidad).length > 0 ? <button className="btn btn-success  btn-sm"
+                                                                {seleciondesillas.filter(item => item.localidad == e.localidad).length > 0 ? <button className=" d-none d-sm-block btn btn-success  btn-sm"
                                                                     data-toggle="collapse" href={"#collapseExample" + i}
                                                                     aria-expanded="false"
                                                                     aria-controls={"#collapseExample" + i}
@@ -237,7 +238,9 @@ const ModalCarritoView = (prop) => {
                                                                     <i className="fa fa-eye fa-2xs"></i>
                                                                 </button> : ''}
                                                             </div>
-                                                            <div className=" col-6 d-block d-sm-none col-6 d-flex flex-row ">
+
+
+                                                            <div className="d-block d-sm-none col-6  col-6 d-flex flex-row ">
                                                                 <div className="d-flex flex-column ">
                                                                     <h5 className="card-title">{e.localidad}</h5>
 
@@ -245,7 +248,7 @@ const ModalCarritoView = (prop) => {
                                                                     <p className="card-subtitle">Cantidad {e.cantidad}</p>
                                                                 </div>
                                                             </div>
-                                                            <div className=" d-block d-sm-none col-6 d-sm-flex flex-row justify-content-center align-items-center text-center">
+                                                            <div className=" d-block d-sm-none col-6 d-flex flex-row justify-content-center align-items-center text-center">
                                                                 <button className="btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
                                                                     <i className="fa fa-trash fa-1x"></i>
                                                                 </button>
@@ -284,6 +287,7 @@ const ModalCarritoView = (prop) => {
                                                                     }
                                                                 </div>
                                                             </div>
+
                                                         </div>
                                                     )
                                                 })
@@ -294,24 +298,27 @@ const ModalCarritoView = (prop) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 col-lg-6 border rounded-5   p-0">
-                            <div className="d-flex flex-column justify-content-center text-center    justify-content-center d-sm-flex " style={{ height: "400px" }}>
+                        <div className="col-12 col-lg-6 border rounded-5   p-0"
+                            style={{ alignItems: 'stretch', lineHeight: '1', }}>
+                            <div className="d-flex flex-column  justify-content-center text-center p-0 d-sm-flex pb-0 " style={{ height: "400px" }}>
                                 <h5 style={{ fontSize: '', fontFamily: 'fantasy' }} >
                                     SELECCIONE LA LOCALIDAD EN EL MAPA O NOMBRE
                                 </h5>
-                                <div>
+                                <div className="">
                                     {showshop ?
-                                        <SvgselectView text={precios.mapa} />
+                                        <SvgselectView
+
+                                            text={precios.mapa} />
                                         : ''}
                                 </div>
                             </div>
-                            <div className="d-flex   col-12 flex-wrap pb-2 justify-content-between align-items-center p-0">
+                            <div className=" container-fluid d-flex pt-0   col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
                                 {precios.precios.length > 0 ?
                                     precios.precios.map((elm, i) => {
                                         return (
                                             <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                 <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 10, width: 10, backgroundColor: elm.color }}></div>
-                                                <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '0', minWidth: '120px', maxWidth: '120px' }} >
+                                                <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '130px' }} >
                                                     <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >{elm.localodad} </span>
                                                     <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >${elm.precio_normal} </span>
                                                 </div>

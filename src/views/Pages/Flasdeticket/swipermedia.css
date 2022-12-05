@@ -13,7 +13,7 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active {
     background-color: rgba(175, 170, 170, 0.884);
 }
 
-@media (max-width: 400px) {
+@media (max-width: 570px) {
     .descripciones {
         position: absolute;
         margin-left: auto;
@@ -28,5 +28,4 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active {
 
 .iti__selected-flag {
     background-color: #dee2e6 !important;
-
 }

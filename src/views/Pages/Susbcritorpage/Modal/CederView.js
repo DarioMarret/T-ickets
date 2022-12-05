@@ -6,6 +6,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { GetSuscritores } from "utils/Querypanel";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { Triangle } from "react-loader-spinner";
+
 const CederView = () => {
     let estatusModal = useSelector(state => state.SuscritorSlice.modal)
     let [alert, setAlert] = useState(null)
@@ -25,8 +26,8 @@ const CederView = () => {
             <SweetAlert
                 info
                 style={{ display: "block", marginTop: "-100px" }}
-                title="Estas Seguro de ceder el boleto?"
-                onConfirm={() => hideAlert()}
+                title="Estás Seguro de ceder el boleto?"
+                onConfirm={() => succesceder()}
                 onCancel={() => hideAlert()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
@@ -35,26 +36,29 @@ const CederView = () => {
                 showCancel
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
             >
-                Este ticket dejara de ser de su propiedad  y pasara a ser de {estatusModal.estado.nombre}
+                Este ticket dejara de ser de su propiedad  y pasara a ser de {datos.nombreCompleto}
             </SweetAlert>
-
         )
+    }
+    const succesceder = () => {
+        hideAlert()
+        usedispatch(setModal({ nombre: '', estado: '' }))
+        usedispatch(setToastes({
+            show: true,
+            message: 'se cambio el propietario del boleto',
+            color: 'bg-success', estado: 'Cambio exitoso '
+        }))
+
     }
     const hideAlert = () => {
         setAlert(null)
-        usedispatch(setModal({ nombre: '', estado: '' }))
     }
     const filterNames = async () => {
         let nombre = $('#cedula').val()
-        //  console.log(nombre)
         if (nombre.trim().length >= 10) {
             $("#search").removeClass("d-none")
-            //console.log(lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()))
-            //console.log(lista.find(e => e.cedula == nombre))
             if (lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()) != null) {
                 setDausuario({ ...lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()), whatsapp: lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()).movil, password: '', resgistro: true })
-
-
                 $('#movil').val(lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()).movil)
                 $("#search").addClass("d-none")
                 return
@@ -70,16 +74,14 @@ const CederView = () => {
                 $('#movil').val("")
                 usedispatch(setToastes({
                     show: true,
-                    message: 'el correo o cédula ingresados no se encontraron',
+                    message: 'El correo o cédula ingresados no se encontraron',
                     color: 'bg-danger', estado: 'No encontrado'
                 }))
             }
         } else if (nombre.length == 0) {
-
             $('#movil').val("")
         }
     }
-
     const handelChange = e => {
         setDausuario({
             ...datos,

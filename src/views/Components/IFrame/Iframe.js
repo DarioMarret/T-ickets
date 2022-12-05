@@ -1,16 +1,50 @@
 import zIndex from '@mui/material/styles/zIndex'
 import { Modal } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect, useRef, useState } from 'react'
+import SweetAlert from 'react-bootstrap-sweetalert'
 
 function Iframe(props) {
-    const { url, setEstadoFrame, intervalo } = props
+    const modal = useSelector((state) => state.SuscritorSlice.modal)
+    const usedispatch = useDispatch()
+
+    const { url, setEstadoFrame, intervalo, detener } = props
     const [height, setHeight] = useState(0)
     const [width, setWidth] = useState(1024)
-
+    const [alert, setAlert] = useState(null)
     window.addEventListener('resize', () => {
         setWidth(window.innerWidth)
         setHeight(window.innerHeight)
     })
+    const cerrarPago = () => {
+        detener()
+        useDispatch()
+    }
+    const successAlert = () => {
+        setAlert(
+            <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                title="Estas Seguro de cerrar?"
+                onConfirm={() => cerrarPago()}
+                onCancel={() => hideAlert()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                confirmBtnText="Confirmar"
+                cancelBtnText="Cancelar"
+                showCancel
+
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+            >
+                Se Borraran Todas las Localidades Seleccionadas
+            </SweetAlert>
+        );
+    };
+
+    const hideAlert = () => setAlert(null)
+
+
+
     useEffect(() => {
         renderWidth()
     }, [width, height])
@@ -24,8 +58,9 @@ function Iframe(props) {
     }
     return (
         <>
+            {alert}
             <Modal
-                show={true}
+                show={modal.nombre == "pago" ? true : false}
                 size="lg"
                 fullscreen={'lg-down'}
             >
@@ -43,7 +78,7 @@ function Iframe(props) {
                     <div className=" float-end ">
 
                     </div>
-                    <button type="button" className="close"  >
+                    <button type="button" className="close" onClick={successAlert} >
                         ×
                     </button>
                 </Modal.Header>

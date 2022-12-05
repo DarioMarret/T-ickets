@@ -16,7 +16,8 @@ import face from "../../../assets/imagen/footericon/face.png";
 import insta from "../../../assets/imagen/footericon/instagram.png";
 import tick from "../../../assets/imagen/footericon/tictok.png";
 import youtube from "../../../assets/imagen/footericon/youtube.png";
+import nombrepage from "../../../assets/imagen/nombrepage.png"
 export const pasados = [img1, img2, img3]
 export const carrusel = {
-    principal, secundaria, tercero, logofla, mapa, portal, icon, valla, android, ios, face, insta, tick, youtube
+    principal, secundaria, tercero, logofla, mapa, portal, icon, valla, android, ios, face, insta, tick, youtube, nombrepage
 } 

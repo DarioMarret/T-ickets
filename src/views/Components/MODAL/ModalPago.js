@@ -122,40 +122,23 @@ function ModalPago(props) {
                 <Modal.Header className=" d-flex  rounded-top-4   bg-dark pb-2
                  justify-content-between align-items-center">
                     <div className="d-flex flex-lg-row pb-2 container justify-content-between text-center" >
-
-
                         <h5 className=' text-white' style={{ fontFamily: 'fantasy', fontSize: '1.37em' }}>{intervalo ? "Tiempo restante para la compra" : ""}  </h5>
                         <h5 style={{ fontFamily: 'fantasy', fontSize: '1.7em' }}><span className=' text-danger' > {intervalo ? intervalo : ""} </span> </h5>
-
-
                         <div><button className='close text-light' onClick={closedeposito} >x</button></div>
-
                     </div>
-
-
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{
                         display: 'flex',
                         flexDirection: 'column',
-
                     }}>
-
-
                         <div className='d-flex flex-column pb-3' style={{ textAlign: '', fontWeight: '' }}>
-
                             <h5 style={{ fontSize: '1.1em', textTransform: '' }}>Una vez realizado el pago los boletos seran enviados a:
                             </h5>
-
-
-
                             <span className=' pt-2' style={{ fontWeight: '', fontSize: '1.1em' }}>
                                 {datosPerson.envio != "whatsapp" ? "Correo: " : "Whastapp: "}     <span>{datosPerson.envio != "whatsapp" ? datosPerson.email : datosPerson.whatsapp}</span>
-
                             </span>
                         </div>
-
-                        {/* //PAGO CON PAGO MEDIO */}
                         <label className='' htmlFor="pagoMedio"
                             style={{
                                 textAlign: 'center',
@@ -183,34 +166,6 @@ function ModalPago(props) {
                                 />
                             </div>
                         </label>
-
-
-                        {/* //PAGO CON PAYPHONE */}
-                        {/*<label htmlFor="payPhone"
-                        style={{
-                            textAlign: 'center',
-                        }}
-                    >
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                padding: '10px',
-                                cursor: 'pointer'
-                            }}
-                            onClick={() => CrearLinkPayPhone()}
-                        >
-                            <img
-                                src="https://codigomarret.online/img/payphone.jpeg"
-                                width={300}
-                                alt="Pagos medios"
-                            />
-                        </div>
-                        {/* 
-                    <ButtonPago cargar={cargar} /> }
-                    </label> */}
                         <div className='d-flex  justify-content-center'>
                             <div className=' container d-flex   px-0 mx-0 justify-content-between ' style={{ width: '90%' }}>
                                 <div className='px-'>
@@ -248,7 +203,38 @@ function ModalPago(props) {
                                 onClick={succesAlert}
                             >CANCELAR</button>
                         </div>
+                        <div>
+                            <div className={spinerst}
+                                style={{
+                                    display: 'none',
+                                    position: 'fixed',
+                                    top: '0',
+                                    left: '0',
+                                    width: '100%',
+                                    height: '100%',
+                                    backgroundColor: 'rgba(0,0,0,0.5)',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    zIndex: '1000'
+                                }}
+                            >
 
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: '10px',
+                                    padding: '10px',
+                                }}>
+                                    <Spinner animation="border" variant="light" size='120'></Spinner>
+                                    <h4 className='text-light'>Generando Link de Pago</h4>
+
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </Modal.Body>
@@ -393,7 +379,7 @@ function ModalPago(props) {
                     </div>
                 </div>
                 <div>
-                    <div className={spinerst}
+                    <div className={""}
                         style={{
                             display: 'none',
                             position: 'fixed',

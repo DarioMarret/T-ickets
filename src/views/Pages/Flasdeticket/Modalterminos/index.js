@@ -8,7 +8,7 @@ const Modalterminos = () => {
       <div className="modal-dialog   modal-lg" role="document">
         <div className="terminos  modal-content  ">
           <div className="modal-header">
-            <h5 className="modal-title text-center justify-content-center ">TÉRMINOS Y CONDICIONES</h5>
+            <h5 className="modal-title text-center justify-content-center text-dark ">TÉRMINOS Y CONDICIONES</h5>
             <button type="button" className=" close" data-dismiss="modal" aria-label="Close">
               <span className="" aria-hidden="true">x</span>
             </button>
@@ -90,7 +90,7 @@ const Modalterminos = () => {
                   <Accordion.Body>
                     En caso de cancelación definitiva del evento por cualquier causa, T-ICKETS es en su condición de simple intermediario para la distribución y venta del ticket, no se hacen responsable por la devolución del dinero pagado por este ticket, siendo única y exclusivamente responsable el empresario, promotor o productor del evento. El presente ticket es emitido por la imprenta autorizada por mandato del empresario quien es la única persona legalmente responsable del evento, información impresa en la parte frontal del presente ticket. T-ICKETS gestionará la devolución solo en caso de ser contratado por EL EMPRESARIO para esta gestión. En caso que T-ICKETS gestione la devolución del dinero, EL CLIENTE deberá seguir las indicaciones publicadas en el sitio web WWW.T-ICKET.COM.</Accordion.Body>
                 </Accordion.Item>
-                <Accordion.Item eventKey="11" >
+                <Accordion.Item eventKey="12" >
                   <Accordion.Header>DECIMA TERCERA</Accordion.Header>
                   <Accordion.Body>
                     EL CLIENTE acepta que los tickets comprados o reservados por la web WWW.t-ICKETS.COM deberán ser recogidos por el usuario registrado en el sistema de T-ICKETS o por la persona que el usuario haya indicado en el proceso de la compra, mostrando su documento de identidad original.

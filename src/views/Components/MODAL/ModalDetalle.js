@@ -286,7 +286,7 @@ function ModalDetalle(props) {
                                 id="formaPago" disabled={true}
                                 placeholder="forma de pago Selecionada"
                             />
-                            <div className="col-12 border border-bottom mb-3"></div>
+                            <div className="d-none col-12  border border-bottom mb-3"></div>
 
 
                             <span>Cedula DNI:</span>
@@ -313,7 +313,7 @@ function ModalDetalle(props) {
                                 placeholder="Ingrese su nombre completo"
                             />
                         </div>
-                        <div className="col-12 col-sm-6 d-flex flex-column">
+                        <div className="col-12 col-sm-6 d-flex flex-column   ">
                             <span>Forma de envío:</span>
                             <div>
                                 <select className="form-select" required
@@ -329,7 +329,7 @@ function ModalDetalle(props) {
                                 </select>
                             </div>
 
-                            <div className="col-12 border border-bottom mb-3"></div>
+                            <div className=" d-none col-12 border border-bottom mb-3"></div>
 
                             <span>Correo:</span>
                             <input type="email"

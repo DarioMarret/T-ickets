@@ -128,6 +128,7 @@ const TabunoView = (props) => {
                         id: '',
                         array: ''
                     })
+
                     setFilas([])
                     usedispatch(setToastes({ show: true, message: 'Localidad creada correctamente', color: 'bg-success', estado: 'Datos guardados' }))
                 }
@@ -149,19 +150,20 @@ const TabunoView = (props) => {
         else {
             try {
                 const actualiza = await AptualizarLocalida({ "id": nmobretabuno.id, "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
+                //console.log(JSON.stringify(ListaFilas))
                 if (actualiza.success) {
-                    SetDataloca({
-                        typo: '',
+
+                    setLocalidad({
                         nombre: '',
                         description: '',
-                        id: '',
-                        array: ''
+                        id: ''
                     })
+                    setFilas([])
                     usedispatch(setToastes({ show: true, message: 'Localidad actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
                 }
 
             } catch (error) {
-                usedispatch(setToastes({ show: true, message: 'Hubo un error, Complete todos los datos y verifique no sobrepasar el limite de 39 sillas', color: 'bg-danger', estado: 'Datos incompletos' }))
+                usedispatch(setToastes({ show: true, message: 'Hubo un error, Complete todos los datos y verifique no sobrepasar el limite de  sillas', color: 'bg-danger', estado: 'Datos incompletos' }))
 
                 console.log(error)
 
@@ -258,7 +260,7 @@ const TabunoView = (props) => {
                     </div>
                     <div className="col-sm-2 text-left">
                         <label className="form-label" style={{ color: 'white' }}><b>.</b></label><br />
-                        <button className="btn btn-info" onClick={GeneraFilas}><i className="fa fa-plus"></i></button>
+                        <button className="btn btn-success" onClick={GeneraFilas}><i className="fa fa-plus"></i></button>
                     </div>
                     <div className="col-sm-5">
                         <label className="form-label"><b>Sillas x fila</b></label>

@@ -2,6 +2,7 @@ import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { Form } from "react-bootstrap";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 const ModalConfima = (prop) => {
     const { setrepShow, pararcontador } = prop
     let usedispatch = useDispatch()
@@ -14,6 +15,8 @@ const ModalConfima = (prop) => {
     function confirmar() {
         usedispatch(setModal({ nombre: '', estado: '' }))
         pararcontador()
+        usedispatch(setToastes({ show: true, message: 'Datos del deposito Guardado ', color: 'bg-success', estado: 'Se guardo el numero de control' }))
+
     }
 
 
@@ -29,12 +32,8 @@ const ModalConfima = (prop) => {
                         </h3>
 
                     </div>
-                    <div className=" float-left "
-                        style={{ marginTop: '-45px' }}
-                    >
-                        <button type="button" className="  text-light"
-                            onClick={cerrar}
-                        >
+                    <div className=" float-left " style={{ marginTop: '-45px' }}>
+                        <button type="button" className="text-light" onClick={cerrar}>
                             ×
                         </button>
                     </div>

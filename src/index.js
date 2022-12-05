@@ -16,6 +16,7 @@ import Subcr from "layouts/Subsc";
 import Indexflas from "../src/views/Pages/Flasdeticket"
 import { store } from "StoreRedux/store";
 import { Provider } from 'react-redux';
+import ToastViews from "views/Components/TOAST/toast";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 /*<Route path="/panel" render={(props)=> <Subcr {...props}/> }/>*/
 
@@ -31,5 +32,6 @@ root.render(
         <Route path="*" to="/" />
       </Switch>
     </BrowserRouter>
+    <ToastViews />
   </Provider>
 );

@@ -257,6 +257,15 @@ export const ListarEventos = async (parms) => {
     })
     return data;
 }
+export const EventosActivos = async () => {
+    const { data } = await axios.get(Host + "listareventos/ACTIVO", {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+        }
+    })
+    return data;
+}
 export const listarpreciolocalidad = async (parms) => {
     const { data } = await axios.get(Host + "ListaPreciosLocalidades/" + parms, {
         header: {

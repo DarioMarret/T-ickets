@@ -228,9 +228,9 @@ function PerfilPage(props) {
   return (
     <>
 
-      <Container fluid>
+      <Container fluid className="px-0">
         {alert}
-        <div className="section-image" data-image="../../assets/img/bg5.jpg">
+        <div className="section-image" >
           {/* you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " */}
           <Container>
             <Row className="d-flex justify-content-center">

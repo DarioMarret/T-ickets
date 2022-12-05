@@ -106,7 +106,6 @@ const EventosViews = () => {
       <CederView />
       <div className="row">
         <div className="col-md-12">
-
           <div className="card text-left">
             <div className="card-header">
               Eventos y Tickets
@@ -178,7 +177,6 @@ const EventosViews = () => {
                       width: '100%',
                     }}
                   >
-
                     <Typography>ciudad : {row.original.ciudad} </Typography>
                     <Typography>Concierto : {row.original.concierto} </Typography>
                     <Typography sx={{
@@ -189,10 +187,6 @@ const EventosViews = () => {
                       <QRCodeCanvas value={row.original.qr} />
                     </Typography>
                     <Typography>Protocolo : {row.original.protocolo} </Typography>
-
-
-
-
                   </Box>
                 )}
 

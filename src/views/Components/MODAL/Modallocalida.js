@@ -40,7 +40,7 @@ const LocalidadmapViews = (props) => {
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
-        if (TotalSelecion() != 10)
+        if (TotalSelecion() < 10)
             TiendaIten(producto), setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
         else
             succesLimit()
@@ -228,7 +228,7 @@ const LocalidadmapViews = (props) => {
             if (!this.classList.contains('seleccionado') && !this.classList.contains('ocupado') && !this.classList.contains("reservado")) {
                 let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
                 // console.log(obtenerdatosConcierto())
-                if (TotalSelecion() != 10) {
+                if (TotalSelecion() < 10) {
                     this.classList.remove('disponible')
                     this.classList.add('seleccionado')
                     // enviasilla()
@@ -237,16 +237,11 @@ const LocalidadmapViews = (props) => {
                     AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                     enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
-                        //console.log(ouput)
                         usedispatch(filtrarlocali(ouput))
-                        // console.log(ouput)
                     }
                     ).catch(exit => {
-
                         console.log(exit)
                     })
-                    // enviasilla({ id: nombres.idcolor, silla: this.classList[0] })
-
                 } else
                     succesLimit()
             }
@@ -263,20 +258,10 @@ const LocalidadmapViews = (props) => {
             return
         }
     })
-    /*$(document).on('click', 'li.cargados', function () {
-        if (!this.classList.contains('disponible')) {
-            let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-            $("a." + this.classList[0]).removeClass("seleccionado").addClass("disponible");
-            $("a." + this.classList[0]).removeClass("seleccionado").addClass("disponible");
-            succesElimAlertli({ "localidad": nombres.localodad, "localidaEspacio": nombres, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "borrar" })
-        }
-        return
-    })*/
-
     $(document).on('click', 'a.disponible', function () {
         if (!this.classList.contains('seleccionado')) {
             let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-            if (TotalSelecion() != 10) {
+            if (TotalSelecion() < 10) {
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
                 AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
@@ -580,7 +565,7 @@ const LocalidadmapViews = (props) => {
                             }
                         </div>
 
-                        <div className="col-2 d-none d-flex align-items-center justify-content-end" >
+                        <div className="  d-none  col-2 align-items-center justify-content-end" >
                             <div>
                                 <button className="btn btn-primary " onClick={() => usedispatch(clearSillas({}))} > <i className="fa fa-plus" ></i> </button>
                             </div>
