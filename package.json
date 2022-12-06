@@ -1,13 +1,9 @@
 {
   "name": "t-ickets",
   "version": "2.0.1",
-  "homepage": ".",
   "private": true,
   "dependencies": {
-    "@chakra-ui/react": "^2.3.6",
     "@date-io/date-fns": "^2.16.0",
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
     "@fortawesome/fontawesome-free": "5.15.2",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
@@ -27,7 +23,6 @@
     "datatables.net-responsive-bs4": "^2.4.0",
     "date-fns": "^2.0.0-beta.5",
     "export-to-csv": "^0.2.1",
-    "framer-motion": "^7.6.1",
     "history": "5.3.0",
     "iframe-resizer-react": "^1.1.0",
     "intl-tel-input": "^17.0.19",
