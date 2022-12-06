@@ -162,6 +162,7 @@ const ModalCarritoView = (prop) => {
                 show={showshop}
                 size="lg"
                 fullscreen={'md-down'}
+                className="modalCarrito"
             // fullscreen={true}
             >
                 <Modal.Header >
@@ -171,7 +172,6 @@ const ModalCarritoView = (prop) => {
                                 style={{ fontFamily: 'fantasy' }}
                             >Boletería </h5>
                         </div>
-
                     </div>
                     <div className=" float-end ">
                         <div>
@@ -180,7 +180,7 @@ const ModalCarritoView = (prop) => {
                             >  Tiempo restante para la compra <span className="text-danger"
                                 style={{
                                     fontFamily: 'fantasy',
-                                    fontSize: '1.3em'
+                                    fontSize: '1.2em'
                                 }}
                             >{intervalo}</span> </h5>
                         </div>
@@ -210,97 +210,96 @@ const ModalCarritoView = (prop) => {
                                         <h4>AGREGADOS</h4>
 
                                     </div>
-                                    <div className=" px-2  list-group-flush" style={{ maxHeight: '500px', overflowY: 'auto', overflowX: 'hidden' }}>
-                                        {
-                                            detalle.length > 0 ?
-                                                detalle.map((e, i) => {
-                                                    return (
-                                                        <div className="d-flex flex-table row list-group-item" role="rowgroup" key={"items" + i}>
+                                    <div className="px-2  list-group-flush" style={{ maxHeight: '500px', overflowY: 'auto', overflowX: 'hidden' }}>
+                                        {detalle.length > 0 ?
+                                            detalle.map((e, i) => {
+                                                return (
+                                                    <div className="d-flex flex-table row list-group-item" role="rowgroup" key={"items" + i}>
 
-                                                            <div className="flex-row first  d-none d-sm-block col-sm p-0"
-                                                                style={{
-                                                                    fontSize: "0.9em",
-                                                                }} >{e.localidad}</div>
-                                                            <div className="  d-none d-sm-block  flex-row text-center col-2">${GetEstadousu().discapacidad === "No" ? e.valor * e.cantidad : e.discapacidad * e.cantidad}</div>
-                                                            <div className=" d-none d-sm-block flex-row  text-center  col-2">{e.cantidad}</div>
-                                                            <div className=" d-none d-sm-block d-flex d-sm-flex flex-row    text-center align-items-center col-sm">
-                                                                <button className=" d-none d-sm-block  btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
-                                                                    <i className="fa fa-trash fa-1x"></i>
-                                                                </button>
-                                                                <button className=" d-none d-sm-block btn btn-primary mx-1  btn-sm " onClick={() => Abririlocalfirt(e.localidaEspacio)} >
-                                                                    <i className="fa fa-edit"></i>
-                                                                </button>
-                                                                {seleciondesillas.filter(item => item.localidad == e.localidad).length > 0 ? <button className=" d-none d-sm-block btn btn-success  btn-sm"
-                                                                    data-toggle="collapse" href={"#collapseExample" + i}
-                                                                    aria-expanded="false"
-                                                                    aria-controls={"#collapseExample" + i}
-                                                                >
-                                                                    <i className="fa fa-eye fa-2xs"></i>
-                                                                </button> : ''}
+                                                        <div className="flex-row first  d-none d-sm-block col-sm p-0"
+                                                            style={{
+                                                                fontSize: "0.9em",
+                                                            }} >{e.localidad}</div>
+                                                        <div className="d-none d-sm-block  flex-row text-center col-2">${GetEstadousu().discapacidad === "No" ? e.valor * e.cantidad : e.discapacidad * e.cantidad}</div>
+                                                        <div className="d-none d-sm-block flex-row  text-center  col-2">{e.cantidad}</div>
+                                                        <div className="d-none d-sm-block d-flex d-sm-flex flex-row    text-center align-items-center col-sm">
+                                                            <button className=" d-none d-sm-block  btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
+                                                                <i className="fa fa-trash fa-1x"></i>
+                                                            </button>
+                                                            <button className=" d-none d-sm-block btn btn-primary mx-1  btn-sm " onClick={() => Abririlocalfirt(e.localidaEspacio)} >
+                                                                <i className="fa fa-edit"></i>
+                                                            </button>
+                                                            {seleciondesillas.filter(item => item.localidad == e.localidad).length > 0 ? <button className=" d-none d-sm-block btn btn-success  btn-sm"
+                                                                data-toggle="collapse" href={"#collapseExample" + i}
+                                                                aria-expanded="false"
+                                                                aria-controls={"#collapseExample" + i}
+                                                            >
+                                                                <i className="fa fa-eye fa-2xs"></i>
+                                                            </button> : ''}
+                                                        </div>
+
+
+                                                        <div className="d-block d-sm-none col-6  col-6 d-flex flex-row ">
+                                                            <div className="d-flex flex-column ">
+                                                                <h5 className="card-title">{e.localidad}</h5>
+
+                                                                <p className="card-subtitle">Valor ${e.valor * e.cantidad}</p>
+                                                                <p className="card-subtitle">Cantidad {e.cantidad}</p>
                                                             </div>
-
-
-                                                            <div className="d-block d-sm-none col-6  col-6 d-flex flex-row ">
-                                                                <div className="d-flex flex-column ">
-                                                                    <h5 className="card-title">{e.localidad}</h5>
-
-                                                                    <p className="card-subtitle">Valor ${e.valor * e.cantidad}</p>
-                                                                    <p className="card-subtitle">Cantidad {e.cantidad}</p>
-                                                                </div>
-                                                            </div>
-                                                            <div className=" d-block d-sm-none col-6 d-flex flex-row justify-content-center align-items-center text-center">
-                                                                <button className="btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
-                                                                    <i className="fa fa-trash fa-1x"></i>
-                                                                </button>
-                                                                <button className="btn btn-primary mx-1  btn-sm " onClick={() => Abririlocalfirt(e.localidaEspacio)} >
-                                                                    <i className="fa fa-edit"></i>
-                                                                </button>
-                                                                {seleciondesillas.filter(item => item.localidad == e.localidad).length > 0 ? <button className="btn btn-success  btn-sm"
-                                                                    data-toggle="collapse" href={"#collapseExample" + i}
-                                                                    aria-expanded="false"
-                                                                    aria-controls={"#collapseExample" + i}
-                                                                >
-                                                                    <i className="fa fa-eye fa-2xs"></i>
-                                                                </button> : ''}
-                                                            </div>
-                                                            <div className="collapse" id={"collapseExample" + i}>
-                                                                <div className="d-flex flex-wrap">
-                                                                    {
-                                                                        seleciondesillas.filter(item => item.localidad == e.localidad).length > 0 ?
-                                                                            seleciondesillas.filter(item => item.localidad == e.localidad && item.estado == "seleccionado").map((elm, id) => {
-                                                                                return (
-                                                                                    <div key={id} className={elm.silla + ' d-flex rounded-5  bg-success justify-content-center align-items-center '}
-                                                                                        style={{ height: '30px', width: '60px', margin: '1px' }} >
-                                                                                        <div className={'d-flex   text-white justify-content-center  '} >
-                                                                                            <div className="d-flex flex-wrap justify-content-center text-center p-2">
-                                                                                                <span className="mx-1" style={{ fontSize: '0.7em' }}>{elm.silla.replace("-", " ").split(" ")[0]}</span>
-                                                                                                <span style={{ fontSize: '0.7em' }}>{elm.silla.replace("-", " ").split(" ")[1]}</span>
-                                                                                            </div>
+                                                        </div>
+                                                        <div className="d-block d-sm-none col-6 d-flex flex-row justify-content-center align-items-center text-center">
+                                                            <button className="d-block d-sm-none btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
+                                                                <i className="fa fa-trash fa-1x"></i>
+                                                            </button>
+                                                            <button className="d-block d-sm-none btn btn-primary mx-1  btn-sm " onClick={() => Abririlocalfirt(e.localidaEspacio)} >
+                                                                <i className="fa fa-edit"></i>
+                                                            </button>
+                                                            {seleciondesillas.filter(item => item.localidad == e.localidad).length > 0 ? <button className="d-block d-sm-none btn btn-success  btn-sm"
+                                                                data-toggle="collapse" href={"#collapseExample" + i}
+                                                                aria-expanded="false"
+                                                                aria-controls={"#collapseExample" + i}
+                                                            >
+                                                                <i className="fa fa-eye fa-2xs"></i>
+                                                            </button> : ''}
+                                                        </div>
+                                                        <div className="collapse" id={"collapseExample" + i}>
+                                                            <div className="d-flex flex-wrap">
+                                                                {
+                                                                    seleciondesillas.filter(item => item.localidad == e.localidad).length > 0 ?
+                                                                        seleciondesillas.filter(item => item.localidad == e.localidad && item.estado == "seleccionado").map((elm, id) => {
+                                                                            return (
+                                                                                <div key={id} className={elm.silla + ' d-flex rounded-5  bg-success justify-content-center align-items-center '}
+                                                                                    style={{ height: '30px', width: '60px', margin: '1px' }} >
+                                                                                    <div className={'d-flex   text-white justify-content-center  '} >
+                                                                                        <div className="d-flex flex-wrap justify-content-center text-center p-2">
+                                                                                            <span className="mx-1" style={{ fontSize: '0.7em' }}>{elm.silla.replace("-", " ").split(" ")[0]}</span>
+                                                                                            <span style={{ fontSize: '0.7em' }}>{elm.silla.replace("-", " ").split(" ")[1]}</span>
                                                                                         </div>
                                                                                     </div>
+                                                                                </div>
 
-                                                                                )
-                                                                            }) :
-                                                                            <div className="d-flex text-center" >
+                                                                            )
+                                                                        }) :
+                                                                        <div className="d-flex text-center" >
 
-                                                                            </div>
-                                                                    }
-                                                                </div>
+                                                                        </div>
+                                                                }
                                                             </div>
-
                                                         </div>
-                                                    )
-                                                })
-                                                : ''
+
+                                                    </div>
+                                                )
+                                            })
+                                            : ''
                                         }
                                         <div className="d-flex flex-table row list-group-item" role="rowgroup"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 col-lg-6 border rounded-5   p-0"
+                        <div className="col-12 col-lg-6 border rounded-5   px-0"
                             style={{ alignItems: 'stretch', lineHeight: '1', }}>
-                            <div className="d-flex flex-column  justify-content-center text-center p-0 d-sm-flex pb-0 " style={{ height: "400px" }}>
+                            <div className="d-flex flex-column   justify-content-center  text-center p-0 d-sm-flex pb-0 " style={{ height: "400px" }}>
                                 <h5 style={{ fontSize: '', fontFamily: 'fantasy' }} >
                                     SELECCIONE LA LOCALIDAD EN EL MAPA O NOMBRE
                                 </h5>
@@ -312,7 +311,7 @@ const ModalCarritoView = (prop) => {
                                         : ''}
                                 </div>
                             </div>
-                            <div className=" container-fluid d-flex pt-0   col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
+                            <div className=" container-fluid d-flex pt-1   col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
                                 {precios.precios.length > 0 ?
                                     precios.precios.map((elm, i) => {
                                         return (

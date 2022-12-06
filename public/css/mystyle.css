@@ -4,7 +4,6 @@
   height: 36px;
   border-radius: 50%;
   border-left-color: #09f;
-
   animation: spin 1s ease infinite;
 }
 
@@ -34,11 +33,14 @@ table.vertical-align>tbody>tr>td {
 .comp {
   background-color: rgba(125, 128, 131, 0.897) !important;
 }
+
 .footer-fluid {
-  position:fixed;
-  left:0px;
-  bottom:0px;
- 
-  width:100%;
-  
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+}
+
+.modal-dialog {
+  border-radius: 20px !important;
 }

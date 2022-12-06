@@ -13,20 +13,21 @@ export default function Footer(props) {
                 <div className=" d-none container d-none justify-content-center p-2">
                     <div className="row text-center p-2">
                         <div className="col-12 col-lg-3">
-                            <li className=" unlisted nav-item" href="#!" ><a className="nav-link text-white" role="link"
+                            <li className=" unlisted nav-item" href="#!" ><a className="nav-link text-white"
                                 href="#!">Quiénes Somos</a> </li>
                         </div>
                         <div className="col-12 col-lg-3">
                             <li className="unlisted nav-item" ><a
-                                className="nav-link text-white" role="link" >Términos y condiciones</a>
+                                className="nav-link text-white"  >Términos y condiciones</a>
                             </li>
                         </div>
                         <div className="col-12 col-lg-3">
-                            <li className="unlisted nav-item" ><a className="nav-link text-white" role="link"
-                                href="#!">Puntos de venta</a> </li>
+                            <li className="unlisted nav-item" >
+                                <a className="nav-link text-white"
+                                    href="#!">Puntos de venta</a> </li>
                         </div>
                         <div className="col-12 col-lg-3">
-                            <li className="unlisted nav-item" ><a className="nav-link text-white" role="link">Contáctanos</a> </li>
+                            <li className="unlisted nav-item" ><a className="nav-link text-white" >Contáctanos</a> </li>
                         </div>
                     </div>
                 </div>
@@ -88,8 +89,8 @@ export default function Footer(props) {
                             <div className="d-flex  flex-column  pb-2" style={{ minWidth: '120px', maxWidth: '' }} >
                                 <span className=" text-white" style={{ fontSize: '0.7em', }} >
                                     Al permanecer en esta página, usted acuerda aceptar nuestros
-                                    <a className="unlisted nav-item px-1" data-toggle="modal" data-target="#terminosModalModal" aria-label="terminos"><a
-                                        className="nav-item text-white link-light" role="link" data-target="#terminosModalLong">Términos y condiciones</a>
+                                    <a className="unlisted link-light nav-item px-1" href='#!' data-toggle="modal" data-target="#terminosModalModal" aria-label="terminos">
+                                        Términos y condiciones
                                     </a> </span>
                             </div>
                         </div>

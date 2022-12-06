@@ -211,7 +211,7 @@ function PerfilPage(props) {
         const suscrito = await GetSuscritores()
         console.log()
         const dato = suscrito.users.filter((e) => e.id == info.id)
-        // console.log(dato)
+        console.log(dato)
         setPerson({ ...info, new_password: '', enable: dato[0].enable })
         // console.log({...info,new_password:'',enable:dato[0].enable})
         //console.log(dato)

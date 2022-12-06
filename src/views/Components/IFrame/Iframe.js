@@ -91,7 +91,7 @@ function Iframe(props) {
                     <iframe
                         src={url ? url : "https://pagourl.com/f/2y-13-car9uvqdnfak3rdv3qwqvon1wqcwj0mv8hyjoaojhlyv-v86jh-3"}
                         title="W3Schools Free Online Web Tutorials"
-                        Width={'100%'}
+                        width='100%'
                         height={renderWidth()}
                         style={{
                             border: 'none',

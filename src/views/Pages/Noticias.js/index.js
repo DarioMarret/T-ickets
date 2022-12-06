@@ -18,6 +18,11 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { columnsTicket } from "utils/ColumnTabla";
+
+
+
+
+
 export default function NoticiasView() {
 
     const imagenes = {
@@ -32,7 +37,8 @@ export default function NoticiasView() {
     const [datos, setDatos] = useState({
         encabezado: '',
         descipcion: '',
-        fechamax: ''
+        fechamax: '',
+        mas: ''
     })
     const handelchange = (e) => {
         setTipo(e.value)
@@ -59,15 +65,250 @@ export default function NoticiasView() {
         img.src = window.URL.createObjectURL(e.files[0])
         setImg(img.src)
     }
+    const tipoevento = {
+        Evento: <div className="row ">
+            <div className="row col-12">
+                <div className="col-6 ">
+                    <label className="form-label">Seleccione un evento </label>
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text"><i className="fa fa-search"></i></span>
+                        </div>
+                        <select className="form-select" defaultValue={""} onChange={(e) => handelchangeEvento(e.target)} >
+                            <option disabled value="">Seleccione el el evento </option>
+                            {
+                                eventos.length > 0 ? eventos.map((el, i) => {
+                                    return (
+                                        <option key={i} value={el.id} >{el.nombreConcierto}</option>
+                                    )
+                                }) : ''
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div className="row " >
+                <div className="col-6">
+                    <label className="form-label">Encabezado </label>
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text"><i className="fab fa-leanpub"></i></span>
+                        </div>
+                        <input type="text"
+                            className="form-control numero"
+                            name="encabezado"
+                            value={datos.encabezado}
+                            onChange={(e) => handelchangedatos(e.target)}
+                        />  </div>
+                </div>
+                <div className="col-6">
+                    <label className="form-label" >Breve descripción </label>
+                    <div className=" input-group mb-3">
+                        <div className="   input-group-append ">
+                            <span className=" input-group-text" > <i className="fab fa-leanpub "></i></span>
+                        </div>
+                        <input className=" form-control"
+                            name="descipcion"
+                            value={datos.descipcion}
+                            onChange={(e) => handelchangedatos(e.target)}
+                        ></input>
+                    </div>
+                </div>
+            </div>
+            <div className="row" >
+                <div className="col-6">
+                    <label className=" form-label " > Imagen del Evento </label>
+                    <div className="custom-file" >
+                        <input className="  form-control" type="file"
+                            onChange={(e) => handelchangeComposeventos(e.target)}
+                        />
+                    </div>
+                </div>
+                <div className="col-6">
+                    <label className=" form-label">Fecha maxima de presentación</label>
+                    <div className=" input-group mb-3">
+                        <div className=" input-group-append ">
+                            <span className=" input-group-text "><i className=" fa fa-calendar "></i></span>
+                        </div>
+                        <input className=" form-control"
+                            name="fechamax"
+                            min={fechamin}
+                            type="date"
+                            onChange={(e) => handelchangedatos(e.target)}
+                        ></input>
+                    </div>
+                </div>
+            </div>
+            <div>
+            </div>
+        </div>,
+        publicidad:
+            <div className="row">
+                <div className="col-6">
+                    <label className="form-label">Encabezado </label>
+
+                    <div className="input-group mb-3">
+
+                        <div className="input-group-prepend">
+                            <span className="input-group-text"><i className="fab fa-leanpub"></i></span>
+                        </div>
+
+                        <input type="text"
+                            className="form-control numero"
+                            name="encabezado"
+                            value={datos.encabezado}
+                            onChange={(e) => handelchangedatos(e.target)}
+                        />  </div>
+                </div>
+                <div className="col-6">
+                    <label className="form-label" >Breve descripción </label>
+                    <div className=" input-group mb-3">
+                        <div className="   input-group-append ">
+                            <span className=" input-group-text" > <i className="fab fa-leanpub "></i></span>
+                        </div>
+                        <input className=" form-control"
+                            name="descipcion"
+                            value={datos.descipcion}
+                            onChange={(e) => handelchangedatos(e.target)}
+                        ></input>
+                    </div>
+                </div>
+                <div>
+                    <div className="row" >
+                        <div className="col-6">
+                            <label className=" form-label " > Imagen del Evento </label>
+                            <div className="custom-file" >
+                                <input className="  form-control" type="file"
+                                    onChange={(e) => handelchangeComposeventos(e.target)}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-6">
+                            <label className=" form-label">Fecha maxima de presentación</label>
+                            <div className=" input-group mb-3">
+                                <div className=" input-group-append ">
+                                    <span className=" input-group-text "><i className=" fa fa-calendar "></i></span>
+                                </div>
+                                <input className=" form-control"
+                                    name="fechamax"
+                                    min={fechamin}
+                                    type="date"
+                                    onChange={(e) => handelchangedatos(e.target)}
+                                ></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row" >
+                        <div className="col-12">
+                            <label className="form-label"> Boton Ver mas  </label>
+                            <div className=" input-group mb-3">
+                                <div className=" input-group-append ">
+                                    <span className=" input-group-text "><i className=" fa fa-link "></i></span>
+                                </div>
+                                <input className="  form-control"
+                                    name="mas"
+                                    value={datos.mas}
+                                    onChange={(e) => handelchangedatos(e.target)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>,
+        informativo:
+            <div className="row">
+                <div className="col-6">
+                    <label className="form-label">Encabezado </label>
+
+                    <div className="input-group mb-3">
+
+                        <div className="input-group-prepend">
+                            <span className="input-group-text"><i className="fab fa-leanpub"></i></span>
+                        </div>
+
+                        <input type="text"
+                            className="form-control numero"
+                            name="encabezado"
+                            value={datos.encabezado}
+                            onChange={(e) => handelchangedatos(e.target)}
+                        />  </div>
+                </div>
+                <div className="col-6">
+                    <label className="form-label" >Breve descripción </label>
+                    <div className=" input-group mb-3">
+                        <div className="   input-group-append ">
+                            <span className=" input-group-text" > <i className="fab fa-leanpub "></i></span>
+                        </div>
+                        <input className=" form-control"
+                            name="descipcion"
+                            value={datos.descipcion}
+                            onChange={(e) => handelchangedatos(e.target)}
+                        ></input>
+                    </div>
+                </div>
+                <div>
+                    <div className="row" >
+                        <div className="col-6">
+                            <label className=" form-label " > Imagen del Evento </label>
+                            <div className="custom-file" >
+                                <input className="  form-control" type="file"
+                                    onChange={(e) => handelchangeComposeventos(e.target)}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-6">
+                            <label className=" form-label">Fecha maxima de presentación</label>
+                            <div className=" input-group mb-3">
+                                <div className=" input-group-append ">
+                                    <span className=" input-group-text "><i className=" fa fa-calendar "></i></span>
+                                </div>
+                                <input className=" form-control"
+                                    name="fechamax"
+                                    min={fechamin}
+                                    type="date"
+                                    onChange={(e) => handelchangedatos(e.target)}
+
+                                ></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row" >
+                        <div className="col-12">
+                            <label className="form-label"> Boton Ver información  </label>
+                            <div className=" input-group mb-3">
+                                <div className=" input-group-append ">
+                                    <span className=" input-group-text "><i className="fa fa-info "></i></span>
+                                </div>
+                                <input className="  form-control"
+                                    name="mas"
+                                    value={datos.mas}
+                                    onChange={(e) => handelchangedatos(e.target)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+    }
+    const tipobutton = {
+        informativo: <button className="btn border rounded-1  btn-lg btn-outline-light "
+            style={styleswiper.button}>VER Infomación</button>,
+        Evento: <button className="btn border rounded-1  btn-lg btn-outline-light "
+            style={styleswiper.button}>VER MÁS</button>,
+        publicidad: <a className="btn border rounded-1  btn-lg btn-outline-light "
+            style={styleswiper.button}
+            href={datos.mas}
+            target="_blank"
+        >VER MÁS</a>
+    }
     useEffect(() => {
         EventosActivos().then(oupt => {
             setEventos(oupt.data)
             console.log(oupt)
         }).catch(err => console.log(err))
-
     }, [])
-
-
     return (
         <>
             <Row className={show ? "" : "d-none" + " container-fluid pb-2 "}>
@@ -87,7 +328,6 @@ export default function NoticiasView() {
                                 <div style={styleswiper.fondo}>
                                 </div>
                                 <div className="descripciones ">
-
                                     <div className="d-flex  flex-column text-white" >
                                         <div className="py-3 d-none d-sm-block   ">
                                             <div className=" row d-flex  align-items-center p-1">
@@ -115,9 +355,9 @@ export default function NoticiasView() {
                                             {datos.descipcion}
                                         </span>
                                         <div className="pt-2 ">
-                                            <button className="btn border rounded-1  btn-lg btn-outline-light "
-                                                style={styleswiper.button}
-                                            >VER MÁS</button>
+
+
+                                            {tipobutton[Tipo]}
                                         </div>
                                     </div>
                                 </div>
@@ -140,158 +380,26 @@ export default function NoticiasView() {
                             <div className="row p-2">
                                 <form className="row " onSubmit={onSubmit} >
                                     <div className="col-md-12">
+
                                         <div className="col-6 px-0">
+
                                             <label className="form-label">Tipo de noticia </label>
-                                            <select className="form-select" value={Tipo} onChange={(e) => handelchange(e.target)} required>
-                                                <option value="Evento">Evento </option>
-                                                <option value={"informativo"}>Informativo</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    {Tipo != "Evento" ? <div className="row">
-                                        <div className="col-6">
-                                            <label className="form-label">Encabezado </label>
-
-                                            <div className="input-group mb-3">
-
-                                                <div className="input-group-prepend">
-                                                    <span className="input-group-text"><i className="fab fa-leanpub"></i></span>
-                                                </div>
-
-                                                <input type="text"
-                                                    className="form-control numero"
-                                                    name="encabezado"
-                                                    value={datos.encabezado}
-                                                    onChange={(e) => handelchangedatos(e.target)}
-                                                />  </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <label className="form-label" >Breve descripción </label>
                                             <div className=" input-group mb-3">
                                                 <div className="   input-group-append ">
-                                                    <span className=" input-group-text" > <i className="fab fa-leanpub "></i></span>
+                                                    <span className=" input-group-text" > <i className="fa fa-question "></i></span>
                                                 </div>
-                                                <input className=" form-control"
-                                                    name="descipcion"
-                                                    value={datos.descipcion}
-                                                    onChange={(e) => handelchangedatos(e.target)}
-                                                ></input>
+                                                <select className="form-select" value={Tipo} onChange={(e) => handelchange(e.target)} required>
+                                                    <option value="Evento">Evento </option>
+                                                    <option value={"informativo"}>Informativo</option>
+                                                    <option value={"publicidad"}>Publicidad</option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <div>
-                                            <div className="row" >
-                                                <div className="col-6">
-                                                    <label className=" form-label " > Imagen del Evento </label>
-                                                    <div className="custom-file" >
-                                                        <input className="  form-control" type="file"
-                                                            onChange={(e) => handelchangeComposeventos(e.target)}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="col-6">
-                                                    <label className=" form-label">Fecha maxima de presentación</label>
-                                                    <div className=" input-group mb-3">
-                                                        <div className=" input-group-append ">
-                                                            <span className=" input-group-text "><i className=" fa fa-calendar "></i></span>
-                                                        </div>
-                                                        <input className=" form-control"
-                                                            name="fechamax"
-                                                            min={fechamin}
-                                                            type="date"
-                                                            onChange={(e) => handelchangedatos(e.target)}
-
-                                                        ></input>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div> :
-                                        <div className="row ">
-                                            <div className="row col-12">
-                                                <div className="col-6 ">
-                                                    <label className="form-label">Seleccione un evento </label>
-
-                                                    <div className="input-group mb-3">
-
-                                                        <div className="input-group-prepend">
-                                                            <span className="input-group-text"><i className="fa fa-search"></i></span>
-                                                        </div>
-
-                                                        <select className="form-select" defaultValue={""} onChange={(e) => handelchangeEvento(e.target)} >
-                                                            <option disabled value="">Seleccione el el evento </option>
-                                                            {
-                                                                eventos.length > 0 ? eventos.map((el, i) => {
-                                                                    return (
-                                                                        <option key={i} value={el.id} >{el.nombreConcierto}</option>
-                                                                    )
-                                                                }) : ''
-
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row " >
-                                                <div className="col-6">
-                                                    <label className="form-label">Encabezado </label>
-                                                    <div className="input-group mb-3">
-                                                        <div className="input-group-prepend">
-                                                            <span className="input-group-text"><i className="fab fa-leanpub"></i></span>
-                                                        </div>
-                                                        <input type="text"
-                                                            className="form-control numero"
-                                                            name="encabezado"
-                                                            value={datos.encabezado}
-                                                            onChange={(e) => handelchangedatos(e.target)}
-                                                        />  </div>
-                                                </div>
-                                                <div className="col-6">
-                                                    <label className="form-label" >Breve descripción </label>
-                                                    <div className=" input-group mb-3">
-                                                        <div className="   input-group-append ">
-                                                            <span className=" input-group-text" > <i className="fab fa-leanpub "></i></span>
-                                                        </div>
-                                                        <input className=" form-control"
-                                                            name="descipcion"
-                                                            value={datos.descipcion}
-                                                            onChange={(e) => handelchangedatos(e.target)}
-                                                        ></input>
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div className="row" >
-                                                <div className="col-6">
-                                                    <label className=" form-label " > Imagen del Evento </label>
-                                                    <div className="custom-file" >
-                                                        <input className="  form-control" type="file"
-                                                            onChange={(e) => handelchangeComposeventos(e.target)}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="col-6">
-                                                    <label className=" form-label">Fecha maxima de presentación</label>
-                                                    <div className=" input-group mb-3">
-                                                        <div className=" input-group-append ">
-                                                            <span className=" input-group-text "><i className=" fa fa-calendar "></i></span>
-                                                        </div>
-                                                        <input className=" form-control"
-                                                            name="fechamax"
-                                                            min={fechamin}
-                                                            type="date"
-                                                            onChange={(e) => handelchangedatos(e.target)}
-
-                                                        ></input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                            </div>
-                                        </div>
+                                    </div>
+                                    {
+                                        tipoevento[Tipo]
                                     }
+
                                     <div className="col-12 d-flex justify-content-end">
                                         <button className="btn btn-primary mx-1"  >Guardar</button>
                                     </div>
