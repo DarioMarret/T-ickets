@@ -105,3 +105,14 @@ li.agregados {
 /*div.seleccionmap{
    // background-color: #198754;
 }*/
+.modal-fullscreen-md-down {
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.modal-fullscreen {
+    padding: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+}
