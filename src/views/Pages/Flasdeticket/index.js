@@ -44,6 +44,7 @@ import "../../../assets/css/animate.css";
 import "../../../assets/css/bootstrap.css";
 import Iframe from "views/Components/IFrame/Iframe.js";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion.js";
+import { quitarsilla } from "utils/Querypanelsigui.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
@@ -147,6 +148,7 @@ const IndexFlas = () => {
   }
 
   function detenervelocidad() {
+    // quitarsilla()
     handleClosesop(false)
     clearInterval(datatime.current)
     clearInterval(localidadtimer.current)
