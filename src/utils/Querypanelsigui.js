@@ -81,14 +81,13 @@ export const eliminaMapa = async (parm) => {
 }
 export const enviasilla = async (info) => {
     let user = getDatosUsuariosLocalStorag()
-    //console.log(user)
     const datos = {
         id: info.id,
         cedula: user.cedula,
         silla: info.silla,
         estado: "reservado",
     }
-    // console.log(datos)
+    console.log(datos)
     try {
         const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecionar_localidad", datos, {
             headers: {
@@ -96,13 +95,108 @@ export const enviasilla = async (info) => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-        // console.log(data)
-        // console.log(data)
-        //  usedispatch(filtrarlocali(data.datos))
         return data.data.datos
     } catch (error) {
         console.log(error)
         return { error: error, info: info }
+
+    }
+}
+export const correlativosadd = async (parms) => {
+    try {
+        const { data } = await axios.post(Host + "api/v1/selecionar_localidad_correlativa",
+            parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        }
+        )
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const correlativodelete = async (parms) => {
+    try {
+        const { data } = await axios.post(Host + "api/v1/selecionar_localidad_correlativa_eliminar",
+            parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        }
+        )
+        console.log(data)
+        return data
+
+    } catch (error) {
+
+    }
+}
+export const listarLocalidadaEspeci = async (parms) => {
+    try {
+        const { data } = await axios.get(Host + "api/v1/listar_localidades_id_espacio/" + parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const guardarCarrusel = async (parms) => {
+    try {
+        const { data } = await axios.post(Host + "api/v1/", parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+
+    }
+}
+export const quitarsilla = async (parms) => {
+    try {
+        const { data } = await axios.put(Host + "api/v1/quitarselecion_localidad",
+            parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+
+    }
+}
+export const buscarcliente = async (datos) => {
+    try {
+        const { data } = await axios.get("", datos, {
+            header: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+
+    }
+}
+export const sumarcorrelativo = async (datos) => {
+    try {
+        const { data } = await axios.post(Host + "api/v1/selecionar_localidad_correlativa",
+            datos,
+        )
+
+    } catch (error) {
 
     }
 }

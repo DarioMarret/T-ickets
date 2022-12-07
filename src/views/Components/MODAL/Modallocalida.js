@@ -14,6 +14,11 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { seleccionmapa } from "utils/constantes";
 import { enviasilla } from "utils/Querypanelsigui";
 import { CarritoTicket } from "utils/constantes";
+import { listaEliminasillas } from "utils/CarritoLocalStorang";
+import { quitarsilla } from "utils/Querypanelsigui";
+import { correlativosadd } from "utils/Querypanelsigui";
+import moment from "moment";
+import { correlativodelete } from "utils/Querypanelsigui";
 const LocalidadmapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
@@ -29,22 +34,7 @@ const LocalidadmapViews = (props) => {
         setMapashow(flase)
     }
 
-    function agregar() {
-        let producto = {
-            cantidad: 1,
-            localidad: mapath.precio.localodad,
-            localidaEspacio: mapath.precio,
-            id: mapath.precio.id,
-            fila: 0,
-            discapacidad: mapath.precio.precio_discapacidad,
-            valor: mapath.precio.precio_normal,
-            nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
-        }
-        if (TotalSelecion() < 10)
-            TiendaIten(producto), setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
-        else
-            succesLimit()
-    }
+
     function MesaVerifica(M, C) {
         hideAlert()
         for (let i = 1; i < parseInt(C) + 1; i++) {
@@ -71,7 +61,61 @@ const LocalidadmapViews = (props) => {
             nombreConcierto: sessionStorage.getItem("consierto"),
         }
         TiendaIten(producto)
+        // console.log(getVerTienda().find(e => e.id == mapath.precio.id) != undefined ? "resta" : '')
+        /*  getVerTienda().find(e => e.id == mapath.precio.id).cantidad != undefined ? console.log({
+              "id": mapath.precio.id,
+              "cedula": "1314780774",
+              "estado": "string",
+              "protocol": moment(new Date()).format("YYYY MM DD HH MM SS"),
+              "cantidad": getVerTienda().find(e => e.id == mapath.precio.id).cantidad
+          }) : ''*/
+        correlativodelete({
+            "id": mapath.precio.idcolor,
+            "cedula": "1314780774",
+            "estado": "disponible",
+            //  "protocol": moment(new Date()).format("YYYYMMDDHHMMSS"),
+            "cantidad": 1
+        }).then(oupt => {
+            console.log(oupt)
+        }).catch(err => {
+            console.log(err)
+        })
         setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
+    }
+    function agregar() {
+        let producto = {
+            cantidad: 1,
+            localidad: mapath.precio.localodad,
+            localidaEspacio: mapath.precio,
+            id: mapath.precio.id,
+            fila: 0,
+            discapacidad: mapath.precio.precio_discapacidad,
+            valor: mapath.precio.precio_normal,
+            nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
+        }
+        if (TotalSelecion() < 10) {
+            //console.log(mapath.localidadespecica.info.length)
+            TiendaIten(producto)
+            setDetalle(getVerTienda().filter(e => e.id == mapath.precio.id))
+            // console.log(getVerTienda().find(e => e.id == mapath.precio.id))
+            /* console.log({
+                 "id": getVerTienda().find(e => e.id == mapath.precio.id).localidaEspacio["idcolor"],
+                 "cedula": "1314780774",
+                 "estado": "seleccion",
+                 "protocol": moment(new Date()).format("YYYY-MM-DD HH:MM:SS"),
+                 "cantidad": getVerTienda().find(e => e.id == mapath.precio.id).cantidad
+             })*/
+            correlativosadd({
+                "id": getVerTienda().find(e => e.id == mapath.precio.id).localidaEspacio["idcolor"],
+                "cedula": "1314780774",
+                "estado": "seleccion",
+                "protocol": moment(new Date()).format("YYYYMMDDHHMMSS"),
+                "cantidad": getVerTienda().find(e => e.id == mapath.precio.id).cantidad
+            }
+            ).then(oupt => console.log(oupt)).catch(erro => console.log(erro))
+        }
+        else
+            succesLimit()
     }
     function Eliminar(e) {
         EliminarByStora(e.localidad)
@@ -216,9 +260,15 @@ const LocalidadmapViews = (props) => {
         usedispatch(deleteSillas({ ...e }))
     }
     const eliminaLista = (d, e) => {
+        let user = getDatosUsuariosLocalStorag()
         d.classList.remove('seleccionado')
         d.classList.add('disponible')
         hideAlert()
+        console.log({ estado: "disponible", "id": e.id, "silla": e.silla, "cedula": user.cedula })
+        quitarsilla({ "array": [{ estado: "disponible", "id": e.id, "silla": e.silla, "cedula": user.cedula }] }).then(ouput =>
+            console.log(ouput)).catch(err => console.log(err))
+        console.log({ "array": [{ estado: "disponible", "id": e.id, "silla": e.silla, "cedula": user.cedula }] })
+        //console.log()
         EliminarSillas({ ...e })
         usedispatch(deleteSillas({ ...e }))
     }
@@ -253,7 +303,9 @@ const LocalidadmapViews = (props) => {
         if (this.classList.contains("seleccionado")) {
             if (!this.classList.contains('disponible')) {
                 let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-                succesElimAlert(this, { "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
+                //                
+                succesElimAlert(this, { "id": nombres.idcolor, "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
+
             }
             return
         }
@@ -267,7 +319,9 @@ const LocalidadmapViews = (props) => {
                 AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                 usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                 successAlert(this.classList[0], nombres.localodad, "Mesa")
+                //console.log({ id: nombres.idcolor, silla: this.classList[0] })
                 enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
+                    //console.log(ouput)
                     usedispatch(filtrarlocali(ouput))
                     // console.log(ouput)
                 }
@@ -282,7 +336,7 @@ const LocalidadmapViews = (props) => {
         if (!this.classList.contains('disponible')) {
             let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
 
-            succesElimAlert(this, { "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
+            succesElimAlert(this, { id: nombres.idcolor, "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
         }
         return
     })
@@ -315,7 +369,7 @@ const LocalidadmapViews = (props) => {
         if (d.cedula != undefined) {
             if (user != null && user.cedula == d.cedula) return "seleccionado"
             else
-                return "reservado"
+                return d.estado == "seleccionado" ? "reservado" : d.estado
         }
         else return d.estado
     }
@@ -330,6 +384,20 @@ const LocalidadmapViews = (props) => {
         $("#seleccionado").text(seleccion.length)
     })
     useEffect(() => {
+
+        let producto = {
+            // cantidad: mapath.precio.typo === "correlativo" ? mapath.localidadespecica.info.length : 1,
+            localidad: mapath.precio.localodad,
+            localidaEspacio: mapath.precio,
+            id: mapath.precio.id,
+            fila: 0,
+            discapacidad: mapath.precio.precio_discapacidad,
+            valor: mapath.precio.precio_normal,
+            nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
+        }
+        //  mapath.precio.typo === "correlativo" ? TiendaIten(producto) : ''
+
+
         getVerTienda().filter((e) => e.id == mapath.precio.id).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.id)) : setDetalle([])
         let selct = seleccion
         selct.length > 0 ?
@@ -343,7 +411,9 @@ const LocalidadmapViews = (props) => {
 
 
 
+
     }, [showMapa])
+    //console.log(mapath.localidadespecica)
 
     return (
         <>

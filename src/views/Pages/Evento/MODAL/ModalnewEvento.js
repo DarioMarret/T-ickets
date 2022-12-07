@@ -6,6 +6,7 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
 const ModalNewEvento = (props) => {
     const { show, Setshow } = props;
     let user = clienteInfo()
@@ -17,6 +18,7 @@ const ModalNewEvento = (props) => {
     const [localidad, setLocalidades] = useState([])
     const [inputdisable, setinput] = useState(false)
     const [localidadfiltrada, setFiltra] = useState([])
+    const [selectLocalidad, setLocalidad] = useState([])
     async function Lista() {
         const datos = await ListarLocalidad()
         const cargarLista = await ListarEspacios()
@@ -30,11 +32,14 @@ const ModalNewEvento = (props) => {
     }
     function toggleValueInArray(array, value) {
         //copia de array de localidades
+        console.log(value)
         let ArrayCopia = array;
         let arr = selectLocalidad
-        var index = ArrayCopia.findIndex(obj => obj.localodad == value.localodad);
-        var i = arr.findIndex(obj => obj.nombre == value.localodad);
-        //console.log(arr[i])
+        var index = ArrayCopia.findIndex(obj => obj.id == value.identificador);
+        var i = arr.findIndex(obj => obj.id == value.identificador
+        );
+        console.log(value, array)
+        console.log(arr[i])
         if (index == -1) {
             ArrayCopia.push({ ...value, identificador: arr[i].id, tipo: arr[i].mesas_array });
         } else {
@@ -43,6 +48,7 @@ const ModalNewEvento = (props) => {
         setPreLocalidad(ArrayCopia)
         setPrecios({
             localodad: '',
+            identificador: '',
             precio_normal: '',
             precio_discapacidad: '',
             precio_tarjeta: '',
@@ -51,34 +57,7 @@ const ModalNewEvento = (props) => {
         })
         console.log(ArrayCopia)
     }
-    let defauldata2 = {
-        "nombreConcierto": "Aesa1222",
-        "fechaConcierto": "10-11-2022",
-        "horaConcierto": "09:09:pm",
-        "lugarConcierto": "santo domingo",
-        "cuidadConcerto": "santo domingo",
-        "descripcionConcierto": "ejemlo",
-        "imagenConcierto": "lonk ejemplo",
-        "idUsuario": "12",
-        "LocalodadPrecios": [
-            {
-                "localodad": "viene",
-                "precio_normal": "1",
-                "precio_discapacidad": "2",
-                "precio_tarjeta": "3",
-                "precio_descuento": "4",
-                "habilitar_cortesia": "5"
-            },
-            {
-                "localodad": "va",
-                "precio_normal": "1",
-                "precio_discapacidad": "2",
-                "precio_tarjeta": "3",
-                "precio_descuento": "4",
-                "habilitar_cortesia": "5"
-            }
-        ]
-    }
+
     async function gaurdaPrueba() {
         setinput(true)
 
@@ -126,8 +105,8 @@ const ModalNewEvento = (props) => {
             lugarConcierto: '',
             cuidadConcert: '',
             descripcionConcierto: '',
-            codigo: '',
-            autorizacion: '',
+
+
             imagenConcierto: '',
             idUsuario: "" + user.id,
         })
@@ -140,27 +119,28 @@ const ModalNewEvento = (props) => {
                     e.value = ""
                     usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 500px y máximo 600px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
                 }
-                if (img.width > 900 || img.height > 620) {e.value="" 
-                usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 500px y máximo 600px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
-                }else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+                if (img.width > 900 || img.height > 620) {
+                    e.value = ""
+                    usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 500px y máximo 600px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
+                } else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
             }
             img.onerror = () => {
                 setNewEventos({ ...neweventos, imagenConcierto: '' })
             }
-        }else if(e.name=="imagenCarrusel"){
-            let imgevento =new Image()
+        } else if (e.name == "imagenCarrusel") {
+            let imgevento = new Image()
             imgevento.src = window.URL.createObjectURL(e.files[0])
-            imgevento.onload=()=>{
-                if(imgevento.width>1000 || imgevento.height>300){
+            imgevento.onload = () => {
+                if (imgevento.width > 1000 || imgevento.height > 300) {
                     console.log(imgevento.src)
                     usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, ', color: 'bg-warning', estado: 'Advertencia' }))
-                
-                }else if(imgevento.width<500|| imgevento.height<600){
-                      usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es valida', color: 'bg-warning', estado: 'Advertencia' }))
+
+                } else if (imgevento.width < 500 || imgevento.height < 600) {
+                    usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es valida', color: 'bg-warning', estado: 'Advertencia' }))
                     console.log(imgevento.src)
-                }else console.log(imgevento.src)
+                } else console.log(imgevento.src)
             }
-            imgevento.onerror = ()=>{
+            imgevento.onerror = () => {
                 //setNewEventos({ ...neweventos, imagenConcierto: '' })
             }
 
@@ -181,6 +161,7 @@ const ModalNewEvento = (props) => {
     const [precios, setPrecios] = useState(
         {
             localodad: '',
+            identificador: '',
             precio_normal: '',
             precio_discapacidad: '',
             precio_tarjeta: '',
@@ -188,39 +169,53 @@ const ModalNewEvento = (props) => {
             habilitar_cortesia: ''
         }
     )
-    const [selectLocalidad, setLocalidad] = useState([])
+
 
     function handelchange(e) {
         if (e.value != "") {
-            console.log(e)
-            console.log(localidad)
+            console.log(e.value)
+            // console.log(localidad)
+            listarLocalidadaEspeci(e.value).then(oupt => {
+                console.log()
+                setLocalidad(oupt.data)
+                setPreLocalidad([])
+                setPrecios({
+                    localodad: '',
+                    precio_normal: 0,
+                    identificador: '',
+                    precio_discapacidad: 0,
+                    precio_tarjeta: 0,
+                    precio_descuento: 0,
+                    habilitar_cortesia: 0
+                })
+            }
+            ).catch(err =>
+                console.log(err))
+
             var index = localidad.filter(obj => obj.espacio == e.value);
-            console.log(index)
-            setLocalidad(index)
-            setPreLocalidad([])
-            setPrecios({
-                localodad: '',
-                precio_normal: 0,
-                precio_discapacidad: 0,
-                precio_tarjeta: 0,
-                precio_descuento: 0,
-                habilitar_cortesia: 0
-            })
+            // console.log(index)
+
+
         } else { setLocalidad([]) }
 
     }
     function soloSelectespacio(e) {
-        var index = localidadPreci.findIndex(obj => obj.localodad == e.value);
-        var dato = espacios.filter(D => D.id == e.id)
+        var index = selectLocalidad.findIndex(obj => obj.id == e.value);
+        console.log(e)
+        console.log(index)
+        var dato = selectLocalidad.find(D => D.id == e.value)
+        console.log(dato)
         setPrecios({
             precio_normal: localidadPreci[index] ? localidadPreci[index].precio_normal : 0,
             precio_discapacidad: localidadPreci[index] ? localidadPreci[index].precio_discapacidad : 0,
             precio_tarjeta: localidadPreci[index] ? localidadPreci[index].precio_tarjeta : 0,
             precio_descuento: localidadPreci[index] ? localidadPreci[index].precio_descuento : 0,
             habilitar_cortesia: localidadPreci[index] ? localidadPreci[index].habilitar_cortesia : 0,
-            nombre: dato[0].nombre,
-            [e.name]: e.value,
+            localodad: dato.nombre,
+
+            identificador: e.value,
         })
+        console.log(precios)
     }
     function handelchangeLocalidad(e) {
         setPrecios({
@@ -240,7 +235,7 @@ const ModalNewEvento = (props) => {
     useEffect(() => {
         (async () => {
             await Lista()
-        })()        
+        })()
     }, [show])
     return (
         <Modal
@@ -334,7 +329,7 @@ const ModalNewEvento = (props) => {
 
                                     </div>
                                 </div>
-                                <div className="col-12 col-md-6" >
+                                {/*<div className="col-12 col-md-6" >
                                     <label className="form-label">
                                         estado legal
                                     </label>
@@ -365,7 +360,7 @@ const ModalNewEvento = (props) => {
                                             onChange={(e) => handelchangeComposeventos(e.target)}
                                         />
                                     </div>
-                                }
+                                }*/}
                                 <div className="col-12 col-md-12">
                                     <label className="form-label">Descripcion </label>
                                     <div className="input-group mb-3">
@@ -389,16 +384,16 @@ const ModalNewEvento = (props) => {
                                             id="imagenConcierto" placeholder="Imagen del concierto" />
                                     </div>
                                 </div>
-                                <div className="col-12 col-md-12">
+                                { /*  <div className="col-12 col-md-12">
                                     <label className="form-label">selecione una imagen para el carrusel</label>
                                     <div className="input-group mb-3">
 
                                         <input type="file" accept="image/*" name="imagenCarrusel" className="form-control "
-                                        onChange={(e) => handelchangeComposeventos(e.target)}
-                                        placeholder="Imagen promoción"
+                                            onChange={(e) => handelchangeComposeventos(e.target)}
+                                            placeholder="Imagen promoción"
                                         />
                                     </div>
-                                </div>
+                                </div>*/}
 
 
                             </div>
@@ -411,7 +406,7 @@ const ModalNewEvento = (props) => {
                                 <input disabled={true} type="text" className="d-none form-control" id="user_id" placeholder="usuario que creo el evento" />
                             </div>
                             {
-                                selectLocalidad.length ?
+                                selectLocalidad.length > 0 ?
                                     <div className="col-12">
 
                                         <h3>Precios de Localidades </h3>
@@ -420,12 +415,12 @@ const ModalNewEvento = (props) => {
                                                 <div className="input-group-prepend">
                                                     <span className="input-group-text"><i className="fa fa-map"></i></span>
                                                 </div>
-                                                <select className="form-control" name="localodad" value={precios.localodad} onChange={(e) => soloSelectespacio(e.target)}>
+                                                <select className="form-control" name="identificador" value={precios.identificador} onChange={(e) => soloSelectespacio(e.target)}>
                                                     <option value={""}>Seleccione localidad</option>
                                                     {selectLocalidad.map((e, i) => {
                                                         <option></option>
                                                         return (
-                                                            <option value={e.nombre} key={i + "op" + e.nombre}>{e.nombre}</option>
+                                                            <option value={e.id} key={i + "op" + e.nombre}>{e.nombre}</option>
                                                         )
                                                     })
 

@@ -10,6 +10,8 @@ import { clearSillas, cargarsilla } from "StoreRedux/Slice/sillasSlice"
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { GetEstadousu } from "utils/CarritoLocalStorang"
 import { CarritoTicket } from "utils/constantes"
+import { listaEliminasillas } from "utils/CarritoLocalStorang"
+import { quitarsilla } from "utils/Querypanelsigui"
 
 const ModalCarritoView = (prop) => {
     const { showshop, handleClosesop, handleContinuar, setMapashow, precios, setListaPrecio, setListarCarritoDetalle, intervalo, detener } = prop
@@ -40,6 +42,12 @@ const ModalCarritoView = (prop) => {
         setCheck(false)
     }
     function Eliminar(e) {
+        let array = listaEliminasillas(e.localidaEspacio
+        ["idcolor"])
+        quitarsilla({ "array": array }).then(ouput =>
+            console.log(ouput)).catch(err => console.log(err))
+        // listaEliminasillas
+        // listaEliminasillas(e.id)
         usedispatch(clearSillas(e))
         EliminarByStora(e.localidad)
         EliminarSillaLocal(e.localidad)

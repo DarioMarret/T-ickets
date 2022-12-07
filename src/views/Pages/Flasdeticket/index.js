@@ -177,21 +177,33 @@ const IndexFlas = () => {
     }
     else {
       try {
+        console.log(e)
         let obten = await listarpreciolocalidad(e.codigoEvento)
+        // const lista = await
+
         const listalocal = await ListarLocalidad()
         let localidades = await cargarMapa()
+        console.log(obten)
+        // console.log(localidades)
+        //console.log(localidades)
+        // console.log(listalocal)
         sessionStorage.consierto = e.nombreConcierto
         if (obten.data.length > 0) {
+          console.log(localidades.data)
           let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
+          console.log("obtengo mapas", mapa)
           let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
           let localidad = JSON.parse(mapa[0].localidad)
+          console.log(JSON.parse(mapa[0].pathmap))
           let path = JSON.parse(mapa[0].pathmap)
-          let newprecios = obten.data.map((e, i) => {
-            let color = localidad.filter((f, i) => f.nombre == e.localodad)
-            e.color = color[0].color
-            e.idcolor = color[0].id
-            e.typo = color[0].tipo
-            return e
+          console.log(obten.data, localidad)
+          let newprecios = obten.data.map((g, i) => {
+            let color = localidad.filter((f, i) => f.nombre == g.localodad)
+            //console.log("colores", g)
+            g.color = color[0].color
+            g.idcolor = color[0].id
+            g.typo = color[0].tipo
+            return g
           })
           let colornuevo = mapalocal.map((L) => {
             if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {

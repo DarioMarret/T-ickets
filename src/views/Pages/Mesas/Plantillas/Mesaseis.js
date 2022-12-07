@@ -28,9 +28,10 @@ const MesaseisView = ({ text, list }) => {
     }
     var index = list.findIndex(obj => obj.silla == e);
     return list[index].estado*/
-    if (estado.cedula != undefined) {
+    if (estado.cedula != undefined && estado != "") {
+      // console.log(estado)
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
-      else return "reservado"
+      else return estado.estado == "seleccionado" ? "reservado" : estado.estado
       // return "seleccionado"
     }
     else return estado.estado

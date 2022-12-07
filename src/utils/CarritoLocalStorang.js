@@ -98,6 +98,7 @@ export function EliminarSillas(silla) {
     Filterduplicados()
     getVerTienda()
 }
+
 export function EliminarsilladeMesa(silla) {
     VerSillas()
     let ListadeSillas = PVsilla.filter((iten) => iten.seleccionmapa != silla.localodad)
@@ -201,6 +202,20 @@ function VerSillas() {
         console.log(error)
     }
 
+}
+function ListaEliminaLocalida() {
+    let user = getDatosUsuariosLocalStorag()
+    let iten = JSON.parse(sessionStorage.getItem(listaasiento));
+    return iten.map(e => {
+        return {
+            silla: e.silla, cedula: user.cedula,
+            id: e.localidaEspacio["idcolor"],
+            estado: "disponible"
+        }
+    })
+}
+export function listaEliminasillas(parms) {
+    return ListaEliminaLocalida().filter(e => e.id == parms)
 }
 export function VerSillaslist() {
     try {

@@ -6,6 +6,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { GetSuscritores } from "utils/Querypanel";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { Triangle } from "react-loader-spinner";
+import { buscarcliente } from "utils/Querypanelsigui";
 
 const CederView = () => {
     let estatusModal = useSelector(state => state.SuscritorSlice.modal)
@@ -56,6 +57,8 @@ const CederView = () => {
     const filterNames = async () => {
         let nombre = $('#cedula').val()
         if (nombre.trim().length >= 10) {
+            buscarcliente(nombre.trim()).then(oupt =>
+                console.log(oupt)).catch(err => console.log(err))
             $("#search").removeClass("d-none")
             if (lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()) != null) {
                 setDausuario({ ...lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()), whatsapp: lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()).movil, password: '', resgistro: true })

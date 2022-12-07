@@ -157,6 +157,7 @@ const Modalupdate = (props) => {
             }
         } else {
             try {
+
                 const link = await Obtenerlinkimagen(neweventos.imagenConcierto)
                 if (link == null) return
                 let info = {

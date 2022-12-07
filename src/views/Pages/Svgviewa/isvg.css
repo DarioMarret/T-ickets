@@ -64,3 +64,42 @@ path.disponible:hover {
     .fil0 {fill:none}
     .fil2 {fill:#373435;fill-rule:nonzero}
     .fil1 {fill:#373435;fill-rule:nonzero}*/
+
+
+.fil0 {
+  fill: #96989A
+}
+
+.fil7 {
+  fill: #373435
+}
+
+.fil5 {
+  fill: #00BBF2
+}
+
+.fil6 {
+  fill: #1F8B57
+}
+
+.fil3 {
+  fill: #5D5994
+}
+
+.fil1 {
+  fill: #670965
+}
+
+.fil2 {
+  fill: #A000A8
+}
+
+
+
+.mapanuevo {
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+  image-rendering: optimizeQuality;
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+}

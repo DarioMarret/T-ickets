@@ -307,7 +307,7 @@ export const Obtenerlinkimagen = async (parm) => {
     try {
         const fordata = new FormData();
         fordata.append('image', parm);
-        const { data } = await axios.post("https://codigomarret.online/api/img", fordata)
+        const { data } = await axios.post("https://flash.t-ickets.com/store/api/img", fordata)
         if (!data.success) return null
         return data.link
 

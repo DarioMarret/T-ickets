@@ -55,7 +55,7 @@ const TabtresView = (props) => {
         if (localidaname.nombre != "" && localidaname.description != "" && localidaname.cantidad != "" && localidaname.inicio != "") {
             try {
 
-                const guardar = await GuardarLocalidad({ "espacio": espacioname.nombre, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio } }) })
+                const guardar = await GuardarLocalidad({ "espacio": espacioname.nombre, "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio } }) })
                 if (guardar.success) {
                     SetDataloca({
                         typo: '',

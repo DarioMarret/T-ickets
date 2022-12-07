@@ -79,6 +79,21 @@ const EventoEspecifico = () => {
     setShowpr(true)
   }
   async function Evento() {
+    SetEvento({
+      id: '',
+      nombreConcierto: '',
+      fechaConcierto: '',
+      horaConcierto: '',
+      lugarConcierto: '',
+      cuidadConcert: '',
+      descripcionConcierto: '',
+      imagenConcierto: '',
+      idUsuario: '',
+      estado: '',
+      codigoEvento: '',
+      fechaCreacion: '',
+      LocalodadPrecios: []
+    })
     try {
       const cargar = await ListarEventos()
       // const activo = await ListarEventos("ACTIVO")
@@ -140,7 +155,7 @@ const EventoEspecifico = () => {
     (async () => {
       await Evento()
     })()
-  }, [show])
+  }, [!show])
 
   const successAlert = (i) => {
     setAlert(
@@ -207,6 +222,11 @@ const EventoEspecifico = () => {
         showpr={showpr}
         setShowpr={setShowpr}
         valores={valores}
+      />
+      <Modalupdate
+        show={show}
+        Setshow={setShow}
+        evento={evento}
       />
       {alert}
       <div className="d-flex mb-1 justify-content-end align-items-end" >
@@ -421,11 +441,7 @@ const EventoEspecifico = () => {
         />
       </div>
 
-      <Modalupdate
-        show={show}
-        Setshow={setShow}
-        evento={evento}
-      />
+
 
     </>
   )

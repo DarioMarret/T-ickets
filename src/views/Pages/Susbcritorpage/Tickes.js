@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice.js";
 import { columnsTicket } from "utils/ColumnTabla";
 import TableWiev from "./TableFunc.js"
+import { buscarcliente } from "utils/Querypanelsigui.js";
 import { ListarTikets } from "utils/Querypanel.js";
 import CederView from "./Modal/CederView.js";
 import ToastViews from "views/Components/TOAST/toast.js";
