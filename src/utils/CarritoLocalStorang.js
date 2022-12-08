@@ -108,24 +108,26 @@ export function EliminarsilladeMesa(silla) {
     //getVerTienda()
 }
 
-export function ActualizarCantidad1(valor, id,) {
+
+export function Verificalocalidad(valor, id) {
+    let user = getDatosUsuariosLocalStorag()
     VerTienda()
-    const existe = PViten.some(iten => iten.id === id)
-    if (existe) {
-        const Actualizar = PViten.map(iten => {
-            if (iten.id === id) {
-                iten.cantidad = iten.cantidad + valor;
-                return iten;
-            } else {
-                return iten;
-            }
-        })
-        PViten = [...Actualizar];
+    if (PViten.some(item => item.id == valor.id) && id.find(e => e.cedula == user.cedula) != undefined) {
+        let index = PViten.findIndex(k => k.id == valor.id)
+        PViten[index] = { ...valor, cantidad: id.find(e => e.cedula == user.cedula).cantidad, protocol: id.find(e => e.cedula == user.cedula).protocol }
         sessionStorage.setItem(CarritoTicket, JSON.stringify(PViten))
-        JSON.parse(sessionStorage.getItem(CarritoTicket))
+        let array = JSON.parse(sessionStorage.getItem(CarritoTicket))
+
+        return array
+    }
+    else if (id.find(e => e.cedula == user.cedula) != undefined) {
+        PViten.push({ ...valor, cantidad: id.find(e => e.cedula == user.cedula).cantidad, protocol: id.find(e => e.cedula == user.cedula).protocol })
+        sessionStorage.setItem(CarritoTicket, JSON.stringify(PViten))
+        let array = JSON.parse(sessionStorage.getItem(CarritoTicket))
+
+        return array
     }
 }
-
 export function GetCantidades() {
     let iten = JSON.parse(sessionStorage.getItem(CarritoTicket))
     if (iten !== null) {

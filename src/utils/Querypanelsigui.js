@@ -104,7 +104,7 @@ export const enviasilla = async (info) => {
 }
 export const correlativosadd = async (parms) => {
     try {
-        const { data } = await axios.post(Host + "api/v1/selecionar_localidad_correlativa",
+        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecionar_localidad_correlativa",
             parms, {
             headers: {
                 'Content-Type': 'application/json',

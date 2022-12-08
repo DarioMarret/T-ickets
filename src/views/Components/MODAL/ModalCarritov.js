@@ -12,6 +12,7 @@ import { GetEstadousu } from "utils/CarritoLocalStorang"
 import { CarritoTicket } from "utils/constantes"
 import { listaEliminasillas } from "utils/CarritoLocalStorang"
 import { quitarsilla } from "utils/Querypanelsigui"
+import { correlativodelete } from "utils/Querypanelsigui"
 
 const ModalCarritoView = (prop) => {
     const { showshop, handleClosesop, handleContinuar, setMapashow, precios, setListaPrecio, setListarCarritoDetalle, intervalo, detener } = prop
@@ -42,15 +43,35 @@ const ModalCarritoView = (prop) => {
         setCheck(false)
     }
     function Eliminar(e) {
-        let array = listaEliminasillas(e.localidaEspacio
-        ["idcolor"])
-        quitarsilla({ "array": array }).then(ouput =>
-            console.log(ouput)).catch(err => console.log(err))
+        let array = e.localidaEspacio["typo"] != "correlativo" ? listaEliminasillas(e.localidaEspacio
+        ["idcolor"]) : ''
+        e.localidaEspacio["typo"] != "correlativo" ? quitarsilla({ "array": [...array] }).then(ouput => {
+            usedispatch(clearSillas(e))
+            EliminarSillaLocal(e.localidad)
+            console.log(e.localidaEspacio["idcolor"])
+            $("div." + e.localidaEspacio["idcolor"] + "silla").removeClass("seleccionado").addClass("disponible");
+            // var elems = document.querySelector("div." + e.localidaEspacio["idcolor"]);
+            // elems !== null ? elems.classList.remove("seleccionado") : ''
+            //  elems !== null ? elems.classList.add("disponible") : ''
+
+            console.log(ouput)
+        }
+        ).catch(err => console.log(err)) : correlativodelete(
+            {
+                "id": e.id,
+                "protocol": e.protocol,
+                "cantidad": e.cantidad
+            }
+        ).then(oupt => {
+            console.log(oupt)
+        }).catch(err => {
+            console.log(err)
+        })
         // listaEliminasillas
         // listaEliminasillas(e.id)
-        usedispatch(clearSillas(e))
+        e.localidaEspacio["typo"] == "correlativo" ? usedispatch(clearSillas(e)) : ''
         EliminarByStora(e.localidad)
-        EliminarSillaLocal(e.localidad)
+        e.localidaEspacio["typo"] == "correlativo" ? EliminarSillaLocal(e.localidad) : ''
         setDetalle(getVerTienda())
         ListaPrecioset(GetValores())
         hideAlert()

@@ -574,12 +574,12 @@ const IndexFlas = () => {
   }, [])
   return (
     <>
-      <LocalidadmapViews
+      {showMapa ? <LocalidadmapViews
         handleClosesop={handleClosesop}
         showMapa={showMapa}
         intervalo={intervalo}
         setMapashow={setMapashow}
-      />
+      /> : ''}
       <ModalCarritov
         showshop={showshop}
         handleClosesop={detenervelocidad}
