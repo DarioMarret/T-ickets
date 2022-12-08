@@ -214,8 +214,8 @@ const TabdosView = (props) => {
                     asiento.push(sillas.asientos.length)
                 })
             })
-            console.log(asiento)
-            console.log(Object.values(asiento).every(isValido))
+            //console.log(asiento)
+            //console.log(Object.values(asiento).every(isValido))
             if (Object.values(asiento).every(isValido)) return true
             else return false
 
@@ -238,7 +238,7 @@ const TabdosView = (props) => {
         }
         else {
             try {
-                const guarda = await GuardarLocalidad({ "espacio": localidanames.nombre, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
+                const guarda = await GuardarLocalidad({ "espacio": localidanames.nombre, "id_espacio": localidanames.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
                 // console.log(guarda)
                 if (guarda.success) {
                     SetDataloca({
@@ -276,7 +276,7 @@ const TabdosView = (props) => {
         }
         else {
             try {
-                const actualiza = await AptualizarLocalida({ "id": localidaname.id, "espacio": localidanames.nombre, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
+                const actualiza = await AptualizarLocalida({ "id": localidaname.id, "id_espacio": localidanames.id, "espacio": localidanames.nombre, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
                 if (actualiza.success) {
                     SetDataloca({
                         typo: '',

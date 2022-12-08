@@ -24,32 +24,62 @@ const LocalidadmapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
     let nombre = JSON.parse(sessionStorage.getItem(seleccionmapa))
+
     const usedispatch = useDispatch()
     const [detalle, setDetalle] = useState([])
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localodad))
     const maximocarro = useSelector((state) => state.sillasSlice.sillasSelecionadas)
-
     const [alert, setAlert] = useState(null);
     function cerrar() {
         handleClosesop(true)
         setMapashow(flase)
     }
-
-
     function MesaVerifica(M, C) {
+        let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
         hideAlert()
+        let nuevo = []
         for (let i = 1; i < parseInt(C) + 1; i++) {
             let valid = seleccion.some(e => e.seleccionmapa == nombre.localodad + "-" + M + "-s-" + i)
             if (valid) { }
-            if (TotalSelecion() != 10) {
-                $("." + M + "-s-" + i).hasClass('disponible') ? AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" }) : ''
-                $("." + M + "-s-" + i).hasClass('disponible') ? usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + M + "-s-" + i, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" })) : ''
-                $("." + M + "-s-" + i).hasClass('disponible') ? $("." + M + "-s-" + i).addClass('seleccionado') : ''
-                $("." + M + "-s-" + i).hasClass('disponible') ? $("." + M + "-s-" + i).removeClass('disponible') : ''
-            } else {
-                succesLimit()
+            nuevo.push({ id: nombres.idcolor, silla: M + "-s-" + i })
+        }
+        nuevo.length > 0 && TotalSelecion() < 10 ? nuevo.map((e, index) => {
+            setTimeout(() => {
+                $("." + e.silla).hasClass('disponible') ? enviasilla({ ...e }).then(ouput => {
+                    AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" })
+                    usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" }))
+                }
+                ).catch(exit => {
+                    console.log(exit)
+                }) : ''
+            }, 20 * index)
+
+        }) : succesLimit()
+
+    }
+    const eliminarmesas = (M, C) => {
+        let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
+        let user = getDatosUsuariosLocalStorag()
+        let nuevo = []
+        for (let i = 1; i < parseInt(C) + 1; i++) {
+            let valid = seleccion.some(e => e.seleccionmapa == nombre.localodad + "-" + M + "-s-" + i && e.estado == "seleccionado")
+            if (valid) {
+                nuevo.push({ id: nombres.idcolor, silla: M + "-s-" + i })
             }
         }
+        nuevo.length > 0 ? nuevo.map((elm, index) => {
+            setTimeout(() => {
+                quitarsilla({ "array": [{ estado: "disponible", "id": elm.id, "silla": elm.silla, "cedula": user.cedula }] }).then(ouput => {
+                    usedispatch(deleteSillas({ "localidad": nombre.localodad, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "seleccionado" }))
+                    EliminarsilladeMesa({ localodad: nombre.localodad + "-" + elm.silla })
+                    // console.log(user.cedula, ouput)
+                }).catch(err => console.log(err))
+
+
+            }, 25 * index)
+
+        }) : ''
+        hideAlert()
     }
     function restaprecio() {
         let producto = {
@@ -60,9 +90,7 @@ const LocalidadmapViews = (props) => {
             fila: 0,
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto"),
-
         }
-
         getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : correlativodelete({
             "id": mapath.precio.idcolor,
             "protocol": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol,
@@ -73,11 +101,10 @@ const LocalidadmapViews = (props) => {
             console.log(err)
         })
         getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
-
-
         setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
     }
     function agregar() {
+        let user = getDatosUsuariosLocalStorag()
         let protoco = moment().format("YYYYMMDDHHMMSS")
         let producto = {
             cantidad: 1,
@@ -93,17 +120,10 @@ const LocalidadmapViews = (props) => {
         if (TotalSelecion() < 10) {
             getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
             setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
-            /*console.log({
-                "id": mapath.precio.idcolor,
-                "estado": "seleccion",
-                "cedula": "1314780774",
-                "protocol": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? protoco : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol,
-                "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? 1 : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad
-            })+*/
             correlativosadd({
                 "id": mapath.precio.idcolor,
                 "estado": "seleccion",
-                "cedula": "1314780774",
+                "cedula": user.cedula,
                 "protocol": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? protoco : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol,
                 "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? 1 : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad
             }).then(oupt => {
@@ -238,19 +258,7 @@ const LocalidadmapViews = (props) => {
             </SweetAlert>
         )
     }
-    const eliminarmesas = (M, C) => {
-        for (let i = 1; i < parseInt(C) + 1; i++) {
-            let valid = seleccion.some(e => e.seleccionmapa == nombre.localodad + "-" + M + "-s-" + i && e.estado == "seleccionado")
-            if (valid) {
-                usedispatch(deleteSillas({ "localidad": nombre.localodad, "fila": M, "silla": M + "-s-" + i, "estado": "seleccionado" }))
-                EliminarsilladeMesa({ localodad: nombre.localodad + "-" + M + "-s-" + i })
 
-                $("." + M + "-s-" + i).removeClass("seleccionado").addClass("disponible")
-                $("." + M).removeClass("mesadisponible").addClass("mesaselecion")
-            }
-        }
-        hideAlert()
-    }
     const eliminaListadiv = (e) => {
         let user = getDatosUsuariosLocalStorag()
         e.tipo != "mesa" ? $("div." + e.silla).removeClass("seleccionado").addClass("disponible") : $("a." + e.silla).removeClass("seleccionado").addClass("disponible");
@@ -265,15 +273,11 @@ const LocalidadmapViews = (props) => {
         d.classList.remove('seleccionado')
         d.classList.add('disponible')
         hideAlert()
-        console.log({ estado: "disponible", "id": e.id, "silla": e.silla, "cedula": user.cedula })
         quitarsilla({ "array": [{ estado: "disponible", "id": e.id, "silla": e.silla, "cedula": user.cedula }] }).then(ouput => {
             EliminarSillas({ ...e })
             usedispatch(deleteSillas({ ...e }))
-
-            console.log(ouput)
         }).catch(err => console.log(err))
-        console.log({ "array": [{ estado: "disponible", "id": e.id, "silla": e.silla, "cedula": user.cedula }] })
-        //console.log()
+
 
     }
     $(document).on('click', 'div.disponible', function (e) {
@@ -281,13 +285,10 @@ const LocalidadmapViews = (props) => {
         if (this.classList.contains("disponible")) {
             if (!this.classList.contains('seleccionado') && !this.classList.contains('ocupado') && !this.classList.contains("reservado")) {
                 let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-                // console.log(obtenerdatosConcierto())
                 if (TotalSelecion() < 10) {
                     this.classList.remove('disponible')
                     this.classList.add('seleccionado')
                     this.classList.add("" + nombres.idcolor + "silla")
-                    // enviasilla()
-                    // console.log("nuevo")
                     successAlert(this.classList[0], nombres.localodad, "Fila")
                     AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
@@ -321,7 +322,6 @@ const LocalidadmapViews = (props) => {
             if (TotalSelecion() < 10) {
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
-
                 AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                 usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                 successAlert(this.classList[0], nombres.localodad, "Mesa")
@@ -391,16 +391,7 @@ const LocalidadmapViews = (props) => {
         $("#seleccionado").text(seleccion.length)
     })
     useEffect(() => {
-
-        // mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.find(e => e.cedula == "1314780774") ? TiendaIten(producto) : '' : ''
-
-
         getVerTienda().filter((e) => e.id == mapath.precio.idcolor).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.idcolor)) : setDetalle([])
-        let selct = seleccion
-        /*  selct.length > 0 ?
-              selct.map((e) => {
-                   $("div." + e.silla).removeClass("disponible").addClass("" + e.estado);
-               }) : '';*/
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
             $("#mapas" + e.path).attr("fill", e.fill)
             $("#mapas" + e.path).removeAttr("class")
@@ -421,8 +412,6 @@ const LocalidadmapViews = (props) => {
 
 
     }, [showMapa])
-    //console.log(mapath.localidadespecica)
-
     return (
         <>
             <Modal

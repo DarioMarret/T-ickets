@@ -3,20 +3,7 @@ import { Stylesilla } from "./style";
 import { useSelector } from "react-redux";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 const MesaseisView = ({ text, list }) => {
-  let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
-  // console.log(nombre)
-  // const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
-
-  //let silla = seleccion
-  // console.log(silla)
-  function checkAvailability(arr, val) {
-    return arr.some(function (arrVal) {
-      //console.log(val,arrVal.silla)
-      return val === arrVal.silla;
-    });
-  }
   let user = getDatosUsuariosLocalStorag()
-
   function Estado(e) {
     let estado = list.find(f => f.silla == e)
     /*if (silla.length > 0) {
@@ -28,17 +15,24 @@ const MesaseisView = ({ text, list }) => {
     }
     var index = list.findIndex(obj => obj.silla == e);
     return list[index].estado*/
-    if (estado.cedula != undefined && estado != "") {
-      // console.log(estado)
+    if (estado.cedula != undefined && estado.cedula != "") {
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
-      else return estado.estado == "seleccionado" ? "reservado" : estado.estado
+      else return "reservado"
       // return "seleccionado"
     }
     else return estado.estado
   }
-  function MesaEstado(e) {
+  function MesaEstado() {
     let asiento = list.map(function (k) {
-      return [k.estado];
+      {
+        if (k.cedula != undefined) {
+          if (user != undefined && k.cedula == user.cedula) {
+            return ["seleccionado"];
+          }
+          else { return k.estado }
+        }
+        else return [k.estado]
+      }
     });
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
     const isOcupado = (currentValue) => currentValue == "ocupado";
@@ -48,6 +42,7 @@ const MesaseisView = ({ text, list }) => {
     if (Object.values(asiento).every(isOcupado)) { return "mesaocupado" }
     if (Object.values(asiento).every(isReserva)) { return "mesareserva" }
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
+    return "mesadisponible"
   }
   return (
     <div style={{ padding: '0.7px' }}>
@@ -71,7 +66,7 @@ const MesaseisView = ({ text, list }) => {
           <a className={text + "-s-3 sillas   " + Estado(text + "-s-3")} style={Stylesilla.asientos}>
           </a>
         </div>
-        <div className={text + " " + list.length + " Mesa  txt-white d-flex  p-1 " + MesaEstado(text)} style={Stylesilla.mesas}>
+        <div className={text + " " + list.length + " Mesa  txt-white d-flex  p-1 " + MesaEstado()} style={Stylesilla.mesas}>
           {text}
         </div>
 

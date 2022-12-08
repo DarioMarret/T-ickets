@@ -87,7 +87,7 @@ export const enviasilla = async (info) => {
         silla: info.silla,
         estado: "reservado",
     }
-    console.log(datos)
+    //console.log(datos)
     try {
         const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecionar_localidad", datos, {
             headers: {
@@ -178,7 +178,7 @@ export const quitarsilla = async (parms) => {
 }
 export const buscarcliente = async (datos) => {
     try {
-        const { data } = await axios.get("", datos, {
+        const { data } = await axios.post(Host + "api/v1/consultar_cedula", datos, {
             header: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -193,9 +193,42 @@ export const buscarcliente = async (datos) => {
 export const sumarcorrelativo = async (datos) => {
     try {
         const { data } = await axios.post(Host + "api/v1/selecionar_localidad_correlativa",
-            datos,
+            datos, {
+            header: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        }
         )
+        return data
+    } catch (error) {
 
+    }
+}
+export const agregarNoticia = async (datos) => {
+    try {
+        const { data } = await axios.post(Host + "api/v1/crear_publicidad", datos, {
+            header: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        }
+        )
+        return data
+    } catch (error) {
+
+    }
+}
+export const noticiasEvento = async (datos) => {
+    try {
+        const { data } = await axios.post(Host + "api/v1/crear_evento_publicidad", datos, {
+            header: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        }
+        )
+        return data
     } catch (error) {
 
     }

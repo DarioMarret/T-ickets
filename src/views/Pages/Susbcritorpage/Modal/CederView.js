@@ -7,7 +7,6 @@ import { GetSuscritores } from "utils/Querypanel";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { Triangle } from "react-loader-spinner";
 import { buscarcliente } from "utils/Querypanelsigui";
-
 const CederView = () => {
     let estatusModal = useSelector(state => state.SuscritorSlice.modal)
     let [alert, setAlert] = useState(null)
@@ -18,7 +17,7 @@ const CederView = () => {
         nombreCompleto: '',
         ciudad: '',
         email: '',
-        movil: '',
+
         resgistro: '',
         password: ''
     })
@@ -57,30 +56,44 @@ const CederView = () => {
     const filterNames = async () => {
         let nombre = $('#cedula').val()
         if (nombre.trim().length >= 10) {
-            buscarcliente(nombre.trim()).then(oupt =>
-                console.log(oupt)).catch(err => console.log(err))
-            $("#search").removeClass("d-none")
-            if (lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()) != null) {
-                setDausuario({ ...lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()), whatsapp: lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()).movil, password: '', resgistro: true })
-                $('#movil').val(lista.find(e => e.cedula == nombre.trim() || e.email == nombre.trim()).movil)
-                $("#search").addClass("d-none")
-                return
-            } else {
-                setDausuario({
-                    nombreCompleto: '',
-                    ciudad: '',
-                    email: '',
-                    movil: '',
-                    resgistro: '',
-                    password: '', resgistro: false
-                })
-                $('#movil').val("")
+            let informacion = {
+                "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
+                "email": isNaN(nombre.trim()) ? nombre.trim() : ''
+            }
+            buscarcliente({ ...informacion }).then(oupt => {
+                console.log(informacion, oupt)
+                $("#search").removeClass("d-none")
+                if (oupt.data.name != undefined && oupt.data.name != null) {
+                    setDausuario({
+                        nombreCompleto: oupt.data.name,
+                        ciudad: oupt.data.direccion,
+                        email: oupt.data.email,
+                    })
+                }
+                else {
+                    setDausuario({
+                        nombreCompleto: '',
+                        ciudad: '',
+                        email: '',
+                    })
+                    usedispatch(setToastes({
+                        show: true,
+                        message: 'Para ceder un ticket el usuario debe estar registrado',
+                        color: 'bg-danger', estado: 'Usuaario no encontraron'
+                    }))
+                }
+
+            }
+
+            ).catch(err => {
                 usedispatch(setToastes({
                     show: true,
-                    message: 'El correo o cédula ingresados no se encontraron',
-                    color: 'bg-danger', estado: 'No encontrado'
+                    message: 'Problemas de conexión, intente de nuevo mas tarde',
+                    color: 'bg-danger', estado: 'Hubo un error'
                 }))
-            }
+                console.log(err)
+            })
+
         } else if (nombre.length == 0) {
             $('#movil').val("")
         }
@@ -135,125 +148,96 @@ const CederView = () => {
                                     <h4> CONSULTAR CLIENTE A CEDER</h4>
                                 </div>
                                 <div>
-                                    <form id="register" className=" needs-validation  " onSubmit={(e) => e.preventDefault()}  >
-                                        <div className="row d-flex justify-content-center">
+                                    <div className="row d-flex justify-content-center">
 
-                                            <div className="col-9">
-                                                <div className="input-group mb-3">
+                                        <div className="col-9">
+                                            <div className="input-group mb-3">
 
-                                                    <input id="cedula" type="text"
-                                                        className="form-control "
-                                                        name="cedula"
-                                                        minLength={10}
-                                                        maxLength={20}
+                                                <input id="cedula" type="text"
+                                                    className="form-control "
+                                                    name="cedula"
+                                                    minLength={10}
+                                                    maxLength={20}
 
-                                                        placeholder={"Ingrese correo electrónico o cédula"} />
-                                                    <div className="input-group-prepend">
-                                                        <button className="input-group-text  btn-primary" onClick={filterNames} ><i className="fa fa-search"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-2" >
-                                                {datos.resgistro ? <button className="btn btn-success" onClick={succesAlert}  > CEDER </button> :
-                                                    <button className="btn btn-success" disabled={true} > CEDER </button>}
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <div className="input-group mb-3">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text"><i className="fa fa-user"></i></span>
-                                                    </div>
-                                                    <input type="text"
-                                                        className="form-control"
-                                                        id="nombreCompleto"
-                                                        value={datos.nombreCompleto}
-
-                                                        name="nombreCompleto"
-                                                        onChange={(e) => handelChange(e.target)}
-                                                        placeholder="Ingrese su nombres completos" />
-                                                    <div className="invalid-feedback">
-                                                        Ingrese sus nombres
-
-                                                    </div>
-
+                                                    placeholder={"Ingrese correo electrónico o cédula"} />
+                                                <div className="input-group-prepend">
+                                                    <button className="input-group-text  btn-primary" onClick={filterNames} ><i className="fa fa-search"></i></button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="row">
-
-
-                                            <div className="col-12 col-lg-6  ">
-                                                <div className="input-group mb-3  px-0 d-flex justify-content-center ">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text"><i className="fab fa-whatsapp"></i></span>
-                                                    </div>
-                                                    <input
-                                                        name="movil" type="tel"
-                                                        className="m-0 inptFielsd form-control " id="movil"
-
-
-
-                                                        placeholder="999 999 999" />
-
-
-                                                    <div className="invalid-feedback">
-                                                        Ingrese un numero de Whatsapp
-
-                                                    </div>
+                                        <div className="col-2" >
+                                            {datos.resgistro ? <button className="btn btn-success" onClick={succesAlert}  > CEDER </button> :
+                                                <button className="btn btn-success" disabled={true} > CEDER </button>}
+                                        </div>
+                                        <div className="col-lg-12">
+                                            <div className="input-group mb-3">
+                                                <div className="input-group-prepend">
+                                                    <span className="input-group-text"><i className="fa fa-user"></i></span>
                                                 </div>
+                                                <input type="text"
+                                                    className="form-control"
+                                                    id="nombreCompleto"
+                                                    value={datos.nombreCompleto}
+
+                                                    name="nombreCompleto"
+                                                    onChange={(e) => handelChange(e.target)}
+                                                    placeholder="Ingrese su nombres completos" />
+                                                <div className="invalid-feedback">
+                                                    Ingrese sus nombres
+
+                                                </div>
+
                                             </div>
-
-                                            <div className="col-12 col-lg-6">
-                                                <div className="input-group mb-3" >
-                                                    <div className=" input-group-prepend">
-                                                        <span className=" input-group-text"> <i className="fa fa-map-marker"></i> </span>
-                                                    </div>
-                                                    <input type="text"
-                                                        className="form-control form-control-sm"
-                                                        id="direccion"
-                                                        name="ciudad"
-                                                        maxLength={255}
-
-                                                        value={datos.ciudad}
-                                                        onChange={(e) => handelChange(e.target)}
-                                                        placeholder="Ingrese su dirección"
-                                                    />
-                                                    <div className="invalid-feedback">
-                                                        Ingrese una direccion
-
-                                                    </div>
+                                        </div>
+                                    </div>
+                                    <div className="row d-flex justify-content-center">
+                                        <div className="col-lg-6 ">
+                                            <div className="input-group mb-3">
+                                                <div className="input-group-prepend">
+                                                    <span className="input-group-text"><i className="fa fa-envelope"></i></span>
                                                 </div>
 
+                                                <input id="email" type="email" className="form-control" name="email"
+                                                    value={datos.email}
+                                                    onChange={(e) => handelChange(e.target)}
+                                                    placeholder="Email" />
+                                                <div className="invalid-feedback">
+                                                    Correo incompleto
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div className="col-12 col-lg-6">
+                                            <div className="input-group mb-3" >
+                                                <div className=" input-group-prepend">
+                                                    <span className=" input-group-text"> <i className="fa fa-map-marker"></i> </span>
+                                                </div>
+                                                <input type="text"
+                                                    className="form-control form-control-sm"
+                                                    id="direccion"
+                                                    name="ciudad"
+                                                    maxLength={255}
+
+                                                    value={datos.ciudad}
+                                                    onChange={(e) => handelChange(e.target)}
+                                                    placeholder="Ingrese su dirección"
+                                                />
+                                                <div className="invalid-feedback">
+                                                    Ingrese una direccion
+
+                                                </div>
                                             </div>
 
                                         </div>
 
 
-                                        <div className="row d-flex justify-content-center">
-                                            <div className="col-lg-6 ">
-                                                <div className="input-group mb-3">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text"><i className="fa fa-envelope"></i></span>
-                                                    </div>
-
-                                                    <input id="email" type="email" className="form-control" name="email"
-                                                        value={datos.email}
-                                                        onChange={(e) => handelChange(e.target)}
-                                                        placeholder="Email" />
-                                                    <div className="invalid-feedback">
-                                                        Correo incompleto
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-
-                                        </div>
+                                    </div>
 
 
 
 
-                                    </form>
+
                                 </div>
 
 

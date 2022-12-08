@@ -26,6 +26,7 @@ const Modalupdate = (props) => {
             imagenConcierto: '',
             fechacreacion: '',
             idUsuario: "" + user.id,
+            //mapaconcierto:""
         })
     const [precios, setPrecios] = useState({
         localodad: '',
@@ -71,7 +72,6 @@ const Modalupdate = (props) => {
             habilitar_cortesia: 0
         })
     }
-
     $(document).ready(function () {
         $(".numero").keypress(function (e) {
             var n = (e = e || window.event).keyCode || e.which,
@@ -79,21 +79,36 @@ const Modalupdate = (props) => {
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
     });
-
     function handelchangeComposeventos(e) {
         if (e.name == "imagenConcierto") {
             let img = new Image()
             img.src = window.URL.createObjectURL(e.files[0])
             img.onload = () => {
-                if (img.width < 750 || img.height < 500) {
-                    e.value = ""
-                    setNewEventos({ ...neweventos, imagenConcierto: '' })
-                    usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 500px y un ancho minimo de 750px', color: 'bg-warning', estado: 'Advertencia' }))
-                }
-                else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+                setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+                /* if (img.width < 13830 || img.height < 3662) {
+                     e.value = ""
+                     setNewEventos({ ...neweventos, imagenConcierto: '' })
+                     usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
+                 }
+                 else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })*/
             }
             img.onerror = () => {
                 setNewEventos({ ...neweventos, imagenConcierto: '' })
+            }
+        } else if (e.name == "mapaconcierto") {
+            let img = new Image()
+            img.src = window.URL.createObjectURL(e.files[0])
+            img.onload = () => {
+                setNewEventos({ ...neweventos, mapaconcierto: e.files[0] ? e.files[0] : '' })
+                /* if (img.width < 13830 || img.height < 3662) {
+                     e.value = ""
+                     setNewEventos({ ...neweventos, imagenConcierto: '' })
+                     usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
+                 }
+                 else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })*/
+            }
+            img.onerror = () => {
+                setNewEventos({ ...neweventos, mapaconcierto: '' })
             }
         } else {
             setNewEventos({
@@ -260,6 +275,7 @@ const Modalupdate = (props) => {
                                         </div>
                                         <input type="text" name="lugarConcierto" className="form-control "
                                             value={neweventos.lugarConcierto}
+                                            disabled={true}
                                             onChange={(e) => handelchangeComposeventos(e.target)}
                                             placeholder="Imagen del concierto" />
 
@@ -296,7 +312,7 @@ const Modalupdate = (props) => {
 
 
                                 <div className="col-12 col-md-12">
-                                    <label className="form-label"> {neweventos.imagenConcierto ? "Hay una imagen Cargada " : "Seleccione una imagen"}</label>
+                                    <label className="form-label"> {neweventos.imagenConcierto ? "Hay una imagen Cargada " : "Seleccione una imagen del concierto"}</label>
                                     <div className="input-group mb-3">
 
                                         <input type="file" accept="image/*" name="imagenConcierto" className="form-control "
@@ -305,6 +321,17 @@ const Modalupdate = (props) => {
 
                                     </div>
                                 </div>
+                                <div className="col-12 col-md-12">
+                                    <label className="form-label"> {neweventos.mapaconcierto ? "Hay un mapa Cargada " : "Subir imagen del mapa"}</label>
+                                    <div className="input-group mb-3">
+
+                                        <input type="file" accept="image/*" name="mapaconcierto" className="form-control "
+                                            onChange={(e) => handelchangeComposeventos(e.target)}
+                                            id="mapaconcierto" placeholder="Imagen del mapa" />
+
+                                    </div>
+                                </div>
+
 
                             </div>
 

@@ -45,6 +45,7 @@ const ModalCarritoView = (prop) => {
     function Eliminar(e) {
         let array = e.localidaEspacio["typo"] != "correlativo" ? listaEliminasillas(e.localidaEspacio
         ["idcolor"]) : ''
+        console.log(array)
         e.localidaEspacio["typo"] != "correlativo" ? quitarsilla({ "array": [...array] }).then(ouput => {
             usedispatch(clearSillas(e))
             EliminarSillaLocal(e.localidad)

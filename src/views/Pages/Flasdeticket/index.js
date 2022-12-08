@@ -45,6 +45,9 @@ import "../../../assets/css/bootstrap.css";
 import Iframe from "views/Components/IFrame/Iframe.js";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion.js";
 import { quitarsilla } from "utils/Querypanelsigui.js";
+import { listaEliminasillas } from "utils/CarritoLocalStorang.js";
+import { correlativodelete } from "utils/Querypanelsigui.js";
+import { ListaElimnaLCompleta } from "utils/CarritoLocalStorang.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
@@ -148,7 +151,6 @@ const IndexFlas = () => {
   }
 
   function detenervelocidad() {
-    // quitarsilla()
     handleClosesop(false)
     clearInterval(datatime.current)
     clearInterval(localidadtimer.current)
@@ -157,19 +159,28 @@ const IndexFlas = () => {
     efectiOpShow(false)
     setModalPago(false)
     setrepShow(false)
-    Limpiarseleccion()
-    LimpiarLocalStore()
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
+    let array = ListaElimnaLCompleta()
+    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
+      console.log(ouput)
+    }
+    ).catch(err => console.log(err)) : ''
+    getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
+
+      getVerTienda().filter(e => e.tipo == "correlativo").map(async (elem) => {
+        correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
+        }).catch(err => {
+          console.log(err)
+        })
+      })
+      : ''
+    Limpiarseleccion()
+    LimpiarLocalStore()
   }
   function para() {
     clearInterval(datatime.current)
   }
-  function abrircarro() {
-    handleClosesop(true)
-    velocidad()
-  }
-
   const abrir = async (e) => {
     setspinervi("")
     let id = sessionStorage.getItem(Eventoid)
@@ -179,26 +190,26 @@ const IndexFlas = () => {
     }
     else {
       try {
-        console.log(e)
+        //  console.log(e)
         let obten = await listarpreciolocalidad(e.codigoEvento)
         // const lista = await
 
         const listalocal = await ListarLocalidad()
         let localidades = await cargarMapa()
-        console.log(obten)
+        // console.log(obten)
         // console.log(localidades)
         //console.log(localidades)
         // console.log(listalocal)
         sessionStorage.consierto = e.nombreConcierto
         if (obten.data.length > 0) {
-          console.log(localidades.data)
+          //  console.log(localidades.data)
           let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-          console.log("obtengo mapas", mapa)
+          //console.log("obtengo mapas", mapa)
           let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
           let localidad = JSON.parse(mapa[0].localidad)
-          console.log(JSON.parse(mapa[0].pathmap))
+          //  console.log(JSON.parse(mapa[0].pathmap))
           let path = JSON.parse(mapa[0].pathmap)
-          console.log(obten.data, localidad)
+          //   console.log(obten.data, localidad)
           let newprecios = obten.data.map((g, i) => {
             let color = localidad.filter((f, i) => f.nombre == g.localodad)
             //console.log("colores", g)
@@ -764,12 +775,13 @@ const IndexFlas = () => {
                 <div className="row  p-0">
                   {eventoslist.length > 0 ?
                     eventoslist.map((e, i) => {
+
                       return (
                         <div className="col-12 mx-auto my-3" id={"evento" + e.id} key={i}>
                           <a id={"headingThree" + e.id} className="collapsed" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7 shadow-md px-0">
-                              <img src={!e.imagenConcierto ? e.imagenConcierto : portal} className="img-fluid rounded-7 shadow-md " alt="" />
+                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
                           </a>
                           <div className="collapse container mt-4 px-0" aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">

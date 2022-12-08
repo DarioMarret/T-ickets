@@ -11,6 +11,10 @@ div.ocupado {
     background-color: #dc3545;
 }
 
+div.OCUPADO {
+    background-color: #dc3545;
+}
+
 div.mesaselecion {
     background-color: #6c757d;
     cursor: pointer;
@@ -71,7 +75,7 @@ li.agregados {
     cursor: pointer;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 950px) {
     .modal-content {
         border-radius: 15px !important;
     }
@@ -91,6 +95,10 @@ li.agregados {
         height: 100% !important;
         margin: 0 !important;
     }
+
+    .modal-content {
+        border-radius: 0 !important;
+    }
 }
 
 .modal-fullscreen {
@@ -102,7 +110,7 @@ li.agregados {
 }
 
 .modal-fullscreen-md-down {
-    padding: 0;
+    padding: 0 !important;
 }
 
 .modal-fullscreen {

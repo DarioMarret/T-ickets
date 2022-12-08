@@ -28,7 +28,7 @@ const MesadiesView = ({ text, list }) => {
     }
     var index = list.findIndex(obj => obj.silla == e);
     return list[index].estado*/
-    if (estado.cedula != undefined) {
+    if (estado.cedula != undefined && estado.cedula != "") {
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
       else return "reservado"
       // return "seleccionado"
@@ -37,7 +37,15 @@ const MesadiesView = ({ text, list }) => {
   }
   function MesaEstado(e) {
     let asiento = list.map(function (k) {
-      return [k.estado];
+      {
+        if (k.cedula != undefined) {
+          if (user != undefined && k.cedula == user.cedula) {
+            return ["seleccionado"];
+          }
+          else { return k.estado }
+        }
+        else return [k.estado]
+      }
     });
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
     const isOcupado = (currentValue) => currentValue == "ocupado";
@@ -47,6 +55,7 @@ const MesadiesView = ({ text, list }) => {
     if (Object.values(asiento).every(isOcupado)) { return "mesaocupado" }
     if (Object.values(asiento).every(isReserva)) { return "mesareserva" }
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
+    return "mesadisponible"
   }
   return (
     <div style={{ padding: '0.7px' }}>

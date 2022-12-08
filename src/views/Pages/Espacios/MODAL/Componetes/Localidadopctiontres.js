@@ -64,6 +64,14 @@ const TabtresView = (props) => {
                         id: '',
                         array: ''
                     })
+                    setLocalidad({
+                        nombre: '',
+                        description: '',
+                        id: '',
+                        cantidad: '',
+                        inicio: ''
+                    })
+
                     usedispatch(setToastes({ show: true, message: 'Localidad creada correctamente', color: 'bg-success', estado: 'Datos guadados' }))
                 }
 

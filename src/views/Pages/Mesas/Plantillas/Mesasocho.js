@@ -1,22 +1,9 @@
 import React from "react";
 import { Stylesilla } from "./style";
-import { useSelector } from "react-redux";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 const MesaochoView = ({ text, list }) => {
   let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
-  // console.log(nombre)
-  // const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
-
-  //let silla = seleccion
-  // console.log(silla)
-  function checkAvailability(arr, val) {
-    return arr.some(function (arrVal) {
-      //console.log(val,arrVal.silla)
-      return val === arrVal.silla;
-    });
-  }
   let user = getDatosUsuariosLocalStorag()
-
   function Estado(e) {
     let estado = list.find(f => f.silla == e)
     /*if (silla.length > 0) {
@@ -28,7 +15,7 @@ const MesaochoView = ({ text, list }) => {
     }
     var index = list.findIndex(obj => obj.silla == e);
     return list[index].estado*/
-    if (estado.cedula != undefined) {
+    if (estado.cedula != undefined && estado.cedula != "") {
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
       else return "reservado"
       // return "seleccionado"
@@ -37,7 +24,15 @@ const MesaochoView = ({ text, list }) => {
   }
   function MesaEstado(e) {
     let asiento = list.map(function (k) {
-      return [k.estado];
+      {
+        if (k.cedula != undefined) {
+          if (user != undefined && k.cedula == user.cedula) {
+            return ["seleccionado"];
+          }
+          else { return k.estado }
+        }
+        else return [k.estado]
+      }
     });
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
     const isOcupado = (currentValue) => currentValue == "ocupado";
@@ -47,6 +42,7 @@ const MesaochoView = ({ text, list }) => {
     if (Object.values(asiento).every(isOcupado)) { return "mesaocupado" }
     if (Object.values(asiento).every(isReserva)) { return "mesareserva" }
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
+    return "mesadisponible"
   }
   return (
     <div style={{ padding: '0.7px' }}>

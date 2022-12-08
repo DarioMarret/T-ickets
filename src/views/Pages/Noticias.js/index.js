@@ -18,6 +18,9 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { columnsTicket } from "utils/ColumnTabla";
+import { agregarNoticia } from "utils/Querypanelsigui";
+import { Obtenerlinkimagen } from "utils/Querypanel";
+import { noticiasEvento } from "utils/Querypanelsigui";
 
 
 
@@ -38,6 +41,7 @@ export default function NoticiasView() {
         encabezado: '',
         descipcion: '',
         fechamax: '',
+        link_img: '',
         mas: ''
     })
     const handelchange = (e) => {
@@ -46,12 +50,73 @@ export default function NoticiasView() {
         setImg("")
     }
     const handelchangeEvento = (e) => {
-        setImg(imagenes[e.value])
+        console.log(eventos.find(el => el.id == e.value))
+        setImg(eventos.find(el => el.id == e.value).imagenConcierto)
+        setDatos({
+            ...datos,
+            encabezado: eventos.find(el => el.id == e.value).nombreConcierto,
+            descipcion: eventos.find(el => el.id == e.value).descripcionConcierto,
+            link_img: eventos.find(el => el.id == e.value).imagenConcierto,
+            mas: { ...eventos.find(el => el.id == e.value) }
+
+        })
+        // setImg(imagenes[e.value])
 
     }
     const onSubmit = async (e) => {
         e.preventDefault()
-        console.log(e)
+        // console.log(e)
+        // console.log(img)
+        const form = new FormData(e.target)
+        try {
+            if (Object.values(Object.fromEntries(form.entries())).some(e => e)) {
+
+                if (Tipo != "Evento") {
+                    let link = await Obtenerlinkimagen(img)
+
+                    console.log(Object.fromEntries(form.entries()))
+                    let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
+
+                    let datos = {
+
+                        "encabezado": encabezado,
+                        "descripcion": descipcion,
+                        "link_img": link,
+                        "fecha_presentacion": fechamax,
+                        "redirect": mas
+                    }
+
+                    let carruse = await agregarNoticia(datos)
+                    console.log(link, carruse)
+                }
+                else {
+                    let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
+
+                    let datas = {
+                        "evento": datos.mas,
+                        "encabezado": encabezado,
+                        "descripcion": descipcion,
+                        "link_img": datos.link_img,
+                        "fecha_presentacion": fechamax,
+                        "redirect": ''
+                    }
+                    console.log(datas)
+                    let carruse = await noticiasEvento(datas)
+                    console.log(carruse)
+
+                }
+
+            } else {
+                console.log("vacio")
+            }
+
+        } catch (error) {
+            console.log(error)
+
+        }
+
+
+
     }
     const handelchangedatos = (e) => {
         setDatos({
@@ -63,7 +128,7 @@ export default function NoticiasView() {
     function handelchangeComposeventos(e) {
         let img = new Image()
         img.src = window.URL.createObjectURL(e.files[0])
-        setImg(img.src)
+        setImg(e.files[0])
     }
     const tipoevento = {
         Evento: <div className="row ">
@@ -114,16 +179,6 @@ export default function NoticiasView() {
                         ></input>
                     </div>
                 </div>
-            </div>
-            <div className="row" >
-                <div className="col-6">
-                    <label className=" form-label " > Imagen del Evento </label>
-                    <div className="custom-file" >
-                        <input className="  form-control" type="file"
-                            onChange={(e) => handelchangeComposeventos(e.target)}
-                        />
-                    </div>
-                </div>
                 <div className="col-6">
                     <label className=" form-label">Fecha maxima de presentación</label>
                     <div className=" input-group mb-3">
@@ -139,6 +194,7 @@ export default function NoticiasView() {
                     </div>
                 </div>
             </div>
+
             <div>
             </div>
         </div>,
@@ -179,6 +235,7 @@ export default function NoticiasView() {
                             <label className=" form-label " > Imagen del Evento </label>
                             <div className="custom-file" >
                                 <input className="  form-control" type="file"
+                                    name="imagen-even"
                                     onChange={(e) => handelchangeComposeventos(e.target)}
                                 />
                             </div>
@@ -252,6 +309,7 @@ export default function NoticiasView() {
                             <label className=" form-label " > Imagen del Evento </label>
                             <div className="custom-file" >
                                 <input className="  form-control" type="file"
+                                    name="imagen-even"
                                     onChange={(e) => handelchangeComposeventos(e.target)}
                                 />
                             </div>
@@ -391,7 +449,6 @@ export default function NoticiasView() {
                                                 <select className="form-select" value={Tipo} onChange={(e) => handelchange(e.target)} required>
                                                     <option value="Evento">Evento </option>
                                                     <option value={"informativo"}>Informativo</option>
-                                                    <option value={"publicidad"}>Publicidad</option>
                                                 </select>
                                             </div>
                                         </div>

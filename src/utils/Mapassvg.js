@@ -3,7 +3,7 @@ export const ProvinciasMap = [
         provincia: "Guayas",
         mapas: [
             {
-                "nombre": "golden",
+                "nombre": "estandar",
                 "ciudad": "Duran",
                 "description": "alberto spencer",
                 "plantilla": <svg version="1.0" className="opciones" xmlns="http://www.w3.org/2000/svg"
@@ -784,7 +784,7 @@ export const ProvinciasMap = [
                 </svg>
             },
             {
-                "nombre": "estandar",
+                "nombre": "golden",
                 "ciudad": "Guayaquil",
                 "description": "Estadio Goldden",
                 "plantilla":
