@@ -107,7 +107,28 @@ let color = {
   "CANCELADO": "danger",
   "EXPIRO": "warning"
 }
+export const columnPublicidad = [
+  {
+    accessorKey: 'encabezado',
+    header: 'Encabezado',
+  },
+  {
+    accessorKey: 'descripcion',
+    header: 'Descripcion',
+  },
+  {
+    accessorKey: 'evento',
+    header: 'Tipo',
+    Cell: ({ cell, column }) => (
+      cell.getValue() == "undefined" ? 'Informativo' : 'Evento'
+    ),
+  },
+  {
+    accessorKey: 'fecha_presentacion',
+    header: 'Fecha expocision',
+  },
 
+]
 
 export const Columnevento = [
 

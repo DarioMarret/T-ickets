@@ -233,3 +233,43 @@ export const noticiasEvento = async (datos) => {
 
     }
 }
+export const ListarNoticias = async () => {
+    try {
+        const { data } = await axios.get(Host + "api/v1/listar_publicidad", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+
+    }
+}
+export const Actualizarpublicdad = async (id, parms) => {
+    try {
+        const { data } = await axios.put(Host + "api/v1/actualizar_publicidad" + id, parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Eliminarpublici = async (parms) => {
+    try {
+        const { data } = await axios.delete(Host + "api/v1/eliminar_publicidad/" + parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}

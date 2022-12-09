@@ -114,14 +114,15 @@ const ModalNewEvento = (props) => {
             let img = new Image()
             img.src = window.URL.createObjectURL(e.files[0])
             img.onload = () => {
-                if (img.width < 750 || img.height < 500) {
-                    e.value = ""
-                    usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 500px y máximo 600px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
-                }
-                if (img.width > 900 || img.height > 620) {
-                    e.value = ""                                                                                                    // alto de 3662px y un ancho minimo de 13830px
-                    usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 3662px y máximo 3762px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
-                } else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+                setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+                /* if (img.width < 750 || img.height < 500) {
+                     e.value = ""
+                     usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 500px y máximo 600px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
+                 }
+                 if (img.width > 900 || img.height > 620) {
+                     e.value = ""                                                                                                    // alto de 3662px y un ancho minimo de 13830px
+                     usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 3662px y máximo 3762px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
+                 } else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })*/
             }
             img.onerror = () => {
                 setNewEventos({ ...neweventos, imagenConcierto: '' })

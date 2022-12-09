@@ -21,11 +21,8 @@ import { columnsTicket } from "utils/ColumnTabla";
 import { agregarNoticia } from "utils/Querypanelsigui";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { noticiasEvento } from "utils/Querypanelsigui";
-
-
-
-
-
+import { ListarNoticias } from "utils/Querypanelsigui";
+import { columnPublicidad } from "utils/ColumnTabla";
 export default function NoticiasView() {
 
     const imagenes = {
@@ -36,6 +33,7 @@ export default function NoticiasView() {
     const [Tipo, setTipo] = useState("Evento")
     const [show, setShowca] = useState(false)
     const [eventos, setEventos] = useState([])
+    const [publicidad, setpublicidad] = useState([])
     const [img, setImg] = useState("")
     const [datos, setDatos] = useState({
         encabezado: '',
@@ -366,6 +364,10 @@ export default function NoticiasView() {
             setEventos(oupt.data)
             console.log(oupt)
         }).catch(err => console.log(err))
+        ListarNoticias().then(oupt => {
+            setpublicidad(oupt.data)
+            console.log(oupt)
+        }).catch(err => console.log(err))
     }, [])
     return (
         <>
@@ -476,11 +478,30 @@ export default function NoticiasView() {
                                 <h5>Eventos del carrusel</h5>
 
                             </div>
-                            <MaterialReactTable
-                                columns={columnsTicket}
-                                data={[]}
+                            {publicidad.length > 0 ? <MaterialReactTable
+                                columns={columnPublicidad}
+                                data={publicidad}
+                                muiTableProps={{
+                                    sx: {
+                                        tableLayout: 'fixed'
+                                    }
+                                }}
+                                enableRowActions
+                                renderRowActions={({ row }) => (
+                                    <Box sx={{ display: 'flex' }}>
+                                        <IconButton
+                                            color="error"
+
+                                        >
+                                            <Delete />
+                                        </IconButton>
+
+
+                                    </Box>
+                                )}
+                                positionToolbarAlertBanner="bottom"
                                 localization={MRT_Localization_ES}
-                            />
+                            /> : ''}
 
                         </div>
                     </div>
