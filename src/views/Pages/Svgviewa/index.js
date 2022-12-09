@@ -248,7 +248,7 @@ const Viewssvg = () => {
                             <rect id="2" className="none" x="16041" y="7207" width="1064" height="254" />
                             <rect id="10" className="none" x="16041" y="7487" width="1697" height="288" />
                             <polygon id="11" className="none" points="16040,7801 18915,7801 18915,9027 16040,9027 " />
-                            <rect className="none" x="14251" y="7209" width="1636" height="1818" />
+                            <rect id="14" className="none" x="14251" y="7209" width="1636" height="1818" />
 
 
                         </svg>
