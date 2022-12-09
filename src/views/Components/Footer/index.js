@@ -105,20 +105,23 @@ export default function Footer(props) {
                                 >
                                     <div className=' col-sm-6 txt-white  p-1' style={{ width: '225px', maxWidth: 225 }}>
                                         <h4>Habla con Nosotros</h4>
-                                        <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
+                                        <a href='https://t-ickets.net/3FynwiC' target="_blank" className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <i className="bi bi-whatsapp"></i>
                                             <span className=" text-white" style={{ fontFamily: '', }} > 0945580545  </span>
                                         </a>
-
-                                        <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
+                                        <a
+                                            href="tel:043585652" target="_blank"
+                                            className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <i className="bi bi-telephone-fill"></i>
                                             <span className=" text-white" style={{ fontFamily: '', }} > 043585652  </span>
                                         </a>
-                                        <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
+                                        <a href="mailto:info@t-ickets.com?Subject=Comunicate%20con%20nosotros%20-%20t-ickets"
+                                            target="_blank"
+                                            className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <i className="bi bi-envelope"> </i>
                                             <span className=" text-white" style={{ fontFamily: '', }} > info@t-ickets.com  </span>
                                         </a>
-                                        <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
+                                        <a href='https://goo.gl/maps/NvfDLJ9D6r1QNeFu5' target="_blank" className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <i className="bi bi-geo-alt-fill"> </i>
                                             <span className=" text-white" style={{ fontFamily: '', }} >City Oficce Piso 3 </span>
                                         </a>

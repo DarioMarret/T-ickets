@@ -2,6 +2,7 @@ import zIndex from '@mui/material/styles/zIndex'
 import { Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect, useRef, useState } from 'react'
+import { setModal } from 'StoreRedux/Slice/SuscritorSlice'
 import SweetAlert from 'react-bootstrap-sweetalert'
 
 function Iframe(props) {
@@ -18,7 +19,7 @@ function Iframe(props) {
     })
     const cerrarPago = () => {
         detener()
-        useDispatch()
+        useDispatch(setModal({ nombre: '', estado: '' }))
     }
     const successAlert = () => {
         setAlert(

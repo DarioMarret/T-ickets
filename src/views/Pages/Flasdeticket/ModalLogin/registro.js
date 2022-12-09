@@ -119,7 +119,7 @@ const ResgistroView = (prop) => {
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
 
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
-            console.log(Object.values(Object.fromEntries(form.entries())).some(e => e))
+            //  console.log(Object.values(Object.fromEntries(form.entries())).some(e => e))
             setDatoToas({
                 show: true,
                 message: "Falta datos por completar",
@@ -440,7 +440,7 @@ const ResgistroView = (prop) => {
                                     <div className="col-12 d-flex ">
                                         <strong>
                                             <p style={{ fontSize: "0.8em" }}>
-                                                <strong> Acepto que se crea mi cuenta de usuario en el portal de flasthetickets, la misma que contiene mis datos persoanales, así como los
+                                                <strong> Acepto que se crea mi cuenta de usuario en el portal de t-ickets, la misma que contiene mis datos persoanales, así como los
                                                     datos de mis compras, tambien recibir las promociones por ese mismo medio.</strong>
                                             </p>
                                         </strong>

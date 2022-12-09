@@ -6,6 +6,8 @@ import { ReportarDepositoCompra, EnviarmensajeWhastapp } from "../../../utils/Qu
 import { useSelector, useDispatch } from 'react-redux';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
+import { GetMetodo } from 'utils/CarritoLocalStorang';
+import { GetValores } from 'utils/CarritoLocalStorang';
 const Reporte = (props) => {
   const { repShop, handlereportColse,
     setDatoToas, setrepShow, detener, intervalo,
@@ -112,7 +114,7 @@ const Reporte = (props) => {
             <div className="d-flex flex-wrap px-0 justify-content-center align-items-center" >
               <div className='d-flex px-0'>
 
-                <h5 className="modal-title pb-3 px-0 text-center " style={{ fontSize: '0.7em' }}>Para completar la compra, deberá transferir el valor total <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> {intervalo}</strong> </span> Minutos a nombre de:
+                <h5 className="modal-title pb-3 px-0 text-center " style={{ fontSize: '0.7em' }}>Para completar la compra, deberá transferir el valor total <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> ${GetMetodo() != "Tarjeta" ? (parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)).toFixed(2) : (GetValores().total).toFixed(2)} </strong> </span> <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> {intervalo}</strong> </span> Minutos a nombre de:
                   <strong>TICKETSECUADOR S.A.</strong>   RUC No. <strong>0993377293001</strong>, a una de las siguientes cuentas:</h5>
 
               </div>

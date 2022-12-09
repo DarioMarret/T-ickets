@@ -51,10 +51,6 @@ const ModalCarritoView = (prop) => {
             EliminarSillaLocal(e.localidad)
             console.log(e.localidaEspacio["idcolor"])
             $("div." + e.localidaEspacio["idcolor"] + "silla").removeClass("seleccionado").addClass("disponible");
-            // var elems = document.querySelector("div." + e.localidaEspacio["idcolor"]);
-            // elems !== null ? elems.classList.remove("seleccionado") : ''
-            //  elems !== null ? elems.classList.add("disponible") : ''
-
             console.log(ouput)
         }
         ).catch(err => console.log(err)) : correlativodelete(

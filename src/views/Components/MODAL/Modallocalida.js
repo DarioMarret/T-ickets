@@ -348,7 +348,7 @@ const LocalidadmapViews = (props) => {
     })
     $(document).on("click", "div.mesadisponible", function () {
         if (!this.classList.contains("mesaselecion")) {
-            if (TotalSelecion() != 10) {
+            if (TotalSelecion() < 10) {
                 Alertmesas(this.classList[0], this.classList[1])
             }
             else
@@ -424,9 +424,15 @@ const LocalidadmapViews = (props) => {
                 {alert}
                 <Modal.Header>
                     <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
-                    <button className=" btn btn-primary" onClick={cerrar} >
-                        <i className="bi bi-caret-left-fill">  </i>Regresar
-                    </button>
+                    <div className="" >
+                        <button className=" btn btn-primary" onClick={cerrar} >
+                            <i className="fa fa-arrow-left">  </i>
+                        </button>
+                        <button className=" btn btn-primary mx-1" onClick={cerrar} >
+                            <i className="fa fa-shopping-cart">  </i>
+                        </button>
+                    </div>
+
                 </Modal.Header>
                 <Modal.Body>
                     <div className='conatiner-fluid col-12'>
@@ -619,10 +625,11 @@ const LocalidadmapViews = (props) => {
                                     detalle.map((e, i) => {
                                         return (
                                             <div className="d-flex flex-table row justify-content-center " role="rowgroup" key={"items" + i}>
-                                                <div className="flex-row first text-center col-3 col-md-3" role="cell">{e.localidad}</div>
+                                                <div className="flex-row first text-center col-3 col-md-3" role="cell">Localidad: {e.localidad}</div>
                                                 {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
-                                                <div className="flex-row   text-center col-2 col-md-2">${e.valor * e.cantidad}</div>
-                                                <div className="flex-row  text-center  col-2 col-md-2">{e.cantidad}</div>
+
+                                                <div className="flex-row  text-center  col-2 col-md-2">Total: {e.cantidad}</div>
+                                                <div className="flex-row   text-center col-2 col-md-2">Valor ${e.valor * e.cantidad}</div>
                                                 <div className="flex-row  text-center col-3 col-md-3">
                                                     <button className="btn btn-danger" onClick={() => Eliminar(e)} >Eliminar</button>
                                                 </div>

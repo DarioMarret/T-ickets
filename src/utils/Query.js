@@ -21,16 +21,36 @@ export const Authsucrito = async (parms) => {
     // console.log(data)
     return data
 }
+/*concierto = [
+    {
+        "nombreConcierto": "Seve Linda",
+        "id_localidad": 60
+    },
+    {
+        "nombreConcierto": "Seve Linda",
+        "id_localidad": 61
+    }
+]*/
 export const GenerarLinkPagoMedios = async () => {
-    let datosPersonal = getDatosUsuariosLocalStorag()
-    let concierto = getVerTienda()
+    let datosPersonal = getDatosUsuariosLocalStorag().cedula
+    let concierto = getVerTienda().map((e) => {
+        return {
+            "nombreConcierto": e.nombreConcierto,
+            "id_localidad": e.localidaEspacio["idcolor"],
+            "cantidad": e.cantidad
+        }
+    })
     let valores = GetValores()
     let metodo = GetMetodo()
     console.log("se esta generando")
+    console.log({ "cedula": datosPersonal },
+        valores,
+        metodo,
+        concierto)
 
-    if (datosPersonal != null && valores != null) {
+    /*if (datosPersonal != null && valores != null) {
         const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio", {
-            datosPersonal,
+            {"cedula":datosPersonal},
             valores,
             metodo,
             concierto
@@ -40,9 +60,16 @@ export const GenerarLinkPagoMedios = async () => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
+        console.log({
+            datosPersonal,
+            valores,
+            metodo,
+            concierto
+        }, data
+        )
         //const envios= datosPersonal.envio=="correo"? await EnviarEmail() : await EnviarmensajeWhastapp() 
         return data.data
-    }
+    }*/
 }
 export const GuardarDatosdelComprador = async () => {
 

@@ -23,8 +23,9 @@ import { Obtenerlinkimagen } from "utils/Querypanel";
 import { noticiasEvento } from "utils/Querypanelsigui";
 import { ListarNoticias } from "utils/Querypanelsigui";
 import { columnPublicidad } from "utils/ColumnTabla";
+import { Eliminarpublici } from "utils/Querypanelsigui";
+import SweetAlert from "react-bootstrap-sweetalert";
 export default function NoticiasView() {
-
     const imagenes = {
         22: carrusel.principal,
         20: carrusel.secundaria
@@ -35,6 +36,7 @@ export default function NoticiasView() {
     const [eventos, setEventos] = useState([])
     const [publicidad, setpublicidad] = useState([])
     const [img, setImg] = useState("")
+    const [alert, setAlert] = useState(null)
     const [datos, setDatos] = useState({
         encabezado: '',
         descipcion: '',
@@ -63,58 +65,57 @@ export default function NoticiasView() {
     }
     const onSubmit = async (e) => {
         e.preventDefault()
-        // console.log(e)
-        // console.log(img)
         const form = new FormData(e.target)
         try {
             if (Object.values(Object.fromEntries(form.entries())).some(e => e)) {
 
                 if (Tipo != "Evento") {
-                    let link = await Obtenerlinkimagen(img)
-
-                    console.log(Object.fromEntries(form.entries()))
-                    let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
-
-                    let datos = {
-
-                        "encabezado": encabezado,
-                        "descripcion": descipcion,
-                        "link_img": link,
-                        "fecha_presentacion": fechamax,
-                        "redirect": mas
+                    if (img == "") {
+                        console.log("llenar datos")
                     }
-
-                    let carruse = await agregarNoticia(datos)
+                    else {
+                        let link = await Obtenerlinkimagen(img)
+                        console.log(Object.fromEntries(form.entries()))
+                        let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
+                        let paramet = {
+                            "encabezado": encabezado,
+                            "descripcion": descipcion,
+                            "link_img": link,
+                            "fecha_presentacion": fechamax,
+                            "redirect": mas
+                        }
+                    }
+                    Evento()
+                    let carruse = await agregarNoticia(paramet)
                     console.log(link, carruse)
                 }
                 else {
-                    let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
-
-                    let datas = {
-                        "evento": datos.mas,
-                        "encabezado": encabezado,
-                        "descripcion": descipcion,
-                        "link_img": datos.link_img,
-                        "fecha_presentacion": fechamax,
-                        "redirect": ''
+                    if (datos.mas == "" && datos.link_img == "") {
+                        console.log("llenar datos")
                     }
-                    console.log(datas)
-                    let carruse = await noticiasEvento(datas)
-                    console.log(carruse)
-
+                    else {
+                        let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
+                        console.log(Object.values(Object.fromEntries(form.entries())).some(e => e), Object.fromEntries(form.entries()))
+                        let datas = {
+                            "evento": datos.mas["codigoEvento"] + "-" + datos.mas["id"],
+                            "encabezado": encabezado,
+                            "descripcion": descipcion,
+                            "link_img": datos.link_img,
+                            "fecha_presentacion": fechamax,
+                            "redirect": ''
+                        }
+                        console.log(datas)
+                        let carruse = await noticiasEvento(datas)
+                        Evento()
+                        console.log(carruse)
+                    }
                 }
-
             } else {
                 console.log("vacio")
             }
-
         } catch (error) {
             console.log(error)
-
         }
-
-
-
     }
     const handelchangedatos = (e) => {
         setDatos({
@@ -123,6 +124,36 @@ export default function NoticiasView() {
         })
 
     }
+    function EliminaNoticias(e) {
+        Eliminarpublici(e).then(oupt => {
+            console.log(oupt)
+            Evento()
+            hideAlert()
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+    const successAlert = (e) => {
+        setAlert(
+            <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                title="Estas Seguro de eliminar?"
+                onConfirm={() => EliminaNoticias(e)}
+                onCancel={() => hideAlert()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                confirmBtnText="Confirmar"
+                cancelBtnText="Cancelar"
+                showCancel
+
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+            >
+                Se Borraran este evento
+            </SweetAlert>
+        );
+    };
+    const hideAlert = () => setAlert(null)
     function handelchangeComposeventos(e) {
         let img = new Image()
         img.src = window.URL.createObjectURL(e.files[0])
@@ -147,6 +178,20 @@ export default function NoticiasView() {
                                 }) : ''
                             }
                         </select>
+                    </div>
+                </div>
+                <div className="col-6">
+                    <label className=" form-label">Fecha maxima de presentación</label>
+                    <div className=" input-group mb-3">
+                        <div className=" input-group-append ">
+                            <span className=" input-group-text "><i className=" fa fa-calendar "></i></span>
+                        </div>
+                        <input className=" form-control"
+                            name="fechamax"
+                            min={fechamin}
+                            type="date"
+                            onChange={(e) => handelchangedatos(e.target)}
+                        ></input>
                     </div>
                 </div>
             </div>
@@ -177,99 +222,13 @@ export default function NoticiasView() {
                         ></input>
                     </div>
                 </div>
-                <div className="col-6">
-                    <label className=" form-label">Fecha maxima de presentación</label>
-                    <div className=" input-group mb-3">
-                        <div className=" input-group-append ">
-                            <span className=" input-group-text "><i className=" fa fa-calendar "></i></span>
-                        </div>
-                        <input className=" form-control"
-                            name="fechamax"
-                            min={fechamin}
-                            type="date"
-                            onChange={(e) => handelchangedatos(e.target)}
-                        ></input>
-                    </div>
-                </div>
+
             </div>
 
             <div>
             </div>
         </div>,
-        publicidad:
-            <div className="row">
-                <div className="col-6">
-                    <label className="form-label">Encabezado </label>
 
-                    <div className="input-group mb-3">
-
-                        <div className="input-group-prepend">
-                            <span className="input-group-text"><i className="fab fa-leanpub"></i></span>
-                        </div>
-
-                        <input type="text"
-                            className="form-control numero"
-                            name="encabezado"
-                            value={datos.encabezado}
-                            onChange={(e) => handelchangedatos(e.target)}
-                        />  </div>
-                </div>
-                <div className="col-6">
-                    <label className="form-label" >Breve descripción </label>
-                    <div className=" input-group mb-3">
-                        <div className="   input-group-append ">
-                            <span className=" input-group-text" > <i className="fab fa-leanpub "></i></span>
-                        </div>
-                        <input className=" form-control"
-                            name="descipcion"
-                            value={datos.descipcion}
-                            onChange={(e) => handelchangedatos(e.target)}
-                        ></input>
-                    </div>
-                </div>
-                <div>
-                    <div className="row" >
-                        <div className="col-6">
-                            <label className=" form-label " > Imagen del Evento </label>
-                            <div className="custom-file" >
-                                <input className="  form-control" type="file"
-                                    name="imagen-even"
-                                    onChange={(e) => handelchangeComposeventos(e.target)}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-6">
-                            <label className=" form-label">Fecha maxima de presentación</label>
-                            <div className=" input-group mb-3">
-                                <div className=" input-group-append ">
-                                    <span className=" input-group-text "><i className=" fa fa-calendar "></i></span>
-                                </div>
-                                <input className=" form-control"
-                                    name="fechamax"
-                                    min={fechamin}
-                                    type="date"
-                                    onChange={(e) => handelchangedatos(e.target)}
-                                ></input>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row" >
-                        <div className="col-12">
-                            <label className="form-label"> Boton Ver mas  </label>
-                            <div className=" input-group mb-3">
-                                <div className=" input-group-append ">
-                                    <span className=" input-group-text "><i className=" fa fa-link "></i></span>
-                                </div>
-                                <input className="  form-control"
-                                    name="mas"
-                                    value={datos.mas}
-                                    onChange={(e) => handelchangedatos(e.target)}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>,
         informativo:
             <div className="row">
                 <div className="col-6">
@@ -359,18 +318,23 @@ export default function NoticiasView() {
             target="_blank"
         >VER MÁS</a>
     }
+    function Evento() {
+        ListarNoticias().then(oupt => {
+            setpublicidad(oupt.data)
+            console.log(oupt)
+        }).catch(err => console.log(err))
+
+    }
     useEffect(() => {
         EventosActivos().then(oupt => {
             setEventos(oupt.data)
             console.log(oupt)
         }).catch(err => console.log(err))
-        ListarNoticias().then(oupt => {
-            setpublicidad(oupt.data)
-            console.log(oupt)
-        }).catch(err => console.log(err))
+        Evento()
     }, [])
     return (
         <>
+            {alert}
             <Row className={show ? "" : "d-none" + " container-fluid pb-2 "}>
                 <Swiper >
                     <SwiperSlide>
@@ -491,7 +455,7 @@ export default function NoticiasView() {
                                     <Box sx={{ display: 'flex' }}>
                                         <IconButton
                                             color="error"
-
+                                            onClick={() => successAlert(row.original.id)}
                                         >
                                             <Delete />
                                         </IconButton>

@@ -468,7 +468,7 @@ function ModalDetalle(props) {
                                     <h4>Subtotal:</h4>
                                 </div>
                                 <div>
-                                    <p>Comision por Boleto:</p>
+                                    <p>Costo de Emisión:</p>
                                 </div>
                                 <div className={hidecomision}>
                                     <p>Comision Bancaria:</p>

@@ -311,7 +311,7 @@ const ModalNewEvento = (props) => {
                                             value={neweventos.lugarConcierto}
                                             disabled={true}
                                             onChange={(e) => handelchangeComposeventos(e.target)}
-                                            placeholder="Imagen del concierto" />
+                                            placeholder="" />
 
                                     </div>
                                 </div>

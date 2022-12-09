@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { Form } from "react-bootstrap";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import { GetMetodo } from "utils/CarritoLocalStorang";
+import { GetValores } from "utils/CarritoLocalStorang";
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 const ModalConfima = (prop) => {
     const { setrepShow, pararcontador } = prop
     let usedispatch = useDispatch()
@@ -46,7 +49,7 @@ const ModalConfima = (prop) => {
                                 Selecione el banco al que realizó la transferencia
                             </h5>
                             <Form.Select className=" form-control">
-                                <option></option>
+                                <option disabled selected></option>
                                 <option>Banco Pichincha</option>
                                 <option>Banco Guayaquil</option>
                             </Form.Select>
@@ -55,8 +58,8 @@ const ModalConfima = (prop) => {
                             <h5 style={{ fontSize: '1.0em' }}>
                                 Ingrese el número de comprobante de la transferencia
                             </h5>
-                            <input className=" form-control"
-                                type={"number"}
+                            <input className=" form-control numero"
+                                type={"text"}
                             />
                         </div>
                         <div className="p-1" >
@@ -64,6 +67,14 @@ const ModalConfima = (prop) => {
                                 Adjuntar Comprobante ( imagen jpg ó png)
                             </h5>
                             <input type="file" accept="image/*" className="form-control" />
+                        </div>
+                        <div className=" p-1 ">
+                            <span>
+                                Una vez confirmado el deposito su ticket sera enviado  {
+                                    GetValores().envio == "correo" ? "al: correo" + getDatosUsuariosLocalStorag().email : "al: Whatsapp " + getDatosUsuariosLocalStorag().whatsapp
+                                }
+                            </span>
+
                         </div>
 
                     </div>

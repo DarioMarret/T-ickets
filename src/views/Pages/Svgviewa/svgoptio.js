@@ -822,9 +822,9 @@ const SVGView = ({ text }) => {
             <rect id="mapas8" className="none" x="12422" y="7489" width="1697" height="288" />
             <polygon id="mapas9" className="none" points="14120,7803 11245,7803 11245,9029 14120,9029 " />
             <rect id="mapas2" className="none" x="16041" y="7207" width="1064" height="254" />
-            <rect id="1mapas0" className="none" x="16041" y="7487" width="1697" height="288" />
+            <rect id="mapas10" className="none" x="16041" y="7487" width="1697" height="288" />
             <polygon id="mapas11" className="none" points="16040,7801 18915,7801 18915,9027 16040,9027 " />
-            <rect id="mapas14" className="nome" x="14251" y="7209" width="1636" height="1818" />
+            <rect id="mapas14" className="none" x="14251" y="7209" width="1636" height="1818" />
         </svg >
 
 

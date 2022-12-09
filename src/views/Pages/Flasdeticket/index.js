@@ -811,9 +811,16 @@ const IndexFlas = () => {
                                     }} >
                                     <div>
                                       <div className="row" style={{ alignItems: 'stretch', lineHeight: '1', }} >
-                                        <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><b>Espacio de los auspiciaste<span id="horaEvento"></span></b></p>
+                                        <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><b>Datos de la empresa responsable<span id="horaEvento"></span></b></p>
+                                        <div className="border"
+                                          style={{
+                                            height: 30,
+                                            width: "90%",
+                                            padding: 5
+                                          }}
+                                        >
+                                        </div>
                                       </div>
-                                      <div className="col-12 border border-bottom mb-3"></div>
                                     </div>
                                   </div>
                                   <div className=" col-12 text-center  pt-3"
@@ -847,8 +854,6 @@ const IndexFlas = () => {
                       </div>
 
                     </div>}
-
-
                   {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
                   <div className=" d-none col-12 col-lg-6 mx-auto my-5" >
                     <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
@@ -959,7 +964,6 @@ const IndexFlas = () => {
         </div>
       </div>
       <TOAST
-
         Toastestado={Toastestado}
         setDatoToas={setDatoToas}
       />
