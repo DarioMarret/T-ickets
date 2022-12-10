@@ -6,7 +6,7 @@ import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import { DatosUsuariosLocalStorag, getCliente } from 'utils/DatosUsuarioLocalStorag';
 import { getCedula } from 'utils/DatosUsuarioLocalStorag';
 import { ValidarWhatsapp, GuardarDatosdelComprador, EnviarmensajeWhastapp, Authsucrito } from 'utils/Query';
-
+import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 import { useDispatch } from "react-redux";
 import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
 import { getVerTienda, GetEstadousu } from 'utils/CarritoLocalStorang';
@@ -25,11 +25,9 @@ function ModalDetalle(props) {
     });
     const [valorTotal, SetValor] = useState(0)
     const [clienteauth, setChecked] = useState(false)
-
     const [spinervi, setspiner] = useState("d-none")
     const [hidecomision, sethideComision] = useState("d-none")
     const [validationfrom, setValidation] = useState("")
-
     const [datosPerson, setPerson] = useState({
         cedula: '',
         name: '',
@@ -39,7 +37,10 @@ function ModalDetalle(props) {
         envio: '',
         direccion: '',
     })
-
+    function detposito() {
+        usedispatch(setModal({ nombre: "modalpago", estado: "" }))
+        setDetalle(false)
+    }
     const handleCheckboxChange = (event) => {
         const { name, checked } = event
         if (checked) {
@@ -419,16 +420,16 @@ function ModalDetalle(props) {
                         </div>
                         <div className="col-6 col-sm text-end align-items-end flex-column ">
                             <div className="container ">
-                                <h4 className="subtotal">${listaPrecio.subtotal} </h4>
+                                <h4 className="subtotal">${parseInt(listaPrecio.subtotal).toFixed(2)} </h4>
                             </div>
                             <div className="container-fluid">
-                                <h4 className="comision-boleto text-end">${listaPrecio.comision} </h4>
+                                <h4 className="comision-boleto text-end">${parseInt(listaPrecio.comision).toFixed(2)} </h4>
                             </div>
                             <div className={"container-fluid " + hidecomision}>
-                                <h4 className="comision-boleto text-end">${listaPrecio.comision_bancaria} </h4>
+                                <h4 className="comision-boleto text-end">${parseFloat(listaPrecio.comision_bancaria).toFixed(2)} </h4>
                             </div>
                             <div className="container  ">
-                                <h4 className="total-text"> ${GetMetodo() === "Tarjeta" ? listaPrecio.total : (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)} </h4>
+                                <h4 className="total-text"> ${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)} </h4>
                             </div>
 
                         </div>
@@ -498,7 +499,7 @@ function ModalDetalle(props) {
                                 !clienteauth && datosPerson.metodoPago == "Efectivo" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { handelefctivorShow() } }}
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { detposito() } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
@@ -529,7 +530,7 @@ function ModalDetalle(props) {
                                 clienteauth && datosPerson.metodoPago == "Efectivo" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={!(datosPerson.envio != '')}
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { handelefctivorShow() } }}
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { detposito() } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }

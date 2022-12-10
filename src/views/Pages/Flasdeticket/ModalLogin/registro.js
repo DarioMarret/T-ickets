@@ -38,7 +38,7 @@ const ResgistroView = (prop) => {
                     seTspine("")
                     const datos = await getCedula(e.target.value)
                     const { name, email, direccion, whatsapp, discapacidad } = datos
-                    //console.log(datos)
+                    console.log(datos)
                     if (name) {
 
                         seTspine("d-none")
@@ -110,14 +110,14 @@ const ResgistroView = (prop) => {
         let datos = {
             nombreCompleto: datosPerson.name,
             email: datosPerson.email,
-            password: datosPerson.password,
+            password: password,
             movil: movil,
             ciudad: datosPerson.direccion,
             cedula: datosPerson.cedula,
-            envio: ''
+
         }
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
-
+        console.log(datos)
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
             //  console.log(Object.values(Object.fromEntries(form.entries())).some(e => e))
             setDatoToas({
@@ -326,7 +326,7 @@ const ResgistroView = (prop) => {
 
                                                     <input
                                                         name="movil" type="tel"
-                                                        className="m-0 inptFielsd form-control " id="movil"
+                                                        className="m-0 inptFielsd form-control numero" id="movil"
                                                         size={100}
                                                         placeholder="999 999 999" />
 

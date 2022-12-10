@@ -358,14 +358,15 @@ const ModalCarritoView = (prop) => {
                 <Modal.Footer className="d-flex  p-3 border-top  justify-content-between align-items-cente">
                     <div className="d-flex flex-column">
                         <div className="px-5">
-                            Método de pago
+                            <strong> Método de pago</strong>
+
                             <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     checked={checked.Tarjeta == "Tarjeta" ? true : false}
                                     onChange={(e) => handelMetodopago(e.target, "Tarjeta")}
                                     name="Tarjeta" id="Tarjeta" />
                                 <label className="form-check-label" >
-                                    Tarjeta
+                                    Tarjeta-credito
                                 </label>
                             </div>
                             <div className="form-check ">
@@ -377,14 +378,14 @@ const ModalCarritoView = (prop) => {
                                     Deposito-transferencia
                                 </label>
                             </div>
-                            <div className=" d-none form-check">
+                            <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     name="Efectivo" id="Efectivo"
                                     checked={checked.Efectivo == "Efectivo" ? true : false}
                                     onChange={(e) => handelMetodopago(e.target, "Efectivo")}
                                 />
                                 <label className="form-check-label">
-                                    Efectivo
+                                    Efectivo punto de pagos
                                 </label>
                             </div>
 

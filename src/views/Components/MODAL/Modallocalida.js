@@ -45,13 +45,13 @@ const LocalidadmapViews = (props) => {
         }
         nuevo.length > 0 && TotalSelecion() < 10 ? nuevo.map((e, index) => {
             setTimeout(() => {
-                $("." + e.silla).hasClass('disponible') ? enviasilla({ ...e }).then(ouput => {
+                TotalSelecion() < 10 ? $("." + e.silla).hasClass('disponible') ? enviasilla({ ...e }).then(ouput => {
                     AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" }))
                 }
                 ).catch(exit => {
                     console.log(exit)
-                }) : ''
+                }) : '' : succesLimit()
             }, 20 * index)
 
         }) : succesLimit()
@@ -322,6 +322,7 @@ const LocalidadmapViews = (props) => {
             if (TotalSelecion() < 10) {
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
+                successAlert(this.classList[0], nombres.localodad, "Mesa")
                 AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                 usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                 successAlert(this.classList[0], nombres.localodad, "Mesa")
@@ -628,10 +629,10 @@ const LocalidadmapViews = (props) => {
                                                 <div className="flex-row first text-center col-3 col-md-3" role="cell">Localidad: {e.localidad}</div>
                                                 {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
 
-                                                <div className="flex-row  text-center  col-2 col-md-2">Total: {e.cantidad}</div>
+                                                <div className="flex-row  text-center  col-2 col-md-3">Total tickets: {e.cantidad}</div>
                                                 <div className="flex-row   text-center col-2 col-md-2">Valor ${e.valor * e.cantidad}</div>
                                                 <div className="flex-row  text-center col-3 col-md-3">
-                                                    <button className="btn btn-danger" onClick={() => Eliminar(e)} >Eliminar</button>
+                                                    {  /* <button className="btn btn-danger" onClick={() => Eliminar(e)} >Eliminar</button>*/}
                                                 </div>
                                             </div>
                                         )

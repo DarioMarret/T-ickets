@@ -32,25 +32,26 @@ export const Authsucrito = async (parms) => {
     }
 ]*/
 export const GenerarLinkPagoMedios = async () => {
-    let datosPersonal = getDatosUsuariosLocalStorag().cedula
-    let concierto = getVerTienda().map((e) => {
+    //  let datosPersonal = { cedula: getDatosUsuariosLocalStorag().cedula }
+    let datosPersonal = getDatosUsuariosLocalStorag()
+    let concierto = getVerTienda()/*.map((e) => {
         return {
             "nombreConcierto": e.nombreConcierto,
             "id_localidad": e.localidaEspacio["idcolor"],
             "cantidad": e.cantidad
         }
-    })
+    })*/
     let valores = GetValores()
     let metodo = GetMetodo()
     console.log("se esta generando")
-    console.log({ "cedula": datosPersonal },
+    console.log(datosPersonal,
         valores,
         metodo,
         concierto)
 
-    /*if (datosPersonal != null && valores != null) {
+    if (datosPersonal != null && valores != null) {
         const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio", {
-            {"cedula":datosPersonal},
+            datosPersonal,
             valores,
             metodo,
             concierto
@@ -69,7 +70,7 @@ export const GenerarLinkPagoMedios = async () => {
         )
         //const envios= datosPersonal.envio=="correo"? await EnviarEmail() : await EnviarmensajeWhastapp() 
         return data.data
-    }*/
+    }
 }
 export const GuardarDatosdelComprador = async () => {
 

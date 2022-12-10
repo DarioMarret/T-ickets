@@ -119,8 +119,9 @@ export const columnPublicidad = [
   {
     accessorKey: 'evento',
     header: 'Tipo',
+
     Cell: ({ cell, column }) => (
-      cell.getValue() == "undefined" ? 'Informativo' : 'Evento'
+      cell.getValue() != null ? 'Evento' : 'Informativo'
     ),
   },
   {

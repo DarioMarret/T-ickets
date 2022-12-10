@@ -12,8 +12,10 @@ export const concierto = "consierto";
 export const seleccionmapa = "seleccionmapa";
 export const sillaspalco = "sillaspalco";
 export const Eventolocalidad = "Eventolocalidad"
+export const FacturaComnet = "idFactura"
 //export const Host = "https://a8e1-45-187-2-162.sa.ngrok.io/"
 export const Host = "https://rec.netbot.ec/ms_login/";
+export const token = "RXQ0eGpqSnpodGRNRnNvdktBYUNCQT09"
 export const Valores = "Costos"
 export const Metodos = "Metodo-pago"
 export function Salircliente() {

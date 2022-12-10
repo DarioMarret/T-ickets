@@ -15,8 +15,8 @@ const ViewToas = (props) => {
                 style={{
                     position: 'fixed',
                     top: 30,
-                    left: '50%',
-                    transform: 'translate(-50 %, -50 %)',
+
+                    transform: 'translate(-50 %, 0 %)',
                     zIndex: 10000,
                 }}>
                 <Toast.Header closeButton={false}>
@@ -30,7 +30,7 @@ const ViewToas = (props) => {
                     </button>
 
                 </Toast.Header>
-                <Toast.Body className={Toastestado.color + " text-white"} > {Toastestado.message}</Toast.Body>
+                <Toast.Body className={Toastestado.color + " text-white"} >  {Toastestado.message}</Toast.Body>
             </Toast>
         </>
     )

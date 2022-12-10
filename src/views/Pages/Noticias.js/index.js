@@ -48,6 +48,13 @@ export default function NoticiasView() {
         setTipo(e.value)
         setShowca(false)
         setImg("")
+        setDatos({
+            encabezado: '',
+            descipcion: '',
+            fechamax: '',
+            link_img: '',
+            mas: ''
+        })
     }
     const handelchangeEvento = (e) => {
         console.log(eventos.find(el => el.id == e.value))
@@ -68,8 +75,8 @@ export default function NoticiasView() {
         const form = new FormData(e.target)
         try {
             if (Object.values(Object.fromEntries(form.entries())).some(e => e)) {
-
-                if (Tipo != "Evento") {
+                let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
+                if (Tipo != "Evento" && [encabezado, descipcion, fechamax, mas].some(e => e)) {
                     if (img == "") {
                         console.log("llenar datos")
                     }
@@ -77,17 +84,19 @@ export default function NoticiasView() {
                         let link = await Obtenerlinkimagen(img)
                         console.log(Object.fromEntries(form.entries()))
                         let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
-                        let paramet = {
+                        let parametr = {
                             "encabezado": encabezado,
                             "descripcion": descipcion,
                             "link_img": link,
                             "fecha_presentacion": fechamax,
                             "redirect": mas
                         }
+
+                        let carruse = await agregarNoticia(parametr)
+                        console.log(link, carruse)
+                        Evento()
                     }
-                    Evento()
-                    let carruse = await agregarNoticia(paramet)
-                    console.log(link, carruse)
+
                 }
                 else {
                     if (datos.mas == "" && datos.link_img == "") {
@@ -97,7 +106,7 @@ export default function NoticiasView() {
                         let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
                         console.log(Object.values(Object.fromEntries(form.entries())).some(e => e), Object.fromEntries(form.entries()))
                         let datas = {
-                            "evento": datos.mas["codigoEvento"] + "-" + datos.mas["id"],
+                            "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"],
                             "encabezado": encabezado,
                             "descripcion": descipcion,
                             "link_img": datos.link_img,

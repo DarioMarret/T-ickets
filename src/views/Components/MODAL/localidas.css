@@ -71,6 +71,11 @@ div.esquema:hover {
         0 3px 5px -1px rgba(0, 0, 0, 0.4)
 }
 
+.pagos:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
 li.agregados {
     cursor: pointer;
 }
@@ -97,7 +102,7 @@ li.agregados {
     }
 
     .modal-content {
-        border-radius: 0 !important;
+        border-radius: 0px !important;
     }
 }
 
@@ -106,7 +111,7 @@ li.agregados {
     max-width: none !important;
     height: 100% !important;
     margin: 0 !important;
-    border-radius: 0 !important;
+    border-radius: 0px !important;
 }
 
 .modal-fullscreen-md-down {

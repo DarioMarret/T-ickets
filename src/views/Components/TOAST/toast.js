@@ -15,13 +15,14 @@ const ToastViews = () => {
         <div className="  d-flex justify-content-center text-center ">
 
             <Toast
-                onClose={cerrar} show={selector.show} delay={6500} autohide
+                onClose={cerrar} show={selector.show} delay={16500} autohide
 
-                className="top-center"
+                className=" "
 
                 style={{
                     position: 'fixed',
-
+                    left: '50%',
+                    transform: 'translate(-50 %, -50 %)',
 
                     zIndex: 10000,
                 }}>

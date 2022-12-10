@@ -13,23 +13,24 @@
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-*/
-import Dashboard from "views/Dashboard.js";
 import UserPage from "views/Pages/UserPage.js";
 import LoginPage from "views/Pages/LoginPage.js";
 import RegisterPage from "views/Pages/RegisterPage.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
-import Ticket from "views/Pages/Tickets.js";
-import Ventas from "views/Pages/VenderTiket.js"
-import Espacios from "views/Pages/Espacios";
 import RegularForms from "views/Forms/RegularForms.js";
 import ExtendedForms from "views/Forms/ExtendedForms.js";
 import ValidationForms from "views/Forms/ValidationForms.js";
 import Wizard from "views/Forms/Wizard/Wizard.js";
-import Eventos from "views/Pages/Evento";
 import PerfilPage from "views/Pages/Perfil";
+*/
+import Dashboard from "views/Dashboard.js";
+import Ticket from "views/Pages/Tickets.js";
+import Ventas from "views/Pages/VenderTiket.js"
+import Espacios from "views/Pages/Espacios";
+import Eventos from "views/Pages/Evento";
 import EventoEspecifico from "views/Pages/Evento/MODAL/Evetoespecifico";
-import Dashboardsub from "views/Pages/Susbcritorpage/index.js";
+import DiseñoViwpdf from "views/Pages/Diseñador/Diseñopdf.js";
+import AutorizacionView from "views/Pages/Autorizacion";
 import Reactabla from "views/Pages/Susbcritorpage/Tickes.js";
 import ReactTables from "views/Tables/ReactTables.js";
 import SuscritorViews from "views/Pages/Suscriptores";
@@ -95,13 +96,28 @@ var routes = [
         component: Eventos,
         permiso: ["superadmin", "super_admin"]
       },
-
       {
+        path: "/Informacion-tributaria",
+        layout: "/admin",
+        name: "SRI",
+        mini: "*",
+        component: AutorizacionView,
+        permiso: ["superadmin", "super_admin"]
+      }
+      , {
         path: "/Diseñar-Ticket",
         layout: "/admin",
         name: "Diseñar Ticket",
         mini: "*",
         component: Reactabla,
+        permiso: ["superadmin", "super_admin"]
+      },
+      {
+        path: "/Diseñar-PDF",
+        layout: "/admin",
+        name: "Diseñar PDF",
+        mini: "*",
+        component: DiseñoViwpdf,
         permiso: ["superadmin", "super_admin"]
       }
     ]

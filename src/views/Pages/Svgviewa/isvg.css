@@ -58,42 +58,61 @@ path.disponible:hover {
   transform: scale(1.01);
 }
 
-/*.str2 {stroke:#FEFEFE;stroke-width:20}
-    .str1 {stroke:#E6E7E8;stroke-width:20}
-    .str0 {stroke:#373435;stroke-width:7.62}
-    .fil0 {fill:none}
-    .fil2 {fill:#373435;fill-rule:nonzero}
-    .fil1 {fill:#373435;fill-rule:nonzero}*/
-
-
-.fil0 {
-  fill: #96989A
+.str0 {
+  stroke: #E6E7E8;
+  stroke-width: 20
 }
 
-.fil7 {
-  fill: #373435
+.str1 {
+  stroke: #373435;
+  stroke-width: 20
 }
 
-.fil5 {
-  fill: #00BBF2
-}
-
-.fil6 {
-  fill: #1F8B57
+.str2 {
+  stroke: #FEFEFE;
+  stroke-width: 7.62
 }
 
 .fil3 {
-  fill: #5D5994
+  fill: #FEFEFE
+}
+
+.fil0 {
+  fill: #E6E7E8
+}
+
+.fil7 {
+  fill: #BDBFC1
+}
+
+.fil8 {
+  fill: #4B4B4D
 }
 
 .fil1 {
-  fill: #670965
+  fill: #373435
 }
 
 .fil2 {
-  fill: #A000A8
+  fill: #039AB5
 }
 
+.fil6 {
+  fill: #9C9C9C
+}
+
+.fil5 {
+  fill: #A90623
+}
+
+.fil4 {
+  fill: #E6BE28
+}
+
+.fil9 {
+  fill: #FEFEFE;
+  fill-rule: nonzero
+}
 
 
 .mapanuevo {
@@ -102,4 +121,12 @@ path.disponible:hover {
   image-rendering: optimizeQuality;
   fill-rule: evenodd;
   clip-rule: evenodd;
+}
+
+.seudtres {
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+  image-rendering: optimizeQuality;
+  fill-rule: evenodd;
+  clip-rule: evenodd
 }

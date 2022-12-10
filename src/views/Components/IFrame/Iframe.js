@@ -19,7 +19,7 @@ function Iframe(props) {
     })
     const cerrarPago = () => {
         detener()
-        useDispatch(setModal({ nombre: '', estado: '' }))
+        usedispatch(setModal({ nombre: '', estado: '' }))
     }
     const successAlert = () => {
         setAlert(

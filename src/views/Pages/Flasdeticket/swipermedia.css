@@ -24,8 +24,20 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active {
         align-items: center;
         bottom: 50;
     }
+
+
+}
+
+@media (min-width:600px) {
+    .toast {
+        left: 50% !important;
+    }
 }
 
 .iti__selected-flag {
     background-color: #dee2e6 !important;
+}
+
+.collapsed {
+    cursor: pointer;
 }

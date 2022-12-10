@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styleswiper } from "./styleswiper.js";
 import { pasados, carrusel } from "./imagenstatctic.js";
-let { icon, valla, principal, secundaria, tercero, logofla, mapa, portal } = carrusel
+let { icon, valla, principal, secundaria, tercero, logofla, mapa, portal, header } = carrusel
 import { useSelector, useDispatch } from "react-redux";
 import { todossiler } from "./Modalterminos/silder.js";
 let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
@@ -48,6 +48,9 @@ import { quitarsilla } from "utils/Querypanelsigui.js";
 import { listaEliminasillas } from "utils/CarritoLocalStorang.js";
 import { correlativodelete } from "utils/Querypanelsigui.js";
 import { ListaElimnaLCompleta } from "utils/CarritoLocalStorang.js";
+import { Triangle } from "react-loader-spinner";
+import { ListarNoticias } from "utils/Querypanelsigui.js";
+import ModalFacilitoView from "views/Components/MODAL/ModalFacilito.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
@@ -503,7 +506,7 @@ const IndexFlas = () => {
     fecha: ''
   })
   const [eventoslist, setEventos] = useState([])
-
+  const [publicidad, setpublicidad] = useState([])
 
   useEffect(() => {
     usedispatch(clearMapa({}))
@@ -523,17 +526,23 @@ const IndexFlas = () => {
       }
     }
     evento()
-    var popUp = window.open('url', '', 'options');
-    if (popUp == null || typeof (popUp) == 'undefined') {
-      setDatoToas({
-        show: true,
-        message: 'Por favor habilite las ventanas emergentes antes de continuar y actualice la pagina',
-        color: 'bg-danger',
-        estado: 'Mensaje importante',
-      })
-    } else {
-      popUp.close();
-    }
+    ListarNoticias().then(ouput => {
+      setpublicidad(ouput.data)
+      //console.log(ouput)
+    }).catch(err =>
+      console.log(err)
+    )
+    /* var popUp = window.open('url', '', 'options');
+     if (popUp == null || typeof (popUp) == 'undefined') {
+       setDatoToas({
+         show: true,
+         message: 'Por favor habilite las ventanas emergentes antes de continuar y actualice la pagina',
+         color: 'bg-danger',
+         estado: 'Mensaje importante',
+       })
+     } else {
+       popUp.close();
+     }*/
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
@@ -567,6 +576,7 @@ const IndexFlas = () => {
       })
       usedispatch(addususcritor({ ...clineteLogeado }))
     }
+
     /* (function (s, z, c, h, a, t) {
        s.webchat = s.webchat || function () {
          (s.webchat.q = s.webchat.q || []).push(arguments);
@@ -583,6 +593,16 @@ const IndexFlas = () => {
        if (event.origin !== 'https://comnet.sz.chat') return;
      }, false)*/
   }, [])
+
+  function eventocarrusel(e) {
+    let datos = e.split("-")
+
+    return {
+      nombreConcierto: datos[2],
+      codigoEvento: datos[0],
+      lugarConcierto: datos[3]
+    }
+  }
   return (
     <>
       {showMapa ? <LocalidadmapViews
@@ -632,8 +652,10 @@ const IndexFlas = () => {
       />
       <ModalEfectivo
         efectShow={efectShow}
+        handleDetalleColse={handleDetalleColse}
         handleefectivoClose={handleefectivoClose}
         efectiOpShow={efectiOpShow}
+        setDetalle={setDetalle}
         intervalo={intervalo}
         detener={detenervelocidad}
         setDatoToas={setDatoToas}
@@ -685,10 +707,12 @@ const IndexFlas = () => {
         setShowLogin={setShowLogin}
         abrir={abrir}
       />
+      <ModalFacilitoView />
       {/* header */}
-      <div className="container-fluid  pt-2 px-0" style={{
+      {publicidad.length > 0 ? <div className="container-fluid  pt-2 px-0" style={{
         minHeight: '300px'
       }}>
+
 
         <Swiper
           className="AnimatedSlides "
@@ -705,67 +729,90 @@ const IndexFlas = () => {
           modules={[Autoplay, EffectFade, Pagination]}>
 
           {
-            [principal, secundaria, tercero].map((element, index) => {
-              return (
-                <SwiperSlide key={index}>
-                  <div style={{ width: "100%", height: "400px" }}>
-                    <div className="slide-image" style={{
-                      position: "relative",
-                      width: "100%",
-                      height: "400px",
-                    }}>
+            publicidad.length > 0 ?
+              publicidad.map((element, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <div style={{ width: "100%", height: "400px" }}>
+                      <div className="slide-image" style={{
+                        position: "relative",
+                        width: "100%",
+                        height: "400px",
+                      }}>
 
-                      <div style={{
-                        backgroundImage: "url('" + element + "')",
-                        ...styleswiper.slideimg
-                      }} >
-                      </div>
-                      <div style={styleswiper.fondo}>
-                      </div>
-                      <div className="descripciones ">
+                        <div style={{
+                          backgroundImage: "url('" + element.link_img + "')",
+                          ...styleswiper.slideimg
+                        }} >
+                        </div>
+                        <div style={styleswiper.fondo}>
+                        </div>
+                        <div className="descripciones ">
 
-                        <div className="d-flex  flex-column text-white" >
-                          <div className="py-3 d-none d-sm-block   ">
-                            <div className=" row d-flex  align-items-center p-1">
-                              <i className="fa fa-volume-off fa-3x  col-2 ">  </i>
-                              <h5 className="col-10 px-0 pt-2"
-                                style={{
-                                  fontSize: '0.9em'
-                                }}
-                              >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
+                          <div className="d-flex  flex-column text-white" >
+                            <div className="py-3 d-none d-sm-block   ">
+                              <div className=" row d-flex  align-items-center p-1">
+                                <i className="fa fa-volume-off fa-3x  col-2 ">  </i>
+                                <h5 className="col-10 px-0 pt-2"
+                                  style={{
+                                    fontSize: '0.9em'
+                                  }}
+                                >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
+                              </div>
+
                             </div>
-
-                          </div>
-                          <div className="d-block d-sm-none" >
-                            <div className="d-flex flex-row justify-content-center text-center">
-                              <i className="fa fa-volume-off fa-1x"> </i>
-                              <h5 className=" px-0"
-                                style={{
-                                  fontSize: '0.9em'
-                                }}
-                              >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
+                            <div className="d-block d-sm-none" >
+                              <div className="d-flex flex-row justify-content-center text-center">
+                                <i className="fa fa-volume-off fa-1x"> </i>
+                                <h5 className=" px-0"
+                                  style={{
+                                    fontSize: '0.9em'
+                                  }}
+                                >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
+                              </div>
                             </div>
-                          </div>
-                          <h4 className=" " style={styleswiper.titulo}>Descripción de la imagen  </h4>
-                          <span style={styleswiper.subtitulo}>
-                            Sub descripción
-                          </span>
-                          <div className="pt-2 ">
-                            <button className="btn border rounded-1  btn-lg btn-outline-light "
-                              style={styleswiper.button}
-                            >VER MÁS</button>
+                            <h4 className=" " style={styleswiper.titulo}>{element.encabezado}  </h4>
+                            <span style={styleswiper.subtitulo}>
+                              {element.descripcion}
+                            </span>
+                            <div className="pt-2 ">
+                              {
+                                element.evento == null ?
+                                  <a className="btn border rounded-1  btn-lg btn-outline-light "
+                                    style={styleswiper.button}
+                                    href={element.redirect}
+                                    target="_blank"
+                                  >VER MÁS</a> :
+                                  <button className="btn border rounded-1  btn-lg btn-outline-light "
+                                    onClick={() => eventocarrusel(element.evento)}
+                                    style={styleswiper.button}
+                                  >VER MÁS</button>
+
+                              }
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </SwiperSlide>
-              )
-            })
+                  </SwiperSlide>
+                )
+              }) : ''
           }
 
         </Swiper>
-      </div>
+      </div> : <div className="container-fluid  p-0">
+        <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '400px', backgroundImage: `url(${header})` }}>
+          <div className="container w-100 h-100 px-0">
+            <div className="container btn-group-vertical  h-100 text-center px-0">
+              <h1 className="text-white mx-auto" style={{ fontSize: '3.5em' }}><img src={logofla} className="img-fluid" style={{ height: '150px' }} alt="" /></h1>
+              <p className="mx-auto text-white d-none" style={{ fontSize: '1.2em' }}><b>Compra</b> tu entrada <b>fácil, rápido</b> y
+                <b>seguro</b>
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>}
       {/* eventos */}
       {seleccion == "" ?
         <div className="container-fluid " id="nuevoseventos">
@@ -957,7 +1004,15 @@ const IndexFlas = () => {
           borderRadius: '10px',
           padding: '10px',
         }}>
-          <Spinner animation="border" variant="light" size='120'></Spinner>
+          <Triangle
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="triangle-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={true}
+          />
           <h4 className='text-light'>Cargando  evento  ...</h4>
 
 
