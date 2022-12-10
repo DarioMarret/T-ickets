@@ -69,11 +69,11 @@ const ModalConfima = (prop) => {
                             <input type="file" accept="image/*" className="form-control" />
                         </div>
                         <div className=" p-1 ">
-                            <span>
+                            {modal.nombre == "confirmar" ? <span>
                                 Una vez confirmado el deposito su ticket sera enviado  {
                                     GetValores().envio == "correo" ? "al: correo" + getDatosUsuariosLocalStorag().email : "al: Whatsapp " + getDatosUsuariosLocalStorag().whatsapp
                                 }
-                            </span>
+                            </span> : ''}
 
                         </div>
 

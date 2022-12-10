@@ -12,30 +12,33 @@ const ToastViews = () => {
     // console.log(selector)
 
     return (<>
-        <Toast
-            onClose={cerrar} show={selector.show} delay={6500} autohide
+        <div className="  d-flex justify-content-center text-center ">
 
-            className="top-center"
+            <Toast
+                onClose={cerrar} show={selector.show} delay={6500} autohide
 
-            style={{
-                position: 'fixed',
-                top: 10,
-                right: 25,
-                zIndex: 10000,
-            }}>
-            <Toast.Header closeButton={false}>
-                <div className={selector.color + " rounded-3"} style={{ width: '20px', height: '20px', }}></div>
-                <strong className="mr-auto  px-1">{selector.estado} </strong>
-                <small></small>
-                <button type="button" className="close"
-                    onClick={cerrar} >
-                    ×
-                </button>
+                className="top-center"
 
-            </Toast.Header>
-            <Toast.Body className={selector.color + " text-white"} >{selector.message}</Toast.Body>
-        </Toast>
+                style={{
+                    position: 'fixed',
 
+
+                    zIndex: 10000,
+                }}>
+                <Toast.Header closeButton={false}>
+                    <div className={selector.color + " rounded-3"} style={{ width: '20px', height: '20px', }}></div>
+                    <strong className="mr-auto  px-1">{selector.estado} </strong>
+                    <small></small>
+                    <button type="button" className="close"
+                        onClick={cerrar} >
+                        ×
+                    </button>
+
+                </Toast.Header>
+                <Toast.Body className={selector.color + " text-white"} >{selector.message}</Toast.Body>
+            </Toast>
+
+        </div>
     </>)
 }
 export default ToastViews
