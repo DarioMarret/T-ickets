@@ -13,7 +13,7 @@ export default function ModalFacilitoView() {
     return (
         <>
             <Modal
-                show={Modalshow.nombre != "ordendepago" ? true : false}
+                show={Modalshow.nombre == "ordendepago" ? true : false}
                 size="lg">
                 <Modal.Header>
                     <button className="close" onClick={Cerrar}> x</button>

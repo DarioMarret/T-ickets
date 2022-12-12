@@ -42,7 +42,8 @@ export const GenerarLinkPagoMedios = async () => {
         }
     })*/
     let valores = GetValores()
-    let metodo = GetMetodo()
+    //  let datosPersonal = { cedula: getDatosUsuariosLocalStorag().cedula }
+    let metodo = { "forma_paago": GetMetodo() }
     console.log("se esta generando")
     console.log(datosPersonal,
         valores,
@@ -141,10 +142,18 @@ export const EnviarmensajeWhastapp = async (parms) => {
 }
 export const ReportarDepositoCompra = async (transaccion) => {
     let datosPersonal = getDatosUsuariosLocalStorag()
-    let concierto = getVerTienda()
+    //  let datosPersonal = { cedula: getDatosUsuariosLocalStorag().cedula }
+    //let metodo = { "forma_paago": GetMetodo() }
+    let concierto = getVerTienda()/*.map((e) => {
+        return {
+            "nombreConcierto": e.nombreConcierto,
+            "id_localidad": e.localidaEspacio["idcolor"],
+            "cantidad": e.cantidad
+        }
+    })*/
     let valores = GetValores()
     let metodo = GetMetodo()
-    // console.log("se esta generando")  
+    // console.log("se esta generando")
     const { data } = await axios.post(Host + "pago_medio", {
         datosPersonal,
         valores,
@@ -167,6 +176,8 @@ export const ReportarDepositoCompra = async (transaccion) => {
 */
 export const ReportarEfectivoCompra = async () => {
     let datosPersonal = getDatosUsuariosLocalStorag()
+    //  let datosPersonal = { cedula: getDatosUsuariosLocalStorag().cedula }
+    //let metodo = { "forma_paago": GetMetodo() }
     let concierto = getVerTienda()
     let valores = GetValores()
     let metodo = GetMetodo()

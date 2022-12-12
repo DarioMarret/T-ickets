@@ -43,6 +43,8 @@ const ModalEfectivo = (props) => {
         sessionStorage.setItem(FacturaComnet, ouput.idcliente)
         seTSpiners("d-none")
         console.log(ouput)
+        usedispatch(setModal({ nombre: 'ordendepago', estado: '' }))
+
       }
       ).catch(err => console.log(err))
     }, 5000)

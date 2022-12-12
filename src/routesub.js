@@ -41,6 +41,7 @@ import Viesvg from "views/Pages/Svgviewa"
 import AjustesView from "views/Pages/Ajustes";
 import EsquemaViews from "views/Pages/Esquemas";
 import NoticiasJs from "views/Pages/Noticias.js";
+import VentasView from "PDF";
 
 var routes = [
   {
@@ -242,18 +243,18 @@ var routes = [
         component: Ventas,
         permiso: ["superadmin", "super_admin"]
       },
+
       {
+        path: "/Ventas-Por-Aprobar",
+        layout: "/admin",
+        name: "Ventas Por Aprobar",
+        mini: "*",
+        component: VentasView,
+        permiso: ["superadmin", "super_admin"]
+      }, {
         path: "/Vender-Articulo",
         layout: "/admin",
         name: "Vender Articulo",
-        mini: "*",
-        component: Reactabla,
-        permiso: ["superadmin", "super_admin"]
-      },
-      {
-        path: "/Peronalizaciones",
-        layout: "/admin",
-        name: "Peronalizaciones",
         mini: "*",
         component: Reactabla,
         permiso: ["superadmin", "super_admin"]

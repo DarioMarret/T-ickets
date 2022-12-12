@@ -596,7 +596,11 @@ const IndexFlas = () => {
 
   function eventocarrusel(e) {
     let datos = e.split("-")
-
+    abrir({
+      "nombreConcierto": datos[2],
+      "codigoEvento": datos[0],
+      "lugarConcierto": datos[1]
+    })
     return {
       nombreConcierto: datos[2],
       codigoEvento: datos[0],
@@ -786,7 +790,7 @@ const IndexFlas = () => {
                                   <button className="btn border rounded-1  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
-                                  >VER MÁS</button>
+                                  >COMPRAR</button>
 
                               }
                             </div>
@@ -825,7 +829,7 @@ const IndexFlas = () => {
 
                       return (
                         <div className="col-12 mx-auto my-3" id={"evento" + e.id} key={i}>
-                          <a id={"headingThree" + e.id} className="collapsed" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
+                          <a id={"headingThree" + e.id} className="collapsed evento" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7 shadow-md px-0">
                               <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md " alt="" />

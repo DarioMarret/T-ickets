@@ -160,6 +160,21 @@ export const Columnevento = [
     size: 50
   }
 ]
+export const EventosporAprobar=[
+  {
+    accessorKey: 'nombre',
+    header: 'Evento',
+  },
+  {
+    accessorKey: 'cedula',
+    header: 'Fecha ',
+
+  },
+  {
+    accessorKey: 'fecha',
+    header: 'Estado',
+  },
+]
 export const columnsTicket = [
 
   {

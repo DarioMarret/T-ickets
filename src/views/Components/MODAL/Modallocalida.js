@@ -289,11 +289,12 @@ const LocalidadmapViews = (props) => {
                     this.classList.remove('disponible')
                     this.classList.add('seleccionado')
                     this.classList.add("" + nombres.idcolor + "silla")
-                    successAlert(this.classList[0], nombres.localodad, "Fila")
+
                     AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                     enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
                         usedispatch(filtrarlocali(ouput))
+                        successAlert(this.classList[0], nombres.localodad, "Fila")
                     }
                     ).catch(exit => {
                         console.log(exit)
@@ -322,14 +323,16 @@ const LocalidadmapViews = (props) => {
             if (TotalSelecion() < 10) {
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
-                successAlert(this.classList[0], nombres.localodad, "Mesa")
+
                 AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                 usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
-                successAlert(this.classList[0], nombres.localodad, "Mesa")
+
                 //console.log({ id: nombres.idcolor, silla: this.classList[0] })
                 enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
                     //console.log(ouput)
+
                     usedispatch(filtrarlocali(ouput))
+                    successAlert(this.classList[0], nombres.localodad, "Mesa")
                     // console.log(ouput)
                 }
                 ).catch(exit => console.log(exit))

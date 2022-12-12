@@ -75,7 +75,7 @@ export default function DiseñoViwpdf() {
                                         <th scope="col">Fecha de compra  </th>
 
                                         <th scope="col">Forma de Pago </th>
-                                        <th scope="col">Valores PAgados</th>
+                                        <th scope="col">$25</th>
                                     </tr>
                                 </tbody>
                             </table>
