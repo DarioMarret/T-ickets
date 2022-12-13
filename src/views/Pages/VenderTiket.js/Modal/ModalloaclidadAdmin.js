@@ -10,6 +10,8 @@ import { EliminarSillas, AgregarAsiento, VerSillaslist, TotalSelecion } from "ut
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { enviasilla } from "utils/Querypanelsigui";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { quitarsilla } from "utils/Querypanelsigui";
+import { filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice";
 const ModalLocalidamapViews = (props) => {
     const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
@@ -215,17 +217,27 @@ const ModalLocalidamapViews = (props) => {
         hideAlert()
     }
     const eliminaListadiv = (e) => {
-        $("div." + e.silla).removeClass("seleccionado").addClass("disponible")
+        let user = getDatosUsuariosLocalStorag()
+        e.tipo != "mesa" ? $("div." + e.silla).removeClass("seleccionado").addClass("disponible") : $("a." + e.silla).removeClass("seleccionado").addClass("disponible");
+        quitarsilla({ "array": [{ estado: "disponible", "id": e.id, "silla": e.silla, "cedula": user.cedula }] }).then(ouput =>
+            console.log(ouput)).catch(err => console.log(err))
         hideAlert()
         EliminarSillas({ ...e })
         usedispatch(deleteSillas({ ...e }))
     }
     const eliminaLista = (d, e) => {
+        let user = getDatosUsuariosLocalStorag()
         d.classList.remove('seleccionado')
         d.classList.add('disponible')
+        console.log({ estado: "disponible", "id": e.id, "silla": e.silla, "cedula": user.cedula })
         hideAlert()
-        EliminarSillas({ ...e })
-        usedispatch(deleteSillas({ ...e }))
+        quitarsilla({ "array": [{ estado: "disponible", "id": e.id, "silla": e.silla, "cedula": user.cedula }] }).then(ouput => {
+            EliminarSillas({ ...e })
+            usedispatch(deleteSillas({ ...e }))
+            console.log(ouput)
+        }).catch(err => console.log(err))
+
+
     }
     $(document).on('click', 'div.disponible', function (e) {
         e.preventDefault();
@@ -259,7 +271,7 @@ const ModalLocalidamapViews = (props) => {
         if (this.classList.contains("seleccionado")) {
             if (!this.classList.contains('disponible')) {
                 let nombres = JSON.parse(sessionStorage.getItem("seleccionmapa"))
-                succesElimAlert(this, { "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
+                succesElimAlert(this, { "id": nombres.idcolor, "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
             }
             return
         }
@@ -295,7 +307,7 @@ const ModalLocalidamapViews = (props) => {
         if (!this.classList.contains('disponible')) {
             let nombres = JSON.parse(sessionStorage.getItem("seleccionmapa"))
 
-            succesElimAlert(this, { "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
+            succesElimAlert(this, { "id": nombres.idcolor, "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
         }
         return
     })

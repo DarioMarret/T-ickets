@@ -9,6 +9,7 @@ import logo from "../../../../assets/imagen/logo-inicio.png";
 import { useSelector, useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
 
 const ModalLogin = (props) => {
@@ -52,6 +53,8 @@ const ModalLogin = (props) => {
         else {
           setShowToas(true)
           setmessage(data.message)
+
+          // usedispatch(setToastes({ show: true, message: data.message, color: 'bg-success', estado: 'Se guardo el numero de control'}))
         }
       } catch (error) {
         console.log(error)
@@ -97,7 +100,7 @@ const ModalLogin = (props) => {
 
 
             <div className=" text-center">
-              <h5 className="">INICIA SECCIÓN</h5>
+              <h5 className="">INICIA SESION</h5>
             </div>
             <div className="card-body">
               <div className="container text-center">
@@ -147,9 +150,9 @@ const ModalLogin = (props) => {
         className="top-center"
         style={{
           position: 'fixed',
-          top: 60,
-          left: '50%',
-          transform: 'translate(-50 %, -50 %)',
+          top: 30,
+
+          transform: 'translate(-50 %, 0 %)',
           zIndex: 10000,
         }}>
         <Toast.Header closeButton={false}>
@@ -169,9 +172,9 @@ const ModalLogin = (props) => {
         className="top-center"
         style={{
           position: 'fixed',
-          top: 60,
-          left: '50%',
-          transform: 'translate(-50 %, -50 %)',
+          top: 30,
+
+          transform: 'translate(-50 %, 0 %)',
           zIndex: 10000,
         }}>
         <Toast.Header closeButton={false} >

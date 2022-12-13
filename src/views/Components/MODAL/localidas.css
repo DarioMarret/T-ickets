@@ -71,8 +71,12 @@ div.esquema:hover {
         0 3px 5px -1px rgba(0, 0, 0, 0.4)
 }
 
+.pagos {
+    transition: all .3s ease-in-out;
+}
+
 .pagos:hover {
-    /*transform: scale(1.1);*/
+    transform: scale(1.1);
     cursor: pointer;
 }
 

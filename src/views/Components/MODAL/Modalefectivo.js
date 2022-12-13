@@ -10,8 +10,9 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { crearusercomnet } from 'utils/Querycomnet';
 import { FacturaComnet } from 'utils/constantes';
 import { Triangle } from 'react-loader-spinner';
+import { GetValores } from 'utils/CarritoLocalStorang';
 const ModalEfectivo = (props) => {
-  const { intervalo, detener, setDetalle } = props;
+  const { intervalo, detener, } = props;
   let usedispatch = useDispatch()
   let Modalshow = useSelector((state) => state.SuscritorSlice.modal)
   //console.log(Modalshow)
@@ -39,14 +40,32 @@ const ModalEfectivo = (props) => {
   function comnetusernew() {
     seTSpiners("")
     setTimeout(function () {
+      let registro = {
+        codigo: 25,
+        total: 2
+      }
+      sessionStorage.setItem(FacturaComnet, JSON.stringify(registro))
+
+      seTSpiners("d-none")
+      console.log("ouput")
+      detener()
+      usedispatch(setModal({ nombre: 'ordendepago', estado: '' }))
+      /*
       crearusercomnet().then(ouput => {
-        sessionStorage.setItem(FacturaComnet, ouput.idcliente)
+        let total = parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)
+        let registro = {
+          codigo: ouput.idcliente,
+          total: total
+        }
+        sessionStorage.setItem(FacturaComnet, JSON.stringify(registro))
+
         seTSpiners("d-none")
         console.log(ouput)
+        detener()
         usedispatch(setModal({ nombre: 'ordendepago', estado: '' }))
 
       }
-      ).catch(err => console.log(err))
+      ).catch(err => console.log(err))*/
     }, 5000)
   }
   const cerrar = () => {
@@ -91,9 +110,9 @@ const ModalEfectivo = (props) => {
         <Modal.Header >
           <div className='d-flex justify-content-between w-100' >
             <h5 className="modal-title text-center justify-content-center align-items-center" style={{ fontFamily: 'fantasy', fontSize: '1.2em' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
-            <div><button className='btn btn-primary'  >  <i className="bi bi-caret-left-fill"></i> Regresar  </button></div>
+            <div><button className='btn btn-primary' onClick={() => cerrar()}  >  <i className="fa fa-arrow-left">  </i>   </button></div>
           </div>
-          <button type="button" className="close"
+          <button type="button" className="d-none close"
             onClick={() => cerrar()} >
             ×
           </button>

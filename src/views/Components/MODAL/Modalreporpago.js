@@ -7,6 +7,7 @@ import { GetValores } from "utils/CarritoLocalStorang";
 import { useState } from "react";
 import { useEffect } from "react";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import jsPDF from "jspdf";
 let { bancoguyaquil,
     bancopacifico,
     produbancoguayaquil,
@@ -36,20 +37,19 @@ export default function ReporteView(prop) {
         "guayaquil": "18018624"
     }
     const nuevo = () => {
-        var element = document.getElementById('COMPROBANTE');
-        var opt = {
-            margin: 1,
-            filename: 'COMPROBANTE.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-        };
+        html2canvas(document.querySelector("#COMPROBANTE")).then(canvas => {
+            var imgWidth = 130;
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            //   alert(imgHeight)
+            const contentDataURL = canvas.toDataURL('image/png')
+            let pdf = new jsPDF('p', 'mm', 'a5'); // A4 size page of PDF
+            var position = 10;
+            pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
+            window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
 
-        // New Promise-based usage:
-        // html2pdf().set(opt).from(element).save();
 
-        //   console.log(element)
-        //html2pdf(element, opt);
+
+        });
 
     }
     const Cerrar = () => {
@@ -62,7 +62,21 @@ export default function ReporteView(prop) {
 
     }, [modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ?
         true : false])
+    function imprime() {
+        html2canvas(document.querySelector("#COMPROBANTE")).then(canvas => {
+            var imgWidth = 208;
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            //   alert(imgHeight)
+            const contentDataURL = canvas.toDataURL('image/png')
+            let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+            var position = 0;
+            pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+            window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
 
+
+
+        });
+    }
 
     return (
         <>
@@ -76,8 +90,12 @@ export default function ReporteView(prop) {
 
                 >
                     <div className="d-flex  container    justify-content-center text-center" >
-                        <h4 className=" p-2  text-light">
-                            <strong> ORDEN DE PAGO</strong>
+                        <h4 className=" p-2  text-light"
+                            style={{
+                                fontWeight: "bold"
+                            }}
+                        >
+                            ORDEN DE PAGO
                         </h4>
                     </div>
                     <div className=" float-left  " style={{ marginTop: '-45px' }}>

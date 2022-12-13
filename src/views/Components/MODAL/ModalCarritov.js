@@ -16,7 +16,7 @@ import { correlativodelete } from "utils/Querypanelsigui"
 import { setModal } from "StoreRedux/Slice/SuscritorSlice"
 
 const ModalCarritoView = (prop) => {
-    const { handleClosesop, precios, setListarCarritoDetalle, intervalo, detener } = prop
+    const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
     let usedispatch = useDispatch()
     let sleccionlocalidad = useSelector((state) => state.mapaLocalSlice)
     let seleciondesillas = useSelector((state) => state.sillasSlice.sillasSelecionadas)
@@ -119,7 +119,7 @@ const ModalCarritoView = (prop) => {
         sessionStorage.seleccionmapa = JSON.stringify(e)
         abrirlocalidad()
     }
-    const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible')
+    const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
     path.forEach(E => {
         E.addEventListener("click", function () {
             let consulta = precios.precios.filter((F) => F.idcolor == this.classList[0])
@@ -194,18 +194,20 @@ const ModalCarritoView = (prop) => {
                     <div className="d-flex col-6 justify-content-between  align-items-center " >
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
-                                style={{ fontFamily: 'fantasy' }}
-                            >Boletería </h5>
+                                style={{
+                                    fontWeight: "bold"
+                                }}>BOLETERÍA </h5>
                         </div>
                     </div>
                     <div className=" float-end ">
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
-                                style={{ fontFamily: 'fantasy' }}
+
                             >  Tiempo restante para la compra <span className="text-danger"
                                 style={{
-                                    fontFamily: 'fantasy',
-                                    fontSize: '1.2em'
+
+                                    fontSize: '1.2em',
+                                    fontWeight: "bold"
                                 }}
                             >{intervalo}</span> </h5>
                         </div>
@@ -325,7 +327,7 @@ const ModalCarritoView = (prop) => {
                         <div className="col-12 col-lg-6 border rounded-5   px-0"
                             style={{ alignItems: 'stretch', lineHeight: '1', }}>
                             <div className="d-flex flex-column   justify-content-center  text-center p-0 d-sm-flex pb-0 " style={{ height: "400px" }}>
-                                <h5 style={{ fontSize: '', fontFamily: 'fantasy' }} >
+                                <h5 style={{ fontSize: '', fontWeight: "bold" }} >
                                     SELECCIONE LA LOCALIDAD EN EL MAPA O NOMBRE
                                 </h5>
                                 <div className="">
@@ -356,7 +358,9 @@ const ModalCarritoView = (prop) => {
                 </Modal.Body>
                 <Modal.Footer className="d-flex  p-3 border-top  justify-content-between align-items-cente">
                     <div className="d-flex flex-column">
-                        <div className="px-5">
+                        <div className=""
+
+                        >
                             <strong> Método de pago</strong>
 
                             <div className="form-check">
@@ -393,19 +397,19 @@ const ModalCarritoView = (prop) => {
                     <div className="d-flex flex-row  align-items-center" >
                         <h4
                             style={{
-                                fontSize: '1.8rem',
+                                fontSize: '1.5rem',
 
                             }}
                         >SUBTOTAL:</h4>
                         <h4
                             style={{
-                                fontSize: '1.7rem',
+                                fontSize: '1.5rem',
                                 fontWeight: 'bold',
                             }}
                             className="px-1 text-danger total-detalle"> {listaPrecio.subtotal ? "$" + listaPrecio.subtotal : null}</h4>
 
                     </div>
-                    <div className="">
+                    <div className="d-flex  align-items-end">
                         {detalle.length > 0 ?
                             <button className="btn btn-primary" disabled={check} onClick={handleContinuar}>continuar</button> :
                             <button className="btn btn-primary" disabled={true} >continuar</button>

@@ -207,7 +207,7 @@ const ModalNewEvento = (props) => {
         console.log(index)
         var dato = selectLocalidad.find(D => D.id == e.value)
         console.log(dato)
-        if (datos != undefined) {
+        if (dato != undefined) {
             setPrecios({
                 precio_normal: localidadPreci[index] ? localidadPreci[index].precio_normal : 0,
                 precio_discapacidad: localidadPreci[index] ? localidadPreci[index].precio_discapacidad : 0,

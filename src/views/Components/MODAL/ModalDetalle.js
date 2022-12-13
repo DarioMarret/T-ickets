@@ -12,10 +12,10 @@ import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
 import { getVerTienda, GetEstadousu } from 'utils/CarritoLocalStorang';
 
 function ModalDetalle(props) {
-    const { showDetalle,
+    const {
         listarCarritoDetalle, setListarCarritoDetalle,
-        handelefctivorShow,
-        setDetalle, setDatoToas, intervalo
+
+        setDatoToas, intervalo
     } = props
     const usedispatch = useDispatch()
 

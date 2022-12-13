@@ -14,7 +14,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 
 
 function ModalPago(props) {
-    const { setModalPago, modalPago, detenervelocidad, para, intervalo } = props
+    const { setModalPago, modalPago, detenervelocidad, intervalo } = props
     let usedispatch = useDispatch();
     const [spinerst, setSpiner] = useState("d-none")
     const [alert, setAlert] = useState(null)

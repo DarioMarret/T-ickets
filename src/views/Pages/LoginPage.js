@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import logo from "../../assets/img/logo-t-ickets.png";
-import logoportal from "../../assets/portada-login.png";
+import logo from "../../assets/imagen/logo-t-ickets.png";
+import logoportal from "../../assets/imagen/portada-login.jpeg";
 import { setDatosUser } from "utils/DatosUsuarioLocalStorag";
 import { Loginadmin } from "utils/Querypanel";
 import imgen from '../../assets/imagen/nones.png'

@@ -41,6 +41,9 @@ path.mapas {
 
 .precios {
   cursor: pointer;
+
+  transition: all .2s ease-in-out;
+
 }
 
 polygon.disponible:hover {
@@ -48,14 +51,35 @@ polygon.disponible:hover {
   cursor: pointer;
 }
 
+polygon.disponible {
+  transition: all .2s ease-in-out;
+}
+
 rect.disponible:hover {
   transform: scale(1.01);
   cursor: pointer;
 }
 
+rect.disponible {
+  transition: all .2s ease-in-out;
+}
+
 path.disponible:hover {
   cursor: pointer;
   transform: scale(1.01);
+}
+
+ellipse.disponible {
+  transition: all .2s ease-in-out;
+}
+
+ellipse.disponible:hover {
+  cursor: pointer;
+
+}
+
+path.disponible {
+  transition: all .2s ease-in-out;
 }
 
 .str0 {

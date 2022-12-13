@@ -249,7 +249,7 @@ export const ListarNoticias = async () => {
 }
 export const Actualizarpublicdad = async (id, parms) => {
     try {
-        const { data } = await axios.put(Host + "api/v1/actualizar_publicidad" + id, parms, {
+        const { data } = await axios.put(Host + "api/v1/actualizar_publicidad/" + id, parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

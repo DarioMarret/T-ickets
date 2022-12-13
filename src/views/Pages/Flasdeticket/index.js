@@ -51,6 +51,7 @@ import { Triangle } from "react-loader-spinner";
 import { ListarNoticias } from "utils/Querypanelsigui.js";
 import ModalFacilitoView from "views/Components/MODAL/ModalFacilito.js";
 import ReporteView from "views/Components/MODAL/Modalreporpago.js";
+import Comprobante from "./comprobante/index.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
@@ -62,7 +63,7 @@ const IndexFlas = () => {
   })
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
-  const [efectShow, efectiOpShow] = useState(false);
+  //const [efectShow, efectiOpShow] = useState(false);
   const [spinervi, setspinervi] = useState("d-none")
   const [seleccion, SetSeleccion] = useState("");
   const [showshop, handleClosesop] = useState(false);
@@ -89,7 +90,7 @@ const IndexFlas = () => {
         handleClosesop(false)
         setMapashow(false)
         setDetalle(false)
-        efectiOpShow(false)
+        //   efectiOpShow(false)
         setModalPago(false)
         setrepShow(false)
         Limpiarseleccion()
@@ -152,7 +153,7 @@ const IndexFlas = () => {
     clearInterval(localidadtimer.current)
     setMapashow(false)
     setDetalle(false)
-    efectiOpShow(false)
+    // efectiOpShow(false)
     setModalPago(false)
     setrepShow(false)
     usedispatch(clearMapa({}))
@@ -427,16 +428,21 @@ const IndexFlas = () => {
 
   function eventocarrusel(e) {
     let datos = e.split("-")
-    abrir({
+    userauthi.login ? abrir({
       "nombreConcierto": datos[2],
       "codigoEvento": datos[0],
       "lugarConcierto": datos[1]
-    })
-    return {
-      nombreConcierto: datos[2],
-      codigoEvento: datos[0],
-      lugarConcierto: datos[3]
-    }
+    }) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))
+    /* abrir({
+       "nombreConcierto": datos[2],
+       "codigoEvento": datos[0],
+       "lugarConcierto": datos[1]
+     })
+     return {
+       nombreConcierto: datos[2],
+       codigoEvento: datos[0],
+       lugarConcierto: datos[3]
+     }*/
   }
   return (
     <>
@@ -466,14 +472,11 @@ const IndexFlas = () => {
           setDatoToas={setDatoToas} /> : ''}
       {modal.nombre == "ModalDetalle" ?
         <ModalDetalle
-          showDetalle={showDetalle}
+
           intervalo={intervalo}
-          setDetalle={setDetalle}
 
           setListarCarritoDetalle={setListarCarritoDetalle}
-
           listarCarritoDetalle={listarCarritoDetalle}
-          setModalPago={setModalPago}
           setDatoToas={setDatoToas}
         /> : ''}
 
@@ -488,12 +491,8 @@ const IndexFlas = () => {
         detener={detenervelocidad}
       />
       <ModalEfectivo
-        efectShow={efectShow}
-        efectiOpShow={efectiOpShow}
-        setDetalle={setDetalle}
         intervalo={intervalo}
         detener={detenervelocidad}
-        setDatoToas={setDatoToas}
       />
       <ReporteView
         setrepShow={setrepShow} />
@@ -521,7 +520,7 @@ const IndexFlas = () => {
                 </li> : ""
               }
               {userauthi.login ?
-                <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("Tickets")}>
+                <li className="d-none nav-item active" aria-current="page" onClick={() => SetSeleccion("Tickets")}>
                   <a className="nav-link " href="#">Tickets</a>
                 </li> : ""
               }
@@ -865,6 +864,9 @@ const IndexFlas = () => {
         intervalo={intervalo}
         detener={detenervelocidad}
       /> : ''}
+      <div className="col-9" id="imprimecomprobante">
+
+      </div>
 
     </>
 

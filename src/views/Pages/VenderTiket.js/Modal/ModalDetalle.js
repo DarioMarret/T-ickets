@@ -283,20 +283,10 @@ function ModalDetalle(props) {
                 whatsapp: clineteLogeado ? clineteLogeado.whatsapp : '',
                 cedula: clineteLogeado ? clineteLogeado.cedula : '',
                 metodoPago: metodoPago,
-                direccion: clineteLogeado ? clineteLogeado.direccion : '',
+                direccion: clineteLogeado ? clineteLogeado.ciudad : '',
                 envio: datosPersonal ? datosPersonal.envio : '',
                 metodoPago: metodoPago,
             })
-            /* DatosUsuariosLocalStorag({
-                 ...datosPerson,
-                 ['metodoPago']: metodoPago,
-                 email: clineteLogeado ? clineteLogeado.email : '',
-                 name: clineteLogeado ? clineteLogeado.name : '',
-                 whatsapp: clineteLogeado ? clineteLogeado.whatsapp : '',
-                 cedula: clineteLogeado ? clineteLogeado.cedula : '',
-                 direccion: clineteLogeado ? clineteLogeado.direccion : '',
-                 envio: datosPersonal ? datosPersonal.envio : '',
-             })*/
         }
         let mostrarcomision = GetMetodo()
         const mostrar = mostrarcomision != "Tarjeta" ? "d-none" : ""
@@ -332,7 +322,7 @@ function ModalDetalle(props) {
                         </div>
                     </div>
                     <div id="detalle">
-                        <div className={"container-fluid row " + validationfrom} >
+                        <div className="container-fluid row was-validated "  >
 
 
                             <div className="col-12 col-sm-6 d-flex flex-column">
@@ -377,11 +367,6 @@ function ModalDetalle(props) {
 
                                         value={datosPerson.envio ? datosPerson.envio : ''} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
                                         {
-
-
-
-
-
                                             Envio.map((item, index) => {
                                                 return (
                                                     <option key={index} value={item.value}>{item.envio}</option>
@@ -553,6 +538,7 @@ function ModalDetalle(props) {
                                         disabled={!(Object.values(datosPerson).every((d) => d))}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handlePago() } }}
                                     >
+                                        {console.log(datosPerson)}
                                         <i className="fa fa-credit-card mx-1"> </i>PAGAR</button> : ""
                             }
                             {

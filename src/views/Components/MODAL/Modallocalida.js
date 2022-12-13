@@ -32,11 +32,7 @@ const LocalidadmapViews = (props) => {
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
 
     const [alert, setAlert] = useState(null);
-    function cerrar() {
-        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-        // handleClosesop(true)
-        // setMapashow(flase)
-    }
+
     function MesaVerifica(M, C) {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
         hideAlert()
@@ -148,14 +144,13 @@ const LocalidadmapViews = (props) => {
             <SweetAlert
                 success
                 style={{ display: "block", marginTop: "-100px" }}
-                title={"Se agrego   "}
+                title="Se agrego"
                 onConfirm={() => hideAlert()}
                 onCancel={() => cerrar()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Seguir Agregando"
                 cancelBtnText="Ir al carrito"
-
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >
@@ -289,14 +284,16 @@ const LocalidadmapViews = (props) => {
             if (!this.classList.contains('seleccionado') && !this.classList.contains('ocupado') && !this.classList.contains("reservado")) {
                 let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
                 if (TotalSelecion() < 10) {
+                    successAlert(this.classList[0], nombres.localodad, "Fila")
                     this.classList.remove('disponible')
                     this.classList.add('seleccionado')
                     this.classList.add("" + nombres.idcolor + "silla")
-                    successAlert(this.classList[0], nombres.localodad, "Fila")
-                    AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                    usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+
                     enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
                         usedispatch(filtrarlocali(ouput))
+                        AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+                        usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+
                     }
                     ).catch(exit => {
                         console.log(exit)
@@ -323,18 +320,20 @@ const LocalidadmapViews = (props) => {
         if (!this.classList.contains('seleccionado')) {
             let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
             if (TotalSelecion() < 10) {
+                successAlert(this.classList[0], nombres.localodad, "Mesa")
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
 
-                AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
 
                 //console.log({ id: nombres.idcolor, silla: this.classList[0] })
                 enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
                     //console.log(ouput)
 
                     usedispatch(filtrarlocali(ouput))
-                    successAlert(this.classList[0], nombres.localodad, "Mesa")
+
+                    AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+                    usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+
                     // console.log(ouput)
                 }
                 ).catch(exit => console.log(exit))
@@ -368,10 +367,8 @@ const LocalidadmapViews = (props) => {
         }
     })
     function cerrar() {
-        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-        //  setMapashow(false)
-        // handleClosesop(true)
         hideAlert()
+        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
         sessionStorage.removeItem(seleccionmapa)
     }
     const hideAlert = () => {
@@ -413,10 +410,12 @@ const LocalidadmapViews = (props) => {
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
         let cantidad = mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info : ''
-        mapath.localidadespecica.info != undefined && mapath.localidadespecica.info.length > 0 ? console.log(Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"])) : ''
+        //console.log(mapath.localidadespecica.info)
+        mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"]) : '' : ''
     }, [modalshow.nombre == "Modallocalida" ? true : false])
     return (
         <>
+
             <Modal
                 show={modalshow.nombre == "Modallocalida" ? true : false}
                 size="lg"
@@ -424,7 +423,7 @@ const LocalidadmapViews = (props) => {
                 onHide={cerrar}
                 className="rounded-7"
             >
-                {alert}
+
                 <Modal.Header>
                     <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
                     <div className="" >
@@ -438,6 +437,7 @@ const LocalidadmapViews = (props) => {
 
                 </Modal.Header>
                 <Modal.Body>
+                    {alert}
                     <div className='conatiner-fluid col-12'>
                         <div className="row ">
                             <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontFamily: 'fantasy' }}>
@@ -623,19 +623,46 @@ const LocalidadmapViews = (props) => {
 
                             </div>}
                         <div>
+                            {mapath.precio.typo === "correlativo" ?
+                                <div className="d-flex  justify-content-center " >
+
+                                    <div className="flex-row first text-center col-4 col-md-4" role="cell"
+                                        style={{
+                                            fontWeight: 'bold'
+                                        }}
+                                    >Localidad</div>
+                                    {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
+
+                                    <div className="flex-row  text-center  col-4 col-md-4"
+                                        style={{
+                                            fontWeight: 'bold'
+                                        }}
+                                    >Total tickets </div>
+                                    <div className="flex-row   text-center col-4 col-md-4"
+                                        style={{
+                                            fontWeight: 'bold'
+                                        }}
+                                    >Valor </div>
+
+
+                                </div>
+                                : ''
+
+                            }
                             {
                                 mapath.precio.typo === "correlativo" && detalle.length > 0 ?
+
                                     detalle.map((e, i) => {
                                         return (
-                                            <div className="d-flex flex-table row justify-content-center " role="rowgroup" key={"items" + i}>
-                                                <div className="flex-row first text-center col-3 col-md-3" role="cell">Localidad: {e.localidad}</div>
+                                            <div className="d-flex  justify-content-center " role="rowgroup" key={"items" + i}>
+
+                                                <div className="flex-row first text-center col-4 col-md-4" role="cell"> {e.localidad}</div>
                                                 {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
 
-                                                <div className="flex-row  text-center  col-2 col-md-3">Total tickets: {e.cantidad}</div>
-                                                <div className="flex-row   text-center col-2 col-md-2">Valor ${e.valor * e.cantidad}</div>
-                                                <div className="flex-row  text-center col-3 col-md-3">
-                                                    {  /* <button className="btn btn-danger" onClick={() => Eliminar(e)} >Eliminar</button>*/}
-                                                </div>
+                                                <div className="flex-row  text-center  col-4 col-md-4"> {e.cantidad}</div>
+                                                <div className="flex-row   text-center col-4 col-md-4"> ${(e.valor * e.cantidad).toFixed(2)}</div>
+
+
                                             </div>
                                         )
                                     }) : ''

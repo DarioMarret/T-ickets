@@ -831,7 +831,8 @@ const svgselectView = ({ text }) => {
         </svg >,
         "paladines": <svg className="seudtres opciones" xmlns="http://www.w3.org/2000/svg" width="90%" height="90%" version="1.1"
             viewBox="0 0 19477 14400"
-        ><g id="Capa_x0020_1">
+        >
+            <g id="Capa_x0020_1">
                 <metadata id="CorelCorpID_0Corel-Layer" />
                 <ellipse className="fil0" transform="matrix(0.0574626 0.00618266 -0.0126404 0.117482 9670.37 6932.29)" rx="162923" ry="57868" />
                 <ellipse className="fil1" transform="matrix(0.280167 0.0253639 -0.033402 0.36202 10097.7 6158.01)" rx="28173" ry="14669" />

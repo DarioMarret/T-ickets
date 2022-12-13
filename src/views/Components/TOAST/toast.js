@@ -12,34 +12,30 @@ const ToastViews = () => {
     // console.log(selector)
 
     return (<>
-        <div className="  d-flex justify-content-center text-center ">
 
-            <Toast
-                onClose={cerrar} show={selector.show} delay={16500} autohide
+        <Toast
+            onClose={cerrar} show={selector.show} delay={16500} autohide
 
-                className=" "
+            className="top-center"
+            style={{
+                position: 'fixed',
+                top: 30,
 
-                style={{
-                    position: 'fixed',
-                    left: '50%',
-                    transform: 'translate(-50 %, -50 %)',
+                transform: 'translate(-50 %, 0 %)',
+                zIndex: 10000,
+            }}>
+            <Toast.Header closeButton={false}>
+                <div className={selector.color + " rounded-3"} style={{ width: '20px', height: '20px', }}></div>
+                <strong className="mr-auto  px-1">{selector.estado} </strong>
+                <small></small>
+                <button type="button" className="close"
+                    onClick={cerrar} >
+                    ×
+                </button>
 
-                    zIndex: 10000,
-                }}>
-                <Toast.Header closeButton={false}>
-                    <div className={selector.color + " rounded-3"} style={{ width: '20px', height: '20px', }}></div>
-                    <strong className="mr-auto  px-1">{selector.estado} </strong>
-                    <small></small>
-                    <button type="button" className="close"
-                        onClick={cerrar} >
-                        ×
-                    </button>
-
-                </Toast.Header>
-                <Toast.Body className={selector.color + " text-white"} >{selector.message}</Toast.Body>
-            </Toast>
-
-        </div>
+            </Toast.Header>
+            <Toast.Body className={selector.color + " text-white"} >{selector.message}</Toast.Body>
+        </Toast>
     </>)
 }
 export default ToastViews

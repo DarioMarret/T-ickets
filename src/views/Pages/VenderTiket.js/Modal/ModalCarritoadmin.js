@@ -51,7 +51,6 @@ const ModalCarritoViewadmin = (prop) => {
         setMapashow(true)
         detener(false)
     }
-
     useEffect(() => {
         setDetalle(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
@@ -69,7 +68,6 @@ const ModalCarritoViewadmin = (prop) => {
             $("#" + e.path).attr("fill", e.fill)
         }) : ''
     }, [showshop])
-
     function Abririlocalfirt(e) {
         let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
         let filtro = sleccionlocalidad.localidades.filter((G) => G.nombre == e.localodad)

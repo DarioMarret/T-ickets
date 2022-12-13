@@ -5,7 +5,6 @@ import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send } from '@mui/icons-material';
-
 import { Container, Row } from "react-bootstrap"
 import { EventosActivos } from "utils/Querypanel"
 import { styleswiper } from "../Flasdeticket/styleswiper"
@@ -17,7 +16,6 @@ import "swiper/css/effect-fade";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { columnsTicket } from "utils/ColumnTabla";
 import { agregarNoticia } from "utils/Querypanelsigui";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { noticiasEvento } from "utils/Querypanelsigui";
@@ -25,24 +23,27 @@ import { ListarNoticias } from "utils/Querypanelsigui";
 import { columnPublicidad } from "utils/ColumnTabla";
 import { Eliminarpublici } from "utils/Querypanelsigui";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Actualizarpublicdad } from "utils/Querypanelsigui";
 export default function NoticiasView() {
-    const imagenes = {
-        22: carrusel.principal,
-        20: carrusel.secundaria
-    }
+
+    let usedispatch = useDispatch()
     let fechamin = new Date().toISOString().slice(0, -14);
     const [Tipo, setTipo] = useState("Evento")
     const [show, setShowca] = useState(false)
     const [eventos, setEventos] = useState([])
     const [publicidad, setpublicidad] = useState([])
     const [img, setImg] = useState("")
+    const [imgen, setimagen] = useState("")
     const [alert, setAlert] = useState(null)
     const [datos, setDatos] = useState({
         encabezado: '',
         descipcion: '',
         fechamax: '',
         link_img: '',
-        mas: ''
+        mas: '',
+        id: ''
     })
     const handelchange = (e) => {
         setTipo(e.value)
@@ -53,35 +54,34 @@ export default function NoticiasView() {
             descipcion: '',
             fechamax: '',
             link_img: '',
-            mas: ''
+            mas: '',
+            id: ''
         })
     }
     const handelchangeEvento = (e) => {
-        console.log(eventos.find(el => el.id == e.value))
-        setImg(eventos.find(el => el.id == e.value).imagenConcierto)
         setDatos({
             ...datos,
             encabezado: eventos.find(el => el.id == e.value).nombreConcierto,
             descipcion: eventos.find(el => el.id == e.value).descripcionConcierto,
-            link_img: eventos.find(el => el.id == e.value).imagenConcierto,
+            link_img: "",
             mas: { ...eventos.find(el => el.id == e.value) }
 
         })
         // setImg(imagenes[e.value])
-
     }
     const onSubmit = async (e) => {
         e.preventDefault()
         const form = new FormData(e.target)
-        try {
-            if (Object.values(Object.fromEntries(form.entries())).some(e => e)) {
-                let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
-                if (Tipo != "Evento" && [encabezado, descipcion, fechamax, mas].some(e => e)) {
-                    if (img == "") {
-                        console.log("llenar datos")
-                    }
-                    else {
-                        let link = await Obtenerlinkimagen(img)
+        //   console.log("Datos -->", datos)
+        if (Object.values(Object.fromEntries(form.entries())).some(e => e)) {
+            let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
+            if (Tipo != "Evento") {
+                if (imgen == "" || ![encabezado, descipcion, fechamax, mas].some(e => e)) {
+                    usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
+                }
+                else {
+                    try {
+                        let link = await Obtenerlinkimagen(imgen)
                         console.log(Object.fromEntries(form.entries()))
                         let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
                         let parametr = {
@@ -91,39 +91,128 @@ export default function NoticiasView() {
                             "fecha_presentacion": fechamax,
                             "redirect": mas
                         }
-
+                        // console.log(parametr)
                         let carruse = await agregarNoticia(parametr)
-                        console.log(link, carruse)
+                        //console.log(link, carruse)
                         Evento()
-                    }
 
+                    } catch (error) {
+                        console.log(error)
+
+                    }
+                }
+            }
+            else if (Tipo == "Evento") {
+                if (encabezado == "" || descipcion == "" || fechamax == "" || imgen == "") {
+                    //console.log("llenar datos", img)
+                    usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
                 }
                 else {
-                    if (datos.mas == "" && datos.link_img == "") {
-                        console.log("llenar datos")
-                    }
-                    else {
+                    try {
+                        //  console.log("llenar datos", imgen)
+                        let link = await Obtenerlinkimagen(imgen)
+                        //    console.log(Object.fromEntries(form.entries()))
                         let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
-                        console.log(Object.values(Object.fromEntries(form.entries())).some(e => e), Object.fromEntries(form.entries()))
+                        //  console.log(Object.fromEntries(form.entries()))
                         let datas = {
                             "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"],
                             "encabezado": encabezado,
                             "descripcion": descipcion,
-                            "link_img": datos.link_img,
+                            "link_img": link,
                             "fecha_presentacion": fechamax,
                             "redirect": ''
                         }
-                        console.log(datas)
+                        //  console.log(datas)
                         let carruse = await noticiasEvento(datas)
                         Evento()
-                        console.log(carruse)
+                        //  console.log(carruse)
+
+                    } catch (error) {
+                        console.log(error)
+
                     }
+
                 }
-            } else {
-                console.log("vacio")
             }
-        } catch (error) {
-            console.log(error)
+        } else {
+            usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
+
+            //   console.log("vacio")
+        }
+    }
+    const onaPutbmit = async (e) => {
+        e.preventDefault()
+        // console.log("Datos --> actualizar", datos)
+        const form = new FormData(e.target)
+        let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
+        if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
+            usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
+            return
+        }
+        if (Tipo == "Evento") {
+            try {
+                if (imgen == "" || ![encabezado, descipcion, fechamax, mas].some(e => e)) {
+                    usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
+                    return
+                }
+                else {
+                    let link = await Obtenerlinkimagen(imgen)
+                    let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
+                    let parametr = {
+                        "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"],
+                        "encabezado": encabezado,
+                        "descripcion": descipcion,
+                        "link_img": link,
+                        "fecha_presentacion": fechamax,
+                        "redirect": ''
+                    }
+                    //    let Actualizarpublicdad().then().catch()
+                    //    console.log("Eventos", parametr)
+                    setDatos({
+                        encabezado: '',
+                        descipcion: '',
+                        fechamax: '',
+                        link_img: '',
+                        mas: '',
+                        id: ''
+                    })
+                    setimagen("")
+                    usedispatch(setToastes({ show: true, message: 'Evento actualizados', color: 'bg-success', estado: 'Actualizado' }))
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        } else {
+            try {
+                if (imgen == "" || ![encabezado, descipcion, fechamax, mas].some(e => e)) {
+                    usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
+                    return
+                }
+                let link = await Obtenerlinkimagen(imgen)
+                let parametr = {
+                    "encabezado": encabezado,
+                    "descripcion": descipcion,
+                    "link_img": link,
+                    "fecha_presentacion": fechamax,
+                    "redirect": mas
+                }
+                //console.log("actualiza publicida", parametr)
+                let actualizapublicida = await Actualizarpublicdad(datos.id, parametr)
+                // console.log(parametr)
+                Evento()
+                setDatos({
+                    encabezado: '',
+                    descipcion: '',
+                    fechamax: '',
+                    link_img: '',
+                    mas: '',
+                    id: ''
+                })
+                setimagen("")
+                usedispatch(setToastes({ show: true, message: 'Publicidad actualizada', color: 'bg-success', estado: 'Actualizado' }))
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
     const handelchangedatos = (e) => {
@@ -164,9 +253,27 @@ export default function NoticiasView() {
     };
     const hideAlert = () => setAlert(null)
     function handelchangeComposeventos(e) {
-        let img = new Image()
-        img.src = window.URL.createObjectURL(e.files[0])
-        setImg(e.files[0])
+        if (e.files) {
+            let img = new Image()
+            img.src = window.URL.createObjectURL(e.files[0])
+
+            setImg(img.src)
+            setimagen(e.files[0])
+            let totalBytes = e.files[0].size;
+            /* if (totalBytes < 1000000) {
+                 var _size = Math.floor(totalBytes / 1000) + 'KB';
+                 console.log(_size);
+             } else {
+                 var _size = Math.floor(totalBytes / 1000000) + 'MB';
+                 console.log(_size);
+             }*/
+        }
+        else {
+
+            setImg("")
+            setimagen("")
+            setShowca(false)
+        }
     }
     const tipoevento = {
         Evento: <div className="row ">
@@ -229,6 +336,18 @@ export default function NoticiasView() {
                             value={datos.descipcion}
                             onChange={(e) => handelchangedatos(e.target)}
                         ></input>
+                    </div>
+                </div>
+
+            </div>
+            <div className="row" >
+                <div className="col-6">
+                    <label className=" form-label " > Imagen del Evento </label>
+                    <div className="custom-file" >
+                        <input className="  form-control" type="file"
+                            name="imagen-even"
+                            onChange={(e) => handelchangeComposeventos(e.target)}
+                        />
                     </div>
                 </div>
 
@@ -328,17 +447,68 @@ export default function NoticiasView() {
         >VER MÁS</a>
     }
     function Evento() {
+
         ListarNoticias().then(oupt => {
             setpublicidad(oupt.data)
-            console.log(oupt)
+            // console.log(oupt)
         }).catch(err => console.log(err))
+
+    }
+    function obtenervento(e) {
+        console.log(e)
+        /*{
+            "id": 34,
+                "evento": "CU1E1Q-Medio Estadio Atahualpa -ELADIO CARRION",
+                    "encabezado": "ELADIO CARRION",
+                        "descripcion": "Evento Bahia",
+                            "link_img": "https://flash.t-ickets.com/store/img/cabecera.png",
+                                "fecha_presentacion": "2022-12-31",
+                                    "redirect": ""
+        }
+         {
+            "id": 35,
+            "evento": null,
+            "encabezado": "ELADIO CARRION",
+            "descripcion": "Evento Bahia",
+            "link_img": "https://flash.t-ickets.com/store/img/cabecera.png",
+            "fecha_presentacion": "2022-12-22",
+            "redirect": ""
+        }
+        */
+        if (e.evento == null) {
+            setTipo("informativo")
+            setDatos({
+                encabezado: e.encabezado,
+                descipcion: e.descripcion,
+                fechamax: e.fecha_presentacion,
+                link_img: e.link_img,
+                mas: e.redirect,
+                id: e.id
+            })
+            //document.getElementById("").value = e.encabezado;
+            //document.getElementById("").value = e.descripcion;
+            //document.getElementById("").value = e.fecha_presentacion;
+            // document.getElementById("").value = e.redirect;
+
+        } else {
+            setTipo("Evento")
+            setDatos({
+                encabezado: e.encabezado,
+                descipcion: e.descripcion,
+                fechamax: e.fecha_presentacion,
+                link_img: e.link_img,
+                mas: e.redirect,
+                id: e.id
+            })
+        }
 
     }
     useEffect(() => {
         EventosActivos().then(oupt => {
             setEventos(oupt.data)
-            console.log(oupt)
+            //console.log(oupt)
         }).catch(err => console.log(err))
+
         Evento()
     }, [])
     return (
@@ -353,11 +523,11 @@ export default function NoticiasView() {
                                 width: "100%",
                                 height: "400px",
                             }}>
-                                <div style={{
+                                {img != "" ? <div style={{
                                     backgroundImage: "url('" + img + "')",
                                     ...styleswiper.slideimg
                                 }} >
-                                </div>
+                                </div> : ''}
                                 <div style={styleswiper.fondo}>
                                 </div>
                                 <div className="descripciones ">
@@ -404,40 +574,43 @@ export default function NoticiasView() {
                 <Row>
                     <div className="">
                         <div className="card">
-                            <div className="d-flex  justify-content-end p-3">
-                                {img ? <button className=" btn btn-primary"
-                                    onClick={() => setShowca(!show)}
-                                > <i className=" fa fa-eye"></i> </button> : ''}
-                            </div>
+                            <div className=" container-fuild">
+                                <div className="d-flex  justify-content-end p-3">
+                                    {img ? <button className=" btn btn-primary"
+                                        onClick={() => setShowca(!show)}
+                                    > <i className=" fa fa-eye"></i> </button> : ''}
+                                </div>
 
-                            <div className="row p-2">
-                                <form className="row " onSubmit={onSubmit} >
-                                    <div className="col-md-12">
+                                <div className="  row ml-1 p-2">
+                                    <form className="row " onSubmit={datos.id == "" ? onSubmit : onaPutbmit} >
+                                        <div className="col-md-12">
 
-                                        <div className="col-6 px-0">
+                                            <div className="col-6 px-0">
 
-                                            <label className="form-label">Tipo de noticia </label>
-                                            <div className=" input-group mb-3">
-                                                <div className="   input-group-append ">
-                                                    <span className=" input-group-text" > <i className="fa fa-question "></i></span>
+                                                <label className="form-label">Tipo de noticia </label>
+                                                <div className=" input-group mb-3">
+                                                    <div className="   input-group-append ">
+                                                        <span className=" input-group-text" > <i className="fa fa-question "></i></span>
+                                                    </div>
+                                                    <select className="form-select" value={Tipo} onChange={(e) => handelchange(e.target)} required>
+                                                        <option value="Evento">Evento </option>
+                                                        <option value={"informativo"}>Informativo</option>
+                                                    </select>
                                                 </div>
-                                                <select className="form-select" value={Tipo} onChange={(e) => handelchange(e.target)} required>
-                                                    <option value="Evento">Evento </option>
-                                                    <option value={"informativo"}>Informativo</option>
-                                                </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    {
-                                        tipoevento[Tipo]
-                                    }
+                                        {
+                                            tipoevento[Tipo]
+                                        }
 
-                                    <div className="col-12 d-flex justify-content-end">
-                                        <button className="btn btn-primary mx-1"  >Guardar</button>
-                                    </div>
-                                </form>
+                                        <div className="col-12 d-flex justify-content-end">
+                                            {datos.id == "" ? <button className="btn btn-primary mx-1"  >Guardar </button> :
+                                                <button className="btn btn-primary mx-1"  >Actualizar </button>}
+                                        </div>
+                                    </form>
 
 
+                                </div>
                             </div>
 
                         </div>
@@ -446,7 +619,7 @@ export default function NoticiasView() {
                 </Row>
                 <Row>
                     <div >
-                        <div className="card">
+                        {publicidad.length > 0 ? <div className="card " >
                             <div className="  card-header">
                                 <h5>Eventos del carrusel</h5>
 
@@ -468,15 +641,20 @@ export default function NoticiasView() {
                                         >
                                             <Delete />
                                         </IconButton>
+                                        <IconButton
+                                            color="success"
+                                            onClick={() => obtenervento(row.original)}
+                                        >
+                                            <Edit />
 
-
+                                        </IconButton>
                                     </Box>
                                 )}
                                 positionToolbarAlertBanner="bottom"
                                 localization={MRT_Localization_ES}
                             /> : ''}
 
-                        </div>
+                        </div> : ""}
                     </div>
                 </Row>
 

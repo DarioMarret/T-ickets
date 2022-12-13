@@ -28,8 +28,8 @@ root.render(
 
         <Route path="/auth" render={(props) => !clienteInfo() ? <AuthLayout {...props} /> : <Redirect from="/" to="/admin/inicio" />} />
         <Route path="/admin" render={(props) => clienteInfo() ? <AdminLayout {...props} /> : <Redirect from="/" to="/auth/login" />} />
-        <Route path="/ticket" render={() => <Indexflas />} />
-        <Redirect from="/" to="/ticket" />
+        <Route path="/" render={() => <Indexflas />} />
+
         <Route path="*" to="/" />
       </Switch>
     </BrowserRouter>
