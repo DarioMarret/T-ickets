@@ -1,13 +1,13 @@
 
-import img1 from "../../../assets/imagen/pasado1.jpg"
-import img2 from "../../../assets/imagen/pasado2.jpg"
-import img3 from "../../../assets/imagen/pasado3.jpg"
+import img1 from "../../../assets/imagen/pasado1.png"
+import img2 from "../../../assets/imagen/pasado2.png"
+import img3 from "../../../assets/imagen/pasado3.png"
 import principal from "../../../assets/imagen/eventoprincip.jpg";
 import header from "../../../assets/header.jpeg";
 import secundaria from "../../../assets/imagen/encabezadoweb3.jpg";
 import tercero from "../../../assets/imagen/concierto.jpg"
 import logofla from "../../../assets/imagen/LOGO-WEB.png";
-import mapa from "../../../assets/imagen/MAPAPRUEBA.jpg"
+import mapa from "../../../assets/imagen/MAPAPRUEBA.png"
 import portal from "../../../assets/imagen/Portadashows.jpg"
 import icon from "../../../assets/imagen/50pixeles.png";
 import valla from "../../../assets/imagen/valla-proximo-evento.png";

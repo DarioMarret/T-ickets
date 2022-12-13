@@ -15,6 +15,7 @@ import axios from "axios"
 import { ValidarWhatsapp } from "utils/Query"
 import { Host } from "utils/constantes"
 import { MagnifyingGlass } from "react-loader-spinner"
+import { buscarcliente } from "utils/Querypanelsigui"
 //import{R}
 
 export default function ListaSuscritor(prop) {
@@ -155,9 +156,13 @@ export default function ListaSuscritor(prop) {
     }, [modalshow.modal.nombre == "suscritor" ? true : ''])
 
     const filterNames = async (nombre) => {
-        if (code == "cedula" && nombre.length == 10) {
+        if (code == "cedula" && nombre.trim().length >= 10) {
+
             $("#search").removeClass("d-none")
             //console.log(lista.find(e => e.cedula == nombre))
+            buscarcliente({}).then(oupt => console.log(oupt)).catch(err => {
+                console.log(err)
+            })
             if (lista.find(e => e.cedula == nombre) != null) {
                 setDausuario({
                     nombreCompleto: lista.find(e => e.cedula == nombre).nombreCompleto,
@@ -169,7 +174,7 @@ export default function ListaSuscritor(prop) {
                     whatsapp: lista.find(e => e.cedula == nombre).movil, password: '', resgistro: true
                 })
 
-
+                DatosUsuariosLocalStorag({ ...lista.find(e => e.cedula == nombre) })
                 //   console.log(lista.find(e => e.cedula == nombre))
                 //console.log({ ...lista.find(e => e.cedula == nombre), discapacidad: cedula.discapacidad, password: '' })
                 $('#movil').val(lista.find(e => e.cedula == nombre).movil)
@@ -191,7 +196,9 @@ export default function ListaSuscritor(prop) {
                     sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...cedula }))
                     $('#movil').val("")
                     $("#search").addClass("d-none")
+
                 } else {
+                    //  console.log(cedula)
                     setDausuario({
                         nombreCompleto: '',
                         ciudad: '',

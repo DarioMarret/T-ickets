@@ -36,7 +36,8 @@ const Modalupdate = (props) => {
         precio_descuento: 0,
         id: '',
         localodad: '',
-        habilitar_cortesia: 0
+        habilitar_cortesia: 0,
+        comision: 0
     })
     const [selectLocalidad, setLocalidad] = useState([])
     async function Lista() {
@@ -69,7 +70,9 @@ const Modalupdate = (props) => {
             precio_discapacidad: 0,
             precio_tarjeta: 0,
             precio_descuento: 0,
-            habilitar_cortesia: 0
+            habilitar_cortesia: 0,
+            comision: 0
+
         })
     }
     $(document).ready(function () {
@@ -130,6 +133,7 @@ const Modalupdate = (props) => {
             precio_tarjeta: array[index] ? array[index].precio_tarjeta : '',
             precio_descuento: array[index] ? array[index].precio_descuento : '',
             habilitar_cortesia: array[index] ? array[index].habilitar_cortesia : '',
+            comision: array[index] ? array[index].comision : '',
             id: array[index] ? array[index].id : '',
             localodad: array[index] ? array[index].localodad : '',
         })
@@ -400,6 +404,12 @@ const Modalupdate = (props) => {
                                         <label >HABILITAR CORTESIA </label>
                                     </div>
                                     <input className="numero form-control col-6" value={precios.habilitar_cortesia} name="habilitar_cortesia" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                </div>
+                                <div className="d-flex flex-wrap mb-2">
+                                    <div className="px-2 col-4">
+                                        <label >Costo de emision </label>
+                                    </div>
+                                    <input className="numero form-control col-6" value={precios.comision} name="comision" onChange={(e) => handelchangeLocalidad(e.target)} />
                                 </div>
 
                             </div>

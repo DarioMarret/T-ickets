@@ -45,12 +45,12 @@ import "../../../assets/css/bootstrap.css";
 import Iframe from "views/Components/IFrame/Iframe.js";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion.js";
 import { quitarsilla } from "utils/Querypanelsigui.js";
-import { listaEliminasillas } from "utils/CarritoLocalStorang.js";
 import { correlativodelete } from "utils/Querypanelsigui.js";
 import { ListaElimnaLCompleta } from "utils/CarritoLocalStorang.js";
 import { Triangle } from "react-loader-spinner";
 import { ListarNoticias } from "utils/Querypanelsigui.js";
 import ModalFacilitoView from "views/Components/MODAL/ModalFacilito.js";
+import ReporteView from "views/Components/MODAL/Modalreporpago.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
@@ -78,7 +78,6 @@ const IndexFlas = () => {
     var tiempo = 60 * 10
     timer = tiempo
     var minutos = 0, segundos = 0;
-    //console.log(datatime)
     datatime.current = setInterval(function () {
       minutos = parseInt(timer / 60, 10);
       segundos = parseInt(timer % 60, 10);
@@ -121,18 +120,13 @@ const IndexFlas = () => {
       }
     })
     usedispatch(cargalocalidad(nuevo))
-
   }
   window.onbeforeunload = preguntarAntesDeSalir;
-
   function preguntarAntesDeSalir() {
     var bPreguntar = (getVerTienda().length > 0)
     var respuesta;
-
     if (modal.nombre != "pago" && bPreguntar) {
-      // window.confirm('¿Seguro que quieres salir?');
       respuesta = window.confirm('¿Seguro que quieres salir?');
-
       if (respuesta) {
         window.onunload = function () {
           return true;
@@ -146,7 +140,6 @@ const IndexFlas = () => {
     let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
     localidadtimer.current = setInterval(function () {
       ListarLocalidad().then(ouput => {
-
         filterlocal(id, ouput.data)
       }
       ).catch(exit => console.log(exit))
@@ -154,7 +147,7 @@ const IndexFlas = () => {
   }
 
   function detenervelocidad() {
-    handleClosesop(false)
+    usedispatch(setModal({ nombre: "", estado: '' }))
     clearInterval(datatime.current)
     clearInterval(localidadtimer.current)
     setMapashow(false)
@@ -171,11 +164,14 @@ const IndexFlas = () => {
     ).catch(err => console.log(err)) : ''
     getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
 
-      getVerTienda().filter(e => e.tipo == "correlativo").map(async (elem) => {
-        correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
-        }).catch(err => {
-          console.log(err)
-        })
+      getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
+        setTimeout(function () {
+          correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
+            // console.log(ouput)
+          }).catch(err => {
+            console.log(err)
+          })
+        }, 20 * index)
       })
       : ''
     Limpiarseleccion()
@@ -193,29 +189,18 @@ const IndexFlas = () => {
     }
     else {
       try {
-        //  console.log(e)
         let obten = await listarpreciolocalidad(e.codigoEvento)
-        // const lista = await
 
         const listalocal = await ListarLocalidad()
         let localidades = await cargarMapa()
-        // console.log(obten)
-        // console.log(localidades)
-        //console.log(localidades)
-        // console.log(listalocal)
         sessionStorage.consierto = e.nombreConcierto
         if (obten.data.length > 0) {
-          //  console.log(localidades.data)
           let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-          //console.log("obtengo mapas", mapa)
           let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
           let localidad = JSON.parse(mapa[0].localidad)
-          //  console.log(JSON.parse(mapa[0].pathmap))
           let path = JSON.parse(mapa[0].pathmap)
-          //   console.log(obten.data, localidad)
           let newprecios = obten.data.map((g, i) => {
             let color = localidad.filter((f, i) => f.nombre == g.localodad)
-            //console.log("colores", g)
             g.color = color[0].color
             g.idcolor = color[0].id
             g.typo = color[0].tipo
@@ -251,21 +236,18 @@ const IndexFlas = () => {
 
           consultarlocalidad()
           Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
-            handleClosesop(true)
             setspinervi("d-none")
             velocidad()
             usedispatch(cargarsilla(outp))
-
+            usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
           }).catch(err => {
             console.log(err)
           })
-
         }
       } catch (err) {
         console.log(err)
         setspinervi("d-none")
       }
-
     }
   }
   const borrar = async (e) => {
@@ -348,151 +330,12 @@ const IndexFlas = () => {
   };
   const [showMapa, setMapashow] = useState(false);
   const [modalPago, setModalPago] = useState(false);
-  const [show, setShow] = useState(false);
-  const handleContinuar = () => {
-    handleClosesop(false)
-    setDetalle(true)
-  }
-  const handleDetalleColse = () => {
-    setDetalle(false)
-    handleClosesop(true)
-  }
   const salir = () => {
     sessionStorage.removeItem(DatosUsuariocliente)
     sessionStorage.removeItem(DatosUsuarioLocalStorang)
     usedispatch(deletesuscrito({ ...userauthi }))
     SetSeleccion("")
   }
-  const handelReporShow = async () => {
-    let datos = await getDatosUsuariosLocalStorag()
-    let nuemro = await ValidarWhatsapp()
-    let user = { email: datos.email, password: datos.cedula }
-    let clineteLogeado = await getCliente()
-    try {
-      if (clineteLogeado == null) {
-        if (nuemro == null) {
-          setDatoToas({
-            show: true,
-            message: "Ingrese un numero de Whatsapp",
-            color: 'bg-danger',
-            estado: "Numero " + datos.whatsapp + " Invalido",
-          })
-          return
-        }
-        else {
-          const { success, message } = await GuardarDatosdelComprador()
-          if (success) {
-            const { data } = await Authsucrito(user)
-            var hoy = new Date();
-            let users = {
-              ...datos,
-              cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
-              telefono: data.movil, name: data.nombreCompleto,
-              email: data.email, hora: String(hoy),
-              enable: data.enable, id: data.id,
-            }
-            DatosUsuariosLocalStorag({ ...datos, ...users })
-            sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
-            usedispatch(addususcritor({ users }))
-            setrepShow(true)
-            setDetalle(false)
-          }
-          else {
-            setDatoToas({
-              show: true,
-              message: "Ingrese un correo diferente o inicie sección",
-              color: 'bg-danger',
-              estado: "Correo " + datos.email + " Duplicado",
-            })
-          }
-        }
-      } else {
-        setrepShow(true)
-        setDetalle(false)
-      }
-    } catch (error) {
-      setDatoToas({
-        show: true,
-        message: "Verifique su conexión o intente mas tarde",
-        color: 'bg-danger',
-        estado: "Hubo un error",
-      })
-      console.log("Error---", error)
-    }
-  }
-  const handelefctivorShow = async () => {
-    let datos = await getDatosUsuariosLocalStorag()
-    let user = { email: datos.email, password: datos.cedula }
-    let clineteLogeado = await getCliente()
-    let nuemro = await ValidarWhatsapp()
-    try {
-      if (clineteLogeado == null) {
-        if (nuemro != null) {
-          setDatoToas({
-            show: true,
-            message: "Ingrese un número de Whatsapp válido",
-            color: 'bg-danger',
-            estado: "Número " + datos.whatsapp + " Inválido",
-          })
-          return false
-        }
-        const { success, message } = await GuardarDatosdelComprador()
-        if (success) {
-          const { data } = await Authsucrito(user)
-          var hoy = new Date();
-          let users = {
-            ...datos,
-            cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
-            telefono: data.movil, name: data.nombreCompleto,
-            email: data.email, hora: String(hoy),
-            enable: data.enable, id: data.id,
-          }
-          DatosUsuariosLocalStorag({ ...datos, ...users })
-          sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
-          usedispatch(addususcritor({ users }))
-          efectiOpShow(true)
-          setDetalle(false)
-        }
-        else {
-          setDatoToas({
-            show: true,
-            message: "Inicie sesión o Ingrese un correo diferente ",
-            color: 'bg-danger',
-            estado: "Correo " + datos.email + " Duplicado",
-          })
-        }
-      } else {
-        efectiOpShow(true)
-        setDetalle(false)
-      }
-    } catch (error) {
-      setDatoToas({
-        show: true,
-        message: "Hubo un error correo duplicado o verifique su conexión",
-        color: 'bg-danger',
-        estado: "Hubo un error",
-      })
-    }
-  }
-  const handlereportColse = async () => {
-    setrepShow(false)
-    setDetalle(true)
-  };
-  const closedeposito = () => {
-    setModalPago(false)
-    setDetalle(true)
-  }
-  const handleefectivoClose = () => {
-    efectiOpShow(false)
-    setDetalle(true)
-  };
-
-  const [listaPrecio, setListaPrecio] = useState({
-    total: 0,
-    subtotal: 0,
-    comision: 0,
-    comision_bancaria: 0
-  })
   const [listarCarritoDetalle, setListarCarritoDetalle] = useState([])
   const [datosPerson, setPerson] = useState({
     cedula: '',
@@ -532,17 +375,6 @@ const IndexFlas = () => {
     }).catch(err =>
       console.log(err)
     )
-    /* var popUp = window.open('url', '', 'options');
-     if (popUp == null || typeof (popUp) == 'undefined') {
-       setDatoToas({
-         show: true,
-         message: 'Por favor habilite las ventanas emergentes antes de continuar y actualice la pagina',
-         color: 'bg-danger',
-         estado: 'Mensaje importante',
-       })
-     } else {
-       popUp.close();
-     }*/
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
@@ -576,7 +408,6 @@ const IndexFlas = () => {
       })
       usedispatch(addususcritor({ ...clineteLogeado }))
     }
-
     /* (function (s, z, c, h, a, t) {
        s.webchat = s.webchat || function () {
          (s.webchat.q = s.webchat.q || []).push(arguments);
@@ -609,62 +440,63 @@ const IndexFlas = () => {
   }
   return (
     <>
-      {showMapa ? <LocalidadmapViews
-        handleClosesop={handleClosesop}
-        showMapa={showMapa}
-        intervalo={intervalo}
-        setMapashow={setMapashow}
-      /> : ''}
-      <ModalCarritov
-        showshop={showshop}
-        handleClosesop={detenervelocidad}
-        detener={handleClosesop}
-        handleContinuar={handleContinuar}
-        setListarCarritoDetalle={setListarCarritoDetalle}
-        datos={datos}
-        precios={precios}
-        intervalo={intervalo}
-        setListaPrecio={setListaPrecio}
-        setMapashow={setMapashow}
-      />
-      {modal.nombre == "registro" ? <ResgistroView
-        abrir={abrir}
-        setDatoToas={setDatoToas} /> : ''}
-      <ModalDetalle
-        showDetalle={showDetalle}
-        intervalo={intervalo}
-        setDetalle={setDetalle}
-        handleDetalleColse={handleDetalleColse}
-        setListarCarritoDetalle={setListarCarritoDetalle}
-        handelReporShow={handelReporShow}
-        listarCarritoDetalle={listarCarritoDetalle}
-        handelefctivorShow={handelefctivorShow}
-        setModalPago={setModalPago}
-        setDatoToas={setDatoToas}
-      />
+      {modal.nombre == "Modallocalida" ?
+        <LocalidadmapViews
+          handleClosesop={handleClosesop}
+          showMapa={showMapa}
+          intervalo={intervalo}
+          setMapashow={setMapashow}
+        /> : ''}
+      {modal.nombre == "ModalCarritov" ?
+        <ModalCarritov
+          showshop={showshop}
+          handleClosesop={detenervelocidad}
+          detener={handleClosesop}
+
+          setListarCarritoDetalle={setListarCarritoDetalle}
+          datos={datos}
+          precios={precios}
+          intervalo={intervalo}
+
+          setMapashow={setMapashow}
+        /> : ''}
+      {modal.nombre == "registro" ?
+        <ResgistroView
+          abrir={abrir}
+          setDatoToas={setDatoToas} /> : ''}
+      {modal.nombre == "ModalDetalle" ?
+        <ModalDetalle
+          showDetalle={showDetalle}
+          intervalo={intervalo}
+          setDetalle={setDetalle}
+
+          setListarCarritoDetalle={setListarCarritoDetalle}
+
+          listarCarritoDetalle={listarCarritoDetalle}
+          setModalPago={setModalPago}
+          setDatoToas={setDatoToas}
+        /> : ''}
 
       {
-        modalPago ? <ModalPago intervalo={intervalo} detenervelocidad={detenervelocidad} para={para} closedeposito={closedeposito} setModalPago={setModalPago} modalPago={modalPago} setDatoToas={setDatoToas} /> : null
+        modal.nombre == "ModalPago" ? <ModalPago intervalo={intervalo} detenervelocidad={detenervelocidad} para={para} setModalPago={setModalPago} modalPago={modalPago} setDatoToas={setDatoToas} /> : null
       }
       <ModalReport
         repShop={repShop}
         intervalo={intervalo}
         setrepShow={setrepShow}
-        handlereportColse={handlereportColse}
         setDatoToas={setDatoToas}
         detener={detenervelocidad}
       />
       <ModalEfectivo
         efectShow={efectShow}
-        handleDetalleColse={handleDetalleColse}
-        handleefectivoClose={handleefectivoClose}
         efectiOpShow={efectiOpShow}
         setDetalle={setDetalle}
         intervalo={intervalo}
         detener={detenervelocidad}
         setDatoToas={setDatoToas}
       />
-
+      <ReporteView
+        setrepShow={setrepShow} />
       {alert}
       <nav className="navbar navbar-expand-lg  justify-content-between navbar-dark bg-black  py-3">
         <div className="container-fluid col-lg-8    d-flex justify-content-between">
@@ -721,8 +553,9 @@ const IndexFlas = () => {
         <Swiper
           className="AnimatedSlides "
           parallax={true}
-          loop={true}
+          loop={publicidad.length > 1 ? true : false}
           autoHeight={true}
+          navigation={true}
           pagination={{
             clickable: true,
           }}
@@ -752,10 +585,9 @@ const IndexFlas = () => {
                         <div style={styleswiper.fondo}>
                         </div>
                         <div className="descripciones ">
-
                           <div className="d-flex  flex-column text-white" >
                             <div className="py-3 d-none d-sm-block   ">
-                              <div className=" row d-flex  align-items-center p-1">
+                              <div className=" d-none row d-flex  align-items-center p-1">
                                 <i className="fa fa-volume-off fa-3x  col-2 ">  </i>
                                 <h5 className="col-10 px-0 pt-2"
                                   style={{
@@ -831,7 +663,7 @@ const IndexFlas = () => {
                         <div className="col-12 mx-auto my-3" id={"evento" + e.id} key={i}>
                           <a id={"headingThree" + e.id} className="collapsed evento" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
-                            <div className="container rounded-7 shadow-md px-0">
+                            <div className="container rounded-7  d-flex justify-content-center px-0">
                               <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
                           </a>

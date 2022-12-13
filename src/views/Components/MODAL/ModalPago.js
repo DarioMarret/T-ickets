@@ -14,12 +14,10 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 
 
 function ModalPago(props) {
-    const { setModalPago, modalPago, setDatoToas, closedeposito, detenervelocidad, para, intervalo } = props
+    const { setModalPago, modalPago, detenervelocidad, para, intervalo } = props
     let usedispatch = useDispatch();
     const [spinerst, setSpiner] = useState("d-none")
-    const [estadoFrame, setEstadoFrame] = useState(false)
     const [alert, setAlert] = useState(null)
-    const [url, setUrl] = useState('')
     const [cargar, setCargar] = useState(false)
     const [datosPerson, setPerson] = useState({
         cedula: '',
@@ -45,9 +43,8 @@ function ModalPago(props) {
         }
         setCargar(!cargar)
     }, [modalPago])
-
+    const closedeposito = () => usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
     const borrar = () => {
-
         Limpiarseleccion()
         LimpiarLocalStore()
         usedispatch(clearMapa({}))
@@ -55,7 +52,6 @@ function ModalPago(props) {
         setModalPago(false)
         intervalo ? detenervelocidad() : ''
     }
-
     const succesAlert = () => {
         setAlert(
             <SweetAlert
@@ -64,12 +60,10 @@ function ModalPago(props) {
                 title="Estas seguro de cancelar la compra"
                 onConfirm={() => hideAlert()}
                 onCancel={() => borrar()}
-
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Continuar"
                 cancelBtnText="Salir y Borrar"
-
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             >

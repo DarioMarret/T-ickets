@@ -7,17 +7,19 @@ import { DatosUsuariosLocalStorag, getCliente } from 'utils/DatosUsuarioLocalSto
 import { getCedula } from 'utils/DatosUsuarioLocalStorag';
 import { ValidarWhatsapp, GuardarDatosdelComprador, EnviarmensajeWhastapp, Authsucrito } from 'utils/Query';
 import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
 import { getVerTienda, GetEstadousu } from 'utils/CarritoLocalStorang';
 
 function ModalDetalle(props) {
-    const { showDetalle, handleDetalleColse,
+    const { showDetalle,
         listarCarritoDetalle, setListarCarritoDetalle,
-        setModalPago, handelReporShow, handelefctivorShow,
+        handelefctivorShow,
         setDetalle, setDatoToas, intervalo
     } = props
     const usedispatch = useDispatch()
+
+    const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [actualState, changeCheckState] = useState({
         check1: false,
         check2: false,
@@ -37,10 +39,10 @@ function ModalDetalle(props) {
         envio: '',
         direccion: '',
     })
-    function detposito() {
-        usedispatch(setModal({ nombre: "modalpago", estado: "" }))
-        setDetalle(false)
-    }
+    const detposito = () => usedispatch(setModal({ nombre: "modalpago", estado: "" }))
+    const handelReporShow = () => usedispatch(setModal({ nombre: 'ModalReporte', estado: '' }))
+    const handleDetalleColse = () => usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+
     const handleCheckboxChange = (event) => {
         const { name, checked } = event
         if (checked) {
@@ -57,6 +59,7 @@ function ModalDetalle(props) {
         }
 
     }
+
     async function handlePago() {
         let user = { email: datosPerson.email, password: datosPerson.cedula }
         let datos = getDatosUsuariosLocalStorag()
@@ -83,8 +86,10 @@ function ModalDetalle(props) {
                     DatosUsuariosLocalStorag({ users })
                     sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
                     usedispatch(addususcritor({ users }))
-                    setDetalle(!showDetalle)
-                    setModalPago(true)
+
+                    //setDetalle(!showDetalle)
+                    usedispatch(setModal({ nombre: 'ModalPago', estado: '' }))
+                    //setModalPago(true)
                 }
                 else {
                     setDatoToas({
@@ -97,14 +102,16 @@ function ModalDetalle(props) {
             }
         }
         else {
-            setDetalle(!showDetalle)
-            setModalPago(true)
+            //            setDetalle(!showDetalle)
+            usedispatch(setModal({ nombre: 'ModalPago', estado: '' }))
+            //  setModalPago(true)
         }
     }
     function abrirPago() {
         sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
-        setDetalle(!showDetalle)
-        setModalPago(true)
+        //setDetalle(!showDetalle)
+        usedispatch(setModal({ nombre: 'ModalPago', estado: '' }))
+        //setModalPago(true)
     }
     const [listaPrecio, ListaPrecioset] = useState({
         total: 0,
@@ -245,10 +252,10 @@ function ModalDetalle(props) {
         let mostrarcomision = GetMetodo()
         const mostrar = mostrarcomision != "Tarjeta" ? "d-none" : ""
         sethideComision(mostrar)
-    }, [showDetalle, actualState])
+    }, [modalshow.nombre == "ModalDetalle" ? true : false, actualState])
     return (
         <Modal
-            show={showDetalle}
+            show={modalshow.nombre == "ModalDetalle" ? true : false}
             onHide={handleDetalleColse}
             size="lg"
             fullscreen={'md-down'}

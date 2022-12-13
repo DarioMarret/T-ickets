@@ -14,6 +14,7 @@ import logo from "../../../../assets/imagen/logo-inicio.png";
 import { Whatsappnumero } from "utils/constantes"
 import { Triangle } from "react-loader-spinner"
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice"
+import { buscarcliente } from "utils/Querypanelsigui"
 const ResgistroView = (prop) => {
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
@@ -36,50 +37,63 @@ const ResgistroView = (prop) => {
             if (code == "cedula") {
                 try {
                     seTspine("")
-                    const datos = await getCedula(e.target.value)
-                    const { name, email, direccion, whatsapp, discapacidad } = datos
-                    console.log(datos)
-                    if (name) {
-
-                        seTspine("d-none")
-                        setPerson({
-                            nombreCompleto: name,
-                            whatsapp: '', ...datos,
-                            direccion: '',
-                            email: ''
-                        })
+                    const busacar = await buscarcliente({ "cedula": e.target.value, "email": "" })
+                    console.log(busacar)
+                    if (busacar.success == true) {
                         setDatoToas({
                             show: true,
-                            message: "Encontrado: " + name,
+                            message: "Por favor inicie sesión con el correo: " + busacar.data["email"],
                             color: 'bg-success',
-                            estado: "Hubo una coincidencia, Complete los datos restantes ",
+                            estado: "Usuario Registrado",
                         })
-                        DatosUsuariosLocalStorag({
-                            ...usuario,
-                            ...datos
-                        })
-                    }
-                    else {
+                        usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))
                         seTspine("d-none")
-                        setPerson({
-                            cedula: '', name: '', email: '', edad: '', movil: '', discapacidad: '', genero: '', direccion: '', password: '',
-                        })
 
-                        DatosUsuariosLocalStorag({
-                            email: '',
-                            edad: '',
-                            movil: '',
-                            discapacidad: '',
-                            genero: '',
-                            direccion: '',
-                            password: '',
-                        })
-                        setDatoToas({
-                            show: true,
-                            message: "Vuelva a interntarlo o cambie de metodo de identificación",
-                            color: 'bg-danger',
-                            estado: "No hubo coincidencia de cédula",
-                        })
+                    } else {
+                        const datos = await getCedula(e.target.value)
+                        console.log(datos)
+                        const { name } = datos
+                        if (name) {
+
+                            seTspine("d-none")
+                            setPerson({
+                                nombreCompleto: name,
+                                whatsapp: '', ...datos,
+                                direccion: '',
+                                email: ''
+                            })
+                            setDatoToas({
+                                show: true,
+                                message: "Encontrado: " + name,
+                                color: 'bg-success',
+                                estado: "Hubo una coincidencia, Complete los datos restantes ",
+                            })
+                            DatosUsuariosLocalStorag({
+                                ...usuario,
+                                ...datos
+                            })
+                        }
+                        else {
+                            seTspine("d-none")
+                            setPerson({
+                                cedula: e.target.value, name: '', email: '', edad: '', movil: '', discapacidad: '', genero: '', direccion: '', password: '',
+                            })
+                            DatosUsuariosLocalStorag({
+                                email: '',
+                                edad: '',
+                                movil: '',
+                                discapacidad: '',
+                                genero: '',
+                                direccion: '',
+                                password: '',
+                            })
+                            setDatoToas({
+                                show: true,
+                                message: "Vuelva a interntarlo o cambie de metodo de identificación",
+                                color: 'bg-danger',
+                                estado: "No hubo coincidencia de cédula",
+                            })
+                        }
                     }
                 } catch (error) {
                     seTspine("d-none")
@@ -103,17 +117,17 @@ const ResgistroView = (prop) => {
         let info = getDatosUsuariosLocalStorag()
         const form = new FormData(e.target)
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-        const { nombreCompleto, email, password, movil, ciudad, cedula } = Object.fromEntries(form.entries())
+        const { name, email, password, movil, direccion, cedula } = Object.fromEntries(form.entries())
         // console.log(password)
         sessionStorage.setItem(Whatsappnumero, movil)
         //console.log(movil)
         let datos = {
-            nombreCompleto: datosPerson.name,
-            email: datosPerson.email,
+            nombreCompleto: name,
+            email: email,
             password: password,
             movil: movil,
-            ciudad: datosPerson.direccion,
-            cedula: datosPerson.cedula,
+            ciudad: direccion,
+            cedula: cedula,
 
         }
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
@@ -127,7 +141,18 @@ const ResgistroView = (prop) => {
                 estado: "Complete toda la información",
             })
             return
+        } if (
+            password.length < 8
+        ) {
+            setDatoToas({
+                show: true,
+                message: "La contraseña debe tener almenos 8 caracteres",
+                color: 'bg-danger',
+                estado: "Email " + email + " Invalido",
+            })
+            return
         }
+
         if (!emailRegex.test(email)) {
             // console.log(emailRegex.test(email))
             setDatoToas({
@@ -156,35 +181,45 @@ const ResgistroView = (prop) => {
                     return
                 }
                 else {
-                    const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                        }
-                    })
-                    if (registro.data.success) {
-                        let usuario = getDatosUsuariosLocalStorag()
-                        const { data } = await Authsucrito({ email: email, password: password },)
-                        var hoy = new Date();
-                        let users = {
-                            ...usuario,
-                            cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
-                            telefono: movil, name: data.nombreCompleto,
-                            email: data.email, hora: String(hoy),
-                            enable: data.enable, id: data.id,
-                            envio: ''
-                        }
-                        DatosUsuariosLocalStorag({ ...usuario, ...users })
-                        sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
-                        setDatoToas({
-                            show: true,
-                            message: "Bienvenido" + data.nombreCompleto,
-                            color: 'bg-success',
-                            estado: "Inicio Exitoso",
+                    try {
+                        console.log(datos)
+
+
+                        const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                            }
                         })
-                        usedispatch(setModal({ nombre: '', estado: '' }))
-                        usedispatch(addususcritor({ users }))
+                        if (registro.data.success) {
+                            let usuario = getDatosUsuariosLocalStorag()
+                            const { data } = await Authsucrito({ email: email, password: password },)
+                            var hoy = new Date();
+                            let users = {
+                                ...usuario,
+                                cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
+                                telefono: movil, name: data.nombreCompleto,
+                                email: data.email, hora: String(hoy),
+                                enable: data.enable, id: data.id,
+                                envio: ''
+                            }
+                            DatosUsuariosLocalStorag({ ...usuario, ...users })
+                            sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+                            setDatoToas({
+                                show: true,
+                                message: "Bienvenido" + data.nombreCompleto,
+                                color: 'bg-success',
+                                estado: "Inicio Exitoso",
+                            })
+                            usedispatch(setModal({ nombre: '', estado: '' }))
+                            usedispatch(addususcritor({ users }))
+                        }
+
+                    } catch (error) {
+                        console.log(error)
+
                     }
+
                 }
 
             } catch (error) {
@@ -304,7 +339,6 @@ const ResgistroView = (prop) => {
                                                     <input type="text"
                                                         className="form-control"
                                                         id="name"
-                                                        disabled={(code == "cedula")}
                                                         name="name"
                                                         value={datosPerson.name}
                                                         required
@@ -312,7 +346,6 @@ const ResgistroView = (prop) => {
                                                         placeholder="Ingrese su nombre completo" />
                                                     <div className="invalid-feedback">
                                                         Ingrese sus nombres
-
                                                     </div>
 
                                                 </div>
@@ -391,7 +424,7 @@ const ResgistroView = (prop) => {
                                                         id="password"
                                                         name='password'
                                                         required
-                                                        minLength={7}
+                                                        minLength={8}
                                                         placeholder="contraseña"
                                                         className="form-control"
                                                         onChange={(e) => hanbleOnchange(e)} />
@@ -403,6 +436,41 @@ const ResgistroView = (prop) => {
                                             </div>
 
                                         </div>
+                                        { /* <div className="row">
+                                            <div className="col-lg-6">
+                                                <div className="input-group mb-3">
+                                                    <div className="input-group-prepend">
+                                                        <span className="input-group-text"><i className="fa fa-envelope"></i></span>
+                                                    </div>
+
+                                                    <input id="edad" type="edad" className="form-control" name="email"
+
+                                                        required
+                                                        placeholder="edad" />
+                                                    <div className="invalid-feedback">
+                                                        Correo registrado o inválido
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <div className="input-group mb-3">
+                                                    <div className="input-group-prepend">
+                                                        <span className="input-group-text"><i className="fa fa-envelope"></i></span>
+                                                    </div>
+
+                                                    <input id="fecha" type="date" className="form-control" name="email"
+
+                                                        required
+                                                        placeholder="Email" />
+                                                    <div className="invalid-feedback">
+                                                        Correo registrado o inválido
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>*/}
 
 
 

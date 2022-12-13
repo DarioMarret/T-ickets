@@ -10,7 +10,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
-import { setToastes } from "StoreRedux/Slice/ToastSlice";
 
 const ModalLogin = (props) => {
   const { showLogin, setShowLogin, abrir } = props
@@ -24,17 +23,14 @@ const ModalLogin = (props) => {
   const handleSubmit = async (event) => {
     var hoy = new Date();
     event.preventDefault();
-
     if (credenciales.username !== '' && credenciales.pass !== '') {
       try {
-        // console.log(credenciales,encodedToken)
         const { data } = await axios.post(Host + "api/v1/auth_suscriptor", { email: credenciales.username, password: credenciales.pass }, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
           }
         })
-        //  console.log(data)
         if (data.success) {
           const cedula = await getCedula(data.data.cedula)
           let client = {
@@ -51,21 +47,16 @@ const ModalLogin = (props) => {
           setShowToass(true)
           setmessage("Bienvenido " + data.data.nombreCompleto)
           Modalstatus.estado != null ? abrir(Modalstatus.estado) : ''
-
           usedispatch(setModal({ nombre: '', estado: '' }))
-
         }
         else {
           setShowToas(true)
           setmessage(data.message)
-          //console.log("mensage de alvertencia")
         }
       } catch (error) {
         console.log(error)
         setShowToas(true)
         setmessage("Hubo un error Verifique correo y contraseña e intente de nuevo")
-
-        //console.log("error Logincredet-->",error)
       }
 
     }

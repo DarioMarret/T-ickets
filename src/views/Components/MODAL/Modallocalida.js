@@ -20,19 +20,22 @@ import { correlativosadd } from "utils/Querypanelsigui";
 import moment from "moment";
 import { correlativodelete } from "utils/Querypanelsigui";
 import { Verificalocalidad } from "utils/CarritoLocalStorang";
+import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 const LocalidadmapViews = (props) => {
-    const { precios, showMapa, handleClosesop, setMapashow, intervalo } = props
+    const { showMapa, handleClosesop, setMapashow, intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
     let nombre = JSON.parse(sessionStorage.getItem(seleccionmapa))
 
     const usedispatch = useDispatch()
     const [detalle, setDetalle] = useState([])
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localodad))
-    const maximocarro = useSelector((state) => state.sillasSlice.sillasSelecionadas)
+    const modalshow = useSelector((state) => state.SuscritorSlice.modal)
+
     const [alert, setAlert] = useState(null);
     function cerrar() {
-        handleClosesop(true)
-        setMapashow(flase)
+        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+        // handleClosesop(true)
+        // setMapashow(flase)
     }
     function MesaVerifica(M, C) {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
@@ -289,12 +292,11 @@ const LocalidadmapViews = (props) => {
                     this.classList.remove('disponible')
                     this.classList.add('seleccionado')
                     this.classList.add("" + nombres.idcolor + "silla")
-
+                    successAlert(this.classList[0], nombres.localodad, "Fila")
                     AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                     enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
                         usedispatch(filtrarlocali(ouput))
-                        successAlert(this.classList[0], nombres.localodad, "Fila")
                     }
                     ).catch(exit => {
                         console.log(exit)
@@ -366,8 +368,9 @@ const LocalidadmapViews = (props) => {
         }
     })
     function cerrar() {
-        setMapashow(false)
-        handleClosesop(true)
+        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+        //  setMapashow(false)
+        // handleClosesop(true)
         hideAlert()
         sessionStorage.removeItem(seleccionmapa)
     }
@@ -400,8 +403,6 @@ const LocalidadmapViews = (props) => {
             $("#mapas" + e.path).attr("fill", e.fill)
             $("#mapas" + e.path).removeAttr("class")
         }) : ''
-
-
         let producto = {
             localidad: mapath.precio.localodad,
             localidaEspacio: mapath.precio,
@@ -412,14 +413,12 @@ const LocalidadmapViews = (props) => {
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
         let cantidad = mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info : ''
-        mapath.localidadespecica.info != undefined && mapath.localidadespecica.info.length > 0 ? setDetalle(Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio.idcolor)) : ''
-
-
-    }, [showMapa])
+        mapath.localidadespecica.info != undefined && mapath.localidadespecica.info.length > 0 ? console.log(Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"])) : ''
+    }, [modalshow.nombre == "Modallocalida" ? true : false])
     return (
         <>
             <Modal
-                show={showMapa}
+                show={modalshow.nombre == "Modallocalida" ? true : false}
                 size="lg"
                 fullscreen={'md-down'}
                 onHide={cerrar}
@@ -446,10 +445,10 @@ const LocalidadmapViews = (props) => {
                                 <h6 className="px-1">$ {mapath.precio.precio_normal} </h6>
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center" style={{ maxHeight: "200px" }}>
-                                {showMapa ? <SVGView text={mapath.nombre} /> : ''}
+                                {modalshow.nombre == "Modallocalida" ? <SVGView text={mapath.nombre} /> : ''}
                             </div>
 
-                            {showMapa && mapath.precio.typo != "correlativo" ?
+                            {modalshow.nombre == "Modallocalida" && mapath.precio.typo != "correlativo" ?
                                 <div className="col-12 d-flex  flex-wrap  ">
                                     <div className="d-flex  flex-row  p-2  align-items-center" >
                                         <div className="d-flex   mx-1 bg-success text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
@@ -492,9 +491,9 @@ const LocalidadmapViews = (props) => {
 
                                 </div> : ''}
                             <div className="col-12 pt-1">
-                                {showMapa && mapath.precio.typo == "fila" ?
+                                {modalshow.nombre == "Modallocalida" && mapath.precio.typo == "fila" ?
                                     <div className="section" style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
-                                        {showMapa && mapath.localidadespecica.length > 0 ?
+                                        {modalshow.nombre == "Modallocalida" && mapath.localidadespecica.length > 0 ?
                                             mapath.localidadespecica.map((e, i) => {
                                                 {
                                                     return (
@@ -528,7 +527,7 @@ const LocalidadmapViews = (props) => {
                                             })
                                             : ""}
                                     </div> : ''}
-                                {showMapa && mapath.precio.typo === "mesa" ?
+                                {modalshow.nombre == "Modallocalida" && mapath.precio.typo === "mesa" ?
                                     <div className="col-sm-12 text-center " style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
                                         <div className='d-flex  px-3 align-items-center' >
                                             <div className='d-flex align-itmes-center pb-2' style={{ width: '80px' }}>

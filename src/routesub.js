@@ -104,6 +104,13 @@ var routes = [
         mini: "*",
         component: AutorizacionView,
         permiso: ["superadmin", "super_admin"]
+      }, {
+        path: "/configurar-comisiones",
+        layout: "/admin",
+        name: " Comisiones",
+        mini: "*",
+        component: AutorizacionView,
+        permiso: ["superadmin", "super_admin"]
       }
       , {
         path: "/Diseñar-Ticket",

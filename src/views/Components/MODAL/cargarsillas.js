@@ -28,6 +28,7 @@ export const Cargarsillas = (colornuevo) => {
                                 })
                             }
                         });
+                        //aqui eliminar
                     })
                 }
                 if (JSON.parse(ouput.data.find(ins => ins.id == f.id).mesas_array).Typo == "mesa") {
@@ -48,8 +49,17 @@ export const Cargarsillas = (colornuevo) => {
                                     })
                                 }
                             })
+                            //aqui eliminar
                         })
                     })
+
+                }
+                if (JSON.parse(ouput.data.find(ins => ins.id == f.id).mesas_array).Typo == "correlativo") {
+                    if (!JSON.parse(ouput.data.find(ins => ins.id == f.id).mesas_array).datos["info"] != undefined) {
+                        //    console.log(
+                        //      JSON.parse(ouput.data.find(ins => ins.id == f.id).mesas_array).datos["info"].find(corr => corr.cedula == user.cedula))
+                        //aqui info
+                    }
 
                 }
             }

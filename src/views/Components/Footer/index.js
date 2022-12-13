@@ -147,7 +147,7 @@ export default function Footer(props) {
                                             <span className=" text-white" style={{ fontFamily: '', }} >Quiénes Somos</span>
                                         </a>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
-                                            <span className=" text-white" style={{ fontFamily: '', }} >Vision</span>
+                                            <span className=" text-white" style={{ fontFamily: '', }} >Visión</span>
                                         </a>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <span className=" text-white" style={{ fontFamily: '', }} >Trabaja con Nosotros</span>
@@ -165,7 +165,7 @@ export default function Footer(props) {
                                         </a>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
 
-                                            <span className=" text-white" style={{ fontFamily: '', }} >Descargar Factura Electronica</span>
+                                            <span className=" text-white" style={{ fontFamily: '', }} >Descargar Factura Electrónica</span>
                                         </a>
 
                                     </div>

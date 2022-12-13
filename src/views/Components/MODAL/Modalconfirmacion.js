@@ -12,8 +12,8 @@ const ModalConfima = (prop) => {
 
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     function cerrar() {
-        usedispatch(setModal({ nombre: '', estado: '' }))
-        setrepShow(true)
+        usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
+        // setrepShow(true)
     }
     function confirmar() {
         usedispatch(setModal({ nombre: '', estado: '' }))
@@ -26,7 +26,7 @@ const ModalConfima = (prop) => {
     return (
         <>
             <Modal
-                show={modal.nombre == "confirmar" ? true : false}
+                show={modal.nombre == "confirmar2" ? true : false}
             >
                 <Modal.Header className=" d-flex  rounded-top-4 m-0  bg-secondary  justify-content-between align-items-center">
                     <div className="d-flex  container   justify-content-center text-center" >

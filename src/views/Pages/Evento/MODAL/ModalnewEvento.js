@@ -53,7 +53,8 @@ const ModalNewEvento = (props) => {
             precio_discapacidad: '',
             precio_tarjeta: '',
             precio_descuento: '',
-            habilitar_cortesia: ''
+            habilitar_cortesia: '',
+            comision: ''
         })
         console.log(ArrayCopia)
     }
@@ -106,6 +107,7 @@ const ModalNewEvento = (props) => {
             cuidadConcert: '',
             descripcionConcierto: '',
             imagenConcierto: '',
+
             idUsuario: "" + user.id,
             //mapaconcierto:""
         })
@@ -164,7 +166,8 @@ const ModalNewEvento = (props) => {
             precio_discapacidad: '',
             precio_tarjeta: '',
             precio_descuento: '',
-            habilitar_cortesia: ''
+            habilitar_cortesia: '',
+            comision: ''
         }
     )
 
@@ -181,7 +184,8 @@ const ModalNewEvento = (props) => {
                     precio_discapacidad: 0,
                     precio_tarjeta: 0,
                     precio_descuento: 0,
-                    habilitar_cortesia: 0
+                    habilitar_cortesia: 0,
+                    comision: 0
                 })
             }
             ).catch(err =>
@@ -203,17 +207,19 @@ const ModalNewEvento = (props) => {
         console.log(index)
         var dato = selectLocalidad.find(D => D.id == e.value)
         console.log(dato)
-        setPrecios({
-            precio_normal: localidadPreci[index] ? localidadPreci[index].precio_normal : 0,
-            precio_discapacidad: localidadPreci[index] ? localidadPreci[index].precio_discapacidad : 0,
-            precio_tarjeta: localidadPreci[index] ? localidadPreci[index].precio_tarjeta : 0,
-            precio_descuento: localidadPreci[index] ? localidadPreci[index].precio_descuento : 0,
-            habilitar_cortesia: localidadPreci[index] ? localidadPreci[index].habilitar_cortesia : 0,
-            localodad: dato.nombre,
-
-            identificador: e.value,
-        })
-        console.log(precios)
+        if (datos != undefined) {
+            setPrecios({
+                precio_normal: localidadPreci[index] ? localidadPreci[index].precio_normal : 0,
+                precio_discapacidad: localidadPreci[index] ? localidadPreci[index].precio_discapacidad : 0,
+                precio_tarjeta: localidadPreci[index] ? localidadPreci[index].precio_tarjeta : 0,
+                precio_descuento: localidadPreci[index] ? localidadPreci[index].precio_descuento : 0,
+                habilitar_cortesia: localidadPreci[index] ? localidadPreci[index].habilitar_cortesia : 0,
+                localodad: dato.nombre,
+                comision: 0,
+                identificador: e.value,
+            })
+            console.log(precios)
+        }
     }
     function handelchangeLocalidad(e) {
         setPrecios({
@@ -478,6 +484,13 @@ const ModalNewEvento = (props) => {
                                                 <label >HABILITAR CORTESIA </label>
                                             </div>
                                             <input className="numero form-control col-6" value={precios.habilitar_cortesia} name="habilitar_cortesia" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                        </div>
+                                        <div className="d-flex flex-wrap mb-2">
+                                            <div className="px-2 col-4">
+                                                <label >Costo de emision </label>
+                                            </div>
+                                            <input className="numero form-control col-6"
+                                                value={precios.comision} name="comision" onChange={(e) => handelchangeLocalidad(e.target)} />
                                         </div>
 
                                     </div> : ""}

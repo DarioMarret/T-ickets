@@ -21,13 +21,11 @@ export function getCliente() {
     } else {
         return null
     }
-
-
 }
 export async function getCedula(cedula) {
     try {
         const { data } = await axios.get(Host + "cedula/" + cedula)
-        //  console.log(data)
+        console.log(data)
         const { success } = data
         if (success) {
             return data.data;

@@ -29,9 +29,6 @@ import Wizard from "views/Forms/Wizard/Wizard.js";
 import RegularTables from "views/Tables/RegularTables.js";
 import ExtendedTables from "views/Tables/ExtendedTables.js";
 import ReactTables from "views/Tables/ReactTables.js";
-import GoogleMaps from "views/Maps/GoogleMaps.js";
-import FullScreenMap from "views/Maps/FullScreenMap.js";
-import VectorMap from "views/Maps/VectorMap.js";
 import Charts from "views/Charts.js";
 import Calendar from "views/Calendar.js";
 import UserPage from "views/Pages/UserPage.js";
@@ -172,36 +169,7 @@ var routes = [
       }
     ]
   },
-  {
-    collapse: true,
-    path: "/maps",
-    name: "Maps",
-    state: "openMaps",
-    icon: "nc-icon nc-pin-3",
-    views: [
-      {
-        path: "/google-maps",
-        layout: "/admin",
-        name: "Google Maps",
-        mini: "GM",
-        component: GoogleMaps
-      },
-      {
-        path: "/full-screen-maps",
-        layout: "/admin",
-        name: "Full Screen Map",
-        mini: "FSM",
-        component: FullScreenMap
-      },
-      {
-        path: "/vector-maps",
-        layout: "/admin",
-        name: "Vector Map",
-        mini: "VM",
-        component: VectorMap
-      }
-    ]
-  },
+
   {
     path: "/charts",
     layout: "/admin",

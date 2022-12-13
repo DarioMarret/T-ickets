@@ -10,6 +10,7 @@ const TabtresView = (props) => {
         nombre: '',
         description: '',
         cantidad: '',
+        info: [],
         inicio: '',
         id: '',
     })
@@ -22,7 +23,7 @@ const TabtresView = (props) => {
     async function Actualiza() {
         if (localidaname.id != "" && localidaname.nombre != "" && localidaname.cantidad != "" && localidaname.inicio != "") {
             try {
-                const actualiza = await AptualizarLocalida({ "id": localidaname.id, "espacio": espacioname.nombre, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio } }) })
+                const actualiza = await AptualizarLocalida({ "id": localidaname.id, "espacio": espacioname.nombre, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: localidaname.info } }) })
                 if (actualiza.success) {
                     SetDataloca({
                         typo: '',
@@ -55,7 +56,7 @@ const TabtresView = (props) => {
         if (localidaname.nombre != "" && localidaname.description != "" && localidaname.cantidad != "" && localidaname.inicio != "") {
             try {
 
-                const guardar = await GuardarLocalidad({ "espacio": espacioname.nombre, "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio } }) })
+                const guardar = await GuardarLocalidad({ "espacio": espacioname.nombre, "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: [] } }) })
                 if (guardar.success) {
                     SetDataloca({
                         typo: '',

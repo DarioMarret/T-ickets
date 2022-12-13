@@ -50,8 +50,8 @@ const ModalEfectivo = (props) => {
     }, 5000)
   }
   const cerrar = () => {
-    setDetalle(true)
-    usedispatch(setModal({ nombre: '', estado: '' }))
+    // setDetalle(true)
+    usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
 
   }
   const succesAlert = () => {

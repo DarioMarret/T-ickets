@@ -18,7 +18,7 @@ export const Authsucrito = async (parms) => {
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     })
-    // console.log(data)
+    console.log(data)
     return data
 }
 /*concierto = [

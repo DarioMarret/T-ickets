@@ -13,12 +13,14 @@ import { CarritoTicket } from "utils/constantes"
 import { listaEliminasillas } from "utils/CarritoLocalStorang"
 import { quitarsilla } from "utils/Querypanelsigui"
 import { correlativodelete } from "utils/Querypanelsigui"
+import { setModal } from "StoreRedux/Slice/SuscritorSlice"
 
 const ModalCarritoView = (prop) => {
-    const { showshop, handleClosesop, handleContinuar, setMapashow, precios, setListaPrecio, setListarCarritoDetalle, intervalo, detener } = prop
+    const { handleClosesop, precios, setListarCarritoDetalle, intervalo, detener } = prop
     let usedispatch = useDispatch()
     let sleccionlocalidad = useSelector((state) => state.mapaLocalSlice)
     let seleciondesillas = useSelector((state) => state.sillasSlice.sillasSelecionadas)
+    const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [detalle, setDetalle] = useState([])
     const [alert, setAlert] = useState(null)
     const [timer, setTimer] = useState(false)
@@ -34,6 +36,7 @@ const ModalCarritoView = (prop) => {
         comision: 0,
         comision_bancaria: 0
     })
+    const handleContinuar = () => usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
     const [check, setCheck] = useState(true)
     function handelMetodopago(target, value) {
         setChecked({
@@ -64,8 +67,6 @@ const ModalCarritoView = (prop) => {
         }).catch(err => {
             console.log(err)
         })
-        // listaEliminasillas
-        // listaEliminasillas(e.id)
         e.localidaEspacio["typo"] == "correlativo" ? usedispatch(clearSillas(e)) : ''
         EliminarByStora(e.localidad)
         e.localidaEspacio["typo"] == "correlativo" ? EliminarSillaLocal(e.localidad) : ''
@@ -74,8 +75,7 @@ const ModalCarritoView = (prop) => {
         hideAlert()
     }
     function abrirlocalidad() {
-        setMapashow(true)
-        detener(false)
+        usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
     }
 
 
@@ -91,7 +91,6 @@ const ModalCarritoView = (prop) => {
 
     useEffect(() => {
         setDetalle(getVerTienda())
-        //console.log(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
         let metodoPago = GetMetodo()
         metodoPago != null ? setChecked({
@@ -108,7 +107,7 @@ const ModalCarritoView = (prop) => {
             $("#" + e.path).attr("fill", e.fill)
         }) : ''
 
-    }, [showshop])
+    }, [modalshow.nombre == "ModalCarritov" ? true : false])
 
     function Abririlocalfirt(e) {
         let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
@@ -185,7 +184,7 @@ const ModalCarritoView = (prop) => {
         <>
             {alert}
             <Modal
-                show={showshop}
+                show={modalshow.nombre == "ModalCarritov" ? true : false}
                 size="lg"
                 fullscreen={'md-down'}
                 className="modalCarrito"
@@ -330,7 +329,7 @@ const ModalCarritoView = (prop) => {
                                     SELECCIONE LA LOCALIDAD EN EL MAPA O NOMBRE
                                 </h5>
                                 <div className="">
-                                    {showshop ?
+                                    {modalshow.nombre == "ModalCarritov" ?
                                         <SvgselectView
 
                                             text={precios.mapa} />
