@@ -11,6 +11,7 @@ import { borrarseleccion } from 'StoreRedux/Slice/sillasSlice';
 import { useDispatch, useSelector } from "react-redux"
 import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { PagoRapido } from 'utils/Querycomnet';
 
 
 function ModalPago(props) {
@@ -74,20 +75,28 @@ function ModalPago(props) {
     const hideAlert = () => {
         setAlert(null)
     }
-    async function CrearPagoMedio() {
+    function CrearPagoMedio() {
         setSpiner("")
-        const data = await GenerarLinkPagoMedios()
-
-        if (data.status === 200) {
-            usedispatch(setModal({ nombre: 'pago', estado: data.data.url }))
-            console.log(data.data.url)
+        PagoRapido("").then(ouput => {
+            console.log(ouput)
+            ouput.success ? usedispatch(setModal({ nombre: 'pago', estado: ouput.url })) : ''
+            console.log(ouput)
             //   popUp(data.data.url)
             /// setEstadoFrame(!estadoFrame)
             setSpiner("d-none")
-            setModalPago(false)
+            // setModalPago(false)
+        }).catch(errro => {
+            console.log(errro)
+            setSpiner("d-none")
+        })
+        /*const data = await GenerarLinkPagoMedios()
 
-        }
-        setSpiner("d-none")
+        if (data.status === 200) {
+
+            
+
+        }*/
+
     }
     /*  async function CrearLinkPayPhone() {
           setSpiner("")
@@ -116,9 +125,9 @@ function ModalPago(props) {
                 <Modal.Header className=" d-flex  rounded-top-4   bg-dark pb-2
                  justify-content-between align-items-center">
                     <div className="d-flex flex-lg-row pb-2 container justify-content-between text-center" >
-                        <h5 className=' text-white' style={{ fontFamily: 'fantasy', fontSize: '1.37em' }}>{intervalo ? "Tiempo restante para la compra" : ""}  </h5>
-                        <h5 style={{ fontFamily: 'fantasy', fontSize: '1.7em' }}><span className=' text-danger' > {intervalo ? intervalo : ""} </span> </h5>
-                        <div><button className='close text-light' onClick={closedeposito} >x</button></div>
+                        <h5 className=' text-white' style={{ fontWeight: "bold", fontSize: '1.37em' }}>{intervalo ? "Tiempo restante para la compra" : ""}  </h5>
+                        <h5 style={{ fontWeight: "bold", fontSize: '1.7em' }}><span className=' text-danger' > {intervalo ? intervalo : ""} </span> </h5>
+                        <div><button className='close text-light' onClick={closedeposito} >X</button></div>
                     </div>
                 </Modal.Header>
                 <Modal.Body>
@@ -278,7 +287,7 @@ function ModalPago(props) {
                             <button className='btn btn-primary' onClick={closedeposito} > <i className="bi bi-caret-left-fill"></i>  Regresar  </button>
                         </div>
                         <div className='d-flex flex-column pb-3' style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                            <h6 style={{ fontFamily: 'fantasy', fontSize: '1.2em' }}>{intervalo ? "Tiempo restante" : ""} <span className=' text-secondary ' > {intervalo ? intervalo : ""} </span>  </h6>
+                            <h6 style={{ fontWeight: "bold", fontSize: '1.2em' }}>{intervalo ? "Tiempo restante" : ""} <span className=' text-secondary ' > {intervalo ? intervalo : ""} </span>  </h6>
                             <strong>
                                 <span style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>Una vez confirmado el pago se enviara los boletos a :
                                 </span>

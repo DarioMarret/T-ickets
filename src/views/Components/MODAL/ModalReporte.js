@@ -9,6 +9,7 @@ import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 import { GetMetodo } from 'utils/CarritoLocalStorang';
 import { GetValores } from 'utils/CarritoLocalStorang';
 import { bancos } from 'utils/Imgenesutils';
+import { PagoRapido } from 'utils/Querycomnet';
 
 let { GUAYAQUIL, numero,
   pacifico, pichincha,
@@ -95,25 +96,48 @@ const Reporte = (props) => {
   }
   function Confirmar(e) {
     if (e == "pichincha") {
-      usedispatch(setModal({ nombre: 'pichincha', estado: '#ffc107' }))
-      setrepShow(false)
+      PagoRapido("").then(oupt => {
+        usedispatch(setModal({ nombre: e, estado: '#ffc107' }))
+        setrepShow(false)
+        console.log(oupt)
+      }).catch(error => {
+        seTSpiners("d-none")
+        console.log(error)
+      })
       return
     }
     if (e == "guayaquil") {
-      usedispatch(setModal({ nombre: 'guayaquil', estado: '#d3006e' }))
+      usedispatch(setModal({ nombre: e, estado: '#d3006e' }))
       setrepShow(false)
+      PagoRapido("").then(oupt => {
+        usedispatch(setModal({ nombre: e, estado: '#ffc107' }))
+        setrepShow(false)
+      }).catch(error => {
+        seTSpiners("d-none")
+        console.log(error)
+      })
       return
     }
     if (e == "produbanco") {
-      usedispatch(setModal({
-        nombre: 'produbanco', estado: '#003da6'
-      }))
-      setrepShow(false)
+      PagoRapido("").then(oupt => {
+        usedispatch(setModal({ nombre: e, estado: '#ffc107' }))
+        setrepShow(false)
+        console.log(oupt)
+      }).catch(error => {
+        seTSpiners("d-none")
+        console.log(error)
+      })
       return
     }
     if (e == "pacifico") {
-      usedispatch(setModal({ nombre: 'pacifico', estado: '#169eda' }))
-      setrepShow(false)
+      PagoRapido("").then(oupt => {
+        usedispatch(setModal({ nombre: e, estado: '#ffc107' }))
+        setrepShow(false)
+        console.log(oupt)
+      }).catch(error => {
+        seTSpiners("d-none")
+        console.log(error)
+      })
       return
     }
   }
@@ -124,17 +148,15 @@ const Reporte = (props) => {
         show={modalshow.nombre == "ModalReporte" ? true : false}
         onHide={succesAlert}
         size="lg"
-
-      >
-        <Modal.Header className=" d-flex  m-0  bg-dark   justify-content-between align-items-center"
-
-        >
+      ><Modal.Header className=" d-flex  m-0  bg-dark   justify-content-between align-items-center"        >
           <div className="d-flex  container   justify-content-center text-center" >
-            <h4 className=" p-1 text-light ">
-              <strong> DEPOSITAR A LAS SIGUIENTES CUENTAS</strong>
-
+            <h4 className=" p-1 text-light "
+              style={{
+                fontWeight: "bold"
+              }}
+            >
+              {GetMetodo() != "Transferencia" ? "DEPOSITAR A LAS SIGUIENTES CUENTAS" : "TRANSFERIR A LAS SIGUIENTES CUENTAS "}
             </h4>
-
           </div>
           <div className=" float-left " style={{ marginTop: '-45px' }}>
             <button type="button" className=" text-secondary" onClick={handlereportColse}>
@@ -147,7 +169,7 @@ const Reporte = (props) => {
 
           <div className="container-fluid px-0">
 
-            <div className='row  flex-wrap-reverse'>
+            {GetMetodo() != "Transferencia" ? <div className='row  flex-wrap-reverse'>
               <div className='col-12 col-md-6 d-flex flex-column align-items-center'>
                 <div className='pt-2 pagos' >
                   <img src={pichincha} className="img-fluid" onClick={() => Confirmar("pichincha")} />
@@ -207,56 +229,54 @@ const Reporte = (props) => {
                   <a href='https://t-ickets.net/3FynwiC' className=' nav-link' target="_blank" >
                     <h5 className='text-danger' href='https://t-ickets.net/3FynwiC' target="_blank" > <strong>REPORTAR EL PAGO AL </strong>
                     </h5>
-
                   </a>
                 </div>
-                <div className='  text-center'>
+                <div className='   text-center'>
                   <a href='https://t-ickets.net/3FynwiC' target="_blank">
-                    <img src={numero} className=" img-fluid" style={{
-
+                    <img src={numero} className=" img-fluid shadow  border rounded-7" style={{
                       width: 270
                     }}></img>
                   </a>
-
                 </div>
               </div>
 
             </div>
-            <div className="d-flex d-none flex-wrap px-0 justify-content-center align-items-center" >
-              <div className='d-flex px-0'>
+              : <div className="d-flex flex-wrap px-0 justify-content-center align-items-center" >
+                <div className='d-flex px-0'>
 
-                <h5 className="modal-title pb-3 px-0 text-center " style={{ fontSize: '0.7em' }}>Para completar la compra, deberá transferir el valor total <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> ${GetMetodo() != "Tarjeta" ? (parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)).toFixed(2) : (GetValores().total).toFixed(2)} </strong> </span> <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> {intervalo}</strong> </span> Minutos a nombre de:
-                  <strong>TICKETSECUADOR S.A.</strong>   RUC No. <strong>0993377293001</strong>, a una de las siguientes cuentas:</h5>
-
-              </div>
-              <div className='d-fex border rounded-5' style={{ width: '90%' }}>
-                <div className='d-flex flex-column  '>
-                  <div className='  m-2'>
-                    <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO DE GUAYAQUIL: 248875 </h4>
-                  </div>
-
-                  <div className='m-2' >
-                    <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO PICHINCHA: 248875 </h4>
-                  </div>
-                  <div className='m-2'>
-                    <h4 style={{ fontSize: '0.7em' }}>
-                      CUENTA CORRIENTE BANCO PRODUBANCO: 248875
-                    </h4>
-
-                  </div>
-                </div>
-
-              </div>
-              <div className=' container d-flex   px-0 mx-0 justify-content-between ' style={{ width: '90%' }}>
-                <div className=''>
-                  <button className='btn btn-success m-2 ' style={{ fontSize: '0.7em' }} onClick={Confirmar} > CONFRIMAR DEPOSITO </button>
+                  <h5 className="modal-title pb-3 px-0 text-center " style={{ fontSize: '0.7em' }}>Para completar la compra, deberá transferir el valor total <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> ${GetMetodo() != "Tarjeta" ? (parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)).toFixed(2) : (GetValores().total).toFixed(2)} </strong> </span> <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> {intervalo}</strong> </span> Minutos a nombre de:
+                    <strong>TICKETSECUADOR S.A.</strong>   RUC No. <strong>0993377293001</strong>, a una de las siguientes cuentas:</h5>
 
                 </div>
-                <div>
-                  <button className='btn  btn-danger m-2' style={{ fontSize: '0.7em' }} onClick={succesAlert}> CANCELAR COMPRA </button>
+                <div className='d-fex border rounded-5' style={{ width: '90%' }}>
+                  <div className='d-flex flex-column  '>
+                    <div className='  m-2'>
+                      <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO DE GUAYAQUIL: 248875 </h4>
+                    </div>
+
+                    <div className='m-2' >
+                      <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO PICHINCHA: 248875 </h4>
+                    </div>
+                    <div className='m-2'>
+                      <h4 style={{ fontSize: '0.7em' }}>
+                        CUENTA CORRIENTE BANCO PRODUBANCO: 248875
+                      </h4>
+
+                    </div>
+                  </div>
+
                 </div>
-              </div>
-            </div>
+                <div className=' container d-flex   px-0 mx-0 justify-content-between ' style={{ width: '90%' }}>
+                  <div className=''>
+                    <button className='btn btn-success m-2 ' style={{ fontSize: '0.7em' }} onClick={Confirmar} > CONFRIMAR DEPOSITO </button>
+
+                  </div>
+                  <div>
+                    <button className='btn  btn-danger m-2' style={{ fontSize: '0.7em' }} onClick={succesAlert}> CANCELAR COMPRA </button>
+                  </div>
+                </div>
+              </div>}
+
 
           </div>
 

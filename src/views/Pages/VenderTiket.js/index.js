@@ -462,7 +462,7 @@ export default function StoreTickesViews() {
             <Row>
                 <div className="col-12 d-flex flex-column align-items-center "  >
                     <h4 style={{
-                        fontFamily: 'fantasy'
+                        fontWeight: "bold"
                     }} >Conciertos Activos</h4>
                     <div className="col-8 border rounded-7 bg-black bg-opacity-10">
                         <Swiper

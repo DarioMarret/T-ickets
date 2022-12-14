@@ -85,23 +85,29 @@ const ModalLogin = (props) => {
       <Modal
         show={Modalstatus.nombre == "loginpage" ? true : false}
         onHide={() => setShowLogin(false)}
-        aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header className="d-flex text-center">
-          <button type="button" className="close"
-            onClick={() => usedispatch(setModal({ nombre: '', estado: '' }))}>
-            ×
-          </button>
+        <Modal.Header className="py-4">
+          <div className=" d-flex  col-12 ">
+            <div className="col-sm   justify-content-end  pl-0 ">
+              <h5 className="modal-title text-center">INICIA SESIÓN</h5>
+            </div>
+
+            <button type="button" className="close "
+              onClick={() => usedispatch(setModal({ nombre: '', estado: '' }))}>
+              ×
+            </button>
+
+          </div>
+
+
 
         </Modal.Header>
         <Modal.Body>
           <Container className="d-flex flex-column justify-content-center">
 
 
-            <div className=" text-center">
-              <h5 className="">INICIA SESION</h5>
-            </div>
+
             <div className="card-body">
               <div className="container text-center">
                 <img src={logo} className="mb-4 img-fluid " style={{ height: '80px', color: 'black' }} alt="" />

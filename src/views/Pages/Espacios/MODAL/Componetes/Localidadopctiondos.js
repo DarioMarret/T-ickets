@@ -381,7 +381,7 @@ const TabdosView = (props) => {
 
                                             <div className='col-12 col-md-6'>
                                                 <label className="form-label" style={{ color: 'white' }}><b>.</b></label><br />
-                                                <button className="btn btn-info" onClick={AgregarFilas}>Crear</button>
+                                                <button className="btn btn-success" onClick={AgregarFilas}>Crear</button>
 
 
                                             </div>
@@ -437,7 +437,7 @@ const TabdosView = (props) => {
 
                                             <div className="col-12 col-md-2 text-left">
                                                 <label className="form-label" style={{ color: 'white' }}><b>.</b></label><br />
-                                                <button className="btn btn-info" onClick={AgregasMesas}>Agregar</button>
+                                                <button className="btn btn-success" onClick={AgregasMesas}>Agregar</button>
                                             </div>
                                         </div>
                                     </Accordion.Body>
@@ -549,7 +549,7 @@ const TabdosView = (props) => {
                                                 </div>
                                                 <div className="col-12 ">
                                                     <label className="form-label" style={{ color: 'white' }}><b>.</b></label><br />
-                                                    <button className="btn btn-info" onClick={AgregasSillasMesa}>Agregar</button>
+                                                    <button className="btn btn-success" onClick={AgregasSillasMesa}>Agregar</button>
                                                 </div>
                                             </div>
 

@@ -76,7 +76,7 @@ div.esquema:hover {
 }
 
 .pagos:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     cursor: pointer;
 }
 
@@ -108,6 +108,27 @@ li.agregados {
     .modal-content {
         border-radius: 0px !important;
     }
+}
+
+.modal-header {
+    background-color: #212529 !important;
+    color: white;
+}
+
+.close {
+    color: white;
+    transition: all .3s ease-in-out;
+}
+
+.close:hover {
+
+    color: rgb(253, 252, 249);
+}
+
+.modal-backdrop.show {
+    opacity: .1;
+    filter: alpha(opacity=80);
+    /* Para versiones anteriores de IE */
 }
 
 .modal-fullscreen {

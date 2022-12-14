@@ -154,7 +154,7 @@ function ModalCarrito(props) {
                     <h5 className="modal-title text-center justify-content-center">LOCALIDADES</h5>
                     <button type="button" className="close"
                         onClick={handleClose}>
-                        ×
+                        X
                     </button>
                 </Modal.Header>
                 <div >

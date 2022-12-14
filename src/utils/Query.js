@@ -140,6 +140,11 @@ export const EnviarmensajeWhastapp = async (parms) => {
     console.log("mensaje -->", message)
     return message
 }
+/**
+ * Guargdar Pagos medios
+ * @param {*} transaccion 
+ * @returns 
+ */
 export const ReportarDepositoCompra = async (transaccion) => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     //  let datosPersonal = { cedula: getDatosUsuariosLocalStorag().cedula }

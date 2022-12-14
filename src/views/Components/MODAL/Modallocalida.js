@@ -395,6 +395,7 @@ const LocalidadmapViews = (props) => {
         $("#seleccionado").text(seleccion.length)
     })
     useEffect(() => {
+        let user = getDatosUsuariosLocalStorag()
         getVerTienda().filter((e) => e.id == mapath.precio.idcolor).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.idcolor)) : setDetalle([])
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
             $("#mapas" + e.path).attr("fill", e.fill)
@@ -409,9 +410,9 @@ const LocalidadmapViews = (props) => {
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
-        let cantidad = mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info : ''
-        //console.log(mapath.localidadespecica.info)
-        mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"]) : '' : ''
+        let cantidad = mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? mapath.localidadespecica.info.filter(ced => ced.cedula == user.cedula) : [] : []
+        console.log(mapath.localidadespecica.info)
+        mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? cantidad.length > 0 ? Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"]) : '' : '' : ''
     }, [modalshow.nombre == "Modallocalida" ? true : false])
     return (
         <>
@@ -421,16 +422,18 @@ const LocalidadmapViews = (props) => {
                 size="lg"
                 fullscreen={'md-down'}
                 onHide={cerrar}
-                className="rounded-7"
+
+                centered
             >
 
-                <Modal.Header>
-                    <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
+                <Modal.Header className=" bg-dark  text-light py-4">
+
+                    <h5 className="modal-title text-center justify-content-center" style={{ fontWeight: "bold" }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
                     <div className="" >
-                        <button className=" btn btn-primary" onClick={cerrar} >
+                        <button className=" btn btn-outline-light" onClick={cerrar} >
                             <i className="fa fa-arrow-left">  </i>
                         </button>
-                        <button className=" btn btn-primary mx-1" onClick={cerrar} >
+                        <button className=" btn  btn-outline-light mx-1" onClick={cerrar} >
                             <i className="fa fa-shopping-cart">  </i>
                         </button>
                     </div>
@@ -440,7 +443,7 @@ const LocalidadmapViews = (props) => {
                     {alert}
                     <div className='conatiner-fluid col-12'>
                         <div className="row ">
-                            <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontFamily: 'fantasy' }}>
+                            <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontWeight: "bold" }}>
                                 <h5>{mapath.precio.localodad}</h5>
                                 <h6 className="px-1">$ {mapath.precio.precio_normal} </h6>
                             </div>

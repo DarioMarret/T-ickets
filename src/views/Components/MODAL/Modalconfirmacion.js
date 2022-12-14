@@ -37,7 +37,7 @@ const ModalConfima = (prop) => {
                     </div>
                     <div className=" float-left " style={{ marginTop: '-45px' }}>
                         <button type="button" className="text-light" onClick={cerrar}>
-                            ×
+                            X
                         </button>
                     </div>
 

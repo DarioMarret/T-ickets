@@ -66,12 +66,12 @@ function Iframe(props) {
                 fullscreen={'lg-down'}
             >
                 <Modal.Header>
-                    <div className="d-flex col-6 justify-content-between  align-items-center " >
+                    <div className="d-flex col-6 justify-content-between py-3 align-items-center " >
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
-                                style={{ fontFamily: 'fantasy' }}
+                                style={{ fontWeight: "bold" }}
                             >  Tiempo restante para la compra <span className="text-danger"
-                                style={{ fontFamily: 'fantasy' }}
+                                style={{ fontWeight: "bold" }}
                             >{intervalo}</span> </h5>
                         </div>
 

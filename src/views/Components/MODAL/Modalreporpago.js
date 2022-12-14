@@ -12,7 +12,6 @@ let { bancoguyaquil,
     bancopacifico,
     produbancoguayaquil,
     vecino } = bancosdetall
-let { produbanco } = bancos
 export default function ReporteView(prop) {
     let { setrepShow } = prop
     let usedispatch = useDispatch()
@@ -23,7 +22,6 @@ export default function ReporteView(prop) {
         comision: 0,
         comision_bancaria: 0
     })
-    //console.log(modalshow.nombre)
     const imagenes = {
         "pichincha": vecino,
         "pacifico": bancopacifico,
@@ -40,15 +38,11 @@ export default function ReporteView(prop) {
         html2canvas(document.querySelector("#COMPROBANTE")).then(canvas => {
             var imgWidth = 130;
             var imgHeight = canvas.height * imgWidth / canvas.width;
-            //   alert(imgHeight)
             const contentDataURL = canvas.toDataURL('image/png')
             let pdf = new jsPDF('p', 'mm', 'a5'); // A4 size page of PDF
             var position = 10;
             pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
             window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
-
-
-
         });
 
     }
@@ -62,22 +56,6 @@ export default function ReporteView(prop) {
 
     }, [modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ?
         true : false])
-    function imprime() {
-        html2canvas(document.querySelector("#COMPROBANTE")).then(canvas => {
-            var imgWidth = 208;
-            var imgHeight = canvas.height * imgWidth / canvas.width;
-            //   alert(imgHeight)
-            const contentDataURL = canvas.toDataURL('image/png')
-            let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-            var position = 0;
-            pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-            window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
-
-
-
-        });
-    }
-
     return (
         <>
             <Modal

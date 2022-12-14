@@ -52,7 +52,7 @@ export default function Footer(props) {
                                     <h5 className=" text-white" style={{ fontFamily: '', }} > <img src={nombrepage} style={{ height: 20 }} ></img> </h5>
                                     <span className=" text-white" style={{ fontFamily: '', }} >Descarga nuestra aplicación </span>
                                 </div>
-                                <h5 className='d-none text-white' style={{ fontFamily: 'cursive,bold,fantasy' }}>  </h5>
+                                <h5 className='d-none text-white' style={{ fontFamily: ',bold,' }}>  </h5>
                                 <div className='d-flex py-2  flex-row'>
                                     <div className=' pr-1' >
                                         <img src={android} className='img-fluid' style={{ height: 40, cursor: 'pointer' }} />

@@ -99,7 +99,7 @@ const Reporte = (props) => {
             >
                 <Modal.Header  >
                     <div className='d-flex col-12 justify-content-between align-items-center' >
-                        <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy', fontSize: '1.2em' }}><span className="text-danger" > </span></h5>
+                        <h5 className="modal-title text-center justify-content-center" style={{ fontWeight: "bold", fontSize: '1.2em' }}><span className="text-danger" > </span></h5>
                         <div><button className='btn btn-primary' onClick={handlereportColse} style={{ fontSize: '0.7em' }} >  <i className="bi bi-caret-left-fill"></i>  Regresar</button></div>
                     </div>
                 </Modal.Header>

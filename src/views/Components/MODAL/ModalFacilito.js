@@ -34,9 +34,10 @@ export default function ModalFacilitoView() {
         <>
             <Modal
                 show={Modalshow.nombre == "ordendepago" ? true : false}
-                size="lg">
-                <Modal.Header>
-                    <button className="close" onClick={Cerrar}> x</button>
+                size="lg"
+                centered>
+                <Modal.Header className="bg-dark  text-light py-4  text-white">
+                    <button className="close text-light" onClick={Cerrar}> X</button>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="row border">

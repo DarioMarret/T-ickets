@@ -295,7 +295,7 @@ export function GetValores() {
             comision: comision.toFixed(2),
             comision_bancaria: valor.toFixed(2) * 5 / 100,
             subtotal: subtotal.toFixed(2),
-            description: descrption + "" + user.discapacidad,
+            description: descrption,
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : ''
         }
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))

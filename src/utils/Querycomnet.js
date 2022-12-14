@@ -1,5 +1,6 @@
 import axios from "axios";
-import { token } from "./constantes";
+import { GetMetodo, GetValores, getVerTienda } from "./CarritoLocalStorang";
+import { Host, token } from "./constantes";
 import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag";
 /*
 https://portal.comnet.ec/api/v1/NewUser
@@ -32,5 +33,50 @@ export const crearusercomnet = async () => {
     } catch (error) {
         return error
     }
+}
+
+export const PagoRapido = async (transaccion) => {
+    try {
+        let datosPersonal = getDatosUsuariosLocalStorag().cedula
+        let metodo = GetMetodo()
+        let concierto = getVerTienda().map((e) => {
+            return {
+                "id_localidad": e.localidaEspacio["idcolor"],
+                "cantidad": e.cantidad,
+                "nombreConcierto": e.nombreConcierto
+            }
+        })
+        let datos = {
+            "cedula": datosPersonal,
+            "forma_pago": metodo,
+            "concierto": [...concierto],
+            "valores": {
+                "total": parseFloat(GetValores().total).toFixed(2),
+                "comision": parseFloat(GetValores().comision).toFixed(2),
+                "subtotal": parseFloat(GetValores().subtotal).toFixed(2),
+                "comision_bancaria": parseFloat(GetValores().comision_bancaria).toFixed(2),
+                "description": GetValores().description
+            },
+            "idfactura": "",
+            "transaccion": transaccion
+        }
+        console.log(datos)
+        const { data } = await axios.post(Host + "/api/v1/registraCompra ", datos, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        }
+        )
+        console.log(data)
+        return data;
+
+    } catch (error) {
+        return error
+
+    }
+
+
 
 }
+

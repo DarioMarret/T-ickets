@@ -259,13 +259,17 @@ function ModalDetalle(props) {
             onHide={handleDetalleColse}
             size="lg"
             fullscreen={'md-down'}
-        >
-            <Modal.Header >
-                <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}>Tiempo restante para la compra <span className="text-danger" >{intervalo} </span></h5>
+            centered
 
-                <button type="button" className="close"
+        >
+            <Modal.Header className='  text-light border  border-dark '
+
+            >
+                <h5 className="modal-title text-center py-3 justify-content-center" style={{ fontWeight: "bold" }}>Tiempo restante para la compra <span className="text-danger" >{intervalo} </span></h5>
+
+                <button type="button" className="close text-white"
                     onClick={handleDetalleColse}>
-                    ×
+                    X
                 </button>
             </Modal.Header>
 
@@ -278,7 +282,7 @@ function ModalDetalle(props) {
                         </div>
                         <div className="col-12 col-lg-6 d-flex justify-content-end">
 
-                            <button className="btn  btn-primary" onClick={handleDetalleColse}
+                            <button className="btn d-none  btn-primary" onClick={handleDetalleColse}
                                 data-backdrop="static" data-keyboard="false">  <i className="bi bi-caret-left-fill"></i>  REGRESAR</button>
                         </div>
                     </div>
@@ -410,7 +414,7 @@ function ModalDetalle(props) {
                             </tbody>
                         </table>
                     </div>
-                    <div className="row p-4 float-rigth">
+                    <div className="row p-1 float-rigth">
                         <div className="col-6 col-lg-8 text-end d-flex align-items-end flex-column  ">
                             <div>
                                 <h4>Subtotal:</h4>
@@ -511,7 +515,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                !clienteauth && datosPerson.metodoPago == "Deposito" ?
+                                !clienteauth && (datosPerson.metodoPago == "Deposito" || datosPerson.metodoPago == "Transferencia") ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
@@ -542,7 +546,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                clienteauth && datosPerson.metodoPago == "Deposito" ?
+                                clienteauth && (datosPerson.metodoPago == "Deposito" || datosPerson.metodoPago) == "Transferencia" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={!(datosPerson.envio != '')}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}

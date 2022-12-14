@@ -85,8 +85,26 @@ const IndexFlas = () => {
       minutos = minutos < 10 ? "0" + minutos : minutos;
       segundos = segundos < 10 ? "0" + segundos : segundos;
       if (timer === 0) {
+        let array = ListaElimnaLCompleta()
+        array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
+          console.log(ouput)
+        }
+        ).catch(err => console.log(err)) : ''
+        getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
+
+          getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
+            setTimeout(function () {
+              correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
+                console.log(ouput)
+              }).catch(err => {
+                console.log(err)
+              })
+            }, 20 * index)
+          })
+          : ''
         clearInterval(datatime.current);
         setDatoToas({ show: true, message: 'Su tiempo de compra a finalizado', color: 'bg-danger', estado: 'Mensaje importante', })
+
         handleClosesop(false)
         setMapashow(false)
         setDetalle(false)
@@ -168,7 +186,7 @@ const IndexFlas = () => {
       getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
         setTimeout(function () {
           correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
-            // console.log(ouput)
+            console.log(ouput)
           }).catch(err => {
             console.log(err)
           })
@@ -180,6 +198,35 @@ const IndexFlas = () => {
   }
   function para() {
     clearInterval(datatime.current)
+  }
+  function paraenlace() {
+    clearInterval(localidadtimer.current)
+    setMapashow(false)
+    setDetalle(false)
+    // efectiOpShow(false)
+    setModalPago(false)
+    setrepShow(false)
+    usedispatch(clearMapa({}))
+    usedispatch(borrarseleccion({ estado: "seleccionado" }))
+    let array = ListaElimnaLCompleta()
+    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
+      console.log(ouput)
+    }
+    ).catch(err => console.log(err)) : ''
+    getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
+
+      getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
+        setTimeout(function () {
+          correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
+            console.log(ouput)
+          }).catch(err => {
+            console.log(err)
+          })
+        }, 20 * index)
+      })
+      : ''
+    Limpiarseleccion()
+    LimpiarLocalStore()
   }
   const abrir = async (e) => {
     setspinervi("")
@@ -492,7 +539,7 @@ const IndexFlas = () => {
       />
       <ModalEfectivo
         intervalo={intervalo}
-        detener={detenervelocidad}
+        detener={paraenlace}
       />
       <ReporteView
         setrepShow={setrepShow} />
@@ -663,7 +710,7 @@ const IndexFlas = () => {
                           <a id={"headingThree" + e.id} className="collapsed evento" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7  d-flex justify-content-center px-0">
-                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
+                              <img src={"https://flash.t-ickets.com/store/img/portadadeeventos.png"} className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
                           </a>
                           <div className="collapse container mt-4 px-0" aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">
@@ -716,7 +763,7 @@ const IndexFlas = () => {
                                 </div>
                               </div>
                               <div className="container col-12 col-md-6 rounded-7  px-0">
-                                <img src={!e.imagenConcierto ? e.imagenConcierto : mapa} className="img-fluid rounded-7 shadow-md " alt="" />
+                                <img src={e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
                               </div>
                             </div>
                           </div>
@@ -737,7 +784,7 @@ const IndexFlas = () => {
 
                     </div>}
                   {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
-                  <div className=" d-none col-12 col-lg-6 mx-auto my-5" >
+                  <div className="col-12 d-none col-lg-6 mx-auto my-5" >
                     <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
                       aria-controls="collapseExample">
                       <div className="container  px-0">

@@ -11,6 +11,7 @@ import { crearusercomnet } from 'utils/Querycomnet';
 import { FacturaComnet } from 'utils/constantes';
 import { Triangle } from 'react-loader-spinner';
 import { GetValores } from 'utils/CarritoLocalStorang';
+import { PagoRapido } from 'utils/Querycomnet';
 const ModalEfectivo = (props) => {
   const { intervalo, detener, } = props;
   let usedispatch = useDispatch()
@@ -39,17 +40,27 @@ const ModalEfectivo = (props) => {
   }
   function comnetusernew() {
     seTSpiners("")
-    setTimeout(function () {
-      let registro = {
-        codigo: 25,
-        total: 2
-      }
-      sessionStorage.setItem(FacturaComnet, JSON.stringify(registro))
-
-      seTSpiners("d-none")
-      console.log("ouput")
-      detener()
+    PagoRapido("").then(ouput => {
       usedispatch(setModal({ nombre: 'ordendepago', estado: '' }))
+      console.log(ouput)
+      /*  let registro = {
+   codigo: 25,
+   total: 2
+ }
+ sessionStorage.setItem(FacturaComnet, JSON.stringify(registro))
+*/
+      seTSpiners("d-none")
+      // console.log("ouput")
+
+      //detener()
+    }).catch(error => {
+      seTSpiners("d-none")
+      console.log(error)
+    })
+    /*setTimeout(function () {
+
+   
+     
       /*
       crearusercomnet().then(ouput => {
         let total = parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)
@@ -65,8 +76,8 @@ const ModalEfectivo = (props) => {
         usedispatch(setModal({ nombre: 'ordendepago', estado: '' }))
 
       }
-      ).catch(err => console.log(err))*/
-    }, 5000)
+      ).catch(err => console.log(err))*
+    }, 2000)*/
   }
   const cerrar = () => {
     // setDetalle(true)
@@ -98,6 +109,7 @@ const ModalEfectivo = (props) => {
   }
 
   useEffect(() => {
+    seTSpiners("d-none")
   }, [Modalshow.nombre == "modalpago" ? true : false])
   return (
     <>
@@ -109,12 +121,12 @@ const ModalEfectivo = (props) => {
       >
         <Modal.Header >
           <div className='d-flex justify-content-between w-100' >
-            <h5 className="modal-title text-center justify-content-center align-items-center" style={{ fontFamily: 'fantasy', fontSize: '1.2em' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
+            <h5 className="modal-title text-center justify-content-center align-items-center" style={{ fontWeight: "bold", fontSize: '1.2em' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
             <div><button className='btn btn-primary' onClick={() => cerrar()}  >  <i className="fa fa-arrow-left">  </i>   </button></div>
           </div>
           <button type="button" className="d-none close"
             onClick={() => cerrar()} >
-            ×
+            X
           </button>
         </Modal.Header>
         <Modal.Body>

@@ -388,7 +388,7 @@ const ModalLocalidamapViews = (props) => {
             >
                 {alert}
                 <Modal.Header>
-                    <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}> <span className="text-danger" > </span></h5>
+                    <h5 className="modal-title text-center justify-content-center" style={{ fontWeight: "bold" }}> <span className="text-danger" > </span></h5>
                     <button className=" btn btn-primary" onClick={cerrar} >
                         <i className="bi bi-caret-left-fill">  </i>Regresar
                     </button>
@@ -396,7 +396,7 @@ const ModalLocalidamapViews = (props) => {
                 <Modal.Body>
                     <div className='conatiner-fluid col-12'>
                         <div className="row ">
-                            <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontFamily: 'fantasy' }}>
+                            <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontWeight: "bold" }}>
                                 <h5>{mapath.precio.localodad}</h5>
                                 <h6 className="px-1">$ {mapath.precio.precio_normal} </h6>
                             </div>

@@ -52,14 +52,14 @@ const ResgistroView = (prop) => {
                     } else {
                         const datos = await getCedula(e.target.value)
                         console.log(datos)
-                        const { name } = datos
+                        const { name, direccion } = datos
                         if (name) {
 
                             seTspine("d-none")
                             setPerson({
                                 nombreCompleto: name,
                                 whatsapp: '', ...datos,
-                                direccion: '',
+                                direccion: direccion,
                                 email: ''
                             })
                             setDatoToas({
@@ -96,6 +96,7 @@ const ResgistroView = (prop) => {
                         }
                     }
                 } catch (error) {
+
                     seTspine("d-none")
                 }
             }
@@ -109,24 +110,21 @@ const ResgistroView = (prop) => {
         }
 
     }
-
     async function Registeruser(e) {
-
         e.preventDefault();
         sedtValida("was-validated")
         let info = getDatosUsuariosLocalStorag()
         const form = new FormData(e.target)
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         const { name, email, password, movil, direccion, cedula } = Object.fromEntries(form.entries())
-        // console.log(password)
         sessionStorage.setItem(Whatsappnumero, movil)
-        //console.log(movil)
         let datos = {
             nombreCompleto: name,
             email: email,
             password: password,
             movil: movil,
-            ciudad: direccion,
+            ciudad: "guayaquil",
+            direccion: direccion,
             cedula: cedula,
 
         }
@@ -182,7 +180,7 @@ const ResgistroView = (prop) => {
                 }
                 else {
                     try {
-                        console.log(datos)
+                        console.log("condireccion-->", datos)
 
 
                         const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
@@ -213,10 +211,24 @@ const ResgistroView = (prop) => {
                             })
                             usedispatch(setModal({ nombre: '', estado: '' }))
                             usedispatch(addususcritor({ users }))
+                        } else {
+                            console.log("error", registro.data)
+                            setDatoToas({
+                                show: true,
+                                message: "Email o cedula duplicada",
+                                color: 'bg-danger',
+                                estado: "Error",
+                            })
                         }
 
                     } catch (error) {
                         console.log(error)
+                        setDatoToas({
+                            show: true,
+                            message: "Email o cedula duplicada",
+                            color: 'bg-danger',
+                            estado: error.response.data["error"],
+                        })
 
                     }
 
@@ -228,9 +240,9 @@ const ResgistroView = (prop) => {
                 document.getElementById("email").classList.add("is-invalid")
                 setDatoToas({
                     show: true,
-                    message: "Verifique Correo o cédula ya registrados",
+                    message: error.response.data["message"],
                     color: 'bg-danger',
-                    estado: "Hubo un error",
+                    estado: error.response.data["error"],
                 })
                 console.log(error)
             }
@@ -265,7 +277,7 @@ const ResgistroView = (prop) => {
                 size='lg'
                 onHide={() => usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))}
             >
-                <Modal.Header>
+                <Modal.Header className="py-4">
                     <button type="button" className="close"
                         onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))}>
                         ×
@@ -282,7 +294,7 @@ const ResgistroView = (prop) => {
                                     <form className={nedvalida} onSubmit={(e) => Registeruser(e)} method="post" >
                                         <div className="row">
 
-                                            <div className="col-lg-4">
+                                            <div className="col-6 col-lg-4">
                                                 <div className=" input-group mb-3" >
                                                     <div className="input-group-prepend">
                                                         <span className="input-group-text">
@@ -297,7 +309,7 @@ const ResgistroView = (prop) => {
                                                     </Form.Select>
                                                 </div>
                                             </div>
-                                            <div className="col-lg-8">
+                                            <div className="col-6 col-lg-8">
                                                 <div className="input-group mb-3">
                                                     <div className="input-group-prepend">
                                                         <span className="input-group-text"><i className="fa fa-search"></i></span>
@@ -352,9 +364,7 @@ const ResgistroView = (prop) => {
                                             </div>
                                         </div>
                                         <div className="row">
-
-
-                                            <div className="col-12 col-lg-6  ">
+                                            <div className="col-6 col-lg-6  ">
                                                 <div className="input-group mb-3  px-0 d-flex justify-content-center ">
 
                                                     <input
@@ -362,14 +372,9 @@ const ResgistroView = (prop) => {
                                                         className="m-0 inptFielsd form-control numero" id="movil"
                                                         size={100}
                                                         placeholder="999 999 999" />
-
-
-
                                                 </div>
-
                                             </div>
-
-                                            <div className="col-12 col-lg-6">
+                                            <div className="col-6 col-lg-6">
                                                 <div className="input-group mb-3" >
                                                     <div className=" input-group-prepend">
                                                         <span className=" input-group-text"> <i className="fa fa-map-marker"></i> </span>

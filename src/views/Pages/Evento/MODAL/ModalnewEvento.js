@@ -54,33 +54,54 @@ const ModalNewEvento = (props) => {
             precio_tarjeta: '',
             precio_descuento: '',
             habilitar_cortesia: '',
-            comision: ''
+            comision_boleto: ''
         })
         console.log(ArrayCopia)
     }
 
     async function gaurdaPrueba() {
         setinput(true)
-
         try {
-            const data = await Obtenerlinkimagen(neweventos.imagenConcierto)
-            if (data == null) return
-            let defauldata = {
-                ...neweventos,
-                imagenConcierto: data,
-                codigo: neweventos.autorizacion == "preventa" ? 'preventa' : neweventos.codigo,
-                estado: "PROCESO",
-                "LocalodadPrecios": [
-                    ...localidadPreci
-                ]
+            console.log(neweventos)
+            //const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)codigo: neweventos.autorizacion == "preventa" ? 'preventa' : neweventos.codigo,
+            const conci = await Obtenerlinkimagen(neweventos.imagenConcierto)
+
+            if (conci == null) {
+                console.log(conci, "mapa")
+                usedispatch(setToastes({ show: true, message: 'Imagen no se creo', color: 'bg-success', estado: 'Guardado' }))
+
+                return
             }
-            const evento = await GuardarEvento(defauldata)
-            // console.log(data)
-            if (evento.success) {
-                usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
-                setinput(false)
-                Setshow(false)
-            }
+            setTimeout(async function () {
+                const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)
+                if (mapa == null) {
+                    console.log(conci, "mapa")
+                    usedispatch(setToastes({ show: true, message: 'Imagen mapa no se creo', color: 'bg-success', estado: 'Guardado' }))
+
+                    return
+                }
+                let defauldata = {
+                    ...neweventos,
+                    imagenConcierto: conci,
+
+                    mapaConcierto: mapa,
+                    estado: "ACTIVO",
+                    "LocalodadPrecios": [
+                        ...localidadPreci
+                    ]
+                }
+                const evento = await GuardarEvento(defauldata)
+                console.log(defauldata)
+                if (evento.success) {
+                    console.log(evento)
+                    usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
+                    setinput(false)
+                    Setshow(false)
+                }
+
+
+            }, 3000)
+
 
         } catch (error) {
             console.log(error)
@@ -107,43 +128,44 @@ const ModalNewEvento = (props) => {
             cuidadConcert: '',
             descripcionConcierto: '',
             imagenConcierto: '',
-
-            idUsuario: "" + user.id,
-            //mapaconcierto:""
+            idUsuario: '' + user.id,
+            mapaConcierto: ''
         })
     function handelchangeComposeventos(e) {
         if (e.name == "imagenConcierto") {
-            let img = new Image()
-            img.src = window.URL.createObjectURL(e.files[0])
-            img.onload = () => {
-                setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
-                /* if (img.width < 750 || img.height < 500) {
-                     e.value = ""
-                     usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 500px y máximo 600px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
-                 }
-                 if (img.width > 900 || img.height > 620) {
-                     e.value = ""                                                                                                    // alto de 3662px y un ancho minimo de 13830px
-                     usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 3662px y máximo 3762px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
-                 } else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })*/
-            }
-            img.onerror = () => {
-                setNewEventos({ ...neweventos, imagenConcierto: '' })
-            }
-        } else if (e.name == "mapaconcierto") {
-            let img = new Image()
-            img.src = window.URL.createObjectURL(e.files[0])
-            img.onload = () => {
-                setNewEventos({ ...neweventos, mapaconcierto: e.files[0] ? e.files[0] : '' })
-                /* if (img.width < 13830 || img.height < 3662) {
-                     e.value = ""
-                     setNewEventos({ ...neweventos, imagenConcierto: '' })
-                     usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
-                 }
-                 else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })*/
-            }
-            img.onerror = () => {
-                setNewEventos({ ...neweventos, mapaconcierto: '' })
-            }
+            setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+            /* let img = new Imagen()
+             img.src = window.URL.createObjectURL(e.files[0])
+             img.onload = () => {
+                 setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+                  if (img.width < 750 || img.height < 500) {
+                      e.value = ""
+                      usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 500px y máximo 600px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
+                  }
+                  if (img.width > 900 || img.height > 620) {
+                      e.value = ""                                                                                                    // alto de 3662px y un ancho minimo de 13830px
+                      usedispatch(setToastes({ show: true, message: 'La dimensión de la imagen no es validad, necesita un alto mínimo de 3662px y máximo 3762px, un ancho mínimo de 750px y máximo de 900px', color: 'bg-warning', estado: 'Advertencia' }))
+                  } else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+             }
+             img.onerror = () => {
+                 setNewEventos({ ...neweventos, imagenConcierto: '' })
+             }*/
+        } else if (e.name == "mapaConcierto") {
+            setNewEventos({ ...neweventos, mapaConcierto: e.files[0] ? e.files[0] : '' })
+            /*  let img = new Image()
+              img.src = window.URL.createObjectURL(e.files[0])
+              img.onload = () => {
+                  setNewEventos({ ...neweventos, mapaConcierto: e.files[0] ? e.files[0] : '' })
+                  /* if (img.width < 13830 || img.height < 3662) {
+                       e.value = ""
+                       setNewEventos({ ...neweventos, imagenConcierto: '' })
+                       usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
+                   }
+                   else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })*
+              }
+              img.onerror = () => {
+                  setNewEventos({ ...neweventos, mapaConcierto: '' })
+              }*/
         } else if (e.name == "autorizacion") {
             setNewEventos({
                 ...neweventos,
@@ -167,11 +189,9 @@ const ModalNewEvento = (props) => {
             precio_tarjeta: '',
             precio_descuento: '',
             habilitar_cortesia: '',
-            comision: ''
+            comision_boleto: ''
         }
     )
-
-
     function handelchange(e) {
         if (e.value != "") {
             listarLocalidadaEspeci(e.value).then(oupt => {
@@ -185,7 +205,7 @@ const ModalNewEvento = (props) => {
                     precio_tarjeta: 0,
                     precio_descuento: 0,
                     habilitar_cortesia: 0,
-                    comision: 0
+                    comision_boleto: 0
                 })
             }
             ).catch(err =>
@@ -215,7 +235,7 @@ const ModalNewEvento = (props) => {
                 precio_descuento: localidadPreci[index] ? localidadPreci[index].precio_descuento : 0,
                 habilitar_cortesia: localidadPreci[index] ? localidadPreci[index].habilitar_cortesia : 0,
                 localodad: dato.nombre,
-                comision: 0,
+                comision_boleto: localidadPreci[index] ? localidadPreci[index].comision_boleto : 0,
                 identificador: e.value,
             })
             console.log(precios)
@@ -390,12 +410,12 @@ const ModalNewEvento = (props) => {
                                     </div>
                                 </div>
                                 <div className="col-12 col-md-12">
-                                    <label className="form-label"> {neweventos.mapaconcierto ? "Hay un mapa Cargada " : "Subir imagen del mapa"}</label>
+                                    <label className="form-label"> {neweventos.mapaConcierto ? "Hay un mapa Cargada " : "Subir imagen del mapa"}</label>
                                     <div className="input-group mb-3">
 
-                                        <input type="file" accept="image/*" name="mapaconcierto" className="form-control "
+                                        <input type="file" accept="image/*" name="mapaConcierto" className="form-control "
                                             onChange={(e) => handelchangeComposeventos(e.target)}
-                                            id="mapaconcierto" placeholder="Imagen del mapa" />
+                                            id="mapaConcierto" placeholder="Imagen del mapa" />
 
                                     </div>
                                 </div>
@@ -490,7 +510,7 @@ const ModalNewEvento = (props) => {
                                                 <label >Costo de emision </label>
                                             </div>
                                             <input className="numero form-control col-6"
-                                                value={precios.comision} name="comision" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                                value={precios.comision_boleto} name="comision_boleto" onChange={(e) => handelchangeLocalidad(e.target)} />
                                         </div>
 
                                     </div> : ""}
@@ -506,17 +526,16 @@ const ModalNewEvento = (props) => {
                 <div className="d-flex modal-footer justify-content-end align-items-end">
                     <button type="button" className="btn d-none btn-secondary close-btn" >Salir</button>
                     {selectLocalidad.length > 0 && selectLocalidad.length != localidadPreci.length ?
-                        <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button> :
+                        <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar1</button> :
                         ""}
-                    {!selectLocalidad.length > 0 && Object.values(neweventos).every(e => e) ?
-                        <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button> :
+                    {!selectLocalidad.length > 0 && !Object.values(neweventos).every(e => e) ?
+                        <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar2</button> :
                         ""}
-                    {selectLocalidad.length > 0 && selectLocalidad.length == localidadPreci.length && !inputdisable ?
-                        <button disabled={!Object.values(neweventos).every(e => e)}
-                            onClick={gaurdaPrueba}
-                            className="btn btn-primary close-modal float-rigth">Grabar</button>
-                        :
-                        ""}
+
+                    <button disabled={false}
+                        onClick={gaurdaPrueba}
+                        className="btn btn-primary close-modal float-rigth">Grabar3</button> :
+
                     {inputdisable ?
                         <button className="btn btn-primary" disabled={true} >
                             <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>

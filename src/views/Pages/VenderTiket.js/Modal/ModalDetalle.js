@@ -300,7 +300,7 @@ function ModalDetalle(props) {
             fullscreen={'md-down'}
         >
             <Modal.Header >
-                <h5 className="modal-title text-center justify-content-center" style={{ fontFamily: 'fantasy' }}> <span className="text-danger" > </span></h5>
+                <h5 className="modal-title text-center justify-content-center" style={{ fontWeight: "bold" }}> <span className="text-danger" > </span></h5>
 
                 <button type="button" className="close"
                     onClick={handleDetalleColse}>

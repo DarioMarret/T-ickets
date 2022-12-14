@@ -152,7 +152,7 @@ const ModalCarritoViewadmin = (prop) => {
                     <div className="d-flex col-6 justify-content-between  align-items-center " >
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
-                                style={{ fontFamily: 'fantasy' }}
+                                style={{ fontWeight: "bold" }}
                             >Boletería  cliente : {getDatosUsuariosLocalStorag() != null ? getDatosUsuariosLocalStorag().nombreCompleto : ''}</h5>
                         </div>
 
@@ -160,7 +160,7 @@ const ModalCarritoViewadmin = (prop) => {
                     <div className=" float-end ">
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
-                                style={{ fontFamily: 'fantasy' }}
+                                style={{ fontWeight: "bold" }}
                             >   </h5>
                         </div>
                     </div>
@@ -275,7 +275,7 @@ const ModalCarritoViewadmin = (prop) => {
                         </div>
                         <div className="col-12 col-lg-6  p-0">
                             <div className="d-flex flex-column text-center justify-content-center d-none d-sm-block d-sm-flex " style={{ height: "200px" }}>
-                                <h5 style={{ fontSize: '0.9em', fontFamily: 'fantasy' }} >
+                                <h5 style={{ fontSize: '0.9em', fontWeight: "bold" }} >
                                     Seleccione la Localidad en el Mapa o Nombre
                                 </h5>
                                 {showshop ?
@@ -288,8 +288,8 @@ const ModalCarritoViewadmin = (prop) => {
                                             <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                 <div id={"precios" + elm.id} className="mx-1  rounded-4" style={{ height: 25, width: 25, backgroundColor: elm.color }}></div>
                                                 <div className="row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '120px', maxWidth: '120px' }} >
-                                                    <span className="pb-0" style={{ fontFamily: 'cursive,bold,fantasy', fontSize: '0.7em' }} >{elm.localodad}</span>
-                                                    <span className="pt-0" style={{ fontFamily: 'cursive,bold,fantasy', fontSize: '0.7em' }} >${elm.precio_normal}</span>
+                                                    <span className="pb-0" style={{ fontFamily: 'cursive,bold,', fontSize: '0.7em' }} >{elm.localodad}</span>
+                                                    <span className="pt-0" style={{ fontFamily: 'cursive,bold,', fontSize: '0.7em' }} >${elm.precio_normal}</span>
                                                 </div>
                                             </div>
                                         )

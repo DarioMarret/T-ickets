@@ -75,7 +75,14 @@ ellipse.disponible {
 
 ellipse.disponible:hover {
   cursor: pointer;
-
+  /* transform: scale(0.2);*/
+  fill: #08aff1;
+  opacity: 1;
+  stroke: rgb(214, 26, 26);
+  stroke: #646464;
+  stroke-width: 1px;
+  stroke-dasharray: 2, 2;
+  stroke-linejoin: round;
 }
 
 path.disponible {

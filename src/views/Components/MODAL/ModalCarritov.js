@@ -25,9 +25,10 @@ const ModalCarritoView = (prop) => {
     const [alert, setAlert] = useState(null)
     const [timer, setTimer] = useState(false)
     const [checked, setChecked] = useState({
-        Efectivo: "",
+        PasarelaEfectivo: "",
         Tarjeta: "",
         Deposito: "",
+        Transferencia: ""
     })
 
     const [listaPrecio, ListaPrecioset] = useState({
@@ -94,9 +95,10 @@ const ModalCarritoView = (prop) => {
         setListarCarritoDetalle(getVerTienda())
         let metodoPago = GetMetodo()
         metodoPago != null ? setChecked({
-            Efectivo: metodoPago == "Efectivo" ? "Efectivo" : "",
+            PasarelaEfectivo: metodoPago == "Efectivo" ? "Efectivo" : "",
             Tarjeta: metodoPago == "Tarjeta" ? "Tarjeta" : "",
             Deposito: metodoPago == "Deposito" ? "Deposito" : "",
+            Transferencia: metodoPago == "Transferencia" ? "Transferencia" : ""
         }) : handelMetodopago({ name: 'Tarjeta' }, "Tarjeta"), setCheck(false)
 
         ListaPrecioset(GetValores())
@@ -188,9 +190,10 @@ const ModalCarritoView = (prop) => {
                 size="lg"
                 fullscreen={'md-down'}
                 className="modalCarrito"
+                centered
             // fullscreen={true}
             >
-                <Modal.Header >
+                <Modal.Header className="pb-2  bg-dark  text-light">
                     <div className="d-flex col-6 justify-content-between  align-items-center " >
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
@@ -202,7 +205,9 @@ const ModalCarritoView = (prop) => {
                     <div className=" float-end ">
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
-
+                                style={{
+                                    fontWeight: "bold"
+                                }}
                             >  Tiempo restante para la compra <span className="text-danger"
                                 style={{
 
@@ -212,17 +217,17 @@ const ModalCarritoView = (prop) => {
                             >{intervalo}</span> </h5>
                         </div>
                     </div>
-                    <button type="button" className="close" onClick={detalle.length > 0 ? successAlert : cerrar} >
-                        ×
+                    <button type="button" className="close txt-white" onClick={detalle.length > 0 ? successAlert : cerrar} >
+                        X
                     </button>
                 </Modal.Header>
                 <Modal.Body  >
-                    <div className="d-flex flex-wrap-reverse p-0 container-fluid"  >
-                        <div className="col-12 pt-0  col-lg-6" >
+                    <div className="d-flex flex-wrap-reverse justify-content-center p-0 container-fluid"  >
+                        <div className="col-12 pt-0  col-lg-12" >
                             <div className="  ">
                                 <div className="detalles-resumen"
                                 >
-                                    <div className="bg-secondary d-none p-2 d-sm-block text-black flex-table row" role="rowgroup">
+                                    <div className="bg-secondary d-none p-2 d-sm-block  text-light flex-table row" role="rowgroup">
                                         <div className="row text-center p-0 header" role="rowgroup">
                                             <div className="flex-row text-center col-sm" role="columnheader">Localidad</div>
                                             {/*<div className=" flex-row  text-center col-2 col-md-2" role="columnheader">Asiento</div>*/}
@@ -237,19 +242,18 @@ const ModalCarritoView = (prop) => {
                                         <h4>AGREGADOS</h4>
 
                                     </div>
-                                    <div className="px-2  list-group-flush" style={{ maxHeight: '500px', overflowY: 'auto', overflowX: 'hidden' }}>
+                                    <div className="px-2  list-group-flush " style={{ maxHeight: '500px', overflowY: 'auto', overflowX: 'hidden' }}>
                                         {detalle.length > 0 ?
                                             detalle.map((e, i) => {
                                                 return (
-                                                    <div className="d-flex flex-table row list-group-item" role="rowgroup" key={"items" + i}>
-
+                                                    <div className="d-flex flex-table text-center row list-group-item" role="rowgroup" key={"items" + i}>
                                                         <div className="flex-row first  d-none d-sm-block col-sm p-0"
                                                             style={{
                                                                 fontSize: "0.9em",
                                                             }} >{e.localidad}</div>
                                                         <div className="d-none d-sm-block  flex-row text-center col-2">${GetEstadousu().discapacidad === "No" ? e.valor * e.cantidad : e.discapacidad * e.cantidad}</div>
-                                                        <div className="d-none d-sm-block flex-row  text-center  col-2">{e.cantidad}</div>
-                                                        <div className="d-none d-sm-block d-flex d-sm-flex flex-row    text-center align-items-center col-sm">
+                                                        <div className="d-none d-sm-block flex-row  text-center  col-2 mx-auto justify-content-center">{e.cantidad}</div>
+                                                        <div className="d-none d-sm-block d-flex d-sm-flex flex-row   mx-auto  justify-content-center col-sm">
                                                             <button className=" d-none d-sm-block  btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
                                                                 <i className="fa fa-trash fa-1x"></i>
                                                             </button>
@@ -324,39 +328,50 @@ const ModalCarritoView = (prop) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 col-lg-6 border rounded-5   px-0"
+                        <div className="col-12 col-lg-12  border rounded-5 pt-1 mb-2  px-0"
                             style={{ alignItems: 'stretch', lineHeight: '1', }}>
-                            <div className="d-flex flex-column   justify-content-center  text-center p-0 d-sm-flex pb-0 " style={{ height: "400px" }}>
-                                <h5 style={{ fontSize: '', fontWeight: "bold" }} >
-                                    SELECCIONE LA LOCALIDAD EN EL MAPA O NOMBRE
-                                </h5>
-                                <div className="">
-                                    {modalshow.nombre == "ModalCarritov" ?
-                                        <SvgselectView
+                            <div className="row ">
+                                <div className="col-12  text-center">
+                                    <h5 style={{ fontSize: '1.1em', fontWeight: "bold" }} >
+                                        SELECCIONE LA LOCALIDAD EN EL MAPA O EN EL NOMBRE
+                                    </h5>
+                                    <div className="col-12 col-md-9  col-lg-10 mx-auto text-center " style={{
+                                        height: "auto"
+                                    }}>
+                                        {modalshow.nombre == "ModalCarritov" ?
+                                            <SvgselectView
 
-                                            text={precios.mapa} />
-                                        : ''}
+                                                text={precios.mapa} />
+                                            : ''}
+                                    </div>
+
+                                </div>
+                                <div className="col-12">
+                                    <div className=" container-fluid d-flex  py-2  col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
+                                        {precios.precios.length > 0 ?
+                                            precios.precios.map((elm, i) => {
+                                                return (
+                                                    <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
+                                                        <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 10, width: 10, backgroundColor: elm.color }}></div>
+                                                        <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '130px' }} >
+                                                            <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >{elm.localodad} </span>
+                                                            <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >${elm.precio_normal} </span>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }) : ''
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                            <div className=" container-fluid d-flex pt-1   col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
-                                {precios.precios.length > 0 ?
-                                    precios.precios.map((elm, i) => {
-                                        return (
-                                            <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
-                                                <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 10, width: 10, backgroundColor: elm.color }}></div>
-                                                <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '130px' }} >
-                                                    <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >{elm.localodad} </span>
-                                                    <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >${elm.precio_normal} </span>
-                                                </div>
-                                            </div>
-                                        )
-                                    }) : ''
-                                }
-                            </div>
+
+
+
+
                         </div>
                     </div>
                 </Modal.Body>
-                <Modal.Footer className="d-flex  p-3 border-top  justify-content-between align-items-cente">
+                <Modal.Footer className="d-flex  p-3 border-top  justify-content-between align-items-center">
                     <div className="d-flex flex-column">
                         <div className=""
 
@@ -378,13 +393,22 @@ const ModalCarritoView = (prop) => {
                                     onChange={(e) => handelMetodopago(e.target, "Deposito")}
                                     name="Deposito" id="Deposito" />
                                 <label className="form-check-label" >
-                                    Deposito-transferencia
+                                    Deposito
+                                </label>
+                            </div>
+                            <div className="form-check ">
+                                <input className="form-check-input" type="radio"
+                                    checked={checked.Transferencia == "Transferencia" ? true : false}
+                                    onChange={(e) => handelMetodopago(e.target, "Transferencia")}
+                                    name="Transferencia" id="Transferencia" />
+                                <label className="form-check-label" >
+                                    Transferencia
                                 </label>
                             </div>
                             <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
-                                    name="Efectivo" id="Efectivo"
-                                    checked={checked.Efectivo == "Efectivo" ? true : false}
+                                    name="PasarelaEfectivo" id="PasarelaEfectivo"
+                                    checked={checked.PasarelaEfectivo == "Efectivo" ? true : false}
                                     onChange={(e) => handelMetodopago(e.target, "Efectivo")}
                                 />
                                 <label className="form-check-label">
@@ -409,11 +433,15 @@ const ModalCarritoView = (prop) => {
                             className="px-1 text-danger total-detalle"> {listaPrecio.subtotal ? "$" + listaPrecio.subtotal : null}</h4>
 
                     </div>
-                    <div className="d-flex  align-items-end">
-                        {detalle.length > 0 ?
-                            <button className="btn btn-primary" disabled={check} onClick={handleContinuar}>continuar</button> :
-                            <button className="btn btn-primary" disabled={true} >continuar</button>
-                        }
+                    <div className="d-flex  mx-sm-auto   ">
+                        <div className=" ">
+                            {detalle.length > 0 ?
+                                <button className="btn btn-primary " disabled={check} onClick={handleContinuar}>continuar</button> :
+                                <button className="btn btn-primary  float-right" disabled={true} >continuar</button>
+                            }
+
+
+                        </div>
 
                     </div>
                 </Modal.Footer>

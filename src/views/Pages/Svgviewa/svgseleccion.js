@@ -829,7 +829,7 @@ const svgselectView = ({ text }) => {
             <polygon id="11" className="none" points="16040,7801 18915,7801 18915,9027 16040,9027 " />
             <rect id="14" className="none" x="14251" y="7209" width="1636" height="1818" />
         </svg >,
-        "paladines": <svg className="seudtres opciones" xmlns="http://www.w3.org/2000/svg" width="90%" height="90%" version="1.1"
+        "paladines": <svg className="seudtres opciones" xmlns="http://www.w3.org/2000/svg" width="90%" height="auto" version="1.1"
             viewBox="0 0 19477 14400"
         >
             <g id="Capa_x0020_1">
