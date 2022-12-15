@@ -29,7 +29,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Skeleton } from "@mui/material";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper";
 import ResgistroView from "./ModalLogin/registro.js";
-import { Spinner } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { Box } from "@mui/system";
 import 'moment-timezone'
 import 'moment/locale/es';
@@ -710,7 +710,108 @@ const IndexFlas = () => {
                           <a id={"headingThree" + e.id} className="collapsed evento" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7  d-flex justify-content-center px-0">
+                              <i className="  text-info  btn-hover" style={{
+                                position: "absolute",
+                                margin: "auto",
+                                bottom: -5,
+                                width: 40,
+                              }}>
+                                <svg
+                                  style={{
+                                    fill: "white",
+                                    filter: "drop-shadow(1px 1px 3px #888)"
+                                  }}
+                                  className="text-info" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                                  viewBox="0 0 490 490"  >
+                                  <g>
+                                    <g>
+                                      <g>
+                                        <polygon points="366.291,109.411 244.998,233.196 123.709,109.411 161.578,72.429 244.998,157.564 328.422,72.429 			" />
+                                      </g>
+                                      <g>
+                                        <polygon points="490,167.534 244.996,417.571 0,167.534 76.493,92.832 244.996,264.8 413.507,92.832 			" />
+                                      </g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                    <g>
+                                    </g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                  <g>
+                                  </g>
+                                </svg>
+                              </i>
+
+                              <Button className=" btn  btn-outline-info  rounded-7 btn-hover "
+                                style={{
+                                  position: "absolute",
+                                  margin: "auto",
+                                  right: 25,
+                                  bottom: 25,
+                                  zIndex: 2
+
+                                }}
+                              >
+                                <i className="bi bi-cart-fill"></i>
+                                COMPRAR
+
+                              </Button>
                               <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
+
                             </div>
                           </a>
                           <div className="collapse container mt-4 px-0" aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">
@@ -722,11 +823,11 @@ const IndexFlas = () => {
                                     <h4 style={{ fontSize: '1.4em', }}><span id="tour">{e.descripcionConcierto} </span></h4>
                                     <div className="col-12 border border-bottom my-3"></div>
                                     <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                      <p style={{ fontSize: '1.0em' }}>  <i class="bi bi-calendar-week-fill"></i>   <b>  Fecha:<span id="fechaEvento">{Dias[new Date(e.fechaConcierto).getDay()]}  {e.fechaConcierto} </span></b></p>
+                                      <p style={{ fontSize: '1.0em' }}>  <i className="bi bi-calendar-week-fill"></i>   <b>  Fecha:<span id="fechaEvento">{Dias[new Date(e.fechaConcierto).getDay()]}  {e.fechaConcierto} </span></b></p>
                                       <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                        <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><i class="bi bi-alarm-fill"></i> <b> Hora:<span id="horaEvento"> {e.horaConcierto}</span></b></p>
+                                        <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><i className="bi bi-alarm-fill"></i> <b> Hora:<span id="horaEvento"> {e.horaConcierto}</span></b></p>
                                       </div>
-                                      <p className="" style={{ fontSize: '1.0em', }}><i class="bi bi-geo-alt-fill"></i> <b>Lugar:<span id="lugarEvento">{e.lugarConcierto}</span></b></p>
+                                      <p className="" style={{ fontSize: '1.0em', }}><i className="bi bi-geo-alt-fill"></i> <b>Lugar:<span id="lugarEvento">{e.lugarConcierto}</span></b></p>
 
                                       <div className="col-12 border border-bottom mb-3"></div>
                                       <div>

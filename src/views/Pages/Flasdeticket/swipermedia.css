@@ -24,8 +24,20 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active {
         align-items: center;
         bottom: 50;
     }
+}
 
+.btn-hover {
 
+    transition: all .3s ease-in-out;
+}
+
+.btn-hover:hover {
+    translate: 0 10px;
+}
+
+a[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+    translate: 0 0;
 }
 
 @media (min-width:600px) {
