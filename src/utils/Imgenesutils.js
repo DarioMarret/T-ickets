@@ -7,11 +7,14 @@ import bancoguyaquil from "../assets/bancos/banco-guayaquil.png"
 import bancopacifico from "../assets/bancos/banco-pacifico.png"
 import produbancoguayaquil from "../assets/bancos/produbanco-guayaquil.png"
 import vecino from "../assets/bancos/mi-vecino.png"
+import logo from "../assets/imagen/logo-t-ickets.png"
+import portada from "../assets/imagen/portada-login.jpeg"
 
 export const bancos = {
     GUAYAQUIL, numero,
     pacifico, pichincha,
-    produbanco
+    produbanco,
+    logo, portada
 }
 export const bancosdetall = {
     bancoguyaquil,

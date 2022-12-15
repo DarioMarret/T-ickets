@@ -139,8 +139,14 @@ const ModalLogin = (props) => {
                   <div className="col-12">
                     <button className="btn btn-primary px-4" type="submit">ENTAR</button>
                   </div>
-                  <div className="col-12">
-                    <a className="btn btn-link  nav-link px-4" onClick={regsitronew} href="#">Crear Cuenta</a>
+                  <div className="col-12 "
+
+                  >
+                    <a className="btn btn-link text-dark  px-4" onClick={regsitronew} href="#"
+                      style={{
+                        fontWeight: "bold"
+                      }}
+                    >Crear Cuenta</a>
                   </div>
                 </div>
               </form>

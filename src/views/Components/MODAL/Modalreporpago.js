@@ -145,9 +145,6 @@ export default function ReporteView(prop) {
                                     <h3>Numero de Cuenta</h3>
                                     <h3> <strong>1500618760</strong> </h3>
                                 </div>
-
-
-
                                 <div className="d-flex flex-wrap">
                                     <div className="col-12 col-lg-6 d-flex flex-column p-3">
                                         <select className="form-control " name="banco" defaultValue={"Banco Internacional"} aria-label="Selecione el Banco">
@@ -155,8 +152,6 @@ export default function ReporteView(prop) {
                                         </select>
                                         <label >Numero de Control</label>
                                         <input className="form-control" type="text" name="control"
-
-
                                         />
                                     </div>
                                     <div className="col-12 col-lg-6 d-flex flex-column p-3 align-items-end" >

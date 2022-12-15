@@ -238,11 +238,12 @@ const ResgistroView = (prop) => {
 
                 document.getElementById("cedula").classList.add("is-invalid")
                 document.getElementById("email").classList.add("is-invalid")
+                //   error.response.data["message"]
                 setDatoToas({
                     show: true,
-                    message: error.response.data["message"],
+                    message: "Hubo un error intente de nuevo",
                     color: 'bg-danger',
-                    estado: error.response.data["error"],
+                    estado: "Error",
                 })
                 console.log(error)
             }

@@ -1,11 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import logo from "../../assets/imagen/logo-t-ickets.png";
-import logoportal from "../../assets/imagen/portada-login.jpeg";
+import { bancos } from "utils/Imgenesutils";
 import { setDatosUser } from "utils/DatosUsuarioLocalStorag";
 import { Loginadmin } from "utils/Querypanel";
-import imgen from '../../assets/imagen/nones.png'
+let { logo, portada } = bancos
 import { Badge, Button, Card, Form, Navbar, Nav, Toast, Container, Col, Row } from "react-bootstrap";
 function LoginPage() {
   const history = useHistory();
@@ -129,10 +128,11 @@ function LoginPage() {
                 </form>
               </div>
             </div>
-            <div className="card px-0  shadow-md text-white py-5 d-none d-lg-block " style={{
-              width: '100%', backgroundImage:
-                "url('" + logoportal + "')", backgroundSize: 'cover'
-            }}>
+            <div className="card px-0  shadow-md text-white py-5 d-none d-lg-block "
+              style={{
+                width: '100%', backgroundImage:
+                  "url('" + portada + "')", backgroundSize: 'cover'
+              }}>
               <div className="card-body text-center">
                 <div>
                   <h2></h2>
