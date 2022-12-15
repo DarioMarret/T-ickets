@@ -41,8 +41,10 @@ const ModalEfectivo = (props) => {
   function comnetusernew() {
     seTSpiners("")
     PagoRapido("").then(ouput => {
+
       usedispatch(setModal({ nombre: 'ordendepago', estado: '' }))
       console.log(ouput)
+      detener()
       /*  let registro = {
    codigo: 25,
    total: 2
@@ -90,12 +92,12 @@ const ModalEfectivo = (props) => {
         warning
         style={{ display: "block", marginTop: "-100px" }}
         title={"Esta seguro de querer salir  "}
-        onConfirm={() => hideAlert()}
+        onConfirm={() => comnetusernew()}
         onCancel={() => cerrar()}
         confirmBtnBsStyle="success"
         cancelBtnBsStyle="danger"
-        confirmBtnText="Completar  Compra"
-        cancelBtnText="Anular Compra"
+        confirmBtnText="Pagar"
+        cancelBtnText="Cancelar"
 
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
         showCancel
@@ -116,8 +118,6 @@ const ModalEfectivo = (props) => {
       {alert}
       <Modal
         show={Modalshow.nombre == "modalpago" ? true : false}
-
-
       >
         <Modal.Header className='py-3' >
           <div className='d-flex justify-content-between w-100' >
@@ -136,7 +136,7 @@ const ModalEfectivo = (props) => {
               <div className="container d-flex flex-column p-3">
                 <div className="row  pagos d-flex justify-content-center   m-1 p-2">
                   <img src={facilito} className=" img-fluid"
-                    onClick={comnetusernew}
+                    onClick={succesAlert}
                   />
 
                 </div>

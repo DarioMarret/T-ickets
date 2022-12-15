@@ -83,7 +83,6 @@ const Reporte = (props) => {
         cancelBtnBsStyle="danger"
         confirmBtnText="Completar  Compra"
         cancelBtnText="Anular Compra"
-
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
         showCancel
       >
@@ -109,8 +108,10 @@ const Reporte = (props) => {
     if (e == "guayaquil") {
       setrepShow(false)
       PagoRapido("").then(oupt => {
+        //limpiar carroo cuando haya pagado
         usedispatch(setModal({ nombre: e, estado: '#d3006e' }))
         setrepShow(false)
+        console.log(oupt)
       }).catch(error => {
         seTSpiners("d-none")
         console.log(error)
@@ -119,6 +120,7 @@ const Reporte = (props) => {
     }
     if (e == "produbanco") {
       PagoRapido("").then(oupt => {
+        //limpiar carroo cuando haya pagado
         usedispatch(setModal({ nombre: e, estado: '#103987' }))
         setrepShow(false)
         console.log(oupt)
@@ -130,6 +132,7 @@ const Reporte = (props) => {
     }
     if (e == "pacifico") {
       PagoRapido("").then(oupt => {
+        //limpiar carroo cuando haya pagado
         usedispatch(setModal({
           nombre: e, estado: '#199ad6'
         }))
@@ -142,7 +145,7 @@ const Reporte = (props) => {
       return
     }
     if (e == "transferencia") {
-      usedispatch(setModal({ nombre: "transferencia", estado: "" }))
+      usedispatch(setModal({ nombre: "confirmar", estado: "" }))
       return
     }
   }

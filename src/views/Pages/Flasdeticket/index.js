@@ -40,6 +40,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./swipermedia.css"
+import "./fechaefect.scss"
 import "../../../assets/css/animate.css";
 import "../../../assets/css/bootstrap.css";
 import Iframe from "views/Components/IFrame/Iframe.js";
@@ -710,13 +711,13 @@ const IndexFlas = () => {
                           <a id={"headingThree" + e.id} className="collapsed evento" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7  d-flex justify-content-center px-0">
-                              <i className="  text-info  btn-hover" style={{
+                              <i className="  text-info btn-hover" style={{
                                 position: "absolute",
                                 margin: "auto",
                                 bottom: -2,
                                 width: 40,
                               }}>
-                                <svg className="seudtres" xmlns="http://www.w3.org/2000/svg" width="auto" height="auto" version="1.1"
+                                <svg className="seudtres " xmlns="http://www.w3.org/2000/svg" width="auto" height="auto" version="1.1"
                                   style={{
                                     filter: "drop-shadow(1px 1px 3px #888)"
 
@@ -725,8 +726,8 @@ const IndexFlas = () => {
 
                                   <g id="Capa_x0020_1">
 
-                                    <polygon fill="#A9ABAE" points="15706,1584 10507,6889 5309,1584 6932,-1 10507,3648 14083,-1 " />
-                                    <polygon fill="#E6E7E8" points="21008,4985 10507,15701 8,4985 1725,3307 10513,12281 19287,3305 " />
+                                    <polygon className="line1" fill="#A9ABAE" points="15706,1584 10507,6889 5309,1584 6932,-1 10507,3648 14083,-1 " />
+                                    <polygon className="line3" fill="#E6E7E8" points="21008,4985 10507,15701 8,4985 1725,3307 10513,12281 19287,3305 " />
                                     <g id="_2060064090544">
                                     </g>
                                     <g id="_2060064092496">
@@ -757,7 +758,7 @@ const IndexFlas = () => {
                                     </g>
                                     <g id="_2060064084368">
                                     </g>
-                                    <polygon fill="#D2D3D5" points="4440,1615 10517,7827 16671,1547 18381,3233 10517,11278 2718,3313 " />
+                                    <polygon className="line2" fill="#D2D3D5" points="4440,1615 10517,7827 16671,1547 18381,3233 10517,11278 2718,3313 " />
                                   </g>
                                 </svg>
                               </i>

@@ -13,20 +13,17 @@ const ModalConfima = (prop) => {
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     function cerrar() {
         usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
-        // setrepShow(true)
     }
     function confirmar() {
         usedispatch(setModal({ nombre: '', estado: '' }))
         pararcontador()
         usedispatch(setToastes({ show: true, message: 'Datos del deposito Guardado ', color: 'bg-success', estado: 'Se guardo el numero de control' }))
-
     }
-
-
     return (
         <>
             <Modal
-                show={modal.nombre == "confirmar2" ? true : false}
+                show={modal.nombre == "confirmar" ? true : false}
+                centered
             >
                 <Modal.Header className=" d-flex  rounded-top-4 m-0  bg-secondary  justify-content-between align-items-center">
                     <div className="d-flex  container   justify-content-center text-center" >

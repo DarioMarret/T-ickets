@@ -1,0 +1,50 @@
+.btn-hover :hover {
+    translate: 0 10px;
+    transition: all .3s ease-in-out;
+
+    .line1 {
+
+        animation: dash 3.5s linear infinite;
+    }
+
+    .line3 {
+
+        animation-duration: 2s;
+        animation: dash2 2.5s linear infinite;
+    }
+
+    .line2 {
+
+        animation: dash3 1.5s linear infinite;
+    }
+
+    @keyframes dash {
+        from {
+            fill: #198754;
+        }
+
+        to {
+            fill: #ffffff;
+        }
+    }
+
+    @keyframes dash2 {
+        from {
+            fill: #198754;
+        }
+
+        to {
+            fill: #ffffff;
+        }
+    }
+
+    @keyframes dash3 {
+        from {
+            fill: #198754;
+        }
+
+        to {
+            fill: #ffffff;
+        }
+    }
+}
