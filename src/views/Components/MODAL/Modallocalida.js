@@ -422,15 +422,14 @@ const LocalidadmapViews = (props) => {
                 size="lg"
                 fullscreen={'md-down'}
                 onHide={cerrar}
-
                 centered
             >
 
                 <Modal.Header className=" bg-dark  text-light py-4">
 
                     <h5 className="modal-title text-center justify-content-center" style={{ fontWeight: "bold" }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
-                    <div className="" >
-                        <button className=" btn btn-outline-light" onClick={cerrar} >
+                    <div className="pl-0" >
+                        <button className=" d-none btn btn-outline-light" onClick={cerrar} >
                             <i className="fa fa-arrow-left">  </i>
                         </button>
                         <button className=" btn  btn-outline-light mx-1" onClick={cerrar} >
@@ -439,13 +438,19 @@ const LocalidadmapViews = (props) => {
                     </div>
 
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className={mapath.precio.typo === "correlativo" ? " d-flex align-items-center mx-auto" : ""}>
                     {alert}
                     <div className='conatiner-fluid col-12'>
-                        <div className="row ">
+                        <div className="row  ">
                             <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontWeight: "bold" }}>
-                                <h5>{mapath.precio.localodad}</h5>
-                                <h6 className="px-1">$ {mapath.precio.precio_normal} </h6>
+                                <h5 style={{
+                                    fontWeight: "bold"
+                                }}>{mapath.precio.localodad}</h5>
+                                <h6 className="px-1"
+                                    style={{
+                                        fontWeight: "bold"
+                                    }}
+                                >$ {mapath.precio.precio_normal} </h6>
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center" style={{ maxHeight: "200px" }}>
                                 {modalshow.nombre == "Modallocalida" ? <SVGView text={mapath.nombre} /> : ''}
@@ -573,15 +578,16 @@ const LocalidadmapViews = (props) => {
                                 {mapath.precio.typo === "correlativo" ?
                                     <div className="d-flex flex-wrap justify-content-center align-items-center">
                                         <div className="text-center d-flex justify-content-end align-items-center">
-                                            <button className="resta btn btn-danger rounded-7 "
+
+                                            <button className="suma   btn-success rounded-circle"
+                                                onClick={agregar} >
+                                                <i className="fa fa-plus"></i>
+                                            </button>
+                                            <hr className="mx-2" ></hr>
+                                            <button className="resta  btn-danger rounded-circle "
                                                 onClick={restaprecio}
                                             >
                                                 <i className="fa fa-minus"></i>
-                                            </button>
-                                            <hr className="mx-2" ></hr>
-                                            <button className="suma btn btn-success rounded-7"
-                                                onClick={agregar} >
-                                                <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
 
@@ -597,7 +603,7 @@ const LocalidadmapViews = (props) => {
 
 
                 </Modal.Body>
-                <Modal.Footer className="" >
+                <Modal.Footer className="px-0 bg" >
                     <div className=" container-fluid  text-dark  border-top justify-content-between p-3" style={{ minHeight: '50px', maxHeight: '188px', width: '100%' }} >
                         {mapath.precio.typo != "correlativo" ?
                             <div className="col-12 ">
@@ -625,23 +631,23 @@ const LocalidadmapViews = (props) => {
 
 
                             </div>}
-                        <div>
+                        <div className="px-0">
                             {mapath.precio.typo === "correlativo" ?
-                                <div className="d-flex  justify-content-center " >
+                                <div className="d-flex px-0  justify-content-center " >
 
-                                    <div className="flex-row first text-center col-4 col-md-4" role="cell"
+                                    <div className="flex-row first text-center col-4 " role="cell"
                                         style={{
                                             fontWeight: 'bold'
                                         }}
                                     >Localidad</div>
                                     {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
 
-                                    <div className="flex-row  text-center  col-4 col-md-4"
+                                    <div className="flex-row  text-center  col-5"
                                         style={{
                                             fontWeight: 'bold'
                                         }}
                                     >Total tickets </div>
-                                    <div className="flex-row   text-center col-4 col-md-4"
+                                    <div className="flex-row   text-center col-3"
                                         style={{
                                             fontWeight: 'bold'
                                         }}
@@ -659,11 +665,11 @@ const LocalidadmapViews = (props) => {
                                         return (
                                             <div className="d-flex  justify-content-center " role="rowgroup" key={"items" + i}>
 
-                                                <div className="flex-row first text-center col-4 col-md-4" role="cell"> {e.localidad}</div>
+                                                <div className="flex-row first text-center col-4 " role="cell"> {e.localidad}</div>
                                                 {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
 
-                                                <div className="flex-row  text-center  col-4 col-md-4"> {e.cantidad}</div>
-                                                <div className="flex-row   text-center col-4 col-md-4"> ${(e.valor * e.cantidad).toFixed(2)}</div>
+                                                <div className="flex-row  text-center  col-5"> {e.cantidad}</div>
+                                                <div className="flex-row   text-center col-3"> ${(e.valor * e.cantidad).toFixed(2)}</div>
 
 
                                             </div>

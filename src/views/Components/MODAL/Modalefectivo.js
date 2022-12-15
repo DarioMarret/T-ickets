@@ -119,12 +119,12 @@ const ModalEfectivo = (props) => {
 
 
       >
-        <Modal.Header >
+        <Modal.Header className='py-3' >
           <div className='d-flex justify-content-between w-100' >
             <h5 className="modal-title text-center justify-content-center align-items-center" style={{ fontWeight: "bold", fontSize: '1.2em' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
-            <div><button className='btn btn-primary' onClick={() => cerrar()}  >  <i className="fa fa-arrow-left">  </i>   </button></div>
+            <div><button className='d-none btn btn-primary' onClick={() => cerrar()}  >  <i className="fa fa-arrow-left">  </i>   </button></div>
           </div>
-          <button type="button" className="d-none close"
+          <button type="button" className=" close"
             onClick={() => cerrar()} >
             X
           </button>

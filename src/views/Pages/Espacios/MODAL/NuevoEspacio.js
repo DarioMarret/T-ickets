@@ -64,7 +64,7 @@ const NewEspacioView = (props) => {
         >
 
             <div className="modal-content ">
-                <div className="modal-header">
+                <div className="modal-header py-3">
                     <h5 className="modal-title" id="espacioModal">{estado != "" ? "Actualizar espacio" : "Registar espacio"}</h5>
                     <button type="button" className="close"
                         onClick={() => SetShownuev(false)}>

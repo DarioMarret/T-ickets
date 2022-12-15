@@ -492,7 +492,9 @@ const ResgistroView = (prop) => {
                             <div className="col-12  text-start d-flex flex-column  ">
                                 <div className="d-flex text-start  flex-wrap-reverse ">
                                     <div className="col-12 ">
-                                        <p style={{ fontSize: "0.7em" }}>Acepto los <strong>Términos y condiciones</strong> emitidas por
+                                        <p style={{ fontSize: "0.7em" }}>Acepto los <span style={{
+                                            fontWeight: "bold"
+                                        }}>Términos y condiciones</span> emitidas por
                                             t-icket</p>
                                     </div>
 
@@ -502,7 +504,7 @@ const ResgistroView = (prop) => {
                                     <div className="col-12 d-flex ">
                                         <p style={{ fontSize: "0.7em" }}>
                                             Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
-                                            realizada la compra , caso contrario no podra retirar los boletos duros sin opcion a
+                                            realizada la compra , caso contrario no podrá retirar los boletos duros sin opción a
                                             rembolso
                                         </p>
                                     </div>
@@ -511,12 +513,15 @@ const ResgistroView = (prop) => {
 
                                 <div className="d-flex ">
                                     <div className="col-12 d-flex ">
-                                        <strong>
-                                            <p style={{ fontSize: "0.8em" }}>
-                                                <strong> Acepto que se crea mi cuenta de usuario en el portal de t-ickets, la misma que contiene mis datos persoanales, así como los
-                                                    datos de mis compras, tambien recibir las promociones por ese mismo medio.</strong>
-                                            </p>
-                                        </strong>
+
+                                        <p style={{
+                                            fontSize: "0.8em",
+                                            fontWeight: "bold"
+                                        }}>
+                                            Acepto que se crea mi cuenta de usuario en el portal de t-ickets, la misma que contiene mis datos personales, así como los
+                                            datos de mis compras, también recibir las promociones por ese mismo medio.
+                                        </p>
+
                                     </div>
 
                                 </div>

@@ -107,10 +107,9 @@ const Reporte = (props) => {
       return
     }
     if (e == "guayaquil") {
-      usedispatch(setModal({ nombre: e, estado: '#d3006e' }))
       setrepShow(false)
       PagoRapido("").then(oupt => {
-        usedispatch(setModal({ nombre: e, estado: '#ffc107' }))
+        usedispatch(setModal({ nombre: e, estado: '#d3006e' }))
         setrepShow(false)
       }).catch(error => {
         seTSpiners("d-none")
@@ -120,7 +119,7 @@ const Reporte = (props) => {
     }
     if (e == "produbanco") {
       PagoRapido("").then(oupt => {
-        usedispatch(setModal({ nombre: e, estado: '#ffc107' }))
+        usedispatch(setModal({ nombre: e, estado: '#103987' }))
         setrepShow(false)
         console.log(oupt)
       }).catch(error => {
@@ -131,13 +130,19 @@ const Reporte = (props) => {
     }
     if (e == "pacifico") {
       PagoRapido("").then(oupt => {
-        usedispatch(setModal({ nombre: e, estado: '#ffc107' }))
+        usedispatch(setModal({
+          nombre: e, estado: '#199ad6'
+        }))
         setrepShow(false)
         console.log(oupt)
       }).catch(error => {
         seTSpiners("d-none")
         console.log(error)
       })
+      return
+    }
+    if (e == "transferencia") {
+      usedispatch(setModal({ nombre: "transferencia", estado: "" }))
       return
     }
   }
@@ -270,7 +275,7 @@ const Reporte = (props) => {
                 </div>
                 <div className=' container d-flex   px-0 mx-0 justify-content-between ' style={{ width: '90%' }}>
                   <div className=''>
-                    <button className='btn btn-success m-2 ' style={{ fontSize: '0.7em' }} onClick={Confirmar} > CONFRIMAR DEPOSITO </button>
+                    <button className='btn btn-success m-2 ' style={{ fontSize: '0.7em' }} onClick={() => Confirmar("transferencia")} > CONFRIMAR DEPOSITO </button>
 
                   </div>
                   <div>

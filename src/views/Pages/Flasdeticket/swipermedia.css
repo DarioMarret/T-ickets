@@ -27,12 +27,20 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active {
 }
 
 .btn-hover {
-
     transition: all .3s ease-in-out;
 }
 
-.btn-hover:hover {
+.btn-hover :hover {
     translate: 0 10px;
+    fill: #198754 !important;
+}
+
+.Flecha {
+    shape-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
+    image-rendering: optimizeQuality;
+    fill-rule: evenodd;
+    clip-rule: evenodd
 }
 
 a[aria-expanded="true"] svg {
@@ -46,10 +54,23 @@ a[aria-expanded="true"] svg {
     }
 }
 
+.nuevos .modal-dialog {
+    max-width: 90%;
+}
+
+
 .iti__selected-flag {
     background-color: #dee2e6 !important;
 }
 
 .evento {
     cursor: pointer;
+}
+
+.seudtres {
+    shape-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
+    image-rendering: optimizeQuality;
+    fill-rule: evenodd;
+    clip-rule: evenodd
 }

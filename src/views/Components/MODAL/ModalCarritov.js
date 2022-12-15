@@ -198,7 +198,8 @@ const ModalCarritoView = (prop) => {
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
                                 style={{
-                                    fontWeight: "bold"
+                                    fontWeight: "bold",
+                                    fontSize: "1.2em"
                                 }}>BOLETERÍA </h5>
                         </div>
                     </div>
@@ -206,7 +207,10 @@ const ModalCarritoView = (prop) => {
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
                                 style={{
-                                    fontWeight: "bold"
+                                    fontWeight: "bold",
+                                    fontSize: "1.2em",
+                                    fontSizeAdjust: 0.5
+
                                 }}
                             >  Tiempo restante para la compra <span className="text-danger"
                                 style={{
@@ -383,7 +387,7 @@ const ModalCarritoView = (prop) => {
                                     checked={checked.Tarjeta == "Tarjeta" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
                                     name="Tarjeta" id="Tarjeta" />
-                                <label className="form-check-label" for="Tarjeta">
+                                <label className="form-check-label" htmlFor="Tarjeta">
                                     Tarjeta-credito
                                 </label>
                             </div>
@@ -392,7 +396,7 @@ const ModalCarritoView = (prop) => {
                                     checked={checked.Transferencia == "Transferencia" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
                                     name="Transferencia" id="Transferencia" />
-                                <label className="form-check-label" for="Transferencia">
+                                <label className="form-check-label" htmlFor="Transferencia">
                                     Transferencia
                                 </label>
                             </div>
@@ -401,7 +405,7 @@ const ModalCarritoView = (prop) => {
                                     checked={checked.Deposito == "Deposito" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
                                     name="Deposito" id="Deposito" />
-                                <label className="form-check-label" for="Deposito">
+                                <label className="form-check-label" htmlFor="Deposito">
                                     Deposito
                                 </label>
                             </div>
@@ -412,7 +416,7 @@ const ModalCarritoView = (prop) => {
                                     checked={checked.PasarelaEfectivo == "Efectivo" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Efectivo")}
                                 />
-                                <label className="form-check-label" for="PasarelaEfectivo"
+                                <label className="form-check-label" htmlFor="PasarelaEfectivo"
 
                                 >
                                     Efectivo punto de pagos

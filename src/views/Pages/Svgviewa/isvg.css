@@ -1,163 +1,252 @@
-#estandar path.none {
-  fill: rgb(148, 152, 152);
-}
+ path.none {
+   fill: rgb(148, 152, 152);
+ }
 
-polygon.none {
-  fill: rgb(148, 152, 152);
+ polygon.none {
+   fill: rgb(148, 152, 152);
 
-}
+ }
 
-:root {
-  --swiper-navigation-color: #000000;
-}
+ :root {
+   --swiper-navigation-color: #000000;
+ }
 
-rect.none {
-  fill: rgb(148, 152, 152)
-}
+ rect.none {
+   fill: rgb(148, 152, 152)
+ }
 
-#grado {
-  fill: rgb(148, 152, 152);
-  cursor: pointer;
-}
+ #grado {
+   fill: rgb(148, 152, 152);
+   cursor: pointer;
+ }
 
-svg.opciones {
-  fill: rgb(148, 152, 152);
-}
+ svg.opciones {
+   fill: rgb(148, 152, 152);
+ }
 
-path.opciones {
-  fill: rgb(148, 152, 152);
-}
+ path.opciones {
+   fill: rgb(148, 152, 152);
+ }
 
-path.mapas {
-  fill: rgb(148, 152, 152);
-}
+ path.mapas {
+   fill: rgb(148, 152, 152);
+ }
 
-@media (min-width: 800px) {
-  .precios:hover {
-    cursor: pointer;
-    transform: scale(1.3);
-  }
-}
+ @media (min-width: 800px) {
+   .precios:hover {
+     cursor: pointer;
+     transform: scale(1.1);
+   }
+ }
 
-.precios {
-  cursor: pointer;
+ .precios {
+   cursor: pointer;
 
-  transition: all .2s ease-in-out;
+   transition: all .2s ease-in-out;
 
-}
+ }
 
-polygon.disponible:hover {
-  transform: scale(1.01);
-  cursor: pointer;
-}
+ polygon.disponible:hover {
+   /* transform: scale(1.01);
+   cursor: pointer;*/
+   cursor: pointer;
+   /* transform: scale(0.2);*/
+   fill-opacity: 70%;
+   opacity: 1;
+   stroke: rgb(214, 26, 26);
+   stroke: #646464;
+   stroke-width: 1px;
+   stroke-dasharray: 2, 2;
+   stroke-linejoin: round;
+ }
 
-polygon.disponible {
-  transition: all .2s ease-in-out;
-}
+ polygon.disponible {
+   transition: all .2s ease-in-out;
+ }
 
-rect.disponible:hover {
-  transform: scale(1.01);
-  cursor: pointer;
-}
+ rect.disponible:hover {
+   /*transform: scale(1.01);
+   cursor: pointer;*/
+   cursor: pointer;
+   /* transform: scale(0.2);*/
+   fill-opacity: 70%;
+   opacity: 1;
+   stroke: rgb(214, 26, 26);
+   stroke: #646464;
+   stroke-width: 1px;
+   stroke-dasharray: 2, 2;
+   stroke-linejoin: round;
+ }
 
-rect.disponible {
-  transition: all .2s ease-in-out;
-}
+ rect.disponible {
+   transition: all .2s ease-in-out;
+ }
 
-path.disponible:hover {
-  cursor: pointer;
-  transform: scale(1.01);
-}
+ path.disponible:hover {
+   /*  cursor: pointer;
+   transform: scale(1.0);*/
+   cursor: pointer;
+   /* transform: scale(0.2);*/
 
-ellipse.disponible {
-  transition: all .2s ease-in-out;
-}
+   fill-opacity: 70%;
+   opacity: 1;
+   stroke: rgb(214, 26, 26);
+   stroke: #646464;
+   stroke-width: 1px;
+   stroke-dasharray: 2, 2;
+   stroke-linejoin: round;
+ }
 
-ellipse.disponible:hover {
-  cursor: pointer;
-  /* transform: scale(0.2);*/
-  fill: #08aff1;
-  opacity: 1;
-  stroke: rgb(214, 26, 26);
-  stroke: #646464;
-  stroke-width: 1px;
-  stroke-dasharray: 2, 2;
-  stroke-linejoin: round;
-}
+ ellipse.disponible {
+   transition: all .2s ease-in-out;
+ }
 
-path.disponible {
-  transition: all .2s ease-in-out;
-}
+ ellipse.disponible:hover {
+   cursor: pointer;
+   fill-opacity: 70%;
+   stroke: rgb(214, 26, 26);
+   stroke: #646464;
+   stroke-width: 1px;
+   stroke-dasharray: 2, 2;
+   stroke-linejoin: round;
+ }
 
-.str0 {
-  stroke: #E6E7E8;
-  stroke-width: 20
-}
+ path.disponible {
+   transition: all .2s ease-in-out;
+ }
 
-.str1 {
-  stroke: #373435;
-  stroke-width: 20
-}
+ .str0 {
+   stroke: #E6E7E8;
+   stroke-width: 20
+ }
 
-.str2 {
-  stroke: #FEFEFE;
-  stroke-width: 7.62
-}
+ .str1 {
+   stroke: #373435;
+   stroke-width: 20
+ }
 
-.fil3 {
-  fill: #FEFEFE
-}
+ .str2 {
+   stroke: #FEFEFE;
+   stroke-width: 7.62
+ }
 
-.fil0 {
-  fill: #E6E7E8
-}
+ .fil3 {
+   fill: #FEFEFE
+ }
 
-.fil7 {
-  fill: #BDBFC1
-}
+ .fil0 {
+   fill: #E6E7E8
+ }
 
-.fil8 {
-  fill: #4B4B4D
-}
+ .fil7 {
+   fill: #BDBFC1
+ }
 
-.fil1 {
-  fill: #373435
-}
+ .fil8 {
+   fill: #4B4B4D
+ }
 
-.fil2 {
-  fill: #039AB5
-}
+ .fil1 {
+   fill: #373435
+ }
 
-.fil6 {
-  fill: #9C9C9C
-}
+ .fil2 {
+   fill: #039AB5
+ }
 
-.fil5 {
-  fill: #A90623
-}
+ .fil6 {
+   fill: #9C9C9C
+ }
 
-.fil4 {
-  fill: #E6BE28
-}
+ .fil5 {
+   fill: #A90623
+ }
 
-.fil9 {
-  fill: #FEFEFE;
-  fill-rule: nonzero
-}
+ .fil4 {
+   fill: #E6BE28
+ }
+
+ .fil9 {
+   fill: #FEFEFE;
+   fill-rule: nonzero
+ }
+
+ .stra1 {
+   stroke: #FEFEFE;
+   stroke-width: 75
+ }
+
+ .stra0 {
+   stroke: #96989A;
+   stroke-width: 20
+ }
+
+ .fila2 {
+   fill: #FEFEFE
+ }
+
+ .fila10 {
+   fill: #E6E7E8
+ }
+
+ .fila0 {
+   fill: #BDBFC1
+ }
+
+ .fila9 {
+   fill: #A9ABAE
+ }
+
+ .fila1 {
+   fill: #96989A
+ }
+
+ .fila11 {
+   fill: #4B4B4D
+ }
+
+ .fila8 {
+   fill: #373435
+ }
+
+ .fila7 {
+   fill: #84716B
+ }
+
+ .fila5 {
+   fill: #9D98CA
+ }
+
+ .fila3 {
+   fill: #213858
+ }
+
+ .fila4 {
+   fill: #4494D3
+ }
+
+ .fila6 {
+   fill: #4E76B8
+ }
+
+ .fila12 {
+   fill: #FEFEFE;
+   fill-rule: nonzero
+ }
 
 
-.mapanuevo {
-  shape-rendering: geometricPrecision;
-  text-rendering: geometricPrecision;
-  image-rendering: optimizeQuality;
-  fill-rule: evenodd;
-  clip-rule: evenodd;
-}
+ .mapanuevo {
+   shape-rendering: geometricPrecision;
+   text-rendering: geometricPrecision;
+   image-rendering: optimizeQuality;
+   fill-rule: evenodd;
+   clip-rule: evenodd;
+ }
 
-.seudtres {
-  shape-rendering: geometricPrecision;
-  text-rendering: geometricPrecision;
-  image-rendering: optimizeQuality;
-  fill-rule: evenodd;
-  clip-rule: evenodd
-}
+ .seudtres {
+   shape-rendering: geometricPrecision;
+   text-rendering: geometricPrecision;
+   image-rendering: optimizeQuality;
+   fill-rule: evenodd;
+   clip-rule: evenodd
+ }

@@ -713,90 +713,56 @@ const IndexFlas = () => {
                               <i className="  text-info  btn-hover" style={{
                                 position: "absolute",
                                 margin: "auto",
-                                bottom: -5,
+                                bottom: -2,
                                 width: 40,
                               }}>
-                                <svg
+                                <svg className="seudtres" xmlns="http://www.w3.org/2000/svg" width="auto" height="auto" version="1.1"
                                   style={{
-                                    fill: "white",
                                     filter: "drop-shadow(1px 1px 3px #888)"
+
                                   }}
-                                  className="text-info" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-                                  viewBox="0 0 490 490"  >
-                                  <g>
-                                    <g>
-                                      <g>
-                                        <polygon points="366.291,109.411 244.998,233.196 123.709,109.411 161.578,72.429 244.998,157.564 328.422,72.429 			" />
-                                      </g>
-                                      <g>
-                                        <polygon points="490,167.534 244.996,417.571 0,167.534 76.493,92.832 244.996,264.8 413.507,92.832 			" />
-                                      </g>
+                                  viewBox="0 0 21000 15700">
+
+                                  <g id="Capa_x0020_1">
+
+                                    <polygon fill="#A9ABAE" points="15706,1584 10507,6889 5309,1584 6932,-1 10507,3648 14083,-1 " />
+                                    <polygon fill="#E6E7E8" points="21008,4985 10507,15701 8,4985 1725,3307 10513,12281 19287,3305 " />
+                                    <g id="_2060064090544">
                                     </g>
-                                    <g>
+                                    <g id="_2060064092496">
                                     </g>
-                                    <g>
+                                    <g id="_2060064090096">
                                     </g>
-                                    <g>
+                                    <g id="_2060064090192">
                                     </g>
-                                    <g>
+                                    <g id="_2060064090032">
                                     </g>
-                                    <g>
+                                    <g id="_2060064089840">
                                     </g>
-                                    <g>
+                                    <g id="_2060064089648">
                                     </g>
-                                    <g>
+                                    <g id="_2060064088752">
                                     </g>
-                                    <g>
+                                    <g id="_2060064087472">
                                     </g>
-                                    <g>
+                                    <g id="_2060064087504">
                                     </g>
-                                    <g>
+                                    <g id="_2060064086576">
                                     </g>
-                                    <g>
+                                    <g id="_2060064086544">
                                     </g>
-                                    <g>
+                                    <g id="_2060064087216">
                                     </g>
-                                    <g>
+                                    <g id="_2060064087760">
                                     </g>
-                                    <g>
+                                    <g id="_2060064084368">
                                     </g>
-                                    <g>
-                                    </g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
-                                  </g>
-                                  <g>
+                                    <polygon fill="#D2D3D5" points="4440,1615 10517,7827 16671,1547 18381,3233 10517,11278 2718,3313 " />
                                   </g>
                                 </svg>
                               </i>
 
-                              <Button className=" btn  btn-outline-info  rounded-7 btn-hover "
+                              <Button className=" d-none btn  btn-outline-info  rounded-7 btn-hover "
                                 style={{
                                   position: "absolute",
                                   margin: "auto",

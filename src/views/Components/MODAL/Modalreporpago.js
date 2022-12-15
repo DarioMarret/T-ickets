@@ -1,4 +1,4 @@
-import { Modal } from "react-bootstrap";
+import { Container, Modal } from "react-bootstrap";
 import { bancosdetall } from "utils/Imgenesutils";
 import { bancos } from "utils/Imgenesutils";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { GetValores } from "utils/CarritoLocalStorang";
 import { useState } from "react";
 import { useEffect } from "react";
+import metodos from "../../../assets/Banco_Internacional_Ecuador.png";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import jsPDF from "jspdf";
 let { bancoguyaquil,
@@ -51,7 +52,7 @@ export default function ReporteView(prop) {
         setrepShow(true)
     }
     useEffect(() => {
-        modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ? ListaPrecioset(GetValores()) : ''
+        modalshow.nombre == "transferencia" || modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ? ListaPrecioset(GetValores()) : ''
         //  modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ? console.log((parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)) : ''
 
     }, [modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ?
@@ -60,7 +61,7 @@ export default function ReporteView(prop) {
         <>
             <Modal
                 show={
-                    modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ?
+                    modalshow.nombre == "transferencia" || modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ?
                         true : false}
                 size="lg"
             >
@@ -72,8 +73,8 @@ export default function ReporteView(prop) {
                             style={{
                                 fontWeight: "bold"
                             }}
-                        >
-                            ORDEN DE PAGO
+                        >{modalshow.nombre == "transferencia" ?
+                            " ORDEN DE PAGO" : 'reportar pago'}
                         </h4>
                     </div>
                     <div className=" float-left  " style={{ marginTop: '-45px' }}>
@@ -82,7 +83,7 @@ export default function ReporteView(prop) {
                         </button>
                     </div>
                 </Modal.Header>
-                <Modal.Body
+                {modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ? <Modal.Body
                 >
                     <div>
                         <div id="COMPROBANTE" className="container   px-0"
@@ -129,7 +130,56 @@ export default function ReporteView(prop) {
                         </div>
 
                     </div>
-                </Modal.Body>
+                </Modal.Body> : ''}
+                {modalshow.nombre == "transferencia" ?
+                    <Modal.Body> <Container>
+                        <div className="container ">
+                            <div className='d-flex col-12 justify-content-between align-items-center' >
+                                <h5 className="modal-title d-none text-center justify-content-center" style={{ fontWeight: 'bold', fontSize: '1.2em' }}>Tiempo restante de compra <span className="text-danger" >{/*/intervalo/*/} </span></h5>
+                            </div>
+                            <div className="d-flex flex-wrap justify-content-center align-items-center" >
+                                <div className='d-flex flex-column text-center justify-content-center align-items-center'>
+
+                                    <h3 className="modal-title pb-3 ">PARA DEPOSITO O TRANSFERENCIA</h3>
+                                    <img src={metodos} className="img-fluid" style={{ width: '300px' }} alt="" />
+                                    <h3>Numero de Cuenta</h3>
+                                    <h3> <strong>1500618760</strong> </h3>
+                                </div>
+
+
+
+                                <div className="d-flex flex-wrap">
+                                    <div className="col-12 col-lg-6 d-flex flex-column p-3">
+                                        <select className="form-control " name="banco" defaultValue={"Banco Internacional"} aria-label="Selecione el Banco">
+                                            <option value="Banco Internacional"> Banco Internacional</option>
+                                        </select>
+                                        <label >Numero de Control</label>
+                                        <input className="form-control" type="text" name="control"
+
+
+                                        />
+                                    </div>
+                                    <div className="col-12 col-lg-6 d-flex flex-column p-3 align-items-end" >
+                                        <h5 >LUEGO DE REALIZAR LA TRANSACCIÓN
+                                            POR FAVOR REPORTAR EL PAGO
+                                        </h5>
+
+                                        <button className="btn btn-danger col-6 float-end"
+
+                                        >
+                                            Reportar Pago
+                                        </button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </Container></Modal.Body> : ''
+
+                }
 
             </Modal>
         </>
