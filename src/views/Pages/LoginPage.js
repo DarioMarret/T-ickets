@@ -129,7 +129,10 @@ function LoginPage() {
                 </form>
               </div>
             </div>
-            <div className="card px-0  shadow-md text-white py-5 d-none d-lg-block " style={{ width: '100%', backgroundImage: `url(${logoportal})`, backgroundSize: 'cover' }}>
+            <div className="card px-0  shadow-md text-white py-5 d-none d-lg-block " style={{
+              width: '100%', backgroundImage:
+                "url('" + logoportal + "')", backgroundSize: 'cover'
+            }}>
               <div className="card-body text-center">
                 <div>
                   <h2></h2>

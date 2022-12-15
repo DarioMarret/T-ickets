@@ -147,7 +147,9 @@ const Reporte = (props) => {
       <Modal
         show={modalshow.nombre == "ModalReporte" ? true : false}
         onHide={succesAlert}
-        size="lg"
+        size={GetMetodo() != "Transferencia" ? "lg" : ""}
+        centered
+
       ><Modal.Header className=" d-flex  m-0  bg-dark   justify-content-between align-items-center"        >
           <div className="d-flex  container   justify-content-center text-center" >
             <h4 className=" p-1 text-light "

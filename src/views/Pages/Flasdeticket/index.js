@@ -683,7 +683,7 @@ const IndexFlas = () => {
 
         </Swiper>
       </div> : <div className="container-fluid  p-0">
-        <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '400px', backgroundImage: `url(${header})` }}>
+        <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '300px', backgroundImage: `url(${header})` }}>
           <div className="container w-100 h-100 px-0">
             <div className="container btn-group-vertical  h-100 text-center px-0">
               <h1 className="text-white mx-auto" style={{ fontSize: '3.5em' }}><img src={logofla} className="img-fluid" style={{ height: '150px' }} alt="" /></h1>
@@ -710,7 +710,7 @@ const IndexFlas = () => {
                           <a id={"headingThree" + e.id} className="collapsed evento" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7  d-flex justify-content-center px-0">
-                              <img src={"https://flash.t-ickets.com/store/img/portadadeeventos.png"} className="img-fluid rounded-7 shadow-md " alt="" />
+                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
                           </a>
                           <div className="collapse container mt-4 px-0" aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">
@@ -722,11 +722,11 @@ const IndexFlas = () => {
                                     <h4 style={{ fontSize: '1.4em', }}><span id="tour">{e.descripcionConcierto} </span></h4>
                                     <div className="col-12 border border-bottom my-3"></div>
                                     <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                      <p style={{ fontSize: '1.0em' }}><b>Fecha:<span id="fechaEvento">{Dias[new Date(e.fechaConcierto).getDay()]}  {e.fechaConcierto} </span></b></p>
+                                      <p style={{ fontSize: '1.0em' }}>   <b>    <i class="bi bi-calendar-week-fill"></i> Fecha:<span id="fechaEvento">{Dias[new Date(e.fechaConcierto).getDay()]}  {e.fechaConcierto} </span></b></p>
                                       <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                        <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><b>Hora:<span id="horaEvento"> {e.horaConcierto}</span></b></p>
+                                        <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><i class="bi bi-alarm-fill"></i><b>Hora:<span id="horaEvento"> {e.horaConcierto}</span></b></p>
                                       </div>
-                                      <p className="" style={{ fontSize: '1.0em', }}><b>Lugar:<span id="lugarEvento">{e.lugarConcierto}</span></b></p>
+                                      <p className="" style={{ fontSize: '1.0em', }}><i class="bi bi-geo-alt-fill"></i> <b>Lugar:<span id="lugarEvento">{e.lugarConcierto}</span></b></p>
 
                                       <div className="col-12 border border-bottom mb-3"></div>
                                       <div>
