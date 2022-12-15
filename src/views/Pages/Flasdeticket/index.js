@@ -722,9 +722,9 @@ const IndexFlas = () => {
                                     <h4 style={{ fontSize: '1.4em', }}><span id="tour">{e.descripcionConcierto} </span></h4>
                                     <div className="col-12 border border-bottom my-3"></div>
                                     <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                      <p style={{ fontSize: '1.0em' }}>   <b>    <i class="bi bi-calendar-week-fill"></i> Fecha:<span id="fechaEvento">{Dias[new Date(e.fechaConcierto).getDay()]}  {e.fechaConcierto} </span></b></p>
+                                      <p style={{ fontSize: '1.0em' }}>  <i class="bi bi-calendar-week-fill"></i>   <b>  Fecha:<span id="fechaEvento">{Dias[new Date(e.fechaConcierto).getDay()]}  {e.fechaConcierto} </span></b></p>
                                       <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                        <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><i class="bi bi-alarm-fill"></i><b>Hora:<span id="horaEvento"> {e.horaConcierto}</span></b></p>
+                                        <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><i class="bi bi-alarm-fill"></i> <b> Hora:<span id="horaEvento"> {e.horaConcierto}</span></b></p>
                                       </div>
                                       <p className="" style={{ fontSize: '1.0em', }}><i class="bi bi-geo-alt-fill"></i> <b>Lugar:<span id="lugarEvento">{e.lugarConcierto}</span></b></p>
 
