@@ -733,7 +733,7 @@ const IndexFlas = () => {
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="col-12 h-50 w-100"
+                                  <div className=" d-none col-12  h-50 w-100"
                                     style={{
                                       height: 100,
                                       width: '100%'
