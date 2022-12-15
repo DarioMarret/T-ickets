@@ -149,14 +149,7 @@ var routes = [
     icon: "nc-icon nc-single-02",
     permiso: ["superadmin", "super_admin"],
     views: [
-      {
-        path: "/usuarios",
-        layout: "/admin",
-        name: "Usuarios",
-        mini: "*",
-        component: UsersView,
-        permiso: ["superadmin", "super_admin"]
-      },
+
 
       {
         path: "/suscritor",
@@ -269,27 +262,59 @@ var routes = [
     ]
   },
   {
+    collapse: true,
     path: "/Ajustes",
-    layout: "/admin",
     name: "Ajustes",
     icon: "nc-icon nc-settings-gear-64",
-    component: AjustesView,
-    permiso: ["superadmin", "super_admin"]
+    state: "openAjustes",
+    permiso: ["superadmin", "super_admin"],
+    views: [
+      {
+        path: "/Gestion-Personal",
+        layout: "/admin",
+        name: "Gestión Personal",
+        mini: "*",
+        component: UsersView,
+        permiso: ["superadmin", "super_admin"]
+      },
 
+      {
+        path: "/Pasarela-Pago",
+        layout: "/admin",
+        name: "Pasarela de Pago",
+        mini: "*",
+        component: Ventas,
+        permiso: ["superadmin", "super_admin"]
+      }, {
+        path: "/Servidor-Correo",
+        layout: "/admin",
+        name: "Servidor de Correo",
+        mini: "*",
+        component: Reactabla,
+        permiso: ["superadmin", "super_admin"]
+      }, {
+        path: "/Servidor-Correo",
+        layout: "/admin",
+        name: "Configurar WhatsApp",
+        mini: "*",
+        component: Reactabla,
+        permiso: ["superadmin", "super_admin"]
+      }
+    ]
   },
   {
     path: "/Pruebaticke",
     layout: "/admin",
     name: "Prueba",
     component: EsquemaViews,
-    permiso: ["superadmin", "super_admin"]
+    permiso: ["", ""]
   },
   {
     path: "/Pruebasvg",
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["superadmin", "super_admin"]
+    permiso: ["", ""]
   }
 
 

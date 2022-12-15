@@ -381,37 +381,40 @@ const ModalCarritoView = (prop) => {
                             <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     checked={checked.Tarjeta == "Tarjeta" ? true : false}
-                                    onChange={(e) => handelMetodopago(e.target, "Tarjeta")}
+                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
                                     name="Tarjeta" id="Tarjeta" />
-                                <label className="form-check-label" >
+                                <label className="form-check-label" for="Tarjeta">
                                     Tarjeta-credito
                                 </label>
                             </div>
                             <div className="form-check ">
                                 <input className="form-check-input" type="radio"
-                                    checked={checked.Deposito == "Deposito" ? true : false}
-                                    onChange={(e) => handelMetodopago(e.target, "Deposito")}
-                                    name="Deposito" id="Deposito" />
-                                <label className="form-check-label" >
-                                    Deposito
+                                    checked={checked.Transferencia == "Transferencia" ? true : false}
+                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
+                                    name="Transferencia" id="Transferencia" />
+                                <label className="form-check-label" for="Transferencia">
+                                    Transferencia
                                 </label>
                             </div>
                             <div className="form-check ">
                                 <input className="form-check-input" type="radio"
-                                    checked={checked.Transferencia == "Transferencia" ? true : false}
-                                    onChange={(e) => handelMetodopago(e.target, "Transferencia")}
-                                    name="Transferencia" id="Transferencia" />
-                                <label className="form-check-label" >
-                                    Transferencia
+                                    checked={checked.Deposito == "Deposito" ? true : false}
+                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
+                                    name="Deposito" id="Deposito" />
+                                <label className="form-check-label" for="Deposito">
+                                    Deposito
                                 </label>
                             </div>
+
                             <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     name="PasarelaEfectivo" id="PasarelaEfectivo"
                                     checked={checked.PasarelaEfectivo == "Efectivo" ? true : false}
-                                    onChange={(e) => handelMetodopago(e.target, "Efectivo")}
+                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Efectivo")}
                                 />
-                                <label className="form-check-label">
+                                <label className="form-check-label" for="PasarelaEfectivo"
+
+                                >
                                     Efectivo punto de pagos
                                 </label>
                             </div>
