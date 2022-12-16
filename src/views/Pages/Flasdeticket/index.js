@@ -532,22 +532,14 @@ const IndexFlas = () => {
     <>
       {modal.nombre == "Modallocalida" ?
         <LocalidadmapViews
-          handleClosesop={handleClosesop}
-          showMapa={showMapa}
           intervalo={intervalo}
-          setMapashow={setMapashow}
         /> : ''}
       {modal.nombre == "ModalCarritov" ?
         <ModalCarritov
-          showshop={showshop}
           handleClosesop={detenervelocidad}
-          detener={handleClosesop}
-
           setListarCarritoDetalle={setListarCarritoDetalle}
-          datos={datos}
           precios={precios}
           intervalo={intervalo}
-
           setMapashow={setMapashow}
         /> : ''}
       {modal.nombre == "registro" ?
@@ -556,12 +548,9 @@ const IndexFlas = () => {
           setDatoToas={setDatoToas} /> : ''}
       {modal.nombre == "ModalDetalle" ?
         <ModalDetalle
-
           intervalo={intervalo}
-
           setListarCarritoDetalle={setListarCarritoDetalle}
           listarCarritoDetalle={listarCarritoDetalle}
-          setDatoToas={setDatoToas}
         /> : ''}
 
       {
@@ -578,6 +567,7 @@ const IndexFlas = () => {
       <ModalEfectivo
         intervalo={intervalo}
         detener={sololimpiarlocal}
+        detenervelocidad={detenervelocidad}
       />
       <ReporteView
         setrepShow={setrepShow} />

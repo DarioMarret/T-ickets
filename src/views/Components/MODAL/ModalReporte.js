@@ -321,7 +321,7 @@ const Reporte = (props) => {
             </h4>
           </div>
           <div className=" float-left " style={{ marginTop: '-45px' }}>
-            <button type="button" className=" text-secondary" onClick={handlereportColse}>
+            <button type="button" className=" text-secondary" onClick={succesAlert}>
               X
             </button>
           </div>

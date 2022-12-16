@@ -10,6 +10,7 @@ import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 import { useDispatch, useSelector } from "react-redux";
 import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
 import { getVerTienda, GetEstadousu } from 'utils/CarritoLocalStorang';
+import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 
 function ModalDetalle(props) {
     const {
@@ -66,12 +67,13 @@ function ModalDetalle(props) {
         if (!clienteauth) {
             const numero = await ValidarWhatsapp()
             if (numero == null) {
-                setDatoToas({
-                    show: true,
-                    message: 'Ingrese un nuemro Válido',
-                    color: 'bg-danger',
-                    estado: 'Numero de Whatsapp inválido',
-                })
+                usedispatch(
+                    setToastes({
+                        show: true,
+                        message: 'Ingrese un nuemro Válido',
+                        color: 'bg-danger',
+                        estado: 'Numero de Whatsapp inválido',
+                    }))
                 return false
             }
             else if (validarEmail(datosPerson.email)) {
@@ -92,12 +94,13 @@ function ModalDetalle(props) {
                     //setModalPago(true)
                 }
                 else {
-                    setDatoToas({
-                        show: true,
-                        message: "Ingrese un correo diferente o inicie sección",
-                        color: 'bg-danger',
-                        estado: "Correo " + datosPerson.email + " Duplicado",
-                    })
+                    usedispatch(
+                        setToastes({
+                            show: true,
+                            message: 'Ingrese un nuemro Válido',
+                            color: 'bg-danger',
+                            estado: 'Numero de Whatsapp inválido',
+                        }))
                 }
             }
         }
@@ -131,10 +134,9 @@ function ModalDetalle(props) {
             setspiner("")
             const datos = await getCedula(value)
             const { name, email, direccion, whatsapp, discapacidad } = datos
-            console.log(datos)
+            //console.log(datos)
             if (name) {
                 DatosUsuariosLocalStorag({ ...datos, cedula: value, envio: datosPerson.envio, whatsapp: '', discapacidad: discapacidad })
-
                 setPerson({
                     ...datosPerson,
                     email: email ? email : '',
@@ -163,7 +165,6 @@ function ModalDetalle(props) {
                     estado: 'No se encontraron datos',
                 })
             }
-
         }
     }
     function hanbleDatos(e) {
@@ -220,7 +221,6 @@ function ModalDetalle(props) {
                     cedula: datosPersonal.cedula,
                     metodoPago: metodoPago
                 })
-
                 setChecked(false)
             }
             setPerson({
@@ -247,7 +247,6 @@ function ModalDetalle(props) {
                 envio: datosPersonal ? datosPersonal.envio : '',
                 metodoPago: metodoPago,
             })
-
         }
         let mostrarcomision = GetMetodo()
         const mostrar = mostrarcomision != "Tarjeta" ? "d-none" : ""
@@ -260,19 +259,15 @@ function ModalDetalle(props) {
             size="lg"
             fullscreen={'md-down'}
             centered
-
         >
             <Modal.Header className='  text-light border  border-dark '
-
             >
                 <h5 className="modal-title text-center py-3 justify-content-center" style={{ fontWeight: "bold" }}>Tiempo restante para la compra <span className="text-danger" >{intervalo} </span></h5>
-
                 <button type="button" className="close text-white"
                     onClick={handleDetalleColse}>
                     X
                 </button>
             </Modal.Header>
-
             <Modal.Body>
 
                 <div className="container-fluid flex-wrap-reverse justify-content-center " style={{ height: "auto" }}>

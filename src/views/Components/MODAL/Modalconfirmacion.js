@@ -9,6 +9,7 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { useState } from "react";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { PagoRapido } from "utils/Querycomnet";
+import SweetAlert from "react-bootstrap-sweetalert";
 const ModalConfima = (prop) => {
     const { pararcontador } = prop
     let usedispatch = useDispatch()
@@ -31,7 +32,25 @@ const ModalConfima = (prop) => {
         pararcontador()
         usedispatch(setToastes({ show: true, message: 'Datos del deposito Guardado ', color: 'bg-success', estado: 'Se guardo el numero de control' }))
     }
-
+    const succesAlert = () => {
+        setAlert(
+            <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                title={"Esta seguro de querer salir  "}
+                onConfirm={() => hideAlert()}
+                onCancel={() => cerrar()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                confirmBtnText="Completar  Compra"
+                cancelBtnText="Anular Compra"
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                showCancel
+            >
+                Se borraran todos los datos Seleccionados
+            </SweetAlert>
+        )
+    }
     async function onSubmit(e) {
         e.preventDefault();
 
@@ -41,8 +60,8 @@ const ModalConfima = (prop) => {
         //if([codigo,comprobante.name])
         console.log(comprobante)
         console.log([codigo, comprobante.name].some(e => e))
-        if ([codigo, comprobante.name].some(e => e)) usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Se guardo el numero de control' }))
-        if (banco == "") usedispatch(setToastes({ show: true, message: "codigo vacio", color: 'bg-danger', estado: 'Se guardo el numero de control' }))
+        if ([codigo, comprobante.name].some(e => e)) usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
+        if (banco == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
         else if (![codigo, comprobante.name].some(e => e) && banco != "") {
             try {
                 // const link = await Obtenerlinkimagen(comprobante)
@@ -65,7 +84,7 @@ const ModalConfima = (prop) => {
         <>
 
             <Modal
-                show={modal.nombre != "confirmar" ? true : false}
+                show={modal.nombre == "confirmar" ? true : false}
                 centered
             >
                 <Modal.Header className=" d-flex  rounded-top-4 m-0  bg-secondary  justify-content-between align-items-center">

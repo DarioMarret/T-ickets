@@ -9,11 +9,14 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { cargalocalidad, clearMapa } from "StoreRedux/Slice/mapaLocalSlice";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
 import { Eventoid, listaasiento } from "utils/constantes";
-import ModalCarritoView from "./Modal/ModalCarritoadmin";
+//import ModalCarritoView from "./Modal/ModalCarritoadmin";
 import { Cargarsillas } from "views/Components/MODAL/cargarsillas";
 import ModalPago from "views/Components/MODAL/ModalPago";
-import ModalLocalidamapViews from "./Modal/ModalloaclidadAdmin"
-import ModalDetalle from "./Modal/ModalDetalle";
+//import ModalLocalidamapViews from "./Modal/ModalloaclidadAdmin"
+import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
+import ModalCarritov from "views/Components/MODAL/ModalCarritov";
+//import ModalDetalle from "./Modal/ModalDetalle";
+import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalEfectivo from "./Modal/Modalefectivo";
 import Reporte from "./Modal/ModalDeposito";
 import ModalSuscritoView from "../Suscriptores/ModalSuscritor";
@@ -33,6 +36,9 @@ import { seleccionmapa } from "utils/constantes";
 import { Eventolocalidad } from "utils/constantes";
 import { filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
+import { ListaElimnaLCompleta } from "utils/CarritoLocalStorang";
+import { quitarsilla } from "utils/Querypanelsigui";
+import { correlativodelete } from "utils/Querypanelsigui";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -94,14 +100,31 @@ export default function StoreTickesViews() {
         }, 2000);
     }
     function detenervelocidad() {
-        handleClosesop(false)
+        //  handleClosesop(false)
         clearInterval(intervalRef.current)
         setMapashow(false)
         setDetalle(false)
-        Limpiarseleccion()
-        LimpiarLocalStore()
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
+        usedispatch(setModal({ nombre: "", estado: '' }))
+        let array = ListaElimnaLCompleta()
+        array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
+            console.log(ouput)
+        }).catch(err => console.log(err)) : ''
+        getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
+
+            getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
+                setTimeout(function () {
+                    correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
+                        console.log(ouput)
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }, 20 * index)
+            })
+            : ''
+        Limpiarseleccion()
+        LimpiarLocalStore()
     }
     function para() {
         clearInterval(intervalRef.current)
@@ -215,9 +238,10 @@ export default function StoreTickesViews() {
     }
     const abrir = async (e) => {
         let id = sessionStorage.getItem(Eventoid)
-
         if (id != null && id != e.codigoEvento) {
-            borrar(e)
+            // borrar(e)
+            // setspinervi("d-none")
+            //successAlert(e)
             usedispatch(setModal({ nombre: '', estado: '' }))
         }
         try {
@@ -230,12 +254,12 @@ export default function StoreTickesViews() {
                 let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
                 let localidad = JSON.parse(mapa[0].localidad)
                 let path = JSON.parse(mapa[0].pathmap)
-                let newprecios = obten.data.map((e, i) => {
-                    let color = localidad.filter((f, i) => f.nombre == e.localodad)
-                    e.color = color[0].color
-                    e.idcolor = color[0].id
-                    e.typo = color[0].tipo
-                    return e
+                let newprecios = obten.data.map((g, i) => {
+                    let color = localidad.filter((f, i) => f.nombre == g.localodad)
+                    g.color = color[0].color
+                    g.idcolor = color[0].id
+                    g.typo = color[0].tipo
+                    return g
                 })
                 let colornuevo = mapalocal.map((L) => {
                     if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
@@ -267,10 +291,13 @@ export default function StoreTickesViews() {
 
                 consultarlocalidad()
                 Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
-                    handleClosesop(true)
+                    // handleClosesop(true)
+                    // usedispatch(cargarsilla(outp))
+                    // usedispatch(setModal({ nombre: '', estado: '' }))
+                    // setspinervi("d-none")
+                    //velocidad()
                     usedispatch(cargarsilla(outp))
-
-                    usedispatch(setModal({ nombre: '', estado: '' }))
+                    usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
 
                 }).catch(err => {
                     console.log(err)
@@ -281,6 +308,7 @@ export default function StoreTickesViews() {
             console.log(err)
         }
     }
+
     window.onbeforeunload = preguntarAntesDeSalir;
 
     function preguntarAntesDeSalir() {
@@ -315,29 +343,33 @@ export default function StoreTickesViews() {
     }, [])
     return (
         <>
-            <ModalLocalidamapViews
-                handleClosesop={handleClosesop}
-                showMapa={showMapa}
+            {modalshow.modal.nombre == "Modallocalida" ?
+                <LocalidadmapViews
+                    intervalo={intervalo}
+                /> : ''}
+            {modalshow.modal.nombre == "ModalCarritov" ?
+                <ModalCarritov
+                    handleClosesop={detenervelocidad}
+                    setListarCarritoDetalle={setListarCarritoDetalle}
+                    precios={precios}
+                    intervalo={intervalo}
+                    setMapashow={setMapashow}
+                /> : ''
+            }
+            <ModalDetalle
                 intervalo={intervalo}
-                setMapashow={setMapashow}
-            />
-            <ModalCarritoView
-                showshop={showshop}
-                handleClosesop={detenervelocidad}
-                detener={handleClosesop}
-                handleContinuar={handleContinuar}
                 setListarCarritoDetalle={setListarCarritoDetalle}
-                datos={datos}
-                precios={precios}
-                intervalo={intervalo}
-                setMapashow={setMapashow}
+                listarCarritoDetalle={listarCarritoDetalle}
             />
-            <ModalEfectivo
+            {modalshow.modal.nombre == "suscritor" || modalshow.modal.nombre == false ? <ListaSuscritor abrir={abrir} /> : ''}
+            {
+                modalshow.modal.nombre == "ModalPago" ? <ModalPago intervalo={intervalo} detenervelocidad={detenervelocidad} para={para} setModalPago={setModalPago} modalPago={modalPago} /> : null
+            }
+            {modalshow.modal.nombre == "ModalPago" ? <ModalEfectivo
                 intervalo={intervalo}
-                efectShow={efectShow}
-                efectiOpShow={efectiOpShow}
-                handleefectivoClose={handleefectivoClose}
-            />
+
+                detenervelocidad={detenervelocidad}
+            /> : ''}
             <ModalSuscritoView
                 show={modalshow.modal.nombre == "newsuscri" ? true : false}
                 setshow={cerrnewsuscr}
@@ -520,41 +552,10 @@ export default function StoreTickesViews() {
                     </div>
                 </div>
             </Row>
-            {modalshow.modal.nombre == "suscritor" || modalshow.modal.nombre == false ? <ListaSuscritor abrir={abrir} /> : ''}
-            {
-                modalPago ? <ModalPago
-                    intervalo={intervalo}
-                    detenervelocidad={detenervelocidad}
-                    para={para}
-                    closedeposito={closedeposito}
-                    setModalPago={setModalPago} modalPago={modalPago} /> : null
-            }
-            <ModalConfima
-                setrepShow={setrepShow}
-                pararcontador={detenervelocidad}
-                detener={detenervelocidad}
 
-            />
-            <ModalDetalle
-                showDetalle={showDetalle}
-                intervalo={intervalo}
-                setDetalle={setDetalle}
-                handleDetalleColse={handleDetalleColse}
-                listarCarritoDetalle={listarCarritoDetalle}
-                pararcontador={detenervelocidad}
-                setListarCarritoDetalle={setListarCarritoDetalle}
-                setModalPago={setModalPago}
-                setrepShow={setrepShow}
-                efectiOpShow={efectiOpShow}
-            />
-            <Reporte
-                intervalo={intervalo}
-                repShop={repShop}
-                pararcontador={detenervelocidad}
-                setrepShow={setrepShow}
-                detener={detenervelocidad}
-                handlereportColse={handlereportColse}
-            />
+
+
+
 
         </>
 

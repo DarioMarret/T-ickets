@@ -13,7 +13,7 @@ import { Triangle } from 'react-loader-spinner';
 import { GetValores } from 'utils/CarritoLocalStorang';
 import { PagoRapido } from 'utils/Querycomnet';
 const ModalEfectivo = (props) => {
-  const { intervalo, detener, } = props;
+  const { intervalo, detener, detenervelocidad } = props;
   let usedispatch = useDispatch()
   let Modalshow = useSelector((state) => state.SuscritorSlice.modal)
   //console.log(Modalshow)
@@ -61,10 +61,8 @@ const ModalEfectivo = (props) => {
         // usedispatch(setToastes({nombre:""}))      
         console.log(ouput)
         seTSpiners("d-none")
-
         hideAlert()
       }
-
     }).catch(error => {
       seTSpiners("d-none")
       console.log(error)
@@ -72,7 +70,29 @@ const ModalEfectivo = (props) => {
   }
   const cerrar = () => {
     // setDetalle(true)
-    usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
+    detenervelocidad()
+    usedispatch(setModal({ nombre: '', estado: '' }))
+    hideAlert()
+  }
+
+  const succesExit = () => {
+    setAlert(
+      <SweetAlert
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title={"Esta seguro de querer salir  "}
+        onConfirm={() => hideAlert()}
+        onCancel={() => cerrar()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText="Completar  Compra"
+        cancelBtnText="Anular Compra"
+        closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+        showCancel
+      >
+        Se borraran todos los datos Seleccionados
+      </SweetAlert>
+    )
   }
   const succesAlert = () => {
     setAlert(
@@ -111,7 +131,7 @@ const ModalEfectivo = (props) => {
             <div><button className='d-none btn btn-primary' onClick={() => cerrar()}  >  <i className="fa fa-arrow-left">  </i>   </button></div>
           </div>
           <button type="button" className=" close"
-            onClick={() => cerrar()} >
+            onClick={() => succesExit()} >
             X
           </button>
         </Modal.Header>

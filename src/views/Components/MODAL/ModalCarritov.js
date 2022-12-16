@@ -14,6 +14,7 @@ import { listaEliminasillas } from "utils/CarritoLocalStorang"
 import { quitarsilla } from "utils/Querypanelsigui"
 import { correlativodelete } from "utils/Querypanelsigui"
 import { setModal } from "StoreRedux/Slice/SuscritorSlice"
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 
 const ModalCarritoView = (prop) => {
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
@@ -137,6 +138,7 @@ const ModalCarritoView = (prop) => {
     })
     function cerrar() {
         handleClosesop()
+        // usedispatch(setModal({ nombre: "", estado: '' }))
         hideAlert()
     }
     const successAlert = () => {
@@ -391,16 +393,17 @@ const ModalCarritoView = (prop) => {
                                     Tarjeta-credito
                                 </label>
                             </div>
-                            <div className="form-check ">
-                                <input className="form-check-input" type="radio"
-                                    checked={checked.Transferencia == "Transferencia" ? true : false}
-                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
-                                    name="Transferencia" id="Transferencia" />
-                                <label className="form-check-label" htmlFor="Transferencia">
-                                    Transferencia
-                                </label>
-                            </div>
-                            <div className="form-check ">
+                            {clienteInfo() == null ?
+                                <div className="form-check ">
+                                    <input className="form-check-input" type="radio"
+                                        checked={checked.Transferencia == "Transferencia" ? true : false}
+                                        onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
+                                        name="Transferencia" id="Transferencia" />
+                                    <label className="form-check-label" htmlFor="Transferencia">
+                                        Transferencia
+                                    </label>
+                                </div> : ""}
+                            {clienteInfo() == null ? <div className="form-check ">
                                 <input className="form-check-input" type="radio"
                                     checked={checked.Deposito == "Deposito" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
@@ -408,7 +411,7 @@ const ModalCarritoView = (prop) => {
                                 <label className="form-check-label" htmlFor="Deposito">
                                     Deposito
                                 </label>
-                            </div>
+                            </div> : ""}
 
                             <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
@@ -416,10 +419,8 @@ const ModalCarritoView = (prop) => {
                                     checked={checked.PasarelaEfectivo == "Efectivo" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Efectivo")}
                                 />
-                                <label className="form-check-label" htmlFor="PasarelaEfectivo"
-
-                                >
-                                    Efectivo punto de pagos
+                                <label className="form-check-label" htmlFor="PasarelaEfectivo">
+                                    {clienteInfo() == null ? "Efectivo punto de pagos" : "Efectivo"}
                                 </label>
                             </div>
 

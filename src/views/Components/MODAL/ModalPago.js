@@ -44,14 +44,34 @@ function ModalPago(props) {
         }
         setCargar(!cargar)
     }, [modalPago])
-    const closedeposito = () => usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
+    const closedeposito = () => {
+        setAlert(
+            <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                title={"Esta seguro de querer salir  "}
+                onConfirm={() => hideAlert()}
+                onCancel={() => borrar()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                confirmBtnText="Completar  Compra"
+                cancelBtnText="Anular Compra"
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                showCancel
+            >
+                Se borraran todos los datos Seleccionados
+            </SweetAlert>
+        )
+    }
     const borrar = () => {
-        Limpiarseleccion()
-        LimpiarLocalStore()
+
+
+        detenervelocidad()
+        //Limpiarseleccion()
+        //LimpiarLocalStore()
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
         setModalPago(false)
-        intervalo ? detenervelocidad() : ''
     }
     const succesAlert = () => {
         setAlert(
