@@ -377,6 +377,7 @@ const LocalidadmapViews = (props) => {
     const sillasetado = (d) => {
         const user = getDatosUsuariosLocalStorag()
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
+        //  console.log(d.estado)
         if (d.cedula != undefined) {
             if (user != null && user.cedula == d.cedula) return "seleccionado  " + nombres.idcolor + "silla"
             else

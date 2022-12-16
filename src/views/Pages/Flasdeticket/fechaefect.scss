@@ -1,16 +1,16 @@
-.btn-hover :hover {
-    translate: 0 10px;
-    transition: all .3s ease-in-out;
+.eventoss :hover {
+    .btn-hover svg {
+        translate: 0 10px;
+        transition: all .3s ease-in-out;
+    }
 
     .line1 {
 
-        animation: dash 3.5s linear infinite;
+        animation: dash 1.5s linear infinite;
     }
 
     .line3 {
-
-        animation-duration: 2s;
-        animation: dash2 2.5s linear infinite;
+        animation: dash2 1.5s linear infinite;
     }
 
     .line2 {
@@ -19,32 +19,43 @@
     }
 
     @keyframes dash {
-        from {
-            fill: #198754;
+        0% {
+            fill: #A9ABAE;
         }
 
-        to {
-            fill: #ffffff;
-        }
-    }
-
-    @keyframes dash2 {
-        from {
-            fill: #198754;
-        }
-
-        to {
-            fill: #ffffff;
+        100% {
+            fill: #E6E7E8;
         }
     }
 
     @keyframes dash3 {
-        from {
-            fill: #198754;
+        0% {
+            fill: #E6E7E8;
         }
 
-        to {
-            fill: #ffffff;
+        50% {
+            fill: #A9ABAE;
+        }
+
+        100% {
+            fill: #D2D3D5;
         }
     }
+
+    @keyframes dash2 {
+        0% {
+            fill: #D2D3D5;
+        }
+
+        50% {
+            fill: #E6E7E8;
+        }
+
+        100% {
+            fill: #A9ABAE;
+        }
+    }
+
+
+
 }

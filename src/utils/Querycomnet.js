@@ -14,7 +14,7 @@ https://portal.comnet.ec/api/v1/NewUser
                         "movil": "989898989",
                             "direccion_principal": "CONCIERTO ELADIO CARRION"
 }*/
-export const crearusercomnet = async () => {
+/*export const crearusercomnet = async () => {
     let user = getDatosUsuariosLocalStorag()
     let informa = {
 
@@ -33,33 +33,34 @@ export const crearusercomnet = async () => {
     } catch (error) {
         return error
     }
-}
+}*/
 
 export const PagoRapido = async (transaccion) => {
-    try {
-        let datosPersonal = getDatosUsuariosLocalStorag().cedula
-        let metodo = GetMetodo()
-        let concierto = getVerTienda().map((e) => {
-            return {
-                "id_localidad": e.localidaEspacio["idcolor"],
-                "cantidad": e.cantidad,
-                "nombreConcierto": e.nombreConcierto
-            }
-        })
-        let datos = {
-            "cedula": datosPersonal,
-            "forma_pago": metodo,
-            "concierto": [...concierto],
-            "valores": {
-                "total": parseFloat(GetValores().total).toFixed(2),
-                "comision": parseFloat(GetValores().comision).toFixed(2),
-                "subtotal": parseFloat(GetValores().subtotal).toFixed(2),
-                "comision_bancaria": parseFloat(GetValores().comision_bancaria).toFixed(2),
-                "description": GetValores().description
-            },
-            "idfactura": "",
-            "transaccion": transaccion
+    let datosPersonal = getDatosUsuariosLocalStorag().cedula
+    let metodo = GetMetodo()
+    let concierto = getVerTienda().map((e) => {
+        return {
+            "nombreConcierto": e.nombreConcierto,
+            "id_localidad": e.localidaEspacio["idcolor"],
+            "cantidad": e.cantidad,
         }
+    })
+    let datos = {
+        "cedula": datosPersonal,
+        "forma_pago": metodo,
+        "concierto": [...concierto],
+        "valores": {
+            "total": parseFloat(GetValores().total).toFixed(2),
+            "comision": parseFloat(GetValores().comision).toFixed(2),
+            "subtotal": parseFloat(GetValores().subtotal).toFixed(2),
+            "comision_bancaria": parseFloat(GetValores().comision_bancaria).toFixed(2),
+            "description": GetValores().description
+        },
+        "idfactura": "",
+        "transaccion": transaccion
+    }
+    try {
+
         console.log(datos)
         const { data } = await axios.post(Host + "/api/v1/registraCompra ", datos, {
             headers: {

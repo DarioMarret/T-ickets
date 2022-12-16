@@ -205,7 +205,7 @@ const ResgistroView = (prop) => {
                             sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
                             setDatoToas({
                                 show: true,
-                                message: "Bienvenido" + data.nombreCompleto,
+                                message: "Bienvenido " + data.nombreCompleto,
                                 color: 'bg-success',
                                 estado: "Inicio Exitoso",
                             })
@@ -215,9 +215,9 @@ const ResgistroView = (prop) => {
                             console.log("error", registro.data)
                             setDatoToas({
                                 show: true,
-                                message: "Email o cedula duplicada",
+                                message: "El Email ya " + email + " se encuentra registrado intente con otro",
                                 color: 'bg-danger',
-                                estado: "Error",
+                                estado: "Error de registro",
                             })
                         }
 
@@ -225,9 +225,9 @@ const ResgistroView = (prop) => {
                         console.log(error)
                         setDatoToas({
                             show: true,
-                            message: "Email o cedula duplicada",
+                            message: "El Email ya" + email + " se encuentra registrado intente con otro",
                             color: 'bg-danger',
-                            estado: error.response.data["error"],
+                            estado: "Email dubplicado",
                         })
 
                     }

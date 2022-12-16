@@ -50,6 +50,7 @@ import { correlativodelete } from "utils/Querypanelsigui.js";
 import { ListaElimnaLCompleta } from "utils/CarritoLocalStorang.js";
 import { Triangle } from "react-loader-spinner";
 import { ListarNoticias } from "utils/Querypanelsigui.js";
+import { setItervalo } from "StoreRedux/Slice/SuscritorSlice.js";
 import ModalFacilitoView from "views/Components/MODAL/ModalFacilito.js";
 import ReporteView from "views/Components/MODAL/Modalreporpago.js";
 import Comprobante from "./comprobante/index.js";
@@ -117,11 +118,16 @@ const IndexFlas = () => {
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
         usedispatch(setModal({ nombre: '', estado: '' }))
+        setcrono("00:00")
+        usedispatch(setItervalo({ intervalo: "00:00" }))
         $(".Mesa").removeClass("mesaocupado").addClass("mesadisponible")
         $(".Mesa").removeClass("mesareserva")
+
       }
       else {
         setcrono(minutos + ":" + segundos)
+
+        usedispatch(setItervalo({ intervalo: minutos + ":" + segundos }))
         if (--timer < 0) timer = tiempo;
       }
     }, 1000);
@@ -228,6 +234,36 @@ const IndexFlas = () => {
       : ''
     Limpiarseleccion()
     LimpiarLocalStore()
+  }
+  function sololimpiarlocal() {
+    clearInterval(localidadtimer.current)
+    clearInterval(datatime.current)
+    //setMapashow(false)
+    //setDetalle(false)
+    // efectiOpShow(false)
+    //setModalPago(false)
+    //setrepShow(false)
+    usedispatch(clearMapa({}))
+    usedispatch(borrarseleccion({ estado: "seleccionado" }))
+    let array = ListaElimnaLCompleta()
+    /* array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
+       console.log(ouput)
+     }
+     ).catch(err => console.log(err)) : ''
+     getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
+ 
+       getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
+         setTimeout(function () {
+           correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
+             console.log(ouput)
+           }).catch(err => {
+             console.log(err)
+           })
+         }, 20 * index)
+       })
+       : ''*/
+    //Limpiarseleccion()
+    //LimpiarLocalStore()
   }
   const abrir = async (e) => {
     setspinervi("")
@@ -537,10 +573,11 @@ const IndexFlas = () => {
         setrepShow={setrepShow}
         setDatoToas={setDatoToas}
         detener={detenervelocidad}
+        comprar={sololimpiarlocal}
       />
       <ModalEfectivo
         intervalo={intervalo}
-        detener={paraenlace}
+        detener={sololimpiarlocal}
       />
       <ReporteView
         setrepShow={setrepShow} />
@@ -708,7 +745,7 @@ const IndexFlas = () => {
 
                       return (
                         <div className="col-12 mx-auto my-3" id={"evento" + e.id} key={i}>
-                          <a id={"headingThree" + e.id} className="collapsed evento" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
+                          <a id={"headingThree" + e.id} className="collapsed evento eventoss" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7  d-flex justify-content-center px-0">
                               <i className="  text-info btn-hover" style={{
@@ -777,7 +814,7 @@ const IndexFlas = () => {
                                 COMPRAR
 
                               </Button>
-                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
+                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md  btn-hover " alt="" />
 
                             </div>
                           </a>

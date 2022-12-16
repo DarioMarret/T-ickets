@@ -10,16 +10,18 @@ import { GetMetodo } from 'utils/CarritoLocalStorang';
 import { GetValores } from 'utils/CarritoLocalStorang';
 import { bancos } from 'utils/Imgenesutils';
 import { PagoRapido } from 'utils/Querycomnet';
+import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 
 let { GUAYAQUIL, numero,
   pacifico, pichincha,
   produbanco } = bancos
 const Reporte = (props) => {
   const {
-    setDatoToas, setrepShow, detener, intervalo,
+    setDatoToas, setrepShow, detener, comprar, intervalo,
   } = props
   let usedispatch = useDispatch()
-  const modalshow = useSelector((state) => state.SuscritorSlice.modal)
+
+  let modalshow = useSelector((state) => state.SuscritorSlice.modal)
   const [codigo, setCodigo] = useState("")
   const [alert, setAlert] = useState(null)
   function handelchange(e) {
@@ -90,39 +92,138 @@ const Reporte = (props) => {
       </SweetAlert>
     )
   }
+  const succesAlertBanc = (e) => {
+    setAlert(
+      <SweetAlert
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title={"Se generara al banco selecionado"}
+        onConfirm={() => Confirmar(e)}
+        onCancel={() => cerrar()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText="Completar  Compra"
+        cancelBtnText="Anular Compra"
+        closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+        showCancel
+      >
+        Se borraran todos los datos Seleccionados
+      </SweetAlert>
+    )
+  }
   const hideAlert = () => {
     setAlert(null)
   }
   function Confirmar(e) {
+    let valores = GetValores()
     if (e == "pichincha") {
+      //  /*
+      usedispatch(setModal({
+        nombre: e, estado: valores
+      }))
+      usedispatch(setToastes({
+        show: true,
+        message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
+        color: 'bg-success',
+        estado: 'Orden de Pago Generada '
+      }))
+      //*/
+
+      /*
       PagoRapido("").then(oupt => {
-        usedispatch(setModal({ nombre: e, estado: '#ffc107' }))
-        setrepShow(false)
+       if (oupt.success) {
+        comprar()
+          usedispatch(setModal({
+            nombre: e, estado: oupt.message
+          }))
+          usedispatch(setToastes({
+            show: true,
+            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
+            color: 'bg-success',
+            estado: 'Orden de Pago Generada '
+          }))
+          return
+        }
+        else {
+          usedispatch(setToastes({
+            show: true,
+            message: 'Hubo un error al generar la orden intenta de nueavo',
+            color: 'bg-wharning',
+            estado: 'Orden de pago no generada '
+          }))
+        }
+        //setrepShow(false)
         console.log(oupt)
+
       }).catch(error => {
         seTSpiners("d-none")
         console.log(error)
       })
+      //*/
       return
     }
     if (e == "guayaquil") {
-      setrepShow(false)
       PagoRapido("").then(oupt => {
-        //limpiar carroo cuando haya pagado
-        usedispatch(setModal({ nombre: e, estado: '#d3006e' }))
-        setrepShow(false)
+        if (oupt.success) {
+          comprar()
+          usedispatch(setModal({
+            nombre: e, estado: oupt.message
+          }))
+          usedispatch(setToastes({
+            show: true,
+            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
+            color: 'bg-success',
+            estado: 'Orden de Pago Generada '
+          }))
+          return
+        }
+        else {
+          usedispatch(setToastes({
+            show: true,
+            message: 'Hubo un error al generar la orden intenta de nueavo',
+            color: 'bg-wharning',
+            estado: 'Orden de pago no generada '
+          }))
+        }
+        //setrepShow(false)
         console.log(oupt)
+
       }).catch(error => {
         seTSpiners("d-none")
         console.log(error)
+        usedispatch(setToastes({
+          show: true,
+          message: 'Hubo un error ',
+          color: 'bg-wharning',
+          estado: 'Orden de pago no generada '
+        }))
       })
       return
     }
     if (e == "produbanco") {
       PagoRapido("").then(oupt => {
-        //limpiar carroo cuando haya pagado
-        usedispatch(setModal({ nombre: e, estado: '#103987' }))
-        setrepShow(false)
+        if (oupt.success) {
+          comprar()
+          usedispatch(setModal({
+            nombre: e, estado: oupt.message
+          }))
+          usedispatch(setToastes({
+            show: true,
+            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
+            color: 'bg-success',
+            estado: 'Orden de Pago Generada '
+          }))
+          return
+        }
+        else {
+          usedispatch(setToastes({
+            show: true,
+            message: 'Hubo un error al generar la orden intenta de nueavo',
+            color: 'bg-wharning',
+            estado: 'Orden de pago no generada '
+          }))
+        }
+        //setrepShow(false)
         console.log(oupt)
       }).catch(error => {
         seTSpiners("d-none")
@@ -132,11 +233,27 @@ const Reporte = (props) => {
     }
     if (e == "pacifico") {
       PagoRapido("").then(oupt => {
-        //limpiar carroo cuando haya pagado
-        usedispatch(setModal({
-          nombre: e, estado: '#199ad6'
-        }))
-        setrepShow(false)
+        if (oupt.success) {
+          comprar()
+          usedispatch(setModal({
+            nombre: e, estado: oupt.message
+          }))
+          usedispatch(setToastes({
+            show: true,
+            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
+            color: 'bg-success',
+            estado: 'Orden de Pago Generada '
+          }))
+          return
+        }
+        else {
+          usedispatch(setToastes({
+            show: true,
+            message: 'Hubo un error al generar la orden intenta de nueavo',
+            color: 'bg-wharning',
+            estado: 'Orden de pago no generada '
+          }))
+        }
         console.log(oupt)
       }).catch(error => {
         seTSpiners("d-none")
@@ -146,6 +263,41 @@ const Reporte = (props) => {
     }
     if (e == "transferencia") {
       usedispatch(setModal({ nombre: "confirmar", estado: "" }))
+      comprar()
+      usedispatch(setToastes({
+        show: true,
+        message: "Recuerdaque tiene 1 hora para realizar el deposito",
+        color: 'bg-success',
+        estado: 'Orden de Pago Generada '
+      }))
+      /*PagoRapido("").then(oupt => {
+        if (oupt.success) {
+          comprar()
+          usedispatch(setModal({
+            nombre: "confirmar", estado: oupt.message
+          }))
+          usedispatch(setToastes({
+            show: true,
+            message: oupt.message,
+            color: 'bg-success',
+            estado: 'Orden de Pago Generada '
+          }))
+          return
+        }
+        else {
+          usedispatch(setToastes({
+            show: true,
+            message: 'Hubo un error al generar la orden intenta de nueavo',
+            color: 'bg-wharning',
+            estado: 'Orden de pago no generada '
+          }))
+        }
+        //setrepShow(false)
+        console.log(oupt)
+      }).catch(error => {
+        seTSpiners("d-none")
+        console.log(error)
+      })*/
       return
     }
   }
@@ -155,7 +307,7 @@ const Reporte = (props) => {
       <Modal
         show={modalshow.nombre == "ModalReporte" ? true : false}
         onHide={succesAlert}
-        size={GetMetodo() != "Transferencia" ? "lg" : ""}
+        size={GetMetodo() == "Transferencia" ? "lg" : ""}
         centered
 
       ><Modal.Header className=" d-flex  m-0  bg-dark   justify-content-between align-items-center"        >
@@ -165,7 +317,7 @@ const Reporte = (props) => {
                 fontWeight: "bold"
               }}
             >
-              {GetMetodo() != "Transferencia" ? "DEPOSITAR A LAS SIGUIENTES CUENTAS" : "TRANSFERIR A LAS SIGUIENTES CUENTAS "}
+              {GetMetodo() == "Transferencia" ? "DEPOSITAR A LAS SIGUIENTES CUENTAS" : "TRANSFERIR A LAS SIGUIENTES CUENTAS "}
             </h4>
           </div>
           <div className=" float-left " style={{ marginTop: '-45px' }}>
@@ -178,8 +330,7 @@ const Reporte = (props) => {
         <Modal.Body>
 
           <div className="container-fluid px-0">
-
-            {GetMetodo() != "Transferencia" ? <div className='row  flex-wrap-reverse'>
+            {GetMetodo() == "Transferencia" ? <div className='row  flex-wrap-reverse'>
               <div className='col-12 col-md-6 d-flex flex-column align-items-center'>
                 <div className='pt-2 pagos' >
                   <img src={pichincha} className="img-fluid" onClick={() => Confirmar("pichincha")} />
@@ -199,6 +350,9 @@ const Reporte = (props) => {
               </div>
               <div className='col-12 col-md-6' >
                 <div className='text-center'>
+                  <p style={{
+                    fontWeight: "bold"
+                  }}>Tiempo restante <span className='text-danger'  >{intervalo}</span> </p>
                   <h5>
                     <strong
                     >  Pasos para Compra con Déposito</strong>
@@ -278,11 +432,11 @@ const Reporte = (props) => {
                 </div>
                 <div className=' container d-flex   px-0 mx-0 justify-content-between ' style={{ width: '90%' }}>
                   <div className=''>
-                    <button className='btn btn-success m-2 ' style={{ fontSize: '0.7em' }} onClick={() => Confirmar("transferencia")} > CONFRIMAR DEPOSITO </button>
+                    <button className='btn btn-success m-2 ' style={{ fontSize: '0.7em' }} onClick={() => Confirmar("transferencia")} > CONFIMAR TRANSFERENCIA </button>
 
                   </div>
                   <div>
-                    <button className='btn  btn-danger m-2' style={{ fontSize: '0.7em' }} onClick={succesAlert}> CANCELAR COMPRA </button>
+                    <button className='btn  btn-danger m-2' style={{ fontSize: '0.7em' }} onClick={succesAlert}><span className='text-danger'>......</span>   CANCELAR COMPRA <span className='text-danger'>......</span>  </button>
                   </div>
                 </div>
               </div>}

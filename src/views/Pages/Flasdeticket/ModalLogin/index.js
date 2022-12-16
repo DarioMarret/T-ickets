@@ -26,7 +26,7 @@ const ModalLogin = (props) => {
     event.preventDefault();
     if (credenciales.username !== '' && credenciales.pass !== '') {
       try {
-        const { data } = await axios.post(Host + "api/v1/auth_suscriptor", { email: credenciales.username, password: credenciales.pass }, {
+        const { data } = await axios.post(Host + "api/v1/auth_suscriptor", { email: credenciales.username.trim(), password: credenciales.pass }, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
