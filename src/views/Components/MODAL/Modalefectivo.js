@@ -4,16 +4,16 @@ import { Salircliente } from 'utils/constantes';
 import { ReportarEfectivoCompra, EnviarmensajeWhastapp } from "../../../utils/Query";
 import { useDispatch, useSelector } from 'react-redux';
 import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
+import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { carrusel } from 'views/Pages/Flasdeticket/imagenstatctic';
 let { facilito, redacti } = carrusel
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { crearusercomnet } from 'utils/Querycomnet';
 import { FacturaComnet } from 'utils/constantes';
 import { Triangle } from 'react-loader-spinner';
 import { GetValores } from 'utils/CarritoLocalStorang';
 import { PagoRapido } from 'utils/Querycomnet';
 const ModalEfectivo = (props) => {
-  const { intervalo, detener, } = props;
+  const { intervalo, detener, detenervelocidad } = props;
   let usedispatch = useDispatch()
   let Modalshow = useSelector((state) => state.SuscritorSlice.modal)
   //console.log(Modalshow)
@@ -40,51 +40,42 @@ const ModalEfectivo = (props) => {
   }
   function comnetusernew() {
     seTSpiners("")
+    hideAlert()
+    let valores = GetValores()
     PagoRapido("").then(ouput => {
-      usedispatch(setModal({ nombre: 'ordendepago', estado: '' }))
-      console.log(ouput)
-      /*  let registro = {
-   codigo: 25,
-   total: 2
- }
- sessionStorage.setItem(FacturaComnet, JSON.stringify(registro))
-*/
-      seTSpiners("d-none")
-      // console.log("ouput")
-
-      //detener()
+      if (!ouput.success) {
+        detener()
+        usedispatch(setToastes({
+          show: true, message: 'Hubo un error ', color: 'bg-warning', estado:
+            "No se genero la orden intente de nuevo"
+        }))
+        seTSpiners("d-none")
+        hideAlert()
+        return
+      }
+      else {
+        detener()
+        sessionStorage.setItem(FacturaComnet, JSON.stringify(ouput.idfactura))
+        usedispatch(setModal({ nombre: 'ordendepago', estado: valores }))
+        usedispatch(setToastes({ show: true, message: 'Orden de pago generada', color: 'bg-success', estado: ouput.message }))
+        // usedispatch(setToastes({nombre:""}))      
+        console.log(ouput)
+        seTSpiners("d-none")
+        hideAlert()
+      }
     }).catch(error => {
       seTSpiners("d-none")
       console.log(error)
     })
-    /*setTimeout(function () {
-
-   
-     
-      /*
-      crearusercomnet().then(ouput => {
-        let total = parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)
-        let registro = {
-          codigo: ouput.idcliente,
-          total: total
-        }
-        sessionStorage.setItem(FacturaComnet, JSON.stringify(registro))
-
-        seTSpiners("d-none")
-        console.log(ouput)
-        detener()
-        usedispatch(setModal({ nombre: 'ordendepago', estado: '' }))
-
-      }
-      ).catch(err => console.log(err))*
-    }, 2000)*/
   }
   const cerrar = () => {
     // setDetalle(true)
-    usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
-
+    detenervelocidad()
+    usedispatch(setModal({ nombre: '', estado: '' }))
+    hideAlert()
   }
-  const succesAlert = () => {
+
+  const succesExit = () => {
     setAlert(
       <SweetAlert
         warning
@@ -96,11 +87,28 @@ const ModalEfectivo = (props) => {
         cancelBtnBsStyle="danger"
         confirmBtnText="Completar  Compra"
         cancelBtnText="Anular Compra"
-
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
         showCancel
       >
         Se borraran todos los datos Seleccionados
+      </SweetAlert>
+    )
+  }
+  const succesAlert = () => {
+    setAlert(
+      <SweetAlert
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title={" Desea continuar con la compra"}
+        onConfirm={() => comnetusernew()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText="Aceptar"
+        cancelBtnText="Cancelar"
+        closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+        showCancel
+      >Se generara una orden de pago con el cual debera cancelar la compra
       </SweetAlert>
     )
   }
@@ -116,8 +124,6 @@ const ModalEfectivo = (props) => {
       {alert}
       <Modal
         show={Modalshow.nombre == "modalpago" ? true : false}
-
-
       >
         <Modal.Header className='py-3' >
           <div className='d-flex justify-content-between w-100' >
@@ -125,7 +131,7 @@ const ModalEfectivo = (props) => {
             <div><button className='d-none btn btn-primary' onClick={() => cerrar()}  >  <i className="fa fa-arrow-left">  </i>   </button></div>
           </div>
           <button type="button" className=" close"
-            onClick={() => cerrar()} >
+            onClick={() => succesExit()} >
             X
           </button>
         </Modal.Header>
@@ -136,7 +142,7 @@ const ModalEfectivo = (props) => {
               <div className="container d-flex flex-column p-3">
                 <div className="row  pagos d-flex justify-content-center   m-1 p-2">
                   <img src={facilito} className=" img-fluid"
-                    onClick={comnetusernew}
+                    onClick={succesAlert}
                   />
 
                 </div>

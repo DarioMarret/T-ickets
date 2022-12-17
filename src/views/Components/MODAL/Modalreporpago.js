@@ -2,11 +2,11 @@ import { Container, Modal } from "react-bootstrap";
 import { bancosdetall } from "utils/Imgenesutils";
 import { bancos } from "utils/Imgenesutils";
 import { useDispatch, useSelector } from "react-redux";
-import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { GetValores } from "utils/CarritoLocalStorang";
 import { useState } from "react";
 import { useEffect } from "react";
 import metodos from "../../../assets/Banco_Internacional_Ecuador.png";
+import SweetAlert from "react-bootstrap-sweetalert";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import jsPDF from "jspdf";
 let { bancoguyaquil,
@@ -17,6 +17,7 @@ export default function ReporteView(prop) {
     let { setrepShow } = prop
     let usedispatch = useDispatch()
     let modalshow = useSelector((state) => state.SuscritorSlice.modal)
+    const [alert, setAlert] = useState(null)
     const [listaPrecio, ListaPrecioset] = useState({
         total: 0,
         subtotal: 0,
@@ -28,6 +29,12 @@ export default function ReporteView(prop) {
         "pacifico": bancopacifico,
         "produbanco": produbancoguayaquil,
         "guayaquil": bancoguyaquil
+    }
+    const color = {
+        "pichincha": "#feda00",
+        "pacifico": "#169eda",
+        "produbanco": "#003da7",
+        "guayaquil": "#d2006e"
     }
     const cuentas = {
         "pichincha": "2100106995",
@@ -47,18 +54,46 @@ export default function ReporteView(prop) {
         });
 
     }
-    const Cerrar = () => {
-        usedispatch(setModal({ nombre: 'ModalReporte', estado: '' }))
-        setrepShow(true)
+    const imprime = () => {
+        nuevo()
+        usedispatch(setModal({ nombre: '', estado: '' }))
+        hideAlert()
     }
+    const Cerrar = () => {
+        usedispatch(setModal({ nombre: '', estado: '' }))
+        hideAlert()
+    }
+    const hideAlert = () => setAlert(null)
+    //HACER  ALERTEA PARA GUARDAR 
+    const succesAlert = () => {
+        setAlert(
+            <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                title={"Antes de cerrar"}
+                onConfirm={() => Cerrar()}
+                onCancel={() => imprime()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                confirmBtnText="Cerrar "
+                cancelBtnText="Imprimir y cerrar"
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                showCancel
+            > Recuerda imprimir la infromacion de la cuenta a depositar
+            </SweetAlert>
+        )
+    }
+
+
     useEffect(() => {
-        modalshow.nombre == "transferencia" || modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ? ListaPrecioset(GetValores()) : ''
+        //modalshow.nombre == "transferencia" || modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ? ListaPrecioset(GetValores()) : ''
         //  modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ? console.log((parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)) : ''
 
     }, [modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ?
         true : false])
     return (
         <>
+            {alert}
             <Modal
                 show={
                     modalshow.nombre == "transferencia" || modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ?
@@ -74,11 +109,11 @@ export default function ReporteView(prop) {
                                 fontWeight: "bold"
                             }}
                         >{modalshow.nombre == "transferencia" ?
-                            " ORDEN DE PAGO" : 'reportar pago'}
+                            " ORDEN DE PAGO" : 'REPORTAR PAGO'}
                         </h4>
                     </div>
                     <div className=" float-left  " style={{ marginTop: '-45px' }}>
-                        <button type="button" className=" text-secondary" onClick={Cerrar} >
+                        <button type="button" className=" text-secondary" onClick={succesAlert} >
                             X
                         </button>
                     </div>
@@ -92,13 +127,13 @@ export default function ReporteView(prop) {
                                 borderStyle: "solid",
                                 borderWidth: "2px",
                                 borderRadius: 20,
-                                borderColor: modalshow.estado,
+                                borderColor: color[modalshow.nombre],
 
                             }}
                         >
                             <div className={"  d-flex justify-content-center py-2   h-25 "}
                                 style={{
-                                    backgroundColor: modalshow.estado,
+                                    backgroundColor: color[modalshow.nombre],
                                     borderTopLeftRadius: 15,
                                     borderTopRightRadius: 15
                                 }}
@@ -115,7 +150,9 @@ export default function ReporteView(prop) {
                                 <h5><strong> Titular de la Cuenta : </strong> <span>COMPUTECNICSNET S.A.</span> </h5>
                                 <h5><strong> RUC: </strong> <span>0992782129001</span></h5>
                                 <h5><strong> Email: </strong> <span>recaudacion@t-ickets.com</span> </h5>
-                                <h5><strong> Valor a Dépositar </strong>{"$" + (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)}</h5>
+                                <h5><strong> Whastapp: </strong> <span>0969200247</span> </h5>
+
+                                <h5><strong> Valor a Dépositar </strong>{"$" + (parseFloat(modalshow.estado.subtotal) + parseFloat(modalshow.estado.comision)).toFixed(2)}</h5>
                             </div>
 
                             <div >

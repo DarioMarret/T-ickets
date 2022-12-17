@@ -96,7 +96,7 @@ function LoginPage() {
             <div className="card p-4 col-12 px-0 shadow-md">
               <div className="card-body">
                 <div className="container text-center">
-                  <img src={logo} className="mb-4 img-fluid" style={{ height: '80px' }} alt="" />
+                  <img src={"https://flash.t-ickets.com/store/img/logo-t-ickets.png"} className="mb-4 img-fluid" style={{ height: '80px' }} alt="" />
                 </div>
                 <form onSubmit={(e) => handleSubmit(e)} method="post">
                   <div className="input-group mb-4">
@@ -131,7 +131,7 @@ function LoginPage() {
             <div className="card px-0  shadow-md text-white py-5 d-none d-lg-block "
               style={{
                 width: '100%', backgroundImage:
-                  "url('" + portada + "')", backgroundSize: 'cover'
+                  "url('https://flash.t-ickets.com/store/img/portada-login.jpeg')", backgroundSize: 'cover'
               }}>
               <div className="card-body text-center">
                 <div>

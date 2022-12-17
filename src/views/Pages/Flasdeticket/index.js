@@ -40,6 +40,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./swipermedia.css"
+import "./fechaefect.scss"
 import "../../../assets/css/animate.css";
 import "../../../assets/css/bootstrap.css";
 import Iframe from "views/Components/IFrame/Iframe.js";
@@ -49,6 +50,7 @@ import { correlativodelete } from "utils/Querypanelsigui.js";
 import { ListaElimnaLCompleta } from "utils/CarritoLocalStorang.js";
 import { Triangle } from "react-loader-spinner";
 import { ListarNoticias } from "utils/Querypanelsigui.js";
+import { setItervalo } from "StoreRedux/Slice/SuscritorSlice.js";
 import ModalFacilitoView from "views/Components/MODAL/ModalFacilito.js";
 import ReporteView from "views/Components/MODAL/Modalreporpago.js";
 import Comprobante from "./comprobante/index.js";
@@ -116,11 +118,16 @@ const IndexFlas = () => {
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
         usedispatch(setModal({ nombre: '', estado: '' }))
+        setcrono("00:00")
+        usedispatch(setItervalo({ intervalo: "00:00" }))
         $(".Mesa").removeClass("mesaocupado").addClass("mesadisponible")
         $(".Mesa").removeClass("mesareserva")
+
       }
       else {
         setcrono(minutos + ":" + segundos)
+
+        usedispatch(setItervalo({ intervalo: minutos + ":" + segundos }))
         if (--timer < 0) timer = tiempo;
       }
     }, 1000);
@@ -227,6 +234,36 @@ const IndexFlas = () => {
       : ''
     Limpiarseleccion()
     LimpiarLocalStore()
+  }
+  function sololimpiarlocal() {
+    clearInterval(localidadtimer.current)
+    clearInterval(datatime.current)
+    //setMapashow(false)
+    //setDetalle(false)
+    // efectiOpShow(false)
+    //setModalPago(false)
+    //setrepShow(false)
+    usedispatch(clearMapa({}))
+    usedispatch(borrarseleccion({ estado: "seleccionado" }))
+    let array = ListaElimnaLCompleta()
+    /* array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
+       console.log(ouput)
+     }
+     ).catch(err => console.log(err)) : ''
+     getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
+ 
+       getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
+         setTimeout(function () {
+           correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
+             console.log(ouput)
+           }).catch(err => {
+             console.log(err)
+           })
+         }, 20 * index)
+       })
+       : ''*/
+    //Limpiarseleccion()
+    //LimpiarLocalStore()
   }
   const abrir = async (e) => {
     setspinervi("")
@@ -495,22 +532,14 @@ const IndexFlas = () => {
     <>
       {modal.nombre == "Modallocalida" ?
         <LocalidadmapViews
-          handleClosesop={handleClosesop}
-          showMapa={showMapa}
           intervalo={intervalo}
-          setMapashow={setMapashow}
         /> : ''}
       {modal.nombre == "ModalCarritov" ?
         <ModalCarritov
-          showshop={showshop}
           handleClosesop={detenervelocidad}
-          detener={handleClosesop}
-
           setListarCarritoDetalle={setListarCarritoDetalle}
-          datos={datos}
           precios={precios}
           intervalo={intervalo}
-
           setMapashow={setMapashow}
         /> : ''}
       {modal.nombre == "registro" ?
@@ -519,12 +548,9 @@ const IndexFlas = () => {
           setDatoToas={setDatoToas} /> : ''}
       {modal.nombre == "ModalDetalle" ?
         <ModalDetalle
-
           intervalo={intervalo}
-
           setListarCarritoDetalle={setListarCarritoDetalle}
           listarCarritoDetalle={listarCarritoDetalle}
-          setDatoToas={setDatoToas}
         /> : ''}
 
       {
@@ -536,10 +562,12 @@ const IndexFlas = () => {
         setrepShow={setrepShow}
         setDatoToas={setDatoToas}
         detener={detenervelocidad}
+        comprar={sololimpiarlocal}
       />
       <ModalEfectivo
         intervalo={intervalo}
-        detener={paraenlace}
+        detener={sololimpiarlocal}
+        detenervelocidad={detenervelocidad}
       />
       <ReporteView
         setrepShow={setrepShow} />
@@ -707,16 +735,16 @@ const IndexFlas = () => {
 
                       return (
                         <div className="col-12 mx-auto my-3" id={"evento" + e.id} key={i}>
-                          <a id={"headingThree" + e.id} className="collapsed evento" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
+                          <a id={"headingThree" + e.id} className="collapsed evento eventoss" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7  d-flex justify-content-center px-0">
-                              <i className="  text-info  btn-hover" style={{
+                              <i className="  text-info btn-hover" style={{
                                 position: "absolute",
                                 margin: "auto",
                                 bottom: -2,
                                 width: 40,
                               }}>
-                                <svg className="seudtres" xmlns="http://www.w3.org/2000/svg" width="auto" height="auto" version="1.1"
+                                <svg className="seudtres " xmlns="http://www.w3.org/2000/svg" width="auto" height="auto" version="1.1"
                                   style={{
                                     filter: "drop-shadow(1px 1px 3px #888)"
 
@@ -725,8 +753,8 @@ const IndexFlas = () => {
 
                                   <g id="Capa_x0020_1">
 
-                                    <polygon fill="#A9ABAE" points="15706,1584 10507,6889 5309,1584 6932,-1 10507,3648 14083,-1 " />
-                                    <polygon fill="#E6E7E8" points="21008,4985 10507,15701 8,4985 1725,3307 10513,12281 19287,3305 " />
+                                    <polygon className="line1" fill="#A9ABAE" points="15706,1584 10507,6889 5309,1584 6932,-1 10507,3648 14083,-1 " />
+                                    <polygon className="line3" fill="#E6E7E8" points="21008,4985 10507,15701 8,4985 1725,3307 10513,12281 19287,3305 " />
                                     <g id="_2060064090544">
                                     </g>
                                     <g id="_2060064092496">
@@ -757,7 +785,7 @@ const IndexFlas = () => {
                                     </g>
                                     <g id="_2060064084368">
                                     </g>
-                                    <polygon fill="#D2D3D5" points="4440,1615 10517,7827 16671,1547 18381,3233 10517,11278 2718,3313 " />
+                                    <polygon className="line2" fill="#D2D3D5" points="4440,1615 10517,7827 16671,1547 18381,3233 10517,11278 2718,3313 " />
                                   </g>
                                 </svg>
                               </i>
@@ -776,7 +804,7 @@ const IndexFlas = () => {
                                 COMPRAR
 
                               </Button>
-                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
+                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md  btn-hover " alt="" />
 
                             </div>
                           </a>

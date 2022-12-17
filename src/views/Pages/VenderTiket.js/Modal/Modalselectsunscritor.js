@@ -231,18 +231,18 @@ export default function ListaSuscritor(prop) {
             $('#movil').val("")
         }
     }
-    $(document).ready(function () {
-        const phoneInputField = document.querySelector("#movil");
-        modalshow.modal.nombre == "suscritor" ? intlTelInput(phoneInputField, {
-            initialCountry: "ec",
-            separateDialCode: true,
-            nationalMode: true,
-            utilsScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-
-        }) : ''
-
-    })
+    /* $(document).ready(function () {
+         const phoneInputField = document.querySelector("#movil");
+         modalshow.modal.nombre == "suscritor" ? intlTelInput(phoneInputField, {
+             initialCountry: "ec",
+             separateDialCode: true,
+             nationalMode: true,
+             utilsScript:
+                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+ 
+         }) : ''
+ 
+     })*/
 
     const handelChange = e => {
         setDausuario({

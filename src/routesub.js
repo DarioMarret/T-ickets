@@ -160,28 +160,39 @@ var routes = [
         permiso: ["superadmin", "super_admin"]
       },
 
+
+    ]
+  },
+  {
+    collapse: true,
+    path: "/Ventas",
+    name: "Ventas",
+    state: "openVentas",
+    icon: "nc-icon nc-cart-simple",
+    permiso: ["superadmin", "super_admin"],
+    views: [
       {
-        path: "/notificacion",
+        path: "/Vender-Tickets",
         layout: "/admin",
-        name: "Notificaciones Email",
+        name: "Vender Tickets",
         mini: "*",
-        component: UsersView,
+        component: Ventas,
         permiso: ["superadmin", "super_admin"]
       },
+
       {
-        path: "/whatsapp",
+        path: "/Ventas-Por-Aprobar",
         layout: "/admin",
-        name: "Notificaciones Whatsapp",
+        name: "Ventas Por Aprobar",
         mini: "*",
-        component: ReactTables,
+        component: VentasView,
         permiso: ["superadmin", "super_admin"]
-      },
-      {
-        path: "/Push",
+      }, {
+        path: "/Vender-Articulo",
         layout: "/admin",
-        name: "Notificaciones Push",
+        name: "Vender Articulo",
         mini: "*",
-        component: ReactTables,
+        component: Reactabla,
         permiso: ["superadmin", "super_admin"]
       }
     ]
@@ -227,39 +238,41 @@ var routes = [
         permiso: ["superadmin", "super_admin"]
       }
     ]
-  }, {
+  },
+  {
     collapse: true,
-    path: "/Ventas",
-    name: "Ventas",
-    state: "openVentas",
-    icon: "nc-icon nc-cart-simple",
+    path: "/Mensaeria",
+    name: "Mensajeria",
+    state: "openMensajeria",
+    icon: "nc-icon nc-money-coins",
     permiso: ["superadmin", "super_admin"],
     views: [
       {
-        path: "/Vender-Tickets",
+        path: "/notificacion",
         layout: "/admin",
-        name: "Vender Tickets",
+        name: "Notificaciones Email",
         mini: "*",
-        component: Ventas,
+        component: UsersView,
         permiso: ["superadmin", "super_admin"]
       },
-
       {
-        path: "/Ventas-Por-Aprobar",
+        path: "/whatsapp",
         layout: "/admin",
-        name: "Ventas Por Aprobar",
+        name: "Notificaciones Whatsapp",
         mini: "*",
-        component: VentasView,
+        component: ReactTables,
         permiso: ["superadmin", "super_admin"]
-      }, {
-        path: "/Vender-Articulo",
+      },
+      {
+        path: "/Push",
         layout: "/admin",
-        name: "Vender Articulo",
+        name: "Notificaciones Push",
         mini: "*",
-        component: Reactabla,
+        component: ReactTables,
         permiso: ["superadmin", "super_admin"]
       }
     ]
+
   },
   {
     collapse: true,
@@ -302,6 +315,7 @@ var routes = [
       }
     ]
   },
+
   {
     path: "/Pruebaticke",
     layout: "/admin",
@@ -314,7 +328,7 @@ var routes = [
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["superadmin", "super_admin"]
+    permiso: ["", ""]
   }
 
 

@@ -106,24 +106,25 @@ li.agregados {
     }
 
     .modal-content {
-        
-        border-top: 20px!important;
-        
+
+        border-top: 20px !important;
+
     }
 }
-
 
 .modal-header {
     background-color: #212529 !important;
     color: white;
     border-top: 20px;
 }
+
 .toast {
-background-color:  #212529 !important;
-}
-.toast-header{
     background-color: #212529 !important;
-        color: white;
+}
+
+.toast-header {
+    background-color: #212529 !important;
+    color: white;
 }
 
 .close {

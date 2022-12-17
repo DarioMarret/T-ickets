@@ -6,19 +6,30 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { GetValores } from "utils/CarritoLocalStorang";
 import { FacturaComnet } from "utils/constantes";
 import { carrusel } from "views/Pages/Flasdeticket/imagenstatctic";
+import SweetAlert from "react-bootstrap-sweetalert";
+import { alertClasses } from "@mui/material";
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 let { facilitodos } = carrusel
 export default function ModalFacilitoView() {
     let usedispatch = useDispatch()
     let Modalshow = useSelector((state) => state.SuscritorSlice.modal)
-    //console.log(Modalshow)
+    const [alert, setAlert] = useState(null)
+    let user = getDatosUsuariosLocalStorag()
+
+    //console.log(user)
     function codigoregistro() {
         const codigoregistro = JSON.parse(sessionStorage.getItem(FacturaComnet))
-        if (codigoregistro != null) return { ...codigoregistro }
+        if (codigoregistro != null) return codigoregistro
         else return "00000"
     }
-    const Cerrar = () => usedispatch(setModal({ nombre: '', estado: '' }))
+    const Cerrar = () => {
+        hideAlert()
+        usedispatch(setModal({ nombre: '', estado: '' }))
+
+    }
     //   let arrr = document.
     function imprime() {
+
         html2canvas(document.querySelector("#comprobantepago")).then(canvas => {
             var imgWidth = 130;
             var imgHeight = canvas.height * imgWidth / canvas.width;
@@ -29,15 +40,37 @@ export default function ModalFacilitoView() {
             pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
             window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
         });
+        hideAlert()
+        usedispatch(setModal({ nombre: '', estado: '' }))
+    }
+    const hideAlert = () => setAlert(null)
+    const succesAlert = () => {
+        setAlert(
+            <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                title={"Antes de cerrar"}
+                onConfirm={() => Cerrar()}
+                onCancel={() => imprime()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                confirmBtnText="Cerrar "
+                cancelBtnText="Imprimir y cerrar"
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                showCancel
+            > Recuerda imprimir la infromación de la orden de pago
+            </SweetAlert>
+        )
     }
     return (
         <>
+            {alert}
             <Modal
                 show={Modalshow.nombre == "ordendepago" ? true : false}
                 size="lg"
                 centered>
                 <Modal.Header className="bg-dark  text-light py-4  text-white">
-                    <button className="close text-light" onClick={Cerrar}> X</button>
+                    <button className="close text-light" onClick={succesAlert}> X</button>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="row border">
@@ -53,87 +86,98 @@ export default function ModalFacilitoView() {
                         </div>
                     </div>
                     <div className="row pt-3">
-                        <div className="d-flex   flex-column">
-                            <div className="col-8">
-                                <h4 style={{ fontSize: '0.9em' }}>orden Generada correctamente: {Modalshow.nombre == "ordendepago" ? codigoregistro().codigo : ''} </h4>
+                        <div className="d-flex   flex-column ">
+                            <div id="comprobantepago">
+                                <div className="col-8">
+                                    <h4 style={{ fontSize: '0.9em' }}>orden Generada correctamente: <span style={{
+                                        fontWeight: "bold"
+                                    }}>{Modalshow.nombre == "ordendepago" ? codigoregistro() : ''}</span>  </h4>
+                                </div>
+                                <div className=" d-flex  flex-wrap  justify-content-center">
+                                    <div className="col-12 px-0  d-flex justify-content-center"
+
+                                    >
+                                        <h5
+                                            style={{
+                                                fontSize: "0.9em",
+                                                fontWeight: "bold"
+                                            }}>¡Estas a punto de finalizar tu compra en t-ickets.com!</h5>
+                                    </div>
+                                    <div>
+
+
+                                    </div>
+                                    <div className=" col-12 border px-0  d-flex flex-column  ">
+                                        <div className=" d-flex flex-wrap bg-dark  justify-content-center align-items-center   col-12 text-center"
+                                        >
+                                            <div className="pt-3  text-light"  ><p style={{
+
+                                                fontWeight: "bold"
+                                            }}>Servicio Recaudación   </p></div>
+                                        </div>
+                                        <div className=" d-flex flex-wrap   bg-secondary justify-content-center align-items-center   col-12 text-center"
+                                            style={{
+
+                                                height: 30
+                                            }}
+                                        >
+                                            <div className="    text-light "><p> Empres: Comnet - Speed - T-ickets    </p></div>
+
+                                        </div>
+                                        <div className="row py-2">
+                                            <div className="col-6 d-flex  justify-content-center">
+                                                <div>
+                                                    <h5
+                                                        style={{
+                                                            fontSize: "1.1em",
+                                                            fontWeight: "bold"
+                                                        }}
+                                                    >
+                                                        CODIGO DE PAGO
+                                                    </h5>
+                                                    <h5 className="text-danger text-center"
+                                                        style={{
+                                                            fontSize: "1.1em",
+                                                            fontWeight: "bold"
+                                                        }}
+                                                    >
+                                                        {user ? user.cedula : ""}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div className="col-6 d-flex  justify-content-center">
+                                                <div>
+                                                    <h5
+                                                        style={{
+                                                            fontSize: "1.1em",
+                                                            fontWeight: "bold"
+                                                        }}
+                                                    >
+                                                        MONTO A PAGAR
+                                                    </h5>
+                                                    <h5 className="text-danger  text-center"
+                                                        style={{
+                                                            fontSize: "1.1em",
+                                                            fontWeight: "bold"
+                                                        }}
+                                                    >
+                                                        {Modalshow.nombre == "ordendepago" ? "$" + parseFloat(Modalshow.estado.total).toFixed(2) : '$0.00'}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
-                            <div className=" d-flex  flex-wrap  justify-content-center">
-                                <div className="col-12 px-0  d-flex justify-content-center"
-
-                                >
-                                    <h5
-                                        style={{
-                                            fontSize: "0.9em",
-                                            fontWeight: "bold"
-                                        }}>¡Estas a punto de finalizar tu compra en t-ickets.com!</h5>
-                                </div>
-                                <div id="comprobantepago" className=" col-12 border px-0  d-flex flex-column  ">
-                                    <div className=" d-flex flex-wrap bg-dark  justify-content-center align-items-center   col-12 text-center"
-                                    >
-                                        <div className="pt-3  text-light"  ><p style={{
-
-                                            fontWeight: "bold"
-                                        }}>Servicio Recaudación   </p></div>
-                                    </div>
-                                    <div className=" d-flex flex-wrap   bg-secondary justify-content-center align-items-center   col-12 text-center"
-                                        style={{
-
-                                            height: 30
-                                        }}
-                                    >
-                                        <div className="    text-light "><p> Empres: Comnet - Speed - T-ickets    </p></div>
-
-                                    </div>
-                                    <div className="row py-2">
-                                        <div className="col-6 d-flex  justify-content-center">
-                                            <div>
-                                                <h5
-                                                    style={{
-                                                        fontSize: "1.1em",
-                                                        fontWeight: "bold"
-                                                    }}
-                                                >
-                                                    CODIGO DE PAGO
-                                                </h5>
-                                                <h5 className="text-danger"
-                                                    style={{
-                                                        fontSize: "1.1em",
-                                                        fontWeight: "bold"
-                                                    }}
-                                                >
-                                                    0923980742
-                                                </h5>
-                                            </div>
-                                        </div>
-                                        <div className="col-6 d-flex  justify-content-center">
-                                            <div>
-                                                <h5
-                                                    style={{
-                                                        fontSize: "1.1em",
-                                                        fontWeight: "bold"
-                                                    }}
-                                                >
-                                                    MONTO A PAGAR
-                                                </h5>
-                                                <h5 className="text-danger"
-                                                    style={{
-                                                        fontSize: "1.1em",
-                                                        fontWeight: "bold"
-                                                    }}
-                                                >
-                                                    {Modalshow.nombre == "ordendepago" ? "$" + parseFloat(codigoregistro().total).toFixed(2) : ''}
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row py-3 col-9 d-flex justify-content-center ">
-                                    <div className="col-3 d-flex justify-content-end">
-                                        <button className="btn btn-primary">
+                            <div className=" d-flex flex-column  align-items-center">
+                                <div className="row py-3 col-9  d-flex justify-content-center ">
+                                    <div className=" d-none col-3 d-flex justify-content-end">
+                                        <button className=" btn btn-primary">
                                             Enviar:
                                         </button>
                                     </div>
-                                    <div className="col-6">
+                                    <div className="d-none col-6">
                                         <select className=" form-select">
                                             <option>Whastapp</option>
                                             <option>Correo</option>
@@ -174,6 +218,7 @@ export default function ModalFacilitoView() {
                                     </div>
                                 </div>
                             </div>
+
 
                         </div>
                     </div>

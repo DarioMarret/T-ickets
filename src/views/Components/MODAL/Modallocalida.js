@@ -22,7 +22,7 @@ import { correlativodelete } from "utils/Querypanelsigui";
 import { Verificalocalidad } from "utils/CarritoLocalStorang";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 const LocalidadmapViews = (props) => {
-    const { showMapa, handleClosesop, setMapashow, intervalo } = props
+    const { intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
     let nombre = JSON.parse(sessionStorage.getItem(seleccionmapa))
 
@@ -140,7 +140,7 @@ const LocalidadmapViews = (props) => {
     }
     const successAlert = (e, f, c) => {
         let silla = e.replace("-", " ").split(" ")[1]
-        setAlert(
+        return setAlert(
             <SweetAlert
                 success
                 style={{ display: "block", marginTop: "-100px" }}
@@ -162,6 +162,7 @@ const LocalidadmapViews = (props) => {
                 </div>
             </SweetAlert>
         );
+
     };
     const succesElimAlert = (e, f) => {
         setAlert(
@@ -284,7 +285,30 @@ const LocalidadmapViews = (props) => {
             if (!this.classList.contains('seleccionado') && !this.classList.contains('ocupado') && !this.classList.contains("reservado")) {
                 let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
                 if (TotalSelecion() < 10) {
-                    successAlert(this.classList[0], nombres.localodad, "Fila")
+                    //successAlert(this.classList[0], nombres.localodad, "Fila")
+                    let silla = this.classList[0].replace("-", " ").split(" ")[1]
+                    setAlert(
+                        <SweetAlert
+                            success
+                            style={{ display: "block", marginTop: "-100px" }}
+                            title="Se agrego"
+                            onConfirm={() => hideAlert()}
+                            onCancel={() => cerrar()}
+                            confirmBtnBsStyle="success"
+                            cancelBtnBsStyle="danger"
+                            confirmBtnText="Seguir Agregando"
+                            cancelBtnText="Ir al carrito"
+                            closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                            showCancel
+                        >
+                            <div className="d-flex flex-row justify-content-center text-center">
+                                <div className="d-flex">
+                                    <h4 style={{ fontSize: '0.9em' }} >
+                                        De la Localidad {nombres.localodad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
+                                </div>
+                            </div>
+                        </SweetAlert>
+                    );
                     this.classList.remove('disponible')
                     this.classList.add('seleccionado')
                     this.classList.add("" + nombres.idcolor + "silla")
@@ -320,7 +344,30 @@ const LocalidadmapViews = (props) => {
         if (!this.classList.contains('seleccionado')) {
             let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
             if (TotalSelecion() < 10) {
-                successAlert(this.classList[0], nombres.localodad, "Mesa")
+                // successAlert(this.classList[0], nombres.localodad, "Mesa")
+                let silla = this.classList[0].replace("-", " ").split(" ")[1]
+                setAlert(
+                    <SweetAlert
+                        success
+                        style={{ display: "block", marginTop: "-100px" }}
+                        title="Se agrego"
+                        onConfirm={() => hideAlert()}
+                        onCancel={() => cerrar()}
+                        confirmBtnBsStyle="success"
+                        cancelBtnBsStyle="danger"
+                        confirmBtnText="Seguir Agregando"
+                        cancelBtnText="Ir al carrito"
+                        closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                        showCancel
+                    >
+                        <div className="d-flex flex-row justify-content-center text-center">
+                            <div className="d-flex">
+                                <h4 style={{ fontSize: '0.9em' }} >
+                                    De la Localidad {nombres.localodad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
+                            </div>
+                        </div>
+                    </SweetAlert>
+                )
                 this.classList.remove('disponible')
                 this.classList.add('seleccionado')
 
@@ -333,7 +380,6 @@ const LocalidadmapViews = (props) => {
 
                     AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
-
                     // console.log(ouput)
                 }
                 ).catch(exit => console.log(exit))
@@ -346,7 +392,6 @@ const LocalidadmapViews = (props) => {
     $(document).on("click", "a.seleccionado", function () {
         if (!this.classList.contains('disponible')) {
             let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-
             succesElimAlert(this, { id: nombres.idcolor, "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
         }
         return
@@ -377,6 +422,7 @@ const LocalidadmapViews = (props) => {
     const sillasetado = (d) => {
         const user = getDatosUsuariosLocalStorag()
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
+        //  console.log(d.estado)
         if (d.cedula != undefined) {
             if (user != null && user.cedula == d.cedula) return "seleccionado  " + nombres.idcolor + "silla"
             else
@@ -396,7 +442,6 @@ const LocalidadmapViews = (props) => {
     })
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
-        getVerTienda().filter((e) => e.id == mapath.precio.idcolor).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.idcolor)) : setDetalle([])
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
             $("#mapas" + e.path).attr("fill", e.fill)
             $("#mapas" + e.path).removeAttr("class")
@@ -411,12 +456,14 @@ const LocalidadmapViews = (props) => {
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
         let cantidad = mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? mapath.localidadespecica.info.filter(ced => ced.cedula == user.cedula) : [] : []
-        console.log(mapath.localidadespecica.info)
-        mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? cantidad.length > 0 ? Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"]) : '' : '' : ''
+        // console.log(mapath.localidadespecica.info)
+        mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? cantidad.length > 0 ? setDetalle(Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"])) : '' : '' : ''
+        getVerTienda().filter((e) => e.id == mapath.precio.idcolor).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.idcolor)) : setDetalle([])
+
     }, [modalshow.nombre == "Modallocalida" ? true : false])
     return (
         <>
-
+            {alert}
             <Modal
                 show={modalshow.nombre == "Modallocalida" ? true : false}
                 size="lg"
@@ -439,7 +486,7 @@ const LocalidadmapViews = (props) => {
 
                 </Modal.Header>
                 <Modal.Body className={mapath.precio.typo === "correlativo" ? " d-flex align-items-center mx-auto" : ""}>
-                    {alert}
+
                     <div className='conatiner-fluid col-12'>
                         <div className="row  ">
                             <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontWeight: "bold" }}>
@@ -579,15 +626,17 @@ const LocalidadmapViews = (props) => {
                                     <div className="d-flex flex-wrap justify-content-center align-items-center">
                                         <div className="text-center d-flex justify-content-end align-items-center">
 
-                                            <button className="suma   btn-success rounded-circle"
-                                                onClick={agregar} >
-                                                <i className="fa fa-plus"></i>
-                                            </button>
-                                            <hr className="mx-2" ></hr>
+
+
                                             <button className="resta  btn-danger rounded-circle "
                                                 onClick={restaprecio}
                                             >
                                                 <i className="fa fa-minus"></i>
+                                            </button>
+                                            <hr className="mx-2" ></hr>
+                                            <button className="suma   btn-success rounded-circle"
+                                                onClick={agregar} >
+                                                <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
 

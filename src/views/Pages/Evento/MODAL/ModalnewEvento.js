@@ -526,16 +526,17 @@ const ModalNewEvento = (props) => {
                 <div className="d-flex modal-footer justify-content-end align-items-end">
                     <button type="button" className="btn d-none btn-secondary close-btn" >Salir</button>
                     {selectLocalidad.length > 0 && selectLocalidad.length != localidadPreci.length ?
-                        <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar1</button> :
+                        <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button> :
                         ""}
-                    {!selectLocalidad.length > 0 && !Object.values(neweventos).every(e => e) ?
-                        <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar2</button> :
+                    {!selectLocalidad.length > 0 && Object.values(neweventos).every(e => e) ?
+                        <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button> :
                         ""}
-
-                    <button disabled={false}
-                        onClick={gaurdaPrueba}
-                        className="btn btn-primary close-modal float-rigth">Grabar3</button> :
-
+                    {selectLocalidad.length > 0 && selectLocalidad.length == localidadPreci.length && !inputdisable ?
+                        <button disabled={!Object.values(neweventos).every(e => e)}
+                            onClick={gaurdaPrueba}
+                            className="btn btn-primary close-modal float-rigth">Grabar</button>
+                        :
+                        ""}
                     {inputdisable ?
                         <button className="btn btn-primary" disabled={true} >
                             <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>

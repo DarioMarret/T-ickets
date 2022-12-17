@@ -26,14 +26,9 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active {
     }
 }
 
-.btn-hover {
+/*.btn-hover {
     transition: all .3s ease-in-out;
-}
-
-.btn-hover :hover {
-    translate: 0 10px;
-    fill: #198754 !important;
-}
+}*/
 
 .Flecha {
     shape-rendering: geometricPrecision;
