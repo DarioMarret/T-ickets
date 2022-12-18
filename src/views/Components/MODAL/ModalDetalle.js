@@ -510,7 +510,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                !clienteauth && datosPerson.metodoPago == "Transferencia" ?
+                                !clienteauth && datosPerson.metodoPago == "Deposito" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
@@ -518,7 +518,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                !clienteauth && datosPerson.metodoPago == "Deposito" ?
+                                !clienteauth && datosPerson.metodoPago == "Transferencia" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
@@ -549,7 +549,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                clienteauth && datosPerson.metodoPago == "Transferencia" ?
+                                clienteauth && datosPerson.metodoPago == "Deposito" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={!(datosPerson.envio != '')}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
@@ -557,7 +557,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                clienteauth && datosPerson.metodoPago == "Deposito" ?
+                                clienteauth && datosPerson.metodoPago == "Transferencia" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={!(datosPerson.envio != '')}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}

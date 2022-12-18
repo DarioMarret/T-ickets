@@ -307,7 +307,7 @@ const Reporte = (props) => {
       <Modal
         show={modalshow.nombre == "ModalReporte" ? true : false}
         onHide={succesAlert}
-        size={GetMetodo() == "Transferencia" ? "lg" : ""}
+        size={GetMetodo() != "Transferencia" ? "lg" : ""}
         centered
 
       ><Modal.Header className=" d-flex  m-0  bg-dark   justify-content-between align-items-center"        >
@@ -317,7 +317,7 @@ const Reporte = (props) => {
                 fontWeight: "bold"
               }}
             >
-              {GetMetodo() == "Transferencia" ? "DEPOSITAR A LAS SIGUIENTES CUENTAS" : "TRANSFERIR A LAS SIGUIENTES CUENTAS "}
+              {GetMetodo() != "Transferencia" ? "DEPOSITAR A LAS SIGUIENTES CUENTAS" : "TRANSFERIR A LAS SIGUIENTES CUENTAS "}
             </h4>
           </div>
           <div className=" float-left " style={{ marginTop: '-45px' }}>
@@ -330,7 +330,7 @@ const Reporte = (props) => {
         <Modal.Body>
 
           <div className="container-fluid px-0">
-            {GetMetodo() == "Transferencia" ? <div className='row  flex-wrap-reverse'>
+            {GetMetodo() != "Transferencia" ? <div className='row  flex-wrap-reverse'>
               <div className='col-12 col-md-6 d-flex flex-column align-items-center'>
                 <div className='pt-2 pagos' >
                   <img src={pichincha} className="img-fluid" onClick={() => Confirmar("pichincha")} />
