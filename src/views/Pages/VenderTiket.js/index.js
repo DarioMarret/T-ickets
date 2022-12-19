@@ -39,6 +39,7 @@ import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { ListaElimnaLCompleta } from "utils/CarritoLocalStorang";
 import { quitarsilla } from "utils/Querypanelsigui";
 import { correlativodelete } from "utils/Querypanelsigui";
+import { GetSuscritores } from "utils/Querypanel";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -47,34 +48,15 @@ export default function StoreTickesViews() {
     const [Eventos, setEvento] = useState([])
     const [showMapa, setMapashow] = useState(false);
     const [showshop, handleClosesop] = useState(false);
-    const [repShop, setrepShow] = useState(false);
     const [showDetalle, setDetalle] = useState(false)
-    const [efectShow, efectiOpShow] = useState(false);
     const [modalPago, setModalPago] = useState(false);
     const [precios, setPrecios] = useState({ precios: [], pathmapa: [], mapa: '' })
     const [datos, setDatoscon] = useState([])
     const [listarCarritoDetalle, setListarCarritoDetalle] = useState([])
     const [intervalo, setcrono] = useState("")
     const [alert, setAlert] = useState(null);
-    const handleContinuar = () => {
-        handleClosesop(false)
-        setDetalle(true)
-    }
-    const handleDetalleColse = () => {
-        setDetalle(false)
-        handleClosesop(true)
-    }
-    const handleefectivoClose = () => {
-        efectiOpShow(false)
-        setDetalle(true)
-    };
-    const [info, setInfo] = useState({ Ticket: 0, Activos: 0, Venta: 0, })
+    const [info, setInfo] = useState({ Ticket: 0, Activos: 0, Venta: 0, suscritor: 0 })
     const intervalRef = useRef(null);
-
-    const closedeposito = () => {
-        setModalPago(false)
-        setDetalle(true)
-    }
     function filterlocal(id, consulta) {
         let nuevo = []
         id.forEach((elm, i) => {
@@ -129,10 +111,6 @@ export default function StoreTickesViews() {
     function para() {
         clearInterval(intervalRef.current)
     }
-    const handlereportColse = async () => {
-        setrepShow(false)
-        setDetalle(true)
-    };
     const hideAlert = () => {
         setAlert(null);
     };
@@ -217,10 +195,10 @@ export default function StoreTickesViews() {
     const evento = async () => {
         try {
             const data = await cargarEventoActivo()
-            console.log(data)
+            const susct = await GetSuscritores()
+            //console.log(data, susct)
             const Datos = await ListarTikets()
             const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
-
             const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
             if (data != null) {
                 setEvento(filtro.sort(sorter))
@@ -228,7 +206,7 @@ export default function StoreTickesViews() {
                     ...info,
                     Ticket: Datos.data.length,
                     Activos: filtro.sort(sorter).length,
-                    Venta: 0
+                    Venta: 0, suscritor: susct.users.length
                 })
             }
             else if (data == null) setEvento([])
@@ -239,9 +217,6 @@ export default function StoreTickesViews() {
     const abrir = async (e) => {
         let id = sessionStorage.getItem(Eventoid)
         if (id != null && id != e.codigoEvento) {
-            // borrar(e)
-            // setspinervi("d-none")
-            //successAlert(e)
             usedispatch(setModal({ nombre: '', estado: '' }))
         }
         try {
@@ -308,16 +283,12 @@ export default function StoreTickesViews() {
             console.log(err)
         }
     }
-
     window.onbeforeunload = preguntarAntesDeSalir;
-
     function preguntarAntesDeSalir() {
         var bPreguntar = (getVerTienda().length > 0)
         var respuesta;
-
         if (bPreguntar) {
             respuesta = window.confirm('¿Seguro que quieres salir?');
-
             if (respuesta) {
                 window.onunload = function () {
                     this.preventDefault()
@@ -330,7 +301,6 @@ export default function StoreTickesViews() {
     }
     function cerrnewsuscr(e) {
         usedispatch(setModal({ nombre: e, estado: '' }))
-
     }
     useEffect(() => {
         (async () => {
@@ -365,10 +335,9 @@ export default function StoreTickesViews() {
             {
                 modalshow.modal.nombre == "ModalPago" ? <ModalPago intervalo={intervalo} detenervelocidad={detenervelocidad} para={para} setModalPago={setModalPago} modalPago={modalPago} /> : null
             }
-            {modalshow.modal.nombre == "ModalPago" ? <ModalEfectivo
+            {modalshow.modal.nombre == "modalpago" ? <ModalEfectivo
                 intervalo={intervalo}
-
-                detenervelocidad={detenervelocidad}
+                detenervelocidad={para}
             /> : ''}
             <ModalSuscritoView
                 show={modalshow.modal.nombre == "newsuscri" ? true : false}
@@ -406,7 +375,7 @@ export default function StoreTickesViews() {
                         <Card.Footer>
                             <hr></hr>
                             <div className="stats">
-                                <i className="fas fa-redo mr-1"></i>
+                                <i className="far fa-calendar-alt mr-1"></i>
                                 {moment().format('DD MMMM YYYY')}
                             </div>
                         </Card.Footer>
@@ -449,7 +418,7 @@ export default function StoreTickesViews() {
                                 </Col>
                                 <Col xs="7">
                                     <div className="numbers">
-                                        <p className="card-category">Ventas eventos activos</p>
+                                        <p className="card-category">Ventas por Aprobar</p>
                                         <Card.Title as="h4">{info.Venta}</Card.Title>
                                     </div>
                                 </Col>
@@ -470,13 +439,13 @@ export default function StoreTickesViews() {
                             <Row>
                                 <Col xs="5">
                                     <div className="icon-big text-center icon-warning">
-                                        <i className="nc-icon nc-favourite-28 text-primary"></i>
+                                        <i className="nc-icon nc-single-02 text-primary"></i>
                                     </div>
                                 </Col>
                                 <Col xs="7">
                                     <div className="numbers">
-                                        <p className="card-category">Suscriptores nuevos</p>
-                                        <Card.Title as="h4">0</Card.Title>
+                                        <p className="card-category">Total de Suscriptores </p>
+                                        <Card.Title as="h4">{info.suscritor}</Card.Title>
                                     </div>
                                 </Col>
                             </Row>
@@ -484,7 +453,7 @@ export default function StoreTickesViews() {
                         <Card.Footer>
                             <hr></hr>
                             <div className="stats">
-                                <i className="fas fa-redo mr-1"></i>
+                                <i className="far fa-calendar-alt mr-1"></i>
                                 {moment().format('DD MMMM YYYY ')}
                             </div>
                         </Card.Footer>
@@ -496,7 +465,7 @@ export default function StoreTickesViews() {
                     <h4 style={{
                         fontWeight: "bold"
                     }} >Conciertos Activos</h4>
-                    <div className="col-8 border rounded-7 bg-black bg-opacity-10">
+                    <div className="col-8 border rounded-7  bg-light bg-opacity-10">
                         <Swiper
                             effect={"flip"}
                             grabCursor={true}
@@ -519,16 +488,15 @@ export default function StoreTickesViews() {
                                         <SwiperSlide key={i} >
                                             <div className=" container-fluid  mt-4 px-0">
                                                 <div className=" card-body  py-5"
-
                                                 >
                                                     <div className="row" >
-                                                        <div className="col-6" >
-                                                            <div className="d-flex justify-content-end pl-4">
+                                                        <div className="col-12" >
+                                                            <div className="d-flex justify-content-end px-4">
                                                                 <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md  " alt="" />
                                                             </div>
 
                                                         </div>
-                                                        <div className="container col-6" >
+                                                        <div className="container col-12 text-center" >
                                                             <h1 style={{ fontSize: '1.6em' }}><span id="artista" className="fw-bold">{e.nombreConcierto}</span> </h1>
                                                             <div className="col-12 border border-bottom my-3"></div>
 

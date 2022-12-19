@@ -39,6 +39,7 @@ import SuscritoridView from "views/Pages/Suscriptores/Suscritorid";
 import UseridView from "views/Pages/Usuarios/Usuarioid";
 import Viesvg from "views/Pages/Svgviewa"
 import AjustesView from "views/Pages/Ajustes";
+import { DiseñoViewtickes } from "views/Pages/Diseñador/Diseñodeticke";
 import EsquemaViews from "views/Pages/Esquemas";
 import NoticiasJs from "views/Pages/Noticias.js";
 import VentasView from "PDF";
@@ -117,7 +118,7 @@ var routes = [
         layout: "/admin",
         name: "Diseñar Ticket",
         mini: "*",
-        component: Reactabla,
+        component: DiseñoViewtickes,
         permiso: ["superadmin", "super_admin"]
       },
       {
@@ -321,14 +322,14 @@ var routes = [
     layout: "/admin",
     name: "Prueba",
     component: EsquemaViews,
-    permiso: ["", ""]
+    permiso: ["superadmin", "super_admin"]
   },
   {
     path: "/Pruebasvg",
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["", ""]
+    permiso: ["superadmin", "super_admin"]
   }
 
 

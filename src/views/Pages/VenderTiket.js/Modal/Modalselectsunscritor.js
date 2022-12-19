@@ -231,6 +231,9 @@ export default function ListaSuscritor(prop) {
             $('#movil').val("")
         }
     }
+    const verificar = () => {
+
+    }
     /* $(document).ready(function () {
          const phoneInputField = document.querySelector("#movil");
          modalshow.modal.nombre == "suscritor" ? intlTelInput(phoneInputField, {
@@ -269,14 +272,7 @@ export default function ListaSuscritor(prop) {
                 <Modal.Body>
                     <div className=" container " >
                         <div className="container mb-3">
-                            <div className="col-12 d-none">
-                                <Form.Control
-                                    placeholder="Ingrese el Nombre o cédula"
-                                    onChange={(e) => filterNames(e.target.value)}
-                                    type="text"
-                                >
-                                </Form.Control>
-                            </div>
+
                         </div>
                         <div className="container-fluid row "  >
                             <div className="col-12 p-0  d-flex flex-column">
@@ -300,19 +296,17 @@ export default function ListaSuscritor(prop) {
                                                     </Form.Select>
                                                 </div>
                                             </div>
-                                            <div className="col-6">
-                                                <div className="input-group mb-3">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text"><i className="fa fa-search"></i></span>
-                                                    </div>
-                                                    <input id="cedula" type="text"
-                                                        className="form-control numero"
-                                                        name="cedula"
-                                                        minLength={10}
-                                                        maxLength={code == "cedula" ? 10 : 20}
-                                                        onChange={(e) => filterNames(e.target.value)}
-                                                        placeholder={(code == "cedula") ? "Ingrese cédula" : "Ingrese su número de identificación"} required />
-                                                </div>
+                                            <div className="col-5">
+                                                <input id="cedula" type="text"
+                                                    className="form-control numero"
+                                                    name="cedula"
+                                                    minLength={10}
+                                                    maxLength={code == "cedula" ? 10 : 20}
+                                                    onChange={(e) => filterNames(e.target.value)}
+                                                    placeholder={(code == "cedula") ? "Ingrese cédula" : "Ingrese su número de identificación"} required />
+                                            </div>
+                                            <div className="col-sm">
+                                                <button className="btn btn-danger"> <i className=" fa fa-search"></i> </button>
                                             </div>
                                             <div className="col-2" >
                                                 {!datos.resgistro ? <button className="btn btn-success" onClick={CrearUSuario} > CREAR </button> :

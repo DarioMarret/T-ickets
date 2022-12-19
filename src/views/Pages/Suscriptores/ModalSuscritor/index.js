@@ -72,7 +72,6 @@ const ModalSuscritoView = (props) => {
     }
     if (datos.new_password.length < 7) {
       setValidate("was-validated")
-
       return true
     }
     else {

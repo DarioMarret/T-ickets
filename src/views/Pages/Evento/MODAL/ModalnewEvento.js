@@ -7,6 +7,7 @@ import { Obtenerlinkimagen } from "utils/Querypanel";
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
+import { ListarEventos } from "utils/Querypanel";
 const ModalNewEvento = (props) => {
     const { show, Setshow } = props;
     let user = clienteInfo()
@@ -22,10 +23,12 @@ const ModalNewEvento = (props) => {
     async function Lista() {
         const datos = await ListarLocalidad()
         const cargarLista = await ListarEspacios()
+        const eventos = await ListarEventos()
 
         const { success, data } = cargarLista
         //console.log(data)
         if (success) {
+            console.log(eventos)
             setListaEspa(data)
             setLocalidades(datos.data)
         }

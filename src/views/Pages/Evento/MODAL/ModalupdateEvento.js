@@ -37,7 +37,7 @@ const Modalupdate = (props) => {
         id: '',
         localodad: '',
         habilitar_cortesia: 0,
-        comision: 0
+        comision_boleto: 0
     })
     const [selectLocalidad, setLocalidad] = useState([])
     async function Lista() {
@@ -71,7 +71,7 @@ const Modalupdate = (props) => {
             precio_tarjeta: 0,
             precio_descuento: 0,
             habilitar_cortesia: 0,
-            comision: 0
+            comision_boleto: 0
 
         })
     }
@@ -84,29 +84,31 @@ const Modalupdate = (props) => {
     });
     function handelchangeComposeventos(e) {
         console.log(e)
+        let img = new Image()
         try {
 
             if (e.name == "imagenConcierto") {
-                setNewEventos({ ...neweventos, imagenConcierto: e.files[0] })
+                // setNewEventos({ ...neweventos, imagenConcierto: e.files[0] })
                 console.log(e.files[0])
-                /*  let img = new Im
-                  img.src = window.URL.createObjectURL(e.files[0])
-  
-                  img.onload = () => {
+                img.src = window.URL.createObjectURL(e.files[0])
+                console.log(window.URL.createObjectURL(e.files[0]))
+
+                img.src = window.URL.createObjectURL(e.files[0])
+
+                /*  img.onload = () => {
                       setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
-                      /* if (img.width < 13830 || img.height < 3662) {
-                           e.value = ""
-                           setNewEventos({ ...neweventos, imagenConcierto: '' })
-                           usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
-                       }
-                       else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })*
+                      console.log(img.width)
+                      if (img.width < 13830 || img.height < 3662) {
+                          e.value = ""
+                          setNewEventos({ ...neweventos, imagenConcierto: '' })
+                          usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
+                      }
+                      else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
                   }
                   img.onerror = () => {
                       setNewEventos({ ...neweventos, imagenConcierto: '' })
                   }*/
             } else if (e.name == "mapaConcierto") {
-
-
                 setNewEventos({ ...neweventos, mapaConcierto: e.files[0] })
                 console.log({ mapaConcierto: e.files[0] })
 
@@ -132,15 +134,10 @@ const Modalupdate = (props) => {
                     [e.name]: e.value,
                 })
             }
-
         } catch (error) {
             console.log(error)
-
         }
-
     }
-
-
     function soloSelectespacio(e) {
         let array = selectLocalidad
         var index = array.findIndex(obj => obj.localodad == e.value);
@@ -152,7 +149,7 @@ const Modalupdate = (props) => {
             precio_tarjeta: array[index] ? array[index].precio_tarjeta : '',
             precio_descuento: array[index] ? array[index].precio_descuento : '',
             habilitar_cortesia: array[index] ? array[index].habilitar_cortesia : '',
-            comision: array[index] ? array[index].comision : '',
+            comision_boleto: array[index] ? array[index].comision_boleto : '',
             id: array[index] ? array[index].id : '',
             localodad: array[index] ? array[index].localodad : '',
         })
@@ -200,39 +197,37 @@ const Modalupdate = (props) => {
             try {
                 if (neweventos.imagenConcierto == "") return
                 if (neweventos.mapaConcierto == "") return
-                else
-                    Obtenerlinkimagen(neweventos.imagenConcierto).then(oput => {
-                        Obtenerlinkimagen(neweventos.mapaConcierto).then(salida => {
-                            let info = {
-                                ...neweventos,
-                                imagenConcierto: oput,
-                                mapaConcierto: salida,
-                                estado: "ACTIVO",
-                                "LocalodadPrecios": selectLocalidad
-                            }
-                            ActualizarLocalidad(evento.codigoEvento, info).then(guardo => {
-                                usedispatch(setToastes({ show: true, message: 'Datos de evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
+                else {
+                    const link = await Obtenerlinkimagen(neweventos.imagenConcierto)
+                    if (link == null) {
+                        console.log(link, "mapa")
+                        usedispatch(setToastes({ show: true, message: 'Imagen no se creo', color: 'bg-success', estado: 'Guardado' }))
 
-
-                            }).catch(ErrorR => console.log(ErrorR))
-                            /* if (actualiza.success) {
-                                 Setshow(false)
-                                 usedispatch(setToastes({ show: true, message: 'Datos de evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
-                             }
-                             else {
-                                 console.log("dosimagen")
-                                 usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
-                             }*/
-
-                        }).catch(error => {
-                            console.log(error)
-
-                        })
-
-
-
-                    }).catch(err => console.log(err))
-                const link = await Obtenerlinkimagen(neweventos.imagenConcierto)
+                        return
+                    }
+                    setTimeout(async function () {
+                        const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)
+                        if (mapa == null) {
+                            console.log(link, "mapa")
+                            usedispatch(setToastes({ show: true, message: 'Imagen mapa no se creo', color: 'bg-success', estado: 'Guardado' }))
+                            return
+                        }
+                        let defauldata = {
+                            ...neweventos,
+                            imagenConcierto: link,
+                            mapaConcierto: mapa,
+                            estado: "ACTIVO",
+                            "LocalodadPrecios": selectLocalidad
+                        }
+                        const evento = await GuardarEvento(defauldata)
+                        console.log(defauldata)
+                        if (evento.success) {
+                            console.log(evento)
+                            usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
+                            setinput(false)
+                            Setshow(false)
+                        }
+                    }, 3000)
                 //  const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)
                 /* if (link == null) return
                  let info = {
@@ -250,7 +245,7 @@ const Modalupdate = (props) => {
                  else {
                      console.log("dosimagen")
                      usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
-                 }*/
+                 }*/}
             } catch (error) {
                 usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
                 console.log(error)
@@ -262,7 +257,7 @@ const Modalupdate = (props) => {
     }
 
     useEffect(() => {
-        console.log(evento)
+        //console.log(evento)
         setNewEventos(
             {
                 nombreConcierto: evento.nombreConcierto ? evento.nombreConcierto : '',
@@ -276,6 +271,7 @@ const Modalupdate = (props) => {
                 mapaConcierto: evento.mapaConcierto ? evento.mapaConcierto : '',
                 idUsuario: "" + user.id,
             })
+        //  console.log(evento.LocalodadPrecios)
         setLocalidad(evento.LocalodadPrecios)
         //  console.log(neweventos)
         // console.log(Object.values(neweventos).every((d) => d))
@@ -467,9 +463,9 @@ const Modalupdate = (props) => {
                                 </div>
                                 <div className="d-flex flex-wrap mb-2">
                                     <div className="px-2 col-4">
-                                        <label >Costo de emision </label>
+                                        <label >Comision boleto </label>
                                     </div>
-                                    <input className="numero form-control col-6" value={precios.comision} name="comision" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                    <input className="numero form-control col-6" value={precios.comision_boleto} name="comision_boleto" onChange={(e) => handelchangeLocalidad(e.target)} />
                                 </div>
 
                             </div>

@@ -167,12 +167,11 @@ const Reporte = (props) => {
         if (oupt.success) {
           comprar()
           usedispatch(setModal({
-            nombre: e, estado: oupt.message
+            nombre: e, estado: valores
           }))
           usedispatch(setToastes({
             show: true,
-            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
-            color: 'bg-success',
+            message: oupt.message, color: 'bg-success',
             estado: 'Orden de Pago Generada '
           }))
           return
@@ -205,12 +204,11 @@ const Reporte = (props) => {
         if (oupt.success) {
           comprar()
           usedispatch(setModal({
-            nombre: e, estado: oupt.message
+            nombre: e, estado: valores
           }))
           usedispatch(setToastes({
             show: true,
-            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
-            color: 'bg-success',
+            message: oupt.message, color: 'bg-success',
             estado: 'Orden de Pago Generada '
           }))
           return
@@ -236,11 +234,11 @@ const Reporte = (props) => {
         if (oupt.success) {
           comprar()
           usedispatch(setModal({
-            nombre: e, estado: oupt.message
+            nombre: e, estado: valores
           }))
           usedispatch(setToastes({
             show: true,
-            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
+            message: oupt.message,
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
           }))
@@ -262,24 +260,13 @@ const Reporte = (props) => {
       return
     }
     if (e == "transferencia") {
-      usedispatch(setModal({ nombre: "confirmar", estado: "" }))
-      comprar()
-      usedispatch(setToastes({
-        show: true,
-        message: "Recuerdaque tiene 1 hora para realizar el deposito",
-        color: 'bg-success',
-        estado: 'Orden de Pago Generada '
-      }))
-      /*PagoRapido("").then(oupt => {
+      PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          usedispatch(setModal({
-            nombre: "confirmar", estado: oupt.message
-          }))
+          usedispatch(setModal({ nombre: "confirmar", estado: valores }))
           usedispatch(setToastes({
             show: true,
-            message: oupt.message,
-            color: 'bg-success',
+            message: oupt.message, color: 'bg-success',
             estado: 'Orden de Pago Generada '
           }))
           return
@@ -297,7 +284,7 @@ const Reporte = (props) => {
       }).catch(error => {
         seTSpiners("d-none")
         console.log(error)
-      })*/
+      })
       return
     }
   }
