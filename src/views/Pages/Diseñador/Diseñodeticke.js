@@ -40,7 +40,100 @@ export function DiseñoViewtickes() {
                         <div className=" d-flex justify-content-center" style={{
                             height: 400
                         }}>
-                            <div className="pt-3  ">
+                            <div className="pt-3">
+                                <div className=" border bg-success" style={{
+                                    position: "relative",
+                                    width: "17.05cm",
+                                    height: "5.5cm"
+                                }}>
+                                    {/**primer cuadro a la izquierda */}
+                                    <div className=" d-flex
+                                     bg-info
+                                    " style={{
+                                            height: "4.5cm"
+                                        }}>
+                                        {/** seccion principal izquierda */}
+                                        <div className=""
+                                            style={{
+                                                height: "100%",
+                                                width: "9.5cm"
+                                            }}
+                                        >
+                                            <div className="pl-2  pt-2" >
+                                                <h5 style={{
+                                                    fontSize: "0.7em",
+                                                    lineHeight: 0,
+                                                }} className="pt-1 pb-0"> <span>ESTADIO VOLTER PALADIINES </span> MIEL SAN MARCOS  </h5>
+                                                <p className=" pl-3 pt-1 pb-0" style={{ fontSize: "0.68em", lineHeight: 0, }} >Guayaquil 20 de diciembre 2022 19:00 </p>
+                                            </div>
+                                            <div className="row px-0">
+                                                <div className="col-4">
+                                                    <div className=" pb-0 pt-3 text-center">
+                                                        <p style={{
+                                                            fontSize: "0.9em",
+                                                            fontWeight: "bold",
+                                                            lineHeight: 0
+                                                        }}>Preventa </p>
+                                                        <QRCodeCanvas value="Ayuda XD"
+                                                            style={{
+                                                                width: "90%",
+                                                                height: "100%",
+                                                                padding: 0,
+                                                                paddingLeft: 2
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className=" bg-danger pt-0" >
+
+                                                    </div>
+                                                </div>
+                                                <div className="col-8">
+                                                    <div className="">
+
+                                                    </div>
+                                                    <div >
+                                                        <p className=""> Jessi Uribe  </p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        {/**segundo cuado iquierda */}
+                                        <div className=" bg-primary"
+                                            style={{
+                                                height: "100%",
+                                                width: "2cm"
+                                            }}>
+
+                                        </div>
+                                        {/** tercera donde esta el codigo del barra */}
+                                        <div className=" bg-light"
+                                            style={{
+                                                height: "100%",
+                                                width: "1.5cm"
+                                            }}
+                                        >
+
+                                        </div>
+                                        {/**seccion final */}
+                                        <div className=" bg-warning"
+                                            style={{
+                                                height: "100%",
+                                                width: "4cm"
+                                            }}>
+
+                                        </div>
+                                    </div>
+                                    {/**pie de pagina */}
+                                    <div className="bg-success">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div className="pt-3  d-none ">
                                 <div className="  " style={{
                                     position: "relative",
                                     width: "17.05cm",
