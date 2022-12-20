@@ -443,22 +443,27 @@ const IndexFlas = () => {
     const evento = async () => {
       try {
         const data = await cargarEventoActivo()
-        const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
-        const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
-        if (data != null) {
-          setEventos(filtro.sort(sorter))
-        }
-        else if (data == null) setEventos([])
+        console.log(data)
+        /*  const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
+          const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
+          if (data != null) {
+            setEventos(filtro.sort(sorter))
+          }
+          else if (data == null) setEventos([])*/
       } catch (error) {
+        setEventos([])
         console.log(error)
       }
     }
     evento()
     ListarNoticias().then(ouput => {
-      setpublicidad(ouput.data)
-      //console.log(ouput)
-    }).catch(err =>
+      //  setpublicidad(ouput.data)
+      console.log(ouput)
+    }).catch(err => {
+
+      setpublicidad([])
       console.log(err)
+    }
     )
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()
@@ -617,7 +622,7 @@ const IndexFlas = () => {
         setShowLogin={setShowLogin}
         abrir={abrir}
       />
-      <ModalFacilitoView />
+      {userauthi.login ? <ModalFacilitoView /> : ''}
       {/* header */}
       {publicidad.length > 0 ? <div className="container-fluid  pt-2 px-0" style={{
         minHeight: '300px'
