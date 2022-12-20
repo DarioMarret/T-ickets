@@ -33,51 +33,7 @@ const LocalidadmapViews = (props) => {
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [alert, setAlert] = useState(null);
     // console.log(mapath, seleccion)
-    localidaandespacio(mapath.precio.espacio, mapath.precio.idcolor).then(ouput => {
-        //console.log(ouput)
-        let nuevoObjeto = []
-        if (ouput.data.find(e => e.typo == "fila")) {
-            ouput.data.forEach(x => {
-                if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                    nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
-                }
-                else {
-                    let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
-                    nuevoObjeto[indixe].asientos.push({
-                        silla: x.silla, estado: x.estado, idsilla: x.id
-                    })
-                }
-            })
-            console.log(nuevoObjeto)
-        } else if (ouput.data.find(e => e.typo == "mesa")) {
-            ouput.data.forEach(x => {
-                if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                    nuevoObjeto.push({ fila: x.fila, Mesas: [] })
-                }
-            })
-            nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
-                let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
-                    nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
-                }
-            }) : ''
-            nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
-                let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
-                nuevoObjeto[index].Mesas[sillas].asientos.push({
-                    silla: x.silla, estado: x.estado, idsilla: x.id
-                })
-            }) : ''
-            console.log(nuevoObjeto)
-        }
-        else if (ouput.data.find(e => e.typo == "correlativo")) {
-            console.log(ouput.data)
-        }
 
-    }).catch(err => {
-        console.log(err)
-
-    })
     function MesaVerifica(M, C) {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
         hideAlert()
@@ -90,19 +46,14 @@ const LocalidadmapViews = (props) => {
         nuevo.length > 0 && TotalSelecion() < 10 ? nuevo.map((e, index) => {
             setTimeout(() => {
                 TotalSelecion() < 10 ? $("." + e.silla).hasClass('disponible') ? enviasilla({ ...e }).then(ouput => {
-
                     AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" }))
-
-
                 }
                 ).catch(exit => {
                     console.log(exit)
                 }) : '' : succesLimit()
             }, 20 * index)
-
         }) : succesLimit()
-
     }
     const eliminarmesas = (M, C) => {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
@@ -547,6 +498,51 @@ const LocalidadmapViews = (props) => {
         mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? cantidad.length > 0 ? setDetalle(Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"])) : '' : '' : ''
         getVerTienda().filter((e) => e.id == mapath.precio.idcolor).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.idcolor)) : setDetalle([])
 
+        localidaandespacio(mapath.precio.espacio, mapath.precio.idcolor).then(ouput => {
+            //console.log(ouput)
+            let nuevoObjeto = []
+            if (ouput.data.find(e => e.typo == "fila")) {
+                ouput.data.forEach(x => {
+                    if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                        nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+                    }
+                    else {
+                        let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                        nuevoObjeto[indixe].asientos.push({
+                            silla: x.silla, estado: x.estado, idsilla: x.id
+                        })
+                    }
+                })
+                console.log(nuevoObjeto)
+                //usedispatch(filtrarlocali(nuevoObjeto))
+            } else if (ouput.data.find(e => e.typo == "mesa")) {
+                ouput.data.forEach(x => {
+                    if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                        nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                    }
+                })
+                nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                    let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                    if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                        nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                    }
+                }) : ''
+                nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                    let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                    let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                    nuevoObjeto[index].Mesas[sillas].asientos.push({
+                        silla: x.silla, estado: x.estado, idsilla: x.id
+                    })
+                }) : ''
+                console.log(nuevoObjeto)
+            }
+            else if (ouput.data.find(e => e.typo == "correlativo")) {
+                console.log(ouput.data)
+            }
+
+        }).catch(err => {
+            console.log(err)
+        })
     }, [modalshow.nombre == "Modallocalida" ? true : false])
     return (
         <>
@@ -686,7 +682,7 @@ const LocalidadmapViews = (props) => {
                                                         <div className='d-flex  PX-1 align-items-center' key={index}>
                                                             <div className='d-flex pb-2'>
                                                                 <MesaiView
-                                                                    text={e.Fila}
+                                                                    text={e.fila}
                                                                 />
                                                             </div>
                                                             <div className='d-flex  pb-2' >

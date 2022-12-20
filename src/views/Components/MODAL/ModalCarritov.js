@@ -134,7 +134,7 @@ const ModalCarritoView = (prop) => {
                         })
                     }
                 })
-                console.log(nuevoObjeto)
+                //console.log(nuevoObjeto)
                 usedispatch(cargarmapa(color))
                 usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                 usedispatch(filtrarlocali(nuevoObjeto))
