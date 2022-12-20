@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-
+import { carrusel } from "../Flasdeticket/imagenstatctic";
+let { tercero } = carrusel
 import { QRCodeCanvas } from "qrcode.react";
 export function DiseñoViewtickes() {
     return (
@@ -76,8 +77,8 @@ export function DiseñoViewtickes() {
                                                         }}>Preventa </p>
                                                         <QRCodeCanvas value="Ayuda XD"
                                                             style={{
-                                                                width: "90%",
-                                                                height: "100%",
+                                                                width: "2.3cm",
+                                                                height: "2.3cm",
                                                                 padding: 0,
                                                                 paddingLeft: 2
                                                             }}
@@ -87,13 +88,43 @@ export function DiseñoViewtickes() {
 
                                                     </div>
                                                 </div>
-                                                <div className="col-8">
-                                                    <div className="">
+                                                <div className="col-8 d-flex pl-0">
+                                                    <div style={{
+                                                        height: "4.7cm"
+                                                    }}>
+                                                        <div className="border" style={{
+                                                            height: "2cm",
+                                                            width: "4.5cm",
+                                                            display: "flex",
+                                                            alignItems: "center"
+                                                        }}>
+                                                            <img src={tercero} className="img-fluid"
+
+                                                                style={{
+                                                                    WebkitFilter: "grayscale(100%)",
+                                                                    filter: "grayscale(100%)"
+                                                                }}>
+                                                            </img>
+
+                                                        </div>
+                                                        <div className="text-center pt-1" >
+                                                            <p className=""
+                                                                style={{
+                                                                    fontSize: "0.8em",
+                                                                    fontWeight: "bold"
+                                                                }}
+                                                            > Jessi Uribe & Francy  </p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="border"
+                                                        style={{
+                                                            height: "3cm",
+                                                            width: "2cm"
+                                                        }}
+                                                    >
 
                                                     </div>
-                                                    <div >
-                                                        <p className=""> Jessi Uribe  </p>
-                                                    </div>
+
                                                 </div>
 
                                             </div>

@@ -28,7 +28,8 @@ const ModalNewEvento = (props) => {
         const { success, data } = cargarLista
         //console.log(data)
         if (success) {
-            console.log(eventos)
+
+            console.log(eventos, data)
             setListaEspa(data)
             setLocalidades(datos.data)
         }

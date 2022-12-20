@@ -2,6 +2,7 @@ export function insertLocalidad(mapa, datos) {
     let nuevo = mapa.map((e, i) => {
         if (datos.id == e.id) {
             e.fill = datos.fill
+            //e.espacio = datos.espacio
             return e;
         }
         else {

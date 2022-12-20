@@ -272,7 +272,7 @@ const OpctionLocalidadView = (props) => {
                                                                                         return (
                                                                                                 <div id={mapa.nombre}
                                                                                                         onClick={() => setMapaselec(mapa.nombre)}
-                                                                                                        className={"border rounded-2 text-center mx-3 esquema grid-item element-item transition justify-content-center  " + mapa.ciudad + " " + provincias.provincia} key={"pla" + i} style={{ width: "200px", height: '250px' }} >
+                                                                                                        className={"border rounded-2 text-center   m-3 esquema grid-item element-item transition justify-content-center  " + mapa.ciudad + " " + provincias.provincia} key={"pla" + i} style={{ width: "200px", height: '250px' }} >
 
                                                                                                         <h4 className="nombre text-capitalize d-none " style={{ fontSize: '0.9em' }} >{mapa.nombre}</h4>
                                                                                                         <div style={{ alignItems: 'stretch', lineHeight: '1', fontSize: '0.9em' }} >

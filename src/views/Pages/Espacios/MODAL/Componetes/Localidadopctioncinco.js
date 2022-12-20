@@ -37,15 +37,15 @@ const MapadelocalidadViews = (props) => {
 
                 var index = array.findIndex(obj => obj.path == dato);
                 if (index == -1) {
-                        array.push({ path: dato, id: id, fill: color });
+                        array.push({ path: dato, id: id, fill: color, espacio: localidaname.id });
 
                 } else {
                         do {
                                 array.splice(index, 1);
-                                index = array.indexOf({ path: dato, id: id, fill: color });
+                                index = array.indexOf({ path: dato, id: id, fill: color, espacio: localidaname.id });
                         } while (index != -1);
                 }
-                insertLocalidad(array, { path: dato, id: id, fill: color })
+                insertLocalidad(array, { path: dato, id: id, fill: color, espacio: localidaname.id })
                 cargarcolores()
         }
         async function cargardatosMapa() {
@@ -133,6 +133,7 @@ const MapadelocalidadViews = (props) => {
         }
 
         const GuardarMapa = async () => {
+
                 let valores = {
                         "mapasvg": estadio,
                         "nombre_espacio": localidaname.nombre,
@@ -147,6 +148,17 @@ const MapadelocalidadViews = (props) => {
                                 hideAlert()
                         }
                         else {
+                                let valor = {
+                                        "mapasvg": estadio,
+                                        "nombre_espacio": localidaname.nombre,
+                                        "pathmap": getMapacolor(),
+                                        "localidad": getLocalidadmapa(),
+                                }
+                                console.log(
+
+                                        valor
+                                )
+
                                 let updatedatos = await editarMapa({ ...valores, id: localidadmap.id.toString() })
                                 //console.log({ ...valores, id: localidadmap.id.toString() })
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
@@ -179,13 +191,14 @@ const MapadelocalidadViews = (props) => {
                 nuevo.length > 0 && colores.length > 0 ? colores.forEach(p => {
                         if (valorDuplicadas.findIndex(pd => pd.id === p.id) === -1) {
                                 let index = nuevo.findIndex((e) => parseInt(e.id) === parseInt(p.id))
-                                valorDuplicadas.push({ id: p.id, nombre: nuevo[index] ? nuevo[index].nombre : '', color: p.fill });
+                                valorDuplicadas.push({ id: p.id, nombre: nuevo[index] ? nuevo[index].nombre : '', color: p.fill, espacio: localidaname.id });
                         }
                 }) : ''
                 nuevo.length > 0 && colores.length > 0 ? nuevo.map((L) => {
                         if (valorDuplicadas.findIndex((e) => parseInt(e.id) === parseInt(L.id)) != -1) {
                                 $("#precios" + L.id).css('background', valorDuplicadas[valorDuplicadas.findIndex((e) => parseInt(e.id) === parseInt(L.id))].color);
                                 L.color = valorDuplicadas[valorDuplicadas.findIndex((e) => parseInt(e.id) === parseInt(L.id))].color;
+                                L.espacio = localidaname.id
                                 return L
                         } else {
                                 $("#" + L.id).attr("background-color", '')

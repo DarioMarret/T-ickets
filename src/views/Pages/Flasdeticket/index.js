@@ -90,10 +90,8 @@ const IndexFlas = () => {
         let array = ListaElimnaLCompleta()
         array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
           console.log(ouput)
-        }
-        ).catch(err => console.log(err)) : ''
+        }).catch(err => console.log(err)) : ''
         getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
-
           getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
             setTimeout(function () {
               correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
@@ -102,15 +100,12 @@ const IndexFlas = () => {
                 console.log(err)
               })
             }, 20 * index)
-          })
-          : ''
+          }) : ''
         clearInterval(datatime.current);
         setDatoToas({ show: true, message: 'Su tiempo de compra a finalizado', color: 'bg-danger', estado: 'Mensaje importante', })
-
         handleClosesop(false)
         setMapashow(false)
         setDetalle(false)
-        //   efectiOpShow(false)
         setModalPago(false)
         setrepShow(false)
         Limpiarseleccion()
@@ -122,11 +117,9 @@ const IndexFlas = () => {
         usedispatch(setItervalo({ intervalo: "00:00" }))
         $(".Mesa").removeClass("mesaocupado").addClass("mesadisponible")
         $(".Mesa").removeClass("mesareserva")
-
       }
       else {
         setcrono(minutos + ":" + segundos)
-
         usedispatch(setItervalo({ intervalo: minutos + ":" + segundos }))
         if (--timer < 0) timer = tiempo;
       }
@@ -136,7 +129,6 @@ const IndexFlas = () => {
     let nuevo = []
     id.forEach((elm, i) => {
       let espacifica = JSON.parse(sessionStorage.getItem(seleccionmapa)) ? JSON.parse(sessionStorage.getItem(seleccionmapa)) : { id: null }
-
       if (consulta.findIndex(f => f.id === elm) != -1) {
         nuevo[i] = consulta[consulta.findIndex(f => f.id === elm)]
         if (espacifica.id != null) {
@@ -166,7 +158,8 @@ const IndexFlas = () => {
     let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
     localidadtimer.current = setInterval(function () {
       ListarLocalidad().then(ouput => {
-        filterlocal(id, ouput.data)
+        //console.log(ouput)
+        // filterlocal(id, ouput.data)
       }
       ).catch(exit => console.log(exit))
     }, 2000);
@@ -178,7 +171,6 @@ const IndexFlas = () => {
     clearInterval(localidadtimer.current)
     setMapashow(false)
     setDetalle(false)
-    // efectiOpShow(false)
     setModalPago(false)
     setrepShow(false)
     usedispatch(clearMapa({}))
@@ -282,6 +274,7 @@ const IndexFlas = () => {
         if (obten.data.length > 0) {
           let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
           let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
+          console.log(mapalocal, mapa)
           let localidad = JSON.parse(mapa[0].localidad)
           let path = JSON.parse(mapa[0].pathmap)
           let newprecios = obten.data.map((g, i) => {
@@ -289,6 +282,7 @@ const IndexFlas = () => {
             g.color = color[0].color
             g.idcolor = color[0].id
             g.typo = color[0].tipo
+            g.espacio = color[0].espacio
             return g
           })
           let colornuevo = mapalocal.map((L) => {
@@ -298,6 +292,8 @@ const IndexFlas = () => {
               L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
               L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
               L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
+              L.espacioid = L.id_espacio
+
               return L
             }
           })
@@ -309,7 +305,7 @@ const IndexFlas = () => {
           sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
             return e.id
           }))]))
-          usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
+          // usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
           let nuevosdatos = {
             precios: newprecios,
             pathmapa: pathnuevo.filter((e) => e != undefined),
@@ -442,7 +438,7 @@ const IndexFlas = () => {
     Limpiarseleccion()
     const evento = async () => {
       try {
-        const data = await cargarEventoActivo()
+        const data = await cargarEventoActivo("PROCESO")
         const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         if (data != null) {

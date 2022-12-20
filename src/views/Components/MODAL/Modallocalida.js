@@ -21,18 +21,63 @@ import moment from "moment";
 import { correlativodelete } from "utils/Querypanelsigui";
 import { Verificalocalidad } from "utils/CarritoLocalStorang";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import { OneKPlusOutlined } from "@mui/icons-material";
+import { localidaandespacio } from "utils/Querypanel";
 const LocalidadmapViews = (props) => {
     const { intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
     let nombre = JSON.parse(sessionStorage.getItem(seleccionmapa))
-
     const usedispatch = useDispatch()
     const [detalle, setDetalle] = useState([])
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localodad))
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
-
     const [alert, setAlert] = useState(null);
+    // console.log(mapath, seleccion)
+    localidaandespacio(mapath.precio.espacio, mapath.precio.idcolor).then(ouput => {
+        //console.log(ouput)
+        let nuevoObjeto = []
+        if (ouput.data.find(e => e.typo == "fila")) {
+            ouput.data.forEach(x => {
+                if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                    nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+                }
+                else {
+                    let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                    nuevoObjeto[indixe].asientos.push({
+                        silla: x.silla, estado: x.estado, idsilla: x.id
+                    })
+                }
+            })
+            console.log(nuevoObjeto)
+        } else if (ouput.data.find(e => e.typo == "mesa")) {
+            ouput.data.forEach(x => {
+                if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                    nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                }
+            })
+            nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                    nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                }
+            }) : ''
+            nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                nuevoObjeto[index].Mesas[sillas].asientos.push({
+                    silla: x.silla, estado: x.estado, idsilla: x.id
+                })
+            }) : ''
+            console.log(nuevoObjeto)
+        }
+        else if (ouput.data.find(e => e.typo == "correlativo")) {
+            console.log(ouput.data)
+        }
 
+    }).catch(err => {
+        console.log(err)
+
+    })
     function MesaVerifica(M, C) {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
         hideAlert()
@@ -45,8 +90,11 @@ const LocalidadmapViews = (props) => {
         nuevo.length > 0 && TotalSelecion() < 10 ? nuevo.map((e, index) => {
             setTimeout(() => {
                 TotalSelecion() < 10 ? $("." + e.silla).hasClass('disponible') ? enviasilla({ ...e }).then(ouput => {
+
                     AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" }))
+
+
                 }
                 ).catch(exit => {
                     console.log(exit)
@@ -279,42 +327,80 @@ const LocalidadmapViews = (props) => {
 
 
     }
+    function sillasselecion(e) {
+        let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
+        enviasilla({ id: nombres.idcolor, silla: e.silla }).then(ouput => {
+            setAlert(
+                <SweetAlert
+                    success
+                    style={{ display: "block", marginTop: "-100px" }}
+                    title="Se agrego"
+                    onConfirm={() => hideAlert()}
+                    onCancel={() => cerrar()}
+                    confirmBtnBsStyle="success"
+                    cancelBtnBsStyle="danger"
+                    confirmBtnText="Seguir Agregando"
+                    cancelBtnText="Ir al carrito"
+                    closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                    showCancel
+                >
+                    <div className="d-flex flex-row justify-content-center text-center">
+                        <div className="d-flex">
+                            <h4 style={{ fontSize: '0.9em' }} >
+                                De la Localidad {nombres.localodad} En la Fila:  {e.silla.replace("-", " ").split(" ")[0]} la Silla #{e.silla.split("-")[1]}  </h4>
+                        </div>
+                    </div>
+                </SweetAlert>
+            )
+            // usedispatch(filtrarlocali(ouput))
+            AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+            usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+
+        }
+        ).catch(exit => {
+            console.log(exit)
+        })
+    }
+
     $(document).on('click', 'div.disponible', function (e) {
         e.preventDefault();
         if (this.classList.contains("disponible")) {
             if (!this.classList.contains('seleccionado') && !this.classList.contains('ocupado') && !this.classList.contains("reservado")) {
                 let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
                 if (TotalSelecion() < 10) {
+
                     //successAlert(this.classList[0], nombres.localodad, "Fila")
                     let silla = this.classList[0].replace("-", " ").split(" ")[1]
-                    setAlert(
-                        <SweetAlert
-                            success
-                            style={{ display: "block", marginTop: "-100px" }}
-                            title="Se agrego"
-                            onConfirm={() => hideAlert()}
-                            onCancel={() => cerrar()}
-                            confirmBtnBsStyle="success"
-                            cancelBtnBsStyle="danger"
-                            confirmBtnText="Seguir Agregando"
-                            cancelBtnText="Ir al carrito"
-                            closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                            showCancel
-                        >
-                            <div className="d-flex flex-row justify-content-center text-center">
-                                <div className="d-flex">
-                                    <h4 style={{ fontSize: '0.9em' }} >
-                                        De la Localidad {nombres.localodad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
-                                </div>
-                            </div>
-                        </SweetAlert>
-                    );
+                    // console.log("sillas->", this.id)
+
                     this.classList.remove('disponible')
                     this.classList.add('seleccionado')
                     this.classList.add("" + nombres.idcolor + "silla")
 
                     enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
-                        usedispatch(filtrarlocali(ouput))
+                        setAlert(
+                            <SweetAlert
+                                success
+                                style={{ display: "block", marginTop: "-100px" }}
+                                title="Se agrego"
+                                onConfirm={() => hideAlert()}
+                                onCancel={() => cerrar()}
+                                confirmBtnBsStyle="success"
+                                cancelBtnBsStyle="danger"
+                                confirmBtnText="Seguir Agregando"
+                                cancelBtnText="Ir al carrito"
+                                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                                showCancel
+                            >
+                                <div className="d-flex flex-row justify-content-center text-center">
+                                    <div className="d-flex">
+                                        <h4 style={{ fontSize: '0.9em' }} >
+                                            De la Localidad {nombres.localodad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
+                                    </div>
+                                </div>
+                            </SweetAlert>
+                        )
+                        // usedispatch(filtrarlocali(ouput))
                         AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                         usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
 
@@ -346,6 +432,7 @@ const LocalidadmapViews = (props) => {
             if (TotalSelecion() < 10) {
                 // successAlert(this.classList[0], nombres.localodad, "Mesa")
                 let silla = this.classList[0].replace("-", " ").split(" ")[1]
+                console.log(this.id)
                 setAlert(
                     <SweetAlert
                         success
@@ -376,7 +463,7 @@ const LocalidadmapViews = (props) => {
                 enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
                     //console.log(ouput)
 
-                    usedispatch(filtrarlocali(ouput))
+                    //usedispatch(filtrarlocali(ouput))
 
                     AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
                     usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
@@ -397,14 +484,14 @@ const LocalidadmapViews = (props) => {
         return
     })
     $(document).on("click", "div.mesadisponible", function () {
-        if (!this.classList.contains("mesaselecion")) {
+        /*if (!this.classList.contains("mesaselecion")) {
             if (TotalSelecion() < 10) {
                 Alertmesas(this.classList[0], this.classList[1])
             }
             else
                 succesLimit()
         }
-        return
+        return*/
     })
     $(document).on("click", "div.mesaselecion", function () {
         if (!this.classList.contains("mesadisponible")) {
@@ -564,7 +651,7 @@ const LocalidadmapViews = (props) => {
                                                                 {e.asientos.map((silla, index) => {
                                                                     let numero = index + 1
                                                                     return (
-                                                                        <div key={"silla" + index}
+                                                                        <div key={"silla" + index} id={silla.idsilla}
                                                                             className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 sillasfila text-center  justify-content-center align-items-center '}
                                                                             style={{ height: '30px', width: '30px', marginLeft: '1px', }} >
                                                                             <div className={'px-3 d-flex   text-white justify-content-center  '} >

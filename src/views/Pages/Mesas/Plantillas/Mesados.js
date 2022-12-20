@@ -2,21 +2,13 @@ import React from "react";
 import { Stylesilla } from "./style";
 import { useSelector } from "react-redux";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+
 const MesadosView = ({ text, list }) => {
   let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
   let user = getDatosUsuariosLocalStorag()
-
+  const modalshow = useSelector((state) => state.SuscritorSlice.modal)
   function Estado(e) {
     let estado = list.find(f => f.silla == e)
-    /*if (silla.length > 0) {
-      //let valor = 
-      //console.log(checkAvailability(seleccion,e))
-      //var index = ;
-      var index = list.findIndex(obj => obj.silla == e);
-      return checkAvailability(seleccion, e) ? silla[silla.findIndex(obj => obj.silla == e)].estado : list[index].estado
-    }
-    var index = list.findIndex(obj => obj.silla == e);
-    return list[index].estado*/
     if (estado.cedula != undefined && estado.cedula != "") {
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
       else return "reservado"
@@ -46,32 +38,36 @@ const MesadosView = ({ text, list }) => {
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
     return "mesadisponible"
   }
+  function obtenerid(e) {
+    let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).idsilla : ""
+    return estado
+  }
+  function enviarsillas() {
+    modalshow.nombre == "Modallocalida" ? console.log(list) : ''
+  }
   return (
     <div style={{ padding: '0.7px' }}>
       <div className="d-flex ">
         <div className=" " style={Stylesilla.asientos}>
         </div>
-
         <div style={Stylesilla.asientos}></div>
-
-        <a className={text + "-s-1 sillas  " + Estado(text + "-s-1")} style={Stylesilla.asientos}>
+        <a id={obtenerid(text + "-s-1")} className={text + "-s-1 sillas  " + Estado(text + "-s-1")} style={Stylesilla.asientos}>
         </a>
         <div style={Stylesilla.asientos}>
         </div>
       </div>
-
       <div className=" d-flex  align-items-center">
         <div className="d-flex flex-column">
           <div style={Stylesilla.asientos}>
           </div>
-
           <div style={Stylesilla.asientos}>
           </div>
         </div>
-        <div className={text + " " + list.length + " Mesa  txt-white d-flex p-1 " + MesaEstado(text)} style={Stylesilla.mesas}>
+        <div className={text + " " + list.length + " Mesa  txt-white d-flex p-1 " + MesaEstado(text)}
+          onClick={enviarsillas}
+          style={Stylesilla.mesas}>
           {text}
         </div>
-
         <div className="d-flex flex-column">
           <div style={Stylesilla.asientos}>
           </div>
@@ -79,20 +75,16 @@ const MesadosView = ({ text, list }) => {
           </div>
         </div>
       </div>
-
       <div className="d-flex ">
         <div className=" " style={Stylesilla.asientos}>
         </div>
-
         <div style={Stylesilla.asientos}></div>
-
-        <a className={text + "-s-2 sillas  " + Estado(text + "-s-2")} style={Stylesilla.asientos}>
+        <a id={obtenerid(text + "-s-2")} className={text + "-s-2 sillas  " + Estado(text + "-s-2")} style={Stylesilla.asientos}>
         </a>
         <div style={Stylesilla.asientos}>
         </div>
       </div>
     </div>
-
 
   )
 

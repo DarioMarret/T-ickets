@@ -15,6 +15,7 @@ import { quitarsilla } from "utils/Querypanelsigui"
 import { correlativodelete } from "utils/Querypanelsigui"
 import { setModal } from "StoreRedux/Slice/SuscritorSlice"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
+import { localidaandespacio } from "utils/Querypanel"
 
 const ModalCarritoView = (prop) => {
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
@@ -113,28 +114,148 @@ const ModalCarritoView = (prop) => {
 
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
 
+
     function Abririlocalfirt(e) {
+        console.log(e)
         let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
-        let filtro = sleccionlocalidad.localidades.filter((G) => G.nombre == e.localodad)
-        let espacio = JSON.parse(filtro[0].mesas_array)
-        usedispatch(cargarmapa(color))
-        usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
-        usedispatch(filtrarlocali(espacio.datos))
-        sessionStorage.seleccionmapa = JSON.stringify(e)
-        abrirlocalidad()
+        localidaandespacio(e.espacio, e.idcolor).then(ouput => {
+            //   console.log(ouput)
+            // console.log(ouput.data.find(e => e.typo == "fila"))
+            let nuevoObjeto = []
+            if (ouput.data.find(e => e.typo == "fila")) {
+                ouput.data.forEach(x => {
+                    if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                        nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+                    }
+                    else {
+                        let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                        nuevoObjeto[indixe].asientos.push({
+                            silla: x.silla, estado: x.estado, idsilla: x.id
+                        })
+                    }
+                })
+                console.log(nuevoObjeto)
+                usedispatch(cargarmapa(color))
+                usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
+                usedispatch(filtrarlocali(nuevoObjeto))
+                sessionStorage.seleccionmapa = JSON.stringify(e)
+                abrirlocalidad()
+
+            }
+            else if (ouput.data.find(e => e.typo == "mesa")) {
+                ouput.data.forEach(x => {
+                    if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                        nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                    }
+                })
+                nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                    let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                    if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                        nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                    }
+                }) : ''
+                nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                    let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                    let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                    nuevoObjeto[index].Mesas[sillas].asientos.push({
+                        silla: x.silla, estado: x.estado, idsilla: x.id
+                    })
+                }) : ''
+                usedispatch(cargarmapa(color))
+                usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
+                usedispatch(filtrarlocali(nuevoObjeto))
+                sessionStorage.seleccionmapa = JSON.stringify(e)
+                abrirlocalidad()
+
+            }
+            else if (ouput.data.find(e => e.typo == "correlativo")) {
+                usedispatch(cargarmapa(color))
+                usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
+                sessionStorage.seleccionmapa = JSON.stringify(e)
+                abrirlocalidad()
+            }
+        }
+        ).catch(err =>
+            console.log(err))
+        /* let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
+         let filtro = sleccionlocalidad.localidades.filter((G) => G.nombre == e.localodad)
+         let espacio = JSON.parse(filtro[0].mesas_array)
+         usedispatch(cargarmapa(color))
+         usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
+         usedispatch(filtrarlocali(espacio.datos))
+         sessionStorage.seleccionmapa = JSON.stringify(e)
+         abrirlocalidad()*/
     }
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
     path.forEach(E => {
         E.addEventListener("click", function () {
-            let consulta = precios.precios.filter((F) => F.idcolor == this.classList[0])
-            let color = precios.pathmapa.filter((E) => E.id == consulta[0].idcolor)
-            let filtro = sleccionlocalidad.localidades.filter((G) => G.nombre == consulta[0].localodad)
-            let espacio = JSON.parse(filtro[0].mesas_array)
-            usedispatch(cargarmapa(color))
-            usedispatch(settypo({ nombre: precios.mapa, typo: consulta[0].tipo, precio: { ...consulta[0] } }))
-            usedispatch(filtrarlocali(espacio.datos))
-            sessionStorage.seleccionmapa = JSON.stringify(consulta[0])
-            abrirlocalidad()
+            let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
+            localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
+                let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
+                let nuevoObjeto = []
+                if (ouput.data.find(e => e.typo == "fila")) {
+                    ouput.data.forEach(x => {
+                        if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                            nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+                        }
+                        else {
+                            let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                            nuevoObjeto[indixe].asientos.push({
+                                silla: x.silla, estado: x.estado, idsilla: x.id
+                            })
+                        }
+                    })
+                    console.log(nuevoObjeto)
+                    usedispatch(cargarmapa(color))
+                    usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                    usedispatch(filtrarlocali(nuevoObjeto))
+                    sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                    abrirlocalidad()
+                } else if (ouput.data.find(e => e.typo == "mesa")) {
+                    ouput.data.forEach(x => {
+                        if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                            nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                        }
+                    })
+                    nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                        let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                        if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                            nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                        }
+                    }) : ''
+                    nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                        let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                        let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                        nuevoObjeto[index].Mesas[sillas].asientos.push({
+                            silla: x.silla, estado: x.estado, idsilla: x.id
+                        })
+                    }) : ''
+                    usedispatch(cargarmapa(color))
+                    usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                    usedispatch(filtrarlocali(nuevoObjeto))
+                    sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                    abrirlocalidad()
+
+                }
+                else if (ouput.data.find(e => e.typo == "correlativo")) {
+                    usedispatch(cargarmapa(color))
+                    usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                    //  usedispatch(filtrarlocali(nuevoObjeto))
+                    sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                    abrirlocalidad()
+                }
+            }
+            ).catch(err =>
+                console.log(err))
+            return
+            /*  let color = precios.pathmapa.filter((E) => E.id == consulta[0].idcolor)
+              let filtro = sleccionlocalidad.localidades.filter((G) => G.nombre == consulta[0].localodad)
+              let espacio = JSON.parse(filtro[0].mesas_array)
+              usedispatch(cargarmapa(color))
+              usedispatch(settypo({ nombre: precios.mapa, typo: consulta[0].tipo, precio: { ...consulta[0] } }))
+              usedispatch(filtrarlocali(espacio.datos))
+              sessionStorage.seleccionmapa = JSON.stringify(consulta[0])
+              abrirlocalidad()*/
         })
     })
     function cerrar() {

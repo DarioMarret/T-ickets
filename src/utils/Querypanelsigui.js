@@ -10,9 +10,9 @@ export const ActualizaEstadoLocalidad = async (id, parms) => {
     })
     return data
 }
-export const cargarEventoActivo = async () => {
+export const cargarEventoActivo = async (parms) => {
     try {
-        const { data } = await axios.get(Host + "listareventos/ACTIVO", {
+        const { data } = await axios.get(Host + "listareventos/" + parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -81,6 +81,7 @@ export const eliminaMapa = async (parm) => {
 }
 export const enviasilla = async (info) => {
     let user = getDatosUsuariosLocalStorag()
+    console.log(info, user)
     const datos = {
         id: info.id,
         cedula: user.cedula,
@@ -89,12 +90,13 @@ export const enviasilla = async (info) => {
     }
     //console.log(datos)
     try {
-        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecionar_localidad", datos, {
+        const { data } = await axios.post(Host + "api/v1/selecionar_localidad", datos, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
+        console.log(data)
         return data.data.datos
     } catch (error) {
         console.log(error)
@@ -104,7 +106,7 @@ export const enviasilla = async (info) => {
 }
 export const correlativosadd = async (parms) => {
     try {
-        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecionar_localidad_correlativa",
+        const { data } = await axios.post(Host + "api/v1/selecionar_localidad_correlativa",
             parms, {
             headers: {
                 'Content-Type': 'application/json',
@@ -136,7 +138,7 @@ export const correlativodelete = async (parms) => {
 }
 export const listarLocalidadaEspeci = async (parms) => {
     try {
-        const { data } = await axios.get(Host + "api/v1/listar_localidades_id_espacio/" + parms, {
+        const { data } = await axios.get(Host + "api/v1/listar_localidades_id_espacio_descripcion/" + parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

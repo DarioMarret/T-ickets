@@ -122,13 +122,11 @@ export default function ReporteView(prop) {
                 >
                     <div>
                         <div id="COMPROBANTE" className="container   px-0"
-
                             style={{
                                 borderStyle: "solid",
                                 borderWidth: "2px",
                                 borderRadius: 20,
                                 borderColor: color[modalshow.nombre],
-
                             }}
                         >
                             <div className={"  d-flex justify-content-center py-2   h-25 "}
@@ -140,7 +138,6 @@ export default function ReporteView(prop) {
                             >
                                 <div className="px-0 ">
                                     <img src={imagenes[modalshow.nombre]} className="" style={{
-
                                     }}></img>
                                 </div>
                             </div>

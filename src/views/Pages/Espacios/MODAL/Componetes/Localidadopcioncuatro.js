@@ -4,11 +4,12 @@ import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Button, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete } from '@mui/icons-material';
-import { ListarLocalidad } from '../../../../../utils/Querypanel';
+import { ListarLocalidad, Listarlocalidadid, localidaandespacio } from '../../../../../utils/Querypanel';
 import { columnespacio } from 'utils/ColumnTabla';
 import { EliminarLocalidad } from '../../../../../utils/Querypanel';
 import { useSelector, useDispatch } from 'react-redux';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { listarLocalidadaEspeci } from 'utils/Querypanelsigui';
 
 const LocalidadesagreViews = (props) => {
   let usedispatch = useDispatch()
@@ -18,6 +19,8 @@ const LocalidadesagreViews = (props) => {
   async function ObtenLocalidad() {
     try {
       const datos = await ListarLocalidad()
+      //const datos2 = await Listarlocalidadid(localidaname.id)
+      //console.log(datos2)
       const { success, data } = datos
       if (success) {
         const filtrado = data.filter(e => e.espacio == localidaname.nombre)
@@ -47,27 +50,89 @@ const LocalidadesagreViews = (props) => {
     }
   }
   function Editar(parms) {
-    let tipo = JSON.parse(parms.mesas_array)
-    console.log(tipo.Typo)
-    if (tipo.Typo == "fila") {
-      SetDataloca({ typo: 'fila', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: tipo.datos })
-      $("#listas").removeClass("active")
-      $("#filas").addClass("active")
-      $('[href*="filas"]').addClass('active');
-      $('[href*="listas"]').removeClass('active');
-    } else if (tipo.Typo == "mesa") {
-      SetDataloca({ typo: 'mesa', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: tipo.datos })
-      $("#listas").removeClass("active")
-      $("#mesas").addClass("active")
-      $('[href*="mesas"]').addClass('active');
-      $('[href*="listas"]').removeClass('active');
-    } else if (tipo.Typo == "correlativo") {
-      SetDataloca({ typo: 'correlativo', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: tipo.datos })
-      $("#listas").removeClass("active")
-      $("#correlativos").addClass("active")
-      $('[href*="correlativos"]').addClass('active');
-      $('[href*="listas"]').removeClass('active');
+    //export const localidaandespacio = async (parms, id) => {
+    console.log(localidaname.id, parms)
+    localidaandespacio(localidaname.id, parms.id).then(ouput => {
+      console.log(ouput)
+      console.log(ouput.data.find(e => e.typo == "fila"))
+      let nuevoObjeto = []
+      if (ouput.data.find(e => e.typo == "fila")) {
+        ouput.data.forEach(x => {
+          if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+            nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+          }
+          else {
+            let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+            nuevoObjeto[indixe].asientos.push({
+              silla: x.silla, estado: x.estado, idsilla: x.id
+            })
+          }
+        })
+        console.log(nuevoObjeto)
+        SetDataloca({ typo: 'fila', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: nuevoObjeto })
+        $("#listas").removeClass("active")
+        $("#filas").addClass("active")
+        $('[href*="filas"]').addClass('active');
+        $('[href*="listas"]').removeClass('active');
+      }
+      else if (ouput.data.find(e => e.typo == "mesa")) {
+        ouput.data.forEach(x => {
+          if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+            nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+          }
+        })
+        nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+          let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+          if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+            nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+          }
+        }) : ''
+        nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+          let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+          let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+          nuevoObjeto[index].Mesas[sillas].asientos.push({
+            silla: x.silla, estado: x.estado, idsilla: x.id
+          })
+        }) : ''
+        SetDataloca({ typo: 'mesa', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: nuevoObjeto })
+        $("#listas").removeClass("active")
+        $("#mesas").addClass("active")
+        $('[href*="mesas"]').addClass('active');
+        $('[href*="listas"]').removeClass('active');
+      }
+      else if (ouput.data.find(e => e.typo == "correlativo")) {
+        /* SetDataloca({ typo: 'correlativo', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: tipo.datos })
+         $("#listas").removeClass("active")
+         $("#correlativos").addClass("active")
+         $('[href*="correlativos"]').addClass('active');
+         $('[href*="listas"]').removeClass('active');*/
+      }
+
+
     }
+    ).catch(err =>
+      console.log(err))
+    let tipo = JSON.parse(parms.mesas_array)
+    //console.log(tipo.Typo)
+    /* if (tipo.Typo == "fila") {
+       SetDataloca({ typo: 'fila', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: tipo.datos })
+       $("#listas").removeClass("active")
+       $("#filas").addClass("active")
+       $('[href*="filas"]').addClass('active');
+       $('[href*="listas"]').removeClass('active');
+     } else if (tipo.Typo == "mesa") {
+       SetDataloca({ typo: 'mesa', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: tipo.datos })
+       $("#listas").removeClass("active")
+       $("#mesas").addClass("active")
+       $('[href*="mesas"]').addClass('active');
+       $('[href*="listas"]').removeClass('active');
+     } else if (tipo.Typo == "correlativo") {
+       SetDataloca({ typo: 'correlativo', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: tipo.datos })
+       $("#listas").removeClass("active")
+       $("#correlativos").addClass("active")
+       $('[href*="correlativos"]').addClass('active');
+       $('[href*="listas"]').removeClass('active');
+     }*/
   }
 
   useEffect(() => {

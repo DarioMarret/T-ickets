@@ -199,6 +199,25 @@ export const ListarLocalidad = async () => {
         header: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+        }
+    })
+    return data
+}
+export const localidaandespacio = async (parms, id) => {
+    const { data } = await axios.get(Host + "api/v1/listar_localidades_id_espacio/" + parms + "/" + id, {
+        header: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+
+        }
+    })
+    return data
+}
+export const Listarlocalidadid = async (parms) => {
+    const { data } = await axios.get(Host + "api/v1/listar_localidades_id_espacio/" + parms, {
+        header: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })

@@ -120,19 +120,20 @@ const TabunoView = (props) => {
         }
         else {
             try {
-                const guardad = await GuardarLocalidad({ "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "id_espacio": localidaname.id, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
-                if (guardad.success) {
-                    SetDataloca({
-                        typo: '',
-                        nombre: '',
-                        description: '',
-                        id: '',
-                        array: ''
-                    })
-
-                    setFilas([])
-                    usedispatch(setToastes({ show: true, message: 'Localidad creada correctamente', color: 'bg-success', estado: 'Datos guardados' }))
-                }
+                console.log(ListaFilas)
+                /*  const guardad = await GuardarLocalidad({ "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "id_espacio": localidaname.id, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
+                  if (guardad.success) {
+                      SetDataloca({
+                          typo: '',
+                          nombre: '',
+                          description: '',
+                          id: '',
+                          array: ''
+                      })
+  
+                      setFilas([])
+                      usedispatch(setToastes({ show: true, message: 'Localidad creada correctamente', color: 'bg-success', estado: 'Datos guardados' }))
+                  }*/
             } catch (error) {
                 console.log(error)
             }

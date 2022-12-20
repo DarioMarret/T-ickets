@@ -36,7 +36,7 @@ const TabdosView = (props) => {
         filas: 1
     })
     const [SillasMesas, SetSillasmes] = useState({
-        Fila: '',
+        fila: '',
         Mesa: '',
         cantidad: ''
     })
@@ -47,7 +47,7 @@ const TabdosView = (props) => {
     })
     function cambiaFila(value) {
         setSingleSelectwo(value)
-        var index = FilasLocalidad.filter(obj => obj.Fila == value.value)
+        var index = FilasLocalidad.filter(obj => obj.fila == value.value)
         //console.log(index)
         setMultipleSelect("")
 
@@ -56,11 +56,11 @@ const TabdosView = (props) => {
     const AgregarFilas = () => {
         let fila = parseInt(Mesass.filas)
         const data = Letras.slice(0, fila).map((e, i) => {
-            return { Fila: e, Mesas: [] }
+            return { fila: e, Mesas: [] }
         })
         SetFilaLocalidad(data)
         const datos = data.map((e, i) => {
-            return { value: e.Fila, label: e.Fila }
+            return { value: e.fila, label: e.fila }
         })
         Fila(datos)
         setSingleSelect("")
@@ -71,7 +71,7 @@ const TabdosView = (props) => {
             ListadeMesas = FilasLocalidad
             let sillas = []
             for (var i = 0; i < ListadeMesas.length; i++) {
-                var letra = ListadeMesas[i].Fila
+                var letra = ListadeMesas[i].fila
                 for (var f = 0; f < parseInt(Mesass.me_inicial); f++) {
                     let valor = parseInt(f) + 1
                     sillas[f] = { mesa: letra + "" + valor, sillas: 0, asientos: [] }
@@ -88,9 +88,9 @@ const TabdosView = (props) => {
             ListadeMesas = FilasLocalidad
             SetFilaLocalidad([])
             let sillas = []
-            var index = ListadeMesas.findIndex(obj => obj.Fila == singleSelect.value);
-            console.log(index, ListadeMesas[index].Fila)
-            var letra = ListadeMesas[index].Fila
+            var index = ListadeMesas.findIndex(obj => obj.fila == singleSelect.value);
+            console.log(index, ListadeMesas[index].fila)
+            var letra = ListadeMesas[index].fila
             console.log(letra)
             const repeticiones = parseInt(Mesass.me_inicial)
             for (var i = 0; i < repeticiones; i++) {
@@ -157,7 +157,7 @@ const TabdosView = (props) => {
 
             //Fila especifica mesa especifica 
             ListadeMesas = FilasLocalidad
-            var index = ListadeMesas.findIndex(obj => obj.Fila == singleSelecttwo.value);
+            var index = ListadeMesas.findIndex(obj => obj.fila == singleSelecttwo.value);
             var fila = ListadeMesas[index].Mesas.findIndex(obj => obj.mesa == multipleSelect.value);
             var numfila = singleSelecttwo.value
             ListadeMesas[index].Mesas[fila]["asientos"] = []
@@ -224,6 +224,7 @@ const TabdosView = (props) => {
 
     }
     async function agregaLocaliad() {
+        console.log(FilasLocalidad)
         if (localidaname.nombre == "" || localidaname.description == "" || ListaMesa.length < 0) {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guardar', color: 'bg-warning', estado: 'Advertencia' }))
             return
@@ -238,24 +239,25 @@ const TabdosView = (props) => {
         }
         else {
             try {
-                const guarda = await GuardarLocalidad({ "espacio": localidanames.nombre, "id_espacio": localidanames.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
-                // console.log(guarda)
-                if (guarda.success) {
-                    SetDataloca({
-                        typo: '',
-                        nombre: '',
-                        description: '',
-                        id: '',
-                        array: ''
-                    })
-                    usedispatch(setToastes({ show: true, message: 'Localidad guardada correctamente', color: 'bg-success', estado: 'Datos Correctos' }))
-                    SetFilaLocalidad([])
-                    setLocalidad({
-                        nombre: '',
-                        description: '',
-                        id: ''
-                    })
-                }
+                console.log(FilasLocalidad)
+                /* const guarda = await GuardarLocalidad({ "espacio": localidanames.nombre, "id_espacio": localidanames.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
+                 // console.log(guarda)
+                 if (guarda.success) {
+                     SetDataloca({
+                         typo: '',
+                         nombre: '',
+                         description: '',
+                         id: '',
+                         array: ''
+                     })
+                     usedispatch(setToastes({ show: true, message: 'Localidad guardada correctamente', color: 'bg-success', estado: 'Datos Correctos' }))
+                     SetFilaLocalidad([])
+                     setLocalidad({
+                         nombre: '',
+                         description: '',
+                         id: ''
+                     })
+                 }*/
 
             } catch (error) {
                 console.log(error)
@@ -414,7 +416,7 @@ const TabdosView = (props) => {
                                                             label: "Todas",
                                                         },
                                                         ...FilasLocalidad.map((e, i) => {
-                                                            return { value: e.Fila, label: e.Fila }
+                                                            return { value: e.fila, label: e.fila }
                                                         })
 
                                                     ]}
@@ -468,7 +470,7 @@ const TabdosView = (props) => {
                                                                 label: "Todas",
                                                             },
                                                             ...FilasLocalidad.map((e, i) => {
-                                                                return { value: e.Fila, label: e.Fila }
+                                                                return { value: e.fila, label: e.fila }
                                                             })
 
                                                         ]}
@@ -572,7 +574,7 @@ const TabdosView = (props) => {
                                         <div className='d-flex  px-3 align-items-center' key={index}>
                                             <div className='d-flex pb-2'>
                                                 <MesaiView
-                                                    text={e.Fila}
+                                                    text={e.fila}
                                                 />
                                             </div>
                                             <div className='d-flex  pb-2' >
