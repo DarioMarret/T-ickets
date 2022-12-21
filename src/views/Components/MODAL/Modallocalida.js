@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import MesaiView from "views/Pages/Mesas/Plantillas/indice"
 import MesasView from "views/Pages/Mesas"
 import SVGView from "views/Pages/Svgviewa/svgoptio.js";
@@ -32,6 +32,7 @@ const LocalidadmapViews = (props) => {
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localodad))
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [alert, setAlert] = useState(null);
+    const intervalolista = useRef(null)
     // console.log(mapath, seleccion)
 
     function MesaVerifica(M, C) {
@@ -80,6 +81,7 @@ const LocalidadmapViews = (props) => {
         hideAlert()
     }
     function restaprecio() {
+        let user = getDatosUsuariosLocalStorag()
         let producto = {
             cantidad: -1,
             localidad: mapath.precio.localodad,
@@ -89,20 +91,28 @@ const LocalidadmapViews = (props) => {
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto"),
         }
-        getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : correlativodelete({
+        console.log(getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad)
+
+        getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : correlativosadd({
             "id": mapath.precio.idcolor,
-            "protocol": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol,
-            "cantidad": 1
+            "estado": "disponible",
+            "cedula": user.cedula,
+            "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad == 1 ? getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad : (parseInt(getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad - 1))
+
+            //"protocol": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol,  
         }).then(oupt => {
-            //console.log(oupt)
+            getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
+            setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
+
+            console.log(oupt)
         }).catch(err => {
             console.log(err)
         })
-        getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
-        setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
     }
     function agregar() {
         let user = getDatosUsuariosLocalStorag()
+        let disponible = mapath.localidadespecica.length
+        if (disponible == 0) return
         let protoco = moment().format("YYYYMMDDHHMMSS")
         let producto = {
             cantidad: 1,
@@ -120,12 +130,13 @@ const LocalidadmapViews = (props) => {
             setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
             correlativosadd({
                 "id": mapath.precio.idcolor,
-                "estado": "seleccion",
+                "estado": "reservado",
                 "cedula": user.cedula,
-                "protocol": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? protoco : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol,
                 "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? 1 : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad
+                //"protocol": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? protoco : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol,
+
             }).then(oupt => {
-                //  console.log(oupt)
+                console.log(oupt)
             }
 
             ).catch(erro => console.log(erro))
@@ -478,6 +489,63 @@ const LocalidadmapViews = (props) => {
         $("#reservado").text(reservado.length)
         $("#seleccionado").text(seleccion.length)
     })
+
+    function Cargarlisat() {
+        intervalolista.current = setInterval(function () {
+            localidaandespacio(mapath.precio.espacio, mapath.precio.idcolor).then(ouput => {
+                //console.log(ouput)
+                let nuevoObjeto = []
+                if (ouput.data.find(e => e.typo == "fila")) {
+                    ouput.data.forEach(x => {
+                        if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                            nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+                        }
+                        else {
+                            let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                            nuevoObjeto[indixe].asientos.push({
+                                silla: x.silla, estado: x.estado, idsilla: x.id
+                            })
+                        }
+                    })
+                    console.log(nuevoObjeto)
+                    //usedispatch(filtrarlocali(nuevoObjeto))
+                } else if (ouput.data.find(e => e.typo == "mesa")) {
+                    ouput.data.forEach(x => {
+                        if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                            nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                        }
+                    })
+                    nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                        let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                        if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                            nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                        }
+                    }) : ''
+                    nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                        let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                        let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                        nuevoObjeto[index].Mesas[sillas].asientos.push({
+                            silla: x.silla, estado: x.estado, idsilla: x.id
+                        })
+                    }) : ''
+                    console.log(nuevoObjeto)
+                }
+                else if (ouput.data.find(e => e.typo == "correlativo")) {
+                    console.log(ouput.data.filter(e => e.estado == "disponible"))
+                }
+
+            }).catch(err => {
+                console.log(err)
+            })
+        }, 3000)
+    }
+
+
+    function parar() {
+        clearInterval(intervalolista.current);
+
+    }
+    modalshow.nombre != "ModalCarritov" ? '' : parar();
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
@@ -497,53 +565,11 @@ const LocalidadmapViews = (props) => {
         // console.log(mapath.localidadespecica.info)
         mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? cantidad.length > 0 ? setDetalle(Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"])) : '' : '' : ''
         getVerTienda().filter((e) => e.id == mapath.precio.idcolor).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.idcolor)) : setDetalle([])
+        modalshow.nombre == "Modallocalida" ? Cargarlisat() : ''
+        // return (() => )
 
-        localidaandespacio(mapath.precio.espacio, mapath.precio.idcolor).then(ouput => {
-            //console.log(ouput)
-            let nuevoObjeto = []
-            if (ouput.data.find(e => e.typo == "fila")) {
-                ouput.data.forEach(x => {
-                    if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                        nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
-                    }
-                    else {
-                        let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
-                        nuevoObjeto[indixe].asientos.push({
-                            silla: x.silla, estado: x.estado, idsilla: x.id
-                        })
-                    }
-                })
-                console.log(nuevoObjeto)
-                //usedispatch(filtrarlocali(nuevoObjeto))
-            } else if (ouput.data.find(e => e.typo == "mesa")) {
-                ouput.data.forEach(x => {
-                    if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                        nuevoObjeto.push({ fila: x.fila, Mesas: [] })
-                    }
-                })
-                nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
-                    let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                    if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
-                        nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
-                    }
-                }) : ''
-                nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
-                    let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                    let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
-                    nuevoObjeto[index].Mesas[sillas].asientos.push({
-                        silla: x.silla, estado: x.estado, idsilla: x.id
-                    })
-                }) : ''
-                console.log(nuevoObjeto)
-            }
-            else if (ouput.data.find(e => e.typo == "correlativo")) {
-                console.log(ouput.data)
-            }
-
-        }).catch(err => {
-            console.log(err)
-        })
     }, [modalshow.nombre == "Modallocalida" ? true : false])
+
     return (
         <>
             {alert}

@@ -16,6 +16,8 @@ import { correlativodelete } from "utils/Querypanelsigui"
 import { setModal } from "StoreRedux/Slice/SuscritorSlice"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 import { localidaandespacio } from "utils/Querypanel"
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
+import { correlativosadd } from "utils/Querypanelsigui"
 
 const ModalCarritoView = (prop) => {
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
@@ -50,6 +52,7 @@ const ModalCarritoView = (prop) => {
         setCheck(false)
     }
     function Eliminar(e) {
+        let user = getDatosUsuariosLocalStorag()
         let array = e.localidaEspacio["typo"] != "correlativo" ? listaEliminasillas(e.localidaEspacio
         ["idcolor"]) : ''
         console.log(array)
@@ -60,10 +63,11 @@ const ModalCarritoView = (prop) => {
             $("div." + e.localidaEspacio["idcolor"] + "silla").removeClass("seleccionado").addClass("disponible");
             console.log(ouput)
         }
-        ).catch(err => console.log(err)) : correlativodelete(
+        ).catch(err => console.log(err)) : correlativosadd(
             {
                 "id": e.id,
-                "protocol": e.protocol,
+                "estado": "disponible",
+                "cedula": user.cedula,
                 "cantidad": e.cantidad
             }
         ).then(oupt => {
@@ -169,6 +173,9 @@ const ModalCarritoView = (prop) => {
 
             }
             else if (ouput.data.find(e => e.typo == "correlativo")) {
+
+
+                usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible")))
                 usedispatch(cargarmapa(color))
                 usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                 sessionStorage.seleccionmapa = JSON.stringify(e)
