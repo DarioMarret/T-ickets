@@ -260,15 +260,18 @@ export default function ListaSuscritor(prop) {
                 })
                 return
             }
-            else setDausuario({
-                nombreCompleto: ouput.data.nombreCompleto,
-                ciudad: ouput.data.ciudad,
-                email: ouput.data.email,
-                movil: "0" + ouput.data.movil,
-                resgistro: ouput.data.registro,
-                password: '',
-                whatsapp: ouput.data.movil, password: '', resgistro: true
-            })
+            else {
+                setDausuario({
+                    nombreCompleto: ouput.data.nombreCompleto,
+                    ciudad: ouput.data.ciudad,
+                    email: ouput.data.email,
+                    movil: "0" + ouput.data.movil,
+                    resgistro: ouput.data.registro,
+                    password: '',
+                    whatsapp: ouput.data.movil, password: '', resgistro: true
+                })
+                DatosUsuariosLocalStorag({ ...ouput.data })
+            }
 
         }).catch(erro => {
             console.log(erro)
@@ -305,7 +308,10 @@ export default function ListaSuscritor(prop) {
                 centered
                 size="lg"
             >
-                <Modal.Header  >
+                <Modal.Header className="py-3" >
+                    <h5 className="modal-title">
+                        CLIENTES
+                    </h5>
                     <button type="button" className="close"
                         onClick={() => usedispatch(setModal({ nombre: '', estado: '' }))}
                     >
@@ -325,7 +331,18 @@ export default function ListaSuscritor(prop) {
                                 <div>
                                     <form id="register" className=" needs-validation  " onSubmit={(e) => e.preventDefault()}  >
                                         <div className="row">
-                                            <div className="col-4">
+                                            <div className="col-12 mb-3">
+                                                <div className=" d-flex  justify-content-end">
+
+                                                    <button className="btn btn-danger mx-3" onClick={buscarsuscritor}> <i className=" fa fa-search"></i> Buscar cliente </button>
+                                                    {
+                                                        !datos.resgistro ? <button className="btn btn-success "  ><i className="fa fa-search "></i> Buscar cédula </button> : ''
+                                                    }
+                                                    {!datos.resgistro ? <button className="btn btn-success ml-3" onClick={CrearUSuario} ><i className=" fa fa-plus-circle"></i> CREAR </button> :
+                                                        <button className="btn btn-primary" onClick={successAlert} > <i className=" fa fa-check-circle"></i> </button>}
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
                                                 <div className=" input-group mb-3" >
                                                     <div className="input-group-prepend">
                                                         <span className="input-group-text">
@@ -339,7 +356,7 @@ export default function ListaSuscritor(prop) {
                                                     </Form.Select>
                                                 </div>
                                             </div>
-                                            <div className="col-5">
+                                            <div className="col-6">
                                                 <input id="cedula" type="text"
                                                     className="form-control numero"
                                                     name="cedula"
@@ -348,13 +365,8 @@ export default function ListaSuscritor(prop) {
 
                                                     placeholder={(code == "cedula") ? "Ingrese cédula" : "Ingrese su número de identificación"} required />
                                             </div>
-                                            <div className="col-sm">
-                                                <button className="btn btn-danger" onClick={buscarsuscritor}> <i className=" fa fa-search"></i> </button>
-                                            </div>
-                                            <div className="col-2" >
-                                                {!datos.resgistro ? <button className="btn btn-success" onClick={CrearUSuario} > CREAR </button> :
-                                                    <button className="btn btn-primary" onClick={successAlert} > <i className=" fa fa-check-circle"></i> </button>}
-                                            </div>
+
+
                                             <div className="col-lg-12">
                                                 <div className="input-group mb-3">
                                                     <div className="input-group-prepend">
@@ -364,7 +376,6 @@ export default function ListaSuscritor(prop) {
                                                         className="form-control"
                                                         id="nombreCompleto"
                                                         value={datos.nombreCompleto}
-                                                        disabled={(code == "cedula")}
                                                         name="nombreCompleto"
                                                         onChange={(e) => handelChange(e.target)}
                                                         placeholder="Ingrese su nombres completos" required />
@@ -377,11 +388,8 @@ export default function ListaSuscritor(prop) {
                                             </div>
                                         </div>
                                         <div className="row">
-
-
                                             <div className="col-12 col-lg-6  ">
                                                 <div className="input-group mb-3  px-0 d-flex justify-content-center ">
-
                                                     <input
                                                         name="movil" type="tel"
                                                         className="m-0 inptFielsd form-control " id="movil"
@@ -390,11 +398,8 @@ export default function ListaSuscritor(prop) {
                                                         required
                                                         value={datos.movil}
                                                         placeholder="999 999 999" />
-
-
                                                     <div className="invalid-feedback">
                                                         Ingrese un numero de Whatsapp
-
                                                     </div>
                                                 </div>
                                             </div>

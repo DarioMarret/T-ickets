@@ -448,10 +448,17 @@ const IndexFlas = () => {
     }
     evento()
     ListarNoticias().then(ouput => {
+
       setpublicidad(ouput.data)
       //console.log(ouput)
-    }).catch(err =>
+    }).catch(err => {
+      if (err.response.status === 500) {
+        //error page redirect 
+      } else {
+        //unsuccess page redirect
+      }
       console.log(err)
+    }
     )
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()

@@ -2,9 +2,34 @@ import { useEffect } from "react";
 import { carrusel } from "../Flasdeticket/imagenstatctic";
 let { tercero } = carrusel
 import { QRCodeCanvas } from "qrcode.react";
+import jsPDF from "jspdf";
 export function DiseñoViewtickes() {
+
+    function imprime() {
+
+        html2canvas(document.querySelector("#ticktes")).then(canvas => {
+            console.log(canvas)
+            var imgWidth = 90;
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            //   alert(imgHeight)
+            const contentDataURL = canvas.toDataURL('image/png')
+            let pdf = new jsPDF('p', 'mm', 'a5'); // A4 size page of PDF
+            var position = 10;
+            pdf.addImage(contentDataURL, 'PNG', 5, position, imgWidth, imgHeight);
+            //  window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
+
+            // doc.save('comprobante.pdf');
+            pdf.autoPrint();
+            //doc.output('bloburl')
+            document.getElementById('main-iframe').setAttribute('src', pdf.output('bloburl'));
+        });
+        //hideAlert()
+        //usedispatch(setModal({ nombre: '', estado: '' }))
+    }
+
     return (
         <div className="container">
+            <iframe className='d-none' id="main-iframe" ></iframe>
             <div className="row">
 
                 <div className="card">
@@ -14,8 +39,8 @@ export function DiseñoViewtickes() {
                         </div>
                         <div className="col-6">
                             <select className=" form-select">
-                                <option > Evemto 1</option>
-                                <option>Ecento 2 </option>
+                                <option>Evento 1</option>
+                                <option>Evento 2 </option>
                             </select>
                         </div>
                     </div>
@@ -23,6 +48,7 @@ export function DiseñoViewtickes() {
             </div>
             <div className="row card">
                 <div className=" card-body">
+                    <button className=" btn btn-success" onClick={imprime}> Imprimir </button>
                     <div className=" container row  mx-auto ">
                         <div className="col-sm mx-1 text-center border ">
                             <h4> Sección 1</h4>
@@ -38,18 +64,18 @@ export function DiseñoViewtickes() {
                         </div>
                     </div>
                     <div className=" row mx-auto  ">
-                        <div className="  mx-auto justify-content-center" style={{
+                        <div className="d-flex  mx-auto justify-content-center" style={{
                             height: 400
                         }}>
                             <div className="pt-3">
-                                <div className=" border bg-success" style={{
+                                <div id="ticktes" className="border bg-info " style={{
                                     position: "relative",
                                     width: "17.05cm",
                                     height: "5.5cm"
                                 }}>
                                     {/**primer cuadro a la izquierda */}
-                                    <div className=" d-flex
-                                     bg-info
+                                    <div className=" d-flex 
+                                     
                                     " style={{
                                             height: "4.5cm"
                                         }}>
@@ -60,12 +86,16 @@ export function DiseñoViewtickes() {
                                                 width: "9.5cm"
                                             }}
                                         >
-                                            <div className="pl-2  pt-2" >
+                                            <div className="pl-2  pt-2"
+                                                style={{
+
+                                                }}>
                                                 <h5 style={{
                                                     fontSize: "0.7em",
+                                                    fontWeight: "bold",
                                                     lineHeight: 0,
                                                 }} className="pt-1 pb-0"> <span>ESTADIO VOLTER PALADIINES </span> MIEL SAN MARCOS  </h5>
-                                                <p className=" pl-3 pt-1 pb-0" style={{ fontSize: "0.68em", lineHeight: 0, }} >Guayaquil 20 de diciembre 2022 19:00 </p>
+                                                <p className=" pl-3 pt-1 pb-0" style={{ fontSize: "0.68em", fontWeight: "bold", lineHeight: 0, }} >Guayaquil 20 de diciembre 2022 19:00 </p>
                                             </div>
                                             <div className="row px-0">
                                                 <div className="col-4">
@@ -92,11 +122,13 @@ export function DiseñoViewtickes() {
                                                     <div style={{
                                                         height: "4.7cm"
                                                     }}>
-                                                        <div className="border" style={{
+                                                        <div className="" style={{
                                                             height: "2cm",
                                                             width: "4.5cm",
                                                             display: "flex",
-                                                            alignItems: "center"
+                                                            alignItems: "center",
+                                                            backgroundImage: 'url("' + tercero + '")',
+                                                            backgroundSize: "cover"
                                                         }}>
                                                             <img src={tercero} className="img-fluid"
 
@@ -107,19 +139,28 @@ export function DiseñoViewtickes() {
                                                             </img>
 
                                                         </div>
-                                                        <div className="text-center pt-1" >
-                                                            <p className=""
+                                                        <div className="text-center bg pt-1" >
+                                                            <p className=" pt-3"
                                                                 style={{
                                                                     fontSize: "0.8em",
-                                                                    fontWeight: "bold"
+                                                                    fontWeight: "bold",
+                                                                    lineHeight: 0,
                                                                 }}
                                                             > Jessi Uribe & Francy  </p>
+                                                            <p style={{
+                                                                lineHeight: 0,
+                                                                paddingTop: -5,
+                                                                fontSize: "0.8em",
+                                                                fontWeight: "bold"
+                                                            }}>
+                                                                valor $30.00
+                                                            </p>
                                                         </div>
                                                     </div>
-                                                    <div className="border"
+                                                    <div className=""
                                                         style={{
                                                             height: "3.2cm",
-                                                            width: "1.5cm"
+                                                            width: "1.5cm",
                                                         }}
                                                     >
 
@@ -148,7 +189,7 @@ export function DiseñoViewtickes() {
 
                                         </div>
                                         {/**segundo cuado iquierda */}
-                                        <div className=" bg-primary"
+                                        <div className=" "
                                             style={{
                                                 height: "100%",
                                                 width: "2cm"
@@ -174,23 +215,31 @@ export function DiseñoViewtickes() {
                                                             }}
                                                         />
                                                     </div>
-                                                    <div className=" border "
+                                                    <div className="  "
                                                         style={
                                                             {
                                                                 height: "2.40cm",
-                                                                width: "2cm"
+                                                                width: "2.4cm"
                                                             }
                                                         }>
-                                                        <div className=" text-center pb-1"
-                                                            style={{
-                                                                fontSize: "0.7em",
-                                                                writingMode: "vertical-lr",
-                                                                transform: "rotate(180deg)",
-                                                            }}
+
+                                                        <div className="d-flex flex-column text-center pb-1"
+
                                                         >
-                                                            <span> VALOR $30.00 </span>
-                                                            <span> Ticket # 982 </span>
-                                                            <span> PREFERENCIAL</span>
+                                                            <span className=" px-0 " style={{
+                                                                transform: "translate(-41px,35px) rotate(" + 270 + "deg) ",
+                                                                fontSize: "0.7em"
+                                                            }}> VALOR $30.00 </span>
+                                                            <span
+                                                                style={{
+                                                                    transform: "translate(-20px,15px) rotate(" + 270 + "deg) ",
+                                                                    fontSize: "0.8em"
+                                                                }}> Ticket # 982 </span>
+                                                            <span style={{
+                                                                transform: "translate(0px,-5px) rotate(" + 270 + "deg) ",
+                                                                fontSize: "0.7em"
+
+                                                            }}> PREFERENCIAL</span>
 
                                                         </div>
                                                     </div>
@@ -207,26 +256,88 @@ export function DiseñoViewtickes() {
                                                 width: "1.5cm"
                                             }}
                                         >
-
                                         </div>
                                         {/**seccion final */}
-                                        <div className=" bg-warning"
+                                        <div className="  d-flex align-items-center"
                                             style={{
                                                 height: "100%",
                                                 width: "4cm"
                                             }}>
 
+                                            <div className="row ">
+                                                <div className="col-12 pb-0 mb-0 text-center"
+                                                    style={{
+                                                        fontWeight: "bold"
+                                                    }}>
+                                                    <span> TICKET #982</span>
+                                                </div>
+
+
+
+                                                <div className="col-2">
+                                                    <div className="d-flex text-center "
+                                                        style={{
+                                                            width: "3cm"
+                                                        }}
+                                                    >
+                                                        <span style={{
+                                                            transform: "translate(-15px,30px) rotate(" + 270 + "deg) ",
+                                                            fontSize: "0.7em",
+                                                            fontWeight: "bold"
+                                                        }}> DORIS JOJOA </span>
+                                                    </div>
+                                                </div>
+                                                <div className="col-7">
+                                                    <QRCodeCanvas value="Ayuda XD"
+                                                        style={{
+                                                            width: "2.5cm",
+                                                            height: "2cm",
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div className="col-2">
+                                                    <div className=" "
+                                                        style={{
+                                                            display: "flex",
+                                                            width: "3cm"
+                                                        }}
+                                                    >
+                                                        <span style={{
+                                                            transform: "translate(-35px,30px) rotate(" + 270 + "deg) ",
+                                                            fontSize: "0.7em",
+                                                            fontWeight: "bold"
+
+                                                        }}> VALOR $30.00 </span>
+                                                    </div>
+                                                    <div className=" d-none pb-1"
+                                                        style={{
+                                                            fontSize: "0.7em",
+                                                            writingMode: "vertical-lr",
+                                                            transform: "translate(2px) rotate(180deg)",
+                                                        }}
+                                                    >
+                                                        <span> VALOR $30.00 </span>
+                                                    </div>
+                                                </div>
+                                                <div className="col-12 PT-0 text-center" style={{
+                                                    fontWeight: "bold"
+                                                }}>
+                                                    PREFERENCIAL
+                                                </div>
+
+                                            </div>
+
                                         </div>
                                     </div>
                                     {/**pie de pagina */}
-                                    <div className="bg-success">
+                                    <div className=" bg-success border ">
 
                                     </div>
 
                                 </div>
 
                             </div>
-                            <div className="pt-3  d- ">
+                            <div className="pt-3  d-none ">
                                 <div className="  " style={{
                                     position: "relative",
                                     width: "17.05cm",

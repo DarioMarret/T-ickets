@@ -485,10 +485,11 @@ const LocalidadmapViews = (props) => {
 
     function Cargarlisat() {
         const user = getDatosUsuariosLocalStorag()
+        let nuevoObjeto = []
         intervalolista.current = setInterval(function () {
             modalshow.nombre == "Modallocalida" ? '' : clearInterval(intervalolista.current);
             localidaandespacio(mapath.precio.espacio, mapath.precio.idcolor).then(ouput => {
-                let nuevoObjeto = []
+
                 if (ouput.data.find(e => e.typo == "fila")) {
                     ouput.data.forEach(x => {
                         if (!nuevoObjeto.some(e => e.fila == x.fila)) {
@@ -524,9 +525,10 @@ const LocalidadmapViews = (props) => {
                     }) : ''
                     console.log(nuevoObjeto)
                 }
-                else if (ouput.data.find(e => e.typo == "correlativo")) {
-                    usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible")))
+                else if (ouput.data.some(e => e.typo == "correlativo")) {
+                    mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible"))) : ''
                     console.log(ouput.data.filter(e => e.estado == "disponible"))
+
                     // console.log(ouput.data.filter(e => e.estado == "disponible"))
                     // console.log(ouput.data.filter(e => e.cedula == user.cedula && e.estado == "reservado"))
                 }
@@ -791,7 +793,7 @@ const LocalidadmapViews = (props) => {
                             {mapath.precio.typo === "correlativo" ?
                                 <div className="d-flex px-0  justify-content-center " >
 
-                                    <div className="flex-row first text-center col-4 " role="cell"
+                                    <div className="flex-row first text-center col-sm " role="cell"
                                         style={{
                                             fontWeight: 'bold'
                                         }}
@@ -803,7 +805,7 @@ const LocalidadmapViews = (props) => {
                                             fontWeight: 'bold'
                                         }}
                                     >Total tickets </div>
-                                    <div className="flex-row   text-center col-3"
+                                    <div className="flex-row   text-center col-sm"
                                         style={{
                                             fontWeight: 'bold'
                                         }}
@@ -821,25 +823,31 @@ const LocalidadmapViews = (props) => {
                                         return (
                                             <div className="d-flex  justify-content-center " role="rowgroup" key={"items" + i}>
 
-                                                <div className="flex-row first text-center col-4 " role="cell"> {e.localidad}</div>
+                                                <div className="flex-row first text-center col-sm " role="cell"> {e.localidad}</div>
                                                 {/* <div className="flex-row d-none d-sm-block  text-center col-2 col-md-2">{e.fila}</div>*/}
 
                                                 <div className="flex-row  text-center  col-5"> {e.cantidad}</div>
-                                                <div className="flex-row   text-center col-3"> ${(e.valor * e.cantidad).toFixed(2)}</div>
+                                                <div className="flex-row   text-center col-sm"> ${(e.valor * e.cantidad).toFixed(2)}</div>
 
 
                                             </div>
                                         )
-                                    }) : ''
+                                    })
+
+
+
+                                    : ''
+
                             }
+                            {
+                                mapath.precio.typo === "correlativo" && detalle.length > 0 ? <div className="text-center ">
+                                    <button className="btn btn-primary mt-2" onClick={cerrar} > Continuar </button>
+
+
+                                </div> : ''}
                         </div>
 
-                        <div className="  d-none  col-2 align-items-center justify-content-end" >
-                            <div>
-                                <button className="btn btn-primary " onClick={() => usedispatch(clearSillas({}))} > <i className="fa fa-plus" ></i> </button>
-                            </div>
 
-                        </div>
 
                     </div>
 

@@ -29,14 +29,12 @@ const ModalCarritoView = (prop) => {
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [detalle, setDetalle] = useState([])
     const [alert, setAlert] = useState(null)
-    const [timer, setTimer] = useState(false)
     const [checked, setChecked] = useState({
         PasarelaEfectivo: "",
         Tarjeta: "",
         Deposito: "",
         Transferencia: ""
     })
-
     const [listaPrecio, ListaPrecioset] = useState({
         total: 0,
         subtotal: 0,
@@ -86,9 +84,6 @@ const ModalCarritoView = (prop) => {
     function abrirlocalidad() {
         usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
     }
-
-
-
     /* window.addEventListener("beforeunload", (evento) => {
          let carriito = JSON.parse(sessionStorage.getItem(CarritoTicket))
          if (getVerTienda().length > 0) {
@@ -97,7 +92,6 @@ const ModalCarritoView = (prop) => {
              return "";
          }
         });*/
-
     useEffect(() => {
         setDetalle(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
@@ -118,14 +112,10 @@ const ModalCarritoView = (prop) => {
         }) : ''
 
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
-
-
     function Abririlocalfirt(e) {
         console.log(e)
         let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
         localidaandespacio(e.espacio, e.idcolor).then(ouput => {
-            //   console.log(ouput)
-            // console.log(ouput.data.find(e => e.typo == "fila"))
             let nuevoObjeto = []
             if (ouput.data.find(e => e.typo == "fila")) {
                 ouput.data.forEach(x => {
@@ -139,7 +129,6 @@ const ModalCarritoView = (prop) => {
                         })
                     }
                 })
-                //console.log(nuevoObjeto)
                 usedispatch(cargarmapa(color))
                 usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                 usedispatch(filtrarlocali(nuevoObjeto))
@@ -174,11 +163,8 @@ const ModalCarritoView = (prop) => {
 
             }
             else if (ouput.data.find(e => e.typo == "correlativo")) {
-
-
                 usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible")))
                 ouput.data.filter(e => e.estado == "disponible").length == 0 ?
-
                     usedispatch(setToastes({
                         show: true,
                         message: "Estan en proceso o vendidos",
@@ -251,7 +237,6 @@ const ModalCarritoView = (prop) => {
                     usedispatch(filtrarlocali(nuevoObjeto))
                     sessionStorage.seleccionmapa = JSON.stringify(consulta)
                     abrirlocalidad()
-
                 }
                 else if (ouput.data.find(e => e.typo == "correlativo")) {
                     usedispatch(cargarmapa(color))
@@ -283,7 +268,6 @@ const ModalCarritoView = (prop) => {
     })
     function cerrar() {
         handleClosesop()
-        // usedispatch(setModal({ nombre: "", estado: '' }))
         hideAlert()
     }
     const successAlert = () => {

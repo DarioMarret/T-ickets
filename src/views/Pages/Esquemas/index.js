@@ -8,6 +8,7 @@ import Imagen from "../../../../src/assets/imagen/logo_Flash.png"
 import Form from 'react-bootstrap/Form';
 import './index.css'
 import { QRCodeCanvas } from "qrcode.react"
+import jsPDF from "jspdf"
 
 const EsquemaViews = () => {
 
@@ -158,15 +159,24 @@ const EsquemaViews = () => {
     }
 
     function GenerarPDF() {
-        var element = document.getElementById('tickets');
-        var opt = {
-            margin: 1,
-            filename: 'myfile.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'l' }
-        };
-        html2pdf(element, opt);
+
+
+        html2canvas(document.querySelector("#tickets")).then(canvas => {
+            console.log(canvas)
+            var imgWidth = 90;
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            //   alert(imgHeight)
+            const contentDataURL = canvas.toDataURL('image/png')
+            let pdf = new jsPDF('p', 'mm', 'a5'); // A4 size page of PDF
+            var position = 0;
+            pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+            //  window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
+
+            // doc.save('comprobante.pdf');
+            pdf.autoPrint();
+            //doc.output('bloburl')
+            document.getElementById('main-iframe').setAttribute('src', pdf.output('bloburl'));
+        });
 
     }
     //convertir base 64 para que renderise imagen en pdf
@@ -224,6 +234,7 @@ const EsquemaViews = () => {
     return (
         <>
             <div className="container-fluid">
+
                 <div className="d-flex justify-content-end">
                     <button className="btn btn-success" onClick={GenerarPDF} > Generar PDF </button>
                 </div>
