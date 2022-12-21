@@ -38,7 +38,7 @@ export function DiseñoViewtickes() {
                         </div>
                     </div>
                     <div className=" row mx-auto  ">
-                        <div className=" d-flex justify-content-center" style={{
+                        <div className="  mx-auto justify-content-center" style={{
                             height: 400
                         }}>
                             <div className="pt-3">
@@ -118,11 +118,28 @@ export function DiseñoViewtickes() {
                                                     </div>
                                                     <div className="border"
                                                         style={{
-                                                            height: "3cm",
-                                                            width: "2cm"
+                                                            height: "3.2cm",
+                                                            width: "1.5cm"
                                                         }}
                                                     >
 
+
+                                                        <div
+                                                            className="d-flex"
+                                                        >
+
+                                                            <img src={tercero}
+                                                                style={{
+                                                                    WebkitFilter: "grayscale(100%)",
+                                                                    filter: "grayscale(100%)",
+                                                                    transformOrigin: "left",
+                                                                    transform: "translate(25px,45px) rotate(" + 270 + "deg) ",
+                                                                    height: "1cm",
+                                                                    marginTop: 35,
+                                                                    width: "2.5cm"
+                                                                }}>
+                                                            </img>
+                                                        </div>
                                                     </div>
 
                                                 </div>
@@ -136,6 +153,51 @@ export function DiseñoViewtickes() {
                                                 height: "100%",
                                                 width: "2cm"
                                             }}>
+                                            <div className="d-flex w-100 h-100">
+                                                <div className=""
+                                                    style={{
+
+                                                    }}
+                                                >
+                                                    <div className="d-flex align-items-center justify-content-center"
+                                                        style={
+                                                            {
+                                                                height: "2cm",
+                                                                width: "2cm"
+                                                            }
+                                                        }
+                                                    >
+                                                        <QRCodeCanvas value="Ayuda XD"
+                                                            style={{
+                                                                width: "1.5cm",
+                                                                height: "1.5cm",
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className=" border "
+                                                        style={
+                                                            {
+                                                                height: "2.40cm",
+                                                                width: "2cm"
+                                                            }
+                                                        }>
+                                                        <div className=" text-center pb-1"
+                                                            style={{
+                                                                fontSize: "0.7em",
+                                                                writingMode: "vertical-lr",
+                                                                transform: "rotate(180deg)",
+                                                            }}
+                                                        >
+                                                            <span> VALOR $30.00 </span>
+                                                            <span> Ticket # 982 </span>
+                                                            <span> PREFERENCIAL</span>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
 
                                         </div>
                                         {/** tercera donde esta el codigo del barra */}
@@ -164,7 +226,7 @@ export function DiseñoViewtickes() {
                                 </div>
 
                             </div>
-                            <div className="pt-3  d-none ">
+                            <div className="pt-3  d- ">
                                 <div className="  " style={{
                                     position: "relative",
                                     width: "17.05cm",
@@ -356,6 +418,6 @@ export function DiseñoViewtickes() {
                 </div>
 
             </div>
-        </div>
+        </div >
     )
 }

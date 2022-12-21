@@ -2,36 +2,19 @@ import React from "react";
 import { Stylesilla } from "./style";
 import { useSelector } from "react-redux";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import SweetAlert from "react-bootstrap-sweetalert";
+import { useState } from "react";
 const MesacuatroView = ({ text, list }) => {
   let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
-  // console.log(nombre)
-  // const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
-
-  //let silla = seleccion
-  // console.log(silla)
-  function checkAvailability(arr, val) {
-    return arr.some(function (arrVal) {
-      //console.log(val,arrVal.silla)
-      return val === arrVal.silla;
-    });
-  }
+  const [alert, setAlert] = useState(null)
   let user = getDatosUsuariosLocalStorag()
+  const modalshow = useSelector((state) => state.SuscritorSlice.modal)
 
   function Estado(e) {
     let estado = list.find(f => f.silla == e)
-    /*if (silla.length > 0) {
-      //let valor = 
-      //console.log(checkAvailability(seleccion,e))
-      //var index = ;
-      var index = list.findIndex(obj => obj.silla == e);
-      return checkAvailability(seleccion, e) ? silla[silla.findIndex(obj => obj.silla == e)].estado : list[index].estado
-    }
-    var index = list.findIndex(obj => obj.silla == e);
-    return list[index].estado*/
     if (estado.cedula != undefined && estado.cedula != "") {
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
       else return "reservado"
-      // return "seleccionado"
     }
     else return estado.estado
   }
@@ -61,9 +44,40 @@ const MesacuatroView = ({ text, list }) => {
     let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).idsilla : ""
     return estado
 
+  } function enviarsillas(text) {
+    modalshow.nombre == "Modallocalida" ? succesLimit(text) : ''
+    modalshow.nombre == "Modallocalida" ? console.log(list) : ''
   }
+  const succesLimit = (list) => {
+    setAlert(
+      <SweetAlert
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Deseas selecionar todas las sillas disponible"
+        onConfirm={() => timeposlimites()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText="Si, Continuar"
+        cancelBtnText="Cancelar"
+        closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+        showCancel>
+        En la mesa  {list}
+      </SweetAlert>
+    )
+  }
+  function timeposlimites() {
+    list.map((e, i) => {
+      setTimeout(function () {
+        console.log(e)
+      }, 1000 * i)
+    })
+
+  }
+  const hideAlert = () => setAlert(null)
   return (
-    <div className="" style={{ padding: '0.7px' }}>
+    <div style={{ padding: '0.7px' }}>
+      {alert}
       <div className="d-flex">
         <div style={Stylesilla.asientos}>
         </div>

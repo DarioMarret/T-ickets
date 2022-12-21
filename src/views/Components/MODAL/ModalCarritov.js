@@ -18,10 +18,11 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 import { localidaandespacio } from "utils/Querypanel"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { correlativosadd } from "utils/Querypanelsigui"
+import { setToastes } from "StoreRedux/Slice/ToastSlice"
 
 const ModalCarritoView = (prop) => {
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
-    const sorter = (a, b) => a.precio_normal > b.precio_normal ? 1 : -1;
+    const sorter = (a, b) => a.precio_normal > b.precio_normal ? 1 : -1 && a.id < b.id ? 1 : -1;
     let usedispatch = useDispatch()
     let sleccionlocalidad = useSelector((state) => state.mapaLocalSlice)
     let seleciondesillas = useSelector((state) => state.sillasSlice.sillasSelecionadas)
@@ -176,6 +177,14 @@ const ModalCarritoView = (prop) => {
 
 
                 usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible")))
+                ouput.data.filter(e => e.estado == "disponible").length == 0 ?
+
+                    usedispatch(setToastes({
+                        show: true,
+                        message: "Estan en proceso o vendidos",
+                        color: 'bg-primary',
+                        estado: "Esta loclidad no tiene disponibles  "
+                    })) : ''
                 usedispatch(cargarmapa(color))
                 usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                 sessionStorage.seleccionmapa = JSON.stringify(e)
@@ -248,6 +257,13 @@ const ModalCarritoView = (prop) => {
                     usedispatch(cargarmapa(color))
                     usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
                     //  usedispatch(filtrarlocali(nuevoObjeto))
+                    filtrarlocali(ouput.data.filter(e => e.estado == "disponible"))
+                    ouput.data.filter(e => e.estado == "disponible").length == 0 ? usedispatch(setToastes({
+                        show: true,
+                        message: "Estan en proceso o vendidos",
+                        color: 'bg-primary',
+                        estado: "Esta loclidad no tiene disponibles  "
+                    })) : ''
                     sessionStorage.seleccionmapa = JSON.stringify(consulta)
                     abrirlocalidad()
                 }
@@ -478,6 +494,7 @@ const ModalCarritoView = (prop) => {
                                         {modalshow.nombre == "ModalCarritov" ?
                                             <SvgselectView
 
+
                                                 text={precios.mapa} />
                                             : ''}
                                     </div>
@@ -492,7 +509,7 @@ const ModalCarritoView = (prop) => {
                                                         <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 10, width: 10, backgroundColor: elm.color }}></div>
                                                         <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '130px' }} >
                                                             <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >{elm.localodad} </span>
-                                                            <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >${elm.precio_normal} </span>
+                                                            <span className="pl-1" style={{ fontFamily: '', fontSize: '0.8em' }} >${elm.precio_normal} </span>
                                                         </div>
                                                     </div>
                                                 )

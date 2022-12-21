@@ -61,7 +61,7 @@ const RegistroViwstab = (props) => {
                 fullscreen={true}
                 onHide={() => setShowToast(false)}
             >
-                <Modal.Header>
+                <Modal.Header className="py-4">
                     <h5> Registro de Localidades en Espacion {localidaname.nombre}</h5>
                     <button type="button" className="close"
                         onClick={() => setShowToast(false)}>

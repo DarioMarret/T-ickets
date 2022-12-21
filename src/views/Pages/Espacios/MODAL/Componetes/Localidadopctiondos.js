@@ -108,42 +108,19 @@ const TabdosView = (props) => {
     }
     const AgregasSillasMesa = () => {
         //Todas las filas Todas las mesas
-        if (multipleSelect.value == "Todas" && singleSelecttwo.value == "Todas" && singleSelecttres.value != "") {
-            ListadeMesas = FilasLocalidad
-            for (var i = 0; i < ListadeMesas.length; i++) {
-                for (var j = 0; j < ListadeMesas[i].Mesas.length; j++) {
-                    ListadeMesas[i].Mesas[j]["sillas"] = singleSelecttres.value
-                    for (var f = 0; f < parseInt(singleSelecttres.value); f++) {
-                        let valor = parseInt(f) + 1
-                        ListadeMesas[i].Mesas[j]["asientos"][f] = { silla: ListadeMesas[i].Mesas[j].mesa + "-s-" + valor, estado: "disponible" };
+        try {
+            if (multipleSelect.value == "Todas" && singleSelecttwo.value == "Todas" && singleSelecttres.value != "") {
+                ListadeMesas = FilasLocalidad
+                for (var i = 0; i < ListadeMesas.length; i++) {
+                    for (var j = 0; j < ListadeMesas[i].Mesas.length; j++) {
+                        ListadeMesas[i].Mesas[j]["sillas"] = singleSelecttres.value
+                        for (var f = 0; f < parseInt(singleSelecttres.value); f++) {
+                            let valor = parseInt(f) + 1
+                            ListadeMesas[i].Mesas[j]["asientos"][f] = { silla: ListadeMesas[i].Mesas[j].mesa + "-s-" + valor, estado: "disponible" };
+                        }
                     }
-                }
 
-            }
-            SetFilaLocalidad([])
-            setTimeout(function () {
-                SetFilaLocalidad(ListadeMesas)
-                setSingleSelectwo({ value: "", label: "", })
-                setMultipleSelect({ value: "", label: "", })
-                setSingleSelectres({ value: "", label: "", })
-            }, 90);
-
-        } else if (multipleSelect.value != "" && singleSelecttwo.value != "" && multipleSelect.value == "Todas" && singleSelecttwo.value != "Todas" && singleSelecttres.value != "") {
-            //Fila especifica Todas las mesas   
-            ListadeMesas = FilasLocalidad
-            var index = ListadeMesas.findIndex(obj => obj.Fila == singleSelecttwo.value);
-            let fila = ListadeMesas[index].Mesas
-            if (fila.length > 0) {
-                for (var i = 0; i < fila.length; i++) {
-                    fila[i]["asientos"] = []
-                    var numfila = fila[i].mesa
-                    //aqui asigna la cantidad de sillas 
-                    for (var f = 0; f < parseInt(singleSelecttres.value); f++) {
-                        let valor = parseInt(f) + 1
-                        fila[i]["asientos"][f] = { silla: numfila + "-s-" + valor, estado: "disponible" };
-                    }
                 }
-                ListadeMesas[index].Mesas = fila
                 SetFilaLocalidad([])
                 setTimeout(function () {
                     SetFilaLocalidad(ListadeMesas)
@@ -151,34 +128,63 @@ const TabdosView = (props) => {
                     setMultipleSelect({ value: "", label: "", })
                     setSingleSelectres({ value: "", label: "", })
                 }, 90);
+
+            } else if (multipleSelect.value != "" && singleSelecttwo.value != "" && multipleSelect.value == "Todas" && singleSelecttwo.value != "Todas" && singleSelecttres.value != "") {
+                //Fila especifica Todas las mesas   
+                ListadeMesas = FilasLocalidad
+                var index = ListadeMesas.findIndex(obj => obj.fila == singleSelecttwo.value);
+                console.log(singleSelecttwo.value, index)
+                let fila = ListadeMesas[index].Mesas
+                if (fila.length > 0) {
+                    for (var i = 0; i < fila.length; i++) {
+                        fila[i]["asientos"] = []
+                        var numfila = fila[i].mesa
+                        //aqui asigna la cantidad de sillas 
+                        for (var f = 0; f < parseInt(singleSelecttres.value); f++) {
+                            let valor = parseInt(f) + 1
+                            fila[i]["asientos"][f] = { silla: numfila + "-s-" + valor, estado: "disponible" };
+                        }
+                    }
+                    ListadeMesas[index].Mesas = fila
+                    SetFilaLocalidad([])
+                    setTimeout(function () {
+                        SetFilaLocalidad(ListadeMesas)
+                        setSingleSelectwo({ value: "", label: "", })
+                        setMultipleSelect({ value: "", label: "", })
+                        setSingleSelectres({ value: "", label: "", })
+                    }, 90);
+                }
             }
-        }
-        else if (multipleSelect.value != undefined && singleSelecttwo.value != undefined && multipleSelect.value != "Todas" && singleSelecttwo.value != "Todas" && singleSelecttres.value != undefined) {
+            else if (multipleSelect.value != undefined && singleSelecttwo.value != undefined && multipleSelect.value != "Todas" && singleSelecttwo.value != "Todas" && singleSelecttres.value != undefined) {
 
-            //Fila especifica mesa especifica 
-            ListadeMesas = FilasLocalidad
-            var index = ListadeMesas.findIndex(obj => obj.fila == singleSelecttwo.value);
-            var fila = ListadeMesas[index].Mesas.findIndex(obj => obj.mesa == multipleSelect.value);
-            var numfila = singleSelecttwo.value
-            ListadeMesas[index].Mesas[fila]["asientos"] = []
-            for (var f = 0; f < parseInt(singleSelecttres.value); f++) {
+                //Fila especifica mesa especifica 
+                ListadeMesas = FilasLocalidad
+                var index = ListadeMesas.findIndex(obj => obj.fila == singleSelecttwo.value);
+                var fila = ListadeMesas[index].Mesas.findIndex(obj => obj.mesa == multipleSelect.value);
+                var numfila = singleSelecttwo.value
+                ListadeMesas[index].Mesas[fila]["asientos"] = []
+                for (var f = 0; f < parseInt(singleSelecttres.value); f++) {
 
-                let valor = parseInt(f) + 1
-                ListadeMesas[index].Mesas[fila]["asientos"][f] = { silla: multipleSelect.value + "-s-" + valor, estado: "disponible" };
-                ListadeMesas[index].Mesas[fila]["sillas"] = parseInt(singleSelecttres.value)
+                    let valor = parseInt(f) + 1
+                    ListadeMesas[index].Mesas[fila]["asientos"][f] = { silla: multipleSelect.value + "-s-" + valor, estado: "disponible" };
+                    ListadeMesas[index].Mesas[fila]["sillas"] = parseInt(singleSelecttres.value)
+                }
+                SetFilaLocalidad([])
+                setTimeout(function () {
+                    SetFilaLocalidad(ListadeMesas)
+                    setSingleSelectwo({ value: "", label: "", })
+                    setMultipleSelect({ value: "", label: "", })
+                    setSingleSelectres({ value: "", label: "", })
+                }, 90);
+
+            } else {
+                usedispatch(setToastes({ show: true, message: 'Complete todos los campos', color: 'bg-warning', estado: 'Advertencia' }))
+
             }
-            SetFilaLocalidad([])
-            setTimeout(function () {
-                SetFilaLocalidad(ListadeMesas)
-                setSingleSelectwo({ value: "", label: "", })
-                setMultipleSelect({ value: "", label: "", })
-                setSingleSelectres({ value: "", label: "", })
-            }, 90);
-
-        } else {
-            usedispatch(setToastes({ show: true, message: 'Complete todos los campos', color: 'bg-warning', estado: 'Advertencia' }))
-
+        } catch (error) {
+            console.log(error)
         }
+
     }
     function handelchangeMesa(e) {
         setMesass({
@@ -240,24 +246,24 @@ const TabdosView = (props) => {
         else {
             try {
                 console.log(FilasLocalidad)
-                /* const guarda = await GuardarLocalidad({ "espacio": localidanames.nombre, "id_espacio": localidanames.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
-                 // console.log(guarda)
-                 if (guarda.success) {
-                     SetDataloca({
-                         typo: '',
-                         nombre: '',
-                         description: '',
-                         id: '',
-                         array: ''
-                     })
-                     usedispatch(setToastes({ show: true, message: 'Localidad guardada correctamente', color: 'bg-success', estado: 'Datos Correctos' }))
-                     SetFilaLocalidad([])
-                     setLocalidad({
-                         nombre: '',
-                         description: '',
-                         id: ''
-                     })
-                 }*/
+                const guarda = await GuardarLocalidad({ "espacio": localidanames.nombre, "id_espacio": localidanames.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
+                // console.log(guarda)
+                if (guarda.success) {
+                    SetDataloca({
+                        typo: '',
+                        nombre: '',
+                        description: '',
+                        id: '',
+                        array: ''
+                    })
+                    usedispatch(setToastes({ show: true, message: 'Localidad guardada correctamente', color: 'bg-success', estado: 'Datos Correctos' }))
+                    SetFilaLocalidad([])
+                    setLocalidad({
+                        nombre: '',
+                        description: '',
+                        id: ''
+                    })
+                }
 
             } catch (error) {
                 console.log(error)

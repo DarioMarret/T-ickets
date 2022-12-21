@@ -54,7 +54,7 @@ const LocalidadesagreViews = (props) => {
     console.log(localidaname.id, parms)
     localidaandespacio(localidaname.id, parms.id).then(ouput => {
       console.log(ouput)
-      console.log(ouput.data.find(e => e.typo == "fila"))
+      //    console.log(ouput.data.find(e => e.typo == "fila"))
       let nuevoObjeto = []
       if (ouput.data.find(e => e.typo == "fila")) {
         ouput.data.forEach(x => {
@@ -101,11 +101,11 @@ const LocalidadesagreViews = (props) => {
         $('[href*="listas"]').removeClass('active');
       }
       else if (ouput.data.find(e => e.typo == "correlativo")) {
-        /* SetDataloca({ typo: 'correlativo', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: tipo.datos })
-         $("#listas").removeClass("active")
-         $("#correlativos").addClass("active")
-         $('[href*="correlativos"]').addClass('active');
-         $('[href*="listas"]').removeClass('active');*/
+        SetDataloca({ typo: 'correlativo', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: { cantidad: ouput.data.length, inicio: 1 } })
+        $("#listas").removeClass("active")
+        $("#correlativos").addClass("active")
+        $('[href*="correlativos"]').addClass('active');
+        $('[href*="listas"]').removeClass('active');
       }
 
 

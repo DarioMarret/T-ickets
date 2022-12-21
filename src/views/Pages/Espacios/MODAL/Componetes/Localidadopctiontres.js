@@ -93,9 +93,7 @@ const TabtresView = (props) => {
                 cantidad: datalocalidad.array.cantidad ? datalocalidad.array.cantidad : '',
                 inicio: datalocalidad.array.inicio ? datalocalidad.array.inicio : ''
             })
-
         }
-        //   console.log(datalocalidad)
     }, [datalocalidad])
     return (<>
         <div className="d-flex flex-column">

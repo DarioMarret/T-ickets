@@ -73,13 +73,13 @@ export default function StoreTickesViews() {
 
     }
     const consultarlocalidad = () => {
-        let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
-        intervalRef.current = setInterval(function () {
-            ListarLocalidad().then(ouput => {
-                filterlocal(id, ouput.data)
-            }
-            ).catch(exit => console.log(exit))
-        }, 2000);
+        /* let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
+         intervalRef.current = setInterval(function () {
+             ListarLocalidad().then(ouput => {
+                // filterlocal(id, ouput.data)
+             }
+             ).catch(exit => console.log(exit))
+         }, 2000);*/
     }
     function detenervelocidad() {
         //  handleClosesop(false)
@@ -194,7 +194,7 @@ export default function StoreTickesViews() {
     }
     const evento = async () => {
         try {
-            const data = await cargarEventoActivo()
+            const data = await cargarEventoActivo("PROCESO")
             const susct = await GetSuscritores()
             //console.log(data, susct)
             const Datos = await ListarTikets()
@@ -234,6 +234,7 @@ export default function StoreTickesViews() {
                     g.color = color[0].color
                     g.idcolor = color[0].id
                     g.typo = color[0].tipo
+                    g.espacio = color[0].espacio
                     return g
                 })
                 let colornuevo = mapalocal.map((L) => {
@@ -243,6 +244,7 @@ export default function StoreTickesViews() {
                         L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
                         L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
                         L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
+                        L.espacioid = L.id_espacio
                         return L
                     }
                 })
@@ -313,10 +315,10 @@ export default function StoreTickesViews() {
     }, [])
     return (
         <>
-            {modalshow.modal.nombre == "Modallocalida" ?
-                <LocalidadmapViews
-                    intervalo={intervalo}
-                /> : ''}
+
+            <LocalidadmapViews
+                intervalo={intervalo}
+            />
             {modalshow.modal.nombre == "ModalCarritov" ?
                 <ModalCarritov
                     handleClosesop={detenervelocidad}

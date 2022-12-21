@@ -271,12 +271,14 @@ export function GetValores() {
     var valor = 0;
     var subtotal = 0;
     var comision = 0;
+    var sumcomision = 0;
     var descrption = ""
     if (tag !== null) {
         tag.map(tienda => {
             let valores = user.discapacidad === "No" ? tienda.valor : tienda.localidaEspacio.precio_discapacidad
             subtotal += valores * tienda.cantidad
             descrption = tienda.nombreConcierto
+            sumcomision += parseInt(tienda.cantidad) * parseFloat(tienda.localidaEspacio["comision_boleto"])
             if (valores >= 101) {
                 comision += tienda.cantidad * 2
             } else if (valores >= 201) {
@@ -292,10 +294,10 @@ export function GetValores() {
         valor = subtotal + comision;
         let precios = {
             total: valor.toFixed(2) * 5 / 100 + valor,
-            comision: comision.toFixed(2),
+            sumcomision: comision.toFixed(2),
             comision_bancaria: valor.toFixed(2) * 5 / 100,
             subtotal: subtotal.toFixed(2),
-            description: descrption,
+            description: descrption, comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : ''
         }
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))

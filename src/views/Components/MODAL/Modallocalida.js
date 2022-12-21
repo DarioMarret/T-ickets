@@ -23,6 +23,7 @@ import { Verificalocalidad } from "utils/CarritoLocalStorang";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { OneKPlusOutlined } from "@mui/icons-material";
 import { localidaandespacio } from "utils/Querypanel";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 const LocalidadmapViews = (props) => {
     const { intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
@@ -91,19 +92,14 @@ const LocalidadmapViews = (props) => {
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto"),
         }
-        console.log(getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad)
-
         getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : correlativosadd({
             "id": mapath.precio.idcolor,
             "estado": "disponible",
             "cedula": user.cedula,
             "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad == 1 ? getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad : (parseInt(getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad - 1))
-
-            //"protocol": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol,  
         }).then(oupt => {
             getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
             setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
-
             console.log(oupt)
         }).catch(err => {
             console.log(err)
@@ -112,7 +108,10 @@ const LocalidadmapViews = (props) => {
     function agregar() {
         let user = getDatosUsuariosLocalStorag()
         let disponible = mapath.localidadespecica.length
-        if (disponible == 0) return
+        if (disponible == 0) {
+            succesLimit()
+            return
+        }
         let protoco = moment().format("YYYYMMDDHHMMSS")
         let producto = {
             cantidad: 1,
@@ -133,8 +132,6 @@ const LocalidadmapViews = (props) => {
                 "estado": "reservado",
                 "cedula": user.cedula,
                 "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? 1 : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad
-                //"protocol": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? protoco : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol,
-
             }).then(oupt => {
                 console.log(oupt)
             }
@@ -460,11 +457,7 @@ const LocalidadmapViews = (props) => {
             Elimnamesa(this.classList[0], this.classList[1])
         }
     })
-    function cerrar() {
-        hideAlert()
-        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-        sessionStorage.removeItem(seleccionmapa)
-    }
+
     const hideAlert = () => {
         setAlert(null);
     }
@@ -491,9 +484,10 @@ const LocalidadmapViews = (props) => {
     })
 
     function Cargarlisat() {
+        const user = getDatosUsuariosLocalStorag()
         intervalolista.current = setInterval(function () {
+            modalshow.nombre == "Modallocalida" ? '' : clearInterval(intervalolista.current);
             localidaandespacio(mapath.precio.espacio, mapath.precio.idcolor).then(ouput => {
-                //console.log(ouput)
                 let nuevoObjeto = []
                 if (ouput.data.find(e => e.typo == "fila")) {
                     ouput.data.forEach(x => {
@@ -531,21 +525,19 @@ const LocalidadmapViews = (props) => {
                     console.log(nuevoObjeto)
                 }
                 else if (ouput.data.find(e => e.typo == "correlativo")) {
+                    usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible")))
                     console.log(ouput.data.filter(e => e.estado == "disponible"))
+                    // console.log(ouput.data.filter(e => e.estado == "disponible"))
+                    // console.log(ouput.data.filter(e => e.cedula == user.cedula && e.estado == "reservado"))
                 }
 
             }).catch(err => {
                 console.log(err)
             })
-        }, 3000)
+
+        }, 2000)
     }
 
-
-    function parar() {
-        clearInterval(intervalolista.current);
-
-    }
-    modalshow.nombre != "ModalCarritov" ? '' : parar();
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
@@ -565,11 +557,17 @@ const LocalidadmapViews = (props) => {
         // console.log(mapath.localidadespecica.info)
         mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? cantidad.length > 0 ? setDetalle(Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"])) : '' : '' : ''
         getVerTienda().filter((e) => e.id == mapath.precio.idcolor).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.idcolor)) : setDetalle([])
-        modalshow.nombre == "Modallocalida" ? Cargarlisat() : ''
-        // return (() => )
-
+        Cargarlisat()
     }, [modalshow.nombre == "Modallocalida" ? true : false])
 
+    function cerrar() {
+        clearInterval(intervalolista.current);
+        hideAlert()
+        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+        clearInterval(intervalolista.current);
+        sessionStorage.removeItem(seleccionmapa)
+
+    }
     return (
         <>
             {alert}

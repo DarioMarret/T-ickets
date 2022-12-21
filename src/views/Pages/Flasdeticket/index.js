@@ -267,7 +267,6 @@ const IndexFlas = () => {
     else {
       try {
         let obten = await listarpreciolocalidad(e.codigoEvento)
-
         const listalocal = await ListarLocalidad()
         let localidades = await cargarMapa()
         sessionStorage.consierto = e.nombreConcierto
@@ -293,7 +292,6 @@ const IndexFlas = () => {
               L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
               L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
               L.espacioid = L.id_espacio
-
               return L
             }
           })
@@ -314,7 +312,6 @@ const IndexFlas = () => {
           sessionStorage.eventoid = e.codigoEvento
           setPrecios(nuevosdatos)
           setDatoscon(e)
-
           consultarlocalidad()
           Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
             setspinervi("d-none")
@@ -740,7 +737,7 @@ const IndexFlas = () => {
                                 bottom: -2,
                                 width: 40,
                               }}>
-                                <svg className="seudtres " xmlns="http://www.w3.org/2000/svg" width="auto" height="auto" version="1.1"
+                                <svg className="seudtres " xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" version="1.1"
                                   style={{
                                     filter: "drop-shadow(1px 1px 3px #888)"
 

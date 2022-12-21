@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Stylesilla } from "./style";
 import { useSelector } from "react-redux";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import SweetAlert from "react-bootstrap-sweetalert";
 
 const MesadosView = ({ text, list }) => {
   let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
+  const [alert, setAlert] = useState(null)
   let user = getDatosUsuariosLocalStorag()
   const modalshow = useSelector((state) => state.SuscritorSlice.modal)
   function Estado(e) {
@@ -12,10 +14,10 @@ const MesadosView = ({ text, list }) => {
     if (estado.cedula != undefined && estado.cedula != "") {
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
       else return "reservado"
-      // return "seleccionado"
     }
     else return estado.estado
   }
+
   function MesaEstado(e) {
     let asiento = list.map(function (k) {
       {
@@ -42,11 +44,40 @@ const MesadosView = ({ text, list }) => {
     let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).idsilla : ""
     return estado
   }
-  function enviarsillas() {
+  function enviarsillas(text) {
+    modalshow.nombre == "Modallocalida" ? succesLimit(text) : ''
     modalshow.nombre == "Modallocalida" ? console.log(list) : ''
   }
+  const succesLimit = (list) => {
+    setAlert(
+      <SweetAlert
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Deseas selecionar todas las sillas disponible"
+        onConfirm={() => timeposlimites()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText="Si, Continuar"
+        cancelBtnText="Cancelar"
+        closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+        showCancel>
+        En la mesa  {list}
+      </SweetAlert>
+    )
+  }
+  function timeposlimites() {
+    list.map((e, i) => {
+      setTimeout(function () {
+        console.log(e)
+      }, 1000 * i)
+    })
+
+  }
+  const hideAlert = () => setAlert(null)
   return (
     <div style={{ padding: '0.7px' }}>
+      {alert}
       <div className="d-flex ">
         <div className=" " style={Stylesilla.asientos}>
         </div>
@@ -64,7 +95,7 @@ const MesadosView = ({ text, list }) => {
           </div>
         </div>
         <div className={text + " " + list.length + " Mesa  txt-white d-flex p-1 " + MesaEstado(text)}
-          onClick={enviarsillas}
+          onClick={() => enviarsillas(text)}
           style={Stylesilla.mesas}>
           {text}
         </div>

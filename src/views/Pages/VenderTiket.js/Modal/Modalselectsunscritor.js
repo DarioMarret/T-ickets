@@ -231,6 +231,49 @@ export default function ListaSuscritor(prop) {
             $('#movil').val("")
         }
     }
+    const buscarsuscritor = () => {
+        let nombre = $('#cedula').val()
+        if (nombre.trim().length < 9) {
+            console.log("error", nombre)
+            return
+        }
+        let informacion = {
+            "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
+            "email": isNaN(nombre.trim()) ? nombre.trim() : ''
+        }
+        buscarcliente({ ...informacion }).then(ouput => {
+            //  console.log(ouput)
+            if (!ouput.success) {
+                usedispatch(setToastes({
+                    show: true, message: ouput.message
+                    , color: 'bg-warning', estado:
+                        "No hubo ninguna coincidencia"
+                }))
+                setDausuario({
+                    nombreCompleto: "",
+                    ciudad: "",
+                    email: "",
+                    movil: "",
+                    resgistro: "",
+                    password: '',
+                    whatsapp: "", password: '', resgistro: false
+                })
+                return
+            }
+            else setDausuario({
+                nombreCompleto: ouput.data.nombreCompleto,
+                ciudad: ouput.data.ciudad,
+                email: ouput.data.email,
+                movil: "0" + ouput.data.movil,
+                resgistro: ouput.data.registro,
+                password: '',
+                whatsapp: ouput.data.movil, password: '', resgistro: true
+            })
+
+        }).catch(erro => {
+            console.log(erro)
+        })
+    }
     const verificar = () => {
 
     }
@@ -302,11 +345,11 @@ export default function ListaSuscritor(prop) {
                                                     name="cedula"
                                                     minLength={10}
                                                     maxLength={code == "cedula" ? 10 : 20}
-                                                    onChange={(e) => filterNames(e.target.value)}
+
                                                     placeholder={(code == "cedula") ? "Ingrese cédula" : "Ingrese su número de identificación"} required />
                                             </div>
                                             <div className="col-sm">
-                                                <button className="btn btn-danger"> <i className=" fa fa-search"></i> </button>
+                                                <button className="btn btn-danger" onClick={buscarsuscritor}> <i className=" fa fa-search"></i> </button>
                                             </div>
                                             <div className="col-2" >
                                                 {!datos.resgistro ? <button className="btn btn-success" onClick={CrearUSuario} > CREAR </button> :
@@ -343,8 +386,9 @@ export default function ListaSuscritor(prop) {
                                                         name="movil" type="tel"
                                                         className="m-0 inptFielsd form-control " id="movil"
                                                         size={100}
+                                                        onChange={(e) => handelChange(e.target)}
                                                         required
-
+                                                        value={datos.movil}
                                                         placeholder="999 999 999" />
 
 
