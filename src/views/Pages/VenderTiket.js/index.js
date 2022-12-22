@@ -40,6 +40,7 @@ import { ListaElimnaLCompleta } from "utils/CarritoLocalStorang";
 import { quitarsilla } from "utils/Querypanelsigui";
 import { correlativodelete } from "utils/Querypanelsigui";
 import { GetSuscritores } from "utils/Querypanel";
+import { espacio } from "utils/constantes";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -221,25 +222,28 @@ export default function StoreTickesViews() {
         }
         try {
             let obten = await listarpreciolocalidad(e.codigoEvento)
-            const listalocal = await ListarLocalidad()
+            const listalocal = await ListarLocalidad("")
             let localidades = await cargarMapa()
             sessionStorage.consierto = e.nombreConcierto
             if (obten.data.length > 0) {
                 let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
+                //  console.log(listalocal)
                 let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
+                console.log(mapalocal, mapa)
                 let localidad = JSON.parse(mapa[0].localidad)
                 let path = JSON.parse(mapa[0].pathmap)
                 let newprecios = obten.data.map((g, i) => {
-                    let color = localidad.filter((f, i) => f.nombre == g.localodad)
+                    let color = localidad.filter((f, i) => f.nombre == g.localidad)
                     g.color = color[0].color
                     g.idcolor = color[0].id
                     g.typo = color[0].tipo
                     g.espacio = color[0].espacio
+                    sessionStorage.setItem(espacio, color[0].espacio)
                     return g
                 })
                 let colornuevo = mapalocal.map((L) => {
                     if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
-                        L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)]
+                        L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
                         L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
                         L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
                         L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
@@ -254,7 +258,7 @@ export default function StoreTickesViews() {
                     }
                 })
                 sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
-                    return e.id
+                    return e
                 }))]))
                 usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
                 let nuevosdatos = {
@@ -262,10 +266,10 @@ export default function StoreTickesViews() {
                     pathmapa: pathnuevo.filter((e) => e != undefined),
                     mapa: mapa[0].nombre_mapa
                 }
+                console.log(nuevosdatos)
                 sessionStorage.eventoid = e.codigoEvento
                 setPrecios(nuevosdatos)
                 setDatoscon(e)
-
                 consultarlocalidad()
                 Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
                     // handleClosesop(true)

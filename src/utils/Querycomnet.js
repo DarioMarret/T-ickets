@@ -61,7 +61,7 @@ export const PagoRapido = async (transaccion) => {
     }
     try {
 
-        console.log(datos)
+        console.log(datos, concierto)
         const { data } = await axios.post(Host + "/api/v1/registraCompra ", datos, {
             headers: {
                 'Content-Type': 'application/json',

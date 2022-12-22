@@ -19,12 +19,19 @@ import { localidaandespacio } from "utils/Querypanel"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { correlativosadd } from "utils/Querypanelsigui"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
+import { listarLocalidadaEspeci } from "utils/Querypanelsigui"
+import { espacio } from "utils/constantes"
+import { Eventolocalidad } from "utils/constantes"
+import { TiendaIten } from "utils/CarritoLocalStorang"
+import { updateboletos } from "StoreRedux/Slice/SuscritorSlice"
+import { Listarticketporestado } from "utils/userQuery"
+import { Eventoid } from "utils/constantes"
 
 const ModalCarritoView = (prop) => {
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
     const sorter = (a, b) => a.precio_normal > b.precio_normal ? 1 : -1 && a.id < b.id ? 1 : -1;
     let usedispatch = useDispatch()
-    let sleccionlocalidad = useSelector((state) => state.mapaLocalSlice)
+    let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
     let seleciondesillas = useSelector((state) => state.sillasSlice.sillasSelecionadas)
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [detalle, setDetalle] = useState([])
@@ -84,15 +91,10 @@ const ModalCarritoView = (prop) => {
     function abrirlocalidad() {
         usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
     }
-    /* window.addEventListener("beforeunload", (evento) => {
-         let carriito = JSON.parse(sessionStorage.getItem(CarritoTicket))
-         if (getVerTienda().length > 0) {
-             evento.preventDefault();
-             evento.returnValue = "";
-             return "";
-         }
-        });*/
+
+
     useEffect(() => {
+        let user = getDatosUsuariosLocalStorag()
         setDetalle(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
         let metodoPago = GetMetodo()
@@ -110,7 +112,45 @@ const ModalCarritoView = (prop) => {
             $("#" + e.path).attr("class", e.id + "  disponible " + e.tipo)
             $("#" + e.path).attr("fill", e.fill)
         }) : ''
+        Listarticketporestado(user.cedula).then(oupt => {
+            console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)))
+            usedispatch(updateboletos({
+                disponibles: 0,
+                proceso: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)).length,
+                pagados: 0
+            }))
+            console.log({
+                disponibles: 0,
+                proceso: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)).length,
+                pagados: 0
+            })
 
+        }).catch(err => {
+            console.log(err)
+        })
+        /*listarLocalidadaEspeci(sessionStorage.getItem(espacio)).then(oupt => {
+            console.log(
+
+
+                oupt.data.filter(E => E.estado == "reservado" && E.pasado == "SIN PASAR" && E.cedula == user.cedula).length)
+            let procesar = oupt.data.filter(E => E.estado == "reservado" && E.pasado == "SIN PASAR" && E.cedula == user.cedula).length;
+            let disponible = oupt.data.filter(E => E.estado == "dispoible").length;
+
+            /*  usedispatch(updateboletos({
+                  disponibles: disponible,
+                  proceso: procesar,
+                  pagados: ""
+              }))*
+
+            let precioslocal = JSON.parse(sessionStorage.getItem(Eventolocalidad))
+            let cantidad = oupt.data.filter(e => e.estado == "reservado" && e.typo == "correlativo").length
+            precioslocal.map((elm, im) => {
+                if (oupt.data.filter(el => el.id_localidades == elm.id).filter(e => e.estado == "reservado" && e.typo == "correlativo").length > 0) {
+                    console.log(oupt.data.filter(el => el.id_localidades == elm.id).filter(e => e.estado == "reservado" && e.typo == "correlativo"))
+                }
+            })
+        }
+        ).catch(err => console.log(err))*/
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
     function Abririlocalfirt(e) {
         console.log(e)
@@ -179,14 +219,6 @@ const ModalCarritoView = (prop) => {
         }
         ).catch(err =>
             console.log(err))
-        /* let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
-         let filtro = sleccionlocalidad.localidades.filter((G) => G.nombre == e.localodad)
-         let espacio = JSON.parse(filtro[0].mesas_array)
-         usedispatch(cargarmapa(color))
-         usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
-         usedispatch(filtrarlocali(espacio.datos))
-         sessionStorage.seleccionmapa = JSON.stringify(e)
-         abrirlocalidad()*/
     }
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
     path.forEach(E => {
@@ -256,14 +288,6 @@ const ModalCarritoView = (prop) => {
             ).catch(err =>
                 console.log(err))
             return
-            /*  let color = precios.pathmapa.filter((E) => E.id == consulta[0].idcolor)
-              let filtro = sleccionlocalidad.localidades.filter((G) => G.nombre == consulta[0].localodad)
-              let espacio = JSON.parse(filtro[0].mesas_array)
-              usedispatch(cargarmapa(color))
-              usedispatch(settypo({ nombre: precios.mapa, typo: consulta[0].tipo, precio: { ...consulta[0] } }))
-              usedispatch(filtrarlocali(espacio.datos))
-              sessionStorage.seleccionmapa = JSON.stringify(consulta[0])
-              abrirlocalidad()*/
         })
     })
     function cerrar() {
@@ -322,7 +346,6 @@ const ModalCarritoView = (prop) => {
                 fullscreen={'md-down'}
                 className="modalCarrito"
                 centered
-            // fullscreen={true}
             >
                 <Modal.Header className="pb-2  bg-dark  text-light">
                     <div className="d-flex col-6 justify-content-between  align-items-center " >
@@ -341,22 +364,20 @@ const ModalCarritoView = (prop) => {
                                     fontWeight: "bold",
                                     fontSize: "1.2em",
                                     fontSizeAdjust: 0.5
-
-                                }}
-                            >  Tiempo restante para la compra <span className="text-danger"
-                                style={{
-
-                                    fontSize: '1.2em',
-                                    fontWeight: "bold"
-                                }}
-                            >{intervalo}</span> </h5>
+                                }}>
+                                Tiempo restante para la compra <span className="text-danger"
+                                    style={{
+                                        fontSize: '1.2em',
+                                        fontWeight: "bold"
+                                    }}
+                                >{intervalo}</span> </h5>
                         </div>
                     </div>
                     <button type="button" className="close txt-white" onClick={detalle.length > 0 ? successAlert : cerrar} >
                         X
                     </button>
                 </Modal.Header>
-                <Modal.Body  >
+                <Modal.Body>
                     <div className="d-flex flex-wrap-reverse justify-content-center p-0 container-fluid"  >
                         <div className="col-12 pt-0  col-lg-12" >
                             <div className="  ">
@@ -460,7 +481,9 @@ const ModalCarritoView = (prop) => {
                                             })
                                             : ''
                                         }
-                                        <div className="d-flex flex-table row list-group-item" role="rowgroup"></div>
+                                        <div className="d-flex d-none  justify-content-center my-1 row list-group-item" role="rowgroup">
+                                            {sleccionlocalidad.proceso > 0 ? "Tienes " + sleccionlocalidad.proceso + " boletos por pagar" : ''}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -492,7 +515,7 @@ const ModalCarritoView = (prop) => {
                                                     <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                         <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 10, width: 10, backgroundColor: elm.color }}></div>
                                                         <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '130px' }} >
-                                                            <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >{elm.localodad} </span>
+                                                            <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >{elm.localidad} </span>
                                                             <span className="pl-1" style={{ fontFamily: '', fontSize: '0.8em' }} >${elm.precio_normal} </span>
                                                         </div>
                                                     </div>
@@ -510,7 +533,11 @@ const ModalCarritoView = (prop) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="d-flex  p-3 border-top  justify-content-between align-items-center">
+                    <div className="d-flex  col-12 justify-content-center my-1" role="rowgroup">
+                        {sleccionlocalidad.proceso > 0 ? "Tienes " + sleccionlocalidad.proceso + " boletos por pagar" : ''}
+                    </div>
                     <div className="d-flex flex-column">
+
                         <div className=""
 
                         >

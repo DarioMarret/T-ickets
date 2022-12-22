@@ -14,6 +14,8 @@ import { buscarcliente } from "utils/Querypanelsigui.js";
 import { ListarTikets } from "utils/Querypanel.js";
 import CederView from "./Modal/CederView.js";
 import ToastViews from "views/Components/TOAST/toast.js";
+import { Listarticketporestado } from "utils/userQuery.js";
+import { ticketproceso } from "utils/columnasub.js";
 function Example() {
   let usedispatch = useDispatch()
 
@@ -48,7 +50,7 @@ function Example() {
 
       })*/
       // console.log(datos)
-      setTikes([...datos])
+      //setTikes([...datos])
       // setTikes([...valors])
       //   console.log(data)
 
@@ -94,6 +96,7 @@ function Example() {
     (async () => {
       await ListarUsuarios()
     })()
+    Listarticketporestado("1314780774").then(ouput => setTikes([...ouput.data])).catch(err => console.log(err))
     //  console.log(tiketslist)
 
   },
@@ -108,7 +111,7 @@ function Example() {
         </div>
         <div className="card-body table-responsive">
           <MaterialReactTable
-            columns={columnsTicket}
+            columns={ticketproceso}
             data={tiketslist}
 
             muiTableProps={{
@@ -119,28 +122,7 @@ function Example() {
             muiTableBodyProps={{
               sx: { columnVisibility: { nombre: false } }
             }}
-            renderDetailPanel={({ row }) => (
-              <Box
-                sx={{
-                  display: 'grid',
-                  margin: 'auto',
-                  gridTemplateColumns: '1fr 1fr',
-                  width: '100%',
-                }}
-              >
 
-                <Typography>ciudad : {row.original.ciudad} </Typography>
-                <Typography>Concierto : {row.original.concierto} </Typography>
-                <Typography sx={{
-                  display: 'flex',
-                  flexDirection: 'column'
-                }} >
-                  QR:
-                  <QRCodeCanvas value={row.original.qr} />
-                </Typography>
-                <Typography>Protocolo : {row.original.protocolo} </Typography>
-              </Box>
-            )}
 
             enableRowActions
             renderRowActions={({ row }) => (

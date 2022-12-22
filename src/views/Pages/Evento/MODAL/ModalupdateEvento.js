@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Alert, OverlayTrigger, Tooltip } from "react-bootstrap"
+import { Modal, Alert, OverlayTrigger, Tooltip, Form } from "react-bootstrap"
 import { ListarLocalidad, ListarEspacios, GuardarEvento, ActualizarLocalidad } from "utils/Querypanel.js";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,7 +29,7 @@ const Modalupdate = (props) => {
 
         })
     const [precios, setPrecios] = useState({
-        localodad: '',
+        localidad: '',
         precio_normal: 0,
         precio_discapacidad: 0,
         precio_tarjeta: 0,
@@ -37,7 +37,8 @@ const Modalupdate = (props) => {
         id: '',
         localodad: '',
         habilitar_cortesia: 0,
-        comision_boleto: 0
+        comision_boleto: 0,
+        habilitar: ""
     })
     const [selectLocalidad, setLocalidad] = useState([])
     async function Lista() {
@@ -140,9 +141,7 @@ const Modalupdate = (props) => {
     }
     function soloSelectespacio(e) {
         let array = selectLocalidad
-        var index = array.findIndex(obj => obj.localodad == e.value);
-        // console.log(array)
-        //console.log(array[index])
+        var index = array.findIndex(obj => obj.localidad == e.value);
         setPrecios({
             precio_normal: array[index] ? array[index].precio_normal : '',
             precio_discapacidad: array[index] ? array[index].precio_discapacidad : '',
@@ -150,11 +149,20 @@ const Modalupdate = (props) => {
             precio_descuento: array[index] ? array[index].precio_descuento : '',
             habilitar_cortesia: array[index] ? array[index].habilitar_cortesia : '',
             comision_boleto: array[index] ? array[index].comision_boleto : '',
+            habilitar: array[index] ? array[index].habilitar : '',
             id: array[index] ? array[index].id : '',
-            localodad: array[index] ? array[index].localodad : '',
+            localidad: array[index] ? array[index].localidad : '',
         })
     }
     function handelchangeLocalidad(e) {
+        if (e.target.name == "habilitar") {
+            setPrecios({
+                ...precios,
+                [e.name]: e.checked,
+            })
+
+            return
+        }
         setPrecios({
             ...precios,
             [e.name]: e.value,
@@ -168,7 +176,7 @@ const Modalupdate = (props) => {
         }, "1500")
     }
     async function Actualizar() {
-        console.log(neweventos)
+        console.log(neweventos, selectLocalidad)
         if (neweventos.imagenConcierto == evento.imagenConcierto && neweventos.mapaConcierto == evento.mapaConcierto) {
             //  console.log(neweventos)
             let guarda = {
@@ -194,63 +202,64 @@ const Modalupdate = (props) => {
                 console.log(error)
             }
         } else {
-            try {
-                if (neweventos.imagenConcierto == "") return
-                if (neweventos.mapaConcierto == "") return
-                else {
-                    const link = await Obtenerlinkimagen(neweventos.imagenConcierto)
-                    if (link == null) {
-                        console.log(link, "mapa")
-                        usedispatch(setToastes({ show: true, message: 'Imagen no se creo', color: 'bg-success', estado: 'Guardado' }))
-
-                        return
-                    }
-                    setTimeout(async function () {
-                        const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)
-                        if (mapa == null) {
-                            console.log(link, "mapa")
-                            usedispatch(setToastes({ show: true, message: 'Imagen mapa no se creo', color: 'bg-success', estado: 'Guardado' }))
-                            return
-                        }
-                        let defauldata = {
-                            ...neweventos,
-                            imagenConcierto: link,
-                            mapaConcierto: mapa,
-                            estado: "ACTIVO",
-                            "LocalodadPrecios": selectLocalidad
-                        }
-                        const evento = await GuardarEvento(defauldata)
-                        console.log(defauldata)
-                        if (evento.success) {
-                            console.log(evento)
-                            usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
-                            setinput(false)
-                            Setshow(false)
-                        }
-                    }, 3000)
-                //  const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)
-                /* if (link == null) return
-                 let info = {
-                     ...neweventos,
-                     imagenConcierto: link,
-                     mapaConcierto: "mapa",
-                     estado: "ACTIVO",
-                     "LocalodadPrecios": selectLocalidad
-                 }
-                 const actualiza = await ActualizarLocalidad(evento.codigoEvento, info)
-                 if (actualiza.success) {
-                     Setshow(false)
-                     usedispatch(setToastes({ show: true, message: 'Datos de evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
-                 }
-                 else {
-                     console.log("dosimagen")
-                     usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
-                 }*/}
-            } catch (error) {
-                usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
-                console.log(error)
-
-            }
+            /*
+              try {
+                  if (neweventos.imagenConcierto == "") return
+                  if (neweventos.mapaConcierto == "") return
+                  else {
+                      const link = await Obtenerlinkimagen(neweventos.imagenConcierto)
+                      if (link == null) {
+                          console.log(link, "mapa")
+                          usedispatch(setToastes({ show: true, message: 'Imagen no se creo', color: 'bg-success', estado: 'Guardado' }))
+  
+                          return
+                      }
+                      setTimeout(async function () {
+                          const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)
+                          if (mapa == null) {
+                              console.log(link, "mapa")
+                              usedispatch(setToastes({ show: true, message: 'Imagen mapa no se creo', color: 'bg-success', estado: 'Guardado' }))
+                              return
+                          }
+                          let defauldata = {
+                              ...neweventos,
+                              imagenConcierto: link,
+                              mapaConcierto: mapa,
+                              estado: "ACTIVO",
+                              "LocalodadPrecios": selectLocalidad
+                          }
+                          const evento = await GuardarEvento(defauldata)
+                          console.log(defauldata)
+                          if (evento.success) {
+                              console.log(evento)
+                              usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
+                              setinput(false)
+                              Setshow(false)
+                          }
+                      }, 3000)
+                  //  const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)
+                  /* if (link == null) return
+                   let info = {
+                       ...neweventos,
+                       imagenConcierto: link,
+                       mapaConcierto: "mapa",
+                       estado: "ACTIVO",
+                       "LocalodadPrecios": selectLocalidad
+                   }
+                   const actualiza = await ActualizarLocalidad(evento.codigoEvento, info)
+                   if (actualiza.success) {
+                       Setshow(false)
+                       usedispatch(setToastes({ show: true, message: 'Datos de evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
+                   }
+                   else {
+                       console.log("dosimagen")
+                       usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
+                   }*}
+              } catch (error) {
+                  usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
+                  console.log(error)
+  
+              }/*/
 
         }
 
@@ -406,12 +415,12 @@ const Modalupdate = (props) => {
                                         <div className="input-group-prepend">
                                             <span className="input-group-text"><i className="fa fa-map"></i></span>
                                         </div>
-                                        <select className="form-control" name="localodad" value={precios.localodad} onChange={(e) => soloSelectespacio(e.target)}>
+                                        <select className="form-control" name="localidad" value={precios.localidad} onChange={(e) => soloSelectespacio(e.target)}>
                                             <option value={""}>Seleccione localidad</option>
                                             {selectLocalidad.map((e, i) => {
                                                 <option></option>
                                                 return (
-                                                    <option value={e.localodad} key={i + "op" + e.localodad}>{e.localodad}</option>
+                                                    <option value={e.localidad} key={i + "op" + e.localodad}>{e.localidad}</option>
                                                 )
                                             })
 
@@ -435,38 +444,52 @@ const Modalupdate = (props) => {
                                     <div className="px-2 col-4">
                                         <label >PRECIO NORMAL</label>
                                     </div>
-                                    <input className="numero form-control col-6" value={precios.precio_normal} name="precio_normal" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                    <input className="numero form-control col-4" value={precios.precio_normal} name="precio_normal" onChange={(e) => handelchangeLocalidad(e.target)} />
                                 </div>
                                 <div className="d-flex flex-wrap mb-2">
                                     <div className="px-2 col-4">
                                         <label >PRECIO DISCAPACIDA</label>
                                     </div>
-                                    <input className="numero form-control col-6" value={precios.precio_discapacidad} name="precio_discapacidad" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                    <input className="numero form-control col-4" value={precios.precio_discapacidad} name="precio_discapacidad" onChange={(e) => handelchangeLocalidad(e.target)} />
                                 </div>
                                 <div className="d-flex flex-wrap mb-2">
                                     <div className="px-2 col-4">
                                         <label >PRECIO TC/TD </label>
                                     </div>
-                                    <input className="numero form-control col-6" value={precios.precio_tarjeta} name="precio_tarjeta" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                    <input className="numero form-control col-4" value={precios.precio_tarjeta} name="precio_tarjeta" onChange={(e) => handelchangeLocalidad(e.target)} />
                                 </div>
                                 <div className="d-flex flex-wrap mb-2">
                                     <div className="px-2 col-4">
                                         <label >PRECIO DESCUENTO </label>
                                     </div>
-                                    <input className="numero form-control col-6" value={precios.precio_descuento} name="precio_descuento" onChange={(e) => handelchangeLocalidad(e.target)} />
+
+                                    <input className="numero form-control col-4" value={precios.precio_descuento} name="precio_descuento" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                    <div className=" d-flex  justify-content-center px-2">
+
+                                        <Form.Check className="py-1 pr-1"
+                                            type="switch"
+                                            id="habilitar"
+                                            name="habilitar"
+                                            value="Stripe"
+                                            onChange={(e) => handelchangeLocalidad(e.target)}
+                                        />
+                                        <label className=" ">Habilitar Descuento</label>
+                                    </div>
+
                                 </div>
                                 <div className="d-flex flex-wrap mb-2">
                                     <div className="px-2 col-4">
                                         <label >HABILITAR CORTESIA </label>
                                     </div>
-                                    <input className="numero form-control col-6" value={precios.habilitar_cortesia} name="habilitar_cortesia" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                    <input className="numero form-control col-4" value={precios.habilitar_cortesia} name="habilitar_cortesia" onChange={(e) => handelchangeLocalidad(e.target)} />
                                 </div>
                                 <div className="d-flex flex-wrap mb-2">
                                     <div className="px-2 col-4">
                                         <label >Comision boleto </label>
                                     </div>
-                                    <input className="numero form-control col-6" value={precios.comision_boleto} name="comision_boleto" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                    <input className="numero form-control col-4" value={precios.comision_boleto} name="comision_boleto" onChange={(e) => handelchangeLocalidad(e.target)} />
                                 </div>
+
 
                             </div>
 

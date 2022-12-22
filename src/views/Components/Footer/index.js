@@ -1,13 +1,16 @@
 import React from 'react';
 import { carrusel } from 'views/Pages/Flasdeticket/imagenstatctic';
 let { android, ios, face, insta, tick, youtube, nombre, nombrepage } = carrusel
+
 export default function Footer(props) {
     const { logofla } = props;
     return (
-        <div className=" container-fluid h-55 bg-black footer-fluid px-0"
+        <div className=" container-fluid h-55  footer-fluid px-0"
             style={{
                 position: 'static',
-                bottom: 0
+                bottom: 0,
+                backgroundColor: "#311C7C",
+
             }}
         >            <div className=" container-fluid  pt-3">
                 <div className=" d-none container d-none justify-content-center p-2">

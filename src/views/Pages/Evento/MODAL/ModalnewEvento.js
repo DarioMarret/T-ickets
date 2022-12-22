@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Alert, OverlayTrigger, Tooltip } from "react-bootstrap"
+import { Modal, Alert, OverlayTrigger, Tooltip, Form } from "react-bootstrap"
 import { Localidades } from "utils/constantes";
 import { ListarLocalidad, ListarEspacios, GuardarEvento } from "utils/Querypanel.js";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
@@ -29,7 +29,7 @@ const ModalNewEvento = (props) => {
         //console.log(data)
         if (success) {
 
-            console.log(eventos, data)
+            console.log(data)
             setListaEspa(data)
             setLocalidades(datos.data)
         }
@@ -199,6 +199,7 @@ const ModalNewEvento = (props) => {
     function handelchange(e) {
         if (e.value != "") {
             listarLocalidadaEspeci(e.value).then(oupt => {
+                console.log(oupt, e.value)
                 setLocalidad(oupt.data)
                 setPreLocalidad([])
                 setPrecios({
@@ -483,37 +484,46 @@ const ModalNewEvento = (props) => {
                                             <div className="px-2 col-4">
                                                 <label >PRECIO NORMAL</label>
                                             </div>
-                                            <input className="numero form-control col-6" value={precios.precio_normal} name="precio_normal" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                            <input className="numero form-control col-4" value={precios.precio_normal} name="precio_normal" onChange={(e) => handelchangeLocalidad(e.target)} />
                                         </div>
                                         <div className="d-flex flex-wrap mb-2">
                                             <div className="px-2 col-4">
-                                                <label >PRECIO DISCAPACIDA</label>
+                                                <label >PRECIO DISCAPACIDAD</label>
                                             </div>
-                                            <input className="numero form-control col-6" value={precios.precio_discapacidad} name="precio_discapacidad" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                            <input className="numero form-control col-4" value={precios.precio_discapacidad} name="precio_discapacidad" onChange={(e) => handelchangeLocalidad(e.target)} />
                                         </div>
                                         <div className="d-flex flex-wrap mb-2">
                                             <div className="px-2 col-4">
                                                 <label >PRECIO TC/TD </label>
                                             </div>
-                                            <input className="numero form-control col-6" value={precios.precio_tarjeta} name="precio_tarjeta" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                            <input className="numero form-control col-4" value={precios.precio_tarjeta} name="precio_tarjeta" onChange={(e) => handelchangeLocalidad(e.target)} />
                                         </div>
                                         <div className="d-flex flex-wrap mb-2">
                                             <div className="px-2 col-4">
                                                 <label >PRECIO DESCUENTO </label>
                                             </div>
-                                            <input className="numero form-control col-6" value={precios.precio_descuento} name="precio_descuento" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                            <input className="numero form-control col-4" value={precios.precio_descuento} name="precio_descuento" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                            <div className=" d-flex  justify-content-center px-2">
+
+                                                <Form.Check className="py-1 pr-1"
+                                                    type="switch"
+                                                    id="elimina"
+
+                                                />
+                                                <label className=" ">Habilitar Descuento</label>
+                                            </div>
                                         </div>
                                         <div className="d-flex flex-wrap mb-2">
                                             <div className="px-2 col-4">
                                                 <label >HABILITAR CORTESIA </label>
                                             </div>
-                                            <input className="numero form-control col-6" value={precios.habilitar_cortesia} name="habilitar_cortesia" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                            <input className="numero form-control col-4" value={precios.habilitar_cortesia} name="habilitar_cortesia" onChange={(e) => handelchangeLocalidad(e.target)} />
                                         </div>
                                         <div className="d-flex flex-wrap mb-2">
                                             <div className="px-2 col-4">
                                                 <label >Costo de emision </label>
                                             </div>
-                                            <input className="numero form-control col-6"
+                                            <input className="numero form-control col-4"
                                                 value={precios.comision_boleto} name="comision_boleto" onChange={(e) => handelchangeLocalidad(e.target)} />
                                         </div>
 

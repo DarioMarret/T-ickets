@@ -9,6 +9,7 @@ import { Triangle } from "react-loader-spinner";
 import { buscarcliente } from "utils/Querypanelsigui";
 const CederView = () => {
     let estatusModal = useSelector(state => state.SuscritorSlice.modal)
+    let user = useSelector(state => state.SuscritorSlice)
     let [alert, setAlert] = useState(null)
     let [spinervi, setspinervi] = useState("d-none")
     let usedispatch = useDispatch()
@@ -55,6 +56,19 @@ const CederView = () => {
     }
     const filterNames = async () => {
         let nombre = $('#cedula').val()
+        if (user.subscritor.cedula == nombre) {
+            setDausuario({
+                nombreCompleto: '',
+                ciudad: '',
+                email: '',
+            })
+            usedispatch(setToastes({
+                show: true,
+                message: 'Ingrese un usuario diferente ',
+                color: 'bg-danger', estado: 'Proceso erroneo'
+            }))
+            return
+        }
         if (nombre.trim().length >= 10) {
             let informacion = {
                 "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
@@ -63,9 +77,9 @@ const CederView = () => {
             buscarcliente({ ...informacion }).then(oupt => {
                 console.log(informacion, oupt)
                 $("#search").removeClass("d-none")
-                if (oupt.data.name != undefined && oupt.data.name != null) {
+                if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
                     setDausuario({
-                        nombreCompleto: oupt.data.name,
+                        nombreCompleto: oupt.data.nombreCompleto,
                         ciudad: oupt.data.direccion,
                         email: oupt.data.email,
                     })
@@ -88,7 +102,7 @@ const CederView = () => {
             ).catch(err => {
                 usedispatch(setToastes({
                     show: true,
-                    message: 'Problemas de conexión, intente de nuevo mas tarde',
+                    message: 'Usuario no encontrado ',
                     color: 'bg-danger', estado: 'Hubo un error'
                 }))
                 console.log(err)
@@ -121,7 +135,7 @@ const CederView = () => {
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
             >
-                <Modal.Header>
+                <Modal.Header className="py-3">
                     <button type="button" className="close"
                         onClick={() => usedispatch(setModal({ nombre: '', estado: '' }))}
                     >

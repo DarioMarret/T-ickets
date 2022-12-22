@@ -24,18 +24,19 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { OneKPlusOutlined } from "@mui/icons-material";
 import { localidaandespacio } from "utils/Querypanel";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import { updateboletos } from "StoreRedux/Slice/SuscritorSlice";
 const LocalidadmapViews = (props) => {
     const { intervalo } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
     let nombre = JSON.parse(sessionStorage.getItem(seleccionmapa))
     const usedispatch = useDispatch()
     const [detalle, setDetalle] = useState([])
-    const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localodad))
+    const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localidad))
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [alert, setAlert] = useState(null);
     const intervalolista = useRef(null)
     // console.log(mapath, seleccion)
-
+    let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
     function MesaVerifica(M, C) {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
         hideAlert()
@@ -85,7 +86,7 @@ const LocalidadmapViews = (props) => {
         let user = getDatosUsuariosLocalStorag()
         let producto = {
             cantidad: -1,
-            localidad: mapath.precio.localodad,
+            localidad: mapath.precio.localidad,
             localidaEspacio: mapath.precio,
             id: mapath.precio.idcolor,
             fila: 0,
@@ -107,15 +108,20 @@ const LocalidadmapViews = (props) => {
     }
     function agregar() {
         let user = getDatosUsuariosLocalStorag()
-        let disponible = mapath.localidadespecica.length
-        if (disponible == 0) {
-            succesLimit()
+        if (sleccionlocalidad.disponibles == 0) {
+            usedispatch(setToastes({
+                show: true,
+                message: "No hay más disponibilida en la localidad",
+                color: 'bg-danger',
+                estado: "Localidad llena"
+            }))
             return
         }
+
         let protoco = moment().format("YYYYMMDDHHMMSS")
         let producto = {
             cantidad: 1,
-            localidad: mapath.precio.localodad,
+            localidad: mapath.precio.localidad,
             localidaEspacio: mapath.precio,
             id: mapath.precio.idcolor,
             tipo: "correlativo",
@@ -124,7 +130,7 @@ const LocalidadmapViews = (props) => {
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
-        if (TotalSelecion() < 10) {
+        if ((TotalSelecion() + sleccionlocalidad.proceso) < 10) {
             getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
             setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
             correlativosadd({
@@ -535,6 +541,17 @@ const LocalidadmapViews = (props) => {
                 else if (ouput.data.some(e => e.typo == "correlativo")) {
                     mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible"))) : ''
                     console.log(ouput.data.filter(e => e.estado == "disponible"))
+                    usedispatch(updateboletos({
+                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                        proceso: sleccionlocalidad.proceso,
+                        pagados: ""
+                    }))
+                    console.log({
+                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                        proceso: sleccionlocalidad.proceso,
+                        pagados: ""
+                    })
+
 
                     // console.log(ouput.data.filter(e => e.estado == "disponible"))
                     // console.log(ouput.data.filter(e => e.cedula == user.cedula && e.estado == "reservado"))
@@ -554,7 +571,7 @@ const LocalidadmapViews = (props) => {
             $("#mapas" + e.path).removeAttr("class")
         }) : ''
         let producto = {
-            localidad: mapath.precio.localodad,
+            localidad: mapath.precio.localidad,
             localidaEspacio: mapath.precio,
             id: mapath.precio.idcolor,
             fila: 0, tipo: "correlativo",
@@ -608,7 +625,7 @@ const LocalidadmapViews = (props) => {
                             <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontWeight: "bold" }}>
                                 <h5 style={{
                                     fontWeight: "bold"
-                                }}>{mapath.precio.localodad}</h5>
+                                }}>{mapath.precio.localidad}</h5>
                                 <h6 className="px-1"
                                     style={{
                                         fontWeight: "bold"
@@ -751,7 +768,9 @@ const LocalidadmapViews = (props) => {
                                             </button>
                                             <hr className="mx-2" ></hr>
                                             <button className="suma   btn-success rounded-circle"
-                                                onClick={agregar} >
+                                                onClick={agregar}
+                                                disabled={(sleccionlocalidad.disponibles == 0)}
+                                            >
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>

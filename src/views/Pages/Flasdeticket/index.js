@@ -54,6 +54,7 @@ import { setItervalo } from "StoreRedux/Slice/SuscritorSlice.js";
 import ModalFacilitoView from "views/Components/MODAL/ModalFacilito.js";
 import ReporteView from "views/Components/MODAL/Modalreporpago.js";
 import Comprobante from "./comprobante/index.js";
+import { espacio } from "utils/constantes.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
@@ -267,26 +268,30 @@ const IndexFlas = () => {
     else {
       try {
         let obten = await listarpreciolocalidad(e.codigoEvento)
-        const listalocal = await ListarLocalidad()
+        const listalocal = await ListarLocalidad("")
+        //let nuvos = obten.data.find(e => { return e.espacio == e.espacio })
+        //console.log(nuvos.espacio)
         let localidades = await cargarMapa()
         sessionStorage.consierto = e.nombreConcierto
         if (obten.data.length > 0) {
           let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
+          //  console.log(listalocal)
           let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
           console.log(mapalocal, mapa)
           let localidad = JSON.parse(mapa[0].localidad)
           let path = JSON.parse(mapa[0].pathmap)
           let newprecios = obten.data.map((g, i) => {
-            let color = localidad.filter((f, i) => f.nombre == g.localodad)
+            let color = localidad.filter((f, i) => f.nombre == g.localidad)
             g.color = color[0].color
             g.idcolor = color[0].id
             g.typo = color[0].tipo
             g.espacio = color[0].espacio
+            sessionStorage.setItem(espacio, color[0].espacio)
             return g
           })
           let colornuevo = mapalocal.map((L) => {
             if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
-              L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)]
+              L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
               L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
               L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
               L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
@@ -301,14 +306,15 @@ const IndexFlas = () => {
             }
           })
           sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
-            return e.id
+            return e
           }))]))
-          // usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
+          usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
           let nuevosdatos = {
             precios: newprecios,
             pathmapa: pathnuevo.filter((e) => e != undefined),
             mapa: mapa[0].nombre_mapa
           }
+          console.log(nuevosdatos)
           sessionStorage.eventoid = e.codigoEvento
           setPrecios(nuevosdatos)
           setDatoscon(e)
@@ -572,10 +578,15 @@ const IndexFlas = () => {
       <ReporteView
         setrepShow={setrepShow} />
       {alert}
-      <nav className="navbar navbar-expand-lg  justify-content-between navbar-dark bg-black  py-3">
+      <nav className="navbar border-bottom border-dark shadow navbar-expand-lg  justify-content-between navbar-dark    py-3"
+        style={{
+          backgroundColor: "#311C7C"
+        }}
+
+      >
         <div className="container-fluid col-lg-8    d-flex justify-content-between">
           <a className="navbar-brand " aria-label="TICKETS" href="#">
-            <img src={icon} className="img-fluid" style={{ height: '50px' }} alt="" />
+            <img src={icon} className="img-fluid" alt="" />
           </a>
           <button className="navbar-toggler justify-content-center " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -595,7 +606,7 @@ const IndexFlas = () => {
                 </li> : ""
               }
               {userauthi.login ?
-                <li className="d-none nav-item active" aria-current="page" onClick={() => SetSeleccion("Tickets")}>
+                <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("Tickets")}>
                   <a className="nav-link " href="#">Tickets</a>
                 </li> : ""
               }
@@ -710,7 +721,7 @@ const IndexFlas = () => {
           }
 
         </Swiper>
-      </div> : <div className="container-fluid  p-0">
+      </div> : <div className="container-fluid p-0">
         <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '300px', backgroundImage: `url(${header})` }}>
           <div className="container w-100 h-100 px-0">
             <div className="container btn-group-vertical  h-100 text-center px-0">

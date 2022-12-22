@@ -15,7 +15,7 @@ export const Cargarsillas = (colornuevo) => {
                         filas.asientos.filter(elm => elm.cedula == user.cedula).map(element => {
                             let listsillas = JSON.parse(sessionStorage.getItem(asientosList)) == null ? [] : JSON.parse(sessionStorage.getItem(asientosList))
 
-                            if (listsillas.findIndex(el => el.seleccionmapa == f.localodad + "-" + element.silla) == -1) {
+                            if (listsillas.findIndex(el => el.seleccionmapa == f.localidad + "-" + element.silla) == -1) {
                                 AgregarAsiento({
                                     "localidad": f.nombre,
                                     "localidaEspacio": f.localidaEspacio,
@@ -36,7 +36,7 @@ export const Cargarsillas = (colornuevo) => {
                         mesa.Mesas.map(e => {
                             e.asientos.filter(asi => asi.cedula == user.cedula).map(sele => {
                                 let listsillas = JSON.parse(sessionStorage.getItem(asientosList)) == null ? [] : JSON.parse(sessionStorage.getItem(asientosList))
-                                if (listsillas != null && listsillas.findIndex(el => el.seleccionmapa == f.localodad + "-" + sele.silla) == -1) {
+                                if (listsillas != null && listsillas.findIndex(el => el.seleccionmapa == f.localidad + "-" + sele.silla) == -1) {
                                     AgregarAsiento({
                                         "localidad": f.nombre,
                                         "localidaEspacio": f.localidaEspacio,

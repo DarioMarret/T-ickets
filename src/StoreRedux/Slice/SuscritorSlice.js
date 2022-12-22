@@ -4,7 +4,12 @@ const initialState = {
     login: false,
     localidad: {},
     intervalo: "",
-    modal: { nombre: '', estado: '' }
+    modal: { nombre: '', estado: '' },
+    boletos: {
+        disponibles: "",
+        proceso: "",
+        pagados: ""
+    }
 }
 
 const SubscritorSlice = createSlice({
@@ -14,6 +19,9 @@ const SubscritorSlice = createSlice({
         addususcritor: (state, action) => {
             state.subscritor = { ...action.payload };
             state.login = true;
+        },
+        updateboletos: (state, action) => {
+            state.boletos = { ...action.payload }
         },
         deletesuscrito: (state, action) => {
             state.subscritor = {};
@@ -35,5 +43,5 @@ const SubscritorSlice = createSlice({
     }
 
 })
-export const { addususcritor, deletesuscrito, setModal, setItervalo, addLocalidad, deleteloclidad } = SubscritorSlice.actions;
+export const { addususcritor, deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad, deleteloclidad } = SubscritorSlice.actions;
 export default SubscritorSlice.reducer

@@ -101,7 +101,7 @@ export function EliminarSillas(silla) {
 
 export function EliminarsilladeMesa(silla) {
     VerSillas()
-    let ListadeSillas = PVsilla.filter((iten) => iten.seleccionmapa != silla.localodad)
+    let ListadeSillas = PVsilla.filter((iten) => iten.seleccionmapa != silla.localidad)
     // console.log(ListadeSillas)
     sessionStorage.setItem(listaasiento, JSON.stringify(ListadeSillas));
     Filterduplicados()

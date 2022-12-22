@@ -194,8 +194,8 @@ export const GuardarLocalidad = async (parms) => {
     })
     return data
 }
-export const ListarLocalidad = async () => {
-    const { data } = await axios.get(Host + "api/v1/listar_localidades", {
+export const ListarLocalidad = async (parms) => {
+    const { data } = await axios.get(Host + "api/v1/listar_localidades/" + parms, {
         header: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
