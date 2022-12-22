@@ -337,6 +337,7 @@ const LocalidadmapViews = (props) => {
                     this.classList.add("" + nombres.idcolor + "silla")
 
                     enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
+                        console.log(ouput)
                         setAlert(
                             <SweetAlert
                                 success
@@ -485,12 +486,13 @@ const LocalidadmapViews = (props) => {
 
     function Cargarlisat() {
         const user = getDatosUsuariosLocalStorag()
-        let nuevoObjeto = []
+
         intervalolista.current = setInterval(function () {
             modalshow.nombre == "Modallocalida" ? '' : clearInterval(intervalolista.current);
             localidaandespacio(mapath.precio.espacio, mapath.precio.idcolor).then(ouput => {
 
                 if (ouput.data.find(e => e.typo == "fila")) {
+                    let nuevoObjeto = []
                     ouput.data.forEach(x => {
                         if (!nuevoObjeto.some(e => e.fila == x.fila)) {
                             nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
@@ -502,9 +504,12 @@ const LocalidadmapViews = (props) => {
                             })
                         }
                     })
+                    mapath.precio.typo == "fila" ? usedispatch(filtrarlocali(nuevoObjeto)) : ''
+
                     console.log(nuevoObjeto)
                     //usedispatch(filtrarlocali(nuevoObjeto))
                 } else if (ouput.data.find(e => e.typo == "mesa")) {
+                    let nuevoObjeto = []
                     ouput.data.forEach(x => {
                         if (!nuevoObjeto.some(e => e.fila == x.fila)) {
                             nuevoObjeto.push({ fila: x.fila, Mesas: [] })
@@ -523,6 +528,8 @@ const LocalidadmapViews = (props) => {
                             silla: x.silla, estado: x.estado, idsilla: x.id
                         })
                     }) : ''
+                    mapath.precio.typo == "mesa" ? usedispatch(filtrarlocali(nuevoObjeto)) : ''
+
                     console.log(nuevoObjeto)
                 }
                 else if (ouput.data.some(e => e.typo == "correlativo")) {
@@ -537,7 +544,7 @@ const LocalidadmapViews = (props) => {
                 console.log(err)
             })
 
-        }, 2000)
+        }, 3000)
     }
 
     useEffect(() => {
@@ -566,7 +573,7 @@ const LocalidadmapViews = (props) => {
         clearInterval(intervalolista.current);
         hideAlert()
         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-        clearInterval(intervalolista.current);
+
         sessionStorage.removeItem(seleccionmapa)
 
     }

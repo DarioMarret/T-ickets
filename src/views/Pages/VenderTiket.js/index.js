@@ -315,10 +315,10 @@ export default function StoreTickesViews() {
     }, [])
     return (
         <>
-
-            <LocalidadmapViews
-                intervalo={intervalo}
-            />
+            {modalshow.modal.nombre == "Modallocalida" ?
+                <LocalidadmapViews
+                    intervalo={intervalo}
+                /> : ''}
             {modalshow.modal.nombre == "ModalCarritov" ?
                 <ModalCarritov
                     handleClosesop={detenervelocidad}

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Host } from "./constantes"
+import { Host, seleccionmapa } from "./constantes"
 import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
 export const ActualizaEstadoLocalidad = async (id, parms) => {
     const { data } = await axios.put(Host + "actualizarevento_estado/" + id, parms, {
@@ -81,14 +81,15 @@ export const eliminaMapa = async (parm) => {
 }
 export const enviasilla = async (info) => {
     let user = getDatosUsuariosLocalStorag()
-    console.log(info, user)
+    let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
+    console.log(info, nombres)
     const datos = {
-        id: info.id,
+        id: nombres.idcolor,
         cedula: user.cedula,
         silla: info.silla,
         estado: "reservado",
     }
-    //console.log(datos)
+    console.log("sillas--", datos)
     try {
         const { data } = await axios.post(Host + "api/v1/selecionar_localidad", datos, {
             headers: {
@@ -97,7 +98,7 @@ export const enviasilla = async (info) => {
             }
         })
         console.log(data)
-        return data.data.datos
+        return data
     } catch (error) {
         console.log(error)
         return { error: error, info: info }
