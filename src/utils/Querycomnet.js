@@ -37,7 +37,7 @@ https://portal.comnet.ec/api/v1/NewUser
 
 export const PagoRapido = async (transaccion) => {
     let datosPersonal = getDatosUsuariosLocalStorag().cedula
-    let metodo = GetMetodo()
+    let metodo = GetMetodo() == "Transferencia" ? "Deposito" : GetMetodo()
     let concierto = getVerTienda().map((e) => {
         return {
             "nombreConcierto": e.nombreConcierto,

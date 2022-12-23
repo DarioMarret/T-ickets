@@ -1,3 +1,7 @@
+import { Chip } from "@mui/material"
+let estado = {
+    "reservado": "error"
+}
 export const ticketproceso = [
     {
         accessorKey: "concierto",
@@ -22,5 +26,13 @@ export const ticketproceso = [
     {
         accessorKey: "fechaCreacion",
         header: "Fecha",
+    },
+    {
+        accessorKey: "estado",
+        header: "Estado",
+        Cell: ({ cell, column }) => (
+            <Chip label={cell.getValue()} color={estado[cell.getValue()]} />
+
+        ),
     },
 ]

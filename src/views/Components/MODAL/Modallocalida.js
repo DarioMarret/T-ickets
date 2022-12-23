@@ -769,7 +769,7 @@ const LocalidadmapViews = (props) => {
                                             <hr className="mx-2" ></hr>
                                             <button className="suma   btn-success rounded-circle"
                                                 onClick={agregar}
-                                                disabled={(sleccionlocalidad.disponibles == 0)}
+
                                             >
                                                 <i className="fa fa-plus"></i>
                                             </button>

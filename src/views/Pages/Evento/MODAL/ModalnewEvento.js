@@ -51,7 +51,7 @@ const ModalNewEvento = (props) => {
         }
         setPreLocalidad(ArrayCopia)
         setPrecios({
-            localodad: '',
+            localidad: '',
             identificador: '',
             precio_normal: '',
             precio_discapacidad: '',
@@ -81,7 +81,6 @@ const ModalNewEvento = (props) => {
                 if (mapa == null) {
                     console.log(conci, "mapa")
                     usedispatch(setToastes({ show: true, message: 'Imagen mapa no se creo', color: 'bg-success', estado: 'Guardado' }))
-
                     return
                 }
                 let defauldata = {
@@ -136,9 +135,10 @@ const ModalNewEvento = (props) => {
             mapaConcierto: ''
         })
     function handelchangeComposeventos(e) {
+        let img = new Image()
         if (e.name == "imagenConcierto") {
             setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
-            /* let img = new Imagen()
+            /* 
              img.src = window.URL.createObjectURL(e.files[0])
              img.onload = () => {
                  setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
@@ -156,7 +156,7 @@ const ModalNewEvento = (props) => {
              }*/
         } else if (e.name == "mapaConcierto") {
             setNewEventos({ ...neweventos, mapaConcierto: e.files[0] ? e.files[0] : '' })
-            /*  let img = new Image()
+            /* 
               img.src = window.URL.createObjectURL(e.files[0])
               img.onload = () => {
                   setNewEventos({ ...neweventos, mapaConcierto: e.files[0] ? e.files[0] : '' })
@@ -186,31 +186,34 @@ const ModalNewEvento = (props) => {
     }
     const [precios, setPrecios] = useState(
         {
-            localodad: '',
+            localidad: '',
             identificador: '',
             precio_normal: '',
             precio_discapacidad: '',
             precio_tarjeta: '',
             precio_descuento: '',
             habilitar_cortesia: '',
-            comision_boleto: ''
+            comision_boleto: '',
+            habilitar: "NO",
         }
     )
     function handelchange(e) {
         if (e.value != "") {
-            listarLocalidadaEspeci(e.value).then(oupt => {
-                console.log(oupt, e.value)
-                setLocalidad(oupt.data)
+
+            ListarLocalidad("").then(oupt => {
+                //console.log(oupt.data.filter(f => f.id_espacio == e.value), e.value)
+                setLocalidad(oupt.data.filter(f => f.id_espacio == e.value))
                 setPreLocalidad([])
                 setPrecios({
-                    localodad: '',
+                    localidad: '',
                     precio_normal: 0,
                     identificador: '',
                     precio_discapacidad: 0,
                     precio_tarjeta: 0,
                     precio_descuento: 0,
                     habilitar_cortesia: 0,
-                    comision_boleto: 0
+                    comision_boleto: 0,
+                    habilitar: "NO",
                 })
             }
             ).catch(err =>
@@ -221,8 +224,6 @@ const ModalNewEvento = (props) => {
                 ...neweventos,
                 lugarConcierto: index.nombre,
             })
-
-
         } else { setLocalidad([]) }
 
     }
@@ -239,14 +240,22 @@ const ModalNewEvento = (props) => {
                 precio_tarjeta: localidadPreci[index] ? localidadPreci[index].precio_tarjeta : 0,
                 precio_descuento: localidadPreci[index] ? localidadPreci[index].precio_descuento : 0,
                 habilitar_cortesia: localidadPreci[index] ? localidadPreci[index].habilitar_cortesia : 0,
-                localodad: dato.nombre,
+                localidad: dato.nombre,
                 comision_boleto: localidadPreci[index] ? localidadPreci[index].comision_boleto : 0,
+                habilitar: localidadPreci[index] ? localidadPreci[index].habilitar : "NO",
                 identificador: e.value,
             })
             console.log(precios)
         }
     }
     function handelchangeLocalidad(e) {
+        if (e.name == "habilitar") {
+            setPrecios({
+                ...precios,
+                [e.name]: e.checked,
+            })
+            return
+        }
         setPrecios({
             ...precios,
             [e.name]: e.value,
@@ -392,7 +401,7 @@ const ModalNewEvento = (props) => {
                                     </div>
                                 }*/}
                                 <div className="col-12 col-md-12">
-                                    <label className="form-label">Descripcion </label>
+                                    <label className="form-label">Descripción </label>
                                     <div className="input-group mb-3">
 
                                         <input type="text" name="descripcionConcierto" className="form-control "
@@ -507,8 +516,11 @@ const ModalNewEvento = (props) => {
 
                                                 <Form.Check className="py-1 pr-1"
                                                     type="switch"
-                                                    id="elimina"
-
+                                                    id="habilitar"
+                                                    name="habilitar"
+                                                    value="Stripe"
+                                                    checked={precios.habilitar == "NO" && precios.habilitar != true ? false : true}
+                                                    onChange={(e) => handelchangeLocalidad(e.target)}
                                                 />
                                                 <label className=" ">Habilitar Descuento</label>
                                             </div>

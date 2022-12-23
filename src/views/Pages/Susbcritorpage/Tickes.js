@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Box, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send } from '@mui/icons-material';
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -16,55 +16,18 @@ import CederView from "./Modal/CederView.js";
 import ToastViews from "views/Components/TOAST/toast.js";
 import { Listarticketporestado } from "utils/userQuery.js";
 import { ticketproceso } from "utils/columnasub.js";
+import { bancos } from "utils/Imgenesutils.js";
+import ModalReporteViews from "views/Components/MODAL/ReportarPago.js";
+let { cedericon } = bancos
 function Example() {
   let usedispatch = useDispatch()
-
-  const [data, setData] = React.useState([]);
   const [tiketslist, setTikes] = useState([])
+  const [rowSelection, setRowSelection] = useState({});
 
-  async function ListarUsuarios() {
-    try {
-      const data = await ListarTikets()
-      const datos = data.data.map((e, i) => {
-        return {
-          id: e.id,
-          nombre: e.nombre,
-          cedula: e.cedula,
-          celular: e.celular,
-          fecha: e.actual,
-          ciudad: e.cuidadconcert,
-          concierto: e.nombreconcert,
-          protocolo: e.protocol,
-          link: e.link,
-          qr: e.qr,
-
-        };
-      })
-      /*const valors = data.users.map((e, i) => {
-        return {
-          ...e,
-          action: "<button class='btn btn-danger' onclick='console.log(" + e.id + ")'> <i class='fa fa-edit' /></button>",
-
-        }
-
-
-      })*/
-      // console.log(datos)
-      //setTikes([...datos])
-      // setTikes([...valors])
-      //   console.log(data)
-
-    } catch (error) {
-      //   console.log(error)
-
-    }
-
-
-  }
+  const tableInstanceRef = useRef(null);
   const [alert, setAlert] = useState(null)
   const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })), hideAlert() }
   const successAlert = (e) => {
-
     setAlert(
       <SweetAlert
         info
@@ -89,22 +52,30 @@ function Example() {
       </SweetAlert>
     );
   };
+
   const hideAlert = () => {
     setAlert(null)
   }
-  useEffect(() => {
-    (async () => {
-      await ListarUsuarios()
-    })()
-    Listarticketporestado("1314780774").then(ouput => setTikes([...ouput.data])).catch(err => console.log(err))
-    //  console.log(tiketslist)
 
+  function Pagar() {
+    usedispatch(setModal({ nombre: 'pagarcomprobante', estado: '' }))
+    console.log(Object.keys(rowSelection).map((g, i) => { return tiketslist.find(e => e.id == g) }))
+
+  }
+  useEffect(() => {
+    Listarticketporestado("1314780774").then(ouput => setTikes([...ouput.data])).catch(err => console.log(err))
   },
     [])
+  /*
+  console.log(
+    Object.keys(rowSelection).map((g, i) => { return parseFloat(tiketslist.find(e => e.id == g).valor) }).reduce((a, b) => a + b, 0).toFixed(2) 
+    )
+  */
   return (
     <>
       {alert}
       <CederView />
+      <ModalReporteViews />
       <div className="card card-primary card-outline text-left " style={{ minHeight: '250px' }} >
         <div className="card-header pb-2">
           Tikets
@@ -113,7 +84,6 @@ function Example() {
           <MaterialReactTable
             columns={ticketproceso}
             data={tiketslist}
-
             muiTableProps={{
               sx: {
                 tableLayout: 'flex'
@@ -122,12 +92,35 @@ function Example() {
             muiTableBodyProps={{
               sx: { columnVisibility: { nombre: false } }
             }}
-
-
+            renderDetailPanel={({ row }) => (
+              <Box
+                sx={{
+                  display: 'grid',
+                  margin: 'auto',
+                  gridTemplateColumns: '1fr 1fr',
+                  width: '100%',
+                }}
+              >
+                <Typography>ciudad : {row.original.ciudad} </Typography>
+                <Typography>Concierto : {row.original.concierto} </Typography>
+                <Typography sx={{
+                  display: 'flex',
+                  flexDirection: 'column'
+                }} >
+                  QR:
+                  <QRCodeCanvas value={row.original.qr} />
+                </Typography>
+                <Typography>Protocolo : {row.original.protocolo} </Typography>
+              </Box>
+            )}
+            enableSelectAll={false}
+            enableRowSelection
+            checkboxSelection
             enableRowActions
+            positionActionsColumn="last"
             renderRowActions={({ row }) => (
               <Box sx={{ display: 'flex' }}>
-                <Tooltip title="Ver Ticket" placement="top">
+                {row.original.estado != "reservado" ? <Tooltip className="" title="Ver Ticket" placement="top">
                   <IconButton
                     color="success"
                     arial-label="Enviar"
@@ -138,7 +131,7 @@ function Example() {
                       <FileDownload />
                     </a>
                   </IconButton>
-                </Tooltip>
+                </Tooltip> : ''}
                 <Tooltip title="Borrar" placement="top">
                   <IconButton
                     color="error"
@@ -151,24 +144,77 @@ function Example() {
                     color='success'
                     onClick={() => successAlert(row.original)}
                   >
-                    <Send />
+                    <img src={cedericon}
+                      style={
+                        {
+                          height: 30
+                        }
+                      }
+                    />
                   </IconButton>
                 </Tooltip>
               </Box>
             )}
+            renderTopToolbarCustomActions={({ table, rows }) => {
+              const handleDeactivate = () => {
+                table.getSelectedRowModel().flatRows.map((row) => {
+                  console.log(row.original);
+                });
+              };
+              return (
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button
+                    className=" btn btn-danger"
+                    disabled={table.getSelectedRowModel().flatRows.length === 0}
+                    onClick={handleDeactivate}
+
+                  >
+                    <i className=" fa   fa-shopping-cart"></i>
+                  </button>
+
+                  <div>
+
+                  </div>
+                </div>
+              );
+            }}
+            getRowId={(row) => row.id}
+            muiSelectCheckboxProps={({ row }) => ({
+              disabled: row.original.estado != "reservado",
+            })}
+            tableInstanceRef={tableInstanceRef}
             positionToolbarAlertBanner="bottom"
             displayColumnDefOptions={{
               'mrt-row-numbers': {
                 enableHiding: true,
               },
             }}
-
+            onRowSelectionChange={setRowSelection}
+            state={{ rowSelection }}
             localization={MRT_Localization_ES}
-
           />
-          {/*tiketslist.length == 0 ?
-            <TableWiev data={tiketslist} /> : ''*/}
         </div>
+        <div className=" container pb-3">
+          <div className=" d-flex justify-content-end ">
+            {Object.keys(rowSelection).length > 0 ? <div className="px-2 col-6 text-end border py-3">
+              Valor Total de Seleccionados
+              {"$" +
+                Object.keys(rowSelection).map((g, i) => { return parseFloat(tiketslist.find(e => e.id == g).valor) }).reduce((a, b) => a + b, 0).toFixed(2)
+              }
+            </div> : ''}
+          </div>
+          <div className="d-flex justify-content-end pt-2">
+
+            {Object.keys(rowSelection).length > 0 ? <div className=" px-2">
+              <button className=" btn btn-success"
+                onClick={Pagar}
+              >
+                PAGAR
+              </button>
+            </div> : ''}
+          </div>
+        </div>
+
       </div>
     </>
   );

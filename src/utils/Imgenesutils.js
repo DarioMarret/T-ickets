@@ -9,12 +9,13 @@ import produbancoguayaquil from "../assets/bancos/produbanco-guayaquil.png"
 import vecino from "../assets/bancos/mi-vecino.png"
 import logo from "../assets/imagen/logo-t-ickets.png"
 import portada from "../assets/imagen/portada-login.jpeg"
+import cedericon from "../assets/imagen/iconoceder.png"
 
 export const bancos = {
     GUAYAQUIL, numero,
     pacifico, pichincha,
     produbanco,
-    logo, portada
+    logo, portada, cedericon
 }
 export const bancosdetall = {
     bancoguyaquil,

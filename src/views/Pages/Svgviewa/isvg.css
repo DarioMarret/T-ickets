@@ -250,3 +250,22 @@
    fill-rule: evenodd;
    clip-rule: evenodd
  }
+
+ .path2 {
+   fill: #363435
+ }
+
+ .path0 {
+   fill: #363435;
+   fill-rule: nonzero
+ }
+
+ .path3 {
+   fill: black;
+   fill-rule: nonzero
+ }
+
+ .path3 {
+   fill: black;
+   fill-rule: nonzero
+ }

@@ -59,14 +59,13 @@ var routes = [
     name: "Noticias",
     layout: "/admin",
     component: NoticiasJs,
-    icon: " nc-icon nc-notification-70",
-    permiso: ["superadmin", "super_admin"]
+    icon: " nc-icon nc-notification-70", permiso: ["superadmin", "super_admin", "vendedores"],
   },
   {
     path: "/Evento/:id",
     layout: "/admin",
     component: EventoEspecifico,
-    permiso: ["superadmin", "super_admin"]
+    permiso: ["superadmin", "super_admin", "vendedores"],
   },
   {
     collapse: true,
@@ -137,8 +136,7 @@ var routes = [
     state: "openCliente",
     layout: "/admin",
 
-    component: SuscritoridView,
-    permiso: ["superadmin", "super_admin"]
+    component: SuscritoridView, permiso: ["superadmin", "super_admin", "vendedores"],
   },
 
 
@@ -148,7 +146,7 @@ var routes = [
     name: "Clientes",
     state: "openCliente",
     icon: "nc-icon nc-single-02",
-    permiso: ["superadmin", "super_admin"],
+    permiso: ["superadmin", "super_admin", "vendedores"],
     views: [
 
 
@@ -158,7 +156,7 @@ var routes = [
         name: "Suscriptores",
         mini: "*",
         component: SuscritorViews,
-        permiso: ["superadmin", "super_admin"]
+        permiso: ["superadmin", "super_admin", "vendedores"],
       },
 
 
@@ -170,7 +168,7 @@ var routes = [
     name: "Ventas",
     state: "openVentas",
     icon: "nc-icon nc-cart-simple",
-    permiso: ["superadmin", "super_admin"],
+    permiso: ["superadmin", "super_admin", "vendedores"],
     views: [
       {
         path: "/Vender-Tickets",
@@ -178,7 +176,7 @@ var routes = [
         name: "Vender Tickets",
         mini: "*",
         component: Ventas,
-        permiso: ["superadmin", "super_admin"]
+        permiso: ["superadmin", "super_admin", "vendedores"]
       },
 
       {
@@ -187,14 +185,14 @@ var routes = [
         name: "Ventas Por Aprobar",
         mini: "*",
         component: VentasView,
-        permiso: ["superadmin", "super_admin"]
+        permiso: ["superadmin", "super_admin", "vendedores"]
       }, {
         path: "/Vender-Articulo",
         layout: "/admin",
         name: "Vender Articulo",
         mini: "*",
         component: Reactabla,
-        permiso: ["superadmin", "super_admin"]
+        permiso: ["superadmin", "super_admin", "vendedores"]
       }
     ]
   },
@@ -204,7 +202,7 @@ var routes = [
     name: "Finanzas",
     state: "openFinanzas",
     icon: "nc-icon nc-money-coins",
-    permiso: ["superadmin", "super_admin"],
+    permiso: ["superadmin", "super_admin", "vendedores"],
     views: [
       {
         path: "/Tickets",
@@ -212,7 +210,7 @@ var routes = [
         name: "Tickets",
         mini: "*",
         component: Ticket,
-        permiso: ["superadmin", "super_admin"]
+        permiso: ["superadmin", "super_admin", "vendedores"],
       },
       {
         path: "/Facturas",
@@ -220,7 +218,7 @@ var routes = [
         name: "Facturas Electronicas",
         mini: "*",
         component: Reactabla,
-        permiso: ["superadmin", "super_admin"]
+        permiso: ["superadmin", "super_admin", "vendedores"],
       },
       {
         path: "/Otros",
@@ -228,7 +226,7 @@ var routes = [
         name: "Otros Ingresos & Egresos",
         mini: "*",
         component: Reactabla,
-        permiso: ["superadmin", "super_admin"]
+        permiso: ["superadmin", "super_admin",],
       },
       {
         path: "/Estadistica",
@@ -236,7 +234,7 @@ var routes = [
         name: "Estadisticas",
         mini: "*",
         component: Reactabla,
-        permiso: ["superadmin", "super_admin"]
+        permiso: ["superadmin", "super_admin", "vendedores"],
       }
     ]
   },

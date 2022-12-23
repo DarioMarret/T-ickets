@@ -213,6 +213,11 @@ const ModalCarritoView = (prop) => {
                     })) : ''
                 usedispatch(cargarmapa(color))
                 usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
+                usedispatch(updateboletos({
+                    disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                    proceso: ouput.data.filter(e => e.estado == "reservado").length,
+                    pagados: ""
+                }))
                 sessionStorage.seleccionmapa = JSON.stringify(e)
                 abrirlocalidad()
             }
@@ -281,6 +286,11 @@ const ModalCarritoView = (prop) => {
                         color: 'bg-primary',
                         estado: "Esta loclidad no tiene disponibles  "
                     })) : ''
+                    usedispatch(updateboletos({
+                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                        proceso: ouput.data.filter(e => e.estado == "reservado").length,
+                        pagados: ""
+                    }))
                     sessionStorage.seleccionmapa = JSON.stringify(consulta)
                     abrirlocalidad()
                 }
