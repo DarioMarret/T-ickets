@@ -137,7 +137,7 @@ export default function StoreTickesViews() {
                 let localidad = JSON.parse(mapa[0].localidad)
                 let path = JSON.parse(mapa[0].pathmap)
                 let newprecios = obten.data.map((e, i) => {
-                    let color = localidad.filter((f, i) => f.nombre == e.localodad)
+                    let color = localidad.filter((f, i) => f.nombre == e.localidad)
                     e.color = color[0].color
                     e.idcolor = color[0].id
                     e.typo = color[0].tipo
@@ -195,7 +195,7 @@ export default function StoreTickesViews() {
     }
     const evento = async () => {
         try {
-            const data = await cargarEventoActivo("PROCESO")
+            const data = await cargarEventoActivo("ACTIVO")
             const susct = await GetSuscritores()
             //console.log(data, susct)
             const Datos = await ListarTikets()

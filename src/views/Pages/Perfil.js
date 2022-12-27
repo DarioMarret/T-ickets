@@ -190,11 +190,11 @@ function PerfilPage(props) {
 
   const evento = async () => {
     try {
-      const data = await cargarEventoActivo()
+      const data = await cargarEventoActivo("ACTIVO")
       const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
       const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
       if (data != null) {
-        console.log(filtro.sort(sorter))
+        // console.log(filtro.sort(sorter))
         setEventos(filtro.sort(sorter))
       }
       else if (data == null) setEventos([])
@@ -210,8 +210,8 @@ function PerfilPage(props) {
       try {
         const suscrito = await GetSuscritores()
         console.log()
-        const dato = suscrito.users.filter((e) => e.id == info.id)
-        console.log(dato)
+        const dato = suscrito.users.filter((e) => e.cedula == info.cedula)
+        //  console.log(info, suscrito)
         setPerson({ ...info, new_password: '', enable: dato[0].enable })
         // console.log({...info,new_password:'',enable:dato[0].enable})
         //console.log(dato)

@@ -260,7 +260,10 @@ function ModalDetalle(props) {
             fullscreen={'md-down'}
             centered
         >
-            <Modal.Header className='  text-light border  border-dark '
+            <Modal.Header className='  text-light  bg-dark  '
+                style={{
+                    backgroundColor: '#311C7C'
+                }}
             >
                 <h5 className="modal-title text-center py-3 justify-content-center" style={{ fontWeight: "bold" }}>Tiempo restante para la compra <span className="text-danger" >{intervalo} </span></h5>
                 <button type="button" className="close text-white"

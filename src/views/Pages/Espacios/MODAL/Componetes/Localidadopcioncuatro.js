@@ -18,12 +18,13 @@ const LocalidadesagreViews = (props) => {
   const [datas, setData] = useState([])
   async function ObtenLocalidad() {
     try {
-      const datos = await ListarLocalidad()
+      const datos = await ListarLocalidad("")
       //const datos2 = await Listarlocalidadid(localidaname.id)
-      //console.log(datos2)
+      console.log(datos, localidaname.id)
       const { success, data } = datos
       if (success) {
-        const filtrado = data.filter(e => e.espacio == localidaname.nombre)
+        const filtrado = datos.data.filter(e => e.id_espacio == localidaname.id)
+        console.log(filtrado)
         const obten = filtrado.map((e, i) => {
           let dato = JSON.parse(e.mesas_array)
           return { ...e, tipo: dato.Typo }
@@ -101,6 +102,7 @@ const LocalidadesagreViews = (props) => {
         $('[href*="listas"]').removeClass('active');
       }
       else if (ouput.data.find(e => e.typo == "correlativo")) {
+        console.log({ typo: 'correlativo', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: { cantidad: ouput.data.length, inicio: 1 } })
         SetDataloca({ typo: 'correlativo', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: { cantidad: ouput.data.length, inicio: 1 } })
         $("#listas").removeClass("active")
         $("#correlativos").addClass("active")

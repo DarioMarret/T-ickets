@@ -23,6 +23,12 @@ const ResgistroView = (prop) => {
     const [datosPerson, setPerson] = useState({
         cedula: '', name: '', email: '', edad: '', movil: '', discapacidad: '', genero: '', direccion: '', password: '',
     })
+    const [primro, setsegundo] = useState("password")
+    const [segundo, setprimero] = useState("password")
+    const [check, setCheck] = useState({
+        primero: '',
+        segunfo: ''
+    })
     const [nedvalida, sedtValida] = useState("")
     const [code, setCode] = useState("cedula")
 
@@ -33,6 +39,12 @@ const ResgistroView = (prop) => {
             ...datosPerson,
             [e.target.name]: e.target.value
         })
+        if (e.target.name == "emailconfirma") {
+            document.getElementById("emailconfirma").classList.remove("is-invalid")
+        }
+        if (e.target.name == "passwordcomfirma") {
+            document.getElementById("passwordcomfirma").classList.remove("is-invalid")
+        }
         if (e.target.name === "cedula" && e.target.value.length == 10) {
             if (code == "cedula") {
                 try {
@@ -116,7 +128,8 @@ const ResgistroView = (prop) => {
         let info = getDatosUsuariosLocalStorag()
         const form = new FormData(e.target)
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-        const { name, email, password, movil, direccion, cedula } = Object.fromEntries(form.entries())
+        const { name, email, password, movil, direccion, cedula, passwordcomfirma, emailconfirma } = Object.fromEntries(form.entries())
+        console.log(Object.fromEntries(form.entries()))
         sessionStorage.setItem(Whatsappnumero, movil)
         let datos = {
             nombreCompleto: name,
@@ -165,6 +178,25 @@ const ResgistroView = (prop) => {
             console.log("aqui")
             return
         }
+        if (password != passwordcomfirma) {
+            document.getElementById("passwordcomfirma").classList.add("is-invalid");
+            console.log("asta qui no msa")
+            if (email != emailconfirma) {
+                document.getElementById("emailconfirma").classList.add("is-invalid");
+                return
+            }
+
+            return
+        }
+        if (email != emailconfirma) {
+            document.getElementById("emailconfirma").classList.add("is-invalid");
+            if (password != passwordcomfirma) {
+                document.getElementById("passwordcomfirma").classList.add("is-invalid");
+                return
+            }
+            return
+        }
+
         else {
             try {
                 let nuemro = await ValidarWhatsapp()
@@ -179,58 +211,59 @@ const ResgistroView = (prop) => {
                     return
                 }
                 else {
-                    try {
-                        console.log("condireccion-->", datos)
-
-
-                        const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                            }
-                        })
-                        if (registro.data.success) {
-                            let usuario = getDatosUsuariosLocalStorag()
-                            const { data } = await Authsucrito({ email: email, password: password },)
-                            var hoy = new Date();
-                            let users = {
-                                ...usuario,
-                                cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
-                                telefono: movil, name: data.nombreCompleto,
-                                email: data.email, hora: String(hoy),
-                                enable: data.enable, id: data.id,
-                                envio: ''
-                            }
-                            DatosUsuariosLocalStorag({ ...usuario, ...users })
-                            sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
-                            setDatoToas({
-                                show: true,
-                                message: "Bienvenido " + data.nombreCompleto,
-                                color: 'bg-success',
-                                estado: "Inicio Exitoso",
-                            })
-                            usedispatch(setModal({ nombre: '', estado: '' }))
-                            usedispatch(addususcritor({ users }))
-                        } else {
-                            console.log("error", registro.data)
-                            setDatoToas({
-                                show: true,
-                                message: "El Email ya " + email + " se encuentra registrado intente con otro",
-                                color: 'bg-danger',
-                                estado: "Error de registro",
-                            })
-                        }
-
-                    } catch (error) {
-                        console.log(error)
-                        setDatoToas({
-                            show: true,
-                            message: "El Email ya" + email + " se encuentra registrado intente con otro",
-                            color: 'bg-danger',
-                            estado: "Email dubplicado",
-                        })
-
-                    }
+                    /* try {
+                         console.log("condireccion-->", datos)
+ 
+ 
+                         const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
+                             headers: {
+                                 'Content-Type': 'application/json',
+                                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                             }
+                         })
+                         if (registro.data.success) {
+                             let usuario = getDatosUsuariosLocalStorag()
+                             const { data } = await Authsucrito({ email: email, password: password },)
+                             var hoy = new Date();
+                             let users = {
+                                 ...usuario,
+                                 cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
+                                 telefono: movil, name: data.nombreCompleto,
+                                 email: data.email, hora: String(hoy),
+                                 enable: data.enable, id: data.id,
+                                 envio: ''
+                             }
+                             DatosUsuariosLocalStorag({ ...usuario, ...users })
+                             sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+                             setDatoToas({
+                                 show: true,
+                                 message: "Bienvenido " + data.nombreCompleto,
+                                 color: 'bg-success',
+                                 estado: "Inicio Exitoso",
+                             })
+ 
+                             modal.estado != null ? abrir(modal.estado) : usedispatch(setModal({ nombre: '', estado: '' }))
+                             usedispatch(addususcritor({ users }))
+                         } else {
+                             console.log("error", registro.data)
+                             setDatoToas({
+                                 show: true,
+                                 message: "El Email ya " + email + " se encuentra registrado intente con otro",
+                                 color: 'bg-danger',
+                                 estado: "Error de registro",
+                             })
+                         }
+ 
+                     } catch (error) {
+                         console.log(error)
+                         setDatoToas({
+                             show: true,
+                             message: "El Email ya" + email + " se encuentra registrado intente con otro",
+                             color: 'bg-danger',
+                             estado: "Email dubplicado",
+                         })
+ 
+                     }*/
 
                 }
 
@@ -250,6 +283,14 @@ const ResgistroView = (prop) => {
 
         }
 
+    }
+    function handelMetodopago(target, value) {
+        setCheck({
+            ...check,
+            [target.name]: target.checked
+        })
+        // sessionStorage.setItem(Metodos, value)
+        // setCheck(false)
     }
     $(document).ready(function () {
         $(".numero").keypress(function (e) {
@@ -278,7 +319,7 @@ const ResgistroView = (prop) => {
                 size='lg'
                 onHide={() => usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))}
             >
-                <Modal.Header className="py-4">
+                <Modal.Header className="py-4  bg-dark ">
                     <button type="button" className="close"
                         onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))}>
                         ×
@@ -408,13 +449,56 @@ const ResgistroView = (prop) => {
                                                         <span className="input-group-text"><i className="fa fa-envelope"></i></span>
                                                     </div>
 
-                                                    <input id="email" type="email" className="form-control" name="email"
+                                                    <input id="email" type="email" className="form-control " name="email"
                                                         value={datosPerson.email}
                                                         onChange={(e) => hanbleOnchange(e)}
                                                         required
                                                         placeholder="Email" />
                                                     <div className="invalid-feedback">
-                                                        Correo registrado o inválido
+                                                        Ingrese un email
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6" >
+                                                <div className="input-group mb-3">
+                                                    <div className="input-group-prepend">
+                                                        <span className="input-group-text"><i className="fa fa-envelope"></i></span>
+                                                    </div>
+
+                                                    <input id="emailconfirma" type="email" className="form-control"
+                                                        name="emailconfirma"
+                                                        required
+                                                        onChange={(e) => hanbleOnchange(e)}
+                                                        placeholder="Confirmar Email" />
+                                                    <div className="invalid-feedback">
+                                                        El correo no Coincide  </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-lg-6">
+                                                <div className="input-group mb-3">
+                                                    <div className="input-group-prepend">
+                                                        <span className="input-group-text"><i className="fas fa-key"></i></span>
+                                                    </div>
+
+                                                    <input id="password" type={primro} className="form-control" name="password"
+
+                                                        onChange={(e) => hanbleOnchange(e)}
+                                                        required
+                                                        placeholder="Contraseñas" />
+                                                    <div className="input-group-prepend">
+                                                        <span className="input-group-text groud-eye"
+                                                            onClick={() => primro == "password" ? setsegundo("text") : setsegundo("password")}
+                                                        ><i className={primro != "password" ? "fa fa-eye" : "fa fa-eye-slash"}
+
+                                                        ></i></span>
+                                                    </div>
+                                                    <div className="invalid-feedback">
+                                                        La contraseña debe ser mayor de 7 caracteres
                                                     </div>
 
                                                 </div>
@@ -424,65 +508,37 @@ const ResgistroView = (prop) => {
                                                     <div className="input-group-prepend">
                                                         <span className="input-group-text"><i className="fas fa-key"></i></span>
                                                     </div>
-
-                                                    <input type="password"
-
-                                                        id="password"
-                                                        name='password'
+                                                    <input type={segundo}
+                                                        id="passwordcomfirma"
+                                                        name='passwordcomfirma'
                                                         required
                                                         minLength={8}
-                                                        placeholder="contraseña"
+                                                        placeholder="Confirmar Contraseña"
                                                         className="form-control"
                                                         onChange={(e) => hanbleOnchange(e)} />
+                                                    <div className="input-group-prepend">
+                                                        <span className="input-group-text groud-eye"
+                                                            onClick={() => segundo == "password" ? setprimero("text") : setprimero("password")}
+                                                        ><i className={segundo != "password" ? "fa fa-eye" : "fa fa-eye-slash"}
+
+                                                        ></i></span>
+                                                    </div>
                                                     <div className="invalid-feedback">
-                                                        La contraseña debe ser mayor de 7 caracteres
+                                                        La contraseña no Coincide
                                                     </div>
 
                                                 </div>
                                             </div>
 
                                         </div>
-                                        { /* <div className="row">
-                                            <div className="col-lg-6">
-                                                <div className="input-group mb-3">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text"><i className="fa fa-envelope"></i></span>
-                                                    </div>
-
-                                                    <input id="edad" type="edad" className="form-control" name="email"
-
-                                                        required
-                                                        placeholder="edad" />
-                                                    <div className="invalid-feedback">
-                                                        Correo registrado o inválido
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-6">
-                                                <div className="input-group mb-3">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text"><i className="fa fa-envelope"></i></span>
-                                                    </div>
-
-                                                    <input id="fecha" type="date" className="form-control" name="email"
-
-                                                        required
-                                                        placeholder="Email" />
-                                                    <div className="invalid-feedback">
-                                                        Correo registrado o inválido
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                        </div>*/}
-
-
-
                                         <div className="row">
                                             <div className="col-lg-12">
-                                                <button className="btn btn-block btn-success" type="submit">Crear Cuenta</button>
+                                                <button className="btn btn-block btn-success"
+
+                                                    disabled={(!check.primero || !check.segunfo)}
+                                                    type="submit"
+
+                                                >Crear Cuenta</button>
                                             </div>
                                         </div>
                                     </form>
@@ -503,6 +559,12 @@ const ResgistroView = (prop) => {
 
                                 <div className="d-flex   flex-wrap-reverse ">
                                     <div className="col-12 d-flex ">
+                                        <input className="form-check-input" type="checkbox"
+                                            name="primero"
+                                            checked={check.primero}
+                                            onChange={(e) => handelMetodopago(e.target)}
+
+                                            value="" id="invalidCheck" required />
                                         <p style={{ fontSize: "0.7em" }}>
                                             Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
                                             realizada la compra , caso contrario no podrá retirar los boletos duros sin opción a
@@ -510,11 +572,14 @@ const ResgistroView = (prop) => {
                                         </p>
                                     </div>
                                 </div>
-
-
                                 <div className="d-flex ">
                                     <div className="col-12 d-flex ">
-
+                                        <input className="form-check-input"
+                                            name="segunfo"
+                                            type="checkbox" id="segunfo" required
+                                            checked={check.segunfo}
+                                            onChange={(e) => handelMetodopago(e.target)}
+                                        />
                                         <p style={{
                                             fontSize: "0.8em",
                                             fontWeight: "bold"

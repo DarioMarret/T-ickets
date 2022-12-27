@@ -42,15 +42,15 @@ const LocalidadmapViews = (props) => {
         hideAlert()
         let nuevo = []
         for (let i = 1; i < parseInt(C) + 1; i++) {
-            let valid = seleccion.some(e => e.seleccionmapa == nombre.localodad + "-" + M + "-s-" + i)
+            let valid = seleccion.some(e => e.seleccionmapa == nombre.localidad + "-" + M + "-s-" + i)
             if (valid) { }
             nuevo.push({ id: nombres.idcolor, silla: M + "-s-" + i })
         }
         nuevo.length > 0 && TotalSelecion() < 10 ? nuevo.map((e, index) => {
             setTimeout(() => {
                 TotalSelecion() < 10 ? $("." + e.silla).hasClass('disponible') ? enviasilla({ ...e }).then(ouput => {
-                    AgregarAsiento({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" })
-                    usedispatch(addSillas({ "localidad": nombre.localodad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localodad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" }))
+                    AgregarAsiento({ "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localidad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" })
+                    usedispatch(addSillas({ "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localidad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" }))
                 }
                 ).catch(exit => {
                     console.log(exit)
@@ -63,7 +63,7 @@ const LocalidadmapViews = (props) => {
         let user = getDatosUsuariosLocalStorag()
         let nuevo = []
         for (let i = 1; i < parseInt(C) + 1; i++) {
-            let valid = seleccion.some(e => e.seleccionmapa == nombre.localodad + "-" + M + "-s-" + i && e.estado == "seleccionado")
+            let valid = seleccion.some(e => e.seleccionmapa == nombre.localidad + "-" + M + "-s-" + i && e.estado == "seleccionado")
             if (valid) {
                 nuevo.push({ id: nombres.idcolor, silla: M + "-s-" + i })
             }
@@ -71,8 +71,8 @@ const LocalidadmapViews = (props) => {
         nuevo.length > 0 ? nuevo.map((elm, index) => {
             setTimeout(() => {
                 quitarsilla({ "array": [{ estado: "disponible", "id": elm.id, "silla": elm.silla, "cedula": user.cedula }] }).then(ouput => {
-                    usedispatch(deleteSillas({ "localidad": nombre.localodad, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "seleccionado" }))
-                    EliminarsilladeMesa({ localodad: nombre.localodad + "-" + elm.silla })
+                    usedispatch(deleteSillas({ "localidad": nombre.localidad, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "seleccionado" }))
+                    EliminarsilladeMesa({ localidad: nombre.localidad + "-" + elm.silla })
                     // console.log(user.cedula, ouput)
                 }).catch(err => console.log(err))
 
@@ -312,14 +312,14 @@ const LocalidadmapViews = (props) => {
                     <div className="d-flex flex-row justify-content-center text-center">
                         <div className="d-flex">
                             <h4 style={{ fontSize: '0.9em' }} >
-                                De la Localidad {nombres.localodad} En la Fila:  {e.silla.replace("-", " ").split(" ")[0]} la Silla #{e.silla.split("-")[1]}  </h4>
+                                De la Localidad {nombres.localidad} En la Fila:  {e.silla.replace("-", " ").split(" ")[0]} la Silla #{e.silla.split("-")[1]}  </h4>
                         </div>
                     </div>
                 </SweetAlert>
             )
             // usedispatch(filtrarlocali(ouput))
-            AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-            usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+            AgregarAsiento({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+            usedispatch(addSillas({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
 
         }
         ).catch(exit => {
@@ -334,7 +334,7 @@ const LocalidadmapViews = (props) => {
                 let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
                 if (TotalSelecion() < 10) {
 
-                    //successAlert(this.classList[0], nombres.localodad, "Fila")
+                    //successAlert(this.classList[0], nombres.localidad, "Fila")
                     let silla = this.classList[0].replace("-", " ").split(" ")[1]
                     // console.log("sillas->", this.id)
 
@@ -361,14 +361,14 @@ const LocalidadmapViews = (props) => {
                                 <div className="d-flex flex-row justify-content-center text-center">
                                     <div className="d-flex">
                                         <h4 style={{ fontSize: '0.9em' }} >
-                                            De la Localidad {nombres.localodad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
+                                            De la Localidad {nombres.localidad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
                                     </div>
                                 </div>
                             </SweetAlert>
                         )
                         // usedispatch(filtrarlocali(ouput))
-                        AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                        usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+                        AgregarAsiento({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+                        usedispatch(addSillas({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
 
                     }
                     ).catch(exit => {
@@ -386,7 +386,7 @@ const LocalidadmapViews = (props) => {
             if (!this.classList.contains('disponible')) {
                 let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
                 //                
-                succesElimAlert(this, { "id": nombres.idcolor, "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
+                succesElimAlert(this, { "id": nombres.idcolor, "localidad": nombres.localidad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
 
             }
             return
@@ -396,7 +396,7 @@ const LocalidadmapViews = (props) => {
         if (!this.classList.contains('seleccionado')) {
             let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
             if (TotalSelecion() < 10) {
-                // successAlert(this.classList[0], nombres.localodad, "Mesa")
+                // successAlert(this.classList[0], nombres.localidad, "Mesa")
                 let silla = this.classList[0].replace("-", " ").split(" ")[1]
                 console.log(this.id)
                 setAlert(
@@ -416,7 +416,7 @@ const LocalidadmapViews = (props) => {
                         <div className="d-flex flex-row justify-content-center text-center">
                             <div className="d-flex">
                                 <h4 style={{ fontSize: '0.9em' }} >
-                                    De la Localidad {nombres.localodad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
+                                    De la Localidad {nombres.localidad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
                             </div>
                         </div>
                     </SweetAlert>
@@ -431,8 +431,8 @@ const LocalidadmapViews = (props) => {
 
                     //usedispatch(filtrarlocali(ouput))
 
-                    AgregarAsiento({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                    usedispatch(addSillas({ "localidad": nombres.localodad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localodad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+                    AgregarAsiento({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+                    usedispatch(addSillas({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
                     // console.log(ouput)
                 }
                 ).catch(exit => console.log(exit))
@@ -445,7 +445,7 @@ const LocalidadmapViews = (props) => {
     $(document).on("click", "a.seleccionado", function () {
         if (!this.classList.contains('disponible')) {
             let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-            succesElimAlert(this, { id: nombres.idcolor, "localidad": nombres.localodad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
+            succesElimAlert(this, { id: nombres.idcolor, "localidad": nombres.localidad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
         }
         return
     })

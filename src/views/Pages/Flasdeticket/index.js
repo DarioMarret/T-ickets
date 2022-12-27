@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styleswiper } from "./styleswiper.js";
 import { pasados, carrusel } from "./imagenstatctic.js";
-let { icon, valla, principal, secundaria, tercero, logofla, mapa, portal, header } = carrusel
+let { icon, valla, principal, secundaria, tercero, logofla, mapa, portal, header, avatar } = carrusel
 import { useSelector, useDispatch } from "react-redux";
 import { todossiler } from "./Modalterminos/silder.js";
 let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
@@ -26,7 +26,7 @@ import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Skeleton } from "@mui/material";
+import { Icon, Skeleton } from "@mui/material";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper";
 import ResgistroView from "./ModalLogin/registro.js";
 import { Button, Spinner } from "react-bootstrap";
@@ -355,7 +355,7 @@ const IndexFlas = () => {
         let localidad = JSON.parse(mapa[0].localidad)
         let path = JSON.parse(mapa[0].pathmap)
         let newprecios = obten.data.map((e, i) => {
-          let color = localidad.filter((f, i) => f.nombre == e.localodad)
+          let color = localidad.filter((f, i) => f.nombre == e.localidad)
           e.color = color[0].color
           e.idcolor = color[0].id
           e.typo = color[0].tipo
@@ -441,7 +441,7 @@ const IndexFlas = () => {
     Limpiarseleccion()
     const evento = async () => {
       try {
-        const data = await cargarEventoActivo("PROCESO")
+        const data = await cargarEventoActivo("ACTIVO")
         const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         if (data != null) {
@@ -578,28 +578,33 @@ const IndexFlas = () => {
       <ReporteView
         setrepShow={setrepShow} />
       {alert}
-      <nav className="navbar border-bottom border-dark shadow navbar-expand-lg  justify-content-between navbar-dark    py-3"
+      <nav className="navbar border-bottom border-dark shadow navbar-expand-lg  navbar-dark    py-1"
         style={{
           backgroundColor: "#311C7C"
         }}
 
       >
-        <div className="container-fluid col-lg-8    d-flex justify-content-between">
-          <a className="navbar-brand " aria-label="TICKETS" href="#">
-            <img src={icon} className="img-fluid" alt="" />
+        <div className="container-fluid col-lg-8 py-0   ">
+          <a className="navbar-brand py-1  " aria-label="TICKETS" href="#">
+            <img src={icon} className="img-fluid p-0" alt="" style={{
+              height: 70
+            }} />
           </a>
-          <button className="navbar-toggler justify-content-center " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+          <button className="navbar-toggler  " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-auto  d-md-flex">
+
+          <div className=" collapse navbar-collapse   " id="navbarSupportedContent"
+          >
+            <ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-auto  align-items-lg-center">
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#" onClick={() => SetSeleccion("")}>Inicio</a>
               </li>
-              <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("")}>
-                <a className=" nav-link" href="#nuevoseventos">Eventos</a>
+              <li className="nav-item active  py-0 mx-1" aria-current="page" onClick={() => SetSeleccion("")}>
+                <a className=" nav-link" href="#nuevoseventos"
+                  style={{ height: 70 }}>Eventos</a>
               </li>
-
               {userauthi.login ?
                 <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("Datos")}>
                   <a className="nav-link " >Datos</a>
@@ -611,12 +616,11 @@ const IndexFlas = () => {
                 </li> : ""
               }
               {!userauthi.login ? <li className="  nav-item">
-                <a className=" btn btn-outline-light  " href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
-                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
-                  <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
-                </svg></i> </a>
+                <a className=" btn btn-outline-nuevo  rounded-7 " href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i>
+                  <img src={avatar} className=" img-fluid" />
+                </i> </a>
               </li> : <li className="  nav-item">
-                <a className=" btn btn-outline-light  " href="#" onClick={salir}> Salir <i className="fa fa-window-close"></i> </a>
+                <a className=" btn btn-outline-nuevo rounded-7  " href="#" onClick={salir}> Salir <i className="fa fa-window-close"></i> </a>
               </li>}
             </ul>
 
@@ -725,7 +729,7 @@ const IndexFlas = () => {
         <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '300px', backgroundImage: `url(${header})` }}>
           <div className="container w-100 h-100 px-0">
             <div className="container btn-group-vertical  h-100 text-center px-0">
-              <h1 className="text-white mx-auto" style={{ fontSize: '3.5em' }}><img src={logofla} className="img-fluid" style={{ height: '150px' }} alt="" /></h1>
+              <h1 className="text-white mx-auto" style={{ fontSize: '3.5em' }}><img src={Icon} className="img-fluid" style={{ height: '150px' }} alt="" /></h1>
               <p className="mx-auto text-white d-none" style={{ fontSize: '1.2em' }}><b>Compra</b> tu entrada <b>fácil, rápido</b> y
                 <b>seguro</b>
               </p>

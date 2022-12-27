@@ -4,13 +4,13 @@ import { Modal } from "react-bootstrap";
 const PreciosViews = (prop) => {
     let { showpr, setShowpr, valores } = prop
     const [precios, setPrecios] = useState({
-        localodad: '',
+        localidad: '',
         precio_normal: '',
         precio_discapacidad: '',
         precio_tarjeta: '',
         precio_descuento: '',
         id: '',
-        localodad: '',
+        localidad: '',
         habilitar_cortesia: ''
     })
 
@@ -45,7 +45,7 @@ const PreciosViews = (prop) => {
                 <Modal.Body>
                     <div className="col-12">
 
-                        <h3>Localidad:{precios.localodad} </h3>
+                        <h3>Localidad:{precios.localidad} </h3>
 
                         <div className="row">
                             <div className="d-flex flex-wrap col-12 col-md-6">

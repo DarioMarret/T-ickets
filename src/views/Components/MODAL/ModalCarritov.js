@@ -524,7 +524,7 @@ const ModalCarritoView = (prop) => {
                                                 return (
                                                     <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                         <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 10, width: 10, backgroundColor: elm.color }}></div>
-                                                        <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '130px' }} >
+                                                        <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '160px' }} >
                                                             <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >{elm.localidad} </span>
                                                             <span className="pl-1" style={{ fontFamily: '', fontSize: '0.8em' }} >${elm.precio_normal} </span>
                                                         </div>

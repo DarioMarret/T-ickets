@@ -160,7 +160,7 @@ export const Columnevento = [
     size: 50
   }
 ]
-export const EventosporAprobar=[
+export const EventosporAprobar = [
   {
     accessorKey: 'nombre',
     header: 'Evento',

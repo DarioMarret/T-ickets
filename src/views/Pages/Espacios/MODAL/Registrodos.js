@@ -20,10 +20,11 @@ const RegistroViwstab = (props) => {
     })
     async function ObtenLocalidad() {
         try {
-            const datos = await ListarLocalidad()
+            const datos = await ListarLocalidad("")
             const { success, data } = datos
-
+            console.log(datos)
             if (success) {
+                console.log(datos)
                 const filtrado = data.filter(e => e.espacio == localidaname.nombre)
                 const obten = filtrado.map((e, i) => {
                     let dato = JSON.parse(e.mesas_array)
@@ -32,8 +33,8 @@ const RegistroViwstab = (props) => {
                 // console.log("localidada",obten)
                 //setLocalidad(filtrado)
                 //setmapa(obten)
-                sessionStorage.localidad = JSON.stringify(obten)
-                sessionStorage.localidadrespaldo = JSON.stringify(obten)
+                //  sessionStorage.localidad = JSON.stringify(obten)
+                //sessionStorage.localidadrespaldo = JSON.stringify(obten)
 
             }
 
@@ -86,7 +87,7 @@ const RegistroViwstab = (props) => {
                                     <a className="nav-link" data-toggle="tab" href="#correlativos">Números Correlativos</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link d-none" data-toggle="tab" href="#listas"
+                                    <a className="nav-link " data-toggle="tab" href="#listas"
                                     >Localidades Agregadas</a>
                                 </li>
                                 <li className="nav-item  ">

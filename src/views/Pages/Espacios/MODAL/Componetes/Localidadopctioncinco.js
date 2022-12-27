@@ -50,14 +50,15 @@ const MapadelocalidadViews = (props) => {
         }
         async function cargardatosMapa() {
                 try {
-                        let listar = await ListarLocalidad()
+                        let listar = await ListarLocalidad("")
                         let map = await cargarMapa()
                         let datos = map.data.filter((e) => e.nombre_espacio == localidaname.nombre)
-                        //console.log(map)
-                        //console.log(datos)
+                        console.log(datos)
+                        console.log(localidaname.nombre)
+                        console.log(listar)
                         if (datos) {
                                 let localidadcolor = JSON.parse(datos[0].localidad)
-                                const filtrado = listar.data.filter(e => e.espacio == localidaname.nombre)
+                                const filtrado = listar.data.filter(e => e.id_espacio == localidaname.id)
                                 // console.log(filtrado)
                                 const obten = filtrado.map((e, i) => {
                                         if (localidadcolor > 0 && localidadcolor.findIndex(e => e.id == e.id) != -1) {
@@ -106,31 +107,7 @@ const MapadelocalidadViews = (props) => {
                 }
 
         }
-        async function GetLocalidad(e) {
-                try {
-                        let listar = await ListarLocalidad()
 
-                        if (listar.data.length > 0) {
-                                const filtrado = listar.data.filter(e => e.espacio == localidaname.nombre)
-                                setmapa([])
-                                const obten = filtrado.map((e, i) => {
-                                        let dato = JSON.parse(e.mesas_array)
-                                        return { id: e.id, nombre: e.nombre, tipo: dato.Typo, color: '' }
-                                })
-                                sessionStorage.removeItem("mapa")
-                                setselection({ ...localidadmap, name: "", color: '#A12121' })
-                                SetSelecion(e)
-
-                                setTimeout(function () {
-                                        setmapa(obten)
-                                }, 90)
-
-                        }
-                } catch (error) {
-                        console.log(error)
-                }
-
-        }
 
         const GuardarMapa = async () => {
 

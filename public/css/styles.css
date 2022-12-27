@@ -80,10 +80,7 @@ a.list-group-item:hover {
 }
 
 
-.navbar-nav {
-  justify-content: center !important;
-  align-items: center !important;
-}
+
 
 .contenedor {
   position: absolute;

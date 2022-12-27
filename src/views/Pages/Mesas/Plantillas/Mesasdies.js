@@ -5,7 +5,7 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 const MesadiesView = ({ text, list }) => {
   let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
   // console.log(nombre)
-  // const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localodad))
+  // const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localidad))
 
   //let silla = seleccion
   // console.log(silla)

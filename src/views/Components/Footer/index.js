@@ -1,9 +1,12 @@
 import React from 'react';
 import { carrusel } from 'views/Pages/Flasdeticket/imagenstatctic';
 let { android, ios, face, insta, tick, youtube, nombre, nombrepage } = carrusel
+import { useSelector } from 'react-redux';
 
 export default function Footer(props) {
     const { logofla } = props;
+    const datos = useSelector(state => state.SuscritorSlice)
+    // console.log(datos)
     return (
         <div className=" container-fluid h-55  footer-fluid px-0"
             style={{
@@ -170,6 +173,10 @@ export default function Footer(props) {
 
                                             <span className=" text-white" style={{ fontFamily: '', }} >Descargar Factura Electrónica</span>
                                         </a>
+                                        {datos.login ? <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
+
+                                            <span className=" text-white" style={{ fontFamily: '', }} >{datos.subscritor.enable == 1 ? "Cancelar Suscripción" : "Habilitar Suscripción"}</span>
+                                        </a> : ''}
 
                                     </div>
                                 </div>

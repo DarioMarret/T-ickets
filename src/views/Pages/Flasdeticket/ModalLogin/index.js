@@ -76,8 +76,6 @@ const ModalLogin = (props) => {
     })
   }
   useEffect(() => {
-
-
   }, [Modalstatus.nombre == "loginpage" ? true : false])
 
   return (
@@ -87,7 +85,7 @@ const ModalLogin = (props) => {
         onHide={() => setShowLogin(false)}
         centered
       >
-        <Modal.Header className="py-4">
+        <Modal.Header className="py-4  bg-dark ">
           <div className=" d-flex  col-12 ">
             <div className="col-sm   justify-content-end  pl-0 ">
               <h5 className="modal-title text-center">INICIA SESIÓN</h5>
@@ -97,17 +95,10 @@ const ModalLogin = (props) => {
               onClick={() => usedispatch(setModal({ nombre: '', estado: '' }))}>
               ×
             </button>
-
           </div>
-
-
-
         </Modal.Header>
         <Modal.Body>
           <Container className="d-flex flex-column justify-content-center">
-
-
-
             <div className="card-body">
               <div className="container text-center">
                 <img src={logo} className="mb-4 img-fluid " style={{ height: '80px', color: 'black' }} alt="" />
@@ -147,6 +138,10 @@ const ModalLogin = (props) => {
                         fontWeight: "bold"
                       }}
                     >Crear Cuenta</a>
+                  </div>
+                  <div className="col-12 ">
+                    <a className=" nav-link btn btn-link" href="#" > Olvide mi contraseña </a>
+
                   </div>
                 </div>
               </form>

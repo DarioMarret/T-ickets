@@ -19,6 +19,7 @@ import { ticketproceso } from "utils/columnasub.js";
 import { bancos } from "utils/Imgenesutils.js";
 import ModalReporteViews from "views/Components/MODAL/ReportarPago.js";
 import moment from "moment";
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag.js";
 let { cedericon } = bancos
 function Example() {
   let usedispatch = useDispatch()
@@ -59,25 +60,57 @@ function Example() {
   }
 
   function Pagar() {
-    usedispatch(setModal({ nombre: 'pagarcomprobante', estado: '' }))
-    console.log(Object.keys(rowSelection).map((g, i) => { return tiketslist.find(e => e.id == g) }))
+    //usedispatch(setModal({ nombre: 'pagarcomprobante', estado: '' }))
+    //console.log(Object.keys(rowSelection).map((g, i) => { return tiketslist.find(e => e.codigoEvento == g) }))
 
   }
   useEffect(() => {
-    Listarticketporestado("1314780774").then(ouput => {
-      setTikes([...ouput.data])
-      ouput.data.map(e => {
-        console.log(moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h'))
-        //  console.log(moment(e.fechaCreacion).format("YYYYMMDDHHMMSS"), moment(new Date()).format("YYYYMMDDHHMMSS"))
-      })
+    let user = getDatosUsuariosLocalStorag()
+    Listarticketporestado(user.cedula).then(ouput => {
+      let nuevogrupo = []
+
+      ouput.data.forEach(element => {
+        if (!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento)) {
+          //console.log(!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento))
+          nuevogrupo.push({
+            codigoEvento: element.codigoEvento,
+            concierto: element.concierto,
+            estado: element.estado,
+            valor: element.valor,
+            cedula: element.cedula,
+            fechaCreacion: element.fechaCreacion,
+            tokenPago: element.tokenPago,
+            detalle: []
+          })
+        }
+
+      });
+      let nuevo = ouput.data
+      nuevogrupo.length > 0 ? nuevo.map(elm => {
+        let index = nuevogrupo.findIndex(f => f.codigoEvento == elm.codigoEvento)
+        nuevogrupo[index].detalle.push({
+          sillas: elm.sillas,
+          localidad: elm.localidad, fechaCreacion: elm.fechaCreacion,
+          cedula: elm.cedula,
+          tokenPago: elm.tokenPago,
+          valor: elm.valor, codigoEvento: elm.codigoEvento,
+        })
+        //  console.log(nuevogrupo[index].detalle)
+        /* if (nuevogrupo.indexOf(e => e.codigoEvento == elm.codigoEvento) != -1) {
+           console.log(nuevogrupo.indexOf(e => e.codigoEvento == elm.codigoEvento))
+         }*/
+      }) : ''
+      console.log(nuevogrupo)
+      setTikes([...nuevogrupo])
+
     }).catch(err => console.log(err))
   },
     [])
   /*
-  console.log(
-    Object.keys(rowSelection).map((g, i) => { return parseFloat(tiketslist.find(e => e.id == g).valor) }).reduce((a, b) => a + b, 0).toFixed(2) 
-    )
-  */
+    console.log(
+      Object.keys(rowSelection).map((g, i) => { return parseFloat(tiketslist.find(e => e.id == g).valor) }).reduce((a, b) => a + b, 0).toFixed(2)
+    )*/
+  console.log(Object.keys(rowSelection).map((g) => { return tiketslist.find(e => e.codigoEvento == g).detalle }))
   return (
     <>
       {alert}
@@ -100,23 +133,38 @@ function Example() {
               sx: { columnVisibility: { nombre: false } }
             }}
             renderDetailPanel={({ row }) => (
-              <Box
-                sx={{
-                  display: 'grid',
-                  margin: 'auto',
-                  gridTemplateColumns: '1fr 1fr',
-                  width: '100%',
-                }}
-              >
-                <Typography>Estado :
-                  {moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(row.original.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') > 2 ?
+              <div>
+                {row.original.detalle ? row.original.detalle.map((e, i) => {
+                  return (
+                    <div className="row">
+                      <div className="col-2">
 
-                    <Chip label={"Expiro"} color={"error"} /> :
-                    <Chip label={row.original.estado} color={"error"} />
+                        Silla   {e.sillas}
+                      </div>
+                      <div className="col-2">
+                        Localidad:  {e.localidad}
+                      </div>
+                      <div className="col-2">
+                        Valor :{e.valor}
+                      </div>
+                      <div className="col-12 col-md-2">
+                        Codigo :{e.codigoEvento}
+                      </div>
+                      <div>
 
-                  }
+                      </div>
+                    </div>
+                  )
+                }) : ''}
+
+                {/*<Typography sx={{
+                  display: 'flex',
+                  flexDirection: 'column'
+                }} >
+                  QR:
+                  <QRCodeCanvas value={row.original.qr} />
                 </Typography>
-                {/* <Typography>Concierto : {row.original.concierto} </Typography>
+                 <Typography>Concierto : {row.original.concierto} </Typography>
                 <Typography sx={{
                   display: 'flex',
                   flexDirection: 'column'
@@ -125,11 +173,12 @@ function Example() {
                   <QRCodeCanvas value={row.original.qr} />
                 </Typography>
                 <Typography>Protocolo : {row.original.protocolo} </Typography>*/}
-              </Box>
+              </div>
             )}
             enableSelectAll={false}
+            enableMultiRowSelection={false}
             enableRowSelection
-            checkboxSelection
+
             enableRowActions
             positionActionsColumn="last"
             renderRowActions={({ row }) => (
@@ -153,7 +202,7 @@ function Example() {
                     <Delete />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Ceder ticket" placement="top-start">
+                {row.original.estado != "reservado" ? <Tooltip title="Ceder ticket" placement="top-start">
                   <IconButton
                     color='success'
                     onClick={() => successAlert(row.original)}
@@ -166,7 +215,7 @@ function Example() {
                       }
                     />
                   </IconButton>
-                </Tooltip>
+                </Tooltip> : ''}
               </Box>
             )}
             /*renderTopToolbarCustomActions={({ table, rows }) => {
@@ -192,7 +241,7 @@ function Example() {
                 </div>
               );
             }}*/
-            getRowId={(row) => row.id}
+            getRowId={(row) => row.codigoEvento}
             muiSelectCheckboxProps={({ row }) => ({
               disabled: row.original.estado != "reservado",
               disabled: moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(row.original.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') > 2
@@ -211,22 +260,22 @@ function Example() {
         </div>
         <div className=" container pb-3">
           <div className=" d-flex justify-content-end ">
-            {Object.keys(rowSelection).length > 0 ? <div className="px-2 col-6 text-end border py-3">
+            {/*Object.keys(rowSelection).length > 0 ? <div className="px-2 col-6 text-end border py-3">
               Valor Total de Seleccionados
               {"$" +
                 Object.keys(rowSelection).map((g, i) => { return parseFloat(tiketslist.find(e => e.id == g).valor) }).reduce((a, b) => a + b, 0).toFixed(2)
               }
-            </div> : ''}
+            </div> : ''*/}
           </div>
           <div className="d-flex justify-content-end pt-2">
 
-            {Object.keys(rowSelection).length > 0 ? <div className=" px-2">
+            {/*Object.keys(rowSelection).length > 0 ? <div className=" px-2">
               <button className=" btn btn-success"
                 onClick={Pagar}
               >
                 PAGAR
               </button>
-            </div> : ''}
+            </div> : ''*/}
           </div>
         </div>
 

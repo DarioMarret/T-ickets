@@ -33,14 +33,14 @@ const EventoEspecifico = () => {
   const [precios, SetPrecios] = useState([])
   const [open, setOpen] = useState(true);
   const [valores, setvalores] = useState({
-    localodad: '',
+    localidad: '',
     precio_normal: '',
     precio_discapacidad: '',
     precio_tarjeta: '',
     precio_descuento: '',
     codigoEvento: "",
     id: '',
-    localodad: '',
+    localidad: '',
     habilitar_cortesia: ''
   })
   const [evento, SetEvento] = useState({
@@ -277,7 +277,7 @@ const EventoEspecifico = () => {
                 precios.map((e, i) => {
                   return (
                     <Accordion.Item eventKey={i} key={i}>
-                      <Accordion.Header>Localidad: {e.localodad}</Accordion.Header>
+                      <Accordion.Header>Localidad: {e.localidad}</Accordion.Header>
                       <Accordion.Body>
                         <div className="d-flex flex-row  justify-content-between">
                           <div className="d-flex flex-column">
@@ -309,7 +309,7 @@ const EventoEspecifico = () => {
                           </div>
                           <div className="d-flex flex-column ">
                             <button className="btn btn-danger"
-                              onClick={() => successAlertElimna(e.codigoEvento, e.localodad)}
+                              onClick={() => successAlertElimna(e.codigoEvento, e.localidad)}
                             >Eliminar </button>
                           </div>
                         </div>

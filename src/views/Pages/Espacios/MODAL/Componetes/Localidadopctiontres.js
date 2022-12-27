@@ -53,6 +53,7 @@ const TabtresView = (props) => {
         }
     }
     async function Guardar() {
+        console.log({ "espacio": espacioname.nombre, "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: [] } }) })
         if (localidaname.nombre != "" && localidaname.description != "" && localidaname.cantidad != "" && localidaname.inicio != "") {
             try {
 

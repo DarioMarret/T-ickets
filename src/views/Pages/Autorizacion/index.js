@@ -128,7 +128,7 @@ export default function AutorizacionView() {
                                                     <div className="row" key={i}>
                                                         <div className="col-12 col-md-4 d-flex align-items-center">
 
-                                                            {e.localodad + " $" + e.precio_normal}
+                                                            {e.localidad + " $" + e.precio_normal}
                                                         </div>
                                                         <div className=" col-12 col-md-8 row">
                                                             <div className="col-6 col-md-4"><label className="form-label">Autorización SRI</label>

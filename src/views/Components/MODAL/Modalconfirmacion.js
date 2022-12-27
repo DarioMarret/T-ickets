@@ -87,7 +87,7 @@ const ModalConfima = (prop) => {
                 show={modal.nombre == "confirmar" ? true : false}
                 centered
             >
-                <Modal.Header className=" d-flex  rounded-top-4 m-0  bg-secondary  justify-content-between align-items-center">
+                <Modal.Header className=" d-flex  rounded-top-4 m-0   bg-dark   justify-content-between align-items-center">
                     <div className="d-flex  container   justify-content-center text-center" >
                         <h3 className=" p-2 ">
                             Confirmación de Pago
