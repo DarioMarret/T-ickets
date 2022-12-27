@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Box, Button, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Chip, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send } from '@mui/icons-material';
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -18,6 +18,7 @@ import { Listarticketporestado } from "utils/userQuery.js";
 import { ticketproceso } from "utils/columnasub.js";
 import { bancos } from "utils/Imgenesutils.js";
 import ModalReporteViews from "views/Components/MODAL/ReportarPago.js";
+import moment from "moment";
 let { cedericon } = bancos
 function Example() {
   let usedispatch = useDispatch()
@@ -63,7 +64,13 @@ function Example() {
 
   }
   useEffect(() => {
-    Listarticketporestado("1314780774").then(ouput => setTikes([...ouput.data])).catch(err => console.log(err))
+    Listarticketporestado("1314780774").then(ouput => {
+      setTikes([...ouput.data])
+      ouput.data.map(e => {
+        console.log(moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h'))
+        //  console.log(moment(e.fechaCreacion).format("YYYYMMDDHHMMSS"), moment(new Date()).format("YYYYMMDDHHMMSS"))
+      })
+    }).catch(err => console.log(err))
   },
     [])
   /*
@@ -83,7 +90,7 @@ function Example() {
         <div className="card-body table-responsive">
           <MaterialReactTable
             columns={ticketproceso}
-            data={tiketslist}
+            data={tiketslist.sort(e => e.fechaCreacion)}
             muiTableProps={{
               sx: {
                 tableLayout: 'flex'
@@ -101,8 +108,15 @@ function Example() {
                   width: '100%',
                 }}
               >
-                <Typography>ciudad : {row.original.ciudad} </Typography>
-                <Typography>Concierto : {row.original.concierto} </Typography>
+                <Typography>Estado :
+                  {moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(row.original.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') > 2 ?
+
+                    <Chip label={"Expiro"} color={"error"} /> :
+                    <Chip label={row.original.estado} color={"error"} />
+
+                  }
+                </Typography>
+                {/* <Typography>Concierto : {row.original.concierto} </Typography>
                 <Typography sx={{
                   display: 'flex',
                   flexDirection: 'column'
@@ -110,7 +124,7 @@ function Example() {
                   QR:
                   <QRCodeCanvas value={row.original.qr} />
                 </Typography>
-                <Typography>Protocolo : {row.original.protocolo} </Typography>
+                <Typography>Protocolo : {row.original.protocolo} </Typography>*/}
               </Box>
             )}
             enableSelectAll={false}
@@ -155,7 +169,7 @@ function Example() {
                 </Tooltip>
               </Box>
             )}
-            renderTopToolbarCustomActions={({ table, rows }) => {
+            /*renderTopToolbarCustomActions={({ table, rows }) => {
               const handleDeactivate = () => {
                 table.getSelectedRowModel().flatRows.map((row) => {
                   console.log(row.original);
@@ -177,10 +191,11 @@ function Example() {
                   </div>
                 </div>
               );
-            }}
+            }}*/
             getRowId={(row) => row.id}
             muiSelectCheckboxProps={({ row }) => ({
               disabled: row.original.estado != "reservado",
+              disabled: moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(row.original.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') > 2
             })}
             tableInstanceRef={tableInstanceRef}
             positionToolbarAlertBanner="bottom"
