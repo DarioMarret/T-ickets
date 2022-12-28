@@ -161,6 +161,7 @@ const LocalidadmapViews = (props) => {
                 onConfirm={() => hideAlert()}
                 onCancel={() => cerrar()}
                 confirmBtnBsStyle="success"
+                closeOnClickOutside={false}
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Seguir Agregando"
                 cancelBtnText="Ir al carrito"
@@ -189,7 +190,7 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Cancelar"
-
+                closeOnClickOutside={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
             </SweetAlert>
@@ -207,7 +208,7 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Cancelar"
-
+                closeOnClickOutside={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
             </SweetAlert>
@@ -225,7 +226,7 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
-
+                closeOnClickOutside={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
@@ -244,7 +245,7 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
-
+                closeOnClickOutside={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección
@@ -306,6 +307,7 @@ const LocalidadmapViews = (props) => {
                     cancelBtnBsStyle="danger"
                     confirmBtnText="Seguir Agregando"
                     cancelBtnText="Ir al carrito"
+                    closeOnClickOutside={false}
                     closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                     showCancel
                 >
@@ -355,6 +357,7 @@ const LocalidadmapViews = (props) => {
                                 cancelBtnBsStyle="danger"
                                 confirmBtnText="Seguir Agregando"
                                 cancelBtnText="Ir al carrito"
+                                closeOnClickOutside={false}
                                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                                 showCancel
                             >
@@ -410,6 +413,7 @@ const LocalidadmapViews = (props) => {
                         cancelBtnBsStyle="danger"
                         confirmBtnText="Seguir Agregando"
                         cancelBtnText="Ir al carrito"
+                        closeOnClickOutside={false}
                         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                         showCancel
                     >

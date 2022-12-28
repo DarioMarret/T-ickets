@@ -313,6 +313,7 @@ const ModalCarritoView = (prop) => {
                 onConfirm={() => cerrar()}
                 onCancel={() => hideAlert()}
                 confirmBtnBsStyle="success"
+                closeOnClickOutside={false}
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Confirmar"
                 cancelBtnText="Cancelar"
@@ -334,6 +335,7 @@ const ModalCarritoView = (prop) => {
                 onCancel={() => hideAlert()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
+                closeOnClickOutside={false}
                 confirmBtnText="Confirmar"
                 cancelBtnText="Cancelar"
 

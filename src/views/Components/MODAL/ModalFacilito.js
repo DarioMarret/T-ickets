@@ -54,6 +54,7 @@ export default function ModalFacilitoView() {
                 onCancel={() => imprime()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
+                closeOnClickOutside={false}
                 confirmBtnText="Cerrar "
                 cancelBtnText="Imprimir y cerrar"
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}

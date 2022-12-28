@@ -31,6 +31,7 @@ function Iframe(props) {
                 onCancel={() => hideAlert()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
+                closeOnClickOutside={false}
                 confirmBtnText="Confirmar"
                 cancelBtnText="Cancelar"
                 showCancel

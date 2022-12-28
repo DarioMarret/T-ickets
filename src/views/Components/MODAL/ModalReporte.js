@@ -85,6 +85,7 @@ const Reporte = (props) => {
         cancelBtnBsStyle="danger"
         confirmBtnText="Completar  Compra"
         cancelBtnText="Anular Compra"
+        closeOnClickOutside={false}
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
         showCancel
       >
@@ -104,6 +105,7 @@ const Reporte = (props) => {
         cancelBtnBsStyle="danger"
         confirmBtnText="Completar  Compra"
         cancelBtnText="Anular Compra"
+        closeOnClickOutside={false}
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
         showCancel
       >
@@ -402,15 +404,15 @@ const Reporte = (props) => {
                 <div className='d-fex border rounded-5' style={{ width: '90%' }}>
                   <div className='d-flex flex-column  '>
                     <div className='  m-2'>
-                      <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO DE GUAYAQUIL: 248875 </h4>
+                      <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO DE GUAYAQUIL: 1801862 </h4>
                     </div>
 
                     <div className='m-2' >
-                      <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO PICHINCHA: 248875 </h4>
+                      <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO PICHINCHA: 2100106995 </h4>
                     </div>
                     <div className='m-2'>
                       <h4 style={{ fontSize: '0.7em' }}>
-                        CUENTA CORRIENTE BANCO PRODUBANCO: 248875
+                        CUENTA CORRIENTE BANCO PRODUBANCO: 1058194005git
                       </h4>
 
                     </div>

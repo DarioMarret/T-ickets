@@ -69,6 +69,7 @@ export default function VentasView() {
                 onCancel={() => hideAlert()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
+                closeOnClickOutside={false}
                 confirmBtnText="Si, Ceder"
                 cancelBtnText="Cancelar"
 

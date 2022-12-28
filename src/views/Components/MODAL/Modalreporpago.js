@@ -73,10 +73,12 @@ export default function ReporteView(prop) {
                 title={"Antes de cerrar"}
                 onConfirm={() => Cerrar()}
                 onCancel={() => imprime()}
+                closeOnClickOutside={false}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Cerrar "
                 cancelBtnText="Imprimir y cerrar"
+
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel
             > Recuerda imprimir la infromacion de la cuenta a depositar

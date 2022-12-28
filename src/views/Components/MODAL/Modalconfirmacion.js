@@ -42,6 +42,7 @@ const ModalConfima = (prop) => {
                 onCancel={() => cerrar()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
+                closeOnClickOutside={false}
                 confirmBtnText="Completar  Compra"
                 cancelBtnText="Anular Compra"
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}

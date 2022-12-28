@@ -85,6 +85,7 @@ const ModalEfectivo = (props) => {
         onCancel={() => cerrar()}
         confirmBtnBsStyle="success"
         cancelBtnBsStyle="danger"
+        closeOnClickOutside={false}
         confirmBtnText="Completar  Compra"
         cancelBtnText="Anular Compra"
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
@@ -105,6 +106,7 @@ const ModalEfectivo = (props) => {
         confirmBtnBsStyle="success"
         cancelBtnBsStyle="danger"
         confirmBtnText="Aceptar"
+        closeOnClickOutside={false}
         cancelBtnText="Cancelar"
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
         showCancel
