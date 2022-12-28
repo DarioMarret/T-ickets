@@ -244,20 +244,43 @@ export default function ListaSuscritor(prop) {
         buscarcliente({ ...informacion }).then(ouput => {
             //  console.log(ouput)
             if (!ouput.success) {
-                usedispatch(setToastes({
-                    show: true, message: ouput.message
-                    , color: 'bg-warning', estado:
-                        "No hubo ninguna coincidencia"
-                }))
-                setDausuario({
-                    nombreCompleto: "",
-                    ciudad: "",
-                    email: "",
-                    movil: "",
-                    resgistro: "",
-                    password: '',
-                    whatsapp: "", password: '', resgistro: false
+                getCedula(nombre).then(salida => {
+                    if (salida.success) {
+                        usedispatch(setToastes({
+                            show: true, message: ouput.message
+                            , color: 'bg-warning', estado:
+                                "No hubo ninguna coincidencia"
+                        }))
+                        setDausuario({
+                            nombreCompleto: "",
+                            ciudad: "",
+                            email: "",
+                            movil: "",
+                            resgistro: "",
+                            password: '',
+                            whatsapp: "", password: '', resgistro: false
+                        })
+                        return
+                    }
+                    else {
+                        setDausuario({
+                            nombreCompleto: salida.name,
+                            ciudad: salida.direccion != null ? salida.direccion : ' ',
+                            email: '',
+                            movil: "",
+                            resgistro: "",
+                            whatsapp: '', password: '', resgistro: false
+                        })
+                        DatosUsuariosLocalStorag({ ...salida })
+                        sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...salida }))
+                        //$('#movil').val("")
+                        $("#search").addClass("d-none")
+                    }
+                }).catch(erro => {
+                    console.log(erro)
                 })
+
+
                 return
             }
             else {
@@ -280,18 +303,18 @@ export default function ListaSuscritor(prop) {
     const verificar = () => {
 
     }
-    /* $(document).ready(function () {
-         const phoneInputField = document.querySelector("#movil");
-         modalshow.modal.nombre == "suscritor" ? intlTelInput(phoneInputField, {
-             initialCountry: "ec",
-             separateDialCode: true,
-             nationalMode: true,
-             utilsScript:
-                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
- 
-         }) : ''
- 
-     })*/
+    $(document).ready(function () {
+        const phoneInputField = document.querySelector("#movil");
+        modalshow.modal.nombre == "suscritor" ? intlTelInput(phoneInputField, {
+            initialCountry: "ec",
+            separateDialCode: true,
+            nationalMode: true,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+
+        }) : ''
+
+    })
 
     const handelChange = e => {
         setDausuario({
@@ -310,12 +333,12 @@ export default function ListaSuscritor(prop) {
             >
                 <Modal.Header className="py-3" >
                     <h5 className="modal-title">
-                        CLIENTES
+                        CONSULTAR CLIENTE  /  CREAR CLIENTE
                     </h5>
                     <button type="button" className="close"
                         onClick={() => usedispatch(setModal({ nombre: '', estado: '' }))}
                     >
-                        ×
+                        X
                     </button>
                 </Modal.Header>
                 <Modal.Body>
@@ -326,7 +349,6 @@ export default function ListaSuscritor(prop) {
                         <div className="container-fluid row "  >
                             <div className="col-12 p-0  d-flex flex-column">
                                 <div className=" d-flex pt-0 mb-2 justify-content-center" >
-                                    <h2> CONSULTAR CLIENTE </h2>
                                 </div>
                                 <div>
                                     <form id="register" className=" needs-validation  " onSubmit={(e) => e.preventDefault()}  >
@@ -336,7 +358,7 @@ export default function ListaSuscritor(prop) {
 
                                                     <button className="btn btn-danger mx-3" onClick={buscarsuscritor}> <i className=" fa fa-search"></i> Buscar cliente </button>
                                                     {
-                                                        !datos.resgistro ? <button className="btn btn-success "  ><i className="fa fa-search "></i> Buscar cédula </button> : ''
+                                                        !datos.resgistro ? <button className="d-none btn btn-success "  ><i className="fa fa-search "></i> Buscar cédula </button> : ''
                                                     }
                                                     {!datos.resgistro ? <button className="btn btn-success ml-3" onClick={CrearUSuario} ><i className=" fa fa-plus-circle"></i> CREAR </button> :
                                                         <button className="btn btn-primary" onClick={successAlert} > <i className=" fa fa-check-circle"></i> </button>}

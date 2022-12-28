@@ -55,6 +55,7 @@ import ModalFacilitoView from "views/Components/MODAL/ModalFacilito.js";
 import ReporteView from "views/Components/MODAL/Modalreporpago.js";
 import Comprobante from "./comprobante/index.js";
 import { espacio } from "utils/constantes.js";
+import { correlativosadd } from "utils/Querypanelsigui.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
@@ -76,6 +77,8 @@ const IndexFlas = () => {
   const [alert, setAlert] = useState(null);
   const [intervalo, setcrono] = useState("")
   const datatime = useRef(null);
+
+  const intervalolista = useRef(null)
   const localidadtimer = useRef(null);
   function velocidad() {
     let timer = 0
@@ -103,6 +106,7 @@ const IndexFlas = () => {
             }, 20 * index)
           }) : ''
         clearInterval(datatime.current);
+        clearInterval(intervalolista.current)
         setDatoToas({ show: true, message: 'Su tiempo de compra a finalizado', color: 'bg-danger', estado: 'Mensaje importante', })
         handleClosesop(false)
         setMapashow(false)
@@ -167,6 +171,7 @@ const IndexFlas = () => {
   }
 
   function detenervelocidad() {
+    let user = getDatosUsuariosLocalStorag()
     usedispatch(setModal({ nombre: "", estado: '' }))
     clearInterval(datatime.current)
     clearInterval(localidadtimer.current)
@@ -182,10 +187,14 @@ const IndexFlas = () => {
     }
     ).catch(err => console.log(err)) : ''
     getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
-
       getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
         setTimeout(function () {
-          correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
+          correlativosadd({
+            "id": elem.id,
+            "estado": "disponible",
+            "cedula": user.cedula,
+            "cantidad": elem.cantidad
+          }).then(ouput => {
             console.log(ouput)
           }).catch(err => {
             console.log(err)
@@ -203,7 +212,6 @@ const IndexFlas = () => {
     clearInterval(localidadtimer.current)
     setMapashow(false)
     setDetalle(false)
-    // efectiOpShow(false)
     setModalPago(false)
     setrepShow(false)
     usedispatch(clearMapa({}))
@@ -231,11 +239,6 @@ const IndexFlas = () => {
   function sololimpiarlocal() {
     clearInterval(localidadtimer.current)
     clearInterval(datatime.current)
-    //setMapashow(false)
-    //setDetalle(false)
-    // efectiOpShow(false)
-    //setModalPago(false)
-    //setrepShow(false)
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
@@ -255,8 +258,8 @@ const IndexFlas = () => {
          }, 20 * index)
        })
        : ''*/
-    //Limpiarseleccion()
-    //LimpiarLocalStore()
+    Limpiarseleccion()
+    LimpiarLocalStore()
   }
   const abrir = async (e) => {
     setspinervi("")
@@ -269,13 +272,10 @@ const IndexFlas = () => {
       try {
         let obten = await listarpreciolocalidad(e.codigoEvento)
         const listalocal = await ListarLocalidad("")
-        //let nuvos = obten.data.find(e => { return e.espacio == e.espacio })
-        //console.log(nuvos.espacio)
         let localidades = await cargarMapa()
         sessionStorage.consierto = e.nombreConcierto
         if (obten.data.length > 0) {
           let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-          //  console.log(listalocal)
           let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
           console.log(mapalocal, mapa)
           let localidad = JSON.parse(mapa[0].localidad)
@@ -318,7 +318,7 @@ const IndexFlas = () => {
           sessionStorage.eventoid = e.codigoEvento
           setPrecios(nuevosdatos)
           setDatoscon(e)
-          consultarlocalidad()
+          //consultarlocalidad()
           Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
             setspinervi("d-none")
             velocidad()
@@ -539,6 +539,7 @@ const IndexFlas = () => {
       {modal.nombre == "Modallocalida" ?
         <LocalidadmapViews
           intervalo={intervalo}
+          intervalolista={intervalolista}
         /> : ''}
       {modal.nombre == "ModalCarritov" ?
         <ModalCarritov
@@ -576,7 +577,8 @@ const IndexFlas = () => {
         detenervelocidad={detenervelocidad}
       />
       <ReporteView
-        setrepShow={setrepShow} />
+        setrepShow={setrepShow}
+        comprar={sololimpiarlocal} />
       {alert}
       <nav className="navbar border-bottom border-dark shadow navbar-expand-lg  navbar-dark    py-1"
         style={{
@@ -617,7 +619,10 @@ const IndexFlas = () => {
               }
               {!userauthi.login ? <li className="  nav-item">
                 <a className=" btn btn-outline-nuevo  rounded-7 " href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i>
-                  <img src={avatar} className=" img-fluid" />
+                  <img src={avatar} className=" img-fluid"
+                    style={{
+                      height: 25
+                    }} />
                 </i> </a>
               </li> : <li className="  nav-item">
                 <a className=" btn btn-outline-nuevo rounded-7  " href="#" onClick={salir}> Salir <i className="fa fa-window-close"></i> </a>

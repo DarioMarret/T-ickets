@@ -26,6 +26,7 @@ import { TiendaIten } from "utils/CarritoLocalStorang"
 import { updateboletos } from "StoreRedux/Slice/SuscritorSlice"
 import { Listarticketporestado } from "utils/userQuery"
 import { Eventoid } from "utils/constantes"
+import { Triangle } from "react-loader-spinner"
 
 const ModalCarritoView = (prop) => {
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
@@ -36,6 +37,7 @@ const ModalCarritoView = (prop) => {
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [detalle, setDetalle] = useState([])
     const [alert, setAlert] = useState(null)
+    const [spinervi, setSpiner] = useState("d-none")
     const [checked, setChecked] = useState({
         PasarelaEfectivo: "",
         Tarjeta: "",
@@ -89,6 +91,7 @@ const ModalCarritoView = (prop) => {
         hideAlert()
     }
     function abrirlocalidad() {
+        setSpiner("d-none")
         usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
     }
 
@@ -153,6 +156,7 @@ const ModalCarritoView = (prop) => {
         ).catch(err => console.log(err))*/
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
     function Abririlocalfirt(e) {
+        setSpiner("")
         console.log(e)
         let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
         localidaandespacio(e.espacio, e.idcolor).then(ouput => {
@@ -226,8 +230,9 @@ const ModalCarritoView = (prop) => {
             console.log(err))
     }
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
-    path.forEach(E => {
+    modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
         E.addEventListener("click", function () {
+            setSpiner("")
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
             localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
                 let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
@@ -249,7 +254,9 @@ const ModalCarritoView = (prop) => {
                     usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
                     usedispatch(filtrarlocali(nuevoObjeto))
                     sessionStorage.seleccionmapa = JSON.stringify(consulta)
-                    abrirlocalidad()
+                    setSpiner("d-none")
+                    usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+                    return
                 } else if (ouput.data.find(e => e.typo == "mesa")) {
                     ouput.data.forEach(x => {
                         if (!nuevoObjeto.some(e => e.fila == x.fila)) {
@@ -273,7 +280,9 @@ const ModalCarritoView = (prop) => {
                     usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
                     usedispatch(filtrarlocali(nuevoObjeto))
                     sessionStorage.seleccionmapa = JSON.stringify(consulta)
-                    abrirlocalidad()
+                    setSpiner("d-none")
+                    usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+                    return
                 }
                 else if (ouput.data.find(e => e.typo == "correlativo")) {
                     usedispatch(cargarmapa(color))
@@ -292,14 +301,17 @@ const ModalCarritoView = (prop) => {
                         pagados: ""
                     }))
                     sessionStorage.seleccionmapa = JSON.stringify(consulta)
-                    abrirlocalidad()
+                    setSpiner("d-none")
+                    usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+                    return
+
                 }
             }
             ).catch(err =>
                 console.log(err))
             return
         })
-    })
+    }) : ''
     function cerrar() {
         handleClosesop()
         hideAlert()
@@ -370,8 +382,8 @@ const ModalCarritoView = (prop) => {
                         </div>
                     </div>
                     <div className=" float-end ">
-                        <div>
-                            <h5 className="modal-title text-center justify-content-center"
+                        <div >
+                            {intervalo ? <h5 className="modal-title text-center justify-content-center"
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "1.2em",
@@ -382,7 +394,7 @@ const ModalCarritoView = (prop) => {
                                         fontSize: '1.2em',
                                         fontWeight: "bold"
                                     }}
-                                >{intervalo}</span> </h5>
+                                >{intervalo}</span> </h5> : ''}
                         </div>
                     </div>
                     <button type="button" className="close txt-white" onClick={detalle.length > 0 ? successAlert : cerrar} >
@@ -405,9 +417,9 @@ const ModalCarritoView = (prop) => {
                                         </div>
 
                                     </div>
-                                    <div className="bg-secondary p-1 text-black flex-table row d-block d-sm-none " >
+                                    <div className="bg-secondary p-1  text-light flex-table row d-block d-sm-none " >
 
-                                        <h4>AGREGADOS</h4>
+                                        <h4>Seleccionados</h4>
 
                                     </div>
                                     <div className="px-2  list-group-flush " style={{ maxHeight: '500px', overflowY: 'auto', overflowX: 'hidden' }}>
@@ -615,8 +627,8 @@ const ModalCarritoView = (prop) => {
                     <div className="d-flex  mx-sm-auto   ">
                         <div className=" ">
                             {detalle.length > 0 ?
-                                <button className="btn btn-primary " disabled={check} onClick={handleContinuar}>continuar</button> :
-                                <button className="btn btn-primary  float-right" disabled={true} >continuar</button>
+                                <button className="btn btn-primary " disabled={check} onClick={handleContinuar}>Continuar</button> :
+                                <button className="btn btn-primary  float-right" disabled={true} >Continuar</button>
                             }
 
 
@@ -625,6 +637,44 @@ const ModalCarritoView = (prop) => {
                     </div>
                 </Modal.Footer>
             </Modal>
+            <div className={spinervi}
+                style={{
+                    display: 'none',
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: '10000'
+                }}
+            >
+
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: '10px',
+                    padding: '10px',
+                }}>
+                    <Triangle
+                        height="80"
+                        width="80"
+                        color="#4fa94d"
+                        ariaLabel="triangle-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                    <h4 className='text-light'>Cargando  localidad...</h4>
+
+
+                </div>
+            </div>
         </>
     )
 }

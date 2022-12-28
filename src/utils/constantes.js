@@ -47,6 +47,33 @@ export const Envio = [
         class: ""
     }
 ]
+export const Envioadmin = [
+    {
+        id: 1,
+        envio: "",
+        value: "",
+        class: "",
+    },
+    {
+        id: 2,
+        envio: "Correo Electrónico",
+        value: "correo",
+        class: ""
+    },
+    {
+        id: 3,
+        envio: "Whatsapp",
+        value: "whatsapp",
+        class: ""
+    },
+    {
+        id: 4,
+        envio: "Impresion",
+        value: "Impresion",
+        class: ""
+    }
+
+]
 export const Letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
 export const Dias = {

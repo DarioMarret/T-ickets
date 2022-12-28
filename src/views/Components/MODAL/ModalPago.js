@@ -98,14 +98,22 @@ function ModalPago(props) {
         setAlert(null)
     }
     function CrearPagoMedio() {
+        let user = clienteInfo()
+        //console.log(user)
         setSpiner("")
         PagoRapido("").then(ouput => {
             console.log(ouput)
-            ouput.success ? usedispatch(setModal({ nombre: 'pago', estado: ouput.url })) : ''
-            console.log(ouput)
-            //   popUp(data.data.url)
-            /// setEstadoFrame(!estadoFrame)
-            setSpiner("d-none")
+            if (user == null) {
+                ouput.success ? usedispatch(setModal({ nombre: 'pago', estado: ouput.url })) : ''
+                console.log(ouput)
+                //   popUp(data.data.url)
+                /// setEstadoFrame(!estadoFrame)
+                setSpiner("d-none")
+            }
+            else {
+                popUp(ouput.url)
+                setSpiner("d-none")
+            }
             // setModalPago(false)
         }).catch(errro => {
             console.log(errro)

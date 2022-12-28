@@ -119,22 +119,22 @@ const Reporte = (props) => {
   function Confirmar(e) {
     let valores = GetValores()
     if (e == "pichincha") {
-      //  /*
-      usedispatch(setModal({
-        nombre: e, estado: valores
-      }))
-      usedispatch(setToastes({
-        show: true,
-        message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
-        color: 'bg-success',
-        estado: 'Orden de Pago Generada '
-      }))
-      //*/
-
       /*
+    usedispatch(setModal({
+      nombre: e, estado: valores
+    }))
+    usedispatch(setToastes({
+      show: true,
+      message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
+      color: 'bg-success',
+      estado: 'Orden de Pago Generada '
+    }))
+    //*/
+
+
       PagoRapido("").then(oupt => {
-       if (oupt.success) {
-        comprar()
+        if (oupt.success) {
+          comprar()
           usedispatch(setModal({
             nombre: e, estado: oupt.message
           }))
@@ -161,7 +161,7 @@ const Reporte = (props) => {
         seTSpiners("d-none")
         console.log(error)
       })
-      //*/
+
       return
     }
     if (e == "guayaquil") {
@@ -297,6 +297,7 @@ const Reporte = (props) => {
         show={modalshow.nombre == "ModalReporte" ? true : false}
         onHide={succesAlert}
         size={GetMetodo() != "Transferencia" ? "lg" : ""}
+        fullscreen={'md-down'}
         centered
 
       ><Modal.Header className=" d-flex  m-0  bg-dark   justify-content-between align-items-center"        >

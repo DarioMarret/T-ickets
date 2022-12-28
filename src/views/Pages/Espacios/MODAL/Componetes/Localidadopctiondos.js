@@ -15,7 +15,7 @@ import { color } from "@mui/system";
 const TabdosView = (props) => {
     const { datalocalidad, SetDataloca, localidanames } = props
     let usedispatch = useDispatch()
-    let ejemplo = [1, 2, 3, 4, 5]
+    const [inputdisable, setdisable] = useState(false)
     let ListadeMesas = []
     //array de la localidad
     const [FilasLocalidad, SetFilaLocalidad] = useState([])
@@ -245,6 +245,7 @@ const TabdosView = (props) => {
         }
         else {
             try {
+                setdisable(true)
                 console.log(FilasLocalidad)
                 const guarda = await GuardarLocalidad({ "espacio": localidanames.nombre, "id_espacio": localidanames.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
                 // console.log(guarda)
@@ -256,6 +257,7 @@ const TabdosView = (props) => {
                         id: '',
                         array: ''
                     })
+                    setdisable(false)
                     usedispatch(setToastes({ show: true, message: 'Localidad guardada correctamente', color: 'bg-success', estado: 'Datos Correctos' }))
                     SetFilaLocalidad([])
                     setLocalidad({
@@ -266,6 +268,7 @@ const TabdosView = (props) => {
                 }
 
             } catch (error) {
+                setdisable(false)
                 console.log(error)
             }
         }
@@ -284,6 +287,7 @@ const TabdosView = (props) => {
         }
         else {
             try {
+                setdisable(true)
                 const actualiza = await AptualizarLocalida({ "id": localidaname.id, "id_espacio": localidanames.id, "espacio": localidanames.nombre, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
                 if (actualiza.success) {
                     SetDataloca({
@@ -299,9 +303,11 @@ const TabdosView = (props) => {
                         description: '',
                         id: ''
                     })
+                    setdisable(false)
                     usedispatch(setToastes({ show: true, message: 'Localidad actualizada correctamente', color: 'bg-success', estado: 'Actializado' }))
                 }
             } catch (error) {
+                setdisable(false)
                 console.log(error)
             }
         }
@@ -360,8 +366,7 @@ const TabdosView = (props) => {
 
                                 <div className="d-flex text-end row">
                                     {localidaname.id !== "" ? <button className="btn btn-primary col-12" onClick={actualizalocalidad}>Actualizar</button> : ''}
-
-                                    <button className="btn btn-success" onClick={agregaLocaliad}>Guardar</button>
+                                    {!inputdisable ? '' : <button className="btn btn-success" onClick={agregaLocaliad}>Guardar</button>}
                                 </div>
                             </div>
                         </div>

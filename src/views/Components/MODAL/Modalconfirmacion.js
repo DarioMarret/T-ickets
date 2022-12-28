@@ -32,26 +32,7 @@ const ModalConfima = (prop) => {
         pararcontador()
         usedispatch(setToastes({ show: true, message: 'Datos del deposito Guardado ', color: 'bg-success', estado: 'Se guardo el numero de control' }))
     }
-    const succesAlert = () => {
-        setAlert(
-            <SweetAlert
-                warning
-                style={{ display: "block", marginTop: "-100px" }}
-                title={"Esta seguro de querer salir  "}
-                onConfirm={() => hideAlert()}
-                onCancel={() => cerrar()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                closeOnClickOutside={false}
-                confirmBtnText="Completar  Compra"
-                cancelBtnText="Anular Compra"
-                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel
-            >
-                Se borraran todos los datos Seleccionados
-            </SweetAlert>
-        )
-    }
+
     async function onSubmit(e) {
         e.preventDefault();
 
@@ -86,6 +67,7 @@ const ModalConfima = (prop) => {
 
             <Modal
                 show={modal.nombre == "confirmar" ? true : false}
+                fullscreen={'md-down'}
                 centered
             >
                 <Modal.Header className=" d-flex  rounded-top-4 m-0   bg-dark   justify-content-between align-items-center">

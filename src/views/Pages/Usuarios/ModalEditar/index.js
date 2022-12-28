@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import Autocomplete from '@mui/material/Autocomplete';
 import { Modal, Toast, Form, FormCheck, Col } from "react-bootstrap";
 import { GetRoles, EditUser, CrearUser } from "utils/Querypanel";
@@ -9,6 +9,7 @@ import Select from "react-select";
 const EditaruserView = (props) => {
   const options = ['Option 1', 'Option 2'];
   let history = useHistory()
+  let id = useParams()
   const { editShow, SetModalEdit, datosuser, estado, roles, reloadpage } = props
   const [validate, setValidate] = useState("")
   const [message, setmessage] = useState("");
@@ -40,27 +41,20 @@ const EditaruserView = (props) => {
 
     if (datos.password.length < 7 || !Object.values(params).every((d) => d)) { setValidate("was-validated") }
     else {
-      console.log(params)
       try {
-        const editados = await EditUser(datos.id, params)
+        const editados = await EditUser(id.id, params)
         const { success, message } = editados
         if (success) {
-          location.reload()
+          //location.reload()
+          console.log(message)
           SetModalEdit(false)
-
-
         }
       } catch (error) {
-
         setValidate("was-validated")
         setShowToas(true)
         setmessage("Hubo un error Verifique  que el correo no este duplicado")
-
       }
     }
-
-
-
   }
   async function Crearuser() {
     let params = {
@@ -283,7 +277,7 @@ const EditaruserView = (props) => {
               </div>
             </div>
             <div className="col-12 col-md-6 border px-0 pl-2">
-              <div className="col-12  bg-dark txt-white py-2  ">
+              <div className="col-12  modal-header txt-white py-2  ">
                 <h4 className="px-3">    Permisos</h4>
 
               </div>

@@ -58,6 +58,8 @@ export default function StoreTickesViews() {
     const [alert, setAlert] = useState(null);
     const [info, setInfo] = useState({ Ticket: 0, Activos: 0, Venta: 0, suscritor: 0 })
     const intervalRef = useRef(null);
+
+    const intervalolista = useRef(null)
     function filterlocal(id, consulta) {
         let nuevo = []
         id.forEach((elm, i) => {
@@ -84,6 +86,7 @@ export default function StoreTickesViews() {
     }
     function detenervelocidad() {
         //  handleClosesop(false)
+        clearInterval(intervalRef.current)
         clearInterval(intervalRef.current)
         setMapashow(false)
         setDetalle(false)
@@ -322,6 +325,7 @@ export default function StoreTickesViews() {
             {modalshow.modal.nombre == "Modallocalida" ?
                 <LocalidadmapViews
                     intervalo={intervalo}
+                    intervalolista={intervalolista}
                 /> : ''}
             {modalshow.modal.nombre == "ModalCarritov" ?
                 <ModalCarritov

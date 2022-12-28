@@ -66,7 +66,7 @@ function LoginPage() {
         else {
           setShow(true)
           setmessage("Usuario o contraeña incorrecta")
-          console.log("mensage de alvertencia")
+          console.log("mensage de alvertencia", data)
         }
       } catch (error) {
         setmessage("Hubo un error intente de nuevo o verifique mas tarde")

@@ -14,7 +14,7 @@ let { bancoguyaquil,
     produbancoguayaquil,
     vecino } = bancosdetall
 export default function ReporteView(prop) {
-    let { setrepShow } = prop
+    let { setrepShow, comprar } = prop
     let usedispatch = useDispatch()
     let modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [alert, setAlert] = useState(null)
@@ -53,6 +53,23 @@ export default function ReporteView(prop) {
             window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
         });
 
+    }
+    function compartir() {
+        html2canvas(document.querySelector("#COMPROBANTE")).then(canvas => {
+            var imgWidth = 130;
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            const contentDataURL = canvas.toDataURL('image/png')
+            let pdf = new jsPDF('p', 'mm', 'a5'); // A4 size page of PDF
+            var position = 10;
+            pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
+            var pdfs = new File([pdf.output('blob')], "doc_name" + ".pdf", { type: "application/pdf" });
+            var filesToShare = [pdfs];
+            try {
+                navigator.share({ title: "reporte" + ".pdf", files: filesToShare });
+            } catch (error) {
+                console.log(error)
+            }
+        });
     }
     const imprime = () => {
         nuevo()
@@ -161,8 +178,11 @@ export default function ReporteView(prop) {
 
                     <div className=" d-flex  flex-row  justify-content-center pt-3">
 
-                        <div>
+                        <div className="p-1 d-none d-md-block ">
                             <button className="btn btn-dark" onClick={nuevo}> IMPRIMIR</button>
+                        </div>
+                        <div className="p-1">
+                            <button className=" btn btn-dark" onClick={compartir}>COMPARTIR </button>
                         </div>
 
                     </div>

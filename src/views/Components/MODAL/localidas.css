@@ -71,6 +71,42 @@ div.esquema:hover {
         0 3px 5px -1px rgba(0, 0, 0, 0.4)
 }
 
+.btn-warning {
+    color: rgb(247, 247, 247);
+    background-color: #F58634 !important;
+    border-color: #F58634 !important;
+
+}
+
+.btn-outline-danger {
+    color: #F58634;
+    border-color: #F58634 !important;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #3F40E0 !important;
+    border-color: #3F40E0 !important;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #4655FC !important;
+    border-color: #4655FC !important;
+}
+
+.btn-outline-danger:hover {
+    color: #fff;
+    background-color: #b42e2e !important;
+    border-color: #b42e2e !important;
+}
+
+.btn-warning:hover {
+    color: #fff;
+    background-color: #f57418 !important;
+    border-color: #f57418 !important;
+}
+
 .pagos {
     transition: all .3s ease-in-out;
 }

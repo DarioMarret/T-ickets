@@ -1,163 +1,166 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Edit,Delete,Visibility } from '@mui/icons-material';
-import { Row,Col ,Card,Button} from "react-bootstrap";
+import { Edit, Delete, Visibility } from '@mui/icons-material';
+import { Row, Col, Card, Button } from "react-bootstrap";
 import { useParams } from "react-router";
-import { GetUserList,GetRoles } from "utils/Querypanel";
-import { clienteInfo } from "utils/DatosUsuarioLocalStorag"; 
+import { GetUserList, GetRoles } from "utils/Querypanel";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import EditaruserView from "./ModalEditar";
 import { ColumnaUsuarioid } from "utils/ColumnTabla";
 import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
-const UseridView=()=>{
-    let user = clienteInfo()
- const[fecha,setFecha]=useState(new Date())
-    let {id} =useParams()
-    const [alert,setAlert] = React.useState(null)
-    const [editShow,SetModalEdit]=useState(false)
-   // console.log(id)
+const UseridView = () => {
+  let user = clienteInfo()
+  const [fecha, setFecha] = useState(new Date())
+  let { id } = useParams()
+  const [alert, setAlert] = React.useState(null)
+  const [editShow, SetModalEdit] = useState(false)
+  // console.log(id)
   //console.log("Estado dentro")
-    const [roles, setRoles] = useState([])
-    const [datauser,setDatauser]=useState({
-        name:'',
-        perfil:'',
-        username:'',
-        email:'',
-        password:'',        
-    })
-        const cerraredit=()=>{    
-        SetModalEdit(true)
-    }
-    async function ListarUsuarios(){
-        try {
-            let Roles = await GetRoles()           
-            const data = await GetUserList()        
-            if(data.users.length>0){   
-                let rol =Roles.data.map((e,i)=>{
-                    return{"value":e.roles,"label":e.roles}
-                     })
-                    setRoles(rol) 
-                const dato = data.users.filter((e)=>e.id==id) 
-                setDatauser({
-                    username:dato[0].username,
-                    name:dato[0].name,
-                    email:dato[0].email,
-                    perfil:dato[0].perfil,
-                    password:''
-                })
-            }
-        } catch (error) {
-            console.log(error)
-            
-        }        
-    }
-    const successAlert = (e) => {
-        setAlert(
-          <SweetAlert
-            warning
-            style={{ display: "block", marginTop: "-100px" }}
-            title="Estas Seguro?"
-            onConfirm={() => hideAlert()}
-            onCancel={() => cancelDetele()}
-            confirmBtnBsStyle="success"
-            cancelBtnBsStyle="danger"
-            confirmBtnText="Confirmar"
-            cancelBtnText="Cancelar"
-            showCancel
-          >
-            Esta seguro de eliminar este Usuario
-          </SweetAlert>
-        );
-      };
-      const successDelete = () => {
-        setAlert(
-          <SweetAlert
-            success
-            style={{ display: "block", marginTop: "-100px" }}
-            title="Eliminado!"
-            onConfirm={() => hideAlert()}
-            onCancel={() => hideAlert()}
-            confirmBtnBsStyle="success"
-          >
-            El usuario se elimino correctamenta
-          </SweetAlert>
-        );
-      };
-      const cancelDetele = () => {
-        setAlert(
-          <SweetAlert
-            danger
-            style={{ display: "block", marginTop: "-100px" }}
-            title="Cancelado"
-            onConfirm={() => hideAlert()}
-            onCancel={() => hideAlert()}
-            confirmBtnBsStyle="success"
-          >
-           Se a cancelado la acción 
-          </SweetAlert>
-        );
-      };
-      const cancelDetele1 = () => {
-        setAlert(
-          <SweetAlert
-            danger
-            style={{ display: "block", marginTop: "-100px" }}
-            title="Session Activa"
-            onConfirm={() => hideAlert()}
-            onCancel={() => hideAlert()}
-            confirmBtnBsStyle="success"
-          >
-          La seccion esta activa no se puede eliminar 
-          </SweetAlert>
-        );
-      };
-      const hideAlert = () => {
-        setAlert(null);
-      };
-    useEffect(()=>{
-        (async()=>{
-            await ListarUsuarios()
-        })()
+  const [roles, setRoles] = useState([])
+  const [datauser, setDatauser] = useState({
+    name: '',
+    perfil: '',
+    username: '',
+    email: '',
+    password: '',
+  })
+  const cerraredit = () => {
+    SetModalEdit(true)
+  }
+  async function ListarUsuarios() {
+    try {
+      let Roles = await GetRoles()
+      const data = await GetUserList()
+      if (data.users.length > 0) {
+        let rol = Roles.data.map((e, i) => {
+          return { "value": e.roles, "label": e.roles }
+        })
+        setRoles(rol)
+        const dato = data.users.filter((e) => e.id == id)
+        setDatauser({
+          username: dato[0].username,
+          name: dato[0].name,
+          email: dato[0].email,
+          perfil: dato[0].perfil,
+          password: ''
+        })
+      }
+    } catch (error) {
+      console.log(error)
 
-    },[])
-    return(
-        <>
-          
-    {alert}
-        <div>
-            <div className="d-flex justify-content-end align-items-end pb-2" >
-                <div>
-                <Button className="btn btn-wd btn-outline mr-1"
-                        type="button"
-                        onClick={cerraredit}
-                        variant="success">
-                        <span className="btn-label">
-                          <i className="fas fa-edit"></i>
-                        </span>
-                        Editar
+    }
+  }
+  async function Eliminaruser(id) {
+
+  }
+  const successAlert = (e) => {
+    setAlert(
+      <SweetAlert
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Estas Seguro?"
+        onConfirm={() => hideAlert()}
+        onCancel={() => cancelDetele()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText="Confirmar"
+        cancelBtnText="Cancelar"
+        showCancel
+      >
+        Esta seguro de eliminar este Usuario
+      </SweetAlert>
+    );
+  };
+  const successDelete = () => {
+    setAlert(
+      <SweetAlert
+        success
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Eliminado!"
+        onConfirm={() => hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+      >
+        El usuario se elimino correctamenta
+      </SweetAlert>
+    );
+  };
+  const cancelDetele = () => {
+    setAlert(
+      <SweetAlert
+        danger
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Cancelado"
+        onConfirm={() => hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+      >
+        Se a cancelado la acción
+      </SweetAlert>
+    );
+  };
+  const cancelDetele1 = () => {
+    setAlert(
+      <SweetAlert
+        danger
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Session Activa"
+        onConfirm={() => hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+      >
+        La seccion esta activa no se puede eliminar
+      </SweetAlert>
+    );
+  };
+  const hideAlert = () => {
+    setAlert(null);
+  };
+  useEffect(() => {
+    (async () => {
+      await ListarUsuarios()
+    })()
+
+  }, [])
+  return (
+    <>
+
+      {alert}
+      <div>
+        <div className="d-flex justify-content-end align-items-end pb-2" >
+          <div>
+            <Button className="btn btn-wd btn-outline mr-1"
+              type="button"
+              onClick={cerraredit}
+              variant="success">
+              <span className="btn-label">
+                <i className="fas fa-edit"></i>
+              </span>
+              Editar
             </Button>
             {
-            String(user.id)===String(id)?
-            '':<Button className="btn-wd btn-outline mr-1"
-            onClick={successAlert}
-                        type="button"
-                        variant="danger">
-                        <span className="btn-label">
-                          <i className="fas fa-trash"></i>
-                        </span>
-                        Eliminar
-            </Button>}
-                </div>
-                
-            
+              String(user.id) === String(id) ?
+                '' : <Button className="btn-wd btn-outline mr-1"
+                  onClick={successAlert}
+                  type="button"
+                  variant="danger">
+                  <span className="btn-label">
+                    <i className="fas fa-trash"></i>
+                  </span>
+                  Eliminar
+                </Button>}
+          </div>
 
 
-            </div>
-        
+
+
+        </div>
+
         <Row>
           <Col lg="3" sm="6" >
             <Card className="card-stats ">
@@ -232,7 +235,7 @@ const UseridView=()=>{
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-calendar-alt mr-1"></i>
-                 Actualizado {moment(fecha).format('DD MMMM YYYY ')}
+                  Actualizado {moment(fecha).format('DD MMMM YYYY ')}
                 </div>
               </Card.Footer>
             </Card>
@@ -263,45 +266,45 @@ const UseridView=()=>{
               </Card.Footer>
             </Card>
           </Col>
-          
-         
-         
+
+
+
         </Row>
-        <div className="row"> 
-            <div className="col-md-12">
+        <div className="row">
+          <div className="col-md-12">
             <div className="card card-primary card-outline text-left">
-                            <div className="card-header">
-                               Lista 
-                            </div>
-                            <MaterialReactTable
-                                    columns={ColumnaUsuarioid}
-                                    data={[]}
-                                  
-                                    muiTableProps={{
-                                      sx:{
-                                        tableLayout:'fixed'
-                                      }
-                                    }}
-                                            
-                                    enableRowActions
-                                    renderRowActions={({ row }) => (
-                                        <Box sx={{ display: 'flex' }}>
-                                          <IconButton 
-                                          color="error"  
-                                            >
-                                            <Delete/>
-                                          </IconButton>
-                                         
-                                          
-                                        </Box>
-                                      )}
-                                    positionToolbarAlertBanner="bottom"
-                                  
-                                    localization={MRT_Localization_ES }
-                                />   
+              <div className="card-header">
+                Lista
+              </div>
+              <MaterialReactTable
+                columns={ColumnaUsuarioid}
+                data={[]}
+
+                muiTableProps={{
+                  sx: {
+                    tableLayout: 'fixed'
+                  }
+                }}
+
+                enableRowActions
+                renderRowActions={({ row }) => (
+                  <Box sx={{ display: 'flex' }}>
+                    <IconButton
+                      color="error"
+                    >
+                      <Delete />
+                    </IconButton>
 
 
-                           { /*<div className="card-body table-responsive">
+                  </Box>
+                )}
+                positionToolbarAlertBanner="bottom"
+
+                localization={MRT_Localization_ES}
+              />
+
+
+              { /*<div className="card-body table-responsive">
                             <table className="table table-hover text-center ">
                                     <thead>
                                         <tr>
@@ -326,25 +329,25 @@ const UseridView=()=>{
                                     </tbody>
                                 </table>
                             </div>*/}
-                        </div>
-
-            </div>
             </div>
 
-
+          </div>
         </div>
-        <EditaruserView 
-          editShow={editShow}
-          SetModalEdit={SetModalEdit}
-          datosuser={datauser}
-          roles={roles}
-          estado={"update"}
-         
-          />
-       
 
-        </>
-    )
+
+      </div>
+      <EditaruserView
+        editShow={editShow}
+        SetModalEdit={SetModalEdit}
+        datosuser={datauser}
+        roles={roles}
+        estado={"update"}
+
+      />
+
+
+    </>
+  )
 
 }
 

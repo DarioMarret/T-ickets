@@ -43,6 +43,25 @@ export default function ModalFacilitoView() {
         hideAlert()
         usedispatch(setModal({ nombre: '', estado: '' }))
     }
+    function compartir() {
+        html2canvas(document.querySelector("#comprobantepago")).then(canvas => {
+            var imgWidth = 130;
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            //   alert(imgHeight)
+            const contentDataURL = canvas.toDataURL('image/png')
+            let pdf = new jsPDF('p', 'mm', 'a5'); // A4 size page of PDF
+            var position = 10;
+            pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
+            var pdfs = new File([pdf.output('blob')], "doc_name" + ".pdf", { type: "application/pdf" });
+            var filesToShare = [pdfs];
+            try {
+                navigator.share({ title: "reporte" + ".pdf", files: filesToShare });
+            } catch (error) {
+                console.log(error)
+            }
+
+        });
+    }
     const hideAlert = () => setAlert(null)
     const succesAlert = () => {
         setAlert(
@@ -69,21 +88,24 @@ export default function ModalFacilitoView() {
             <Modal
                 show={Modalshow.nombre == "ordendepago" ? true : false}
                 size="lg"
+                fullscreen={'md-down'}
                 centered>
                 <Modal.Header className="bg-dark  text-light py-4  text-white">
                     <button className="close text-light" onClick={succesAlert}> X</button>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="row border">
-                        <div className=" col-6 py-2">
+                    <div className="row border text-center">
+                        <div className=" col-12 col-md-6 py-2">
                             <img src={facilitodos} className=""
                                 style={{
                                     height: 50
                                 }}
                             ></img>
                         </div>
-                        <div className="col-6 d-flex justify-content-center align-items-center">
-                            <h3>Información para tu pago</h3>
+                        <div className="col-12 col-md-6 d-flex justify-content-center align-items-center">
+                            <h3 style={{
+
+                            }}>Información para tu pago</h3>
                         </div>
                     </div>
                     <div className="row pt-3">
@@ -100,7 +122,7 @@ export default function ModalFacilitoView() {
                                     >
                                         <h5
                                             style={{
-                                                fontSize: "0.9em",
+                                                fontSize: "0.82em",
                                                 fontWeight: "bold"
                                             }}>¡Estas a punto de finalizar tu compra en t-ickets.com!</h5>
                                     </div>
@@ -109,7 +131,7 @@ export default function ModalFacilitoView() {
 
                                     </div>
                                     <div className=" col-12 border px-0  d-flex flex-column  ">
-                                        <div className=" d-flex flex-wrap bg-dark  justify-content-center align-items-center   col-12 text-center"
+                                        <div className=" d-flex flex-wrap bg-black  text-light justify-content-center align-items-center   col-12 text-center"
                                         >
                                             <div className="pt-3  text-light"  ><p style={{
 
@@ -130,7 +152,7 @@ export default function ModalFacilitoView() {
                                                 <div>
                                                     <h5
                                                         style={{
-                                                            fontSize: "1.1em",
+                                                            fontSize: "1.0em",
                                                             fontWeight: "bold"
                                                         }}
                                                     >
@@ -138,7 +160,7 @@ export default function ModalFacilitoView() {
                                                     </h5>
                                                     <h5 className="text-danger text-center"
                                                         style={{
-                                                            fontSize: "1.1em",
+                                                            fontSize: "1.0em",
                                                             fontWeight: "bold"
                                                         }}
                                                     >
@@ -150,7 +172,7 @@ export default function ModalFacilitoView() {
                                                 <div>
                                                     <h5
                                                         style={{
-                                                            fontSize: "1.1em",
+                                                            fontSize: "1.0em",
                                                             fontWeight: "bold"
                                                         }}
                                                     >
@@ -158,7 +180,7 @@ export default function ModalFacilitoView() {
                                                     </h5>
                                                     <h5 className="text-danger  text-center"
                                                         style={{
-                                                            fontSize: "1.1em",
+                                                            fontSize: "1.0em",
                                                             fontWeight: "bold"
                                                         }}
                                                     >
@@ -178,17 +200,19 @@ export default function ModalFacilitoView() {
                                             Enviar:
                                         </button>
                                     </div>
-                                    <div className="d-none col-6">
+                                    <div className="d-none ">
                                         <select className=" form-select">
                                             <option>Whastapp</option>
                                             <option>Correo</option>
                                         </select>
                                     </div>
-                                    <div className="col-3">
-                                        <button className=" btn btn-primary" onClick={imprime}> imprimir</button>
+                                    <div className=" d-flex justify-content-center">
+                                        <div className="p-1"> <button className=" btn btn-primary d-none d-md-block" onClick={imprime}> imprimir</button></div>
+                                        <div className="p-1"> <button className="btn btn-primary" onClick={compartir}>compartir</button></div>
+
                                     </div>
                                 </div>
-                                <div className="  col-9">
+                                <div className="col-10">
                                     <div className="">
                                         <h5
                                             style={{

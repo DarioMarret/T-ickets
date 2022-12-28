@@ -320,14 +320,14 @@ var routes = [
     layout: "/admin",
     name: "Prueba",
     component: EsquemaViews,
-    permiso: ["superadmin", "super_admin"]
+    permiso: ["", ""]
   },
   {
     path: "/Pruebasvg",
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["superadmin", "super_admin"]
+    permiso: ["", ""]
   }
 
 

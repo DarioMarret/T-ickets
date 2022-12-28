@@ -13,20 +13,18 @@ import "./localidas.css"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { seleccionmapa } from "utils/constantes";
 import { enviasilla } from "utils/Querypanelsigui";
-import { CarritoTicket } from "utils/constantes";
-import { listaEliminasillas } from "utils/CarritoLocalStorang";
 import { quitarsilla } from "utils/Querypanelsigui";
 import { correlativosadd } from "utils/Querypanelsigui";
 import moment from "moment";
-import { correlativodelete } from "utils/Querypanelsigui";
 import { Verificalocalidad } from "utils/CarritoLocalStorang";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { OneKPlusOutlined } from "@mui/icons-material";
 import { localidaandespacio } from "utils/Querypanel";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { updateboletos } from "StoreRedux/Slice/SuscritorSlice";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 const LocalidadmapViews = (props) => {
-    const { intervalo } = props
+    const { intervalo, intervalolista } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
     let nombre = JSON.parse(sessionStorage.getItem(seleccionmapa))
     const usedispatch = useDispatch()
@@ -34,7 +32,6 @@ const LocalidadmapViews = (props) => {
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localidad))
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [alert, setAlert] = useState(null);
-    const intervalolista = useRef(null)
     // console.log(mapath, seleccion)
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
     function MesaVerifica(M, C) {
@@ -515,9 +512,7 @@ const LocalidadmapViews = (props) => {
                         }
                     })
                     mapath.precio.typo == "fila" ? usedispatch(filtrarlocali(nuevoObjeto)) : ''
-
                     console.log(nuevoObjeto)
-                    //usedispatch(filtrarlocali(nuevoObjeto))
                 } else if (ouput.data.find(e => e.typo == "mesa")) {
                     let nuevoObjeto = []
                     ouput.data.forEach(x => {
@@ -555,17 +550,13 @@ const LocalidadmapViews = (props) => {
                         proceso: sleccionlocalidad.proceso,
                         pagados: ""
                     })
-
-
-                    // console.log(ouput.data.filter(e => e.estado == "disponible"))
-                    // console.log(ouput.data.filter(e => e.cedula == user.cedula && e.estado == "reservado"))
                 }
 
             }).catch(err => {
                 console.log(err)
             })
 
-        }, 3000)
+        }, 4000)
     }
 
     useEffect(() => {
@@ -584,20 +575,24 @@ const LocalidadmapViews = (props) => {
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
         let cantidad = mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? mapath.localidadespecica.info.filter(ced => ced.cedula == user.cedula) : [] : []
-        // console.log(mapath.localidadespecica.info)
         mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? cantidad.length > 0 ? setDetalle(Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"])) : '' : '' : ''
         getVerTienda().filter((e) => e.id == mapath.precio.idcolor).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.idcolor)) : setDetalle([])
         Cargarlisat()
     }, [modalshow.nombre == "Modallocalida" ? true : false])
 
     function cerrar() {
+
         clearInterval(intervalolista.current);
+        sessionStorage.removeItem(seleccionmapa)
+        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+        usedispatch(filtrarlocali([]))
         hideAlert()
         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
 
-        sessionStorage.removeItem(seleccionmapa)
+
 
     }
+    modalshow.nombre != "Modallocalida" ? clearInterval(intervalolista.current) : ''
     return (
         <>
             {alert}
@@ -613,10 +608,10 @@ const LocalidadmapViews = (props) => {
 
                     <h5 className="modal-title text-center justify-content-center" style={{ fontWeight: "bold" }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
                     <div className="pl-0" >
-                        <button className=" d-none btn btn-outline-light" onClick={cerrar} >
+                        <button className=" d-none btn btn-outline-light" onClick={() => cerrar()} >
                             <i className="fa fa-arrow-left">  </i>
                         </button>
-                        <button className=" btn  btn-outline-light mx-1" onClick={cerrar} >
+                        <button className=" btn  btn-outline-light mx-1" onClick={() => cerrar()} >
                             <i className="fa fa-shopping-cart">  </i>
                         </button>
                     </div>
@@ -629,10 +624,11 @@ const LocalidadmapViews = (props) => {
                             <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontWeight: "bold" }}>
                                 <h5 style={{
                                     fontWeight: "bold"
-                                }}>{mapath.precio.localidad}</h5>
+                                }}>Localidad: {mapath.precio.localidad}</h5>
                                 <h6 className="px-1"
                                     style={{
-                                        fontWeight: "bold"
+                                        fontWeight: "bold",
+                                        fontSize: "0.8em"
                                     }}
                                 >$ {mapath.precio.precio_normal} </h6>
                             </div>
@@ -884,6 +880,7 @@ const LocalidadmapViews = (props) => {
                 </Modal.Footer>
 
             </Modal>
+
         </>
     )
 

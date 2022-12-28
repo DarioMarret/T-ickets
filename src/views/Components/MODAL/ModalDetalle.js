@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Spinner, InputGroup } from "react-bootstrap"
 import { GetMetodo, GetValores } from 'utils/CarritoLocalStorang';
-import { Envio, DatosUsuariocliente } from 'utils/constantes';
+import { Envio, Envioadmin, DatosUsuariocliente } from 'utils/constantes';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import { DatosUsuariosLocalStorag, getCliente } from 'utils/DatosUsuarioLocalStorag';
 import { getCedula } from 'utils/DatosUsuarioLocalStorag';
@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
 import { getVerTienda, GetEstadousu } from 'utils/CarritoLocalStorang';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
+import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
+import { index } from 'utilsstile.js/style';
 
 function ModalDetalle(props) {
     const {
@@ -19,7 +21,7 @@ function ModalDetalle(props) {
         setDatoToas, intervalo
     } = props
     const usedispatch = useDispatch()
-
+    let admin = clienteInfo()
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [actualState, changeCheckState] = useState({
         check1: false,
@@ -260,12 +262,12 @@ function ModalDetalle(props) {
             fullscreen={'md-down'}
             centered
         >
-            <Modal.Header className='  text-light  bg-dark  '
+            <Modal.Header className=' py-3 text-light  bg-dark  '
                 style={{
                     backgroundColor: '#311C7C'
                 }}
             >
-                <h5 className="modal-title text-center py-3 justify-content-center" style={{ fontWeight: "bold" }}>Tiempo restante para la compra <span className="text-danger" >{intervalo} </span></h5>
+                {intervalo ? <h5 className="modal-title text-center py-3 justify-content-center" style={{ fontWeight: "bold" }}>Tiempo restante para la compra <span className="text-danger" >{intervalo} </span></h5> : ''}
                 <button type="button" className="close text-white"
                     onClick={handleDetalleColse}>
                     X
@@ -299,7 +301,7 @@ function ModalDetalle(props) {
                             <div className="d-none col-12  border border-bottom mb-3"></div>
 
 
-                            <span>Cedula DNI:</span>
+                            <span>Cédula DNI:</span>
                             <input type="text"
                                 className="numero form-control form-control-sm"
                                 id="dni"
@@ -329,8 +331,12 @@ function ModalDetalle(props) {
                                 <select className="form-select" required
 
                                     value={datosPerson.envio ? datosPerson.envio : ''} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
-                                    {
+                                    {admin == null ?
                                         Envio.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item.value}>{item.envio}</option>
+                                            )
+                                        }) : Envioadmin.map((item, index) => {
                                             return (
                                                 <option key={index} value={item.value}>{item.envio}</option>
                                             )
@@ -369,7 +375,7 @@ function ModalDetalle(props) {
 
                         </div>
                         <div className="col-12 col-sm-12 d-flex flex-column">
-                            <span>Direccion:</span>
+                            <span>Dirección:</span>
                             <input type="text"
                                 className="form-control form-control-sm"
                                 id="direccion"
@@ -387,7 +393,7 @@ function ModalDetalle(props) {
                         <table className="resumen-table table ">
                             <thead>
                                 <tr className="text-black">
-                                    <th scope="col" className="text-black">CONCIENTO</th>
+                                    <th scope="col" className="text-black">CONCIERTO</th>
                                     <th className="text-black">LOCALIDAD</th>
 
                                     <th className="text-black" scope="col">ASIENTO</th>
@@ -412,16 +418,42 @@ function ModalDetalle(props) {
                             </tbody>
                         </table>
                     </div>
-                    <div className="row p-1 float-rigth">
+                    <div>
+                        <table className="table table-borderless ">
+                            <tbody>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td colspan="2" className='text-end' >Subtotal:</td>
+                                    <td className='text-center'>${parseInt(listaPrecio.subtotal).toFixed(2)}</td>
+                                </tr>
+                                <tr className={hidecomision}>
+                                    <th scope="row"></th>
+                                    <td colspan="2" className={hidecomision + " text-end"} >Comisión por Boleto:</td>
+                                    <td className={hidecomision + " text-center"}>${parseInt(listaPrecio.comision).toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td colspan="2" className='text-end' >Comisión Bancaria:</td>
+                                    <td className='text-center'>${parseFloat(listaPrecio.comision_bancaria).toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td colspan="2" className='text-end' >Total:</td>
+                                    <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="row p-1 d-none float-rigth">
                         <div className="col-6 col-lg-8 text-end d-flex align-items-end flex-column  ">
                             <div>
                                 <h4>Subtotal:</h4>
                             </div>
                             <div>
-                                <p>Comision por Boleto:</p>
+                                <p>Comisión por Boleto:</p>
                             </div>
                             <div className={hidecomision}>
-                                <p>Comision Bancaria:</p>
+                                <p>Comisión Bancaria:</p>
                             </div>
                             <div>
                                 <h4>Total:</h4>
@@ -445,57 +477,8 @@ function ModalDetalle(props) {
 
                     </div>
                     <div className="row pb-3">
-                        <div className="col-12 col-lg-10 text-end d-flex flex-column  ">
-                            {!clienteauth ? <div className="d-flex text-end  flex-wrap-reverse ">
-                                <div className="col-10 text-end">
-                                    <p style={{ fontSize: "0.7em" }}>Acepto los <strong>Términos y condiciones</strong> emitidas por
-                                        t-icket</p>
-                                </div>
-                                <div className="px-3">
-                                    <input className="form-check-input terminoscheck"
-                                        checked={actualState.check1}
-                                        id="check1"
-                                        name="check1"
-                                        onChange={(e) => handleCheckboxChange(e.target)}
-                                        type="checkbox" />
-                                </div>
-                            </div> : ""}
 
-                            {!clienteauth ? <div className="d-flex text-end  flex-wrap-reverse ">
-                                <div className="col-10 d-flex text-end">
-                                    <p style={{ fontSize: "0.7em" }}>
-                                        Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
-                                        realizada la compra , caso contrario no podra retirar los boletos duros sin opcion a
-                                        rembolso
-                                    </p>
-                                </div>
-                                <div className="px-3">
-                                    <input className="form-check-input terminoscheck" id="check2" type="checkbox"
-                                        checked={actualState.check2}
-                                        name="check2"
-                                        onChange={(e) => handleCheckboxChange(e.target)}
-                                    />
-                                </div>
-                            </div> : ""}
-                            {!clienteauth ? <div className="d-flex text-end  flex-wrap-reverse ">
-                                <div className="col-10 d-flex text-end">
-                                    <strong>
-                                        <p style={{ fontSize: "0.8em" }}>
-                                            <strong> Acepto que se cree mi cuenta de usuario en el portal de flasthetickets, la misma que contiene mis datos persoanales, así como los
-                                                datos de mis compras, tambien recibir las promociones por ese mismo medio.</strong>
-                                        </p>
-                                    </strong>
-                                </div>
-                                <div className="px-3">
-                                    <input className="form-check-input terminoscheck" id="check3"
-                                        checked={actualState.check3}
-                                        name="check3" type="checkbox"
-                                        onChange={(e) => handleCheckboxChange(e.target)} />
-                                </div>
-                            </div> : ""}
-
-                        </div>
-                        <div className="col-12 col-lg-2 text-center align-items-end ">
+                        <div className="col-11  text-center text-lg-end align-items-end ">
                             {
                                 !clienteauth && datosPerson.metodoPago == "Tarjeta" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
@@ -541,7 +524,7 @@ function ModalDetalle(props) {
                                         disabled={!(datosPerson.envio != '')}
                                         onClick={abrirPago}
                                     >
-                                        <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
+                                        <i className="fa fa-credit-card "> </i>PAGAR  </button> : ""
                             }
                             {
                                 clienteauth && datosPerson.metodoPago == "Efectivo" ?
@@ -557,7 +540,7 @@ function ModalDetalle(props) {
                                         disabled={!(datosPerson.envio != '')}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
                                     >
-                                        <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
+                                        <i className="fa fa-credit-card me-2"> </i>PAGAR </button> : ""
                             }
                             {
                                 clienteauth && datosPerson.metodoPago == "Transferencia" ?

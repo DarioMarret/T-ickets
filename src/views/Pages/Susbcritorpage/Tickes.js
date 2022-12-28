@@ -136,21 +136,35 @@ function Example() {
               <div>
                 {row.original.detalle ? row.original.detalle.map((e, i) => {
                   return (
-                    <div className="row">
-                      <div className="col-2">
+                    <div className="row" key={i}>
+                      <div className="col-3 col-md-2">
 
-                        Silla   {e.sillas}
+                        boleto   {e.sillas}
                       </div>
-                      <div className="col-2">
+                      <div className="col-3 col-md-3">
                         Localidad:  {e.localidad}
                       </div>
-                      <div className="col-2">
+                      <div className="col-2 col-md-2">
                         Valor :{e.valor}
                       </div>
-                      <div className="col-12 col-md-2">
-                        Codigo :{e.codigoEvento}
+                      <div className="col-2 col-md-2">
+                        Concierto :{row.original.concierto}
                       </div>
-                      <div>
+                      <div className="col-2">
+                        <Tooltip title="Ceder ticket" placement="top-start">
+                          <IconButton
+                            color='success'
+                            onClick={() => successAlert(e.id)}
+                          >
+                            <img src={cedericon}
+                              style={
+                                {
+                                  height: 30
+                                }
+                              }
+                            />
+                          </IconButton>
+                        </Tooltip>
 
                       </div>
                     </div>

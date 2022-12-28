@@ -6,6 +6,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice"
 const TabtresView = (props) => {
     let usedispatch = useDispatch()
     const { datalocalidad, espacioname, SetDataloca } = props
+    const [inputdisable, setdisable] = useState(false)
     const [localidaname, setLocalidad] = useState({
         nombre: '',
         description: '',
@@ -23,6 +24,7 @@ const TabtresView = (props) => {
     async function Actualiza() {
         if (localidaname.id != "" && localidaname.nombre != "" && localidaname.cantidad != "" && localidaname.inicio != "") {
             try {
+                setdisable(true)
                 const actualiza = await AptualizarLocalida({ "id": localidaname.id, "espacio": espacioname.nombre, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: localidaname.info } }) })
                 if (actualiza.success) {
                     SetDataloca({
@@ -39,11 +41,12 @@ const TabtresView = (props) => {
                         inicio: 0,
                         id: '',
                     })
+                    setdisable(false)
                     usedispatch(setToastes({ show: true, message: 'Localidad actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
                 }
             } catch (error) {
                 usedispatch(setToastes({ show: true, message: 'Hubo un error intente de nuevo', color: 'bg-danger', estado: 'Error' }))
-
+                setdisable(false)
                 console.log(error)
             }
 
@@ -56,7 +59,7 @@ const TabtresView = (props) => {
         console.log({ "espacio": espacioname.nombre, "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: [] } }) })
         if (localidaname.nombre != "" && localidaname.description != "" && localidaname.cantidad != "" && localidaname.inicio != "") {
             try {
-
+                setdisable(true)
                 const guardar = await GuardarLocalidad({ "espacio": espacioname.nombre, "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: [] } }) })
                 if (guardar.success) {
                     SetDataloca({
@@ -73,11 +76,12 @@ const TabtresView = (props) => {
                         cantidad: '',
                         inicio: ''
                     })
-
+                    setdisable(false)
                     usedispatch(setToastes({ show: true, message: 'Localidad creada correctamente', color: 'bg-success', estado: 'Datos guadados' }))
                 }
 
             } catch (error) {
+                setdisable(false)
                 usedispatch(setToastes({ show: true, message: 'Hubo un error intente de nuevoa mas tarde', color: 'bg-success', estado: 'Datos guadados' }))
                 console.log(error)
             }
@@ -135,7 +139,14 @@ const TabtresView = (props) => {
                             <div className="d-flex text-end row">
                                 {datalocalidad.typo == "correlativo" ?
                                     <button className="btn btn-primary col-12" onClick={Actualiza}>Actualizar</button> : ''}
-                                <button className="btn btn-success col-12" onClick={Guardar}>Guardar</button>
+                                {inputdisable ?
+                                    <button className="btn btn-primary" disabled={true} >
+                                        <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                        Guardando</button>
+                                    : ''
+
+                                }
+                                {!inputdisable ? <button className="btn btn-success col-12" onClick={Guardar}>Guardar</button> : ''}
                             </div>
                         </div>
                     </div>
