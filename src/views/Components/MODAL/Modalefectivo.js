@@ -82,10 +82,7 @@ const ModalEfectivo = (props) => {
       <SweetAlert
         style={{ display: "block", marginTop: "-100px" }}
 
-        onConfirm={() => hideAlert()}
-        onCancel={() => cerrar()}
-        confirmBtnBsStyle="success"
-        cancelBtnBsStyle="danger"
+
         closeOnClickOutside={false}
         showCancel={false}
         showConfirm={false}
@@ -141,19 +138,47 @@ const ModalEfectivo = (props) => {
   const succesAlert = () => {
     setAlert(
       <SweetAlert
-        warning
+
         style={{ display: "block", marginTop: "-100px" }}
-        title={" Desea continuar con la compra"}
-        onConfirm={() => comnetusernew()}
-        onCancel={() => hideAlert()}
-        confirmBtnBsStyle="success"
-        cancelBtnBsStyle="danger"
-        confirmBtnText="Aceptar"
+
         closeOnClickOutside={false}
-        cancelBtnText="Cancelar"
+        showCancel={false}
+        showConfirm={false}
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-        showCancel
-      >Se generara una orden de pago con el cual debera cancelar la compra
+
+      >
+        <div className='col-12 pb-3'>
+          <img src={atencion} className="img-fluid"
+            style={{
+              height: 100
+            }}
+          ></img>
+
+
+        </div>
+        <h6 className=' col-9 col-md-12  mx-auto' style={{
+          fontWeight: "bold",
+          fontSize: "1.0rem"
+        }}>Desea continuar con la compra</h6>
+        <p>Se generará una orden de pago con el cual deberá cancelar la compra</p>
+        <div className='d-flex  justify-content-around py-4'>
+          <div>
+            <button className='btn btn-outline-danger  rounded-6' onClick={() => hideAlert()}>
+
+              <span style={{
+                fontWeight: "bold"
+              }}>Cancelar</span>
+            </button>
+          </div>
+          <div>
+            <button className=' btn btn-warning rounded-5' onClick={() => comnetusernew()} >
+              <span style={{
+                fontWeight: "bold"
+              }}>Comfirmar</span>
+            </button>
+          </div>
+
+        </div>
       </SweetAlert>
     )
   }

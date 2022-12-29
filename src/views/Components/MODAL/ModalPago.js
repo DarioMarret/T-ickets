@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { PagoRapido } from 'utils/Querycomnet';
+import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
 
 
 function ModalPago(props) {
