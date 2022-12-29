@@ -141,7 +141,7 @@ export default function Footer(props) {
                                             <span className=" text-white" style={{ fontFamily: '', }} >Quito </span>
                                         </a>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
-                                            <span className=" text-white" style={{ fontFamily: '', }} >SantoDomingo</span>
+                                            <span className=" text-white" style={{ fontFamily: '', }} >Santo Domingo</span>
                                         </a>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <span className=" text-white" style={{ fontFamily: '', }} >Cuenca</span>

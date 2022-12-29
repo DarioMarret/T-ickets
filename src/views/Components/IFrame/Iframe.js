@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect, useRef, useState } from 'react'
 import { setModal } from 'StoreRedux/Slice/SuscritorSlice'
 import SweetAlert from 'react-bootstrap-sweetalert'
+import { bancos } from 'utils/Imgenesutils'
+let { atencion } = bancos
 
 function Iframe(props) {
     const modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -24,24 +26,51 @@ function Iframe(props) {
     const successAlert = () => {
         setAlert(
             <SweetAlert
-                warning
+
                 style={{ display: "block", marginTop: "-100px" }}
-                title="Estas Seguro de cerrar?"
-                onConfirm={() => cerrarPago()}
-                onCancel={() => hideAlert()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
                 closeOnClickOutside={false}
-                confirmBtnText="Confirmar"
-                cancelBtnText="Cancelar"
-                showCancel
+                showCancel={false}
+                showConfirm={false}
 
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
             >
+                <div className='col-12 pb-3'>
+                    <img src={atencion} className="img-fluid"
+                        style={{
+                            height: 100
+                        }}
+                    ></img>
+                </div>
+                <div>
+                    <h5 style={{
+                        fontWeight: "bold"
+                    }}>
+                        Estas Seguro de cerrar?
+                    </h5>
+                </div>
                 Se Borraran Todas las Localidades Seleccionadas
+                <div className='d-flex  justify-content-around py-4'>
+                    <div>
+                        <button className='btn btn-outline-danger  rounded-6' onClick={() => hideAlert()}>
+
+                            <span style={{
+                                fontWeight: "bold"
+                            }}>Cancelar</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button className=' btn btn-warning rounded-5' onClick={() => cerrarPago()} >
+                            <span style={{
+                                fontWeight: "bold"
+                            }}> Aceptar</span>
+                        </button>
+                    </div>
+
+                </div>
             </SweetAlert>
         );
     };
+
 
     const hideAlert = () => setAlert(null)
 

@@ -119,13 +119,13 @@ const IndexFlas = () => {
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
         usedispatch(setModal({ nombre: '', estado: '' }))
         setcrono("00:00")
-        usedispatch(setItervalo({ intervalo: "00:00" }))
+        //usedispatch(setItervalo({ intervalo: "00:00" }))
         $(".Mesa").removeClass("mesaocupado").addClass("mesadisponible")
         $(".Mesa").removeClass("mesareserva")
       }
       else {
         setcrono(minutos + ":" + segundos)
-        usedispatch(setItervalo({ intervalo: minutos + ":" + segundos }))
+        //usedispatch(setItervalo({ intervalo: minutos + ":" + segundos }))
         if (--timer < 0) timer = tiempo;
       }
     }, 1000);
@@ -824,7 +824,7 @@ const IndexFlas = () => {
                                 COMPRAR
 
                               </Button>
-                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md  btn-hover " alt="" />
+                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md  btn-hover img-evento " alt="" />
 
                             </div>
                           </a>

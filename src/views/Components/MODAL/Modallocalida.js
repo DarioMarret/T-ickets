@@ -18,11 +18,12 @@ import { correlativosadd } from "utils/Querypanelsigui";
 import moment from "moment";
 import { Verificalocalidad } from "utils/CarritoLocalStorang";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
-import { OneKPlusOutlined } from "@mui/icons-material";
 import { localidaandespacio } from "utils/Querypanel";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { updateboletos } from "StoreRedux/Slice/SuscritorSlice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { bancos } from "utils/Imgenesutils";
+let { atencion } = bancos
 const LocalidadmapViews = (props) => {
     const { intervalo, intervalolista } = props
     var mapath = useSelector((state) => state.mapaLocalSlice)
@@ -114,7 +115,10 @@ const LocalidadmapViews = (props) => {
             }))
             return
         }
-
+        if ((sleccionlocalidad.inpagos + TotalSelecion()) == 10) {
+            succesLimit()
+            return
+        }
         let protoco = moment().format("YYYYMMDDHHMMSS")
         let producto = {
             cantidad: 1,
@@ -127,7 +131,7 @@ const LocalidadmapViews = (props) => {
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
-        if ((TotalSelecion() + sleccionlocalidad.proceso) < 10) {
+        if (TotalSelecion() < 10) {
             getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
             setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
             correlativosadd({
@@ -181,15 +185,39 @@ const LocalidadmapViews = (props) => {
                 warning
                 style={{ display: "block", marginTop: "-100px" }}
                 title="Desea quitar este Asiento del carrito"
-                onConfirm={() => eliminaLista(e, f)}
-                onCancel={() => hideAlert()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                confirmBtnText="Si, Continuar"
-                cancelBtnText="Cancelar"
                 closeOnClickOutside={false}
+                showCancel={false}
+                showConfirm={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel>
+            >
+                <div>
+                    <div className='col-12 pb-3'>
+                        <img src={atencion} className="img-fluid"
+                            style={{
+                                height: 100
+                            }}>
+
+                        </img>
+                    </div>
+                    <div className='d-flex  justify-content-around py-4'>
+                        <div>
+                            <button className='btn btn-outline-danger  rounded-6' onClick={() => hideAlert()}>
+
+                                <span style={{
+                                    fontWeight: "bold"
+                                }}>Cancelar</span>
+                            </button>
+                        </div>
+                        <div>
+                            <button className=' btn btn-warning rounded-5' onClick={() => eliminaLista(e, f)} >
+                                <span style={{
+                                    fontWeight: "bold"
+                                }}> Si, Continuar</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
             </SweetAlert>
         )
     }
@@ -214,19 +242,36 @@ const LocalidadmapViews = (props) => {
     const succesLimit = () => {
         setAlert(
             <SweetAlert
-                warning
+
                 style={{ display: "block", marginTop: "-100px" }}
                 title="Has alcanzado la cantidad límite de entradas"
-                onConfirm={() => hideAlert()}
-                onCancel={() => cerrar()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                confirmBtnText="Si, Continuar"
-                cancelBtnText="Ir al carrito"
                 closeOnClickOutside={false}
+                showCancel={false}
+                showConfirm={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel>
-                Deseas Continuar editando la selección
+            >
+                <div>
+
+                    Deseas continuar editando la selección
+                    <div className='d-flex  justify-content-around py-4 px-2'>
+                        <div>
+                            <button className='btn btn-outline-danger  rounded-6' onClick={() => cerrar()}>
+
+                                <span style={{
+                                    fontWeight: "bold"
+                                }}>Ir al carrito</span>
+                            </button>
+                        </div>
+                        <div>
+                            <button className=' btn btn-warning rounded-5' onClick={() => hideAlert()} >
+                                <span style={{
+                                    fontWeight: "bold"
+                                }}> Si, Continuar</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
             </SweetAlert>
         )
     }
@@ -534,31 +579,29 @@ const LocalidadmapViews = (props) => {
                         })
                     }) : ''
                     mapath.precio.typo == "mesa" ? usedispatch(filtrarlocali(nuevoObjeto)) : ''
-
                     console.log(nuevoObjeto)
                 }
                 else if (ouput.data.some(e => e.typo == "correlativo")) {
                     mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible"))) : ''
-                    console.log(ouput.data.filter(e => e.estado == "disponible"))
+                    console.log(ouput.data.filter(e => e.estado == "reservado"))
                     usedispatch(updateboletos({
                         disponibles: ouput.data.filter(e => e.estado == "disponible").length,
-                        proceso: sleccionlocalidad.proceso,
-                        pagados: ""
+                        proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
+                        pagados: "",
+                        inpagos: sleccionlocalidad.inpagos
                     }))
                     console.log({
                         disponibles: ouput.data.filter(e => e.estado == "disponible").length,
-                        proceso: sleccionlocalidad.proceso,
-                        pagados: ""
+                        proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
+                        pagados: "", inpagos: sleccionlocalidad.inpagos
                     })
                 }
-
             }).catch(err => {
                 console.log(err)
             })
 
         }, 4000)
     }
-
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
@@ -587,7 +630,7 @@ const LocalidadmapViews = (props) => {
         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
         usedispatch(filtrarlocali([]))
         hideAlert()
-        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+
 
 
 

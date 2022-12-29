@@ -8,7 +8,8 @@ const initialState = {
     boletos: {
         disponibles: "",
         proceso: "",
-        pagados: ""
+        pagados: "",
+        inpagos: ""
     }
 }
 
@@ -21,7 +22,7 @@ const SubscritorSlice = createSlice({
             state.login = true;
         },
         updateboletos: (state, action) => {
-            state.boletos = { ...action.payload }
+            state.boletos = { ...state.boletos, ...action.payload }
         },
         deletesuscrito: (state, action) => {
             state.subscritor = {};

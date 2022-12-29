@@ -27,8 +27,11 @@ import { updateboletos } from "StoreRedux/Slice/SuscritorSlice"
 import { Listarticketporestado } from "utils/userQuery"
 import { Eventoid } from "utils/constantes"
 import { Triangle } from "react-loader-spinner"
-
+import { bancos } from "utils/Imgenesutils"
+import moment from "moment"
+let { atencion } = bancos
 const ModalCarritoView = (prop) => {
+    let usuario = getDatosUsuariosLocalStorag()
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
     const sorter = (a, b) => a.precio_normal > b.precio_normal ? 1 : -1 && a.id < b.id ? 1 : -1;
     let usedispatch = useDispatch()
@@ -97,6 +100,7 @@ const ModalCarritoView = (prop) => {
 
 
     useEffect(() => {
+
         let user = getDatosUsuariosLocalStorag()
         setDetalle(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
@@ -119,23 +123,21 @@ const ModalCarritoView = (prop) => {
             console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)))
             usedispatch(updateboletos({
                 disponibles: 0,
-                proceso: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)).length,
-                pagados: 0
+                proceso: 0,
+                pagados: 0,
+                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).length
             }))
             console.log({
                 disponibles: 0,
-                proceso: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)).length,
-                pagados: 0
+                proceso: 0,
+                pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).length
             })
 
         }).catch(err => {
             console.log(err)
         })
         /*listarLocalidadaEspeci(sessionStorage.getItem(espacio)).then(oupt => {
-            console.log(
-
-
-                oupt.data.filter(E => E.estado == "reservado" && E.pasado == "SIN PASAR" && E.cedula == user.cedula).length)
+            console.log(oupt.data.filter(E => E.estado == "reservado" && E.pasado == "SIN PASAR" && E.cedula == user.cedula).length)
             let procesar = oupt.data.filter(E => E.estado == "reservado" && E.pasado == "SIN PASAR" && E.cedula == user.cedula).length;
             let disponible = oupt.data.filter(E => E.estado == "dispoible").length;
 
@@ -156,6 +158,15 @@ const ModalCarritoView = (prop) => {
         ).catch(err => console.log(err))*/
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
     function Abririlocalfirt(e) {
+        if (sleccionlocalidad.inpagos >= 10) {
+            usedispatch(setToastes({
+                show: true,
+                message: "Están en proceso, termina tu compra",
+                color: 'bg-info',
+                estado: "Has alcanzado el límite de boletos impago"
+            }))
+            return
+        }
         setSpiner("")
         console.log(e)
         let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
@@ -220,7 +231,8 @@ const ModalCarritoView = (prop) => {
                 usedispatch(updateboletos({
                     disponibles: ouput.data.filter(e => e.estado == "disponible").length,
                     proceso: ouput.data.filter(e => e.estado == "reservado").length,
-                    pagados: ""
+                    pagados: "",
+                    inpagos: sleccionlocalidad.inpagos
                 }))
                 sessionStorage.seleccionmapa = JSON.stringify(e)
                 abrirlocalidad()
@@ -232,6 +244,15 @@ const ModalCarritoView = (prop) => {
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
     modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
         E.addEventListener("click", function () {
+            if (sleccionlocalidad.inpagos >= 10) {
+                usedispatch(setToastes({
+                    show: true,
+                    message: "Están en proceso, termina tu proceso de compra",
+                    color: 'bg-info',
+                    estado: "Has alcanzado el límite de boletos impago"
+                }))
+                return
+            }
             setSpiner("")
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
             localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
@@ -297,8 +318,9 @@ const ModalCarritoView = (prop) => {
                     })) : ''
                     usedispatch(updateboletos({
                         disponibles: ouput.data.filter(e => e.estado == "disponible").length,
-                        proceso: ouput.data.filter(e => e.estado == "reservado").length,
-                        pagados: ""
+                        proceso: ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length,
+                        pagados: "",
+                        inpagos: sleccionlocalidad.inpagos
                     }))
                     sessionStorage.seleccionmapa = JSON.stringify(consulta)
                     setSpiner("d-none")
@@ -319,42 +341,98 @@ const ModalCarritoView = (prop) => {
     const successAlert = () => {
         setAlert(
             <SweetAlert
-                warning
                 style={{ display: "block", marginTop: "-100px" }}
-                title="Estas Seguro de cerrar?"
-                onConfirm={() => cerrar()}
-                onCancel={() => hideAlert()}
-                confirmBtnBsStyle="success"
                 closeOnClickOutside={false}
-                cancelBtnBsStyle="danger"
-                confirmBtnText="Confirmar"
-                cancelBtnText="Cancelar"
-                showCancel
-
+                showCancel={false}
+                showConfirm={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
             >
-                Se Borraran Todas las Localidades Seleccionadas
+                <div >
+                    <div className='col-12 pb-3'>
+                        <img src={atencion} className="img-fluid"
+                            style={{
+                                height: 100
+                            }}
+                        ></img>
+                    </div>
+                    <div className="px-2">
+                        <h6 className=' col-9 col-md-12  mx-auto' style={{
+                            fontWeight: "bold",
+                            fontSize: "1.0rem"
+                        }}>¿Quieres abandonar tu proceso de compra?</h6>
+                        <p> No puedes guardar tu proceso y continuar luego. Si, abandonas perderás tus reservas
+                        </p>
+                        <p>  </p>
+                    </div>
+
+
+                </div>
+                <div className='d-flex  justify-content-around py-4'>
+                    <div>
+                        <button className='btn btn-outline-danger  rounded-6' onClick={() => hideAlert()}>
+
+                            <span style={{
+                                fontWeight: "bold"
+                            }}>Cancelar</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button className=' btn btn-warning rounded-5' onClick={() => cerrar()} >
+                            <span style={{
+                                fontWeight: "bold"
+                            }}> Aceptar</span>
+                        </button>
+                    </div>
+
+                </div>
+
             </SweetAlert>
-        );
-    };
+        )
+    }
+
     const EliminaLocalidad = (e) => {
         setAlert(
             <SweetAlert
-                warning
                 style={{ display: "block", marginTop: "-100px" }}
-                title="Estas Seguro?"
-                onConfirm={() => Eliminar(e)}
-                onCancel={() => hideAlert()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
                 closeOnClickOutside={false}
-                confirmBtnText="Confirmar"
-                cancelBtnText="Cancelar"
-
+                showCancel={false}
+                showConfirm={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel
             >
-                Se Borraran Todas las selecciones de esta Localidad
+                <div className='col-12 pb-3'>
+                    <img src={atencion} className="img-fluid"
+                        style={{
+                            height: 100
+                        }}
+                    ></img>
+                </div>
+                <div>
+                    <h5 style={{
+                        fontWeight: "bold"
+                    }}>
+                        Estas Seguro?
+                    </h5>
+                </div>
+
+                <div className="px-2" > Se Borraran Todas las selecciones de esta Localidad </div>
+                <div className='d-flex  justify-content-around py-4 px-2'>
+                    <div>
+                        <button className='btn btn-outline-danger  rounded-6' onClick={() => hideAlert()}>
+
+                            <span style={{
+                                fontWeight: "bold"
+                            }}>Cancelar</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button className=' btn btn-warning rounded-5' onClick={() => Eliminar(e)} >
+                            <span style={{
+                                fontWeight: "bold"
+                            }}> Aceptar</span>
+                        </button>
+                    </div>
+
+                </div>
             </SweetAlert>
         );
     }
@@ -382,7 +460,7 @@ const ModalCarritoView = (prop) => {
                         </div>
                     </div>
                     <div className=" float-end ">
-                        <div >
+                        <div className="d-none d-md-block d-xl-block" >
                             {intervalo ? <h5 className="modal-title text-center justify-content-center"
                                 style={{
                                     fontWeight: "bold",
@@ -392,6 +470,20 @@ const ModalCarritoView = (prop) => {
                                 Tiempo restante para la compra <span className="text-danger"
                                     style={{
                                         fontSize: '1.2em',
+                                        fontWeight: "bold"
+                                    }}
+                                >{intervalo}</span> </h5> : ''}
+                        </div>
+                        <div className="d-block d-sm-block d-md-none " >
+                            {intervalo ? <h5 className="modal-title text-center justify-content-center"
+                                style={{
+                                    fontWeight: "bold",
+                                    fontSize: "0.8em",
+                                    fontSizeAdjust: 0.5
+                                }}>
+                                Tiempo restante para la compra <span className="text-danger"
+                                    style={{
+                                        fontSize: '0.9em',
                                         fontWeight: "bold"
                                     }}
                                 >{intervalo}</span> </h5> : ''}
@@ -505,8 +597,8 @@ const ModalCarritoView = (prop) => {
                                             })
                                             : ''
                                         }
-                                        <div className="d-flex d-none  justify-content-center my-1 row list-group-item" role="rowgroup">
-                                            {sleccionlocalidad.proceso > 0 ? "Tienes " + sleccionlocalidad.proceso + " boletos por pagar" : ''}
+                                        <div className="d-flex   justify-content-center my-1 row list-group-item" role="rowgroup">
+                                            {sleccionlocalidad.inpagos > 0 ? "Tienes " + sleccionlocalidad.inpagos + " boletos por pagar" : ''}
                                         </div>
                                     </div>
                                 </div>

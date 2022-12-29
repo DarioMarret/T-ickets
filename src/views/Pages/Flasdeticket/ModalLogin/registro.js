@@ -132,13 +132,13 @@ const ResgistroView = (prop) => {
         console.log(Object.fromEntries(form.entries()))
         sessionStorage.setItem(Whatsappnumero, movil)
         let datos = {
-            nombreCompleto: name,
-            email: email,
-            password: password,
-            movil: movil,
+            nombreCompleto: name.trim(),
+            email: email.trim(),
+            password: password.trim(),
+            movil: movil.trim(),
             ciudad: "guayaquil",
-            direccion: direccion,
-            cedula: cedula,
+            direccion: direccion.trim(),
+            cedula: cedula.trim(),
 
         }
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
@@ -180,7 +180,7 @@ const ResgistroView = (prop) => {
         }
         if (password != passwordcomfirma) {
             document.getElementById("passwordcomfirma").classList.add("is-invalid");
-            console.log("asta qui no msa")
+            //  console.log("asta qui no msa")
             if (email != emailconfirma) {
                 document.getElementById("emailconfirma").classList.add("is-invalid");
                 return
@@ -211,59 +211,59 @@ const ResgistroView = (prop) => {
                     return
                 }
                 else {
-                    /* try {
-                         console.log("condireccion-->", datos)
- 
- 
-                         const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
-                             headers: {
-                                 'Content-Type': 'application/json',
-                                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                             }
-                         })
-                         if (registro.data.success) {
-                             let usuario = getDatosUsuariosLocalStorag()
-                             const { data } = await Authsucrito({ email: email, password: password },)
-                             var hoy = new Date();
-                             let users = {
-                                 ...usuario,
-                                 cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
-                                 telefono: movil, name: data.nombreCompleto,
-                                 email: data.email, hora: String(hoy),
-                                 enable: data.enable, id: data.id,
-                                 envio: ''
-                             }
-                             DatosUsuariosLocalStorag({ ...usuario, ...users })
-                             sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
-                             setDatoToas({
-                                 show: true,
-                                 message: "Bienvenido " + data.nombreCompleto,
-                                 color: 'bg-success',
-                                 estado: "Inicio Exitoso",
-                             })
- 
-                             modal.estado != null ? abrir(modal.estado) : usedispatch(setModal({ nombre: '', estado: '' }))
-                             usedispatch(addususcritor({ users }))
-                         } else {
-                             console.log("error", registro.data)
-                             setDatoToas({
-                                 show: true,
-                                 message: "El Email ya " + email + " se encuentra registrado intente con otro",
-                                 color: 'bg-danger',
-                                 estado: "Error de registro",
-                             })
-                         }
- 
-                     } catch (error) {
-                         console.log(error)
-                         setDatoToas({
-                             show: true,
-                             message: "El Email ya" + email + " se encuentra registrado intente con otro",
-                             color: 'bg-danger',
-                             estado: "Email dubplicado",
-                         })
- 
-                     }*/
+                    try {
+                        console.log("condireccion-->", datos)
+
+
+                        const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                            }
+                        })
+                        if (registro.data.success) {
+                            let usuario = getDatosUsuariosLocalStorag()
+                            const { data } = await Authsucrito({ email: email, password: password },)
+                            var hoy = new Date();
+                            let users = {
+                                ...usuario,
+                                cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
+                                telefono: movil, name: data.nombreCompleto,
+                                email: data.email, hora: String(hoy),
+                                enable: data.enable, id: data.id,
+                                envio: ''
+                            }
+                            DatosUsuariosLocalStorag({ ...usuario, ...users })
+                            sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+                            setDatoToas({
+                                show: true,
+                                message: "Bienvenido " + data.nombreCompleto,
+                                color: 'bg-success',
+                                estado: "Inicio Exitoso",
+                            })
+
+                            modal.estado != null ? abrir(modal.estado) : usedispatch(setModal({ nombre: '', estado: '' }))
+                            usedispatch(addususcritor({ users }))
+                        } else {
+                            console.log("error", registro.data)
+                            setDatoToas({
+                                show: true,
+                                message: "El Email ya " + email + " se encuentra registrado intente con otro",
+                                color: 'bg-danger',
+                                estado: "Error de registro",
+                            })
+                        }
+
+                    } catch (error) {
+                        console.log(error)
+                        setDatoToas({
+                            show: true,
+                            message: "El Email ya" + email + " se encuentra registrado intente con otro",
+                            color: 'bg-danger',
+                            estado: "Email dubplicado",
+                        })
+
+                    }
 
                 }
 

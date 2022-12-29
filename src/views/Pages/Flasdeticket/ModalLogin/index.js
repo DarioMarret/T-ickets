@@ -21,12 +21,15 @@ const ModalLogin = (props) => {
   const [show, setShowToas] = useState(false);
   const [showtoass, setShowToass] = useState(false);
   const [credenciales, setnombre] = useState({ username: '', pass: '', });
+  const [tipo, setTipo] = useState(true)
   const handleSubmit = async (event) => {
     var hoy = new Date();
     event.preventDefault();
+    console.log(credenciales)
     if (credenciales.username !== '' && credenciales.pass !== '') {
+
       try {
-        const { data } = await axios.post(Host + "api/v1/auth_suscriptor", { email: credenciales.username.trim(), password: credenciales.pass }, {
+        const { data } = await axios.post(Host + "api/v1/auth_suscriptor", { email: credenciales.username.trim(), password: credenciales.pass.trim() }, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -119,16 +122,19 @@ const ModalLogin = (props) => {
                   <div className="input-group-prepend">
                     <span className="input-group-text"><i className="fa fa-lock"></i></span>
                   </div>
-                  <input id="pass" type="password" className="form-control"
+                  <input id="pass" type={tipo ? "password" : ""} className="form-control"
                     name="pass"
                     value={credenciales.pass}
                     required
                     onChange={(e) => handleChange(e.target)}
                     placeholder="Contraseña" />
+                  <div className="input-group-prepend">
+                    <span className="input-group-text " onClick={() => setTipo(!tipo)}><i className={!tipo ? "fa fa-eye" : "fa fa-eye-slash"}></i></span>
+                  </div>
                 </div>
                 <div className="row text-center">
                   <div className="col-12">
-                    <button className="btn btn-primary px-4" type="submit">ENTAR</button>
+                    <button className="btn btn-primary px-4" type="submit">ENTRAR</button>
                   </div>
                   <div className="col-12 "
 

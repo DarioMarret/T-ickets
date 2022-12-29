@@ -64,22 +64,62 @@ const Reporte = (props) => {
         detener()
         hideAlert()
     }
+
     const succesAlert = () => {
         setAlert(
             <SweetAlert
-                warning
                 style={{ display: "block", marginTop: "-100px" }}
-                title={"Esta seguro de querer salir  "}
-                onConfirm={() => hideAlert()}
-                onCancel={() => cerrar()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
+
+
+                closeOnClickOutside={false}
+                showCancel={false}
+                showConfirm={false}
                 confirmBtnText="Completar  Compra"
                 cancelBtnText="Anular Compra"
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel
+
             >
-                Se borraran todos los datos Seleccionados
+                <div >
+                    <div className='col-12 pb-3'>
+                        <img src={atencion} className="img-fluid"
+                            style={{
+                                height: 100
+                            }}
+                        ></img>
+
+
+                    </div>
+                    <div>
+                        <h6 className=' col-9 col-md-12  mx-auto' style={{
+                            fontWeight: "bold",
+                            fontSize: "1.0rem"
+                        }}>¿Quieres abandonar tu proceso de compra?</h6>
+                        <p> No puedes guardar tu proceso y continuar luego. Si, abandonas perderás tus reservas
+                        </p>
+                        <p>  </p>
+                    </div>
+
+
+                </div>
+                <div className='d-flex  justify-content-around py-4'>
+                    <div>
+                        <button className='btn btn-outline-danger  rounded-6' onClick={() => cerrar()}>
+
+                            <span style={{
+                                fontWeight: "bold"
+                            }}>Anular Compra</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button className=' btn btn-warning rounded-5' onClick={() => hideAlert()} >
+                            <span style={{
+                                fontWeight: "bold"
+                            }}> Completar Compra</span>
+                        </button>
+                    </div>
+
+                </div>
+
             </SweetAlert>
         )
     }
