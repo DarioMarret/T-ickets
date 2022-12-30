@@ -182,9 +182,8 @@ const LocalidadmapViews = (props) => {
     const succesElimAlert = (e, f) => {
         setAlert(
             <SweetAlert
-                warning
+
                 style={{ display: "block", marginTop: "-100px" }}
-                title="Desea quitar este Asiento del carrito"
                 closeOnClickOutside={false}
                 showCancel={false}
                 showConfirm={false}
@@ -199,6 +198,7 @@ const LocalidadmapViews = (props) => {
 
                         </img>
                     </div>
+                    <h5 >Desea quitar este Asiento del carrito </h5>
                     <div className='d-flex  justify-content-around py-4'>
                         <div>
                             <button className='btn btn-outline-danger  rounded-6' onClick={() => hideAlert()}>
@@ -242,21 +242,26 @@ const LocalidadmapViews = (props) => {
     const succesLimit = () => {
         setAlert(
             <SweetAlert
-
                 style={{ display: "block", marginTop: "-100px" }}
-                title="Has alcanzado la cantidad límite de entradas"
+
                 closeOnClickOutside={false}
                 showCancel={false}
                 showConfirm={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
             >
                 <div>
-
+                    <div className='col-12 pb-3'>
+                        <img src={atencion} className="img-fluid"
+                            style={{
+                                height: 100
+                            }}
+                        ></img>
+                    </div>
+                    <h5>Has alcanzado la cantidad límite de entradas</h5>
                     Deseas continuar editando la selección
                     <div className='d-flex  justify-content-around py-4 px-2'>
                         <div>
                             <button className='btn btn-outline-danger  rounded-6' onClick={() => cerrar()}>
-
                                 <span style={{
                                     fontWeight: "bold"
                                 }}>Ir al carrito</span>
@@ -306,7 +311,6 @@ const LocalidadmapViews = (props) => {
                 cancelBtnBsStyle="danger"
                 confirmBtnText="Si, Continuar"
                 cancelBtnText="Ir al carrito"
-
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
                 showCancel>
                 Deseas Continuar editando la selección

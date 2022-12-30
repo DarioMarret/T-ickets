@@ -175,11 +175,11 @@ const Reporte = (props) => {
         if (oupt.success) {
           comprar()
           usedispatch(setModal({
-            nombre: e, estado: oupt.message
+            nombre: e, estado: valores
           }))
           usedispatch(setToastes({
             show: true,
-            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
+            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
           }))

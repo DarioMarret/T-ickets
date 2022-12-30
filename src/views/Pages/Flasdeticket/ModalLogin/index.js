@@ -86,6 +86,7 @@ const ModalLogin = (props) => {
       <Modal
         show={Modalstatus.nombre == "loginpage" ? true : false}
         onHide={() => setShowLogin(false)}
+        fullscreen={"md-down"}
         centered
       >
         <Modal.Header className="py-4  bg-dark ">
@@ -100,7 +101,7 @@ const ModalLogin = (props) => {
             </button>
           </div>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="d-flex   align-items-center">
           <Container className="d-flex flex-column justify-content-center">
             <div className="card-body">
               <div className="container text-center">
@@ -137,7 +138,6 @@ const ModalLogin = (props) => {
                     <button className="btn btn-primary px-4" type="submit">ENTRAR</button>
                   </div>
                   <div className="col-12 "
-
                   >
                     <a className="btn btn-link text-dark  px-4" onClick={regsitronew} href="#"
                       style={{
@@ -152,10 +152,7 @@ const ModalLogin = (props) => {
                 </div>
               </form>
             </div>
-
-
           </Container>
-
         </Modal.Body>
       </Modal>
       <Toast
@@ -164,7 +161,7 @@ const ModalLogin = (props) => {
         style={{
           position: 'fixed',
           top: 30,
-
+          right: 2,
           transform: 'translate(-50 %, 0 %)',
           zIndex: 10000,
         }}>
@@ -186,7 +183,7 @@ const ModalLogin = (props) => {
         style={{
           position: 'fixed',
           top: 30,
-
+          right: 2,
           transform: 'translate(-50 %, 0 %)',
           zIndex: 10000,
         }}>

@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import metodos from "../../../assets/Banco_Internacional_Ecuador.png";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+let { atencion } = bancos
 import jsPDF from "jspdf";
 let { bancoguyaquil,
     bancopacifico,
@@ -18,12 +19,7 @@ export default function ReporteView(prop) {
     let usedispatch = useDispatch()
     let modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [alert, setAlert] = useState(null)
-    const [listaPrecio, ListaPrecioset] = useState({
-        total: 0,
-        subtotal: 0,
-        comision: 0,
-        comision_bancaria: 0
-    })
+
     const imagenes = {
         "pichincha": vecino,
         "pacifico": bancopacifico,
@@ -47,7 +43,7 @@ export default function ReporteView(prop) {
             var imgWidth = 130;
             var imgHeight = canvas.height * imgWidth / canvas.width;
             const contentDataURL = canvas.toDataURL('image/png')
-            let pdf = new jsPDF('p', 'mm', 'a5'); // A4 size page of PDF
+            let pdf = new jsPDF('p', 'mm', 'a5'); // a5 size page of PDF
             var position = 10;
             pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
             window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
@@ -59,7 +55,7 @@ export default function ReporteView(prop) {
             var imgWidth = 130;
             var imgHeight = canvas.height * imgWidth / canvas.width;
             const contentDataURL = canvas.toDataURL('image/png')
-            let pdf = new jsPDF('p', 'mm', 'a5'); // A4 size page of PDF
+            let pdf = new jsPDF('p', 'mm', 'a5'); // a5 size page of PDF
             var position = 10;
             pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
             var pdfs = new File([pdf.output('blob')], "doc_name" + ".pdf", { type: "application/pdf" });
@@ -81,24 +77,45 @@ export default function ReporteView(prop) {
         hideAlert()
     }
     const hideAlert = () => setAlert(null)
-    //HACER  ALERTEA PARA GUARDAR 
     const succesAlert = () => {
         setAlert(
             <SweetAlert
-                warning
                 style={{ display: "block", marginTop: "-100px" }}
-                title={"Antes de cerrar"}
-                onConfirm={() => Cerrar()}
-                onCancel={() => imprime()}
                 closeOnClickOutside={false}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                confirmBtnText="Cerrar "
-                cancelBtnText="Imprimir y cerrar"
-
+                showCancel={false}
+                showConfirm={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel
-            > Recuerda imprimir la infromacion de la cuenta a depositar
+            >
+                <div>
+                    <div className='col-12 pb-3'>
+                        <img src={atencion} className="img-fluid"
+                            style={{
+                                height: 100
+                            }}>
+
+                        </img>
+                    </div>
+                    <h5 >Antes de cerrar </h5>
+                    Recuerda imprimir la información de la cuenta a depositar
+                    <div className='d-flex  justify-content-around py-4'>
+                        <div>
+                            <button className='btn btn-outline-danger  rounded-6' onClick={() => imprime()}>
+
+                                <span style={{
+                                    fontWeight: "bold"
+                                }}>Imprimir y cerrar</span>
+                            </button>
+                        </div>
+                        <div>
+                            <button className=' btn btn-warning rounded-5' onClick={() => Cerrar()} >
+                                <span style={{
+                                    fontWeight: "bold"
+                                }}> Cerrar</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
             </SweetAlert>
         )
     }
@@ -118,6 +135,7 @@ export default function ReporteView(prop) {
                     modalshow.nombre == "transferencia" || modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ?
                         true : false}
                 size="lg"
+                fullscreen={'md-down'}
             >
                 <Modal.Header className=" d-flex  m-0  bg-dark  bg-secondary  justify-content-between align-items-center"
 
@@ -156,7 +174,8 @@ export default function ReporteView(prop) {
                                 }}
                             >
                                 <div className="px-0 ">
-                                    <img src={imagenes[modalshow.nombre]} className="" style={{
+                                    <img src={imagenes[modalshow.nombre]} className=" " style={{
+
                                     }}></img>
                                 </div>
                             </div>
@@ -181,8 +200,8 @@ export default function ReporteView(prop) {
                         <div className="p-1 d-none d-md-block ">
                             <button className="btn btn-dark" onClick={nuevo}> IMPRIMIR</button>
                         </div>
-                        <div className="p-1">
-                            <button className=" btn btn-dark" onClick={compartir}>COMPARTIR </button>
+                        <div className="p-1 d-d-block d-sm-block d-md-none">
+                            <button className="btn btn-dark" onClick={compartir}>COMPARTIR </button>
                         </div>
 
                     </div>

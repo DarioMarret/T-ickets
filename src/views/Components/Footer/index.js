@@ -70,7 +70,7 @@ export default function Footer(props) {
                                 </div>
                                 <div className="d-flex  flex-column" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '120px', maxWidth: '' }} >
 
-                                    <span className=" text-white" style={{ fontFamily: '', }} >Siguenos en nuestras Redes  </span>
+                                    <span className=" text-white" style={{ fontFamily: '', }} >Síguenos en nuestras Redes  </span>
                                 </div>
                                 <div className='d-flex pt-2  pb-5 flex-row' >
                                     <div className=' pl-1 ' >
@@ -161,7 +161,7 @@ export default function Footer(props) {
 
                                     </div>
                                     <div className=' txt-white px-1' style={{ width: '225px', maxWidth: 225 }}>
-                                        <h4>Area de Clientes</h4>
+                                        <h4>Área de Clientes</h4>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <span className=" text-white" style={{ fontFamily: '', }} >Reclamos o Devoluciones</span>
                                         </a>
@@ -183,7 +183,7 @@ export default function Footer(props) {
 
                             </div>
                             <div className="d-flex  flex-column pb-2" style={{ minWidth: '120px', maxWidth: '' }} >
-                                <span className=" text-white" style={{ fontSize: '0.65em', }} >COPYRIGHT © 2022 TICKETS ECUADOR S.A - TODOS LOS DERECHOS RESERVADOS </span>
+                                <span className=" text-white" style={{ fontSize: '0.65em', }} >COPYRIGHT © 2022 TICKETS ECUADOR S.A. - TODOS LOS DERECHOS RESERVADOS </span>
                             </div>
 
                         </div>

@@ -317,6 +317,7 @@ const ResgistroView = (prop) => {
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
                 size='lg'
+                fullscreen={"md-down"}
                 onHide={() => usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))}
             >
                 <Modal.Header className="py-4  bg-dark ">
@@ -327,7 +328,7 @@ const ResgistroView = (prop) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="d-flex flex-column ">
-                        <div className="container text-center">
+                        <div className="container text-center d-none d-sm-none d-md-block">
                             <img src={logo} className="mb-4 img-fluid " style={{ height: '80px', color: 'black' }} alt="" />
                         </div>
                         <div className="container-fluid row "  >
@@ -336,7 +337,7 @@ const ResgistroView = (prop) => {
                                     <form className={nedvalida} onSubmit={(e) => Registeruser(e)} method="post" >
                                         <div className="row">
 
-                                            <div className="col-6 col-lg-4">
+                                            <div className="col-12 col-lg-4">
                                                 <div className=" input-group mb-3" >
                                                     <div className="input-group-prepend">
                                                         <span className="input-group-text">
@@ -351,7 +352,7 @@ const ResgistroView = (prop) => {
                                                     </Form.Select>
                                                 </div>
                                             </div>
-                                            <div className="col-6 col-lg-8">
+                                            <div className="col-12 col-lg-8">
                                                 <div className="input-group mb-3">
                                                     <div className="input-group-prepend">
                                                         <span className="input-group-text"><i className="fa fa-search"></i></span>
@@ -406,7 +407,7 @@ const ResgistroView = (prop) => {
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <div className="col-6 col-lg-6  ">
+                                            <div className="col-12 col-lg-6  ">
                                                 <div className="input-group mb-3  px-0 d-flex justify-content-center ">
 
                                                     <input
@@ -416,7 +417,7 @@ const ResgistroView = (prop) => {
                                                         placeholder="999 999 999" />
                                                 </div>
                                             </div>
-                                            <div className="col-6 col-lg-6">
+                                            <div className="col-12 col-lg-6">
                                                 <div className="input-group mb-3" >
                                                     <div className=" input-group-prepend">
                                                         <span className=" input-group-text"> <i className="fa fa-map-marker"></i> </span>
@@ -546,7 +547,7 @@ const ResgistroView = (prop) => {
 
 
                             </div>
-                            <div className="col-12  text-start d-flex flex-column  ">
+                            <div className="col-12  text-start d-flex flex-column d-none d-sm-none d-md-block ">
                                 <div className="d-flex text-start  flex-wrap-reverse ">
                                     <div className="col-12 ">
                                         <p style={{ fontSize: "0.7em" }}>Acepto los <span style={{
@@ -640,7 +641,53 @@ const ResgistroView = (prop) => {
 
                 </Modal.Body>
                 <Modal.Footer>
+                    <div className="col-12 border-top  px-0 pb-0 text-start d-flex flex-column d-block d-sm-block d-md-none ">
+                        <div className="d-flex text-start  flex-wrap-reverse ">
+                            <div className="col-12 ">
+                                <p style={{ fontSize: "0.7em" }}>Acepto los <span style={{
+                                    fontWeight: "bold"
+                                }}>Términos y condiciones</span> emitidas por
+                                    t-icket</p>
+                            </div>
 
+                        </div>
+
+                        <div className="d-flex   flex-wrap-reverse ">
+                            <div className="col-12 d-flex ">
+                                <input className="form-check-input" type="checkbox"
+                                    name="primero"
+                                    checked={check.primero}
+                                    onChange={(e) => handelMetodopago(e.target)}
+
+                                    value="" id="invalidCheck" required />
+                                <p style={{ fontSize: "0.7em" }}>
+                                    Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
+                                    realizada la compra , caso contrario no podrá retirar los boletos duros sin opción a
+                                    rembolso
+                                </p>
+                            </div>
+                        </div>
+                        <div className="d-flex ">
+                            <div className="col-12 d-flex ">
+                                <input className="form-check-input"
+                                    name="segunfo"
+                                    type="checkbox" id="segunfo" required
+                                    checked={check.segunfo}
+                                    onChange={(e) => handelMetodopago(e.target)}
+                                />
+                                <p style={{
+                                    fontSize: "0.7em",
+                                    fontWeight: "bold"
+                                }}>
+                                    Acepto que se crea mi cuenta de usuario en el portal de t-ickets, la misma que contiene mis datos personales, así como los
+                                    datos de mis compras, también recibir las promociones por ese mismo medio.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
                 </Modal.Footer>
             </Modal>
         </>

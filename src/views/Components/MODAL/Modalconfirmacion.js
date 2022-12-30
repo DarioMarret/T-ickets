@@ -83,8 +83,8 @@ const ModalConfima = (prop) => {
                     </div>
 
                 </Modal.Header>
-                <Modal.Body>
-                    <div className="container d-flex flex-column">
+                <Modal.Body className="d-flex align-items-center">
+                    <div className="container d-flex flex-column  ">
                         <form onSubmit={(e) => onSubmit(e)}>
 
 

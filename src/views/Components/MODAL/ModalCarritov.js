@@ -121,6 +121,8 @@ const ModalCarritoView = (prop) => {
         }) : ''
         Listarticketporestado(user.cedula).then(oupt => {
             console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)))
+            console.log(oupt.data)
+
             usedispatch(updateboletos({
                 disponibles: 0,
                 proceso: 0,

@@ -275,7 +275,7 @@ function ModalDetalle(props) {
             </Modal.Header>
             <Modal.Body>
 
-                <div className="container-fluid flex-wrap-reverse justify-content-center " style={{ height: "auto" }}>
+                <div className="container-fluid px-0 flex-wrap-reverse justify-content-center " style={{ height: "auto" }}>
                     <div className="row p-4 ">
                         <div className="col-12 col-lg-6">
                             <h3>Resumen de compra</h3>
@@ -389,7 +389,7 @@ function ModalDetalle(props) {
                             />
                         </div>
                     </div>
-                    <div className="container-fluid table-responsive">
+                    <div className="container-fluid table-responsive px-0">
                         <table className="resumen-table table ">
                             <thead>
                                 <tr className="text-black">

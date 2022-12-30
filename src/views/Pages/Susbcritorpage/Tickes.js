@@ -69,7 +69,7 @@ function Example() {
     Listarticketporestado(user.cedula).then(ouput => {
       let nuevogrupo = []
 
-      ouput.data.forEach(element => {
+      ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).forEach(element => {
         if (!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento)) {
           //console.log(!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento))
           nuevogrupo.push({
@@ -85,7 +85,7 @@ function Example() {
         }
 
       });
-      let nuevo = ouput.data
+      let nuevo = ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2)
       nuevogrupo.length > 0 ? nuevo.map(elm => {
         let index = nuevogrupo.findIndex(f => f.codigoEvento == elm.codigoEvento)
         nuevogrupo[index].detalle.push({
@@ -133,24 +133,30 @@ function Example() {
               sx: { columnVisibility: { nombre: false } }
             }}
             renderDetailPanel={({ row }) => (
-              <div>
+              <div className=" ">
                 {row.original.detalle ? row.original.detalle.map((e, i) => {
                   return (
-                    <div className="row" key={i}>
-                      <div className="col-3 col-md-2">
+                    <div className="row  border-bottom  align-items-center  rounded-1" key={i}>
+                      <div className="col-2 col-md-2 ">
 
                         boleto   {e.sillas}
                       </div>
-                      <div className="col-3 col-md-3">
+                      <div className="col-2 col-md-3">
                         Localidad:  {e.localidad}
                       </div>
                       <div className="col-2 col-md-2">
                         Valor :{e.valor}
                       </div>
-                      <div className="col-2 col-md-2">
+                      <div className="col-sm">
                         Concierto :{row.original.concierto}
                       </div>
-                      <div className="col-2">
+                      <div className="col-sm">
+                        {row.original.fechaCreacion}
+                      </div>
+                      <div className="col-sm">
+                        {row.original.codigoEvento}
+                      </div>
+                      <div className="col-sm">
                         <Tooltip title="Ceder ticket" placement="top-start">
                           <IconButton
                             color='success'

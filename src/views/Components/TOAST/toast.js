@@ -20,7 +20,7 @@ const ToastViews = () => {
             style={{
                 position: 'fixed',
                 top: 30,
-
+                right: 2,
                 transform: 'translate(-50 %, 0 %)',
                 zIndex: 10000,
             }}>
