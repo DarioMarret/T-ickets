@@ -452,7 +452,7 @@ const Reporte = (props) => {
                     </div>
                     <div className='m-2'>
                       <h4 style={{ fontSize: '0.7em' }}>
-                        CUENTA CORRIENTE BANCO PRODUBANCO: 1058194005git
+                        CUENTA CORRIENTE BANCO PRODUBANCO: 1058194005
                       </h4>
 
                     </div>

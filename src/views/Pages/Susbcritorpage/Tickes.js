@@ -68,8 +68,8 @@ function Example() {
     let user = getDatosUsuariosLocalStorag()
     Listarticketporestado(user.cedula).then(ouput => {
       let nuevogrupo = []
-
-      ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).forEach(element => {
+      console.log(ouput)
+      ouput.data.forEach(element => {
         if (!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento)) {
           //console.log(!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento))
           nuevogrupo.push({
@@ -85,12 +85,12 @@ function Example() {
         }
 
       });
-      let nuevo = ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2)
-      nuevogrupo.length > 0 ? nuevo.map(elm => {
+      let nuevo = ouput.data
+      nuevogrupo.length > 0 ? ouput.data.map((elm, idex) => {
         let index = nuevogrupo.findIndex(f => f.codigoEvento == elm.codigoEvento)
         nuevogrupo[index].detalle.push({
           sillas: elm.sillas,
-          localidad: elm.localidad, fechaCreacion: elm.fechaCreacion,
+          localidad: elm.localidad, fechaCreacion: nuevo[idex].fechaCreacion,
           cedula: elm.cedula,
           tokenPago: elm.tokenPago,
           valor: elm.valor, codigoEvento: elm.codigoEvento,

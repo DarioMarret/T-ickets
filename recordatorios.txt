@@ -1,0 +1,9 @@
+un edpoit para recordadar la contraseña
+
+actualizar registro de eventos con campo fecha de inico de Ventan
+
+campo para agrupar compras 
+
+la general esta quemado
+
+ver permisos de de usuario

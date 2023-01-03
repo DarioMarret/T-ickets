@@ -42,6 +42,7 @@ export const PagoRapido = async (transaccion) => {
         return {
             "nombreConcierto": e.nombreConcierto,
             "id_localidad": e.localidaEspacio["idcolor"],
+            "idespaciolocalida": e.localidaEspacio["ideprecio"],
             "cantidad": e.cantidad,
         }
     })
