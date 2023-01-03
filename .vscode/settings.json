@@ -1,10 +1,7 @@
 {
-  "editor.formatOnSave": true,
-  "prettier.bracketSameLine": true,
-  "prettier.resolveGlobalModules": false,
-  "editor.formatOnPaste": true,
-  "prettier.requireConfig": true,
-  "evenBetterToml.schema.associations": {
-    ".*netlify\\.toml": "./.netlify/netlify.toml.schema.json"
-  }
+    "launch": {
+    
+        "configurations": [],
+        "compounds": []
+    }
 }

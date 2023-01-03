@@ -8,19 +8,19 @@ export const ticketproceso = [
         accessorKey: "concierto",
         header: "Evento"
     },
-    {
-        accessorKey: "localidad",
-        header: "localidad"
-    },
-    {
-        accessorKey: "sillas",
-        header: "Boletos",
-
-        size: 50,
-    },
+    
+   
     {
         accessorKey: "valor",
         header: "Valor",
+        Cell: ({ cell}) => (
+            <div>
+                {
+                
+                 cell.row.original.detalle.map((g, i) => { return parseFloat(g.valor) }).reduce((a, b) => a + b, 0).toFixed(2)
+                }
+                </div>
+        ),
         size: 50,
 
     },

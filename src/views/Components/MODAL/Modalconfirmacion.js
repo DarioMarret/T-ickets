@@ -14,7 +14,7 @@ const ModalConfima = (prop) => {
     const { pararcontador } = prop
     let usedispatch = useDispatch()
     const [banco, setBanco] = useState("")
-
+    const [alert, setAlert] = useState(null)
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     let intervalo = useSelector((state) => state.SuscritorSlice.intervalo)
     function cerrar() {
@@ -31,6 +31,65 @@ const ModalConfima = (prop) => {
         usedispatch(setModal({ nombre: '', estado: '' }))
         pararcontador()
         usedispatch(setToastes({ show: true, message: 'Datos del deposito Guardado ', color: 'bg-success', estado: 'Se guardo el numero de control' }))
+    }
+    const successAlert=()=>{
+
+        setAlert(
+            <SweetAlert
+                style={{ display: "block", marginTop: "-100px" }}
+
+
+                closeOnClickOutside={false}
+                showCancel={false}
+                showConfirm={false}
+                confirmBtnText="Completar  Compra"
+                cancelBtnText="Anular Compra"
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+
+            >
+                <div >
+                    <div className='col-12 pb-3'>
+                        <img src={atencion} className="img-fluid"
+                            style={{
+                                height: 100
+                            }}
+                        ></img>
+
+
+                    </div>
+                    <div>
+                        <h6 className=' col-9 col-md-12  mx-auto' style={{
+                            fontWeight: "bold",
+                            fontSize: "1.0rem"
+                        }}>¿Quieres abandonar tu proceso de compra?</h6>
+                        <p> No puedes guardar tu proceso y continuar luego. Si, abandonas perderás tus reservas
+                        </p>
+                        <p>  </p>
+                    </div>
+
+
+                </div>
+                <div className='d-flex  justify-content-around py-4'>
+                    <div>
+                        <button className='btn btn-outline-danger  rounded-6' onClick={() => cerrar()}>
+
+                            <span style={{
+                                fontWeight: "bold"
+                            }}>Anular Compra</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button className=' btn btn-warning rounded-5' onClick={() => hideAlert()} >
+                            <span style={{
+                                fontWeight: "bold"
+                            }}> Completar Compra</span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </SweetAlert>
+        )
     }
 
     async function onSubmit(e) {
