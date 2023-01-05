@@ -10,6 +10,7 @@ import logofla from "../../../assets/imagen/LOGO-WEB.png";
 import mapa from "../../../assets/imagen/MAPAPRUEBA.png"
 import portal from "../../../assets/imagen/Portadashows.jpg"
 import icon from "../../../assets/imagen/50pixeles.png";
+import iconhead from "../../../assets/imagen/LOGO-WEB.png"
 import valla from "../../../assets/imagen/valla-proximo-evento.png";
 import android from "../../../assets/imagen/footericon/app1.png";
 import ios from "../../../assets/imagen/footericon/app2.png";
@@ -28,5 +29,5 @@ export const carrusel = {
     mapa, portal, icon, valla,
     android, ios, face, insta,
     tick, youtube, nombrepage, facilito,
-    redacti, facilitodos, avatar
+    redacti, facilitodos, avatar, iconhead
 } 

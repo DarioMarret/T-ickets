@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styleswiper } from "./styleswiper.js";
 import { pasados, carrusel } from "./imagenstatctic.js";
-let { icon, valla, principal, secundaria, tercero, logofla, mapa, portal, header, avatar } = carrusel
+let { icon,iconhead, valla, principal, secundaria, tercero, logofla, mapa, portal, header, avatar } = carrusel
 import { useSelector, useDispatch } from "react-redux";
 import { todossiler } from "./Modalterminos/silder.js";
 let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
@@ -737,7 +737,8 @@ const IndexFlas = () => {
         <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '300px', backgroundImage: `url(${header})` }}>
           <div className="container w-100 h-100 px-0">
             <div className="container btn-group-vertical  h-100 text-center px-0">
-              <h1 className="text-white mx-auto" style={{ fontSize: '3.5em' }}><img src={Icon} className="img-fluid" style={{ height: '150px' }} alt="" /></h1>
+              <h1 className="text-white mx-auto" style={{ fontSize: '3.5em' }}>
+                  <img src={iconhead} className="img-fluid" style={{ height: '150px' }} alt="" /></h1>
               <p className="mx-auto text-white d-none" style={{ fontSize: '1.2em' }}><b>Compra</b> tu entrada <b>fácil, rápido</b> y
                 <b>seguro</b>
               </p>
