@@ -42,7 +42,8 @@ import AjustesView from "views/Pages/Ajustes";
 import { DiseñoViewtickes } from "views/Pages/Diseñador/Diseñodeticke";
 import EsquemaViews from "views/Pages/Esquemas";
 import NoticiasJs from "views/Pages/Noticias.js";
-import VentasView from "PDF";
+import AprobarView from "views/Pages/VenderTiket.js/Aprobar";
+import EmitirboView from "views/Pages/VenderTiket.js/Emitir";
 
 var routes = [
   {
@@ -180,13 +181,21 @@ var routes = [
       },
 
       {
-        path: "/Ventas-Por-Aprobar",
+        path: "/Aprobar-Ventas",
         layout: "/admin",
         name: "Ventas Por Aprobar",
         mini: "*",
-        component: VentasView,
+        component: AprobarView,
         permiso: ["superadmin", "super_admin", "vendedores"]
-      }, {
+      }, 
+      {
+        path:"/Emitir-Boleto",
+        layout:"/admin",
+        mini:"*",
+        name:"Emitir Bolto",
+        component: EmitirboView,
+      },
+      {
         path: "/Vender-Articulo",
         layout: "/admin",
         name: "Vender Articulo",
@@ -196,6 +205,7 @@ var routes = [
       }
     ]
   },
+  //
   {
     collapse: true,
     path: "/finanza",

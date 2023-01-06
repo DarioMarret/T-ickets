@@ -438,7 +438,7 @@ const Reporte = (props) => {
                 <div className='d-flex px-0'>
 
                   <h5 className="modal-title pb-3 px-0 text-center " style={{ fontSize: '0.7em' }}>Para completar la compra, deberá transferir el valor total <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> ${GetMetodo() != "Tarjeta" ? (parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)).toFixed(2) : (GetValores().total).toFixed(2)} </strong> </span> <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> {intervalo}</strong> </span> Minutos a nombre de:
-                    <strong>TICKETSECUADOR S.A.</strong>   RUC No. <strong>0993377293001</strong>, a una de las siguientes cuentas:</h5>
+                    <strong>COMPUTECNICSNET S.A.</strong> RUC No. <strong>0992782129001</strong>, a una de las siguientes cuentas:</h5>
 
                 </div>
                 <div className='d-fex border rounded-5' style={{ width: '90%' }}>
@@ -449,6 +449,9 @@ const Reporte = (props) => {
 
                     <div className='m-2' >
                       <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO PICHINCHA: 2100106995 </h4>
+                    </div>
+                    <div className='m-2' >
+                      <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO PACIFICO: 8069530 </h4>
                     </div>
                     <div className='m-2'>
                       <h4 style={{ fontSize: '0.7em' }}>

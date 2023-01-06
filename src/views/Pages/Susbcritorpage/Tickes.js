@@ -24,10 +24,38 @@ let { cedericon } = bancos
 function Example() {
     let usedispatch = useDispatch()
     const [tiketslist, setTikes] = useState([])
+    const [tikesele,setTicket] =useState([])
+    
     const [rowSelection, setRowSelection] = useState({});
     const tableInstanceRef = useRef(null);
     const [alert, setAlert] = useState(null)
     const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })), hideAlert() }
+    
+    function selecion(cod, seleccionado) {
+        let info = tikesele
+        let nuevo = []
+        if (info.some(e => e.uid == cod)) {
+            if (info.some(g => g.sillas === seleccionado.sillas)) {
+               
+                setTicket(info.filter(h => h.sillas != seleccionado.sillas))
+                // delete nuevo.seleccionado.sillas;
+                // setselcion({...nuevo})
+
+            } else {
+                info.push({ ...seleccionado })
+                nuevo.push({...seleccionado})
+                setTicket(info)
+            }
+        } else {
+            nuevo=[]
+            let datos = info.filter(f => f.ui == cod)
+            datos.push({ ...seleccionado })
+            setTicket(datos)
+            nuevo.push({ ...seleccionado })
+        }
+
+    }
+    
     const successAlert = (e) => {
         setAlert(
             <SweetAlert
@@ -65,10 +93,10 @@ function Example() {
     }
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
-        Listarticketporestado(user.cedula).then(ouput => {
+        Listarticketporestado(user.cedula).then(ouput => {            
             let nuevogrupo = []
             console.log(ouput)
-            ouput.data.forEach(element => {
+            ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h')<2).forEach(element => {
                 if (!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento)) {
                     //console.log(!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento))
                     let filtro = ouput.data.filter(e => e.codigoEvento == element.codigoEvento)
@@ -84,8 +112,9 @@ function Example() {
                     })
                 }
 
-            });           
-            nuevogrupo.length > 0 ? ouput.data.map((elm, idex) => {
+            });    
+            let nuevo = ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') <2)       
+            nuevogrupo.length > 0 ? nuevo.map((elm, idex) => {
                 let index = nuevogrupo.findIndex(f => f.codigoEvento == elm.codigoEvento)
                 let fecha = elm.fechaCreacion
                 console.log(elm.fechaCreacion)
@@ -104,13 +133,8 @@ function Example() {
         }).catch(err => console.log(err))
     },
         [])
-    /*
-      console.log(
-        Object.keys(rowSelection).map((g, i) => { return parseFloat(tiketslist.find(e => e.id == g).valor) }).reduce((a, b) => a + b, 0).toFixed(2)
-      )*/
+   
     console.log(Object.keys(rowSelection).map((g) => { return tiketslist.find(e => e.codigoEvento == g).detalle }))
-   // console.log(Object.keys(rowSelection))
-  ////  console.log(Object.keys(rowSelection).length > 0 ? suma(Object.keys(rowSelection)[0]):'')
         function suma (item){
          let tikets=   tiketslist.find(e => e.codigoEvento == item).detalle.map((f) => { return parseFloat( f.valor) })
          try {
@@ -149,6 +173,21 @@ function Example() {
                                 {row.original.detalle ? row.original.detalle.map((e, i) => {
                                     return (
                                         <div className="row  border-bottom  align-items-center  rounded-1" key={"cons"+i}>
+                                            <div className="col-sm">
+                                                <div className=" text-center">
+                                                    <label className="form-check-label" >
+
+                                                    </label>
+                                                    <input className="form-check-input" type="checkbox" name={e.sillas}
+                                                       
+
+                                                        id="flexCheckIndeterminate" />
+
+                                                </div>
+
+
+                                            </div>
+                                           
                                             <div className="col-2 col-md-2 ">
 
                                                 boleto   {e.sillas}
@@ -238,8 +277,8 @@ function Example() {
                      
                         getRowId={(row) => row.codigoEvento}
                         muiSelectCheckboxProps={({ row }) => ({
-                            disabled: row.original.estado != "reservado",
-                            disabled: moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(row.original.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2
+                            disabled: row.original.estado == "reservado",
+                            disabled: moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(row.original.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') > 2
                         })}
                         tableInstanceRef={tableInstanceRef}
                         positionToolbarAlertBanner="bottom"

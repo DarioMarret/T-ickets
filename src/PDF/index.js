@@ -102,7 +102,7 @@ export default function VentasView() {
 
             <div className="card card-primary card-outline text-left " style={{ minHeight: '250px' }} >
                 <div className="card-header pb-2">
-                    Ventas por Aprobar
+                    Ventas por Aprobar aqui
                 </div>
                 <div className="card-body table-responsive">
                     <MaterialReactTable

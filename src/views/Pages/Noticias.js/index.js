@@ -30,6 +30,7 @@ export default function NoticiasView() {
 
     let usedispatch = useDispatch()
     let fechamin = new Date().toISOString().slice(0, -14);
+    const [cargando,setCargando]=useState(false)
     const [Tipo, setTipo] = useState("Evento")
     const [show, setShowca] = useState(false)
     const [eventos, setEventos] = useState([])
@@ -72,7 +73,6 @@ export default function NoticiasView() {
     const onSubmit = async (e) => {
         e.preventDefault()
         const form = new FormData(e.target)
-        //   console.log("Datos -->", datos)
         if (Object.values(Object.fromEntries(form.entries())).some(e => e)) {
             let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
             if (Tipo != "Evento") {
@@ -81,24 +81,27 @@ export default function NoticiasView() {
                 }
                 else {
                     try {
+                        setCargando(true)
                         let link = await Obtenerlinkimagen(imgen)
                         console.log(Object.fromEntries(form.entries()))
                         let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
-                        let parametr = {
-                            "encabezado": encabezado,
-                            "descripcion": descipcion,
-                            "link_img": link,
-                            "fecha_presentacion": fechamax,
-                            "redirect": mas
-                        }
+                       
                         // console.log(parametr)
-                        let carruse = await agregarNoticia(parametr)
-                        //console.log(link, carruse)
-                        Evento()
-
+                        
+                        setTimeout(async function () {
+                            let parametr = {
+                                "encabezado": encabezado,
+                                "descripcion": descipcion,
+                                "link_img": link,
+                                "fecha_presentacion": fechamax,
+                                "redirect": mas
+                            }
+                            let carruse = await agregarNoticia(parametr)
+                            Evento()
+                            setCargando(false)
+                        }, 3000)
                     } catch (error) {
                         console.log(error)
-
                     }
                 }
             }
@@ -110,34 +113,35 @@ export default function NoticiasView() {
                 else {
                     try {
                         //  console.log("llenar datos", imgen)
+                        setCargando(true)
                         let link = await Obtenerlinkimagen(imgen)
                         //    console.log(Object.fromEntries(form.entries()))
                         let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
                         //  console.log(Object.fromEntries(form.entries()))
-                        let datas = {
-                            "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"],
-                            "encabezado": encabezado,
-                            "descripcion": descipcion,
-                            "link_img": link,
-                            "fecha_presentacion": fechamax,
-                            "redirect": ''
-                        }
-                        //  console.log(datas)
-                        let carruse = await noticiasEvento(datas)
-                        Evento()
+                        
+                                   
+                        setTimeout(async function() {
+                            let datas = {
+                                "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"],
+                                "encabezado": encabezado,
+                                "descripcion": descipcion,
+                                "link_img": link,
+                                "fecha_presentacion": fechamax,
+                                "redirect": ''
+                            }
+                            console.log(datas)      
+                            let carruse = await noticiasEvento(datas)
+                            Evento()
+                            setCargando(false)
+                        },3000)        
                         //  console.log(carruse)
-
                     } catch (error) {
                         console.log(error)
-
                     }
-
                 }
             }
         } else {
             usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
-
-            //   console.log("vacio")
         }
     }
     const onaPutbmit = async (e) => {
@@ -604,7 +608,7 @@ export default function NoticiasView() {
                                         }
 
                                         <div className="col-12 d-flex justify-content-end">
-                                            {datos.id == "" ? <button className="btn btn-primary mx-1"  >Guardar </button> :
+                                            {datos.id == "" ? <button className="btn btn-primary mx-1" disabled={cargando} >Guardar </button> :
                                                 <button className="btn btn-primary mx-1"  >Actualizar </button>}
                                         </div>
                                     </form>
