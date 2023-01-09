@@ -119,13 +119,11 @@ div.esquema:hover {
 li.agregados {
     cursor: pointer;
 }
-
 @media (min-width: 950px) {
     .modal-content {
         border-radius: 15px !important;
     }
 }
-
 @media (max-width: 967.98px) {
     .modal-dialog {
         width: 100% !important;
@@ -140,13 +138,9 @@ li.agregados {
         height: 100% !important;
         margin: 0 !important;
     }
-
     .modal-content {
-
         border-top: 20px !important;
-
     }
-
     .img-evento {
         height: 190px !important;
         width: 100% !important;

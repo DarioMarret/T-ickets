@@ -526,7 +526,7 @@ const IndexFlas = () => {
       "codigoEvento": datos[0],
       "lugarConcierto": datos[1]
     }) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))
-    /* abrir({
+     abrir({
        "nombreConcierto": datos[2],
        "codigoEvento": datos[0],
        "lugarConcierto": datos[1]
@@ -535,7 +535,7 @@ const IndexFlas = () => {
        nombreConcierto: datos[2],
        codigoEvento: datos[0],
        lugarConcierto: datos[3]
-     }*/
+     }
   }
   return (
     <>
@@ -631,7 +631,6 @@ const IndexFlas = () => {
                 <a className=" btn btn-outline-nuevo rounded-7  " href="#" onClick={salir}> Salir <i className="fa fa-window-close"></i> </a>
               </li>}
             </ul>
-
           </div>
         </div>
       </nav>
@@ -645,14 +644,12 @@ const IndexFlas = () => {
       {publicidad.length > 0 ? <div className="container-fluid  pt-2 px-0" style={{
         minHeight: '300px'
       }}>
-
-
         <Swiper
           className="AnimatedSlides "
           parallax={true}
           loop={publicidad.length > 1 ? true : false}
           autoHeight={true}
-          navigation={true}
+          navigation={publicidad.length > 1 ? true : false}
           pagination={{
             clickable: true,
           }}
@@ -673,7 +670,6 @@ const IndexFlas = () => {
                         width: "100%",
                         height: "400px",
                       }}>
-
                         <div style={{
                           backgroundImage: "url('" + element.link_img + "')",
                           ...styleswiper.slideimg
@@ -704,8 +700,8 @@ const IndexFlas = () => {
                                 >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
                               </div>
                             </div>
-                            <h4 className=" " style={styleswiper.titulo}>{element.encabezado}  </h4>
-                            <span style={styleswiper.subtitulo}>
+                            <h4 className=" font-weight-bold " style={styleswiper.titulo}>{element.encabezado}  </h4>
+                            <span className="" style={styleswiper.subtitulo}>
                               {element.descripcion}
                             </span>
                             <div className="pt-2 ">

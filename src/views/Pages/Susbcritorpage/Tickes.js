@@ -20,6 +20,9 @@ import { bancos } from "utils/Imgenesutils.js";
 import ModalReporteViews from "views/Components/MODAL/ReportarPago.js";
 import moment from "moment";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag.js";
+import { registraPagos } from "utils/pagos/Queripagos.js";
+import { listarRegistro } from "utils/pagos/Queripagos.js";
+import ListaderegistroView from "../Flasdeticket/Listaregistro/index.js";
 let { cedericon } = bancos
 function Example() {
     let usedispatch = useDispatch()
@@ -113,6 +116,7 @@ function Example() {
                 }
 
             });    
+            
             let nuevo = ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') <2)       
             nuevogrupo.length > 0 ? nuevo.map((elm, idex) => {
                 let index = nuevogrupo.findIndex(f => f.codigoEvento == elm.codigoEvento)
@@ -314,6 +318,10 @@ function Example() {
               </button>
             </div> : ''}
                     </div>
+                </div>
+                <div className=" container">
+                    <ListaderegistroView/>
+                    
                 </div>
 
             </div>

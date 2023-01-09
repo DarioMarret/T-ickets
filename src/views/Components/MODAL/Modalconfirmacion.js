@@ -10,11 +10,17 @@ import { useState } from "react";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { PagoRapido } from "utils/Querycomnet";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { registraPagos } from "utils/pagos/Queripagos";
 const ModalConfima = (prop) => {
     const { pararcontador } = prop
     let usedispatch = useDispatch()
-    const [banco, setBanco] = useState("")
+    const [estado,setEstado]=useState(true)
     const [alert, setAlert] = useState(null)
+    const [comproba,setcomprobante]=useState({
+        numeroTransaccion:"",
+        link_comprobante:"",
+        banco:""
+    })
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     let intervalo = useSelector((state) => state.SuscritorSlice.intervalo)
     function cerrar() {
@@ -26,6 +32,7 @@ const ModalConfima = (prop) => {
             estado: "Recuerda "
         }))
     }
+
 
     function confirmar() {
         usedispatch(setModal({ nombre: '', estado: '' }))
@@ -91,36 +98,77 @@ const ModalConfima = (prop) => {
             </SweetAlert>
         )
     }
+     function onChange(e){
+        setcomprobante({
+            ...comproba,
+            link_comprobante:e.files
+        })
+        console.log(e.files)
+
+    }
+    function onhandelChange(e){
+        setcomprobante({
+            ...comproba,            
+            [e.name]:e.value
+        })
+
+    }
 
     async function onSubmit(e) {
         e.preventDefault();
-
-        const form = new FormData(e.target)
-        console.log(Object.fromEntries(form.entries()))
-        const { codigo, comprobante } = Object.fromEntries(form.entries())
-        //if([codigo,comprobante.name])
-        console.log(comprobante)
-        console.log([codigo, comprobante.name].some(e => e))
-        if ([codigo, comprobante.name].some(e => e)) usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
-        if (banco == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
-        else if (![codigo, comprobante.name].some(e => e) && banco != "") {
-            try {
-                // const link = await Obtenerlinkimagen(comprobante)
-                const reporte = {
-                    "banco": banco,
-                    "codigo": codigo,
-                    "comprobante": "link"
-                }
-                console.log(reporte)
-                //console.log  PagoRapido().then(ouput=>console.log(e))
+        if (![comproba.banco, comproba.numeroTransaccion].some(e => e)) usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
+        if (comproba.banco == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
+        if (comproba.link_comprobante[0] == undefined) usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del Comprobante', color: 'bg-danger', estado: 'Datos vacios' }))
+        if (isNaN(comproba.numeroTransaccion.trim())) usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobante ', color: 'bg-danger', estado: 'Datos vacios' }))
+        else if ([comproba.banco, comproba.numeroTransaccion].some(e => e) ) {
+           try {
+               setEstado(false)
+               const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
+               setTimeout( async function(){
+                    const reporte = {
+                        "forma_pago": "Deposito",
+                        "link_comprobante": link,
+                        "numeroTransaccion": comproba.numeroTransaccion,
+                        "cedula": "1314780774",
+                        "estado": "Pagado"
+                    }
+                  //console.log(reporte)
+                   registraPagos(reporte).then(ouput=>{
+                       if (ouput.success){
+                           setEstado(true)
+                           usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
+                           usedispatch(setModal({ nombre: '', estado: '' }))
+                            console.log(ouput)
+                        }
+                       else{
+                       setEstado(true)
+                       console.log(ouput)
+                           usedispatch(setToastes({ show: true, message: 'No se pudo realizar el regfistro del comprobante ', color: 'bg-danger', estado: 'Hubo un error' }))
+                        
+                    }
+                   }).catch(erro=>{
+                    console.log(erro)
+                       setEstado(true)
+                      // usedispatch(setModal({ nombre: '', estado: '' }))
+                   })
+                   setEstado(true)
+                },2000)
+                
             } catch (error) {
                 console.log(error)
 
             }
         }
 
-    }
 
+    }
+    $(document).ready(function () {
+        $(".numero").keypress(function (e) {
+            var n = (e = e || window.event).keyCode || e.which,
+                t = -1 != "0123456789".indexOf(String.fromCharCode(n));
+            (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
+        })
+    });
     return (
         <>
 
@@ -145,8 +193,6 @@ const ModalConfima = (prop) => {
                 <Modal.Body className="d-flex align-items-center">
                     <div className="container d-flex flex-column  ">
                         <form onSubmit={(e) => onSubmit(e)}>
-
-
                             <div className=" p-1">
                                 <div className="d-none text-center"
                                 >
@@ -158,10 +204,12 @@ const ModalConfima = (prop) => {
                                 <h5 style={{ fontSize: "1.0em" }}>
                                     Selecione el banco al que realizó la transferencia
                                 </h5>
-                                <select className="  form-select" id="banco" name="banco" value={banco} onChange={(e) => setBanco(e.target.value)}>
+                                <select className="  form-select"  name="banco" value={comproba.banco} onChange={(g)=>onhandelChange(g.target)} >
                                     <option disabled value={""}></option>
                                     <option value={"Pichincha"}>Banco Pichincha</option>
                                     <option value={"Guayaquil"}>Banco Guayaquil</option>
+                                    <option value={"Produbanco"}>Banco Produbanco</option>
+                                    <option value={"Pacifico"}>Banco Pacifico</option>
                                 </select>
                             </div>
                             <div className=" p-1">
@@ -169,8 +217,9 @@ const ModalConfima = (prop) => {
                                     Ingrese el número de comprobante de la transferencia
                                 </h5>
                                 <input className=" form-control numero"
-                                    name="codigo"
-                                    id="codigo"
+                                    name="numeroTransaccion"
+                                    value={comproba.numeroTransaccion}
+                                    onChange={(e)=>onhandelChange(e.target)}
                                     type={"text"}
                                 />
                             </div>
@@ -178,7 +227,12 @@ const ModalConfima = (prop) => {
                                 <h5 style={{ fontSize: '1.0em' }}>
                                     Adjuntar Comprobante ( imagen jpg ó png)
                                 </h5>
-                                <input type="file" accept="image/*" id="comprobante" name="comprobante" className="form-control" />
+                                <input type="file" accept="image/*"  name="comprobante"
+                                    onChange={(e) => onChange(e.target)}
+                                className="form-control"
+                                    
+                                
+                                />
                             </div>
                             <div className=" p-1 ">
                                 {modal.nombre == "confirmar" ? <span>
@@ -190,8 +244,10 @@ const ModalConfima = (prop) => {
                             </div>
                             <div className="d-flex container justify-content-center ">
                                 <div>
-                                    <button className=" btn p-2 btn-success">Confirmar Transferencia</button>
-                                </div>
+                                 {estado?   <button className=" btn p-2 btn-success">Confirmar Transferencia</button>
+                               :
+                                        <button className="btn btn-success p-2"  disabled={true}>Confirmar Transferencia <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> </button>
+                               } </div>
 
                             </div>
                         </form>

@@ -6,15 +6,15 @@ export const styleswiper = {
   },
   titulo: {
     textTransform: 'uppercase',
-    fontFamily: '  ', fontSize: '1.0em',
+     fontSize: '1.0em',
   },
   subtitulo: {
     textColor: 'red',
-    fontFamily: ' bold,fantasy', fontSize: '0.9em',
+     fontSize: '0.9em',
     textTransform: 'uppercase',
   },
   button: {
-    fontFamily: ' ', width: '150px',
+     width: '150px',
     fontSize: '1.0em'
   },
   slideimg: {

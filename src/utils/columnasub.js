@@ -1,7 +1,10 @@
 import { Chip } from "@mui/material"
 import moment from "moment"
+import { Badge } from "react-bootstrap"
 let estado = {
-    "reservado": "error"
+    "reservado": "error",
+    "GENERAR":"Generar",
+    "null":"Sin generar"
 }
 export const ticketproceso = [
     {
@@ -59,4 +62,40 @@ export const ticketprocesoapro = [
         header: "Fecha",
     },
 
+]
+let color = {
+    "ACTIVO": "success",
+    "PROCESO": "secondary",
+    null: "danger",
+    "null": "danger"
+}
+
+export const listaRegistro=[
+    {
+        accessorKey: "cedula",
+        header: "Cedula"
+    },
+    {
+        accessorKey:"fechaReporte",
+        header:"Fecha"
+    },
+    { accessorKey:"generar_pdf",
+        header:"PDF" ,
+        Cell: ({ cell }) => (
+            <div>
+                <Badge bg={color[cell.row.original.generar_pdf]}  >
+
+                    {estado[cell.row.original.generar_pdf]}</Badge>
+
+            </div>
+        ),      
+},
+    {
+        accessorKey:"forma_pago",
+        header:"Metodo"
+    },
+    {
+        accessorKey: "estado_pago",
+        header: "Estado"
+    }
 ]
