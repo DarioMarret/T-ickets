@@ -132,13 +132,13 @@ const ModalConfima = (prop) => {
                         "cedula": modal.estado.cedula?  modal.estado.cedula:getDatosUsuariosLocalStorag().cedula,
                         "estado": "Pagado"
                     }
-                  console.log(reporte)
+                  //console.log(reporte)
                    registraPagos(reporte).then(ouput=>{
                        if (ouput.success){
                            setEstado(true)
                            usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
                            usedispatch(setModal({ nombre: '', estado: '' }))
-                            console.log(ouput)
+                           // console.log(ouput)
                         }
                        else{
                        setEstado(true)

@@ -120,20 +120,19 @@ const ModalCarritoView = (prop) => {
             $("#" + e.path).attr("fill", e.fill)
         }) : ''
         Listarticketporestado(user.cedula).then(oupt => {
-            console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)))
-            console.log(oupt.data)
-
+           // console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)))
+            //console.log(oupt.data)
             usedispatch(updateboletos({
                 disponibles: 0,
                 proceso: 0,
                 pagados: 0,
                 inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).length
             }))
-            console.log({
+            /*console.log({
                 disponibles: 0,
                 proceso: 0,
                 pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).length
-            })
+            })*/
 
         }).catch(err => {
             console.log(err)
