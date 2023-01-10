@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styleswiper } from "./styleswiper.js";
 import { pasados, carrusel } from "./imagenstatctic.js";
-let { icon,iconhead, valla, principal, secundaria, tercero, logofla, mapa, portal, header, avatar } = carrusel
+let { icon, iconhead, valla, principal, secundaria, tercero, logofla, mapa, portal, header, avatar } = carrusel
 import { useSelector, useDispatch } from "react-redux";
 import { todossiler } from "./Modalterminos/silder.js";
 let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
@@ -56,6 +56,8 @@ import ReporteView from "views/Components/MODAL/Modalreporpago.js";
 import Comprobante from "./comprobante/index.js";
 import { espacio } from "utils/constantes.js";
 import { correlativosadd } from "utils/Querypanelsigui.js";
+import { listarRegistropanel } from "utils/pagos/Queripagos.js";
+import { setToastes } from "StoreRedux/Slice/ToastSlice.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
@@ -263,79 +265,104 @@ const IndexFlas = () => {
   }
   const abrir = async (e) => {
     setspinervi("")
-    let id = sessionStorage.getItem(Eventoid)
-    if (id != null && id != e.codigoEvento) {
-      setspinervi("d-none")
-      successAlert(e)
-    }
-    else {
-      try {
-        let obten = await listarpreciolocalidad(e.codigoEvento)
-        const listalocal = await ListarLocalidad("")
-        let localidades = await cargarMapa()
-        sessionStorage.consierto = e.nombreConcierto
-        if (obten.data.length > 0) {
-          let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-          let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-          console.log(mapalocal, mapa)
-          let localidad = JSON.parse(mapa[0].localidad)
-          let path = JSON.parse(mapa[0].pathmap)
-          console.log(obten.data)
-          let newprecios = obten.data.map((g, i) => {
-            let color = localidad.filter((f, i) => f.nombre == g.localidad)
-            g.color = color[0].color
-            g.idcolor = color[0].id
-            g.typo = color[0].tipo
-            g.ideprecio = g.id
-            g.espacio = color[0].espacio
-            sessionStorage.setItem(espacio, color[0].espacio)
-            return g
-          })
-          let colornuevo = mapalocal.map((L) => {
-            if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
-              L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
-              L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
-              L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
-              L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
-              L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
-              L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
-              L.espacioid = L.id_espacio
-              return L
-            }
-          })
-          let pathnuevo = path.map((L) => {
-            if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
-              return L
-            }
-          })
-          sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
-            return e
-          }))]))
-          usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
-          let nuevosdatos = {
-            precios: newprecios,
-            pathmapa: pathnuevo.filter((e) => e != undefined),
-            mapa: mapa[0].nombre_mapa
-          }
-          console.log(nuevosdatos)
-          sessionStorage.eventoid = e.codigoEvento
-          setPrecios(nuevosdatos)
-          setDatoscon(e)
-          //consultarlocalidad()
-          Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
+    try {
+      const boletos = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
+      if (boletos.success) {
+        console.log(boletos, boletos.data.filter(f => f.estado_pago != "Pagado"))
+        if (!boletos.data.some(f => f.estado_pago == "Pendiente")) {
+          let id = sessionStorage.getItem(Eventoid)
+          if (id != null && id != e.codigoEvento) {
             setspinervi("d-none")
-            velocidad()
-            usedispatch(cargarsilla(outp))
-            usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-          }).catch(err => {
-            console.log(err)
-          })
+            successAlert(e)
+          }
+          else {
+            try {
+              let obten = await listarpreciolocalidad(e.codigoEvento)
+              const listalocal = await ListarLocalidad("")
+              let localidades = await cargarMapa()
+              sessionStorage.consierto = e.nombreConcierto
+              if (obten.data.length > 0) {
+                let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
+                let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
+                console.log(mapalocal, mapa)
+                let localidad = JSON.parse(mapa[0].localidad)
+                let path = JSON.parse(mapa[0].pathmap)
+                console.log(obten.data)
+                let newprecios = obten.data.map((g, i) => {
+                  let color = localidad.filter((f, i) => f.nombre == g.localidad)
+                  g.color = color[0].color
+                  g.idcolor = color[0].id
+                  g.typo = color[0].tipo
+                  g.ideprecio = g.id
+                  g.espacio = color[0].espacio
+                  sessionStorage.setItem(espacio, color[0].espacio)
+                  return g
+                })
+                let colornuevo = mapalocal.map((L) => {
+                  if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+                    L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
+                    L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
+                    L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
+                    L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
+                    L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
+                    L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
+                    L.espacioid = L.id_espacio
+                    return L
+                  }
+                })
+                let pathnuevo = path.map((L) => {
+                  if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+                    return L
+                  }
+                })
+                sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
+                  return e
+                }))]))
+                usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
+                let nuevosdatos = {
+                  precios: newprecios,
+                  pathmapa: pathnuevo.filter((e) => e != undefined),
+                  mapa: mapa[0].nombre_mapa
+                }
+                console.log(nuevosdatos)
+                sessionStorage.eventoid = e.codigoEvento
+                setPrecios(nuevosdatos)
+                setDatoscon(e)
+                //consultarlocalidad()
+                Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
+                  setspinervi("d-none")
+                  velocidad()
+                  usedispatch(cargarsilla(outp))
+                  usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+                }).catch(err => {
+                  console.log(err)
+                })
+              }
+            } catch (err) {
+              console.log(err)
+              setspinervi("d-none")
+            }
+          }
+
         }
-      } catch (err) {
-        console.log(err)
-        setspinervi("d-none")
+        else {
+          setspinervi("d-none")
+          SetSeleccion("Tickets")
+          usedispatch(setToastes({
+            show: true,
+            message: "Antes de comprar de nuevo termina pagando la compra pendiente",
+            color: 'bg-warning',
+            estado: "Tienes una compra pendiente "
+          }))
+        }
+
       }
+    } catch (error) {
+      console.log(error)
     }
+   
+ 
+  
   }
   const borrar = async (e) => {
     try {
@@ -526,16 +553,16 @@ const IndexFlas = () => {
       "codigoEvento": datos[0],
       "lugarConcierto": datos[1]
     }) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))
-     abrir({
-       "nombreConcierto": datos[2],
-       "codigoEvento": datos[0],
-       "lugarConcierto": datos[1]
-     })
-     return {
-       nombreConcierto: datos[2],
-       codigoEvento: datos[0],
-       lugarConcierto: datos[3]
-     }
+    abrir({
+      "nombreConcierto": datos[2],
+      "codigoEvento": datos[0],
+      "lugarConcierto": datos[1]
+    })
+    return {
+      nombreConcierto: datos[2],
+      codigoEvento: datos[0],
+      lugarConcierto: datos[3]
+    }
   }
   return (
     <>
@@ -606,7 +633,7 @@ const IndexFlas = () => {
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#" onClick={() => SetSeleccion("")}>Inicio</a>
               </li>
-              <li className="nav-item active  py-0 mx-1" aria-current="page" onClick={() => SetSeleccion("")}>
+              <li className="nav-item active  py-0 mx-lg-1" aria-current="page" onClick={() => SetSeleccion("")}>
                 <a className=" nav-link" href="#nuevoseventos"
                   style={{ height: 70 }}>Eventos</a>
               </li>
@@ -734,7 +761,7 @@ const IndexFlas = () => {
           <div className="container w-100 h-100 px-0">
             <div className="container btn-group-vertical  h-100 text-center px-0">
               <h1 className="text-white mx-auto" style={{ fontSize: '3.5em' }}>
-                  <img src={iconhead} className="img-fluid" style={{ height: '150px' }} alt="" /></h1>
+                <img src={iconhead} className="img-fluid" style={{ height: '150px' }} alt="" /></h1>
               <p className="mx-auto text-white d-none" style={{ fontSize: '1.2em' }}><b>Compra</b> tu entrada <b>fácil, rápido</b> y
                 <b>seguro</b>
               </p>

@@ -170,7 +170,7 @@ const ModalLogin = (props) => {
           <strong className="mr-auto">Hubo un error </strong>
           <small></small>
           <button type="button" className="close"
-            onClick={() => setShowToas({ ...Toastestado, show: false })} >
+            onClick={() => setShowToas(false )} >
             ×
           </button>
         </Toast.Header>

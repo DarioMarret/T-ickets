@@ -116,7 +116,7 @@ const ModalConfima = (prop) => {
 
     async function onSubmit(e) {
         e.preventDefault();
-        if (![comproba.banco, comproba.numeroTransaccion].some(e => e)) usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
+        if (comproba.numeroTransaccion == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
         if (comproba.banco == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
         if (comproba.link_comprobante[0] == undefined) usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del Comprobante', color: 'bg-danger', estado: 'Datos vacios' }))
         if (isNaN(comproba.numeroTransaccion.trim())) usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobante ', color: 'bg-danger', estado: 'Datos vacios' }))
@@ -129,10 +129,10 @@ const ModalConfima = (prop) => {
                         "forma_pago": "Deposito",
                         "link_comprobante": link,
                         "numeroTransaccion": comproba.numeroTransaccion,
-                        "cedula": "1314780774",
+                        "cedula": modal.estado.cedula?  modal.estado.cedula:getDatosUsuariosLocalStorag().cedula,
                         "estado": "Pagado"
                     }
-                  //console.log(reporte)
+                  console.log(reporte)
                    registraPagos(reporte).then(ouput=>{
                        if (ouput.success){
                            setEstado(true)
@@ -143,7 +143,7 @@ const ModalConfima = (prop) => {
                        else{
                        setEstado(true)
                        console.log(ouput)
-                           usedispatch(setToastes({ show: true, message: 'No se pudo realizar el regfistro del comprobante ', color: 'bg-danger', estado: 'Hubo un error' }))
+                           usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
                         
                     }
                    }).catch(erro=>{
