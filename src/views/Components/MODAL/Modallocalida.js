@@ -793,7 +793,9 @@ const LocalidadmapViews = (props) => {
                                                                     return (
                                                                         <div key={"silla" + index} id={silla.idsilla}
                                                                             className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 sillasfila text-center  justify-content-center align-items-center '}
-                                                                            style={{ height: '30px', width: '30px', marginLeft: '1px', }} >
+                                                                            style={{ height: '30px', width: '30px', marginLeft: '1px', }}  
+                                                                            onClick={() => console.log(silla)}
+                                                                            >
                                                                             <div className={'px-3 d-flex   text-white justify-content-center  '} >
                                                                                 <div className="d-flex justify-content-center">
                                                                                     <span style={{ fontSize: '0.7em' }}> {numero} </span>

@@ -4,34 +4,17 @@ import { useSelector } from "react-redux";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 const MesadiesView = ({ text, list }) => {
   let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
-  // console.log(nombre)
-  // const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == nombre.localidad))
-
-  //let silla = seleccion
-  // console.log(silla)
   function checkAvailability(arr, val) {
     return arr.some(function (arrVal) {
-      //console.log(val,arrVal.silla)
       return val === arrVal.silla;
     });
   }
   let user = getDatosUsuariosLocalStorag()
-
   function Estado(e) {
     let estado = list.find(f => f.silla == e)
-    /*if (silla.length > 0) {
-      //let valor = 
-      //console.log(checkAvailability(seleccion,e))
-      //var index = ;
-      var index = list.findIndex(obj => obj.silla == e);
-      return checkAvailability(seleccion, e) ? silla[silla.findIndex(obj => obj.silla == e)].estado : list[index].estado
-    }
-    var index = list.findIndex(obj => obj.silla == e);
-    return list[index].estado*/
     if (estado.cedula != undefined && estado.cedula != "") {
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
       else return "reservado"
-      // return "seleccionado"
     }
     else return estado.estado
   }
@@ -57,6 +40,11 @@ const MesadiesView = ({ text, list }) => {
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
     return "mesadisponible"
   }
+  function sillasid(e) {
+    let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).idsilla : ""
+    console.log(estado)
+  }
+
   function obtenerid(e) {
     let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla" + list.find(f => f.silla == e).idsilla : ""
     return estado
@@ -67,20 +55,30 @@ const MesadiesView = ({ text, list }) => {
         <div className=" " style={{ margin: '0.1px', height: '5px', width: '15px', borderRadius: '5px' }}>
         </div>
 
-        <a id={obtenerid(text + "-s-1")} className={text + "-s-1 sillas   " + Estado(text + "-s-1")} style={Stylesilla.asientos}></a>
+        <a id={obtenerid(text + "-s-1")}
+          onClick={() => sillasid(text + "-s-1")}
+        className={text + "-s-1 sillas   " + Estado(text + "-s-1")} style={Stylesilla.asientos}></a>
 
-        <a id={obtenerid(text + "-s-2")} className={text + "-s-2 sillas  " + Estado(text + "-s-2")} style={Stylesilla.asientos}>
+        <a id={obtenerid(text + "-s-2")} 
+          onClick={() => sillasid(text + "-s-2")}
+        className={text + "-s-2 sillas  " + Estado(text + "-s-2")} style={Stylesilla.asientos}>
         </a>
-        <a id={obtenerid(text + "-s-3")} className={text + "-s-3 sillas  " + Estado(text + "-s-3")} style={Stylesilla.asientos}>
+        <a id={obtenerid(text + "-s-3")} 
+          onClick={() => sillasid(text + "-s-3")}
+        className={text + "-s-3 sillas  " + Estado(text + "-s-3")} style={Stylesilla.asientos}>
         </a>
       </div>
 
       <div className=" d-flex  align-items-center">
         <div className="d-flex flex-column">
-          <a id={obtenerid(text + "-s-4")} className={text + "-s-4 sillas " + Estado(text + "-s-4")} style={Stylesilla.asientos}>
+          <a id={obtenerid(text + "-s-4")} 
+            onClick={() => sillasid(text + "-s-4")}
+          className={text + "-s-4 sillas " + Estado(text + "-s-4")} style={Stylesilla.asientos}>
           </a>
 
-          <a id={obtenerid(text + "-s-5")} className={text + "-s-5 sillas  " + Estado(text + "-s-5")} style={Stylesilla.asientos}>
+          <a id={obtenerid(text + "-s-5")} 
+            onClick={() => sillasid(text + "-s-5")}
+          className={text + "-s-5 sillas  " + Estado(text + "-s-5")} style={Stylesilla.asientos}>
           </a>
         </div>
         <div className={text + " " + list.length + "  Mesa   txt-white d-flex p-1  " + MesaEstado(text)} style={Stylesilla.mesas} >
@@ -88,9 +86,13 @@ const MesadiesView = ({ text, list }) => {
         </div>
 
         <div className="d-flex flex-column">
-          <a id={obtenerid(text + "-s-6")} className={text + "-s-6 sillas  " + Estado(text + "-s-6")} style={Stylesilla.asientos}>
+          <a id={obtenerid(text + "-s-6")} 
+            onClick={() => sillasid(text + "-s-6")}
+          className={text + "-s-6 sillas  " + Estado(text + "-s-6")} style={Stylesilla.asientos}>
           </a>
-          <a id={obtenerid(text + "-s-7")} className={text + "-s-7 sillas  " + Estado(text + "-s-7")} style={Stylesilla.asientos}>
+          <a id={obtenerid(text + "-s-7")} 
+            onClick={() => sillasid(text + "-s-7")}
+          className={text + "-s-7 sillas  " + Estado(text + "-s-7")} style={Stylesilla.asientos}>
           </a>
         </div>
       </div>
@@ -98,11 +100,18 @@ const MesadiesView = ({ text, list }) => {
       <div className="d-flex ">
         <div className=" " style={{ margin: '0.1px', height: '5px', width: '15px', borderRadius: '5px' }}>
         </div>
-        <a id={obtenerid(text + "-s-8")} className={text + "-s-8 sillas  " + Estado(text + "-s-8")} style={Stylesilla.asientos}>
+        <a id={obtenerid(text + "-s-8")} 
+          onClick={() => sillasid(text + "-s-8")}
+        className={text + "-s-8 sillas  " + Estado(text + "-s-8")} style={Stylesilla.asientos}>
         </a>
-        <a id={obtenerid(text + "-s-9")} className={text + "-s-9 sillas  " + Estado(text + "-s-9")} style={Stylesilla.asientos}>
+        <a id={obtenerid(text + "-s-9")} 
+          onClick={() => sillasid(text + "-s-9")}
+
+        className={text + "-s-9 sillas  " + Estado(text + "-s-9")} style={Stylesilla.asientos}>
         </a>
-        <a id={obtenerid(text + "-s-10")} className={text + "-s-10 sillas  " + Estado(text + "-s-10")} style={Stylesilla.asientos}>
+        <a id={obtenerid(text + "-s-10")} 
+          onClick={() => sillasid(text + "-s-10")}
+        className={text + "-s-10 sillas  " + Estado(text + "-s-10")} style={Stylesilla.asientos}>
         </a>
       </div>
     </div >

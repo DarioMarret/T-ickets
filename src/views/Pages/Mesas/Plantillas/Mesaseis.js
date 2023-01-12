@@ -5,20 +5,11 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 const MesaseisView = ({ text, list }) => {
   let user = getDatosUsuariosLocalStorag()
   function Estado(e) {
-    let estado = list.find(f => f.silla == e)
-    /*if (silla.length > 0) {
-      //let valor = 
-      //console.log(checkAvailability(seleccion,e))
-      //var index = ;
-      var index = list.findIndex(obj => obj.silla == e);
-      return checkAvailability(seleccion, e) ? silla[silla.findIndex(obj => obj.silla == e)].estado : list[index].estado
-    }
-    var index = list.findIndex(obj => obj.silla == e);
-    return list[index].estado*/
+    let estado = list.find(f => f.silla == e)  
     if (estado.cedula != undefined && estado.cedula != "") {
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
       else return "reservado"
-      // return "seleccionado"
+     
     }
     else return estado.estado
   }
@@ -44,7 +35,10 @@ const MesaseisView = ({ text, list }) => {
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
     return "mesadisponible"
   }
-
+  function sillasid(e) {
+    let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).idsilla : ""
+    console.log(estado)
+  }
   function obtenerid(e) {
     let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).idsilla : ""
     return estado
@@ -59,7 +53,9 @@ const MesaseisView = ({ text, list }) => {
 
         <div style={Stylesilla.asientos}></div>
 
-        <a id={obtenerid(text + "-s-1")} className={text + "-s-1 sillas   " + Estado(text + "-s-1")} style={Stylesilla.asientos}>
+        <a id={obtenerid(text + "-s-1")}
+          onClick={() => sillasid(text + "-s-1")}
+        className={text + "-s-1 sillas   " + Estado(text + "-s-1")} style={Stylesilla.asientos}>
         </a>
         <div style={Stylesilla.asientos}>
         </div>
@@ -67,10 +63,14 @@ const MesaseisView = ({ text, list }) => {
 
       <div className=" d-flex  align-items-center">
         <div className="d-flex flex-column">
-          <a id={obtenerid(text + "-s-2")} className={text + "-s-2 sillas   " + Estado(text + "-s-2")} style={Stylesilla.asientos}>
+          <a id={obtenerid(text + "-s-2")} 
+            onClick={() => sillasid(text + "-s-2")}
+          className={text + "-s-2 sillas   " + Estado(text + "-s-2")} style={Stylesilla.asientos}>
           </a>
 
-          <a id={obtenerid(text + "-s-3")} className={text + "-s-3 sillas   " + Estado(text + "-s-3")} style={Stylesilla.asientos}>
+          <a id={obtenerid(text + "-s-3")} 
+            onClick={() => sillasid(text + "-s-3")}
+          className={text + "-s-3 sillas   " + Estado(text + "-s-3")} style={Stylesilla.asientos}>
           </a>
         </div>
         <div className={text + " " + list.length + " Mesa  txt-white d-flex  p-1 " + MesaEstado()} style={Stylesilla.mesas}>
@@ -78,9 +78,13 @@ const MesaseisView = ({ text, list }) => {
         </div>
 
         <div className="d-flex flex-column">
-          <a id={obtenerid(text + "-s-4")} className={text + "-s-4 sillas   " + Estado(text + "-s-4")} style={Stylesilla.asientos}>
+          <a id={obtenerid(text + "-s-4")}
+            onClick={() => sillasid(text + "-s-4")}
+          className={text + "-s-4 sillas   " + Estado(text + "-s-4")} style={Stylesilla.asientos}>
           </a>
-          <a id={obtenerid(text + "-s-5")} className={text + "-s-5 sillas   " + Estado(text + "-s-5")} style={Stylesilla.asientos}>
+          <a id={obtenerid(text + "-s-5")} 
+            onClick={() => sillasid(text + "-s-5")}
+          className={text + "-s-5 sillas   " + Estado(text + "-s-5")} style={Stylesilla.asientos}>
           </a>
         </div>
       </div>
@@ -91,7 +95,9 @@ const MesaseisView = ({ text, list }) => {
 
         <div style={Stylesilla.asientos}></div>
 
-        <a id={obtenerid(text + "-s-6")} className={text + "-s-6 sillas   " + Estado(text + "-s-6")} style={Stylesilla.asientos}>
+        <a id={obtenerid(text + "-s-6")}
+          onClick={() => sillasid(text + "-s-6")}
+        className={text + "-s-6 sillas   " + Estado(text + "-s-6")} style={Stylesilla.asientos}>
         </a>
         <div style={Stylesilla.asientos}>
         </div>

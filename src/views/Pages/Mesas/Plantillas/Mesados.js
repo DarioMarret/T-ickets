@@ -17,6 +17,10 @@ const MesadosView = ({ text, list }) => {
     }
     else return estado.estado
   }
+function sillasid(e){
+  let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).idsilla : ""
+  console.log(estado)
+}
 
   function MesaEstado(e) {
     let asiento = list.map(function (k) {
@@ -82,7 +86,9 @@ const MesadosView = ({ text, list }) => {
         <div className=" " style={Stylesilla.asientos}>
         </div>
         <div style={Stylesilla.asientos}></div>
-        <a id={obtenerid(text + "-s-1")} className={text + "-s-1 sillas  " + Estado(text + "-s-1")} style={Stylesilla.asientos}>
+        <a id={obtenerid(text + "-s-1")}
+             onClick={()=> sillasid(text+"-s-1")}
+        className={text + "-s-1 sillas  " + Estado(text + "-s-1")} style={Stylesilla.asientos}>
         </a>
         <div style={Stylesilla.asientos}>
         </div>
@@ -110,7 +116,9 @@ const MesadosView = ({ text, list }) => {
         <div className=" " style={Stylesilla.asientos}>
         </div>
         <div style={Stylesilla.asientos}></div>
-        <a id={obtenerid(text + "-s-2")} className={text + "-s-2 sillas  " + Estado(text + "-s-2")} style={Stylesilla.asientos}>
+        <a id={obtenerid(text + "-s-2")} 
+          onClick={() => sillasid(text + "-s-2")}
+        className={text + "-s-2 sillas  " + Estado(text + "-s-2")} style={Stylesilla.asientos}>
         </a>
         <div style={Stylesilla.asientos}>
         </div>

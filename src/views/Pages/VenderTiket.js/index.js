@@ -41,12 +41,18 @@ import { quitarsilla } from "utils/Querypanelsigui";
 import { correlativodelete } from "utils/Querypanelsigui";
 import { GetSuscritores } from "utils/Querypanel";
 import { espacio } from "utils/constantes";
+import { listarRegistropanel } from "utils/pagos/Queripagos";
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import { useHistory } from "react-router";
+import { Triangle } from "react-loader-spinner";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
     let usedispatch = useDispatch()
+    let history = useHistory()
     let modalshow = useSelector((state) => state.SuscritorSlice)
     const [Eventos, setEvento] = useState([])
+    const [spinervi, setspinervi]=useState("d-none")
     const [showMapa, setMapashow] = useState(false);
     const [showshop, handleClosesop] = useState(false);
     const [showDetalle, setDetalle] = useState(false)
@@ -72,9 +78,7 @@ export default function StoreTickesViews() {
                 }
             }
         })
-        usedispatch(cargalocalidad(nuevo))
-
-    }
+        usedispatch(cargalocalidad(nuevo))    }
     const consultarlocalidad = () => {
         /* let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
          intervalRef.current = setInterval(function () {
@@ -85,7 +89,6 @@ export default function StoreTickesViews() {
          }, 2000);*/
     }
     function detenervelocidad() {
-        //  handleClosesop(false)
         clearInterval(intervalRef.current)
         clearInterval(intervalRef.current)
         setMapashow(false)
@@ -220,17 +223,32 @@ export default function StoreTickesViews() {
     }
     const abrir = async (e) => {
         let id = sessionStorage.getItem(Eventoid)
+        setspinervi("")     
         if (id != null && id != e.codigoEvento) {
             usedispatch(setModal({ nombre: '', estado: '' }))
         }
         try {
+            let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
+            if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
+               setspinervi("d-none")             
+                usedispatch(setToastes({
+                    show: true,
+                    message: "Este usuario tiene una compra pendiente ",
+                    color: 'bg-warning',
+                    estado: "Compra pendiente de pago "
+                }))
+                usedispatch(setModal({ nombre: '', estado: '' }))
+                history.push("/admin/Aprobar-Ventas")
+                return
+            }
+        
+           else {
             let obten = await listarpreciolocalidad(e.codigoEvento)
             const listalocal = await ListarLocalidad("")
             let localidades = await cargarMapa()
             sessionStorage.consierto = e.nombreConcierto
             if (obten.data.length > 0) {
                 let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-                //  console.log(listalocal)
                 let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
                 console.log(mapalocal, mapa)
                 let localidad = JSON.parse(mapa[0].localidad)
@@ -275,21 +293,19 @@ export default function StoreTickesViews() {
                 setDatoscon(e)
                 consultarlocalidad()
                 Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
-                    // handleClosesop(true)
-                    // usedispatch(cargarsilla(outp))
-                    // usedispatch(setModal({ nombre: '', estado: '' }))
-                    // setspinervi("d-none")
-                    //velocidad()
+                    setspinervi("d-none")     
                     usedispatch(cargarsilla(outp))
                     usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
 
                 }).catch(err => {
                     console.log(err)
+                    setspinervi("d-none")     
                 })
 
-            }
+            }}
         } catch (err) {
             console.log(err)
+            setspinervi("d-none")     
         }
     }
     window.onbeforeunload = preguntarAntesDeSalir;
@@ -543,7 +559,44 @@ export default function StoreTickesViews() {
                 </div>
             </Row>
 
+            <div className={spinervi}
+                style={{
+                    display: 'none',
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: '1000'
+                }}
+            >
 
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: '10px',
+                    padding: '10px',
+                }}>
+                    <Triangle
+                        height="80"
+                        width="80"
+                        color="#4fa94d"
+                        ariaLabel="triangle-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                    <h4 className='text-light'>Cargando  evento  ...</h4>
+
+
+                </div>
+            </div>
 
 
 

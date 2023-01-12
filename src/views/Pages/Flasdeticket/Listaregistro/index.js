@@ -63,9 +63,9 @@ export default function ListaderegistroView(props) {
                 renderRowActions={({ row }) => (
                     <Box sx={{ display: 'flex' }}>
 
-                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago !="Expirado" ? <Tooltip title="Reportar" placement="top">
+                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago !="Expirado" ? 
+                        <Tooltip title="Reportar" placement="top">
                             <IconButton
-
                                 color="error"
                                 aria-label="Bloquear"
                                 onClick={() => abrirModal(row)}
@@ -80,9 +80,21 @@ export default function ListaderegistroView(props) {
                         >
                             <Summarize />
                         </IconButton>}
-                       {clienteInfo()? <IconButton>
+                       {clienteInfo()? 
+                            row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" 
+                            && row.original.estado_pago != "Expirado" ?
+                       <IconButton>
                             <Summarize/>
-                        </IconButton>:""}
+                        </IconButton>:
+                                <IconButton
+                                    disabled={true}
+                                    color="error"
+                                    aria-label="Bloquear"
+                                    onClick={() => abrirModal(row)}
+                                >
+                                    <Summarize />
+                                </IconButton>
+                        :""}
 
                     </Box>
                 )}
