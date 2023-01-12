@@ -266,103 +266,94 @@ const IndexFlas = () => {
   const abrir = async (e) => {
     setspinervi("")
     try {
-      const boletos = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
-      if (boletos.success) {
-        console.log(boletos, boletos.data.filter(f => f.estado_pago != "Pagado"))
-        if (!boletos.data.some(f => f.estado_pago == "Pendiente")) {
-          let id = sessionStorage.getItem(Eventoid)
-          if (id != null && id != e.codigoEvento) {
-            setspinervi("d-none")
-            successAlert(e)
-          }
-          else {
-            try {
-              let obten = await listarpreciolocalidad(e.codigoEvento)
-              const listalocal = await ListarLocalidad("")
-              let localidades = await cargarMapa()
-              sessionStorage.consierto = e.nombreConcierto
-              if (obten.data.length > 0) {
-                let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-                let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-                console.log(mapalocal, mapa)
-                let localidad = JSON.parse(mapa[0].localidad)
-                let path = JSON.parse(mapa[0].pathmap)
-                console.log(obten.data)
-                let newprecios = obten.data.map((g, i) => {
-                  let color = localidad.filter((f, i) => f.nombre == g.localidad)
-                  g.color = color[0].color
-                  g.idcolor = color[0].id
-                  g.typo = color[0].tipo
-                  g.ideprecio = g.id
-                  g.espacio = color[0].espacio
-                  sessionStorage.setItem(espacio, color[0].espacio)
-                  return g
-                })
-                let colornuevo = mapalocal.map((L) => {
-                  if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
-                    L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
-                    L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
-                    L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
-                    L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
-                    L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
-                    L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
-                    L.espacioid = L.id_espacio
-                    return L
-                  }
-                })
-                let pathnuevo = path.map((L) => {
-                  if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
-                    return L
-                  }
-                })
-                sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
-                  return e
-                }))]))
-                usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
-                let nuevosdatos = {
-                  precios: newprecios,
-                  pathmapa: pathnuevo.filter((e) => e != undefined),
-                  mapa: mapa[0].nombre_mapa
-                }
-                console.log(nuevosdatos)
-                sessionStorage.eventoid = e.codigoEvento
-                setPrecios(nuevosdatos)
-                setDatoscon(e)
-                //consultarlocalidad()
-                Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
-                  setspinervi("d-none")
-                  velocidad()
-                  usedispatch(cargarsilla(outp))
-                  usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-                }).catch(err => {
-                  console.log(err)
-                })
-              }
-            } catch (err) {
-              console.log(err)
-              setspinervi("d-none")
-            }
-          }
+      //let registro = await listarRegistropanel(getDatosUsuariosLocalStorag().cedula)
+      // status false pasa
+      // status pendiente no pasa
 
-        }
-        else {
-          setspinervi("d-none")
-          SetSeleccion("Tickets")
-          usedispatch(setToastes({
-            show: true,
-            message: "Antes de comprar de nuevo termina pagando la compra pendiente",
-            color: 'bg-warning',
-            estado: "Tienes una compra pendiente "
-          }))
-        }
-
+      let id = sessionStorage.getItem(Eventoid)
+      if (id != null && id != e.codigoEvento) {
+        setspinervi("d-none")
+        successAlert(e)
       }
+      else {
+        try {
+          let obten = await listarpreciolocalidad(e.codigoEvento)
+          const listalocal = await ListarLocalidad("")
+          let localidades = await cargarMapa()
+          sessionStorage.consierto = e.nombreConcierto
+          console.log(listalocal, localidades, obten)
+          if (obten.data.length > 0) {
+            let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
+            let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
+            console.log(mapalocal, mapa)
+            let localidad = JSON.parse(mapa[0].localidad)
+            let path = JSON.parse(mapa[0].pathmap)
+            console.log(obten.data)
+            let newprecios = obten.data.map((g, i) => {
+              let color = localidad.filter((f, i) => f.nombre == g.localidad)
+              g.color = color[0].color
+              g.idcolor = color[0].id
+              g.typo = color[0].tipo
+              g.ideprecio = g.id
+              g.espacio = color[0].espacio
+              sessionStorage.setItem(espacio, color[0].espacio)
+              return g
+            })
+            let colornuevo = mapalocal.map((L) => {
+              if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+                L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
+                L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
+                L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
+                L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
+                L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
+                L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
+                L.espacioid = L.id_espacio
+                return L
+              }
+            })
+            let pathnuevo = path.map((L) => {
+              if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+                return L
+              }
+            })
+            sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
+              return e
+            }))]))
+            usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
+            let nuevosdatos = {
+              precios: newprecios,
+              pathmapa: pathnuevo.filter((e) => e != undefined),
+              mapa: mapa[0].nombre_mapa
+            }
+            console.log(nuevosdatos)
+            sessionStorage.eventoid = e.codigoEvento
+            setPrecios(nuevosdatos)
+            setDatoscon(e)
+            //consultarlocalidad()
+            Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
+              setspinervi("d-none")
+              velocidad()
+              usedispatch(cargarsilla(outp))
+              usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+            }).catch(err => {
+              console.log(err)
+            })
+          }
+        } catch (err) {
+          console.log(err)
+          setspinervi("d-none")
+        }
+      }
+
+
+
+
     } catch (error) {
       console.log(error)
     }
-   
- 
-  
+
+
+
   }
   const borrar = async (e) => {
     try {

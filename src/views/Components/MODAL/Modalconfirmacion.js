@@ -14,12 +14,12 @@ import { registraPagos } from "utils/pagos/Queripagos";
 const ModalConfima = (prop) => {
     const { pararcontador } = prop
     let usedispatch = useDispatch()
-    const [estado,setEstado]=useState(true)
+    const [estado, setEstado] = useState(true)
     const [alert, setAlert] = useState(null)
-    const [comproba,setcomprobante]=useState({
-        numeroTransaccion:"",
-        link_comprobante:"",
-        banco:""
+    const [comproba, setcomprobante] = useState({
+        numeroTransaccion: "",
+        link_comprobante: "",
+        banco: ""
     })
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     let intervalo = useSelector((state) => state.SuscritorSlice.intervalo)
@@ -39,7 +39,7 @@ const ModalConfima = (prop) => {
         pararcontador()
         usedispatch(setToastes({ show: true, message: 'Datos del deposito Guardado ', color: 'bg-success', estado: 'Se guardo el numero de control' }))
     }
-    const successAlert=()=>{
+    const successAlert = () => {
 
         setAlert(
             <SweetAlert
@@ -98,18 +98,18 @@ const ModalConfima = (prop) => {
             </SweetAlert>
         )
     }
-     function onChange(e){
+    function onChange(e) {
         setcomprobante({
             ...comproba,
-            link_comprobante:e.files
+            link_comprobante: e.files
         })
         console.log(e.files)
 
     }
-    function onhandelChange(e){
+    function onhandelChange(e) {
         setcomprobante({
-            ...comproba,            
-            [e.name]:e.value
+            ...comproba,
+            [e.name]: e.value
         })
 
     }
@@ -120,40 +120,40 @@ const ModalConfima = (prop) => {
         if (comproba.banco == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
         if (comproba.link_comprobante[0] == undefined) usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del Comprobante', color: 'bg-danger', estado: 'Datos vacios' }))
         if (isNaN(comproba.numeroTransaccion.trim())) usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobante ', color: 'bg-danger', estado: 'Datos vacios' }))
-        else if ([comproba.banco, comproba.numeroTransaccion].some(e => e) ) {
-           try {
-               setEstado(false)
-               const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
-               setTimeout( async function(){
+        else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
+            try {
+                setEstado(false)
+                const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
+                setTimeout(async function () {
                     const reporte = {
                         "forma_pago": "Deposito",
                         "link_comprobante": link,
                         "numeroTransaccion": comproba.numeroTransaccion,
-                        "cedula": modal.estado.cedula?  modal.estado.cedula:getDatosUsuariosLocalStorag().cedula,
-                        "estado": "Pagado"
+                        "cedula": modal.estado.cedula ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
+                        "estado": "Comprobar"
                     }
-                  //console.log(reporte)
-                   registraPagos(reporte).then(ouput=>{
-                       if (ouput.success){
-                           setEstado(true)
-                           usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
-                           usedispatch(setModal({ nombre: '', estado: '' }))
-                           // console.log(ouput)
+                    //console.log(reporte)
+                    registraPagos(reporte).then(ouput => {
+                        if (ouput.success) {
+                            setEstado(true)
+                            usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
+                            usedispatch(setModal({ nombre: '', estado: '' }))
+                            // console.log(ouput)
                         }
-                       else{
-                       setEstado(true)
-                       console.log(ouput)
-                           usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
-                        
-                    }
-                   }).catch(erro=>{
-                    console.log(erro)
-                       setEstado(true)
-                      // usedispatch(setModal({ nombre: '', estado: '' }))
-                   })
-                   setEstado(true)
-                },2000)
-                
+                        else {
+                            setEstado(true)
+                            console.log(ouput)
+                            usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
+
+                        }
+                    }).catch(erro => {
+                        console.log(erro)
+                        setEstado(true)
+                        // usedispatch(setModal({ nombre: '', estado: '' }))
+                    })
+                    setEstado(true)
+                }, 2000)
+
             } catch (error) {
                 console.log(error)
 
@@ -204,7 +204,7 @@ const ModalConfima = (prop) => {
                                 <h5 style={{ fontSize: "1.0em" }}>
                                     Selecione el banco al que realizó la transferencia
                                 </h5>
-                                <select className="  form-select"  name="banco" value={comproba.banco} onChange={(g)=>onhandelChange(g.target)} >
+                                <select className="  form-select" name="banco" value={comproba.banco} onChange={(g) => onhandelChange(g.target)} >
                                     <option disabled value={""}></option>
                                     <option value={"Pichincha"}>Banco Pichincha</option>
                                     <option value={"Guayaquil"}>Banco Guayaquil</option>
@@ -219,7 +219,7 @@ const ModalConfima = (prop) => {
                                 <input className=" form-control numero"
                                     name="numeroTransaccion"
                                     value={comproba.numeroTransaccion}
-                                    onChange={(e)=>onhandelChange(e.target)}
+                                    onChange={(e) => onhandelChange(e.target)}
                                     type={"text"}
                                 />
                             </div>
@@ -227,11 +227,11 @@ const ModalConfima = (prop) => {
                                 <h5 style={{ fontSize: '1.0em' }}>
                                     Adjuntar Comprobante ( imagen jpg ó png)
                                 </h5>
-                                <input type="file" accept="image/*"  name="comprobante"
+                                <input type="file" accept="image/*" name="comprobante"
                                     onChange={(e) => onChange(e.target)}
-                                className="form-control"
-                                    
-                                
+                                    className="form-control"
+
+
                                 />
                             </div>
                             <div className=" p-1 ">
@@ -244,10 +244,10 @@ const ModalConfima = (prop) => {
                             </div>
                             <div className="d-flex container justify-content-center ">
                                 <div>
-                                 {estado?   <button className=" btn p-2 btn-success">Confirmar Transferencia</button>
-                               :
-                                        <button className="btn btn-success p-2"  disabled={true}>Confirmar Transferencia <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> </button>
-                               } </div>
+                                    {estado ? <button className=" btn p-2 btn-success">Confirmar Transferencia</button>
+                                        :
+                                        <button className="btn btn-success p-2" disabled={true}>Confirmar Transferencia <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> </button>
+                                    } </div>
 
                             </div>
                         </form>

@@ -73,7 +73,7 @@ export const Columnasubcrito = [
     header: 'Estado',
     size: 100,
     Cell: ({ cell, column }) => (
-      <Badge bg={cell.getValue() == 0 ? 'success' : 'danger'}>{cell.getValue() == 0 ? 'Habiliado' : 'Anulado'}</Badge>
+      <Badge bg={cell.getValue() == 0 ? 'success' : 'danger'}>{cell.getValue() == 0 ? 'Habilitado' : 'Anulado'}</Badge>
     ),
   },
 

@@ -32,8 +32,8 @@ let { cedericon } = bancos
 function Example() {
     let usedispatch = useDispatch()
     const [tiketslist, setTikes] = useState([])
-    const [tikesele,setTicket] =useState([])
-    
+    const [tikesele, setTicket] = useState([])
+
     const [rowSelection, setRowSelection] = useState({});
     const tableInstanceRef = useRef(null);
     const [alert, setAlert] = useState(null)
@@ -69,7 +69,7 @@ function Example() {
             'aria-controls': `simple-tabpanel-${index}`,
         };
     }
-    
+
     const successAlert = (e) => {
         setAlert(
             <SweetAlert
@@ -101,16 +101,16 @@ function Example() {
     }
 
     function Pagar() {
-        let valor = Object.keys(rowSelection).length > 0 ? tiketslist.find(e => e.codigoEvento == Object.keys(rowSelection)[0]).detalle :  ''
-        
-       //s console.log(valor)
+        let valor = Object.keys(rowSelection).length > 0 ? tiketslist.find(e => e.codigoEvento == Object.keys(rowSelection)[0]).detalle : ''
+
+        //s console.log(valor)
     }
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
-        Listarticketporestado(user.cedula).then(ouput => {            
+        Listarticketporestado(user.cedula).then(ouput => {
             let nuevogrupo = []
-            //console.log(ouput)
-            ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h')<2).forEach(element => {
+            console.log(ouput)
+            ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).forEach(element => {
                 if (!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento)) {
                     //console.log(!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento))
                     let filtro = ouput.data.filter(e => e.codigoEvento == element.codigoEvento)
@@ -126,13 +126,13 @@ function Example() {
                     })
                 }
 
-            });    
-            
-            let nuevo = ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') <2)       
+            });
+
+            let nuevo = ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2)
             nuevogrupo.length > 0 ? nuevo.map((elm, idex) => {
                 let index = nuevogrupo.findIndex(f => f.codigoEvento == elm.codigoEvento)
                 let fecha = elm.fechaCreacion
-               // console.log(elm.fechaCreacion)
+                // console.log(elm.fechaCreacion)
                 nuevogrupo[index].detalle.push({
                     sillas: elm.sillas,
                     localidad: elm.localidad, fechaCreacion: fecha,
@@ -140,28 +140,28 @@ function Example() {
                     tokenPago: elm.tokenPago,
                     estado: elm.estado,
                     valor: elm.valor, codigoEvento: elm.codigoEvento,
-                })              
+                })
             }) : ''
-            //console.log(nuevogrupo.length)
+            console.log(nuevogrupo)
             setTikes([...nuevogrupo])
 
         }).catch(err => console.log(err))
     },
         [])
-   
+
     console.log(Object.keys(rowSelection).map((g) => { return tiketslist.find(e => e.codigoEvento == g).detalle }))
-        function suma (item){
-         let tikets=   tiketslist.find(e => e.codigoEvento == item).detalle.map((f) => { return parseFloat( f.valor) })
-         try {
-             let valo = tikets.reduce((a, b) => a + b, 0).toFixed(2)
-             return valo
-            
-         } catch (error) {
+    function suma(item) {
+        let tikets = tiketslist.find(e => e.codigoEvento == item).detalle.map((f) => { return parseFloat(f.valor) })
+        try {
+            let valo = tikets.reduce((a, b) => a + b, 0).toFixed(2)
+            return valo
+
+        } catch (error) {
             console.log(error)
-            
-         }
-      
+
         }
+
+    }
     return (
         <>
             {alert}
@@ -173,12 +173,12 @@ function Example() {
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example"
                 >
-                    <Tab label="Tickets" {...a11yProps(1)} />
-                    <Tab className="d-none" label="Reportar Compras" {...a11yProps(0)} />
-                    <Tab className="d-none" label="Datatable"{...a11yProps(2)}/>
-                   
+                    <Tab label="Reportar Compras" {...a11yProps(1)} />
+                    <Tab className="" label="Tickets" {...a11yProps(0)} />
+                    <Tab className="d-none" label="Datatable"{...a11yProps(2)} />
+
                 </Tabs>
-               
+
                 <div className=" container-fluid py-2 px-0">
                     <TabPanel value={value} index={1} >
                         <MaterialReactTable
@@ -340,14 +340,14 @@ function Example() {
                         </div>
                     </TabPanel>
                     <TabPanel value={value} index={0} >
-                        <ListaderegistroView 
-                        cedula={getDatosUsuariosLocalStorag().cedula}
+                        <ListaderegistroView
+                            cedula={getDatosUsuariosLocalStorag().cedula}
                         />
 
                     </TabPanel>
                     <TabPanel value={value} index={2} >
 
-                        <DataTableBos/>
+                        <DataTableBos />
                     </TabPanel>
 
                 </div>
@@ -358,12 +358,12 @@ function Example() {
                     Tikets
                 </div>
                 <div className="card-body table-responsive">
-                 
+
                 </div>
-                
+
                 <div className=" container">
-                    
-                    
+
+
                 </div>
 
             </div>

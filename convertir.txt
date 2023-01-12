@@ -1,3 +1,6 @@
+
+1311036550
+1714730510
 function creaComprobante() {
     var opciones = {
         orientation: 'p',
