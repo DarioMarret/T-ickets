@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listaRegistro } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 
 export default function ListaderegistroView(props) {
     let { cedula } = props
@@ -62,7 +63,7 @@ export default function ListaderegistroView(props) {
                 renderRowActions={({ row }) => (
                     <Box sx={{ display: 'flex' }}>
 
-                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" ? <Tooltip title="Reportar" placement="top">
+                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago !="Expirado" ? <Tooltip title="Reportar" placement="top">
                             <IconButton
 
                                 color="error"
@@ -79,6 +80,9 @@ export default function ListaderegistroView(props) {
                         >
                             <Summarize />
                         </IconButton>}
+                       {clienteInfo()? <IconButton>
+                            <Summarize/>
+                        </IconButton>:""}
 
                     </Box>
                 )}

@@ -140,16 +140,10 @@ const ModalEfectivo = (props) => {
             doc.autoPrint();
             //doc.output('bloburl')
             document.getElementById('main-iframe').setAttribute('src', doc.output('bloburl'));
-
         } catch (error) {
             console.log(error)
-
         }
-
     }
-
-
-
     useEffect(() => {
         detenervelocidad()
     }, [modalshow.nombre == "modalpago" ? true : false])
@@ -159,7 +153,6 @@ const ModalEfectivo = (props) => {
             <iframe className='d-none' id="main-iframe" ></iframe>
             <Modal
                 show={modalshow.nombre == "modalpago" ? true : false}
-
             >
                 <Modal.Header className='py-3'>
                     <h5><span className="text-danger" >{intervalo}</span> </h5>
@@ -170,12 +163,10 @@ const ModalEfectivo = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="container ">
-                        <div className='d-flex col-12 justify-content-end align-items-center' >
-
-                            <div><button className='btn btn-primary' onClick={() => usedispatch(setModal({ nombre: "ModalDetalle", estado: "" }))} >  <i className="bi bi-caret-left-fill"></i>  </button></div>
+                        <div className='d-flex col-12 justify-content-end align-items-center px-0' >
+                            <div><button className='close text-dark' onClick={() => usedispatch(setModal({ nombre: "ModalDetalle", estado: "" }))} >  <i className="bi bi-caret-left-fill"></i>  </button></div>
                         </div>
                         <div className="d-flex flex-column " >
-
                             <h3 className='text-center'> VALOR EFECTIVO </h3>
                             <div className="container d-flex flex-column  text-between p-3">
                                 <div className="row  d-flex  justify-content-between  border rounded-6 m-1 p-2">
@@ -208,10 +199,8 @@ const ModalEfectivo = (props) => {
                                         onClick={creaComprobante}
                                     >COBRAR</button>
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
                 </Modal.Body>
             </Modal>

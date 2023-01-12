@@ -324,11 +324,63 @@ function PerfilPage(props) {
 
               </Col>
               <Col lg="6" sm="12">
-                <Card className="card-stats" style={{ maxHeight: '310px' }} >
+                <Card className="card-stats d-none d-sm-none d-md-block" style={{ maxHeight: '310px' }} >
                   <LocalizationProvider dateAdapter={AdapterMoment} >
                     <StaticDatePicker
 
                       orientation="landscape"
+                      label={"Nuevos Eventos"}
+                      openTo="day"
+                      value={value}
+                      minDate={new Date()}
+                      hideTabs={false} componentsProps={{
+                        actionBar: {
+                          actions: [''],
+                        },
+                      }}
+                      minDateTime={today}
+                      renderDay={(day, value, DayComponentProps) => {
+                        // console.log(moment(DayComponentProps.key).format('MM/DD/YYYY'))
+                        const isDate = Eventos.some(event => moment(event.fechaConcierto).format('MM/DD/YYYY') === moment(DayComponentProps.key).format('MM/DD/YYYY'));
+                        const info = Eventos.find(event => moment(event.fechaConcierto).format('MM/DD/YYYY') === moment(DayComponentProps.key).format('MM/DD/YYYY'))
+                        //console.log(day.toString())
+
+                        return (
+
+                          <Tooltip key={day.toString()} title={isDate ? info.nombreConcierto : 'sin evento'} placement="top">
+                            <Badge
+                              overlap="circular"
+                              badgeContent={isDate ? '' : ''}
+                            >
+
+                              <PickersDay {...DayComponentProps} />
+                              <span hidden={!isDate} className="position-absolute bottom-0 start-50 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                <span className="visually-hidden">New alerts</span>
+                              </span>
+
+                            </Badge>
+                          </Tooltip>
+
+                        )
+
+                      }
+
+                      }
+                      // shouldDisableDate={isWeekend}
+                      onChange={(newValue) => {
+                        setValue(newValue);
+                      }}
+
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
+
+                </Card>
+                <Card className="card-stats d-block d-sm-block d-md-none" style={{ maxHeight: '510px' }} >
+                  <LocalizationProvider dateAdapter={AdapterMoment} >
+                    <StaticDatePicker
+
+                     
                       label={"Nuevos Eventos"}
                       openTo="day"
                       value={value}

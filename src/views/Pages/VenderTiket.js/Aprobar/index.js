@@ -13,6 +13,7 @@ import { ticketprocesoapro } from "utils/columnasub";
 import moment from "moment";
 import ModalAprobarViews from "./Modalventas";
 import ModalBoletoApro from "./Modalboleto";
+import ListaderegistroView from "views/Pages/Flasdeticket/Listaregistro";
 let { cedericon, atencion } = bancos
 export default function AprobarView() {
     let usedispatch = useDispatch()
@@ -124,7 +125,7 @@ export default function AprobarView() {
     }
    // console.log(data)
     useEffect(() => {
-        AprobarTiket().then(oupt => {
+       /* AprobarTiket().then(oupt => {
             let datos = oupt.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado === "reservado")
             // console.log(datos)
             let nuevo = datos.map((e) => {
@@ -167,7 +168,7 @@ export default function AprobarView() {
             setTikes([...nuevogrupo])
         }).catch(err => {
             console.log(err)
-        })
+        })*/
     },
         [])
     function suma() {
@@ -204,7 +205,7 @@ export default function AprobarView() {
                 <div className="card-header pb-2">
                     Ventas por Aprobar
                 </div>
-                <div className="row px-3">
+                <div className="row px-3 d-none">
                     <div className="col-10 text-end  ">
                         <div className=" d-flex  justify-content-end align-items-center h-100">
                             <h5>Total de Boletos seleccionados {data.length > 1 ? "$" + suma() : "$00.00"}</h5>
@@ -220,7 +221,12 @@ export default function AprobarView() {
 
                 </div>
                 <div className="card-body table-responsive">
-                    <MaterialReactTable
+                    <ListaderegistroView 
+                    cedula={""}
+                    />
+                   
+                    {/*
+                     <MaterialReactTable
                         columns={ticketprocesoapro}
                         data={tiketslist}
 
@@ -298,8 +304,8 @@ export default function AprobarView() {
                         localization={MRT_Localization_ES}
 
                     />
-                    {/*tiketslist.length == 0 ?
-            <TableWiev data={tiketslist} /> : ''*/}
+                    
+                    */}
                 </div>
             </div>
         </>

@@ -423,22 +423,22 @@ function ModalDetalle(props) {
                             <tbody>
                                 <tr>
                                     <th scope="row"></th>
-                                    <td colspan="2" className='text-end' >Subtotal:</td>
+                                    <td  className='text-end' >Subtotal:</td>
                                     <td className='text-center'>${parseInt(listaPrecio.subtotal).toFixed(2)}</td>
                                 </tr>
                                 <tr className={hidecomision}>
                                     <th scope="row"></th>
-                                    <td colspan="2" className={hidecomision + " text-end"} >Comisión por Boleto:</td>
+                                    <td className={hidecomision + " text-end"} >Comisión por Boleto:</td>
                                     <td className={hidecomision + " text-center"}>${parseInt(listaPrecio.comision).toFixed(2)}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"></th>
-                                    <td colspan="2" className='text-end' >Comisión Bancaria:</td>
+                                    <td  className='text-end' >Comisión Bancaria:</td>
                                     <td className='text-center'>${parseFloat(listaPrecio.comision_bancaria).toFixed(2)}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"></th>
-                                    <td colspan="2" className='text-end' >Total:</td>
+                                    <td  className='text-end' >Total:</td>
                                     <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)}</td>
                                 </tr>
                             </tbody>

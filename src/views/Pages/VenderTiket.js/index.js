@@ -319,6 +319,18 @@ export default function StoreTickesViews() {
             usedispatch(clearMapa({}))
             usedispatch(borrarseleccion({ estado: "seleccionado" }))
         })()
+        var popUp = window.open('url', '', 'options');
+        if (popUp == null || typeof (popUp) == 'undefined') {
+            //  popUp.close();     
+            usedispatch(setToastes( {
+                show: true,
+                message: 'Por favor habilite las ventanas emergentes antes de continuar y actualice la pagina',
+                color: 'bg-danger',
+                estado: 'Mensaje importante',
+            }))
+        } else {
+            popUp.close();
+        } 
     }, [])
     return (
         <>

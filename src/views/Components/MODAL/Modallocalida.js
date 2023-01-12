@@ -33,7 +33,6 @@ const LocalidadmapViews = (props) => {
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localidad))
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [alert, setAlert] = useState(null);
-    // console.log(mapath, seleccion)
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
     function MesaVerifica(M, C) {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
@@ -71,7 +70,6 @@ const LocalidadmapViews = (props) => {
                 quitarsilla({ "array": [{ estado: "disponible", "id": elm.id, "silla": elm.silla, "cedula": user.cedula }] }).then(ouput => {
                     usedispatch(deleteSillas({ "localidad": nombre.localidad, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "seleccionado" }))
                     EliminarsilladeMesa({ localidad: nombre.localidad + "-" + elm.silla })
-                    // console.log(user.cedula, ouput)
                 }).catch(err => console.log(err))
 
 
@@ -106,7 +104,7 @@ const LocalidadmapViews = (props) => {
     }
     function agregar() {
         let user = getDatosUsuariosLocalStorag()
-        if (sleccionlocalidad.disponibles == 0) {
+        if (sleccionlocalidad.disponibles != 0) {
             usedispatch(setToastes({
                 show: true,
                 message: "No hay más disponibilida en la localidad",
@@ -226,16 +224,40 @@ const LocalidadmapViews = (props) => {
             <SweetAlert
                 warning
                 style={{ display: "block", marginTop: "-100px" }}
-                title="Desea quitar este Asiento del carrito"
-                onConfirm={() => eliminaListadiv(e)}
-                onCancel={() => hideAlert()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                confirmBtnText="Si, Continuar"
-                cancelBtnText="Cancelar"
                 closeOnClickOutside={false}
+                showCancel={false}
+                showConfirm={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel>
+                >
+                <div>
+                    <div className='col-12 pb-3'>
+                        <img src={atencion} className="img-fluid"
+                            style={{
+                                height: 100
+                            }}>
+
+                        </img>
+                    </div>
+                    <h5 >Desea quitar este Asiento del carrito </h5>
+                    <div className='d-flex  justify-content-around py-4'>
+                        <div>
+                            <button className='btn btn-outline-danger  rounded-6' onClick={() => hideAlert()}>
+
+                                <span style={{
+                                    fontWeight: "bold"
+                                }}>Cancelar</span>
+                            </button>
+                        </div>
+                        <div>
+                            <button className=' btn btn-warning rounded-5' onClick={() => eliminaListadiv(e)} >
+                                <span style={{
+                                    fontWeight: "bold"
+                                }}> Si, Continuar</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
             </SweetAlert>
         )
     }
@@ -303,17 +325,41 @@ const LocalidadmapViews = (props) => {
         setAlert(
             <SweetAlert
                 warning
-                style={{ display: "block", marginTop: "-100px" }}
-                title="Desea quitar los asientos seleccionados de esta mesa"
-                onConfirm={() => eliminarmesas(e, f)}
-                onCancel={() => cerrar()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                confirmBtnText="Si, Continuar"
-                cancelBtnText="Ir al carrito"
+                style={{ display: "block", marginTop: "-100px" }}               
+                closeOnClickOutside={false}
+                showCancel={false}
+                showConfirm={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel>
-                Deseas Continuar editando la selección
+                >
+                <div>
+                    <div className='col-12 pb-3'>
+                        <img src={atencion} className="img-fluid"
+                            style={{
+                                height: 100
+                            }}>
+
+                        </img>
+                    </div>
+                    <h5 >Desea quitar los asientos seleccionados de esta mesa </h5>
+                    <div className='d-flex  justify-content-around py-4'>
+                        <div>
+                            <button className='btn btn-outline-danger  rounded-6' onClick={() => cerrar()}>
+
+                                <span style={{
+                                    fontWeight: "bold"
+                                }}>Cancelar</span>
+                            </button>
+                        </div>
+                        <div>
+                            <button className=' btn btn-warning rounded-5' onClick={() => eliminarmesas(e, f)} >
+                                <span style={{
+                                    fontWeight: "bold"
+                                }}> Si, Continuar</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
             </SweetAlert>
         )
     }
@@ -587,7 +633,8 @@ const LocalidadmapViews = (props) => {
                 }
                 else if (ouput.data.some(e => e.typo == "correlativo")) {
                     mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible"))) : ''
-                    console.log(ouput.data.filter(e => e.estado == "reservado"))
+                    console.log(ouput.data.filter(e => e.estado == "disponible").length)
+                    let dispo = ouput.data.filter(e => e.estado == "disponible").length 
                     usedispatch(updateboletos({
                         disponibles: ouput.data.filter(e => e.estado == "disponible").length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
@@ -595,7 +642,7 @@ const LocalidadmapViews = (props) => {
                         inpagos: sleccionlocalidad.inpagos
                     }))
                     console.log({
-                        disponibles: ouput.data,
+                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
                         pagados: "", inpagos: sleccionlocalidad.inpagos
                     })
