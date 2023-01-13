@@ -636,7 +636,7 @@ const LocalidadmapViews = (props) => {
                     console.log(ouput.data.filter(e => e.estado == "disponible").length)
                     let dispo = ouput.data.filter(e => e.estado == "disponible").length 
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                        disponibles: ouput.data.filter(e => e.cedula != "" && e.cedula!= null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
                         pagados: "",
                         inpagos: sleccionlocalidad.inpagos

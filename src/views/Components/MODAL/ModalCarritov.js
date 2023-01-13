@@ -219,8 +219,8 @@ const ModalCarritoView = (prop) => {
 
             }
             else if (ouput.data.find(e => e.typo == "correlativo")) {
-                usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible")))
-                ouput.data.filter(e => e.estado == "disponible").length == 0 ?
+                usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null)))
+                ouput.data.filter(e => e.cedula != "" && e.cedula != null).length == 0 ?
                     usedispatch(setToastes({
                         show: true,
                         message: "Estan en proceso o vendidos",
@@ -230,7 +230,7 @@ const ModalCarritoView = (prop) => {
                 usedispatch(cargarmapa(color))
                 usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                 usedispatch(updateboletos({
-                    disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                    disponibles: ouput.data.filter(e => e.cedula != "" && e.cedula != null).length,
                     proceso: ouput.data.filter(e => e.estado == "reservado").length,
                     pagados: "",
                     inpagos: sleccionlocalidad.inpagos
@@ -310,15 +310,15 @@ const ModalCarritoView = (prop) => {
                     usedispatch(cargarmapa(color))
                     usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
                     //  usedispatch(filtrarlocali(nuevoObjeto))
-                    filtrarlocali(ouput.data.filter(e => e.estado == "disponible"))
-                    ouput.data.filter(e => e.estado == "disponible").length == 0 ? usedispatch(setToastes({
+                    filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
+                    ouput.data.filter(e => e.cedula != "" && e.cedula != null).length == 0 ? usedispatch(setToastes({
                         show: true,
                         message: "Estan en proceso o vendidos",
                         color: 'bg-primary',
                         estado: "Esta loclidad no tiene disponibles  "
                     })) : ''
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                        disponibles: ouput.data.filter(e => e.cedula != "" && e.cedula != null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length,
                         pagados: "",
                         inpagos: sleccionlocalidad.inpagos

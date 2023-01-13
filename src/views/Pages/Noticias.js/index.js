@@ -86,9 +86,14 @@ export default function NoticiasView() {
                         console.log(Object.fromEntries(form.entries()))
                         let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
                        
-                        // console.log(parametr)
-                        
+                         console.log(link)
+                       
                         setTimeout(async function () {
+                            if(link ==null){
+                                usedispatch(setToastes({ show: true, message: "La imagen tiene un peso de " + Math.floor(imgen.size / 1000000) +"MB", color: 'bg-warning', estado: 'Imagen demasiada pesada' }))
+                                setCargando(false)
+                                return
+                            }
                             let parametr = {
                                 "encabezado": encabezado,
                                 "descripcion": descipcion,
@@ -97,6 +102,8 @@ export default function NoticiasView() {
                                 "redirect": mas
                             }
                             let carruse = await agregarNoticia(parametr)
+                            console.log(carruse)
+
                             Evento()
                             setCargando(false)
                         }, 3000)
@@ -264,13 +271,14 @@ export default function NoticiasView() {
             setImg(img.src)
             setimagen(e.files[0])
             let totalBytes = e.files[0].size;
-            /* if (totalBytes < 1000000) {
+            console.log(totalBytes)
+            if (totalBytes < 1000000) {
                  var _size = Math.floor(totalBytes / 1000) + 'KB';
                  console.log(_size);
              } else {
                  var _size = Math.floor(totalBytes / 1000000) + 'MB';
                  console.log(_size);
-             }*/
+             }
         }
         else {
 

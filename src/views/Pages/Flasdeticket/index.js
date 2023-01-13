@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styleswiper } from "./styleswiper.js";
 import { pasados, carrusel } from "./imagenstatctic.js";
-let { icon, iconhead, valla, principal, secundaria, tercero, logofla, mapa, portal, header, avatar } = carrusel
+let { icon, iconhead, valla, principal, secundaria, tercero, logofla, mapa, portal, header, avatar,prubas } = carrusel
 import { useSelector, useDispatch } from "react-redux";
 import { todossiler } from "./Modalterminos/silder.js";
 let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
@@ -697,11 +697,11 @@ const IndexFlas = () => {
               publicidad.map((element, index) => {
                 return (
                   <SwiperSlide key={index}>
-                    <div style={{ width: "100%", height: "400px" }}>
+                    <div className="d-none d-sm-none d-md-block" style={{ width: "100%", height: "453px" }}>
                       <div className="slide-image" style={{
                         position: "relative",
                         width: "100%",
-                        height: "400px",
+                        height: "453px",
                       }}>
                         <div style={{
                           backgroundImage: "url('" + element.link_img + "')",
@@ -710,7 +710,7 @@ const IndexFlas = () => {
                         </div>
                         <div style={styleswiper.fondo}>
                         </div>
-                        <div className="descripciones ">
+                        <div className="descripciones">
                           <div className="d-flex  flex-column text-white" >
                             <div className="py-3 d-none d-sm-block   ">
                               <div className=" d-none row d-flex  align-items-center p-1">
@@ -719,16 +719,15 @@ const IndexFlas = () => {
                                   style={{
                                     fontSize: '0.9em'
                                   }}
-                                >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
+                                >EVENTO - <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
                               </div>
-
                             </div>
                             <div className="d-block d-sm-none" >
                               <div className="d-flex flex-row justify-content-center text-center">
                                 <i className="fa fa-volume-off fa-1x"> </i>
                                 <h5 className=" px-0"
                                   style={{
-                                    fontSize: '0.9em'
+                                    fontSize: '0.9em',
                                   }}
                                 >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
                               </div>
@@ -740,11 +739,75 @@ const IndexFlas = () => {
                             <div className="pt-2 ">
                               {
                                 element.evento == null ?
-                                  <a className="btn border rounded-1  btn-lg btn-outline-light "
+                                <button className="btn border rounded-1  btn-lg btn-outline-light "
+                                    style={styleswiper.button}
+                                   href="#"
+                                    onClick={() => userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Modalstatus.estado" })):""}
+                                  >{"Subscríbete"}</button>
+                                  /*<a className="btn border rounded-1  btn-lg btn-outline-light "
                                     style={styleswiper.button}
                                     href={element.redirect}
                                     target="_blank"
-                                  >VER MÁS</a> :
+                                  >VER MÁS</a>*/ :
+                                  <button className="btn border rounded-1  btn-lg btn-outline-light "
+                                    onClick={() => eventocarrusel(element.evento)}
+                                    style={styleswiper.button}
+                                  >COMPRAR</button>
+
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="d-block d-sm-block d-md-none" style={{ width: "100%", height: "auto" }}>
+                      <div className="slide-image" style={{
+                        position: "relative",
+                        width: "100%",
+                        height: "auto",
+                      }}>
+                        <div style={{
+                          backgroundImage: "url('" +prubas + "')",
+                          ...styleswiper.slideimg
+                        }} >
+                        </div>
+                        <div style={styleswiper.fondo}>
+                        </div>
+                        <div className="descripciones">
+                          <div className="d-flex  flex-column text-white" >
+                            <div className="py-3 d-none d-sm-block   ">
+                              <div className=" d-none row d-flex  align-items-center p-1">
+                                <i className="fa fa-volume-off fa-3x  col-2 ">  </i>
+                                <h5 className="col-10 px-0 pt-2"
+                                  style={{
+                                    fontSize: '0.9em'
+                                  }}
+                                >EVENTO - <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
+                              </div>
+                            </div>
+                            <div className="d-block d-sm-none" >
+                              <div className="d-flex flex-row justify-content-center text-center">
+                                <i className="fa fa-volume-off fa-1x"> </i>
+                                <h5 className=" px-0"
+                                  style={{
+                                    fontSize: '0.9em',
+                                  }}
+                                >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
+                              </div>
+                            </div>
+                            <h4 className=" font-weight-bold " style={styleswiper.titulo}>{element.encabezado}  </h4>
+                            <span className="" style={styleswiper.subtitulo}>
+                              {element.descripcion}
+                            </span>
+                            <div className="pt-2 ">
+                              {
+                                element.evento == null ?
+                                  < button className="btn border rounded-1  btn-lg btn-outline-light "
+                                    style={styleswiper.button}
+                                  
+                                    onClick={() => userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Modalstatus.estado" })) : ""}
+
+                                  >Subscríbete</button> :
                                   <button className="btn border rounded-1  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
@@ -760,9 +823,8 @@ const IndexFlas = () => {
                 )
               }) : ''
           }
-
         </Swiper>
-      </div> : <div className="container-fluid p-0">
+      </div> : <div className="container-fluid  p-0">
         <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '300px', backgroundImage: `url(${header})` }}>
           <div className="container w-100 h-100 px-0">
             <div className="container btn-group-vertical  h-100 text-center px-0">
@@ -774,7 +836,6 @@ const IndexFlas = () => {
             </div>
           </div>
         </div>
-
       </div>}
       {/* eventos */}
       {seleccion == "" ?
@@ -785,7 +846,6 @@ const IndexFlas = () => {
                 <div className="row  p-0">
                   {eventoslist.length > 0 ?
                     eventoslist.map((e, i) => {
-
                       return (
                         <div className="col-12 mx-auto my-3" id={"evento" + e.id} key={i}>
                           <a id={"headingThree" + e.id} className="collapsed evento eventoss" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
@@ -800,12 +860,9 @@ const IndexFlas = () => {
                                 <svg className="seudtres " xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" version="1.1"
                                   style={{
                                     filter: "drop-shadow(1px 1px 3px #888)"
-
                                   }}
                                   viewBox="0 0 21000 15700">
-
                                   <g id="Capa_x0020_1">
-
                                     <polygon className="line1" fill="#A9ABAE" points="15706,1584 10507,6889 5309,1584 6932,-1 10507,3648 14083,-1 " />
                                     <polygon className="line3" fill="#E6E7E8" points="21008,4985 10507,15701 8,4985 1725,3307 10513,12281 19287,3305 " />
                                     <g id="_2060064090544">

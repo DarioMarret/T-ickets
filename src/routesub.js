@@ -44,6 +44,7 @@ import EsquemaViews from "views/Pages/Esquemas";
 import NoticiasJs from "views/Pages/Noticias.js";
 import AprobarView from "views/Pages/VenderTiket.js/Aprobar";
 import EmitirboView from "views/Pages/VenderTiket.js/Emitir";
+import TagsInput from "components/TagsInput/TagsInput";
 
 var routes = [
   {
@@ -200,12 +201,11 @@ var routes = [
         layout: "/admin",
         name: "Vender Articulo",
         mini: "*",
-        component: Reactabla,
+        component: EmitirboView,
         permiso: ["superadmin", "super_admin", "vendedores"]
       }
     ]
   },
-  //
   {
     collapse: true,
     path: "/finanza",

@@ -328,6 +328,7 @@ export const Obtenerlinkimagen = async (parm) => {
         fordata.append('image', parm);
         const { data } = await axios.post("https://flash.t-ickets.com/store/api/img", fordata)
         if (!data.success) return null
+        console.log(data)
         return data.link
 
     } catch (error) {

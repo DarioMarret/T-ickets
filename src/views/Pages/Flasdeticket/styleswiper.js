@@ -11,14 +11,14 @@ export const styleswiper = {
   subtitulo: {
     textColor: 'red',
      fontSize: '0.9em',
-    textTransform: 'uppercase',
+    fontWeight:"bold"
   },
   button: {
      width: '150px',
     fontSize: '1.0em'
   },
   slideimg: {
-    height: "400px",
+    height: "453px",
     width: "100%",
     position: "relative",
     backgroundPosition: "center",
