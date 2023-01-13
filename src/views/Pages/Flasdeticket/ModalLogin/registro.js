@@ -122,6 +122,10 @@ const ResgistroView = (prop) => {
         }
 
     }
+    function Suscritosfirs(){
+        usedispatch(setModal({ nombre: '', estado: '' })) 
+    }
+
     async function Registeruser(e) {
         e.preventDefault();
         sedtValida("was-validated")
@@ -139,12 +143,10 @@ const ResgistroView = (prop) => {
             ciudad: "guayaquil",
             direccion: direccion.trim(),
             cedula: cedula.trim(),
-
         }
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
         console.log(datos)
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
-            //  console.log(Object.values(Object.fromEntries(form.entries())).some(e => e))
             setDatoToas({
                 show: true,
                 message: "Falta datos por completar",
@@ -165,7 +167,6 @@ const ResgistroView = (prop) => {
         }
 
         if (!emailRegex.test(email)) {
-            // console.log(emailRegex.test(email))
             setDatoToas({
                 show: true,
                 message: "Fromato de correo Erroneo",
@@ -242,7 +243,7 @@ const ResgistroView = (prop) => {
                                 estado: "Inicio Exitoso",
                             })
 
-                            modal.estado != null ? abrir(modal.estado) : usedispatch(setModal({ nombre: '', estado: '' }))
+                            modal.estado != null && modal.estado != "Subscription" ? abrir(modal.estado) : modal.estado == "Subscription" ? usedispatch(setModal({ nombre: "Subscription", estado: "" })) : usedispatch(setModal({nombre:"",estado:""}))
                             usedispatch(addususcritor({ users }))
                         } else {
                             console.log("error", registro.data)
@@ -253,25 +254,19 @@ const ResgistroView = (prop) => {
                                 estado: "Error de registro",
                             })
                         }
-
                     } catch (error) {
                         console.log(error)
                         setDatoToas({
                             show: true,
-                            message: "El Email ya" + email + " se encuentra registrado intente con otro",
+                            message: "El Email ya " + email + " se encuentra registrado intente con otro",
                             color: 'bg-danger',
                             estado: "Email dubplicado",
                         })
-
                     }
-
                 }
-
             } catch (error) {
-
                 document.getElementById("cedula").classList.add("is-invalid")
                 document.getElementById("email").classList.add("is-invalid")
-                //   error.response.data["message"]
                 setDatoToas({
                     show: true,
                     message: "Hubo un error intente de nuevo",

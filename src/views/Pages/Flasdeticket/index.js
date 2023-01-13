@@ -58,6 +58,7 @@ import { espacio } from "utils/constantes.js";
 import { correlativosadd } from "utils/Querypanelsigui.js";
 import { listarRegistropanel } from "utils/pagos/Queripagos.js";
 import { setToastes } from "StoreRedux/Slice/ToastSlice.js";
+import SubscrtitoViews from "./ModalLogin/Modalsubscrito.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
@@ -742,13 +743,8 @@ const IndexFlas = () => {
                                 <button className="btn border rounded-1  btn-lg btn-outline-light "
                                     style={styleswiper.button}
                                    href="#"
-                                    onClick={() => userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Modalstatus.estado" })):""}
-                                  >{"Subscríbete"}</button>
-                                  /*<a className="btn border rounded-1  btn-lg btn-outline-light "
-                                    style={styleswiper.button}
-                                    href={element.redirect}
-                                    target="_blank"
-                                  >VER MÁS</a>*/ :
+                                    onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })):""}
+                                  >{"Subscríbete"}</button>:
                                   <button className="btn border rounded-1  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
@@ -805,7 +801,7 @@ const IndexFlas = () => {
                                   < button className="btn border rounded-1  btn-lg btn-outline-light "
                                     style={styleswiper.button}
                                   
-                                    onClick={() => userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Modalstatus.estado" })) : ""}
+                                    onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
 
                                   >Subscríbete</button> :
                                   <button className="btn border rounded-1  btn-lg btn-outline-light "
@@ -984,6 +980,7 @@ const IndexFlas = () => {
 
                     </div>}
                   {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
+                  <SubscrtitoViews/>
                   <div className="col-12 d-none col-lg-6 mx-auto my-5" >
                     <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
                       aria-controls="collapseExample">

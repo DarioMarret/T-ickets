@@ -24,11 +24,12 @@ import facilito from "../../../assets/facilito.png"
 import facilitodos from "../../../assets/facilito.jpeg"
 import avatar from "../../../assets/imagen/avatarpng.png"
 import prubas from "../../../assets/imagen/EladioCarrion.jpg"
+import proximo from "../../../assets/imagen/carrion.jpg"
 export const pasados = [img1, img2, img3]
 export const carrusel = {
     principal, secundaria, header, tercero, logofla,
     mapa, portal, icon, valla,
     android, ios, face, insta, 
     tick, youtube, nombrepage, facilito,
-    redacti, facilitodos, avatar, iconhead, prubas
+    redacti, facilitodos, avatar, iconhead, prubas, proximo
 } 

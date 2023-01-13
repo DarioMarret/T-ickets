@@ -104,7 +104,7 @@ const LocalidadmapViews = (props) => {
     }
     function agregar() {
         let user = getDatosUsuariosLocalStorag()
-        if (sleccionlocalidad.disponibles != 0) {
+        if (sleccionlocalidad.disponibles == 0) {
             usedispatch(setToastes({
                 show: true,
                 message: "No hay más disponibilida en la localidad",
@@ -636,13 +636,13 @@ const LocalidadmapViews = (props) => {
                     console.log(ouput.data.filter(e => e.estado == "disponible").length)
                     let dispo = ouput.data.filter(e => e.estado == "disponible").length 
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e => e.cedula != "" && e.cedula!= null).length,
+                        disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula!= null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
                         pagados: "",
                         inpagos: sleccionlocalidad.inpagos
                     }))
                     console.log({
-                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                        disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
                         pagados: "", inpagos: sleccionlocalidad.inpagos
                     })

@@ -311,14 +311,15 @@ const ModalCarritoView = (prop) => {
                     usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
                     //  usedispatch(filtrarlocali(nuevoObjeto))
                     filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
-                    ouput.data.filter(e => e.cedula != "" && e.cedula != null).length == 0 ? usedispatch(setToastes({
+                    console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
+                    ouput.data.filter(e => e.cedula != " " && e.cedula != null).length== 0 ? usedispatch(setToastes({
                         show: true,
                         message: "Estan en proceso o vendidos",
                         color: 'bg-primary',
                         estado: "Esta loclidad no tiene disponibles  "
                     })) : ''
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e => e.cedula != "" && e.cedula != null).length,
+                        disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length,
                         pagados: "",
                         inpagos: sleccionlocalidad.inpagos
