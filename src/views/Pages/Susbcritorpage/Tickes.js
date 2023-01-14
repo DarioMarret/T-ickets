@@ -28,6 +28,7 @@ import Tabs from "@mui/material/Tabs";
 
 import ListaderegistroView from "../Flasdeticket/Listaregistro/index.js";
 import DataTableBos from "components/ReactTable/Datatable.js/index.js";
+import { ticketsboletos } from "utils/columnasub.js";
 let { cedericon } = bancos
 function Example() {
     let usedispatch = useDispatch()
@@ -108,8 +109,14 @@ function Example() {
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         Listarticketporestado(user.cedula).then(ouput => {
+            if(!ouput.success){
+
+                return
+            }
+            setTikes(ouput.data)
+           // console.log(ouput)
             let nuevogrupo = []
-            console.log(ouput)
+         
             ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).forEach(element => {
                 if (!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento)) {
                     //console.log(!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento))
@@ -143,13 +150,13 @@ function Example() {
                 })
             }) : ''
             console.log(nuevogrupo)
-            setTikes([...nuevogrupo])
+           // setTikes([...nuevogrupo])
 
         }).catch(err => console.log(err))
     },
         [])
 
-    console.log(Object.keys(rowSelection).map((g) => { return tiketslist.find(e => e.codigoEvento == g).detalle }))
+    //console.log(Object.keys(rowSelection).map((g) => { return tiketslist.find(e => e.codigoEvento == g).detalle }))
     function suma(item) {
         let tikets = tiketslist.find(e => e.codigoEvento == item).detalle.map((f) => { return parseFloat(f.valor) })
         try {
@@ -182,8 +189,13 @@ function Example() {
                 <div className=" container-fluid py-2 px-0">
                     <TabPanel value={value} index={1} >
                         <MaterialReactTable
+                            columns={ticketsboletos}
+                            data={tiketslist.sort(e => e.id)}
+                            localization={MRT_Localization_ES}
+                        />
+                       {/* <MaterialReactTable
                             columns={ticketproceso}
-                            data={tiketslist.sort(e => e.fechaCreacion)}
+                            data={tiketslist.sort(e => e.id)}
                             muiTableProps={{
                                 sx: {
                                     tableLayout: 'flex'
@@ -192,69 +204,7 @@ function Example() {
                             muiTableBodyProps={{
                                 sx: { columnVisibility: { nombre: false } }
                             }}
-                            renderDetailPanel={({ row }) => (
-                                <div className=" ">
-                                    {row.original.detalle ? row.original.detalle.map((e, i) => {
-                                        return (
-                                            <div className="row  border-bottom  align-items-center  rounded-1" key={"cons" + i}>
-                                                <div className="col-sm">
-                                                    <div className=" text-center">
-                                                        <label className="form-check-label" >
-
-                                                        </label>
-                                                        <input className="form-check-input" type="checkbox" name={e.sillas}
-
-
-                                                            id="flexCheckIndeterminate" />
-
-                                                    </div>
-
-
-                                                </div>
-
-                                                <div className="col-2 col-md-2 ">
-
-                                                    boleto   {e.sillas}
-                                                </div>
-                                                <div className="col-2 col-md-3">
-                                                    Localidad:  {e.localidad}
-                                                </div>
-                                                <div className="col-sm">
-                                                    ${e.valor}
-                                                </div>
-
-                                                <div className="col-sm col-md-3">
-                                                    {e.fechaCreacion}
-                                                </div>
-                                                <div className="col-sm">
-                                                    {row.original.codigoEvento}
-                                                </div>
-                                                <div className=" col-sm">
-                                                    {row.original.estado}
-                                                </div>
-                                                <div className="col-sm">
-                                                    <Tooltip title="Ceder ticket" placement="top-start">
-                                                        <IconButton
-                                                            color='success'
-                                                            onClick={() => successAlert(e.id)}
-                                                        >
-                                                            <img src={cedericon}
-                                                                style={
-                                                                    {
-                                                                        height: 30
-                                                                    }
-                                                                }
-                                                            />
-                                                        </IconButton>
-                                                    </Tooltip>
-
-                                                </div>
-                                            </div>
-                                        )
-                                    }) : ''}
-
-                                </div>
-                            )}
+                           
                             enableSelectAll={false}
                             enableMultiRowSelection={false}
                             enableRowSelection
@@ -314,13 +264,10 @@ function Example() {
                             onRowSelectionChange={setRowSelection}
                             state={{ rowSelection }}
                             localization={MRT_Localization_ES}
-                        />
+                        />*/}
                         <div className=" container pb-3">
                             <div className=" d-flex justify-content-end ">
                                 {
-
-
-
                                     Object.keys(rowSelection).length > 0 ? <div className="px-2 col-12 col-md-6 text-end border py-3">
                                         Valor Total de Selección:
                                         {" $" +

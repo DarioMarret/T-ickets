@@ -121,12 +121,12 @@ const ModalCarritoView = (prop) => {
         }) : ''
         Listarticketporestado(user.cedula).then(oupt => {
            // console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)))
-            //console.log(oupt.data)
+           // console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado == "reservados").length)
             usedispatch(updateboletos({
                 disponibles: 0,
                 proceso: 0,
-                pagados: 0,
-                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).length
+                pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado == "Pagado").length,
+                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado =="reservados").length
             }))
             /*console.log({
                 disponibles: 0,
@@ -219,8 +219,8 @@ const ModalCarritoView = (prop) => {
 
             }
             else if (ouput.data.find(e => e.typo == "correlativo")) {
-                usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null)))
-                ouput.data.filter(e => e.cedula != "" && e.cedula != null).length == 0 ?
+                usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != " " && e.cedula != null)))
+                ouput.data.filter(e => e.cedula != " " && e.cedula != null).length == 0 ?
                     usedispatch(setToastes({
                         show: true,
                         message: "Estan en proceso o vendidos",
@@ -232,7 +232,7 @@ const ModalCarritoView = (prop) => {
                 usedispatch(updateboletos({
                     disponibles: ouput.data.filter(e => e.cedula != "" && e.cedula != null).length,
                     proceso: ouput.data.filter(e => e.estado == "reservado").length,
-                    pagados: "",
+                    pagados: sleccionlocalidad.pagados,
                     inpagos: sleccionlocalidad.inpagos
                 }))
                 sessionStorage.seleccionmapa = JSON.stringify(e)
@@ -321,7 +321,7 @@ const ModalCarritoView = (prop) => {
                     usedispatch(updateboletos({
                         disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length,
-                        pagados: "",
+                        pagados: sleccionlocalidad.pagados,
                         inpagos: sleccionlocalidad.inpagos
                     }))
                     sessionStorage.seleccionmapa = JSON.stringify(consulta)

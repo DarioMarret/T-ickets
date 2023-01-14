@@ -26,8 +26,8 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Actualizarpublicdad } from "utils/Querypanelsigui";
+import { ListarEventos } from "utils/Querypanel";
 export default function NoticiasView() {
-
     let usedispatch = useDispatch()
     let fechamin = new Date().toISOString().slice(0, -14);
     const [cargando,setCargando]=useState(false)
@@ -66,16 +66,14 @@ export default function NoticiasView() {
             descipcion: eventos.find(el => el.id == e.value).descripcionConcierto,
             link_img: "",
             mas: { ...eventos.find(el => el.id == e.value) }
-
         })
-        // setImg(imagenes[e.value])
     }
     const onSubmit = async (e) => {
         e.preventDefault()
         const form = new FormData(e.target)
         if (Object.values(Object.fromEntries(form.entries())).some(e => e)) {
             let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
-            if (Tipo != "Evento") {
+            if (Tipo != "Evento") {               
                 if (imgen == "" || ![encabezado, descipcion, fechamax, mas].some(e => e)) {
                     usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
                 }
@@ -84,10 +82,8 @@ export default function NoticiasView() {
                         setCargando(true)
                         let link = await Obtenerlinkimagen(imgen)
                         console.log(Object.fromEntries(form.entries()))
-                        let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
-                       
-                         console.log(link)
-                       
+                        let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())                       
+                         console.log(link)                                                
                         setTimeout(async function () {
                             if(link ==null){
                                 usedispatch(setToastes({ show: true, message: "La imagen tiene un peso de " + Math.floor(imgen.size / 1000000) +"MB", color: 'bg-warning', estado: 'Imagen demasiada pesada' }))
@@ -103,7 +99,6 @@ export default function NoticiasView() {
                             }
                             let carruse = await agregarNoticia(parametr)
                             console.log(carruse)
-
                             Evento()
                             setCargando(false)
                         }, 3000)
@@ -113,35 +108,31 @@ export default function NoticiasView() {
                 }
             }
             else if (Tipo == "Evento") {
+               // let tipo = document.getElementById("mas").value
+                //console.log(tipo)
+               
                 if (encabezado == "" || descipcion == "" || fechamax == "" || imgen == "") {
-                    //console.log("llenar datos", img)
                     usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
                 }
                 else {
                     try {
-                        //  console.log("llenar datos", imgen)
                         setCargando(true)
                         let link = await Obtenerlinkimagen(imgen)
-                        //    console.log(Object.fromEntries(form.entries()))
                         let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
-                        //  console.log(Object.fromEntries(form.entries()))
-                        
-                                   
                         setTimeout(async function() {
                             let datas = {
-                                "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"],
+                                "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"]+"-"+datos.mas["estado"],
                                 "encabezado": encabezado,
                                 "descripcion": descipcion,
                                 "link_img": link,
                                 "fecha_presentacion": fechamax,
-                                "redirect": ''
+                                "redirect":""
                             }
                             console.log(datas)      
                             let carruse = await noticiasEvento(datas)
                             Evento()
                             setCargando(false)
                         },3000)        
-                        //  console.log(carruse)
                     } catch (error) {
                         console.log(error)
                     }
@@ -170,7 +161,7 @@ export default function NoticiasView() {
                     let link = await Obtenerlinkimagen(imgen)
                     let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
                     let parametr = {
-                        "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"],
+                        "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"]+"-"+datos.mas["estado"],
                         "encabezado": encabezado,
                         "descripcion": descipcion,
                         "link_img": link,
@@ -350,7 +341,6 @@ export default function NoticiasView() {
                         ></input>
                     </div>
                 </div>
-
             </div>
             <div className="row" >
                 <div className="col-6">
@@ -362,13 +352,21 @@ export default function NoticiasView() {
                         />
                     </div>
                 </div>
-
+                <div className="col-6 d-none">
+                    <label className=" form-label " > Tipo  </label>
+                    <div className="custom-file" >
+                        <select className=" form-select" id="mas"
+                          >
+                            <option value="" disabled ></option>
+                            <option value="Venta">Venta </option>
+                            <option value="subscripcion">Subscripción</option>
+                       </select>
+                    </div>
+                </div>
             </div>
-
             <div>
             </div>
         </div>,
-
         informativo:
             <div className="row">
                 <div className="col-6">
@@ -497,11 +495,6 @@ export default function NoticiasView() {
                 mas: e.redirect,
                 id: e.id
             })
-            //document.getElementById("").value = e.encabezado;
-            //document.getElementById("").value = e.descripcion;
-            //document.getElementById("").value = e.fecha_presentacion;
-            // document.getElementById("").value = e.redirect;
-
         } else {
             setTipo("Evento")
             setDatos({
@@ -513,14 +506,12 @@ export default function NoticiasView() {
                 id: e.id
             })
         }
-
     }
     useEffect(() => {
-        EventosActivos().then(oupt => {
-            setEventos(oupt.data)
-            //console.log(oupt)
+        ListarEventos("").then(oupt => {
+            setEventos(oupt.data.filter(e => e.estado == "PROCESO" || e.estado == "ACTIVO"))
+            console.log(oupt.data.filter(e => e.estado=="PROCESO" || e.estado=="ACTIVO")) 
         }).catch(err => console.log(err))
-
         Evento()
     }, [])
     return (
@@ -580,7 +571,6 @@ export default function NoticiasView() {
                         </div>
                     </SwiperSlide>
                 </Swiper>
-
             </Row>
             <Container fluid className="pt-3">
                 <Row>
@@ -614,19 +604,14 @@ export default function NoticiasView() {
                                         {
                                             tipoevento[Tipo]
                                         }
-
-                                        <div className="col-12 d-flex justify-content-end">
+                                        <div className="py-2 col-12 d-flex justify-content-end">
                                             {datos.id == "" ? <button className="btn btn-primary mx-1" disabled={cargando} >Guardar </button> :
                                                 <button className="btn btn-primary mx-1"  >Actualizar </button>}
                                         </div>
                                     </form>
-
-
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </Row>
                 <Row>
@@ -634,7 +619,6 @@ export default function NoticiasView() {
                         {publicidad.length > 0 ? <div className="card " >
                             <div className="  card-header">
                                 <h5>Eventos del carrusel</h5>
-
                             </div>
                             {publicidad.length > 0 ? <MaterialReactTable
                                 columns={columnPublicidad}
@@ -669,7 +653,6 @@ export default function NoticiasView() {
                         </div> : ""}
                     </div>
                 </Row>
-
             </Container>
         </>
     )

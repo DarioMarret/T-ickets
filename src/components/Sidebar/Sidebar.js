@@ -269,7 +269,7 @@ function Sidebar({ routes, image, background }) {
         <div
           className="sidebar-background"
           style={{
-            backgroundImage: "url('" + image + "')"
+           // backgroundImage: "url('" + image + "')"
           }}
         ></div>
       </div>

@@ -105,7 +105,7 @@ const ModalLogin = (props) => {
           <Container className="d-flex flex-column justify-content-center">
             <div className="card-body">
               <div className="container text-center">
-                <img src={logo} className="mb-4 img-fluid " style={{ height: '80px', color: 'black' }} alt="" />
+                <img src={logo} className="mb-4 img-fluid " style={{ height: '125px', color: 'black' }} alt="" />
               </div>
               <form onSubmit={(e) => handleSubmit(e)}  >
                 <div className="input-group mb-4">
@@ -135,13 +135,14 @@ const ModalLogin = (props) => {
                 </div>
                 <div className="row text-center">
                   <div className="col-12">
-                    <button className="btn btn-primary px-4" type="submit">ENTRAR</button>
+                    <button className="btn btn-primary px-4" type="submit">INGRESAR</button>
                   </div>
                   <div className="col-12 "
                   >
-                    <a className="btn btn-link text-dark  px-4" onClick={regsitronew} href="#"
+                    <a className="btn btn-link text-pag  px-4" onClick={regsitronew} href="#"
                       style={{
-                        fontWeight: "bold"
+                        fontWeight: "bold",
+                        color:"#3F40E0"
                       }}
                     >Crear Cuenta</a>
                   </div>

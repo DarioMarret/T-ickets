@@ -48,18 +48,9 @@ export default function ListaderegistroView(props) {
                     sx: {
                         tableLayout: 'flex'
                     }
-                }}
-                muiTableBodyProps={{
-                    sx: { columnVisibility: { nombre: false } }
-                }}
-
-                displayColumnDefOptions={{
-                    'mrt-row-numbers': {
-                        enableHiding: true,
-                    },
-                }}
+                }}                           
                 enableRowActions
-                positionActionsColumn="last"
+                positionActionsColumn="first"
                 renderRowActions={({ row }) => (
                     <Box sx={{ display: 'flex' }}>
 

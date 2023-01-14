@@ -2,10 +2,9 @@
 import img1 from "../../../assets/imagen/pasado1.png"
 import img2 from "../../../assets/imagen/pasado2.png"
 import img3 from "../../../assets/imagen/pasado3.png"
-import principal from "../../../assets/imagen/eventoprincip.jpg";
+
 import header from "../../../assets/header.jpeg";
-import secundaria from "../../../assets/imagen/encabezadoweb3.jpg";
-import tercero from "../../../assets/imagen/concierto.jpg"
+
 import logofla from "../../../assets/imagen/LOGO-WEB.png";
 import mapa from "../../../assets/imagen/MAPAPRUEBA.png"
 import portal from "../../../assets/imagen/Portadashows.jpg"
@@ -27,7 +26,7 @@ import prubas from "../../../assets/imagen/EladioCarrion.jpg"
 import proximo from "../../../assets/imagen/carrion.jpg"
 export const pasados = [img1, img2, img3]
 export const carrusel = {
-    principal, secundaria, header, tercero, logofla,
+      header,  logofla,
     mapa, portal, icon, valla,
     android, ios, face, insta, 
     tick, youtube, nombrepage, facilito,

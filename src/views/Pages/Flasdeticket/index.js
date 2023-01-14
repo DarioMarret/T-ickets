@@ -268,11 +268,9 @@ const IndexFlas = () => {
     setspinervi("")
     try {
       let registro = await listarRegistropanel({"cedula":getDatosUsuariosLocalStorag().cedula})
-
-    //  console.log(registro)
-      // status false pasa
-      // status pendiente no pasa
-      if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")){
+     
+      /** agregar en casi de && f.forma_pago != "Tarjeta" */
+      if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente" )){
         setspinervi("d-none")
         SetSeleccion("Tickets")
         usedispatch(setToastes({
@@ -358,20 +356,10 @@ const IndexFlas = () => {
             setspinervi("d-none")
           }
         }
-
       }
-
-    
-
-
-
-
     } catch (error) {
       console.log(error)
     }
-
-
-
   }
   const borrar = async (e) => {
     try {
@@ -744,7 +732,7 @@ const IndexFlas = () => {
                                     style={styleswiper.button}
                                    href="#"
                                     onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })):""}
-                                  >{"Subscríbete"}</button>:
+                                  >{!userauthi.login?"Subscríbete":"Muy pronto"}</button>:
                                   <button className="btn border rounded-1  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
@@ -803,7 +791,7 @@ const IndexFlas = () => {
                                   
                                     onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
 
-                                  >Subscríbete</button> :
+                                  >{!userauthi.login?"Subscríbete":"Muy pronto"}</button> :
                                   <button className="btn border rounded-1  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
@@ -1027,11 +1015,8 @@ const IndexFlas = () => {
                                 backgroundSize: 'cover',
                                 backgroundRepeat: "no-repeat",
                               }}
-
                             >
-
                             </div>
-
                           </div>
                         )
                       })

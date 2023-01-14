@@ -89,6 +89,11 @@ div.esquema:hover {
     border-color: #3F40E0 !important;
 }
 
+.text-pag {
+    --bs-text-opacity: 1;
+    color: rgba(var(#3F40E0), var(--bs-text-opacity)) !important;
+}
+
 .btn-primary:hover {
     color: #fff;
     background-color: #4655FC !important;

@@ -140,13 +140,13 @@ const ResgistroView = (prop) => {
             email: email.trim(),
             password: password.trim(),
             movil: movil.trim(),
-            ciudad: "guayaquil",
+            ciudad: modal.estado == "Subscription" ? "Eladio Carrion" :"guayaquil",
             direccion: direccion.trim(),
             cedula: cedula.trim(),
         }
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
-        console.log(datos)
-        if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
+       
+        if (!Object.values(Object.fromEntries(form.entries())).some(e => e)  ) {
             setDatoToas({
                 show: true,
                 message: "Falta datos por completar",
@@ -175,7 +175,7 @@ const ResgistroView = (prop) => {
             })
             return
         }
-        if (password.length < 7 & movil.length != 9) {
+        if (password.length < 7 && movil.length != 9) {
             console.log("aqui")
             return
         }
@@ -246,7 +246,7 @@ const ResgistroView = (prop) => {
                             modal.estado != null && modal.estado != "Subscription" ? abrir(modal.estado) : modal.estado == "Subscription" ? usedispatch(setModal({ nombre: "Subscription", estado: "" })) : usedispatch(setModal({nombre:"",estado:""}))
                             usedispatch(addususcritor({ users }))
                         } else {
-                            console.log("error", registro.data)
+                            //console.log("error", registro.data)
                             setDatoToas({
                                 show: true,
                                 message: "El Email ya " + email + " se encuentra registrado intente con otro",
@@ -255,7 +255,7 @@ const ResgistroView = (prop) => {
                             })
                         }
                     } catch (error) {
-                        console.log(error)
+                        //console.log(error)
                         setDatoToas({
                             show: true,
                             message: "El Email ya " + email + " se encuentra registrado intente con otro",
@@ -293,6 +293,11 @@ const ResgistroView = (prop) => {
                 t = -1 != "0123456789".indexOf(String.fromCharCode(n));
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
+        $(".nombres").keypress(function (e) {
+            var n = (e = e || window.event).keyCode || e.which,
+                t = -1 === "0123456789".indexOf(String.fromCharCode(n));
+            (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
+        })
         const phoneInputField = document.querySelector("#movil");
         intlTelInput(phoneInputField, {
             initialCountry: "ec",
@@ -324,7 +329,7 @@ const ResgistroView = (prop) => {
                 <Modal.Body>
                     <div className="d-flex flex-column ">
                         <div className="container text-center d-none d-sm-none d-md-block">
-                            <img src={logo} className="mb-4 img-fluid " style={{ height: '80px', color: 'black' }} alt="" />
+                            <img src={logo} className="mb-4 img-fluid " style={{ height: '125px', color: 'black' }} alt="" />
                         </div>
                         <div className="container-fluid row "  >
                             <div className="col-12 p-0 d-flex flex-column">
@@ -387,10 +392,11 @@ const ResgistroView = (prop) => {
                                                     </div>
 
                                                     <input type="text"
-                                                        className="form-control"
+                                                        className="form-control nombres"
                                                         id="name"
                                                         name="name"
                                                         value={datosPerson.name}
+                                                      
                                                         required
                                                         onChange={(e) => hanbleOnchange(e)}
                                                         placeholder="Ingrese su nombre completo" />

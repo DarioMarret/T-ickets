@@ -3,7 +3,7 @@ import { GetMetodo, GetValores, getVerTienda } from "./CarritoLocalStorang";
 import { Host, token } from "./constantes";
 import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag";
 
-
+/** reportar Pago */
 export const PagoRapido = async (transaccion) => {
     let datosPersonal = getDatosUsuariosLocalStorag().cedula
     let metodo = GetMetodo() == "Transferencia" ? "Deposito" : GetMetodo()
@@ -46,11 +46,8 @@ export const PagoRapido = async (transaccion) => {
         return error
 
     }
-
-
-
 }
-
+/** Listar todos los reportes de tickes */
 export const AprobarTiket = async () => {
     try {
         let { data } = await axios.get(Host + "/ticket_admin", {
@@ -63,8 +60,8 @@ export const AprobarTiket = async () => {
     } catch (error) {
         return error
     }
-
 }
+/**  */
 export const  ConsolidaBoleto = async ()=>{
     try {
         let {data} =await axios.post(Host+"/boletos",{
@@ -77,5 +74,17 @@ export const  ConsolidaBoleto = async ()=>{
     } catch (error) {
         return error
     }
-
+}
+export const Pagofisico=async()=>{
+    try {
+        let {data}=await axios.post(Host+"/pagosefectivi",{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
 }

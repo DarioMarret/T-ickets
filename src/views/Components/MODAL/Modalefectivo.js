@@ -185,10 +185,9 @@ const ModalEfectivo = (props) => {
   const hideAlert = () => {
     setAlert(null)
   }
-
   useEffect(() => {
     seTSpiners("d-none")
-  }, [Modalshow.nombre != "modalpago" ? true : false])
+  }, [Modalshow.nombre == "modalpago" ? true : false])
   return (
     <>
       {alert}

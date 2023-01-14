@@ -129,7 +129,7 @@ export default function Footer(props) {
                                         </a>
                                         <a href='https://goo.gl/maps/NvfDLJ9D6r1QNeFu5' target="_blank" className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <i className="bi bi-geo-alt-fill"> </i>
-                                            <span className=" text-white" style={{ fontFamily: '', }} >City Oficce Piso 3 Oficina L310 </span>
+                                            <span className=" text-white" style={{ fontFamily: '', }} >City Office Piso 3 Oficina L310 </span>
                                         </a>
                                     </div>
                                     <div className='txt-white p-1' style={{ width: '225px', maxWidth: 225 }}>

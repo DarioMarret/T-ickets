@@ -638,13 +638,13 @@ const LocalidadmapViews = (props) => {
                     usedispatch(updateboletos({
                         disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula!= null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
-                        pagados: "",
+                        pagados: sleccionlocalidad.pagados,
                         inpagos: sleccionlocalidad.inpagos
                     }))
                     console.log({
                         disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
-                        pagados: "", inpagos: sleccionlocalidad.inpagos
+                        pagados: sleccionlocalidad.pagados,  inpagos: sleccionlocalidad.inpagos
                     })
                 }
             }).catch(err => {
