@@ -17,7 +17,7 @@ export default function SubscrtitoViews() {
                     <button className="close" onClick={cerrar} >X</button>
                 </Modal.Header>
                 <Modal.Body className="text-center">
-                    <h5 className=" font-weight-bold">Espera Proximamente</h5>
+                    <h5 className=" font-weight-bold">Espera Próximamente</h5>
                     <img className=" border rounded-4 img-fluid"
                         src={proximo}
                     ></img>
