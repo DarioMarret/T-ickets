@@ -130,31 +130,38 @@ function Example() {
                         <td className="text-xs ">
                             {item.estado}</td>
                         <td className="text-center ">
+                           
                             <div className="btn-group" >
-                                {item.estado == "Pagado" && item.pdf != null ? 
-                                <button className=" btn btn-default" 
+                                {item.estado != "reservado" && item.pdf != null ? <Tooltip className="" title="Ver Ticket" placement="top">
+                                    <button 
+                                        className=" btn btn-default"
                                         disabled={(item.cedido == "SI")}
-                                            ><i className="bi bi-credit-card-2-front"></i>  </button>:""}
-                                {item.cedido == "NO" ?<a className=" btn btn-default " 
+                                        href={item.pdf}
+                                        target="_black"
+                                    >
 
-                                  
-                                    onClick={() => successAlert(item)}
-                                >
-                                    <img src={cedericon}
-                                        style={
-                                            {
-                                                height: 20
+                                        <i className="fa fa-download "></i>
+
+                                    </button>
+                                </Tooltip> : ''}
+                                {item.estado == "Pagado" && item.pdf != null && item.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
+                                    <a className=" btn btn-default "
+
+
+                                        onClick={() => successAlert(item)}
+                                    >
+                                        <img src={cedericon}
+                                            style={
+                                                {
+                                                    height: 20
+                                                }
                                             }
-                                        }
-                                    />
-                                </a>:""}
-                                {item.cedido != "NO" ? <a className=" btn btn-default btn-sm"
-
-
-                                   
-                                >
-                                    <i className="fa fa-download "></i>
-                                </a> : ""}
+                                        />
+                                    </a>
+                                </Tooltip> : ''}
+                                
+                              
+                            
                              
                             </div>
                           
@@ -249,8 +256,8 @@ function Example() {
                     aria-label="scrollable auto tabs example"
                 >
                     <Tab label="Reportar Compras" {...a11yProps(1)} />
-                    <Tab className="" label="Tickets" {...a11yProps(0)} />
-                    <Tab className="d-none" label="Tickets "{...a11yProps(2)} />
+                    <Tab className="d-none" label="Tickets" {...a11yProps(0)} />
+                    <Tab className="" label="Tickets "{...a11yProps(2)} />
 
                 </Tabs>
 
