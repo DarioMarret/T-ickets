@@ -20,14 +20,18 @@ export default function TablasViwe({...props}){
                         "sSearch": false,
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json", "info": "Mostrando page _PAGE_ de _PAGES_",
-                           
-                            "searchPlaceholder": "Buscar...",
+                            "sSearch": "",
+                            "searchPlaceholder": "",
                             'paginate': {
                                 'previous': '<span class="prev-icon"><i class="fa fa-arrow-left"> </i> </span>',
                                 'next': '<span class="next-icon"> <i class="fa fa-arrow-right"> </i></span>'
                             }
                         },
-                        
+                        "oLanguage": {
+
+                            "sSearch": "Quick Search:"
+
+                        },
                         select: {
                             style: "single",
                         },

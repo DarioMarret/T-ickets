@@ -101,12 +101,12 @@ function Example() {
         return (
             <thead className="">
                 <tr className="border ">
+                    <th  >Detalle</th>
+                    <th className="text-xs text-center"  >Boleto</th>
                    
-                    <th  >Boleto</th>
-                    <th >Detalle</th>
-                    <th >Valor</th>
-                    <th >Fecha</th>
-                    <th >Estado</th>
+                    <th className="text-xs text-center" >Valor</th>
+                    <th className="text-xs text-center">Fecha</th>
+                    <th className="text-xs text-center">Estado</th>
                     <th  className="text-center"> Aciones</th>
 
                 </tr>
@@ -121,13 +121,13 @@ function Example() {
                 return (
                     <tr key={index}>
 
-                       
-                        <td className="text-xs ">{item.sillas}</td>
                         <td className="text-xs ">{item.concierto + " Localidad:" + item.localidad}</td>
-                        <td className="text-xs ">{item.valor}</td>
+                        <td className="text-xs text-center ">#{item.sillas.padStart(10, 0)}</td>
+                       
+                        <td className="text-xs text-center">{item.valor}</td>
 
-                        <td className="text-xs ">{item.fecha}</td>
-                        <td className="text-xs ">
+                        <td className="text-xs text-center">{item.fecha}</td>
+                        <td className="text-xs text-center">
                             {item.estado}</td>
                         <td className="text-center ">
                            
