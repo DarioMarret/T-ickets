@@ -428,13 +428,13 @@ function ModalDetalle(props) {
                                 </tr>
                                 <tr className={hidecomision}>
                                     <th scope="row"></th>
-                                    <td className={hidecomision + " text-end"} >Comisión por Boleto:</td>
-                                    <td className={hidecomision + " text-center"}>${parseInt(listaPrecio.comision).toFixed(2)}</td>
+                                    <td className={hidecomision + " text-end"} >Comisión Bancaria:</td>
+                                    <td className={hidecomision + " text-center"}>${parseFloat(listaPrecio.comision_bancaria).toFixed(2)}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"></th>
-                                    <td  className='text-end' >Comisión Bancaria:</td>
-                                    <td className='text-center'>${parseFloat(listaPrecio.comision_bancaria).toFixed(2)}</td>
+                                    <td className='text-end' >Comisión por Boleto:</td>
+                                    <td className='text-center'>${parseInt(listaPrecio.comision).toFixed(2)}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"></th>

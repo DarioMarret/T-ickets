@@ -132,8 +132,8 @@ function Example() {
                         <td className="text-center ">
                            
                             <div className="btn-group" >
-                                {item.estado != "reservado" && item.pdf != null ? <Tooltip className="" title="Ver Ticket" placement="top">
-                                    <button 
+                                {item.estado != "reservado" && item.pdf != null && item.cedido == "SI" ? <Tooltip className="" title="Ver Ticket" placement="top">
+                                    <a 
                                         className=" btn btn-default btn-sm"
                                         disabled={(item.cedido == "SI")}
                                         href={item.pdf}
@@ -142,7 +142,7 @@ function Example() {
 
                                         <i className="fa fa-download "></i>
 
-                                    </button>
+                                    </a>
                                 </Tooltip> : ''}
                                 {item.estado == "Pagado" && item.pdf != null && item.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
                                     <a className=" btn btn-default btn-sm"

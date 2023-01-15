@@ -228,7 +228,6 @@ const ModalEfectivo = (props) => {
           <div>
             <div className={spinerst}
               style={{
-                display: 'none',
                 position: 'fixed',
                 top: '0',
                 left: '0',

@@ -692,11 +692,15 @@ const ModalCarritoView = (prop) => {
                             </div> : ""}
 
                             <div className="form-check">
-                                <input className="v-check form-check-input" type="radio"
+                             { clienteInfo() == null ?  <input className="v-check form-check-input" type="radio"
                                     name="PasarelaEfectivo" id="PasarelaEfectivo"
                                     checked={checked.PasarelaEfectivo == "Efectivo" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Efectivo")}
-                                />
+                                />: <input className="v-check form-check-input" type="radio"
+                                    name="PasarelaEfectivo" id="PasarelaEfectivo"
+                                    checked={checked.PasarelaEfectivo == "Fisico" ? true : false}
+                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Fisico")}
+                                />}
                                 <label className="form-check-label" htmlFor="PasarelaEfectivo">
                                     {clienteInfo() == null ? "Efectivo punto de pagos" : "Efectivo"}
                                 </label>
