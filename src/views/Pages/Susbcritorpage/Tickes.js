@@ -134,7 +134,7 @@ function Example() {
                             <div className="btn-group" >
                                 {item.estado != "reservado" && item.pdf != null ? <Tooltip className="" title="Ver Ticket" placement="top">
                                     <button 
-                                        className=" btn btn-default"
+                                        className=" btn btn-default btn-sm"
                                         disabled={(item.cedido == "SI")}
                                         href={item.pdf}
                                         target="_black"
@@ -145,7 +145,7 @@ function Example() {
                                     </button>
                                 </Tooltip> : ''}
                                 {item.estado == "Pagado" && item.pdf != null && item.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
-                                    <a className=" btn btn-default "
+                                    <a className=" btn btn-default btn-sm"
 
 
                                         onClick={() => successAlert(item)}
