@@ -74,19 +74,26 @@ export default function Footer(props) {
                                 </div>
                                 <div className='d-flex pt-2  pb-5 flex-row' >
                                     <div className=' pl-2   ' >
-                                        <img src={face} className='img-fluid shadow  ' style={{
+                                        <a href="https://www.facebook.com/tickets.com.ec?mibextid=LQQJ4d" target="_black">
+                                        <img src={face}  target="_black" className='img-fluid shadow  ' style={{
                                             height: 40,
                                             cursor: 'pointer'
                                         }} />
+                                    </a>
                                     </div>
                                     <div className=' pl-2 ' >
-                                        <img src={insta} className='img-fluid  shadow-lg '  style={{ height: 40, cursor: 'pointer' }} />
-                                    </div>
+                                        <a href="https://instagram.com/tickets.com.ec?igshid=YmMyMTA2M2Y=" target="_black">
+                                            <img src={insta}  className='img-fluid  shadow-lg ' style={{ height: 40, cursor: 'pointer' }} />
+
+                                        </a>
+                                       </div>
                                     <div className=' pl-2' >
+                                        <a href="https://www.tiktok.com/@tickets.com.ec?_t=8Z2G1FTansT&_r=1" target="_black">
                                         <img src={tick} className='img-fluid' style={{ height: 40, cursor: 'pointer' }} />
+                                         </a>
                                     </div>
                                     <div className='  pl-2 '
-                                    >
+                                    > 
                                         <img src={youtube} className='img-fluid' style={{ height: 40, cursor: 'pointer' }} />
 
                                     </div>
