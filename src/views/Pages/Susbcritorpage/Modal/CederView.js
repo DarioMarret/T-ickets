@@ -42,7 +42,7 @@ const CederView = () => {
                 showCancel
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
             >
-                Este ticket dejara de ser de su propiedad  y pasara a ser de {datos.nombreCompleto+" "+estatusModal.estado.id}
+                Este ticket dejara de ser de su propiedad  y pasara a ser de {datos.nombreCompleto}
             </SweetAlert>
         )
     }
@@ -203,8 +203,9 @@ const CederView = () => {
                                             </div>
                                         </div>
                                         <div className="col-2" >
-                                            {!datos.resgistro ? <button className="btn btn-success" onClick={succesAlert}  > CEDER </button> :
-                                                <button className="btn btn-success"  > CEDER </button>}
+                                            {datos.id ? <button className="btn btn-success" onClick={succesAlert}  > CEDER </button> :
+                                                <button className="btn btn-success" 
+                                                disabled={true} > CEDER </button>}
                                         </div>
                                         <div className="col-lg-12">
                                             <div className="input-group mb-3">
