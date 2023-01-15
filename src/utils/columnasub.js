@@ -3,7 +3,8 @@ import moment from "moment"
 import { Badge } from "react-bootstrap"
 let estado = {
     "reservado": "error",
-    "GENERAR": "Generar",
+    "NO": "No Generado",
+    "SI":"Generado",
     "null": "Sin generar"
 }
 export const ticketproceso = [
@@ -96,7 +97,9 @@ let color = {
     "ACTIVO": "success",
     "PROCESO": "secondary",
     null: "danger",
-    "null": "danger"
+    "null": "danger",
+    "SI":"success",
+    "NO":"danger"
 }
 
 export const listaRegistro = [
@@ -109,13 +112,13 @@ export const listaRegistro = [
         header: "Fecha"
     },
     {
-        accessorKey: "generar_pdf",
-        header: "PDF",
+        accessorKey: "pdf",
+        header: "Ticket",
         Cell: ({ cell }) => (
             <div>
-                <Badge bg={color[cell.row.original.generar_pdf]}  >
+                <Badge bg={color[cell.row.original.pdf]}  >
 
-                    {estado[cell.row.original.generar_pdf]}</Badge>
+                    {estado[cell.row.original.pdf]}</Badge>
 
             </div>
         ),

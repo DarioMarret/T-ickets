@@ -140,7 +140,8 @@ const ResgistroView = (prop) => {
             email: email.trim(),
             password: password.trim(),
             movil: movil.trim(),
-            ciudad: modal.estado == "Subscription" ? "Eladio Carrion" :"guayaquil",
+            ciudad: "guayaquil",
+            //ciudad: modal.estado == "Subscription" ? "Eladio Carrion" :"guayaquil",
             direccion: direccion.trim(),
             cedula: cedula.trim(),
         }

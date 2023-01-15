@@ -7,6 +7,8 @@ import { GetSuscritores } from "utils/Querypanel";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { Triangle } from "react-loader-spinner";
 import { buscarcliente } from "utils/Querypanelsigui";
+import axios from "axios";
+import { Host } from "utils/constantes";
 const CederView = () => {
     let estatusModal = useSelector(state => state.SuscritorSlice.modal)
     let user = useSelector(state => state.SuscritorSlice)
@@ -18,7 +20,7 @@ const CederView = () => {
         nombreCompleto: '',
         ciudad: '',
         email: '',
-
+        id: "",
         resgistro: '',
         password: ''
     })
@@ -28,7 +30,10 @@ const CederView = () => {
                 info
                 style={{ display: "block", marginTop: "-100px" }}
                 title="Estás Seguro de ceder el boleto?"
-                onConfirm={() => succesceder()}
+                onConfirm={() => succesceder({
+                    "usuario_ceder": datos.id,
+                    "id": estatusModal.estado.id
+                })}
                 onCancel={() => hideAlert()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
@@ -37,13 +42,30 @@ const CederView = () => {
                 showCancel
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
             >
-                Este ticket dejara de ser de su propiedad  y pasara a ser de {datos.nombreCompleto}
+                Este ticket dejara de ser de su propiedad  y pasara a ser de {datos.nombreCompleto+" "+estatusModal.estado.id}
             </SweetAlert>
         )
     }
-    const succesceder = () => {
+    const succesceder = async (ceder) => {
+        
+        console.log(ceder)
+        try {
+            let { data } = await axios.post(Host + "/api/v1/ceder_boleto", ceder, {
+
+            }, {
+                header: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                }
+            })
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+
+        }
+
         hideAlert()
-        usedispatch(setModal({ nombre: '', estado: '' }))
+      //  usedispatch(setModal({ nombre: '', estado: '' }))
         usedispatch(setToastes({
             show: true,
             message: 'se cambio el propietario del boleto',
@@ -82,6 +104,7 @@ const CederView = () => {
                         nombreCompleto: oupt.data.nombreCompleto,
                         ciudad: oupt.data.direccion,
                         email: oupt.data.email,
+                        id:oupt.data.cedula
                     })
                 }
                 else {
@@ -180,8 +203,8 @@ const CederView = () => {
                                             </div>
                                         </div>
                                         <div className="col-2" >
-                                            {datos.resgistro ? <button className="btn btn-success" onClick={succesAlert}  > CEDER </button> :
-                                                <button className="btn btn-success" disabled={true} > CEDER </button>}
+                                            {!datos.resgistro ? <button className="btn btn-success" onClick={succesAlert}  > CEDER </button> :
+                                                <button className="btn btn-success"  > CEDER </button>}
                                         </div>
                                         <div className="col-lg-12">
                                             <div className="input-group mb-3">

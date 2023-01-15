@@ -11,13 +11,17 @@ table.dataTable>tbody>tr.child ul.dtr-details {
 }
 
 
-
+td
 
 
 
 tr.child {
     width: 100% !important;
     padding: 0 !important;
+}
+tr.odd{
+    color: black !important;
+    background:rgba(255, 252, 252, 0.904) !important;
 }
 
 ul.dtr-details {

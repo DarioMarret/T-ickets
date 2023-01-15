@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { styleswiper } from "./styleswiper.js";
+import { styleswiper, styleswipers } from "./styleswiper.js";
 import { pasados, carrusel } from "./imagenstatctic.js";
 let { icon, iconhead, valla, principal, secundaria, tercero, logofla, mapa, portal, header, avatar,prubas } = carrusel
 import { useSelector, useDispatch } from "react-redux";
@@ -663,7 +663,7 @@ const IndexFlas = () => {
       />
       <ModalFacilitoView />
       {/* header */}
-      {publicidad.length > 0 ? <div className="container-fluid  pt-2 px-0" style={{
+      {publicidad.length > 0 ? <div className="container-fluid   px-0" style={{
         minHeight: '300px'
       }}>
         <Swiper
@@ -680,25 +680,22 @@ const IndexFlas = () => {
             disableOnInteraction: true,
           }}
           modules={[Autoplay, EffectFade, Pagination]}>
-
           {
             publicidad.length > 0 ?
               publicidad.map((element, index) => {
                 return (
                   <SwiperSlide key={index}>
-                    <div className="d-none d-sm-none d-md-block" style={{ width: "100%", height: "453px" }}>
-                      <div className="slide-image" style={{
-                        position: "relative",
-                        width: "100%",
-                        height: "453px",
-                      }}>
+                    <div className="d-none d-sm-none d-md-block" style={{ width: "100%", height: "453px" }}>                  
                         <div style={{
                           backgroundImage: "url('" + element.link_img + "')",
-                          ...styleswiper.slideimg
+                          ...styleswipers.slideimgcenter
+                        }}></div>
+                        <div style={{
+                          backgroundImage: "url('" + element.link_img + "')",
+                          ...styleswipers.slideimg
                         }} >
-                        </div>
-                        <div style={styleswiper.fondo}>
-                        </div>
+                          <div>
+                          </div>
                         <div className="descripciones">
                           <div className="d-flex  flex-column text-white" >
                             <div className="py-3 d-none d-sm-block   ">
@@ -728,12 +725,12 @@ const IndexFlas = () => {
                             <div className="pt-2 ">
                               {
                                 element.evento == null ?
-                                <button className="btn border rounded-1  btn-lg btn-outline-light "
+                                  <button className="btn border rounded-6  btn-lg btn-outline-light "
                                     style={styleswiper.button}
-                                   href="#"
-                                    onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })):""}
-                                  >{!userauthi.login?"Subscríbete":"Muy pronto"}</button>:
-                                  <button className="btn border rounded-1  btn-lg btn-outline-light "
+                                    href="#"
+                                    onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
+                                  >{!userauthi.login ? "Suscríbete" : "Muy pronto"}</button> :
+                                  <button className="btn border rounded-6  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
                                   >COMPRAR</button>
@@ -742,8 +739,10 @@ const IndexFlas = () => {
                             </div>
                           </div>
                         </div>
+                        </div>
                       </div>
-                    </div>
+                       
+                   
                     <div className="d-block d-sm-block d-md-none" style={{ width: "100%", height: "auto" }}>
                       <div className="slide-image" style={{
                         position: "relative",
@@ -786,13 +785,13 @@ const IndexFlas = () => {
                             <div className="pt-2 ">
                               {
                                 element.evento == null ?
-                                  < button className="btn border rounded-1  btn-lg btn-outline-light "
+                                  < button className="btn border rounded-6  btn-lg btn-outline-light "
                                     style={styleswiper.button}
                                   
                                     onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
 
-                                  >{!userauthi.login?"Subscríbete":"Muy pronto"}</button> :
-                                  <button className="btn border rounded-1  btn-lg btn-outline-light "
+                                  >{!userauthi.login?"Suscríbete":"Muy pronto"}</button> :
+                                  <button className="btn border rounded-6  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
                                   >COMPRAR</button>
@@ -997,12 +996,16 @@ const IndexFlas = () => {
           </div>
           <div className="container p-3 d-none d-md-none  d-xl-block">
             <div className="row d-flex justify-content-center " >
-              <div className="col-12 col-lg-9 px-0 ">
+              <div className="col-12 col-lg-9 px-0 pb-3   ">
+              
                 <div className="row mx-auto bg-gradient d-flex justify-content-center px-0 ">
-                  <h4 >
-                    <b> EVENTOS PASADOS</b>
-                  </h4>
-                  <div className="row d-flex justify-content-center  " >
+                  <div className="col-12  border-bottom border-3 border-dark mb-3">
+                    <h4 className="text-capitalize font-weight-bolds">
+                      <b className="  "> Eventos Pasados</b>
+                    </h4>
+                  </div>
+                  
+                  <div className="row d-flex justify-content-center " >
                     {
                       [...pasados].map((element, index) => {
                         return (

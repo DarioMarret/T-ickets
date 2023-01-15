@@ -123,7 +123,7 @@ const ModalCarritoView = (prop) => {
            // console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)))
            // console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado == "reservados").length)
             usedispatch(updateboletos({
-                disponibles: 0,
+                disponibles: sleccionlocalidad.disponibles, 
                 proceso: 0,
                 pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado == "Pagado").length,
                 inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado =="reservados").length
@@ -230,7 +230,8 @@ const ModalCarritoView = (prop) => {
                 usedispatch(cargarmapa(color))
                 usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                 usedispatch(updateboletos({
-                    disponibles: ouput.data.filter(e => e.cedula != "" && e.cedula != null).length,
+                   
+                    disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
                     proceso: ouput.data.filter(e => e.estado == "reservado").length,
                     pagados: sleccionlocalidad.pagados,
                     inpagos: sleccionlocalidad.inpagos
@@ -319,7 +320,7 @@ const ModalCarritoView = (prop) => {
                         estado: "Esta loclidad no tiene disponibles  "
                     })) : ''
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
+                        disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length, 
                         proceso: ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length,
                         pagados: sleccionlocalidad.pagados,
                         inpagos: sleccionlocalidad.inpagos

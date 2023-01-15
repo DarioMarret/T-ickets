@@ -15,7 +15,7 @@ export default function Footer(props) {
                 backgroundColor: "#311C7C",
 
             }}
-        >            <div className=" container-fluid  pt-3">
+        >       <div className=" container-fluid  pt-3">
                 <div className=" d-none container d-none justify-content-center p-2">
                     <div className="row text-center p-2">
                         <div className="col-12 col-lg-3">
@@ -51,7 +51,7 @@ export default function Footer(props) {
                     </div>
                 </div>
                 <div className='d-flex flex-wrap pt-2 px-0 justify-content-center justify-content-md-between ' >
-                    <div className='col-12 col-md-4    d-flex justify-content-center justify-content-md-between px-0 pb-2'          >
+                    <div className='col-12 col-md-3    d-flex justify-content-center justify-content-md-between px-0 pb-2'          >
                         <div className='d-flex flex-column justify-content-center justify-content-md-between align-content-between'>
                             <div className=''>
                                 <div className="d-flex  flex-column" style={{ alignItems: 'stretch', lineHeight: '2', minWidth: '120px', maxWidth: '' }} >
@@ -73,35 +73,29 @@ export default function Footer(props) {
                                     <span className=" text-white" style={{ fontFamily: '', }} >Síguenos en nuestras Redes  </span>
                                 </div>
                                 <div className='d-flex pt-2  pb-5 flex-row' >
-                                    <div className=' pl-1 ' >
-                                        <img src={face} className='img-fluid ' style={{
+                                    <div className=' pl-2   ' >
+                                        <img src={face} className='img-fluid shadow  ' style={{
                                             height: 40,
                                             cursor: 'pointer'
                                         }} />
                                     </div>
-                                    <div className=' pl-1 ' >
-                                        <img src={insta} className='img-fluid' style={{ height: 40, cursor: 'pointer' }} />
+                                    <div className=' pl-2 ' >
+                                        <img src={insta} className='img-fluid  shadow-lg '  style={{ height: 40, cursor: 'pointer' }} />
                                     </div>
-                                    <div className=' pl-1 ' >
+                                    <div className=' pl-2' >
                                         <img src={tick} className='img-fluid' style={{ height: 40, cursor: 'pointer' }} />
                                     </div>
-                                    <div className='  pl-1 '
+                                    <div className='  pl-2 '
                                     >
                                         <img src={youtube} className='img-fluid' style={{ height: 40, cursor: 'pointer' }} />
 
                                     </div>
                                 </div>
                             </div>
-                            <div className="d-flex  flex-column  pb-2" style={{ minWidth: '120px', maxWidth: '' }} >
-                                <span className=" text-white" style={{ fontSize: '0.7em', }} >
-                                    Al permanecer en esta página, usted acuerda aceptar nuestros
-                                    <a className="unlisted link-light nav-item px-1" href='#!' data-toggle="modal" data-target="#terminosModalModal" aria-label="terminos">
-                                        Términos y condiciones
-                                    </a> </span>
-                            </div>
+
                         </div>
                     </div>
-                    <div className='col-12 col-md-8 d-flex px-0  container-fluid pb-2'
+                    <div className='col-12 col-md-9 d-flex px-0  container-fluid pb-2'
 
                     >
                         <div className='d-flex flex-column  px-0  container-fluid   '>
@@ -110,7 +104,9 @@ export default function Footer(props) {
                                     style={{ fontSize: '0.8em', lineHeight: 1 }}
                                 >
                                     <div className=' col-sm-6 txt-white  p-1' style={{ width: '225px', maxWidth: 225 }}>
-                                        <h4>Habla con Nosotros</h4>
+                                        <h6 className='text-capitalize font-weight-bold '
+                                        
+                                        >Habla con Nosotros</h6>
                                         <a href='https://t-ickets.net/3FynwiC' target="_blank" className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <i className="bi bi-whatsapp"></i>
                                             <span className=" text-white" style={{ fontFamily: '', }} > 593 96 920 0247  </span>
@@ -132,8 +128,8 @@ export default function Footer(props) {
                                             <span className=" text-white" style={{ fontFamily: '', }} >City Office Piso 3 Oficina L310 </span>
                                         </a>
                                     </div>
-                                    <div className='txt-white p-1' style={{ width: '225px', maxWidth: 225 }}>
-                                        <h4>Puntos de ventas </h4>
+                                    <div className='d-none  txt-white p-1' style={{ width: '225px', maxWidth: 225 }}>
+                                        <h6 className='text-capitalize font-weight-bold '> Puntos de ventas </h6>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <span className=" text-white" style={{ fontFamily: '', }} >Guayaquil</span>
                                         </a>
@@ -145,10 +141,10 @@ export default function Footer(props) {
                                         </a>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <span className=" text-white" style={{ fontFamily: '', }} >Cuenca</span>
-                                        </a>
+                                        </a> 
                                     </div>
-                                    <div className=' txt-white p-1' style={{ width: '225px', maxWidth: 225 }}>
-                                        <h4>Nuestra empresa  </h4>
+                                    <div className='d-none d-sm-none d-md-block  txt-white p-1' style={{ width: '225px', maxWidth: 225 }}>
+                                        <h6 className='text-capitalize font-weight-bold '>Nuestra empresa  </h6>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <span className=" text-white" style={{ fontFamily: '', }} >Quiénes Somos</span>
                                         </a>
@@ -160,8 +156,8 @@ export default function Footer(props) {
                                         </a>
 
                                     </div>
-                                    <div className=' txt-white px-1' style={{ width: '225px', maxWidth: 225 }}>
-                                        <h4>Área de Clientes</h4>
+                                    <div className=' d-none d-sm-none d-md-block txt-white px-1' style={{ width: '225px', maxWidth: 225 }}>
+                                        <h6 className='text-capitalize font-weight-bold '>Área de Clientes</h6>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <span className=" text-white" style={{ fontFamily: '', }} >Reclamos o Devoluciones</span>
                                         </a>
@@ -182,13 +178,25 @@ export default function Footer(props) {
                                 </div>
 
                             </div>
-                            <div className="d-flex  flex-column pb-2" style={{ minWidth: '120px', maxWidth: '' }} >
-                                <span className=" text-white" style={{ fontSize: '0.65em', }} >COPYRIGHT © 2022 TICKETS ECUADOR S.A. - TODOS LOS DERECHOS RESERVADOS </span>
-                            </div>
+
 
                         </div>
 
                     </div>
+
+                </div>
+                <div className='row  '>
+                    <div className="col-12 text-center px-1 flex-column  pb-2" style={{ minWidth: '120px', maxWidth: '' }} >
+                        <span className=" text-white" style={{ fontSize: '0.7em', }} >
+                            Al permanecer en esta página, usted acuerda aceptar nuestros
+                            <a className="unlisted link-light nav-item px-1" href='#!' data-toggle="modal" data-target="#terminosModalModal" aria-label="terminos">
+                                Términos y condiciones
+                            </a> </span>
+                    </div>
+                    <div className="col-12 text-center px-1 d-flex  flex-column pb-2" style={{ minWidth: '120px', maxWidth: '' }} >
+                        <span className=" text-white" style={{ fontSize: '0.65em', }} >COPYRIGHT © 2022 TICKETS ECUADOR S.A | COMPUTECNICSNET S.A | TODOS LOS DERECHOS RESERVADOS </span>
+                    </div>
+                    
 
                 </div>
 

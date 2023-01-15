@@ -6,6 +6,7 @@ import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag";
 /** reportar Pago */
 export const PagoRapido = async (transaccion) => {
     let datosPersonal = getDatosUsuariosLocalStorag().cedula
+    let id = getDatosUsuariosLocalStorag().id
     let metodo = GetMetodo() == "Transferencia" ? "Deposito" : GetMetodo()
     let concierto = getVerTienda().map((e) => {
         return {
@@ -17,6 +18,7 @@ export const PagoRapido = async (transaccion) => {
     })
     let datos = {
         "cedula": datosPersonal,
+        "id_usuario": parseInt(id),
         "forma_pago": metodo,
         "concierto": [...concierto],
         "valores": {

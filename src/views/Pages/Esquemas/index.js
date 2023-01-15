@@ -3,8 +3,6 @@ import { array } from "prop-types"
 import React, { useEffect, useState } from "react"
 import { Accordion } from "react-bootstrap"
 import { ListarLocalidad } from "utils/Querypanel"
-import Codigo from "../../../../src/assets/imagen/flash.png"
-import Imagen from "../../../../src/assets/imagen/logo_Flash.png"
 import Form from 'react-bootstrap/Form';
 import './index.css'
 import { QRCodeCanvas } from "qrcode.react"
@@ -122,7 +120,7 @@ const EsquemaViews = () => {
         bgticketespaciouni: '#D5583D',
         opacity: 0.6,
         textcolor: '#000000',
-        imagen: Imagen,
+        imagen: "Imagen",
         imagenmask: '',
         mensaje: 'Mensaje breve',
         orientacio: 'mixed',

@@ -29,6 +29,7 @@ import Tabs from "@mui/material/Tabs";
 import ListaderegistroView from "../Flasdeticket/Listaregistro/index.js";
 import DataTableBos from "components/ReactTable/Datatable.js/index.js";
 import { ticketsboletos } from "utils/columnasub.js";
+import TablasViwe from "layouts/Tablasdoc.js";
 let { cedericon } = bancos
 function Example() {
     let usedispatch = useDispatch()
@@ -96,7 +97,74 @@ function Example() {
             </SweetAlert>
         );
     };
+    const thead = () => {
+        return (
+            <thead className="">
+                <tr className="border ">
+                   
+                    <th  >Boleto</th>
+                    <th >Detalle</th>
+                    <th >Valor</th>
+                    <th >Fecha</th>
+                    <th >Estado</th>
+                    <th  className="text-center"> Aciones</th>
 
+                </tr>
+            </thead>
+        )
+
+    }
+    const showDatos = () => {
+        try {
+            return tiketslist.map((item, index) => {
+
+                return (
+                    <tr key={index}>
+
+                       
+                        <td className="text-xs ">{item.sillas}</td>
+                        <td className="text-xs ">{item.concierto + " Localidad:" + item.localidad}</td>
+                        <td className="text-xs ">{item.valor}</td>
+
+                        <td className="text-xs ">{item.fecha}</td>
+                        <td className="text-xs ">
+                            {item.estado}</td>
+                        <td className="text-center ">
+                            <div className="btn-group" >
+                                {item.estado == "Pagado" && item.pdf != null ? 
+                                <button className=" btn btn-default" 
+                                        disabled={(item.cedido == "SI")}
+                                            ><i className="bi bi-credit-card-2-front"></i>  </button>:""}
+                                {item.cedido == "NO" ?<a className=" btn btn-default " 
+
+                                  
+                                    onClick={() => successAlert(item)}
+                                >
+                                    <img src={cedericon}
+                                        style={
+                                            {
+                                                height: 20
+                                            }
+                                        }
+                                    />
+                                </a>:""}
+                                {item.cedido != "NO" ? <a className=" btn btn-default btn-sm"
+
+
+                                   
+                                >
+                                    <i className="fa fa-download "></i>
+                                </a> : ""}
+                             
+                            </div>
+                          
+                        </td>
+
+                    </tr>
+                )
+            });
+        } catch (error) { }
+    }
     const hideAlert = () => {
         setAlert(null)
     }
@@ -109,14 +177,14 @@ function Example() {
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         Listarticketporestado(user.cedula).then(ouput => {
-            if(!ouput.success){
+            if (!ouput.success) {
 
                 return
             }
             setTikes(ouput.data)
-           // console.log(ouput)
+            console.log(ouput)
             let nuevogrupo = []
-         
+
             ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).forEach(element => {
                 if (!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento)) {
                     //console.log(!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento))
@@ -149,8 +217,8 @@ function Example() {
                     valor: elm.valor, codigoEvento: elm.codigoEvento,
                 })
             }) : ''
-            console.log(nuevogrupo)
-           // setTikes([...nuevogrupo])
+
+            // setTikes([...nuevogrupo])
 
         }).catch(err => console.log(err))
     },
@@ -172,7 +240,7 @@ function Example() {
     return (
         <>
             {alert}
-            <CederView />
+           
             <ModalReporteViews />
             <div className="container-fluid">
                 <Tabs value={value} onChange={handleChange}
@@ -182,18 +250,61 @@ function Example() {
                 >
                     <Tab label="Reportar Compras" {...a11yProps(1)} />
                     <Tab className="" label="Tickets" {...a11yProps(0)} />
-                    <Tab className="d-none" label="Datatable"{...a11yProps(2)} />
+                    <Tab className="d-none" label="Tickets "{...a11yProps(2)} />
 
                 </Tabs>
 
-                <div className=" container-fluid py-2 px-0">
+                <div className=" container-fluid py-2 px-0 ">
                     <TabPanel value={value} index={1} >
+
                         <MaterialReactTable
                             columns={ticketsboletos}
-                            data={tiketslist.sort(e => e.id)}
+                            data={tiketslist}
+                            enableRowActions
+                            positionActionsColumn="last"
+                            renderRowActions={({ row }) => (
+                                <Box sx={{ display: 'flex' }}>
+                                    {row.original.estado != "reservado" && row.original.pdf != null ? <Tooltip className="" title="Ver Ticket" placement="top">
+                                        <IconButton
+                                            color="primary"
+                                            arial-label="Enviar"
+                                            disabled={(row.original.cedido == "SI")}
+                                            href={row.original.pdf}
+                                            target="_black"
+                                        >
+
+                                            <FileDownload />
+
+                                        </IconButton>
+                                    </Tooltip> : ''}
+                                    <Tooltip title="Borrar" placement="top">
+                                        <IconButton
+                                            className="d-none"
+                                            color="error"
+                                            aria-label="Bloquear">
+                                            <Delete />
+                                        </IconButton>
+                                    </Tooltip>
+                                    {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido =="NO"? <Tooltip title="Ceder ticket" placement="top-start">
+                                        <IconButton
+
+                                            color='success'
+                                            onClick={() => successAlert(row.original)}
+                                        >
+                                            <img src={cedericon}
+                                                style={
+                                                    {
+                                                        height: 30
+                                                    }
+                                                }
+                                            />
+                                        </IconButton>
+                                    </Tooltip> : ''}
+                                </Box>
+                            )}
                             localization={MRT_Localization_ES}
                         />
-                       {/* <MaterialReactTable
+                        {/* <MaterialReactTable
                             columns={ticketproceso}
                             data={tiketslist.sort(e => e.id)}
                             muiTableProps={{
@@ -294,7 +405,12 @@ function Example() {
                     </TabPanel>
                     <TabPanel value={value} index={2} >
 
-                        <DataTableBos />
+                        <TablasViwe
+                            number={3}
+                            thead={thead}
+                            showDatos={showDatos}
+                            Titel={"nuevo"}
+                        />
                     </TabPanel>
 
                 </div>
@@ -314,6 +430,7 @@ function Example() {
                 </div>
 
             </div>
+            <CederView />
         </>
     );
 }
