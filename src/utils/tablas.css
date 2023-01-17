@@ -3,7 +3,7 @@
     --success: #36f456dc;
     --danger:#f44336;
     --prymary:#311C7C;
-    --warning:#ffd857;
+    --warning:#e25d0ffb;
     --secondary:#5e5a5ada;
     --white:#fff;
 }
@@ -54,8 +54,9 @@ table.dataTable thead .sorting_desc_disabled {
 }
 
 table.dataTable .label {
-    font-weight: 700 !important;
-    font-size: 8.5px;
+    font-weight: bold !important;
+
+    font-size: 12px !important;
     padding: 3px 6px;
 }
 .label {
@@ -67,19 +68,24 @@ table.dataTable .label {
     white-space: nowrap;
     vertical-align: baseline;
     -webkit-border-radius: 2px;
+    
     border-radius: 2px;
 }
 .label.label-danger {
     background: var(--danger) !important;
+    text-transform: uppercase;
 }
 .label.label-warning {
     background-color: var(--warning) !important;
+    text-transform: uppercase;
 }
 .label.label-success {
     background-color: var(--success) !important;
+    text-transform: uppercase;
 }
 .label.label-primary {
     background-color: var(--prymary) !important;
+    text-transform: uppercase;
 }
 
 .dt-button-ligth {
@@ -206,7 +212,6 @@ tr.dt-hasChild.parent td.dtr-control {
 
 
 table.table {
-    border-top: 1px solid black;
     font-size: 13px;
 }
 
