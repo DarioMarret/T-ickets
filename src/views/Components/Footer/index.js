@@ -50,8 +50,8 @@ export default function Footer(props) {
                         </a>
                     </div>
                 </div>
-                <div className='d-flex flex-wrap pt-2 px-0 justify-content-center justify-content-md-between ' >
-                    <div className='col-12 col-md-3    d-flex justify-content-center justify-content-md-between px-0 pb-2'          >
+                <div className='d-flex flex-wrap pt-2 px-0 justify-content-between ' >
+                    <div className='col-12 col-sm-12 col-md-12 col-lg-3 ml-n1  d-flex justify-content-center justify-content-lg-between px-0 pb-2'          >
                         <div className='d-flex flex-column justify-content-center justify-content-md-between align-content-between'>
                             <div className=''>
                                 <div className="d-flex  flex-column" style={{ alignItems: 'stretch', lineHeight: '2', minWidth: '120px', maxWidth: '' }} >
@@ -65,11 +65,9 @@ export default function Footer(props) {
                                     </div>
                                     <div className=' pl-1 ' >
                                         <img src={ios} className='img-fluid' style={{ height: 40, cursor: 'pointer' }} />
-
                                     </div>
                                 </div>
                                 <div className="d-flex  flex-column" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '120px', maxWidth: '' }} >
-
                                     <span className=" text-white" style={{ fontFamily: '', }} >Síguenos en nuestras Redes  </span>
                                 </div>
                                 <div className='d-flex pt-2  pb-5 flex-row' >
@@ -102,12 +100,12 @@ export default function Footer(props) {
 
                         </div>
                     </div>
-                    <div className='col-12 col-md-9 d-flex px-0  container-fluid pb-2'
+                    <div className='col-12 col-md-9  d-flex px-0  container-fluid pb-2 '
 
                     >
                         <div className='d-flex flex-column  px-0  container-fluid   '>
                             <div className='d-flex flex-column pb-5 px-0'>
-                                <div className='pb-5 d-flex flex-wrap  justify-content-between '
+                                <div className='pb-5 d-flex flex-wrap  justify-content-center  justify-content-md-between '
                                     style={{ fontSize: '0.8em', lineHeight: 1 }}
                                 >
                                     <div className=' col-sm-6 txt-white  p-1' style={{ width: '225px', maxWidth: 225 }}>

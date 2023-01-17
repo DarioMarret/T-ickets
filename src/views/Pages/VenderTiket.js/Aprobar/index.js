@@ -14,6 +14,7 @@ import moment from "moment";
 import ModalAprobarViews from "./Modalventas";
 import ModalBoletoApro from "./Modalboleto";
 import ListaderegistroView from "views/Pages/Flasdeticket/Listaregistro";
+import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 let { cedericon, atencion } = bancos
 export default function AprobarView() {
     let usedispatch = useDispatch()
@@ -201,6 +202,7 @@ export default function AprobarView() {
                 modal.nombre =="boleto"?
                 <ModalBoletoApro/>:""
             }
+            <ModalConfima/>
             <div className="card card-primary card-outline text-left " style={{ minHeight: '250px' }} >
                 <div className="card-header pb-2">
                     Ventas por Aprobar

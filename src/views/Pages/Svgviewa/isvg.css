@@ -320,7 +320,9 @@
                  .linefil2{
                     fill: #292040
                   }
-        
+        .bordesvg {
+           fill: #FEFEFE
+         }
                  .linefil4 {
                    fill: #402580
                  }

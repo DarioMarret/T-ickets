@@ -9,3 +9,11 @@ ver permisos de de usuario
 dos opciones de venta 
 
 despues de guardar dos compras ya no  registra los boletos pero la compra si 
+
+
+el servidor esta adelantado
+
+//reportar pago desde el administrador seria de poner Paagado directo ?
+
+//un edpoit para consultar 
+// 

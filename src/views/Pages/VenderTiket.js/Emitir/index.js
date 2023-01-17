@@ -27,11 +27,11 @@ export default function EmitirboView() {
 
     })
     const [alert, setAlert] = useState(null)
-    const abrirceder = (e) => { 
+    const abrirceder = (e) => {
         usedispatch(setModal({ nombre: 'ceder', estado: e })),
-         hideAlert() 
+            hideAlert()
     }
-    
+
 
     const successAlert = (e) => {
 
@@ -86,54 +86,56 @@ export default function EmitirboView() {
     const hideAlert = () => {
         setAlert(null)
     }
-    function abriremitir(e){       
-        usedispatch(setModal({ nombre:"Emitir",estado:e}))
+    function abriremitir(e) {
+        usedispatch(setModal({ nombre: "Emitir", estado: e }))
     }
-    function Aprobar(e){
+    function Aprobar(e) {
         console.log(e)
         usedispatch(setModal({ nombre: "boleto", estado: e }))
     }
     useEffect(() => {
         AprobarTiket().then(oupt => {
+            console.log(oupt)
             let datos = oupt.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado === "reservado")
             let nuevo = datos.map((e) => {
                 e.uid = e.codigoEvento + "-" + e.cedula
                 return e
             })
-            let nuevogrupo = []
-            nuevo.forEach(element => {
-                if (!nuevogrupo.some(e => e.uid == element.uid)) {
-                    nuevogrupo.push({
-                        codigoEvento: element.codigoEvento,
-                        concierto: element.concierto,
-                        cedula: element.cedula,
-                        estado: element.estado,
-                        valor: element.valor,
+            setTikes([...nuevo])
+            /*  let nuevogrupo = []
+              nuevo.forEach(element => {
+                  if (!nuevogrupo.some(e => e.uid == element.uid)) {
+                      nuevogrupo.push({
+                          codigoEvento: element.codigoEvento,
+                          concierto: element.concierto,
+                          cedula: element.cedula,
+                          estado: element.estado,
+                          valor: element.valor,
+  
+                          fechaCreacion: element.fechaCreacion,
+                          tokenPago: element.tokenPago,
+                          uid: element.uid,
+                          detalle: []
+                      })
+                  }
+              });
+              nuevogrupo.length > 0 ? nuevo.map((elm, idex) => {
+                  let index = nuevogrupo.findIndex(f => f.uid == elm.uid)
+                  let fecha = elm.fechaCreacion
+                  if (!nuevogrupo[index].detalle.some(h => h.sillas === elm.sillas)) {
+                      nuevogrupo[index].detalle.push({
+                          sillas: elm.sillas,
+                          localidad: elm.localidad, fechaCreacion: fecha,
+                          cedula: elm.cedula,
+                          tokenPago: elm.tokenPago,
+                          estado: elm.estado,
+                          uid: elm.uid,
+                          valor: elm.valor, codigoEvento: elm.codigoEvento,
+                      })
+                  }
+              }) : ''**/
 
-                        fechaCreacion: element.fechaCreacion,
-                        tokenPago: element.tokenPago,
-                        uid: element.uid,
-                        detalle: []
-                    })
-                }
-            });
-            nuevogrupo.length > 0 ? nuevo.map((elm, idex) => {
-                let index = nuevogrupo.findIndex(f => f.uid == elm.uid)
-                let fecha = elm.fechaCreacion
-                if (!nuevogrupo[index].detalle.some(h => h.sillas === elm.sillas)) {
-                    nuevogrupo[index].detalle.push({
-                        sillas: elm.sillas,
-                        localidad: elm.localidad, fechaCreacion: fecha,
-                        cedula: elm.cedula,
-                        tokenPago: elm.tokenPago,
-                        estado: elm.estado,
-                        uid: elm.uid,
-                        valor: elm.valor, codigoEvento: elm.codigoEvento,
-                    })
-                }
-            }) : ''
-
-            setTikes([...nuevogrupo])
+            // setTikes([...nuevogrupo])
         }).catch(err => {
             console.log(err)
         })
@@ -154,10 +156,10 @@ export default function EmitirboView() {
     return (
         <>
             {alert}
-            {showmodal.nombre=="Emitir"? 
-            <EmitirmodlView/>:""
+            {showmodal.nombre == "Emitir" ?
+                <EmitirmodlView /> : ""
             }
-            {showmodal.nombre =="boleto" ?<ModalBoletoApro/>:""}
+            {showmodal.nombre == "boleto" ? <ModalBoletoApro /> : ""}
             <div className="card card-primary card-outline text-left " style={{ minHeight: '250px' }} >
                 <div className="card-header pb-2">
                     Emitir boleto
@@ -188,61 +190,36 @@ export default function EmitirboView() {
                             sx: { columnVisibility: { nombre: false } }
                         }}
                         renderDetailPanel={({ row }) => (
-                            <div className=" ">
-                                {row.original.detalle ? row.original.detalle.map((e, i) => {
-                                    return (
-                                        <div className="row  border-bottom pb-1 align-items-center  rounded-1" key={"cons" + i}>
-                                            <div className="col-sm d-none">
-                                                <div className=" text-center">
-                                                    <label className="form-check-label" >
-                                                    </label>
-                                                    <input className="form-check-input" type="checkbox" name={e.sillas}
-                                                        checked={data.some(f => f.sillas == e.sillas)}
-                                                        onChange={() => selecion(e.uid, e)}
-                                                        id="flexCheckIndeterminate" />
-                                                </div>
-                                            </div>
-                                            <div className="col-sm  d-flex align-items-center   btn-group">                                                
-                                                <button className="btn  btn-success btn-sm"
-                                                    data-bs-toggle="tooltip" 
-                                                    data-bs-placement="top" 
-                                                    title="Emitir"
-                                                    onClick={() => abriremitir(e)}
-                                                > <i className="fa fa-paper-plane fa-xs"></i> </button>
-                                                <button className="btn btn-danger btn-sm"
-                                                    data-bs-toggle="tooltip"
-                                                    data-bs-placement="top"
-                                                    title="Aprobar"
-                                                    onClick={() => Aprobar(e)}
-                                                >
-                                                    <i className=" fa fa-edit  fa-xs" ></i>
-                                                </button>
 
-                                            </div>
-                                            <div className="col-2 col-md-2 ">
-                                                boleto   {e.sillas}
-                                            </div>
-                                            <div className="col-2 col-md-3">
-                                                Localidad:  {e.localidad}
-                                            </div>
-                                            <div className="col-sm">
-                                                ${e.valor}
-                                            </div>
+                            <div className="row  border-bottom pb-1 align-items-center  rounded-1" >
+                                {row.original.cedido=="NO"? <div className="col-sm  d-flex align-items-center   btn-group">
+                                    <button className="btn btn-danger btn-sm"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                       
+                                        title="edit"
+                                        onClick={() => Aprobar(row.original)}
+                                    >
+                                        <i className=" fa fa-edit  fa-xs" ></i> opciones por definir?
+                                    </button>
+                                    <button className="btn  btn-success btn-sm"
+                                        data-bs-toggle="tooltip"
+                                        disabled={true}
+                                        data-bs-placement="top"
+                                        title="Emitir"
+                                        onClick={() => abriremitir(row.original)}
+                                    > <i className="fa fa-paper-plane fa-xs"></i> opciones por definir? </button>
+                                    
 
-                                            <div className="col-sm col-md-3">
-                                                {e.fechaCreacion}
-                                            </div>
-                                            <div className="col-sm">
-                                                {row.original.codigoEvento}
-                                            </div>
-                                            <div className=" col-sm">
-                                                {row.original.estado}
-                                            </div>
-                                        </div>
-                                    )
-                                }) : ''}
+                                </div>:""}
+                                <div className="col-sm ">
+                                  
+                                    boleto   {row.original.sillas}
+                                </div>
 
                             </div>
+
+
                         )}
                         positionToolbarAlertBanner="bottom"
                         displayColumnDefOptions={{

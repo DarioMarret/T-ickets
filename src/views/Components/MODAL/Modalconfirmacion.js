@@ -11,6 +11,7 @@ import { Obtenerlinkimagen } from "utils/Querypanel";
 import { PagoRapido } from "utils/Querycomnet";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { registraPagos } from "utils/pagos/Queripagos";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 const ModalConfima = (prop) => {
     const { pararcontador } = prop
     let usedispatch = useDispatch()
@@ -25,12 +26,12 @@ const ModalConfima = (prop) => {
     let intervalo = useSelector((state) => state.SuscritorSlice.intervalo)
     function cerrar() {
         usedispatch(setModal({ nombre: '', estado: '' }))
-        usedispatch(setToastes({
+     !clienteInfo()?   usedispatch(setToastes({
             show: true,
             message: "Tienes un tiempo límite para reportar el pago, puedes hacerlo desde la opción tickets",
             color: 'bg-primary',
             estado: "Recuerda "
-        }))
+        })):""
     }
 
 
@@ -40,19 +41,15 @@ const ModalConfima = (prop) => {
         usedispatch(setToastes({ show: true, message: 'Datos del deposito Guardado ', color: 'bg-success', estado: 'Se guardo el numero de control' }))
     }
     const successAlert = () => {
-
         setAlert(
             <SweetAlert
                 style={{ display: "block", marginTop: "-100px" }}
-
-
                 closeOnClickOutside={false}
                 showCancel={false}
                 showConfirm={false}
                 confirmBtnText="Completar  Compra"
                 cancelBtnText="Anular Compra"
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-
             >
                 <div >
                     <div className='col-12 pb-3'>
@@ -104,16 +101,13 @@ const ModalConfima = (prop) => {
             link_comprobante: e.files
         })
         console.log(e.files)
-
     }
     function onhandelChange(e) {
         setcomprobante({
             ...comproba,
             [e.name]: e.value
         })
-
     }
-
     async function onSubmit(e) {
         e.preventDefault();
         if (comproba.numeroTransaccion == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
@@ -126,30 +120,28 @@ const ModalConfima = (prop) => {
                 const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
                 setTimeout(async function () {
                     const reporte = {
+                        "id_usuario": clienteInfo()? modal.estado.id: getDatosUsuariosLocalStorag().id, 
                         "forma_pago": "Deposito",
                         "link_comprobante": link,
                         "numeroTransaccion": comproba.numeroTransaccion,
-                        "cedula": modal.estado.cedula ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
+                        "cedula": clienteInfo() ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
                         "estado": "Comprobar"
                     }
-                    //console.log(reporte)
+                    console.log(reporte)
                     registraPagos(reporte).then(ouput => {
                         if (ouput.success) {
                             setEstado(true)
                             usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
                             usedispatch(setModal({ nombre: '', estado: '' }))
-                            // console.log(ouput)
                         }
                         else {
                             setEstado(true)
-                            console.log(ouput)
                             usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
-
                         }
                     }).catch(erro => {
                         console.log(erro)
                         setEstado(true)
-                        // usedispatch(setModal({ nombre: '', estado: '' }))
+                        usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
                     })
                     setEstado(true)
                 }, 2000)
@@ -235,9 +227,9 @@ const ModalConfima = (prop) => {
                                 />
                             </div>
                             <div className=" p-1 ">
-                                {modal.nombre == "confirmar" ? <span>
+                                {modal.nombre == "confirmar" && !clienteInfo()  ? <span>
                                     Una vez confirmado el deposito su ticket sera enviado  {
-                                        GetValores().envio == "correo " ? "al: correo " + getDatosUsuariosLocalStorag().email : "al: Whatsapp " + getDatosUsuariosLocalStorag().whatsapp
+                                        GetValores()?"":   GetValores().envio == "correo " ? "al: correo " + getDatosUsuariosLocalStorag().email : "al: Whatsapp " + getDatosUsuariosLocalStorag().whatsapp
                                     }
                                 </span> : ''}
 

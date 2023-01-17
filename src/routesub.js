@@ -45,6 +45,7 @@ import NoticiasJs from "views/Pages/Noticias.js";
 import AprobarView from "views/Pages/VenderTiket.js/Aprobar";
 import EmitirboView from "views/Pages/VenderTiket.js/Emitir";
 import TagsInput from "components/TagsInput/TagsInput";
+import DetalleCompraView from "views/Pages/VenderTiket.js/Aprobar/Detalleregistro";
 
 var routes = [
   {
@@ -139,6 +140,13 @@ var routes = [
     layout: "/admin",
 
     component: SuscritoridView, permiso: ["superadmin", "super_admin", "vendedores"],
+  },
+  {
+    path: "/Reporte/:id",
+    state: "openCliente",
+    layout: "/admin",
+
+    component: DetalleCompraView, permiso: ["superadmin", "super_admin", "vendedores"],
   },
 
 
@@ -337,7 +345,7 @@ var routes = [
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["", ""]
+    permiso: ["", "", ""]
   }
 
 

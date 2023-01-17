@@ -1,19 +1,11 @@
 import { Chip } from "@mui/material"
 import moment from "moment"
 import { Badge } from "react-bootstrap"
-let estado = {
-    "reservado": "error",
-    "NO": "No Generado",
-    "SI":"Generado",
-    "null": "Sin generar"
-}
 export const ticketproceso = [
     {
         accessorKey: "concierto",
         header: "Evento"
     },
-
-
     {
         accessorKey: "valor",
         header: "Valor",
@@ -21,47 +13,80 @@ export const ticketproceso = [
             <div>
                 {
 
-                    cell.row.original.detalle.map((g, i) => { return parseFloat(g.valor) }).reduce((a, b) => a + b, 0).toFixed(2)
+                    cell.row.original.detalle.map((g) => { return parseFloat(g.valor) }).reduce((a, b) => a + b, 0).toFixed(2)
                 }
             </div>
         ),
         size: 50,
-
     },
     {
         accessorKey: "fechaCreacion",
         header: "Fecha",
     },
-
 ]
+let estado = {
+    "reservado": "Pendiente",
+    "NO": "No Generado",
+    "SI": "Generado",
+    "null": "Sin generar",
+    "Expirado": "Expirado"
+}
+let color = {
+    "reservado": "warning",
+    "ACTIVO": "success",
+    "PROCESO": "secondary",
+  
+    null: "danger",
+    "null": "danger",
+    "SI": "success",
+    "NO": "danger",
+    "Expirado": "danger"
+}
 export const ticketprocesoapro = [
     {
         accessorKey: "concierto",
-        header: "Evento"
+        header: "Evento",
+        Cell: ({ cell }) => (
+            <div>
+                {cell.row.original.concierto + " localidad: " + cell.row.original.localidad}
+            </div>
+        )
     },
     {
         accessorKey: "cedula",
-        header: "Cédula"
+        header: "Cédula",
+        size: 50
     },
-
+    {
+        accessorKey: "sillas",
+        header: "Boleto #",
+        Cell:({cell})=>(
+            <div>
+                {cell.row.original.sillas.padStart(10, 0)}
+            </div>
+        ),
+        size: 23
+    },
     {
         accessorKey: "valor",
         header: "Valor",
-        Cell: ({ cell }) => (
-            <div>
-                {
-
-                    cell.row.original.detalle.map((g, i) => { return parseFloat(g.valor) }).reduce((a, b) => a + b, 0).toFixed(2)
-                }
-            </div>
-        ),
         size: 50,
-
     },
     {
         accessorKey: "fechaCreacion",
         header: "Fecha",
+        size: 50
     },
+    {
+        accessorKey: "estado",
+        header: "Estado",
+        Cell: ({ cell }) => (
+            <div>
+                <Badge bg={color[cell.row.original.estado]}  >
+                    {cell.row.original.estado}</Badge>
+            </div>
+        ),
+    }
 
 ]
 export const ticketsboletos = [
@@ -90,26 +115,35 @@ export const ticketsboletos = [
     },
     {
         accessorKey: "estado",
-        header: "Estado"
+        header: "Estado",
+        Cell: ({ cell }) => (
+            <div>
+                <Badge bg={color[cell.row.original.estado]} >
+                    {estado[cell.row.original.estado]}</Badge>
+            </div>
+        ),
     },
 ]
-let color = {
-    "ACTIVO": "success",
-    "PROCESO": "secondary",
-    null: "danger",
-    "null": "danger",
-    "SI":"success",
-    "NO":"danger"
-}
-
 export const listaRegistro = [
     {
         accessorKey: "cedula",
         header: "Cedula"
     },
     {
-        accessorKey: "fechaReporte",
-        header: "Fecha"
+        accessorKey: "fechaCreacion",
+        header: "Fecha",
+    },
+    {
+        accessorKey: "estado_pago",
+        header: "Estado",
+        Cell: ({ cell }) => (
+            <Badge bg={color[cell.row.original.estado_pago]}>
+               {cell.row.original.estado_pago}</Badge>
+        )
+    },
+    {
+        accessorKey: "forma_pago",
+        header: "Metodo"
     },
     {
         accessorKey: "pdf",
@@ -122,13 +156,5 @@ export const listaRegistro = [
 
             </div>
         ),
-    },
-    {
-        accessorKey: "forma_pago",
-        header: "Metodo"
-    },
-    {
-        accessorKey: "estado_pago",
-        header: "Estado"
     }
 ]

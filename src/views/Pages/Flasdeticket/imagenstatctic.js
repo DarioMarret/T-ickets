@@ -23,7 +23,7 @@ import facilito from "../../../assets/facilito.png"
 import facilitodos from "../../../assets/facilito.jpeg"
 import avatar from "../../../assets/imagen/avatarpng.png"
 import prubas from "../../../assets/imagen/EladioCarrion.jpg"
-import proximo from "../../../assets/imagen/carrion.jpg"
+import proximo from "../../../assets/imagen/carrion.jpeg"
 export const pasados = [img1, img2, img3]
 export const carrusel = {
       header,  logofla,

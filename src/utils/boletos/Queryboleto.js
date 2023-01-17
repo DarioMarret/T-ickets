@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Host } from "utils/constantes";
-
 export const generarBoleto = async (parms)=>{
     try {
         let {data}= await axios.post(Host+"/api/v1/generaboleto"+parms,{
@@ -10,6 +9,32 @@ export const generarBoleto = async (parms)=>{
             }
         })
         return data        
+    } catch (error) {
+        return error
+    }
+}
+export const generaPDF= async(parms)=>{
+    try {
+        let { data } = await axios.post(Host +"/api/v1/ticket_pdf",parms,{
+            Headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const enviarEmail = async (parm)=>{
+    try {
+        let {data}= await axios.post(Host+"/api/v1/ticket_pdf",parm,{
+            Headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
     } catch (error) {
         return error
     }

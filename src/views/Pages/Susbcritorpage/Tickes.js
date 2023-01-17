@@ -114,6 +114,10 @@ function Example() {
         )
 
     }
+    const color={
+        "reservado":"label label-warning",
+        "Disponible":"label label-success"
+    }
     const showDatos = () => {
         try {
             return tiketslist.map((item, index) => {
@@ -128,22 +132,33 @@ function Example() {
 
                         <td className="text-xs text-center">{item.fecha}</td>
                         <td className="text-xs text-center">
-                            {item.estado}</td>
+                            <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
                            
-                            <div className="btn-group" >
-                                {item.estado != "reservado" && item.pdf != null && item.link == "SI" ? <Tooltip className="" title="Ver Ticket" placement="top">
+                            <div className=" btn-group" >
+                                {item.estado != "reservado" && item.pdf != null && item.link != "SI" ?
+                                 <Tooltip className="" title="Ver Ticket" placement="top">
                                     <a 
                                         className=" btn btn-default btn-sm"
                                      
                                         href={item.pdf}
                                         target="_black"
                                     >
-
-                                        <i className="fa fa-download "></i>
+                                            <i className="fa fa-download "></i>
+                                        
 
                                     </a>
-                                </Tooltip> : ''}
+                                </Tooltip> :
+                                    <a
+                                        className=" btn btn-default btn-sm btn-disable"
+                                       disabled
+
+                                    >
+                                        <i className="fa fa-download "></i>
+                                      
+
+                                    </a>
+                                }
                                 {item.estado == "Pagado" && item.pdf != null && item.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
                                     <a className=" btn btn-default btn-sm"
 
@@ -158,7 +173,23 @@ function Example() {
                                             }
                                         />
                                     </a>
-                                </Tooltip> : ''}
+                                </Tooltip> :
+                                    <a
+                                        className=" btn btn-default btn-sm btn-disable"
+                                        disabled
+
+                                    >
+                                        <img src={cedericon}
+                                            style={
+                                                {
+                                                    height: 20
+                                                }
+                                            }
+                                        />
+
+
+                                    </a>
+                                    }
                                 
                               
                             
@@ -192,38 +223,7 @@ function Example() {
             console.log(ouput)
             let nuevogrupo = []
 
-            ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).forEach(element => {
-                if (!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento)) {
-                    //console.log(!nuevogrupo.some(e => e.codigoEvento == element.codigoEvento))
-                    let filtro = ouput.data.filter(e => e.codigoEvento == element.codigoEvento)
-                    nuevogrupo.push({
-                        codigoEvento: element.codigoEvento,
-                        concierto: element.concierto,
-                        estado: element.estado,
-                        valor: element.valor,
-                        cedula: element.cedula,
-                        fechaCreacion: element.fechaCreacion,
-                        tokenPago: element.tokenPago,
-                        detalle: []
-                    })
-                }
-
-            });
-
-            let nuevo = ouput.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2)
-            nuevogrupo.length > 0 ? nuevo.map((elm, idex) => {
-                let index = nuevogrupo.findIndex(f => f.codigoEvento == elm.codigoEvento)
-                let fecha = elm.fechaCreacion
-                // console.log(elm.fechaCreacion)
-                nuevogrupo[index].detalle.push({
-                    sillas: elm.sillas,
-                    localidad: elm.localidad, fechaCreacion: fecha,
-                    cedula: elm.cedula,
-                    tokenPago: elm.tokenPago,
-                    estado: elm.estado,
-                    valor: elm.valor, codigoEvento: elm.codigoEvento,
-                })
-            }) : ''
+           
 
             // setTikes([...nuevogrupo])
 
