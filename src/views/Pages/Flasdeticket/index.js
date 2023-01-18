@@ -502,7 +502,7 @@ const IndexFlas = () => {
         if (data){ return}
         ///console.log(data)
         let datos = data.filter(e => e.estado !="CANCELADO")
-        const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
+        const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         if (data != null) {
           setEventos(filtro.sort(sorter))
