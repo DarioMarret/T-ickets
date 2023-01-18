@@ -262,7 +262,8 @@ const ModalCarritoView = (prop) => {
                 }))
                 return
             }
-            else{setSpiner("")
+            else{
+                setSpiner("")
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
             localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
                 let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
@@ -678,7 +679,7 @@ const ModalCarritoView = (prop) => {
                                     Tarjeta-credito
                                 </label>
                             </div>:""}
-                            {clienteInfo() == null ?
+                            {clienteInfo() == null ? estdo == "ACTIVO" ?
                                 <div className="form-check">
                                     <input className="form-check-input" type="radio"
                                         checked={checked.Transferencia == "Transferencia" ? true : false}
@@ -687,8 +688,8 @@ const ModalCarritoView = (prop) => {
                                     <label className="form-check-label" htmlFor="Transferencia">
                                         Transferencia
                                     </label>
-                                </div> : ""}
-                            { clienteInfo() == null ? <div className="form-check ">
+                                </div> :"": ""}
+                            {clienteInfo() == null ? estdo == "ACTIVO" ? <div className="form-check ">
                                 <input className="form-check-input" type="radio"
                                     checked={checked.Deposito == "Deposito" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
@@ -696,21 +697,32 @@ const ModalCarritoView = (prop) => {
                                 <label className="form-check-label" htmlFor="Deposito">
                                     Deposito
                                 </label>
-                            </div> : ""}
+                            </div> :"": ""}
                             <div className="form-check">
-                                {clienteInfo() == null ?  <input className="v-check form-check-input" type="radio"
+                                {clienteInfo() == null ? estdo == "ACTIVO" ? <input className="v-check form-check-input" type="radio"
                                     name="PasarelaEfectivo" id="PasarelaEfectivo"
                                     checked={checked.PasarelaEfectivo == "Efectivo" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Efectivo")}
-                                />: <input className="v-check form-check-input" type="radio"
+                                /> : estdo == "ACTIVO" ?<input className="v-check form-check-input" type="radio"
                                     name="PasarelaEfectivo" id="PasarelaEfectivo"
                                     checked={checked.PasarelaEfectivo == "Fisico" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Fisico")}
-                                />}
-                                <label className="form-check-label" htmlFor="PasarelaEfectivo">
+                                />:"":""}
+                                {estdo == "ACTIVO" ? <label className="form-check-label" htmlFor="PasarelaEfectivo">
                                     {clienteInfo() == null ? "Efectivo punto de pagos" : "Efectivo"}
-                                </label>
+                                </label>:""}
                             </div>
+                            {
+                                estdo != "ACTIVO" ? <div className="form-check ">
+                                    <input className="form-check-input" type="radio"
+                                        checked={checked.Deposito == "Deposito" ? true : false}
+                                        onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
+                                        name="Deposito" id="Deposito" />
+                                    <label className="form-check-label" htmlFor="Deposito">
+                                        Reservar
+                                    </label>
+                                </div> : ""
+                            }
                            
 
                         </div>

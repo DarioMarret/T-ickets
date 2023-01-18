@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styleswiper, styleswipers } from "./styleswiper.js";
 import { pasados, carrusel } from "./imagenstatctic.js";
-let { icon, iconhead, valla, principal, secundaria, tercero, logofla, mapa, portal, header, avatar,prubas } = carrusel
+let { icon, iconhead, valla, prubasdos, principal, secundaria, tercero, logofla, mapa, portal, header, avatar,prubas } = carrusel
 import { useSelector, useDispatch } from "react-redux";
 import { todossiler } from "./Modalterminos/silder.js";
-let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
+let { cargalocalidad,  cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
 
 import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalPago from "views/Components/MODAL/ModalPago";
@@ -499,9 +499,11 @@ const IndexFlas = () => {
       try {
         //AGREGAR ESTADO
         const data = await cargarEventoActivo("")
-        if (data){ return}
+       if (!data ==null){ return}
         ///console.log(data)
+        console.log(data)
         let datos = data.filter(e => e.estado !="CANCELADO")
+        //console.log(datos)
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         if (data != null) {
@@ -769,13 +771,12 @@ const IndexFlas = () => {
                                     
                                     href="#"
                                     onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
-                                  >{!userauthi.login ? "Suscríbete" : "Muy pronto"}</button> :
+                                  >{!userauthi.login ? "Suscríbete" : "RESERVAR"}</button> :
                                   <button className="btn border rounded-6  btn-lg btn-outline-light "
                                  
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
                                   >COMPRAR</button>
-
                               }
                             </div>
                           </div>
@@ -797,11 +798,15 @@ const IndexFlas = () => {
                         width: "100%",
                         height: "auto",
                       }}>
-                        <div style={{
-                          backgroundImage: "url('" +prubas + "')",
+                        {element.id == 99?  <div style={{
+                          backgroundImage: "url('" +  prubas+ "')",
                           ...styleswiper.slideimg
                         }} >
-                        </div>
+                        </div> :< div style={{
+                          backgroundImage: "url('" +   prubasdos + "')",
+                          ...styleswiper.slideimg
+                        }} >
+                      </div>}
                         <div style={styleswiper.fondo}>
                         </div>
                         <div className="descripciones">
@@ -838,7 +843,7 @@ const IndexFlas = () => {
                                   
                                     onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
 
-                                  >{!userauthi.login?"Suscríbete":"Muy pronto"}</button> :
+                                  >{!userauthi.login ? "Suscríbete" :"RESERVAR"}</button> :
                                   <button className="btn border rounded-6  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
@@ -1003,7 +1008,7 @@ const IndexFlas = () => {
                                     {e.estado=="ACTIVO"?
                                       <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                         className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
-                                        {e.estado == "ACTIVO" ? "Comprar Entrada" : "MUY PRONTO"}</p>
+                                        {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
                                     :""}
                                     
                                   </div>
@@ -1097,8 +1102,6 @@ const IndexFlas = () => {
 
           </div>
         </div> : ''}
-
-
       {userauthi.login && seleccion == "Tickets" ? <div className="container p-2"> <Tikes /></div> : ""}
       {userauthi.login && seleccion == "Datos" ? <div className="container p-2"><PerfilPage datosPerson={datosPerson} setDatoToas={setDatoToas} /></div> : ""}
 

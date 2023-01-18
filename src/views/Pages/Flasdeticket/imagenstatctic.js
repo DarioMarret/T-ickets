@@ -22,13 +22,22 @@ import redacti from "../../../assets/redactiva.png"
 import facilito from "../../../assets/facilito.png"
 import facilitodos from "../../../assets/facilito.jpeg"
 import avatar from "../../../assets/imagen/avatarpng.png"
-import prubas from "../../../assets/imagen/EladioCarrion.jpg"
+import prubas from "../../../assets/imagen/quito.jpg"
+import prubasdos from "../../../assets/imagen/guayaquil.jpg"
 import proximo from "../../../assets/imagen/carrion.jpeg"
+import quito from "../../../assets/imagen/preventaquito.jpg"
+import guayaquil from "../../../assets/imagen/preventa.jpg"
+let datos = [{
+  link_img: guayaquil,
+  encabezado:"Eladi",
+  subtitulo:""
+}]
+
 export const pasados = [img1, img2, img3]
 export const carrusel = {
       header,  logofla,
     mapa, portal, icon, valla,
     android, ios, face, insta, 
     tick, youtube, nombrepage, facilito,
-    redacti, facilitodos, avatar, iconhead, prubas, proximo
+  redacti, facilitodos, avatar, iconhead, prubas, proximo, prubasdos
 } 

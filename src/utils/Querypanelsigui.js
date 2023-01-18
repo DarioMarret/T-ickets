@@ -21,7 +21,7 @@ export const cargarEventoActivo = async (parms) => {
         if (data.data == 0) return null
         return data.data
     } catch (error) {
-        return error
+        return null
 
     }
 
