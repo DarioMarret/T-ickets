@@ -20,7 +20,7 @@ const Reporte = (props) => {
     setDatoToas, setrepShow, detener, comprar, intervalo,
   } = props
   let usedispatch = useDispatch()
-
+  let evento = sessionStorage.getItem("eventoid")
   let modalshow = useSelector((state) => state.SuscritorSlice.modal)
   const [codigo, setCodigo] = useState("")
   const [alert, setAlert] = useState(null)
@@ -158,30 +158,26 @@ const Reporte = (props) => {
   function Confirmar(e) {
     let valores = GetValores()
     if (e == "pichincha") {
-      /*
-    usedispatch(setModal({
-      nombre: e, estado: valores
-    }))
-    usedispatch(setToastes({
-      show: true,
-      message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al Whastapp o email indicado, tienes un tiempo [] para reportarlo',
-      color: 'bg-success',
-      estado: 'Orden de Pago Generada '
-    }))
-    //*/
-
-
+     // console.log(evento)
+      
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          usedispatch(setModal({
+          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
             nombre: e, estado: valores
+          })) : usedispatch(setModal({
+            nombre: "", estado: ""
           }))
-          usedispatch(setToastes({
+          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setToastes({
             show: true,
             message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
+          })) : usedispatch(setToastes({
+            show: true,
+            message: 'Recuerda estar pendiente de tu reserva, te informaremos de las cuentas al inicio de las ventas',
+            color: 'bg-success',
+            estado: 'Reserva Generada '
           }))
           return
         }
@@ -207,13 +203,21 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          usedispatch(setModal({
+          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
             nombre: e, estado: valores
+          })) : usedispatch(setModal({
+            nombre: "", estado: ""
           }))
-          usedispatch(setToastes({
+          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setToastes({
             show: true,
-            message: oupt.message, color: 'bg-success',
+            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
+            color: 'bg-success',
             estado: 'Orden de Pago Generada '
+          })) : usedispatch(setToastes({
+            show: true,
+            message: 'Recuerda estar pendiente de tu reserva, te informaremos de las cuentas al inicio de las ventas',
+            color: 'bg-success',
+            estado: 'Reserva Generada '
           }))
           return
         }
@@ -244,13 +248,21 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          usedispatch(setModal({
+          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
             nombre: e, estado: valores
+          })) : usedispatch(setModal({
+            nombre: "", estado: ""
           }))
-          usedispatch(setToastes({
+          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setToastes({
             show: true,
-            message: oupt.message, color: 'bg-success',
+            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
+            color: 'bg-success',
             estado: 'Orden de Pago Generada '
+          })) : usedispatch(setToastes({
+            show: true,
+            message: 'Recuerda estar pendiente de tu reserva, te informaremos de las cuentas al inicio de las ventas',
+            color: 'bg-success',
+            estado: 'Reserva Generada '
           }))
           return
         }
@@ -274,14 +286,21 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          usedispatch(setModal({
+          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
             nombre: e, estado: valores
+          })) : usedispatch(setModal({
+            nombre: "", estado: ""
           }))
-          usedispatch(setToastes({
+          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setToastes({
             show: true,
-            message: oupt.message,
+            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
+          })) : usedispatch(setToastes({
+            show: true,
+            message: 'Recuerda estar pendiente de tu reserva, te informaremos de las cuentas al inicio de las ventas',
+            color: 'bg-success',
+            estado: 'Reserva Generada '
           }))
           return
         }
@@ -304,11 +323,21 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          usedispatch(setModal({ nombre: "confirmar", estado: valores }))
-          usedispatch(setToastes({
+          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
+            nombre: e, estado: valores
+          })) : usedispatch(setModal({
+            nombre: "", estado: ""
+          }))
+          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setToastes({
             show: true,
-            message: oupt.message, color: 'bg-success',
+            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
+            color: 'bg-success',
             estado: 'Orden de Pago Generada '
+          })) : usedispatch(setToastes({
+            show: true,
+            message: 'Recuerda estar pendiente de tu reserva, te informaremos de las cuentas al inicio de las ventas',
+            color: 'bg-success',
+            estado: 'Reserva Generada '
           }))
           return
         }

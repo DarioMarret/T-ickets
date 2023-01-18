@@ -30,7 +30,7 @@ import { ListarEventos } from "utils/Querypanel";
 export default function NoticiasView() {
     let usedispatch = useDispatch()
     let fechamin = new Date().toISOString().slice(0, -14);
-    const [cargando,setCargando]=useState(false)
+    const [cargando, setCargando] = useState(false)
     const [Tipo, setTipo] = useState("Evento")
     const [show, setShowca] = useState(false)
     const [eventos, setEventos] = useState([])
@@ -73,7 +73,7 @@ export default function NoticiasView() {
         const form = new FormData(e.target)
         if (Object.values(Object.fromEntries(form.entries())).some(e => e)) {
             let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
-            if (Tipo != "Evento") {               
+            if (Tipo != "Evento") {
                 if (imgen == "" || ![encabezado, descipcion, fechamax, mas].some(e => e)) {
                     usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
                 }
@@ -82,11 +82,11 @@ export default function NoticiasView() {
                         setCargando(true)
                         let link = await Obtenerlinkimagen(imgen)
                         console.log(Object.fromEntries(form.entries()))
-                        let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())                       
-                         console.log(link)                                                
+                        let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
+                        console.log(link)
                         setTimeout(async function () {
-                            if(link ==null){
-                                usedispatch(setToastes({ show: true, message: "La imagen tiene un peso de " + Math.floor(imgen.size / 1000000) +"MB", color: 'bg-warning', estado: 'Imagen demasiada pesada' }))
+                            if (link == null) {
+                                usedispatch(setToastes({ show: true, message: "La imagen tiene un peso de " + Math.floor(imgen.size / 1000000) + "MB", color: 'bg-warning', estado: 'Imagen demasiada pesada' }))
                                 setCargando(false)
                                 return
                             }
@@ -108,9 +108,9 @@ export default function NoticiasView() {
                 }
             }
             else if (Tipo == "Evento") {
-               // let tipo = document.getElementById("mas").value
+                // let tipo = document.getElementById("mas").value
                 //console.log(tipo)
-               
+
                 if (encabezado == "" || descipcion == "" || fechamax == "" || imgen == "") {
                     usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
                 }
@@ -119,20 +119,20 @@ export default function NoticiasView() {
                         setCargando(true)
                         let link = await Obtenerlinkimagen(imgen)
                         let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
-                        setTimeout(async function() {
+                        setTimeout(async function () {
                             let datas = {
-                                "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"]+"-"+datos.mas["estado"],
+                                "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"] + "-" + datos.mas["estado"],
                                 "encabezado": encabezado,
                                 "descripcion": descipcion,
                                 "link_img": link,
                                 "fecha_presentacion": fechamax,
-                                "redirect":""
+                                "redirect": ""
                             }
-                            console.log(datas)      
+                            console.log(datas)
                             let carruse = await noticiasEvento(datas)
                             Evento()
                             setCargando(false)
-                        },3000)        
+                        }, 3000)
                     } catch (error) {
                         console.log(error)
                     }
@@ -147,6 +147,7 @@ export default function NoticiasView() {
         // console.log("Datos --> actualizar", datos)
         const form = new FormData(e.target)
         let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
+        console.log(Object.fromEntries(form.entries()), imgen)
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
             usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
             return
@@ -161,7 +162,7 @@ export default function NoticiasView() {
                     let link = await Obtenerlinkimagen(imgen)
                     let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
                     let parametr = {
-                        "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"]+"-"+datos.mas["estado"],
+                        "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"] + "-" + datos.mas["estado"],
                         "encabezado": encabezado,
                         "descripcion": descipcion,
                         "link_img": link,
@@ -264,12 +265,12 @@ export default function NoticiasView() {
             let totalBytes = e.files[0].size;
             console.log(totalBytes)
             if (totalBytes < 1000000) {
-                 var _size = Math.floor(totalBytes / 1000) + 'KB';
-                 console.log(_size);
-             } else {
-                 var _size = Math.floor(totalBytes / 1000000) + 'MB';
-                 console.log(_size);
-             }
+                var _size = Math.floor(totalBytes / 1000) + 'KB';
+                console.log(_size);
+            } else {
+                var _size = Math.floor(totalBytes / 1000000) + 'MB';
+                console.log(_size);
+            }
         }
         else {
 
@@ -306,6 +307,7 @@ export default function NoticiasView() {
                             <span className=" input-group-text "><i className=" fa fa-calendar "></i></span>
                         </div>
                         <input className=" form-control"
+                            value={datos.fechamax}
                             name="fechamax"
                             min={fechamin}
                             type="date"
@@ -356,11 +358,11 @@ export default function NoticiasView() {
                     <label className=" form-label " > Tipo  </label>
                     <div className="custom-file" >
                         <select className=" form-select" id="mas"
-                          >
+                        >
                             <option value="" disabled ></option>
                             <option value="Venta">Venta </option>
                             <option value="subscripcion">Subscripción</option>
-                       </select>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -416,6 +418,7 @@ export default function NoticiasView() {
                                     <span className=" input-group-text "><i className=" fa fa-calendar "></i></span>
                                 </div>
                                 <input className=" form-control"
+                                    value={datos.fechamax}
                                     name="fechamax"
                                     min={fechamin}
                                     type="date"
@@ -510,7 +513,7 @@ export default function NoticiasView() {
     useEffect(() => {
         ListarEventos("").then(oupt => {
             setEventos(oupt.data.filter(e => e.estado == "PROCESO" || e.estado == "ACTIVO"))
-            console.log(oupt.data.filter(e => e.estado=="PROCESO" || e.estado=="ACTIVO")) 
+            console.log(oupt.data.filter(e => e.estado == "PROCESO" || e.estado == "ACTIVO"))
         }).catch(err => console.log(err))
         Evento()
     }, [])

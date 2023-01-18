@@ -9,7 +9,7 @@ import { Obtenerlinkimagen } from "utils/Querypanel";
 const Modalupdate = (props) => {
     const { show, Setshow, evento } = props;
     let usedispatch = useDispatch()
-    console.log(evento)
+    //console.log(evento)
     let user = clienteInfo()
 
     const [alertnone, showAlernone] = useState("d-none")
@@ -108,13 +108,14 @@ const Modalupdate = (props) => {
                     setNewEventos({ ...neweventos, imagenConcierto: '' })
                 }
             } else if (e.name == "mapaConcierto") {
-                setNewEventos({ ...neweventos, mapaConcierto: e.files[0] })
+               // setNewEventos({ ...neweventos, mapaConcierto: e.files[0] })
                 console.log({ mapaConcierto: e.files[0] })
                 img.src = window.URL.createObjectURL(e.files[0])
                 img.onload = () => {
                     //const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)
                     console.log(img.width)
                     setNewEventos({ ...neweventos, mapaConcierto: e.files[0] })
+                    console.log(e.files[0])
                     if (img.width < 400 || img.height < 400) {
                         e.value = ""
                         setNewEventos({ ...neweventos, imagenConcierto: '' })
@@ -175,7 +176,7 @@ const Modalupdate = (props) => {
         if (neweventos.imagenConcierto == evento.imagenConcierto && neweventos.mapaConcierto == evento.mapaConcierto) {
             let guarda = {
                 ...neweventos,
-                estado: "ACTIVO",
+                estado: "PROCESO",
                 "LocalodadPrecios": selectLocalidad
             }
             try {
@@ -194,20 +195,23 @@ const Modalupdate = (props) => {
             }
         }
         else if (neweventos.imagenConcierto == evento.imagenConcierto && neweventos.mapaConcierto != evento.mapaConcierto) {
-            const mapas = await Obtenerlinkimagen(neweventos.mapaConcierto)
-            console.log(mapas)
-            if (mapas == null) {
-                usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
+            console.log(neweventos.mapaConcierto)
+            const linkmapas = await Obtenerlinkimagen(neweventos.mapaConcierto)
+            console.log(linkmapas)
+            if (linkmapas == null) {
+                usedispatch(setToastes({ show: true, message: "no se genero link de Imagen",color: 'bg-danger', estado: 'Error' }))
                 return
             }
-            let guarda = {
+            console.log(linkmapas)
+            let guardados = {
                 ...neweventos,
-                estado: "ACTIVO",
-                nombreConcierto: mapas,
+                mapaConcierto: linkmapas,
+                estado: "PROCESO",                
                 "LocalodadPrecios": selectLocalidad
             }
+            console.log(guardados)
             try {
-                const actualiza = await ActualizarLocalidad(evento.codigoEvento, guarda)
+                const actualiza = await ActualizarLocalidad(evento.codigoEvento, guardados)
                 if (actualiza.success) {
                     Setshow(false)
                     usedispatch(setToastes({ show: true, message: 'Datos del evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
@@ -227,26 +231,30 @@ const Modalupdate = (props) => {
                 usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
                 return
             }
-            let guarda = {
-                ...neweventos,
-                estado: "ACTIVO",
-                imagenConcierto: link,
-                "LocalodadPrecios": selectLocalidad
-            }
-            try {
-                const actualiza = await ActualizarLocalidad(evento.codigoEvento, guarda)
-                if (actualiza.success) {
-                    Setshow(false)
-                    usedispatch(setToastes({ show: true, message: 'Datos del evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
+            setTimeout( async() => {
+                let guarda = {
+                    ...neweventos,
+                    estado: "PROCESO",
+                    imagenConcierto: link,
+                    "LocalodadPrecios": selectLocalidad
                 }
-                else {
-                    console.log("pasa")
-                    usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
+                try {
+                    const actualiza = await ActualizarLocalidad(evento.codigoEvento, guarda)
+                    if (actualiza.success) {
+                        Setshow(false)
+                        usedispatch(setToastes({ show: true, message: 'Datos del evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
+                    }
+                    else {
+                        console.log("pasa")
+                        usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
+                    }
+                } catch (error) {
+                    usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
+                    console.log(error)
                 }
-            } catch (error) {
-                usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
-                console.log(error)
-            }
+                
+            }, 1000);
+           
         }
         else if (neweventos.imagenConcierto != evento.imagenConcierto && neweventos.mapaConcierto != evento.mapaConcierto) {
             try {

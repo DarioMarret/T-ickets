@@ -19,7 +19,8 @@ import { listaRegistro } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useHistory } from "react-router";
-import SuscritSidebar from "components/Sidebar/SilderSubc";
+import { setdetalle } from "StoreRedux/Slice/SuscritorSlice";
+
 let { cedericon, atencion } = bancos
 export default function AprobarView() {
     let usedispatch = useDispatch()
@@ -161,8 +162,9 @@ export default function AprobarView() {
             if (e.data) {
 
                 setTikes(e.data)
+                return
             }
-            setTikes([])
+            //setTikes([])
         }).catch(err => {
             console.log(err)
         })
@@ -191,8 +193,12 @@ export default function AprobarView() {
         usedispatch(setModal({ nombre: "boleto", estado: e }))
 
     }
+    function abrirModal(e){
+        usedispatch(setModal({ nombre:"confirmar",estado:e}))
+    }
     function detalle(e) {
-        usedispatch(SuscritSidebar({ ...e }))
+        console.log(e)
+        usedispatch(setdetalle({ ...e }))
         history.push("/admin/Reporte/" + e.id)
     }
 
@@ -216,13 +222,14 @@ export default function AprobarView() {
                         aria-label="scrollable auto tabs example"
                     >
                         <Tab className="" label="Tickets pendientes "{...a11yProps(0)} />
-                        <Tab label="Tickets expirado" {...a11yProps(1)} />                   
+                        <Tab label="Tickets expirado" {...a11yProps(1)} />       
+                        <Tab label="Tickets Pagados" {...a11yProps(1)} />                              
                     </Tabs>
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">
                             <MaterialReactTable
-                                columns={listaRegistro.filter(e => e.estado_pago != "Expirado")}
-                                data={[...tiketslist.filter(e => e.estado_pago == "Expirado")]}
+                                columns={listaRegistro}
+                                data={tiketslist.filter(e => e.estado_pago =="Pendiente")}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'
@@ -249,7 +256,7 @@ export default function AprobarView() {
                                             >
                                                 <Summarize />
                                             </IconButton>}
-                                        {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? <Tooltip
+                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
                                             title="Comprobar" placement="top"
                                         >
                                             <IconButton
@@ -267,7 +274,52 @@ export default function AprobarView() {
                         <TabPanel value={value} index={1} className="text-center" >
                             <MaterialReactTable
                                 columns={listaRegistro}
-                                data={[...tiketslist.filter(e => e.estado_pago == "Expirado")]}
+                                data={tiketslist.filter(e => e.estado_pago == "Expirado")}
+                                muiTableProps={{
+                                    sx: {
+                                        tableLayout: 'flex'
+                                    }
+                                }}
+                                enableRowActions
+                                positionActionsColumn="first"
+                                renderRowActions={({ row }) => (
+                                    <Box sx={{ display: 'flex' }}>
+                                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
+                                            <Tooltip title="Reportar" placement="top">
+                                                <IconButton
+                                                    color="error"
+                                                    aria-label="Bloquear"
+                                                    onClick={() => abrirModal(row.original)}
+                                                >
+                                                    <Summarize />
+                                                </IconButton>
+                                            </Tooltip> : <IconButton
+                                                disabled={true}
+                                                color="error"
+                                                aria-label="Consolidar"
+
+                                            >
+                                                <Summarize />
+                                            </IconButton>}
+                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
+                                            title="Comprobar" placement="top"
+                                        >
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => detalle(row.original)}
+                                            >
+                                                <Visibility />
+                                            </IconButton>
+                                        </Tooltip> : ""}
+                                    </Box>
+                                )}
+                                localization={MRT_Localization_ES}
+                            />
+                        </TabPanel>
+                        <TabPanel value={value} index={2} className="text-center">
+                            <MaterialReactTable
+                                columns={listaRegistro}
+                                data={tiketslist.filter(e => e.estado_pago == "Pagado")}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'
@@ -294,7 +346,7 @@ export default function AprobarView() {
                                             >
                                                 <Summarize />
                                             </IconButton>}
-                                        {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? <Tooltip
+                                        {clienteInfo() &&  row.original.link_comprobante == null ? <Tooltip
                                             title="Comprobar" placement="top"
                                         >
                                             <IconButton

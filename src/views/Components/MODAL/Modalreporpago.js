@@ -33,7 +33,7 @@ export default function ReporteView(prop) {
         "guayaquil": "#d2006e"
     }
     const cuentas = {
-        "pichincha": "20100106995",
+        "pichincha": "2100106995",
         "pacifico": "8069530",
         "produbanco": "1058194005",
         "guayaquil": "18018624"

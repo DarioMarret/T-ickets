@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Box, Tooltip, Typography } from '@mui/material';
+import { Box, Tooltip, Typography,Tab } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send, CheckBox } from '@mui/icons-material';
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -17,6 +17,7 @@ import moment from "moment";
 import { Form } from "react-bootstrap";
 import EmitirmodlView from "./ModalEmitir/Modalconsolidar";
 import ModalBoletoApro from "../Aprobar/Modalboleto";
+import { ticketsboletos } from "utils/columnasub";
 let { cedericon } = bancos
 export default function EmitirboView() {
     let usedispatch = useDispatch()
@@ -32,57 +33,6 @@ export default function EmitirboView() {
             hideAlert()
     }
 
-
-    const successAlert = (e) => {
-
-        setAlert(
-            <SweetAlert
-                info
-                style={{ display: "block", marginTop: "-100px" }}
-                title={"Estas Seguro?"}
-                onConfirm={() => abrirceder(e)}
-                onCancel={() => hideAlert()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                closeOnClickOutside={false}
-                confirmBtnText="Si, Ceder"
-                cancelBtnText="Cancelar"
-
-                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel
-            >
-                <div className="d-flex flex-row justify-content-center text-center">
-                    <div className="d-flex">
-                        <h4 style={{ fontSize: '0.9em' }} >
-                            Desea ceder este boleto a otro usuario</h4>
-                    </div>
-                </div>
-            </SweetAlert>
-        );
-    };
-    function selecion(cod, seleccionado) {
-        let info = data
-        if (info.some(e => e.uid == cod)) {
-            if (info.some(g => g.sillas === seleccionado.sillas)) {
-                let nuevo = selecions
-                setData(info.filter(h => h.sillas != seleccionado.sillas))
-            } else {
-                info.push({ ...seleccionado })
-                setselcion({
-                    ...selecions,
-                    [seleccionado.sillas]: true
-                })
-                setData(info)
-            }
-        } else {
-            setselcion({})
-            let datos = info.filter(f => f.ui == cod)
-            datos.push({ ...seleccionado })
-            setData(datos)
-            setselcion({ [seleccionado.sillas]: true })
-        }
-
-    }
     const hideAlert = () => {
         setAlert(null)
     }
@@ -96,46 +46,12 @@ export default function EmitirboView() {
     useEffect(() => {
         AprobarTiket().then(oupt => {
             console.log(oupt)
-            let datos = oupt.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado === "reservado")
+            let datos = oupt.data
             let nuevo = datos.map((e) => {
                 e.uid = e.codigoEvento + "-" + e.cedula
-                return e
+                return e 
             })
-            setTikes([...nuevo])
-            /*  let nuevogrupo = []
-              nuevo.forEach(element => {
-                  if (!nuevogrupo.some(e => e.uid == element.uid)) {
-                      nuevogrupo.push({
-                          codigoEvento: element.codigoEvento,
-                          concierto: element.concierto,
-                          cedula: element.cedula,
-                          estado: element.estado,
-                          valor: element.valor,
-  
-                          fechaCreacion: element.fechaCreacion,
-                          tokenPago: element.tokenPago,
-                          uid: element.uid,
-                          detalle: []
-                      })
-                  }
-              });
-              nuevogrupo.length > 0 ? nuevo.map((elm, idex) => {
-                  let index = nuevogrupo.findIndex(f => f.uid == elm.uid)
-                  let fecha = elm.fechaCreacion
-                  if (!nuevogrupo[index].detalle.some(h => h.sillas === elm.sillas)) {
-                      nuevogrupo[index].detalle.push({
-                          sillas: elm.sillas,
-                          localidad: elm.localidad, fechaCreacion: fecha,
-                          cedula: elm.cedula,
-                          tokenPago: elm.tokenPago,
-                          estado: elm.estado,
-                          uid: elm.uid,
-                          valor: elm.valor, codigoEvento: elm.codigoEvento,
-                      })
-                  }
-              }) : ''**/
-
-            // setTikes([...nuevogrupo])
+            setTikes([...nuevo])            
         }).catch(err => {
             console.log(err)
         })
@@ -179,7 +95,7 @@ export default function EmitirboView() {
                 </div>
                 <div className="card-body table-responsive">
                     <MaterialReactTable
-                        columns={ticketprocesoapro}
+                        columns={ticketsboletos}
                         data={tiketslist}
                         muiTableProps={{
                             sx: {

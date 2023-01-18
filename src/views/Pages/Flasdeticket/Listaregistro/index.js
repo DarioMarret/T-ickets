@@ -3,7 +3,7 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Tooltip, } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Summarize, Visibility, } from '@mui/icons-material';
+import { Edit, Summarize, Visibility, } from '@mui/icons-material';
 import { useDispatch, useSelector } from "react-redux";
 import { listaRegistro } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
@@ -21,6 +21,7 @@ export default function ListaderegistroView(props) {
     useEffect(() => {
         listarRegistropanel({ "cedula": cedula }).then(
             e => {
+                console.log(e.data)
                 setDatos(e.data.sort((a, b) => {
                     if (a.estado_pago > b.estado_pago) { return -1; }
                     if (a.estado_pago < b.estado_pago) { return 1; }
@@ -52,11 +53,17 @@ export default function ListaderegistroView(props) {
                 }}
                 enableRowActions
                 positionActionsColumn="first"
-                renderRowActions={({ row }) => (
+                renderRowActions={({ row }) => {
+                    let info = JSON.parse(row.original.info_concierto).map(e => { return e.nombreConcierto })
+                    
+
+                    return(
+                    
                     <Box sx={{ display: 'flex' }}>
-                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
-                            <Tooltip title="Reportar" placement="top">
+                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado " ?
+                                Object.values(info).includes("Eladio Carrión Quito") && Object.values(info).includes("Eladio Carrión Guayaquil") ? <Tooltip title="Reportar" placement="top">
                                 <IconButton
+                                   
                                     color="error"
                                     aria-label="Bloquear"
                                     onClick={() => abrirModal(row)}
@@ -64,6 +71,13 @@ export default function ListaderegistroView(props) {
                                     <Summarize />
                                 </IconButton>
                             </Tooltip> : <IconButton
+                                disabled={true}
+                                color="error"
+                                aria-label="Consolidar"
+                            >
+                                <Summarize />
+                            </IconButton>: 
+                            <IconButton
                                 disabled={true}
                                 color="error"
                                 aria-label="Consolidar"
@@ -82,7 +96,7 @@ export default function ListaderegistroView(props) {
                             </IconButton>
                         </Tooltip> : ""}
                     </Box>
-                )}
+                )}}
                 localization={MRT_Localization_ES}
             />
 

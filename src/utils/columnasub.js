@@ -12,7 +12,6 @@ export const ticketproceso = [
         Cell: ({ cell }) => (
             <div>
                 {
-
                     cell.row.original.detalle.map((g) => { return parseFloat(g.valor) }).reduce((a, b) => a + b, 0).toFixed(2)
                 }
             </div>
@@ -35,12 +34,15 @@ let color = {
     "reservado": "warning",
     "ACTIVO": "success",
     "PROCESO": "secondary",
-  
+    "Pendiente":"warning",
+    "Pagado":"success",
     null: "danger",
     "null": "danger",
     "SI": "success",
     "NO": "danger",
-    "Expirado": "danger"
+    "Expirado": "danger",
+    
+
 }
 export const ticketprocesoapro = [
     {
@@ -91,10 +93,6 @@ export const ticketprocesoapro = [
 ]
 export const ticketsboletos = [
     {
-        accessorKey: "sillas",
-        header: "Boleto"
-    },
-    {
         accessorKey: "localidad",
         header: "Detalle",
         Cell: ({ cell }) => (
@@ -106,12 +104,27 @@ export const ticketsboletos = [
         ),
     },
     {
+        accessorKey: "sillas",
+        header: "Boleto",
+        Cell: ({ cell }) => (
+            <div>#
+                {
+                    cell.row.original.sillas.padStart(10,0)
+                }
+            </div>
+        ),
+        size:70
+    },
+    
+    {
         accessorKey: "valor",
-        header: "Valor"
+        header: "Valor",
+        sixe:50
     },
     {
         accessorKey: "fecha",
-        header: "Fecha"
+        header: "Fecha",
+        sixe:50
     },
     {
         accessorKey: "estado",
@@ -119,9 +132,10 @@ export const ticketsboletos = [
         Cell: ({ cell }) => (
             <div>
                 <Badge bg={color[cell.row.original.estado]} >
-                    {estado[cell.row.original.estado]}</Badge>
+                    {cell.row.original.estado}</Badge>
             </div>
         ),
+        size:50
     },
 ]
 export const listaRegistro = [

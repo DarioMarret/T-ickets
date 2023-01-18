@@ -136,7 +136,7 @@ function Example() {
                         <td className="text-center ">
                            
                             <div className=" btn-group  " >
-                                {item.estado != "reservado" && item.pdf != null && item.link != "SI" ?
+                                {item.estado != "reservado" && item.pdf != null && item.link == "SI" ?
                                  <Tooltip className="" title="Ver Ticket" placement="top">
                                     <a 
                                         className=" btn btn-default btn-sm"
@@ -311,78 +311,7 @@ function Example() {
                             )}
                             localization={MRT_Localization_ES}
                         />
-                        {/* <MaterialReactTable
-                            columns={ticketproceso}
-                            data={tiketslist.sort(e => e.id)}
-                            muiTableProps={{
-                                sx: {
-                                    tableLayout: 'flex'
-                                }
-                            }}
-                            muiTableBodyProps={{
-                                sx: { columnVisibility: { nombre: false } }
-                            }}
-                           
-                            enableSelectAll={false}
-                            enableMultiRowSelection={false}
-                            enableRowSelection
-
-                            enableRowActions
-                            positionActionsColumn="last"
-                            renderRowActions={({ row }) => (
-                                <Box sx={{ display: 'flex' }}>
-                                    {row.original.estado != "reservado" ? <Tooltip className="" title="Ver Ticket" placement="top">
-                                        <IconButton
-                                            color="success"
-                                            arial-label="Enviar"
-                                        >
-                                            <a href={row.original.link}
-                                                target="_blank"
-                                            >
-                                                <FileDownload />
-                                            </a>
-                                        </IconButton>
-                                    </Tooltip> : ''}
-                                    <Tooltip title="Borrar" placement="top">
-                                        <IconButton
-                                            color="error"
-                                            aria-label="Bloquear">
-                                            <Delete />
-                                        </IconButton>
-                                    </Tooltip>
-                                    {row.original.estado != "reservado" ? <Tooltip title="Ceder ticket" placement="top-start">
-                                        <IconButton
-                                            color='success'
-                                            onClick={() => successAlert(row.original)}
-                                        >
-                                            <img src={cedericon}
-                                                style={
-                                                    {
-                                                        height: 30
-                                                    }
-                                                }
-                                            />
-                                        </IconButton>
-                                    </Tooltip> : ''}
-                                </Box>
-                            )}
-
-                            getRowId={(row) => row.codigoEvento}
-                            muiSelectCheckboxProps={({ row }) => ({
-                                disabled: row.original.estado == "reservado",
-                                disabled: moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(row.original.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') > 2
-                            })}
-                            tableInstanceRef={tableInstanceRef}
-                            positionToolbarAlertBanner="bottom"
-                            displayColumnDefOptions={{
-                                'mrt-row-numbers': {
-                                    enableHiding: true,
-                                },
-                            }}
-                            onRowSelectionChange={setRowSelection}
-                            state={{ rowSelection }}
-                            localization={MRT_Localization_ES}
-                        />*/}
+                       
                         <div className=" container pb-3">
                             <div className=" d-flex justify-content-end ">
                                 {

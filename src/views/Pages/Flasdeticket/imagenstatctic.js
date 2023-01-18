@@ -25,8 +25,10 @@ import avatar from "../../../assets/imagen/avatarpng.png"
 import prubas from "../../../assets/imagen/quito.jpg"
 import prubasdos from "../../../assets/imagen/guayaquil.jpg"
 import proximo from "../../../assets/imagen/carrion.jpeg"
-import quito from "../../../assets/imagen/preventaquito.jpg"
+import uno from "../../../assets/imagen/uno.png"
+//import dos from ""
 import guayaquil from "../../../assets/imagen/preventa.jpg"
+import cedericon from "../../../assets/imagen/iconoceder.png"
 let datos = [{
   link_img: guayaquil,
   encabezado:"Eladi",
@@ -39,5 +41,5 @@ export const carrusel = {
     mapa, portal, icon, valla,
     android, ios, face, insta, 
     tick, youtube, nombrepage, facilito,
-  redacti, facilitodos, avatar, iconhead, prubas, proximo, prubasdos
+  redacti, facilitodos, avatar, iconhead, prubas, proximo, prubasdos, cedericon, uno
 } 

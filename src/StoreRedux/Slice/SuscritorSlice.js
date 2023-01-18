@@ -39,10 +39,13 @@ const SubscritorSlice = createSlice({
         },
         setItervalo: (state, action) => {
             state.intervalo = action.payload.intervalo
+        },
+        setdetalle:(state,action)=>{
+            state.subscritor = { ...action.payload }
         }
 
     }
 
 })
-export const { addususcritor, deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad, deleteloclidad } = SubscritorSlice.actions;
+export const { addususcritor, deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad, deleteloclidad, setdetalle } = SubscritorSlice.actions;
 export default SubscritorSlice.reducer

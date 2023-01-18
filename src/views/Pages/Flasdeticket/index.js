@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styleswiper, styleswipers } from "./styleswiper.js";
 import { pasados, carrusel } from "./imagenstatctic.js";
-let { icon, iconhead, valla, prubasdos, principal, secundaria, tercero, logofla, mapa, portal, header, avatar,prubas } = carrusel
+let { icon, iconhead,uno, valla, prubasdos, principal, secundaria, tercero, logofla, mapa, portal, header, avatar, prubas } = carrusel
 import { useSelector, useDispatch } from "react-redux";
 import { todossiler } from "./Modalterminos/silder.js";
-let { cargalocalidad,  cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
+let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
 
 import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalPago from "views/Components/MODAL/ModalPago";
@@ -133,7 +133,7 @@ const IndexFlas = () => {
       }
     }, 1000);
   }
-  function cuentaregersivas (){
+  function cuentaregersivas() {
 
   }
   function filterlocal(id, consulta) {
@@ -271,10 +271,10 @@ const IndexFlas = () => {
     sessionStorage.setItem("estadoevento", e.estado)
     setspinervi("")
     try {
-      let registro = await listarRegistropanel({"cedula":getDatosUsuariosLocalStorag().cedula})
-     
+      let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
+
       /** agregar en casi de && f.forma_pago != "Tarjeta" */
-      if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente" )){
+      if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
         setspinervi("d-none")
         SetSeleccion("Tickets")
         usedispatch(setToastes({
@@ -285,7 +285,7 @@ const IndexFlas = () => {
         }))
         return
       }
-      else{
+      else {
         let id = sessionStorage.getItem(Eventoid)
         if (id != null && id != e.codigoEvento) {
           setspinervi("d-none")
@@ -297,14 +297,14 @@ const IndexFlas = () => {
             const listalocal = await ListarLocalidad("")
             let localidades = await cargarMapa()
             sessionStorage.consierto = e.nombreConcierto
-           // console.log(listalocal, localidades, obten)
+            // console.log(listalocal, localidades, obten)
             if (obten.data.length > 0) {
               let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
               let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-           //   console.log(mapalocal, mapa)
+              //   console.log(mapalocal, mapa)
               let localidad = JSON.parse(mapa[0].localidad)
               let path = JSON.parse(mapa[0].pathmap)
-          //    console.log(obten.data)
+              //    console.log(obten.data)
               let newprecios = obten.data.map((g, i) => {
                 let color = localidad.filter((f, i) => f.nombre == g.localidad)
                 g.color = color[0].color
@@ -341,7 +341,7 @@ const IndexFlas = () => {
                 pathmapa: pathnuevo.filter((e) => e != undefined),
                 mapa: mapa[0].nombre_mapa
               }
-             // console.log(nuevosdatos)
+              // console.log(nuevosdatos)
               sessionStorage.eventoid = e.codigoEvento
               setPrecios(nuevosdatos)
               setDatoscon(e)
@@ -485,7 +485,7 @@ const IndexFlas = () => {
     var hours = Math.floor((distance % _day) / _hour);
     var minutes = Math.floor((distance % _hour) / _minute);
     var seconds = Math.floor((distance % _minute) / _second);
-    console.log(days, hours,minutes,seconds)
+    console.log(days, hours, minutes, seconds)
     document.getElementById('regeresion').innerHTML = "  " + hours + " :  " + minutes + "  :  " + seconds + "";
     document.getElementById('regeresiondos').innerHTML = " " + hours + "  :  " + minutes + "  :  " + seconds;
 
@@ -499,10 +499,10 @@ const IndexFlas = () => {
       try {
         //AGREGAR ESTADO
         const data = await cargarEventoActivo("")
-       if (!data ==null){ return}
+        if (!data == null) { return }
         ///console.log(data)
         console.log(data)
-        let datos = data.filter(e => e.estado !="CANCELADO")
+        let datos = data.filter(e => e.estado != "CANCELADO")
         //console.log(datos)
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
@@ -517,17 +517,17 @@ const IndexFlas = () => {
     evento()
     ListarNoticias().then(ouput => {
       //console.log(ouput)
-      if( !ouput.data) { return }
+      if (!ouput.data) { return }
       setpublicidad(ouput.data)
     }).catch(err => {
       if (err.response.status === 500) {
-        
+
       } else {
       }
       //console.log(err)
     }
     )
-   
+
     //document.getElementById('regeresion').innerHTML = " 52555 "  ;
     //document.getElementById('regeresiondos').innerHTML = "55455 ";
 
@@ -726,17 +726,17 @@ const IndexFlas = () => {
               publicidad.map((element, index) => {
                 return (
                   <SwiperSlide key={index}>
-                    <div className="d-none d-sm-none d-md-block" style={{ width: "100%", height: "453px" }}>                  
-                        <div style={{
-                          backgroundImage: "url('" + element.link_img + "')",
-                          ...styleswipers.slideimgcenter
-                        }}></div>
-                        <div style={{
-                          backgroundImage: "url('" + element.link_img + "')",
-                          ...styleswipers.slideimg
-                        }} >
-                          <div>
-                          </div>
+                    <div className="d-none d-sm-none d-md-block" style={{ width: "100%", height: "453px" }}>
+                      <div style={{
+                        backgroundImage: "url('" + element.link_img + "')",
+                        ...styleswipers.slideimgcenter
+                      }}></div>
+                      <div style={{
+                        backgroundImage: "url('" + element.link_img + "')",
+                        ...styleswipers.slideimg
+                      }} >
+                        <div>
+                        </div>
                         <div className="descripciones ">
                           <div className="d-flex  flex-column text-white" >
                             <div className="py-3 d-none d-sm-block   ">
@@ -768,12 +768,12 @@ const IndexFlas = () => {
                                 element.evento == null ?
                                   <button className="btn border rounded-6  btn-lg btn-outline-light "
                                     style={styleswiper.button}
-                                    
+
                                     href="#"
                                     onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
                                   >{!userauthi.login ? "Suscríbete" : "RESERVAR"}</button> :
                                   <button className="btn border rounded-6  btn-lg btn-outline-light "
-                                 
+
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
                                   >COMPRAR</button>
@@ -782,31 +782,31 @@ const IndexFlas = () => {
                           </div>
                         </div>
                         <div className=" contador  "
-                      
+
                         >
                           <div className="regeresion" >
                             <h5 className="tiempo" id="regeresion"></h5>
-                            </div>
-                        </div>
+                          </div>
                         </div>
                       </div>
-                       
-                   
+                    </div>
+
+
                     <div className="d-block d-sm-block d-md-none" style={{ width: "100%", height: "auto" }}>
                       <div className="slide-image" style={{
                         position: "relative",
                         width: "100%",
                         height: "auto",
                       }}>
-                        {element.id == 99?  <div style={{
-                          backgroundImage: "url('" +  prubas+ "')",
+                        {element.id == 99 ? <div style={{
+                          backgroundImage: "url('" + prubas + "')",
                           ...styleswiper.slideimg
                         }} >
-                        </div> :< div style={{
-                          backgroundImage: "url('" +   prubasdos + "')",
+                        </div> : < div style={{
+                          backgroundImage: "url('" + prubasdos + "')",
                           ...styleswiper.slideimg
                         }} >
-                      </div>}
+                        </div>}
                         <div style={styleswiper.fondo}>
                         </div>
                         <div className="descripciones">
@@ -840,10 +840,10 @@ const IndexFlas = () => {
                                 element.evento == null ?
                                   < button className="btn border rounded-6  btn-lg btn-outline-light "
                                     style={styleswiper.button}
-                                  
+
                                     onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
 
-                                  >{!userauthi.login ? "Suscríbete" :"RESERVAR"}</button> :
+                                  >{!userauthi.login ? "Suscríbete" : "RESERVAR"}</button> :
                                   <button className="btn border rounded-6  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
@@ -995,22 +995,109 @@ const IndexFlas = () => {
                                       </div>
                                     </div>
                                   </div>
-                                  <div className=" col-12 text-center  pt-3"
+                                  <div className=" col-12   pt-3"
                                     style={{
                                       bottom: 10,
                                     }}
                                   >
-                                    {e.estado =="PROCESO"?
-                                      <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                        className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
-                                        {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>                                    
-                                    :""}
-                                    {e.estado=="ACTIVO"?
+                                    {e.estado == "PROCESO" ?
+                                      <div className="row"
+                                        >
+                                        {e.id == 17 ? 
+                                        
+                                        <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                            <p style={{ fontSize: '0.8em' }}>    <b className="   "
+                                            style={{
+                                              fontWeight:"normal"
+
+                                            }}
+                                            >  <span style={{
+                                              fontWeight:"bold"
+                                            }}>PROMOTOR: </span>   <span id="fechaEvento" > ASB ENTERTAINMENT MUSIC</span></b></p>
+                                          <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                              <p className="col-12 pt-0 mt-n2" style={{ fontSize: '0.8em',
+                                             fontWeight: "normal" }}
+                                              
+                                            >  <span style={{
+                                                  fontWeight: "bold"
+                                                }}>WEB: </span> <span id="horaEvento">WWW.ASBEVENTOS.COM</span></p>
+                                              <p className="col-12 pt-0 mt-n2" style={{
+                                                fontSize: '0.8em',
+                                                fontWeight: "normal"
+                                              }}
+
+                                              >  <span style={{
+                                                fontWeight: "bold"
+                                              }}>RESPONSABLE: </span><span id="lugarEvento">BLASCHKE SERRANO JOSE ENRIQUE</span></p>
+                                              <p className="col-12 pt-0 mt-n2" style={{
+                                                fontSize: '0.8em',
+                                                fontWeight: "normal"
+                                              }}
+
+                                              >  <span style={{
+                                                fontWeight: "bold"
+                                              }}>RUC: </span><span id="lugarEvento">09910904614001</span></p>
+                                          </div>
+                                            
+
+                                          <div>
+                                          </div>
+                                          </div> : 
+                                          e.id == 18 ?
+
+                                              <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                                <p style={{ fontSize: '0.8em' }}>    <b className="   "
+                                                  style={{
+                                                    fontWeight: "normal"
+
+                                                  }}
+                                                >  <span style={{
+                                                  fontWeight: "bold"
+                                                }}>PROMOTOR: </span>   <span id="fechaEvento" > ASB ENTERTAINMENT MUSIC</span></b></p>
+                                                <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                                  <p className="col-12 pt-0 mt-n2" style={{
+                                                    fontSize: '0.8em',
+                                                    fontWeight: "normal"
+                                                  }}
+
+                                                  >  <span style={{
+                                                    fontWeight: "bold"
+                                                  }}>WEB: </span> <span id="horaEvento">WWW.ASBEVENTOS.COM</span></p>
+                                                  <p className="col-12 pt-0 mt-n2" style={{
+                                                    fontSize: '0.8em',
+                                                    fontWeight: "normal"
+                                                  }}
+
+                                                  >  <span style={{
+                                                    fontWeight: "bold"
+                                                  }}>RESPONSABLE: </span><span id="lugarEvento   " className="  text-uppercase">Alan Israel Andrade Logacho </span></p>
+                                                  <p className="col-12 pt-0 mt-n2" style={{
+                                                    fontSize: '0.8em',
+                                                    fontWeight: "normal"
+                                                  }}
+
+                                                  >  <span style={{
+                                                    fontWeight: "bold"
+                                                  }}>RUC: </span><span id="lugarEvento">1715820906001 </span></p>
+                                                </div>
+
+
+                                                <div>
+                                                </div>
+                                              </div> : ""
+                                          
+}
+                                        <div className="col-12  py-2 ">
+                                          <p className="" style={{ fontSize: '0.8em', }}><i className="bi bi-calendar-week-fill"></i> <b>Venta:<span >21 de Enero del 2023</span></b></p>
+                                        </div>
+                                      </div>
+                                      : ""}
+                                    {e.estado == "ACTIVO" ?
                                       <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                         className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
                                         {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
-                                    :""}
-                                    
+                                      : ""}
+
                                   </div>
                                 </div>
                               </div>
@@ -1036,7 +1123,7 @@ const IndexFlas = () => {
 
                     </div>}
                   {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
-                  <SubscrtitoViews/>
+                  <SubscrtitoViews />
                   <div className="col-12 d-none col-lg-6 mx-auto my-5" >
                     <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
                       aria-controls="collapseExample">
@@ -1066,14 +1153,14 @@ const IndexFlas = () => {
           <div className="container p-3 d-none d-md-none  d-xl-block">
             <div className="row d-flex justify-content-center " >
               <div className="col-12 col-lg-9 px-0 pb-3   ">
-              
+
                 <div className="row mx-auto bg-gradient d-flex justify-content-center px-0 ">
                   <div className="col-12  border-bottom border-3 border-dark mb-3">
                     <h4 className="text-capitalize font-weight-bolds">
                       <b className="  "> Eventos Pasados</b>
                     </h4>
                   </div>
-                  
+
                   <div className="row d-none d-flex justify-content-center " >
                     {
                       [...pasados].map((element, index) => {
