@@ -1074,7 +1074,7 @@ const IndexFlas = () => {
                     </h4>
                   </div>
                   
-                  <div className="row d-flex justify-content-center " >
+                  <div className="row d-none d-flex justify-content-center " >
                     {
                       [...pasados].map((element, index) => {
                         return (
