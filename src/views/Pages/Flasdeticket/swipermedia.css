@@ -3,21 +3,37 @@
     left: 100px;
     bottom: 50px;
 }
-
+.contador{
+    position: absolute;
+    top:45%;
+    width: 100%;
+    height: 45px;
+    text-align: center;
+    color: azure ;   
+    z-index: 2;
+}
+.contadordos{
+    position: absolute;
+    top:37%;
+    width: 100%;
+        height: 35px;
+        text-align: center;
+        color: azure;
+        
+}
+.tiempo{
+    text-transform: capitalize;
+    font-weight: bold ;
+    font-size: 60px;
+}
 span.swiper-pagination-bullet.swiper-pagination-bullet-active {
     background-color: #fff;
     opacity: 1
 }
-
 .swiper-pagination-bullet {
     background-color: rgba(175, 170, 170, 0.884);
 }
 
-/*.navbar {
-    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),
-        0 1px 18px 0 rgba(0, 0, 0, 0.12),
-        0 3px 5px -1px rgba(0, 0, 0, 0.4)
-}*/
 .pl-n1 {
   padding-left: 0.05rem !important;
 }

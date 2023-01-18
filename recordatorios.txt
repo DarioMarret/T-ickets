@@ -17,3 +17,103 @@ el servidor esta adelantado
 
 //un edpoit para consultar 
 // 
+
+1751147891
+1724349590 2 /2  1724349590 1724349590
+1722817549
+1721037138
+
+"data": [
+        {
+            "id": 9,
+            "id_usuario": 272,
+            "id_usuario_registro_pago": null,
+            "cedula": "1721037138",
+            "forma_pago": "Tarjeta",
+            "info_concierto": "[{\"nombreConcierto\":\"Ranchenato del Amor\",\"id_localidad\":\"33\",\"idespaciolocalida\":112,\"cantidad\":\"3\"}]",
+            "link_pago": "https://cloud.abitmedia.com/pagos/solicitudes/?t=2y-13-ca66hsnejzuauzyddyd5i-tncpnjn2godzap79z9-ujk-5nqgknho",
+            "token_pago": "2y-13-ca66hsnejzuauzyddyd5i-tncpnjn2godzap79z9-ujk-5nqgknho",
+            "estado_pago": "Expirado",
+            "fechaCreacion": "2023-01-17 14:16:26",
+            "fechaReporte": "2023-01-17",
+            "FechaPagoLink": null,
+            "generar_pdf": null,
+            "numerTransacion": "0",
+            "idfactura": "0",
+            "banco": null,
+            "link_comprobante": null,
+            "st": 1,
+            "pdf": "NO"
+        }
+    ]
+}
+
+
+{
+    "success": true,
+    "data": [
+        {
+            "id": 12,
+            "id_usuario": 1011,
+            "id_usuario_registro_pago": null,
+            "cedula": "1724349590",
+            "forma_pago": "Tarjeta",
+            "info_concierto": "[{\"nombreConcierto\":\"Ranchenato del Amor\",\"id_localidad\":\"35\",\"idespaciolocalida\":114,\"cantidad\":\"2\"}]",
+            "link_pago": null,
+            "token_pago": null,
+            "estado_pago": "Expirado",
+            "fechaCreacion": "2023-01-17 19:53:02",
+            "fechaReporte": "2023-01-17",
+            "FechaPagoLink": null,
+            "generar_pdf": "GENERAR",
+            "numerTransacion": "0",
+            "idfactura": "0",
+            "banco": null,
+            "link_comprobante": null,
+            "st": 1,
+            "pdf": "NO"
+        },
+        {
+            "id": 13,
+            "id_usuario": 1011,
+            "id_usuario_registro_pago": null,
+            "cedula": "1724349590",
+            "forma_pago": "Tarjeta",
+            "info_concierto": "[{\"nombreConcierto\":\"Ranchenato del Amor\",\"id_localidad\":\"35\",\"idespaciolocalida\":114,\"cantidad\":\"2\"}]",
+            "link_pago": null,
+            "token_pago": null,
+            "estado_pago": "Expirado",
+            "fechaCreacion": "2023-01-17 19:53:08",
+            "fechaReporte": "2023-01-17",
+            "FechaPagoLink": null,
+            "generar_pdf": "GENERAR",
+            "numerTransacion": "0",
+            "idfactura": "0",
+            "banco": null,
+            "link_comprobante": null,
+            "st": 1,
+            "pdf": "NO"
+        },
+        {
+            "id": 14,
+            "id_usuario": 1011,
+            "id_usuario_registro_pago": null,
+            "cedula": "1724349590",
+            "forma_pago": "Tarjeta",
+            "info_concierto": "[{\"nombreConcierto\":\"Ranchenato del Amor\",\"id_localidad\":\"35\",\"idespaciolocalida\":114,\"cantidad\":\"2\"}]",
+            "link_pago": "https://cloud.abitmedia.com/pagos/solicitudes/?t=2y-13-ahotsdou-nyqobleq5usyeh7i2xmq6tkbb63zl3v8v7lkrrvmld-6",
+            "token_pago": "2y-13-ahotsdou-nyqobleq5usyeh7i2xmq6tkbb63zl3v8v7lkrrvmld-6",
+            "estado_pago": "Pagado",
+            "fechaCreacion": "2023-01-17 19:53:30",
+            "fechaReporte": "2023-01-17",
+            "FechaPagoLink": "2023-01-17 14:55:50",
+            "generar_pdf": "GENERAR",
+            "numerTransacion": "0",
+            "idfactura": "0",
+            "banco": null,
+            "link_comprobante": null,
+            "st": 1,
+            "pdf": "NO"
+        }
+    ]
+}

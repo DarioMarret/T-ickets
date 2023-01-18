@@ -9,37 +9,18 @@ import imagen5 from "assets/imagen/logo-tickets.png"
 
 // react-bootstrap components
 import {
-  Badge,
-  Button,
-  ButtonGroup,
-  Card,
   Collapse,
-  Form,
-  InputGroup,
-  Navbar,
   Nav,
-  Pagination,
-  Container,
-  Row,
-  Col
 } from "react-bootstrap";
 
 function Sidebar({ routes, image, background }) {
   let user = clienteInfo()
- 
-  // to check for active links and opened collapses
    let location = useLocation();
-  // this is for the user collapse
   const [userCollapseState, setUserCollapseState] = React.useState(false);
-  // this is for the rest of the collapses
   const [state, setState] = React.useState({});
   React.useEffect(() => {
     setState(getCollapseStates(routes));
-    //const user = clienteInfo()
-   // console.log(user)
   }, []);
-  // this creates the intial state of this component based on the collapse routes
-  // that it gets through routes prop
   const getCollapseStates = (routes) => {
     let initialState = {};
     routes.map((prop, key) => {

@@ -75,7 +75,7 @@ export default function TablasViwe({...props}){
 
              
 
-            <div className={" " + spinerdos}
+            <div className={spinerdos}
                     style={{
 
                         
@@ -83,6 +83,7 @@ export default function TablasViwe({...props}){
                         left: '0',
                         bottom: '0',
                         width: '100%',
+                        
                         backgroundColor: '#fff',
                         display: 'flex',
                         justifyContent: 'center',

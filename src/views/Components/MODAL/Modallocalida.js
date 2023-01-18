@@ -629,23 +629,26 @@ const LocalidadmapViews = (props) => {
                         })
                     }) : ''
                     mapath.precio.typo == "mesa" ? usedispatch(filtrarlocali(nuevoObjeto)) : ''
-                    console.log(nuevoObjeto)
+                    //console.log(nuevoObjeto)
                 }
                 else if (ouput.data.some(e => e.typo == "correlativo")) {
                     mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible"))) : ''
-                    console.log(ouput.data.filter(e => e.estado == "disponible").length)
+                //    console.log(ouput.data.filter(e => e.estado == "disponible").length)
                     let dispo = ouput.data.filter(e => e.estado == "disponible").length 
+                   // console.log(ouput.data.filter(e=>e.cedula!=""))
+                   // console.log(ouput.data.filter(e=>e.cedula!=null).length)
+                    //console.log(ouput.data)
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula!= null).length,
+                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
                         pagados: sleccionlocalidad.pagados,
                         inpagos: sleccionlocalidad.inpagos
                     }))
-                    console.log({
+                   /* console.log({
                         disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
                         pagados: sleccionlocalidad.pagados,  inpagos: sleccionlocalidad.inpagos
-                    })
+                    })*/
                 }
             }).catch(err => {
                 console.log(err)

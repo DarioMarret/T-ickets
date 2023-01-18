@@ -61,7 +61,7 @@ export const styleswipers = {
     width: "100%",
     height: "100%",
     backgroundPosition: "center",
-    filter: 'blur(1.0rem)',
+    filter: 'blur(0.9rem)',
     backgroundRepeat: "no-repeat", backgroundSize: "cover",
   }
 

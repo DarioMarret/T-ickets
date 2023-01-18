@@ -142,7 +142,7 @@ const EventosViews = () => {
   return (
     <div className="container-fluid">
       {alert}
-      <Row className="" >
+      <Row className="d-none" >
         <Col lg="3" sm="6">
           <Card className="card-stats">
             <Card.Body>

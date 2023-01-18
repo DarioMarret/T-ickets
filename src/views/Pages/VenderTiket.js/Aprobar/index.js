@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Box, Tooltip, Typography } from '@mui/material';
+import { Box, Tabs, Tooltip, Tab, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send, CheckBox } from '@mui/icons-material';
+import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send, CheckBox, Summarize, } from '@mui/icons-material';
 import SweetAlert from "react-bootstrap-sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice.js";
@@ -15,17 +15,21 @@ import ModalAprobarViews from "./Modalventas";
 import ModalBoletoApro from "./Modalboleto";
 import ListaderegistroView from "views/Pages/Flasdeticket/Listaregistro";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
+import { listaRegistro } from "utils/columnasub";
+import { listarRegistropanel } from "utils/pagos/Queripagos";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { useHistory } from "react-router";
+import SuscritSidebar from "components/Sidebar/SilderSubc";
 let { cedericon, atencion } = bancos
 export default function AprobarView() {
     let usedispatch = useDispatch()
+    let history = useHistory()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
 
     const [data, setData] = React.useState([]);
     const [tiketslist, setTikes] = useState([])
-    const [selecions, setselcion] = useState({
-
-    })
-
+    const [selecions, setselcion] = useState({})
+    const [value, setValue] = React.useState(0);
 
     const [alert, setAlert] = useState(null)
     const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })), hideAlert() }
@@ -54,6 +58,32 @@ export default function AprobarView() {
             </SweetAlert>
         );
     };
+    function TabPanel(props) {
+        const { children, value, index, ...other } = props;
+
+        return (
+            <div
+                role="tabpanel"
+                hidden={value !== index}
+                id={`simple-tabpanel-${index}`}
+                aria-labelledby={`simple-tab-${index}`}
+                {...other}
+            >
+                {value === index && (
+                    <div>
+                        <span>{children}</span>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    function a11yProps(index) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
     const succesLimit = () => {
         setAlert(
             <SweetAlert
@@ -124,52 +154,18 @@ export default function AprobarView() {
     const hideAlert = () => {
         setAlert(null)
     }
-   // console.log(data)
+    // console.log(data)
     useEffect(() => {
-       /* AprobarTiket().then(oupt => {
-            let datos = oupt.data.filter(e => moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado === "reservado")
-            // console.log(datos)
-            let nuevo = datos.map((e) => {
-                e.uid = e.codigoEvento + "-" + e.cedula
-                return e
-            })
-            let nuevogrupo = []
-            nuevo.forEach(element => {
-                if (!nuevogrupo.some(e => e.uid == element.uid)) {
-                    nuevogrupo.push({
-                        codigoEvento: element.codigoEvento,
-                        concierto: element.concierto,
-                        cedula: element.cedula,
-                        estado: element.estado,
-                        valor: element.valor,
+        listarRegistropanel({ "cedula": "" }).then(e => {
+            console.log(e)
+            if (e.data) {
 
-                        fechaCreacion: element.fechaCreacion,
-                        tokenPago: element.tokenPago,
-                        uid: element.uid,
-                        detalle: []
-                    })
-                }
-            });
-            nuevogrupo.length > 0 ? nuevo.map((elm, idex) => {
-                let index = nuevogrupo.findIndex(f => f.uid == elm.uid)
-                let fecha = elm.fechaCreacion
-                if (!nuevogrupo[index].detalle.some(h => h.sillas === elm.sillas)) {
-                    nuevogrupo[index].detalle.push({
-                        sillas: elm.sillas,
-                        localidad: elm.localidad, fechaCreacion: fecha,
-                        cedula: elm.cedula,
-                        tokenPago: elm.tokenPago,
-                        estado: elm.estado,
-                        uid: elm.uid,
-                        valor: elm.valor, codigoEvento: elm.codigoEvento,
-                    })
-                }
-            }) : ''
-            //console.log(nuevogrupo)
-            setTikes([...nuevogrupo])
+                setTikes(e.data)
+            }
+            setTikes([])
         }).catch(err => {
             console.log(err)
-        })*/
+        })
     },
         [])
     function suma() {
@@ -183,132 +179,139 @@ export default function AprobarView() {
 
         }
     }
-    function Aprobarvarios(){
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+        console.log(newValue)
+    };
+    function Aprobarvarios() {
         usedispatch(setModal({ nombre: "Aprobar", estado: data }))
     }
-    function Aprobar(e){
+    function Aprobar(e) {
         //console.log(e)
-        usedispatch(setModal({ nombre:"boleto",estado:e}))
+        usedispatch(setModal({ nombre: "boleto", estado: e }))
 
+    }
+    function detalle(e) {
+        usedispatch(SuscritSidebar({ ...e }))
+        history.push("/admin/Reporte/" + e.id)
     }
 
     return (
         <>
             {alert}
             {
-            modal.nombre=="Aprobar"?
-            <ModalAprobarViews />:""}
+                modal.nombre == "Aprobar" ?
+                    <ModalAprobarViews /> : ""}
             {
-                modal.nombre =="boleto"?
-                <ModalBoletoApro/>:""
+                modal.nombre == "boleto" ?
+                    <ModalBoletoApro /> : ""
             }
-            <ModalConfima/>
+            <ModalConfima />
             <div className="card card-primary card-outline text-left " style={{ minHeight: '250px' }} >
-                <div className="card-header pb-2">
-                    Ventas por Aprobar
-                </div>
-                <div className="row px-3 d-none">
-                    <div className="col-10 text-end  ">
-                        <div className=" d-flex  justify-content-end align-items-center h-100">
-                            <h5>Total de Boletos seleccionados {data.length > 1 ? "$" + suma() : "$00.00"}</h5>
-                           
-                        </div>
 
+                <div className='container-fluid row p-0'>
+                    <Tabs value={value} onChange={handleChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        aria-label="scrollable auto tabs example"
+                    >
+                        <Tab className="" label="Tickets pendientes "{...a11yProps(0)} />
+                        <Tab label="Tickets expirado" {...a11yProps(1)} />                   
+                    </Tabs>
+                    <div className=" text-center  py-2  ">
+                        <TabPanel value={value} index={0} className="text-center">
+                            <MaterialReactTable
+                                columns={listaRegistro.filter(e => e.estado_pago != "Expirado")}
+                                data={[...tiketslist.filter(e => e.estado_pago == "Expirado")]}
+                                muiTableProps={{
+                                    sx: {
+                                        tableLayout: 'flex'
+                                    }
+                                }}
+                                enableRowActions
+                                positionActionsColumn="first"
+                                renderRowActions={({ row }) => (
+                                    <Box sx={{ display: 'flex' }}>
+                                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
+                                            <Tooltip title="Reportar" placement="top">
+                                                <IconButton
+                                                    color="error"
+                                                    aria-label="Bloquear"
+                                                    onClick={() => abrirModal(row)}
+                                                >
+                                                    <Summarize />
+                                                </IconButton>
+                                            </Tooltip> : <IconButton
+                                                disabled={true}
+                                                color="error"
+                                                aria-label="Consolidar"
+                                              
+                                            >
+                                                <Summarize />
+                                            </IconButton>}
+                                        {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? <Tooltip
+                                            title="Comprobar" placement="top"
+                                        >
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => detalle(row.original)}
+                                            >
+                                                <Visibility />
+                                            </IconButton>
+                                        </Tooltip> : ""}
+                                    </Box>
+                                )}
+                                localization={MRT_Localization_ES}
+                            />
+                        </TabPanel>
+                        <TabPanel value={value} index={1} className="text-center" >
+                            <MaterialReactTable
+                                columns={listaRegistro}
+                                data={[...tiketslist.filter(e => e.estado_pago == "Expirado")]}
+                                muiTableProps={{
+                                    sx: {
+                                        tableLayout: 'flex'
+                                    }
+                                }}
+                                enableRowActions
+                                positionActionsColumn="first"
+                                renderRowActions={({ row }) => (
+                                    <Box sx={{ display: 'flex' }}>
+                                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
+                                            <Tooltip title="Reportar" placement="top">
+                                                <IconButton
+                                                    color="error"
+                                                    aria-label="Bloquear"
+                                                    onClick={() => abrirModal(row)}
+                                                >
+                                                    <Summarize />
+                                                </IconButton>
+                                            </Tooltip> : <IconButton
+                                                disabled={true}
+                                                color="error"
+                                                aria-label="Consolidar"
 
+                                            >
+                                                <Summarize />
+                                            </IconButton>}
+                                        {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? <Tooltip
+                                            title="Comprobar" placement="top"
+                                        >
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => detalle(row.original)}
+                                            >
+                                                <Visibility />
+                                            </IconButton>
+                                        </Tooltip> : ""}
+                                    </Box>
+                                )}
+                                localization={MRT_Localization_ES}
+                            />
+                        </TabPanel>
                     </div>
-                    <div className="col-sm ">
-                        {data.length > 1 ? <button className="btn btn-success" onClick={Aprobarvarios}> Pagar</button> : 
-                        <button className="btn btn-success" disabled={true} > Pagar </button>}
-                    </div>
-
                 </div>
-                <div className="card-body table-responsive">
-                    <ListaderegistroView 
-                    cedula={""}
-                    />
-                   
-                    {/*
-                     <MaterialReactTable
-                        columns={ticketprocesoapro}
-                        data={tiketslist}
-
-                        muiTableProps={{
-                            sx: {
-                                tableLayout: 'flex'
-                            }
-                        }}
-                        muiTableBodyProps={{
-                            sx: { columnVisibility: { nombre: false } }
-                        }}
-                        renderDetailPanel={({ row }) => (
-                            <div className=" ">
-                                {row.original.detalle ? row.original.detalle.map((e, i) => {
-                                    return (
-                                        <div className="row  border-bottom pb-1 align-items-center  rounded-1" key={"cons" + i}>
-                                            <div className=" d-none col-sm">
-                                                <div className=" text-center">
-                                                   
-                                                    <input className="form-check-input" type="checkbox" name={e.sillas}
-                                                        checked={data.some(f => f.sillas == e.sillas)}
-
-                                                        onChange={() => selecion(e.uid, e)}
-
-                                                        id="flexCheckIndeterminate" />
-                                                    <label className="form-check-label" >
-
-                                                    </label>
-                                                </div>       
-                                            </div>
-                                            <div className="col-sm  d-flex align-items-center">
-                                                <button className="btn  btn-success btn-sm"
-                                                    onClick={()=>Aprobar(e)}
-                                                > <i className=" fa fa-edit fa-xs"></i> </button>
-                                            </div>
-                                            <div className="col-2 col-md-2 ">
-
-                                                boleto   {e.sillas}
-                                            </div>
-                                            <div className="col-2 col-md-3">
-                                                Localidad:  {e.localidad}
-                                            </div>
-                                            <div className="col-sm">
-                                                ${e.valor}
-                                            </div>
-
-                                            <div className="col-sm col-md-3">
-                                                {e.fechaCreacion}
-                                            </div>
-                                            <div className="col-sm">
-                                                {row.original.codigoEvento}
-                                            </div>
-                                            <div className=" col-sm">
-                                                {row.original.estado}
-                                            </div>
-
-                                        </div>
-                                    )
-                                }) : ''}
-
-                            </div>
-                        )}
-                        enableSelectAll={false}
-                        enableMultiRowSelection={false}
-                        enableRowSelection
-
-
-                        positionToolbarAlertBanner="bottom"
-                        displayColumnDefOptions={{
-                            'mrt-row-numbers': {
-                                enableHiding: true,
-                            },
-                        }}
-
-                        localization={MRT_Localization_ES}
-
-                    />
-                    
-                    */}
-                </div>
+           
             </div>
         </>
     );

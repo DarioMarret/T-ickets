@@ -130,12 +130,12 @@ function Example() {
                        
                         <td className="text-xs text-center">{item.valor}</td>
 
-                        <td className="text-xs text-center">{item.fecha}</td>
+                        <td className="text-xs text-center">{item.fechaCreacion}</td>
                         <td className="text-xs text-center">
                             <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
                            
-                            <div className=" btn-group" >
+                            <div className=" btn-group  " >
                                 {item.estado != "reservado" && item.pdf != null && item.link != "SI" ?
                                  <Tooltip className="" title="Ver Ticket" placement="top">
                                     <a 

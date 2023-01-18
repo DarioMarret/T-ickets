@@ -2,10 +2,12 @@
     --main-color:#311C7C;
     --success: #36f456dc;
     --danger:#f44336;
-    --prymary:#311C7C;
+    --prymary:#448DAE;
+    --prymary500:"#79C9EC";
     --warning:#e25d0ffb;
     --secondary:#5e5a5ada;
     --white:#fff;
+    --white500:#d9dfe2
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
     background: none !important;
@@ -181,9 +183,11 @@ div.dataTables_wrapper div.dataTables_info {
 }
 
 .btn.btn-default {
-    color: #313131;
-    background: #ffffff;
-    border-color: #d9dfe2;
+    color: var(--secondary);
+    background: var(--white);
+    border-color: var(--white500);
+    margin: 0 !important;
+   
 }
 
 /*
@@ -219,23 +223,23 @@ table.table {
 .dataTables_filter input {
     margin-top: 2px !important;
 }
-
 @media (max-width: 767px) {
     div.dataTables_wrapper div.dataTables_paginate ul.pagination {
         -ms-flex-pack: center !important;
         justify-content: center !important;
         margin-top: 1rem !important;
-
     }
 }
-
-div.dataTables_wrapper tr.child td.child>ul.dtr-details>li {
+div.dataTables_wrapper tr.child {    
     width: 100% !important;
-
+    padding: 2px !important;   
+    text-align: center !important;
+}
+div.dataTables_wrapper tr.child td.child>ul.dtr-details>li {
     justify-content: center !important;
     list-style-type: none !important;
     border: none !important;
-    padding: 1px !important;
+    padding: 2px !important;
 }
 
 /*a.paginate_button.current {
@@ -243,7 +247,7 @@ div.dataTables_wrapper tr.child td.child>ul.dtr-details>li {
 }*/
 li.paginate_button :hover {
     background: "red" !important;
-    background-color: #311C7C;
+    background-color: var(--main-color);
 }
 
 li.paginate_button {
@@ -252,7 +256,7 @@ li.paginate_button {
 
 .btn-default,
 .btn-default:hover {
-    color: #212529 !important;
+    color: var(--secondary) !important;
     background-color: var(--white)  !important;
     border-color: rgb(175, 175, 175) !important;
 }
@@ -290,9 +294,9 @@ thead {
 }
 
 .paging_full_numbers span.paginate_button:hover {
-    background: repeat-x scroll 50% 50% #79C9EC !important;
-    border: 1px solid #448DAE !important;
-    color: #fff !important;
+    background: repeat-x scroll 50% 50% var(--prymary500) !important;
+    border: 1px solid var(--prymary) !important;
+    color: var(--white) !important;
     font-weight: normal !important;
 }
 

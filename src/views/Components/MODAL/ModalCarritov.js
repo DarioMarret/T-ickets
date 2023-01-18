@@ -34,6 +34,7 @@ const ModalCarritoView = (prop) => {
     let usuario = getDatosUsuariosLocalStorag()
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
     const sorter = (a, b) => a.precio_normal > b.precio_normal ? 1 : -1 && a.id < b.id ? 1 : -1;
+    let estdo = sessionStorage.getItem("estadoevento")
     let usedispatch = useDispatch()
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
     let seleciondesillas = useSelector((state) => state.sillasSlice.sillasSelecionadas)
@@ -120,13 +121,13 @@ const ModalCarritoView = (prop) => {
             $("#" + e.path).attr("fill", e.fill)
         }) : ''
         Listarticketporestado(user.cedula).then(oupt => {
-           // console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid)))
-           // console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado == "reservados").length)
+            console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado == "Pagado").length)
+           //console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado == "reservados").length)
             usedispatch(updateboletos({
                 disponibles: sleccionlocalidad.disponibles, 
                 proceso: 0,
-                pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado == "Pagado").length,
-                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado =="reservados").length
+                pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado == "Pagado" || e.estado == "reservado").length,
+                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado=="reservado").length
             }))
             /*console.log({
                 disponibles: 0,
@@ -159,17 +160,20 @@ const ModalCarritoView = (prop) => {
         ).catch(err => console.log(err))*/
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
     function Abririlocalfirt(e) {
-        if (sleccionlocalidad.inpagos >= 10) {
+       // console.log(sleccionlocalidad.pagados )
+       // console.log((sleccionlocalidad.pagados > 10))
+        if (sleccionlocalidad.pagados >=10) {
             usedispatch(setToastes({
                 show: true,
-                message: "Están en proceso, termina tu compra",
-                color: 'bg-info',
-                estado: "Has alcanzado el límite de boletos impago"
+                message: "Están en proceso, o llegaste al limite de compra",
+                color: 'bg-primary',
+                estado: "Has alcanzado el límite de boletos por evento"
             }))
             return
         }
+        else{
         setSpiner("")
-        console.log(e)
+       // console.log(e)
         let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
         localidaandespacio(e.espacio, e.idcolor).then(ouput => {
             let nuevoObjeto = []
@@ -219,8 +223,8 @@ const ModalCarritoView = (prop) => {
 
             }
             else if (ouput.data.find(e => e.typo == "correlativo")) {
-                usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != " " && e.cedula != null)))
-                ouput.data.filter(e => e.cedula != " " && e.cedula != null).length == 0 ?
+               usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != " " && e.cedula != null)))
+                ouput.data.filter(e => e.estado == "disponible").length== 0 ?
                     usedispatch(setToastes({
                         show: true,
                         message: "Estan en proceso o vendidos",
@@ -229,11 +233,14 @@ const ModalCarritoView = (prop) => {
                     })) : ''
                 usedispatch(cargarmapa(color))
                 usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
-                usedispatch(updateboletos({
-                   
-                    disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
+                console.log({
+                    disponibles: ouput.data.filter(e => e.estado == "disponible").length,
                     proceso: ouput.data.filter(e => e.estado == "reservado").length,
-                    pagados: sleccionlocalidad.pagados,
+                    inpagos: sleccionlocalidad.inpagos
+                })
+                usedispatch(updateboletos({
+                    disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                    proceso: ouput.data.filter(e => e.estado == "reservado").length,
                     inpagos: sleccionlocalidad.inpagos
                 }))
                 sessionStorage.seleccionmapa = JSON.stringify(e)
@@ -241,21 +248,21 @@ const ModalCarritoView = (prop) => {
             }
         }
         ).catch(err =>
-            console.log(err))
+            console.log(err))}
     }
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
     modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
         E.addEventListener("click", function () {
-            if (sleccionlocalidad.inpagos >= 10) {
+            if (sleccionlocalidad.pagados >= 10) {
                 usedispatch(setToastes({
                     show: true,
-                    message: "Están en proceso, termina tu proceso de compra",
-                    color: 'bg-info',
-                    estado: "Has alcanzado el límite de boletos impago"
+                    message: "Están en proceso, o completaste la cantidad de compra",
+                    color: 'bg-primary',
+                    estado: "Has alcanzado el límite de boletos por evento"
                 }))
                 return
             }
-            setSpiner("")
+            else{setSpiner("")
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
             localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
                 let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
@@ -312,15 +319,17 @@ const ModalCarritoView = (prop) => {
                     usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
                     //  usedispatch(filtrarlocali(nuevoObjeto))
                     filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
-                    console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
-                    ouput.data.filter(e => e.cedula != " " && e.cedula != null).length== 0 ? usedispatch(setToastes({
+                   // console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
+                    ouput.data.filter(e => e.estado == "disponible").length== 0 ? usedispatch(setToastes({
                         show: true,
                         message: "Estan en proceso o vendidos",
                         color: 'bg-primary',
                         estado: "Esta loclidad no tiene disponibles  "
                     })) : ''
+                    // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
+                    console.log(ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length)
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length, 
+                        disponibles: ouput.data.filter(e => e.estado == "disponible").length, 
                         proceso: ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length,
                         pagados: sleccionlocalidad.pagados,
                         inpagos: sleccionlocalidad.inpagos
@@ -334,7 +343,7 @@ const ModalCarritoView = (prop) => {
             }
             ).catch(err =>
                 console.log(err))
-            return
+            return}
         })
     }) : ''
     function cerrar() {
@@ -656,13 +665,11 @@ const ModalCarritoView = (prop) => {
                         {sleccionlocalidad.proceso > 0 ? "Tienes " + sleccionlocalidad.proceso + " boletos por pagar" : ''}
                     </div>
                     <div className="d-flex flex-column">
-
                         <div className=""
-
                         >
                             <strong> Método de pago</strong>
 
-                            <div className="form-check">
+                            {estdo == "ACTIVO" ? <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     checked={checked.Tarjeta == "Tarjeta" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
@@ -670,9 +677,9 @@ const ModalCarritoView = (prop) => {
                                 <label className="form-check-label" htmlFor="Tarjeta">
                                     Tarjeta-credito
                                 </label>
-                            </div>
+                            </div>:""}
                             {clienteInfo() == null ?
-                                <div className="form-check ">
+                                <div className="form-check">
                                     <input className="form-check-input" type="radio"
                                         checked={checked.Transferencia == "Transferencia" ? true : false}
                                         onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
@@ -681,7 +688,7 @@ const ModalCarritoView = (prop) => {
                                         Transferencia
                                     </label>
                                 </div> : ""}
-                            {clienteInfo() == null ? <div className="form-check ">
+                            { clienteInfo() == null ? <div className="form-check ">
                                 <input className="form-check-input" type="radio"
                                     checked={checked.Deposito == "Deposito" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
@@ -690,9 +697,8 @@ const ModalCarritoView = (prop) => {
                                     Deposito
                                 </label>
                             </div> : ""}
-
                             <div className="form-check">
-                             { clienteInfo() == null ?  <input className="v-check form-check-input" type="radio"
+                                {clienteInfo() == null ?  <input className="v-check form-check-input" type="radio"
                                     name="PasarelaEfectivo" id="PasarelaEfectivo"
                                     checked={checked.PasarelaEfectivo == "Efectivo" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Efectivo")}
@@ -705,6 +711,7 @@ const ModalCarritoView = (prop) => {
                                     {clienteInfo() == null ? "Efectivo punto de pagos" : "Efectivo"}
                                 </label>
                             </div>
+                           
 
                         </div>
                     </div>

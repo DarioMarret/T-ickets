@@ -133,6 +133,9 @@ const IndexFlas = () => {
       }
     }, 1000);
   }
+  function cuentaregersivas (){
+
+  }
   function filterlocal(id, consulta) {
     let nuevo = []
     id.forEach((elm, i) => {
@@ -265,6 +268,7 @@ const IndexFlas = () => {
     LimpiarLocalStore()
   }
   const abrir = async (e) => {
+    sessionStorage.setItem("estadoevento", e.estado)
     setspinervi("")
     try {
       let registro = await listarRegistropanel({"cedula":getDatosUsuariosLocalStorag().cedula})
@@ -293,14 +297,14 @@ const IndexFlas = () => {
             const listalocal = await ListarLocalidad("")
             let localidades = await cargarMapa()
             sessionStorage.consierto = e.nombreConcierto
-            console.log(listalocal, localidades, obten)
+           // console.log(listalocal, localidades, obten)
             if (obten.data.length > 0) {
               let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
               let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-              console.log(mapalocal, mapa)
+           //   console.log(mapalocal, mapa)
               let localidad = JSON.parse(mapa[0].localidad)
               let path = JSON.parse(mapa[0].pathmap)
-              console.log(obten.data)
+          //    console.log(obten.data)
               let newprecios = obten.data.map((g, i) => {
                 let color = localidad.filter((f, i) => f.nombre == g.localidad)
                 g.color = color[0].color
@@ -337,7 +341,7 @@ const IndexFlas = () => {
                 pathmapa: pathnuevo.filter((e) => e != undefined),
                 mapa: mapa[0].nombre_mapa
               }
-              console.log(nuevosdatos)
+             // console.log(nuevosdatos)
               sessionStorage.eventoid = e.codigoEvento
               setPrecios(nuevosdatos)
               setDatoscon(e)
@@ -461,14 +465,43 @@ const IndexFlas = () => {
   })
   const [eventoslist, setEventos] = useState([])
   const [publicidad, setpublicidad] = useState([])
+  var end = new Date('01/17/2023 7:00 PM');
+  var _second = 1000;
+  var _minute = _second * 60;
+  var _hour = _minute * 60;
+  var _day = _hour * 24;
+  var time = useRef(null);;
+  function showRemaining() {
+    var now = new Date();
+    var distance = end - now;
+    if (distance < 0) {
+      clearInterval(time.current);
+      console.log("terminio")
+      document.getElementById('regeresion').innerHTML = " 0 :  00   :   00";
+      document.getElementById('regeresiondos').innerHTML = " 0 :  00   :   00";;
+      return;
+    }
+    var days = Math.floor(distance / _day);
+    var hours = Math.floor((distance % _day) / _hour);
+    var minutes = Math.floor((distance % _hour) / _minute);
+    var seconds = Math.floor((distance % _minute) / _second);
+    console.log(days, hours,minutes,seconds)
+    document.getElementById('regeresion').innerHTML = "  " + hours + " :  " + minutes + "  :  " + seconds + "";
+    document.getElementById('regeresiondos').innerHTML = " " + hours + "  :  " + minutes + "  :  " + seconds;
 
+  }
   useEffect(() => {
+    //time.current = setInterval(showRemaining, 1000);
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     Limpiarseleccion()
     const evento = async () => {
       try {
-        const data = await cargarEventoActivo("ACTIVO")
+        //AGREGAR ESTADO
+        const data = await cargarEventoActivo("")
+        if (data){ return}
+        ///console.log(data)
+        let datos = data.filter(e => e.estado !="CANCELADO")
         const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         if (data != null) {
@@ -481,16 +514,22 @@ const IndexFlas = () => {
     }
     evento()
     ListarNoticias().then(ouput => {
-
+      //console.log(ouput)
+      if( !ouput.data) { return }
       setpublicidad(ouput.data)
     }).catch(err => {
       if (err.response.status === 500) {
         
       } else {
       }
-      console.log(err)
+      //console.log(err)
     }
     )
+   
+    //document.getElementById('regeresion').innerHTML = " 52555 "  ;
+    //document.getElementById('regeresiondos').innerHTML = "55455 ";
+
+    //time.current = setInterval(showRemaining, 1000);
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
@@ -696,7 +735,7 @@ const IndexFlas = () => {
                         }} >
                           <div>
                           </div>
-                        <div className="descripciones">
+                        <div className="descripciones ">
                           <div className="d-flex  flex-column text-white" >
                             <div className="py-3 d-none d-sm-block   ">
                               <div className=" d-none row d-flex  align-items-center p-1">
@@ -722,15 +761,17 @@ const IndexFlas = () => {
                             <span className="" style={styleswiper.subtitulo}>
                               {element.descripcion}
                             </span>
-                            <div className="pt-2 ">
+                            <div className="pt-2  ">
                               {
                                 element.evento == null ?
                                   <button className="btn border rounded-6  btn-lg btn-outline-light "
                                     style={styleswiper.button}
+                                    
                                     href="#"
                                     onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
                                   >{!userauthi.login ? "Suscríbete" : "Muy pronto"}</button> :
                                   <button className="btn border rounded-6  btn-lg btn-outline-light "
+                                 
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
                                   >COMPRAR</button>
@@ -738,6 +779,13 @@ const IndexFlas = () => {
                               }
                             </div>
                           </div>
+                        </div>
+                        <div className=" contador  "
+                      
+                        >
+                          <div className="regeresion" >
+                            <h5 className="tiempo" id="regeresion"></h5>
+                            </div>
                         </div>
                         </div>
                       </div>
@@ -798,6 +846,13 @@ const IndexFlas = () => {
 
                               }
                             </div>
+                          </div>
+                        </div>
+                        <div className=" contadordos  "
+
+                        >
+                          <div className="regeresion">
+                            <h5 className="tiempo" id="regeresiondos"></h5>
                           </div>
                         </div>
                       </div>
@@ -940,8 +995,17 @@ const IndexFlas = () => {
                                       bottom: 10,
                                     }}
                                   >
-                                    <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                      className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >Comprar Entrada</p>
+                                    {e.estado =="PROCESO"?
+                                      <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
+                                        className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
+                                        {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>                                    
+                                    :""}
+                                    {e.estado=="ACTIVO"?
+                                      <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
+                                        className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
+                                        {e.estado == "ACTIVO" ? "Comprar Entrada" : "MUY PRONTO"}</p>
+                                    :""}
+                                    
                                   </div>
                                 </div>
                               </div>
