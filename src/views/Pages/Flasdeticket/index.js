@@ -274,6 +274,7 @@ const IndexFlas = () => {
       let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
       /** agregar en casi de && f.forma_pago != "Tarjeta" */
       // let nuevos =
+      
       if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
         setspinervi("d-none")
         SetSeleccion("Tickets")
