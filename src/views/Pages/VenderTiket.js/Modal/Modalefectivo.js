@@ -211,7 +211,7 @@ const ModalEfectivo = (props) => {
                                 <div className="d-flex justify-content-center pt-3  p-1">
                                     <button className="btn btn-primary 
                                     col-12"
-                                        onClick={creaComprobante}
+                                        onClick={generaPago}
                                     >COBRAR</button>
                                 </div>
                             </div>
