@@ -4,7 +4,7 @@ import { Host } from "utils/constantes";
 
 export const registraPagos =async(parms)=>{
     try {
-        let { data } = await axios.post(Host +"/api/v1/registraPagos ",parms,{
+        let { data } = await axios.post(Host +"api/v1/registraPagos ",parms,{
             Headers:{
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -12,12 +12,13 @@ export const registraPagos =async(parms)=>{
         })
         return data
     } catch (error) {
+        console.log(error)
         return error        
     }
 } 
 export const listarRegistropanel = async (parms)=>{
         try {
-            let { data } = await axios.post(Host +"/api/v1/listarRegistros",parms,{
+            let { data } = await axios.post(Host +"api/v1/listarRegistros",parms,{
                 headers:{
                     'Content-Type': 'application/json',
                     'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -30,7 +31,7 @@ export const listarRegistropanel = async (parms)=>{
 }
 export const generarBoleto=async()=>{
     try {
-        let { data } = await axios.post(Host +"/api/v1/generarBoleto",parms,{
+        let { data } = await axios.post(Host +"api/v1/generarBoleto",parms,{
             headers:{
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

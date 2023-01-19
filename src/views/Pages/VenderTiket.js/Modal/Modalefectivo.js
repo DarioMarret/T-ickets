@@ -14,6 +14,7 @@ import jsPDF from 'jspdf';
 import moment from 'moment';
 import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
+import { Pagofisico } from 'utils/Querycomnet';
 
 const ModalEfectivo = (props) => {
     const { efectShow, intervalo, handleefectivoClose, detenervelocidad } = props;
@@ -92,6 +93,20 @@ const ModalEfectivo = (props) => {
                 align: 'center'
             })
         }
+    }
+    function generaPago(){
+        PagoRapido("").then(ouput=>{
+            if(ouput.success){
+            // console.log(ouput)
+            //   usedispatch(setModal({ nombre: '', estado: valores }))
+            //   usedispatch(setToastes({ show: true, message: 'Orden de pago generada', color: 'bg-success', estado: ouput.message }))
+            }
+            else{
+            // usedispatch(setToastes({ show: true, message: 'Orden de pago generada', color: 'bg-success', estado: ouput.message }))
+            }
+        }).catch(err=>{
+            console.log(err)
+        })
     }
     function creaComprobante() {
         let cliente = getDatosUsuariosLocalStorag()

@@ -108,7 +108,9 @@ const ModalConfima = (prop) => {
             [e.name]: e.value
         })
     }
+    //SuscritorSlice.modal
     async function onSubmit(e) {
+        //console.log(modal)
         e.preventDefault();
         if (comproba.numeroTransaccion == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
         if (comproba.banco == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
@@ -120,14 +122,15 @@ const ModalConfima = (prop) => {
                 const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
                 setTimeout(async function () {
                     const reporte = {
-                        "id_usuario": clienteInfo()? modal.estado.id: getDatosUsuariosLocalStorag().id, 
+                        "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id, 
                         "forma_pago": "Deposito",
                         "link_comprobante": link,
+                        "id": clienteInfo() ? modal.estado.id : modal.estado.id,
                         "numeroTransaccion": comproba.numeroTransaccion,
                         "cedula": clienteInfo() ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
-                        "estado": "Comprobar"
+                        "estado": clienteInfo() ? "Pagado" : "Comprobar"
                     }
-                    console.log(reporte)
+                    //console.log(reporte)
                     registraPagos(reporte).then(ouput => {
                         if (ouput.success) {
                             setEstado(true)
@@ -151,8 +154,6 @@ const ModalConfima = (prop) => {
 
             }
         }
-
-
     }
     $(document).ready(function () {
         $(".numero").keypress(function (e) {

@@ -221,9 +221,10 @@ export default function AprobarView() {
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
                     >
-                        <Tab className="" label="Tickets pendientes "{...a11yProps(0)} />
-                        <Tab label="Tickets expirado" {...a11yProps(1)} />       
-                        <Tab label="Tickets Pagados" {...a11yProps(1)} />                              
+                        <Tab className="" label="Reportes Pendientes "{...a11yProps(0)} />
+                        <Tab label="Reportes expirado" {...a11yProps(1)} />       
+                        <Tab label="Reportes Pagados" {...a11yProps(2)} />  
+                                                   
                     </Tabs>
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">
@@ -244,7 +245,7 @@ export default function AprobarView() {
                                                 <IconButton
                                                     color="error"
                                                     aria-label="Bloquear"
-                                                    onClick={() => abrirModal(row)}
+                                                    onClick={() => abrirModal(row.original)}
                                                 >
                                                     <Summarize />
                                                 </IconButton>

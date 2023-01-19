@@ -18,6 +18,9 @@ el servidor esta adelantado
 //un edpoit para consultar 
 // 
 
+
+///endpoit para borrar boletos 
+
 1751147891
 1724349590 2 /2  1724349590 1724349590
 1722817549
@@ -47,7 +50,6 @@ el servidor esta adelantado
         }
     ]
 }
-
 
 {
     "success": true,

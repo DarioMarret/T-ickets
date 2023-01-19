@@ -43,7 +43,8 @@ const ModalCarritoView = (prop) => {
     const [alert, setAlert] = useState(null)
     const [spinervi, setSpiner] = useState("d-none")
     const [checked, setChecked] = useState({
-        PasarelaEfectivo: "",
+        Efectivo: "",
+        Fisico:"",
         Tarjeta: "",
         Deposito: "",
         Transferencia: ""
@@ -107,7 +108,8 @@ const ModalCarritoView = (prop) => {
         setListarCarritoDetalle(getVerTienda())
         let metodoPago = GetMetodo()
         metodoPago != null ? setChecked({
-            PasarelaEfectivo: metodoPago == "Efectivo" ? "Efectivo" : "",
+            Fisico: metodoPago == "Fisico" ? "Fisico" : "",
+            Efectivo: metodoPago == "Efectivo" ? "Efectivo" : "",
             Tarjeta: metodoPago == "Tarjeta" ? "Tarjeta" : "",
             Deposito: metodoPago == "Deposito" ? "Deposito" : "",
             Transferencia: metodoPago == "Transferencia" ? "Transferencia" : ""
@@ -698,20 +700,28 @@ const ModalCarritoView = (prop) => {
                                     Deposito
                                 </label>
                             </div> :"": ""}
-                            <div className="form-check">
-                                {clienteInfo() == null ? estdo == "ACTIVO" ? <input className="v-check form-check-input" type="radio"
-                                    name="PasarelaEfectivo" id="PasarelaEfectivo"
-                                    checked={checked.PasarelaEfectivo == "Efectivo" ? true : false}
-                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Efectivo")}
-                                /> : estdo == "ACTIVO" ?<input className="v-check form-check-input" type="radio"
-                                    name="PasarelaEfectivo" id="PasarelaEfectivo"
-                                    checked={checked.PasarelaEfectivo == "Fisico" ? true : false}
-                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Fisico")}
-                                />:"":""}
-                                {estdo == "ACTIVO" ? <label className="form-check-label" htmlFor="PasarelaEfectivo">
-                                    {clienteInfo() == null ? "Efectivo punto de pagos" : "Efectivo"}
-                                </label>:""}
-                            </div>
+                          
+                                {clienteInfo() == null ? estdo == "ACTIVO" ? <div className="form-check">
+                                <input className="v-check form-check-input" type="radio"
+                                    name="Efectivo" id="Efectivo"
+                                    checked={checked.Efectivo == "Efectivo" ? true : false}
+                                    onChange={(e) => handelMetodopago(e.target, "Efectivo")}
+                                />
+                                    <label className="form-check-label" htmlFor="Efectivo">
+                                    Efectivo
+                                </label>
+                            </div>:"":""}
+                           
+                            {clienteInfo() != null ?<div className="form-check">
+                                <input className="v-check form-check-input" type="radio"
+                                    name="Fisico" id="Fisico"
+                                    checked={checked.Fisico == "Fisico" ? true : false}
+                                    onChange={(e) => handelMetodopago(e.target, "Fisico")}
+                                />
+                                <label className="form-check-label" htmlFor="Fisico">
+                                    Efectivo punto de pagos
+                                </label>
+                            </div>:""}
                             {
                                 estdo != "ACTIVO" ? <div className="form-check ">
                                     <input className="form-check-input" type="radio"

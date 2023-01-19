@@ -16,7 +16,7 @@ export default function ListaderegistroView(props) {
     let { cedula } = props
     let usedispatch = useDispatch()
     let history = useHistory()
-   // let modal = useSelector((state) => state.SuscritorSlice.modal)
+    // let modal = useSelector((state) => state.SuscritorSlice.modal)
     const [datos, setDatos] = useState([])
     useEffect(() => {
         listarRegistropanel({ "cedula": cedula }).then(
@@ -31,19 +31,30 @@ export default function ListaderegistroView(props) {
         ).catch(err => console.log(err))
 
     }, [])
-    function detalle(e){
-        usedispatch(addususcritor({...e}))
-        history.push("/admin/Reporte/"+e.id)
+    function detalle(e) {
+        usedispatch(addususcritor({ ...e }))
+        history.push("/admin/Reporte/" + e.id)
     }
     function abrirModal(row) {
-        usedispatch(setModal({ nombre: "confirmar", estado: { cedula: row.original.cedula, id: row.original.id_usuario, forma_pago: row.original.forma_pago } }))
-        console.log({ cedula: row.original, numeroTransaccion: row.numeroTransaccion })
+        // console.log(row)
+        let data = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
+        //console.log(Object.values(data).includes("Eladio Carrión Quito"),data)
+        if (Object.values(data).includes("Eladio Carrión Guayaquil")) {
+            //console.log("guay")
+            return
+        }
+        if (Object.values(data).includes("Eladio Carrión Quito")) {
+            //console.log("gu")
+            return
+        }
+        usedispatch(setModal({ nombre: "confirmar", estado: { ...row } }))
+        //console.log({ cedula: row.original, numeroTransaccion: row.numeroTransaccion })
         //confirmar
     }
 
     return (
         <>
-         <MaterialReactTable
+            <MaterialReactTable
                 columns={listaRegistro}
                 data={datos}
                 muiTableProps={{
@@ -55,48 +66,40 @@ export default function ListaderegistroView(props) {
                 positionActionsColumn="first"
                 renderRowActions={({ row }) => {
                     let info = JSON.parse(row.original.info_concierto).map(e => { return e.nombreConcierto })
-                    
 
-                    return(
-                    
-                    <Box sx={{ display: 'flex' }}>
-                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado " ?
-                                Object.values(info).includes("Eladio Carrión Quito") && Object.values(info).includes("Eladio Carrión Guayaquil") ? <Tooltip title="Reportar" placement="top">
+
+                    return (
+
+                        <Box sx={{ display: 'flex' }}>
+                            {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado " ?
                                 <IconButton
-                                   
+                                    onClick={() => abrirModal(row.original)}
                                     color="error"
-                                    aria-label="Bloquear"
-                                    onClick={() => abrirModal(row)}
+                                    aria-label="Consolidar"
                                 >
                                     <Summarize />
+                                </IconButton> :
+                                <IconButton
+                                    disabled={true}
+                                    color="error"
+                                    aria-label="Consolidar"
+                                    onClick={() => abrirModal(row.original)}
+                                >
+                                    <Summarize />
+                                </IconButton>}
+                            {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? <Tooltip
+                                title="Comprobar" placement="top"
+                            >
+                                <IconButton
+                                    color="error"
+                                    onClick={() => detalle(row.original)}
+                                >
+                                    <Visibility />
                                 </IconButton>
-                            </Tooltip> : <IconButton
-                                disabled={true}
-                                color="error"
-                                aria-label="Consolidar"
-                            >
-                                <Summarize />
-                            </IconButton>: 
-                            <IconButton
-                                disabled={true}
-                                color="error"
-                                aria-label="Consolidar"
-                                onClick={() => abrirModal(row)}
-                            >
-                                <Summarize />
-                            </IconButton>}
-                        {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? <Tooltip
-                            title="Comprobar" placement="top"
-                        >
-                            <IconButton
-                                color="error"
-                                onClick={() => detalle(row.original)}
-                            >
-                                <Visibility />
-                            </IconButton>
-                        </Tooltip> : ""}
-                    </Box>
-                )}}
+                            </Tooltip> : ""}
+                        </Box>
+                    )
+                }}
                 localization={MRT_Localization_ES}
             />
 

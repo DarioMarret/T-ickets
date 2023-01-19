@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styleswiper, styleswipers } from "./styleswiper.js";
 import { pasados, carrusel } from "./imagenstatctic.js";
-let { icon, iconhead,uno, valla, prubasdos, principal, secundaria, tercero, logofla, mapa, portal, header, avatar, prubas } = carrusel
+let { icon, iconhead, uno, valla, prubasdos, principal, secundaria, tercero, logofla, mapa, portal, header, avatar, prubas } = carrusel
 import { useSelector, useDispatch } from "react-redux";
 import { todossiler } from "./Modalterminos/silder.js";
 let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
@@ -272,8 +272,8 @@ const IndexFlas = () => {
     setspinervi("")
     try {
       let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
-
       /** agregar en casi de && f.forma_pago != "Tarjeta" */
+      // let nuevos =
       if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
         setspinervi("d-none")
         SetSeleccion("Tickets")
@@ -501,7 +501,7 @@ const IndexFlas = () => {
         const data = await cargarEventoActivo("")
         if (!data == null) { return }
         ///console.log(data)
-        console.log(data)
+        //  console.log(data)
         let datos = data.filter(e => e.estado != "CANCELADO")
         //console.log(datos)
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
@@ -527,11 +527,6 @@ const IndexFlas = () => {
       //console.log(err)
     }
     )
-
-    //document.getElementById('regeresion').innerHTML = " 52555 "  ;
-    //document.getElementById('regeresiondos').innerHTML = "55455 ";
-
-    //time.current = setInterval(showRemaining, 1000);
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
@@ -822,7 +817,7 @@ const IndexFlas = () => {
                               </div>
                             </div>
                             <div className="d-block d-sm-none" >
-                              <div className="d-flex flex-row justify-content-center text-center">
+                              <div className="d-flex flex-row d-none justify-content-center text-center">
                                 <i className="fa fa-volume-off fa-1x"> </i>
                                 <h5 className=" px-0"
                                   style={{
@@ -831,8 +826,8 @@ const IndexFlas = () => {
                                 >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
                               </div>
                             </div>
-                            <h4 className=" font-weight-bold " style={styleswiper.titulo}>{element.encabezado}  </h4>
-                            <span className="" style={styleswiper.subtitulo}>
+                            <h4 className=" font-weight-bold  d-none" style={styleswiper.titulo}>{element.encabezado}  </h4>
+                            <span className="d-none" style={styleswiper.subtitulo}>
                               {element.descripcion}
                             </span>
                             <div className="pt-2 ">
@@ -853,9 +848,7 @@ const IndexFlas = () => {
                             </div>
                           </div>
                         </div>
-                        <div className=" contadordos  "
-
-                        >
+                        <div className=" contadordos  "                >
                           <div className="regeresion">
                             <h5 className="tiempo" id="regeresiondos"></h5>
                           </div>
@@ -959,8 +952,14 @@ const IndexFlas = () => {
                           </a>
                           <div className="collapse container mt-4 px-0" aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">
                             <div className="card row d-flex flex-row card-body rounded-7 py-5">
+                              {e.estado == "PROCESO" ?
+                                <div className="col-12  text-center pb-n2  ">
+                                  <p className="" style={{ fontSize: '1.5em', }}><i className="bi bi-calendar-week-fill"></i> <b>Venta:<span >21 de Enero del 2023</span></b></p>
+                                </div> : ""
+                              }
                               <div className="container col-12 col-md-6">
                                 <div className="d-flex row  btn-group-vertical ">
+
                                   <div className="col-12" >
                                     <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">{e.nombreConcierto}</span> </h1>
                                     <h4 style={{ fontSize: '1.4em', }}><span id="tour">{e.descripcionConcierto} </span></h4>
@@ -1002,25 +1001,27 @@ const IndexFlas = () => {
                                   >
                                     {e.estado == "PROCESO" ?
                                       <div className="row"
-                                        >
-                                        {e.id == 17 ? 
-                                        
-                                        <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                            <p style={{ fontSize: '0.8em' }}>    <b className="   "
-                                            style={{
-                                              fontWeight:"normal"
+                                      >
+                                        {e.id == 17 ?
 
-                                            }}
+                                          <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                            <p style={{ fontSize: '0.8em' }}>    <b className="   "
+                                              style={{
+                                                fontWeight: "normal"
+
+                                              }}
                                             >  <span style={{
-                                              fontWeight:"bold"
+                                              fontWeight: "bold"
                                             }}>PROMOTOR: </span>   <span id="fechaEvento" > ASB ENTERTAINMENT MUSIC</span></b></p>
-                                          <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                              <p className="col-12 pt-0 mt-n2" style={{ fontSize: '0.8em',
-                                             fontWeight: "normal" }}
-                                              
-                                            >  <span style={{
-                                                  fontWeight: "bold"
-                                                }}>WEB: </span> <span id="horaEvento">WWW.ASBEVENTOS.COM</span></p>
+                                            <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                              <p className="col-12 pt-0 mt-n2" style={{
+                                                fontSize: '0.8em',
+                                                fontWeight: "normal"
+                                              }}
+
+                                              >  <span style={{
+                                                fontWeight: "bold"
+                                              }}>WEB: </span> <span id="horaEvento">WWW.ASBEVENTOS.COM</span></p>
                                               <p className="col-12 pt-0 mt-n2" style={{
                                                 fontSize: '0.8em',
                                                 fontWeight: "normal"
@@ -1037,74 +1038,79 @@ const IndexFlas = () => {
                                               >  <span style={{
                                                 fontWeight: "bold"
                                               }}>RUC: </span><span id="lugarEvento">09910904614001</span></p>
-                                          </div>
-                                            
+                                            </div>
 
-                                          <div>
-                                          </div>
-                                          </div> : 
+
+                                            <div>
+                                            </div>
+                                          </div> :
                                           e.id == 18 ?
 
-                                              <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                                <p style={{ fontSize: '0.8em' }}>    <b className="   "
-                                                  style={{
-                                                    fontWeight: "normal"
+                                            <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                              <p style={{ fontSize: '0.8em' }}>    <b className="   "
+                                                style={{
+                                                  fontWeight: "normal"
 
-                                                  }}
+                                                }}
+                                              >  <span style={{
+                                                fontWeight: "bold"
+                                              }}>PROMOTOR: </span>   <span id="fechaEvento" > ASB ENTERTAINMENT MUSIC</span></b></p>
+                                              <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                                <p className="col-12 pt-0 mt-n2" style={{
+                                                  fontSize: '0.8em',
+                                                  fontWeight: "normal"
+                                                }}
+
                                                 >  <span style={{
                                                   fontWeight: "bold"
-                                                }}>PROMOTOR: </span>   <span id="fechaEvento" > ASB ENTERTAINMENT MUSIC</span></b></p>
-                                                <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                                  <p className="col-12 pt-0 mt-n2" style={{
-                                                    fontSize: '0.8em',
-                                                    fontWeight: "normal"
-                                                  }}
+                                                }}>WEB: </span> <span id="horaEvento">WWW.ASBEVENTOS.COM</span></p>
+                                                <p className="col-12 pt-0 mt-n2" style={{
+                                                  fontSize: '0.8em',
+                                                  fontWeight: "normal"
+                                                }}
 
-                                                  >  <span style={{
-                                                    fontWeight: "bold"
-                                                  }}>WEB: </span> <span id="horaEvento">WWW.ASBEVENTOS.COM</span></p>
-                                                  <p className="col-12 pt-0 mt-n2" style={{
-                                                    fontSize: '0.8em',
-                                                    fontWeight: "normal"
-                                                  }}
+                                                >  <span style={{
+                                                  fontWeight: "bold"
+                                                }}>RESPONSABLE: </span><span id="lugarEvento   " className="  text-uppercase">Alan Israel Andrade Logacho </span></p>
+                                                <p className="col-12 pt-0 mt-n2" style={{
+                                                  fontSize: '0.8em',
+                                                  fontWeight: "normal"
+                                                }}
 
-                                                  >  <span style={{
-                                                    fontWeight: "bold"
-                                                  }}>RESPONSABLE: </span><span id="lugarEvento   " className="  text-uppercase">Alan Israel Andrade Logacho </span></p>
-                                                  <p className="col-12 pt-0 mt-n2" style={{
-                                                    fontSize: '0.8em',
-                                                    fontWeight: "normal"
-                                                  }}
-
-                                                  >  <span style={{
-                                                    fontWeight: "bold"
-                                                  }}>RUC: </span><span id="lugarEvento">1715820906001 </span></p>
-                                                </div>
+                                                >  <span style={{
+                                                  fontWeight: "bold"
+                                                }}>RUC: </span><span id="lugarEvento">1715820906001 </span></p>
+                                              </div>
 
 
-                                                <div>
-                                                </div>
-                                              </div> : ""
-                                          
-}
-                                        <div className="col-12  py-2 ">
-                                          <p className="" style={{ fontSize: '0.8em', }}><i className="bi bi-calendar-week-fill"></i> <b>Venta:<span >21 de Enero del 2023</span></b></p>
-                                        </div>
+                                              <div>
+                                              </div>
+                                            </div> : ""
+
+                                        }
+
                                       </div>
                                       : ""}
-                                    {e.estado == "ACTIVO" ?
-                                      <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                        className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
-                                        {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
-                                      : ""}
-
+                                    <div className=" text-center">
+                                      {e.estado == "PROCESO" ?
+                                        <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
+                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? "" : usedispatch(setModal({ nombre: 'registro', estado: null }))} >
+                                          {!userauthi.login ? "SUSCRÍBETE" : "YA ESTAS SUSCRITO"}</p> : ""}
+                                      {e.estado == "ACTIVO" ?
+                                        <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
+                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
+                                          {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
+                                        : ""}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                               <div className="container col-12 col-md-6 rounded-7  px-0">
                                 <img src={e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
                               </div>
+
                             </div>
+
                           </div>
                         </div>
                       )

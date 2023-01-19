@@ -198,10 +198,10 @@ var routes = [
         permiso: ["superadmin", "super_admin", "vendedores"]
       }, 
       {
-        path:"/Emitir-Boleto",
+        path:"/Boletos",
         layout:"/admin",
         mini:"*",
-        name:"Emitir Bolto",
+        name:"Boltos",
         component: EmitirboView,
       },
       {

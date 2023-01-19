@@ -294,7 +294,6 @@ function Example() {
                                     </Tooltip>
                                     {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido =="NO"? <Tooltip title="Ceder ticket" placement="top-start">
                                         <IconButton
-
                                             color='success'
                                             onClick={() => successAlert(row.original)}
                                         >

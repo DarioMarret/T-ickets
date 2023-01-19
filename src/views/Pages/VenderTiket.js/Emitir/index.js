@@ -112,7 +112,7 @@ export default function EmitirboView() {
                                     <button className="btn btn-danger btn-sm"
                                         data-bs-toggle="tooltip"
                                         data-bs-placement="top"
-                                       
+                                       disabled={true}
                                         title="edit"
                                         onClick={() => Aprobar(row.original)}
                                     >
@@ -128,9 +128,25 @@ export default function EmitirboView() {
                                     
 
                                 </div>:""}
-                                <div className="col-sm ">
-                                  
-                                    boleto   {row.original.sillas}
+                                <div className="col-sm  d-flex align-items-center   btn-group">
+                                    <button className="btn btn-danger btn-sm"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        disabled={true}
+                                        title="edit"
+                                        onClick={() => Aprobar(row.original)}
+                                    >
+                                        <i className=" fa fa-edit  fa-xs" ></i> opciones por definir?
+                                    </button>
+                                    <button className="btn  btn-success btn-sm"
+                                        data-bs-toggle="tooltip"
+                                        disabled={true}
+                                        data-bs-placement="top"
+                                        title="Emitir"
+                                        onClick={() => abriremitir(row.original)}
+                                    > <i className="fa fa-paper-plane fa-xs"></i> opciones por definir? </button>
+
+
                                 </div>
 
                             </div>

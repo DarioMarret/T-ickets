@@ -222,6 +222,7 @@ export default function StoreTickesViews() {
         }
     }
     const abrir = async (e) => {
+        sessionStorage.setItem("estadoevento", e.estado)
         let id = sessionStorage.getItem(Eventoid)
         setspinervi("")     
         if (id != null && id != e.codigoEvento) {
