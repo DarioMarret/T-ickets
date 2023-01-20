@@ -244,6 +244,9 @@ export default function AprobarView() {
         usedispatch(setdetalle({ ...e }))
         history.push("/admin/Reporte/" + e.id)
     }
+    function detalledos(e){
+        history.push("/admin/Aprobar/" + e.cedula)
+    }
 
     return (
         <>
@@ -323,6 +326,16 @@ export default function AprobarView() {
 
 
                                         </Tooltip>:""}
+                                        <Tooltip
+                                            title="especifico" placement="top"
+                                        >
+                                            <IconButton
+                                                color="warning"
+                                                onClick={() => detalledos(row.original)}
+                                            >
+                                                <Visibility />
+                                            </IconButton>
+                                        </Tooltip>
                                     </Box>
                                 )}
                                 localization={MRT_Localization_ES}

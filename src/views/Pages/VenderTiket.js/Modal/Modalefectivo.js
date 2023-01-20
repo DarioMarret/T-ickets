@@ -75,6 +75,7 @@ const ModalEfectivo = () => {
         PagoRapido("").then(ouput => {
             console.log(ouput)
             if (ouput.success) {
+                usedispatch(setModal({ nombre: "", estado: "" }))
                 usedispatch(setToastes({ show: true, message: 'Registro generado exitosamente verifica los Boletos como canjeados', color: 'bg-success', estado: "compra guardada" }))
                 history.push("/admin/Aprobar/" + user.cedula)
                 setSpiner(false)

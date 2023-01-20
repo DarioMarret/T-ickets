@@ -201,7 +201,7 @@ export default function StoreTickesViews() {
     }
     const evento = async () => {
         try {
-            const data = await cargarEventoActivo("ACTIVO")
+            const data = await cargarEventoActivo("")
             const susct = await GetSuscritores()
             //console.log(data, susct)
             const Datos = await ListarTikets()

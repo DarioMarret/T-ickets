@@ -579,17 +579,6 @@ const SuscritoridView = () => {
                           <Visibility />
                         </IconButton>
                       </Tooltip> : ""}
-                      <Tooltip
-                        title="Eliminar"
-                        placement="top"
-                      >
-                        <IconButton
-                          color="error"
-                          onClick={() => eliminar(row.original)}
-                        >
-                          <Delete />
-                        </IconButton>
-                      </Tooltip>
                     </Box>
                   )}
                   localization={MRT_Localization_ES}
@@ -625,7 +614,7 @@ const SuscritoridView = () => {
                         >
                           <Summarize />
                         </IconButton>}
-                      {row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? <Tooltip
+                      {row.original.forma_pago == "Deposito" && row.original.link_comprobante != null ? <Tooltip
                         title="Comprobar" placement="top"
                       >
                         <IconButton

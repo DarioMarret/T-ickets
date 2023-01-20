@@ -266,13 +266,58 @@ export default function AprobarViewid() {
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
                     >
-                        <Tab className="" label="Reportes Pendientes "{...a11yProps(0)} />
-                        <Tab label="Reportes expirado" {...a11yProps(1)} />
-                        <Tab label="Reportes Pagados" {...a11yProps(2)} />
+                        <Tab label="Reportes Pagados" {...a11yProps(0)} />
+                        <Tab  label="Reportes Pendientes "{...a11yProps(1)} />
+                        <Tab label="Reportes expirado" {...a11yProps(2)} />
 
                     </Tabs>
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">
+                            <MaterialReactTable
+                                columns={listaRegistro}
+                                data={tiketslist.filter(e => e.estado_pago == "Pagado")}
+                                muiTableProps={{
+                                    sx: {
+                                        tableLayout: 'flex'
+                                    }
+                                }}
+                                enableRowActions
+                                positionActionsColumn="first"
+                                renderRowActions={({ row }) => (
+                                    <Box sx={{ display: 'flex' }}>
+                                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
+                                            <Tooltip title="Reportar" placement="top">
+                                                <IconButton
+                                                    color="error"
+                                                    aria-label="Bloquear"
+                                                    onClick={() => abrirModal(row)}
+                                                >
+                                                    <Summarize />
+                                                </IconButton>
+                                            </Tooltip> : <IconButton
+                                                disabled={true}
+                                                color="error"
+                                                aria-label="Consolidar"
+
+                                            >
+                                                <Summarize />
+                                            </IconButton>}
+                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
+                                            title="Comprobar" placement="top"
+                                        >
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => detalle(row.original)}
+                                            >
+                                                <Visibility />
+                                            </IconButton>
+                                        </Tooltip> : ""}
+                                    </Box>
+                                )}
+                                localization={MRT_Localization_ES}
+                            />
+                        </TabPanel>
+                        <TabPanel value={value} index={1} className="text-center">
                             <MaterialReactTable
                                 columns={listaRegistro}
                                 data={tiketslist.filter(e => e.estado_pago == "Pendiente")}
@@ -330,7 +375,7 @@ export default function AprobarViewid() {
                                 localization={MRT_Localization_ES}
                             />
                         </TabPanel>
-                        <TabPanel value={value} index={1} className="text-center" >
+                        <TabPanel value={value} index={2} className="text-center" >
                             <MaterialReactTable
                                 columns={listaRegistro}
                                 data={tiketslist.filter(e => e.estado_pago == "Expirado")}
@@ -388,51 +433,7 @@ export default function AprobarViewid() {
                                 localization={MRT_Localization_ES}
                             />
                         </TabPanel>
-                        <TabPanel value={value} index={2} className="text-center">
-                            <MaterialReactTable
-                                columns={listaRegistro}
-                                data={tiketslist.filter(e => e.estado_pago == "Pagado")}
-                                muiTableProps={{
-                                    sx: {
-                                        tableLayout: 'flex'
-                                    }
-                                }}
-                                enableRowActions
-                                positionActionsColumn="first"
-                                renderRowActions={({ row }) => (
-                                    <Box sx={{ display: 'flex' }}>
-                                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
-                                            <Tooltip title="Reportar" placement="top">
-                                                <IconButton
-                                                    color="error"
-                                                    aria-label="Bloquear"
-                                                    onClick={() => abrirModal(row)}
-                                                >
-                                                    <Summarize />
-                                                </IconButton>
-                                            </Tooltip> : <IconButton
-                                                disabled={true}
-                                                color="error"
-                                                aria-label="Consolidar"
-
-                                            >
-                                                <Summarize />
-                                            </IconButton>}
-                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
-                                            title="Comprobar" placement="top"
-                                        >
-                                            <IconButton
-                                                color="error"
-                                                onClick={() => detalle(row.original)}
-                                            >
-                                                <Visibility />
-                                            </IconButton>
-                                        </Tooltip> : ""}
-                                    </Box>
-                                )}
-                                localization={MRT_Localization_ES}
-                            />
-                        </TabPanel>
+                        
                     </div>
                 </div>
 
