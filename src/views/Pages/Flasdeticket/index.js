@@ -101,7 +101,13 @@ const IndexFlas = () => {
         getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
           getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
             setTimeout(function () {
-              correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
+              correlativodelete({ 
+                "id": elem.id,
+                "estado": "disponible",
+                "mas": "eliminar",
+                "cedula": user.cedula,
+                "cantidad": elem.cantidad
+              }).then(ouput => {
                 console.log(ouput)
               }).catch(err => {
                 console.log(err)
@@ -195,9 +201,17 @@ const IndexFlas = () => {
     getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
       getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
         setTimeout(function () {
+          console.log(elem,{
+            "id": elem.id,
+            "estado": "disponible",
+            "mas": "eliminar",
+            "cedula": user.cedula,
+            "cantidad": elem.cantidad
+          })
           correlativosadd({
             "id": elem.id,
             "estado": "disponible",
+            "mas": "eliminar",
             "cedula": user.cedula,
             "cantidad": elem.cantidad
           }).then(ouput => {
@@ -266,6 +280,47 @@ const IndexFlas = () => {
        : ''*/
     Limpiarseleccion()
     LimpiarLocalStore()
+  }
+  const token = (e) => {
+    $.confirm({
+      title: 'Canjear Token!',
+      type: 'blue',
+      content: '' +
+        '<form action="" class="formName">' +
+        '<div class="container form-group">' +
+        '<label>Ingrese su token de compra</label>' +
+        '<input  type="text" placeholder="Token" value="" class="form-control name" required />' +
+        '</div>' +
+        '</form>',
+      buttons: {
+        formSubmit: {
+          text: 'Canjear',
+          btnClass: 'btn-blue',
+          action: function () {
+            var name = this.$content.find('.name').val();
+            if (!name) {
+              $.alert('provide a valid name');
+              return false;
+            }
+            //validar el token que llega
+            $.alert('Email ' + name);
+          }
+        },
+        cancel: function () {
+          //close
+        },
+      },
+      onContentReady: function () {
+        // bind to events
+        var jc = this;
+        this.$content.find('form').on('submit', function (e) {
+          // if the user submits the form by pressing enter in the fiel
+          //console.log(e)
+          e.preventDefault();
+          jc.$$formSubmit.trigger('click'); // reference the button and click it
+        });
+      }
+    });
   }
   const abrir = async (e) => {
     sessionStorage.setItem("estadoevento", e.estado)
@@ -698,6 +753,7 @@ const IndexFlas = () => {
         setShowLogin={setShowLogin}
         abrir={abrir}
       />
+      
       <ModalFacilitoView />
       {/* header */}
       {publicidad.length > 0 ? <div className="container-fluid   px-0" style={{
@@ -1099,9 +1155,13 @@ const IndexFlas = () => {
                                           {!userauthi.login ? "SUSCRÍBETE" : "YA ESTAS SUSCRITO"}</p> : ""}
                                       {e.estado == "ACTIVO" ?
                                         <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
+                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? (e.codigoEvento == "ANNKV7" || e.codigoEvento == "9EGM42" ) ? "": abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
                                           {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
                                         : ""}
+                                        {/* 
+                                        validar la hora de pago  cuando sea false permita comprar con token
+                                        (new Date("01/20/2023 23:59 ")>new Date())
+                                        */}
                                     </div>
                                   </div>
                                 </div>

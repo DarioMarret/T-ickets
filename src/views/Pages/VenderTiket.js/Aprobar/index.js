@@ -3,7 +3,7 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Tabs, Tooltip, Tab, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send, CheckBox, Summarize, } from '@mui/icons-material';
+import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send, CheckBox, Summarize, Preview, } from '@mui/icons-material';
 import SweetAlert from "react-bootstrap-sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice.js";
@@ -267,9 +267,9 @@ export default function AprobarView() {
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
                     >
-                        <Tab className="" label="Reportes Pendientes "{...a11yProps(0)} />
-                        <Tab label="Reportes expirado" {...a11yProps(1)} />
-                        <Tab label="Reportes Pagados" {...a11yProps(2)} />
+                        <Tab label={"Reportes Pendientes: " + tiketslist.filter(e => e.estado_pago == "Pendiente" ).length}{...a11yProps(0)} />
+                        <Tab label={"Reportes expirado: " + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(1)} />
+                        <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length} {...a11yProps(2)} />
 
                     </Tabs>
                     <div className=" text-center  py-2  ">
@@ -286,8 +286,7 @@ export default function AprobarView() {
                                 positionActionsColumn="first"
                                 renderRowActions={({ row }) => (
                                     <Box sx={{ display: 'flex' }}>
-                                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
-                                            <Tooltip title="Reportar" placement="top">
+                                         <Tooltip title="Reportar" placement="top">
                                                 <IconButton
                                                     color="error"
                                                     aria-label="Bloquear"
@@ -295,14 +294,7 @@ export default function AprobarView() {
                                                 >
                                                     <Summarize />
                                                 </IconButton>
-                                            </Tooltip> : <IconButton
-                                                disabled={true}
-                                                color="error"
-                                                aria-label="Consolidar"
-
-                                            >
-                                                <Summarize />
-                                            </IconButton>}
+                                            </Tooltip> 
                                         {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
                                             title="Comprobar" placement="top"
                                         >
@@ -327,13 +319,13 @@ export default function AprobarView() {
 
                                         </Tooltip>:""}
                                         <Tooltip
-                                            title="especifico" placement="top"
+                                            title="Boletos especificos" placement="top"
                                         >
                                             <IconButton
-                                                color="warning"
+                                                color="success"
                                                 onClick={() => detalledos(row.original)}
                                             >
-                                                <Visibility />
+                                                <Preview />
                                             </IconButton>
                                         </Tooltip>
                                     </Box>
@@ -345,6 +337,64 @@ export default function AprobarView() {
                             <MaterialReactTable
                                 columns={listaRegistro}
                                 data={tiketslist.filter(e => e.estado_pago == "Expirado")}
+                                muiTableProps={{
+                                    sx: {
+                                        tableLayout: 'flex'
+                                    }
+                                }}
+                                enableRowActions
+                                positionActionsColumn="first"
+                                renderRowActions={({ row }) => (
+                                    <Box sx={{ display: 'flex' }}>
+                                        <IconButton
+                                            color="error"
+                                            aria-label="Bloquear"
+                                            onClick={() => abrirModal(row.original)}
+                                        >
+                                            <Summarize />
+                                        </IconButton>
+                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
+                                            title="Comprobar" placement="top"
+                                        >
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => detalle(row.original)}
+                                            >
+                                                <Visibility />
+                                            </IconButton>
+                                        </Tooltip> : ""}
+                                        {row.original.estado_pago == "Expirado" ? <Tooltip
+                                            title="Borrar"
+                                            placement="top"
+
+                                        >
+                                            <IconButton
+                                                onClick={() => eliminarregistro(row.original)}
+                                                color="error">
+                                                <Delete />
+                                            </IconButton>
+
+
+                                        </Tooltip> : ""}
+                                        <Tooltip
+                                            title="Boletos especificos" placement="top"
+                                        >
+                                            <IconButton
+                                                color="success"
+                                                onClick={() => detalledos(row.original)}
+                                            >
+                                                <Preview />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Box>
+                                )}
+                                localization={MRT_Localization_ES}
+                            />
+                        </TabPanel>
+                        <TabPanel value={value} index={2} className="text-center">
+                            <MaterialReactTable
+                                columns={listaRegistro}
+                                data={tiketslist.filter(e => e.estado_pago == "Pagado")}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'
@@ -381,64 +431,16 @@ export default function AprobarView() {
                                                 <Visibility />
                                             </IconButton>
                                         </Tooltip> : ""}
-                                        {row.original.estado_pago == "Expirado" ? <Tooltip
-                                            title="Borrar"
-                                            placement="top"
-
+                                        <Tooltip
+                                            title="especifico" placement="top"
                                         >
                                             <IconButton
-                                                onClick={() => eliminarregistro(row.original)}
-                                                color="error">
-                                                <Delete />
-                                            </IconButton>
-
-
-                                        </Tooltip> : ""}
-                                    </Box>
-                                )}
-                                localization={MRT_Localization_ES}
-                            />
-                        </TabPanel>
-                        <TabPanel value={value} index={2} className="text-center">
-                            <MaterialReactTable
-                                columns={listaRegistro}
-                                data={tiketslist.filter(e => e.estado_pago == "Pagado")}
-                                muiTableProps={{
-                                    sx: {
-                                        tableLayout: 'flex'
-                                    }
-                                }}
-                                enableRowActions
-                                positionActionsColumn="first"
-                                renderRowActions={({ row }) => (
-                                    <Box sx={{ display: 'flex' }}>
-                                        {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
-                                            <Tooltip title="Reportar" placement="top">
-                                                <IconButton
-                                                    color="error"
-                                                    aria-label="Bloquear"
-                                                    onClick={() => abrirModal(row)}
-                                                >
-                                                    <Summarize />
-                                                </IconButton>
-                                            </Tooltip> : <IconButton
-                                                disabled={true}
-                                                color="error"
-                                                aria-label="Consolidar"
-
+                                                color="success"
+                                                onClick={() => detalledos(row.original)}
                                             >
-                                                <Summarize />
-                                            </IconButton>}
-                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
-                                            title="Comprobar" placement="top"
-                                        >
-                                            <IconButton
-                                                color="error"
-                                                onClick={() => detalle(row.original)}
-                                            >
-                                                <Visibility />
+                                                <Preview />
                                             </IconButton>
-                                        </Tooltip> : ""}
+                                        </Tooltip>
                                     </Box>
                                 )}
                                 localization={MRT_Localization_ES}

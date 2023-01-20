@@ -266,9 +266,10 @@ export default function AprobarViewid() {
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
                     >
-                        <Tab label="Reportes Pagados" {...a11yProps(0)} />
-                        <Tab  label="Reportes Pendientes "{...a11yProps(1)} />
-                        <Tab label="Reportes expirado" {...a11yProps(2)} />
+                        <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length} {...a11yProps(0)} />
+                        <Tab label={"Reportes Pendiente: " + tiketslist.filter(e => e.estado_pago == "Pendiente").length}{...a11yProps(2)} />
+                        <Tab label={"Reportes expirado : " + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(1)} />
+                      
 
                     </Tabs>
                     <div className=" text-center  py-2  ">
@@ -312,6 +313,14 @@ export default function AprobarViewid() {
                                                 <Visibility />
                                             </IconButton>
                                         </Tooltip> : ""}
+                                        <Tooltip title="Borrar" placement="top">
+                                            <IconButton
+                                                onClick={() => eliminarregistro(row.original)}
+                                                color="error">
+                                                <Delete />
+                                            </IconButton>
+                                        </Tooltip>
+                                        
                                     </Box>
                                 )}
                                 localization={MRT_Localization_ES}
@@ -428,6 +437,22 @@ export default function AprobarViewid() {
 
 
                                         </Tooltip> : ""}
+                                        <Tooltip title="Reportar" placement="top">
+                                            <IconButton
+                                                color="error"
+                                                aria-label="Bloquear"
+                                                onClick={() => abrirModal(row.original)}
+                                            >
+                                                <Summarize />
+                                            </IconButton>
+                                        </Tooltip> 
+                                        <Tooltip title="Borrar" placement="top">
+                                            <IconButton
+                                                onClick={() => eliminarregistro(row.original)}
+                                                color="error">
+                                                <Delete />
+                                            </IconButton>
+                                        </Tooltip>
                                     </Box>
                                 )}
                                 localization={MRT_Localization_ES}
@@ -436,7 +461,14 @@ export default function AprobarViewid() {
                         
                     </div>
                 </div>
+                <div className=" fixed-bottom  d-flex justify-content-end align-items-end p-3">
+                    <a className=" rounded-circle btn-primary p-2 text-white"
+                        onClick={() => history.goBack()}
+                    >
+                        <i className=" fa fa-arrow-left"></i>
+                    </a>
 
+                </div>
             </div>
         </>
     );

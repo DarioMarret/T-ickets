@@ -130,7 +130,7 @@ const ModalCarritoView = (prop) => {
                 disponibles: sleccionlocalidad.disponibles, 
                 proceso: 0,
                 pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado == "Pagado" || e.estado == "reservado").length,
-                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado=="reservado").length
+                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) &&  e.estado=="reservado").length
             }))
             /*console.log({
                 disponibles: 0,
@@ -165,6 +165,7 @@ const ModalCarritoView = (prop) => {
     function Abririlocalfirt(e) {
        // console.log(sleccionlocalidad.pagados )
        // console.log((sleccionlocalidad.pagados > 10))
+       console.log(sleccionlocalidad)
         if (sleccionlocalidad.pagados >=10) {
             usedispatch(setToastes({
                 show: true,
@@ -179,6 +180,8 @@ const ModalCarritoView = (prop) => {
        // console.log(e)
         let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
         localidaandespacio(e.espacio, e.idcolor).then(ouput => {
+            console.log(e.espacio, e.idcolor)
+            console.log(ouput)
             let nuevoObjeto = []
             if (ouput.data.find(e => e.typo == "fila")) {
                 ouput.data.forEach(x => {
@@ -256,6 +259,7 @@ const ModalCarritoView = (prop) => {
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
     modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
         E.addEventListener("click", function () {
+            console.log(sleccionlocalidad)
             if (sleccionlocalidad.pagados >= 10) {
                 usedispatch(setToastes({
                     show: true,
@@ -269,6 +273,7 @@ const ModalCarritoView = (prop) => {
                 setSpiner("")
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
             localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
+                console.log(ouput)
                 let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
                 let nuevoObjeto = []
                 if (ouput.data.find(e => e.typo == "fila")) {
@@ -681,6 +686,14 @@ const ModalCarritoView = (prop) => {
                                 <label className="form-check-label" htmlFor="Tarjeta">
                                     Tarjeta-credito
                                 </label>
+                            </div> : clienteInfo() != null ? <div className="form-check">
+                                <input className="v-check form-check-input" type="radio"
+                                    checked={checked.Tarjeta == "Tarjeta" ? true : false}
+                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
+                                    name="Tarjeta" id="Tarjeta" />
+                                <label className="form-check-label" htmlFor="Tarjeta">
+                                    Tarjeta-credito
+                                </label>
                             </div>:""}
                             {clienteInfo() == null ? estdo == "ACTIVO" ?
                                 <div className="form-check">
@@ -734,6 +747,17 @@ const ModalCarritoView = (prop) => {
                                     </label>
                                 </div> : ""
                             }
+                            {clienteInfo() != null ?
+                                <div className="form-check">
+                                    <input className="form-check-input" type="radio"
+                                        checked={checked.Transferencia == "Transferencia" ? true : false}
+                                        onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
+                                        name="Transferencia" id="Transferencia" />
+                                    <label className="form-check-label" htmlFor="Transferencia">
+                                        Transferencia
+                                    </label>
+                                </div>
+                            :""}
                            
 
                         </div>

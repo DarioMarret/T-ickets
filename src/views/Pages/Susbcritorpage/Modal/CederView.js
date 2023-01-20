@@ -49,7 +49,7 @@ const CederView = () => {
     }
     const succesceder = async (ceder) => {
         hideAlert()
-        console.log(ceder)
+       // console.log(ceder)
         cederboleto(ceder).then(ouput=>{
             if(ouput.success){
                 hideAlert()

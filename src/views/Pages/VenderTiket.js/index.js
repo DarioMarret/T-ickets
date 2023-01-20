@@ -18,7 +18,6 @@ import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 //import ModalDetalle from "./Modal/ModalDetalle";
 import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalEfectivo from "./Modal/Modalefectivo";
-import Reporte from "./Modal/ModalDeposito";
 import ModalSuscritoView from "../Suscriptores/ModalSuscritor";
 import ListaSuscritor from "./Modal/Modalselectsunscritor";
 import "swiper/css/effect-flip";
@@ -45,6 +44,9 @@ import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { useHistory } from "react-router";
 import { Triangle } from "react-loader-spinner";
+import { correlativosadd } from "utils/Querypanelsigui";
+
+import ReporteView from "views/Components/MODAL/ModalReporte";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -52,7 +54,7 @@ export default function StoreTickesViews() {
     let history = useHistory()
     let modalshow = useSelector((state) => state.SuscritorSlice)
     const [Eventos, setEvento] = useState([])
-    const [spinervi, setspinervi]=useState("d-none")
+    const [spinervi, setspinervi] = useState("d-none")
     const [showMapa, setMapashow] = useState(false);
     const [showshop, handleClosesop] = useState(false);
     const [showDetalle, setDetalle] = useState(false)
@@ -78,7 +80,8 @@ export default function StoreTickesViews() {
                 }
             }
         })
-        usedispatch(cargalocalidad(nuevo))    }
+        usedispatch(cargalocalidad(nuevo))
+    }
     const consultarlocalidad = () => {
         /* let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
          intervalRef.current = setInterval(function () {
@@ -104,7 +107,13 @@ export default function StoreTickesViews() {
 
             getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
                 setTimeout(function () {
-                    correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
+                    correlativosadd({
+                        "id": elem.id,
+                        "estado": "disponible",
+                        "mas": "eliminar",
+                        "cedula": user.cedula,
+                        "cantidad": elem.cantidad
+                    }).then(ouput => {
                         console.log(ouput)
                     }).catch(err => {
                         console.log(err)
@@ -149,6 +158,7 @@ export default function StoreTickesViews() {
                     e.typo = color[0].tipo
                     return e
                 })
+                console.log(mapa)
                 let colornuevo = mapalocal.map((L) => {
                     if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
                         L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)]
@@ -224,14 +234,14 @@ export default function StoreTickesViews() {
     const abrir = async (e) => {
         sessionStorage.setItem("estadoevento", e.estado)
         let id = sessionStorage.getItem(Eventoid)
-        setspinervi("")     
+        setspinervi("")
         if (id != null && id != e.codigoEvento) {
             usedispatch(setModal({ nombre: '', estado: '' }))
         }
         try {
             let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
             if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
-               setspinervi("d-none")             
+                setspinervi("d-none")
                 usedispatch(setToastes({
                     show: true,
                     message: "Este usuario tiene una compra pendiente ",
@@ -239,78 +249,79 @@ export default function StoreTickesViews() {
                     estado: "Compra pendiente de pago "
                 }))
                 usedispatch(setModal({ nombre: '', estado: '' }))
-               // history.push("/admin/suscritor/" + getDatosUsuariosLocalStorag().id + "")
+                // history.push("/admin/suscritor/" + getDatosUsuariosLocalStorag().id + "")
                 history.push("/admin/Aprobar/" + getDatosUsuariosLocalStorag().cedula)
                 return
             }
-        
-           else {
-            let obten = await listarpreciolocalidad(e.codigoEvento)
-            const listalocal = await ListarLocalidad("")
-            let localidades = await cargarMapa()
-            sessionStorage.consierto = e.nombreConcierto
-            if (obten.data.length > 0) {
-                let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-                let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-                console.log(mapalocal, mapa)
-                let localidad = JSON.parse(mapa[0].localidad)
-                let path = JSON.parse(mapa[0].pathmap)
-                let newprecios = obten.data.map((g, i) => {
-                    let color = localidad.filter((f, i) => f.nombre == g.localidad)
-                    g.color = color[0].color
-                    g.idcolor = color[0].id
-                    g.typo = color[0].tipo
-                    g.ideprecio = g.id
-                    g.espacio = color[0].espacio
-                    sessionStorage.setItem(espacio, color[0].espacio)
-                    return g
-                })
-              
-                let colornuevo = mapalocal.map((L) => {
-                    if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
-                        L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
-                        L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
-                        L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
-                        L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
-                        L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
-                        L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
-                        L.espacioid = L.id_espacio
-                        return L
+
+            else {
+                let obten = await listarpreciolocalidad(e.codigoEvento)
+                const listalocal = await ListarLocalidad("")
+                let localidades = await cargarMapa()
+                sessionStorage.consierto = e.nombreConcierto
+                if (obten.data.length > 0) {
+                    let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
+                    let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
+                    console.log(mapalocal, mapa)
+                    let localidad = JSON.parse(mapa[0].localidad)
+                    let path = JSON.parse(mapa[0].pathmap)
+                    let newprecios = obten.data.map((g, i) => {
+                        let color = localidad.filter((f, i) => f.nombre == g.localidad)
+                        g.color = color[0].color
+                        g.idcolor = color[0].id
+                        g.typo = color[0].tipo
+                        g.ideprecio = g.id
+                        g.espacio = color[0].espacio
+                        sessionStorage.setItem(espacio, color[0].espacio)
+                        return g
+                    })
+
+                    let colornuevo = mapalocal.map((L) => {
+                        if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+                            L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
+                            L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
+                            L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
+                            L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
+                            L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
+                            L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
+                            L.espacioid = L.id_espacio
+                            return L
+                        }
+                    })
+                    let pathnuevo = path.map((L) => {
+                        if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+                            return L
+                        }
+                    })
+                    sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
+                        return e
+                    }))]))
+                    usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
+                    let nuevosdatos = {
+                        precios: newprecios,
+                        pathmapa: pathnuevo.filter((e) => e != undefined),
+                        mapa: mapa[0].nombre_mapa
                     }
-                })
-                let pathnuevo = path.map((L) => {
-                    if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
-                        return L
-                    }
-                })
-                sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
-                    return e
-                }))]))
-                usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
-                let nuevosdatos = {
-                    precios: newprecios,
-                    pathmapa: pathnuevo.filter((e) => e != undefined),
-                    mapa: mapa[0].nombre_mapa
+                    console.log(nuevosdatos)
+                    sessionStorage.eventoid = e.codigoEvento
+                    setPrecios(nuevosdatos)
+                    setDatoscon(e)
+                    consultarlocalidad()
+                    Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
+                        setspinervi("d-none")
+                        usedispatch(cargarsilla(outp))
+                        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+
+                    }).catch(err => {
+                        console.log(err)
+                        setspinervi("d-none")
+                    })
+
                 }
-                console.log(nuevosdatos)
-                sessionStorage.eventoid = e.codigoEvento
-                setPrecios(nuevosdatos)
-                setDatoscon(e)
-                consultarlocalidad()
-                Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
-                    setspinervi("d-none")     
-                    usedispatch(cargarsilla(outp))
-                    usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-
-                }).catch(err => {
-                    console.log(err)
-                    setspinervi("d-none")     
-                })
-
-            }}
+            }
         } catch (err) {
             console.log(err)
-            setspinervi("d-none")     
+            setspinervi("d-none")
         }
     }
     window.onbeforeunload = preguntarAntesDeSalir;
@@ -343,7 +354,7 @@ export default function StoreTickesViews() {
         var popUp = window.open('url', '', 'options');
         if (popUp == null || typeof (popUp) == 'undefined') {
             //  popUp.close();     
-            usedispatch(setToastes( {
+            usedispatch(setToastes({
                 show: true,
                 message: 'Por favor habilite las ventanas emergentes antes de continuar y actualice la pagina',
                 color: 'bg-danger',
@@ -351,7 +362,7 @@ export default function StoreTickesViews() {
             }))
         } else {
             popUp.close();
-        } 
+        }
     }, [])
     return (
         <>
@@ -378,10 +389,14 @@ export default function StoreTickesViews() {
             {
                 modalshow.modal.nombre == "ModalPago" ? <ModalPago intervalo={intervalo} detenervelocidad={detenervelocidad} para={para} setModalPago={setModalPago} modalPago={modalPago} /> : null
             }
-             <ModalEfectivo
-               
-            /> 
-            <ModalSuscritoView
+            <ModalEfectivo
+                comprar={detenervelocidad}
+            />
+            <ReporteView
+                setrepShow={""}
+                comprar={detenervelocidad}
+            />
+                           <ModalSuscritoView
                 show={modalshow.modal.nombre == "newsuscri" ? true : false}
                 setshow={cerrnewsuscr}
                 estado={""}

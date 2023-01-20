@@ -70,14 +70,15 @@ export default function ListaderegistroView(props) {
             typeAnimated: true,
             buttons: {
                 tryAgain: {
-                    text: 'Eliminar',
+                    text: 'Eliminars',
                     btnClass: 'btn-red',
                     action: function () {
                         eliminarRegistro({ "id": row.id }).then(ouput => {
                             console.log(ouput)
                             console.log(row.id)
                             if (!ouput.success) { return $.alert("" + ouput.message) }
-                            listarRegistropanel({ "cedula": cedula }).then(e => {
+                            
+                           /* listarRegistropanel({ "cedula": cedula }).then(e => {
                                  //console.log(e)
                                 if (e.data) {
 
@@ -87,9 +88,13 @@ export default function ListaderegistroView(props) {
                                 //setTikes([])
                             }).catch(err => {
                                 console.log(err)
-                            })
+                            })*/
 
                             $.alert("Registro eliminado correctamente")
+                            setTimeout(function(){
+                                window.location.reload()
+                            },1000)
+                           
 
                         }).catch(error => {
                             $.alert("hubo un error no se pudo eliminar este registro")

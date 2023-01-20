@@ -251,7 +251,7 @@ const SuscritoridView = () => {
     });
 
   }
-  const eliminar = (parms) => {
+  const eliminarregistro = (parms) => {
     //console.log(parms)
     
     $.confirm({
@@ -528,7 +528,7 @@ const SuscritoridView = () => {
                       >
                         <IconButton
                           color="error"
-                          onClick={() => eliminar(row.original)}
+                          onClick={() => eliminarregistro(row.original)}
                         >
                           <Delete />
                         </IconButton>
@@ -614,7 +614,7 @@ const SuscritoridView = () => {
                         >
                           <Summarize />
                         </IconButton>}
-                      {row.original.forma_pago == "Deposito" && row.original.link_comprobante != null ? <Tooltip
+                     <Tooltip
                         title="Comprobar" placement="top"
                       >
                         <IconButton
@@ -623,7 +623,14 @@ const SuscritoridView = () => {
                         >
                           <Visibility />
                         </IconButton>
-                      </Tooltip> : ""}
+                      </Tooltip> 
+                      <Tooltip title="Borrar" placement="top">
+                        <IconButton
+                         onClick={() => eliminarregistro(row.original)}
+                          color="error">
+                          <Delete />
+                        </IconButton>
+                      </Tooltip>
                     </Box>
                   )}
                   localization={MRT_Localization_ES}

@@ -13,6 +13,7 @@ export default function DetalleCompraView() {
     let { id } = useParams()
     let history = useHistory()
     let nombres = useSelector((state) => state.SuscritorSlice.subscritor)
+    console.log(nombres)
     const [usuario, setUser] = useState({
         "id": "",
         "cedula": "",
@@ -146,7 +147,7 @@ export default function DetalleCompraView() {
                                             {nombres.forma_pago != "Tarjeta" ?<div className="m-t-5 m-b-5">
                                                 <strong className="text-inverse">{nombres.banco == null ? "No hay Deposito reportado" : nombres.banco}</strong><br></br>
                                                 <small>
-                                                    Comprobante# {nombres.numerTransacion.padStart(10, 0)} <br></br>
+                                                    Comprobante# {nombres.numerTransacion} <br></br>
                                                     <br></br>
                                                     <br></br>
                                                 </small>
@@ -173,6 +174,32 @@ export default function DetalleCompraView() {
                                             </PhotoView>
                                         </div>
                                     </div>:""}
+                                </div>
+                                <div className=" table-responsive">
+                                    <table className="table table-invoice">
+                                        <thead>
+                                            <tr>
+                                                <th>DESCRIPCION</th>
+                                                <th className="text-center">CANT.</th>
+                                                <th className="text-center" width="15%">loc id</th>
+                                                <th className="text-right" width="15%">espacioid</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {JSON.parse(nombres.info_concierto).length > 0 ? JSON.parse(nombres.info_concierto).map((item, i) => {
+                                                return (
+                                                    <tr key={i}>
+                                                        <td>{item.nombreConcierto}</td>
+                                                        <td className="text-center">{item.cantidad}</td>
+                                                        <td className="text-center">{item.id_localidad}</td>
+                                                        <td className="text-right">{item.idespaciolocalida}</td>
+                                                    </tr>
+                                                )
+                                            }) : ''}
+                                            
+                                        </tbody>
+                                    </table>
+
                                 </div>
                                 <div className=" d-flex col-12  pb-3 border-top pt-2">
                                     <div className=" invoice-from col-12">

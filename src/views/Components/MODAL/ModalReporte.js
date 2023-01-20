@@ -11,6 +11,7 @@ import { GetValores } from 'utils/CarritoLocalStorang';
 import { bancos } from 'utils/Imgenesutils';
 import { PagoRapido } from 'utils/Querycomnet';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
+import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
 
 let { GUAYAQUIL, numero,
   pacifico, pichincha,
@@ -378,7 +379,7 @@ const Reporte = (props) => {
             </h4>
           </div>
           <div className=" float-left " style={{ marginTop: '-45px' }}>
-            <button type="button" className=" text-secondary" onClick={succesAlert}>
+            <button type="button" className=" text-secondary" onClick={() => clienteInfo() != null ? usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' })) : succesAlert()}>
               X
             </button>
           </div>
