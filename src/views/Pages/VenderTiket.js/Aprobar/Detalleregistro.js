@@ -35,13 +35,13 @@ export default function DetalleCompraView() {
     }
 
     useEffect(() => {
-        console.log(nombres)
+        //console.log(nombres)
         buscarcliente({
             "cedula": nombres.cedula,
             "email": ""
         }).then(ouput => {
             if (ouput.success) setUser({ ...ouput.data })
-            console.log(ouput)
+           // console.log(ouput)
         }).catch(erro => {
             console.log(erro)
         })
@@ -215,7 +215,7 @@ export default function DetalleCompraView() {
                 </div>
                 <div className=" fixed-bottom  d-flex justify-content-end align-items-end p-3">
                     <a className=" rounded-circle btn-primary p-2 text-white"
-                        onClick={() => history.push("/admin/Aprobar-Ventas")}
+                        onClick={() => history.goBack()}
                     >
                         <i className=" fa fa-arrow-left"></i>
                     </a>

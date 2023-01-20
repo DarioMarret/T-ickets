@@ -9,6 +9,7 @@ import { Triangle } from "react-loader-spinner";
 import { buscarcliente } from "utils/Querypanelsigui";
 import axios from "axios";
 import { Host } from "utils/constantes";
+import { cederboleto } from "utils/Querycomnet";
 const CederView = () => {
     let estatusModal = useSelector(state => state.SuscritorSlice.modal)
     let user = useSelector(state => state.SuscritorSlice)
@@ -47,8 +48,26 @@ const CederView = () => {
         )
     }
     const succesceder = async (ceder) => {
-        
+        hideAlert()
         console.log(ceder)
+        cederboleto(ceder).then(ouput=>{
+            if(ouput.success){
+                hideAlert()
+                usedispatch(setToastes({
+                    show: true,
+                    message: 'se cambio el propietario del boleto',
+                    color: 'bg-success', estado: 'Cambio exitoso '
+                }))
+                window.location.reload();
+            }
+
+        }).catch(err=>{
+            usedispatch(setToastes({
+                show: true,
+                message: 'se cambio el propietario del boleto',
+                color: 'bg-ganger', estado: 'Cambio exitoso '
+            }))
+        })
         try {
             let { data } = await axios.post(Host + "/api/v1/ceder_boleto", ceder, {
 
@@ -64,14 +83,10 @@ const CederView = () => {
 
         }
 
-        hideAlert()
+        
       //  usedispatch(setModal({ nombre: '', estado: '' }))
-        usedispatch(setToastes({
-            show: true,
-            message: 'se cambio el propietario del boleto',
-            color: 'bg-success', estado: 'Cambio exitoso '
-        }))
-
+      
+       
     }
     const hideAlert = () => {
         setAlert(null)

@@ -236,6 +236,7 @@ function ModalDetalle(props) {
                 direccion: datosPersonal ? datosPersonal.direccion : ''
             })
             setChecked(false)
+            console.log(datosPersonal)
         } else {
             setChecked(true)
             setPerson({
@@ -558,7 +559,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                datosPerson.metodoPago === "Fisico" ?
+                                datosPerson.metodoPago === "Efectivo-Local" ?
                                     <button id="pagarcuenta" className="btn btn-primary"                                       
                                         disabled={!(datosPerson.envio != '')}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { detposito() } }}

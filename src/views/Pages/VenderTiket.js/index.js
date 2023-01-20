@@ -239,7 +239,8 @@ export default function StoreTickesViews() {
                     estado: "Compra pendiente de pago "
                 }))
                 usedispatch(setModal({ nombre: '', estado: '' }))
-                history.push("/admin/Aprobar-Ventas")
+               // history.push("/admin/suscritor/" + getDatosUsuariosLocalStorag().id + "")
+                history.push("/admin/Aprobar/" + getDatosUsuariosLocalStorag().cedula)
                 return
             }
         
@@ -259,10 +260,12 @@ export default function StoreTickesViews() {
                     g.color = color[0].color
                     g.idcolor = color[0].id
                     g.typo = color[0].tipo
+                    g.ideprecio = g.id
                     g.espacio = color[0].espacio
                     sessionStorage.setItem(espacio, color[0].espacio)
                     return g
                 })
+              
                 let colornuevo = mapalocal.map((L) => {
                     if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
                         L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
@@ -270,6 +273,7 @@ export default function StoreTickesViews() {
                         L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
                         L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
                         L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
+                        L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
                         L.espacioid = L.id_espacio
                         return L
                     }
@@ -374,10 +378,9 @@ export default function StoreTickesViews() {
             {
                 modalshow.modal.nombre == "ModalPago" ? <ModalPago intervalo={intervalo} detenervelocidad={detenervelocidad} para={para} setModalPago={setModalPago} modalPago={modalPago} /> : null
             }
-            {modalshow.modal.nombre == "modalpago" ? <ModalEfectivo
-                intervalo={intervalo}
-                detenervelocidad={para}
-            /> : ''}
+             <ModalEfectivo
+               
+            /> 
             <ModalSuscritoView
                 show={modalshow.modal.nombre == "newsuscri" ? true : false}
                 setshow={cerrnewsuscr}

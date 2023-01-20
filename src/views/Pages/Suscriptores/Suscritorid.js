@@ -9,7 +9,7 @@ import { useParams, useHistory } from "react-router";
 import { CancelarSubscriptor, GetSuscritores } from "utils/Querypanel";
 import ModalSuscritoView from "./ModalSuscritor";
 import { carrusel } from "../Flasdeticket/imagenstatctic";
-let { cedericon }= carrusel
+let { cedericon } = carrusel
 import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
@@ -19,13 +19,23 @@ import { listaRegistro } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { ticketsboletos } from "utils/columnasub";
 import { Listarticketporestado } from "utils/userQuery";
+import { setdetalle } from "StoreRedux/Slice/SuscritorSlice";
+import { useDispatch } from "react-redux";
+import { Triangle } from "react-loader-spinner";
+import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
+import { eliminarRegistro } from "utils/pagos/Queripagos";
+import { eliminartiket } from "utils/pagos/Queripagos";
+
 const SuscritoridView = () => {
   let { id } = useParams()
   let history = useHistory()
+  let usedispatch = useDispatch()
+  const [spinervi, setSpiner] = useState("d-none")
   const [show, setshow] = useState(false)
   const [alert, setAlert] = React.useState(null)
   const [tiketslist, setTikes] = useState([])
-  const [boletos,setBoletos]=useState([])
+  const [boletos, setBoletos] = useState([])
   const [suscritoid, setsuscritor] = useState({
     ciudad: "",
     email: "",
@@ -102,20 +112,7 @@ const SuscritoridView = () => {
   };
 
 
-  const successDelete = () => {
-    setAlert(
-      <SweetAlert
-        success
-        style={{ display: "block", marginTop: "-100px" }}
-        title="Eliminado!"
-        onConfirm={() => hideAlert()}
-        onCancel={() => hideAlert()}
-        confirmBtnBsStyle="success"
-      >
-        El suscritor se elimino correctamenta
-      </SweetAlert>
-    );
-  };
+
   const cancelDetele = () => {
     setAlert(
       <SweetAlert
@@ -174,19 +171,158 @@ const SuscritoridView = () => {
         //console.log(datos[0].cedula)
         let registro = await listarRegistropanel({ "cedula": datos[0].cedula })
         let tiket = await Listarticketporestado(datos[0].cedula)
-        if (registro.success && tiket.success){
+        console.log(registro)
+        if (registro.success && tiket.success) {
           setTikes(registro.data)
           setBoletos(tiket.data)
-          //console.log(tiket)
         }
-        //console.log(registro)
-        // console.log(datos[0])
-        // setTikes(data.users)
 
       }
     } catch (error) {
       console.log(error)
     }
+  }
+  function abrirModal(e) {
+    usedispatch(setModal({ nombre: "confirmar", estado: e }))
+  }
+  function detalle(e) {
+    console.log(e)
+    usedispatch(setdetalle({ ...e }))
+    history.push("/admin/Reporte/" + e.id)
+  }
+  const canjear = (e) => {
+    $.confirm({
+      title: 'Canjear boleto!',
+      type: 'blue',
+      content: '' +
+        '<form action="" class="formName">' +
+        '<div class="container form-group">' +
+        '<label>Ingrese email</label>' +
+        '<input  type="text" placeholder="Email" value="' + suscritoid.email + '" class="form-control name" required />' +
+        '</div>' +
+        '</form>',
+      buttons: {
+        formSubmit: {
+          text: 'Canjear',
+          btnClass: 'btn-blue',
+          action: function () {
+            var name = this.$content.find('.name').val();
+            if (!name) {
+              $.alert('provide a valid name');
+              return false;
+            }
+
+            $.alert('Email ' + name);
+          }
+        },
+        cancel: function () {
+          //close
+        },
+      },
+      onContentReady: function () {
+        // bind to events
+        var jc = this;
+        this.$content.find('form').on('submit', function (e) {
+          // if the user submits the form by pressing enter in the fiel
+          console.log(e)
+          e.preventDefault();
+          jc.$$formSubmit.trigger('click'); // reference the button and click it
+        });
+      }
+    });
+  }
+  const eliminarss = (e) => {
+    $.confirm({
+      title: 'Desea eliminar Este boleto # ' + e.sillas + '',
+      content: 'De <span class="txt-capitalize"> ' + e.concierto + '</span> en la localidad:  ' + e.localidad + ' ',
+      type: 'red',
+      typeAnimated: true,
+      buttons: {
+        tryAgain: {
+          text: 'Eliminar',
+          btnClass: 'btn-red',
+          action: function () {
+
+          }
+        },
+        close: function () {
+        }
+      }
+    });
+
+  }
+  const eliminar = (parms) => {
+    //console.log(parms)
+    
+    $.confirm({
+      title: 'Desea eliminar Este registro de compra ',
+      content: '',
+      type: 'red',
+      typeAnimated: true,
+      buttons: {
+        tryAgain: {
+          text: 'Eliminar',
+          btnClass: 'btn-red',
+          action: function () {
+            eliminarRegistro({ "id": parms.id }).then(ouput => {
+              console.log(ouput)
+              console.log(parms.id)
+              if (!ouput.success) { return $.alert("" + ouput.message) }
+              listarRegistropanel({ "cedula": suscritoid.cedula}).then(e => {
+                // console.log(e)
+                if (e.data) {
+
+                  setTikes(e.data)
+                  return
+                }
+                //setTikes([])
+              }).catch(err => {
+                console.log(err)
+              })
+
+              $.alert("Registro Eliminado correctamente")
+
+            }).catch(error => {
+              $.alert("hubo un error no se pudo eliminar este registro")
+            })
+          }
+        },
+        close: function () {
+        }
+      }
+    });
+
+  }
+  const eliminarTiket=(parm)=>{
+    console.log(parm)
+    $.confirm({
+      title: 'Desea eliminar este boleto ',
+      content: '',
+      type: 'red',
+      typeAnimated: true,
+      buttons: {
+        tryAgain: {
+          text: 'Eliminar',
+          btnClass: 'btn-red',
+          action: function () {
+            eliminartiket({ "id": parm.id }).then(ouput => {
+              console.log(ouput)
+              console.log(parm.id)
+              if (!ouput.success) { return $.alert("" + ouput.message) }
+              
+              nuevoevento()
+              $.alert("Boletos eliminado correctamente")
+
+            }).catch(error => {
+              $.alert("hubo un error no se pudo eliminar este registro")
+            })
+          }
+        },
+        close: function () {
+        }
+      }
+    });
+   
   }
   useEffect(() => {
     (async () => {
@@ -330,6 +466,7 @@ const SuscritoridView = () => {
 
         </Row>
 
+        <ModalConfima />
         <div className="">
           <div className='container-fluid row p-0'>
             <Tabs value={value} onChange={handleChange}
@@ -347,7 +484,7 @@ const SuscritoridView = () => {
               <TabPanel value={value} index={0} className="text-center" >
                 <MaterialReactTable
                   columns={listaRegistro}
-                  data={tiketslist.filter(e => e.estado_pago =="Pendiente")}
+                  data={tiketslist.filter(e => e.estado_pago == "Pendiente")}
                   muiTableProps={{
                     sx: {
                       tableLayout: 'flex'
@@ -362,7 +499,7 @@ const SuscritoridView = () => {
                           <IconButton
                             color="error"
                             aria-label="Bloquear"
-                            onClick={() => abrirModal(row)}
+                            onClick={() => abrirModal(row.original)}
                           >
                             <Summarize />
                           </IconButton>
@@ -374,16 +511,28 @@ const SuscritoridView = () => {
                         >
                           <Summarize />
                         </IconButton>}
-                      { row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? <Tooltip
-                        title="Comprobar" placement="top"
+                      {row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ?
+                        <Tooltip
+                          title="Comprobar" placement="top"
+                        >
+                          <IconButton
+                            color="error"
+                            onClick={() => detalle(row.original)}
+                          >
+                            <Visibility />
+                          </IconButton>
+                        </Tooltip> : ""}
+                      <Tooltip
+                        title="Eliminar"
+                        placement="top"
                       >
                         <IconButton
                           color="error"
-                          onClick={() => detalle(row.original)}
+                          onClick={() => eliminar(row.original)}
                         >
-                          <Visibility />
+                          <Delete />
                         </IconButton>
-                      </Tooltip> : ""}
+                      </Tooltip>
                     </Box>
                   )}
 
@@ -408,7 +557,7 @@ const SuscritoridView = () => {
                           <IconButton
                             color="error"
                             aria-label="Bloquear"
-                            onClick={() => abrirModal(row)}
+                            onClick={() => abrirModal(row.original)}
                           >
                             <Summarize />
                           </IconButton>
@@ -430,6 +579,17 @@ const SuscritoridView = () => {
                           <Visibility />
                         </IconButton>
                       </Tooltip> : ""}
+                      <Tooltip
+                        title="Eliminar"
+                        placement="top"
+                      >
+                        <IconButton
+                          color="error"
+                          onClick={() => eliminar(row.original)}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </Tooltip>
                     </Box>
                   )}
                   localization={MRT_Localization_ES}
@@ -453,7 +613,7 @@ const SuscritoridView = () => {
                           <IconButton
                             color="error"
                             aria-label="Bloquear"
-                            onClick={() => abrirModal(row)}
+                            onClick={() => abrirModal(row.original)}
                           >
                             <Summarize />
                           </IconButton>
@@ -481,8 +641,8 @@ const SuscritoridView = () => {
                 />
               </TabPanel>
               <TabPanel value={value} index={3} className="text-center">
-                <MaterialReactTable 
-                columns={ticketsboletos}
+                <MaterialReactTable
+                  columns={ticketsboletos}
                   data={boletos}
                   muiTableProps={{
                     sx: {
@@ -498,18 +658,18 @@ const SuscritoridView = () => {
                         {row.original.estado != "reservado" && row.original.pdf != null && row.original.link == "SI" ?
                           <Tooltip className="" title="Ver Ticket" placement="top">
                             <a
-                              className=" btn btn-default btn-sm"
+                              className=" border  btn-default btn-sm"
 
                               href={row.original.pdf}
                               target="_black"
                             >
-                              <i className="fa fa-download "></i>
+                              <i className="fa fa-download text-primary"></i>
 
 
                             </a>
                           </Tooltip> :
                           <a
-                            className=" btn btn-default btn-sm btn-disable"
+                            className="border  btn-default btn-sm btn-disable"
                             disabled
 
                           >
@@ -519,10 +679,10 @@ const SuscritoridView = () => {
                           </a>
                         }
                         {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
-                          <a className=" btn btn-default btn-sm"
+                          <a className=" btn btn-default btn-sm btn-disable"
 
 
-                            onClick={() => successAlert(row.original)}
+                            onClick={() => console.log(row.original)}
                           >
                             <img src={cedericon}
                               style={
@@ -534,7 +694,7 @@ const SuscritoridView = () => {
                           </a>
                         </Tooltip> :
                           <a
-                            className=" btn btn-default btn-sm btn-disable"
+                            className="border  btn-default btn-sm btn-disable"
                             disabled
 
                           >
@@ -548,11 +708,38 @@ const SuscritoridView = () => {
 
 
                           </a>
+
                         }
+                       {row.original.estado_pago!="Pendiente"? <Tooltip
+                          title="Eliminar"
+                          placement="top"
+                        >
+                          <a
+                            onClick={() => eliminarTiket(row.original)}
+                            className="border  btn-default btn-sm  "
 
 
+                          >
+                            <i className="fa fa-trash text-danger "></i>
 
 
+                          </a>
+                        </Tooltip>:""}
+                        {row.original.canje == "NO CANJEADO" ? <Tooltip
+                          title="Canjear"
+                          placement="top"
+                        >
+                          <a
+                            className="border  btn-default btn-sm "
+                            onClick={() => canjear(row.original)}
+
+                          >
+                            <i className="fa fa-check-circle text-success" aria-hidden="true"></i>
+
+
+                          </a>
+                        </Tooltip> : ""
+                        }
                       </div>
                     </Box>
                   )}
@@ -647,12 +834,60 @@ const SuscritoridView = () => {
         </div>
 
       </div>
+      <div className=" fixed-bottom  d-flex justify-content-end align-items-end p-3">
+        <a className=" rounded-circle btn-primary p-2 text-white"
+          onClick={() => history.goBack()}
+        >
+          <i className=" fa fa-arrow-left"></i>
+        </a>
+
+      </div>
       <ModalSuscritoView
         show={show}
         setshow={setshow}
         estado={"update"}
         datosperson={suscritoid} />
+      <div className={spinervi}
+        style={{
+          display: 'none',
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: '1000'
+        }}
+      >
+
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: '10px',
+          padding: '10px',
+        }}>
+          <Triangle
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="triangle-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={true}
+          />
+          <h4 className='text-light'>Cargando  evento  ...</h4>
+
+
+        </div>
+      </div>
+
     </>
+
   )
 
 }

@@ -69,19 +69,37 @@ export default function ListaSuscritor(prop) {
             password: datos.password,
             cedula: $("#cedula").val()
         }
-        // console.log(datosend, datos)
         DatosUsuariosLocalStorag({ ...usuarios, ...datos, whatsapp: $("#movil").val(), })
+        if ($("#movil").val()==" "){
+            usedispatch(setToastes({
+                show: true,
+                message: "Falta Celualar",
+                color: 'bg-warning',
+                estado: "hubo un error",
+            }))
+            return
+        }
+        if ($("#cedula").val() == " ") {
+            usedispatch(setToastes({
+                show: true,
+                message: "Falta Cédula",
+                color: 'bg-warning',
+                estado: "hubo un error",
+            }))
+            return
+        }
+        if (datos.nombreCompleto == " ") {
+            usedispatch(setToastes({
+                show: true,
+                message: "Falta Nombre",
+                color: 'bg-warning',
+                estado: "hubo un error",
+            }))
+            return
+        }
         if (Object.values(datosend).every(e => e)) {
-            let numero = await ValidarWhatsapp()
-            if (numero != null) {
-                usedispatch(setToastes({
-                    show: true,
-                    message: "Número de whatsapp " + $("#movil").val(),
-                    color: 'bg-danger', estado: 'Whatsapp erroneo'
-                }))
-                return
-            }
-            else {
+            
+          
                 try {
                     const registro = await axios.post(Host + "api/v1/crear_suscriptor", datosend, {
                         headers: {
@@ -99,6 +117,14 @@ export default function ListaSuscritor(prop) {
                         }))
                         successAlert()
                     }
+                    else{
+                        usedispatch(setToastes({
+                            show: true,
+                            message: "Atentos",
+                            color: 'bg-warning',
+                            estado: "hubo un error",
+                        }))
+                    }
 
                 } catch (error) {
                     usedispatch(setToastes({
@@ -107,11 +133,11 @@ export default function ListaSuscritor(prop) {
                         color: 'bg-danger',
                         estado: "Huboo un error ",
                     }))
-                    console.log(error)
+                   // console.log(error)
 
                 }
 
-            }
+          
         }
         else {
             usedispatch(setToastes({

@@ -33,6 +33,7 @@
     "intl-tel-input": "^17.0.19",
     "isotope-layout": "^3.0.6",
     "jquery": "^3.6.1",
+    "jquery-confirm": "^3.3.4",
     "jspdf": "^2.5.1",
     "jszip": "^3.10.1",
     "jwt-decode": "^3.1.2",

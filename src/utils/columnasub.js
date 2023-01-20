@@ -93,39 +93,32 @@ export const ticketprocesoapro = [
 ]
 export const ticketsboletos = [
     {
-        accessorKey: "localidad",
-        header: "Detalle",
-        Cell: ({ cell }) => (
-            <div>
-                {
-                    cell.row.original.concierto + " Localidad:" + cell.row.original.localidad
-                }
-            </div>
-        ),
+        accessorKey: "concierto",
+        header: "EVENTO",
+        size:50
     },
+
+    {
+        accessorKey: "localidad",
+        header: "localidad",
+        
+        size:50
+    },
+    
     {
         accessorKey: "sillas",
         header: "Boleto",
         Cell: ({ cell }) => (
             <div>#
                 {
-                    cell.row.original.sillas.padStart(10,0)
+                    cell.row.original.sillas
                 }
             </div>
         ),
-        size:70
+        size:30
     },
     
-    {
-        accessorKey: "valor",
-        header: "Valor",
-        sixe:50
-    },
-    {
-        accessorKey: "fecha",
-        header: "Fecha",
-        sixe:50
-    },
+    
     {
         accessorKey: "estado",
         header: "Estado",
@@ -137,15 +130,32 @@ export const ticketsboletos = [
         ),
         size:50
     },
+    {
+        accessorKey:"canje",
+        header:"Canjeado",
+        size:50
+    },
+    {
+        accessorKey: "valor",
+        header: "Valor",
+        sixe: 15
+    },
+    {
+        accessorKey: "fecha",
+        header: "Fecha",
+        sixe: 50
+    },
 ]
 export const listaRegistro = [
     {
         accessorKey: "cedula",
-        header: "Cedula"
+        header: "Cedula",
+        size:50
     },
     {
         accessorKey: "fechaCreacion",
         header: "Fecha",
+        
     },
     {
         accessorKey: "estado_pago",
@@ -153,22 +163,23 @@ export const listaRegistro = [
         Cell: ({ cell }) => (
             <Badge bg={color[cell.row.original.estado_pago]}>
                {cell.row.original.estado_pago}</Badge>
-        )
+        ),
+        size:50
     },
     {
         accessorKey: "forma_pago",
-        header: "Metodo"
+        header: "Metodo",
+        size:50
     },
     {
         accessorKey: "pdf",
         header: "Ticket",
         Cell: ({ cell }) => (
-            <div>
+            
                 <Badge bg={color[cell.row.original.pdf]}  >
 
-                    {estado[cell.row.original.pdf]}</Badge>
-
-            </div>
+                    {estado[cell.row.original.pdf]}</Badge>          
         ),
+        size:50
     }
 ]

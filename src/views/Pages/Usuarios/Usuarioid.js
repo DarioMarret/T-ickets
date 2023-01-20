@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 import { Row, Col, Card, Button } from "react-bootstrap";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { GetUserList, GetRoles } from "utils/Querypanel";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import EditaruserView from "./ModalEditar";
@@ -13,8 +13,11 @@ import { ColumnaUsuarioid } from "utils/ColumnTabla";
 import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { EliminaUser } from "utils/Querypanel";
+import { eliminarRegistro } from "utils/pagos/Queripagos";
 const UseridView = () => {
   let user = clienteInfo()
+  let history = useHistory()
   const [fecha, setFecha] = useState(new Date())
   let { id } = useParams()
   const [alert, setAlert] = React.useState(null)
@@ -56,7 +59,12 @@ const UseridView = () => {
     }
   }
   async function Eliminaruser(id) {
-
+    EliminaUser(id).then(oupt=>{
+      console.log(oupt)
+      history.goBack()
+    }).catch(err=>{
+      console.log(err)
+    })
   }
   const successAlert = (e) => {
     setAlert(
@@ -64,7 +72,7 @@ const UseridView = () => {
         warning
         style={{ display: "block", marginTop: "-100px" }}
         title="Estas Seguro?"
-        onConfirm={() => hideAlert()}
+        onConfirm={() => Eliminaruser(e)}
         onCancel={() => cancelDetele()}
         confirmBtnBsStyle="success"
         cancelBtnBsStyle="danger"
@@ -104,6 +112,7 @@ const UseridView = () => {
       </SweetAlert>
     );
   };
+
   const cancelDetele1 = () => {
     setAlert(
       <SweetAlert
@@ -146,7 +155,7 @@ const UseridView = () => {
             {
               String(user.id) === String(id) ?
                 '' : <Button className="btn-wd btn-outline mr-1"
-                  onClick={successAlert}
+                  onClick={()=>successAlert(id)}
                   type="button"
                   variant="danger">
                   <span className="btn-label">

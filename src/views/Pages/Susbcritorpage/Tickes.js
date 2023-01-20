@@ -44,7 +44,9 @@ function Example() {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })), hideAlert() }
+    const abrirceder = (e) => {
+         usedispatch(setModal({ nombre: 'ceder', estado: e }))
+     hideAlert() }
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
 
@@ -221,26 +223,16 @@ function Example() {
             }
             setTikes(ouput.data)
             console.log(ouput)
-            let nuevogrupo = []
-
-           
-
-            // setTikes([...nuevogrupo])
-
-        }).catch(err => console.log(err))
+           }).catch(err => console.log(err))
     },
         [])
-
-    //console.log(Object.keys(rowSelection).map((g) => { return tiketslist.find(e => e.codigoEvento == g).detalle }))
-    function suma(item) {
+   function suma(item) {
         let tikets = tiketslist.find(e => e.codigoEvento == item).detalle.map((f) => { return parseFloat(f.valor) })
         try {
             let valo = tikets.reduce((a, b) => a + b, 0).toFixed(2)
             return valo
-
         } catch (error) {
             console.log(error)
-
         }
 
     }
@@ -286,7 +278,7 @@ function Example() {
                                     </Tooltip> : ''}
                                     <Tooltip title="Borrar" placement="top">
                                         <IconButton
-                                            className="d-none"
+                                            className=""
                                             color="error"
                                             aria-label="Bloquear">
                                             <Delete />
@@ -306,6 +298,19 @@ function Example() {
                                             />
                                         </IconButton>
                                     </Tooltip> : ''}
+                                    {
+                                        <Tooltip 
+                                        title="Eliminar"
+                                        placement="top"
+                                        >
+                                            <IconButton
+                                            color="danger"
+                                            >
+                                                <Delete/>
+                                            </IconButton>
+
+                                        </Tooltip>
+                                    }
                                 </Box>
                             )}
                             localization={MRT_Localization_ES}

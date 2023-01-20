@@ -22,15 +22,16 @@ export const PagoRapido = async (transaccion) => {
         "forma_pago": metodo,
         "concierto": [...concierto],
         "valores": {
-            "total": parseFloat(GetValores().total).toFixed(2),
-            "comision": parseFloat(GetValores().comision).toFixed(2),
-            "subtotal": parseFloat(GetValores().subtotal).toFixed(2),
-            "comision_bancaria": parseFloat(GetValores().comision_bancaria).toFixed(2),
+            "total": parseFloat(GetValores().total),
+            "comision": parseFloat(GetValores().comision),
+            "subtotal": parseFloat(GetValores().subtotal),
+            "comision_bancaria": parseFloat(GetValores().comision_bancaria),
             "description": GetValores().description
         },
         "idfactura": "",
         "transaccion": transaccion
     }
+   // console.log(datos, concierto)
     try {
 
         console.log(datos, concierto)
@@ -41,7 +42,7 @@ export const PagoRapido = async (transaccion) => {
             }
         }
         )
-        console.log(data)
+       // console.log(data)
         return data;
 
     } catch (error) {
@@ -88,5 +89,21 @@ export const Pagofisico=async()=>{
         return data
     } catch (error) {
         return error
+    }
+}
+export const cederboleto=async (ceder)=>{
+    try {
+        let { data } = await axios.post(Host + "/api/v1/ceder_boleto", ceder, {
+
+        }, {
+            header: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        console.log(data)
+    } catch (error) {
+        console.log(error)
+
     }
 }

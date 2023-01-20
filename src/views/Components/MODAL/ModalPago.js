@@ -143,18 +143,17 @@ function ModalPago(props) {
             console.log(ouput)
             if (user == null) {
                 ouput.success ? usedispatch(setModal({ nombre: 'pago', estado: ouput.url })) : ''
-                console.log(ouput)
-                //   popUp(data.data.url)
-                /// setEstadoFrame(!estadoFrame)
+               // console.log(ouput)
                 setSpiner("d-none")
             }
             else {
                 popUp(ouput.url)
+                usedispatch(setModal({ nombre: '', estado: "" }))
                 setSpiner("d-none")
             }
             // setModalPago(false)
         }).catch(errro => {
-            console.log(errro)
+          //  console.log(errro)
             setSpiner("d-none")
         })
         /*const data = await GenerarLinkPagoMedios()

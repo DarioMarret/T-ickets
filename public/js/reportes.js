@@ -1,5 +1,5 @@
 
-
+/*
 $(document).ready(function () {
   //console.log(window.innerWidth)
   if (window.innerWidth === 732) {
@@ -37,7 +37,7 @@ var x = setInterval(function () {
     seconds = Math.floor((daterest % (1000 * 60)) / 1000);
 
   countDiv.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-}, 1000);*/
+}, 1000);*
 
 var end = new Date('01/17/2023 7:00 PM');
 var _second = 1000;
@@ -64,7 +64,7 @@ function showRemaining() {
   document.getElementById('regeresion').innerHTML = "  " + hours + " :  " + minutes + "  :  " + seconds +"" ;
   document.getElementById('regeresiondos').innerHTML =  " " + hours + "  :  " + minutes + "  :  " + seconds;
 
-}
+}*/
 //document.getElementById('regeresion').innerHTML = " 52555 "  ;
 //document.getElementById('regeresiondos').innerHTML = "55455 ";
 

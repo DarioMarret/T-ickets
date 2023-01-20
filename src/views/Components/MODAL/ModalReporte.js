@@ -324,13 +324,13 @@ const Reporte = (props) => {
         if (oupt.success) {
           comprar()
           evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
-            nombre: e, estado: valores
+            nombre: "", estado: ""
           })) : usedispatch(setModal({
             nombre: "", estado: ""
           }))
           evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setToastes({
             show: true,
-            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
+            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp, email indicado o desde la opción Tickets, tienes un tiempo de 1 hora para reportarlo',
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
           })) : usedispatch(setToastes({
@@ -366,9 +366,8 @@ const Reporte = (props) => {
         onHide={succesAlert}
         size={GetMetodo() != "Transferencia" ? "lg" : ""}
         fullscreen={'md-down'}
-        centered
-
-      ><Modal.Header className=" d-flex  m-0  bg-dark   justify-content-between align-items-center"        >
+        centered>
+          <Modal.Header className=" d-flex  m-0  bg-dark   justify-content-between align-items-center"        >
           <div className="d-flex  container   justify-content-center text-center" >
             <h4 className=" p-1 text-light "
               style={{

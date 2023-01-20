@@ -8,3 +8,9 @@
     background-color: rgba(131, 129, 129, 0.432);
 }
 
+.jconfirm.jconfirm-supervan .jconfirm-box {
+    background-color: transparent !important;
+}
+.txt-capitalize {
+     text-transform: capitalize  !important;
+ }

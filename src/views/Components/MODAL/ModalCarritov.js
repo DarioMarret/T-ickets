@@ -80,6 +80,7 @@ const ModalCarritoView = (prop) => {
             {
                 "id": e.id,
                 "estado": "disponible",
+                "mas": "eliminar",
                 "cedula": user.cedula,
                 "cantidad": e.cantidad
             }
@@ -108,7 +109,7 @@ const ModalCarritoView = (prop) => {
         setListarCarritoDetalle(getVerTienda())
         let metodoPago = GetMetodo()
         metodoPago != null ? setChecked({
-            Fisico: metodoPago == "Fisico" ? "Fisico" : "",
+            Fisico: metodoPago == "Efectivo-Local" ? "Efectivo-Local" : "",
             Efectivo: metodoPago == "Efectivo" ? "Efectivo" : "",
             Tarjeta: metodoPago == "Tarjeta" ? "Tarjeta" : "",
             Deposito: metodoPago == "Deposito" ? "Deposito" : "",
@@ -715,8 +716,8 @@ const ModalCarritoView = (prop) => {
                             {clienteInfo() != null ?<div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     name="Fisico" id="Fisico"
-                                    checked={checked.Fisico == "Fisico" ? true : false}
-                                    onChange={(e) => handelMetodopago(e.target, "Fisico")}
+                                    checked={checked.Fisico == "Efectivo-Local" ? true : false}
+                                    onChange={(e) => handelMetodopago(e.target, "Efectivo-Local")}
                                 />
                                 <label className="form-check-label" htmlFor="Fisico">
                                     Efectivo punto de pagos

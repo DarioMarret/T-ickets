@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Box, Tooltip, Typography,Tab } from '@mui/material';
+import { Box, Tooltip, Typography, Tabs, Tab, } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send, CheckBox } from '@mui/icons-material';
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -28,6 +28,36 @@ export default function EmitirboView() {
 
     })
     const [alert, setAlert] = useState(null)
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    const [value, setValue] = React.useState(0);
+    function TabPanel(props) {
+        const { children, value, index, ...other } = props;
+
+        return (
+            <div
+                role="tabpanel"
+                hidden={value !== index}
+                id={`simple-tabpanel-${index}`}
+                aria-labelledby={`simple-tab-${index}`}
+                {...other}
+            >
+                {value === index && (
+                    <div>
+                        <span>{children}</span>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    function a11yProps(index) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
     const abrirceder = (e) => {
         usedispatch(setModal({ nombre: 'ceder', estado: e })),
             hideAlert()
@@ -43,15 +73,75 @@ export default function EmitirboView() {
         console.log(e)
         usedispatch(setModal({ nombre: "boleto", estado: e }))
     }
+    const canjear = (e) => {
+        $.confirm({
+            title: 'Canjear boleto!',
+            type: 'blue',
+            content: '' +
+                '<form action="" class="formName">' +
+                '<div class="container form-group">' +
+                '<label></label>' +
+                '<input  type="text" placeholder="" value="' + e.cedula + '" class="form-control name" required />' +
+                '</div>' +
+                '</form>',
+            buttons: {
+                formSubmit: {
+                    text: 'Canjear',
+                    btnClass: 'btn-blue',
+                    action: function () {
+                        var name = this.$content.find('.name').val();
+                        if (!name) {
+                            $.alert('provide a valid name');
+                            return false;
+                        }
+
+                        $.alert(' ' + name);
+                    }
+                },
+                cancel: function () {
+                    //close
+                },
+            },
+            onContentReady: function () {
+                // bind to events
+                var jc = this;
+                this.$content.find('form').on('submit', function (e) {
+                    // if the user submits the form by pressing enter in the fiel
+                    console.log(e)
+                    e.preventDefault();
+                    jc.$$formSubmit.trigger('click'); // reference the button and click it
+                });
+            }
+        });
+    }
+    const eliminar = (e) => {
+        $.confirm({
+            title: 'Desea eliminar Este boleto # ' + e.sillas + '',
+            content: 'De <span class="txt-capitalize"> ' + e.concierto + '</span> en la localidad:  ' + e.localidad + ' ',
+            type: 'red',
+            typeAnimated: true,
+            buttons: {
+                tryAgain: {
+                    text: 'Eliminar',
+                    btnClass: 'btn-red',
+                    action: function () {
+                    }
+                },
+                close: function () {
+                }
+            }
+        });
+
+    }
     useEffect(() => {
         AprobarTiket().then(oupt => {
             console.log(oupt)
             let datos = oupt.data
             let nuevo = datos.map((e) => {
                 e.uid = e.codigoEvento + "-" + e.cedula
-                return e 
+                return e
             })
-            setTikes([...nuevo])            
+            setTikes([...nuevo])
         }).catch(err => {
             console.log(err)
         })
@@ -93,75 +183,324 @@ export default function EmitirboView() {
                     </div>
 
                 </div>
-                <div className="card-body table-responsive">
+                <Tabs value={value} onChange={handleChange}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    aria-label="scrollable auto tabs example"
+                >
+                    <Tab className="" label="Boletos Pagados sin canjear  "{...a11yProps(0)} />
+                    <Tab label="Boletos Reservados no Canjeado " {...a11yProps(1)} />      
+                    <Tab label="Boletos Canjeados " {...a11yProps(2)} />                
+                </Tabs>
+                <TabPanel value={value} index={0} className="text-center" >
                     <MaterialReactTable
                         columns={ticketsboletos}
-                        data={tiketslist}
+                        data={tiketslist.filter(e => e.canje == "NO CANJEADO" && e.estado =="Pagado")}
                         muiTableProps={{
                             sx: {
                                 tableLayout: 'flex'
                             }
                         }}
-                        muiTableBodyProps={{
-                            sx: { columnVisibility: { nombre: false } }
-                        }}
-                        renderDetailPanel={({ row }) => (
+                        enableRowActions
+                        positionActionsColumn="first"
+                        renderRowActions={({ row }) => (
+                            <Box sx={{ display: 'flex' }}>
 
-                            <div className="row  border-bottom pb-1 align-items-center  rounded-1" >
-                                {row.original.cedido=="NO"? <div className="col-sm  d-flex align-items-center   btn-group">
-                                    <button className="btn btn-danger btn-sm"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                       disabled={true}
-                                        title="edit"
-                                        onClick={() => Aprobar(row.original)}
+                                <div className=" btn-group  " >
+                                    {row.original.estado != "reservado" && row.original.pdf != null && row.original.link == "SI" ?
+                                        <Tooltip className="" title="Ver Ticket" placement="top">
+                                            <a
+                                                className=" border  btn-default btn-sm"
+
+                                                href={row.original.pdf}
+                                                target="_black"
+                                            >
+                                                <i className="fa fa-download text-primary"></i>
+                                            </a>
+                                        </Tooltip> :
+                                        <a
+                                            className="border  btn-default btn-sm btn-disable"
+                                            disabled
+
+                                        >
+                                            <i className="fa fa-download "></i>
+
+
+                                        </a>
+                                    }
+                                    {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
+                                        <a className=" btn btn-default btn-sm btn-disable"
+                                        //  onClick={() => console.log(row.original)}
+                                        >
+                                            <img src={cedericon}
+                                                style={
+                                                    {
+                                                        height: 20
+                                                    }
+                                                }
+                                            />
+                                        </a>
+                                    </Tooltip> :
+                                        <a
+                                            className="border  btn-default btn-sm btn-disable"
+                                            disabled                                        >
+                                            <img src={cedericon}
+                                                style={
+                                                    {
+                                                        height: 20
+                                                    }
+                                                }
+                                            />
+                                        </a>
+                                    }
+                                    {row.original.estado != "Pagado" ?<Tooltip
+                                        title="Eliminar"
+                                        placement="top"
                                     >
-                                        <i className=" fa fa-edit  fa-xs" ></i> opciones por definir?
-                                    </button>
-                                    <button className="btn  btn-success btn-sm"
-                                        data-bs-toggle="tooltip"
-                                        disabled={true}
-                                        data-bs-placement="top"
-                                        title="Emitir"
-                                        onClick={() => abriremitir(row.original)}
-                                    > <i className="fa fa-paper-plane fa-xs"></i> opciones por definir? </button>
-                                    
+                                        <a
+                                            onClick={() => eliminar(row.original)}
+                                            className="border  btn-default btn-sm  "
 
-                                </div>:""}
-                                <div className="col-sm  d-flex align-items-center   btn-group">
-                                    <button className="btn btn-danger btn-sm"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        disabled={true}
-                                        title="edit"
-                                        onClick={() => Aprobar(row.original)}
+
+                                        >
+                                            <i className="fa fa-trash text-danger "></i>
+
+
+                                        </a>
+                                    </Tooltip>:""}
+                                    {row.original.canje == "NO CANJEADO" ? <Tooltip
+                                        title="Canjear"
+                                        placement="top"
                                     >
-                                        <i className=" fa fa-edit  fa-xs" ></i> opciones por definir?
-                                    </button>
-                                    <button className="btn  btn-success btn-sm"
-                                        data-bs-toggle="tooltip"
-                                        disabled={true}
-                                        data-bs-placement="top"
-                                        title="Emitir"
-                                        onClick={() => abriremitir(row.original)}
-                                    > <i className="fa fa-paper-plane fa-xs"></i> opciones por definir? </button>
+                                        <a
+                                            className="border  btn-default btn-sm "
+                                        onClick={() => canjear(row.original)}
+
+                                        >
+                                            <i className="fa fa-check-circle text-success" aria-hidden="true"></i>
 
 
+                                        </a>
+                                    </Tooltip> : ""
+                                    }
                                 </div>
-
-                            </div>
-
-
+                            </Box>
                         )}
-                        positionToolbarAlertBanner="bottom"
-                        displayColumnDefOptions={{
-                            'mrt-row-numbers': {
-                                enableHiding: true,
-                            },
-                        }}
                         localization={MRT_Localization_ES}
                     />
-                </div>
+                </TabPanel>
+                <TabPanel value={value} index={1} className="text-center" >
+                    <MaterialReactTable
+                        columns={ticketsboletos}
+                        data={tiketslist.filter(e => e.canje == "NO CANJEADO" && e.estado == "reservado")}
+                        muiTableProps={{
+                            sx: {
+                                tableLayout: 'flex'
+                            }
+                        }}
+                        enableRowActions
+                        positionActionsColumn="first"
+                        renderRowActions={({ row }) => (
+                            <Box sx={{ display: 'flex' }}>
+
+                                <div className=" btn-group  " >
+                                    {row.original.estado != "reservado" && row.original.pdf != null && row.original.link == "SI" ?
+                                        <Tooltip className="" title="Ver Ticket" placement="top">
+                                            <a
+                                                className=" border  btn-default btn-sm"
+
+                                                href={row.original.pdf}
+                                                target="_black"
+                                            >
+                                                <i className="fa fa-download text-primary"></i>
+
+
+                                            </a>
+                                        </Tooltip> :
+                                        <a
+                                            className="border  btn-default btn-sm btn-disable"
+                                            disabled
+
+                                        >
+                                            <i className="fa fa-download "></i>
+
+
+                                        </a>
+                                    }
+                                    {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
+                                        <a className=" btn btn-default btn-sm btn-disable"
+
+
+                                        //  onClick={() => console.log(row.original)}
+                                        >
+                                            <img src={cedericon}
+                                                style={
+                                                    {
+                                                        height: 20
+                                                    }
+                                                }
+                                            />
+                                        </a>
+                                    </Tooltip> :
+                                        <a
+                                            className="border  btn-default btn-sm btn-disable"
+                                            disabled
+
+                                        >
+                                            <img src={cedericon}
+                                                style={
+                                                    {
+                                                        height: 20
+                                                    }
+                                                }
+                                            />
+
+
+                                        </a>
+
+                                    }
+                                    {row.original.estado == "reservado" ? <Tooltip
+                                        title="Eliminar"
+                                        placement="top"
+                                    >
+                                        <a
+                                            onClick={() => eliminar(row.original)}
+                                            className="border  btn-default btn-sm  "
+
+
+                                        >
+                                            <i className="fa fa-trash text-danger "></i>
+
+
+                                        </a>
+                                    </Tooltip>:""}
+                                    {row.original.canje == "NO CANJEADO" ? <Tooltip
+                                        title="Canjear"
+                                        placement="top"
+                                    >
+                                        <a
+                                            className="border  btn-default btn-sm   btn-disable"
+                                       // onClick={() => canjear(row.original)}
+
+                                        >
+                                            <i className="fa fa-check-circle text-success" aria-hidden="true"></i>
+
+
+                                        </a>
+                                    </Tooltip> : ""
+                                    }
+                                </div>
+                            </Box>
+                        )}
+                        localization={MRT_Localization_ES}
+                    />
+                </TabPanel>
+                <TabPanel value={value} index={2} className="text-center" >
+                    <MaterialReactTable
+                        columns={ticketsboletos}
+                        data={tiketslist.filter(e => e.canje != "NO CANJEADO" )}
+                        muiTableProps={{
+                            sx: {
+                                tableLayout: 'flex'
+                            }
+                        }}
+                        enableRowActions
+                        positionActionsColumn="first"
+                        renderRowActions={({ row }) => (
+                            <Box sx={{ display: 'flex' }}>
+
+                                <div className=" btn-group  " >
+                                    {row.original.estado != "reservado" && row.original.pdf != null && row.original.link == "SI" ?
+                                        <Tooltip className="" title="Ver Ticket" placement="top">
+                                            <a
+                                                className=" border  btn-default btn-sm"
+
+                                                href={row.original.pdf}
+                                                target="_black"
+                                            >
+                                                <i className="fa fa-download text-primary"></i>
+
+
+                                            </a>
+                                        </Tooltip> :
+                                        <a
+                                            className="border  btn-default btn-sm btn-disable"
+                                            disabled
+
+                                        >
+                                            <i className="fa fa-download "></i>
+
+
+                                        </a>
+                                    }
+                                    {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
+                                        <a className=" btn btn-default btn-sm btn-disable"
+
+
+                                        //  onClick={() => console.log(row.original)}
+                                        >
+                                            <img src={cedericon}
+                                                style={
+                                                    {
+                                                        height: 20
+                                                    }
+                                                }
+                                            />
+                                        </a>
+                                    </Tooltip> :
+                                        <a
+                                            className="border  btn-default btn-sm btn-disable"
+                                            disabled
+
+                                        >
+                                            <img src={cedericon}
+                                                style={
+                                                    {
+                                                        height: 20
+                                                    }
+                                                }
+                                            />
+
+
+                                        </a>
+
+                                    }
+                                    {row.original.estado == "Pagado" ? <Tooltip
+                                        title="Eliminar"
+                                        placement="top"
+                                    >
+                                        <a
+                                            onClick={() => eliminar(row.original)}
+                                            className="border  btn-default btn-sm  "
+
+
+                                        >
+                                            <i className="fa fa-trash text-danger "></i>
+
+
+                                        </a>
+                                    </Tooltip>:""}
+                                    {row.original.canje == "NO CANJEADO" ? <Tooltip
+                                        title="Canjear"
+                                        placement="top"
+                                    >
+                                        <a
+                                            className="border  btn-default btn-sm "
+                                        onClick={() => canjear(row.original)}
+
+                                        >
+                                            <i className="fa fa-check-circle text-success" aria-hidden="true"></i>
+
+
+                                        </a>
+                                    </Tooltip> : ""
+                                    }
+                                </div>
+                            </Box>
+                        )}
+                        localization={MRT_Localization_ES}
+                    />
+                </TabPanel>
             </div>
         </>
     );

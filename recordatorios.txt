@@ -8,6 +8,11 @@ ver permisos de de usuario
 
 dos opciones de venta 
 
+// viernes 18:30
+//sabado   22:00
+//lunes   19:00
+//martes   22:00
+//miercoles 19:00
 despues de guardar dos compras ya no  registra los boletos pero la compra si 
 
 
@@ -19,9 +24,16 @@ el servidor esta adelantado
 // https://rec.netbot.ec/ms_login/doc/static/index.html#/Compra/post_api_v1_registraPagos
 // agreagar efectivo
 // terminar endpoit para cambiar canje de boleto
-
+// liberar boletos
 ///endpoit para borrar boletos 
-
+//cambiar metodo efectivo
+// metodo 
+//id 
+//reporte 
+//
+// consultarlocalidad
+//
+//
 1751147891
 1724349590 2 /2  1724349590 1724349590
 1722817549

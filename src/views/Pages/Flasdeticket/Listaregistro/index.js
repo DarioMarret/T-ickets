@@ -3,7 +3,7 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Tooltip, } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Edit, Summarize, Visibility, } from '@mui/icons-material';
+import { Delete, Edit, Summarize, Visibility, } from '@mui/icons-material';
 import { useDispatch, useSelector } from "react-redux";
 import { listaRegistro } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
@@ -11,6 +11,7 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useHistory } from "react-router";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
+import { eliminarRegistro } from "utils/pagos/Queripagos";
 
 export default function ListaderegistroView(props) {
     let { cedula } = props
@@ -50,6 +51,57 @@ export default function ListaderegistroView(props) {
         usedispatch(setModal({ nombre: "confirmar", estado: { ...row } }))
         //console.log({ cedula: row.original, numeroTransaccion: row.numeroTransaccion })
         //confirmar
+    } const eliminarregistro = (row) => {
+        //console.log(row)
+        let data = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
+        //console.log(Object.values(data).includes("Eladio Carrión Quito"),data)
+        if (Object.values(data).includes("Eladio Carrión Guayaquil")) {
+            console.log("guay")
+            return
+        }
+        if (Object.values(data).includes("Eladio Carrión Quito")) {
+            console.log("gu")
+            return
+        }
+        $.confirm({
+            title: 'Desea eliminar el registro de compra ',
+            content: '',
+            type: 'red',
+            typeAnimated: true,
+            buttons: {
+                tryAgain: {
+                    text: 'Eliminar',
+                    btnClass: 'btn-red',
+                    action: function () {
+                        eliminarRegistro({ "id": row.id }).then(ouput => {
+                            console.log(ouput)
+                            console.log(row.id)
+                            if (!ouput.success) { return $.alert("" + ouput.message) }
+                            listarRegistropanel({ "cedula": cedula }).then(e => {
+                                 //console.log(e)
+                                if (e.data) {
+
+                                    setDatos(e.data)
+                                    return
+                                }
+                                //setTikes([])
+                            }).catch(err => {
+                                console.log(err)
+                            })
+
+                            $.alert("Registro eliminado correctamente")
+
+                        }).catch(error => {
+                            $.alert("hubo un error no se pudo eliminar este registro")
+                        })
+                        
+                    }
+                },
+                close: function () {
+                }
+            }
+        });
+
     }
 
     return (
@@ -72,13 +124,17 @@ export default function ListaderegistroView(props) {
 
                         <Box sx={{ display: 'flex' }}>
                             {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado " ?
-                                <IconButton
-                                    onClick={() => abrirModal(row.original)}
-                                    color="error"
-                                    aria-label="Consolidar"
+                                <Tooltip
+                                    title="Reportar pago" placement="top"
                                 >
-                                    <Summarize />
-                                </IconButton> :
+                                    <IconButton
+                                        onClick={() => abrirModal(row.original)}
+                                        color="error"
+                                        aria-label="Consolidar"
+                                    >
+                                        <Summarize />
+                                    </IconButton>
+                                </Tooltip> :
                                 <IconButton
                                     disabled={true}
                                     color="error"
@@ -97,6 +153,16 @@ export default function ListaderegistroView(props) {
                                     <Visibility />
                                 </IconButton>
                             </Tooltip> : ""}
+                            {row.original.estado_pago == "Pendiente" && (row.original.forma_pago == "Deposito" || row.original.forma_pago == "Efectivo") ?
+                                <Tooltip title="Borrar" placement="right">
+                                    <IconButton
+                                        //disabled={}
+                                        color="error"
+                                        onClick={()=>eliminarregistro(row.original)}
+                                        aria-label="Bloquear">
+                                        <Delete />
+                                    </IconButton>
+                                </Tooltip> : ""}
                         </Box>
                     )
                 }}

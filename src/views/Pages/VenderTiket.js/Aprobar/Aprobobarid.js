@@ -18,12 +18,14 @@ import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { listaRegistro } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { setdetalle } from "StoreRedux/Slice/SuscritorSlice";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 
 let { cedericon, atencion } = bancos
-export default function AprobarView() {
+export default function AprobarViewid() {
+    let { id } = useParams()
+    console.log(id)
     let usedispatch = useDispatch()
     let history = useHistory()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -158,8 +160,8 @@ export default function AprobarView() {
     }
     // console.log(data)
     useEffect(() => {
-        listarRegistropanel({ "cedula": "" }).then(e => {
-           // console.log(e)
+        listarRegistropanel({ "cedula": id }).then(e => {
+            // console.log(e)
             if (e.data) {
 
                 setTikes(e.data)
@@ -182,9 +184,9 @@ export default function AprobarView() {
 
         }
     }
-    const eliminarregistro=(parms)=>{
+    const eliminarregistro = (parms) => {
         console.log(parms)
-        
+
         $.confirm({
             title: 'Desea eliminar Este registro de compra ',
             content: '',
@@ -195,11 +197,11 @@ export default function AprobarView() {
                     text: 'Eliminar',
                     btnClass: 'btn-red',
                     action: function () {
-                        eliminarRegistro({"id":parms.id}).then(ouput=>{
+                        eliminarRegistro({ "id": parms.id }).then(ouput => {
                             console.log(ouput)
                             console.log(parms.id)
                             if (!ouput.success) { return $.alert("" + ouput.message) }
-                            listarRegistropanel({ "cedula": "" }).then(e => {
+                            listarRegistropanel({ "cedula": id }).then(e => {
                                 // console.log(e)
                                 if (e.data) {
 
@@ -210,10 +212,10 @@ export default function AprobarView() {
                             }).catch(err => {
                                 console.log(err)
                             })
-                            
+
                             $.alert("Registro Eliminado correctamente")
 
-                        }).catch(error=>{
+                        }).catch(error => {
                             $.alert("hubo un error no se pudo eliminar este registro")
                         })
                     }
@@ -226,7 +228,7 @@ export default function AprobarView() {
     }
     const handleChange = (event, newValue) => {
         setValue(newValue);
-       // console.log(newValue)
+        // console.log(newValue)
     };
     function Aprobarvarios() {
         usedispatch(setModal({ nombre: "Aprobar", estado: data }))
@@ -240,14 +242,14 @@ export default function AprobarView() {
         usedispatch(setModal({ nombre: "confirmar", estado: e }))
     }
     function detalle(e) {
-      //  console.log(e)
+        //  console.log(e)
         usedispatch(setdetalle({ ...e }))
         history.push("/admin/Reporte/" + e.id)
     }
 
     return (
         <>
-            {alert} 
+            {alert}
             {
                 modal.nombre == "Aprobar" ?
                     <ModalAprobarViews /> : ""}
@@ -310,19 +312,19 @@ export default function AprobarView() {
                                                 <Visibility />
                                             </IconButton>
                                         </Tooltip> : ""}
-                                        {row.original.estado_pago == "Pendiente" ?<Tooltip
+                                        {row.original.estado_pago == "Pendiente" ? <Tooltip
                                             title="Borrar"
                                             placement="top"
-                                            
+
                                         >
-                                            <IconButton 
+                                            <IconButton
                                                 onClick={() => eliminarregistro(row.original)}
                                                 color="error">
                                                 <Delete />
                                             </IconButton>
 
 
-                                        </Tooltip>:""}
+                                        </Tooltip> : ""}
                                     </Box>
                                 )}
                                 localization={MRT_Localization_ES}

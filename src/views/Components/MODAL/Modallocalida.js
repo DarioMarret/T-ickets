@@ -91,13 +91,29 @@ const LocalidadmapViews = (props) => {
         }
         getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : correlativosadd({
             "id": mapath.precio.idcolor,
-            "estado": "disponible",
+            "estado": "reservado",
             "cedula": user.cedula,
-            "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad == 1 ? getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad : (parseInt(getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad - 1))
+            "mas": "menos",
+            "cantidad": 1
+
+            // "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad == 1 ? getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad : (parseInt(getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad - 1))
         }).then(oupt => {
-            getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
-            setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
             console.log(oupt)
+            if (oupt.success) {
+               
+                console.log(oupt)
+                  getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
+        setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
+      
+            }
+            //console.log(oupt)
+            console.log({
+                "id": mapath.precio.idcolor,
+                "estado": "reservado",
+                "cedula": user.cedula,
+                "mas": "menos",
+                "cantidad": 1
+            })
         }).catch(err => {
             console.log(err)
         })
@@ -130,15 +146,28 @@ const LocalidadmapViews = (props) => {
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
         if (TotalSelecion() < 10) {
-            getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
-            setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
             correlativosadd({
                 "id": mapath.precio.idcolor,
                 "estado": "reservado",
                 "cedula": user.cedula,
-                "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? 1 : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad
+                "mas": "mas",
+                "cantidad": 1
+                // "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? 1 : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad
             }).then(oupt => {
+                if (oupt.success) {
+                    getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
+                    setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
+
+                }
+                console.log({
+                    "id": mapath.precio.idcolor,
+                    "estado": "reservado",
+                    "cedula": user.cedula,
+                    "mas": "mas",
+                    "cantidad": 1
+                })
                 console.log(oupt)
+                //console.log(oupt)
             }
 
             ).catch(erro => console.log(erro))
@@ -228,7 +257,7 @@ const LocalidadmapViews = (props) => {
                 showCancel={false}
                 showConfirm={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                >
+            >
                 <div>
                     <div className='col-12 pb-3'>
                         <img src={atencion} className="img-fluid"
@@ -325,12 +354,12 @@ const LocalidadmapViews = (props) => {
         setAlert(
             <SweetAlert
                 warning
-                style={{ display: "block", marginTop: "-100px" }}               
+                style={{ display: "block", marginTop: "-100px" }}
                 closeOnClickOutside={false}
                 showCancel={false}
                 showConfirm={false}
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                >
+            >
                 <div>
                     <div className='col-12 pb-3'>
                         <img src={atencion} className="img-fluid"
@@ -633,10 +662,10 @@ const LocalidadmapViews = (props) => {
                 }
                 else if (ouput.data.some(e => e.typo == "correlativo")) {
                     mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible"))) : ''
-                //    console.log(ouput.data.filter(e => e.estado == "disponible").length)
-                    let dispo = ouput.data.filter(e => e.estado == "disponible").length 
-                   // console.log(ouput.data.filter(e=>e.cedula!=""))
-                   // console.log(ouput.data.filter(e=>e.cedula!=null).length)
+                    //    console.log(ouput.data.filter(e => e.estado == "disponible").length)
+                    let dispo = ouput.data.filter(e => e.estado == "disponible").length
+                    // console.log(ouput.data.filter(e=>e.cedula!=""))
+                    // console.log(ouput.data.filter(e=>e.cedula!=null).length)
                     //console.log(ouput.data)
                     usedispatch(updateboletos({
                         disponibles: ouput.data.filter(e => e.estado == "disponible").length,
@@ -644,11 +673,11 @@ const LocalidadmapViews = (props) => {
                         pagados: sleccionlocalidad.pagados,
                         inpagos: sleccionlocalidad.inpagos
                     }))
-                   /* console.log({
-                        disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
-                        proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
-                        pagados: sleccionlocalidad.pagados,  inpagos: sleccionlocalidad.inpagos
-                    })*/
+                    /* console.log({
+                         disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
+                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
+                         pagados: sleccionlocalidad.pagados,  inpagos: sleccionlocalidad.inpagos
+                     })*/
                 }
             }).catch(err => {
                 console.log(err)
@@ -796,9 +825,9 @@ const LocalidadmapViews = (props) => {
                                                                     return (
                                                                         <div key={"silla" + index} id={silla.idsilla}
                                                                             className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 sillasfila text-center  justify-content-center align-items-center '}
-                                                                            style={{ height: '30px', width: '30px', marginLeft: '1px', }}  
+                                                                            style={{ height: '30px', width: '30px', marginLeft: '1px', }}
                                                                             onClick={() => console.log(silla)}
-                                                                            >
+                                                                        >
                                                                             <div className={'px-3 d-flex   text-white justify-content-center  '} >
                                                                                 <div className="d-flex justify-content-center">
                                                                                     <span style={{ fontSize: '0.7em' }}> {numero} </span>

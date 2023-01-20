@@ -42,3 +42,45 @@ export const generarBoleto=async()=>{
         return error
     }
 }
+export const eliminarRegistro= async(parms)=>{
+    try {
+        let { data } = await axios.post(Host +"api/v1/eliminarRegistro",
+        parms,{
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const eliminartiket= async (parms)=>{
+    try {
+        let { data } = await axios.post(Host + "/ticket_usuario_eliminar",
+            parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+        
+    }
+}
+export const cambiarMetodo =async(parms)=>{
+    try {
+        let { data } = await axios.post(Host +"api/v1/cambiandoMetodoPago",parms,{
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}

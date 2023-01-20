@@ -25,7 +25,7 @@ function AdminNavbar() {
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   function salir(){
     removeDatosUsuario()
-    history.push("auth/login")
+    history.push("/")
   }
   return (
     <>

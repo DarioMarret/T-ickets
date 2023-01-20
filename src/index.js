@@ -28,7 +28,7 @@ root.render(
 
         <Route path="/auth" render={(props) => !clienteInfo() ? <AuthLayout {...props} /> : <Redirect from="/" to="/admin/inicio" />} />
         <Route path="/admin" render={(props) => clienteInfo() ? <AdminLayout {...props} /> : <Redirect from="/" to="/auth/login" />} />
-        <Route path="/" render={() => <Indexflas />} />
+        <Route path="/" render={() => !clienteInfo() ? <Indexflas /> : <Redirect from="/" to="/admin/inicio" />} />
 
         <Route path="*" to="/" />
       </Switch>

@@ -43,6 +43,7 @@ import { DiseñoViewtickes } from "views/Pages/Diseñador/Diseñodeticke";
 import EsquemaViews from "views/Pages/Esquemas";
 import NoticiasJs from "views/Pages/Noticias.js";
 import AprobarView from "views/Pages/VenderTiket.js/Aprobar";
+import AprobarViewid from "views/Pages/VenderTiket.js/Aprobar/Aprobobarid";
 import EmitirboView from "views/Pages/VenderTiket.js/Emitir";
 import TagsInput from "components/TagsInput/TagsInput";
 import DetalleCompraView from "views/Pages/VenderTiket.js/Aprobar/Detalleregistro";
@@ -62,7 +63,7 @@ var routes = [
     name: "Noticias",
     layout: "/admin",
     component: NoticiasJs,
-    icon: " nc-icon nc-notification-70", permiso: ["superadmin", "super_admin", "vendedores"],
+    icon: " nc-icon nc-notification-70", permiso: ["superadmin", "super_admin", ""],
   },
   {
     path: "/Evento/:id",
@@ -198,10 +199,17 @@ var routes = [
         permiso: ["superadmin", "super_admin", "vendedores"]
       }, 
       {
+        path: "/Aprobar/:id",
+        layout: "/admin",
+       
+        component: AprobarViewid,
+        permiso: ["superadmin", "super_admin", "vendedores"]
+      }, 
+      {
         path:"/Boletos",
         layout:"/admin",
         mini:"*",
-        name:"Boltos",
+        name:"Boletos",
         component: EmitirboView,
       },
       {
@@ -210,8 +218,9 @@ var routes = [
         name: "Vender Articulo",
         mini: "*",
         component: EmitirboView,
-        permiso: ["superadmin", "super_admin", "vendedores"]
+        permiso: ["superadmin", "super_admin", ""]
       }
+
     ]
   },
   {
@@ -220,7 +229,7 @@ var routes = [
     name: "Finanzas",
     state: "openFinanzas",
     icon: "nc-icon nc-money-coins",
-    permiso: ["superadmin", "super_admin", "vendedores"],
+    permiso: ["", "", ""],
     views: [
       {
         path: "/Tickets",
