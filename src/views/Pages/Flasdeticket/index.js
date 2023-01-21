@@ -59,6 +59,8 @@ import { correlativosadd } from "utils/Querypanelsigui.js";
 import { listarRegistropanel } from "utils/pagos/Queripagos.js";
 import { setToastes } from "StoreRedux/Slice/ToastSlice.js";
 import SubscrtitoViews from "./ModalLogin/Modalsubscrito.js";
+import { GeneraToken } from "utils/Querycomnet.js";
+import { ValidarToken } from "utils/Querycomnet.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
@@ -101,7 +103,7 @@ const IndexFlas = () => {
         getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
           getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
             setTimeout(function () {
-              correlativodelete({ 
+              correlativodelete({
                 "id": elem.id,
                 "estado": "disponible",
                 "mas": "eliminar",
@@ -142,6 +144,44 @@ const IndexFlas = () => {
   function cuentaregersivas() {
 
   }
+  function obtentoken() {
+    setspinervi("")
+    GeneraToken({
+      "email": getDatosUsuariosLocalStorag().email
+    }).then(ouput => {
+      console.log(ouput)
+      if (ouput.success) {
+        setspinervi("d-none")
+        usedispatch(setToastes({
+          show: true,
+          message: "Recuerda verificar tu bandeja de entrada",
+          color: 'bg-success',
+          estado: "Se Genero su Token de compra con éxito "
+        }))
+      }
+      else {
+        setspinervi("d-none")
+        usedispatch(setToastes({
+          show: true,
+          message: "No puedes Generar token ",
+          color: 'bg-danger',
+          estado: "No se Genero el token "
+        }))
+
+      }
+    }).catch(erro => {
+      setspinervi("d-none")
+      console.log(erro)
+      usedispatch(setToastes({
+        show: true,
+        message: "Verifca o vuelve a intentar",
+        color: 'bg-warning',
+        estado: "Hubo un error "
+      }))
+
+    })
+
+  }
   function filterlocal(id, consulta) {
     let nuevo = []
     id.forEach((elm, i) => {
@@ -175,6 +215,12 @@ const IndexFlas = () => {
     let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
     localidadtimer.current = setInterval(function () {
       ListarLocalidad().then(ouput => {
+        usedispatch(setToastes({
+          show: true,
+          message: "Recuerda verificar tu bandeja de entrada",
+          color: 'bg-success',
+          estado: "Se Genero su Token de compra con éxito "
+        }))
         //console.log(ouput)
         // filterlocal(id, ouput.data)
       }
@@ -201,7 +247,7 @@ const IndexFlas = () => {
     getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
       getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
         setTimeout(function () {
-          console.log(elem,{
+          console.log(elem, {
             "id": elem.id,
             "estado": "disponible",
             "mas": "eliminar",
@@ -299,11 +345,33 @@ const IndexFlas = () => {
           action: function () {
             var name = this.$content.find('.name').val();
             if (!name) {
-              $.alert('provide a valid name');
+              $.alert('Ingese su token');
               return false;
             }
+            setspinervi("")
+            ValidarToken().then(ouput => {
+              if (ouput.success) {
+                sessionStorage.setItem("Tokencom", ouput.data)
+                usedispatch(setToastes({
+                  show: true,
+                  message: "Recuerda tienes 10 minutos para comprar luego tu token sera inválido",
+                  color: 'bg-success',
+                  estado: "Token verificado con éxito "
+                }))
+                return
+              }
+              usedispatch(setToastes({
+                show: true,
+                message: "El token no es válido o ya espiro",
+                color: 'bg-danger',
+                estado: "Error de token"
+              }))
+
+            }).catch(erro => {
+
+            })
             //validar el token que llega
-            $.alert('Email ' + name);
+            //$.alert('Email ' + name);
           }
         },
         cancel: function () {
@@ -329,7 +397,7 @@ const IndexFlas = () => {
       let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
       /** agregar en casi de && f.forma_pago != "Tarjeta" */
       // let nuevos =
-      
+
       if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
         setspinervi("d-none")
         SetSeleccion("Tickets")
@@ -753,7 +821,7 @@ const IndexFlas = () => {
         setShowLogin={setShowLogin}
         abrir={abrir}
       />
-      
+
       <ModalFacilitoView />
       {/* header */}
       {publicidad.length > 0 ? <div className="container-fluid   px-0" style={{
@@ -1155,10 +1223,10 @@ const IndexFlas = () => {
                                           {!userauthi.login ? "SUSCRÍBETE" : "YA ESTAS SUSCRITO"}</p> : ""}
                                       {e.estado == "ACTIVO" ?
                                         <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? (e.codigoEvento == "ANNKV7" || e.codigoEvento == "9EGM42" ) ? "": abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
+                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? (e.codigoEvento == "ANNKV7" || e.codigoEvento == "9EGM42") ? "" : abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
                                           {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
                                         : ""}
-                                        {/* 
+                                      {/* 
                                         validar la hora de pago  cuando sea false permita comprar con token
                                         (new Date("01/20/2023 23:59 ")>new Date())
                                         */}
@@ -1268,6 +1336,11 @@ const IndexFlas = () => {
         setrepShow={setrepShow}
         pararcontador={detenervelocidad}
       />
+      {userauthi.login ?
+        <div className=" fixed-bottom text-end p-2 ">
+          <button className="btn btn-danger" onClick={obtentoken} >Obtener token de compra</button>
+        </div>
+        : ""}
       <div className={spinervi}
         style={{
           display: 'none',

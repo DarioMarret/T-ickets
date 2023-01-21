@@ -31,7 +31,7 @@ export const PagoRapido = async (transaccion) => {
         "idfactura": "",
         "transaccion": transaccion
     }
-   // console.log(datos, concierto)
+    // console.log(datos, concierto)
     try {
 
         console.log(datos, concierto)
@@ -42,7 +42,7 @@ export const PagoRapido = async (transaccion) => {
             }
         }
         )
-       // console.log(data)
+        // console.log(data)
         return data;
 
     } catch (error) {
@@ -65,22 +65,9 @@ export const AprobarTiket = async () => {
     }
 }
 /**  */
-export const  ConsolidaBoleto = async ()=>{
+export const ConsolidaBoleto = async () => {
     try {
-        let {data} =await axios.post(Host+"/boletos",{
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-            }
-        })
-        return data
-    } catch (error) {
-        return error
-    }
-}
-export const Pagofisico=async()=>{
-    try {
-        let {data}=await axios.post(Host+"/pagosefectivi",{
+        let { data } = await axios.post(Host + "/boletos", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -91,7 +78,20 @@ export const Pagofisico=async()=>{
         return error
     }
 }
-export const cederboleto=async (ceder)=>{
+export const Pagofisico = async () => {
+    try {
+        let { data } = await axios.post(Host + "/pagosefectivi", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const cederboleto = async (ceder) => {
     try {
         let { data } = await axios.post(Host + "/api/v1/ceder_boleto", ceder, {
 
@@ -105,5 +105,32 @@ export const cederboleto=async (ceder)=>{
     } catch (error) {
         console.log(error)
 
+    }
+}
+
+export const GeneraToken = async (parms) => {
+    try {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/generar_token", parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (err) {
+        return err
+    }
+}
+export const ValidarToken = async (parms) => {
+    try {
+        let { data } = await axios.get("https://rec.netbot.ec/ms_login/validar_token/" + parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
     }
 }
