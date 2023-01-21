@@ -324,7 +324,8 @@ const IndexFlas = () => {
     Limpiarseleccion()
     LimpiarLocalStore()
   }
-  const token = (e) => {
+  const tokenvalida = (e) => {
+    console.log(e)
     $.confirm({
       title: 'Canjear Token!',
       type: 'blue',
@@ -1217,10 +1218,10 @@ const IndexFlas = () => {
                                     <div className=" text-center">
                                       {e.estado == "PROCESO" ?
                                         <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? (e.codigoEvento == "ANNKV7" || e.codigoEvento == "9EGM42") ? "" : abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
-                                          {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
+                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? tokenvalida(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
+                                          Comprar Entrada</p>
                                         : ""}
-                                      {e.estado == "PROCESO" ?
+                                      {e.estado == "cancelar" ?
                                         <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                           className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? "" : usedispatch(setModal({ nombre: 'registro', estado: null }))} >
                                           {!userauthi.login ? "SUSCRÍBETE" : "YA ESTAS SUSCRITO"}</p> : ""}
