@@ -293,12 +293,13 @@ export function GetValores() {
         })
         valor = subtotal + comision;
         let precios = {
-            total: valor.toFixed(2) * 5 / 100 + valor,
+
             sumcomision: comision.toFixed(2),
             comision_bancaria: valor.toFixed(2) * 5 / 100,
             subtotal: subtotal.toFixed(2),
             description: descrption, comision: parseFloat(sumcomision).toFixed(2),
-            envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : ''
+            envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
+            total: valor.toFixed(2) * 5 / 100 + valor,
         }
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))
         return precios

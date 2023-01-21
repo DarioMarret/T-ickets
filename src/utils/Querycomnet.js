@@ -35,7 +35,7 @@ export const PagoRapido = async (transaccion) => {
     try {
 
         console.log(datos, concierto)
-        const { data } = await axios.post(Host + "/api/v1/registraCompra ", datos, {
+        const { data } = await axios.post("https://rec.netbot.ec/ms_login//api/v1/registraCompra ", datos, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -53,7 +53,7 @@ export const PagoRapido = async (transaccion) => {
 /** Listar todos los reportes de tickes */
 export const AprobarTiket = async () => {
     try {
-        let { data } = await axios.get(Host + "/ticket_admin", {
+        let { data } = await axios.get("https://rec.netbot.ec/ms_login//ticket_admin", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -67,7 +67,7 @@ export const AprobarTiket = async () => {
 /**  */
 export const ConsolidaBoleto = async () => {
     try {
-        let { data } = await axios.post(Host + "/boletos", {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login//boletos", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -80,7 +80,7 @@ export const ConsolidaBoleto = async () => {
 }
 export const Pagofisico = async () => {
     try {
-        let { data } = await axios.post(Host + "/pagosefectivi", {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login//pagosefectivi", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -93,7 +93,7 @@ export const Pagofisico = async () => {
 }
 export const cederboleto = async (ceder) => {
     try {
-        let { data } = await axios.post(Host + "/api/v1/ceder_boleto", ceder, {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login//api/v1/ceder_boleto", ceder, {
 
         }, {
             header: {

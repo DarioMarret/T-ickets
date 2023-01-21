@@ -122,8 +122,8 @@ const ResgistroView = (prop) => {
         }
 
     }
-    function Suscritosfirs(){
-        usedispatch(setModal({ nombre: '', estado: '' })) 
+    function Suscritosfirs() {
+        usedispatch(setModal({ nombre: '', estado: '' }))
     }
 
     async function Registeruser(e) {
@@ -146,8 +146,8 @@ const ResgistroView = (prop) => {
             cedula: cedula.trim(),
         }
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
-       
-        if (!Object.values(Object.fromEntries(form.entries())).some(e => e)  ) {
+
+        if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
             setDatoToas({
                 show: true,
                 message: "Falta datos por completar",
@@ -244,7 +244,7 @@ const ResgistroView = (prop) => {
                                 estado: "Inicio Exitoso",
                             })
 
-                            modal.estado != null && modal.estado != "Subscription" ? abrir(modal.estado) : modal.estado == "Subscription" ? usedispatch(setModal({ nombre: "Subscription", estado: "" })) : usedispatch(setModal({nombre:"",estado:""}))
+                            modal.estado != null && modal.estado != "Subscription" ? abrir(modal.estado) : modal.estado == "Subscription" ? usedispatch(setModal({ nombre: "Subscription", estado: "" })) : usedispatch(setModal({ nombre: "", estado: "" }))
                             usedispatch(addususcritor({ users }))
                         } else {
                             //console.log("error", registro.data)
@@ -397,7 +397,7 @@ const ResgistroView = (prop) => {
                                                         id="name"
                                                         name="name"
                                                         value={datosPerson.name}
-                                                      
+
                                                         required
                                                         onChange={(e) => hanbleOnchange(e)}
                                                         placeholder="Ingrese su nombre completo" />

@@ -24,7 +24,7 @@ export function getCliente() {
 }
 export async function getCedula(cedula) {
     try {
-        const { data } = await axios.get(Host + "cedula/" + cedula)
+        const { data } = await axios.get("https://rec.netbot.ec/ms_login/cedula/" + cedula)
         console.log(data)
         const { success } = data
         if (success) {

@@ -12,7 +12,7 @@ import { Host, Whatsappnumero, DatosUsuariocliente, Valores } from "./constantes
  */
 export const Authsucrito = async (parms) => {
     //console.log(parms)
-    const { data } = await axios.post(Host + "api/v1/auth_suscriptor", parms, {
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_suscriptor", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -88,7 +88,7 @@ export const GuardarDatosdelComprador = async () => {
         movil: datosPerson.whatsapp,
         password: datosPerson.cedula
     }
-    const { data } = await axios.post(Host + "api/v1/crear_suscriptor",
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor",
         datos, {
         headers: {
             'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ export const ReportarDepositoCompra = async (transaccion) => {
     let valores = GetValores()
     let metodo = GetMetodo()
     // console.log("se esta generando")
-    const { data } = await axios.post(Host + "pago_medio", {
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio", {
         datosPersonal,
         valores,
         metodo,
@@ -187,7 +187,7 @@ export const ReportarEfectivoCompra = async () => {
     let valores = GetValores()
     let metodo = GetMetodo()
     //console.log({datosPersonal,concierto,valores,metodo})
-    const { data } = await axios.post(Host + "pago_medio", {
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio", {
         datosPersonal,
         valores,
         concierto,

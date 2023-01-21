@@ -29,7 +29,7 @@ const ModalLogin = (props) => {
     if (credenciales.username !== '' && credenciales.pass !== '') {
 
       try {
-        const { data } = await axios.post(Host + "api/v1/auth_suscriptor", { email: credenciales.username.trim(), password: credenciales.pass.trim() }, {
+        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_suscriptor", { email: credenciales.username.trim(), password: credenciales.pass.trim() }, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -139,12 +139,12 @@ const ModalLogin = (props) => {
                   </div>
                   <div className="col-12 "
                   >
-                    <a className="btn btn-link text-pag  px-4" onClick={regsitronew} href="#"
+                    {false ? <a className="btn btn-link text-pag  px-4" onClick={regsitronew} href="#"
                       style={{
                         fontWeight: "bold",
-                        color:"#3F40E0"
+                        color: "#3F40E0"
                       }}
-                    >Crear Cuenta</a>
+                    >Crear Cuenta</a> : ""}
                   </div>
                   <div className="col-12 ">
                     <a className=" nav-link btn btn-link" href="#" > Olvide mi contraseña </a>
@@ -171,7 +171,7 @@ const ModalLogin = (props) => {
           <strong className="mr-auto">Hubo un error </strong>
           <small></small>
           <button type="button" className="close"
-            onClick={() => setShowToas(false )} >
+            onClick={() => setShowToas(false)} >
             ×
           </button>
         </Toast.Header>

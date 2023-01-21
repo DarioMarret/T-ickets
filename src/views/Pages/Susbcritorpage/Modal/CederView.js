@@ -49,9 +49,9 @@ const CederView = () => {
     }
     const succesceder = async (ceder) => {
         hideAlert()
-       // console.log(ceder)
-        cederboleto(ceder).then(ouput=>{
-            if(ouput.success){
+        // console.log(ceder)
+        cederboleto(ceder).then(ouput => {
+            if (ouput.success) {
                 hideAlert()
                 usedispatch(setToastes({
                     show: true,
@@ -61,7 +61,7 @@ const CederView = () => {
                 window.location.reload();
             }
 
-        }).catch(err=>{
+        }).catch(err => {
             usedispatch(setToastes({
                 show: true,
                 message: 'se cambio el propietario del boleto',
@@ -69,7 +69,7 @@ const CederView = () => {
             }))
         })
         try {
-            let { data } = await axios.post(Host + "/api/v1/ceder_boleto", ceder, {
+            let { data } = await axios.post("https://rec.netbot.ec/ms_login//api/v1/ceder_boleto", ceder, {
 
             }, {
                 header: {
@@ -83,10 +83,10 @@ const CederView = () => {
 
         }
 
-        
-      //  usedispatch(setModal({ nombre: '', estado: '' }))
-      
-       
+
+        //  usedispatch(setModal({ nombre: '', estado: '' }))
+
+
     }
     const hideAlert = () => {
         setAlert(null)
@@ -119,7 +119,7 @@ const CederView = () => {
                         nombreCompleto: oupt.data.nombreCompleto,
                         ciudad: oupt.data.direccion,
                         email: oupt.data.email,
-                        id:oupt.data.cedula
+                        id: oupt.data.cedula
                     })
                 }
                 else {
@@ -219,8 +219,8 @@ const CederView = () => {
                                         </div>
                                         <div className="col-2" >
                                             {datos.id ? <button className="btn btn-success" onClick={succesAlert}  > CEDER </button> :
-                                                <button className="btn btn-success" 
-                                                disabled={true} > CEDER </button>}
+                                                <button className="btn btn-success"
+                                                    disabled={true} > CEDER </button>}
                                         </div>
                                         <div className="col-lg-12">
                                             <div className="input-group mb-3">

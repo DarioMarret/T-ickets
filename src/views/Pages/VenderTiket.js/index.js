@@ -396,7 +396,7 @@ export default function StoreTickesViews() {
                 setrepShow={""}
                 comprar={detenervelocidad}
             />
-                           <ModalSuscritoView
+            <ModalSuscritoView
                 show={modalshow.modal.nombre == "newsuscri" ? true : false}
                 setshow={cerrnewsuscr}
                 estado={""}

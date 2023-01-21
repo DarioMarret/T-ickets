@@ -621,7 +621,7 @@ const IndexFlas = () => {
     const evento = async () => {
       try {
         //AGREGAR ESTADO
-        const data = await cargarEventoActivo("")
+        const data = await cargarEventoActivo("ACTIVO")
         if (!data == null) { return }
         ///console.log(data)
         //  console.log(data)
@@ -1227,7 +1227,7 @@ const IndexFlas = () => {
                                           {!userauthi.login ? "SUSCRÍBETE" : "YA ESTAS SUSCRITO"}</p> : ""}
                                       {e.estado == "ACTIVO" ?
                                         <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? (e.codigoEvento == "ANNKV7" || e.codigoEvento == "9EGM42") ? "" : abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
+                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
                                           {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
                                         : ""}
                                       {/* 
@@ -1340,11 +1340,6 @@ const IndexFlas = () => {
         setrepShow={setrepShow}
         pararcontador={detenervelocidad}
       />
-      {userauthi.login ?
-        <div className=" fixed-bottom text-end p-2 ">
-          <button className="btn btn-danger" onClick={obtentoken} >Obtener token de compra</button>
-        </div>
-        : ""}
       <div className={spinervi}
         style={{
           display: 'none',

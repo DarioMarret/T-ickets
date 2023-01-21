@@ -70,7 +70,7 @@ export default function ListaSuscritor(prop) {
             cedula: $("#cedula").val()
         }
         DatosUsuariosLocalStorag({ ...usuarios, ...datos, whatsapp: $("#movil").val(), })
-        if ($("#movil").val()==" "){
+        if ($("#movil").val() == " ") {
             usedispatch(setToastes({
                 show: true,
                 message: "Falta Celualar",
@@ -98,46 +98,46 @@ export default function ListaSuscritor(prop) {
             return
         }
         if (Object.values(datosend).every(e => e)) {
-            
-          
-                try {
-                    const registro = await axios.post(Host + "api/v1/crear_suscriptor", datosend, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                        }
-                    })
-                    console.log(registro.data.success)
-                    if (registro.data.success) {
-                        usedispatch(setToastes({
-                            show: true,
-                            message: "Usuario " + datosend.nombreCompleto + " creado correctamente",
-                            color: 'bg-success',
-                            estado: "Inicio Exitoso",
-                        }))
-                        successAlert()
-                    }
-                    else{
-                        usedispatch(setToastes({
-                            show: true,
-                            message: "Atentos",
-                            color: 'bg-warning',
-                            estado: "hubo un error",
-                        }))
-                    }
 
-                } catch (error) {
+
+            try {
+                const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datosend, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                    }
+                })
+                console.log(registro.data.success)
+                if (registro.data.success) {
                     usedispatch(setToastes({
                         show: true,
-                        message: "Cédula o email ya registrado",
-                        color: 'bg-danger',
-                        estado: "Huboo un error ",
+                        message: "Usuario " + datosend.nombreCompleto + " creado correctamente",
+                        color: 'bg-success',
+                        estado: "Inicio Exitoso",
                     }))
-                   // console.log(error)
-
+                    successAlert()
+                }
+                else {
+                    usedispatch(setToastes({
+                        show: true,
+                        message: "Atentos",
+                        color: 'bg-warning',
+                        estado: "hubo un error",
+                    }))
                 }
 
-          
+            } catch (error) {
+                usedispatch(setToastes({
+                    show: true,
+                    message: "Cédula o email ya registrado",
+                    color: 'bg-danger',
+                    estado: "Huboo un error ",
+                }))
+                // console.log(error)
+
+            }
+
+
         }
         else {
             usedispatch(setToastes({

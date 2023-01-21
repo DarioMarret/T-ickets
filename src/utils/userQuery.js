@@ -3,7 +3,7 @@ import { Host } from "./constantes"
 
 export const Listarticketporestado = async (parms) => {
     try {
-        const { data } = await axios.post(Host + "ticket_usuario", {
+        const { data } = await axios.post("https://rec.netbot.ec/ms_login/ticket_usuario", {
             "cedula": parms
         }, {
             headers: {

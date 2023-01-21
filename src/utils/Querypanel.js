@@ -4,7 +4,7 @@ import { Host } from "./constantes"
 
 /**Listar Suscritorea */
 export const GetSuscritores = async () => {
-    const { data } = await axios.get(Host + "api/v1/listas_suscriptor", {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listas_suscriptor", {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -14,7 +14,7 @@ export const GetSuscritores = async () => {
 }
 /**Listar Usuarios */
 export const GetUserList = async () => {
-    const { data } = await axios.get(Host + "api/v1/listas_user", {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listas_user", {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -24,7 +24,7 @@ export const GetUserList = async () => {
 }
 /**Listar Roles */
 export const GetRoles = async () => {
-    const { data } = await axios.get(Host + "api/v1/listar_roles", {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_roles", {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -34,7 +34,7 @@ export const GetRoles = async () => {
 }
 /** Editar Usuarios */
 export const EditUser = async (id, parms) => {
-    const { data } = await axios.put(Host + "api/v1/actualizar_user/" + id, parms, {
+    const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/actualizar_user/" + id, parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -44,7 +44,7 @@ export const EditUser = async (id, parms) => {
 }
 /**Crear nuevo usuario */
 export const CrearUser = async (parms) => {
-    const { data } = await axios.post(Host + "api/v1/crear_user", parms, {
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_user", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -54,7 +54,7 @@ export const CrearUser = async (parms) => {
 }
 /**Eliminar Usuario */
 export const EliminaUser = async (id) => {
-    const { data } = await axios.delete(Host + "api/v1/eliminar/" + id, {
+    const { data } = await axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar/" + id, {
         headers: {
             'Content-Type': 'aplication/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -64,7 +64,7 @@ export const EliminaUser = async (id) => {
 }
 /**Login de usuario */
 export const Loginadmin = async (parms) => {
-    const { data } = await axios.post(Host + "api/v1/auth_admin", parms, {
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_admin", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -76,7 +76,7 @@ export const Loginadmin = async (parms) => {
 /**Editar subscritores */
 export const EditarSuscrito = async (id, parms) => {
     console.log(parms, id)
-    const { data } = await axios.put(Host + "api/v1/actualizar_suscriptor/" + id, parms, {
+    const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/actualizar_suscriptor/" + id, parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -89,7 +89,7 @@ export const EditarSuscrito = async (id, parms) => {
  * * Eliminar suscritor especifico
  */
 export const EliminarSuscrito = async (id) => {
-    const { data } = await axios.delete(Host + "api/v1/eliminar_suscriptor/" + id, {
+    const { data } = await axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_suscriptor/" + id, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -103,7 +103,7 @@ export const EliminarSuscrito = async (id) => {
  */
 export const CrearSuscritor = async (parms) => {
     // console.log(parms)
-    const { data } = await axios.post(Host + "api/v1/crear_suscriptor", parms, {
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -114,7 +114,7 @@ export const CrearSuscritor = async (parms) => {
 }
 export const CancelarSubscriptor = async (id) => {
     //console.log("query",id)   
-    const { data } = await axios.put(Host + "api/v1/cancelation_suscriptor/" + id, {
+    const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/cancelation_suscriptor/" + id, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -129,7 +129,7 @@ export const ListarTikets = async () => {
     return data
 }
 export const ListarConcierto = async (parms) => {
-    const { data } = await axios.post(Host + "api/v1/filtrar_concierto", parms, {
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/filtrar_concierto", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -140,7 +140,7 @@ export const ListarConcierto = async (parms) => {
 }
 
 export const GuardarEspacio = async (parms) => {
-    const { data } = await axios.post(Host + "api/v1/gusdar_espacio", parms, {
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/gusdar_espacio", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -151,7 +151,7 @@ export const GuardarEspacio = async (parms) => {
 }
 
 export const ListarEspacios = async () => {
-    const { data } = await axios.get(Host + "api/v1/listar_espacios", {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_espacios", {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -162,7 +162,7 @@ export const ListarEspacios = async () => {
 }
 /** Verificar error 500 internal server error */
 export const EliminarEspacios = async (parms) => {
-    const { data } = await axios.delete(Host + "api/v1/eliminar_espacio/" + parms, {
+    const { data } = await axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_espacio/" + parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -172,7 +172,7 @@ export const EliminarEspacios = async (parms) => {
     return data
 }
 export const ActualizarEspacio = async (parms) => {
-    const { data } = await axios.put(Host + "api/v1/actualizar_espacio", parms, {
+    const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/actualizar_espacio", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -184,7 +184,7 @@ export const ActualizarEspacio = async (parms) => {
 
 export const GuardarLocalidad = async (parms) => {
     console.log(parms)
-    const { data } = await axios.post(Host + "api/v1/guardar_localidad", parms, {
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/guardar_localidad", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -195,7 +195,7 @@ export const GuardarLocalidad = async (parms) => {
     return data
 }
 export const ListarLocalidad = async (parms) => {
-    const { data } = await axios.get(Host + "api/v1/listar_localidades/" + parms, {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_localidades/" + parms, {
         header: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -204,7 +204,7 @@ export const ListarLocalidad = async (parms) => {
     return data
 }
 export const localidaandespacio = async (parms, id) => {
-    const { data } = await axios.get(Host + "api/v1/listar_localidades_id_espacio/" + parms + "/" + id, {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_localidades_id_espacio/" + parms + "/" + id, {
         header: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -214,7 +214,7 @@ export const localidaandespacio = async (parms, id) => {
     return data
 }
 export const Listarlocalidadid = async (parms) => {
-    const { data } = await axios.get(Host + "api/v1/listar_localidades_id_espacio/" + parms, {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_localidades_id_espacio/" + parms, {
         header: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -224,7 +224,7 @@ export const Listarlocalidadid = async (parms) => {
     return data
 }
 export const AptualizarLocalida = async (parms) => {
-    const { data } = await axios.put(Host + "api/v1/listar_localidades", parms, {
+    const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/listar_localidades", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -259,7 +259,7 @@ export const FiltrarConcierto = async (parms) => {
     return data
 }
 export const GuardarEvento = async (parms) => {
-    const { data } = await axios.post(Host + "crearevento", parms, {
+    const { data } = await axios.post("https://rec.netbot.ec/ms_login/crearevento", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -268,7 +268,7 @@ export const GuardarEvento = async (parms) => {
     return data;
 }
 export const ListarEventos = async (parms) => {
-    const { data } = await axios.get(Host + "listareventos/", {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/listareventos/", {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -277,7 +277,7 @@ export const ListarEventos = async (parms) => {
     return data;
 }
 export const EventosActivos = async () => {
-    const { data } = await axios.get(Host + "listareventos/ACTIVO", {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/listareventos/ACTIVO", {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -286,7 +286,7 @@ export const EventosActivos = async () => {
     return data;
 }
 export const listarpreciolocalidad = async (parms) => {
-    const { data } = await axios.get(Host + "ListaPreciosLocalidades/" + parms, {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/ListaPreciosLocalidades/" + parms, {
         header: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -296,7 +296,7 @@ export const listarpreciolocalidad = async (parms) => {
     return data;
 }
 export const EliminarEvento = async (parm) => {
-    const { data } = await axios.delete(Host + "eliminarevento/" + parm, {
+    const { data } = await axios.delete("https://rec.netbot.ec/ms_login/eliminarevento/" + parm, {
         header: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -305,7 +305,7 @@ export const EliminarEvento = async (parm) => {
     return data
 }
 export const EliminareventoLocalidad = async (parm, id) => {
-    const { data } = await axios.delete(Host + "eliminarevento/" + parm + "/" + id, {
+    const { data } = await axios.delete("https://rec.netbot.ec/ms_login/eliminarevento/" + parm + "/" + id, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -314,7 +314,7 @@ export const EliminareventoLocalidad = async (parm, id) => {
     return data
 }
 export const ActualizarLocalidad = async (id, parms) => {
-    const { data } = await axios.put(Host + "actualizarevento/" + id, parms, {
+    const { data } = await axios.put("https://rec.netbot.ec/ms_login/actualizarevento/" + id, parms, {
         header: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -328,7 +328,7 @@ export const Obtenerlinkimagen = async (parm) => {
         fordata.append('image', parm);
         const { data } = await axios.post("https://flash.t-ickets.com/store/api/img", fordata)
         if (!data.success) return null
-      //  console.log(data)
+        //  console.log(data)
         return data.link
 
     } catch (error) {
