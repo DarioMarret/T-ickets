@@ -141,13 +141,10 @@ const IndexFlas = () => {
       }
     }, 1000);
   }
-  function cuentaregersivas() {
-
-  }
   function obtentoken() {
     setspinervi("")
     GeneraToken({
-      "email": getDatosUsuariosLocalStorag().email
+      "cedula": getDatosUsuariosLocalStorag().cedula
     }).then(ouput => {
       console.log(ouput)
       if (ouput.success) {
@@ -358,6 +355,7 @@ const IndexFlas = () => {
                   color: 'bg-success',
                   estado: "Token verificado con éxito "
                 }))
+                abrir(e)
                 return
               }
               usedispatch(setToastes({
@@ -1217,6 +1215,11 @@ const IndexFlas = () => {
                                       </div>
                                       : ""}
                                     <div className=" text-center">
+                                      {e.estado == "PROCESO" ?
+                                        <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
+                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? (e.codigoEvento == "ANNKV7" || e.codigoEvento == "9EGM42") ? "" : abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
+                                          {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
+                                        : ""}
                                       {e.estado == "PROCESO" ?
                                         <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                           className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? "" : usedispatch(setModal({ nombre: 'registro', estado: null }))} >
