@@ -881,17 +881,16 @@ const IndexFlas = () => {
                             <div className="pt-2  ">
                               {
                                 element.evento == null ?
-                                  <button className="btn border rounded-6  btn-lg btn-outline-light "
+                                  <a className="btn border rounded-1  btn-lg btn-outline-light "
                                     style={styleswiper.button}
-
-                                    href="#"
-                                    onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
-                                  >{!userauthi.login ? "Suscríbete" : "RESERVAR"}</button> :
-                                  <button className="btn border rounded-6  btn-lg btn-outline-light "
-
+                                    href={element.redirect}
+                                    target="_blank"
+                                  >VER MÁS</a> :
+                                  <button className="btn border rounded-1  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
                                   >COMPRAR</button>
+
                               }
                             </div>
                           </div>

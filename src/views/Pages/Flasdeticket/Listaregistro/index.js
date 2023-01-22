@@ -55,6 +55,7 @@ export default function ListaderegistroView(props) {
                     text: 'Eliminars',
                     btnClass: 'btn-red',
                     action: function () {
+                        /*
                         eliminarRegistro({ "id": row.id }).then(ouput => {
                             console.log(ouput)
                             console.log(row.id)
@@ -70,7 +71,7 @@ export default function ListaderegistroView(props) {
                                  //setTikes([])
                              }).catch(err => {
                                  console.log(err)
-                             })*/
+                             })*
 
                             $.alert("Registro eliminado correctamente")
                             setTimeout(function () {
@@ -80,7 +81,7 @@ export default function ListaderegistroView(props) {
 
                         }).catch(error => {
                             $.alert("hubo un error no se pudo eliminar este registro")
-                        })
+                        })*/
 
                     }
                 },
