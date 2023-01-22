@@ -38,31 +38,13 @@ export default function ListaderegistroView(props) {
     }
     function abrirModal(row) {
         // console.log(row)
-        let data = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-        //console.log(Object.values(data).includes("Eladio Carrión Quito"),data)
-        if (Object.values(data).includes("Eladio Carrión Guayaquil")) {
-            //console.log("guay")
-            return
-        }
-        if (Object.values(data).includes("Eladio Carrión Quito")) {
-            //console.log("gu")
-            return
-        }
+
         usedispatch(setModal({ nombre: "confirmar", estado: { ...row } }))
         //console.log({ cedula: row.original, numeroTransaccion: row.numeroTransaccion })
         //confirmar
     } const eliminarregistro = (row) => {
         //console.log(row)
-        let data = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-        //console.log(Object.values(data).includes("Eladio Carrión Quito"),data)
-        if (Object.values(data).includes("Eladio Carrión Guayaquil")) {
-            console.log("guay")
-            return
-        }
-        if (Object.values(data).includes("Eladio Carrión Quito")) {
-            console.log("gu")
-            return
-        }
+
         $.confirm({
             title: 'Desea eliminar el registro de compra ',
             content: '',
@@ -77,29 +59,29 @@ export default function ListaderegistroView(props) {
                             console.log(ouput)
                             console.log(row.id)
                             if (!ouput.success) { return $.alert("" + ouput.message) }
-                            
-                           /* listarRegistropanel({ "cedula": cedula }).then(e => {
-                                 //console.log(e)
-                                if (e.data) {
 
-                                    setDatos(e.data)
-                                    return
-                                }
-                                //setTikes([])
-                            }).catch(err => {
-                                console.log(err)
-                            })*/
+                            /* listarRegistropanel({ "cedula": cedula }).then(e => {
+                                  //console.log(e)
+                                 if (e.data) {
+ 
+                                     setDatos(e.data)
+                                     return
+                                 }
+                                 //setTikes([])
+                             }).catch(err => {
+                                 console.log(err)
+                             })*/
 
                             $.alert("Registro eliminado correctamente")
-                            setTimeout(function(){
+                            setTimeout(function () {
                                 window.location.reload()
-                            },1000)
-                           
+                            }, 1000)
+
 
                         }).catch(error => {
                             $.alert("hubo un error no se pudo eliminar este registro")
                         })
-                        
+
                     }
                 },
                 close: function () {
@@ -128,7 +110,7 @@ export default function ListaderegistroView(props) {
                     return (
 
                         <Box sx={{ display: 'flex' }}>
-                            {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado " ?
+                            {row.original.forma_pago == "Deposito" ?
                                 <Tooltip
                                     title="Reportar pago" placement="top"
                                 >
@@ -140,14 +122,8 @@ export default function ListaderegistroView(props) {
                                         <Summarize />
                                     </IconButton>
                                 </Tooltip> :
-                                <IconButton
-                                    disabled={true}
-                                    color="error"
-                                    aria-label="Consolidar"
-                                    onClick={() => abrirModal(row.original)}
-                                >
-                                    <Summarize />
-                                </IconButton>}
+                                ""
+                            }
                             {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? <Tooltip
                                 title="Comprobar" placement="top"
                             >
@@ -163,7 +139,7 @@ export default function ListaderegistroView(props) {
                                     <IconButton
                                         //disabled={}
                                         color="error"
-                                        onClick={()=>eliminarregistro(row.original)}
+                                        onClick={() => eliminarregistro(row.original)}
                                         aria-label="Bloquear">
                                         <Delete />
                                     </IconButton>

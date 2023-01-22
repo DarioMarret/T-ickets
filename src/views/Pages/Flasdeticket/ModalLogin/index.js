@@ -139,12 +139,12 @@ const ModalLogin = (props) => {
                   </div>
                   <div className="col-12 "
                   >
-                    {false ? <a className="btn btn-link text-pag  px-4" onClick={regsitronew} href="#"
+                    <a className="btn btn-link text-pag  px-4" onClick={regsitronew} href="#"
                       style={{
                         fontWeight: "bold",
                         color: "#3F40E0"
                       }}
-                    >Crear Cuenta</a> : ""}
+                    >Crear Cuenta</a>
                   </div>
                   <div className="col-12 ">
                     <a className=" nav-link btn btn-link" href="#" > Olvide mi contraseña </a>
