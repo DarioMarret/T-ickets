@@ -30,12 +30,15 @@ import ListaderegistroView from "../Flasdeticket/Listaregistro/index.js";
 import DataTableBos from "components/ReactTable/Datatable.js/index.js";
 import { ticketsboletos } from "utils/columnasub.js";
 import TablasViwe from "layouts/Tablasdoc.js";
+import { generaPDF } from "utils/boletos/Queryboleto.js";
+import { generaTiketspdf } from "utils/Querycomnet.js";
+import { Triangle } from "react-loader-spinner";
 let { cedericon } = bancos
 function Example() {
     let usedispatch = useDispatch()
     const [tiketslist, setTikes] = useState([])
     const [tikesele, setTicket] = useState([])
-
+    const [spiner, setSpiner] = useState("d-none")
     const [rowSelection, setRowSelection] = useState({});
     const tableInstanceRef = useRef(null);
     const [alert, setAlert] = useState(null)
@@ -45,8 +48,9 @@ function Example() {
         setValue(newValue);
     };
     const abrirceder = (e) => {
-         usedispatch(setModal({ nombre: 'ceder', estado: e }))
-     hideAlert() }
+        usedispatch(setModal({ nombre: 'ceder', estado: e }))
+        hideAlert()
+    }
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
 
@@ -74,6 +78,38 @@ function Example() {
         };
     }
 
+    function generaPDF(row) {
+        setSpiner("")
+        generaTiketspdf({
+            "cedula": row.cedula,
+            "codigoEvento": row.codigoEvento,
+            "id_ticket_usuarios": row.id
+        }).then(ouput => {
+            if (ouput.message == "PDF generado") {
+                window.open(ouput.link_pdf, "_blank");
+                setSpiner("d-none")
+
+            } else {
+                usedispatch(setToastes({
+                    show: true,
+                    message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
+                    color: 'bg-primary',
+                    estado: "Hubo un error intenta mas tarder"
+                }))
+                setSpiner("d-none")
+            }
+
+        }).catch(eror => {
+            setSpiner("d-none")
+            usedispatch(setToastes({
+                show: true,
+                message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
+                color: 'bg-primary',
+                estado: "Hubo un error intenta mas tarder"
+            }))
+            //console.log(eror)
+        })
+    }
     const successAlert = (e) => {
         setAlert(
             <SweetAlert
@@ -105,20 +141,20 @@ function Example() {
                 <tr className="border ">
                     <th  >Detalle</th>
                     <th className="text-xs text-center"  >Boleto</th>
-                   
+
                     <th className="text-xs text-center" >Valor</th>
                     <th className="text-xs text-center">Fecha</th>
                     <th className="text-xs text-center">Estado</th>
-                    <th  className="text-center"> Aciones</th>
+                    <th className="text-center"> Aciones</th>
 
                 </tr>
             </thead>
         )
 
     }
-    const color={
-        "reservado":"label label-warning",
-        "Disponible":"label label-success"
+    const color = {
+        "reservado": "label label-warning",
+        "Disponible": "label label-success"
     }
     const showDatos = () => {
         try {
@@ -129,35 +165,33 @@ function Example() {
 
                         <td className="text-xs ">{item.concierto + " Localidad:" + item.localidad}</td>
                         <td className="text-xs text-center ">#{item.sillas.padStart(10, 0)}</td>
-                       
+
                         <td className="text-xs text-center">{item.valor}</td>
 
                         <td className="text-xs text-center">{item.fechaCreacion}</td>
                         <td className="text-xs text-center">
                             <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
-                           
                             <div className=" btn-group  " >
                                 {item.estado != "reservado" && item.pdf != null && item.link == "SI" ?
-                                 <Tooltip className="" title="Ver Ticket" placement="top">
-                                    <a 
-                                        className=" btn btn-default btn-sm"
-                                     
-                                        href={item.pdf}
-                                        target="_black"
-                                    >
+                                    <Tooltip className="" title="Ver Ticket" placement="top">
+                                        <a
+                                            className=" btn btn-default btn-sm"
+                                            onClick={() => generaPDF(item)}
+                                        //href={item.pdf}
+                                        //target="_black"
+                                        >
                                             <i className="fa fa-download "></i>
-                                        
 
-                                    </a>
-                                </Tooltip> :
+                                        </a>
+                                    </Tooltip> :
                                     <a
                                         className=" btn btn-default btn-sm btn-disable"
-                                       disabled
+                                        disabled
 
                                     >
                                         <i className="fa fa-download "></i>
-                                      
+
 
                                     </a>
                                 }
@@ -191,13 +225,13 @@ function Example() {
 
 
                                     </a>
-                                    }
-                                
-                              
-                            
-                             
+                                }
+
+
+
+
                             </div>
-                          
+
                         </td>
 
                     </tr>
@@ -217,16 +251,17 @@ function Example() {
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         Listarticketporestado(user.cedula).then(ouput => {
+            console.log(ouput)
             if (!ouput.success) {
 
                 return
             }
             setTikes(ouput.data)
             console.log(ouput)
-           }).catch(err => console.log(err))
+        }).catch(err => console.log(err))
     },
         [])
-   function suma(item) {
+    function suma(item) {
         let tikets = tiketslist.find(e => e.codigoEvento == item).detalle.map((f) => { return parseFloat(f.valor) })
         try {
             let valo = tikets.reduce((a, b) => a + b, 0).toFixed(2)
@@ -239,7 +274,7 @@ function Example() {
     return (
         <>
             {alert}
-           
+
             <ModalReporteViews />
             <div className="container-fluid">
                 <Tabs value={value} onChange={handleChange}
@@ -284,7 +319,7 @@ function Example() {
                                             <Delete />
                                         </IconButton>
                                     </Tooltip>
-                                    {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido =="NO"? <Tooltip title="Ceder ticket" placement="top-start">
+                                    {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
                                         <IconButton
                                             color='success'
                                             onClick={() => successAlert(row.original)}
@@ -299,14 +334,14 @@ function Example() {
                                         </IconButton>
                                     </Tooltip> : ''}
                                     {
-                                        <Tooltip 
-                                        title="Eliminar"
-                                        placement="top"
+                                        <Tooltip
+                                            title="Eliminar"
+                                            placement="top"
                                         >
                                             <IconButton
-                                            color="danger"
+                                                color="danger"
                                             >
-                                                <Delete/>
+                                                <Delete />
                                             </IconButton>
 
                                         </Tooltip>
@@ -315,7 +350,7 @@ function Example() {
                             )}
                             localization={MRT_Localization_ES}
                         />
-                       
+
                         <div className=" container pb-3">
                             <div className=" d-flex justify-content-end ">
                                 {
@@ -355,6 +390,44 @@ function Example() {
 
                 </div>
 
+            </div>
+            <div className={spiner}
+                style={{
+                    display: 'none',
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: '1000'
+                }}
+            >
+
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: '10px',
+                    padding: '10px',
+                }}>
+                    <Triangle
+                        height="80"
+                        width="80"
+                        color="#4fa94d"
+                        ariaLabel="triangle-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                    <h4 className='text-light'>Cargando  PDF  ...</h4>
+
+
+                </div>
             </div>
             <div className="card d-none card-primary card-outline text-left " style={{ minHeight: '250px' }} >
                 <div className="card-header pb-2">

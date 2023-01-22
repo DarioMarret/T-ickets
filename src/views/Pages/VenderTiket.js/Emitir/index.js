@@ -18,6 +18,8 @@ import { Form } from "react-bootstrap";
 import EmitirmodlView from "./ModalEmitir/Modalconsolidar";
 import ModalBoletoApro from "../Aprobar/Modalboleto";
 import { ticketsboletos } from "utils/columnasub";
+import { generaTiketspdf } from "utils/Querycomnet";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 let { cedericon } = bancos
 export default function EmitirboView() {
     let usedispatch = useDispatch()
@@ -62,17 +64,39 @@ export default function EmitirboView() {
         usedispatch(setModal({ nombre: 'ceder', estado: e })),
             hideAlert()
     }
-
+    function generaPDF(row) {
+      //  window.open("https://tickets.com.ec/", "_blank");
+        usedispatch(setToastes({
+            show: true,
+            message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
+            color: 'bg-primary',
+            estado: "Hubo un error intenta mas tarder"
+        }))
+         generaTiketspdf({
+           "cedula": row.cedula,
+           "codigoEvento": row.codigoEvento,
+           "id_ticket_usuarios": row.id
+         }).then(ouput => {
+             if (ouput.message=="PDF generado"){
+                // ouput.link_pdf
+                 window.open(ouput.link_pdf, "_blank");
+                 
+             }else{
+                 usedispatch(setToastes({
+                     show: true,
+                     message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
+                     color: 'bg-primary',
+                     estado: "Hubo un error intenta mas tarder"
+                 }))
+             }
+            }).catch(eror => {
+           console.log(eror)
+         })
+    }
     const hideAlert = () => {
         setAlert(null)
     }
-    function abriremitir(e) {
-        usedispatch(setModal({ nombre: "Emitir", estado: e }))
-    }
-    function Aprobar(e) {
-        console.log(e)
-        usedispatch(setModal({ nombre: "boleto", estado: e }))
-    }
+   
     const canjear = (e) => {
         $.confirm({
             title: 'Canjear boleto!',
@@ -213,8 +237,7 @@ export default function EmitirboView() {
                                             <a
                                                 className=" border  btn-default btn-sm"
 
-                                                href={row.original.pdf}
-                                                target="_black"
+                                                onClick={() => generaPDF(row.original)}
                                             >
                                                 <i className="fa fa-download text-primary"></i>
                                             </a>

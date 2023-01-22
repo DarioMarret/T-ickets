@@ -4,7 +4,7 @@ import { Host } from "utils/constantes";
 
 export const registraPagos = async (parms) => {
     try {
-        let { data } = await axios.post(Host + "api/v1/registraPagos ", parms, {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/registraPagos ", parms, {
             Headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -18,7 +18,7 @@ export const registraPagos = async (parms) => {
 }
 export const listarRegistropanel = async (parms) => {
     try {
-        let { data } = await axios.post(Host + "api/v1/listarRegistros", parms, {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/listarRegistros", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -31,7 +31,7 @@ export const listarRegistropanel = async (parms) => {
 }
 export const generarBoleto = async () => {
     try {
-        let { data } = await axios.post(Host + "api/v1/generarBoleto", parms, {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/generarBoleto", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -44,7 +44,7 @@ export const generarBoleto = async () => {
 }
 export const eliminarRegistro = async (parms) => {
     try {
-        let { data } = await axios.post(Host + "api/v1/eliminarRegistro",
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/eliminarRegistro",
             parms, {
             headers: {
                 'Content-Type': 'application/json',
@@ -58,8 +58,8 @@ export const eliminarRegistro = async (parms) => {
 }
 export const eliminartiket = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login//ticket_usuario_eliminar",
-            parms, {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/liverar_asiento/",
+            {"id_ticket_usuarios":parms.id}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -73,7 +73,7 @@ export const eliminartiket = async (parms) => {
 }
 export const cambiarMetodo = async (parms) => {
     try {
-        let { data } = await axios.post(Host + "api/v1/cambiandoMetodoPago", parms, {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/cambiandoMetodoPago", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -82,5 +82,21 @@ export const cambiarMetodo = async (parms) => {
         return data
     } catch (error) {
         return error
+    }
+}
+
+export const cambiaradepoatc = async (parms)=>{
+    try {
+        let {data} = await axios.post("",parms,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                }
+            }
+        )
+        return data
+    } catch (error) {
+        return  error        
     }
 }

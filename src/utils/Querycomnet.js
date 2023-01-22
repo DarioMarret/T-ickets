@@ -1,3 +1,4 @@
+import { refType } from "@mui/utils";
 import axios from "axios";
 import { GetMetodo, GetValores, getVerTienda } from "./CarritoLocalStorang";
 import { Host, token } from "./constantes";
@@ -134,3 +135,34 @@ export const ValidarToken = async (parms) => {
         return error
     }
 }
+export const generaTiketspdf = async (parms) => {
+    try {
+        let { data } = await axios.post("https://rec.netbot.ec/ticket/api/v1/ticket_pdf", parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        console.log(data)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const CambiarPagoTC =async (parms)=>{
+    try {
+        let {data} = await axios.post("",parms,{
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+        
+    }
+}
+
+//https://rec.netbot.ec/ms_login/doc/static/index.html#/Compra/post_api_v1_liverar_asiento
+//https://rec.netbot.ec/ms_login/doc/static/index.html#/Compra/post_api_v1_generarBoleto     

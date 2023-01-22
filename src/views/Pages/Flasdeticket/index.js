@@ -623,8 +623,6 @@ const IndexFlas = () => {
         //AGREGAR ESTADO
         const data = await cargarEventoActivo("ACTIVO")
         if (!data == null) { return }
-        ///console.log(data)
-        //  console.log(data)
         let datos = data.filter(e => e.estado != "CANCELADO")
         //console.log(datos)
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
@@ -639,7 +637,6 @@ const IndexFlas = () => {
     }
     evento()
     ListarNoticias().then(ouput => {
-      //console.log(ouput)
       if (!ouput.data) { return }
       setpublicidad(ouput.data)
     }).catch(err => {
@@ -647,7 +644,6 @@ const IndexFlas = () => {
 
       } else {
       }
-      //console.log(err)
     }
     )
     let datosPersonal = getDatosUsuariosLocalStorag()

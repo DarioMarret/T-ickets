@@ -421,7 +421,7 @@ export default function AprobarView() {
                                             >
                                                 <Summarize />
                                             </IconButton>}
-                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
+                                        <Tooltip
                                             title="Comprobar" placement="top"
                                         >
                                             <IconButton
@@ -430,7 +430,7 @@ export default function AprobarView() {
                                             >
                                                 <Visibility />
                                             </IconButton>
-                                        </Tooltip> : ""}
+                                        </Tooltip> 
                                         <Tooltip
                                             title="especifico" placement="top"
                                         >

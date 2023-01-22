@@ -12,6 +12,7 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useHistory } from "react-router";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 
 export default function ListaderegistroView(props) {
     let { cedula } = props
@@ -20,16 +21,15 @@ export default function ListaderegistroView(props) {
     // let modal = useSelector((state) => state.SuscritorSlice.modal)
     const [datos, setDatos] = useState([])
     useEffect(() => {
-        listarRegistropanel({ "cedula": cedula }).then(
+        let user = getDatosUsuariosLocalStorag()
+        listarRegistropanel({ "cedula": user.cedula }).then(
             e => {
                 console.log(e.data)
-                setDatos(e.data.sort((a, b) => {
-                    if (a.estado_pago > b.estado_pago) { return -1; }
-                    if (a.estado_pago < b.estado_pago) { return 1; }
-                    return 0;
-                }))
             }
-        ).catch(err => console.log(err))
+        ).catch(err =>
+            console.log(err)
+            
+            )
 
     }, [])
     function detalle(e) {

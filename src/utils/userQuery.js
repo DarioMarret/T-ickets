@@ -1,4 +1,5 @@
 import axios from "axios"
+import { data, post } from "jquery"
 import { Host } from "./constantes"
 
 export const Listarticketporestado = async (parms) => {
@@ -11,8 +12,10 @@ export const Listarticketporestado = async (parms) => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
+        console.log(data)
         return data
     } catch (error) {
+        console.log(error)
         return error
     }
 

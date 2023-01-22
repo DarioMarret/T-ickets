@@ -9,6 +9,10 @@ import "react-photo-view/dist/react-photo-view.css"
 import { useHistory, useParams } from "react-router"
 import { buscarcliente } from "utils/Querypanelsigui"
 import { useSelector } from "react-redux";
+import { IconButton, Tooltip } from "@mui/material";
+import { carrusel } from "views/Pages/Flasdeticket/imagenstatctic";
+import { ChangeCircle } from "@mui/icons-material";
+let { cedericon } = carrusel
 export default function DetalleCompraView() {
     let { id } = useParams()
     let history = useHistory()
@@ -32,7 +36,7 @@ export default function DetalleCompraView() {
         "SI": "Generado",
         "null": "Sin generar",
         "Expirado": "Expirado",
-        "Pendiente":"label label-primary"
+        "Pendiente": "label label-primary"
     }
 
     useEffect(() => {
@@ -42,11 +46,36 @@ export default function DetalleCompraView() {
             "email": ""
         }).then(ouput => {
             if (ouput.success) setUser({ ...ouput.data })
-           // console.log(ouput)
+            // console.log(ouput)
         }).catch(erro => {
             console.log(erro)
         })
     }, [])
+    function cambiarADeposito() {
+        $.confirm({
+            title: 'Cambiar este Pago a Tarjeta !',
+            type: 'blue',
+            content: '',
+            buttons: {
+                formSubmit: {
+                    text: 'Aceptar',
+                    btnClass: 'btn-blue',
+                    action: function () {
+                        var name = this.$content.find('.name').val();
+                        if (!name) {
+                            $.alert('provide a valid name');
+                            return false;
+                        }
+
+                        $.alert('Email ' + name);
+                    }
+                },
+                cancel: function () {
+                    //close
+                },
+            },
+        });
+    }
     return (
         <PhotoProvider>
             <div>
@@ -73,7 +102,7 @@ export default function DetalleCompraView() {
                                                     <div>
                                                         {nombres.estado_pago === "Expirado" ?
                                                             <span className="label label-danger"> {nombres.estado_pago}</span> :
-                                                            <span className={estado[nombres.estado_pago ]}>
+                                                            <span className={estado[nombres.estado_pago]}>
                                                                 {nombres.estado_pago}
                                                             </span>
                                                         }
@@ -86,7 +115,7 @@ export default function DetalleCompraView() {
                                                         {
                                                             nombres.pdf == "SI" ? <a className=" btn btn-default btn-sm"><i className="bi bi-file-earmark-pdf text-danger"></i>
                                                                 {estado[nombres.pdf]}
-                                                            </a>:""
+                                                            </a> : ""
                                                         }
                                                         {nombres.estado_pago == "Pagado" ? <a className=" btn btn-default btn-sm"><i className="bi bi-printer"></i> Imprimir </a> : ""}
                                                     </div>
@@ -132,7 +161,7 @@ export default function DetalleCompraView() {
                                                         Fecha de creación</small><br></br>
                                                     {nombres.fechaCreacion} <br></br>
                                                     #{id} <br></br>
-                                                    {nombres.forma_pago }<br></br>
+                                                    {nombres.forma_pago}<br></br>
                                                 </div>
                                             </div>
                                         </div>
@@ -144,26 +173,26 @@ export default function DetalleCompraView() {
                                     <div className="col-12 col-md-6 p-3" >
                                         <div className="invoice-from">
                                             <small>Informacion de Pago</small>
-                                            {nombres.forma_pago != "Tarjeta" ?<div className="m-t-5 m-b-5">
+                                            {nombres.forma_pago != "Tarjeta" ? <div className="m-t-5 m-b-5">
                                                 <strong className="text-inverse">{nombres.banco == null ? "No hay Deposito reportado" : nombres.banco}</strong><br></br>
                                                 <small>
                                                     Comprobante# {nombres.numerTransacion} <br></br>
                                                     <br></br>
                                                     <br></br>
                                                 </small>
-                                            </div>:
-                                            
-                                            <div className="m-t-5 m-b-5">
-                                                <strong className="text-inverse">Pago con Tarjeta</strong><br></br>
-                                                <small>
-                                                     <br></br>
-                                                    <br></br>
-                                                    <br></br>
-                                                </small>
-                                            </div>}
+                                            </div> :
+
+                                                <div className="m-t-5 m-b-5">
+                                                    <strong className="text-inverse">Pago con Tarjeta</strong><br></br>
+                                                    <small>
+                                                        <br></br>
+                                                        <br></br>
+                                                        <br></br>
+                                                    </small>
+                                                </div>}
                                         </div>
                                     </div>
-                                    {nombres.forma_pago != "Tarjeta"?<div className="col-12  col-md-6 text-md-end p-3 text-center ">
+                                    {nombres.forma_pago != "Tarjeta" ? <div className="col-12  col-md-6 text-md-end p-3 text-center ">
                                         <div className="invoice-from text-center ">
                                             <small>Comprobante</small>
                                             <div className="m-t-5 m-b-5 rounded-4  ">
@@ -173,7 +202,7 @@ export default function DetalleCompraView() {
                                                 <img className="img-fluid" src={nombres.link_comprobante == null ? "data:image/png;base64,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" : nombres.link_comprobante} alt="" />
                                             </PhotoView>
                                         </div>
-                                    </div>:""}
+                                    </div> : ""}
                                 </div>
                                 <div className=" table-responsive">
                                     <table className="table table-invoice">
@@ -196,7 +225,7 @@ export default function DetalleCompraView() {
                                                     </tr>
                                                 )
                                             }) : ''}
-                                            
+
                                         </tbody>
                                     </table>
 
@@ -210,11 +239,11 @@ export default function DetalleCompraView() {
                                             </textarea>
                                         </div>
                                         {
-                                            nombres.forma_pago != "Tarjeta" ?<div className=" text-center">
-                                            <button className="btn  btn-danger col-6">
-                                                REPORTAR
-                                            </button>
-                                        </div>:""}
+                                            nombres.forma_pago != "Tarjeta" ? <div className=" text-center">
+                                                <button className="btn  btn-danger col-6">
+                                                    REPORTAR
+                                                </button>
+                                            </div> : ""}
 
 
 
@@ -241,7 +270,17 @@ export default function DetalleCompraView() {
 
                 </div>
                 <div className=" fixed-bottom  d-flex justify-content-end align-items-end p-3">
-                    <a className=" rounded-circle btn-primary p-2 text-white"
+                   
+                        <Tooltip
+                            title="Cambiar a Tarjeta"
+                            placement="top"
+                        >
+                            <a className=" rounded-circle btn-primary p-2  text-white" >
+                                <ChangeCircle />
+                            </a>
+                        </Tooltip>
+                  
+                    <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
                         onClick={() => history.goBack()}
                     >
                         <i className=" fa fa-arrow-left"></i>

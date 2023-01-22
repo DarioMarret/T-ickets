@@ -461,7 +461,7 @@ export default function AprobarViewid() {
                         
                     </div>
                 </div>
-                <div className=" fixed-bottom  d-flex justify-content-end align-items-end p-3">
+                <div className="   d-flex justify-content-end align-items-end p-3">
                     <a className=" rounded-circle btn-primary p-2 text-white"
                         onClick={() => history.goBack()}
                     >

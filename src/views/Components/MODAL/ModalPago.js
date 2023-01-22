@@ -142,9 +142,13 @@ function ModalPago(props) {
         PagoRapido("").then(ouput => {
             console.log(ouput)
             if (user == null) {
-                ouput.success ? usedispatch(setModal({ nombre: 'pago', estado: ouput.url })) : ''
-               // console.log(ouput)
-                setSpiner("d-none")
+                if (ouput.success) {
+                    usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
+                    setSpiner("d-none")
+                }
+                else { 
+                    usedispatch(setModal({ nombre: '', estado: "" }))
+                 }
             }
             else {
                 popUp(ouput.url)
@@ -153,7 +157,14 @@ function ModalPago(props) {
             }
             // setModalPago(false)
         }).catch(errro => {
-          //  console.log(errro)
+            usedispatch(setModal({ nombre: '', estado: "" }))
+            usedispatch(setToastes({
+                show: true,
+                message: "Lo sentimos la platadorma de Pagomedia no genero el link",
+                color: 'bg-primary',
+                estado: "Hubo un error de Pagomedio"
+            }))
+            //  console.log(errro)
             setSpiner("d-none")
         })
         /*const data = await GenerarLinkPagoMedios()

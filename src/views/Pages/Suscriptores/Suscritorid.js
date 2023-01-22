@@ -26,6 +26,7 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { eliminartiket } from "utils/pagos/Queripagos";
+import { generaTiketspdf } from "utils/Querycomnet";
 
 const SuscritoridView = () => {
   let { id } = useParams()
@@ -305,7 +306,7 @@ const SuscritoridView = () => {
           text: 'Eliminar',
           btnClass: 'btn-red',
           action: function () {
-            eliminartiket({ "id": parm.id }).then(ouput => {
+            /*eliminartiket({ "id": parm.id }).then(ouput => {
               console.log(ouput)
               console.log(parm.id)
               if (!ouput.success) { return $.alert("" + ouput.message) }
@@ -315,7 +316,7 @@ const SuscritoridView = () => {
 
             }).catch(error => {
               $.alert("hubo un error no se pudo eliminar este registro")
-            })
+            })*/
           }
         },
         close: function () {
@@ -323,6 +324,22 @@ const SuscritoridView = () => {
       }
     });
    
+  }
+  function generaPDF(row) {
+   // console.log(row)
+    //window.open("https://tickets.com.ec/", "_blank");
+   generaTiketspdf({
+      "cedula": row.cedula,
+      "codigoEvento": row.codigoEvento,
+      "id_ticket_usuarios": row.id
+    }).then(ouput => {
+      console.log(ouput)
+      //window.open('Prosjektplan.pdf')
+   //   window.open("https://tickets.com.ec/", "_blank");
+      console.log(ouput)
+    }).catch(eror => {
+      console.log(eror)
+    })
   }
   useEffect(() => {
     (async () => {
@@ -480,6 +497,7 @@ const SuscritoridView = () => {
               <Tab label="Tickets" {...a11yProps(3)} />
             </Tabs>
             <div className=" text-center  py-2  ">
+              {/** pendientes*/}
 
               <TabPanel value={value} index={0} className="text-center" >
                 <MaterialReactTable
@@ -511,7 +529,7 @@ const SuscritoridView = () => {
                         >
                           <Summarize />
                         </IconButton>}
-                      {row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ?
+                     
                         <Tooltip
                           title="Comprobar" placement="top"
                         >
@@ -521,7 +539,7 @@ const SuscritoridView = () => {
                           >
                             <Visibility />
                           </IconButton>
-                        </Tooltip> : ""}
+                        </Tooltip>
                       <Tooltip
                         title="Eliminar"
                         placement="top"
@@ -539,6 +557,7 @@ const SuscritoridView = () => {
                   localization={MRT_Localization_ES}
                 />
               </TabPanel>
+              {/** expirado */}
               <TabPanel value={value} index={1} className="text-center">
                 <MaterialReactTable
                   columns={listaRegistro}
@@ -569,7 +588,7 @@ const SuscritoridView = () => {
                         >
                           <Summarize />
                         </IconButton>}
-                      {row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? <Tooltip
+                      <Tooltip
                         title="Comprobar" placement="top"
                       >
                         <IconButton
@@ -578,12 +597,24 @@ const SuscritoridView = () => {
                         >
                           <Visibility />
                         </IconButton>
-                      </Tooltip> : ""}
+                      </Tooltip>
+                      <Tooltip
+                        title="Eliminar"
+                        placement="top"
+                      >
+                        <IconButton
+                          color="error"
+                          onClick={() => eliminarregistro(row.original)}
+                        >
+                          <Delete />
+                        </IconButton>
+                        </Tooltip>
                     </Box>
                   )}
                   localization={MRT_Localization_ES}
                 />
               </TabPanel>
+              {/** pagados */}
               <TabPanel value={value} index={2} className="text-center">
                 <MaterialReactTable
                   columns={listaRegistro}
@@ -614,7 +645,7 @@ const SuscritoridView = () => {
                         >
                           <Summarize />
                         </IconButton>}
-                     <Tooltip
+                      <Tooltip
                         title="Comprobar" placement="top"
                       >
                         <IconButton
@@ -623,12 +654,38 @@ const SuscritoridView = () => {
                         >
                           <Visibility />
                         </IconButton>
-                      </Tooltip> 
-                      <Tooltip title="Borrar" placement="top">
+                      </Tooltip>
+                      <Tooltip
+                        title="Eliminar"
+                        placement="top"
+                      >
                         <IconButton
-                         onClick={() => eliminarregistro(row.original)}
-                          color="error">
+                          color="error"
+                          onClick={() => eliminarregistro(row.original)}
+                        >
                           <Delete />
+                        </IconButton>
+                        
+                      </Tooltip>
+                      <Tooltip
+                        title="Cambiar a Tarjeta"
+                        placement="top"
+                      >
+                        <IconButton
+                          color="error"
+                        >
+                          <a
+                            className="border  btn-default btn-sm"
+                            
+                            >
+                            <img src={cedericon}
+                              style={
+                                {
+                                  height: 20
+                                }
+                              }
+                            />
+                          </a>
                         </IconButton>
                       </Tooltip>
                     </Box>
@@ -636,6 +693,7 @@ const SuscritoridView = () => {
                   localization={MRT_Localization_ES}
                 />
               </TabPanel>
+              {/** boletos  */}
               <TabPanel value={value} index={3} className="text-center">
                 <MaterialReactTable
                   columns={ticketsboletos}
@@ -656,8 +714,7 @@ const SuscritoridView = () => {
                             <a
                               className=" border  btn-default btn-sm"
 
-                              href={row.original.pdf}
-                              target="_black"
+                              onClick={()=>generaPDF(row.original)}
                             >
                               <i className="fa fa-download text-primary"></i>
 
@@ -674,7 +731,8 @@ const SuscritoridView = () => {
 
                           </a>
                         }
-                        {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
+                        {/*row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? 
+                        <Tooltip title="Ceder ticket" placement="top-start">
                           <a className=" btn btn-default btn-sm btn-disable"
 
 
@@ -705,7 +763,7 @@ const SuscritoridView = () => {
 
                           </a>
 
-                        }
+                        */}
                        {row.original.estado_pago!="Pendiente"? <Tooltip
                           title="Eliminar"
                           placement="top"
@@ -721,9 +779,9 @@ const SuscritoridView = () => {
 
                           </a>
                         </Tooltip>:""}
-                        {row.original.canje == "NO CANJEADO" ? <Tooltip
+                        {false? <Tooltip
                           title="Canjear"
-                          placement="top"
+                          placement="top" 
                         >
                           <a
                             className="border  btn-default btn-sm "
@@ -747,96 +805,24 @@ const SuscritoridView = () => {
           </div>
         </div>
 
-        <div className="row d-none">
-          <div className="col-md-12">
-            <div className="card card-primary card-outline text-left">
-              <div className="card-header mb-1">
-                Tickets
-              </div>
-              <MaterialReactTable
-                columns={columnsTicket}
-                data={[]}
-
-                muiTableProps={{
-                  sx: {
-                    tableLayout: 'fixed'
-                  }
-                }}
-
-                enableRowActions
-                renderRowActions={({ row }) => (
-                  <Box sx={{ display: 'flex' }}>
-                    <IconButton
-                      color="error"
-                    >
-                      <Delete />
-                    </IconButton>
-
-
-                  </Box>
-                )}
-                positionToolbarAlertBanner="bottom"
-
-                localization={MRT_Localization_ES}
-              />
-              {/*  <div className="card-body table-responsive">
-
-                                                    <table className="table table-hover text-center ">
-                                                            <thead>
-                                                                <tr>
-                                                                <th scope="col">Concierto</th>
-                                                                    <th scope="col">Cantidad</th>
-                                                                    
-                                                                    <th scope="col">Localidad</th>
-                                                                    <th scope="col">Valor</th>
-                                                                    <th scope="col">Estado</th>
-                                                                    <th></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            {
-                                                                suscritores.length>0?
-                                                                suscritores.map((e,i)=>{
-                                                                    return(
-                                                                    <tr>
-                                                                    <th scope="row">{e.concierto}</th>
-                                                                    <td>{e.cantidad}</td>
-                                                                    <td>{e.valor}</td>
-                                                                    
-                                                                    <td> {e.localidad} </td>
-                                                                    <td><span className="badge me-1 bg-success text-white">{e.estado}</span></td>
-                                                                    <td>
-                                                                    <a className="btn btn-primary btn-sm mx-1" data-toggle="tooltip" title="Ver tickets"><i className="fa fa-eye"></i></a>
-                                                                    <a className="btn btn-primary btn-sm mx-1"  data-toggle="tooltip" title="Enviar"><i className="fa fa-paper-plane"></i></a> 
-                                                            
-                                                                    </td>
-                                                                </tr>
-                                                                    )
-                                                                }): 
-                                                                <tr>
-                                                                <th scope="row"></th>
-                                                                <th scope="row"></th>
-                                                                <td >No hay datos</td>
-                                                                <th scope="row"></th>
-                                                                <th scope="row"></th> 
-                                                                <th scope="row"></th>
-                                                            </tr>
-                                                            }
-                                                            </tbody>
-                                                        </table>
-                                                    </div>*/}
-            </div>
-          </div>
-        </div>
 
       </div>
-      <div className=" fixed-bottom  d-flex justify-content-end align-items-end p-3">
+      <div className="d-flex   justify-content-end">
+
+     
+      <div className="   d-flex justify-content-end align-items-end p-3"
+      style={{
+
+        widows:50
+      }}
+      >
         <a className=" rounded-circle btn-primary p-2 text-white"
           onClick={() => history.goBack()}
         >
           <i className=" fa fa-arrow-left"></i>
         </a>
 
+      </div>
       </div>
       <ModalSuscritoView
         show={show}

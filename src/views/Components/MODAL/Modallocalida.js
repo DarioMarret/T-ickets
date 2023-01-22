@@ -748,6 +748,7 @@ const LocalidadmapViews = (props) => {
                     <div className='conatiner-fluid col-12'>
                         <div className="row  ">
                             <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontWeight: "bold" }}>
+                                <h5>Libres: {sleccionlocalidad.disponibles}</h5>
                                 <h5 style={{
                                     fontWeight: "bold"
                                 }}>Localidad: {mapath.precio.localidad}</h5>

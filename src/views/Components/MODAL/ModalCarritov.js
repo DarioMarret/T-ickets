@@ -166,6 +166,16 @@ const ModalCarritoView = (prop) => {
        // console.log(sleccionlocalidad.pagados )
        // console.log((sleccionlocalidad.pagados > 10))
        console.log(sleccionlocalidad)
+       /* if (clienteInfo() == null && e.idcolor == "9") {
+            usedispatch(setToastes({
+                show: true,
+                message: "Esta Localidad ya no tiene disponibilidad",
+                color: 'bg-danger',
+                estado: "Localidad Sold out"
+            }))
+            setSpiner("d-none")
+            return
+        }*/
         if (sleccionlocalidad.pagados >=10) {
             usedispatch(setToastes({
                 show: true,
@@ -258,8 +268,22 @@ const ModalCarritoView = (prop) => {
     }
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
     modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
+
+
         E.addEventListener("click", function () {
             console.log(sleccionlocalidad)
+            console.log(clienteInfo())
+            let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
+            /*if ( clienteInfo()==null && consulta.idcolor == "9") {
+                usedispatch(setToastes({
+                    show: true,
+                    message: "Esta Localidad ya no tiene disponibilidad",
+                    color: 'bg-danger',
+                    estado: "Localidad Sold Out"
+                }))
+                setSpiner("d-none")
+                return
+            }*/
             if (sleccionlocalidad.pagados >= 10) {
                 usedispatch(setToastes({
                     show: true,
@@ -271,7 +295,8 @@ const ModalCarritoView = (prop) => {
             }
             else{
                 setSpiner("")
-            let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
+            
+             
             localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
                 console.log(ouput)
                 let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)

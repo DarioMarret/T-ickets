@@ -1,3 +1,8 @@
+//
+  boton pago tarjeta pasar los validados 
+
+  detalle agregar  
+
   un edpoit para recordadar la contraseña
 
 actualizar registro de eventos con campo fecha de inico de Ventan

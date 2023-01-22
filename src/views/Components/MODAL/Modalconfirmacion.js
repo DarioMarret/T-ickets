@@ -251,12 +251,11 @@ const ModalConfima = (prop) => {
 
                                 </select> : <select className="  form-select" name="banco" value={comproba.banco} onChange={(g) => onhandelChange(g.target)} >
                                     <option disabled value={""}></option>
-                                    <option value={"Efectivo"}>Cambiar a Efectivo</option>
+                                    
                                     <option value={"Pichincha"}>Banco Pichincha</option>
                                     <option value={"Guayaquil"}>Banco Guayaquil</option>
                                     <option value={"Produbanco"}>Banco Produbanco</option>
                                     <option value={"Pacifico"}>Banco Pacifico</option>
-                                    <option value={"transferencia"}>Transferencia</option>
                                 </select>}
                             </div>
                             {comproba.banco != "Efectivo" ? <div className=" p-1">
