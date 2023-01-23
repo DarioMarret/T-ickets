@@ -85,8 +85,8 @@ function Example() {
             "codigoEvento": row.codigoEvento,
             "id_ticket_usuarios": row.id
         }).then(ouput => {
-            if (ouput.message == "PDF generado") {
-                window.open(ouput.link_pdf, "_blank");
+            if (ouput.success ) {
+                window.open(ouput.link, "_blank");
                 setSpiner("d-none")
 
             } else {
@@ -173,15 +173,15 @@ function Example() {
                             <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
                             <div className=" btn-group  " >
-                                {item.estado != "reservado" && item.pdf != null && item.link == "SI" ?
+                                {item.estado == "Pagado"  ?
                                     <Tooltip className="" title="Ver Ticket" placement="top">
                                         <a
-                                            className=" btn btn-default btn-sm"
+                                            className="btn btn-default-su btn-sm text-danger"
                                             onClick={() => generaPDF(item)}
                                         //href={item.pdf}
                                         //target="_black"
                                         >
-                                            <i className="fa fa-download "></i>
+                                            <i className="fa fa-download  "></i>
 
                                         </a>
                                     </Tooltip> :

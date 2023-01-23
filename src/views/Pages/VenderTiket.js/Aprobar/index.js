@@ -182,7 +182,7 @@ export default function AprobarView() {
 
         }
     }
-    const eliminarregistro=(parms)=>{
+    const Deliminarregistro=(parms)=>{
         console.log(parms)
         
         $.confirm({
@@ -241,8 +241,9 @@ export default function AprobarView() {
     }
     function detalle(e) {
       //  console.log(e)
-        usedispatch(setdetalle({ ...e }))
+        sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
         history.push("/admin/Reporte/" + e.id)
+       
     }
     function detalledos(e){
         history.push("/admin/Aprobar/" + e.cedula)
@@ -267,134 +268,17 @@ export default function AprobarView() {
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
                     >
-                        <Tab label={"Reportes Pendientes: " + tiketslist.filter(e => e.estado_pago == "Pendiente" ).length}{...a11yProps(0)} />
-                        <Tab label={"Reportes expirado: " + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(1)} />
-                        <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length} {...a11yProps(2)} />
+                        <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado" && e.forma_pago == "Tarjeta").length} {...a11yProps(0)} />
+                        <Tab label={"Reportes Pendientes: " + tiketslist.filter(e => e.estado_pago == "Pagado" && e.forma_pago== "" ).length}{...a11yProps(1)} />
+                        <Tab label={"Reportes expirado: " + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(2)} />
+                        
 
                     </Tabs>
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">
                             <MaterialReactTable
                                 columns={listaRegistro}
-                                data={tiketslist.filter(e => e.estado_pago == "Pendiente")}
-                                muiTableProps={{
-                                    sx: {
-                                        tableLayout: 'flex'
-                                    }
-                                }}
-                                enableRowActions
-                                positionActionsColumn="first"
-                                renderRowActions={({ row }) => (
-                                    <Box sx={{ display: 'flex' }}>
-                                         <Tooltip title="Reportar" placement="top">
-                                                <IconButton
-                                                    color="error"
-                                                    aria-label="Bloquear"
-                                                    onClick={() => abrirModal(row.original)}
-                                                >
-                                                    <Summarize />
-                                                </IconButton>
-                                            </Tooltip> 
-                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
-                                            title="Comprobar" placement="top"
-                                        >
-                                            <IconButton
-                                                color="error"
-                                                onClick={() => detalle(row.original)}
-                                            >
-                                                <Visibility />
-                                            </IconButton>
-                                        </Tooltip> : ""}
-                                        {row.original.estado_pago == "Pendiente" ?<Tooltip
-                                            title="Borrar"
-                                            placement="top"
-                                            
-                                        >
-                                            <IconButton 
-                                                onClick={() => eliminarregistro(row.original)}
-                                                color="error">
-                                                <Delete />
-                                            </IconButton>
-
-
-                                        </Tooltip>:""}
-                                        <Tooltip
-                                            title="Boletos especificos" placement="top"
-                                        >
-                                            <IconButton
-                                                color="success"
-                                                onClick={() => detalledos(row.original)}
-                                            >
-                                                <Preview />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </Box>
-                                )}
-                                localization={MRT_Localization_ES}
-                            />
-                        </TabPanel>
-                        <TabPanel value={value} index={1} className="text-center" >
-                            <MaterialReactTable
-                                columns={listaRegistro}
-                                data={tiketslist.filter(e => e.estado_pago == "Expirado")}
-                                muiTableProps={{
-                                    sx: {
-                                        tableLayout: 'flex'
-                                    }
-                                }}
-                                enableRowActions
-                                positionActionsColumn="first"
-                                renderRowActions={({ row }) => (
-                                    <Box sx={{ display: 'flex' }}>
-                                        <IconButton
-                                            color="error"
-                                            aria-label="Bloquear"
-                                            onClick={() => abrirModal(row.original)}
-                                        >
-                                            <Summarize />
-                                        </IconButton>
-                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
-                                            title="Comprobar" placement="top"
-                                        >
-                                            <IconButton
-                                                color="error"
-                                                onClick={() => detalle(row.original)}
-                                            >
-                                                <Visibility />
-                                            </IconButton>
-                                        </Tooltip> : ""}
-                                        {row.original.estado_pago == "Expirado" ? <Tooltip
-                                            title="Borrar"
-                                            placement="top"
-
-                                        >
-                                            <IconButton
-                                                onClick={() => eliminarregistro(row.original)}
-                                                color="error">
-                                                <Delete />
-                                            </IconButton>
-
-
-                                        </Tooltip> : ""}
-                                        <Tooltip
-                                            title="Boletos especificos" placement="top"
-                                        >
-                                            <IconButton
-                                                color="success"
-                                                onClick={() => detalledos(row.original)}
-                                            >
-                                                <Preview />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </Box>
-                                )}
-                                localization={MRT_Localization_ES}
-                            />
-                        </TabPanel>
-                        <TabPanel value={value} index={2} className="text-center">
-                            <MaterialReactTable
-                                columns={listaRegistro}
-                                data={tiketslist.filter(e => e.estado_pago == "Pagado")}
+                                data={tiketslist.filter(e => e.estado_pago == "Pagado" && e.forma_pago =="Tarjeta")}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'
@@ -430,9 +314,83 @@ export default function AprobarView() {
                                             >
                                                 <Visibility />
                                             </IconButton>
-                                        </Tooltip> 
+                                        </Tooltip>
                                         <Tooltip
                                             title="especifico" placement="top"
+                                        >
+                                            <IconButton
+                                                color="success"
+                                                onClick={() => detalledos(row.original)}
+                                            >
+                                                <Preview />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip
+                                            title="Borrar"
+                                            placement="top"
+
+                                        >
+                                            <IconButton
+                                                onClick={() => Deliminarregistro(row.original)}
+                                                color="error">
+                                                <Delete />
+                                            </IconButton>
+
+
+                                        </Tooltip>
+                                        
+                                    </Box>
+                                )}
+                                localization={MRT_Localization_ES}
+                            />
+                        </TabPanel>
+                        <TabPanel value={value} index={1} className="text-center">
+                            <MaterialReactTable
+                                columns={listaRegistro}
+                                data={tiketslist.filter(e => e.estado_pago == "Pendiente")}
+                                muiTableProps={{
+                                    sx: {
+                                        tableLayout: 'flex'
+                                    }
+                                }}
+                                enableRowActions
+                                positionActionsColumn="first"
+                                renderRowActions={({ row }) => (
+                                    <Box sx={{ display: 'flex' }}>
+                                         <Tooltip title="Reportar" placement="top">
+                                                <IconButton
+                                                    color="error"
+                                                    aria-label="Bloquear"
+                                                    onClick={() => abrirModal(row.original)}
+                                                >
+                                                    <Summarize />
+                                                </IconButton>
+                                            </Tooltip> 
+                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
+                                            title="Comprobar" placement="top"
+                                        >
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => detalle(row.original)}
+                                            >
+                                                <Visibility />
+                                            </IconButton>
+                                        </Tooltip> : ""}
+                                        <Tooltip
+                                            title="Borrar"
+                                            placement="top"
+
+                                        >
+                                            <IconButton
+                                                onClick={() => Deliminarregistro(row.original)}
+                                                color="error">
+                                                <Delete />
+                                            </IconButton>
+
+
+                                        </Tooltip>
+                                        <Tooltip
+                                            title="Boletos especificos" placement="top"
                                         >
                                             <IconButton
                                                 color="success"
@@ -446,6 +404,65 @@ export default function AprobarView() {
                                 localization={MRT_Localization_ES}
                             />
                         </TabPanel>
+                        <TabPanel value={value} index={2} className="text-center" >
+                            <MaterialReactTable
+                                columns={listaRegistro}
+                                data={tiketslist.filter(e => e.estado_pago == "Expirado")}
+                                muiTableProps={{
+                                    sx: {
+                                        tableLayout: 'flex'
+                                    }
+                                }}
+                                enableRowActions
+                                positionActionsColumn="first"
+                                renderRowActions={({ row }) => (
+                                    <Box sx={{ display: 'flex' }}>
+                                        <IconButton
+                                            color="error"
+                                            aria-label="Bloquear"
+                                            onClick={() => abrirModal(row.original)}
+                                        >
+                                            <Summarize />
+                                        </IconButton>
+                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
+                                            title="Comprobar" placement="top"
+                                        >
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => detalle(row.original)}
+                                            >
+                                                <Visibility />
+                                            </IconButton>
+                                        </Tooltip> : ""}
+                                        <Tooltip
+                                            title="Borrar"
+                                            placement="top"
+
+                                        >
+                                            <IconButton
+                                                onClick={() => Deliminarregistro(row.original)}
+                                                color="error">
+                                                <Delete />
+                                            </IconButton>
+
+
+                                        </Tooltip>
+                                        <Tooltip
+                                            title="Boletos especificos" placement="top"
+                                        >
+                                            <IconButton
+                                                color="success"
+                                                onClick={() => detalledos(row.original)}
+                                            >
+                                                <Preview />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Box>
+                                )}
+                                localization={MRT_Localization_ES}
+                            />
+                        </TabPanel>
+                      
                     </div>
                 </div>
 

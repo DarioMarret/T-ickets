@@ -120,6 +120,7 @@ const LocalidadmapViews = (props) => {
     }
     function agregar() {
         let user = getDatosUsuariosLocalStorag()
+        
         if (sleccionlocalidad.disponibles == 0) {
             usedispatch(setToastes({
                 show: true,
@@ -748,10 +749,10 @@ const LocalidadmapViews = (props) => {
                     <div className='conatiner-fluid col-12'>
                         <div className="row  ">
                             <div className="col-12 d-flex  flex-column justify-content-center text-center" style={{ fontWeight: "bold" }}>
-                                <h5>Libres: {sleccionlocalidad.disponibles}</h5>
+                                <h5 className="d-none">Libres: {sleccionlocalidad.disponibles}</h5>
                                 <h5 style={{
                                     fontWeight: "bold"
-                                }}>Localidad: {mapath.precio.localidad}</h5>
+                                }}>Localidad: {mapath.precio.idcolor=="12"?mapath.precio.localidad:""}</h5>
                                 <h6 className="px-1"
                                     style={{
                                         fontWeight: "bold",

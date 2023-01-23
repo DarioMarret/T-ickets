@@ -2,12 +2,12 @@ import { refType } from "@mui/utils";
 import axios from "axios";
 import { GetMetodo, GetValores, getVerTienda } from "./CarritoLocalStorang";
 import { Host, token } from "./constantes";
-import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag";
+import { clienteInfo, getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag";
 
 /** reportar Pago */
 export const PagoRapido = async (transaccion) => {
-    let datosPersonal = getDatosUsuariosLocalStorag().cedula
-    let id = getDatosUsuariosLocalStorag().id
+    let datosPersonal =  getDatosUsuariosLocalStorag().cedula
+    let id = clienteInfo() !=null ? clienteInfo().id: getDatosUsuariosLocalStorag().id
     let metodo = GetMetodo() == "Transferencia" ? "Deposito" : GetMetodo()
     let concierto = getVerTienda().map((e) => {
         return {
@@ -124,7 +124,11 @@ export const GeneraToken = async (parms) => {
 }
 export const ValidarToken = async (parms) => {
     try {
-        let { data } = await axios.get("https://rec.netbot.ec/ms_login/validar_token/" + parms, {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/confirmarpago", {
+            
+            "id": parms
+            }
+        , {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -137,7 +141,7 @@ export const ValidarToken = async (parms) => {
 }
 export const generaTiketspdf = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ticket/api/v1/ticket_pdf", parms, {
+        let { data } = await axios.post("https://rec.netbot.ec/ticket/api/v1/ticket_pdf_link", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

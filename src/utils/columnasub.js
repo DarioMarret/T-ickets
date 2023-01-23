@@ -97,6 +97,11 @@ export const ticketsboletos = [
         header: "EVENTO",
         size:50
     },
+    {
+        accessorKey:"cedula",
+        header:"Cédula",
+        size:50
+    },
 
     {
         accessorKey: "localidad",
@@ -108,13 +113,7 @@ export const ticketsboletos = [
     {
         accessorKey: "sillas",
         header: "Boleto",
-        Cell: ({ cell }) => (
-            <div>#
-                {
-                    cell.row.original.sillas
-                }
-            </div>
-        ),
+       
         size:30
     },
     
@@ -148,15 +147,17 @@ export const ticketsboletos = [
 ]
 export const listaRegistro = [
     {
+        accessorKey: "fechaCreacion",
+        header: "Fecha",
+
+    },
+ 
+    {
         accessorKey: "cedula",
         header: "Cedula",
         size:50
     },
-    {
-        accessorKey: "fechaCreacion",
-        header: "Fecha",
-        
-    },
+    
     {
         accessorKey: "estado_pago",
         header: "Estado",

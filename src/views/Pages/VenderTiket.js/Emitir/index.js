@@ -20,15 +20,13 @@ import ModalBoletoApro from "../Aprobar/Modalboleto";
 import { ticketsboletos } from "utils/columnasub";
 import { generaTiketspdf } from "utils/Querycomnet";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
+
 let { cedericon } = bancos
 export default function EmitirboView() {
     let usedispatch = useDispatch()
     let showmodal = useSelector((state) => state.SuscritorSlice.modal)
     const [data, setData] = React.useState([]);
     const [tiketslist, setTikes] = useState([])
-    const [selecions, setselcion] = useState({
-
-    })
     const [alert, setAlert] = useState(null)
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -77,9 +75,9 @@ export default function EmitirboView() {
            "codigoEvento": row.codigoEvento,
            "id_ticket_usuarios": row.id
          }).then(ouput => {
-             if (ouput.message=="PDF generado"){
+             if (ouput.success){
                 // ouput.link_pdf
-                 window.open(ouput.link_pdf, "_blank");
+                 window.open(ouput.link, "_blank");
                  
              }else{
                  usedispatch(setToastes({
@@ -88,8 +86,7 @@ export default function EmitirboView() {
                      color: 'bg-primary',
                      estado: "Hubo un error intenta mas tarder"
                  }))
-             }
-            }).catch(eror => {
+             }}).catch(eror => {
            console.log(eror)
          })
     }
@@ -191,20 +188,17 @@ export default function EmitirboView() {
             }
             {showmodal.nombre == "boleto" ? <ModalBoletoApro /> : ""}
             <div className="card card-primary card-outline text-left " style={{ minHeight: '250px' }} >
+               
+               
                 <div className="card-header pb-2">
-                    Emitir boleto
+                    Emitir 
                 </div>
+
                 <div className="row px-3">
-                    <div className="col-10 text-end  ">
-                        <div className="">
-                            {data.length > 0 ? "$" + suma() : ''}
-                        </div>
-
-
+                    <div className="col-10   ">
+                        {/*tiketslist.length==0?"": <NuevosDatos apiData={tiketslist} fileName={"Todos Boletos"} />*/}
                     </div>
-                    <div className="col-sm ">
-                        {data.length > 0 ? <button className="btn btn-success"> Pagar</button> : ''}
-                    </div>
+                    
 
                 </div>
                 <Tabs value={value} onChange={handleChange}
@@ -213,14 +207,14 @@ export default function EmitirboView() {
                     aria-label="scrollable auto tabs example"
                 >
                     <Tab className="" label={"Boletos Pagados sin canjear:  " + tiketslist.filter(e => e.canje == "NO CANJEADO" && e.estado == "Pagado").length}{...a11yProps(0)} />
-                    <Tab label={"Boletos Reservados no Canjeado: " + tiketslist.filter(e => e.canje == "NO CANJEADO" && e.estado == "reservado").length} {...a11yProps(1)} />      
-                    <Tab label={"Boletos Canjeados: " + tiketslist.filter(e => e.canje != "NO CANJEADO").length} {...a11yProps(2)} />    
+                    <Tab label={"Boletos Reservados " + tiketslist.filter(e => e.estado == "reservado").length} {...a11yProps(1)} />      
+                    <Tab label={"Boletos Canjeados: " + tiketslist.filter(e => e.estado == "disponible").length} {...a11yProps(2)} />    
                     <Tab label={"Boletos Canjeados: " + tiketslist.filter(e => e.canje == "NO CANJEADO" && e.estado == "disponible").length} {...a11yProps(3)} />                 
                 </Tabs>
                 <TabPanel value={value} index={0} className="text-center" >
                     <MaterialReactTable
                         columns={ticketsboletos}
-                        data={tiketslist.filter(e => e.canje == "NO CANJEADO" && e.estado =="Pagado")}
+                        data={tiketslist.filter(e => e.estado == "Pagado")}
                         muiTableProps={{
                             sx: {
                                 tableLayout: 'flex'
@@ -316,7 +310,7 @@ export default function EmitirboView() {
                 <TabPanel value={value} index={1} className="text-center" >
                     <MaterialReactTable
                         columns={ticketsboletos}
-                        data={tiketslist.filter(e => e.canje == "NO CANJEADO" && e.estado == "reservado")}
+                        data={tiketslist.filter(e =>e.estado == "reservado")}
                         muiTableProps={{
                             sx: {
                                 tableLayout: 'flex'
@@ -422,7 +416,7 @@ export default function EmitirboView() {
                 <TabPanel value={value} index={2} className="text-center" >
                     <MaterialReactTable
                         columns={ticketsboletos}
-                        data={tiketslist.filter(e => e.canje != "NO CANJEADO" )}
+                        data={tiketslist.filter(e => e.estado != "reservado" && e.estado != "Pagado" )}
                         muiTableProps={{
                             sx: {
                                 tableLayout: 'flex'

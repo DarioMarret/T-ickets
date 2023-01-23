@@ -12,11 +12,20 @@ export const Listarticketporestado = async (parms) => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-        console.log(data)
+        //console.log(data)
         return data
     } catch (error) {
         console.log(error)
         return error
     }
 
+}
+export const Liverarasiento = async(parms)=>{
+    try {
+        const {data} = await axios.post("",{
+            
+        })
+    } catch (error) {
+        
+    }
 }

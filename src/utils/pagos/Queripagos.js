@@ -16,6 +16,7 @@ export const registraPagos = async (parms) => {
         return error
     }
 }
+
 export const listarRegistropanel = async (parms) => {
     try {
         let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/listarRegistros", parms, {
@@ -57,9 +58,12 @@ export const eliminarRegistro = async (parms) => {
     }
 }
 export const eliminartiket = async (parms) => {
+    
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/liverar_asiento/",
-            {"id_ticket_usuarios":parms.id}, {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/eliminarTicketrepetido",
+            {
+                "id_ticket_usuarios": parms
+            }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

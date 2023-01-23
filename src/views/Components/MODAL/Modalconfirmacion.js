@@ -6,7 +6,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { GetMetodo } from "utils/CarritoLocalStorang";
 import { GetValores } from "utils/CarritoLocalStorang";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { PagoRapido } from "utils/Querycomnet";
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -18,7 +18,7 @@ const ModalConfima = (prop) => {
     let usedispatch = useDispatch()
     const [estado, setEstado] = useState(false)
     const [alert, setAlert] = useState(null)
-    const [spiner, setspiner] = useState(true)
+    const [spiner, setspiner] = useState("")
     const [comproba, setcomprobante] = useState({
         numeroTransaccion: "",
         link_comprobante: "",
@@ -35,12 +35,9 @@ const ModalConfima = (prop) => {
             estado: "Recuerda "
         })) : ""
     }
-
-
     function confirmarefectivo() {
        // $("#valor").val()
         //console.log($("#valor").val())
-
         if ($("#valor").val() == "") {
             usedispatch(setToastes({ show: true, message: 'Ingrese monto', color: 'bg-danger', estado: 'Datos vacios' }))
 
@@ -63,7 +60,6 @@ const ModalConfima = (prop) => {
             console.log(err)
             $.alert("hubo un error")
         })
-
         //  usedispatch(setModal({ nombre: '', estado: '' }))
         //  pararcontador()
     }
@@ -100,8 +96,8 @@ const ModalConfima = (prop) => {
                         "link_comprobante": link,
                         "id": clienteInfo() ? modal.estado.id : modal.estado.id,
                         "numeroTransaccion": comproba.numeroTransaccion,
-                        "cedula": clienteInfo() ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
-                        "estado": clienteInfo() ? "Pagado" : "Comprobar"
+                        "cedula": clienteInfo()!=null ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
+                        "estado": clienteInfo() != null ? modal.estado.forma_pago : spiner
                     }
                     registraPagos(reporte).then(ouput => {
                         if (ouput.success) {
@@ -206,6 +202,10 @@ const ModalConfima = (prop) => {
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
     });
+
+    useEffect(()=>{
+        setspiner(modal.estado.forma_pago)
+    }, [modal.nombre == "confirmar" ? true : false])
     return (
         <>
 
@@ -238,7 +238,21 @@ const ModalConfima = (prop) => {
                                     }}>Tiempo restante <span className=" text-danger"> {intervalo}</span> </p>
 
                                 </div>
-                                <h5 style={{ fontSize: "1.0em" }}>
+                                {clienteInfo() != null ? <h5 className=" font-weight-bold text-danger">En caso de ser Necesario Cambiar</h5>
+                               :""
+
+                                }
+                               
+                                {clienteInfo()!=null?
+                                    <select className="form-select" value={spiner}
+                                        onChange={(g) => setspiner(g.target.value)}
+                                    > <option value={"Efectivo"}>Efectivo</option>
+                                        <option value={"Tarjeta"}>Tarjeta</option>
+                                        <option value={"Deposito"}>Deposito</option>
+                                        <option value={"Transferencia"}>Transeferencia</option>
+
+                                </select>:""}
+                                <h5 className="mt-1" style={{ fontSize: "1.0em" }}>
                                     Selecione el banco al que realizó la transferencia
                                 </h5>
                                 {!clienteInfo() ? <select className="  form-select" name="banco" value={comproba.banco} onChange={(g) => onhandelChange(g.target)} >

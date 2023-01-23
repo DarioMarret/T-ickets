@@ -33,7 +33,8 @@ export default function ListaderegistroView(props) {
 
     }, [])
     function detalle(e) {
-        usedispatch(addususcritor({ ...e }))
+
+        sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
         history.push("/admin/Reporte/" + e.id)
     }
     function abrirModal(row) {
@@ -106,8 +107,6 @@ export default function ListaderegistroView(props) {
                 positionActionsColumn="first"
                 renderRowActions={({ row }) => {
                     let info = JSON.parse(row.original.info_concierto).map(e => { return e.nombreConcierto })
-
-
                     return (
 
                         <Box sx={{ display: 'flex' }}>
@@ -135,16 +134,7 @@ export default function ListaderegistroView(props) {
                                     <Visibility />
                                 </IconButton>
                             </Tooltip> : ""}
-                            {row.original.estado_pago == "Pendiente" && (row.original.forma_pago == "Deposito" || row.original.forma_pago == "Efectivo") ?
-                                <Tooltip title="Borrar" placement="right">
-                                    <IconButton
-                                        //disabled={}
-                                        color="error"
-                                        onClick={() => eliminarregistro(row.original)}
-                                        aria-label="Bloquear">
-                                        <Delete />
-                                    </IconButton>
-                                </Tooltip> : ""}
+                            
                         </Box>
                     )
                 }}

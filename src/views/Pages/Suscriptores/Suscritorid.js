@@ -27,6 +27,7 @@ import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { eliminartiket } from "utils/pagos/Queripagos";
 import { generaTiketspdf } from "utils/Querycomnet";
+import ExportToExcel from "utils/Exportelemin";
 
 const SuscritoridView = () => {
   let { id } = useParams()
@@ -169,14 +170,19 @@ const SuscritoridView = () => {
       if (data.users.length > 0) {
         const datos = data.users.filter((e) => e.id == id)
         setsuscritor({ ...datos[0] })
-        //console.log(datos[0].cedula)
+        console.log(datos[0].cedula)
         let registro = await listarRegistropanel({ "cedula": datos[0].cedula })
-        let tiket = await Listarticketporestado(datos[0].cedula)
-        console.log(registro)
-        if (registro.success && tiket.success) {
-          setTikes(registro.data)
-          setBoletos(tiket.data)
-        }
+        setTimeout(async function(){
+          let tiket = await Listarticketporestado("" + datos[0].cedula)
+          console.log(registro)
+          if (registro.success) {
+            if (tiket.success)
+              setTikes(registro.data)
+            setBoletos(tiket.data)
+          }
+
+        },1000)
+        
 
       }
     } catch (error) {
@@ -188,7 +194,7 @@ const SuscritoridView = () => {
   }
   function detalle(e) {
     console.log(e)
-    usedispatch(setdetalle({ ...e }))
+    sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
     history.push("/admin/Reporte/" + e.id)
   }
   const canjear = (e) => {
@@ -265,21 +271,12 @@ const SuscritoridView = () => {
           text: 'Eliminar',
           btnClass: 'btn-red',
           action: function () {
+            
             eliminarRegistro({ "id": parms.id }).then(ouput => {
               console.log(ouput)
               console.log(parms.id)
               if (!ouput.success) { return $.alert("" + ouput.message) }
-              listarRegistropanel({ "cedula": suscritoid.cedula}).then(e => {
-                // console.log(e)
-                if (e.data) {
-
-                  setTikes(e.data)
-                  return
-                }
-                //setTikes([])
-              }).catch(err => {
-                console.log(err)
-              })
+              window.location.reload()
 
               $.alert("Registro Eliminado correctamente")
 
@@ -335,7 +332,7 @@ const SuscritoridView = () => {
     }).then(ouput => {
       console.log(ouput)
       //window.open('Prosjektplan.pdf')
-   //   window.open("https://tickets.com.ec/", "_blank");
+      window.open(ouput.link, "_blank");
       console.log(ouput)
     }).catch(eror => {
       console.log(eror)
@@ -353,6 +350,7 @@ const SuscritoridView = () => {
       <div className="container-fluid">
         <div className="d-flex justify-content-end align-row.originals-end pb-2" >
           <div>
+           
             <Button className="btn btn-wd btn-outline mr-1"
               type="button"
               onClick={() => setshow(true)}
@@ -486,15 +484,20 @@ const SuscritoridView = () => {
         <ModalConfima />
         <div className="">
           <div className='container-fluid row p-0'>
+            <div className="col-10   ">
+
+              <ExportToExcel apiData={tiketslist} fileName={"Todos Boletos"} />
+
+            </div>
             <Tabs value={value} onChange={handleChange}
               variant="scrollable"
               scrollButtons="auto"
               aria-label="scrollable auto tabs example"
             >
-              <Tab className="" label="Registro pendientes "{...a11yProps(0)} />
-              <Tab label="Registro expirado" {...a11yProps(1)} />
-              <Tab label="Registro Pagados" {...a11yProps(2)} />
-              <Tab label="Tickets" {...a11yProps(3)} />
+              <Tab className="" label={"Registro pendientes " + tiketslist.filter(e => e.estado_pago == "Pendiente").length}{...a11yProps(0)} />
+              <Tab label={"Registro expirado :" + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(1)} />
+              <Tab label={"Registro Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length} {...a11yProps(2)} />
+              <Tab label={"Tickets: "+boletos.length} {...a11yProps(3)} />
             </Tabs>
             <div className=" text-center  py-2  ">
               {/** pendientes*/}
@@ -616,9 +619,10 @@ const SuscritoridView = () => {
               </TabPanel>
               {/** pagados */}
               <TabPanel value={value} index={2} className="text-center">
+               
                 <MaterialReactTable
                   columns={listaRegistro}
-                  data={tiketslist.filter(e => e.estado_pago == "Pagado")}
+                  data={tiketslist}
                   muiTableProps={{
                     sx: {
                       tableLayout: 'flex'
@@ -655,18 +659,7 @@ const SuscritoridView = () => {
                           <Visibility />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip
-                        title="Eliminar"
-                        placement="top"
-                      >
-                        <IconButton
-                          color="error"
-                          onClick={() => eliminarregistro(row.original)}
-                        >
-                          <Delete />
-                        </IconButton>
-                        
-                      </Tooltip>
+                      
                       <Tooltip
                         title="Cambiar a Tarjeta"
                         placement="top"
@@ -686,6 +679,17 @@ const SuscritoridView = () => {
                               }
                             />
                           </a>
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
+                        title="Eliminar"
+                        placement="top"
+                      >
+                        <IconButton
+                          color="error"
+                          onClick={() => eliminarregistro(row.original)}
+                        >
+                          <Delete />
                         </IconButton>
                       </Tooltip>
                     </Box>
@@ -764,21 +768,7 @@ const SuscritoridView = () => {
                           </a>
 
                         */}
-                       {row.original.estado_pago!="Pendiente"? <Tooltip
-                          title="Eliminar"
-                          placement="top"
-                        >
-                          <a
-                            onClick={() => eliminarTiket(row.original)}
-                            className="border  btn-default btn-sm  "
-
-
-                          >
-                            <i className="fa fa-trash text-danger "></i>
-
-
-                          </a>
-                        </Tooltip>:""}
+                     
                         {false? <Tooltip
                           title="Canjear"
                           placement="top" 
