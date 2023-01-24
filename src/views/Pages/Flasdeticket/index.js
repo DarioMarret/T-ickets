@@ -515,6 +515,7 @@ const IndexFlas = () => {
           e.typo = color[0].tipo
           return e
         })
+        console.log(mapa)
         let colornuevo = mapalocal.map((L) => {
           if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
             return L
@@ -783,17 +784,17 @@ const IndexFlas = () => {
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#" onClick={() => SetSeleccion("")}>Inicio</a>
               </li>
-              <li className="nav-item active  py-0 mx-lg-1" aria-current="page" onClick={() => SetSeleccion("")}>
+              <li className="nav-item active  py-0 mx-lg-1" aria-current="page" onClick={() => SetSeleccion("")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <a className=" nav-link" href="#nuevoseventos"
                   style={{ height: 70 }}>Eventos</a>
               </li>
               {userauthi.login ?
-                <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("Datos")}>
+                <li className="nav-item active " aria-current="page" onClick={() => SetSeleccion("Datos")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <a className="nav-link " >Datos</a>
                 </li> : ""
               }
               {userauthi.login ?
-                <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("Tickets")}>
+                <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("Tickets")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <a className="nav-link " href="#">Tickets</a>
                 </li> : ""
               }

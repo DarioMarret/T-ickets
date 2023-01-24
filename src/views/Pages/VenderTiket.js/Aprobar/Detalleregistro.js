@@ -26,12 +26,15 @@ import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { generaTiketspdf } from "utils/Querycomnet";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import { GEnerarBoletos } from "utils/userQuery";
+import ModalConfirma from "views/Components/MODAL/ModalConfirma";
 export default function DetalleCompraView() {
     let { id } = useParams()
     let history = useHistory()
     let usedispatch = useDispatch()
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
-    console.log(nombres)
+    let info = JSON.parse(sessionStorage.getItem("Suscritorid"))
+    //console.log(nombres)
     const [usuario, setUser] = useState({
         "id": "",
         "cedula": "",
@@ -94,7 +97,7 @@ export default function DetalleCompraView() {
     const [tiketslist, setTikes] = useState([])
     const [setDatos, setlocalida] = useState()
     function generaPDF(row) {
-       
+
         generaTiketspdf({
             "cedula": row.cedula,
             "codigoEvento": row.codigoEvento,
@@ -102,7 +105,7 @@ export default function DetalleCompraView() {
         }).then(ouput => {
             if (ouput.success) {
                 window.open(ouput.link, "_blank");
-                
+
 
             } else {
                 usedispatch(setToastes({
@@ -111,11 +114,11 @@ export default function DetalleCompraView() {
                     color: 'bg-primary',
                     estado: "Hubo un error intenta mas tarder"
                 }))
-               
+
             }
 
         }).catch(eror => {
-            
+
             usedispatch(setToastes({
                 show: true,
                 message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
@@ -125,54 +128,48 @@ export default function DetalleCompraView() {
             //console.log(eror)
         })
     }
+
     useEffect(() => {
+        let id = JSON.parse(nombres.info_concierto)
+        console.log(id)
+        // console.log(nombres.cedula)
 
-        console.log(nombres.cedula)
-        if (nombres.cedula) {
-            sessionStorage.setItem("Detalleuid", JSON.stringify(nombres))
-            setlocalida(JSON.parse(nombres.info_concierto))
-            buscarcliente({
-                "cedula": nombres.cedula,
-                "email": ""
-            }).then(ouput => {
-                if (ouput.success) setUser({ ...ouput.data })
-                // console.log(ouput)
-            }).catch(erro => {
-                console.log(erro)
-            })
-
-            Listarticketporestado(nombres.cedula).then(ouput => {
-                if (ouput.success) {
-                    console.log(ouput)
-                    setTikes(ouput.data)
+        let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
+        //  console.log(datos)
+        setlocalida(setlocalida(JSON.parse(nombres.info_concierto)))
+        buscarcliente({
+            "cedula": datos.cedula,
+            "email": ""
+        }).then(ouput => {
+            if (ouput.success) setUser({ ...ouput.data })
+            // console.log(ouput)
+        }).catch(erro => {
+            console.log(erro)
+        })
+        Listarticketporestado(datos.cedula).then(ouput => {
+            if (ouput.success) {
+                let boletos = ouput.data.map((e) => {
+                    if (id.find(f => f.nombreConcierto == e.concierto) != undefined) {
+                        return { ...e }
+                    }
                 }
-            }).catch(err => {
-                console.log(err)
-            })
-        } else {
-            let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
-            console.log(datos)
-            setlocalida(setlocalida(JSON.parse(nombres.info_concierto)))
-            buscarcliente({
-                "cedula": datos.cedula,
-                "email": ""
-            }).then(ouput => {
-                if (ouput.success) setUser({ ...ouput.data })
-                // console.log(ouput)
-            }).catch(erro => {
-                console.log(erro)
-            })
+                )
+                // console.log(boletos.filter(e=>e!= undefined))
+                setTikes(boletos.filter(e => e != undefined))
+            }
+        }).catch(err => {
+            console.log(err)
+        })
 
-            Listarticketporestado(datos.cedula).then(ouput => {
-                if (ouput.success) {
-                    console.log(ouput)
-                    setTikes(ouput.data)
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-        }
-        console.log(nombres)
+        /*Listarticketporestado(info.cedula).then(ouput => {
+            if (ouput.success) {
+                console.log(ouput)
+                setTikes(ouput.data)
+            }
+        }).catch(err => {
+            console.log(err)
+        })*/
+        //console.log(info)
 
         // JSON.parse(nombres.info_concierto)
         /* nombres.info_concierto ? JSON.parse(nombres.info_concierto).map(e => {
@@ -202,7 +199,7 @@ export default function DetalleCompraView() {
                     action: function () {
                         ValidarToken(nombres.id).then(ouput => {
                             if (ouput.success) {
-                               // window.location.reload()
+                                // window.location.reload()
                                 history.goBack()
                                 //console.log(ouput)
                             }
@@ -225,9 +222,10 @@ export default function DetalleCompraView() {
             return id
         }
     }
-    function cambiarADeposito() {
+    function Generarnew() {
+        console.log(nombres)
         $.confirm({
-            title: 'Cambiar este Pago a Tarjeta !',
+            title: 'Generar de nuevo los Boletos',
             type: 'blue',
             content: '',
             buttons: {
@@ -235,13 +233,18 @@ export default function DetalleCompraView() {
                     text: 'Aceptar',
                     btnClass: 'btn-blue',
                     action: function () {
-                        var name = this.$content.find('.name').val();
-                        if (!name) {
-                            $.alert('provide a valid name');
-                            return false;
-                        }
+                        GEnerarBoletos({
+                            "id_registraCompra": nombres.id,
+                            "cedula": nombres.cedula
+                        }).then(ouput => {
+                            ouput.success ? history.goBack() : ""
+                            // console.log(ouput)
+                        }).catch(errr => {
+                            console.log(errr)
+                        })
 
-                        $.alert('Email ' + name);
+
+
                     }
                 },
                 cancel: function () {
@@ -250,17 +253,27 @@ export default function DetalleCompraView() {
             },
         });
     }
+
+    console.log(nombres)
+
     return (
         <PhotoProvider>
             <div>
                 <ModalConfima />
-
+                <ModalConfirma />
                 <div className="row ">
                     <h1></h1>
                     <div className="d-flex justify-content-end  px-3">
+
+                        <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
+                            data-toggle="tooltip" data-placement="top" title="Generar Boleto"
+                            onClick={() => Generarnew()}
+                        >
+                            <i className=" fa fa-spinner">  </i>
+                        </a>
                         <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
                             data-toggle="tooltip" data-placement="top" title="Reportar"
-                            onClick={() => usedispatch(setModal({ nombre: "confirmar", estado: {...nombres} }))}
+                            onClick={() => usedispatch(setModal({ nombre: "confirmar", estado: { ...nombres } }))}
                         >
                             <i className=" fa fa-file">  </i>
                         </a>
@@ -278,7 +291,7 @@ export default function DetalleCompraView() {
                         >
                             <i className=" fa fa-arrow-left">  </i>
                         </a>
-                   </div>
+                    </div>
                     <div className="row ">
                         <div className="col-12">
                             <div className=" px-0 py-2 w-100  bg-white ">
@@ -305,7 +318,8 @@ export default function DetalleCompraView() {
                                                         {estado[nombres.pdf]}
                                                     </a> : ""
                                                 }
-                                                {nombres.estado_pago == "Pagado" ? <a className=" btn btn-default btn-sm"><i className="bi bi-printer"></i> Imprimir </a> : ""}
+                                                {nombres.estado_pago == "Pagado" ? <a className=" btn btn-default btn-sm"><i className="bi bi-file-earmark-pdf"></i> Imprimir </a> : ""}
+                                                <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-usd"></i> Canjear </a>
                                             </div>
                                         </div>
                                     </div>
@@ -368,11 +382,15 @@ export default function DetalleCompraView() {
                                             <br></br>
                                             <br></br>
                                         </small>
+                                      
                                     </div> :
 
                                         <div className="m-t-5 m-b-5">
                                             <strong className="text-inverse">Pago con Tarjeta</strong><br></br>
                                             <small>
+                                                <a className=" btn btn-default btn-sm">
+                                                    <i className="fa fa-credit-card"></i> Link de pago
+                                                </a>
                                                 <br></br>
                                                 <br></br>
                                                 <br></br>
@@ -383,6 +401,11 @@ export default function DetalleCompraView() {
                             {nombres.forma_pago != "Tarjeta" ? <div className="col-12  col-md-6 text-md-end p-3 text-center ">
                                 <div className="invoice-from text-center ">
                                     <small>Comprobante</small>
+                                    <br></br>
+                                    {nombres.link_comprobante == null ? "" : <a className=" btn btn-default btn-sm">
+                                        <i className="fa fa-copy"></i> copy
+                                    </a>}
+                                    <br></br>
                                     <div className="m-t-5 m-b-5 rounded-4  ">
 
                                     </div>
@@ -391,6 +414,13 @@ export default function DetalleCompraView() {
                                     </PhotoView>
                                 </div>
                             </div> : ""}
+                            {nombres.forma_pago == "Tarjeta" ?
+                                <div className="invoice-from text-center">
+
+
+
+                                </div> : ""
+                            }
                         </div>
                         <div className=" table-responsive">
                             <table className="table table-invoice">
@@ -513,24 +543,7 @@ export default function DetalleCompraView() {
 
 
                 </div>
-                <div className=" fixed-bottom  d-flex justify-content-end align-items-end p-3">
 
-                    <Tooltip
-                        title="Cambiar a Tarjeta"
-                        placement="top"
-                    >
-                        <a className=" rounded-circle btn-primary p-2  text-white" >
-                            <ChangeCircle />
-                        </a>
-                    </Tooltip>
-
-                    <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
-                        onClick={() => history.goBack()}
-                    >
-                        <i className=" fa fa-arrow-left"></i>
-                    </a>
-
-                </div>
             </div>
         </PhotoProvider>
     )

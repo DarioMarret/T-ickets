@@ -80,6 +80,13 @@ function Example() {
 
     function generaPDF(row) {
         setSpiner("")
+        
+       /* if (row.original.forma_pago.includes("Local")){
+
+            setSpiner("d-none")
+            $.alert("Nuevos datos")
+            return
+        }*/
         generaTiketspdf({
             "cedula": row.cedula,
             "codigoEvento": row.codigoEvento,
@@ -298,7 +305,7 @@ function Example() {
                             positionActionsColumn="last"
                             renderRowActions={({ row }) => (
                                 <Box sx={{ display: 'flex' }}>
-                                    {row.original.estado != "reservado" && row.original.pdf != null ? <Tooltip className="" title="Ver Ticket" placement="top">
+                                    {row.original.estado != "reservado" && row.original.pdf != null && row.original.forma_pago != "Efectivo-Local"? <Tooltip className="" title="Ver Ticket" placement="top">
                                         <IconButton
                                             color="primary"
                                             arial-label="Enviar"
@@ -322,7 +329,7 @@ function Example() {
                                     {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
                                         <IconButton
                                             color='success'
-                                            onClick={() => successAlert(row.original)}
+                                            
                                         >
                                             <img src={cedericon}
                                                 style={

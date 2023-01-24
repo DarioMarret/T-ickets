@@ -36,7 +36,7 @@ const ModalConfima = (prop) => {
         })) : ""
     }
     function confirmarefectivo() {
-       // $("#valor").val()
+        // $("#valor").val()
         //console.log($("#valor").val())
         if ($("#valor").val() == "") {
             usedispatch(setToastes({ show: true, message: 'Ingrese monto', color: 'bg-danger', estado: 'Datos vacios' }))
@@ -48,10 +48,10 @@ const ModalConfima = (prop) => {
             "forma_pago": "Efectivo",
             "numeroTransaccion": "",
             "link_comprobante": "",
-            "total_pago": $("#valor").val() 
+            "total_pago": $("#valor").val()
         }
         //console.log(datos)
-       // if (comproba.numeroTransaccion.trim() == "") { return }
+        // if (comproba.numeroTransaccion.trim() == "") { return }
         cambiarMetodo(datos).then(ouput => {
             console.log(ouput)
             usedispatch(setToastes({ show: true, message: 'Reporte pagado ', color: 'bg-success', estado: 'Se guardo el numero de control' }))
@@ -65,21 +65,47 @@ const ModalConfima = (prop) => {
     }
 
     function onChange(e) {
-        setcomprobante({
-            ...comproba,
-            link_comprobante: e.files
-        })
-        console.log(e.files)
+        // let img = new Image()
+
+        //if(e.files.size)
+        let tamaño = parseInt(e.files[0].size / 1024);
+        if (tamaño < 1024 || tamaño == 1024 ) {
+            //console.log(e.files[0].size)
+            setcomprobante({
+                ...comproba,
+                link_comprobante: e.files
+            })
+
+        }
+        else {
+            
+
+           // console.log(tamaño, e.files[0].size, (1024 <= tamaño))
+            $("#comprobante").val(null);
+            $.alert("Pasate el peso maximo")
+            return
+        }
+
+        //img.src = window.URL.createObjectURL(e.files[0])
+
+
+
+        //   console.log(e.files)
     }
     function onhandelChange(e) {
-        setcomprobante({
-            ...comproba,
-            [e.name]: e.value
-        })
+        if (e.name == "comprobante") {
+            setcomprobante({
+                ...comproba,
+                link_comprobante: e.value
+            })
+        } else {
+            setcomprobante({
+                ...comproba,
+                [e.name]: e.value
+            })
+        }
     }
-    //SuscritorSlice.modal
     async function onSubmit(e) {
-        //console.log(modal)
         e.preventDefault();
         if (comproba.numeroTransaccion == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
         if (comproba.banco == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
@@ -92,12 +118,12 @@ const ModalConfima = (prop) => {
                 setTimeout(async function () {
                     const reporte = {
                         "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
-                        "forma_pago": "Deposito",
+                        "forma_pago": spiner,
                         "link_comprobante": link,
                         "id": clienteInfo() ? modal.estado.id : modal.estado.id,
                         "numeroTransaccion": comproba.numeroTransaccion,
-                        "cedula": clienteInfo()!=null ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
-                        "estado": clienteInfo() != null ? modal.estado.forma_pago : spiner
+                        "cedula": clienteInfo() != null ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
+                        "estado": clienteInfo() == null ? "Comprobar" : "Pagado"
                     }
                     registraPagos(reporte).then(ouput => {
                         if (ouput.success) {
@@ -119,7 +145,70 @@ const ModalConfima = (prop) => {
                         setEstado(true)
                         usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
                     })
-                    setEstado(true)
+                    //setEstado(true)
+                }, 2000)
+
+            } catch (error) {
+                console.log(error)
+
+            }
+        }
+    }
+    async function onSubmitT(e) {
+        e.preventDefault();
+        if (comproba.numeroTransaccion == "") {
+            usedispatch(setToastes({ show: true, message: 'completes toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
+            return
+        }
+        if (comproba.banco == "") {
+            usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
+            return
+        }
+        if (comproba.link_comprobante == "") {
+            usedispatch(setToastes({ show: true, message: 'Escribe numero de lote', color: 'bg-danger', estado: 'Datos vacios' }))
+            return
+        }
+        if (isNaN(comproba.numeroTransaccion.trim())) {
+            usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobante ', color: 'bg-danger', estado: 'Datos vacios' }))
+            return
+        }
+        else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
+            try {
+                setEstado(true)
+                //const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
+                setTimeout(async function () {
+                    const reporte = {
+                        "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
+                        "forma_pago": "Deposito",
+                        "link_comprobante": comproba.link_comprobante,
+                        "id": clienteInfo() ? modal.estado.id : modal.estado.id,
+                        "numeroTransaccion": comproba.numeroTransaccion,
+                        "cedula": clienteInfo() != null ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
+                        "estado": clienteInfo() == null ? "Comprobar" : "Pagado"
+                    }
+                    registraPagos(reporte).then(ouput => {
+                        if (ouput.success) {
+                            setEstado(false)
+                            usedispatch(setModal({ nombre: '', estado: '' }))
+                            usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
+                            usedispatch(setModal({ nombre: '', estado: '' }))
+                            setTimeout(function () {
+                                window.location.reload()
+                            }, 1000)
+
+                        }
+                        else {
+                            setEstado(false)
+                            usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
+                        }
+                    }).catch(erro => {
+                        console.log(erro)
+                        setEstado(true)
+                        usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
+                    })
+
+                    console.log(reporte)
+                    setEstado(false)
                 }, 2000)
 
             } catch (error) {
@@ -132,7 +221,7 @@ const ModalConfima = (prop) => {
         e.preventDefault();
         $("#valor").val()
         console.log($("#valor").val())
-     
+
         if ($("#valor").val() == "") {
             usedispatch(setToastes({ show: true, message: 'Ingrese monto', color: 'bg-danger', estado: 'Datos vacios' }))
 
@@ -158,7 +247,7 @@ const ModalConfima = (prop) => {
                 setEstado(false)
                 const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
                 setTimeout(async function () {
-                  //  console.log(modal.estado)
+                    //  console.log(modal.estado)
                     const reporte = {
                         "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
                         "forma_pago": "Efectivo",
@@ -170,22 +259,22 @@ const ModalConfima = (prop) => {
                     }
                     console.log(reporte)
                     cambiarMetodo(reporte).then(ouput => {
-                         // console.log(reporte)
-                         if (ouput.success) {
-                             setEstado(true)
-                             usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
-                             usedispatch(setModal({ nombre: '', estado: '' }))
-                         }
-                         else {
-                             //  console.log(ouput)
-                             setEstado(true)
-                             usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
-                         }
-                     }).catch(erro => {
-                         console.log(erro)
-                         setEstado(true)
-                         usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
-                     })
+                        // console.log(reporte)
+                        if (ouput.success) {
+                            setEstado(true)
+                            usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
+                            usedispatch(setModal({ nombre: '', estado: '' }))
+                        }
+                        else {
+                            //  console.log(ouput)
+                            setEstado(true)
+                            usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
+                        }
+                    }).catch(erro => {
+                        console.log(erro)
+                        setEstado(true)
+                        usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
+                    })
                     setEstado(true)
                 }, 2000)
 
@@ -203,7 +292,7 @@ const ModalConfima = (prop) => {
         })
     });
 
-    useEffect(()=>{
+    useEffect(() => {
         setspiner(modal.estado.forma_pago)
     }, [modal.nombre == "confirmar" ? true : false])
     return (
@@ -229,7 +318,7 @@ const ModalConfima = (prop) => {
                 </Modal.Header>
                 <Modal.Body className="d-flex align-items-center row">
                     <div className="container d-flex flex-column col-12 ">
-                        <form onSubmit={(e) => comproba.banco == "transferencia" ? reportarTransferencia(e) : onSubmit(e)}>
+                        {spiner != "Tarjeta" ? <form onSubmit={(e) => onSubmit(e)} className="  was-validated">
                             <div className=" p-1">
                                 <div className="d-none text-center"
                                 >
@@ -238,39 +327,46 @@ const ModalConfima = (prop) => {
                                     }}>Tiempo restante <span className=" text-danger"> {intervalo}</span> </p>
 
                                 </div>
-                                {clienteInfo() != null ? <h5 className=" font-weight-bold text-danger">En caso de ser Necesario Cambiar</h5>
-                               :""
+                                <h5 className=" font-weight-bold text-danger">Forma de Pagos</h5>
 
-                                }
-                               
-                                {clienteInfo()!=null?
+
+
+                                {clienteInfo() != null ?
                                     <select className="form-select" value={spiner}
                                         onChange={(g) => setspiner(g.target.value)}
-                                    > <option value={"Efectivo"}>Efectivo</option>
+                                    >
+                                        <option value={""} disabled required ></option>
                                         <option value={"Tarjeta"}>Tarjeta</option>
+                                        <option value={"Deposito"}>Deposito</option>
+                                        <option value={"Efectivo"}>Deposito Efectivo facilito</option>
+                                        <option value={"Transferencia"}>Transeferencia</option>
+
+                                    </select> : <select className="form-select" required value={spiner}
+                                        onChange={(g) => setspiner(g.target.value)}>
+                                        <option value={""} disabled></option>
+                                        <option value={"Efectivo"}>Deposito Efectivo facilito</option>
                                         <option value={"Deposito"}>Deposito</option>
                                         <option value={"Transferencia"}>Transeferencia</option>
 
-                                </select>:""}
+                                    </select>}
                                 <h5 className="mt-1" style={{ fontSize: "1.0em" }}>
                                     Selecione el banco al que realizó la transferencia
                                 </h5>
-                                {!clienteInfo() ? <select className="  form-select" name="banco" value={comproba.banco} onChange={(g) => onhandelChange(g.target)} >
-                                    <option disabled value={""}></option>
+                                {spiner != "Tarjeta" ? <select className="  form-select" required name="banco" value={comproba.banco} onChange={(g) => onhandelChange(g.target)} >
+                                    <option value={""} disabled></option>
                                     <option value={"Pichincha"}>Banco Pichincha</option>
                                     <option value={"Guayaquil"}>Banco Guayaquil</option>
                                     <option value={"Produbanco"}>Banco Produbanco</option>
                                     <option value={"Pacifico"}>Banco Pacifico</option>
-
-
-                                </select> : <select className="  form-select" name="banco" value={comproba.banco} onChange={(g) => onhandelChange(g.target)} >
-                                    <option disabled value={""}></option>
-                                    
-                                    <option value={"Pichincha"}>Banco Pichincha</option>
-                                    <option value={"Guayaquil"}>Banco Guayaquil</option>
-                                    <option value={"Produbanco"}>Banco Produbanco</option>
-                                    <option value={"Pacifico"}>Banco Pacifico</option>
-                                </select>}
+                                </select> :
+                                    <select className="  form-select" name="banco" required value={comproba.banco} onChange={(g) => onhandelChange(g.target)} ><option value={"Visa"}>Visa</option>
+                                        <option value={""} disabled></option>
+                                        <option value={"Master"}>Mastercar</option>
+                                        <option value={"Diners"}>Diners club</option>
+                                        <option value={"Discover"}>Discover</option>
+                                        <option value={"America"}>America</option>
+                                        <option value={"Alia"}>Alia</option>
+                                    </select>}
                             </div>
                             {comproba.banco != "Efectivo" ? <div className=" p-1">
                                 <h5 style={{ fontSize: '1.0em' }}>
@@ -279,6 +375,7 @@ const ModalConfima = (prop) => {
                                 <input className=" form-control numero"
                                     name="numeroTransaccion"
                                     value={comproba.numeroTransaccion}
+                                    required
                                     onChange={(e) => onhandelChange(e.target)}
                                     type={"text"}
                                 />
@@ -291,20 +388,31 @@ const ModalConfima = (prop) => {
                                 <input className=" form-control numero"
                                     id="valor"
                                     placeholder="Dato por definir"
-
+                                required
                                     type={"text"}
                                 />
                             </div> : ""}
-                            {comproba.banco != "Efectivo" ? <div className="p-1" >
+                            {spiner != "Tarjeta" ? <div className="p-1" >
                                 <h5 style={{ fontSize: '1.0em' }}>
                                     Adjuntar Comprobante ( imagen jpg ó png)
                                 </h5>
-                                <input type="file" accept="image/*" name="comprobante"
+                                <input type="file" accept="image/*" name="comprobante" id="comprobante"
                                     onChange={(e) => onChange(e.target)}
+                                    required
                                     className="form-control"
                                 />
+                                <span className=" text-danger">Tamaño Maximo de la imagen un  1MB</span>
                             </div>
-                                : ""
+                                : <div className="p-1" >
+                                    <h5 style={{ fontSize: '1.0em' }}>
+                                        numero de lote
+                                    </h5>
+                                    <input type="text" name="comprobante" id="comprobante"
+                                        onChange={(e) => onhandelChange(e.target)} required
+                                        className="form-control"
+                                    />
+                                    <span className=" text-danger">Tamaño Maximo de la imagen un  1MB</span>
+                                </div>
                             }
                             <div className=" p-1 ">
                                 {modal.nombre == "confirmar" && !clienteInfo() ? <span>
@@ -332,7 +440,134 @@ const ModalConfima = (prop) => {
                                 <div>
                                 </div>
                             </div>
-                        </form>
+                        </form> :
+                            <form onSubmit={(e) => onSubmitT(e)} className="was-validated">
+                                <div className=" p-1">
+                                    <div className="d-none text-center"
+                                    >
+                                        <p style={{
+                                            fontWeight: "bold"
+                                        }}>Tiempo restante <span className=" text-danger"> {intervalo}</span> </p>
+
+                                    </div>
+                                    <h5 className=" font-weight-bold text-danger">Forma de Pago</h5>
+
+
+
+                                    {clienteInfo() != null ?
+                                        <select className="form-select" value={spiner} required
+                                            onChange={(g) => setspiner(g.target.value)}
+                                        >
+                                            <option value={""} disabled></option>
+                                            <option value={"Tarjeta"}>Tarjeta</option>
+                                            <option value={"Deposito"}>Deposito</option>
+                                            <option value={"Efectivo"}>Deposito Efectivo facilito</option>
+                                            <option value={"Transferencia"}>Transeferencia</option>
+
+                                        </select> : <select className="form-select" value={spiner}
+                                            onChange={(g) => setspiner(g.target.value)}>
+                                            <option value={""} disabled></option>
+                                            <option value={"Efectivo"}>Deposito Efectivo facilito</option>
+                                            <option value={"Deposito"}>Deposito</option>
+                                            <option value={"Transferencia"}>Transeferencia</option>
+
+                                        </select>}
+                                    <h5 className="mt-1" style={{ fontSize: "1.0em" }}>
+                                        Selecione el banco al que realizó la transferencia
+                                    </h5>
+                                    {spiner != "Tarjeta" ? <select className="  form-select" required name="banco" value={comproba.banco} onChange={(g) => onhandelChange(g.target)} >
+                                        <option value={""} disabled></option>
+                                        <option value={"Pichincha"}>Banco Pichincha</option>
+                                        <option value={"Guayaquil"}>Banco Guayaquil</option>
+                                        <option value={"Produbanco"}>Banco Produbanco</option>
+                                        <option value={"Pacifico"}>Banco Pacifico</option>
+                                    </select> :
+                                        <select className="  form-select" name="banco" required value={comproba.banco} onChange={(g) => onhandelChange(g.target)} >
+                                            <option value={""} disabled></option>
+                                            <option value={"Visa"}>Visa</option>
+
+                                            <option value={"Master"}>Mastercar</option>
+                                            <option value={"Diners"}>Diners club</option>
+                                            <option value={"Discover"}>Discover</option>
+                                            <option value={"America"}>America</option>
+                                            <option value={"Alia"}>Alia</option>
+                                        </select>}
+                                </div>
+                                {comproba.banco != "Efectivo" ? <div className=" p-1">
+                                    <h5 style={{ fontSize: '1.0em' }}>
+                                        Ingrese el número de comprobante de la transferencia
+                                    </h5>
+                                    <input className=" form-control numero"
+                                        name="numeroTransaccion"
+                                        value={comproba.numeroTransaccion}
+                                        required
+                                        onChange={(e) => onhandelChange(e.target)}
+                                        type={"text"}
+                                    />
+                                </div> :
+                                    ""}
+                                {comproba.banco == "Efectivo" || comproba.banco == "transferencia" ? <div className=" p-1">
+                                    <h5 style={{ fontSize: '1.0em' }}>
+                                        Valor a Cobrar
+                                    </h5>
+                                    <input className=" form-control numero"
+                                        id="valor"
+                                        placeholder="Dato por definir"
+                                    required
+                                        type={"text"}
+                                    />
+                                </div> : ""}
+                                {spiner != "Tarjeta" ? <div className="p-1" >
+                                    <h5 style={{ fontSize: '1.0em' }}>
+                                        Adjuntar Comprobante ( imagen jpg ó png)
+                                    </h5>
+                                    <input type="file" accept="image/*" name="comprobante" id="comprobante"
+                                        required
+                                        onChange={(e) => onChange(e.target)}
+                                        className="form-control"
+                                    />
+                                    <span className=" text-danger">Tamaño Maximo de la imagen un  1MB</span>
+                                </div>
+                                    : <div className="p-1" >
+                                        <h5 style={{ fontSize: '1.0em' }}>
+                                            numero de lote
+                                        </h5>
+                                        <input type="text" name="comprobante" id="comprobante"
+                                            required
+                                            onChange={(e) => onhandelChange(e.target)}
+                                            className="form-control"
+                                        />
+                                        <span className=" text-danger">Tamaño Maximo de la imagen un  1MB</span>
+                                    </div>
+                                }
+                                <div className=" p-1 ">
+                                    {modal.nombre == "confirmar" && !clienteInfo() ? <span>
+                                        Una vez confirmado el deposito su ticket sera enviado  {
+                                            GetValores() ? "" : GetValores().envio == "correo " ? "al: correo " + getDatosUsuariosLocalStorag().email : "al: Whatsapp " + getDatosUsuariosLocalStorag().whatsapp
+                                        }
+                                    </span> : ''}
+
+                                </div>
+                                <div className="d-flex container justify-content-center  flex-column text-center">
+                                    <div>
+                                        {comproba.banco != "Efectivo" && comproba.banco != "transferencia" ?
+
+                                            !estado ? <button className=" btn p-2 btn-success">Confirmar Transferencia</button> : <button disabled className=" btn p-2 btn-success">Confirmar Transferencia</button>
+
+                                            :
+                                            ""
+
+                                        }
+                                        {
+                                            comproba.banco == "transferencia" ? <button className=" btn btn-primary" >Reporte en transferencia </button> : ""
+                                        }
+
+                                    </div>
+                                    <div>
+                                    </div>
+                                </div>
+                            </form>
+                        }
                     </div>
                     <div className="col-12 text-center">
                         {clienteInfo() == null ? "" :

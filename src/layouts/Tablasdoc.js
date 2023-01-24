@@ -35,6 +35,24 @@ export default function TablasViwe({...props}){
                         select: {
                             style: "single",
                         },
+                         columnDefs: [
+                             {
+
+                                 "responsivePriority": 1,
+                                 className: "",
+                                 targets: 5,
+                                 visible: true,
+                                 "responsive": false
+                             },
+                             {
+
+                                 "responsivePriority": 1,
+                                 className: "",
+                                 targets: 1,
+                                 visible: true,
+                                 "responsive": false
+                             }
+                           ],
                         dom: "Bfrtip",
                         buttons: [
                            

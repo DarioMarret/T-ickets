@@ -76,7 +76,8 @@ const ModalCarritoView = (prop) => {
             $("div." + e.localidaEspacio["idcolor"] + "silla").removeClass("seleccionado").addClass("disponible");
             console.log(ouput)
         }
-        ).catch(err => console.log(err)) : correlativosadd(
+        ).catch(err => console.log(err)) : 
+        correlativosadd(
             {
                 "id": e.id,
                 "estado": "disponible",

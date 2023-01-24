@@ -241,7 +241,7 @@ export default function StoreTickesViews() {
         try {
             let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
             //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
-            if (false) {
+            if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
                 setspinervi("d-none")
                 usedispatch(setToastes({
                     show: true,

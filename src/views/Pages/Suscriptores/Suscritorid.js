@@ -28,11 +28,15 @@ import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { eliminartiket } from "utils/pagos/Queripagos";
 import { generaTiketspdf } from "utils/Querycomnet";
 import ExportToExcel from "utils/Exportelemin";
+import { BoletosTikets } from "utils/userQuery";
+import { BoletosTiketsGlobal } from "utils/userQuery";
 
 const SuscritoridView = () => {
   let { id } = useParams()
   let history = useHistory()
   let usedispatch = useDispatch()
+  // sessionStorage.setItem("Suscritorid", JSON.stringify(row.original))
+  let info = JSON.parse(sessionStorage.getItem("Suscritorid"))
   const [spinervi, setSpiner] = useState("d-none")
   const [show, setshow] = useState(false)
   const [alert, setAlert] = React.useState(null)
@@ -164,6 +168,8 @@ const SuscritoridView = () => {
     };
   }
   const nuevoevento = async () => {
+    console.log(info)
+
     try {
       const data = await GetSuscritores()
       // console.log(data.users.length>0)
@@ -171,9 +177,9 @@ const SuscritoridView = () => {
         const datos = data.users.filter((e) => e.id == id)
         setsuscritor({ ...datos[0] })
         console.log(datos[0].cedula)
-        let registro = await listarRegistropanel({ "cedula": datos[0].cedula })
-        setTimeout(async function(){
-          let tiket = await Listarticketporestado("" + datos[0].cedula)
+        let registro = await listarRegistropanel({ "cedula": info.cedula })
+        setTimeout(async function () {
+          let tiket = await Listarticketporestado("" + info.cedula)
           console.log(registro)
           if (registro.success) {
             if (tiket.success)
@@ -181,8 +187,8 @@ const SuscritoridView = () => {
             setBoletos(tiket.data)
           }
 
-        },1000)
-        
+        }, 1000)
+
 
       }
     } catch (error) {
@@ -260,7 +266,7 @@ const SuscritoridView = () => {
   }
   const eliminarregistro = (parms) => {
     //console.log(parms)
-    
+
     $.confirm({
       title: 'Desea eliminar Este registro de compra ',
       content: '',
@@ -271,7 +277,7 @@ const SuscritoridView = () => {
           text: 'Eliminar',
           btnClass: 'btn-red',
           action: function () {
-            
+
             eliminarRegistro({ "id": parms.id }).then(ouput => {
               console.log(ouput)
               console.log(parms.id)
@@ -291,7 +297,7 @@ const SuscritoridView = () => {
     });
 
   }
-  const eliminarTiket=(parm)=>{
+  const eliminarTiket = (parm) => {
     console.log(parm)
     $.confirm({
       title: 'Desea eliminar este boleto ',
@@ -320,12 +326,12 @@ const SuscritoridView = () => {
         }
       }
     });
-   
+
   }
   function generaPDF(row) {
-   // console.log(row)
+    // console.log(row)
     //window.open("https://tickets.com.ec/", "_blank");
-   generaTiketspdf({
+    generaTiketspdf({
       "cedula": row.cedula,
       "codigoEvento": row.codigoEvento,
       "id_ticket_usuarios": row.id
@@ -338,10 +344,29 @@ const SuscritoridView = () => {
       console.log(eror)
     })
   }
+  const[global,setGlobal]=useState([])
   useEffect(() => {
-    (async () => {
+    /*(async () => {
       await nuevoevento()
-    })()
+    })()*/
+    setsuscritor({ ...info })
+    //setTikes(info)
+    Listarticketporestado("" + info.cedula).then(ouput=>{
+      ouput.success ? setBoletos(ouput.data)
+      :""
+    }).catch(err=>{
+      console.log(err)
+    })
+    listarRegistropanel({ "cedula": info.cedula }).then(ouput=>{
+      ouput.success ? setTikes(ouput.data) :""
+    })
+    /*BoletosTiketsGlobal(""+info.cedula).then(ouput=>{
+      if(!ouput.success) return
+      setGlobal(ouput.data.filter(e.cedula =="1726979659"))
+      console.log(ouput)
+    }).catch(err=>{
+      console.log(err)
+    })*/
 
   }, []);
   return (
@@ -350,7 +375,7 @@ const SuscritoridView = () => {
       <div className="container-fluid">
         <div className="d-flex justify-content-end align-row.originals-end pb-2" >
           <div>
-           
+
             <Button className="btn btn-wd btn-outline mr-1"
               type="button"
               onClick={() => setshow(true)}
@@ -497,7 +522,7 @@ const SuscritoridView = () => {
               <Tab className="" label={"Registro pendientes " + tiketslist.filter(e => e.estado_pago == "Pendiente").length}{...a11yProps(0)} />
               <Tab label={"Registro expirado :" + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(1)} />
               <Tab label={"Registro Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length} {...a11yProps(2)} />
-              <Tab label={"Tickets: "+boletos.length} {...a11yProps(3)} />
+              <Tab label={"Tickets: " + boletos.length} {...a11yProps(3)} />
             </Tabs>
             <div className=" text-center  py-2  ">
               {/** pendientes*/}
@@ -532,17 +557,17 @@ const SuscritoridView = () => {
                         >
                           <Summarize />
                         </IconButton>}
-                     
-                        <Tooltip
-                          title="Comprobar" placement="top"
+
+                      <Tooltip
+                        title="Comprobar" placement="top"
+                      >
+                        <IconButton
+                          color="error"
+                          onClick={() => detalle(row.original)}
                         >
-                          <IconButton
-                            color="error"
-                            onClick={() => detalle(row.original)}
-                          >
-                            <Visibility />
-                          </IconButton>
-                        </Tooltip>
+                          <Visibility />
+                        </IconButton>
+                      </Tooltip>
                       <Tooltip
                         title="Eliminar"
                         placement="top"
@@ -611,7 +636,7 @@ const SuscritoridView = () => {
                         >
                           <Delete />
                         </IconButton>
-                        </Tooltip>
+                      </Tooltip>
                     </Box>
                   )}
                   localization={MRT_Localization_ES}
@@ -619,7 +644,7 @@ const SuscritoridView = () => {
               </TabPanel>
               {/** pagados */}
               <TabPanel value={value} index={2} className="text-center">
-               
+
                 <MaterialReactTable
                   columns={listaRegistro}
                   data={tiketslist}
@@ -659,7 +684,7 @@ const SuscritoridView = () => {
                           <Visibility />
                         </IconButton>
                       </Tooltip>
-                      
+
                       <Tooltip
                         title="Cambiar a Tarjeta"
                         placement="top"
@@ -668,9 +693,7 @@ const SuscritoridView = () => {
                           color="error"
                         >
                           <a
-                            className="border  btn-default btn-sm"
-                            
-                            >
+                            className="border  btn-default btn-sm">
                             <img src={cedericon}
                               style={
                                 {
@@ -718,7 +741,7 @@ const SuscritoridView = () => {
                             <a
                               className=" border  btn-default btn-sm"
 
-                              onClick={()=>generaPDF(row.original)}
+                              onClick={() => generaPDF(row.original)}
                             >
                               <i className="fa fa-download text-primary"></i>
 
@@ -768,10 +791,10 @@ const SuscritoridView = () => {
                           </a>
 
                         */}
-                     
-                        {false? <Tooltip
+
+                        {false ? <Tooltip
                           title="Canjear"
-                          placement="top" 
+                          placement="top"
                         >
                           <a
                             className="border  btn-default btn-sm "
@@ -791,6 +814,7 @@ const SuscritoridView = () => {
                 />
 
               </TabPanel>
+             
             </div>
           </div>
         </div>
@@ -799,20 +823,20 @@ const SuscritoridView = () => {
       </div>
       <div className="d-flex   justify-content-end">
 
-     
-      <div className="   d-flex justify-content-end align-items-end p-3"
-      style={{
 
-        widows:50
-      }}
-      >
-        <a className=" rounded-circle btn-primary p-2 text-white"
-          onClick={() => history.goBack()}
+        <div className="   d-flex justify-content-end align-items-end p-3"
+          style={{
+
+            widows: 50
+          }}
         >
-          <i className=" fa fa-arrow-left"></i>
-        </a>
+          <a className=" rounded-circle btn-primary p-2 text-white"
+            onClick={() => history.goBack()}
+          >
+            <i className=" fa fa-arrow-left"></i>
+          </a>
 
-      </div>
+        </div>
       </div>
       <ModalSuscritoView
         show={show}

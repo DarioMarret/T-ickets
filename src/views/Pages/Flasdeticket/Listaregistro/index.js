@@ -24,7 +24,8 @@ export default function ListaderegistroView(props) {
         let user = getDatosUsuariosLocalStorag()
         listarRegistropanel({ "cedula": user.cedula }).then(
             e => {
-                console.log(e.data)
+                setDatos(e.data)
+                //console.log(e.data)
             }
         ).catch(err =>
             console.log(err)

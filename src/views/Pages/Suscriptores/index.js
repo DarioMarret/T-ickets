@@ -106,6 +106,10 @@ const SuscritorViews = () => {
       </SweetAlert>
     );
   };
+  const abbrir= (row)=>{
+    sessionStorage.setItem("Suscritorid",JSON.stringify(row.original))
+    usehistory.push("/admin/suscritor/" + row.original.id + "")
+  }
   const hideAlert = () => {
     setAlert(null);
   };
@@ -247,7 +251,7 @@ const SuscritorViews = () => {
                   <Box sx={{ display: 'flex' }}>
                     <IconButton
                       color="error"
-                      onClick={() => usehistory.push("/admin/suscritor/" + row.original.id + "")}
+                      onClick={() => abbrir( row)}
                     >
                       <Visibility />
                     </IconButton>

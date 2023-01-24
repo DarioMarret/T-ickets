@@ -197,6 +197,8 @@ export default function EmitirboView() {
                 <div className="row px-3">
                     <div className="col-10   ">
                         {/*tiketslist.length==0?"": <NuevosDatos apiData={tiketslist} fileName={"Todos Boletos"} />*/}
+
+
                     </div>
                     
 
