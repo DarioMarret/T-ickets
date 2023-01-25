@@ -5,7 +5,6 @@ let { icon, iconhead, uno, valla, prubasdos, principal, secundaria, tercero, log
 import { useSelector, useDispatch } from "react-redux";
 import { todossiler } from "./Modalterminos/silder.js";
 let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
-
 import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalPago from "views/Components/MODAL/ModalPago";
 import ModalReport from "views/Components/MODAL/ModalReporte";
@@ -62,7 +61,14 @@ import SubscrtitoViews from "./ModalLogin/Modalsubscrito.js";
 import { GeneraToken } from "utils/Querycomnet.js";
 import { ValidarToken } from "utils/Querycomnet.js";
 import { Seleccionaruserlista } from "utils/userQuery.js";
+import ReactGA from 'react-ga';
+
+const TRACKING_ID = "G-MCFDXJPD98"; // G-MCFDXJPD98
+/*ReactGA.initialize(TRACKING_ID);
+ReactGA.hasLoaded();*/
 const IndexFlas = () => {
+  ReactGA.initialize(TRACKING_ID);
+  //ReactGA.hasLoaded();
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
   let modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -306,22 +312,22 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
-     array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
-       console.log(ouput)
-     }
-     ).catch(err => console.log(err)) : ''
-     getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
- 
-       getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
-         setTimeout(function () {
-           correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
-             console.log(ouput)
-           }).catch(err => {
-             console.log(err)
-           })
-         }, 20 * index)
-       })
-       : ''
+    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
+      console.log(ouput)
+    }
+    ).catch(err => console.log(err)) : ''
+    getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
+
+      getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
+        setTimeout(function () {
+          correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
+            console.log(ouput)
+          }).catch(err => {
+            console.log(err)
+          })
+        }, 20 * index)
+      })
+      : ''
     Limpiarseleccion()
     LimpiarLocalStore()
   }
@@ -403,12 +409,18 @@ const IndexFlas = () => {
       if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
         setspinervi("d-none")
         SetSeleccion("Tickets")
-        usedispatch(setToastes({
-          show: true,
-          message: "Antes de comprar de nuevo termina pagando la compra pendiente",
-          color: 'bg-warning',
-          estado: "Tienes una compra pendiente "
-        }))
+        !registro.data.some(f => f.estado_pago == "Pendiente" && f.forma_pago == "Tarjeta") ?
+          usedispatch(setToastes({
+            show: true,
+            message: "Antes de realizar una compra nueva debes de completar el proceso de pago del anterior",
+            color: 'bg-warning',
+            estado: "Tienes una compra pendiente "
+          })) : usedispatch(setToastes({
+            show: true,
+            message: "Antes de realizar una compra nueva debes de completar el proceso de pago del anterior o eliminarlo",
+            color: 'bg-danger',
+            estado: "Tienes una compra pendiente "
+          }))
         return
       }
       else {
@@ -525,7 +537,7 @@ const IndexFlas = () => {
           e.typo = color[0].tipo
           return e
         })
-       // console.log(mapa)
+        // console.log(mapa)
         let colornuevo = mapalocal.map((L) => {
           if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
             return L
@@ -705,6 +717,9 @@ const IndexFlas = () => {
      window.addEventListener("message", function (event) {
        if (event.origin !== 'https://comnet.sz.chat') return;
      }, false)*/
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
+
   }, [])
 
   function eventocarrusel(e) {
@@ -712,13 +727,18 @@ const IndexFlas = () => {
     userauthi.login ? abrir({
       "nombreConcierto": datos[2],
       "codigoEvento": datos[0],
-      "lugarConcierto": datos[1]
-    }) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))
-    abrir({
-      "nombreConcierto": datos[2],
-      "codigoEvento": datos[0],
-      "lugarConcierto": datos[1]
-    })
+      "lugarConcierto": datos[1],
+
+
+    }) :
+      usedispatch(setModal({
+        nombre: 'loginpage', estado: {
+          "nombreConcierto": datos[2],
+          "codigoEvento": datos[0],
+          "lugarConcierto": datos[1],
+        }
+      }))
+
     return {
       nombreConcierto: datos[2],
       codigoEvento: datos[0],
@@ -852,6 +872,7 @@ const IndexFlas = () => {
               publicidad.map((element, index) => {
                 return (
                   <SwiperSlide key={index}>
+                    {/*className="d-none d-sm-none d-md-block"*/}
                     <div className="d-none d-sm-none d-md-block" style={{ width: "100%", height: "453px" }}>
                       <div style={{
                         backgroundImage: "url('" + element.link_img + "')",
@@ -892,12 +913,12 @@ const IndexFlas = () => {
                             <div className="pt-2  ">
                               {
                                 element.evento == null ?
-                                  <a className="btn border rounded-1  btn-lg btn-outline-light "
+                                  <a className="btn border rounded-1  btn-lg btn-light "
                                     style={styleswiper.button}
                                     href={element.redirect}
-                                   
+
                                   >VER MÁS</a> :
-                                  <button className="btn border rounded-1  btn-lg btn-outline-light "
+                                  <button className="btn border rounded-1  btn-lg btn-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
                                   >COMPRAR</button>
@@ -916,14 +937,14 @@ const IndexFlas = () => {
                       </div>
                     </div>
 
-
+                    {/*//d-block d-sm-block d-md-none*/}
                     <div className="d-block d-sm-block d-md-none" style={{ width: "100%", height: "auto" }}>
                       <div className="slide-image" style={{
                         position: "relative",
                         width: "100%",
                         height: "auto",
                       }}>
-                        {element.id == 99 ? <div style={{
+                        {element.id == 112 ? <div style={{
                           backgroundImage: "url('" + prubas + "')",
                           ...styleswiper.slideimg
                         }} >
@@ -963,13 +984,13 @@ const IndexFlas = () => {
                             <div className="pt-2 ">
                               {
                                 element.evento == null ?
-                                  < button className="btn border rounded-6  btn-lg btn-outline-light "
+                                  < button className="btn border rounded-6  btn-lg btn-light "
                                     style={styleswiper.button}
 
-                                    onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
+                                    onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "" })) : ""}
 
-                                  >{!userauthi.login ? "Suscríbete" : "Ver mas"}</button> :
-                                  <button className="btn border rounded-6  btn-lg btn-outline-light "
+                                  >{"Registrate"}</button> :
+                                  <button className="btn border rounded-6  btn-lg btn-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
                                   >COMPRAR</button>

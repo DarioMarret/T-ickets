@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Toast } from "react-bootstrap";
@@ -17,11 +17,13 @@ import { store } from "StoreRedux/store";
 import { Provider } from 'react-redux';
 import ToastViews from "views/Components/TOAST/toast";
 import "./utils/tablas.css"
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 /*<Route path="/panel" render={(props)=> <Subcr {...props}/> }/>*/
 
 
 root.render(
+  
   <Provider store={store}>
     <BrowserRouter>
       <Switch>

@@ -126,7 +126,7 @@ const ModalCarritoView = (prop) => {
             $("#" + e.path).attr("fill", e.fill)
         }) : ''
         Listarticketporestado(user.cedula).then(oupt => {
-            console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado == "Pagado").length)
+            //console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado == "Pagado").length)
            //console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado == "reservados").length)
             usedispatch(updateboletos({
                 disponibles: sleccionlocalidad.disponibles, 
@@ -705,7 +705,7 @@ const ModalCarritoView = (prop) => {
                         >
                             <strong> Método de pago</strong>
 
-                            {estdo == "ACTIVO" ? <div className="form-check">
+                          <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     checked={checked.Tarjeta == "Tarjeta" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
@@ -713,16 +713,8 @@ const ModalCarritoView = (prop) => {
                                 <label className="form-check-label" htmlFor="Tarjeta">
                                     Tarjeta-credito
                                 </label>
-                            </div> : clienteInfo() != null ? <div className="form-check">
-                                <input className="v-check form-check-input" type="radio"
-                                    checked={checked.Tarjeta == "Tarjeta" ? true : false}
-                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
-                                    name="Tarjeta" id="Tarjeta" />
-                                <label className="form-check-label" htmlFor="Tarjeta">
-                                    Tarjeta-credito
-                                </label>
-                            </div>:""}
-                            {clienteInfo() == null ? estdo == "ACTIVO" ?
+                            </div> 
+                            {clienteInfo() == null ? 
                                 <div className="form-check">
                                     <input className="form-check-input" type="radio"
                                         checked={checked.Transferencia == "Transferencia" ? true : false}
@@ -731,8 +723,8 @@ const ModalCarritoView = (prop) => {
                                     <label className="form-check-label" htmlFor="Transferencia">
                                         Transferencia
                                     </label>
-                                </div> :"": ""}
-                            {clienteInfo() == null ? estdo == "ACTIVO" ? <div className="form-check ">
+                                </div> :""}
+                            {clienteInfo() == null ?  <div className="form-check ">
                                 <input className="form-check-input" type="radio"
                                     checked={checked.Deposito == "Deposito" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
@@ -740,9 +732,9 @@ const ModalCarritoView = (prop) => {
                                 <label className="form-check-label" htmlFor="Deposito">
                                     Deposito
                                 </label>
-                            </div> :"": ""}
+                            </div> :""}
                           
-                                {clienteInfo() == null ? estdo == "ACTIVO" ? <div className="form-check">
+                                {clienteInfo() == null ?   <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     name="Efectivo" id="Efectivo"
                                     checked={checked.Efectivo == "Efectivo" ? true : false}
@@ -751,7 +743,7 @@ const ModalCarritoView = (prop) => {
                                     <label className="form-check-label" htmlFor="Efectivo">
                                     Efectivo
                                 </label>
-                            </div>:"":""}
+                            </div>:""}
                            
                             {clienteInfo() != null ?<div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
@@ -763,7 +755,7 @@ const ModalCarritoView = (prop) => {
                                     Efectivo punto de pagos
                                 </label>
                             </div>:""}
-                            {
+                            {/*
                                 estdo != "ACTIVO" ? <div className="form-check ">
                                     <input className="form-check-input" type="radio"
                                         checked={checked.Deposito == "Deposito" ? true : false}
@@ -773,7 +765,7 @@ const ModalCarritoView = (prop) => {
                                         Reservar
                                     </label>
                                 </div> : ""
-                            }
+                            */}
                             {clienteInfo() != null ?
                                 <div className="form-check">
                                     <input className="form-check-input" type="radio"

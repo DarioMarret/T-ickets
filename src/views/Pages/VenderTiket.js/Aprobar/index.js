@@ -268,8 +268,8 @@ export default function AprobarView() {
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
                     >
-                        <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado" && e.forma_pago == "Tarjeta").length} {...a11yProps(0)} />
-                        <Tab label={"Reportes Pendientes: " + tiketslist.filter(e => e.estado_pago == "Pagado" && e.forma_pago== "" ).length}{...a11yProps(1)} />
+                        <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado" ).length} {...a11yProps(0)} />
+                        <Tab label={"Reportes Pendientes: " + tiketslist.filter(e => e.estado_pago == "Pendiente" ).length}{...a11yProps(1)} />
                         <Tab label={"Reportes expirado: " + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(2)} />
                         
 
@@ -278,7 +278,7 @@ export default function AprobarView() {
                         <TabPanel value={value} index={0} className="text-center">
                             <MaterialReactTable
                                 columns={listaRegistro}
-                                data={tiketslist.filter(e => e.estado_pago == "Pagado" && e.forma_pago =="Tarjeta")}
+                                data={tiketslist.filter(e => e.estado_pago == "Pagado" )}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'
@@ -328,15 +328,12 @@ export default function AprobarView() {
                                         <Tooltip
                                             title="Borrar"
                                             placement="top"
-
                                         >
                                             <IconButton
                                                 onClick={() => Deliminarregistro(row.original)}
                                                 color="error">
                                                 <Delete />
                                             </IconButton>
-
-
                                         </Tooltip>
                                         
                                     </Box>

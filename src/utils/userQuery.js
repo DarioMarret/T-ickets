@@ -20,6 +20,7 @@ export const Listarticketporestado = async (parms) => {
     }
 
 }
+//Compra/post_api_v1_liverar_asiento
 export const Liverarasiento = async(parms)=>{
     try {
         const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/liverar_asiento",{
@@ -34,7 +35,7 @@ export const Liverarasiento = async(parms)=>{
         return error
     }
 }
- //https://rec.netbot.ec/ms_login/ticket_usuario
+ //Ticket/get_ticket_admin
 export const BoletosTiketsGlobal=async(parms)=>{   
    // console.log(parms)
     try {
@@ -53,7 +54,7 @@ export const BoletosTiketsGlobal=async(parms)=>{
         return error
     }
 }
-// https://rec.netbot.ec/ms_login/api/v1/validar_existencia_asientos
+//validar_existencia_asientos
 export const GEnerarBoletos=async(parms)=>{
     try {
         let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/validar_existencia_asientos",
@@ -69,7 +70,7 @@ export const GEnerarBoletos=async(parms)=>{
         return error        
     }
 } 
-//* seleccion usuario https://rec.netbot.ec/ms_login/doc/static/index.html#/Localidades/post_api_v1_selecion_usuario
+//post_api_v1_selecion_usuario
 export const Seleccionaruserlista=async(parms)=>{
     try {
         let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecion_usuario",parms,{
@@ -81,5 +82,36 @@ export const Seleccionaruserlista=async(parms)=>{
         return data
     } catch (error) {
         return error        
+    }
+}
+
+//post_api_v1_actualisar_descripcion_evento
+export const actualizarDescription = async (parms)=>{
+    try {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/actualisar_descripcion_evento", parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+//post_api_v1_actualisar_precio_localidad
+export const actualizarPrecios= async(parms)=>{
+    try {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/actualisar_precio_localidad",parms,{
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+        
     }
 }

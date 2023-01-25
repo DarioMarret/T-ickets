@@ -269,7 +269,7 @@ function Example() {
                 return
             }
             setTikes(ouput.data)
-            console.log(ouput)
+            //console.log(ouput.data.filter(e => e.canje != "CANJEADO"))
         }).catch(err => console.log(err))
     },
         [])

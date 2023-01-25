@@ -189,7 +189,8 @@ export default function DetalleCompraView() {
     }, [])
     //ValidarToken
     function validar() {
-        console.log(nombres.id)
+       // console.log(nombres.id)
+       // $.alert("Este boton ya no se debe usar ")
         $.confirm({
             title: 'Desea Aprobar el este Registro',
             content: '',
@@ -364,7 +365,7 @@ export default function DetalleCompraView() {
                         </a>
 
                         {nombres.forma_pago == "Tarjeta" ?
-                            <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
+                            <a className="  rounded-circle btn-primary mx-2 p-2 text-white"
                                 data-toggle="tooltip" data-placement="top" title="Aprobar Tarjeta"
                                 onClick={() => validar()}
                             >

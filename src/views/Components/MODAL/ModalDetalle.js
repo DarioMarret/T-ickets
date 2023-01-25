@@ -39,7 +39,7 @@ function ModalDetalle(props) {
         email: '',
         whatsapp: '',
         metodoPago: '',
-        envio: '',
+         envio: "Portal web",
         direccion: '',
     })
     const detposito = () => usedispatch(setModal({ nombre: "modalpago", estado: "" }))
@@ -85,7 +85,7 @@ function ModalDetalle(props) {
                     var hoy = new Date();
                     let users = {
                         ...datos, cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil, telefono: data.movil, name: data.nombreCompleto,
-                        email: data.email, hora: String(hoy), enable: data.enable, id: data.id, metodoPago: datosPerson.metodoPago, envio: datosPerson.envio,
+                        email: data.email, hora: String(hoy), enable: data.enable, id: data.id, metodoPago: datosPerson.metodoPago,  envio: "Portal web",
                     }
                     DatosUsuariosLocalStorag({ users })
                     sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
@@ -138,14 +138,14 @@ function ModalDetalle(props) {
             const { name, email, direccion, whatsapp, discapacidad } = datos
             //console.log(datos)
             if (name) {
-                DatosUsuariosLocalStorag({ ...datos, cedula: value, envio: datosPerson.envio, whatsapp: '', discapacidad: discapacidad })
+                DatosUsuariosLocalStorag({ ...datos, cedula: value,  envio: "Portal web", whatsapp: '', discapacidad: discapacidad })
                 setPerson({
                     ...datosPerson,
                     email: email ? email : '',
                     name: name,
                     cedula: value,
                     direccion: direccion ? direccion : '',
-                    envio: datosPerson.envio,
+                     envio: "Portal web",
                     whatsapp: '',
                     metodoPago: metodoPago
                 })
@@ -219,7 +219,7 @@ function ModalDetalle(props) {
                     email: datosPersonal.email,
                     name: datosPersonal.name,
                     whatsapp: datosPersonal.whatsapp,
-                    envio: datosPersonal.envio,
+                    envio: "Portal web",
                     cedula: datosPersonal.cedula,
                     metodoPago: metodoPago
                 })
@@ -231,7 +231,7 @@ function ModalDetalle(props) {
                 name: datosPersonal ? datosPersonal.name : '',
                 whatsapp: datosPersonal ? datosPersonal.whatsapp : '',
                 cedula: datosPersonal ? datosPersonal.cedula : '',
-                envio: datosPersonal ? datosPersonal.envio : '',
+                 envio: "Portal web",
                 metodoPago: metodoPago,
                 direccion: datosPersonal ? datosPersonal.direccion : ''
             })
@@ -247,7 +247,7 @@ function ModalDetalle(props) {
                 cedula: clineteLogeado ? clineteLogeado.cedula : '',
                 metodoPago: metodoPago,
                 direccion: clineteLogeado ? clineteLogeado.direccion : '',
-                envio: datosPersonal ? datosPersonal.envio : '',
+                 envio: "Portal web",
                 metodoPago: metodoPago,
             })
         }
@@ -329,21 +329,13 @@ function ModalDetalle(props) {
                         <div className="col-12 col-sm-6 d-flex flex-column   ">
                             <span>Forma de envío:</span>
                             <div>
-                                <select className="form-select" required
-
-                                    value={datosPerson.envio ? datosPerson.envio : ''} id="envio" name="envio" onChange={(e) => hanbleDatos(e)}>
-                                    {admin == null ?
-                                        Envio.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.value}>{item.envio}</option>
-                                            )
-                                        }) : Envioadmin.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item.value}>{item.envio}</option>
-                                            )
-                                        })
-                                    }
-                                </select>
+                                <input
+                                className='form-control'
+                                disabled
+                                    value={datosPerson.envio}
+                                    id="envio" name="envio"
+                                />
+                                
                             </div>
 
                             <div className=" d-none col-12 border border-bottom mb-3"></div>

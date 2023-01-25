@@ -14,6 +14,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { PagoRapido } from 'utils/Querycomnet';
 import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
 import { bancos } from 'utils/Imgenesutils';
+import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 let { atencion } = bancos
 function ModalPago(props) {
     const { setModalPago, modalPago, detenervelocidad, intervalo } = props
@@ -147,7 +148,17 @@ function ModalPago(props) {
                     setSpiner("d-none")
                 }
                 else { 
+                    usedispatch(setToastes({
+                        show: true,
+                        message: "Lo sentimos la plataforma de Pagomedio no género el link intente más tarde",
+                        color: 'bg-primary',
+                        estado: "Hubo un error departe de Pagomedio"
+                    }))
                     usedispatch(setModal({ nombre: '', estado: "" }))
+                    LimpiarLocalStore()
+                    Limpiarseleccion()
+                    usedispatch(clearMapa())
+                    detenervelocidad()
                  }
             }
             else {

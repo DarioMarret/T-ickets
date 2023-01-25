@@ -180,15 +180,15 @@ const Modalupdate = (props) => {
                 "LocalodadPrecios": selectLocalidad
             }
             try {
-                const actualiza = await ActualizarLocalidad(evento.codigoEvento, guarda)
-                if (actualiza.success) {
+              //  const actualiza = await ActualizarLocalidad(evento.codigoEvento, guarda)
+              /*  if (actualiza.success) {
                     Setshow(false)
                     usedispatch(setToastes({ show: true, message: 'Datos del evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
                 }
                 else {
                     console.log("pasa")
                     usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
-                }
+                }*/
             } catch (error) {
                 usedispatch(setToastes({ show: true, message: " Hubo un error " + error, color: 'bg-danger', estado: 'Intnete de nuevo' }))
                 console.log(error)

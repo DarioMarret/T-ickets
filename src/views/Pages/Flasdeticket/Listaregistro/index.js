@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Box, Tooltip, } from '@mui/material';
+import { Box, Button, Tooltip, } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Delete, Edit, Summarize, Visibility, } from '@mui/icons-material';
 import { useDispatch, useSelector } from "react-redux";
@@ -54,16 +54,16 @@ export default function ListaderegistroView(props) {
             typeAnimated: true,
             buttons: {
                 tryAgain: {
-                    text: 'Eliminars',
+                    text: 'Eliminar',
                     btnClass: 'btn-red',
                     action: function () {
-                        /*
+                        
                         eliminarRegistro({ "id": row.id }).then(ouput => {
                             console.log(ouput)
                             console.log(row.id)
                             if (!ouput.success) { return $.alert("" + ouput.message) }
 
-                            /* listarRegistropanel({ "cedula": cedula }).then(e => {
+                             listarRegistropanel({ "cedula": cedula }).then(e => {
                                   //console.log(e)
                                  if (e.data) {
  
@@ -83,7 +83,7 @@ export default function ListaderegistroView(props) {
 
                         }).catch(error => {
                             $.alert("hubo un error no se pudo eliminar este registro")
-                        })*/
+                        })
 
                     }
                 },
@@ -125,9 +125,18 @@ export default function ListaderegistroView(props) {
                                 ""
                             }
                             {row.original.forma_pago == "Tarjeta" && row.original.estado_pago != "Pagado" && row.original.estado != "Expirado" ?
-                                <a className=" btn btn-default btn-sm" href={row.originallink_pago} target="_blank" >
+                                row.original.link_pago != null?  <a className=" btn btn-default btn-sm" href={row.original.link_pago} target="_blank" >
                                     <i className="fa fa-credit-card" ></i>
-                                </a> : ""
+                                </a> : <Tooltip
+                                    title="Eliminar" placement="top"
+                                >
+                                    <Button
+                                        color="error"
+                                            onClick={() => eliminarregistro(row.original)}
+                                    >
+                                            <Delete /> <span>Eliminar</span> 
+                                        </Button>
+                                </Tooltip> : ""
 
                             }
                             {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? 
