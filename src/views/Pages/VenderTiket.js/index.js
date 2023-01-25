@@ -47,6 +47,7 @@ import { Triangle } from "react-loader-spinner";
 import { correlativosadd } from "utils/Querypanelsigui";
 
 import ReporteView from "views/Components/MODAL/ModalReporte";
+import { Seleccionaruserlista } from "utils/userQuery";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -92,6 +93,8 @@ export default function StoreTickesViews() {
          }, 2000);*/
     }
     function detenervelocidad() {
+        let user = getDatosUsuariosLocalStorag()
+        console.log("qitoa")
         clearInterval(intervalRef.current)
         clearInterval(intervalRef.current)
         setMapashow(false)
@@ -125,6 +128,7 @@ export default function StoreTickesViews() {
         LimpiarLocalStore()
     }
     function para() {
+        console.log("no quito")
         clearInterval(intervalRef.current)
     }
     const hideAlert = () => {
@@ -240,6 +244,8 @@ export default function StoreTickesViews() {
         }
         try {
             let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
+            let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
+            console.log(seleccionuser)
             //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
             if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
                 setspinervi("d-none")
@@ -256,6 +262,7 @@ export default function StoreTickesViews() {
             }
 
             else {
+                //seleccionuser.data.length > 0  datos= await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
                 let obten = await listarpreciolocalidad(e.codigoEvento)
                 const listalocal = await ListarLocalidad("")
                 let localidades = await cargarMapa()
@@ -312,7 +319,13 @@ export default function StoreTickesViews() {
                         setspinervi("d-none")
                         usedispatch(cargarsilla(outp))
                         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-
+                        if (seleccionuser.data.length > 0) {
+                            Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
+                                console.log(outp)
+                            }).catch(error => {
+                                console.log(error)
+                            })
+                        }
                     }).catch(err => {
                         console.log(err)
                         setspinervi("d-none")
@@ -391,11 +404,11 @@ export default function StoreTickesViews() {
                 modalshow.modal.nombre == "ModalPago" ? <ModalPago intervalo={intervalo} detenervelocidad={detenervelocidad} para={para} setModalPago={setModalPago} modalPago={modalPago} /> : null
             }
             <ModalEfectivo
-                comprar={detenervelocidad}
+                comprar={para}
             />
             <ReporteView
                 setrepShow={""}
-                comprar={detenervelocidad}
+                comprar={para}
             />
             <ModalSuscritoView
                 show={modalshow.modal.nombre == "newsuscri" ? true : false}

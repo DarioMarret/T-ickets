@@ -87,13 +87,18 @@ function Example() {
             $.alert("Nuevos datos")
             return
         }*/
+     
+
+
+       
         generaTiketspdf({
             "cedula": row.cedula,
             "codigoEvento": row.codigoEvento,
             "id_ticket_usuarios": row.id
         }).then(ouput => {
             if (ouput.success ) {
-                window.open(ouput.link, "_blank");
+               
+                 window.open(ouput.link, "_blank");
                 setSpiner("d-none")
 
             } else {

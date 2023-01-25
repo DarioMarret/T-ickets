@@ -9,6 +9,7 @@ export const PagoRapido = async (transaccion) => {
     let datosPersonal =  getDatosUsuariosLocalStorag().cedula
     let id = clienteInfo() !=null ? clienteInfo().id: getDatosUsuariosLocalStorag().id
     let metodo = GetMetodo() == "Transferencia" ? "Deposito" : GetMetodo()
+   //  si discrimino lo tengo que guardar  let total = GetMetodo() == "Tarjeta" ? parseFloat(GetValores().total) : parseFloat(GetValores().comision) + parseFloat(GetValores().subtotal)
     let concierto = getVerTienda().map((e) => {
         return {
             "nombreConcierto": e.nombreConcierto,

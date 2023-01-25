@@ -34,14 +34,14 @@ let color = {
     "reservado": "warning",
     "ACTIVO": "success",
     "PROCESO": "secondary",
-    "Pendiente":"warning",
-    "Pagado":"success",
+    "Pendiente": "warning",
+    "Pagado": "success",
     null: "danger",
     "null": "danger",
     "SI": "success",
     "NO": "danger",
     "Expirado": "danger",
-    
+
 
 }
 export const ticketprocesoapro = [
@@ -62,7 +62,7 @@ export const ticketprocesoapro = [
     {
         accessorKey: "sillas",
         header: "Boleto #",
-        Cell:({cell})=>(
+        Cell: ({ cell }) => (
             <div>
                 {cell.row.original.sillas.padStart(10, 0)}
             </div>
@@ -95,29 +95,29 @@ export const ticketsboletos = [
     {
         accessorKey: "concierto",
         header: "EVENTO",
-        size:50
+        size: 50
     },
     {
-        accessorKey:"cedula",
-        header:"Cédula",
-        size:50
+        accessorKey: "cedula",
+        header: "Cédula",
+        size: 50
     },
 
     {
         accessorKey: "localidad",
         header: "localidad",
-        
-        size:50
+
+        size: 50
     },
-    
+
     {
         accessorKey: "sillas",
         header: "Boleto",
-       
-        size:30
+
+        size: 30
     },
-    
-    
+
+
     {
         accessorKey: "estado",
         header: "Estado",
@@ -127,12 +127,12 @@ export const ticketsboletos = [
                     {cell.row.original.estado}</Badge>
             </div>
         ),
-        size:50
+        size: 50
     },
     {
-        accessorKey:"canje",
-        header:"Canjeado",
-        size:50
+        accessorKey: "canje",
+        header: "Canjeado",
+        size: 50
     },
     {
         accessorKey: "valor",
@@ -151,36 +151,54 @@ export const listaRegistro = [
         header: "Fecha",
 
     },
- 
+
     {
         accessorKey: "cedula",
         header: "Cedula",
-        size:50
+        size: 50
     },
-    
+
     {
         accessorKey: "estado_pago",
         header: "Estado",
         Cell: ({ cell }) => (
             <Badge bg={color[cell.row.original.estado_pago]}>
-               {cell.row.original.estado_pago}</Badge>
+                {cell.row.original.estado_pago}</Badge>
         ),
-        size:50
+        size: 50
     },
     {
         accessorKey: "forma_pago",
         header: "Metodo",
-        size:50
+        size: 50
     },
     {
-        accessorKey: "pdf",
-        header: "Ticket",
+        accessorKey: "total_pago",
+        header: "Total",
         Cell: ({ cell }) => (
-            
-                <Badge bg={color[cell.row.original.pdf]}  >
+            <div>
+                {
+                    parseFloat(quitacomision(cell.row.original)).toFixed(0)+".00"
+                }
+            </div>
 
-                    {estado[cell.row.original.pdf]}</Badge>          
+
+
         ),
-        size:50
+        size: 50
     }
 ]
+
+function quitacomision(row) {
+    if ((new Date("2023-01-22 07:00:00 ") > new Date(row.fechaCreacion))) {
+        let valor = parseFloat(row.total_pago) * 0.05
+        let total = parseFloat(row.total_pago) - valor
+        return Math.round(total) 
+    }
+    else {
+        let valor = parseFloat(row.total_pago) * 0.07
+        let total = parseFloat(row.total_pago) - valor
+        return Math.round(total) 
+    }
+
+}

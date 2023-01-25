@@ -61,6 +61,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice.js";
 import SubscrtitoViews from "./ModalLogin/Modalsubscrito.js";
 import { GeneraToken } from "utils/Querycomnet.js";
 import { ValidarToken } from "utils/Querycomnet.js";
+import { Seleccionaruserlista } from "utils/userQuery.js";
 const IndexFlas = () => {
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
@@ -305,7 +306,7 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
-    /* array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
+     array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
        console.log(ouput)
      }
      ).catch(err => console.log(err)) : ''
@@ -320,7 +321,7 @@ const IndexFlas = () => {
            })
          }, 20 * index)
        })
-       : ''*/
+       : ''
     Limpiarseleccion()
     LimpiarLocalStore()
   }
@@ -394,6 +395,8 @@ const IndexFlas = () => {
     setspinervi("")
     try {
       let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
+      let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
+      console.log(seleccionuser)
       /** agregar en casi de && f.forma_pago != "Tarjeta" */
       // let nuevos =
 
@@ -474,6 +477,13 @@ const IndexFlas = () => {
                 velocidad()
                 usedispatch(cargarsilla(outp))
                 usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+                if (seleccionuser.data.length > 0) {
+                  Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
+                    console.log(outp)
+                  }).catch(error => {
+                    console.log(error)
+                  })
+                }
               }).catch(err => {
                 console.log(err)
               })
@@ -515,7 +525,7 @@ const IndexFlas = () => {
           e.typo = color[0].tipo
           return e
         })
-        console.log(mapa)
+       // console.log(mapa)
         let colornuevo = mapalocal.map((L) => {
           if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
             return L
@@ -885,7 +895,7 @@ const IndexFlas = () => {
                                   <a className="btn border rounded-1  btn-lg btn-outline-light "
                                     style={styleswiper.button}
                                     href={element.redirect}
-                                    target="_blank"
+                                   
                                   >VER MÁS</a> :
                                   <button className="btn border rounded-1  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
@@ -958,7 +968,7 @@ const IndexFlas = () => {
 
                                     onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "Subscription" })) : ""}
 
-                                  >{!userauthi.login ? "Suscríbete" : "RESERVAR"}</button> :
+                                  >{!userauthi.login ? "Suscríbete" : "Ver mas"}</button> :
                                   <button className="btn border rounded-6  btn-lg btn-outline-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}

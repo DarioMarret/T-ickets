@@ -519,9 +519,9 @@ const SuscritoridView = () => {
               scrollButtons="auto"
               aria-label="scrollable auto tabs example"
             >
-              <Tab className="" label={"Registro pendientes " + tiketslist.filter(e => e.estado_pago == "Pendiente").length}{...a11yProps(0)} />
-              <Tab label={"Registro expirado :" + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(1)} />
-              <Tab label={"Registro Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length} {...a11yProps(2)} />
+              <Tab className="" label={"Registro " + tiketslist.length}{...a11yProps(0)} />
+              <Tab className="d-none" label={"Registro expirado :" + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(1)} />
+              <Tab className="d-none" label={"Registro Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length} {...a11yProps(2)} />
               <Tab label={"Tickets: " + boletos.length} {...a11yProps(3)} />
             </Tabs>
             <div className=" text-center  py-2  ">
@@ -530,7 +530,7 @@ const SuscritoridView = () => {
               <TabPanel value={value} index={0} className="text-center" >
                 <MaterialReactTable
                   columns={listaRegistro}
-                  data={tiketslist.filter(e => e.estado_pago == "Pendiente")}
+                  data={tiketslist}
                   muiTableProps={{
                     sx: {
                       tableLayout: 'flex'
@@ -736,7 +736,7 @@ const SuscritoridView = () => {
                     <Box sx={{ display: 'flex' }}>
 
                       <div className=" btn-group  " >
-                        {row.original.estado != "reservado" && row.original.pdf != null && row.original.link == "SI" ?
+                        {row.original.estado != "reservado"  ?
                           <Tooltip className="" title="Ver Ticket" placement="top">
                             <a
                               className=" border  btn-default btn-sm"

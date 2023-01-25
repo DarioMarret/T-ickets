@@ -388,7 +388,8 @@ const Reporte = (props) => {
         <Modal.Body>
 
           <div className="container-fluid px-0">
-            {GetMetodo() != "Transferencia" ? <div className='row  flex-wrap-reverse'>
+            {GetMetodo() != "Transferencia" ? 
+            <div className='row  flex-wrap-reverse'>
               <div className='col-12 col-md-6 d-flex flex-column align-items-center'>
                 <div className='pt-2 pagos' >
                   <img src={pichincha} className="img-fluid" onClick={() => Confirmar("pichincha")} />

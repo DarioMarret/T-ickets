@@ -123,7 +123,7 @@ const ModalConfima = (prop) => {
                         "id": clienteInfo() ? modal.estado.id : modal.estado.id,
                         "numeroTransaccion": comproba.numeroTransaccion,
                         "cedula": clienteInfo() != null ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
-                        "estado": clienteInfo() == null ? "Comprobar" : "Pagado"
+                        "estado":  "Comprobar" 
                     }
                     registraPagos(reporte).then(ouput => {
                         if (ouput.success) {
@@ -175,25 +175,27 @@ const ModalConfima = (prop) => {
         else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
             try {
                 setEstado(true)
-                //const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
+                const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
                 setTimeout(async function () {
                     const reporte = {
                         "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
-                        "forma_pago": "Deposito",
+                        "forma_pago": clienteInfo()!=null? spiner:"Deposito",
                         "link_comprobante": comproba.link_comprobante,
                         "id": clienteInfo() ? modal.estado.id : modal.estado.id,
                         "numeroTransaccion": comproba.numeroTransaccion,
                         "cedula": clienteInfo() != null ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
-                        "estado": clienteInfo() == null ? "Comprobar" : "Pagado"
+                        "estado":  "Comprobar" 
                     }
+                    
                     registraPagos(reporte).then(ouput => {
                         if (ouput.success) {
+                            console.log(ouput)
                             setEstado(false)
                             usedispatch(setModal({ nombre: '', estado: '' }))
                             usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
                             usedispatch(setModal({ nombre: '', estado: '' }))
                             setTimeout(function () {
-                                window.location.reload()
+                              //  window.location.reload()
                             }, 1000)
 
                         }
@@ -264,6 +266,7 @@ const ModalConfima = (prop) => {
                             setEstado(true)
                             usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
                             usedispatch(setModal({ nombre: '', estado: '' }))
+
                         }
                         else {
                             //  console.log(ouput)
@@ -318,7 +321,8 @@ const ModalConfima = (prop) => {
                 </Modal.Header>
                 <Modal.Body className="d-flex align-items-center row">
                     <div className="container d-flex flex-column col-12 ">
-                        {spiner != "Tarjeta" ? <form onSubmit={(e) => onSubmit(e)} className="  was-validated">
+                        {spiner != "Tarjeta" ? 
+                        <form onSubmit={(e) => onSubmit(e)} className="  was-validated">
                             <div className=" p-1">
                                 <div className="d-none text-center"
                                 >
@@ -370,7 +374,7 @@ const ModalConfima = (prop) => {
                             </div>
                             {comproba.banco != "Efectivo" ? <div className=" p-1">
                                 <h5 style={{ fontSize: '1.0em' }}>
-                                    Ingrese el número de comprobante de la transferencia
+                                    Núemero de Lote
                                 </h5>
                                 <input className=" form-control numero"
                                     name="numeroTransaccion"
@@ -405,7 +409,7 @@ const ModalConfima = (prop) => {
                             </div>
                                 : <div className="p-1" >
                                     <h5 style={{ fontSize: '1.0em' }}>
-                                        numero de lote
+                                        Link de voucher
                                     </h5>
                                     <input type="text" name="comprobante" id="comprobante"
                                         onChange={(e) => onhandelChange(e.target)} required
@@ -459,7 +463,7 @@ const ModalConfima = (prop) => {
                                             onChange={(g) => setspiner(g.target.value)}
                                         >
                                             <option value={""} disabled></option>
-                                            <option value={"Tarjeta"}>Tarjeta</option>
+                                            <option value={"Tarjeta"}>Tarjetas</option>
                                             <option value={"Deposito"}>Deposito</option>
                                             <option value={"Efectivo"}>Deposito Efectivo facilito</option>
                                             <option value={"Transferencia"}>Transeferencia</option>

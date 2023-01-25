@@ -13,8 +13,9 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { registraPagos } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { cambiarMetodo } from "utils/pagos/Queripagos";
+import { useHistory } from "react-router";
 export default function Pagarlink (){
-    
+    let history = useHistory()
     let usedispatch = useDispatch()
     const [estado, setEstado] = useState(false)
     const [alert, setAlert] = useState(null)
@@ -45,13 +46,8 @@ export default function Pagarlink (){
  
     async function onSubmitT(e) {
         e.preventDefault();
-        if (comproba.numeroTransaccion == "") {
+        if (spiner == "") {
             usedispatch(setToastes({ show: true, message: 'completes toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
-            return
-        }
-      
-        if (comproba.link_comprobante == "") {
-            usedispatch(setToastes({ show: true, message: 'Escribe numero de lote', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
         else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
@@ -59,7 +55,7 @@ export default function Pagarlink (){
                 setEstado(true)
                 //const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
                 setTimeout(async function () {
-                    const reporte = {
+                  const reporte = spiner!="Tarjeta"? {
                         "id_usuario": clienteInfo().id,
                         "forma_pago": spiner ,
                         "link_comprobante": comproba.link_comprobante,
@@ -67,12 +63,24 @@ export default function Pagarlink (){
                         "numeroTransaccion": comproba.numeroTransaccion,
                         "cedula":  modal.estado.cedula ,
                         "estado":  "Pagado"
+                    }:{
+                          "id_usuario": clienteInfo().id,
+                          "forma_pago": spiner,
+                          "link_pago": comproba.link_comprobante,
+                          "id": modal.estado.id,
+                          "numeroTransaccion": comproba.numeroTransaccion,
+                          "cedula": modal.estado.cedula,
+                          "estado": "Pagado",
+                          "link_comprobante": ""
                     }
-                   /* registraPagos(reporte).then(ouput => {
+                    console.log(reporte)
+                   registraPagos(reporte).then(ouput => {
+                        console.log(ouput)
                         if (ouput.success) {
+                            history.goBack()
                             setEstado(false)
                             usedispatch(setModal({ nombre: '', estado: '' }))
-                            usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
+                            usedispatch(setToastes({ show: true, message: 'Metodo de pago realizado con éxito ', color: 'bg-success', estado: 'Comprobante registrado' }))
                             usedispatch(setModal({ nombre: '', estado: '' }))
                             setTimeout(function () {
                                 window.location.reload()
@@ -80,6 +88,7 @@ export default function Pagarlink (){
 
                         }
                         else {
+                            console.log("aqui",ouput)
                             setEstado(false)
                             usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
                         }
@@ -87,7 +96,7 @@ export default function Pagarlink (){
                         console.log(erro)
                         setEstado(true)
                         usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
-                    })*/
+                    })
 
                     console.log(reporte)
                     setEstado(false)
@@ -136,59 +145,51 @@ export default function Pagarlink (){
                             <div className=" p-1">
                                 <div className="d-none text-center"
                                 >
-                                    <p style={{
-                                        fontWeight: "bold"
-                                    }}>Tiempo restante <span className=" text-danger"> {intervalo}</span> </p>
+                                  
 
                                 </div>
                                 <h5 className=" font-weight-bold text-danger">Forma de Pago</h5>
                                      <select className="form-select" value={spiner}
                                         onChange={(g) => setspiner(g.target.value)}>
-                                        <option value={""} disabled></option>
-                                    <option value={"Tarjeta-local"}>Deposito Efectivo facilito</option>
-                                        <option value={"Efectivo-local"}>Deposito Efectivo facilito</option>
-                                        <option value={"Deposito-local"}>Deposito</option>
-                                        <option value={"Transferencia-local"}>Transeferencia</option>
+                                        <option value={""} disabled></option>       
+                                        <option value={"Tarjeta"}>Tarjeta</option>                            
+                                        <option value={"Efectivo"}>Efectivo</option>
+                                        <option value={"Deposito"}>Deposito</option>
+                                        <option value={"Deposito"}>Transeferencia</option>
                                     </select>
                                 <h5 className="mt-1" style={{ fontSize: "1.0em" }}>
                                     Selecione el banco al que realizó la transferencia
                                 </h5>
                                 
                             </div>
-                            {comproba.banco != "Efectivo" ? <div className=" p-1">
+                         
+                           
+                            <div className="p-1" >
                                 <h5 style={{ fontSize: '1.0em' }}>
-                                    Ingrese el número de comprobante de la transferencia
+                                   Ingrese el número de lote
+                                </h5>
+                                <input type="text" name="numeroTransaccion" id="numeroTransaccion"
+                                    required
+                                    value={comproba.numeroTransaccion}
+                                    onChange={(e) => onhandelChange(e.target)}
+                                    className="form-control"
+                                />
+                              
+                            </div>
+                            <div className=" p-1">
+                                <h5 style={{ fontSize: '1.0em' }}>
+                                    Ingrese el link del Voaucher
                                 </h5>
                                 <input className=" form-control numero"
-                                    name="numeroTransaccion"
-                                    value={comproba.numeroTransaccion}
+                                    name="link_comprobante"
+                                    value={comproba.link_comprobante}
                                     required
                                     onChange={(e) => onhandelChange(e.target)}
                                     type={"text"}
                                 />
-                            </div> :
-                                ""}
-                           
-                         <div className="p-1" >
-                                    <h5 style={{ fontSize: '1.0em' }}>
-                                        numero de lote
-                                    </h5>
-                                    <input type="text" name="comprobante" id="comprobante"
-                                        required
-                                        onChange={(e) => onhandelChange(e.target)}
-                                        className="form-control"
-                                    />
-                                    <span className=" text-danger">Tamaño Maximo de la imagen un  1MB</span>
-                                </div>
-                            
-                            <div className=" p-1 ">
-                                {modal.nombre == "confirmar" && !clienteInfo() ? <span>
-                                    Una vez confirmado el deposito su ticket sera enviado  {
-                                        GetValores() ? "" : GetValores().envio == "correo " ? "al: correo " + getDatosUsuariosLocalStorag().email : "al: Whatsapp " + getDatosUsuariosLocalStorag().whatsapp
-                                    }
-                                </span> : ''}
-
                             </div>
+                            
+                           
                             <div className="d-flex container justify-content-center  flex-column text-center">
                                 <div>
                                     {comproba.banco != "Efectivo" && comproba.banco != "transferencia" ?

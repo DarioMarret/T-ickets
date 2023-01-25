@@ -35,6 +35,7 @@ const ModalCarritoView = (prop) => {
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
     const sorter = (a, b) => a.precio_normal > b.precio_normal ? 1 : -1 && a.id < b.id ? 1 : -1;
     let estdo = sessionStorage.getItem("estadoevento")
+    let CODIGO = sessionStorage.getItem("eventoid")
     let usedispatch = useDispatch()
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
     let seleciondesillas = useSelector((state) => state.sillasSlice.sillasSelecionadas)
@@ -166,17 +167,17 @@ const ModalCarritoView = (prop) => {
     function Abririlocalfirt(e) {
        // console.log(sleccionlocalidad.pagados )
        // console.log((sleccionlocalidad.pagados > 10))
-       console.log(sleccionlocalidad)
-       /* if (clienteInfo() == null && e.idcolor == "9") {
+       //console.log(sleccionlocalidad)
+        if (clienteInfo() == null && CODIGO == "9EGM42") {
             usedispatch(setToastes({
                 show: true,
-                message: "Esta Localidad ya no tiene disponibilidad",
+                message: "Gauayaquil Sould Out estaremos Informando",
                 color: 'bg-danger',
-                estado: "Localidad Sold out"
+                estado: "Evento Sold Out"
             }))
             setSpiner("d-none")
             return
-        }*/
+        }
         if (sleccionlocalidad.pagados >=10) {
             usedispatch(setToastes({
                 show: true,
@@ -275,16 +276,16 @@ const ModalCarritoView = (prop) => {
             console.log(sleccionlocalidad)
             console.log(clienteInfo())
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
-            /*if ( clienteInfo()==null && consulta.idcolor == "9") {
+            if (clienteInfo() == null && CODIGO == "9EGM42") {
                 usedispatch(setToastes({
                     show: true,
-                    message: "Esta Localidad ya no tiene disponibilidad",
+                    message: "Gauayaquil Sould Out estaremos Informando",
                     color: 'bg-danger',
                     estado: "Localidad Sold Out"
                 }))
                 setSpiner("d-none")
                 return
-            }*/
+            }
             if (sleccionlocalidad.pagados >= 10) {
                 usedispatch(setToastes({
                     show: true,

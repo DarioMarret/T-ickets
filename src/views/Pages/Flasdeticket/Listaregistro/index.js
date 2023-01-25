@@ -107,11 +107,10 @@ export default function ListaderegistroView(props) {
                 enableRowActions
                 positionActionsColumn="first"
                 renderRowActions={({ row }) => {
-                    let info = JSON.parse(row.original.info_concierto).map(e => { return e.nombreConcierto })
                     return (
 
                         <Box sx={{ display: 'flex' }}>
-                            {row.original.forma_pago == "Deposito" ?
+                            {row.original.forma_pago == "Deposito" && row.original.estado_pago != "Pagado" && row.original.estado_pago!="Comprobar" ?
                                 <Tooltip
                                     title="Reportar pago" placement="top"
                                 >
@@ -125,7 +124,14 @@ export default function ListaderegistroView(props) {
                                 </Tooltip> :
                                 ""
                             }
-                            {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? <Tooltip
+                            {row.original.forma_pago == "Tarjeta" && row.original.estado_pago != "Pagado" && row.original.estado != "Expirado" ?
+                                <a className=" btn btn-default btn-sm" href={row.originallink_pago} target="_blank" >
+                                    <i className="fa fa-credit-card" ></i>
+                                </a> : ""
+
+                            }
+                            {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? 
+                            <Tooltip
                                 title="Comprobar" placement="top"
                             >
                                 <IconButton
@@ -135,13 +141,12 @@ export default function ListaderegistroView(props) {
                                     <Visibility />
                                 </IconButton>
                             </Tooltip> : ""}
-                            
+
                         </Box>
                     )
                 }}
                 localization={MRT_Localization_ES}
             />
-
 
 
 
