@@ -15,6 +15,8 @@ import { Whatsappnumero } from "utils/constantes"
 import { Triangle } from "react-loader-spinner"
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice"
 import { buscarcliente } from "utils/Querypanelsigui"
+import ReactGA from 'react-ga';
+import { setToastes } from "StoreRedux/Slice/ToastSlice"
 const ResgistroView = (prop) => {
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
@@ -133,7 +135,7 @@ const ResgistroView = (prop) => {
         const form = new FormData(e.target)
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         const { name, email, password, movil, direccion, cedula, passwordcomfirma, emailconfirma } = Object.fromEntries(form.entries())
-        console.log(Object.fromEntries(form.entries()))
+       // console.log(Object.fromEntries(form.entries()))
         sessionStorage.setItem(Whatsappnumero, movil)
         let datos = {
             nombreCompleto: name.trim(),
@@ -202,7 +204,7 @@ const ResgistroView = (prop) => {
         else {
             try {
                 let nuemro = await ValidarWhatsapp()
-                if (nuemro != null) {
+                /*if (nuemro != null) {
                     setDatoToas({
                         show: true,
                         message: "Ingrese un numero de Whatsapp",
@@ -211,10 +213,10 @@ const ResgistroView = (prop) => {
                     })
                     console.log("AQUI")
                     return
-                }
-                else {
+                }*/
+             
                     try {
-                        console.log("condireccion-->", datos)
+                       // console.log("condireccion-->", datos)
 
 
                         const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
@@ -237,17 +239,26 @@ const ResgistroView = (prop) => {
                             }
                             DatosUsuariosLocalStorag({ ...usuario, ...users })
                             sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
-                            setDatoToas({
+                            usedispatch(setToastes({
                                 show: true,
                                 message: "Bienvenido " + data.nombreCompleto,
                                 color: 'bg-success',
                                 estado: "Inicio Exitoso",
-                            })
-
+                            }))
+                         /*   setDatoToas({
+                                show: true,
+                                message: "Bienvenido " + data.nombreCompleto,
+                                color: 'bg-success',
+                                estado: "Inicio Exitoso",
+                            })*/
                             modal.estado != null && modal.estado != "Subscription" ? abrir(modal.estado) : modal.estado == "Subscription" ? usedispatch(setModal({ nombre: "Subscription", estado: "" })) : usedispatch(setModal({ nombre: "", estado: "" }))
                             usedispatch(addususcritor({ users }))
+                            ReactGA.event({
+                                category: "Registrado",
+                                action: "registro",
+                                label: "Button",
+                            })
                         } else {
-                            //console.log("error", registro.data)
                             setDatoToas({
                                 show: true,
                                 message: "El Email ya " + email + " se encuentra registrado intente con otro",
@@ -264,7 +275,7 @@ const ResgistroView = (prop) => {
                             estado: "Email dubplicado",
                         })
                     }
-                }
+                
             } catch (error) {
                 document.getElementById("cedula").classList.add("is-invalid")
                 document.getElementById("email").classList.add("is-invalid")

@@ -40,7 +40,7 @@ export default function TablasViwe({...props}){
 
                                  "responsivePriority": 1,
                                  className: "",
-                                 targets: 5,
+                                 targets: 6,
                                  visible: true,
                                  "responsive": false
                              },

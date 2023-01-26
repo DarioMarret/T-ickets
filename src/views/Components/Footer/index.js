@@ -54,6 +54,10 @@ export default function Footer(props) {
                     <div className='col-12 col-sm-12 col-md-12 col-lg-3 ml-n1  d-flex justify-content-center justify-content-lg-between px-0 pb-2'          >
                         <div className='d-flex flex-column justify-content-center justify-content-md-between align-content-between'>
                             <div className=''>
+                                <div className='d-flex flex-column mb-3'>
+                                    <span className=" text-white" style={{ fontFamily: '', }} >Donde pagar nuestras cuntas </span>
+
+                                </div>
                                 <div className="d-flex  flex-column" style={{ alignItems: 'stretch', lineHeight: '2', minWidth: '120px', maxWidth: '' }} >
                                     <h5 className=" text-white" style={{ fontFamily: '', }} > <img src={nombrepage} style={{ height: 20 }} ></img> </h5>
                                     <span className=" text-white" style={{ fontFamily: '', }} >Descarga nuestra aplicación </span>

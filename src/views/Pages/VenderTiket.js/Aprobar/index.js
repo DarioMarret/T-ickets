@@ -21,7 +21,8 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useHistory } from "react-router";
 import { setdetalle } from "StoreRedux/Slice/SuscritorSlice";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
-
+import ExportToExcel from "utils/Exportelemin";
+import { ExportToCsv } from 'export-to-csv';
 let { cedericon, atencion } = bancos
 export default function AprobarView() {
     let usedispatch = useDispatch()
@@ -35,31 +36,7 @@ export default function AprobarView() {
 
     const [alert, setAlert] = useState(null)
     const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })), hideAlert() }
-    const successAlert = (e) => {
-        setAlert(
-            <SweetAlert
-                info
-                style={{ display: "block", marginTop: "-100px" }}
-                title={"Estas Seguro?"}
-                onConfirm={() => abrirceder(e)}
-                onCancel={() => hideAlert()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                closeOnClickOutside={false}
-                confirmBtnText="Si, Ceder"
-                cancelBtnText="Cancelar"
-                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel
-            >
-                <div className="d-flex flex-row justify-content-center text-center">
-                    <div className="d-flex">
-                        <h4 style={{ fontSize: '0.9em' }} >
-                            Desea ceder este boleto a otro usuario</h4>
-                    </div>
-                </div>
-            </SweetAlert>
-        );
-    };
+  
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
 
@@ -121,45 +98,18 @@ export default function AprobarView() {
                                 }}> Si, Continuar</span>
                             </button>
                         </div>
-
                     </div>
                 </div>
             </SweetAlert>
         )
     }
-    function selecion(cod, seleccionado) {
-        let info = data
-        if (info.some(e => e.uid == cod)) {
-            if (info.some(g => g.sillas === seleccionado.sillas)) {
-                let nuevo = selecions
-                setData(info.filter(h => h.sillas != seleccionado.sillas))
-                // delete nuevo.seleccionado.sillas;
-                // setselcion({...nuevo})
-
-            } else {
-                info.push({ ...seleccionado })
-                setselcion({
-                    ...selecions,
-                    [seleccionado.sillas]: true
-                })
-                setData(info)
-            }
-        } else {
-            setselcion({})
-            let datos = info.filter(f => f.ui == cod)
-            datos.push({ ...seleccionado })
-            setData(datos)
-            setselcion({ [seleccionado.sillas]: true })
-        }
-
-    }
+  
     const hideAlert = () => {
         setAlert(null)
     }
-    // console.log(data)
     useEffect(() => {
         listarRegistropanel({ "cedula": "" }).then(e => {
-           // console.log(e)
+            // console.log(e)
             if (e.data) {
 
                 setTikes(e.data)
@@ -171,20 +121,10 @@ export default function AprobarView() {
         })
     },
         [])
-    function suma() {
-        let tikets = data.map((f) => { return parseFloat(f.valor) })
-        try {
-            let valo = tikets.reduce((a, b) => a + b, 0).toFixed(2)
-            return valo
-
-        } catch (error) {
-            console.log(error)
-
-        }
-    }
-    const Deliminarregistro=(parms)=>{
+  
+    const Deliminarregistro = (parms) => {
         console.log(parms)
-        
+
         $.confirm({
             title: 'Desea eliminar Este registro de compra ',
             content: '',
@@ -195,7 +135,7 @@ export default function AprobarView() {
                     text: 'Eliminar',
                     btnClass: 'btn-red',
                     action: function () {
-                        eliminarRegistro({"id":parms.id}).then(ouput=>{
+                        eliminarRegistro({ "id": parms.id }).then(ouput => {
                             console.log(ouput)
                             console.log(parms.id)
                             if (!ouput.success) { return $.alert("" + ouput.message) }
@@ -210,10 +150,10 @@ export default function AprobarView() {
                             }).catch(err => {
                                 console.log(err)
                             })
-                            
+
                             $.alert("Registro Eliminado correctamente")
 
-                        }).catch(error=>{
+                        }).catch(error => {
                             $.alert("hubo un error no se pudo eliminar este registro")
                         })
                     }
@@ -226,7 +166,7 @@ export default function AprobarView() {
     }
     const handleChange = (event, newValue) => {
         setValue(newValue);
-       // console.log(newValue)
+        // console.log(newValue)
     };
     function Aprobarvarios() {
         usedispatch(setModal({ nombre: "Aprobar", estado: data }))
@@ -240,18 +180,31 @@ export default function AprobarView() {
         usedispatch(setModal({ nombre: "confirmar", estado: e }))
     }
     function detalle(e) {
-      //  console.log(e)
+        //  console.log(e)
         sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
         history.push("/admin/Reporte/" + e.id)
-       
+
     }
-    function detalledos(e){
+    function detalledos(e) {
         history.push("/admin/Aprobar/" + e.cedula)
     }
+    const csvOptions = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        useBom: true,
+        filename: 'Ticket vendidos',
+        useKeysAsHeaders: false,
+    };
+    const csvExporter = new ExportToCsv(csvOptions);
+    const handleExportRows = (rows) => {
+        csvExporter.generateCsv(rows.map((row) => row.original));
+    };
 
     return (
         <>
-            {alert} 
+            {alert}
             {
                 modal.nombre == "Aprobar" ?
                     <ModalAprobarViews /> : ""}
@@ -260,25 +213,31 @@ export default function AprobarView() {
                     <ModalBoletoApro /> : ""
             }
             <ModalConfima />
-            <div className="  text-center " style={{ minHeight: '250px' }} >
-
+            <div className="container d-flex flex-wrap">
+                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagados")} fileName={"Todos Pendientes"} label={"Pagados"} />
+                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pendiente")} fileName={"Todos Pendientes"} label={"Pendientes"} />
+                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Expirado")} fileName={"Todos Pendientes"} label={"Expirados"} />
+                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Comprobar")} fileName={"Todos Pendientes"} label={"Comprobar"} />
+            </div>
+           <div className="   " style={{ minHeight: '250px' }} >
                 <div className='container-fluid  p-0'>
                     <Tabs value={value} onChange={handleChange}
                         variant="scrollable"
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
                     >
-                        <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado" ).length} {...a11yProps(0)} />
-                        <Tab label={"Reportes Pendientes: " + tiketslist.filter(e => e.estado_pago == "Pendiente" ).length}{...a11yProps(1)} />
+                        <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length} {...a11yProps(0)} />
+                        <Tab label={"Reportes Pendientes: " + tiketslist.filter(e => e.estado_pago == "Pendiente").length}{...a11yProps(1)} />
                         <Tab label={"Reportes expirado: " + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(2)} />
-                        
+                        <Tab label={"Reportes comprobar: " + tiketslist.filter(e => e.estado_pago == "Comprobar").length} {...a11yProps(3)} />
+
 
                     </Tabs>
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">
                             <MaterialReactTable
                                 columns={listaRegistro}
-                                data={tiketslist.filter(e => e.estado_pago == "Pagado" )}
+                                data={tiketslist.filter(e => e.estado_pago == "Pagado")}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'
@@ -335,7 +294,7 @@ export default function AprobarView() {
                                                 <Delete />
                                             </IconButton>
                                         </Tooltip>
-                                        
+
                                     </Box>
                                 )}
                                 localization={MRT_Localization_ES}
@@ -354,15 +313,15 @@ export default function AprobarView() {
                                 positionActionsColumn="first"
                                 renderRowActions={({ row }) => (
                                     <Box sx={{ display: 'flex' }}>
-                                         <Tooltip title="Reportar" placement="top">
-                                                <IconButton
-                                                    color="error"
-                                                    aria-label="Bloquear"
-                                                    onClick={() => abrirModal(row.original)}
-                                                >
-                                                    <Summarize />
-                                                </IconButton>
-                                            </Tooltip> 
+                                        <Tooltip title="Reportar" placement="top">
+                                            <IconButton
+                                                color="error"
+                                                aria-label="Bloquear"
+                                                onClick={() => abrirModal(row.original)}
+                                            >
+                                                <Summarize />
+                                            </IconButton>
+                                        </Tooltip>
                                         {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
                                             title="Comprobar" placement="top"
                                         >
@@ -459,7 +418,38 @@ export default function AprobarView() {
                                 localization={MRT_Localization_ES}
                             />
                         </TabPanel>
-                      
+                        <TabPanel value={value} index={3} className="text-center" >
+                            <MaterialReactTable
+                                columns={listaRegistro}
+                                data={tiketslist.filter(e => e.estado_pago == "Comprobar")}
+                                muiTableProps={{
+                                    sx: {
+                                        tableLayout: 'flex'
+                                    }
+                                }}
+                                enableRowActions
+                                positionActionsColumn="first"
+                                renderRowActions={({ row }) => (
+                                    <Box sx={{ display: 'flex' }}>
+
+                                        <Tooltip
+                                            title="Comprobar" placement="top"
+                                        >
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => detalle(row.original)}
+                                            >
+                                                <Visibility />
+                                            </IconButton>
+                                        </Tooltip>
+
+
+                                    </Box>
+                                )}
+                                localization={MRT_Localization_ES}
+                            />
+                        </TabPanel>
+
                     </div>
                 </div>
 

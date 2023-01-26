@@ -21,28 +21,10 @@ export const Authsucrito = async (parms) => {
     console.log(data)
     return data
 }
-/*concierto = [
-    {
-        "nombreConcierto": "Seve Linda",
-        "id_localidad": 60
-    },
-    {
-        "nombreConcierto": "Seve Linda",
-        "id_localidad": 61
-    }
-]*/
 export const GenerarLinkPagoMedios = async () => {
-    //  let datosPersonal = { cedula: getDatosUsuariosLocalStorag().cedula }
     let datosPersonal = getDatosUsuariosLocalStorag()
-    let concierto = getVerTienda()/*.map((e) => {
-        return {
-            "nombreConcierto": e.nombreConcierto,
-            "id_localidad": e.localidaEspacio["idcolor"],
-            "cantidad": e.cantidad
-        }
-    })*/
+    let concierto = getVerTienda()
     let valores = GetValores()
-    //  let datosPersonal = { cedula: getDatosUsuariosLocalStorag().cedula }
     let metodo = { "forma_paago": GetMetodo() }
     console.log("se esta generando")
     console.log(datosPersonal,
@@ -69,12 +51,10 @@ export const GenerarLinkPagoMedios = async () => {
             concierto
         }, data
         )
-        //const envios= datosPersonal.envio=="correo"? await EnviarEmail() : await EnviarmensajeWhastapp() 
         return data.data
     }
 }
 export const GuardarDatosdelComprador = async () => {
-
     let datosPerson = getDatosUsuariosLocalStorag()
     let datos = {
         cedula: datosPerson.cedula,
@@ -104,11 +84,9 @@ export const ValidarWhatsapp = async () => {
     let datosPerson = getDatosUsuariosLocalStorag()
     let nuemero = datosPerson.whatsapp
     const validanumero = nuemero.length == 10 ? nuemero.substring(1, 10) : nuemero
-    // console.log(validanumero)
     const { data } = await axios.post("https://rec.netbot.ec/api_whatsapp_qr/api/validarNumero", { from: "593" + validanumero })
     console.log(validanumero, data)
     if (data.success && data.msg != null) {
-        //  console.log(data)
         sessionStorage.setItem(Whatsappnumero, data.msg["_serialized"])
         return data.msg
     } else {
@@ -131,12 +109,6 @@ export const EnviarmensajeWhastapp = async (parms) => {
         message = message + " la cantidad de " + e.cantidad + " asiento para el concierto " + e.nombreConcierto + " de la localidad  " + e.localidad + ", "
     }) : ''
     message = message + codigo + " podría contactarse conmigo para terminar el proceso de compra"
-    //console.log("mensaje a enviar---> ",message)   
-    /* const {data}= await axios.post("https://rec.netbot.ec/api_whatsapp_qr/api/send_whatsapp",{
-         from:from,
-         mensaje:message,
-         link:null
-     })*/
     console.log("mensaje -->", message)
     return message
 }
@@ -147,18 +119,9 @@ export const EnviarmensajeWhastapp = async (parms) => {
  */
 export const ReportarDepositoCompra = async (transaccion) => {
     let datosPersonal = getDatosUsuariosLocalStorag()
-    //  let datosPersonal = { cedula: getDatosUsuariosLocalStorag().cedula }
-    //let metodo = { "forma_paago": GetMetodo() }
-    let concierto = getVerTienda()/*.map((e) => {
-        return {
-            "nombreConcierto": e.nombreConcierto,
-            "id_localidad": e.localidaEspacio["idcolor"],
-            "cantidad": e.cantidad
-        }
-    })*/
+    let concierto = getVerTienda()
     let valores = GetValores()
     let metodo = GetMetodo()
-    // console.log("se esta generando")
     const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio", {
         datosPersonal,
         valores,
@@ -202,3 +165,4 @@ export const ReportarEfectivoCompra = async () => {
     return data;
 
 }
+

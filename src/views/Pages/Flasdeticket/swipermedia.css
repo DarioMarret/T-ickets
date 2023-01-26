@@ -140,6 +140,9 @@ a[aria-expanded="true"] svg {
 .evento {
     cursor: pointer;
 }
+.cursor{
+    cursor: pointer;
+}
 
 .seudtres {
     shape-rendering: geometricPrecision;

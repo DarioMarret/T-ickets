@@ -13,6 +13,7 @@ import { Triangle } from 'react-loader-spinner';
 import { GetValores } from 'utils/CarritoLocalStorang';
 import { PagoRapido } from 'utils/Querycomnet';
 import { bancos } from 'utils/Imgenesutils';
+import ReactGA from 'react-ga';
 let { atencion } = bancos
 const ModalEfectivo = (props) => {
   const { intervalo, detener, detenervelocidad } = props;
@@ -64,6 +65,11 @@ const ModalEfectivo = (props) => {
         console.log(ouput)
         seTSpiners("d-none")
         hideAlert()
+        ReactGA.event({
+          category: "Pago",
+          action: "Facilito",
+          label: "plataforma",
+        })
       }
     }).catch(error => {
       seTSpiners("d-none")

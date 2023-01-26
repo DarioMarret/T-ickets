@@ -97,8 +97,8 @@ function Example() {
             "id_ticket_usuarios": row.id
         }).then(ouput => {
             if (ouput.success ) {
-               
-                 window.open(ouput.link, "_blank");
+                usedispatch(setModal({ nombre: 'pago', estado: ouput.link }))
+                // window.open(ouput.link, "_blank");
                 setSpiner("d-none")
 
             } else {
@@ -155,6 +155,7 @@ function Example() {
                     <th className="text-xs text-center"  >Boleto</th>
 
                     <th className="text-xs text-center" >Valor</th>
+                    <th className="text-xs text-center" >Valor. emision</th>
                     <th className="text-xs text-center">Fecha</th>
                     <th className="text-xs text-center">Estado</th>
                     <th className="text-center"> Aciones</th>
@@ -168,6 +169,19 @@ function Example() {
         "reservado": "label label-warning",
         "Disponible": "label label-success"
     }
+    let precio = {
+        "General": 1,
+        "Preferencia": 1,
+        "Butacas": 1,
+        "Butacas VIP": 1,
+       "Ranchenato BOX": 1,
+        "SEN2 KBRN": 2,
+        "SAUCES BOYZ": 2,
+        "TODO O NADA": 1,
+       "SEN2-KBRN": 2,
+        "SAUCES BOYZ": 2,
+        "TODO-O-NADA": 1,
+    }
     const showDatos = () => {
         try {
             return tiketslist.map((item, index) => {
@@ -177,9 +191,8 @@ function Example() {
 
                         <td className="text-xs ">{item.concierto + " Localidad:" + item.localidad}</td>
                         <td className="text-xs text-center ">#{item.sillas.padStart(10, 0)}</td>
-
-                        <td className="text-xs text-center">{item.valor}</td>
-
+                        <td className="text-xs text-center">${item.valor}</td>
+                        <td className="text-xs text-center">${precio[item.localidad ].toFixed(2)}</td>
                         <td className="text-xs text-center">{item.fechaCreacion}</td>
                         <td className="text-xs text-center">
                             <span className={color[item.estado]}>  {item.estado} </span></td>

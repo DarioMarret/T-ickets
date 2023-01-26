@@ -46,26 +46,15 @@ export default function Pagarlink (){
  
     async function onSubmitT(e) {
         e.preventDefault();
-        if (spiner == "") {
-            usedispatch(setToastes({ show: true, message: 'completes toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
-            return
-        }
-        else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
+     
+         if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
             try {
                 setEstado(true)
                 //const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
                 setTimeout(async function () {
-                  const reporte = spiner!="Tarjeta"? {
-                        "id_usuario": clienteInfo().id,
-                        "forma_pago": spiner ,
-                        "link_comprobante": comproba.link_comprobante,
-                        "id":  modal.estado.id ,
-                        "numeroTransaccion": comproba.numeroTransaccion,
-                        "cedula":  modal.estado.cedula ,
-                        "estado":  "Pagado"
-                    }:{
+                  const reporte ={
                           "id_usuario": clienteInfo().id,
-                          "forma_pago": spiner,
+                          "forma_pago": "Deposito",
                           "link_pago": comproba.link_comprobante,
                           "id": modal.estado.id,
                           "numeroTransaccion": comproba.numeroTransaccion,
@@ -77,18 +66,16 @@ export default function Pagarlink (){
                    registraPagos(reporte).then(ouput => {
                         console.log(ouput)
                         if (ouput.success) {
-                            history.goBack()
+                            console.log(ouput)
+                            console.log(reporte)
                             setEstado(false)
                             usedispatch(setModal({ nombre: '', estado: '' }))
                             usedispatch(setToastes({ show: true, message: 'Metodo de pago realizado con éxito ', color: 'bg-success', estado: 'Comprobante registrado' }))
                             usedispatch(setModal({ nombre: '', estado: '' }))
-                            setTimeout(function () {
-                                window.location.reload()
-                            }, 1000)
-
+                            history.goBack()
                         }
                         else {
-                            console.log("aqui",ouput)
+                            //console.log("aqui",ouput)
                             setEstado(false)
                             usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
                         }
@@ -98,7 +85,7 @@ export default function Pagarlink (){
                         usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
                     })
 
-                    console.log(reporte)
+                   // console.log(reporte)
                     setEstado(false)
                 }, 2000)
 
@@ -142,29 +129,7 @@ export default function Pagarlink (){
                 <Modal.Body className="d-flex align-items-center row">
                     <div className="container d-flex flex-column col-12 ">
                         <form onSubmit={(e) => onSubmitT(e)} className="was-validated">
-                            <div className=" p-1">
-                                <div className="d-none text-center"
-                                >
-                                  
-
-                                </div>
-                                <h5 className=" font-weight-bold text-danger">Forma de Pago</h5>
-                                     <select className="form-select" value={spiner}
-                                        onChange={(g) => setspiner(g.target.value)}>
-                                        <option value={""} disabled></option>       
-                                        <option value={"Tarjeta"}>Tarjeta</option>                            
-                                        <option value={"Efectivo"}>Efectivo</option>
-                                        <option value={"Deposito"}>Deposito</option>
-                                        <option value={"Deposito"}>Transeferencia</option>
-                                    </select>
-                                <h5 className="mt-1" style={{ fontSize: "1.0em" }}>
-                                    Selecione el banco al que realizó la transferencia
-                                </h5>
-                                
-                            </div>
-                         
-                           
-                            <div className="p-1" >
+                             <div className="p-1" >
                                 <h5 style={{ fontSize: '1.0em' }}>
                                    Ingrese el número de lote
                                 </h5>

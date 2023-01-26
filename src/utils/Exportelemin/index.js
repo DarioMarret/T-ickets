@@ -6,7 +6,7 @@ import { Triangle } from "react-loader-spinner";
 
 import * as XLSX from "xlsx"
 
-export default function ExportToExcel({ apiData, fileName }) {
+export default function ExportToExcel({ apiData, fileName, label }) {
     let [spiner, setSpiner] = useState("d-none")
     const fileType =
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
@@ -31,8 +31,8 @@ export default function ExportToExcel({ apiData, fileName }) {
     }
 
     return (
-        <div>
-            <button className=" btn  btn-success  btn-sm" onClick={(e) => exportToCSV(apiData, fileName)}><i className="bi bi-filetype-exe"></i> Export </button>
+        <div className="m-2">
+            <button className=" btn  btn-success  btn-sm" onClick={(e) => exportToCSV(apiData, fileName)}><i className="bi bi-filetype-exe"></i> Export {label} </button>
             <div className={spiner}
                 style={{
                     display: 'none',

@@ -25,7 +25,7 @@ const ModalLogin = (props) => {
   const handleSubmit = async (event) => {
     var hoy = new Date();
     event.preventDefault();
-    console.log(credenciales)
+    //console.log(credenciales)
     if (credenciales.username !== '' && credenciales.pass !== '') {
 
       try {
@@ -48,8 +48,20 @@ const ModalLogin = (props) => {
           sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
           sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
           usedispatch(addususcritor({ ...client }))
-          setShowToass(true)
-          setmessage("Bienvenido " + data.data.nombreCompleto)
+          // setShowToass(true)
+          // setmessage("Bienvenido " + data.data.nombreCompleto)
+          usedispatch(setToastes({
+            show: true,
+            message: "Bienvenido " + data.data.nombreCompleto,
+            color: 'bg-success',
+            estado: "Inicio Exitoso",
+          }))
+          /* setDatoToas({
+             show: true,
+             message: "Bienvenido " + data.nombreCompleto,
+             color: 'bg-success',
+             estado: "Inicio Exitoso",
+           })*/
           Modalstatus.estado != null ? abrir(Modalstatus.estado) : ''
           usedispatch(setModal({ nombre: '', estado: '' }))
         }

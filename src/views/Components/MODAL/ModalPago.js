@@ -12,9 +12,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { PagoRapido } from 'utils/Querycomnet';
+import ReactGA from "react-ga"
 import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
 import { bancos } from 'utils/Imgenesutils';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
+import { Metodos } from 'utils/constantes';
 let { atencion } = bancos
 function ModalPago(props) {
     const { setModalPago, modalPago, detenervelocidad, intervalo } = props
@@ -141,11 +143,17 @@ function ModalPago(props) {
         //console.log(user)
         setSpiner("")
         PagoRapido("").then(ouput => {
-            console.log(ouput)
+            //console.log(ouput)
             if (user == null) {
                 if (ouput.success) {
                     usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
+                    detenervelocidad()
                     setSpiner("d-none")
+                    ReactGA.event({
+                        category: "Pago",
+                        action: "pagomedia",
+                        label: "Pendiente-TC",
+                    })
                 }
                 else { 
                     usedispatch(setToastes({
@@ -154,11 +162,17 @@ function ModalPago(props) {
                         color: 'bg-primary',
                         estado: "Hubo un error departe de Pagomedio"
                     }))
+                    
                     usedispatch(setModal({ nombre: '', estado: "" }))
                     LimpiarLocalStore()
                     Limpiarseleccion()
                     usedispatch(clearMapa())
                     detenervelocidad()
+                    ReactGA.event({
+                        category: "error",
+                        action: "pagomedia",
+                        label: "Pendiente-TC",
+                    })
                  }
             }
             else {
@@ -186,6 +200,69 @@ function ModalPago(props) {
 
         }*/
 
+    }
+    function CrearPyhome(){
+        sessionStorage.setItem(Metodos, "Payphone")
+        let user = clienteInfo()
+        //console.log(user)
+       setSpiner("")
+        setTimeout(function(){
+            PagoRapido("").then(ouput => {
+               //console.log(ouput)
+                if (user == null) {
+                    if (ouput.success) {
+                        usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
+                        setSpiner("d-none")
+                        detenervelocidad()
+                        ReactGA.event({
+                            category: "Pago",
+                            action: "Pyhome",
+                            label: "Pendiente-TC",
+                        })
+                    }
+                    else {
+                        usedispatch(setToastes({
+                            show: true,
+                            message: "Lo sentimos la plataforma de Pagomedio no género el link intente más tarde",
+                            color: 'bg-primary',
+                            estado: "Hubo un error departe de Pagomedio"
+                        }))
+                        usedispatch(setModal({ nombre: '', estado: "" }))
+                        LimpiarLocalStore()
+                        Limpiarseleccion()
+                        usedispatch(clearMapa())
+                        detenervelocidad()
+                        ReactGA.event({
+                            category: "error",
+                            action: "Pyhome",
+                            label: "Pendiente-TC",
+                        })
+                    }
+                }
+                else {
+                    popUp(ouput.url)
+                    usedispatch(setModal({ nombre: '', estado: "" }))
+                    setSpiner("d-none")
+                }
+                // setModalPago(false)
+            }).catch(errro => {
+                usedispatch(setModal({ nombre: '', estado: "" }))
+                usedispatch(setToastes({
+                    show: true,
+                    message: "Lo sentimos la platadorma de Pagomedia no genero el link",
+                    color: 'bg-primary',
+                    estado: "Hubo un error de Pagomedio"
+                }))
+                ReactGA.event({
+                    category: "error",
+                    action: "Pyhome",
+                    label: "Pendiente-TC",
+                })
+                //  console.log(errro)
+                setSpiner("d-none")
+            })
+        },1000)
+        
     }
     /*  async function CrearLinkPayPhone() {
           setSpiner("")
@@ -236,7 +313,8 @@ function ModalPago(props) {
                                 textAlign: 'center',
                             }}
                         >
-                            <div className='px-0'
+                            <div className='m-3'>
+                                <div className='px-0 pagos'
                                 style={{
                                     display: 'flex',
                                     flexDirection: 'column',
@@ -257,22 +335,46 @@ function ModalPago(props) {
                                     alt="Pagos medios"
                                 />
                             </div>
+                            </div>
+                            <div className='m-3 d-none'>
+                                <div className='px-0 pagos '
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        padding: '5px',
+                                        cursor: 'pointer'
+                                    }}
+                                    onClick={CrearPyhome}
+                                >
+                                    {/**
+                             * 
+                             * https://codigomarret.online/img/whatsapp image 2022-09-18 at 15.12.28.jpeg
+                             */}
+                                    <img className=' image-fluid  '
+                                        src={Pagos}
+                                        width={420}
+                                        alt="Pagos medios"
+                                    />
+                                </div>
+                            </div>
                         </label>
                         <div className='d-flex  justify-content-center'>
-                            <div className=' container d-flex   px-0 mx-0 justify-content-between ' style={{ width: '90%' }}>
-                                <div className='px-'>
+                            <div className=' container d-flex   px-0 mx-0 justify-content-between text-center ' style={{ width: '90%' }}>
+                                <div className='d-none px-'>
                                     <button className='btn btn-primary btn-lg   ' style={{ fontSize: '' }} onClick={CrearPagoMedio}  >  SEGUIR
                                         <span className='  text-primary '></span>
                                     </button>
 
                                 </div>
-                                <div>
-                                    <button className='btn  btn-outline-primary btn-lg ' style={{ fontSize: '' }} onClick={succesAlert}> ELIMINAR  </button>
+                                <div className='col-12 text-center'>
+                                    <button className='btn  btn-outline-danger btn-lg ' style={{ fontSize: '' }} onClick={succesAlert}> ELIMINAR COMPRA </button>
                                 </div>
                             </div>
                         </div>
 
-                        <div className='d-none'
+                        <div className=' d-none'
                             style={{
                                 display: 'flex',
                                 flexDirection: 'row',

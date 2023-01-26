@@ -33,6 +33,7 @@ export const PagoRapido = async (transaccion) => {
         "idfactura": "",
         "transaccion": transaccion
     }
+    
     // console.log(datos, concierto)
     try {
 
@@ -44,7 +45,7 @@ export const PagoRapido = async (transaccion) => {
             }
         }
         )
-         console.log(data)
+       // console.log(data)
         return data;
 
     } catch (error) {

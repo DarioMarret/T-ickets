@@ -31,6 +31,8 @@ import ModalConfirma from "views/Components/MODAL/ModalConfirma";
 import { registraPagos } from "utils/pagos/Queripagos";
 import { Liverarasiento } from "utils/userQuery";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import addNotification from "react-push-notification";
+import { Seleccionaruserlista } from "utils/userQuery";
 export default function DetalleCompraView() {
     let { id } = useParams()
     let history = useHistory()
@@ -133,6 +135,8 @@ export default function DetalleCompraView() {
     }
 
     useEffect(() => {
+       // Push.create('Hello World!')
+       
         let id = JSON.parse(nombres.info_concierto)
         console.log(id)
         // console.log(nombres.cedula)
@@ -216,6 +220,8 @@ export default function DetalleCompraView() {
                 }
             }
         });
+    }
+    const consultarselecionados=()=>{
 
     }
     async function nombre(id) {
@@ -341,6 +347,19 @@ export default function DetalleCompraView() {
 
 
     }
+    function Verificaexistencia(){
+        Seleccionaruserlista({"cedula": nombres.cedula }).then(ouput=>{
+            if(ouput.success){
+                
+                $.alert("Tiene " + ouput.data.length +"  boletos selecion")
+            }else{
+                $.alert("No se encontró boleto seleccionado")
+            }
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
+    //Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
     return (
         <PhotoProvider>
             <div>
@@ -405,7 +424,8 @@ export default function DetalleCompraView() {
                                                     </a> : ""
                                                 }
                                                 {nombres.estado_pago == "Pagado" ? <a className=" btn btn-default btn-sm"><i className="bi bi-file-earmark-pdf"></i> Imprimir </a> : ""}
-                                                <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-usd"></i> Canjear </a>
+                                                <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>
+                                                <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="bi bi-database-check"></i> Verificar boletos </a>
                                             </div>
                                         </div>
                                     </div>
@@ -468,7 +488,7 @@ export default function DetalleCompraView() {
                                             {
                                                 nombres.forma_pago == "Deposito" ?
                                                     <a className=" btn btn-default btn-sm" onClick={ConsolidaBoleto}>
-                                                        <i className="fa fa-credit-card"></i> Consolidar
+                                                        <i className="fa fa-credit-card"></i> Aprobar deposito
                                                     </a>
                                                     : ""
                                             }

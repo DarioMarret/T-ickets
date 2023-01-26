@@ -115,3 +115,19 @@ export const actualizarPrecios= async(parms)=>{
         
     }
 }
+
+///api/v1/actualisar_descripcion_evento
+export const Putdescriptionevent = (parms) => {
+    try {
+        let { data } = axios.post("https://rec.netbot.ec/ms_login/api/v1/actualisar_descripcion_evento",
+            parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}

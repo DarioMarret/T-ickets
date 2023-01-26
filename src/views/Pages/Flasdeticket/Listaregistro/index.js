@@ -18,14 +18,12 @@ export default function ListaderegistroView(props) {
     let { cedula } = props
     let usedispatch = useDispatch()
     let history = useHistory()
-    // let modal = useSelector((state) => state.SuscritorSlice.modal)
     const [datos, setDatos] = useState([])
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         listarRegistropanel({ "cedula": user.cedula }).then(
             e => {
                 setDatos(e.data)
-                //console.log(e.data)
             }
         ).catch(err =>
             console.log(err)
@@ -73,7 +71,7 @@ export default function ListaderegistroView(props) {
                                  //setTikes([])
                              }).catch(err => {
                                  console.log(err)
-                             })*
+                             })
 
                             $.alert("Registro eliminado correctamente")
                             setTimeout(function () {
@@ -124,8 +122,11 @@ export default function ListaderegistroView(props) {
                                 </Tooltip> :
                                 ""
                             }
-                            {row.original.forma_pago == "Tarjeta" && row.original.estado_pago != "Pagado" && row.original.estado != "Expirado" ?
-                                row.original.link_pago != null?  <a className=" btn btn-default btn-sm" href={row.original.link_pago} target="_blank" >
+                            {row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone" && row.original.estado_pago != "Pagado" && row.original.estado != "Expirado" ?
+                                row.original.link_pago != null? 
+                                <a className=" btn btn-default btn-sm"
+                                        onClick={() => usedispatch(setModal({ nombre: 'pago', estado: row.original.link_pago }))}
+                                 >
                                     <i className="fa fa-credit-card" ></i>
                                 </a> : <Tooltip
                                     title="Eliminar" placement="top"
@@ -150,6 +151,7 @@ export default function ListaderegistroView(props) {
                                     <Visibility />
                                 </IconButton>
                             </Tooltip> : ""}
+                       
 
                         </Box>
                     )

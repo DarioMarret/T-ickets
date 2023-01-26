@@ -462,16 +462,13 @@ const ModalConfima = (prop) => {
                                         <select className="form-select" value={spiner} required
                                             onChange={(g) => setspiner(g.target.value)}
                                         >
-                                            <option value={""} disabled></option>
-                                            <option value={"Tarjeta"}>Tarjetas</option>
+                                            <option value={""} disabled></option>                                          
                                             <option value={"Deposito"}>Deposito</option>
-                                            <option value={"Efectivo"}>Deposito Efectivo facilito</option>
                                             <option value={"Transferencia"}>Transeferencia</option>
 
                                         </select> : <select className="form-select" value={spiner}
                                             onChange={(g) => setspiner(g.target.value)}>
                                             <option value={""} disabled></option>
-                                            <option value={"Efectivo"}>Deposito Efectivo facilito</option>
                                             <option value={"Deposito"}>Deposito</option>
                                             <option value={"Transferencia"}>Transeferencia</option>
 

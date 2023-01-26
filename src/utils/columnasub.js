@@ -176,11 +176,11 @@ export const listaRegistro = [
     },
     {
         accessorKey: "total_pago",
-        header:  "Total",
+        header:  "Total boletos",
         Cell: ({ cell }) => (
             <div>
                 {
-                   parseFloat(quitacomision(cell.row.original)).toFixed(0)+".00"
+                    !clienteInfo() ? parseFloat(cantidad(cell.row.original))  : parseFloat(quitacomision(cell.row.original)).toFixed(0)+".00"
                 }
             </div>
 
@@ -217,16 +217,21 @@ let precioespacio={
 function quitacomision(row) {
    // let tt = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad] * parseFloat(e.cantidad) ) })
    // console.log(tt)
-    let valores = !clienteInfo() ? JSON.parse(row.info_concierto).map(precio[e.cantidad]).reduce((a, b) => a + b, 0) :JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+    let valores = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
     if ((new Date("2023-01-21 14:00:00 ") > new Date(row.fechaCreacion))) {
-        let valor = !clienteInfo() ? valores: parseFloat(valores) * 1.05   
+        let valor = parseFloat(valores) * 1.05   
         return row.forma_pago == "Tarjeta" ? Math.round(valor) : valores
     }
     else {
        // console.log(row.total_pago)
-        let valor = !clienteInfo() ? valores : parseFloat(row.total_pago) *1.07    
+        let valor =  parseFloat(row.total_pago) *1.07    
         return row.forma_pago == "Tarjeta" ? Math.round(valor) : valores
     }
 
 }
+function cantidad(row){
+    let tt = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+    return tt
+}
+
 

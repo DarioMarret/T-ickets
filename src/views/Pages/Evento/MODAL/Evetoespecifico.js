@@ -21,6 +21,7 @@ import Collapse from 'react-bootstrap/Collapse';
 import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
+import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
@@ -58,26 +59,20 @@ const EventoEspecifico = () => {
     fechaCreacion: '',
     LocalodadPrecios: []
   })
-  async function Eliminar(e, f) {
-    const elimnar = await EliminareventoLocalidad(e, f)
+  async function Eliminar(e) {
+    dispatch(setModal({nombre:"precios",estado:{...e}}))
+   /* const elimnar = await EliminareventoLocalidad(e, f)
     if (elimnar.success) {
       hideAlert()
       console.log(elimnar, e, f)
       await Evento()
-    }
-
-
+    }*/
   }
   function GetDay(e) {
     var da = new Date(e).getDay()
-    // console.log(Dias[da])
     return Dias[da]
   }
-  function EditarPrecios(e) {
-    setvalores({ ...e })
-    // console.log(e)
-    setShowpr(true)
-  }
+
   async function Evento() {
     SetEvento({
       id: '',
@@ -96,24 +91,17 @@ const EventoEspecifico = () => {
     })
     try {
       const cargar = await ListarEventos()
-      // const activo = await ListarEventos("ACTIVO")
-      // const cancela = await ListarEventos("CANCELADO")
       const precio = await listarpreciolocalidad(id)
       if (cargar.success) {
         let datos = cargar.data.filter((e) => e.codigoEvento == id)
-        //let datosactivos = activo.data.filter((e)=>e.codigoEvento==id)
-        //let datoscancelado =  cancela.data.filter((e)=>e.codigoEvento==id)
-        //console.log(datos[0])
-
         let shortDate = new Date(datos[0].fechaConcierto);
         SetEvento({
           ...datos[0], LocalodadPrecios: precio.data,
         })
-        // console.log(precio, cargar)
+         console.log(precio, cargar)
         SetPrecios(precio.data)
       }
-    } catch (error) {
-      console.log(error)
+    } catch (error) {     
       dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
     }
   }
@@ -308,9 +296,9 @@ const EventoEspecifico = () => {
                             </div>
                           </div>
                           <div className="d-flex flex-column ">
-                            <button className="btn btn-danger"
-                              onClick={() => successAlertElimna(e.codigoEvento, e.localidad)}
-                            >Eliminar </button>
+                            <button className="btn btn-primary"
+                             onClick={() => Eliminar(e)}
+                            >Editar </button>
                           </div>
                         </div>
 

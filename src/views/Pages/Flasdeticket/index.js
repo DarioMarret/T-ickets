@@ -62,6 +62,8 @@ import { GeneraToken } from "utils/Querycomnet.js";
 import { ValidarToken } from "utils/Querycomnet.js";
 import { Seleccionaruserlista } from "utils/userQuery.js";
 import ReactGA from 'react-ga';
+import { eliminarRegistro } from "utils/pagos/Queripagos.js";
+import addNotification from "react-push-notification";
 
 const TRACKING_ID = "G-MCFDXJPD98"; // G-MCFDXJPD98
 /*ReactGA.initialize(TRACKING_ID);
@@ -397,16 +399,15 @@ const IndexFlas = () => {
     });
   }
   const abrir = async (e) => {
+    
     sessionStorage.setItem("estadoevento", e.estado)
     setspinervi("")
     try {
       let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
       let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
-      console.log(seleccionuser)
-      /** agregar en casi de && f.forma_pago != "Tarjeta" */
-      // let nuevos =
-
-      if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
+     // console.log(seleccionuser)
+     //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
+      if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente" && f.forma_pago!="Tarjeta")) {
         setspinervi("d-none")
         SetSeleccion("Tickets")
         !registro.data.some(f => f.estado_pago == "Pendiente" && f.forma_pago == "Tarjeta") ?
@@ -489,13 +490,34 @@ const IndexFlas = () => {
                 velocidad()
                 usedispatch(cargarsilla(outp))
                 usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-                if (seleccionuser.data.length > 0) {
-                  Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
+                ReactGA.event({
+                  category: "Comprar",
+                  action: "click",
+                  label: ""+e.codigoEvento,
+                })
+               // console.log(seleccionuser)
+                if (seleccionuser.success) {
+                 //console.log( registro.data.find(f => f.estado_pago == "Pendiente"))
+                 Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
                     console.log(outp)
                   }).catch(error => {
                     console.log(error)
                   })
                 }
+                console.log(registro.data)
+                if (registro.success){
+                if (registro.data.some(f => f.estado_pago == "Pendiente")){
+                  eliminarRegistro({ "id": registro.data.find(f => f.estado_pago == "Pendiente").id}).then(outp=>{
+                    ReactGA.event({
+                      category: "Elimino",
+                      action: "registroCompra",
+                      label: "Pendiente-TC",
+                    })
+                   // console.log(outp)
+                  }).catch(err=>{
+                    console.log(err)
+                  })
+                }}
               }).catch(err => {
                 console.log(err)
               })
@@ -636,8 +658,22 @@ const IndexFlas = () => {
     document.getElementById('regeresiondos').innerHTML = " " + hours + "  :  " + minutes + "  :  " + seconds;
 
   }
+  userauthi.login ? addNotification({
+    title: 'Recuerda',
+    subtitle: 'Recuerda ',
+    message: 'Se anunciará por redes sociales el canje de los boletos comprados en la web',
+    theme: 'darkblue',
+    native: true // when using native, your OS will handle theming.
+  }) : ""
   useEffect(() => {
     //time.current = setInterval(showRemaining, 1000);
+   /* addNotification({
+      title: 'Warning',
+      subtitle: 'Recuerda ',
+      message: '',
+      theme: 'darkblue',
+      native: true // when using native, your OS will handle theming.
+    });*/
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     Limpiarseleccion()
@@ -718,9 +754,27 @@ const IndexFlas = () => {
        if (event.origin !== 'https://comnet.sz.chat') return;
      }, false)*/
     ReactGA.pageview(window.location.pathname + window.location.search);
-
+    ReactGA.set({
+      username: localStorage.getItem('DatoCliente'),
+    })
 
   }, [])
+ /* function registronew(){
+    ReactGA.event({
+      category: "Registrado",
+      action: "registro",
+      label: "Button",
+    })
+  }*/
+  function regsitronew() {
+    //setShowLogin(false)
+    usedispatch(setModal({ nombre: 'registro', estado: "" }))
+    ReactGA.event({
+      category: "Ver-Registrado",
+      action: "abrir",
+      label: "Button",
+    })
+  }
 
   function eventocarrusel(e) {
     let datos = e.split("-")
@@ -738,7 +792,11 @@ const IndexFlas = () => {
           "lugarConcierto": datos[1],
         }
       }))
-
+    ReactGA.event({
+      category: "Comprar",
+      action: "carrito",
+      label: "Button",
+    })
     return {
       nombreConcierto: datos[2],
       codigoEvento: datos[0],
@@ -916,8 +974,8 @@ const IndexFlas = () => {
                                   <a className="btn border rounded-1  btn-lg btn-light "
                                     style={styleswiper.button}
                                     href={element.redirect}
-
-                                  >VER MÁS</a> :
+                                    onClick={()=>regsitronew()}
+                                  >Registrate</a> :
                                   <button className="btn border rounded-1  btn-lg btn-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
@@ -1416,6 +1474,7 @@ const IndexFlas = () => {
         intervalo={intervalo}
         detener={detenervelocidad}
       /> : ''}
+      
       <div className="col-9" id="imprimecomprobante">
 
       </div>

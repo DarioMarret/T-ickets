@@ -14,7 +14,7 @@ const ViewToas = (props) => {
                 className="top-center"
                 style={{
                     position: 'fixed',
-                    top: 30,
+                    top: 80,
                     right: 5,
                     transform: 'translate(-50 %, 0 %)',
                     zIndex: 10000,

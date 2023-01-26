@@ -180,6 +180,7 @@ const Modalupdate = (props) => {
                 "LocalodadPrecios": selectLocalidad
             }
             try {
+                
               //  const actualiza = await ActualizarLocalidad(evento.codigoEvento, guarda)
               /*  if (actualiza.success) {
                     Setshow(false)

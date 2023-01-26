@@ -93,7 +93,7 @@ function Iframe(props) {
             <Modal
                 show={modal.nombre == "pago" ? true : false}
                 size="lg"
-                fullscreen={'lg-down'}
+                fullscreen={true}
             >
                 <Modal.Header>
                     <div className="d-flex col-6 justify-content-between py-3 align-items-center " >

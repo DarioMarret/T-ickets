@@ -30,6 +30,7 @@ import { generaTiketspdf } from "utils/Querycomnet";
 import ExportToExcel from "utils/Exportelemin";
 import { BoletosTikets } from "utils/userQuery";
 import { BoletosTiketsGlobal } from "utils/userQuery";
+import { Liverarasiento } from "utils/userQuery";
 
 const SuscritoridView = () => {
   let { id } = useParams()
@@ -344,13 +345,78 @@ const SuscritoridView = () => {
       console.log(eror)
     })
   }
+  const Eliminara = (parm) => {
+    console.log(parm)
+    $.confirm({
+      title: 'Desea eliminar este boleto ',
+      content: '',
+      type: 'red',
+      typeAnimated: true,
+      buttons: {
+        tryAgain: {
+          text: 'Eliminar',
+          btnClass: 'btn-red',
+          action: function () {
+            eliminartiket([parm]).then(ouput => {
+              // console.log(ouput)
+
+              if (ouput.success) {
+                console.log(ouput)
+                window.location.reload()
+                //setTikes(ouput.data)
+              }
+              if (!ouput.success) {
+                return $.alert("" + ouput.message)
+              }
+
+            }).catch(error => {
+              console.log(error)
+              $.alert("hubo un error no se pudo eliminar este registro")
+            })
+          }
+        },
+        close: function () {
+        }
+      }
+    });
+
+  }
+  const Licerarrasientos = (parms) => {
+    $.confirm({
+      title: 'Liberar asiento',
+      type: 'blue',
+      content: '',
+      buttons: {
+        formSubmit: {
+          text: 'Aceptar',
+          btnClass: 'btn-blue',
+          action: function () {
+            Liverarasiento(parms).then(ouput => {
+              if (ouput.success) {
+                window.location.reload()
+                return
+              }
+              $.alert("No se registro")
+
+
+            }).catch(err => {
+
+            })
+
+
+          }
+        },
+        cancel: function () {
+          //close
+        },
+      },
+    });
+
+
+  }
   const[global,setGlobal]=useState([])
   useEffect(() => {
-    /*(async () => {
-      await nuevoevento()
-    })()*/
     setsuscritor({ ...info })
-    //setTikes(info)
     Listarticketporestado("" + info.cedula).then(ouput=>{
       ouput.success ? setBoletos(ouput.data)
       :""
@@ -360,6 +426,7 @@ const SuscritoridView = () => {
     listarRegistropanel({ "cedula": info.cedula }).then(ouput=>{
       ouput.success ? setTikes(ouput.data) :""
     })
+  
     /*BoletosTiketsGlobal(""+info.cedula).then(ouput=>{
       if(!ouput.success) return
       setGlobal(ouput.data.filter(e.cedula =="1726979659"))
@@ -758,6 +825,24 @@ const SuscritoridView = () => {
 
                           </a>
                         }
+
+                        <a
+                          onClick={() => Eliminara(row.original.id)}
+                          className="border  btn-default btn-sm cursor "
+
+
+                        >
+                          Eliminar
+                        </a>
+                        <a
+                          onClick={() => Licerarrasientos(row.original.id)}
+                          className="border  btn-default btn-sm cursor "
+                        >
+                          Liberar
+
+
+                        </a>
+
                         {/*row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? 
                         <Tooltip title="Ceder ticket" placement="top-start">
                           <a className=" btn btn-default btn-sm btn-disable"
@@ -791,6 +876,7 @@ const SuscritoridView = () => {
                           </a>
 
                         */}
+
 
                         {false ? <Tooltip
                           title="Canjear"

@@ -130,7 +130,7 @@ export const correlativodelete = async (parms) => {
             }
         }
         )
-        console.log(data)
+       // console.log(data)
         return data
 
     } catch (error) {

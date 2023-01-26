@@ -313,6 +313,7 @@ export const EliminareventoLocalidad = async (parm, id) => {
     })
     return data
 }
+//
 export const ActualizarLocalidad = async (id, parms) => {
     const { data } = await axios.put("https://rec.netbot.ec/ms_login/actualizarevento/" + id, parms, {
         header: {
@@ -322,6 +323,8 @@ export const ActualizarLocalidad = async (id, parms) => {
     })
     return data
 }
+
+//
 export const Obtenerlinkimagen = async (parm) => {
     try {
         const fordata = new FormData();
