@@ -17,6 +17,7 @@ import { addususcritor } from "StoreRedux/Slice/SuscritorSlice"
 import { buscarcliente } from "utils/Querypanelsigui"
 import ReactGA from 'react-ga';
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
+import addNotification from "react-push-notification/dist"
 const ResgistroView = (prop) => {
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
@@ -135,7 +136,7 @@ const ResgistroView = (prop) => {
         const form = new FormData(e.target)
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         const { name, email, password, movil, direccion, cedula, passwordcomfirma, emailconfirma } = Object.fromEntries(form.entries())
-       // console.log(Object.fromEntries(form.entries()))
+        // console.log(Object.fromEntries(form.entries()))
         sessionStorage.setItem(Whatsappnumero, movil)
         let datos = {
             nombreCompleto: name.trim(),
@@ -214,68 +215,75 @@ const ResgistroView = (prop) => {
                     console.log("AQUI")
                     return
                 }*/
-             
-                    try {
-                       // console.log("condireccion-->", datos)
+
+                try {
+                    // console.log("condireccion-->", datos)
 
 
-                        const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                            }
-                        })
-                        if (registro.data.success) {
-                            let usuario = getDatosUsuariosLocalStorag()
-                            const { data } = await Authsucrito({ email: email, password: password },)
-                            var hoy = new Date();
-                            let users = {
-                                ...usuario,
-                                cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
-                                telefono: movil, name: data.nombreCompleto,
-                                email: data.email, hora: String(hoy),
-                                enable: data.enable, id: data.id,
-                                envio: ''
-                            }
-                            DatosUsuariosLocalStorag({ ...usuario, ...users })
-                            sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
-                            usedispatch(setToastes({
-                                show: true,
-                                message: "Bienvenido " + data.nombreCompleto,
-                                color: 'bg-success',
-                                estado: "Inicio Exitoso",
-                            }))
-                         /*   setDatoToas({
-                                show: true,
-                                message: "Bienvenido " + data.nombreCompleto,
-                                color: 'bg-success',
-                                estado: "Inicio Exitoso",
-                            })*/
-                            modal.estado != null && modal.estado != "Subscription" ? abrir(modal.estado) : modal.estado == "Subscription" ? usedispatch(setModal({ nombre: "Subscription", estado: "" })) : usedispatch(setModal({ nombre: "", estado: "" }))
-                            usedispatch(addususcritor({ users }))
-                            ReactGA.event({
-                                category: "Registrado",
-                                action: "registro",
-                                label: "Button",
-                            })
-                        } else {
-                            setDatoToas({
-                                show: true,
-                                message: "El Email ya " + email + " se encuentra registrado intente con otro",
-                                color: 'bg-danger',
-                                estado: "Error de registro",
-                            })
+                    const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                         }
-                    } catch (error) {
-                        //console.log(error)
+                    })
+                    if (registro.data.success) {
+                        let usuario = getDatosUsuariosLocalStorag()
+                        const { data } = await Authsucrito({ email: email, password: password },)
+                        var hoy = new Date();
+                        let users = {
+                            ...usuario,
+                            cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
+                            telefono: movil, name: data.nombreCompleto,
+                            email: data.email, hora: String(hoy),
+                            enable: data.enable, id: data.id,
+                            envio: ''
+                        }
+                        DatosUsuariosLocalStorag({ ...usuario, ...users })
+                        sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+                        usedispatch(setToastes({
+                            show: true,
+                            message: "Bienvenido " + data.nombreCompleto,
+                            color: 'bg-success',
+                            estado: "Inicio Exitoso",
+                        }))
+                        /*   setDatoToas({
+                               show: true,
+                               message: "Bienvenido " + data.nombreCompleto,
+                               color: 'bg-success',
+                               estado: "Inicio Exitoso",
+                           })*/
+                        addNotification({
+                            title: 'Bienvenido',
+                            subtitle: 'registro exitosos ',
+                            message: 'Atento tendremos Noticias sobre Eladio Carrión Guayaquil',
+                            theme: 'darkblue',
+                            native: true // when using native, your OS will handle theming.
+                        })
+                        modal.estado != null ? abrir(modal.estado) : usedispatch(setModal({ nombre: "", estado: "" }))
+                        usedispatch(addususcritor({ users }))
+                        ReactGA.event({
+                            category: "Registrado",
+                            action: "registro",
+                            label: "Button",
+                        })
+                    } else {
                         setDatoToas({
                             show: true,
                             message: "El Email ya " + email + " se encuentra registrado intente con otro",
                             color: 'bg-danger',
-                            estado: "Email dubplicado",
+                            estado: "Error de registro",
                         })
                     }
-                
+                } catch (error) {
+                    //console.log(error)
+                    setDatoToas({
+                        show: true,
+                        message: "El Email ya " + email + " se encuentra registrado intente con otro",
+                        color: 'bg-danger',
+                        estado: "Email dubplicado",
+                    })
+                }
+
             } catch (error) {
                 document.getElementById("cedula").classList.add("is-invalid")
                 document.getElementById("email").classList.add("is-invalid")

@@ -22,6 +22,7 @@ function Iframe(props) {
     const cerrarPago = () => {
         detener()
         usedispatch(setModal({ nombre: '', estado: '' }))
+        hideAlert()
     }
     const successAlert = () => {
         setAlert(
@@ -45,10 +46,10 @@ function Iframe(props) {
                     <h5 style={{
                         fontWeight: "bold"
                     }}>
-                        Estas Seguro de cerrar?
+                        Puedes terminar el pago desde la opción ticktes
                     </h5>
                 </div>
-                Se Borraran Todas las Localidades Seleccionadas
+                Recuerda el llink de pago puede caducar
                 <div className='d-flex  justify-content-around py-4'>
                     <div>
                         <button className='btn btn-outline-danger  rounded-6' onClick={() => hideAlert()}>
@@ -93,14 +94,14 @@ function Iframe(props) {
             <Modal
                 show={modal.nombre == "pago" ? true : false}
                 size="lg"
-                fullscreen={true}
+                fullscreen={"lg-down"}
             >
                 <Modal.Header>
                     <div className="d-flex col-6 justify-content-between py-3 align-items-center " >
                         <div>
                             <h5 className="modal-title text-center justify-content-center"
                                 style={{ fontWeight: "bold" }}
-                            >  Tiempo restante para la compra <span className="text-danger"
+                            >  <span className="text-danger"
                                 style={{ fontWeight: "bold" }}
                             >{intervalo}</span> </h5>
                         </div>

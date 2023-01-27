@@ -114,6 +114,7 @@ function ModalPago(props) {
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
         setModalPago(false)
+        hideAlert()
     }
     const succesAlert = () => {
         setAlert(
@@ -146,34 +147,39 @@ function ModalPago(props) {
             //console.log(ouput)
             if (user == null) {
                 if (ouput.success) {
+                    console.log(ouput)
                     usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
-                    detenervelocidad()
+
                     setSpiner("d-none")
+                    LimpiarLocalStore()
+                    Limpiarseleccion()
                     ReactGA.event({
                         category: "Pago",
                         action: "pagomedia",
                         label: "Pendiente-TC",
                     })
+                    //detenervelocidad()
                 }
-                else { 
+                else {
                     usedispatch(setToastes({
                         show: true,
                         message: "Lo sentimos la plataforma de Pagomedio no género el link intente más tarde",
                         color: 'bg-primary',
                         estado: "Hubo un error departe de Pagomedio"
                     }))
-                    
+
                     usedispatch(setModal({ nombre: '', estado: "" }))
                     LimpiarLocalStore()
                     Limpiarseleccion()
                     usedispatch(clearMapa())
-                    detenervelocidad()
+
                     ReactGA.event({
                         category: "error",
                         action: "pagomedia",
                         label: "Pendiente-TC",
                     })
-                 }
+                    //detenervelocidad()
+                }
             }
             else {
                 popUp(ouput.url)
@@ -201,14 +207,14 @@ function ModalPago(props) {
         }*/
 
     }
-    function CrearPyhome(){
+    function CrearPyhome() {
         sessionStorage.setItem(Metodos, "Payphone")
         let user = clienteInfo()
         //console.log(user)
-       setSpiner("")
-        setTimeout(function(){
+        setSpiner("")
+        setTimeout(function () {
             PagoRapido("").then(ouput => {
-               //console.log(ouput)
+                //console.log(ouput)
                 if (user == null) {
                     if (ouput.success) {
                         usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
@@ -261,8 +267,8 @@ function ModalPago(props) {
                 //  console.log(errro)
                 setSpiner("d-none")
             })
-        },1000)
-        
+        }, 1000)
+
     }
     /*  async function CrearLinkPayPhone() {
           setSpiner("")
@@ -315,26 +321,26 @@ function ModalPago(props) {
                         >
                             <div className='m-3'>
                                 <div className='px-0 pagos'
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    padding: '5px',
-                                    cursor: 'pointer'
-                                }}
-                                onClick={CrearPagoMedio}
-                            >
-                                {/**
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        padding: '5px',
+                                        cursor: 'pointer'
+                                    }}
+                                    onClick={CrearPagoMedio}
+                                >
+                                    {/**
                              * 
                              * https://codigomarret.online/img/whatsapp image 2022-09-18 at 15.12.28.jpeg
                              */}
-                                <img className=' image-fluid'
-                                    src={Pagos}
-                                    width={420}
-                                    alt="Pagos medios"
-                                />
-                            </div>
+                                    <img className=' image-fluid'
+                                        src={Pagos}
+                                        width={420}
+                                        alt="Pagos medios"
+                                    />
+                                </div>
                             </div>
                             <div className='m-3 d-none'>
                                 <div className='px-0 pagos '

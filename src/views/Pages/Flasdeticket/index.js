@@ -236,6 +236,7 @@ const IndexFlas = () => {
 
   function detenervelocidad() {
     let user = getDatosUsuariosLocalStorag()
+    setcrono("")
     usedispatch(setModal({ nombre: "", estado: '' }))
     clearInterval(datatime.current)
     clearInterval(localidadtimer.current)
@@ -307,6 +308,10 @@ const IndexFlas = () => {
       : ''
     Limpiarseleccion()
     LimpiarLocalStore()
+  }
+  function detenercontador() {
+    clearInterval(localidadtimer.current)
+    clearInterval(datatime.current)
   }
   function sololimpiarlocal() {
     clearInterval(localidadtimer.current)
@@ -399,29 +404,24 @@ const IndexFlas = () => {
     });
   }
   const abrir = async (e) => {
-    
+
     sessionStorage.setItem("estadoevento", e.estado)
     setspinervi("")
     try {
       let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
       let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
-     // console.log(seleccionuser)
-     //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
-      if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente" && f.forma_pago!="Tarjeta")) {
+      // console.log(seleccionuser)
+      //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
+      if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
         setspinervi("d-none")
         SetSeleccion("Tickets")
-        !registro.data.some(f => f.estado_pago == "Pendiente" && f.forma_pago == "Tarjeta") ?
-          usedispatch(setToastes({
-            show: true,
-            message: "Antes de realizar una compra nueva debes de completar el proceso de pago del anterior",
-            color: 'bg-warning',
-            estado: "Tienes una compra pendiente "
-          })) : usedispatch(setToastes({
-            show: true,
-            message: "Antes de realizar una compra nueva debes de completar el proceso de pago del anterior o eliminarlo",
-            color: 'bg-danger',
-            estado: "Tienes una compra pendiente "
-          }))
+
+        usedispatch(setToastes({
+          show: true,
+          message: "Antes de realizar una compra nueva debes de completar el proceso de pago del anterior",
+          color: 'bg-warning',
+          estado: "Tienes una compra pendiente "
+        }))
         return
       }
       else {
@@ -493,19 +493,19 @@ const IndexFlas = () => {
                 ReactGA.event({
                   category: "Comprar",
                   action: "click",
-                  label: ""+e.codigoEvento,
+                  label: "" + e.codigoEvento,
                 })
-               // console.log(seleccionuser)
+                // console.log(seleccionuser)
                 if (seleccionuser.success) {
-                 //console.log( registro.data.find(f => f.estado_pago == "Pendiente"))
-                 Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
+                  //console.log( registro.data.find(f => f.estado_pago == "Pendiente"))
+                  Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
                     console.log(outp)
                   }).catch(error => {
                     console.log(error)
                   })
                 }
                 console.log(registro.data)
-                if (registro.success){
+                /*if (registro.success){
                 if (registro.data.some(f => f.estado_pago == "Pendiente")){
                   eliminarRegistro({ "id": registro.data.find(f => f.estado_pago == "Pendiente").id}).then(outp=>{
                     ReactGA.event({
@@ -517,7 +517,8 @@ const IndexFlas = () => {
                   }).catch(err=>{
                     console.log(err)
                   })
-                }}
+                }
+              }*/
               }).catch(err => {
                 console.log(err)
               })
@@ -658,16 +659,16 @@ const IndexFlas = () => {
     document.getElementById('regeresiondos').innerHTML = " " + hours + "  :  " + minutes + "  :  " + seconds;
 
   }
- 
+
   useEffect(() => {
     //time.current = setInterval(showRemaining, 1000);
-   /* addNotification({
-      title: 'Warning',
-      subtitle: 'Recuerda ',
-      message: '',
-      theme: 'darkblue',
-      native: true // when using native, your OS will handle theming.
-    });*/
+    /* addNotification({
+       title: 'Warning',
+       subtitle: 'Recuerda ',
+       message: '',
+       theme: 'darkblue',
+       native: true // when using native, your OS will handle theming.
+     });*/
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     Limpiarseleccion()
@@ -759,13 +760,13 @@ const IndexFlas = () => {
       native: true // when using native, your OS will handle theming.
     }) : ""
   }, [userauthi.login])
- /* function registronew(){
-    ReactGA.event({
-      category: "Registrado",
-      action: "registro",
-      label: "Button",
-    })
-  }*/
+  /* function registronew(){
+     ReactGA.event({
+       category: "Registrado",
+       action: "registro",
+       label: "Button",
+     })
+   }*/
   function regsitronew() {
     //setShowLogin(false)
     usedispatch(setModal({ nombre: 'registro', estado: "" }))
@@ -974,8 +975,8 @@ const IndexFlas = () => {
                                   <a className="btn border rounded-1  btn-lg btn-light "
                                     style={styleswiper.button}
                                     href={element.redirect}
-                                    onClick={() => !userauthi.login ?regsitronew():""}
-                                  >{userauthi.login?"Atentos": "Registrate"}</a> :
+                                    onClick={() => !userauthi.login ? regsitronew() : ""}
+                                  >{userauthi.login ? "Atentos" : "Registrate"}</a> :
                                   <button className="btn border rounded-1  btn-lg btn-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
@@ -1468,13 +1469,13 @@ const IndexFlas = () => {
         setDatoToas={setDatoToas}
       />
 
-      {modal.nombre == "pago" ? <Iframe
+      <Iframe
         setEstadoFrame={modal.nombre == "pago" ? true : false}
         url={modal.estado}
         intervalo={intervalo}
         detener={detenervelocidad}
-      /> : ''}
-      
+      />
+
       <div className="col-9" id="imprimecomprobante">
 
       </div>

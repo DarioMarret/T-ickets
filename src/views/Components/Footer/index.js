@@ -55,7 +55,7 @@ export default function Footer(props) {
                         <div className='d-flex flex-column justify-content-center justify-content-md-between align-content-between'>
                             <div className=''>
                                 <div className='d-flex flex-column mb-3'>
-                                    <span className=" text-white" style={{ fontFamily: '', }} >Donde pagar nuestras cuntas </span>
+                                    <span className=" d-none text-white" style={{ fontFamily: '', }} >Donde pagar nuestras cuntas </span>
 
                                 </div>
                                 <div className="d-flex  flex-column" style={{ alignItems: 'stretch', lineHeight: '2', minWidth: '120px', maxWidth: '' }} >
@@ -77,25 +77,25 @@ export default function Footer(props) {
                                 <div className='d-flex pt-2  pb-5 flex-row' >
                                     <div className=' pl-2   ' >
                                         <a href="https://www.facebook.com/tickets.com.ec?mibextid=LQQJ4d" target="_black">
-                                        <img src={face}  target="_black" className='img-fluid shadow  ' style={{
-                                            height: 40,
-                                            cursor: 'pointer'
-                                        }} />
-                                    </a>
+                                            <img src={face} target="_black" className='img-fluid shadow  ' style={{
+                                                height: 40,
+                                                cursor: 'pointer'
+                                            }} />
+                                        </a>
                                     </div>
                                     <div className=' pl-2 ' >
                                         <a href="https://instagram.com/tickets.com.ec?igshid=YmMyMTA2M2Y=" target="_black">
-                                            <img src={insta}  className='img-fluid  shadow-lg ' style={{ height: 40, cursor: 'pointer' }} />
+                                            <img src={insta} className='img-fluid  shadow-lg ' style={{ height: 40, cursor: 'pointer' }} />
 
                                         </a>
-                                       </div>
+                                    </div>
                                     <div className=' pl-2' >
                                         <a href="https://www.tiktok.com/@tickets.com.ec?_t=8Z2G1FTansT&_r=1" target="_black">
-                                        <img src={tick} className='img-fluid' style={{ height: 40, cursor: 'pointer' }} />
-                                         </a>
+                                            <img src={tick} className='img-fluid' style={{ height: 40, cursor: 'pointer' }} />
+                                        </a>
                                     </div>
                                     <div className='  pl-2 '
-                                    > 
+                                    >
                                         <img src={youtube} className='img-fluid' style={{ height: 40, cursor: 'pointer' }} />
 
                                     </div>
@@ -114,7 +114,7 @@ export default function Footer(props) {
                                 >
                                     <div className=' col-sm-6 txt-white  p-1' style={{ width: '225px', maxWidth: 225 }}>
                                         <h6 className='text-capitalize font-weight-bold '
-                                        
+
                                         >Habla con Nosotros</h6>
                                         <a href='https://t-ickets.net/3FynwiC' target="_blank" className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <i className="bi bi-whatsapp"></i>
@@ -150,7 +150,7 @@ export default function Footer(props) {
                                         </a>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <span className=" text-white" style={{ fontFamily: '', }} >Cuenca</span>
-                                        </a> 
+                                        </a>
                                     </div>
                                     <div className='d-none d-sm-none d-md-block  txt-white p-1' style={{ width: '225px', maxWidth: 225 }}>
                                         <h6 className='text-capitalize font-weight-bold '>Nuestra empresa  </h6>
@@ -205,7 +205,7 @@ export default function Footer(props) {
                     <div className="col-12 text-center px-1 d-flex  flex-column pb-2" style={{ minWidth: '120px', maxWidth: '' }} >
                         <span className=" text-white" style={{ fontSize: '0.65em', }} >COPYRIGHT © 2022 TICKETS ECUADOR S.A | COMPUTECNICSNET S.A | TODOS LOS DERECHOS RESERVADOS </span>
                     </div>
-                    
+
 
                 </div>
 
