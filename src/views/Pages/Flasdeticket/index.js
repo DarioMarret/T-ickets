@@ -974,8 +974,8 @@ const IndexFlas = () => {
                                   <a className="btn border rounded-1  btn-lg btn-light "
                                     style={styleswiper.button}
                                     href={element.redirect}
-                                    onClick={()=>regsitronew()}
-                                  >{userauthi.login?"Estaremos informando": "Registrate"}</a> :
+                                    onClick={() => !userauthi.login ?regsitronew():""}
+                                  >{userauthi.login?"Atentos": "Registrate"}</a> :
                                   <button className="btn border rounded-1  btn-lg btn-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}
