@@ -153,8 +153,7 @@ const LocalidadmapViews = (props) => {
                 "cedula": user.cedula,
                 "mas": "mas",
                 "cantidad": 1
-                // "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? 1 : getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad
-            }).then(oupt => {
+             }).then(oupt => {
                 if (oupt.success) {
                     getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))

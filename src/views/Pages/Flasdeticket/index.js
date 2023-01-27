@@ -658,13 +658,7 @@ const IndexFlas = () => {
     document.getElementById('regeresiondos').innerHTML = " " + hours + "  :  " + minutes + "  :  " + seconds;
 
   }
-  userauthi.login ? addNotification({
-    title: 'Recuerda',
-    subtitle: 'Recuerda ',
-    message: 'Se anunciará por redes sociales el canje de los boletos comprados en la web',
-    theme: 'darkblue',
-    native: true // when using native, your OS will handle theming.
-  }) : ""
+ 
   useEffect(() => {
     //time.current = setInterval(showRemaining, 1000);
    /* addNotification({
@@ -757,8 +751,14 @@ const IndexFlas = () => {
     ReactGA.set({
       username: localStorage.getItem('DatoCliente'),
     })
-
-  }, [])
+    userauthi.login ? addNotification({
+      title: 'Recuerda',
+      subtitle: 'Recuerda ',
+      message: 'Se anunciará por redes sociales el canje de los boletos comprados en la web',
+      theme: 'darkblue',
+      native: true // when using native, your OS will handle theming.
+    }) : ""
+  }, [userauthi.login])
  /* function registronew(){
     ReactGA.event({
       category: "Registrado",
@@ -975,7 +975,7 @@ const IndexFlas = () => {
                                     style={styleswiper.button}
                                     href={element.redirect}
                                     onClick={()=>regsitronew()}
-                                  >Registrate</a> :
+                                  >{userauthi.login?"Estaremos informando": "Registrate"}</a> :
                                   <button className="btn border rounded-1  btn-lg btn-light "
                                     onClick={() => eventocarrusel(element.evento)}
                                     style={styleswiper.button}

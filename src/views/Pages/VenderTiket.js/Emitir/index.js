@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Box, Tooltip, Typography, Tabs, Tab, } from '@mui/material';
+import { Box, Tooltip, Typography, Tabs, Tab, Button, } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send, CheckBox } from '@mui/icons-material';
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -20,7 +20,8 @@ import ModalBoletoApro from "../Aprobar/Modalboleto";
 import { ticketsboletos } from "utils/columnasub";
 import { generaTiketspdf } from "utils/Querycomnet";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
-
+import ExportToExcel from "utils/Exportelemin";
+import { ExportToCsv } from 'export-to-csv';
 let { cedericon } = bancos
 export default function EmitirboView() {
     let usedispatch = useDispatch()
@@ -32,6 +33,15 @@ export default function EmitirboView() {
         setValue(newValue);
     };
     const [value, setValue] = React.useState(0);
+
+    const csvExporter = new ExportToCsv(csvOptions);
+    const handleExportRows = (rows) => {
+        csvExporter.generateCsv(rows.map((row) => row.original));
+    };
+
+
+
+
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
 
@@ -154,6 +164,21 @@ export default function EmitirboView() {
         });
 
     }
+    const csvOptions = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        useBom: true,
+        filename: 'Ticket vendidos',
+        useKeysAsHeaders: false,
+    };
+
+   
+    const handleExportData = () => {
+        csvExporter.generateCsv(data);
+    };
+    
     useEffect(() => {
         AprobarTiket().then(oupt => {
             console.log(oupt)
@@ -195,9 +220,14 @@ export default function EmitirboView() {
                 </div>
 
                 <div className="row px-3">
-                    <div className="col-10   ">
-                        {/*tiketslist.length==0?"": <NuevosDatos apiData={tiketslist} fileName={"Todos Boletos"} />*/}
-
+                    <div className="col-10 d-flex   ">
+                        <ExportToExcel apiData={tiketslist.filter(e => e.estado == "reservado")} 
+                        fileName={"Boletos Reservado"}
+                         label={"Reservado"} />
+                        <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagados")}
+                            fileName={"Boletos Pagados"}
+                            label={"Pagados"} />
+                      
 
                     </div>
                     
@@ -208,11 +238,10 @@ export default function EmitirboView() {
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example"
                 >
-                    <Tab className="" label={"Boletos Pagados sin canjear:  " + tiketslist.filter(e => e.canje == "NO CANJEADO" && e.estado == "Pagado").length}{...a11yProps(0)} />
+                    <Tab className="" label={"Boletos Pagados sin canjear:  " + tiketslist.filter(e => e.estado == "Pagado").length}{...a11yProps(0)} />
                     <Tab label={"Boletos Reservados " + tiketslist.filter(e => e.estado == "reservado").length} {...a11yProps(1)} />      
-                    <Tab label={"Boletos Canjeados: " + tiketslist.filter(e => e.estado == "disponible").length} {...a11yProps(2)} />    
-                    <Tab label={"Boletos Canjeados: " + tiketslist.filter(e => e.canje == "NO CANJEADO" && e.estado == "disponible").length} {...a11yProps(3)} />                 
-                </Tabs>
+                   
+                  </Tabs>
                 <TabPanel value={value} index={0} className="text-center" >
                     <MaterialReactTable
                         columns={ticketsboletos}
@@ -306,6 +335,8 @@ export default function EmitirboView() {
                                 </div>
                             </Box>
                         )}
+                        positionToolbarAlertBanner="bottom"
+                        
                         localization={MRT_Localization_ES}
                     />
                 </TabPanel>
