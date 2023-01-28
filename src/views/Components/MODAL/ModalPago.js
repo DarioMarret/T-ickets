@@ -222,7 +222,7 @@ function ModalPago(props) {
                         detenervelocidad()
                         ReactGA.event({
                             category: "Pago",
-                            action: "Pyhome",
+                            action: "Pyhome-exito",
                             label: "Pendiente-TC",
                         })
                     }
@@ -240,7 +240,7 @@ function ModalPago(props) {
                         detenervelocidad()
                         ReactGA.event({
                             category: "error",
-                            action: "Pyhome",
+                            action: "Pyhomeerr",
                             label: "Pendiente-TC",
                         })
                     }
@@ -261,7 +261,7 @@ function ModalPago(props) {
                 }))
                 ReactGA.event({
                     category: "error",
-                    action: "Pyhome",
+                    action: "Pyhomeerr",
                     label: "Pendiente-TC",
                 })
                 //  console.log(errro)
