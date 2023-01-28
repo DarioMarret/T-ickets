@@ -11,6 +11,7 @@ import { AprobarTiket } from "utils/Querycomnet";
 import { bancos } from "utils/Imgenesutils";
 import { ticketprocesoapro } from "utils/columnasub";
 import moment from "moment";
+import Chart from "react-google-charts";
 import ModalAprobarViews from "./Modalventas";
 import ModalBoletoApro from "./Modalboleto";
 import ListaderegistroView from "views/Pages/Flasdeticket/Listaregistro";
@@ -136,6 +137,20 @@ export default function AprobarView() {
         14: "TODO-O-NADA-Q",
     }
 
+    const [datas, setDatas] = useState([])
+     /*const datas = [
+        ["Localida", "ganancias"],
+        ["Work", 11],
+        ["Eat", 2],
+        ["Commute", 2],
+        ["Watch TV", 2],
+        ["Sleep", 7],
+    ];*/
+
+     const options = {
+        title: "My Daily Activities",
+        is3D: true,
+    };
     useEffect(() => {
         listarRegistropanel({ "cedula": "" }).then(e => {
             if (e.data) {
@@ -158,8 +173,6 @@ export default function AprobarView() {
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     JSON.parse(elm.info_concierto).map(loc => {
                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad]   })
-                     
-                      
                     })
                 })
                 let arrayIndividual=[]
@@ -177,7 +190,14 @@ export default function AprobarView() {
                     
                 })
                 console.log(arrayIndividual)
-
+                let datos = arrayIndividual.map(f=>{
+                    return [f.localidad,f.cantidad]
+                })
+                setDatas([
+                    ["Localida", "ganancias"],
+                    ...datos
+                ])
+                console.log(datos)
                 /* newdatos.forEach(element => {
                     if (nuevosValores.some(e => e.concierto == element.concierto)) {
                         let dat = nuevosValores.findIndex(e => e.concierto == element.concierto)
@@ -186,7 +206,7 @@ export default function AprobarView() {
                         let tota = parseInt(nuevosValores[dat].cantidad) + parseInt(element.cantidad)
                         nuevosValores[dat].cantidad= parseInt( tota)
 
-                    }
+                    }  
                     else {
                         nuevosValores.push({ concierto: element.concierto, cantidad: element.cantidad })
                     }
@@ -198,7 +218,6 @@ export default function AprobarView() {
                 //let valores = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                 //  console.log("nuevos",newdatos)
                 console.log("datsa", nuevosValores)
-
                 setTikes(newdatos)
                 return
             }
@@ -300,6 +319,15 @@ export default function AprobarView() {
                     <ModalBoletoApro /> : ""
             }
             <ModalConfima />
+            <div className=" container" >
+                {/*datas.length>0? <Chart
+                    chartType="PieChart"
+                    data={datas}
+                    options={options}
+                    width={"100%"}
+                    height={"400px"}
+                />:""*/}
+            </div>
             <div className="container d-flex flex-wrap">
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagado")} fileName={"Todos Pendientes"} label={"Pagados"} />
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pendiente")} fileName={"Todos Pendientes"} label={"Pendientes"} />
