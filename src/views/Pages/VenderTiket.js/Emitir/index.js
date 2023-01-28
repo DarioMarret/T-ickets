@@ -224,7 +224,7 @@ export default function EmitirboView() {
                         <ExportToExcel apiData={tiketslist.filter(e => e.estado == "reservado")} 
                         fileName={"Boletos Reservado"}
                          label={"Reservado"} />
-                        <ExportToExcel apiData={tiketslist.filter(e => e.estado == "Pagados")}
+                        <ExportToExcel apiData={tiketslist.filter(e => e.estado == "Pagado")}
                             fileName={"Boletos Pagados"}
                             label={"Pagados"} />
                       

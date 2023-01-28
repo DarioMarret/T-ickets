@@ -15,7 +15,7 @@ import ModalAprobarViews from "./Modalventas";
 import ModalBoletoApro from "./Modalboleto";
 import ListaderegistroView from "views/Pages/Flasdeticket/Listaregistro";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
-import { listaRegistro } from "utils/columnasub";
+import { listaRegistrototal } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useHistory } from "react-router";
@@ -23,6 +23,7 @@ import { setdetalle } from "StoreRedux/Slice/SuscritorSlice";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import ExportToExcel from "utils/Exportelemin";
 import { ExportToCsv } from 'export-to-csv';
+import { listaRegistro } from "utils/columnasub";
 let { cedericon, atencion } = bancos
 export default function AprobarView() {
     let usedispatch = useDispatch()
@@ -36,7 +37,7 @@ export default function AprobarView() {
 
     const [alert, setAlert] = useState(null)
     const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })), hideAlert() }
-  
+
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
 
@@ -103,16 +104,102 @@ export default function AprobarView() {
             </SweetAlert>
         )
     }
-  
+
     const hideAlert = () => {
         setAlert(null)
     }
+
+    let precio = {
+        1: 21,
+        2: 31,
+        3: 41,
+        4: 51,
+        5: 81,
+        9: 122,
+        10: 67,
+        11: 36,
+        12: 122,
+        13: 67,
+        14: 36,
+    }
+    let localidades = {
+        1: "General",
+        2: "Preferencia",
+        3: "Butacas",
+        4: "Butacas VIP",
+        5: "Ranchenato BOX",
+        9: "SEN2 KBRN-G",
+        10: "SAUCES BOYZ-G",
+        11: "TODO O NADA-G",
+        12: "SEN2 KBRN-Q",
+        13: "SAUCES BOYZ-Q",
+        14: "TODO-O-NADA-Q",
+    }
+
     useEffect(() => {
         listarRegistropanel({ "cedula": "" }).then(e => {
-            // console.log(e)
             if (e.data) {
+                console.log(e.data)
+                let newdatos = e.data.map(row => {
+                    let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
+                    let valor = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                    let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                    row.Valortotal = parseFloat(valor)
+                    row.cantidad = cantida
+                    row.concierto = nombre[0]
+                    return { ...row }
+                })
+                
+                let nuevosValores = []
+                let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
 
-                setTikes(e.data)
+                let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
+                let arayReallocalidad = []
+                newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                    JSON.parse(elm.info_concierto).map(loc => {
+                        arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad]   })
+                     
+                      
+                    })
+                })
+                let arrayIndividual=[]
+                console.log(consulat)
+                console.log(arayReallocalidad)
+                arayReallocalidad.forEach(elm=>{
+                    if (arrayIndividual.some(e => e.id == elm.id)) {
+                        let dat = arrayIndividual.findIndex(e => e.id == elm.id)
+                        let tota = parseInt(arrayIndividual[dat].cantidad) + parseInt(elm.cantidad)
+                        arrayIndividual[dat].cantidad=tota
+                    }
+                    else{
+                        arrayIndividual.push({id:elm.id,localidad:elm.localidad,cantidad:elm.cantidad})
+                    }
+                    
+                })
+                console.log(arrayIndividual)
+
+                /* newdatos.forEach(element => {
+                    if (nuevosValores.some(e => e.concierto == element.concierto)) {
+                        let dat = nuevosValores.findIndex(e => e.concierto == element.concierto)
+                     //   console.log(element.cantidad) 
+                      //  console.log(nuevosValores[dat].cantidad)
+                        let tota = parseInt(nuevosValores[dat].cantidad) + parseInt(element.cantidad)
+                        nuevosValores[dat].cantidad= parseInt( tota)
+
+                    }
+                    else {
+                        nuevosValores.push({ concierto: element.concierto, cantidad: element.cantidad })
+                    }
+                });*/
+
+
+                //console.log("precios", e.data)
+
+                //let valores = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                //  console.log("nuevos",newdatos)
+                console.log("datsa", nuevosValores)
+
+                setTikes(newdatos)
                 return
             }
             //setTikes([])
@@ -121,7 +208,7 @@ export default function AprobarView() {
         })
     },
         [])
-  
+
     const Deliminarregistro = (parms) => {
         console.log(parms)
 
@@ -214,12 +301,12 @@ export default function AprobarView() {
             }
             <ModalConfima />
             <div className="container d-flex flex-wrap">
-                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagados")} fileName={"Todos Pendientes"} label={"Pagados"} />
+                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagado")} fileName={"Todos Pendientes"} label={"Pagados"} />
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pendiente")} fileName={"Todos Pendientes"} label={"Pendientes"} />
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Expirado")} fileName={"Todos Pendientes"} label={"Expirados"} />
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Comprobar")} fileName={"Todos Pendientes"} label={"Comprobar"} />
             </div>
-           <div className="   " style={{ minHeight: '250px' }} >
+            <div className="   " style={{ minHeight: '250px' }} >
                 <div className='container-fluid  p-0'>
                     <Tabs value={value} onChange={handleChange}
                         variant="scrollable"
@@ -236,7 +323,7 @@ export default function AprobarView() {
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">
                             <MaterialReactTable
-                                columns={listaRegistro}
+                                columns={listaRegistrototal}
                                 data={tiketslist.filter(e => e.estado_pago == "Pagado")}
                                 muiTableProps={{
                                     sx: {
@@ -302,7 +389,7 @@ export default function AprobarView() {
                         </TabPanel>
                         <TabPanel value={value} index={1} className="text-center">
                             <MaterialReactTable
-                                columns={listaRegistro}
+                                columns={listaRegistrototal}
                                 data={tiketslist.filter(e => e.estado_pago == "Pendiente")}
                                 muiTableProps={{
                                     sx: {
@@ -362,7 +449,7 @@ export default function AprobarView() {
                         </TabPanel>
                         <TabPanel value={value} index={2} className="text-center" >
                             <MaterialReactTable
-                                columns={listaRegistro}
+                                columns={listaRegistrototal}
                                 data={tiketslist.filter(e => e.estado_pago == "Expirado")}
                                 muiTableProps={{
                                     sx: {
@@ -420,7 +507,7 @@ export default function AprobarView() {
                         </TabPanel>
                         <TabPanel value={value} index={3} className="text-center" >
                             <MaterialReactTable
-                                columns={listaRegistro}
+                                columns={listaRegistrototal}
                                 data={tiketslist.filter(e => e.estado_pago == "Comprobar")}
                                 muiTableProps={{
                                     sx: {

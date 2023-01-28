@@ -168,7 +168,7 @@ export const listaRegistro = [
         size: 50
     },
 
-   
+
     {
         accessorKey: "forma_pago",
         header: "Metodo",
@@ -176,11 +176,11 @@ export const listaRegistro = [
     },
     {
         accessorKey: "total_pago",
-        header:  "Total boletos",
+        header: "Total boletos",
         Cell: ({ cell }) => (
             <div>
                 {
-                    !clienteInfo() ? parseFloat(cantidad(cell.row.original))  : parseFloat(quitacomision(cell.row.original)).toFixed(0)+".00"
+                    !clienteInfo() ? parseFloat(cantidad(cell.row.original)) : parseFloat(quitacomision(cell.row.original)).toFixed(0) + ".00"
                 }
             </div>
 
@@ -190,6 +190,52 @@ export const listaRegistro = [
         size: 50
     }
 ]
+export const listaRegistrototal = [
+    {
+        accessorKey: "estado_pago",
+        header: "Estado",
+        Cell: ({ cell }) => (
+            <Badge bg={color[cell.row.original.estado_pago]}>
+                {cell.row.original.estado_pago}</Badge>
+        ),
+        size: 50
+    },
+    {
+        accessorKey: "fechaCreacion",
+        header: "Fecha",
+    },
+    {
+        accessorKey: "concierto",
+        header: "Evento",
+        size: 70
+    },
+    {
+        accessorKey: "cedula",
+        header: "Cedula",
+        size: 50
+    },
+    {
+        accessorKey: "forma_pago",
+        header: "Metodo",
+        size: 50
+    },
+    {
+        accessorKey:"Valortotal",
+        header:"Total",
+        Cell:({cell})=>{
+            { parseFloat(cell.row.original.Valortotal).toFixed(2) }
+        },
+        size:50
+    },
+    {
+        accessorKey: "cantidad",
+        header:"Cantidad",
+        size:25
+    },
+    
+
+]
+
 
 let precio = {
     1: 21,
@@ -204,7 +250,7 @@ let precio = {
     13: 67,
     14: 36,
 }
-let precioespacio={
+let precioespacio = {
     9: 169,
     10: 171,
     11: 170,
@@ -215,21 +261,21 @@ let precioespacio={
 //precioespacio[e.id_localidad]
 
 function quitacomision(row) {
-   // let tt = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad] * parseFloat(e.cantidad) ) })
-   // console.log(tt)
+    // let tt = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad] * parseFloat(e.cantidad) ) })
+    // console.log(tt)
     let valores = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
     if ((new Date("2023-01-21 14:00:00 ") > new Date(row.fechaCreacion))) {
-        let valor = parseFloat(valores) * 1.05   
-        return row.forma_pago == "Tarjeta" ? Math.round(valor) : valores
+        let valor = parseFloat(valores) * 1.05
+        return Math.round(valores) 
     }
     else {
-       // console.log(row.total_pago)
-        let valor =  parseFloat(row.total_pago) *1.07    
-        return row.forma_pago == "Tarjeta" ? Math.round(valor) : valores
+        // console.log(row.total_pago)
+        let valor = parseFloat(valores) * 1.07
+        return Math.round(valores) 
     }
 
 }
-function cantidad(row){
+function cantidad(row) {
     let tt = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
     return tt
 }

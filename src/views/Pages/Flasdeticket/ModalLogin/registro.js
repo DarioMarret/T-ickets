@@ -259,7 +259,8 @@ const ResgistroView = (prop) => {
                             theme: 'darkblue',
                             native: true // when using native, your OS will handle theming.
                         })
-                        modal.estado != null ? abrir(modal.estado) : usedispatch(setModal({ nombre: "", estado: "" }))
+                        modal.estado != null ? abrir(modal.estado) : 
+                        usedispatch(setModal({ nombre: "", estado: "" }))
                         usedispatch(addususcritor({ users }))
                         ReactGA.event({
                             category: "Registrado",
@@ -267,21 +268,22 @@ const ResgistroView = (prop) => {
                             label: "Button",
                         })
                     } else {
-                        setDatoToas({
+                        usedispatch(setToastes({
                             show: true,
                             message: "El Email ya " + email + " se encuentra registrado intente con otro",
                             color: 'bg-danger',
                             estado: "Error de registro",
-                        })
+                        }))
                     }
                 } catch (error) {
                     //console.log(error)
-                    setDatoToas({
+                    usedispatch(setToastes({
                         show: true,
                         message: "El Email ya " + email + " se encuentra registrado intente con otro",
                         color: 'bg-danger',
                         estado: "Email dubplicado",
-                    })
+                    }))
+
                 }
 
             } catch (error) {

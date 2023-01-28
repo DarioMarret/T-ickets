@@ -25,11 +25,12 @@ import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Icon, Skeleton } from "@mui/material";
+import { Drawer, List, ListItem, ListItemText, makeStyles, Skeleton } from "@mui/material";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper";
 import ResgistroView from "./ModalLogin/registro.js";
 import { Button, Spinner } from "react-bootstrap";
 import { Box } from "@mui/system";
+import { Segment, Sidebar, Menu, Icon, Grid, ListIcon } from "semantic-ui-react";
 import 'moment-timezone'
 import 'moment/locale/es';
 require('moment/locale/es.js')
@@ -64,8 +65,9 @@ import { Seleccionaruserlista } from "utils/userQuery.js";
 import ReactGA from 'react-ga';
 import { eliminarRegistro } from "utils/pagos/Queripagos.js";
 import addNotification from "react-push-notification";
+import { Home } from "@mui/icons-material";
 
-const TRACKING_ID = "G-MCFDXJPD98"; // G-MCFDXJPD98
+const TRACKING_ID = "G-LJN507B5NX"; // G-MCFDXJPD98
 /*ReactGA.initialize(TRACKING_ID);
 ReactGA.hasLoaded();*/
 const IndexFlas = () => {
@@ -344,10 +346,10 @@ const IndexFlas = () => {
       title: 'Canjear Token!',
       type: 'blue',
       content: '' +
-        '<form action="" class="formName">' +
-        '<div class="container form-group">' +
+        '<form action="" className="formName">' +
+        '<div className="container form-group">' +
         '<label>Ingrese su token de compra</label>' +
-        '<input  type="text" placeholder="Token" value="" class="form-control name" required />' +
+        '<input  type="text" placeholder="Token" value="" className="form-control name" required />' +
         '</div>' +
         '</form>',
       buttons: {
@@ -804,8 +806,132 @@ const IndexFlas = () => {
       lugarConcierto: datos[3]
     }
   }
+  const styles = {
+    paper: {
+      background: "blue"
+    }
+  }
+  const [visible, setVisible] = React.useState(false)
+
   return (
+
     <>
+      <nav className="navbar border-bottom border-dark shadow navbar-expand-lg  navbar-dark    py-1"
+        style={{
+          backgroundColor: "#311C7C"
+        }}
+
+      >
+
+
+
+        <div className="container-fluid col-lg-8 py-0   ">
+          <a className="navbar-brand py-1  " aria-label="TICKETS" href="#">
+            <img src={icon} className="img-fluid p-0" alt="" style={{
+              height: 70
+            }} />
+          </a>
+
+          <button className="navbar-toggler  " data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            onClick={() => setVisible(!visible)}
+            aria-label="Toggle navigation" type="button">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+
+          <div className=" collapse navbar-collapse   " id="navbarSupportedContent"
+          >
+            <ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-auto  align-items-lg-center">
+              <li className="nav-item">
+                <a className="nav-link active" aria-current="page" href="#" onClick={() => SetSeleccion("")}>Inicio</a>
+              </li>
+              <li className="nav-item active  py-0 mx-lg-1" aria-current="page" onClick={() => SetSeleccion("")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <a className=" nav-link" href="#nuevoseventos"
+                  style={{ height: 70 }}>Eventos</a>
+              </li>
+              {userauthi.login ?
+                <li className="nav-item active " aria-current="page" onClick={() => SetSeleccion("Datos")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <a className="nav-link " >Datos</a>
+                </li> : ""
+              }
+              {userauthi.login ?
+                <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("Tickets")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <a className="nav-link " href="#">Tickets</a>
+                </li> : ""
+              }
+              {!userauthi.login ? <li className="  nav-item">
+                <a className=" btn btn-outline-nuevo  rounded-7 " href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i>
+                  <img src={avatar} className=" img-fluid"
+                    style={{
+                      height: 25
+                    }} />
+                </i> </a>
+              </li> : <li className="  nav-item">
+                <a className=" btn btn-outline-nuevo rounded-7  " href="#" onClick={salir}> Salir <i className="fa fa-window-close"></i> </a>
+              </li>}
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <Drawer
+        anchor="left"
+        PaperProps={{
+          elevation: 8,
+          sx: {
+            width: 240,
+            height: "100%",
+            color: "rgba(225,249,27,1)",
+            backgroundColor: "#311C7C"
+          }
+        }}
+       
+        open={false}
+        onClose={() => setVisible(!visible)}>
+          <div className=" container-fluid">
+
+          </div>
+          <div className="">
+          <ul className="nav nav-pills flex-column mb-auto">
+            <li className="nav-item">
+              <a href="#" className="nav-link active" aria-current="page">
+                <svg className="bi me-2" width="16" height="16"></svg>
+                Home
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link active" aria-current="page" href="#" onClick={() => SetSeleccion("")}>Inicio</a>
+            </li>
+            <li>
+              <a href="#" className="nav-link link-dark">
+                <svg className="bi me-2" width="16" height="16"></svg>
+                Orders
+              </a>
+            </li>
+            <li>
+              <a href="#" className="nav-link link-dark">
+                <svg className="bi me-2" width="16" height="16"></svg>
+                Products
+              </a>
+            </li>
+            <li>
+              <a href="#" className="nav-link link-dark">
+                <svg className="bi me-2" width="16" height="16"></svg>
+                Customers
+              </a>
+            </li>
+          </ul>
+
+          </div>
+    
+          <List>
+        
+          </List>
+
+      </Drawer>
+
+
+
+
       {modal.nombre == "Modallocalida" ?
         <LocalidadmapViews
           intervalo={intervalo}
@@ -850,57 +976,7 @@ const IndexFlas = () => {
         setrepShow={setrepShow}
         comprar={sololimpiarlocal} />
       {alert}
-      <nav className="navbar border-bottom border-dark shadow navbar-expand-lg  navbar-dark    py-1"
-        style={{
-          backgroundColor: "#311C7C"
-        }}
 
-      >
-        <div className="container-fluid col-lg-8 py-0   ">
-          <a className="navbar-brand py-1  " aria-label="TICKETS" href="#">
-            <img src={icon} className="img-fluid p-0" alt="" style={{
-              height: 70
-            }} />
-          </a>
-
-          <button className="navbar-toggler  " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-
-          <div className=" collapse navbar-collapse   " id="navbarSupportedContent"
-          >
-            <ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-auto  align-items-lg-center">
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#" onClick={() => SetSeleccion("")}>Inicio</a>
-              </li>
-              <li className="nav-item active  py-0 mx-lg-1" aria-current="page" onClick={() => SetSeleccion("")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <a className=" nav-link" href="#nuevoseventos"
-                  style={{ height: 70 }}>Eventos</a>
-              </li>
-              {userauthi.login ?
-                <li className="nav-item active " aria-current="page" onClick={() => SetSeleccion("Datos")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <a className="nav-link " >Datos</a>
-                </li> : ""
-              }
-              {userauthi.login ?
-                <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("Tickets")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <a className="nav-link " href="#">Tickets</a>
-                </li> : ""
-              }
-              {!userauthi.login ? <li className="  nav-item">
-                <a className=" btn btn-outline-nuevo  rounded-7 " href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i>
-                  <img src={avatar} className=" img-fluid"
-                    style={{
-                      height: 25
-                    }} />
-                </i> </a>
-              </li> : <li className="  nav-item">
-                <a className=" btn btn-outline-nuevo rounded-7  " href="#" onClick={salir}> Salir <i className="fa fa-window-close"></i> </a>
-              </li>}
-            </ul>
-          </div>
-        </div>
-      </nav>
       <ModalLogin
         showLogin={showLogin}
         setShowLogin={setShowLogin}
@@ -1464,10 +1540,7 @@ const IndexFlas = () => {
 
         </div>
       </div>
-      <TOAST
-        Toastestado={Toastestado}
-        setDatoToas={setDatoToas}
-      />
+
 
       <Iframe
         setEstadoFrame={modal.nombre == "pago" ? true : false}
@@ -1480,6 +1553,11 @@ const IndexFlas = () => {
 
       </div>
 
+
+      <TOAST
+        Toastestado={Toastestado}
+        setDatoToas={setDatoToas}
+      />
     </>
 
   )

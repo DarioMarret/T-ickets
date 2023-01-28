@@ -55,7 +55,7 @@ var routes = [
     name: "Inicio",
     icon: "nc-icon nc-layers-3",
     component: Dashboard,
-    permiso: ["superadmin", "super_admin"]
+    permiso: ["superadmin", "super_admin", "vendedores"]
 
   },
   {

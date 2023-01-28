@@ -66,15 +66,25 @@ const ModalLogin = (props) => {
           usedispatch(setModal({ nombre: '', estado: '' }))
         }
         else {
-          setShowToas(true)
-          setmessage(data.message)
+          usedispatch(setToastes({
+            show: true,
+            message: "Hubo un error Verifique correo y contraseña e intente de nuevo",
+            color: 'bg-danger',
+            estado: "Hubo un error",
+          }))
 
           // usedispatch(setToastes({ show: true, message: data.message, color: 'bg-success', estado: 'Se guardo el numero de control'}))
         }
       } catch (error) {
-        console.log(error)
-        setShowToas(true)
-        setmessage("Hubo un error Verifique correo y contraseña e intente de nuevo")
+        //console.log(error)
+        //setShowToas(true)
+        //setmessage("Hubo un error Verifique correo y contraseña e intente de nuevo")
+        usedispatch(setToastes({
+          show: true,
+          message: "Hubo un error Verifique correo y contraseña e intente de nuevo",
+          color: 'bg-danger',
+          estado: "Hubo un error",
+        }))
       }
 
     }

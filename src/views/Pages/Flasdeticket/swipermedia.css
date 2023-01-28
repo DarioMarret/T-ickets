@@ -127,7 +127,9 @@ a[aria-expanded="true"] svg {
         color: #F58634 !important;
     }
 }
-
+.toast{
+    z-index: 1000000 !important;
+}
 .nuevos .modal-dialog {
     max-width: 90%;
 }
@@ -154,3 +156,7 @@ a[aria-expanded="true"] svg {
 .btn-disable {
      cursor: not-allowed !important;
 }
+/*
+.MuiPaper-root{
+    background-color: #442d97 !important;
+}*/

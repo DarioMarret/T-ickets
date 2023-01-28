@@ -149,7 +149,7 @@ export const generaTiketspdf = async (parms) => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-        console.log(data)
+       // console.log(data)
         return data
     } catch (error) {
         return error

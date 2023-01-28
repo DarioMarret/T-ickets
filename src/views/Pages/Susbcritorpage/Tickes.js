@@ -33,6 +33,7 @@ import TablasViwe from "layouts/Tablasdoc.js";
 import { generaPDF } from "utils/boletos/Queryboleto.js";
 import { generaTiketspdf } from "utils/Querycomnet.js";
 import { Triangle } from "react-loader-spinner";
+import Inframene from "views/Components/IFrame/index.js";
 let { cedericon } = bancos
 function Example() {
     let usedispatch = useDispatch()
@@ -97,7 +98,7 @@ function Example() {
             "id_ticket_usuarios": row.id
         }).then(ouput => {
             if (ouput.success ) {
-                usedispatch(setModal({ nombre: 'pago', estado: ouput.link }))
+                usedispatch(setModal({ nombre: 'pdfsshow', estado: ouput.link }))
                 // window.open(ouput.link, "_blank");
                 setSpiner("d-none")
 
@@ -299,7 +300,7 @@ function Example() {
     return (
         <>
             {alert}
-
+            <Inframene></Inframene>
             <ModalReporteViews />
             <div className="container-fluid">
                 <Tabs value={value} onChange={handleChange}

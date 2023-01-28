@@ -22,7 +22,7 @@ const ToastViews = () => {
                 top: 80,
                 right: 2,
                 transform: 'translate(-50 %, 0 %)',
-                zIndex: 10000,
+                zIndex: 100000,
             }}>
             <Toast.Header closeButton={false}>
                 <div className={selector.color + " rounded-3"} style={{ width: '20px', height: '20px', }}></div>
