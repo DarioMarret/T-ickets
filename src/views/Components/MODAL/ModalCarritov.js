@@ -168,7 +168,8 @@ const ModalCarritoView = (prop) => {
         // console.log(sleccionlocalidad.pagados )
         // console.log((sleccionlocalidad.pagados > 10))
         //console.log(sleccionlocalidad)
-        if (clienteInfo() == null && CODIGO == "9EGM42") {
+        //if (clienteInfo() == null && CODIGO == "9EGM42") {
+        if (false) {
             usedispatch(setToastes({
                 show: true,
                 message: "Gauayaquil Sould Out estaremos Informando",
@@ -277,7 +278,8 @@ const ModalCarritoView = (prop) => {
             console.log(sleccionlocalidad)
             console.log(clienteInfo())
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
-            if (clienteInfo() == null && CODIGO == "9EGM42") {
+            // if (clienteInfo() == null && CODIGO == "9EGM42") 
+            if (false) {
                 usedispatch(setToastes({
                     show: true,
                     message: "Gauayaquil Sould Out estaremos Informando",

@@ -306,7 +306,7 @@ export default function AprobarView() {
         csvExporter.generateCsv(rows.map((row) => row.original));
     };
     const options = {
-        title: "Ventas Globales",
+        title: "Ventas Globales Aprobadas",
 
     };
     return (
