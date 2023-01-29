@@ -158,11 +158,11 @@ const Reporte = (props) => {
   }
   function Confirmar(e) {
     let valores = GetValores()
-    /*  ReactGA.event({
-        category: "Deposito",
-        action: "pagos",
-        label: "Guayaquil",
-    })*/
+    ReactGA.event({
+      category: "Deposito",
+      action: "pagos",
+      label: e,
+    })
     if (e == "pichincha") {
       // console.log(evento)
 
