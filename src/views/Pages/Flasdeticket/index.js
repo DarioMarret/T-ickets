@@ -494,7 +494,7 @@ const IndexFlas = () => {
                 usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
                 ReactGA.event({
                   category: "Comprar",
-                  action: "click",
+                  action: "Eventos",
                   label: "" + e.codigoEvento,
                 })
                 // console.log(seleccionuser)
@@ -797,8 +797,8 @@ const IndexFlas = () => {
       }))
     ReactGA.event({
       category: "Comprar",
-      action: "carrito",
-      label: "Button",
+      action: "carrusel",
+      label: datos[0],
     })
     return {
       nombreConcierto: datos[2],
@@ -884,13 +884,13 @@ const IndexFlas = () => {
             backgroundColor: "#311C7C"
           }
         }}
-       
+
         open={false}
         onClose={() => setVisible(!visible)}>
-          <div className=" container-fluid">
+        <div className=" container-fluid">
 
-          </div>
-          <div className="">
+        </div>
+        <div className="">
           <ul className="nav nav-pills flex-column mb-auto">
             <li className="nav-item">
               <a href="#" className="nav-link active" aria-current="page">
@@ -921,11 +921,11 @@ const IndexFlas = () => {
             </li>
           </ul>
 
-          </div>
-    
-          <List>
-        
-          </List>
+        </div>
+
+        <List>
+
+        </List>
 
       </Drawer>
 

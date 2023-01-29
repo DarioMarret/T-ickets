@@ -12,7 +12,7 @@ import { bancos } from 'utils/Imgenesutils';
 import { PagoRapido } from 'utils/Querycomnet';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
-
+import ReactGA from "react-ga"
 let { GUAYAQUIL, numero,
   pacifico, pichincha,
   produbanco, atencion } = bancos
@@ -158,27 +158,25 @@ const Reporte = (props) => {
   }
   function Confirmar(e) {
     let valores = GetValores()
+    /*  ReactGA.event({
+        category: "Deposito",
+        action: "pagos",
+        label: "Guayaquil",
+    })*/
     if (e == "pichincha") {
-     // console.log(evento)
-      
+      // console.log(evento)
+
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
+          usedispatch(setModal({
             nombre: e, estado: valores
-          })) : usedispatch(setModal({
-            nombre: "", estado: ""
           }))
-          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setToastes({
+          usedispatch(setToastes({
             show: true,
             message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
-          })) : usedispatch(setToastes({
-            show: true,
-            message: 'Recuerda estar pendiente de tu reserva, te informaremos de las cuentas al inicio de las ventas',
-            color: 'bg-success',
-            estado: 'Reserva Generada '
           }))
           return
         }
@@ -204,22 +202,17 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
+          usedispatch(setModal({
             nombre: e, estado: valores
-          })) : usedispatch(setModal({
-            nombre: "", estado: ""
           }))
-          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setToastes({
+          usedispatch(setToastes({
             show: true,
             message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
-          })) : usedispatch(setToastes({
-            show: true,
-            message: 'Recuerda estar pendiente de tu reserva, te informaremos de las cuentas al inicio de las ventas',
-            color: 'bg-success',
-            estado: 'Reserva Generada '
           }))
+
+
           return
         }
         else {
@@ -249,21 +242,19 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
+          /*evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
             nombre: e, estado: valores
           })) : usedispatch(setModal({
             nombre: "", estado: ""
+          }))*/
+          usedispatch(setModal({
+            nombre: e, estado: valores
           }))
-          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setToastes({
+          usedispatch(setToastes({
             show: true,
             message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
-          })) : usedispatch(setToastes({
-            show: true,
-            message: 'Recuerda estar pendiente de tu reserva, te informaremos de las cuentas al inicio de las ventas',
-            color: 'bg-success',
-            estado: 'Reserva Generada '
           }))
           return
         }
@@ -287,7 +278,16 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
+          usedispatch(setModal({
+            nombre: e, estado: valores
+          }))
+          usedispatch(setToastes({
+            show: true,
+            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
+            color: 'bg-success',
+            estado: 'Orden de Pago Generada '
+          }))
+          /*evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
             nombre: e, estado: valores
           })) : usedispatch(setModal({
             nombre: "", estado: ""
@@ -302,7 +302,7 @@ const Reporte = (props) => {
             message: 'Recuerda estar pendiente de tu reserva, te informaremos de las cuentas al inicio de las ventas',
             color: 'bg-success',
             estado: 'Reserva Generada '
-          }))
+          }))*/
           return
         }
         else {
@@ -324,21 +324,14 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
-            nombre: "", estado: ""
-          })) : usedispatch(setModal({
+          usedispatch(setModal({
             nombre: "", estado: ""
           }))
-          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setToastes({
+          usedispatch(setToastes({
             show: true,
-            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp, email indicado o desde la opción Tickets, tienes un tiempo de 1 hora para reportarlo',
+            message: 'Recuerda reportar el comprobante al WhatsApp o desde la opción tickets, tienes un tiempo de 2 hora para reportarlo',
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
-          })) : usedispatch(setToastes({
-            show: true,
-            message: 'Recuerda estar pendiente de tu reserva, te informaremos de las cuentas al inicio de las ventas',
-            color: 'bg-success',
-            estado: 'Reserva Generada '
           }))
           return
         }
@@ -368,7 +361,7 @@ const Reporte = (props) => {
         size={GetMetodo() != "Transferencia" ? "lg" : ""}
         fullscreen={'md-down'}
         centered>
-          <Modal.Header className=" d-flex  m-0  bg-dark   justify-content-between align-items-center"        >
+        <Modal.Header className=" d-flex  m-0  bg-dark   justify-content-between align-items-center"        >
           <div className="d-flex  container   justify-content-center text-center" >
             <h4 className=" p-1 text-light "
               style={{
@@ -388,82 +381,82 @@ const Reporte = (props) => {
         <Modal.Body>
 
           <div className="container-fluid px-0">
-            {GetMetodo() != "Transferencia" ? 
-            <div className='row  flex-wrap-reverse'>
-              <div className='col-12 col-md-6 d-flex flex-column align-items-center'>
-                <div className='pt-2 pagos' >
-                  <img src={pichincha} className="img-fluid" onClick={() => Confirmar("pichincha")} />
-                </div>
-                <div className='py-2 pagos'>
-                  <img src={GUAYAQUIL} className="img-fluid" onClick={() => Confirmar("guayaquil")} />
-                </div>
+            {GetMetodo() != "Transferencia" ?
+              <div className='row  flex-wrap-reverse'>
+                <div className='col-12 col-md-6 d-flex flex-column align-items-center'>
+                  <div className='pt-2 pagos' >
+                    <img src={pichincha} className="img-fluid" onClick={() => Confirmar("pichincha")} />
+                  </div>
+                  <div className='py-2 pagos'>
+                    <img src={GUAYAQUIL} className="img-fluid" onClick={() => Confirmar("guayaquil")} />
+                  </div>
 
-                <div className='pagos'>
-                  <img src={pacifico} className="img-fluid" onClick={() => Confirmar("pacifico")} />
-                </div>
+                  <div className='pagos'>
+                    <img src={pacifico} className="img-fluid" onClick={() => Confirmar("pacifico")} />
+                  </div>
 
-                <div className='py-2 pagos'>
-                  <img src={produbanco} className="img-fluid" onClick={() => Confirmar("produbanco")} />
-                </div>
+                  <div className='py-2 pagos'>
+                    <img src={produbanco} className="img-fluid" onClick={() => Confirmar("produbanco")} />
+                  </div>
 
-              </div>
-              <div className='col-12 col-md-6' >
-                <div className='text-center'>
-                  <p style={{
-                    fontWeight: "bold"
-                  }}>Tiempo restante <span className='text-danger'  >{intervalo}</span> </p>
-                  <h5>
-                    <strong
-                    >  Pasos para Compra con Déposito</strong>
+                </div>
+                <div className='col-12 col-md-6' >
+                  <div className='text-center'>
+                    <p style={{
+                      fontWeight: "bold"
+                    }}>Tiempo restante <span className='text-danger'  >{intervalo}</span> </p>
+                    <h5>
+                      <strong
+                      >  Pasos para Compra con Déposito</strong>
 
-                  </h5>
-                </div>
-                <div>
-                  <span>
-                    <strong>1.</strong>   Dar click sobre la imgen Banco preferido
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    <strong>2.</strong>   Generar la orden de pago
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    <strong> 3.</strong>   Depositar en Ventanilla o corresponsal
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    <strong> 4.</strong> Tomar una foto del comprobante
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    <strong> 5.</strong> Reportar el comprobante
-                  </span>
-                </div>
-                <div>
-                  <span>
-                    <strong> 6.</strong> Tus boletos llegaran al correo registrado
-                  </span>
-                </div>
-                <div className='text-center pt-4 pb-0'>
-                  <a href='https://t-ickets.net/3FynwiC' className=' nav-link' target="_blank" >
-                    <h5 className='text-danger' href='https://t-ickets.net/3FynwiC' target="_blank" > <strong>REPORTAR EL PAGO AL </strong>
                     </h5>
-                  </a>
+                  </div>
+                  <div>
+                    <span>
+                      <strong>1.</strong>   Dar click sobre la imgen Banco preferido
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      <strong>2.</strong>   Generar la orden de pago
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      <strong> 3.</strong>   Depositar en Ventanilla o corresponsal
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      <strong> 4.</strong> Tomar una foto del comprobante
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      <strong> 5.</strong> Reportar el comprobante
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      <strong> 6.</strong> Tus boletos llegaran al correo registrado
+                    </span>
+                  </div>
+                  <div className='text-center pt-4 pb-0'>
+                    <a href='https://t-ickets.net/3FynwiC' className=' nav-link' target="_blank" >
+                      <h5 className='text-danger' href='https://t-ickets.net/3FynwiC' target="_blank" > <strong>REPORTAR EL PAGO AL </strong>
+                      </h5>
+                    </a>
+                  </div>
+                  <div className='   text-center'>
+                    <a href='https://t-ickets.net/3FynwiC' target="_blank">
+                      <img src={numero} className=" img-fluid shadow  border rounded-7" style={{
+                        width: 270
+                      }}></img>
+                    </a>
+                  </div>
                 </div>
-                <div className='   text-center'>
-                  <a href='https://t-ickets.net/3FynwiC' target="_blank">
-                    <img src={numero} className=" img-fluid shadow  border rounded-7" style={{
-                      width: 270
-                    }}></img>
-                  </a>
-                </div>
-              </div>
 
-            </div>
+              </div>
               : <div className="d-flex flex-wrap px-0 justify-content-center align-items-center" >
                 <div className='d-flex px-0'>
 

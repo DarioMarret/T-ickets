@@ -45,7 +45,7 @@ const ModalCarritoView = (prop) => {
     const [spinervi, setSpiner] = useState("d-none")
     const [checked, setChecked] = useState({
         Efectivo: "",
-        Fisico:"",
+        Fisico: "",
         Tarjeta: "",
         Deposito: "",
         Transferencia: ""
@@ -77,20 +77,20 @@ const ModalCarritoView = (prop) => {
             $("div." + e.localidaEspacio["idcolor"] + "silla").removeClass("seleccionado").addClass("disponible");
             console.log(ouput)
         }
-        ).catch(err => console.log(err)) : 
-        correlativosadd(
-            {
-                "id": e.id,
-                "estado": "disponible",
-                "mas": "eliminar",
-                "cedula": user.cedula,
-                "cantidad": e.cantidad
-            }
-        ).then(oupt => {
-            console.log(oupt)
-        }).catch(err => {
-            console.log(err)
-        })
+        ).catch(err => console.log(err)) :
+            correlativosadd(
+                {
+                    "id": e.id,
+                    "estado": "disponible",
+                    "mas": "eliminar",
+                    "cedula": user.cedula,
+                    "cantidad": e.cantidad
+                }
+            ).then(oupt => {
+                console.log(oupt)
+            }).catch(err => {
+                console.log(err)
+            })
         e.localidaEspacio["typo"] == "correlativo" ? usedispatch(clearSillas(e)) : ''
         EliminarByStora(e.localidad)
         e.localidaEspacio["typo"] == "correlativo" ? EliminarSillaLocal(e.localidad) : ''
@@ -127,12 +127,12 @@ const ModalCarritoView = (prop) => {
         }) : ''
         Listarticketporestado(user.cedula).then(oupt => {
             //console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado == "Pagado").length)
-           //console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado == "reservados").length)
+            //console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado == "reservados").length)
             usedispatch(updateboletos({
-                disponibles: sleccionlocalidad.disponibles, 
+                disponibles: sleccionlocalidad.disponibles,
                 proceso: 0,
                 pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado == "Pagado" || e.estado == "reservado").length,
-                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) &&  e.estado=="reservado").length
+                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado == "reservado").length
             }))
             /*console.log({
                 disponibles: 0,
@@ -165,9 +165,9 @@ const ModalCarritoView = (prop) => {
         ).catch(err => console.log(err))*/
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
     function Abririlocalfirt(e) {
-       // console.log(sleccionlocalidad.pagados )
-       // console.log((sleccionlocalidad.pagados > 10))
-       //console.log(sleccionlocalidad)
+        // console.log(sleccionlocalidad.pagados )
+        // console.log((sleccionlocalidad.pagados > 10))
+        //console.log(sleccionlocalidad)
         if (clienteInfo() == null && CODIGO == "9EGM42") {
             usedispatch(setToastes({
                 show: true,
@@ -178,7 +178,7 @@ const ModalCarritoView = (prop) => {
             setSpiner("d-none")
             return
         }
-        if (sleccionlocalidad.pagados >=10) {
+        if (sleccionlocalidad.pagados >= 10) {
             usedispatch(setToastes({
                 show: true,
                 message: "Están en proceso, o llegaste al limite de compra",
@@ -187,86 +187,87 @@ const ModalCarritoView = (prop) => {
             }))
             return
         }
-        else{
-        setSpiner("")
-       // console.log(e)
-        let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
-        localidaandespacio(e.espacio, e.idcolor).then(ouput => {
-            console.log(e.espacio, e.idcolor)
-            console.log(ouput)
-            let nuevoObjeto = []
-            if (ouput.data.find(e => e.typo == "fila")) {
-                ouput.data.forEach(x => {
-                    if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                        nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
-                    }
-                    else {
-                        let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
-                        nuevoObjeto[indixe].asientos.push({
+        else {
+            setSpiner("")
+            // console.log(e)
+            let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
+            localidaandespacio(e.espacio, e.idcolor).then(ouput => {
+                console.log(e.espacio, e.idcolor)
+                console.log(ouput)
+                let nuevoObjeto = []
+                if (ouput.data.find(e => e.typo == "fila")) {
+                    ouput.data.forEach(x => {
+                        if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                            nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+                        }
+                        else {
+                            let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                            nuevoObjeto[indixe].asientos.push({
+                                silla: x.silla, estado: x.estado, idsilla: x.id
+                            })
+                        }
+                    })
+                    usedispatch(cargarmapa(color))
+                    usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
+                    usedispatch(filtrarlocali(nuevoObjeto))
+                    sessionStorage.seleccionmapa = JSON.stringify(e)
+                    abrirlocalidad()
+
+                }
+                else if (ouput.data.find(e => e.typo == "mesa")) {
+                    ouput.data.forEach(x => {
+                        if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                            nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                        }
+                    })
+                    nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                        let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                        if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                            nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                        }
+                    }) : ''
+                    nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                        let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                        let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                        nuevoObjeto[index].Mesas[sillas].asientos.push({
                             silla: x.silla, estado: x.estado, idsilla: x.id
                         })
-                    }
-                })
-                usedispatch(cargarmapa(color))
-                usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
-                usedispatch(filtrarlocali(nuevoObjeto))
-                sessionStorage.seleccionmapa = JSON.stringify(e)
-                abrirlocalidad()
+                    }) : ''
+                    usedispatch(cargarmapa(color))
+                    usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
+                    usedispatch(filtrarlocali(nuevoObjeto))
+                    sessionStorage.seleccionmapa = JSON.stringify(e)
+                    abrirlocalidad()
 
-            }
-            else if (ouput.data.find(e => e.typo == "mesa")) {
-                ouput.data.forEach(x => {
-                    if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                        nuevoObjeto.push({ fila: x.fila, Mesas: [] })
-                    }
-                })
-                nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
-                    let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                    if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
-                        nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
-                    }
-                }) : ''
-                nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
-                    let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                    let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
-                    nuevoObjeto[index].Mesas[sillas].asientos.push({
-                        silla: x.silla, estado: x.estado, idsilla: x.id
+                }
+                else if (ouput.data.find(e => e.typo == "correlativo")) {
+                    usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != " " && e.cedula != null)))
+                    ouput.data.filter(e => e.estado == "disponible").length == 0 ?
+                        usedispatch(setToastes({
+                            show: true,
+                            message: "Estan en proceso o vendidos",
+                            color: 'bg-primary',
+                            estado: "Esta loclidad no tiene disponibles  "
+                        })) : ''
+                    usedispatch(cargarmapa(color))
+                    usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
+                    console.log({
+                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                        proceso: ouput.data.filter(e => e.estado == "reservado").length,
+                        inpagos: sleccionlocalidad.inpagos
                     })
-                }) : ''
-                usedispatch(cargarmapa(color))
-                usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
-                usedispatch(filtrarlocali(nuevoObjeto))
-                sessionStorage.seleccionmapa = JSON.stringify(e)
-                abrirlocalidad()
-
+                    usedispatch(updateboletos({
+                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                        proceso: ouput.data.filter(e => e.estado == "reservado").length,
+                        inpagos: sleccionlocalidad.inpagos
+                    }))
+                    sessionStorage.seleccionmapa = JSON.stringify(e)
+                    abrirlocalidad()
+                }
             }
-            else if (ouput.data.find(e => e.typo == "correlativo")) {
-               usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != " " && e.cedula != null)))
-                ouput.data.filter(e => e.estado == "disponible").length== 0 ?
-                    usedispatch(setToastes({
-                        show: true,
-                        message: "Estan en proceso o vendidos",
-                        color: 'bg-primary',
-                        estado: "Esta loclidad no tiene disponibles  "
-                    })) : ''
-                usedispatch(cargarmapa(color))
-                usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
-                console.log({
-                    disponibles: ouput.data.filter(e => e.estado == "disponible").length,
-                    proceso: ouput.data.filter(e => e.estado == "reservado").length,
-                    inpagos: sleccionlocalidad.inpagos
-                })
-                usedispatch(updateboletos({
-                    disponibles: ouput.data.filter(e => e.estado == "disponible").length,
-                    proceso: ouput.data.filter(e => e.estado == "reservado").length,
-                    inpagos: sleccionlocalidad.inpagos
-                }))
-                sessionStorage.seleccionmapa = JSON.stringify(e)
-                abrirlocalidad()
-            }
+            ).catch(err =>
+                console.log(err))
         }
-        ).catch(err =>
-            console.log(err))}
     }
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
     modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
@@ -295,91 +296,92 @@ const ModalCarritoView = (prop) => {
                 }))
                 return
             }
-            else{
+            else {
                 setSpiner("")
-            
-             
-            localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
-                console.log(ouput)
-                let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
-                let nuevoObjeto = []
-                if (ouput.data.find(e => e.typo == "fila")) {
-                    ouput.data.forEach(x => {
-                        if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                            nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
-                        }
-                        else {
-                            let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
-                            nuevoObjeto[indixe].asientos.push({
+
+
+                localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
+                    console.log(ouput)
+                    let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
+                    let nuevoObjeto = []
+                    if (ouput.data.find(e => e.typo == "fila")) {
+                        ouput.data.forEach(x => {
+                            if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                                nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+                            }
+                            else {
+                                let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                                nuevoObjeto[indixe].asientos.push({
+                                    silla: x.silla, estado: x.estado, idsilla: x.id
+                                })
+                            }
+                        })
+                        //console.log(nuevoObjeto)
+                        usedispatch(cargarmapa(color))
+                        usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                        usedispatch(filtrarlocali(nuevoObjeto))
+                        sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                        setSpiner("d-none")
+                        usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+                        return
+                    } else if (ouput.data.find(e => e.typo == "mesa")) {
+                        ouput.data.forEach(x => {
+                            if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                                nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                            }
+                        })
+                        nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                            let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                            if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                                nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                            }
+                        }) : ''
+                        nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                            let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                            let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                            nuevoObjeto[index].Mesas[sillas].asientos.push({
                                 silla: x.silla, estado: x.estado, idsilla: x.id
                             })
-                        }
-                    })
-                    //console.log(nuevoObjeto)
-                    usedispatch(cargarmapa(color))
-                    usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
-                    usedispatch(filtrarlocali(nuevoObjeto))
-                    sessionStorage.seleccionmapa = JSON.stringify(consulta)
-                    setSpiner("d-none")
-                    usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
-                    return
-                } else if (ouput.data.find(e => e.typo == "mesa")) {
-                    ouput.data.forEach(x => {
-                        if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                            nuevoObjeto.push({ fila: x.fila, Mesas: [] })
-                        }
-                    })
-                    nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
-                        let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                        if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
-                            nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
-                        }
-                    }) : ''
-                    nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
-                        let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                        let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
-                        nuevoObjeto[index].Mesas[sillas].asientos.push({
-                            silla: x.silla, estado: x.estado, idsilla: x.id
-                        })
-                    }) : ''
-                    usedispatch(cargarmapa(color))
-                    usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
-                    usedispatch(filtrarlocali(nuevoObjeto))
-                    sessionStorage.seleccionmapa = JSON.stringify(consulta)
-                    setSpiner("d-none")
-                    usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
-                    return
-                }
-                else if (ouput.data.find(e => e.typo == "correlativo")) {
-                    usedispatch(cargarmapa(color))
-                    usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
-                    //  usedispatch(filtrarlocali(nuevoObjeto))
-                    filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
-                   // console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
-                    ouput.data.filter(e => e.estado == "disponible").length== 0 ? usedispatch(setToastes({
-                        show: true,
-                        message: "Estan en proceso o vendidos",
-                        color: 'bg-primary',
-                        estado: "Esta loclidad no tiene disponibles  "
-                    })) : ''
-                    // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
-                    console.log(ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length)
-                    usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e => e.estado == "disponible").length, 
-                        proceso: ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length,
-                        pagados: sleccionlocalidad.pagados,
-                        inpagos: sleccionlocalidad.inpagos
-                    }))
-                    sessionStorage.seleccionmapa = JSON.stringify(consulta)
-                    setSpiner("d-none")
-                    usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
-                    return
+                        }) : ''
+                        usedispatch(cargarmapa(color))
+                        usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                        usedispatch(filtrarlocali(nuevoObjeto))
+                        sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                        setSpiner("d-none")
+                        usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+                        return
+                    }
+                    else if (ouput.data.find(e => e.typo == "correlativo")) {
+                        usedispatch(cargarmapa(color))
+                        usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                        //  usedispatch(filtrarlocali(nuevoObjeto))
+                        filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
+                        // console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
+                        ouput.data.filter(e => e.estado == "disponible").length == 0 ? usedispatch(setToastes({
+                            show: true,
+                            message: "Estan en proceso o vendidos",
+                            color: 'bg-primary',
+                            estado: "Esta loclidad no tiene disponibles  "
+                        })) : ''
+                        // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
+                        console.log(ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length)
+                        usedispatch(updateboletos({
+                            disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                            proceso: ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length,
+                            pagados: sleccionlocalidad.pagados,
+                            inpagos: sleccionlocalidad.inpagos
+                        }))
+                        sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                        setSpiner("d-none")
+                        usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+                        return
 
+                    }
                 }
+                ).catch(err =>
+                    console.log(err))
+                return
             }
-            ).catch(err =>
-                console.log(err))
-            return}
         })
     }) : ''
     function cerrar() {
@@ -705,7 +707,7 @@ const ModalCarritoView = (prop) => {
                         >
                             <strong> Método de pago</strong>
 
-                          <div className="form-check">
+                            <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     checked={checked.Tarjeta == "Tarjeta" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
@@ -713,8 +715,8 @@ const ModalCarritoView = (prop) => {
                                 <label className="form-check-label" htmlFor="Tarjeta">
                                     Tarjeta-credito
                                 </label>
-                            </div> 
-                            {clienteInfo() == null ? 
+                            </div>
+                            {clienteInfo() == null ?
                                 <div className="form-check">
                                     <input className="form-check-input" type="radio"
                                         checked={checked.Transferencia == "Transferencia" ? true : false}
@@ -723,8 +725,8 @@ const ModalCarritoView = (prop) => {
                                     <label className="form-check-label" htmlFor="Transferencia">
                                         Transferencia
                                     </label>
-                                </div> :""}
-                            {clienteInfo() == null ?  <div className="form-check ">
+                                </div> : ""}
+                            {clienteInfo() == null ? <div className="form-check ">
                                 <input className="form-check-input" type="radio"
                                     checked={checked.Deposito == "Deposito" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
@@ -732,20 +734,20 @@ const ModalCarritoView = (prop) => {
                                 <label className="form-check-label" htmlFor="Deposito">
                                     Deposito
                                 </label>
-                            </div> :""}
-                          
-                                {clienteInfo() == null ?   <div className="form-check">
+                            </div> : ""}
+
+                            {clienteInfo() == null ? <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     name="Efectivo" id="Efectivo"
                                     checked={checked.Efectivo == "Efectivo" ? true : false}
                                     onChange={(e) => handelMetodopago(e.target, "Efectivo")}
                                 />
-                                    <label className="form-check-label" htmlFor="Efectivo">
+                                <label className="form-check-label" htmlFor="Efectivo">
                                     Efectivo
                                 </label>
-                            </div>:""}
-                           
-                            {clienteInfo() != null ?<div className="form-check">
+                            </div> : ""}
+
+                            {clienteInfo() != null ? <div className="form-check">
                                 <input className="v-check form-check-input" type="radio"
                                     name="Fisico" id="Fisico"
                                     checked={checked.Fisico == "Efectivo-Local" ? true : false}
@@ -754,7 +756,7 @@ const ModalCarritoView = (prop) => {
                                 <label className="form-check-label" htmlFor="Fisico">
                                     Efectivo punto de pagos
                                 </label>
-                            </div>:""}
+                            </div> : ""}
                             {/*
                                 estdo != "ACTIVO" ? <div className="form-check ">
                                     <input className="form-check-input" type="radio"
@@ -776,8 +778,8 @@ const ModalCarritoView = (prop) => {
                                         Transferencia
                                     </label>
                                 </div>
-                            :""}
-                           
+                                : ""}
+
 
                         </div>
                     </div>

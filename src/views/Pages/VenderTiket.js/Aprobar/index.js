@@ -25,6 +25,7 @@ import { eliminarRegistro } from "utils/pagos/Queripagos";
 import ExportToExcel from "utils/Exportelemin";
 import { ExportToCsv } from 'export-to-csv';
 import { listaRegistro } from "utils/columnasub";
+import PiecharViews from "views/Components/Piechar";
 let { cedericon, atencion } = bancos
 export default function AprobarView() {
     let usedispatch = useDispatch()
@@ -138,19 +139,16 @@ export default function AprobarView() {
     }
 
     const [datas, setDatas] = useState([])
-     /*const datas = [
-        ["Localida", "ganancias"],
-        ["Work", 11],
-        ["Eat", 2],
-        ["Commute", 2],
-        ["Watch TV", 2],
-        ["Sleep", 7],
-    ];*/
+    /*const datas = [
+       ["Localida", "ganancias"],
+       ["Work", 11],
+       ["Eat", 2],
+       ["Commute", 2],
+       ["Watch TV", 2],
+       ["Sleep", 7],
+   ];*/
 
-     const options = {
-        title: "My Daily Activities",
-        is3D: true,
-    };
+
     useEffect(() => {
         listarRegistropanel({ "cedula": "" }).then(e => {
             if (e.data) {
@@ -164,7 +162,7 @@ export default function AprobarView() {
                     row.concierto = nombre[0]
                     return { ...row }
                 })
-                
+
                 let nuevosValores = []
                 let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
 
@@ -172,26 +170,26 @@ export default function AprobarView() {
                 let arayReallocalidad = []
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     JSON.parse(elm.info_concierto).map(loc => {
-                        arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad]   })
+                        arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad] })
                     })
                 })
-                let arrayIndividual=[]
+                let arrayIndividual = []
                 console.log(consulat)
                 console.log(arayReallocalidad)
-                arayReallocalidad.forEach(elm=>{
+                arayReallocalidad.forEach(elm => {
                     if (arrayIndividual.some(e => e.id == elm.id)) {
                         let dat = arrayIndividual.findIndex(e => e.id == elm.id)
                         let tota = parseInt(arrayIndividual[dat].cantidad) + parseInt(elm.cantidad)
-                        arrayIndividual[dat].cantidad=tota
+                        arrayIndividual[dat].cantidad = tota
                     }
-                    else{
-                        arrayIndividual.push({id:elm.id,localidad:elm.localidad,cantidad:elm.cantidad})
+                    else {
+                        arrayIndividual.push({ id: elm.id, localidad: elm.localidad, cantidad: elm.cantidad })
                     }
-                    
+
                 })
                 console.log(arrayIndividual)
-                let datos = arrayIndividual.map(f=>{
-                    return [f.localidad,f.cantidad]
+                let datos = arrayIndividual.map(f => {
+                    return [f.localidad, parseInt(f.cantidad)]
                 })
                 setDatas([
                     ["Localida", "ganancias"],
@@ -307,7 +305,10 @@ export default function AprobarView() {
     const handleExportRows = (rows) => {
         csvExporter.generateCsv(rows.map((row) => row.original));
     };
+    const options = {
+        title: "Ventas Globales",
 
+    };
     return (
         <>
             {alert}
@@ -320,13 +321,12 @@ export default function AprobarView() {
             }
             <ModalConfima />
             <div className=" container" >
-                {/*datas.length>0? <Chart
-                    chartType="PieChart"
-                    data={datas}
+                {datas.length > 0 ? <PiecharViews
+
+                    datas={datas}
                     options={options}
-                    width={"100%"}
-                    height={"400px"}
-                />:""*/}
+
+                /> : ""}
             </div>
             <div className="container d-flex flex-wrap">
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagado")} fileName={"Todos Pendientes"} label={"Pagados"} />
