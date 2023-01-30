@@ -51,6 +51,7 @@
     "qrcode.react": "^3.1.0",
     "qs": "^6.11.0",
     "react": ">=16.8.0",
+    "react-analytics-charts": "^1.2.14",
     "react-big-calendar": "0.40.2",
     "react-bootstrap": "^2.5.0",
     "react-bootstrap-sweetalert": "5.2.0",

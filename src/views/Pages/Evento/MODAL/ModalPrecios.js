@@ -27,7 +27,8 @@ const PreciosViews = (prop) => {
         
         console.log(precios)
     }
-    useEffect(() => {     
+    useEffect(() => {   
+       // console.log(valores)  
             setPrecios({ 
               
                 id_precios:valores.estado.id_precios,
@@ -38,7 +39,7 @@ const PreciosViews = (prop) => {
                 habilitar_cortesia: valores.estado.habilitar_cortesia  ,
                 comision_boleto: valores.estado.comision_boleto ,
             })     
-    }, [])
+    }, [valores.nombre == "precios" ? true : false])
     return (
         <>
             <Modal

@@ -37,7 +37,7 @@ export const PagoRapido = async (transaccion) => {
     // console.log(datos, concierto)
     try {
 
-       // console.log(datos, concierto)
+        console.log(datos)
         const { data } = await axios.post("https://rec.netbot.ec/ms_login//api/v1/registraCompra ", datos, {
             headers: {
                 'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export const PagoRapido = async (transaccion) => {
             }
         }
         )
-       // console.log(data)
+       console.log(data)
         return data;
 
     } catch (error) {

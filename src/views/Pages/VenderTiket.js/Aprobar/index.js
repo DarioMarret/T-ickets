@@ -26,16 +26,16 @@ import ExportToExcel from "utils/Exportelemin";
 import { ExportToCsv } from 'export-to-csv';
 import { listaRegistro } from "utils/columnasub";
 import PiecharViews from "views/Components/Piechar";
+import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
 let { cedericon, atencion } = bancos
 export default function AprobarView() {
     let usedispatch = useDispatch()
     let history = useHistory()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
+    let value = useSelector((state) => state.SuscritorSlice.tabps)
 
     const [data, setData] = React.useState([]);
     const [tiketslist, setTikes] = useState([])
-    const [selecions, setselcion] = useState({})
-    const [value, setValue] = React.useState(0);
 
     const [alert, setAlert] = useState(null)
     const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })), hideAlert() }
@@ -147,7 +147,7 @@ export default function AprobarView() {
        ["Watch TV", 2],
        ["Sleep", 7],
    ];*/
-
+    const sorter = (a, b) => new Date(a.fechaCreacion) < new Date(b.fechaCreacion) ? 1 : -1;
 
     useEffect(() => {
         listarRegistropanel({ "cedula": "" }).then(e => {
@@ -215,8 +215,9 @@ export default function AprobarView() {
 
                 //let valores = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                 //  console.log("nuevos",newdatos)
-                console.log("datsa", nuevosValores)
-                setTikes(newdatos)
+                //console.log("datsa", nuevosValores)
+                let order = newdatos.sort(sorter)
+                setTikes(order)
                 return
             }
             //setTikes([])
@@ -269,7 +270,8 @@ export default function AprobarView() {
 
     }
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        usedispatch(setTabs({ number :newValue}))
+       // setValue(newValue);
         // console.log(newValue)
     };
     function Aprobarvarios() {

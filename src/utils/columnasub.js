@@ -148,6 +148,11 @@ export const ticketsboletos = [
 ]
 export const listaRegistro = [
     {
+        accessorKey: "fechaCreacion",
+        header: "Fecha",
+
+    },
+    {
         accessorKey: "estado_pago",
         header: "Estado",
         Cell: ({ cell }) => (
@@ -156,11 +161,7 @@ export const listaRegistro = [
         ),
         size: 50
     },
-    {
-        accessorKey: "fechaCreacion",
-        header: "Fecha",
-
-    },
+    
 
     {
         accessorKey: "cedula",
@@ -192,6 +193,10 @@ export const listaRegistro = [
 ]
 export const listaRegistrototal = [
     {
+        accessorKey: "fechaCreacion",
+        header: "Fecha",
+    },
+    {
         accessorKey: "estado_pago",
         header: "Estado",
         Cell: ({ cell }) => (
@@ -200,10 +205,7 @@ export const listaRegistrototal = [
         ),
         size: 50
     },
-    {
-        accessorKey: "fechaCreacion",
-        header: "Fecha",
-    },
+   
     {
         accessorKey: "concierto",
         header: "Evento",

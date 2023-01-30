@@ -1,9 +1,11 @@
-import React ,{useEffect}from "react";
+import React, { useEffect } from "react";
 // react component used to create charts
 import ChartistGraph from "react-chartist";
 import { DatoTokenusuario } from "utils/constantes";
 // react components used to create a SVG / Vector map
 import { getCliente } from "utils/DatosUsuarioLocalStorag";
+import { useAnalyticsApi } from "react-use-analytics-api";
+import { AuthorizeButton, SignOutButton,AnalyticsDashboard,ActiveUsersChart } from "react-analytics-charts";
 import { VectorMap } from "react-jvectormap";
 
 // react-bootstrap components
@@ -22,13 +24,135 @@ import {
   Row,
   Col
 } from "react-bootstrap";
-
+import { renderButton, checkSignedIn } from "utils/Analyti";
+import GoogleLogin from "utils/Analyti/AnalityButton";
 function Dashboard() {
-  useEffect(()=>{
- },[])
+  const [isSignedIn, setIsSignedIn] = React.useState(false);
+
+  const updateSignin = (signedIn) => { //(3)
+    setIsSignedIn(signedIn);
+    if (!signedIn) {
+      renderButton();
+    }
+  };
+
+  const init = () => { //(2)
+    checkSignedIn()
+      .then((signedIn) => {
+        updateSignin(signedIn);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  /*$(document).ready(function () {
+    (function (w, d, s, g, js, fjs) {
+      g = w.gapi || (w.gapi = {}); g.analytics = { q: [], ready: function (cb) { this.q.push(cb) } };
+      js = d.createElement(s); fjs = d.getElementsByTagName(s)[0];
+      js.src = 'https://apis.google.com/js/platform.js';
+      fjs.parentNode.insertBefore(js, fjs); js.onload = function () { g.load('analytics') };
+    }(window, document, 'script'));
+
+    gapi.analytics.ready(function () {
+
+      // Step 3: Authorize the user.
+
+      var CLIENT_ID = '381358769148-30tglog14ossvhoe4oenpgocjvuem4b3.apps.googleusercontent.com';
+
+      gapi.analytics.auth.authorize({
+        container: 'auth-button',
+        clientid: CLIENT_ID,
+      });
+
+      // Step 4: Create the view selector.
+
+      var viewSelector = new gapi.analytics.ViewSelector({
+        container: 'view-selector'
+      });
+
+      // Step 5: Create the timeline chart.
+
+      var timeline = new gapi.analytics.googleCharts.DataChart({
+        reportType: 'ga',
+        query: {
+          'dimensions': 'ga:date',
+          'metrics': 'ga:sessions',
+          'start-date': '30daysAgo',
+          'end-date': 'yesterday',
+        },
+        chart: {
+          type: 'LINE',
+          container: 'timeline'
+        }
+      });
+
+      // Step 6: Hook up the components to work together.
+
+      gapi.analytics.auth.on('success', function (response) {
+        viewSelector.execute();
+      });
+
+      viewSelector.on('change', function (ids) {
+        var newIds = {
+          query: {
+            ids: ids
+          }
+        }
+        timeline.set(newIds).execute();
+      });
+    });
+  })*/
+
+
+
+  const { gapi, authorized } = useAnalyticsApi();
+  useEffect(() => {
+    window.gapi.load("auth2", init); //(1)
+    console.log(gapi, authorized)
+  }, [])
+
   return (
     <>
+      <div className=" container pb-3 d-flex justify-content-end   ">
+        <GoogleLogin />
+
+        
+      </div>
+      <div className=" container">
+        <AnalyticsDashboard
+          authOptions={{
+            clientId:
+              "381358769148-bs6mm0ir6otvvk92dilpae0n59sif6n3.apps.googleusercontent.com",
+          }}
+          renderCharts={(gapi, viewId) => {
+            return (
+              < div >
+                < SessionsByDateChart
+                  gapi={gapi}
+                  viewId={viewId}
+                  showPageViews
+                  showUsers
+                />
+                < SessionsGeoChart gapi={gapi} viewId={viewId} showPageViews />
+                <ActiveUsersChart
+                  gapi={gapi}
+                  viewId={viewId}
+                  days={28}
+                  activeUserDays={7}
+                />
+              
+              </div>
+            );
+          }}
+        />
+      </div>
       <Container fluid>
+        <div>
+          <section id="auth-button"></section>
+          <section id="view-selector"></section>
+          <section id="timeline"></section>
+        </div>
         <Row>
           <Col lg="3" sm="6">
             <Card className="card-stats">

@@ -214,10 +214,11 @@ function ModalPago(props) {
         setSpiner("")
         setTimeout(function () {
             PagoRapido("").then(ouput => {
-                //console.log(ouput)
+                console.log(ouput)
                 if (user == null) {
                     if (ouput.success) {
                         usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
+                        console.log(ouput)
                         setSpiner("d-none")
                         detenervelocidad()
                         ReactGA.event({
@@ -247,6 +248,7 @@ function ModalPago(props) {
                 }
                 else {
                     popUp(ouput.url)
+                    console.log(ouput)
                     usedispatch(setModal({ nombre: '', estado: "" }))
                     setSpiner("d-none")
                 }
@@ -259,6 +261,7 @@ function ModalPago(props) {
                     color: 'bg-primary',
                     estado: "Hubo un error de Pagomedio"
                 }))
+                console.log(errro)
                 ReactGA.event({
                     category: "error",
                     action: "Pyhomeerr",
