@@ -175,7 +175,7 @@ const ModalConfima = (prop) => {
         else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
             try {
                 setEstado(true)
-                const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
+              //  const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
                 setTimeout(async function () {
                     const reporte = {
                         "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,

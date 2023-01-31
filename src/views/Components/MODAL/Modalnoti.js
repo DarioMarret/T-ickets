@@ -7,8 +7,10 @@ export default function Noticiamodal() {
         <>
             <Modal
                 show={modal.nombre == "noticia" ? true : false}
-                size="lg"
+              
+                centered
             >
+                
                 <img className=" img-fluid" src="https://flash.t-ickets.com/store/img/whatsapp image 2023-01-30 at 18.48.09.jpeg"></img>
             </Modal>
         </>

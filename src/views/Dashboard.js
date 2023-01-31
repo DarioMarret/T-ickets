@@ -15,7 +15,7 @@ import {
   Card,
   Form,
   InputGroup,
-  Navbar,
+  Navbar, 
   Nav,
   OverlayTrigger,
   Table,
@@ -26,9 +26,13 @@ import {
 } from "react-bootstrap";
 import { renderButton, checkSignedIn } from "utils/Analyti";
 import GoogleLogin from "utils/Analyti/AnalityButton";
+import { useGetEventosQuery } from "StoreRedux/Slicequery/querySlice";
+import { useGetRegistroCompraQuery } from "StoreRedux/Slicequery/querySlice";
+import { useGetRegistroCompraMutation } from "StoreRedux/Slicequery/querySlice";
+
 function Dashboard() {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
-
+ //const {data:todos=[],isLoading}= useGetEventosQuery(9)
   const updateSignin = (signedIn) => { //(3)
     setIsSignedIn(signedIn);
     if (!signedIn) {
@@ -105,22 +109,42 @@ function Dashboard() {
   })*/
 
 
-
-  const { gapi, authorized } = useAnalyticsApi();
+ // console.log(todos)
+//  let [getRegistroCompra,response] = useGetRegistroCompraMutation()
+  const {data:lista}= useGetEventosQuery(9)
+  const { gapi, authorized } = useAnalyticsApi({ "cedula": "" });
+  //console.log(response,lista)
+  let datos ={
+    cedula:"1718910894"
+  }
   useEffect(() => {
-    window.gapi.load("auth2", init); //(1)
-    console.log(gapi, authorized)
+   /* ( async  () =>{
+      await createTask({ "cedula": "1718910894" })
+    })()*/
+    /*getRegistroCompra(datos)
+      .unwrap()
+      .then((co) => console.log(co))
+      .then((error) => {
+        console.log(error)
+      })*/
+   /* createTask({ "cedula": "1718910894" }).then(oup=>
+      console.log(oup)).catch(err=>{
+        console.log(err)
+      })*/
+   //createTask()
+   /* window.gapi.load("auth2", init); //(1)
+    console.log(gapi, authorized)*/
   }, [])
 
   return (
     <>
       <div className=" container pb-3 d-flex justify-content-end   ">
-        <GoogleLogin />
+       {/* <GoogleLogin />*/}
 
         
       </div>
       <div className=" container">
-        <AnalyticsDashboard
+        {/*<AnalyticsDashboard
           authOptions={{
             clientId:
               "381358769148-bs6mm0ir6otvvk92dilpae0n59sif6n3.apps.googleusercontent.com",
@@ -145,7 +169,7 @@ function Dashboard() {
               </div>
             );
           }}
-        />
+        />*/}
       </div>
       <Container fluid>
         <div>

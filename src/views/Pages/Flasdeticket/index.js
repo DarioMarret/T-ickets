@@ -67,6 +67,8 @@ import { eliminarRegistro } from "utils/pagos/Queripagos.js";
 import addNotification from "react-push-notification";
 import { Home } from "@mui/icons-material";
 import Noticiamodal from "views/Components/MODAL/Modalnoti.js";
+import { useGetEventosQuery } from "StoreRedux/Slicequery/querySlice.js";
+import { useGetPubicidadQuery } from "StoreRedux/Slicequery/querySlice.js";
 
 const TRACKING_ID = "G-LJN507B5NX"; // G-MCFDXJPD98
 /*ReactGA.initialize(TRACKING_ID);
@@ -662,7 +664,9 @@ const IndexFlas = () => {
     document.getElementById('regeresiondos').innerHTML = " " + hours + "  :  " + minutes + "  :  " + seconds;
 
   }
-
+  let { data: eventos=[], isLoading }= useGetEventosQuery("ACTIVO")
+  let {data:publici=[],isLoading:info}= useGetPubicidadQuery()
+  //console.log(eventos)
   useEffect(() => {
     //time.current = setInterval(showRemaining, 1000);
     /* addNotification({
@@ -673,37 +677,39 @@ const IndexFlas = () => {
        native: true // when using native, your OS will handle theming.
      });*/
     usedispatch(clearMapa({}))
-    usedispatch(borrarseleccion({ estado: "seleccionado" }))
+    usedispatch(borrarseleccion({ estado: "seleccionado" })) 
     Limpiarseleccion()
     usedispatch(setModal({ nombre: "noticia", estado: "" }))
-    const evento = async () => {
+    const evento =() => {
       try {
         //AGREGAR ESTADO
-        const data = await cargarEventoActivo("ACTIVO")
-        if (!data == null) { return }
-        let datos = data.filter(e => e.estado != "CANCELADO")
-        //console.log(datos)
+       // const data = await cargarEventoActivo("ACTIVO")
+        if (!eventos == null) { return }
+        let datos = isLoading ? eventos :eventos.data
+        let publicin = publici
+        console.log(info)
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
-        if (data != null) {
-          setEventos(filtro.sort(sorter))
-        }
-        else if (data == null) setEventos([])
+        
+         isLoading? "": setEventos(filtro.sort(sorter))
+         info?"": setpublicidad(publicin.data)
+        
+         //if (eventos.data == null) setEventos([])
       } catch (error) {
         console.log(error)
       }
     }
     evento()
-    ListarNoticias().then(ouput => {
+   /* ListarNoticias().then(ouput => {
       if (!ouput.data) { return }
-      setpublicidad(ouput.data)
+    //  setpublicidad(ouput.data)
     }).catch(err => {
       if (err.response.status === 500) {
 
       } else {
       }
     }
-    )
+    )*/
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
@@ -756,19 +762,19 @@ const IndexFlas = () => {
     ReactGA.set({
       username: localStorage.getItem('DatoCliente'),
     })
-    userauthi.login ? addNotification({
+    userauthi.login ? (new Date("02/01/2023 19:00 ") > new Date())? addNotification({
       title: 'Recuerda',
       subtitle: 'Recuerda ',
-      message: ' Eladio Carrión Guayaquil 1 de Febrero 19:00 ',
+      message: ' Eladio Carrión Guayaquil 1 de Febrero 19:00 PM',
       theme: 'darkblue',
       native: true // when using native, your OS will handle theming.
-    }) : ""
+    }):"" : ""
 
     setTimeout(function () {
       usedispatch(setModal({ nombre: "", estado: "" }))
-    }, 10000)
+    }, 6000)
 
-  }, [userauthi.login])
+  }, [userauthi.login, isLoading, info])
   /* function registronew(){
      ReactGA.event({
        category: "Registrado",
@@ -1409,7 +1415,7 @@ const IndexFlas = () => {
                                 </div>
                               </div>
                               <div className="container col-12 col-md-6 rounded-7  px-0">
-                                <img src={e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
+                                <img src={e.codigoEvento == "9EGM42" ? "https://flash.t-ickets.com/store/img/whatsapp%20image%202023-01-30%20at%2019.51.02.jpeg":e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
                               </div>
 
                             </div>

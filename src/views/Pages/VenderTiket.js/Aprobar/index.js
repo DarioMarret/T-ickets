@@ -27,6 +27,7 @@ import { ExportToCsv } from 'export-to-csv';
 import { listaRegistro } from "utils/columnasub";
 import PiecharViews from "views/Components/Piechar";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
+import { useGetRegistroCompraQuery } from "StoreRedux/Slicequery/querySlice";
 let { cedericon, atencion } = bancos
 export default function AprobarView() {
     let usedispatch = useDispatch()
@@ -149,6 +150,7 @@ export default function AprobarView() {
    ];*/
     const sorter = (a, b) => new Date(a.fechaCreacion) < new Date(b.fechaCreacion) ? 1 : -1;
 
+    //console.log(regist)
     useEffect(() => {
         listarRegistropanel({ "cedula": "" }).then(e => {
             if (e.data) {

@@ -169,12 +169,12 @@ const ModalCarritoView = (prop) => {
         // console.log((sleccionlocalidad.pagados > 10))
         //console.log(sleccionlocalidad)
         //if (clienteInfo() == null && CODIGO == "9EGM42") {
-        if (clienteInfo() == null && CODIGO == "9EGM42") {
+        if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 19:00 ") > new Date())) {
             usedispatch(setToastes({
                 show: true,
-                message: "Gauayaquil Sould Out estaremos Informando",
+                message: "Gauayaquil Disponible el 1 de febrero del 2023 19:00",
                 color: 'bg-danger',
-                estado: "Evento Sold Out"
+                estado: "Pronto Disponible"
             }))
             setSpiner("d-none")
             return
@@ -193,8 +193,8 @@ const ModalCarritoView = (prop) => {
             // console.log(e)
             let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
             localidaandespacio(e.espacio, e.idcolor).then(ouput => {
-                console.log(e.espacio, e.idcolor)
-                console.log(ouput)
+               // console.log(e.espacio, e.idcolor)
+               // console.log(ouput)
                 let nuevoObjeto = []
                 if (ouput.data.find(e => e.typo == "fila")) {
                     ouput.data.forEach(x => {
@@ -275,16 +275,16 @@ const ModalCarritoView = (prop) => {
 
 
         E.addEventListener("click", function () {
-            console.log(sleccionlocalidad)
-            console.log(clienteInfo())
+           // console.log(sleccionlocalidad)
+          //console.log(clienteInfo())
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
             // if (clienteInfo() == null && CODIGO == "9EGM42") 
-            if (clienteInfo() == null && CODIGO == "9EGM42") {
+            if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 19:00 ") > new Date())) {
                 usedispatch(setToastes({
                     show: true,
-                    message: "Gauayaquil Sould Out estaremos Informando",
+                    message: "Gauayaquil Disponible el 1 de febrero del 2023 19:00",
                     color: 'bg-danger',
-                    estado: "Localidad Sold Out"
+                    estado: "Pronto Disponible"
                 }))
                 setSpiner("d-none")
                 return
@@ -303,7 +303,7 @@ const ModalCarritoView = (prop) => {
 
 
                 localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
-                    console.log(ouput)
+                   // console.log(ouput)
                     let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
                     let nuevoObjeto = []
                     if (ouput.data.find(e => e.typo == "fila")) {

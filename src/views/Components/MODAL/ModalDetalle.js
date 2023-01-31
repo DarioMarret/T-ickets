@@ -427,7 +427,7 @@ function ModalDetalle(props) {
                                 <tr>
                                     <th scope="row"></th>
                                     <td className='text-end' >Comisión por Boleto:</td>
-                                    <td className='text-center'>${parseInt(listaPrecio.comision).toFixed(2)}</td>
+                                    <td className='text-center'>${parseFloat(listaPrecio.comision).toFixed(2)}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"></th>
