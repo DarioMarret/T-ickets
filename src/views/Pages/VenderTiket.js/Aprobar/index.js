@@ -115,9 +115,9 @@ export default function AprobarView() {
     let precio = {
         1: 21,
         2: 31,
-        3: 41,
-        4: 51,
-        5: 81,
+        3: 41.5,
+        4: 51.5,
+        5: 82,
         9: 122,
         10: 67,
         11: 36,
