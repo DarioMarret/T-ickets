@@ -66,6 +66,7 @@ import ReactGA from 'react-ga';
 import { eliminarRegistro } from "utils/pagos/Queripagos.js";
 import addNotification from "react-push-notification";
 import { Home } from "@mui/icons-material";
+import Noticiamodal from "views/Components/MODAL/Modalnoti.js";
 
 const TRACKING_ID = "G-LJN507B5NX"; // G-MCFDXJPD98
 /*ReactGA.initialize(TRACKING_ID);
@@ -674,6 +675,7 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     Limpiarseleccion()
+    usedispatch(setModal({ nombre: "noticia", estado: "" }))
     const evento = async () => {
       try {
         //AGREGAR ESTADO
@@ -757,10 +759,15 @@ const IndexFlas = () => {
     userauthi.login ? addNotification({
       title: 'Recuerda',
       subtitle: 'Recuerda ',
-      message: 'Se anunciará por redes sociales el canje de los boletos comprados en la web',
+      message: ' Eladio Carrión Guayaquil 1 de Febrero 19:00 ',
       theme: 'darkblue',
       native: true // when using native, your OS will handle theming.
     }) : ""
+
+    setTimeout(function () {
+      usedispatch(setModal({ nombre: "", estado: "" }))
+    }, 10000)
+
   }, [userauthi.login])
   /* function registronew(){
      ReactGA.event({
@@ -816,6 +823,7 @@ const IndexFlas = () => {
   return (
 
     <>
+      <Noticiamodal />
       <nav className="navbar border-bottom border-dark shadow navbar-expand-lg  navbar-dark    py-1"
         style={{
           backgroundColor: "#311C7C"
