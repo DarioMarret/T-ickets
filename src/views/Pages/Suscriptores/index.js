@@ -38,6 +38,7 @@ const SuscritorViews = () => {
       if (data.users.length > 0) {
         //  console.log(data.users)
         setsuscritor(data.users)
+       // console.log(data.users.filter(f => f.id == "6670"))
 
       }
     } catch (error) {

@@ -170,7 +170,7 @@ export default function AprobarView() {
 
                 let consultados = newdatos.filter(e => e.estado_pago == "Pagado"  ).filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
                 let arayReallocalidad = []
-                newdatos.filter(e => e.estado_pago == "Pagado" && e.forma_pago ).map(elm => {
+                newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     JSON.parse(elm.info_concierto).map(loc => {
                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad] })
                     })
@@ -221,7 +221,7 @@ export default function AprobarView() {
                 //console.log("datsa", nuevosValores)
                 let order = newdatos.sort(sorter)
                 //console.log(e.data.filter(e => e.forma_pago != "Efectivo-Local"))
-                setTikes(order.filter(e => e.forma_pago != "Efectivo-Local"))
+                setTikes(order)
                 return
             }
             //setTikes([])
@@ -329,7 +329,7 @@ export default function AprobarView() {
             }
             <ModalConfima />
             <div className=" container row"  >
-                <div className="col-12 col-md-6">
+                <div className="col-12 col-md-6 ">
                     <PiecharViews
 
                         datas={datas}

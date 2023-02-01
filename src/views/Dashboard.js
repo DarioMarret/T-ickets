@@ -32,6 +32,7 @@ import { useGetRegistroCompraMutation } from "StoreRedux/Slicequery/querySlice";
 import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import { useState } from "react";
 import { useGetSuscritorQuery } from "StoreRedux/Slicequery/querySlice";
+import { region } from "utils/Regionescedula";
 
 function Dashboard() {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
@@ -121,11 +122,31 @@ function Dashboard() {
     pagados:0,
     suscritor:0
   })
+  let [mapas,seTmapa]= useState([])
   let datos = { cedula: "1718910894" }
   let { data: nuevos, isLoading:boletosloading }= useGetBoletosQuery()
   let { data: suscrito = [], isLoading: suscritoloading }=useGetSuscritorQuery()
+
   useEffect(() => {
     !boletosloading && !suscritoloading ? setboletos({ ...boletos, pagados: nuevos.data.filter(e => e.estado == "Pagado").length, suscritor: suscrito.users.length }):""
+     let  arrayRegin=[]
+     !suscritoloading ? suscrito.users.forEach(element => {
+       let dato = element.cedula.substring(0,2) 
+      
+      // console.log(element.cedula, region[dato])
+      if(arrayRegin.some(e=> e.region==region[dato])){
+        let dat = arrayRegin.findIndex(e => e.region == region[dato])
+        let tota = parseInt(arrayRegin[dat].cantidad) + 1
+        arrayRegin[dat].cantidad = tota
+       // arrayRegin.cantidad
+      }
+      else{
+        arrayRegin.push({ region: region[dato], cantidad:1 })
+
+      }
+     }):[]
+//    !suscritoloading ? arrayRegin.map(e=>{return e.cantidad}).reduce():0
+    !suscritoloading ?seTmapa(arrayRegin):""
     //!suscritoloading ? setboletos({ ...boletos, suscritor: suscrito.users.length }) :""
     /* ( async  () =>{
        await createTask({ "cedula": "1718910894" })
@@ -181,11 +202,7 @@ function Dashboard() {
         />*/}
       </div>
       <Container fluid>
-        <div>
-          <section id="auth-button"></section>
-          <section id="view-selector"></section>
-          <section id="timeline"></section>
-        </div>
+        
         <Row>
           <Col lg="3" sm="6">
             <Card className="card-stats">
@@ -293,18 +310,46 @@ function Dashboard() {
           </Col>
         </Row>
         <Row>
-          <Col md="12" className="d-none">
+          <Col md="12">
+            <div className="">
+              <iframe width="100%" height="800px" src="https://lookerstudio.google.com/embed/reporting/13788d50-0048-4bd9-938e-9b4aab7df129/page/s7CED" frameborder="0" allowfullscreen></iframe>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="12" className="">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">Global Sales by Top Locations</Card.Title>
-                <p className="card-category">All products that were shipped</p>
+                <Card.Title as="h4">Global region Ecuador</Card.Title>
+                <p className="card-category"></p>
               </Card.Header>
               <Card.Body>
                 <Row>
                   <Col md="6">
                     <Table responsive>
-                      <tbody>
-                        <tr>
+                      <tbody className="region" >
+                        {
+                          mapas.length>0?
+                          mapas.map((f,i)=>{
+                            return(
+                              <tr key={i}>
+                                <td>
+                                  <div className="flag">
+                                    <img
+                                      alt="..."
+                                      src={require("assets/img/flags/US.png")}
+                                    ></img>
+                                  </div>
+                                </td>
+                                <td>{f.region}</td>
+                                <td className="text-right">{f.cantidad}</td>
+                                
+                              </tr>
+                            )
+                          })
+                          :""
+                        }
+                        {/*<tr>
                           <td>
                             <div className="flag">
                               <img
@@ -381,13 +426,13 @@ function Dashboard() {
                           <td>Brasil</td>
                           <td className="text-right">550</td>
                           <td className="text-right">4.34%</td>
-                        </tr>
+                        </tr>*/}
                       </tbody>
                     </Table>
                   </Col>
                   <Col className="ml-auto mr-auto" md="6">
                     <VectorMap
-                      map={"world_mill"}
+                      map={"es_mill"}
                       backgroundColor="transparent"
                       zoomOnScroll={false}
                       containerStyle={{

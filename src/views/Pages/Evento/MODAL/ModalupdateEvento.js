@@ -24,8 +24,8 @@ const Modalupdate = (props) => {
             cuidadConcert: '',
             descripcionConcierto: '',
             imagenConcierto: '',
-            fechacreacion: '',
-            idUsuario: "" + user.id,
+            mapaConcierto: '',
+            id_evento: "",
 
         })
     const [precios, setPrecios] = useState({
@@ -148,7 +148,6 @@ const Modalupdate = (props) => {
             comision_boleto: array[index] ? array[index].comision_boleto : '',
             habilitar: array[index] ? array[index].habilitar : "NO",
             id: array[index] ? array[index].id : '',
-            localidad: array[index] ? array[index].localidad : '',
         })
     }
     function handelchangeLocalidad(e) {
@@ -173,7 +172,7 @@ const Modalupdate = (props) => {
     }
     async function Actualizar() {
         console.log(neweventos, selectLocalidad)
-        if (neweventos.imagenConcierto == evento.imagenConcierto && neweventos.mapaConcierto == evento.mapaConcierto) {
+        /*if (neweventos.imagenConcierto == evento.imagenConcierto && neweventos.mapaConcierto == evento.mapaConcierto) {
             let guarda = {
                 ...neweventos,
                 estado: "PROCESO",
@@ -189,13 +188,13 @@ const Modalupdate = (props) => {
                 else {
                     console.log("pasa")
                     usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
-                }*/
+                }*
             } catch (error) {
                 usedispatch(setToastes({ show: true, message: " Hubo un error " + error, color: 'bg-danger', estado: 'Intnete de nuevo' }))
                 console.log(error)
             }
-        }
-        else if (neweventos.imagenConcierto == evento.imagenConcierto && neweventos.mapaConcierto != evento.mapaConcierto) {
+        }*/
+       /* else if (neweventos.imagenConcierto == evento.imagenConcierto && neweventos.mapaConcierto != evento.mapaConcierto) {
             console.log(neweventos.mapaConcierto)
             const linkmapas = await Obtenerlinkimagen(neweventos.mapaConcierto)
             console.log(linkmapas)
@@ -225,8 +224,8 @@ const Modalupdate = (props) => {
                 usedispatch(setToastes({ show: true, message: "mapa error" + error, color: 'bg-danger', estado: 'Error' }))
                 console.log(error)
             }
-        }
-        else if (neweventos.imagenConcierto != evento.imagenConcierto && neweventos.mapaConcierto == evento.mapaConcierto) {
+        }*/
+       /* else if (neweventos.imagenConcierto != evento.imagenConcierto && neweventos.mapaConcierto == evento.mapaConcierto) {
             const link = await Obtenerlinkimagen(neweventos.imagenConcierto)
             if (link == null) {
                 usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
@@ -310,12 +309,12 @@ const Modalupdate = (props) => {
 
             }
 
-        }
+        }*/
 
     }
 
     useEffect(() => {
-        //console.log(evento)
+      //  console.log(evento)
         setNewEventos(
             {
                 nombreConcierto: evento.nombreConcierto ? evento.nombreConcierto : '',
@@ -327,7 +326,7 @@ const Modalupdate = (props) => {
                 fechaCreacion: evento.fechaCreacion ? evento.fechaCreacion : '',
                 imagenConcierto: evento.imagenConcierto ? evento.imagenConcierto : '',
                 mapaConcierto: evento.mapaConcierto ? evento.mapaConcierto : '',
-                idUsuario: "" + user.id,
+                id_evento: evento.id,
             })
         //  console.log(evento.LocalodadPrecios)
         setLocalidad(evento.LocalodadPrecios)
@@ -429,7 +428,7 @@ const Modalupdate = (props) => {
                                 </div>
 
 
-                                <div className="col-12 col-md-12">
+                                <div className="col-12 col-md-12 d-none">
                                     <label className="form-label"> {neweventos.imagenConcierto ? "Hay una imagen Cargada " : "Seleccione una imagen del concierto"}</label>
                                     <div className="input-group mb-3">
 
@@ -439,7 +438,7 @@ const Modalupdate = (props) => {
 
                                     </div>
                                 </div>
-                                <div className="col-12 col-md-12">
+                                <div className="col-12 col-md-12 d-none">
                                     <label className="form-label"> {neweventos.mapaConcierto ? "Hay un mapa Cargada " : "Subir imagen del mapa"}</label>
                                     <div className="input-group mb-3">
 
@@ -456,7 +455,7 @@ const Modalupdate = (props) => {
 
 
 
-                            <div className="col-12">
+                            <div className="col-12 d-none">
 
                                 <h3>Precios de Localidades </h3>
                                 <div className="d-flex flex-wrap">

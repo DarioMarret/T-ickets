@@ -666,6 +666,9 @@ const IndexFlas = () => {
   }
   let { data: eventos=[], isLoading }= useGetEventosQuery("ACTIVO")
   let {data:publici=[],isLoading:info}= useGetPubicidadQuery()
+  function eventosmodal(){
+    !(new Date("02/01/2023 19:10") < new Date()) ? usedispatch(setModal({ nombre: "noticia", estado: "" })) : ""
+  }
   //console.log(eventos)
   useEffect(() => {
     //time.current = setInterval(showRemaining, 1000);
@@ -679,7 +682,9 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" })) 
     Limpiarseleccion()
-    usedispatch(setModal({ nombre: "noticia", estado: "" }))
+    eventosmodal()
+   // usedispatch(setModal({ nombre: "noticia", estado: "" }))
+  //    (new Date("02/01/2023 19:10") < new Date()) ? usedispatch(setModal({ nombre: "noticia", estado: "" })) : ""
     const evento =() => {
       try {
         //AGREGAR ESTADO
@@ -687,7 +692,7 @@ const IndexFlas = () => {
         if (!eventos == null) { return }
         let datos = isLoading ? eventos :eventos.data
         let publicin = publici
-        console.log(info)
+      //  console.log(info)
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         
@@ -770,9 +775,9 @@ const IndexFlas = () => {
       native: true // when using native, your OS will handle theming.
     }):"" : ""*/
 
-    setTimeout(function () {
+   /* setTimeout(function () {
       usedispatch(setModal({ nombre: "", estado: "" }))
-    }, 6000)
+    }, 6000)*/
 
   }, [isLoading, info])
   /* function registronew(){
@@ -783,7 +788,6 @@ const IndexFlas = () => {
      })
    }*/
   function regsitronew() {
-    //setShowLogin(false)
     usedispatch(setModal({ nombre: 'registro', estado: "" }))
     ReactGA.event({
       category: "Ver-Registrado",

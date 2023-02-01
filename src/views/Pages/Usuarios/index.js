@@ -48,6 +48,7 @@ const UsersView = () => {
         })
         setRoles(dato)
         setListauser(data.users)
+     
       }
     } catch (error) {
       console.log(error)

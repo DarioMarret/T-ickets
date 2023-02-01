@@ -160,3 +160,10 @@ a[aria-expanded="true"] svg {
 .MuiPaper-root{
     background-color: #442d97 !important;
 }*/
+table> tbody.region{
+ 
+            height: 100px !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+        
+}

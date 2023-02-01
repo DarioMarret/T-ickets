@@ -22,6 +22,9 @@ import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
+import { ticketsboletos } from "utils/columnasub";
+import PiecharViews from "views/Components/Piechar";
 require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
@@ -60,13 +63,13 @@ const EventoEspecifico = () => {
     LocalodadPrecios: []
   })
   async function Eliminar(e) {
-    dispatch(setModal({nombre:"precios",estado:{...e}}))
-   /* const elimnar = await EliminareventoLocalidad(e, f)
-    if (elimnar.success) {
-      hideAlert()
-      console.log(elimnar, e, f)
-      await Evento()
-    }*/
+    dispatch(setModal({ nombre: "precios", estado: { ...e } }))
+    /* const elimnar = await EliminareventoLocalidad(e, f)
+     if (elimnar.success) {
+       hideAlert()
+       console.log(elimnar, e, f)
+       await Evento()
+     }*/
   }
   function GetDay(e) {
     var da = new Date(e).getDay()
@@ -98,10 +101,10 @@ const EventoEspecifico = () => {
         SetEvento({
           ...datos[0], LocalodadPrecios: precio.data,
         })
-         console.log(precio, cargar)
+        // console.log(precio, cargar)
         SetPrecios(precio.data)
       }
-    } catch (error) {     
+    } catch (error) {
       dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
     }
   }
@@ -121,6 +124,8 @@ const EventoEspecifico = () => {
   const handleExportData = () => {
     //csvExporter.generateCsv(data);
   };
+
+  const [datas, setDatas] = useState([])
   async function Cambiar(i) {
     let info = {
       estado: i
@@ -137,13 +142,49 @@ const EventoEspecifico = () => {
       console.log(error)
       dispatch(setToastes({ show: true, message: 'Hubo un error intente mas tarde', color: 'bg-danger', estado: 'Error' }))
     }
-
   }
+  let [tickes, setTikes] = useState([])
+  let { data: nuevos, isLoading: boletosloading } = useGetBoletosQuery()
+  const options = {
+    title: "Ventas Boletos",
+    pieHole: 0.4,
+    is3D: false,
+
+  };
   useEffect(() => {
     (async () => {
       await Evento()
+
     })()
-  }, [!show])
+    boletosloading ? "" : setTikes(nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado"))
+    //  if(boletosloading){
+   // let mapa = nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado")
+    let arrayIndividual = []
+    console.log(nuevos.data.filter(e => e.codigoEvento == id))
+    // console.log(arayReallocalidad)
+    boletosloading ? "" : nuevos.data.filter(e => e.codigoEvento == id && e.estado=="Pagado").forEach(elm => {
+      if (arrayIndividual.some(e => e.id == elm.localidad)) {
+        let dat = arrayIndividual.findIndex(e => e.id == elm.localidad)
+        let tota = parseInt(arrayIndividual[dat].cantidad) + 1
+        arrayIndividual[dat].cantidad = parseInt(tota)
+      } else {
+        arrayIndividual.push({ id: elm.localidad, localidad: elm.localidad, cantidad: 1 })
+        // arrayIndividual.push({  })
+
+      }
+    })
+
+    boletosloading ? "" : console.log(arrayIndividual)
+    //  }
+    let newdatos = boletosloading ? [] : arrayIndividual.map(f => {
+      return [f.localidad, parseInt(f.cantidad)]
+    })
+    boletosloading ? [] : setDatas([
+      ["Localida", "ganancias"],
+      ...newdatos
+    ])
+    console.log(datas)
+  }, [boletosloading])
 
   const successAlert = (i) => {
     setAlert(
@@ -242,7 +283,7 @@ const EventoEspecifico = () => {
                 <img src={evento.imagenConcierto ? evento.imagenConcierto : ''} className="img-fluid rounded-7 shadow-md " alt="" />
               </div>
             </a>
-            <Collapse in={open} >
+            <Collapse in={false} >
               <div className=" container mt-4 px-0" id="collapseExample2">
                 <div className="card card-body rounded-7 py-5">
                   <div className="container">
@@ -297,7 +338,7 @@ const EventoEspecifico = () => {
                           </div>
                           <div className="d-flex flex-column ">
                             <button className="btn btn-primary"
-                             onClick={() => Eliminar(e)}
+                              onClick={() => Eliminar(e)}
                             >Editar </button>
                           </div>
                         </div>
@@ -315,14 +356,23 @@ const EventoEspecifico = () => {
             </Accordion>
           </div>
         </div>
+        <div className="row" >
+          <div className="col-6">
+            <PiecharViews
+              options={options}
+              datas={datas}
+            />
+
+          </div>
+        </div>
       </div>
       <div className="card">
         <div className="card-header pb-2">
           <h5>Tickets</h5>
         </div>
         <MaterialReactTable
-          columns={columnsTicket}
-          data={[]}
+          columns={ticketsboletos}
+          data={tickes}
           enableRowSelection
           muiTableProps={{
             sx: {
