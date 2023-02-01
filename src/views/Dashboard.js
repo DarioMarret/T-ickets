@@ -5,7 +5,7 @@ import { DatoTokenusuario } from "utils/constantes";
 // react components used to create a SVG / Vector map
 import { getCliente } from "utils/DatosUsuarioLocalStorag";
 import { useAnalyticsApi } from "react-use-analytics-api";
-import { AuthorizeButton, SignOutButton,AnalyticsDashboard,ActiveUsersChart } from "react-analytics-charts";
+import { AuthorizeButton, SignOutButton, AnalyticsDashboard, ActiveUsersChart } from "react-analytics-charts";
 import { VectorMap } from "react-jvectormap";
 
 // react-bootstrap components
@@ -15,7 +15,7 @@ import {
   Card,
   Form,
   InputGroup,
-  Navbar, 
+  Navbar,
   Nav,
   OverlayTrigger,
   Table,
@@ -32,7 +32,8 @@ import { useGetRegistroCompraMutation } from "StoreRedux/Slicequery/querySlice";
 
 function Dashboard() {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
- //const {data:todos=[],isLoading}= useGetEventosQuery(9)
+  const [getRegistroCompra, result] = useGetRegistroCompraMutation()
+  //const {data:todos=[],isLoading}= useGetEventosQuery(9)
   const updateSignin = (signedIn) => { //(3)
     setIsSignedIn(signedIn);
     if (!signedIn) {
@@ -109,39 +110,39 @@ function Dashboard() {
   })*/
 
 
- // console.log(todos)
-//  let [getRegistroCompra,response] = useGetRegistroCompraMutation()
-  const {data:lista}= useGetEventosQuery(9)
+  // console.log(todos)
+  //  let [getRegistroCompra,response] = useGetRegistroCompraMutation()
+  const { data: lista } = useGetEventosQuery(9)
   const { gapi, authorized } = useAnalyticsApi({ "cedula": "" });
   //console.log(response,lista)
-  let datos ={
-    cedula:"1718910894"
+  let datos = {
+    cedula: "1718910894"
   }
   useEffect(() => {
-   /* ( async  () =>{
-      await createTask({ "cedula": "1718910894" })
-    })()*/
+    /* ( async  () =>{
+       await createTask({ "cedula": "1718910894" })
+     })()*/
     /*getRegistroCompra(datos)
       .unwrap()
       .then((co) => console.log(co))
       .then((error) => {
         console.log(error)
       })*/
-   /* createTask({ "cedula": "1718910894" }).then(oup=>
-      console.log(oup)).catch(err=>{
-        console.log(err)
-      })*/
-   //createTask()
-   /* window.gapi.load("auth2", init); //(1)
-    console.log(gapi, authorized)*/
+    /* createTask({ "cedula": "1718910894" }).then(oup=>
+       console.log(oup)).catch(err=>{
+         console.log(err)
+       })*/
+    //createTask()
+    /* window.gapi.load("auth2", init); //(1)
+     console.log(gapi, authorized)*/
   }, [])
 
   return (
     <>
       <div className=" container pb-3 d-flex justify-content-end   ">
-       {/* <GoogleLogin />*/}
+        {/* <GoogleLogin />*/}
 
-        
+
       </div>
       <div className=" container">
         {/*<AnalyticsDashboard

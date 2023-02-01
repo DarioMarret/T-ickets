@@ -15,16 +15,19 @@ export const sawerg = createApi({
         getEventos: builder.query({
             query: (parms) => "listareventos/" + parms,
         }),
-        getPubicidad:builder.query({
-            query: () =>"api/v1/listar_publicidad",
+        getPubicidad: builder.query({
+            query: () => "api/v1/listar_publicidad",
         }),
         getRegistroCompra: builder.mutation({
             query: parms => ({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                },
                 url: '/listarRegistros',
                 method: 'POST',
                 body: parms
-            }),
-            invalidatesTags:['Post']
+            })
 
         })
 
