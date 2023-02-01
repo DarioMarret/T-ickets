@@ -178,7 +178,7 @@ const ModalCarritoView = (prop) => {
             }))
             return
         }
-        if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 19:10") < new Date())) {
+        if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 23:59") < new Date())) {
             usedispatch(setToastes({
                 show: true,
                 message: "Estaremos informando la fecha de canje de boletos",
