@@ -29,10 +29,12 @@ import GoogleLogin from "utils/Analyti/AnalityButton";
 import { useGetEventosQuery } from "StoreRedux/Slicequery/querySlice";
 import { useGetRegistroCompraQuery } from "StoreRedux/Slicequery/querySlice";
 import { useGetRegistroCompraMutation } from "StoreRedux/Slicequery/querySlice";
+import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
+import { useState } from "react";
+import { useGetSuscritorQuery } from "StoreRedux/Slicequery/querySlice";
 
 function Dashboard() {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
-  const [getRegistroCompra, result] = useGetRegistroCompraMutation()
   //const {data:todos=[],isLoading}= useGetEventosQuery(9)
   const updateSignin = (signedIn) => { //(3)
     setIsSignedIn(signedIn);
@@ -41,7 +43,8 @@ function Dashboard() {
     }
   };
 
-  const init = () => { //(2)
+
+  const init = () => { 
     checkSignedIn()
       .then((signedIn) => {
         updateSignin(signedIn);
@@ -112,13 +115,18 @@ function Dashboard() {
 
   // console.log(todos)
   //  let [getRegistroCompra,response] = useGetRegistroCompraMutation()
-  const { data: lista } = useGetEventosQuery(9)
+  //const { data: lista, isLoading } = useGetEventosQuery(9)
   const { gapi, authorized } = useAnalyticsApi({ "cedula": "" });
-  //console.log(response,lista)
-  let datos = {
-    cedula: "1718910894"
-  }
+  let [boletos,setboletos]= useState({
+    pagados:0,
+    suscritor:0
+  })
+  let datos = { cedula: "1718910894" }
+  let { data: nuevos, isLoading:boletosloading }= useGetBoletosQuery()
+  let { data: suscrito = [], isLoading: suscritoloading }=useGetSuscritorQuery()
   useEffect(() => {
+    !boletosloading && !suscritoloading ? setboletos({ ...boletos, pagados: nuevos.data.filter(e => e.estado == "Pagado").length, suscritor: suscrito.users.length }):""
+    //!suscritoloading ? setboletos({ ...boletos, suscritor: suscrito.users.length }) :""
     /* ( async  () =>{
        await createTask({ "cedula": "1718910894" })
      })()*/
@@ -135,7 +143,7 @@ function Dashboard() {
     //createTask()
     /* window.gapi.load("auth2", init); //(1)
      console.log(gapi, authorized)*/
-  }, [])
+  }, [boletosloading, suscritoloading])
 
   return (
     <>
@@ -191,7 +199,7 @@ function Dashboard() {
                   <Col xs="7">
                     <div className="numbers">
                       <p className="card-category">Number</p>
-                      <Card.Title as="h4">150GB</Card.Title>
+                      <Card.Title as="h4">{boletos.pagados}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -216,8 +224,8 @@ function Dashboard() {
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
-                      <p className="card-category">Revenue</p>
-                      <Card.Title as="h4">$ 1,345</Card.Title>
+                      <p className="card-category">Suscritores</p>
+                      <Card.Title as="h4">{boletos.suscritor}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -226,7 +234,7 @@ function Dashboard() {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-calendar-alt mr-1"></i>
-                  Last day
+                  
                 </div>
               </Card.Footer>
             </Card>
@@ -285,7 +293,7 @@ function Dashboard() {
           </Col>
         </Row>
         <Row>
-          <Col md="12">
+          <Col md="12" className="d-none">
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Global Sales by Top Locations</Card.Title>

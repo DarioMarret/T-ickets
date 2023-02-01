@@ -11,7 +11,8 @@ const initialState = {
         pagados: "",
         inpagos: ""
     },
-    tabps:0
+    tabps:0,
+    labels:[]
 }
 
 const SubscritorSlice = createSlice({
@@ -46,10 +47,13 @@ const SubscritorSlice = createSlice({
         },
         setTabs:(state,action)=>{
             state.tabps= action.payload.number
+        },
+        setLabels:(state,action)=>{
+            state.labels= action.payload.labels
         }
 
     }
 
 })
-export const { addususcritor, deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad,setTabs, deleteloclidad, setdetalle } = SubscritorSlice.actions;
+export const { addususcritor,setLabels, deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad,setTabs, deleteloclidad, setdetalle } = SubscritorSlice.actions;
 export default SubscritorSlice.reducer

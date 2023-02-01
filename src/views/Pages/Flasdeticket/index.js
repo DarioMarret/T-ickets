@@ -762,19 +762,19 @@ const IndexFlas = () => {
     ReactGA.set({
       username: localStorage.getItem('DatoCliente'),
     })
-    userauthi.login ? (new Date("02/01/2023 19:00 ") > new Date())? addNotification({
+   /* userauthi.login ? (new Date("02/01/2023 19:00 ") > new Date())? addNotification({
       title: 'Recuerda',
       subtitle: 'Recuerda ',
       message: ' Eladio Carrión Guayaquil 1 de Febrero 19:00 PM',
       theme: 'darkblue',
       native: true // when using native, your OS will handle theming.
-    }):"" : ""
+    }):"" : ""*/
 
     setTimeout(function () {
       usedispatch(setModal({ nombre: "", estado: "" }))
     }, 6000)
 
-  }, [userauthi.login, isLoading, info])
+  }, [isLoading, info])
   /* function registronew(){
      ReactGA.event({
        category: "Registrado",

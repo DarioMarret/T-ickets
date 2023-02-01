@@ -18,6 +18,12 @@ export const sawerg = createApi({
         getPubicidad: builder.query({
             query: () => "api/v1/listar_publicidad",
         }),
+        getBoletos:builder.query({
+            query: () =>"ticket_admin"
+        }),
+        getSuscritor:builder.query({
+            query: () =>"api/v1/listas_suscriptor"
+        }),
         getRegistroCompra: builder.mutation({
             query: parms => ({
                 headers: {
@@ -33,4 +39,5 @@ export const sawerg = createApi({
 
     })
 })
-export const { useGetEventosQuery, useGetRegistroCompraMutation, useGetPubicidadQuery } = sawerg
+export const { useGetEventosQuery, useGetRegistroCompraMutation, useGetPubicidadQuery,useGetBoletosQuery
+,useGetSuscritorQuery } = sawerg

@@ -28,6 +28,7 @@ import { listaRegistro } from "utils/columnasub";
 import PiecharViews from "views/Components/Piechar";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
 import { useGetRegistroCompraQuery } from "StoreRedux/Slicequery/querySlice";
+import { setLabels } from "StoreRedux/Slice/SuscritorSlice";
 let { cedericon, atencion } = bancos
 export default function AprobarView() {
     let usedispatch = useDispatch()
@@ -154,7 +155,6 @@ export default function AprobarView() {
     useEffect(() => {
         listarRegistropanel({ "cedula": "" }).then(e => {
             if (e.data) {
-                console.log(e.data)
                 let newdatos = e.data.map(row => {
                     let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
                     let valor = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
@@ -166,11 +166,11 @@ export default function AprobarView() {
                 })
 
                 let nuevosValores = []
-                let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                let consulat = newdatos.filter(e => e.estado_pago == "Pagado" ).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
 
-                let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
+                let consultados = newdatos.filter(e => e.estado_pago == "Pagado"  ).filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
                 let arayReallocalidad = []
-                newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                newdatos.filter(e => e.estado_pago == "Pagado" && e.forma_pago ).map(elm => {
                     JSON.parse(elm.info_concierto).map(loc => {
                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad] })
                     })
@@ -197,7 +197,8 @@ export default function AprobarView() {
                     ["Localida", "ganancias"],
                     ...datos
                 ])
-                console.log(datos)
+                usedispatch(setLabels({labels: [ ["Localida", "ganancias"],...datos]}))
+               // console.log(datos)
                 /* newdatos.forEach(element => {
                     if (nuevosValores.some(e => e.concierto == element.concierto)) {
                         let dat = nuevosValores.findIndex(e => e.concierto == element.concierto)
@@ -219,7 +220,8 @@ export default function AprobarView() {
                 //  console.log("nuevos",newdatos)
                 //console.log("datsa", nuevosValores)
                 let order = newdatos.sort(sorter)
-                setTikes(order)
+                //console.log(e.data.filter(e => e.forma_pago != "Efectivo-Local"))
+                setTikes(order.filter(e => e.forma_pago != "Efectivo-Local"))
                 return
             }
             //setTikes([])
@@ -311,7 +313,9 @@ export default function AprobarView() {
     };
     const options = {
         title: "Ventas Globales Aprobadas",
-
+        pieHole: 0.4,
+        is3D: false,    
+       
     };
     return (
         <>
@@ -324,13 +328,16 @@ export default function AprobarView() {
                     <ModalBoletoApro /> : ""
             }
             <ModalConfima />
-            <div className=" container" >
-                {datas.length > 0 ? <PiecharViews
+            <div className=" container row"  >
+                <div className="col-12 col-md-6">
+                    <PiecharViews
 
-                    datas={datas}
-                    options={options}
+                        datas={datas}
+                        options={options}
 
-                /> : ""}
+                    /> 
+                </div>
+              
             </div>
             <div className="container d-flex flex-wrap">
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagado")} fileName={"Todos Pendientes"} label={"Pagados"} />

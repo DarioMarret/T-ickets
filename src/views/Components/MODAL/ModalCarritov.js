@@ -169,7 +169,36 @@ const ModalCarritoView = (prop) => {
         // console.log((sleccionlocalidad.pagados > 10))
         //console.log(sleccionlocalidad)
         //if (clienteInfo() == null && CODIGO == "9EGM42") {
-        if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 19:00 ") > new Date())) {
+        if (clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/01/2023 17:00") < new Date())) {
+            usedispatch(setToastes({
+                show: true,
+                message: "Estaremos informando la fecha de canje de boletos",
+                color: 'bg-primary',
+                estado: "!Páramos la venta!"
+            }))
+            return
+        }
+        if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 19:10") < new Date())) {
+            usedispatch(setToastes({
+                show: true,
+                message: "Estaremos informando la fecha de canje de boletos",
+                color: 'bg-success',
+                estado: "!Páramos la venta, los 600 boletos se agotaron!"
+            }))
+            return
+        }
+       
+       /* if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 19:00 ") > new Date())) {
+            usedispatch(setToastes({
+                show: true,
+                message: "Gauayaquil Disponible el 1 de febrero del 2023 19:00",
+                color: 'bg-danger',
+                estado: "Pronto Disponible"
+            }))
+            setSpiner("d-none")
+            return
+        }*/
+        if (false) {
             usedispatch(setToastes({
                 show: true,
                 message: "Gauayaquil Disponible el 1 de febrero del 2023 19:00",
@@ -272,14 +301,31 @@ const ModalCarritoView = (prop) => {
     }
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
     modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
-
-
         E.addEventListener("click", function () {
            // console.log(sleccionlocalidad)
           //console.log(clienteInfo())
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
+            if (clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/01/2023 17:00") < new Date())){
+                usedispatch(setToastes({
+                    show: true,
+                    message: "Estaremos informando la fecha de canje de boletos",
+                    color: 'bg-primary',
+                    estado: "!Páramos la venta!"
+                }))
+                return
+            }
+            if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 20:00")< new Date())){
+                usedispatch(setToastes({
+                    show: true,
+                    message:"Estaremos informando la fecha de canje de boletos",
+                    color: 'bg-success',
+                    estado: "!Páramos la venta, los 600 boletos se agotaron!"
+                }))
+                return
+            }
             // if (clienteInfo() == null && CODIGO == "9EGM42") 
-            if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 19:00 ") > new Date())) {
+           // clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 19:00 ") > new Date())
+            if (false) {
                 usedispatch(setToastes({
                     show: true,
                     message: "Gauayaquil Disponible el 1 de febrero del 2023 19:00",

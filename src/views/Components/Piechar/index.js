@@ -9,7 +9,7 @@ export default function PiecharViews({ ...props }) {
                 chartType="PieChart"
                 data={props.datas}
                 options={props.options}
-                width={"400px"}
+                width={"auto"}
                 height={"400px"}
             />
         </>
