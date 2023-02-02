@@ -45,7 +45,7 @@ function Dashboard() {
   };
 
 
-  const init = () => { 
+  const init = () => {
     checkSignedIn()
       .then((signedIn) => {
         updateSignin(signedIn);
@@ -118,35 +118,35 @@ function Dashboard() {
   //  let [getRegistroCompra,response] = useGetRegistroCompraMutation()
   //const { data: lista, isLoading } = useGetEventosQuery(9)
   const { gapi, authorized } = useAnalyticsApi({ "cedula": "" });
-  let [boletos,setboletos]= useState({
-    pagados:0,
-    suscritor:0
+  let [boletos, setboletos] = useState({
+    pagados: 0,
+    suscritor: 0
   })
-  let [mapas,seTmapa]= useState([])
+  let [mapas, seTmapa] = useState([])
   let datos = { cedula: "1718910894" }
-  let { data: nuevos, isLoading:boletosloading }= useGetBoletosQuery()
-  let { data: suscrito = [], isLoading: suscritoloading }=useGetSuscritorQuery()
+  let { data: nuevos, isLoading: boletosloading } = useGetBoletosQuery()
+  let { data: suscrito = [], isLoading: suscritoloading } = useGetSuscritorQuery()
 
   useEffect(() => {
-    !boletosloading && !suscritoloading ? setboletos({ ...boletos, pagados: nuevos.data.filter(e => e.estado == "Pagado").length, suscritor: suscrito.users.length }):""
-     let  arrayRegin=[]
-     !suscritoloading ? suscrito.users.forEach(element => {
-       let dato = element.cedula.substring(0,2) 
-      
+    !boletosloading && !suscritoloading ? setboletos({ ...boletos, pagados: nuevos.data.filter(e => e.estado == "Pagado").length, suscritor: suscrito.users.length }) : ""
+    let arrayRegin = []
+    !suscritoloading ? suscrito.users.forEach(element => {
+      let dato = element.cedula.substring(0, 2)
+
       // console.log(element.cedula, region[dato])
-      if(arrayRegin.some(e=> e.region==region[dato])){
+      if (arrayRegin.some(e => e.region == region[dato])) {
         let dat = arrayRegin.findIndex(e => e.region == region[dato])
         let tota = parseInt(arrayRegin[dat].cantidad) + 1
         arrayRegin[dat].cantidad = tota
-       // arrayRegin.cantidad
+        // arrayRegin.cantidad
       }
-      else{
-        arrayRegin.push({ region: region[dato], cantidad:1 })
+      else {
+        arrayRegin.push({ region: region[dato], cantidad: 1 })
 
       }
-     }):[]
-//    !suscritoloading ? arrayRegin.map(e=>{return e.cantidad}).reduce():0
-    !suscritoloading ?seTmapa(arrayRegin):""
+    }) : []
+    //    !suscritoloading ? arrayRegin.map(e=>{return e.cantidad}).reduce():0
+    !suscritoloading ? seTmapa(arrayRegin) : ""
     //!suscritoloading ? setboletos({ ...boletos, suscritor: suscrito.users.length }) :""
     /* ( async  () =>{
        await createTask({ "cedula": "1718910894" })
@@ -202,7 +202,7 @@ function Dashboard() {
         />*/}
       </div>
       <Container fluid>
-        
+
         <Row>
           <Col lg="3" sm="6">
             <Card className="card-stats">
@@ -251,7 +251,7 @@ function Dashboard() {
                 <hr></hr>
                 <div className="stats">
                   <i className="far fa-calendar-alt mr-1"></i>
-                  
+
                 </div>
               </Card.Footer>
             </Card>
@@ -311,13 +311,16 @@ function Dashboard() {
         </Row>
         <Row>
           <Col md="12">
-            <div className="">
-              <iframe width="100%" height="800px" src="https://lookerstudio.google.com/embed/reporting/13788d50-0048-4bd9-938e-9b4aab7df129/page/s7CED" frameborder="0" allowfullscreen></iframe>
+            <div className="pb-5">
+              <iframe width="100%" height="1000px" src="https://lookerstudio.google.com/embed/reporting/024acead-3e96-4f28-b3ed-eaaac472ee08/page/6zXD"
+                frameborder="0" allowfullscreen>
+
+              </iframe>
             </div>
           </Col>
         </Row>
         <Row>
-          <Col md="12" className="">
+          <Col md="12" className="d-none">
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Global region Ecuador</Card.Title>
@@ -329,25 +332,25 @@ function Dashboard() {
                     <Table responsive>
                       <tbody className="region" >
                         {
-                          mapas.length>0?
-                          mapas.map((f,i)=>{
-                            return(
-                              <tr key={i}>
-                                <td>
-                                  <div className="flag">
-                                    <img
-                                      alt="..."
-                                      src={require("assets/img/flags/US.png")}
-                                    ></img>
-                                  </div>
-                                </td>
-                                <td>{f.region}</td>
-                                <td className="text-right">{f.cantidad}</td>
-                                
-                              </tr>
-                            )
-                          })
-                          :""
+                          mapas.length > 0 ?
+                            mapas.map((f, i) => {
+                              return (
+                                <tr key={i}>
+                                  <td>
+                                    <div className="flag">
+                                      <img
+                                        alt="..."
+                                        src={require("assets/img/flags/US.png")}
+                                      ></img>
+                                    </div>
+                                  </td>
+                                  <td>{f.region}</td>
+                                  <td className="text-right">{f.cantidad}</td>
+
+                                </tr>
+                              )
+                            })
+                            : ""
                         }
                         {/*<tr>
                           <td>

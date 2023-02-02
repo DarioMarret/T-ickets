@@ -17,7 +17,8 @@ import { store } from "StoreRedux/store";
 import { Provider } from 'react-redux';
 import ToastViews from "views/Components/TOAST/toast";
 import "./utils/tablas.css"
-
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css';
 const root = ReactDOM.createRoot(document.getElementById("root"));
 /*<Route path="/panel" render={(props)=> <Subcr {...props}/> }/>*/
 
