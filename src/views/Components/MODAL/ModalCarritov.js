@@ -169,7 +169,7 @@ const ModalCarritoView = (prop) => {
         // console.log((sleccionlocalidad.pagados > 10))
         //console.log(sleccionlocalidad)
         //if (clienteInfo() == null && CODIGO == "9EGM42") {
-        if (clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/01/2023 23:59") < new Date())) {
+        if (clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/02/2023 08:30") < new Date())) {
             usedispatch(setToastes({
                 show: true,
                 message: "Estaremos informando la fecha de canje de boletos",
@@ -178,7 +178,7 @@ const ModalCarritoView = (prop) => {
             }))
             return
         }
-        if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 23:59") < new Date())) {
+        if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/02/2023 08:30") < new Date())) {
             usedispatch(setToastes({
                 show: true,
                 message: "Estaremos informando la fecha de canje de boletos",
@@ -305,7 +305,7 @@ const ModalCarritoView = (prop) => {
             // console.log(sleccionlocalidad)
             //console.log(clienteInfo())
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
-            if (clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/01/2023 23:59") < new Date())) {
+            if (clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/02/2023 08:30") < new Date())) {
                 usedispatch(setToastes({
                     show: true,
                     message: "Estaremos informando la fecha de canje de boletos",
@@ -314,7 +314,7 @@ const ModalCarritoView = (prop) => {
                 }))
                 return
             }
-            if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 23:59") < new Date())) {
+            if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/02/2023 08:30") < new Date())) {
                 usedispatch(setToastes({
                     show: true,
                     message: "Estaremos informando la fecha de canje de boletos",
