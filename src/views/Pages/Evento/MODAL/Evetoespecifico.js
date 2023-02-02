@@ -158,11 +158,11 @@ const EventoEspecifico = () => {
     })()
     boletosloading ? "" : setTikes(nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado"))
     //  if(boletosloading){
-   // let mapa = nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado")
+    // let mapa = nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado")
     let arrayIndividual = []
-    console.log(nuevos.data.filter(e => e.codigoEvento == id))
+    //console.log(nuevos.data.filter(e => e.codigoEvento == id))
     // console.log(arayReallocalidad)
-    boletosloading ? "" : nuevos.data.filter(e => e.codigoEvento == id && e.estado=="Pagado").forEach(elm => {
+    boletosloading ? "" : nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado").forEach(elm => {
       if (arrayIndividual.some(e => e.id == elm.localidad)) {
         let dat = arrayIndividual.findIndex(e => e.id == elm.localidad)
         let tota = parseInt(arrayIndividual[dat].cantidad) + 1
