@@ -22,6 +22,8 @@ import { generaTiketspdf } from "utils/Querycomnet";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import ExportToExcel from "utils/Exportelemin";
 import { ExportToCsv } from 'export-to-csv';
+import PiecharViews from "views/Components/Piechar";
+import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
 let { cedericon } = bancos
 export default function EmitirboView() {
     let usedispatch = useDispatch()
@@ -73,37 +75,38 @@ export default function EmitirboView() {
             hideAlert()
     }
     function generaPDF(row) {
-      //  window.open("https://tickets.com.ec/", "_blank");
+        //  window.open("https://tickets.com.ec/", "_blank");
         usedispatch(setToastes({
             show: true,
             message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
             color: 'bg-primary',
             estado: "Hubo un error intenta mas tarder"
         }))
-         generaTiketspdf({
-           "cedula": row.cedula,
-           "codigoEvento": row.codigoEvento,
-           "id_ticket_usuarios": row.id
-         }).then(ouput => {
-             if (ouput.success){
+        generaTiketspdf({
+            "cedula": row.cedula,
+            "codigoEvento": row.codigoEvento,
+            "id_ticket_usuarios": row.id
+        }).then(ouput => {
+            if (ouput.success) {
                 // ouput.link_pdf
-                 window.open(ouput.link, "_blank");
-                 
-             }else{
-                 usedispatch(setToastes({
-                     show: true,
-                     message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
-                     color: 'bg-primary',
-                     estado: "Hubo un error intenta mas tarder"
-                 }))
-             }}).catch(eror => {
-           console.log(eror)
-         })
+                window.open(ouput.link, "_blank");
+
+            } else {
+                usedispatch(setToastes({
+                    show: true,
+                    message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
+                    color: 'bg-primary',
+                    estado: "Hubo un error intenta mas tarder"
+                }))
+            }
+        }).catch(eror => {
+            console.log(eror)
+        })
     }
     const hideAlert = () => {
         setAlert(null)
     }
-   
+
     const canjear = (e) => {
         $.confirm({
             title: 'Canjear boleto!',
@@ -174,11 +177,11 @@ export default function EmitirboView() {
         useKeysAsHeaders: false,
     };
 
-   
+
     const handleExportData = () => {
         csvExporter.generateCsv(data);
     };
-    
+    let [datas, setDatas] = useState([])
     useEffect(() => {
         AprobarTiket().then(oupt => {
             console.log(oupt)
@@ -187,14 +190,35 @@ export default function EmitirboView() {
                 e.uid = e.codigoEvento + "-" + e.cedula
                 return e
             })
-            let boletosfilter=[]
-            
+            let boletosfilter = []
+            nuevo.length > 0 ? nuevo.forEach(element => {
+                if (boletosfilter.some(e => e.localidad == element.localidad)) {
+                    let num = boletosfilter.findIndex(e => e.localidad == element.localidad)
+                    boletosfilter[num].cantidad = parseInt(boletosfilter[num].cantidad) + 1
+                }
+                else {
+                    boletosfilter.push({ localidad: element.localidad, concierto: element.concierto, cantidad: 1 })
+                }
+            }) : ""
+            console.log(boletosfilter)
+            let datoschar = boletosfilter.map(f => {
+                return [f.localidad, f.concierto, parseInt(f.cantidad)]
+            })
+            setDatas([
+                ["Localida", "evento", "ganancias"],
+                ...datoschar
+            ])
             setTikes([...nuevo])
         }).catch(err => {
             console.log(err)
         })
     },
         [])
+    const options = {
+        title: "Boletos Globales Aprobadas",
+       
+        is3D: false,
+    };
     function suma() {
         let tikets = data.map((f) => { return parseFloat(f.valor) })
         try {
@@ -215,24 +239,30 @@ export default function EmitirboView() {
             }
             {showmodal.nombre == "boleto" ? <ModalBoletoApro /> : ""}
             <div className="card card-primary card-outline text-left " style={{ minHeight: '250px' }} >
-               
-               
-                <div className="card-header pb-2">
-                    Emitir 
+
+                <div className="">
+                  { datas.length>0? <PiecharViewsSlect
+                        datas={datas}
+                        options={options}
+                    />:""}
                 </div>
+                <div className="card-header pb-2">
+                    Emitir
+                </div>
+
 
                 <div className="row px-3">
                     <div className="col-10 d-flex   ">
-                        <ExportToExcel apiData={tiketslist.filter(e => e.estado == "reservado")} 
-                        fileName={"Boletos Reservado"}
-                         label={"Reservado"} />
+                        <ExportToExcel apiData={tiketslist.filter(e => e.estado == "reservado")}
+                            fileName={"Boletos Reservado"}
+                            label={"Reservado"} />
                         <ExportToExcel apiData={tiketslist.filter(e => e.estado == "Pagado")}
                             fileName={"Boletos Pagados"}
                             label={"Pagados"} />
-                      
+
 
                     </div>
-                    
+
 
                 </div>
                 <Tabs value={value} onChange={handleChange}
@@ -241,9 +271,9 @@ export default function EmitirboView() {
                     aria-label="scrollable auto tabs example"
                 >
                     <Tab className="" label={"Boletos Pagados sin canjear:  " + tiketslist.filter(e => e.estado == "Pagado").length}{...a11yProps(0)} />
-                    <Tab label={"Boletos Reservados " + tiketslist.filter(e => e.estado == "reservado").length} {...a11yProps(1)} />      
-                   
-                  </Tabs>
+                    <Tab label={"Boletos Reservados " + tiketslist.filter(e => e.estado == "reservado").length} {...a11yProps(1)} />
+
+                </Tabs>
                 <TabPanel value={value} index={0} className="text-center" >
                     <MaterialReactTable
                         columns={ticketsboletos}
@@ -304,7 +334,7 @@ export default function EmitirboView() {
                                             />
                                         </a>
                                     }
-                                    {row.original.estado != "Pagado" ?<Tooltip
+                                    {row.original.estado != "Pagado" ? <Tooltip
                                         title="Eliminar"
                                         placement="top"
                                     >
@@ -318,14 +348,14 @@ export default function EmitirboView() {
 
 
                                         </a>
-                                    </Tooltip>:""}
+                                    </Tooltip> : ""}
                                     {row.original.canje == "NO CANJEADO" ? <Tooltip
                                         title="Canjear"
                                         placement="top"
                                     >
                                         <a
                                             className="border  btn-default btn-sm "
-                                        onClick={() => canjear(row.original)}
+                                            onClick={() => canjear(row.original)}
 
                                         >
                                             <i className="fa fa-check-circle text-success" aria-hidden="true"></i>
@@ -338,14 +368,14 @@ export default function EmitirboView() {
                             </Box>
                         )}
                         positionToolbarAlertBanner="bottom"
-                        
+
                         localization={MRT_Localization_ES}
                     />
                 </TabPanel>
                 <TabPanel value={value} index={1} className="text-center" >
                     <MaterialReactTable
                         columns={ticketsboletos}
-                        data={tiketslist.filter(e =>e.estado == "reservado")}
+                        data={tiketslist.filter(e => e.estado == "reservado")}
                         muiTableProps={{
                             sx: {
                                 tableLayout: 'flex'
@@ -426,14 +456,14 @@ export default function EmitirboView() {
 
 
                                         </a>
-                                    </Tooltip>:""}
+                                    </Tooltip> : ""}
                                     {row.original.canje == "NO CANJEADO" ? <Tooltip
                                         title="Canjear"
                                         placement="top"
                                     >
                                         <a
                                             className="border  btn-default btn-sm   btn-disable"
-                                       // onClick={() => canjear(row.original)}
+                                        // onClick={() => canjear(row.original)}
 
                                         >
                                             <i className="fa fa-check-circle text-success" aria-hidden="true"></i>
@@ -451,7 +481,7 @@ export default function EmitirboView() {
                 <TabPanel value={value} index={2} className="text-center" >
                     <MaterialReactTable
                         columns={ticketsboletos}
-                        data={tiketslist.filter(e => e.estado != "reservado" && e.estado != "Pagado" )}
+                        data={tiketslist.filter(e => e.estado != "reservado" && e.estado != "Pagado")}
                         muiTableProps={{
                             sx: {
                                 tableLayout: 'flex'
@@ -532,14 +562,14 @@ export default function EmitirboView() {
 
 
                                         </a>
-                                    </Tooltip>:""}
+                                    </Tooltip> : ""}
                                     {row.original.canje == "NO CANJEADO" ? <Tooltip
                                         title="Canjear"
                                         placement="top"
                                     >
                                         <a
                                             className="border  btn-default btn-sm "
-                                        onClick={() => canjear(row.original)}
+                                            onClick={() => canjear(row.original)}
 
                                         >
                                             <i className="fa fa-check-circle text-success" aria-hidden="true"></i>
@@ -557,7 +587,7 @@ export default function EmitirboView() {
                 <TabPanel value={value} index={3} className="text-center" >
                     <MaterialReactTable
                         columns={ticketsboletos}
-                        data={tiketslist.filter(e =>  e.canje == "NO CANJEADO" && e.estado=="disponible")}
+                        data={tiketslist.filter(e => e.canje == "NO CANJEADO" && e.estado == "disponible")}
                         muiTableProps={{
                             sx: {
                                 tableLayout: 'flex'
