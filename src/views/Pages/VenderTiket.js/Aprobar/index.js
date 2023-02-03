@@ -287,24 +287,25 @@ export default function AprobarView() {
 
                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
 
-                        if (parseInt(loc.id_localidad) == 10) {
+                      /*  if (parseInt(loc.id_localidad) == 10) {
                             nuevosValores.push(loc.id_localidad, loc.nombreConcierto, elm.cedula)
-                        }
+                        }*/
                     })
 
                 })
-                console.log(nuevosValores)
+              //  console.log(nuevosValores)
                 let arrayIndividual = []
                 console.log(consulat)
                 console.log(arayReallocalidad)
                 arayReallocalidad.forEach(elm => {
                     if (arrayIndividual.some(e => e.id == elm.id)) {
                         let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                        let tota = parseInt(arrayIndividual[dat].cantidad) + parseInt(elm.cantidad)
+                      //  let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.precio)
+                        let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
                         arrayIndividual[dat].cantidad = tota
                     }
                     else {
-                        //   console.log(elm)
+                        //    arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.precio })
                         arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad })
                     }
 
