@@ -128,16 +128,17 @@ export default function ListaderegistroView(props) {
                                         onClick={() => usedispatch(setModal({ nombre: 'pago', estado: row.original.link_pago }))}
                                  >
                                     <i className="fa fa-credit-card" ></i>
-                                </a> : <Tooltip
+                                    </a> : row.original.estado_pago != "Pagado"? <Tooltip
                                     title="Eliminar" placement="top"
                                 >
                                     <Button
                                         color="error"
+                                        
                                             onClick={() => eliminarregistro(row.original)}
                                     >
                                             <Delete /> <span>Eliminar</span> 
                                         </Button>
-                                </Tooltip> : ""
+                                </Tooltip>:"" : ""
 
                             }
                             {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? 

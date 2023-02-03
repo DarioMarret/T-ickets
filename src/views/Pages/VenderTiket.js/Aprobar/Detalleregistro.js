@@ -533,9 +533,9 @@ export default function DetalleCompraView() {
                                         <div className="m-t-5 m-b-5">
                                             <strong className="text-inverse">Pago con Tarjeta</strong><br></br>
                                             <small>
-                                                <a className=" btn btn-default btn-sm" href={nombres.link_pago} target="_blank">
+                                                {nombres.link_pago!=null || nombres.link_comprobante!=null?  <a className=" btn btn-default btn-sm" href={nombres.link_pago != null ? nombres.link_pago : nombres.link_comprobante} target="_blank">
                                                     <i className="fa fa-credit-card"></i> Link de pago
-                                                </a>
+                                                </a> : <a className=" btn btn-default btn-sm"><i className="fa fa-credit-card"></i> Sin Link</a> }
                                                 {
                                                     nombres.forma_pago == "Deposito" ?
                                                         <a className=" btn btn-default btn-sm">
