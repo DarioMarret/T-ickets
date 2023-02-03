@@ -47,6 +47,7 @@ import AprobarViewid from "views/Pages/VenderTiket.js/Aprobar/Aprobobarid";
 import EmitirboView from "views/Pages/VenderTiket.js/Emitir";
 import TagsInput from "components/TagsInput/TagsInput";
 import DetalleCompraView from "views/Pages/VenderTiket.js/Aprobar/Detalleregistro";
+import InformeView from "views/Pages/VenderTiket.js/Aprobar/Informeventa";
 
 var routes = [
   {
@@ -55,7 +56,7 @@ var routes = [
     name: "Inicio",
     icon: "nc-icon nc-layers-3",
     component: Dashboard,
-    permiso: ["superadmin", "super_admin", "vendedores"]
+    permiso: ["superadmin", "super_admin", "vendedores","suscriptores"]
 
   },
   {
@@ -63,7 +64,7 @@ var routes = [
     name: "Noticias",
     layout: "/admin",
     component: NoticiasJs,
-    icon: " nc-icon nc-notification-70", permiso: ["superadmin", "super_admin", ""],
+    icon: " nc-icon nc-notification-70", permiso: ["superadmin", "super_admin"],
   },
   {
     path: "/Evento/:id",
@@ -179,7 +180,7 @@ var routes = [
     name: "Ventas",
     state: "openVentas",
     icon: "nc-icon nc-cart-simple",
-    permiso: ["superadmin", "super_admin", "vendedores"],
+    permiso: ["superadmin", "super_admin", "vendedores", "suscriptores"],
     views: [
       {
         path: "/Vender-Tickets",
@@ -199,6 +200,14 @@ var routes = [
         permiso: ["superadmin", "super_admin", "vendedores"]
       }, 
       {
+        path: "/Informe",
+        layout: "/admin",
+        name: "Informe",
+        mini: "*",
+        component: InformeView,
+        permiso: ["suscriptores"]
+      }, 
+      {
         path: "/Aprobar/:id",
         layout: "/admin",
        
@@ -211,6 +220,7 @@ var routes = [
         mini:"*",
         name:"Boletos",
         component: EmitirboView,
+        permiso: ["superadmin", "super_admin", "vendedores"]
       },
       {
         path: "/Vender-Articulo",
@@ -218,7 +228,7 @@ var routes = [
         name: "Vender Articulo",
         mini: "*",
         component: EmitirboView,
-        permiso: ["superadmin", "super_admin", ""]
+        permiso: ["superadmin", "super_admin"]
       }
 
     ]

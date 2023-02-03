@@ -14,3 +14,21 @@
 .txt-capitalize {
      text-transform: capitalize  !important;
  }
+/* .goog-inline-block::-ms-expand {
+    display: none;
+}
+ .goog-inline-block {
+        outline: none;
+            overflow: hidden;
+            text-indent: 0.01px;
+            text-overflow: '';
+        
+            background: url("https://img.icons8.com/material/24/000000/sort-down.png") no-repeat right #fff;
+        
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -ms-appearance: none;
+            -o-appearance: none;
+            appearance: none;
+        
+ }*/

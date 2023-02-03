@@ -187,6 +187,8 @@ export default function EmitirboView() {
                 e.uid = e.codigoEvento + "-" + e.cedula
                 return e
             })
+            let boletosfilter=[]
+            
             setTikes([...nuevo])
         }).catch(err => {
             console.log(err)

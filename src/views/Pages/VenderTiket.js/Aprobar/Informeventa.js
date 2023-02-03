@@ -28,11 +28,11 @@ import PiecharViews from "views/Components/Piechar";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
 import { useGetRegistroCompraQuery } from "StoreRedux/Slicequery/querySlice";
 import { setLabels } from "StoreRedux/Slice/SuscritorSlice";
-import { DateRange, DateRangePicker,defaultStaticRanges,defaultInputRanges } from "react-date-range";
+import { DateRange, DateRangePicker, defaultStaticRanges, defaultInputRanges } from "react-date-range";
 import * as locales from 'react-date-range/dist/locale'
 import { setCompras } from "StoreRedux/Slice/SuscritorSlice";
 let { cedericon, atencion } = bancos
-export default function AprobarView() {
+export default function InformeView() {
     let usedispatch = useDispatch()
     const informacion = clienteInfo()
     let history = useHistory()
@@ -46,7 +46,7 @@ export default function AprobarView() {
 
     const [alert, setAlert] = useState(null)
     const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })), hideAlert() }
-//console.log(informacion)
+    //console.log(informacion)
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
 
@@ -171,16 +171,13 @@ export default function AprobarView() {
                 })//.filter(e => e.forma_pago =="Efectivo-Local")
                 console.log(newdatos)
                 let nuevosValores = []
-                let consulat = newdatos.filter(e => e.estado_pago == "Pagado" ).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
 
-                let consultados = newdatos.filter(e => e.estado_pago == "Pagado" ).filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
+                let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
                 let arayReallocalidad = []
-                newdatos.filter(e => e.estado_pago == "Pagado"  ).map(elm => {
+                newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     JSON.parse(elm.info_concierto).map(loc => {
                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad] })
-                        if (parseInt(loc.id_localidad) == 10) {
-                            nuevosValores.push({ id: loc.id_localidad, registro: elm.id, nombe: localidades[loc.id_localidad], evento: loc.nombreConcierto, cedula: elm.cedula, cantidad: loc.cantidad})
-                        }
                     })
                 })
                 let arrayIndividual = []
@@ -205,7 +202,7 @@ export default function AprobarView() {
                     ["Localida", "ganancias"],
                     ...datos
                 ])
-                usedispatch(setLabels({ labels: [["Localida", "ganancias"], ...datos] }))                
+                usedispatch(setLabels({ labels: [["Localida", "ganancias"], ...datos] }))
                 let order = newdatos.sort(sorter)
                 setTikes(order)
                 usedispatch(setCompras({ compras: order }))
@@ -216,18 +213,18 @@ export default function AprobarView() {
             console.log(err)
         })
         //"dias hasta hoy"
-//"días a partir de hoy"
-let labels={
-    0: "Días hasta hoy",
-    1: "Días a partir de hoy"
-}
+        //"días a partir de hoy"
+        let labels = {
+            0: "Días hasta hoy",
+            1: "Días a partir de hoy"
+        }
 
         //console.log(defaultInputRanges)
-        defaultInputRanges.map((e,i)=>{
-            e.label= labels[i]
-            return{...e}
+        defaultInputRanges.map((e, i) => {
+            e.label = labels[i]
+            return { ...e }
         })
-       // console.log(datos)
+        // console.log(datos)
     },
         [])
 
@@ -331,7 +328,54 @@ let labels={
     function handleSelect(date) {
         console.log(date); // native Date object
     }
-    
+    const nameMapper = {
+        ar: 'Arabic',
+        bg: 'Bulgarian',
+        ca: 'Catalan',
+        cs: 'Czech',
+        cy: 'Welsh',
+        da: 'Danish',
+        de: 'German',
+        el: 'Greek',
+        enGB: 'English (United Kingdom)',
+        enUS: 'English (United States)',
+        eo: 'Esperanto',
+        es: 'Spanish',
+        et: 'Estonian',
+        faIR: 'Persian',
+        fi: 'Finnish',
+        fil: 'Filipino',
+        fr: 'French',
+        hi: 'Hindi',
+        hr: 'Croatian',
+        hu: 'Hungarian',
+        hy: 'Armenian',
+        id: 'Indonesian',
+        is: 'Icelandic',
+        it: 'Italian',
+        ja: 'Japanese',
+        ka: 'Georgian',
+        ko: 'Korean',
+        lt: 'Lithuanian',
+        lv: 'Latvian',
+        mk: 'Macedonian',
+        nb: 'Norwegian Bokmål',
+        nl: 'Dutch',
+        pl: 'Polish',
+        pt: 'Portuguese',
+        ro: 'Romanian',
+        ru: 'Russian',
+        sk: 'Slovak',
+        sl: 'Slovenian',
+        sr: 'Serbian',
+        sv: 'Swedish',
+        th: 'Thai',
+        tr: 'Turkish',
+        uk: 'Ukrainian',
+        vi: 'Vietnamese',
+        zhCN: 'Chinese Simplified',
+        zhTW: 'Chinese Traditional'
+    };
     const [locale, setLocale] = React.useState('es');
     function rango(item) {
         if (item.selection.endDate == item.selection.startDate) {
@@ -364,8 +408,8 @@ let labels={
                     arrayIndividual[dat].cantidad = tota
                 }
                 else {
-                     arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad })
-          
+                    arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad })
+
                 }
 
             })
@@ -374,10 +418,10 @@ let labels={
                 return [f.localidad, parseInt(f.cantidad)]
             })
             console.log(datos)
-                setDatas([
-                    ["Localida", "ganancias"],
-                    ...datos
-                ])             
+            setDatas([
+                ["Localida", "ganancias"],
+                ...datos
+            ])
             let order = newdatos.sort(sorter)
             setTikes(order)
         }
@@ -385,7 +429,7 @@ let labels={
 
         console.log(item)
         console.log(defaultStaticRanges)
-       
+
     }
     const label = {
         0: "Hoy",
@@ -396,7 +440,7 @@ let labels={
         5: "ULtimo mes"
 
     }
-  //  let datos = 
+    //  let datos = 
     return (
         <>
             {alert}
@@ -423,8 +467,8 @@ let labels={
                                 e.label = label[i]
                                 return { ...e }
                             }),
-                            
-                            
+
+
                         ]}
                     />
                 </div>
@@ -445,24 +489,21 @@ let labels={
             <div className="container d-flex flex-wrap">
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagado").map(f => {
                     return {
-                        ID_Registro: f.id,
-                        ID_USUARIO: f.id_usuario,
+                       
                         EVENTO: f.concierto,
                         CEDULA: f.cedula,
                         METODO: f.forma_pago,
                         CANTIDAD: f.cantidad,
                         TOTAL_COMISION: f.Valortotal,
-                        MEDIO:f.detalle,
+                        MEDIO: f.detalle,
                         TOTAL: f.total_pago,
                         CREACION: f.fechaCreacion,
-                        ESTADO:f.estado_pago,
-                        FECHAPAGO_LINK: f.link_pago,
+                        ESTADO: f.estado_pago
                     }
-                })} fileName={"Todos Pagados"} label={"Pagados"} />
+                })} fileName={"Registros Pagados"} label={"Pagados"} />
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pendiente").map(f => {
                     return {
-                        ID_Registro: f.id,
-                        ID_USUARIO: f.id_usuario,
+                        
                         EVENTO: f.concierto,
                         CEDULA: f.cedula,
                         METODO: f.forma_pago,
@@ -471,15 +512,13 @@ let labels={
                         MEDIO: f.detalle,
                         TOTAL: f.total_pago,
                         CREACION: f.fechaCreacion,
-                        ESTADO: f.estado_pago,
-                        FECHAPAGO_LINK: f.FechaPagoLink,
-                        LINK: f.link_pago
+                        ESTADO: f.estado_pago
                     }
-                })} fileName={"Todos Pendientes"} label={"Pendientes"} />
+                })} fileName={"Registros Pendientes"} label={"Pendientes"} />
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Expirado").map(f => {
                     return {
-                        ID_Registro: f.id,
-                        ID_USUARIO: f.id_usuario,
+                       
+                        
                         EVENTO: f.concierto,
                         CEDULA: f.cedula,
                         METODO: f.forma_pago,
@@ -488,15 +527,13 @@ let labels={
                         MEDIO: f.detalle,
                         TOTAL: f.total_pago,
                         CREACION: f.fechaCreacion,
-                        ESTADO: f.estado_pago,
-                        FECHAPAGO_LINK: f.FechaPagoLink,
-                        LINK: f.link_pago
+                        ESTADO: f.estado_pago
                     }
-                })} fileName={"Todos Expirados"} label={"Expirados"} />
+                })} fileName={"Registros Expirados"} label={"Expirados"} />
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Comprobar").map(f => {
                     return {
-                        ID_Registro: f.id,
-                        ID_USUARIO: f.id_usuario,
+                        
+                        
                         EVENTO: f.concierto,
                         CEDULA: f.cedula,
                         METODO: f.forma_pago,
@@ -505,11 +542,9 @@ let labels={
                         MEDIO: f.detalle,
                         TOTAL: f.total_pago,
                         CREACION: f.fechaCreacion,
-                        ESTADO: f.estado_pago,
-                        FECHAPAGO_LINK: f.FechaPagoLink,
-                        LINK: f.link_pago
+                        ESTADO: f.estado_pago
                     }
-                })} fileName={"Todos Comprobar"} label={"Comprobar"} />
+                })} fileName={"Registros Comprobar"} label={"Comprobar"} />
             </div>
             <div className="   " style={{ minHeight: '250px' }} >
                 <div className='container-fluid  p-0'>
@@ -538,15 +573,15 @@ let labels={
                                 enableRowActions
                                 positionActionsColumn="first"
                                 renderRowActions={({ row }) => (
-                                  
-                                         <Box sx={{ display: 'flex' }} >                                         
+
+                                    <Box sx={{ display: 'flex' }} >
                                         {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
                                             <Tooltip title="Reportar" placement="top">
                                                 <IconButton
                                                     color="error"
                                                     aria-label="Bloquear"
                                                     onClick={() => abrirModal(row.original)}
-                                                    disabled={(informacion.perfil =="suscriptores") }
+                                                    disabled={true}
                                                 >
                                                     <Summarize />
                                                 </IconButton>
@@ -564,7 +599,7 @@ let labels={
                                             <IconButton
                                                 color="error"
                                                 onClick={() => detalle(row.original)}
-                                                disabled={(informacion.perfil == "suscriptores")}
+                                                disabled={true}
                                             >
                                                 <Visibility />
                                             </IconButton>
@@ -575,7 +610,7 @@ let labels={
                                             <IconButton
                                                 color="success"
                                                 onClick={() => detalledos(row.original)}
-                                                disabled={(informacion.perfil == "suscriptores")}
+                                                disabled={true}
                                             >
                                                 <Preview />
                                             </IconButton>
@@ -586,7 +621,7 @@ let labels={
                                         >
                                             <IconButton
                                                 onClick={() => Deliminarregistro(row.original)}
-                                                disabled={(informacion.perfil == "suscriptores")}
+                                                disabled={true}
                                                 color="error">
                                                 <Delete />
                                             </IconButton>
@@ -601,7 +636,7 @@ let labels={
                             <MaterialReactTable
                                 columns={listaRegistrototal}
                                 data={tiketslist.filter(e => e.estado_pago == "Pendiente")}
-                                disabled={(informacion.perfil == "suscriptores")}
+                                disabled={true}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'
@@ -616,7 +651,7 @@ let labels={
                                                 color="error"
                                                 aria-label="Bloquear"
                                                 onClick={() => abrirModal(row.original)}
-                                                disabled={(informacion.perfil == "suscriptores")}
+                                                disabled={true}
                                             >
                                                 <Summarize />
                                             </IconButton>
@@ -627,7 +662,7 @@ let labels={
                                             <IconButton
                                                 color="error"
                                                 onClick={() => detalle(row.original)}
-                                                disabled={(informacion.perfil == "suscriptores")}
+                                                disabled={true}
                                             >
                                                 <Visibility />
                                             </IconButton>
@@ -639,7 +674,7 @@ let labels={
                                         >
                                             <IconButton
                                                 onClick={() => Deliminarregistro(row.original)}
-                                                disabled={(informacion.perfil == "suscriptores")}
+                                                disabled={true}
                                                 color="error">
                                                 <Delete />
                                             </IconButton>
@@ -652,7 +687,7 @@ let labels={
                                             <IconButton
                                                 color="success"
                                                 onClick={() => detalledos(row.original)}
-                                                disabled={(informacion.perfil == "suscriptores")}
+                                                disabled={true}
                                             >
                                                 <Preview />
                                             </IconButton>
@@ -680,7 +715,7 @@ let labels={
                                             color="error"
                                             aria-label="Bloquear"
                                             onClick={() => abrirModal(row.original)}
-                                            disabled={(informacion.perfil == "suscriptores")}
+                                            disabled={true}
                                         >
                                             <Summarize />
                                         </IconButton>
@@ -690,7 +725,7 @@ let labels={
                                             <IconButton
                                                 color="error"
                                                 onClick={() => detalle(row.original)}
-                                                disabled={(informacion.perfil == "suscriptores")}
+                                                disabled={true}
                                             >
                                                 <Visibility />
                                             </IconButton>
@@ -702,7 +737,7 @@ let labels={
                                         >
                                             <IconButton
                                                 onClick={() => Deliminarregistro(row.original)}
-                                                disabled={(informacion.perfil == "suscriptores")}
+                                                disabled={true}
                                                 color="error">
                                                 <Delete />
                                             </IconButton>
@@ -715,7 +750,7 @@ let labels={
                                             <IconButton
                                                 color="success"
                                                 onClick={() => detalledos(row.original)}
-                                                disabled={(informacion.perfil == "suscriptores")}
+                                                disabled={true}
                                             >
                                                 <Preview />
                                             </IconButton>
@@ -745,7 +780,7 @@ let labels={
                                             <IconButton
                                                 color="error"
                                                 onClick={() => detalle(row.original)}
-                                                disabled={(informacion.perfil == "suscriptores")}
+                                                disabled={true}
                                             >
                                                 <Visibility />
                                             </IconButton>

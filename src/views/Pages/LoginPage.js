@@ -52,9 +52,9 @@ function LoginPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (credenciales.email !== '' && credenciales.password !== '') {
+    if (credenciales.username.trim() !== '' && credenciales.password.trim() !== '') {
       try {
-        const data = await Loginadmin(credenciales)
+        const data = await Loginadmin({ username: credenciales.username.trim() ,password:credenciales.password.trim()})
         const { success, token } = data
         if (success) {
           //console.log("success-->",data)
