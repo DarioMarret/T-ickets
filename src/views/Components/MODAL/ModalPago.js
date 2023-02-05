@@ -17,7 +17,7 @@ import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
 import { bancos } from 'utils/Imgenesutils';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { Metodos } from 'utils/constantes';
-let { atencion } = bancos
+let { atencion, diners, visas, paypal } = bancos
 function ModalPago(props) {
     const { setModalPago, modalPago, detenervelocidad, intervalo } = props
     let usedispatch = useDispatch();
@@ -68,8 +68,6 @@ function ModalPago(props) {
                                 height: 100
                             }}
                         ></img>
-
-
                     </div>
                     <div>
                         <h6 className=' col-9 col-md-12  mx-auto' style={{
@@ -296,6 +294,7 @@ function ModalPago(props) {
             {alert}
             <Modal
                 show={true}
+                fullscreen={'md-down'}
             >
                 <Modal.Header className=" d-flex  rounded-top-4   bg-dark pb-2
                  justify-content-between align-items-center">
@@ -344,6 +343,47 @@ function ModalPago(props) {
                                         alt="Pagos medios"
                                     />
                                 </div>
+                            </div>
+                            <div className='m-3'>
+                                <div className='px-0 pagos' style={{
+                                    display: 'flex',
+                                    alignItems: "start",
+                                    padding: '5px',
+                                    cursor: 'pointer'
+                                }}>
+                                    <img src={diners}
+                                        height={50} />
+                                </div>
+
+
+                            </div>
+                            <div className='m-3'>
+                                <div className='px-0 pagos' style={{
+                                    display: 'flex',
+                                    alignItems: "start",
+
+                                    padding: '5px',
+                                    cursor: 'pointer'
+                                }}>
+                                    <img src={visas}
+                                        height={50}
+
+                                    />
+                                </div>
+                            </div>
+                            <div className='m-3'>
+                                <div className='px-0 pagos' style={{
+                                    display: 'flex',
+                                    alignItems: "start",
+
+                                    padding: '5px',
+                                    cursor: 'pointer'
+                                }}>
+                                    <img src={paypal}
+                                        height={50} />
+                                </div>
+
+
                             </div>
                             <div className='m-3 d-none'>
                                 <div className='px-0 pagos '
