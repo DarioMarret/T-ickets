@@ -33,7 +33,7 @@ const Modalterminos = () => {
                 <Accordion.Item eventKey="2">
                   <Accordion.Header>TERCERA</Accordion.Header>
                   <Accordion.Body>
-                    EL CLIENTE es el usuario, que adquiere los Tickets y está previamente registrado en la página web WWW.T-ICKETSs.COM o en el sistema de facturación de los puntos de venta de T-ICKETS quien acepta haber ingresado toda la información real personal requerida, y es él único y exclusivamente responsable por la información registrada. T-ICKETS no se hace responsable por tiquetes falsos o adulterados o adquiridos en lugares no autorizados. Quien suministre información o use su(s) entrada(s) para falsificaciones o adulteraciones será responsable ante las entidades legales pertinentes, esto puede dar lugar a RESPONSABILIDAD PENAL.
+                    EL CLIENTE es el usuario, que adquiere los Tickets y está previamente registrado en la página web WWW.T-ICKETS.COM o en el sistema de facturación de los puntos de venta de T-ICKETS quien acepta haber ingresado toda la información real personal requerida, y es él único y exclusivamente responsable por la información registrada. T-ICKETS no se hace responsable por tiquetes falsos o adulterados o adquiridos en lugares no autorizados. Quien suministre información o use su(s) entrada(s) para falsificaciones o adulteraciones será responsable ante las entidades legales pertinentes, esto puede dar lugar a RESPONSABILIDAD PENAL.
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey="3" >

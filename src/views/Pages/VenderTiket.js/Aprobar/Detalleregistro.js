@@ -33,13 +33,14 @@ import { Liverarasiento } from "utils/userQuery";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import addNotification from "react-push-notification";
 import { Seleccionaruserlista } from "utils/userQuery";
+import { CanjearBoletoRegistro } from "utils/boletos/Queryboleto";
 export default function DetalleCompraView() {
     let { id } = useParams()
     let history = useHistory()
     let usedispatch = useDispatch()
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
     let info = JSON.parse(sessionStorage.getItem("Suscritorid"))
-    console.log(nombres)
+    //  console.log(nombres)
     const [usuario, setUser] = useState({
         "id": "",
         "cedula": "",
@@ -138,7 +139,7 @@ export default function DetalleCompraView() {
         // Push.create('Hello World!')
 
         let id = JSON.parse(nombres.info_concierto)
-        console.log(id)
+        // console.log(id)
         // console.log(nombres.cedula)
 
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
@@ -161,7 +162,7 @@ export default function DetalleCompraView() {
                     }
                 }
                 )
-                // console.log(boletos.filter(e=>e!= undefined))
+                console.log(boletos.filter(e => e != undefined))
                 setTikes(boletos.filter(e => e != undefined))
             }
         }).catch(err => {
@@ -348,6 +349,9 @@ export default function DetalleCompraView() {
 
     }
     function CanjeBole() {
+        let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
+        let cor = JSON.parse(nombres.info_concierto)
+        // console.log(id)
         $.confirm({
             title: 'Canjear boletos de este registro',
             type: 'yellow',
@@ -357,6 +361,42 @@ export default function DetalleCompraView() {
                     text: 'Aceptar',
                     btnClass: 'btn-blue',
                     action: function () {
+                        CanjearBoletoRegistro({ "id_registraCompra": id }).then(ouput => {
+                            if (ouput.success) {
+                                usedispatch(setToastes({
+                                    show: true,
+                                    message: ouput.message,
+                                    color: 'bg-primary',
+                                    estado: "Boletos actualizados"
+                                }))
+                                Listarticketporestado(datos.cedula).then(ouput => {
+                                    if (ouput.success) {
+                                        let boletos = ouput.data.map((e) => {
+                                            if (cor.find(f => f.nombreConcierto == e.concierto) != undefined) {
+                                                return { ...e }
+                                            }
+                                        }
+                                        )
+                                        //  console.log(boletos.filter(e=>e!= undefined))
+                                        setTikes(boletos.filter(e => e != undefined))
+                                    }
+                                }).catch(err => {
+                                    console.log(err)
+                                })
+                            }
+                            else {
+                                usedispatch(setToastes({
+                                    show: true,
+                                    message: ouput.message,
+                                    color: 'bg-warning',
+                                    estado: "Boletos"
+                                }))
+                            }
+
+
+                        }).catch(err => {
+                            console.log(err)
+                        })
                         console.log(id)
                     }
                 },
@@ -365,6 +405,36 @@ export default function DetalleCompraView() {
                 },
             },
         });
+    }
+    const [rowSelection, setRowSelection] = useState({});
+    //console.log(rowSelection)
+    //console.log(Object.keys(rowSelection))
+    function quitarrepetifod(){
+        console.log(Object.keys(rowSelection))
+        let datos = tiketslist.map(e=>{
+            if (!Object.keys(rowSelection).some(f=>f== e.id)){
+                return e.id
+            }            
+        }).filter(g=>g!=undefined)
+        console.log(datos)
+        if(datos.length>0){
+        eliminartiket([datos]).then(ouput => {
+            // console.log(ouput)
+
+            if (ouput.success) {
+                console.log(ouput)
+                window.location.reload()
+                //setTikes(ouput.data)
+            }
+            if (!ouput.success) {
+                console.log(ouput)
+                return 
+            }
+
+        }).catch(error => {
+            console.log(error)
+            $.alert("hubo un error no se pudo eliminar este registro")
+        })}
     }
     function Verificaexistencia() {
         Seleccionaruserlista({ "cedula": nombres.cedula }).then(ouput => {
@@ -533,9 +603,9 @@ export default function DetalleCompraView() {
                                         <div className="m-t-5 m-b-5">
                                             <strong className="text-inverse">Pago con Tarjeta</strong><br></br>
                                             <small>
-                                                {nombres.link_pago!=null || nombres.link_comprobante!=null?  <a className=" btn btn-default btn-sm" href={nombres.link_pago != null ? nombres.link_pago : nombres.link_comprobante} target="_blank">
+                                                {nombres.link_pago != null || nombres.link_comprobante != null ? <a className=" btn btn-default btn-sm" href={nombres.link_pago != null ? nombres.link_pago : nombres.link_comprobante} target="_blank">
                                                     <i className="fa fa-credit-card"></i> Link de pago
-                                                </a> : <a className=" btn btn-default btn-sm"><i className="fa fa-credit-card"></i> Sin Link</a> }
+                                                </a> : <a className=" btn btn-default btn-sm"><i className="fa fa-credit-card"></i> Sin Link</a>}
                                                 {
                                                     nombres.forma_pago == "Deposito" ?
                                                         <a className=" btn btn-default btn-sm">
@@ -616,11 +686,20 @@ export default function DetalleCompraView() {
                         </div>
                         <div className=" d-flex col-12  pb-3 border-top pt-2">
                             <div className=" invoice-from col-12">
-                                <p>
-                                    <a className="btn btn-primary" data-toggle="collapse" href="#collapsever" role="button" aria-expanded="false" aria-controls="collapsever">
-                                        <i className=" fa fa-eye"></i>
-                                    </a>
-                                </p>
+                                <div className="row">
+                                    <p className="col-12 col-md-6">
+                                        <a className="btn btn-primary" data-toggle="collapse" href="#collapsever" role="button" aria-expanded="false" aria-controls="collapsever">
+                                            <i className=" fa fa-eye"></i>
+                                        </a>
+                                    </p>
+                                  {  Object.keys(rowSelection).length>0?
+                                  <div className="col-12 col-md-6 text-center">
+                                    <button className=" btn btn-success" onClick={quitarrepetifod}  >Quitar los repetidos</button>
+
+                                  </div>
+                                  :""}
+                                </div>
+                                
                                 <div className="collapse" id="collapsever">
                                     <div className="container-fluid">
                                         <MaterialReactTable
@@ -632,6 +711,7 @@ export default function DetalleCompraView() {
                                                 }
                                             }}
                                             enableRowActions
+                                            enableRowSelection
                                             positionActionsColumn="first"
                                             renderRowActions={({ row }) => (
                                                 <Box sx={{ display: 'flex' }}>
@@ -687,7 +767,10 @@ export default function DetalleCompraView() {
                                                     </div>
                                                 </Box>
                                             )}
+                                            getRowId={(row) => row.id}
 
+                                            onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
+                                            state={{ rowSelection }}
 
 
                                             localization={MRT_Localization_ES}

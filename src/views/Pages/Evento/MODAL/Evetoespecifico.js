@@ -283,7 +283,7 @@ const EventoEspecifico = () => {
                 <img src={evento.imagenConcierto ? evento.imagenConcierto : ''} className="img-fluid rounded-7 shadow-md " alt="" />
               </div>
             </a>
-            <Collapse in={false} >
+            <Collapse in={open} >
               <div className=" container mt-4 px-0" id="collapseExample2">
                 <div className="card card-body rounded-7 py-5">
                   <div className="container">
@@ -373,7 +373,7 @@ const EventoEspecifico = () => {
         <MaterialReactTable
           columns={ticketsboletos}
           data={tickes}
-          enableRowSelection
+        
           muiTableProps={{
             sx: {
               tableLayout: 'flex'

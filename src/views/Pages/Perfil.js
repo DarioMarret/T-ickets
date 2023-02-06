@@ -234,7 +234,7 @@ function PerfilPage(props) {
           {/* you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " */}
           <Container>
             <Row className="d-flex justify-content-center">
-              <Col lg="6" sm="12">
+              <Col lg="6" md="12" sm="12">
                 <Row>
                   <Col lg="12" sm="12">
                     <Card className="card-stats">
@@ -323,12 +323,12 @@ function PerfilPage(props) {
                 </Row>
 
               </Col>
-              <Col lg="6" sm="12">
-                <Card className="card-stats d-none d-sm-none d-md-block" style={{ maxHeight: '310px' }} >
+              <Col lg="4" sm="12">
+                <Card className="card-stats d-none d-sm-none d-md-block" >
                   <LocalizationProvider dateAdapter={AdapterMoment} >
                     <StaticDatePicker
 
-                      orientation="landscape"
+                     
                       label={"Nuevos Eventos"}
                       openTo="day"
                       value={value}

@@ -287,20 +287,20 @@ export default function AprobarView() {
 
                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
 
-                      /*  if (parseInt(loc.id_localidad) == 10) {
-                            nuevosValores.push(loc.id_localidad, loc.nombreConcierto, elm.cedula)
-                        }*/
+                        /*  if (parseInt(loc.id_localidad) == 10) {
+                              nuevosValores.push(loc.id_localidad, loc.nombreConcierto, elm.cedula)
+                          }*/
                     })
 
                 })
-              //  console.log(nuevosValores)
+                //  console.log(nuevosValores)
                 let arrayIndividual = []
                 console.log(consulat)
                 console.log(arayReallocalidad)
                 arayReallocalidad.forEach(elm => {
                     if (arrayIndividual.some(e => e.id == elm.id)) {
                         let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                      //  let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.precio)
+                        //  let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.precio)
                         let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
                         arrayIndividual[dat].cantidad = tota
                     }
@@ -364,8 +364,64 @@ export default function AprobarView() {
                             listarRegistropanel({ "cedula": "" }).then(e => {
                                 // console.log(e)
                                 if (e.data) {
+                                    let newdatos = e.data.map(row => {
+                                        let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
+                                        let valor = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                                        let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                                        row.Valortotal = parseFloat(valor)
+                                        row.cantidad = cantida
+                                        row.concierto = nombre[0]
+                                        return { ...row }
+                                    })//.filter(e => e.forma_pago =="Efectivo-Local")
+                                    console.log(newdatos)
+                                    let nuevosValores = []
+                                    let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
 
-                                    setTikes(e.data)
+                                    let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
+                                    let arayReallocalidad = []
+                                    newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                                        JSON.parse(elm.info_concierto).map(loc => {
+
+                                            // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
+                                            // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: Eventos[loc.id_localidad] })
+
+                                            arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
+
+                                            /*  if (parseInt(loc.id_localidad) == 10) {
+                                                  nuevosValores.push(loc.id_localidad, loc.nombreConcierto, elm.cedula)
+                                              }*/
+                                        })
+
+                                    })
+                                    //  console.log(nuevosValores)
+                                    let arrayIndividual = []
+                                    console.log(consulat)
+                                    console.log(arayReallocalidad)
+                                    arayReallocalidad.forEach(elm => {
+                                        if (arrayIndividual.some(e => e.id == elm.id)) {
+                                            let dat = arrayIndividual.findIndex(e => e.id == elm.id)
+                                            //  let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.precio)
+                                            let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
+                                            arrayIndividual[dat].cantidad = tota
+                                        }
+                                        else {
+                                            //    arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.precio })
+                                            arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad })
+                                        }
+
+                                    })
+                                    console.log(arrayIndividual)
+                                    let datos = arrayIndividual.map(f => {
+                                        return [f.localidad, f.evento, parseInt(f.cantidad)]
+                                    })
+                                    setDatas([
+                                        ["Localida", "evento", "ganancias"],
+                                        ...datos
+                                    ])
+                                    usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
+                                    let order = newdatos.sort(sorter)
+                                    setTikes(order)
+                                    usedispatch(setCompras({ compras: order }))
                                     return
                                 }
                                 //setTikes([])
@@ -444,9 +500,9 @@ export default function AprobarView() {
     function handleSelect(date) {
         console.log(date); // native Date object
     }
- 
+
     const [locale, setLocale] = React.useState('es');
-   
+
     const label = {
         0: "Hoy",
         1: "Ayer",
@@ -468,7 +524,7 @@ export default function AprobarView() {
                     <ModalBoletoApro /> : ""
             }
             <ModalConfima />
-            <div className="row" >
+            <div className="row py-3">
                 <div className="col-12 col-lg-7 col-md-9 d-flex align-items-center ">
                     <DateRangePicker
                         editableDateInputs={false}
@@ -485,7 +541,7 @@ export default function AprobarView() {
                             }),
 
 
-                        ]} 
+                        ]}
                     />
                 </div>
                 <div className="col-12 col-md-5  d-flex align-items-center ">

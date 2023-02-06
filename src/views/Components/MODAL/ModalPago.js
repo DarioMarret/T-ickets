@@ -218,7 +218,8 @@ function ModalPago(props) {
                         usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
                         console.log(ouput)
                         setSpiner("d-none")
-                        detenervelocidad()
+                        LimpiarLocalStore()
+                        Limpiarseleccion()
                         ReactGA.event({
                             category: "Pago",
                             action: "Pyhome-exito",
@@ -228,7 +229,7 @@ function ModalPago(props) {
                     else {
                         usedispatch(setToastes({
                             show: true,
-                            message: "Lo sentimos la plataforma de Pagomedio no género el link intente más tarde",
+                            message: "Lo sentimos la plataforma de Payphome no género el link intente más tarde",
                             color: 'bg-primary',
                             estado: "Hubo un error departe de Pagomedio"
                         }))
@@ -236,7 +237,7 @@ function ModalPago(props) {
                         LimpiarLocalStore()
                         Limpiarseleccion()
                         usedispatch(clearMapa())
-                        detenervelocidad()
+                       
                         ReactGA.event({
                             category: "error",
                             action: "Pyhomeerr",
@@ -321,7 +322,7 @@ function ModalPago(props) {
                                 textAlign: 'center',
                             }}
                         >
-                            <div className='m-3'>
+                            <div className='m-3 '>
                                 <div className='px-0 pagos'
                                     style={{
                                         display: 'flex',
@@ -344,34 +345,39 @@ function ModalPago(props) {
                                     />
                                 </div>
                             </div>
-                            <div className='m-3'>
+                            <div className='m-3 d-none'>
                                 <div className='px-0 pagos' style={{
                                     display: 'flex',
                                     alignItems: "start",
                                     padding: '5px',
                                     cursor: 'pointer'
-                                }}>
+                                }}
+                                    onClick={CrearPagoMedio}
+                                >
                                     <img src={diners}
                                         height={50} />
                                 </div>
 
 
                             </div>
-                            <div className='m-3'>
+                            <div className='m-3 d-none'>
                                 <div className='px-0 pagos' style={{
                                     display: 'flex',
                                     alignItems: "start",
 
                                     padding: '5px',
                                     cursor: 'pointer'
-                                }}>
+                                    
+                                }}
+                                    onClick={CrearPyhome}
+                                >
                                     <img src={visas}
                                         height={50}
 
                                     />
                                 </div>
                             </div>
-                            <div className='m-3'>
+                            <div className='m-3 d-none'>
                                 <div className='px-0 pagos' style={{
                                     display: 'flex',
                                     alignItems: "start",

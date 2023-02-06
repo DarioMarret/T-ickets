@@ -7,12 +7,13 @@ import { Edit, Delete, Visibility } from '@mui/icons-material';
 import { Columnusuarios, Columnasubcrito } from "utils/ColumnTabla";
 import { useHistory } from "react-router";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-import { GetUserList, GetRoles, EliminaUser } from "utils/Querypanel";
+import {  GetRoles,  } from "utils/Querypanel";
 import EditaruserView from "./ModalEditar";
 import { Button, Row, Col, Card } from "react-bootstrap";
 import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { GetUserList,Eliminaruser } from "utils/UserQuery/index";
 const UsersView = () => {
   const [fecha, setFecha] = useState(new Date())
   let history = useHistory()

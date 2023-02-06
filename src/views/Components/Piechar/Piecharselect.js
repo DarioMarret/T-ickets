@@ -28,10 +28,12 @@ export default function PiecharViewsSlect({ ...props }) {
                         controlType: "CategoryFilter",
 
                         options: {
+                            
                             filterColumnIndex: 1,
                             ui: {
+                                caption:"Eventos...",
                                 labelStacking: "vertical",
-                                label: "Evento:",
+                                label: "Lista:",
                                 className:"form-select",
                                 allowTyping: false,
                                 allowMultiple: false,

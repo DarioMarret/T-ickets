@@ -6,15 +6,15 @@ import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { useHistory, useParams } from "react-router";
-import { GetUserList, GetRoles } from "utils/Querypanel";
+import {  GetRoles } from "utils/Querypanel";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import EditaruserView from "./ModalEditar";
 import { ColumnaUsuarioid } from "utils/ColumnTabla";
 import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { EliminaUser } from "utils/Querypanel";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
+import { GetUserList,Eliminaruser } from "utils/UserQuery/index";
 const UseridView = () => {
   let user = clienteInfo()
   let history = useHistory()

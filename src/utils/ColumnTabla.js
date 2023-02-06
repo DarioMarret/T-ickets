@@ -80,6 +80,11 @@ export const Columnasubcrito = [
 ]
 export const Columnusuarios = [
   {
+    accessorKey: "id",
+    header:"ID",
+    size:100
+  },
+  {
     accessorKey: 'username',
     header: 'Username',
   },

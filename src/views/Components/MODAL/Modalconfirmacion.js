@@ -501,6 +501,7 @@ const ModalConfima = (prop) => {
                                     <input className=" form-control numero"
                                         name="numeroTransaccion"
                                         value={comproba.numeroTransaccion}
+                                        minLength={4}
                                         required
                                         onChange={(e) => onhandelChange(e.target)}
                                         type={"text"}

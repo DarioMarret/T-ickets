@@ -21,8 +21,12 @@ export default function ListaderegistroView(props) {
     const [datos, setDatos] = useState([])
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
-        listarRegistropanel({ "cedula": user.cedula }).then(
+        listarRegistropanel({ "cedula": cedula }).then(
             e => {
+                if(!e.success){
+                    return
+                }
+               // console.log(e)
                 setDatos(e.data)
             }
         ).catch(err =>

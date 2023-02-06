@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import moment from "moment";
 import { Obtenerlinkimagen } from "utils/Querypanel";
+import { actualizarDescription } from "utils/userQuery";
 const Modalupdate = (props) => {
     const { show, Setshow, evento } = props;
     let usedispatch = useDispatch()
@@ -28,6 +29,10 @@ const Modalupdate = (props) => {
             id_evento: "",
 
         })
+    const [newimagen, setImagen] = useState({
+        imagenConcierto: '',
+        mapaConcierto:''
+    })
     const [precios, setPrecios] = useState({
         localidad: '',
         precio_normal: 0,
@@ -64,7 +69,6 @@ const Modalupdate = (props) => {
             ArrayCopia[index] = { ...value }
         }
         setLocalidad(ArrayCopia)
-        // console.log(ArrayCopia)
         setPrecios({
             localidad: '',
             precio_normal: 0,
@@ -85,7 +89,6 @@ const Modalupdate = (props) => {
         })
     });
     function handelchangeComposeventos(e) {
-        console.log(e)
         let img = new Image()
         try {
             if (e.name == "imagenConcierto") {
@@ -95,42 +98,37 @@ const Modalupdate = (props) => {
                 //   console.log(window.URL.createObjectURL(e.files[0]))
                 //   img.src = window.URL.createObjectURL(e.files[0])
                 img.onload = () => {
-                    setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+                    setImagen({ ...newimagen, imagenConcierto: e.files ? e.value : '' })
                     // console.log(img.width)
                     if (img.width < 1100 || img.height < 400) {
                         e.value = ""
-                        setNewEventos({ ...neweventos, imagenConcierto: e.files[0] })
+                        setImagen({ ...newimagen, imagenConcierto: e.files })
                         usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
                     }
-                    else setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+                    else setImagen({ ...newimagen, imagenConcierto: e.files ? e.files : '' })
                 }
                 img.onerror = () => {
-                    setNewEventos({ ...neweventos, imagenConcierto: '' })
+                    setImagen({ ...newimagen, imagenConcierto: '' })
                 }
             } else if (e.name == "mapaConcierto") {
-               // setNewEventos({ ...neweventos, mapaConcierto: e.files[0] })
-                console.log({ mapaConcierto: e.files[0] })
+                // setNewEventos({ ...neweventos, mapaConcierto: e.files[0] })
+                console.log({ mapaConcierto: e.value })
                 img.src = window.URL.createObjectURL(e.files[0])
                 img.onload = () => {
                     //const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)
                     console.log(img.width)
-                    setNewEventos({ ...neweventos, mapaConcierto: e.files[0] })
-                    console.log(e.files[0])
+                    setImagen({ ...newimagen, mapaConcierto: e.files })
+                    console.log(e.value)
                     if (img.width < 400 || img.height < 400) {
                         e.value = ""
-                        setNewEventos({ ...neweventos, imagenConcierto: '' })
+                        setImagen({ ...newimagen, imagenConcierto: '' })
                         usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
                     }
-                    else setNewEventos({ ...neweventos, mapaConcierto: e.files[0] ? e.files[0] : '' })
+                    else setImagen({ ...newimagen, mapaConcierto: e.files ? e.files : '' })
                 }
                 img.onerror = () => {
-                    setNewEventos({ ...neweventos, mapaConcierto: '' })
+                    setImagen({ ...newimagen, mapaConcierto: '' })
                 }
-            } else {
-                setNewEventos({
-                    ...neweventos,
-                    [e.name]: e.value,
-                })
             }
         } catch (error) {
             console.log(error)
@@ -170,8 +168,31 @@ const Modalupdate = (props) => {
             showAlernone("d-none")
         }, "1500")
     }
-    async function Actualizar() {
-        console.log(neweventos, selectLocalidad)
+    function Actualizar() {
+        //        console.log(neweventos)
+        let info = {
+            "id_evento": neweventos.id_evento,
+            "nombreConcierto": neweventos.nombreConcierto,
+            "fechaConcierto": neweventos.fechaConcierto,
+            "horaConcierto": neweventos.horaConcierto,
+            "lugarConcierto": neweventos.lugarConcierto,
+            "cuidadConcert": neweventos.cuidadConcert,
+            "descripcionConcierto": neweventos.descripcionConcierto,
+            "imagenConcierto": neweventos.imagenConcierto,
+            "mapaConcierto": neweventos.mapaConcierto
+        }
+        if (Object.values(neweventos).some(e => e == "")) {
+            console.log("aqui llega")
+            return
+        }
+        actualizarDescription(info).then(oup => {
+            if (oup.success) {
+                Setshow(false)
+                window.location.reload()
+            }
+            //console.log(oup)
+        }).catch(err =>
+            console.log(err))
         /*if (neweventos.imagenConcierto == evento.imagenConcierto && neweventos.mapaConcierto == evento.mapaConcierto) {
             let guarda = {
                 ...neweventos,
@@ -194,127 +215,219 @@ const Modalupdate = (props) => {
                 console.log(error)
             }
         }*/
-       /* else if (neweventos.imagenConcierto == evento.imagenConcierto && neweventos.mapaConcierto != evento.mapaConcierto) {
-            console.log(neweventos.mapaConcierto)
-            const linkmapas = await Obtenerlinkimagen(neweventos.mapaConcierto)
-            console.log(linkmapas)
-            if (linkmapas == null) {
-                usedispatch(setToastes({ show: true, message: "no se genero link de Imagen",color: 'bg-danger', estado: 'Error' }))
-                return
-            }
-            console.log(linkmapas)
-            let guardados = {
-                ...neweventos,
-                mapaConcierto: linkmapas,
-                estado: "PROCESO",                
-                "LocalodadPrecios": selectLocalidad
-            }
-            console.log(guardados)
-            try {
-                const actualiza = await ActualizarLocalidad(evento.codigoEvento, guardados)
-                if (actualiza.success) {
-                    Setshow(false)
-                    usedispatch(setToastes({ show: true, message: 'Datos del evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
-                }
-                else {
-                    console.log("pasa")
-                    usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
-                }
-            } catch (error) {
-                usedispatch(setToastes({ show: true, message: "mapa error" + error, color: 'bg-danger', estado: 'Error' }))
-                console.log(error)
-            }
-        }*/
-       /* else if (neweventos.imagenConcierto != evento.imagenConcierto && neweventos.mapaConcierto == evento.mapaConcierto) {
-            const link = await Obtenerlinkimagen(neweventos.imagenConcierto)
-            if (link == null) {
-                usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
-                return
-            }
-            setTimeout( async() => {
-                let guarda = {
-                    ...neweventos,
-                    estado: "PROCESO",
-                    imagenConcierto: link,
-                    "LocalodadPrecios": selectLocalidad
-                }
-                try {
-                    const actualiza = await ActualizarLocalidad(evento.codigoEvento, guarda)
-                    if (actualiza.success) {
-                        Setshow(false)
-                        usedispatch(setToastes({ show: true, message: 'Datos del evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
-                    }
-                    else {
-                        console.log("pasa")
-                        usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
-                    }
-                } catch (error) {
-                    usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
-                    console.log(error)
-                }
-                
-            }, 1000);
-           
+        /* else if (neweventos.imagenConcierto == evento.imagenConcierto && neweventos.mapaConcierto != evento.mapaConcierto) {
+             console.log(neweventos.mapaConcierto)
+             const linkmapas = await Obtenerlinkimagen(neweventos.mapaConcierto)
+             console.log(linkmapas)
+             if (linkmapas == null) {
+                 usedispatch(setToastes({ show: true, message: "no se genero link de Imagen",color: 'bg-danger', estado: 'Error' }))
+                 return
+             }
+             console.log(linkmapas)
+             let guardados = {
+                 ...neweventos,
+                 mapaConcierto: linkmapas,
+                 estado: "PROCESO",                
+                 "LocalodadPrecios": selectLocalidad
+             }
+             console.log(guardados)
+             try {
+                 const actualiza = await ActualizarLocalidad(evento.codigoEvento, guardados)
+                 if (actualiza.success) {
+                     Setshow(false)
+                     usedispatch(setToastes({ show: true, message: 'Datos del evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
+                 }
+                 else {
+                     console.log("pasa")
+                     usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
+                 }
+             } catch (error) {
+                 usedispatch(setToastes({ show: true, message: "mapa error" + error, color: 'bg-danger', estado: 'Error' }))
+                 console.log(error)
+             }
+         }*/
+        /* else if (neweventos.imagenConcierto != evento.imagenConcierto && neweventos.mapaConcierto == evento.mapaConcierto) {
+             const link = await Obtenerlinkimagen(neweventos.imagenConcierto)
+             if (link == null) {
+                 usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
+                 return
+             }
+             setTimeout( async() => {
+                 let guarda = {
+                     ...neweventos,
+                     estado: "PROCESO",
+                     imagenConcierto: link,
+                     "LocalodadPrecios": selectLocalidad
+                 }
+                 try {
+                     const actualiza = await ActualizarLocalidad(evento.codigoEvento, guarda)
+                     if (actualiza.success) {
+                         Setshow(false)
+                         usedispatch(setToastes({ show: true, message: 'Datos del evento Actalizados', color: 'bg-success', estado: 'Actualizado' }))
+                     }
+                     else {
+                         console.log("pasa")
+                         usedispatch(setToastes({ show: true, message: 'Hubo un error no se actualizaron los datos', color: 'bg-danger', estado: 'Error  ' }))
+                     }
+                 } catch (error) {
+                     usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
+                     console.log(error)
+                 }
+                 
+             }, 1000);
+            
+         }
+         else if (neweventos.imagenConcierto != evento.imagenConcierto && neweventos.mapaConcierto != evento.mapaConcierto) {
+             try {
+                 console.log(neweventos)
+                 if (neweventos.imagenConcierto == " ") {
+                     usedispatch(setToastes({ show: true, message: 'no se genero link de Imagen ', color: 'bg-success', estado: 'Guardado' }))
+                     return
+                 }
+                 if (neweventos.mapaConcierto == " ") {
+                     usedispatch(setToastes({ show: true, message: 'no se genero link de Imagen ', color: 'bg-success', estado: 'Guardado' }))
+                     return
+                 }
+                 else {
+                     console.log(neweventos)
+                     const img = await Obtenerlinkimagen(neweventos.imagenConcierto)
+ 
+                     if (img == null) {
+ 
+                         usedispatch(setToastes({ show: true, message: 'no se genero link de Imagen ', color: 'bg-success', estado: 'Guardado' }))
+ 
+                         return
+                     }
+ 
+                     setTimeout(async function () {
+                         const mapacon = await Obtenerlinkimagen(neweventos.mapaConcierto)
+                         if (mapacon == null) {
+                             usedispatch(setToastes({ show: true, message: 'Imagen mapa no se creo', color: 'bg-danger', estado: 'Error' }))
+                             return
+                         }
+ 
+                         let defauldata = {
+                             ...neweventos,
+                             imagenConcierto: img,
+                             mapaConcierto: mapacon,
+                             estado: "ACTIVO",
+                             "LocalodadPrecios": selectLocalidad
+                         }
+                         const evento = await ActualizarLocalidad(evento.codigoEvento, defauldata)
+                         console.log(defauldata, evento)
+                         if (evento.success) {
+                             console.log(evento)
+                             usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
+                             setinput(false)
+                             Setshow(false)
+                             window.location.reload()
+                         }
+                     }, 2000)
+                 }
+             } catch (error) {
+                 usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
+                 console.log(error)
+ 
+             }
+ 
+         }*/
+
+    }
+    async function ActualizarMapa(e) {
+       // console.log(e.target.setatr('disabled') == true)
+        e.target.setAttribute('disabled', "true");
+       // e.setAttribute('disabled', true);             
+        if (newimagen.mapaConcierto[0] == undefined ) {
+            usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del los precios', color: 'bg-danger', estado: 'Datos vacios' }))
+            e.target.removeAttribute('disabled')
+            return
         }
-        else if (neweventos.imagenConcierto != evento.imagenConcierto && neweventos.mapaConcierto != evento.mapaConcierto) {
-            try {
-                console.log(neweventos)
-                if (neweventos.imagenConcierto == " ") {
-                    usedispatch(setToastes({ show: true, message: 'no se genero link de Imagen ', color: 'bg-success', estado: 'Guardado' }))
-                    return
+        Obtenerlinkimagen(newimagen.mapaConcierto).then(oup=>{
+            if(oup.success){
+                let info = {
+                    "id_evento": neweventos.id_evento,
+                    "nombreConcierto": neweventos.nombreConcierto,
+                    "fechaConcierto": neweventos.fechaConcierto,
+                    "horaConcierto": neweventos.horaConcierto,
+                    "lugarConcierto": neweventos.lugarConcierto,
+                    "cuidadConcert": neweventos.cuidadConcert,
+                    "descripcionConcierto": neweventos.descripcionConcierto,
+                    "imagenConcierto": neweventos.imagenConcierto,
+                    "mapaConcierto": oup.link
                 }
-                if (neweventos.mapaConcierto == " ") {
-                    usedispatch(setToastes({ show: true, message: 'no se genero link de Imagen ', color: 'bg-success', estado: 'Guardado' }))
-                    return
-                }
-                else {
-                    console.log(neweventos)
-                    const img = await Obtenerlinkimagen(neweventos.imagenConcierto)
-
-                    if (img == null) {
-
-                        usedispatch(setToastes({ show: true, message: 'no se genero link de Imagen ', color: 'bg-success', estado: 'Guardado' }))
-
-                        return
-                    }
-
-                    setTimeout(async function () {
-                        const mapacon = await Obtenerlinkimagen(neweventos.mapaConcierto)
-                        if (mapacon == null) {
-                            usedispatch(setToastes({ show: true, message: 'Imagen mapa no se creo', color: 'bg-danger', estado: 'Error' }))
-                            return
-                        }
-
-                        let defauldata = {
-                            ...neweventos,
-                            imagenConcierto: img,
-                            mapaConcierto: mapacon,
-                            estado: "ACTIVO",
-                            "LocalodadPrecios": selectLocalidad
-                        }
-                        const evento = await ActualizarLocalidad(evento.codigoEvento, defauldata)
-                        console.log(defauldata, evento)
-                        if (evento.success) {
-                            console.log(evento)
-                            usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
-                            setinput(false)
+                setTimeout(function () {
+                    actualizarDescription(info).then(oup => {
+                        if (oup.success) {
+                            e.target.removeAttribute('disabled')
                             Setshow(false)
                             window.location.reload()
                         }
-                    }, 2000)
-                }
-            } catch (error) {
-                usedispatch(setToastes({ show: true, message: "" + error, color: 'bg-danger', estado: 'Error' }))
-                console.log(error)
+                        //console.log(oup)
+                    }).catch(err => {
+                        e.target.removeAttribute('disabled')
+                        console.log(err)
+                    })
+
+                }, 1000)
 
             }
+        }).catch(err=>{
+            console.log(err)
+        })
+        console.log("mapa", newimagen)
+  
 
-        }*/
 
+    }
+     function ActualizarImagen(e) {     
+        if (newimagen.imagenConcierto[0] == undefined) {
+            usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del evento', color: 'bg-danger', estado: 'Datos vacios' }))
+          //  e.target.removeAttribute('disabled')
+            return
+        }
+        Obtenerlinkimagen(newimagen.imagenConcierto).then(ouput=>{
+            e.target.setAttribute('disabled', "true");
+            if(ouput.success){
+                let info = {
+                    "id_evento": neweventos.id_evento,
+                    "nombreConcierto": neweventos.nombreConcierto,
+                    "fechaConcierto": neweventos.fechaConcierto,
+                    "horaConcierto": neweventos.horaConcierto,
+                    "lugarConcierto": neweventos.lugarConcierto,
+                    "cuidadConcert": neweventos.cuidadConcert,
+                    "descripcionConcierto": neweventos.descripcionConcierto,
+                    "imagenConcierto": ouput.link,
+                    "mapaConcierto": neweventos.mapaConcierto
+                }
+                setTimeout(function(){
+                    actualizarDescription(info).then(oup => {
+                        if (oup.success) {
+                            e.target.removeAttribute('disabled')
+                            Setshow(false)
+                            window.location.reload()
+                        }
+                        //console.log(oup)
+                    }).catch(err =>{
+                        e.target.removeAttribute('disabled')
+                        console.log(err)})
+
+                },1000)
+            }
+        }).catch(err=>{
+            e.target.removeAttribute('disabled')
+        })
+        console.log("evento",newimagen)
+    }
+    function cerrar(){
+        setImagen({
+            imagenConcierto:'',
+            mapaConcierto:''
+        })
+        Setshow(false)
     }
 
     useEffect(() => {
-      //  console.log(evento)
+        //  console.log(evento)
         setNewEventos(
             {
                 nombreConcierto: evento.nombreConcierto ? evento.nombreConcierto : '',
@@ -337,13 +450,13 @@ const Modalupdate = (props) => {
         <Modal
             show={show}
             size='lg'
-            onHide={() => Setshow(false)}
+            onHide={() => cerrar()}
         >
             <Modal.Header >
                 <h5>Editar datos del Evento</h5>
                 <button type="button" className="close"
-                    onClick={() => Setshow(false)}>
-                    ×
+                    onClick={() => cerrar()}>
+                    X
                 </button>
             </Modal.Header>
             <Modal.Body>
@@ -551,8 +664,41 @@ const Modalupdate = (props) => {
                     </div>
                 </div>
                 <div className="d-flex modal-footer justify-content-end align-items-end">
-                    <button className="btn btn-success" disabled={false} onClick={Actualizar}>Actualizar</button>
+                    <button className="btn btn-success" disabled={false} onClick={(e)=>Actualizar(e)}>Actualizar</button>
 
+                </div>
+                <div className="row">
+                    <div className="col-12">
+                        <div className="col-12 col-md-12 ">
+                            <label className="form-label"> {neweventos.imagenConcierto ? "Hay una imagen Cargada " : "Seleccione una imagen del concierto"}</label>
+                            <div className="input-group mb-3">
+
+                                <input type="file" accept="image/*" name="imagenConcierto" className="form-control "
+                                    onChange={(e) => handelchangeComposeventos(e.target)}
+                                    id="imagenConcierto" placeholder="Imagen del concierto" />
+
+                            </div>
+                        </div>
+                        <div className="text-center">
+                            <button className="btn btn-success" onClick={ActualizarImagen}>Actualizar imagen de evento</button>
+                        </div>
+
+                    </div>
+                    <div className="col-12">
+                        <div className="col-12 col-md-12  ">
+                            <label className="form-label"> {neweventos.mapaConcierto ? "Hay un mapa Cargada " : "Subir imagen del mapa"}</label>
+                            <div className="input-group mb-3">
+
+                                <input type="file" accept="image/*" name="mapaConcierto" className="form-control "
+                                    onChange={(e) => handelchangeComposeventos(e.target)}
+                                    id="mapaConcierto" placeholder="Imagen del mapa" />
+
+                            </div>
+                        </div>
+                        <div className="text-center">
+                            <button className="btn btn-success" onClick={(e)=>ActualizarMapa(e)}>Actualizar imagen de precios</button>
+                        </div>
+                    </div>
                 </div>
 
 

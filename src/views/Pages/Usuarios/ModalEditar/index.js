@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import Autocomplete from '@mui/material/Autocomplete';
 import { Modal, Toast, Form, FormCheck, Col } from "react-bootstrap";
-import { GetRoles, EditUser, CrearUser } from "utils/Querypanel";
+import { GetRoles } from "utils/Querypanel";
 import InputGroup from 'react-bootstrap/InputGroup';
 
 import Select from "react-select";
+import { EditUser,CrearUser } from "utils/UserQuery/index";
 const EditaruserView = (props) => {
   const options = ['Option 1', 'Option 2'];
   let history = useHistory()

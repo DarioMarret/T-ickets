@@ -1002,6 +1002,14 @@ const IndexFlas = () => {
       />
 
       <ModalFacilitoView />
+
+      <Iframe
+        setEstadoFrame={modal.nombre == "pago" ? true : false}
+        url={modal.estado}
+        intervalo={intervalo}
+        detener={detenervelocidad}
+      />
+
       {/* header */}
       {publicidad.length > 0 ? <div className="container-fluid   px-0" style={{
         minHeight: '300px'
@@ -1559,13 +1567,6 @@ const IndexFlas = () => {
         </div>
       </div>
 
-
-      <Iframe
-        setEstadoFrame={modal.nombre == "pago" ? true : false}
-        url={modal.estado}
-        intervalo={intervalo}
-        detener={detenervelocidad}
-      />
 
       <div className="col-9" id="imprimecomprobante">
 

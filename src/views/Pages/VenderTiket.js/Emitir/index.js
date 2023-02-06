@@ -192,12 +192,25 @@ export default function EmitirboView() {
             })
             let boletosfilter = []
             nuevo.length > 0 ? nuevo.forEach(element => {
+                if (element.codigoEvento == "9EGM42" && element.localidad == "SAUCES BOYZ" && boletosfilter.some(e => e.localidad == "SAUCES-BOYZ")){
+                    let num = boletosfilter.findIndex(e => e.localidad == "SAUCES-BOYZ")
+                    boletosfilter[num].cantidad = parseInt(boletosfilter[num].cantidad) + 1
+                    return
+                }
                 if (boletosfilter.some(e => e.localidad == element.localidad)) {
                     let num = boletosfilter.findIndex(e => e.localidad == element.localidad)
                     boletosfilter[num].cantidad = parseInt(boletosfilter[num].cantidad) + 1
+                    return
                 }
                 else {
-                    boletosfilter.push({ localidad: element.localidad, concierto: element.concierto, cantidad: 1 })
+                    if (element.codigoEvento == "9EGM42" && element.localidad == "SAUCES BOYZ" ){
+                        boletosfilter.push({ localidad: "SAUCES-BOYZ", concierto: element.concierto, cantidad: 1 })
+                        return
+                    }
+                    else{
+                        boletosfilter.push({ localidad: element.localidad, concierto: element.concierto, cantidad: 1 })
+                    }
+                  
                 }
             }) : ""
             console.log(boletosfilter)
