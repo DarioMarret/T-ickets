@@ -14,7 +14,7 @@ import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { eliminarRegistro } from "utils/pagos/Queripagos";
-import { GetUserList, EliminaUser } from "utils/UserQuery/index";
+import { GetUserList, EliminaUser } from "utils/QueryUser/index";
 const UseridView = () => {
   let user = clienteInfo()
   let history = useHistory()

@@ -18,7 +18,6 @@ export const Listarticketporestado = async (parms) => {
         console.log(error)
         return error
     }
-
 }
 //Compra/post_api_v1_liverar_asiento
 export const Liverarasiento = async(parms)=>{

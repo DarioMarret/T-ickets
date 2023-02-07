@@ -13,7 +13,7 @@ import { Button, Row, Col, Card } from "react-bootstrap";
 import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { GetUserList,Eliminaruser } from "utils/UserQuery/index";
+import { GetUserList, Eliminaruser } from "utils/QueryUser/index";
 const UsersView = () => {
   const [fecha, setFecha] = useState(new Date())
   let history = useHistory()

@@ -3,12 +3,12 @@ import { getCliente } from "utils/DatosUsuarioLocalStorag";
 import { DatosUsuariocliente } from "utils/constantes";
 import moment from "moment";
 import 'moment-timezone'
-import { CancelarSubscriptor } from "utils/SuscritorQuery";
-import { EditarSuscrito } from "utils/SuscritorQuery";
+import { CancelarSubscriptor } from "utils/SuscritorQuery/index.js";
+import { EditarSuscrito } from "utils/SuscritorQuery/index.js";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
 import { useDispatch, useSelector } from "react-redux";
 import { deletesuscrito, addususcritor } from "StoreRedux/Slice/SuscritorSlice";
-import { GetSuscritores } from "utils/SuscritorQuery";
+import { GetSuscritores } from "utils/SuscritorQuery/index.js";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Badge, Tooltip } from "@mui/material";
@@ -34,6 +34,7 @@ import {
 import { display } from "@mui/system";
 import { Button } from "@mui/material";
 import { cargarEventoActivo } from "utils/Querypanelsigui";
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 
 function PerfilPage(props) {
   const { setDatoToas } = props
@@ -200,7 +201,7 @@ function PerfilPage(props) {
   useEffect(() => {
 
     (async () => {
-      let info = getCliente()
+      let info = getDatosUsuariosLocalStorag()
 
       try {
         const suscrito = await GetSuscritores()

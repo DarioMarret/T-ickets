@@ -6,7 +6,7 @@ import { GetRoles } from "utils/Querypanel";
 import InputGroup from 'react-bootstrap/InputGroup';
 
 import Select from "react-select";
-import { EditUser,CrearUser } from "utils/UserQuery/index";
+import { EditUser, CrearUser } from "utils/QueryUser/index";
 const EditaruserView = (props) => {
   const options = ['Option 1', 'Option 2'];
   let history = useHistory()
