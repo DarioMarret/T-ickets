@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Modal, ProgressBar, OverlayTrigger, Tooltip, Button, Form } from "react-bootstrap"
-import { GuardarLocalidad, AptualizarLocalida } from 'utils/Querypanel';
+import {  AptualizarLocalida } from 'utils/Querypanel';
+import { GuardarLocalidad } from "utils/LocalidadesQuery/index.js";
 import MesasView from 'views/Pages/Mesas';
 import MesacerView from 'views/Pages/Mesas/Plantillas/Mesacer';
 import MesaiView from "views/Pages/Mesas/Plantillas/indice";

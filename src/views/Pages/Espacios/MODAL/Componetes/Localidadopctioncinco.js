@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react"
 import EcenarioDefView from "views/Components/MapaEcenarios/Ecenariodefalt"
 import EcenarioEstaView from "views/Components/MapaEcenarios/Ecenarioestandar"
-import { cargarMapa, eliminaMapa, guardarMapar, editarMapa } from "utils/Querypanelsigui"
+import { cargarMapa, eliminaMapa, guardarMapar, editarMapa } from "utils/MapaQuery"
 import { Form } from "react-bootstrap"
 import SweetAlert from "react-bootstrap-sweetalert";
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import { plantilla } from "utils/constantes"
 import { insertLocalidad, getMapacolor, getLocalidadmapa } from "utils/Localidadmap"
-import { ListarLocalidad } from "utils/Querypanel"
+import { ListarLocalidad } from "utils/LocalidadesQuery/index.js"
 import SvgselectView from "views/Pages/Svgviewa/svgseleccion.js"
 const MapadelocalidadViews = (props) => {
         const { localidaname, mapaset, SetDataloca, ObtenLocalidad, datalocalidad } = props

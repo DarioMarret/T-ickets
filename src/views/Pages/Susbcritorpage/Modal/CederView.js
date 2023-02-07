@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { Modal, Form } from "react-bootstrap";
 import SweetAlert from "react-bootstrap-sweetalert";
-import { GetSuscritores } from "utils/Querypanel";
+import { GetSuscritores } from "utils/SuscritorQuery";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { Triangle } from "react-loader-spinner";
 import { buscarcliente } from "utils/Querypanelsigui";

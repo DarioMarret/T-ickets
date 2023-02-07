@@ -1,7 +1,7 @@
 import { Form } from "react-bootstrap"
 import { ProvinciasMap } from "utils/Mapassvg"
 import { useState, useEffect, useMemo } from "react"
-import { cargarMapa, guardarMapar, eliminaMapa, editarMapa } from "utils/Querypanelsigui"
+import { cargarMapa, guardarMapar, eliminaMapa, editarMapa } from "utils/MapaQuery"
 import SweetAlert from "react-bootstrap-sweetalert";
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"

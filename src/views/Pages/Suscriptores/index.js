@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 import { Card, Col, Row } from "react-bootstrap";
-import { GetSuscritores, EliminarSuscrito } from "utils/Querypanel";
+import { GetSuscritores, EliminarSuscrito } from "utils/SuscritorQuery";
 import ModalSuscritoView from "./ModalSuscritor";
 import { Button } from "reactstrap";
 import { useHistory } from "react-router";

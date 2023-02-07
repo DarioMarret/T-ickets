@@ -1,4 +1,4 @@
-import { ListarLocalidad } from "utils/Querypanel"
+import { ListarLocalidad } from "utils/LocalidadesQuery/index.js"
 import { AgregarAsiento } from "utils/CarritoLocalStorang"
 import { asientosList, concierto, } from "utils/constantes"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"

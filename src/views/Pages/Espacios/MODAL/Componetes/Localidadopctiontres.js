@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { GuardarLocalidad, AptualizarLocalida } from "utils/Querypanel"
+import {  AptualizarLocalida } from "utils/Querypanel"
+import { GuardarLocalidad } from "utils/LocalidadesQuery/index.js"
 import { Modal, ProgressBar, OverlayTrigger, Tooltip, Button } from "react-bootstrap"
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"

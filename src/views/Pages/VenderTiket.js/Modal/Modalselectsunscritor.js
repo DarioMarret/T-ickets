@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { GetSuscritores } from "utils/Querypanel"
+import { GetSuscritores } from "utils/SuscritorQuery"
 import { Modal } from "react-bootstrap"
 import { DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { useDispatch, useSelector } from "react-redux"

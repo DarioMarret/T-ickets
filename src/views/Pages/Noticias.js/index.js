@@ -16,16 +16,13 @@ import "swiper/css/effect-fade";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { agregarNoticia } from "utils/Querypanelsigui";
+import { agregarNoticia, ListarNoticias, Actualizarpublicdad, Eliminarpublici } from "utils/PublicidadQuery";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { noticiasEvento } from "utils/Querypanelsigui";
-import { ListarNoticias } from "utils/Querypanelsigui";
 import { columnPublicidad } from "utils/ColumnTabla";
-import { Eliminarpublici } from "utils/Querypanelsigui";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Actualizarpublicdad } from "utils/Querypanelsigui";
 import { ListarEventos } from "utils/Querypanel";
 export default function NoticiasView() {
     let usedispatch = useDispatch()

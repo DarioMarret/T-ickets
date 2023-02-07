@@ -6,14 +6,15 @@ import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility, Summarize } from '@mui/icons-material';
 import { Row, Col, Card, Container, Button } from "react-bootstrap";
 import { useParams, useHistory } from "react-router";
-import { CancelarSubscriptor, GetSuscritores } from "utils/Querypanel";
+import { CancelarSubscriptor } from "utils/SuscritorQuery";
+import { GetSuscritores } from "utils/SuscritorQuery";
 import ModalSuscritoView from "./ModalSuscritor";
 import { carrusel } from "../Flasdeticket/imagenstatctic";
 let { cedericon } = carrusel
 import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { EliminarSuscrito } from "utils/Querypanel";
+import { EliminarSuscrito } from "utils/SuscritorQuery";
 import { columnsTicket } from "utils/ColumnTabla";
 import { listaRegistro } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";

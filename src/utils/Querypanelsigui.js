@@ -26,6 +26,7 @@ export const cargarEventoActivo = async (parms) => {
     }
 
 }
+/*
 export const cargarMapa = async () => {
     try {
         const { data } = await axios.get("https://rec.netbot.ec/ms_login/listarMapas", {
@@ -78,7 +79,7 @@ export const eliminaMapa = async (parm) => {
     } catch (error) {
         return error
     }
-}
+}*/
 export const enviasilla = async (info) => {
     let user = getDatosUsuariosLocalStorag()
     let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
@@ -208,9 +209,10 @@ export const sumarcorrelativo = async (datos) => {
 
     }
 }
-export const agregarNoticia = async (datos) => {
+
+export const noticiasEvento = async (datos) => {
     try {
-        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_publicidad", datos, {
+        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_evento_publicidad", datos, {
             header: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -222,9 +224,10 @@ export const agregarNoticia = async (datos) => {
 
     }
 }
-export const noticiasEvento = async (datos) => {
+/*
+export const agregarNoticia = async (datos) => {
     try {
-        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_evento_publicidad", datos, {
+        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_publicidad", datos, {
             header: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -275,4 +278,4 @@ export const Eliminarpublici = async (parms) => {
     } catch (error) {
         return error
     }
-}
+}*/

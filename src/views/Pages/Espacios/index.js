@@ -5,14 +5,14 @@ import { Box, Button, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 import Modalregistroespacio from "./MODAL/Registrolocalidad.js";
-import { EliminarEspacios, ListarEspacios } from "utils/Querypanel.js";
+import { EliminarEspacios, ListarEspacios } from "utils/EspaciosQuery/index.js";
 import { Row, Col, Card } from "react-bootstrap";
 import NewEspacioView from "./MODAL/NuevoEspacio.js";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import axios from "axios";
 import RegistroViwstab from "./MODAL/Registrodos.js";
 import { columns } from "utils/ColumnTabla.js";
-import { ListarLocalidad } from "utils/Querypanel.js";
+import { ListarLocalidad } from "utils/LocalidadesQuery/index.js";
 import { EliminarLocalidad } from "utils/Querypanel.js";
 
 const EventosViews = () => {

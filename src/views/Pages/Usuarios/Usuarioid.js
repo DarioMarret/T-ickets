@@ -84,20 +84,6 @@ const UseridView = () => {
       </SweetAlert>
     );
   };
-  const successDelete = () => {
-    setAlert(
-      <SweetAlert
-        success
-        style={{ display: "block", marginTop: "-100px" }}
-        title="Eliminado!"
-        onConfirm={() => hideAlert()}
-        onCancel={() => hideAlert()}
-        confirmBtnBsStyle="success"
-      >
-        El usuario se elimino correctamenta
-      </SweetAlert>
-    );
-  };
   const cancelDetele = () => {
     setAlert(
       <SweetAlert

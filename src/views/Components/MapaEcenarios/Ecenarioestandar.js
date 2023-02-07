@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from "react"
-import { ListarLocalidad } from "utils/Querypanel"
+import { ListarLocalidad } from "utils/LocalidadesQuery/index.js"
 const EcenarioEstaView =(props)=>{
   const {localidaname} =props
   const [datas,setData]=useState([])

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, ProgressBar, OverlayTrigger, Tooltip, Button } from "react-bootstrap"
-import { GuardarLocalidad } from 'utils/Querypanel';
+import { GuardarLocalidad } from 'utils/LocalidadesQuery';
 import MesasView from 'views/Pages/Mesas';
 import MesacerView from 'views/Pages/Mesas/Plantillas/Mesacer';
 import Accordion from 'react-bootstrap/Accordion';

@@ -259,8 +259,8 @@ const ResgistroView = (prop) => {
                             theme: 'darkblue',
                             native: true // when using native, your OS will handle theming.
                         })
-                        modal.estado != null ? abrir(modal.estado) : 
-                        usedispatch(setModal({ nombre: "", estado: "" }))
+                        modal.estado != null ? abrir(modal.estado) :
+                            usedispatch(setModal({ nombre: "", estado: "" }))
                         usedispatch(addususcritor({ users }))
                         ReactGA.event({
                             category: "Registrado",
@@ -321,7 +321,7 @@ const ResgistroView = (prop) => {
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
         const phoneInputField = document.querySelector("#movil");
-        intlTelInput(phoneInputField, {
+        $("#movil").intlTelInput({
             initialCountry: "ec",
             separateDialCode: true,
             nationalMode: true,
@@ -332,6 +332,18 @@ const ResgistroView = (prop) => {
 
     });
 
+   /* useEffect(() => {
+        if("geolocation"in navigator){
+            navigator.geolocation.getCurrentPosition(function(position){
+                let lat = position.coords.latitude;
+                let log = position.coords.longitude;
+                console.log(lat,log)
+            })
+        }
+        else{
+            console.log("no soport")
+        }
+    }, []) */
     return (
         <>
             <Modal
@@ -434,8 +446,9 @@ const ResgistroView = (prop) => {
                                                 <div className="input-group mb-3  px-0 d-flex justify-content-center ">
 
                                                     <input
+                                                        id="movil"
                                                         name="movil" type="tel"
-                                                        className="m-0 inptFielsd form-control numero" id="movil"
+                                                        className="m-0 inptFielsd form-control numero" 
                                                         size={100}
                                                         placeholder="999 999 999" />
                                                 </div>

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Alert, OverlayTrigger, Tooltip, Form } from "react-bootstrap"
-import { ListarLocalidad, ListarEspacios, GuardarEvento, ActualizarLocalidad } from "utils/Querypanel.js";
+import { ListarLocalidad,  } from "utils/LocalidadesQuery/index.js";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useDispatch, useSelector } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import moment from "moment";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { actualizarDescription } from "utils/userQuery";
+import { ListarEspacios } from "utils/EspaciosQuery/index.js";
 const Modalupdate = (props) => {
     const { show, Setshow, evento } = props;
     let usedispatch = useDispatch()

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Modal, ProgressBar, OverlayTrigger, Tooltip, Button } from "react-bootstrap"
 import { AptualizarLocalida } from "utils/Querypanel"
-import { GuardarLocalidad } from "utils/Querypanel"
+import { GuardarLocalidad } from "utils/LocalidadesQuery/index.js"
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 const TabunoView = (props) => {

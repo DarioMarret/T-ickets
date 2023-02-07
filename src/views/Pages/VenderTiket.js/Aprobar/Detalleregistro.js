@@ -17,7 +17,7 @@ import { Edit, Delete, Visibility, Summarize } from '@mui/icons-material';
 import { Listarticketporestado } from "utils/userQuery";
 import { carrusel } from "views/Pages/Flasdeticket/imagenstatctic";
 import { ChangeCircle } from "@mui/icons-material";
-import { ListarLocalidad } from "utils/Querypanel";
+import { ListarLocalidad } from "utils/LocalidadesQuery/index.js";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { ValidarToken } from "utils/Querycomnet";
 import { eliminartiket } from "utils/pagos/Queripagos";

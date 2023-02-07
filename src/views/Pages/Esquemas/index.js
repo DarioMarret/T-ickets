@@ -2,7 +2,7 @@
 import { array } from "prop-types"
 import React, { useEffect, useState } from "react"
 import { Accordion } from "react-bootstrap"
-import { ListarLocalidad } from "utils/Querypanel"
+import { ListarLocalidad } from "utils/LocalidadesQuery/index.js"
 import Form from 'react-bootstrap/Form';
 import './index.css'
 import { QRCodeCanvas } from "qrcode.react"

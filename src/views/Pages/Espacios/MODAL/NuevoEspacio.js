@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Modal } from "react-bootstrap"
-import { GuardarEspacio, ActualizarEspacio } from "utils/Querypanel"
+import { GuardarEspacio, ActualizarEspacio } from "utils/EspaciosQuery/index.js"
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 const NewEspacioView = (props) => {

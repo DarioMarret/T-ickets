@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-import { CancelarSubscriptor } from "utils/Querypanel";
+import { CancelarSubscriptor } from "utils/SuscritorQuery";
 
 import SweetAlert from 'react-bootstrap-sweetalert';
 // react-bootstrap components

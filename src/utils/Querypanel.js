@@ -3,15 +3,7 @@ import { id } from "date-fns/locale"
 import { Host } from "./constantes"
 
 /**Listar Suscritorea */
-export const GetSuscritores = async () => {
-    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listas_suscriptor", {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-        }
-    })
-    return data
-}
+
 
 /**Listar Roles */
 export const GetRoles = async () => {
@@ -35,31 +27,8 @@ export const Loginadmin = async (parms) => {
     return data
 }
 
-/**Editar subscritores */
-export const EditarSuscrito = async (id, parms) => {
-    console.log(parms, id)
-    const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/actualizar_suscriptor/" + id, parms, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-        }
-    })
-    console.log(data)
-    return data
-}
-/**
- * * Eliminar suscritor especifico
- */
-export const EliminarSuscrito = async (id) => {
-    const { data } = await axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_suscriptor/" + id, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-        }
-    })
-    return data
 
-}
+
 /**
  * Crear nuevo suscritor
  */
@@ -74,18 +43,7 @@ export const CrearSuscritor = async (parms) => {
     // console.log(data)
     return data
 }
-export const CancelarSubscriptor = async (id) => {
-    //console.log("query",id)   
-    const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/cancelation_suscriptor/" + id, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
-        }
-    })
-    //console.log("query",data)
-    return data
-}
 export const ListarTikets = async () => {
     const { data } = await axios.get("https://rec.netbot.ec/pdfqr/api/v1/szchat/listar/")
     return data
@@ -100,7 +58,7 @@ export const ListarConcierto = async (parms) => {
     })
     return data
 }
-
+/*
 export const GuardarEspacio = async (parms) => {
     const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/gusdar_espacio", parms, {
         headers: {
@@ -123,6 +81,7 @@ export const ListarEspacios = async () => {
     return data
 }
 /** Verificar error 500 internal server error */
+/*
 export const EliminarEspacios = async (parms) => {
     const { data } = await axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_espacio/" + parms, {
         headers: {
@@ -142,20 +101,9 @@ export const ActualizarEspacio = async (parms) => {
         }
     })
     return data
-}
+}*/
 
-export const GuardarLocalidad = async (parms) => {
-    console.log(parms)
-    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/guardar_localidad", parms, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-
-
-        }
-    })
-    return data
-}
+/*
 export const ListarLocalidad = async (parms) => {
     const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_localidades/" + parms, {
         header: {
@@ -165,6 +113,7 @@ export const ListarLocalidad = async (parms) => {
     })
     return data
 }
+*/
 export const localidaandespacio = async (parms, id) => {
     const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_localidades_id_espacio/" + parms + "/" + id, {
         header: {

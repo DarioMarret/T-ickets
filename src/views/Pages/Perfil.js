@@ -3,11 +3,12 @@ import { getCliente } from "utils/DatosUsuarioLocalStorag";
 import { DatosUsuariocliente } from "utils/constantes";
 import moment from "moment";
 import 'moment-timezone'
-import { CancelarSubscriptor, EditarSuscrito } from "utils/Querypanel";
+import { CancelarSubscriptor } from "utils/SuscritorQuery";
+import { EditarSuscrito } from "utils/SuscritorQuery";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
 import { useDispatch, useSelector } from "react-redux";
 import { deletesuscrito, addususcritor } from "StoreRedux/Slice/SuscritorSlice";
-import { GetSuscritores } from "utils/Querypanel";
+import { GetSuscritores } from "utils/SuscritorQuery";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Badge, Tooltip } from "@mui/material";
@@ -26,9 +27,6 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import {
   Card,
   Form,
-  InputGroup,
-  Navbar,
-  Nav,
   Container,
   Row,
   Col
@@ -132,11 +130,8 @@ function PerfilPage(props) {
         color: 'bg-danger',
         estado: 'Error',
       })
-      console.log("Error al Actualizar-->", error)
-
+      //console.log("Error al Actualizar-->", error)
     }
-
-
   }
   const successAlert = () => {
     setAlert(

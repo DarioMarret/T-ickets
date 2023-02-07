@@ -21,7 +21,7 @@ export default function ListaderegistroView(props) {
     const [datos, setDatos] = useState([])
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
-        listarRegistropanel({ "cedula": cedula }).then(
+        listarRegistropanel({ "cedula": user.cedula }).then(
             e => {
                 if(!e.success){
                     return
@@ -126,9 +126,10 @@ export default function ListaderegistroView(props) {
                                 </Tooltip> :
                                 ""
                             }
-                            {row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone" && row.original.estado_pago != "Pagado" && row.original.estado != "Expirado" ?
+                            {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone"  ?
                                 row.original.link_pago != null? 
                                 <a className=" btn btn-default btn-sm"
+                                
                                         onClick={() => usedispatch(setModal({ nombre: 'pago', estado: row.original.link_pago }))}
                                  >
                                     <i className="fa fa-credit-card" ></i>

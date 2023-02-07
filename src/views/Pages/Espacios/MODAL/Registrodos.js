@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Modal } from "react-bootstrap"
-import { ListarLocalidad } from "utils/Querypanel"
+import { ListarLocalidad } from "utils/LocalidadesQuery/index.js"
 import TabtresView from './Componetes/Localidadopctiontres'
 import TabunoViews from './Componetes/Localidadopctionuno'
 import TabdosViews from './Componetes/Localidadopctiondos'

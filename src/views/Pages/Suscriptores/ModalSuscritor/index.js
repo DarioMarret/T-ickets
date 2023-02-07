@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Toast } from "react-bootstrap";
 import { getCedula } from "utils/DatosUsuarioLocalStorag";
-import { EditarSuscrito, CrearSuscritor } from "utils/Querypanel";
+import {  CrearSuscritor } from "utils/Querypanel";
+import { EditarSuscrito } from "utils/SuscritorQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 const ModalSuscritoView = (props) => {
