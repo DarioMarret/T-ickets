@@ -50,6 +50,8 @@ import { correlativosadd } from "utils/Querypanelsigui";
 
 import ReporteView from "views/Components/MODAL/ModalReporte";
 import { Seleccionaruserlista } from "utils/userQuery";
+import { agregaReserva } from "utilsstile.js/guardarEventos";
+import { Listarticketporestado } from "utils/userQuery";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -218,13 +220,14 @@ export default function StoreTickesViews() {
     const evento = async () => {
         try {
             const data = await cargarEventoActivo("")
+            const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
+            setEvento(filtro.sort(sorter))
             const susct = await GetSuscritores()
             //console.log(data, susct)
             const Datos = await ListarTikets()
-            const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
             const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
             if (data != null) {
-                setEvento(filtro.sort(sorter))
+
                 if (Datos.data) setInfo({
                     ...info,
                     Ticket: Datos.data.length,
@@ -355,6 +358,67 @@ export default function StoreTickesViews() {
                 return false;
             }
         }
+    }
+    function registraParticipante(codigo, nombre) {
+        let user = getDatosUsuariosLocalStorag().cedula
+        Listarticketporestado("1314780774").then(oup => {
+            if (!oup.success) {
+                return
+            }
+            if (oup.data.length == 0) {
+                agregaReserva(codigo,nombre).then(Ouput => {
+                    console.log("resrva", Ouput)
+                }).catch(err => {
+                    console.log(err)
+                })
+                return
+            }
+            if (codigo == "ZKZX3U"){
+                if (!oup.data.some(e => e.codigoEvento == "ZKZX3U" )) {
+                    console.log(oup.data.some(e => e.codigoEvento == "ZKZX3U" ))
+                    agregaReserva(codigo, nombre).then(Ouput => {
+                        //console.log("resrva", Ouput)
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                    return
+                }
+         
+                else {
+                    console.log("ya tiene boleos")
+                }
+                return
+            }
+            if (codigo == "6E1FO4"){
+                if (!oup.data.some(e => e.codigoEvento == "6E1FO4")) {
+                    console.log(oup.data.some(e => e.codigoEvento == "6E1FO4"))
+                    agregaReserva(codigo, nombre).then(Ouput => {
+                        //console.log("resrva", Ouput)
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                    return
+                }
+                else {
+                    console.log("ya tiene boleos")
+                }
+                return
+            }
+
+           
+            
+
+          //  console.log("boletos", oup)
+            /* agregaReserva("").then(Ouput => {
+                 console.log("resrva",Ouput)
+             }).catch(err => {
+                 console.log(err)
+             })*/
+        }).catch(err => {
+            console.log(err)
+
+        })
+
     }
     function cerrnewsuscr(e) {
         usedispatch(setModal({ nombre: e, estado: '' }))
@@ -576,7 +640,9 @@ export default function StoreTickesViews() {
                                                             <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{e.fechaConcierto}</span></p>
                                                             <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.lugarConcierto + " " + e.lugarConcierto} </span></p>
                                                             <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}  </span></p>
-                                                            <p className="btn btn-primary float-center" onClick={() => venderevento(e)} > Vender entrada</p>
+                                                            {e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U" ? <p className="btn btn-primary float-center" onClick={() => registraParticipante(e.codigoEvento, e.nombreConcierto)} >Participa </p> :
+                                                                <p className="btn btn-primary float-center" onClick={() => venderevento(e)} > Vender entrada</p>
+                                                            }
                                                         </div>
                                                     </div>
 

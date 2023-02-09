@@ -182,6 +182,8 @@ function Example() {
        "SEN2-KBRN": 2,
         "SAUCES BOYZ": 2,
         "TODO-O-NADA": 1,
+        "participantes-jessi":0,
+        "participante-quito":0
     }
     const showDatos = () => {
         try {
@@ -194,7 +196,7 @@ function Example() {
                         <td className="text-xs text-center ">#{item.sillas.padStart(10, 0)}</td>
                         <td className="text-xs text-center">${item.valor}</td>
                         <td className="text-xs text-center">${precio[item.localidad ].toFixed(2)}</td>
-                        <td className="text-xs text-center">{item.fechaCreacion}</td>
+                        <td className="text-xs text-center"></td>
                         <td className="text-xs text-center">
                             <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
@@ -277,9 +279,8 @@ function Example() {
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         Listarticketporestado(user.cedula).then(ouput => {
-            console.log(ouput)
+            //console.log(ouput)
             if (!ouput.success) {
-
                 return
             }
             setTikes(ouput.data)

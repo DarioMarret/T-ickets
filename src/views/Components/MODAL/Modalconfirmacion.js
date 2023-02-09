@@ -69,7 +69,7 @@ const ModalConfima = (prop) => {
 
         //if(e.files.size)
         let tamaño = parseInt(e.files[0].size / 1024);
-        if (tamaño < 1024 || tamaño == 1024 ) {
+        if (tamaño < 1024 || tamaño == 1024) {
             //console.log(e.files[0].size)
             setcomprobante({
                 ...comproba,
@@ -78,9 +78,9 @@ const ModalConfima = (prop) => {
 
         }
         else {
-            
 
-           // console.log(tamaño, e.files[0].size, (1024 <= tamaño))
+
+            // console.log(tamaño, e.files[0].size, (1024 <= tamaño))
             $("#comprobante").val(null);
             $.alert("Pasate el peso maximo")
             return
@@ -107,9 +107,21 @@ const ModalConfima = (prop) => {
     }
     async function onSubmit(e) {
         e.preventDefault();
-        if (comproba.numeroTransaccion == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
-        if (comproba.banco == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
-        if (comproba.link_comprobante[0] == undefined) usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del Comprobante', color: 'bg-danger', estado: 'Datos vacios' }))
+       // console.log(comproba.numeroTransaccion.trim().length < 3)
+        if (comproba.numeroTransaccion.trim().length <= 3) {
+            usedispatch(setToastes({ show: true, message: 'complete toda la información del número del recibo', color: 'bg-danger', estado: 'Datos vacios' }))
+            return
+        }
+       
+        if (comproba.banco == "") {
+
+            usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
+            return
+        }
+        if (comproba.link_comprobante[0] == undefined) {
+            usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del Comprobante', color: 'bg-danger', estado: 'Datos vacios' }))
+            return
+        }
         if (isNaN(comproba.numeroTransaccion.trim())) usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobante ', color: 'bg-danger', estado: 'Datos vacios' }))
         else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
             try {
@@ -123,7 +135,7 @@ const ModalConfima = (prop) => {
                         "id": clienteInfo() ? modal.estado.id : modal.estado.id,
                         "numeroTransaccion": comproba.numeroTransaccion,
                         "cedula": clienteInfo() != null ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
-                        "estado":  "Comprobar" 
+                        "estado": "Comprobar"
                     }
                     registraPagos(reporte).then(ouput => {
                         if (ouput.success) {
@@ -175,18 +187,18 @@ const ModalConfima = (prop) => {
         else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
             try {
                 setEstado(true)
-              //  const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
+                //  const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
                 setTimeout(async function () {
                     const reporte = {
                         "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
-                        "forma_pago": clienteInfo()!=null? spiner:"Deposito",
+                        "forma_pago": clienteInfo() != null ? spiner : "Deposito",
                         "link_comprobante": comproba.link_comprobante,
                         "id": clienteInfo() ? modal.estado.id : modal.estado.id,
                         "numeroTransaccion": comproba.numeroTransaccion,
                         "cedula": clienteInfo() != null ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
-                        "estado":  "Comprobar" 
+                        "estado": "Comprobar"
                     }
-                    
+
                     registraPagos(reporte).then(ouput => {
                         if (ouput.success) {
                             console.log(ouput)
@@ -195,7 +207,7 @@ const ModalConfima = (prop) => {
                             usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
                             usedispatch(setModal({ nombre: '', estado: '' }))
                             setTimeout(function () {
-                              //  window.location.reload()
+                                //  window.location.reload()
                             }, 1000)
 
                         }
@@ -321,130 +333,130 @@ const ModalConfima = (prop) => {
                 </Modal.Header>
                 <Modal.Body className="d-flex align-items-center row">
                     <div className="container d-flex flex-column col-12 ">
-                        {spiner != "Tarjeta" ? 
-                        <form onSubmit={(e) => onSubmit(e)} className="  was-validated">
-                            <div className=" p-1">
-                                <div className="d-none text-center"
-                                >
-                                    <p style={{
-                                        fontWeight: "bold"
-                                    }}>Tiempo restante <span className=" text-danger"> {intervalo}</span> </p>
-
-                                </div>
-                                <h5 className=" font-weight-bold text-danger">Forma de Pagos</h5>
-
-
-
-                                {clienteInfo() != null ?
-                                    <select className="form-select" value={spiner}
-                                        onChange={(g) => setspiner(g.target.value)}
+                        {spiner != "Tarjeta" ?
+                            <form onSubmit={(e) => onSubmit(e)} className="  was-validated">
+                                <div className=" p-1">
+                                    <div className="d-none text-center"
                                     >
-                                        <option value={""} disabled required ></option>
-                                        <option value={"Tarjeta"}>Tarjeta</option>
-                                        <option value={"Deposito"}>Deposito</option>
-                                        <option value={"Efectivo"}>Deposito Efectivo facilito</option>
-                                        <option value={"Transferencia"}>Transeferencia</option>
+                                        <p style={{
+                                            fontWeight: "bold"
+                                        }}>Tiempo restante <span className=" text-danger"> {intervalo}</span> </p>
 
-                                    </select> : <select className="form-select" required value={spiner}
-                                        onChange={(g) => setspiner(g.target.value)}>
-                                        <option value={""} disabled></option>
-                                        <option value={"Efectivo"}>Deposito Efectivo facilito</option>
-                                        <option value={"Deposito"}>Deposito</option>
-                                        <option value={"Transferencia"}>Transeferencia</option>
+                                    </div>
+                                    <h5 className=" font-weight-bold text-danger">Forma de Pagos</h5>
 
-                                    </select>}
-                                <h5 className="mt-1" style={{ fontSize: "1.0em" }}>
-                                    Selecione el banco al que realizó la transferencia
-                                </h5>
-                                {spiner != "Tarjeta" ? <select className="  form-select" required name="banco" value={comproba.banco} onChange={(g) => onhandelChange(g.target)} >
-                                    <option value={""} disabled></option>
-                                    <option value={"Pichincha"}>Banco Pichincha</option>
-                                    <option value={"Guayaquil"}>Banco Guayaquil</option>
-                                    <option value={"Produbanco"}>Banco Produbanco</option>
-                                    <option value={"Pacifico"}>Banco Pacifico</option>
-                                </select> :
-                                    <select className="  form-select" name="banco" required value={comproba.banco} onChange={(g) => onhandelChange(g.target)} ><option value={"Visa"}>Visa</option>
-                                        <option value={""} disabled></option>
-                                        <option value={"Master"}>Mastercar</option>
-                                        <option value={"Diners"}>Diners club</option>
-                                        <option value={"Discover"}>Discover</option>
-                                        <option value={"America"}>America</option>
-                                        <option value={"Alia"}>Alia</option>
-                                    </select>}
-                            </div>
-                            {comproba.banco != "Efectivo" ? <div className=" p-1">
-                                <h5 style={{ fontSize: '1.0em' }}>
-                                    Núemero de Lote
-                                </h5>
-                                <input className=" form-control numero"
-                                    name="numeroTransaccion"
-                                    value={comproba.numeroTransaccion}
-                                    required
-                                    onChange={(e) => onhandelChange(e.target)}
-                                    type={"text"}
-                                />
-                            </div> :
-                                ""}
-                            {comproba.banco == "Efectivo" || comproba.banco == "transferencia" ? <div className=" p-1">
-                                <h5 style={{ fontSize: '1.0em' }}>
-                                    Valor a Cobrar
-                                </h5>
-                                <input className=" form-control numero"
-                                    id="valor"
-                                    placeholder="Dato por definir"
-                                required
-                                    type={"text"}
-                                />
-                            </div> : ""}
-                            {spiner != "Tarjeta" ? <div className="p-1" >
-                                <h5 style={{ fontSize: '1.0em' }}>
-                                    Adjuntar Comprobante ( imagen jpg ó png)
-                                </h5>
-                                <input type="file" accept="image/*" name="comprobante" id="comprobante"
-                                    onChange={(e) => onChange(e.target)}
-                                    required
-                                    className="form-control"
-                                />
-                                <span className=" text-danger">Tamaño Maximo de la imagen un  1MB</span>
-                            </div>
-                                : <div className="p-1" >
-                                    <h5 style={{ fontSize: '1.0em' }}>
-                                        Link de voucher
+
+
+                                    {clienteInfo() != null ?
+                                        <select className="form-select" value={spiner}
+                                            onChange={(g) => setspiner(g.target.value)}
+                                        >
+                                            <option value={""} disabled required ></option>
+                                            <option value={"Tarjeta"}>Tarjeta</option>
+                                            <option value={"Deposito"}>Deposito</option>
+                                            <option value={"Efectivo"}>Deposito Efectivo facilito</option>
+                                            <option value={"Transferencia"}>Transeferencia</option>
+
+                                        </select> : <select className="form-select" required value={spiner}
+                                            onChange={(g) => setspiner(g.target.value)}>
+                                            <option value={""} disabled></option>
+                                            <option value={"Efectivo"}>Deposito Efectivo facilito</option>
+                                            <option value={"Deposito"}>Deposito</option>
+                                            <option value={"Deposito"}>Transferencia</option>
+
+                                        </select>}
+                                    <h5 className="mt-1" style={{ fontSize: "1.0em" }}>
+                                        Selecione el banco al que realizó la transferencia
                                     </h5>
-                                    <input type="text" name="comprobante" id="comprobante"
-                                        onChange={(e) => onhandelChange(e.target)} required
+                                    {spiner != "Tarjeta" ? <select className="  form-select" required name="banco" value={comproba.banco} onChange={(g) => onhandelChange(g.target)} >
+                                        <option value={""} disabled></option>
+                                        <option value={"Pichincha"}>Banco Pichincha</option>
+                                        <option value={"Guayaquil"}>Banco Guayaquil</option>
+                                        <option value={"Produbanco"}>Banco Produbanco</option>
+                                        <option value={"Pacifico"}>Banco Pacifico</option>
+                                    </select> :
+                                        <select className="  form-select" name="banco" required value={comproba.banco} onChange={(g) => onhandelChange(g.target)} ><option value={"Visa"}>Visa</option>
+                                            <option value={""} disabled></option>
+                                            <option value={"Master"}>Mastercar</option>
+                                            <option value={"Diners"}>Diners club</option>
+                                            <option value={"Discover"}>Discover</option>
+                                            <option value={"America"}>America</option>
+                                            <option value={"Alia"}>Alia</option>
+                                        </select>}
+                                </div>
+                                {comproba.banco != "Efectivo" ? <div className=" p-1">
+                                    <h5 style={{ fontSize: '1.0em' }}>
+                                        Número de comprobante
+                                    </h5>
+                                    <input className=" form-control numero"
+                                        name="numeroTransaccion"
+                                        value={comproba.numeroTransaccion}
+                                        required
+                                        onChange={(e) => onhandelChange(e.target)}
+                                        type={"text"}
+                                    />
+                                </div> :
+                                    ""}
+                                {comproba.banco == "Efectivo" || comproba.banco == "transferencia" ? <div className=" p-1">
+                                    <h5 style={{ fontSize: '1.0em' }}>
+                                        Valor a Cobrar
+                                    </h5>
+                                    <input className=" form-control numero"
+                                        id="valor"
+                                        placeholder="Dato por definir"
+                                        required
+                                        type={"text"}
+                                    />
+                                </div> : ""}
+                                {spiner != "Tarjeta" ? <div className="p-1" >
+                                    <h5 style={{ fontSize: '1.0em' }}>
+                                        Adjuntar Comprobante ( imagen jpg ó png)
+                                    </h5>
+                                    <input type="file" accept="image/*" name="comprobante" id="comprobante"
+                                        onChange={(e) => onChange(e.target)}
+                                        required
                                         className="form-control"
                                     />
                                     <span className=" text-danger">Tamaño Maximo de la imagen un  1MB</span>
                                 </div>
-                            }
-                            <div className=" p-1 ">
-                                {modal.nombre == "confirmar" && !clienteInfo() ? <span>
-                                    Una vez confirmado el deposito su ticket sera enviado  {
-                                        GetValores() ? "" : GetValores().envio == "correo " ? "al: correo " + getDatosUsuariosLocalStorag().email : "al: Whatsapp " + getDatosUsuariosLocalStorag().whatsapp
-                                    }
-                                </span> : ''}
-
-                            </div>
-                            <div className="d-flex container justify-content-center  flex-column text-center">
-                                <div>
-                                    {comproba.banco != "Efectivo" && comproba.banco != "transferencia" ?
-
-                                        !estado ? <button className=" btn p-2 btn-success">Confirmar Transferencia</button> : <button disabled className=" btn p-2 btn-success">Confirmar Transferencia</button>
-
-                                        :
-                                        ""
-
-                                    }
-                                    {
-                                        comproba.banco == "transferencia" ? <button className=" btn btn-primary" >Reporte en transferencia </button> : ""
-                                    }
+                                    : <div className="p-1" >
+                                        <h5 style={{ fontSize: '1.0em' }}>
+                                            Link de voucher
+                                        </h5>
+                                        <input type="text" name="comprobante" id="comprobante"
+                                            onChange={(e) => onhandelChange(e.target)} required
+                                            className="form-control"
+                                        />
+                                        <span className=" text-danger">Tamaño Maximo de la imagen un  1MB</span>
+                                    </div>
+                                }
+                                <div className=" p-1 ">
+                                    {modal.nombre == "confirmar" && !clienteInfo() ? <span>
+                                        Una vez confirmado el deposito su ticket sera enviado  {
+                                            GetValores() ? "" : GetValores().envio == "correo " ? "al: correo " + getDatosUsuariosLocalStorag().email : "al: Whatsapp " + getDatosUsuariosLocalStorag().whatsapp
+                                        }
+                                    </span> : ''}
 
                                 </div>
-                                <div>
+                                <div className="d-flex container justify-content-center  flex-column text-center">
+                                    <div>
+                                        {comproba.banco != "Efectivo" && comproba.banco != "transferencia" ?
+
+                                            !estado ? <button className=" btn p-2 btn-success">Confirmar Transferencia</button> : <button disabled className=" btn p-2 btn-success">Confirmar Transferencia</button>
+
+                                            :
+                                            ""
+
+                                        }
+                                        {
+                                            comproba.banco == "transferencia" ? <button className=" btn btn-primary" >Reporte en transferencia </button> : ""
+                                        }
+
+                                    </div>
+                                    <div>
+                                    </div>
                                 </div>
-                            </div>
-                        </form> :
+                            </form> :
                             <form onSubmit={(e) => onSubmitT(e)} className="was-validated">
                                 <div className=" p-1">
                                     <div className="d-none text-center"
@@ -462,7 +474,7 @@ const ModalConfima = (prop) => {
                                         <select className="form-select" value={spiner} required
                                             onChange={(g) => setspiner(g.target.value)}
                                         >
-                                            <option value={""} disabled></option>                                          
+                                            <option value={""} disabled></option>
                                             <option value={"Deposito"}>Deposito</option>
                                             <option value={"Transferencia"}>Transeferencia</option>
 
@@ -515,7 +527,7 @@ const ModalConfima = (prop) => {
                                     <input className=" form-control numero"
                                         id="valor"
                                         placeholder="Dato por definir"
-                                    required
+                                        required
                                         type={"text"}
                                     />
                                 </div> : ""}

@@ -58,7 +58,7 @@ export const eliminarRegistro = async (parms) => {
     }
 }
 export const eliminartiket = async (parms) => {
-    
+
     try {
         let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/eliminarTicketrepetido",
             {
@@ -88,19 +88,11 @@ export const cambiarMetodo = async (parms) => {
         return error
     }
 }
-
-export const cambiaradepoatc = async (parms)=>{
+export const ConsolidarReporte = async (parms) => {
     try {
-        let {data} = await axios.post("",parms,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                }
-            }
-        )
+        let { data } = await axios.post("")
         return data
-    } catch (error) {
-        return  error        
+    } catch (err) {
+        return err
     }
 }

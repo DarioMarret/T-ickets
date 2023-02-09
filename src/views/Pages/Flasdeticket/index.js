@@ -71,6 +71,9 @@ import { Home } from "@mui/icons-material";
 import Noticiamodal from "views/Components/MODAL/Modalnoti.js";
 import { useGetEventosQuery } from "StoreRedux/Slicequery/querySlice.js";
 import { useGetPubicidadQuery } from "StoreRedux/Slicequery/querySlice.js";
+import { Listarticketporestado } from "utils/userQuery.js";
+import { agregaReserva } from "utilsstile.js/guardarEventos.js";
+import Inframene from "views/Components/IFrame/index.js";
 
 const TRACKING_ID = "G-LJN507B5NX"; // G-MCFDXJPD98
 /*ReactGA.initialize(TRACKING_ID);
@@ -411,6 +414,13 @@ const IndexFlas = () => {
     });
   }
   const abrir = async (e) => {
+   
+    if (e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U"){
+      usedispatch(setModal({nombre:"",estado:""}))
+      registraParticipante(e.codigoEvento, e.codigoEvento)
+      
+      return
+    }
 
     sessionStorage.setItem("estadoevento", e.estado)
     setspinervi("")
@@ -666,12 +676,141 @@ const IndexFlas = () => {
     document.getElementById('regeresiondos').innerHTML = " " + hours + "  :  " + minutes + "  :  " + seconds;
 
   }
-  let { data: eventos=[], isLoading }= useGetEventosQuery("ACTIVO")
+  let { data: eventos = [], isLoading } = useGetEventosQuery("ACTIVO")
   let {data:publici=[],isLoading:info}= useGetPubicidadQuery()
   function eventosmodal(){
     !(new Date("02/01/2023 19:10") < new Date()) ? usedispatch(setModal({ nombre: "noticia", estado: "" })) : ""
   }
-  //console.log(eventos)
+  function registraParticipante(codigo, nombre) {
+    let user = getDatosUsuariosLocalStorag().cedula
+    Listarticketporestado(user).then(oup => {
+      setspinervi("")
+      if (!oup.success) {
+        return
+      }
+      if (oup.data.length == 0) {
+        agregaReserva(codigo, nombre).then(Ouput => {
+          if (Ouput.success) {
+            setTimeout(function () {
+              setspinervi("d-none")
+              console.log("aqui")
+              SetSeleccion("Tickets")
+              usedispatch(setToastes({
+                show: true,
+                message: "Ya estas participando en Meet ",
+                color: 'bg-success',
+                estado: "Registro exitoso"
+              }))
+              usedispatch(setModal({ nombre: "pdfsshowpar", estado:"https://flash.t-ickets.com/store/img/img_8242.jpg"}))
+
+            }, 8000)
+          }else{
+            setspinervi("d-none")
+          }
+          console.log("resrva", Ouput)
+         // setspinervi("d-none")
+        }).catch(err => {
+          console.log(err)
+        })
+        return
+      }
+      if (codigo == "ZKZX3U") {
+        if (!oup.data.some(e => e.codigoEvento == "ZKZX3U")) {
+          console.log(oup.data.some(e => e.codigoEvento == "ZKZX3U"))
+          agregaReserva(codigo, nombre).then(Ouput => {
+            if(Ouput.success){
+              setTimeout(function () {
+                setspinervi("d-none")
+                console.log("jessy")
+                SetSeleccion("Tickets")
+                usedispatch(setToastes({
+                  show: true,
+                  message: "Ya estas participando en Meet & Greet Paola",
+                  color: 'bg-success',
+                  estado: "Registro exitoso"
+                }))
+              
+                usedispatch(setModal({ nombre: "pdfsshowpar", estado: "https://flash.t-ickets.com/store/img/img_8242.jpg" }))
+
+              }, 8000)
+            }
+          }).catch(err => {
+            console.log(err)
+          })
+          return
+        }
+
+        else {
+          setspinervi("d-none")
+          console.log("ya tiene boleos")
+          SetSeleccion("Tickets")
+          usedispatch(setToastes({
+            show: true,
+            message: "Ya estas participando en Meet & Greet Paola",
+            color: 'bg-success',
+            estado: "Ya tienes un registro "
+          }))
+        }
+        return
+      }
+      if (codigo == "6E1FO4") {
+        if (!oup.data.some(e => e.codigoEvento == "6E1FO4")) {
+          console.log(oup.data.some(e => e.codigoEvento == "6E1FO4"))
+          agregaReserva(codigo, nombre).then(Ouput => {
+            if (Ouput.success) {
+              setTimeout(function(){
+                setspinervi("d-none")
+                console.log("jessy")
+                //console.log("resrva", Ouput)
+                SetSeleccion("Tickets")
+                usedispatch(setToastes({
+                  show: true,
+                  message: "Ya estas participando en Meet & Greet Jessi",
+                  color: 'bg-success',
+                  estado: "Registro exitoso"
+                }))
+                usedispatch(setModal({ nombre: "pdfsshowpar", estado: "https://flash.t-ickets.com/store/img/img_8242.jpg" }))
+               
+              }, 8000)          
+          }
+          }).catch(err => {
+            console.log(err)
+          })
+          return
+        }
+        else {
+          setspinervi("d-none")
+          console.log("ya tiene boleos")
+          SetSeleccion("Tickets")
+          usedispatch(setToastes({
+            show: true,
+            message: "Ya estas participando en Meet & Greet Jessi",
+            color: 'bg-success',
+            estado: "Ya tienes un registro "
+          }))
+        }
+        return
+      }
+
+
+
+
+      //  console.log("boletos", oup)
+      /* agregaReserva("").then(Ouput => {
+           console.log("resrva",Ouput)
+       }).catch(err => {
+           console.log(err)
+       })*/
+    }).catch(err => {
+      console.log(err)
+
+    })
+
+  }
+
+
+
+
   useEffect(() => {
     //time.current = setInterval(showRemaining, 1000);
     /* addNotification({
@@ -950,7 +1089,7 @@ const IndexFlas = () => {
       </Drawer>
 
 
-
+      <Inframene/>
 
       {modal.nombre == "Modallocalida" ?
         <LocalidadmapViews
@@ -1313,7 +1452,7 @@ const IndexFlas = () => {
                                       bottom: 10,
                                     }}
                                   >
-                                    {e.estado == "PROCESO" ?
+                                    {true ?
                                       <div className="row"
                                       >
                                         {e.id == 17 ?
@@ -1406,20 +1545,30 @@ const IndexFlas = () => {
                                       </div>
                                       : ""}
                                     <div className=" text-center">
-                                      {e.estado == "PROCESO" ?
+                                      {/*e.estado == "PROCESO" ?
                                         <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                           className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? tokenvalida(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
                                           Comprar Entrada</p>
-                                        : ""}
+                                        : ""*/}
                                       {e.estado == "cancelar" ?
                                         <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                           className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? "" : usedispatch(setModal({ nombre: 'registro', estado: null }))} >
                                           {!userauthi.login ? "SUSCRÍBETE" : "YA ESTAS SUSCRITO"}</p> : ""}
-                                      {e.estado == "ACTIVO" ?
+                                      {e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U" ?
+                                        userauthi.login ?   <p className="btn btn-primary float-center" onClick={() => registraParticipante(e.codigoEvento, e.nombreConcierto)} >Participa </p>:
+                                          <p className="btn btn-primary float-center" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: { codigoEvento: e.codigoEvento, nombreConcierto: e.nombreConcierto } })) } >Participa </p> 
+
+                                        : <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
+                                        className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
+                                        {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
+                                       }
+
+                                      
+                                      {/*e.estado == "ACTIVO" ?
                                         <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                           className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
                                           {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
-                                        : ""}
+                                        : ""*/}
                                       {/* 
                                         validar la hora de pago  cuando sea false permita comprar con token
                                         (new Date("01/20/2023 23:59 ")>new Date())

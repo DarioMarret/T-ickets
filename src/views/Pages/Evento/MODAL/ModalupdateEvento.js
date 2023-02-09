@@ -344,7 +344,7 @@ const Modalupdate = (props) => {
             return
         }
         Obtenerlinkimagen(newimagen.mapaConcierto).then(oup=>{
-            if(oup.success){
+            if (oup.success){
                 let info = {
                     "id_evento": neweventos.id_evento,
                     "nombreConcierto": neweventos.nombreConcierto,

@@ -150,7 +150,7 @@ export default function DetalleCompraView() {
             "email": ""
         }).then(ouput => {
             if (ouput.success) setUser({ ...ouput.data })
-            // console.log(ouput)
+             console.log(ouput)
         }).catch(erro => {
             console.log(erro)
         })

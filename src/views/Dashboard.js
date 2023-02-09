@@ -124,13 +124,16 @@ function Dashboard() {
   })
   let [mapas, seTmapa] = useState([])
   let datos = { cedula: "1718910894" }
-  let { data: nuevos, isLoading: boletosloading } = useGetBoletosQuery()
-  let { data: suscrito = [], isLoading: suscritoloading } = useGetSuscritorQuery()
-
+  let { data: nuevos, error: errorboleto, isLoading: boletosloading } = useGetBoletosQuery()
+  let { data: suscrito = [],error:errordis, isLoading: suscritoloading } = useGetSuscritorQuery()
+  console.log(errordis)
   useEffect(() => {
-    !boletosloading && !suscritoloading ? setboletos({ ...boletos, pagados: nuevos.data.filter(e => e.estado == "Pagado").length, suscritor: suscrito.users.length }) : ""
     let arrayRegin = []
-    !suscritoloading ? suscrito.users.forEach(element => {
+  if (errordis!= undefined ){
+    !boletosloading && !suscritoloading  ? setboletos({ ...boletos, pagados: nuevos.data!="" ? nuevos.data.filter(e => e.estado == "Pagado").length : [],
+     suscritor: suscrito.users? suscrito.users.length :0}) : ""
+    
+    !suscritoloading ? suscrito.users?suscrito.users.forEach(element => {
       let dato = element.cedula.substring(0, 2)
 
       // console.log(element.cedula, region[dato])
@@ -144,7 +147,7 @@ function Dashboard() {
         arrayRegin.push({ region: region[dato], cantidad: 1 })
 
       }
-    }) : []
+    }):[] : []}
     //    !suscritoloading ? arrayRegin.map(e=>{return e.cantidad}).reduce():0
     !suscritoloading ? seTmapa(arrayRegin) : ""
     //!suscritoloading ? setboletos({ ...boletos, suscritor: suscrito.users.length }) :""
@@ -480,8 +483,8 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
-        <Row>
-          <Col md="4">
+        <Row className="d-none">
+          <Col md="4"   >
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Email Statistics</Card.Title>
@@ -585,7 +588,7 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
-        <Row>
+        <Row className="d-none">
           <Col md="6">
             <Card>
               <Card.Header>
