@@ -36,6 +36,15 @@ import { Seleccionaruserlista } from "utils/userQuery";
 import { CanjearBoletoRegistro } from "utils/boletos/Queryboleto";
 import { ConsolidarReporte } from "utils/pagos/Queripagos";
 import ConsiliarView from "views/Components/MODAL/ModalConsilia";
+import axios from "axios";
+export const consolidaid = async (parm) => {
+    try {
+        let { data } = await axios.post("")
+        return data
+    } catch (err) {
+        return err
+    }
+}
 export default function DetalleCompraView() {
     let { id } = useParams()
     let history = useHistory()
@@ -140,7 +149,7 @@ export default function DetalleCompraView() {
     useEffect(() => {
         // Push.create('Hello World!')
 
-        let id = JSON.parse(nombres.info_concierto)
+        let concer = JSON.parse(nombres.info_concierto)
         // console.log(id)
         // console.log(nombres.cedula)
 
@@ -152,14 +161,14 @@ export default function DetalleCompraView() {
             "email": ""
         }).then(ouput => {
             if (ouput.success) setUser({ ...ouput.data })
-             console.log(ouput)
+            console.log(ouput)
         }).catch(erro => {
             console.log(erro)
         })
         Listarticketporestado(datos.cedula).then(ouput => {
             if (ouput.success) {
                 let boletos = ouput.data.map((e) => {
-                    if (id.find(f => f.nombreConcierto == e.concierto) != undefined) {
+                    if (concer.find(f => f.nombreConcierto == e.concierto) != undefined) {
                         return { ...e }
                     }
                 }
@@ -171,28 +180,36 @@ export default function DetalleCompraView() {
             console.log(err)
         })
 
-        /*Listarticketporestado(info.cedula).then(ouput => {
-            if (ouput.success) {
-                console.log(ouput)
-                setTikes(ouput.data)
-            }
+       /*consolidaid(id).then(ouput => {
+            console.log(ouput)
         }).catch(err => {
             console.log(err)
         })*/
-        //console.log(info)
+       /* $.ajax({
+            type: "POST",
+            url: "https://brisana.netbot.ec/js/consolidar.php",
+            data: { ...parm },
+            success: function (success) {
+                if (success.status) {
+                    usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
+                    usedispatch(setModal({ nombre: "", estado: "" }))
+                    setTimeout(function () {
+                        history.goBack()
+                        setEstatus(false)
+                    }, 1000)
+                }
+                else {
+                    usedispatch(setToastes({ show: true, message: success.result, color: 'bg-warning', estado: 'Datos vacios' }))
+                    setEstatus(false)
+                }
+            },
+            error: function (error) {
+                console.log(error)
+                setEstatus(false)
 
-        // JSON.parse(nombres.info_concierto)
-        /* nombres.info_concierto ? JSON.parse(nombres.info_concierto).map(e => {
-             // console.log(e)
-             listarRegistropanel({ "cedula": datos[0].cedula })
-             return ListarLocalidad("" + e.id_localidad).then(ouput => {
-                 //  return ouput
-                 return ouput.data[0].nombre
-             }).catch(err => {
-                 return e.id_localidad
-             })
- 
-         }) : ""*/
+            }
+        })*/
+
     }, [])
     //ValidarToken
     function validar() {
@@ -447,32 +464,33 @@ export default function DetalleCompraView() {
     const [rowSelection, setRowSelection] = useState({});
     //console.log(rowSelection)
     //console.log(Object.keys(rowSelection))
-    function quitarrepetifod(){
+    function quitarrepetifod() {
         console.log(Object.keys(rowSelection))
-        let datos = tiketslist.map(e=>{
-            if (!Object.keys(rowSelection).some(f=>f== e.id)){
+        let datos = tiketslist.map(e => {
+            if (!Object.keys(rowSelection).some(f => f == e.id)) {
                 return e.id
-            }            
-        }).filter(g=>g!=undefined)
+            }
+        }).filter(g => g != undefined)
         console.log(datos)
-        if(datos.length>0){
-        eliminartiket([datos]).then(ouput => {
-            // console.log(ouput)
+        if (datos.length > 0) {
+            eliminartiket([datos]).then(ouput => {
+                // console.log(ouput)
 
-            if (ouput.success) {
-                console.log(ouput)
-                window.location.reload()
-                //setTikes(ouput.data)
-            }
-            if (!ouput.success) {
-                console.log(ouput)
-                return 
-            }
+                if (ouput.success) {
+                    console.log(ouput)
+                    window.location.reload()
+                    //setTikes(ouput.data)
+                }
+                if (!ouput.success) {
+                    console.log(ouput)
+                    return
+                }
 
-        }).catch(error => {
-            console.log(error)
-            $.alert("hubo un error no se pudo eliminar este registro")
-        })}
+            }).catch(error => {
+                console.log(error)
+                $.alert("hubo un error no se pudo eliminar este registro")
+            })
+        }
     }
     function Verificaexistencia() {
         Seleccionaruserlista({ "cedula": nombres.cedula }).then(ouput => {
@@ -490,7 +508,7 @@ export default function DetalleCompraView() {
     return (
         <PhotoProvider>
             <div>
-                <ConsiliarView {...nombre}/>
+                <ConsiliarView {...nombre} />
                 <ModalConfima />
                 <ModalConfirma />
                 <div className="row ">
@@ -499,7 +517,7 @@ export default function DetalleCompraView() {
                         {nombres.forma_pago == "Deposito" ?
                             <a className="  rounded-circle btn-primary mx-2 p-2 text-white"
                                 data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
-                                onClick={() => usedispatch(setModal({ nombre: "consiliacion", estado:{...nombres}}))}
+                                onClick={() => usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres } }))}
                             >
                                 <i className=" fa fa-check">  </i>
                             </a> : ""}
@@ -558,13 +576,13 @@ export default function DetalleCompraView() {
                                                     </a> : ""
                                                 }
                                                 {nombres.estado_pago == "Pagado" ? <a className=" btn btn-default btn-sm"
-                                                 
+
                                                 ><i className="bi bi-file-earmark-pdf"></i> Imprimir </a> : ""}
-                                                {nombres.forma_pago=="Deposito"?
+                                                {nombres.forma_pago == "Deposito" ?
                                                     <a className=" btn btn-default btn-sm "
                                                         onClick={ComprobarBoleto}
                                                     ><i className="bi bi-exclamation-octagon text-warning "></i> Cambiar a Comprobar </a>
-                                                :""}
+                                                    : ""}
                                                 <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>
                                                 <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>
                                                 <a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" fa fa-calendar-check-o"> </i> Canjear Boletos</a>
@@ -744,14 +762,14 @@ export default function DetalleCompraView() {
                                             <i className=" fa fa-eye"></i>
                                         </a>
                                     </p>
-                                  {  Object.keys(rowSelection).length>0?
-                                  <div className="col-12 col-md-6 text-center">
-                                    <button className=" btn btn-success" onClick={quitarrepetifod}  >Quitar los repetidos</button>
+                                    {Object.keys(rowSelection).length > 0 ?
+                                        <div className="col-12 col-md-6 text-center">
+                                            <button className=" btn btn-success" onClick={quitarrepetifod}  >Quitar los repetidos</button>
 
-                                  </div>
-                                  :""}
+                                        </div>
+                                        : ""}
                                 </div>
-                                
+
                                 <div className="collapse" id="collapsever">
                                     <div className="container-fluid">
                                         <MaterialReactTable

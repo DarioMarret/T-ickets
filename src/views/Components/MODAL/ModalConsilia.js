@@ -8,11 +8,12 @@ import { PhotoView } from "react-photo-view"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import axios from "axios"
 import { useHistory } from "react-router"
-export const DatosConsolidar = async () => {
+export const DatosConsolidar = async (parms) => {
     try {
-        let { data } = await axios.post("")
+        let { data } = await axios.post("https://brisana.netbot.ec/js/consolidar.php", parms)
+        return data
     } catch (error) {
-
+        return error
     }
 }
 
@@ -33,16 +34,6 @@ export default function ConsiliarView() {
         usuario: "",
         propietario: ""
     })
-    //console.log(props)
-    /* const reporte = {
-         "id_usuario": clienteInfo().id,
-         "forma_pago": nombres.forma_pago,
-         "link_comprobante": nombres.link_comprobante,
-         "id": nombres.id,
-         "numeroTransaccion": nombres.numeroTransaccion,
-         "cedula": nombres.cedula,
-         "estado": "Comprobar"
-     }*/
     function HandeChange(e) {
         // console.log(e.name, e.value)
         setDatos({
@@ -71,6 +62,8 @@ export default function ConsiliarView() {
         }
         else {
             setEstatus(true)
+            console.log(parm)
+            
             $.ajax({
                 type: "POST",
                 url: "https://brisana.netbot.ec/js/consolidar.php",
@@ -95,12 +88,8 @@ export default function ConsiliarView() {
 
                 }
             })
-
         }
-
-
     }
-
     useEffect(() => {
         setDatos({
             comprobante: props.estado.numerTransacion,
