@@ -676,6 +676,7 @@ const IndexFlas = () => {
     document.getElementById('regeresiondos').innerHTML = " " + hours + "  :  " + minutes + "  :  " + seconds;
 
   }
+  //*aqui debe agregarse*/
   let { data: eventos = [], isLoading } = useGetEventosQuery("")
   let {data:publici=[],isLoading:info}= useGetPubicidadQuery()
   function eventosmodal(){

@@ -14,7 +14,7 @@ export const ReservaEvento = async (codigo,nombre) => {
     //  si discrimino lo tengo que guardar  let total = GetMetodo() == "Tarjeta" ? parseFloat(GetValores().total) : parseFloat(GetValores().comision) + parseFloat(GetValores().subtotal)
     let concierto = [1].map((e) => {
         return {
-            "nombreConcierto": nombre,
+            "nombreConcierto": codigo == "6E1FO4" ? "participante-quito" : "participantes-jessi",
             "id_localidad": id_localidad,
             "idespaciolocalida": idespaciolocalida,
             "cantidad": 1,

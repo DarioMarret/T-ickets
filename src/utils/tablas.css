@@ -177,6 +177,10 @@ div.dataTables_wrapper div.dataTables_info {
 
 
 }
+.select2-container--open{
+   
+    z-index: 10000 !important;
+}
 
 .dataTables_wrapper td {
     border: 0.5px solid rgba(0, 0, 0, 0.068);

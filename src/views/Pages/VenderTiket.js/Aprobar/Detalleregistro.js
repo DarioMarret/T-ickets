@@ -34,6 +34,8 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import addNotification from "react-push-notification";
 import { Seleccionaruserlista } from "utils/userQuery";
 import { CanjearBoletoRegistro } from "utils/boletos/Queryboleto";
+import { ConsolidarReporte } from "utils/pagos/Queripagos";
+import ConsiliarView from "views/Components/MODAL/ModalConsilia";
 export default function DetalleCompraView() {
     let { id } = useParams()
     let history = useHistory()
@@ -275,13 +277,49 @@ export default function DetalleCompraView() {
             "estado": "Pagado"
         }
         $.confirm({
-            title: 'Desea consolidar el pago',
+            title: 'Desea Aprobar el pago',
             type: 'blue',
             content: '',
             buttons: {
                 formSubmit: {
                     text: 'Aceptar',
                     btnClass: 'btn-blue',
+                    action: function () {
+                        registraPagos(reporte).then(ouput => {
+                            if (ouput.success) {
+                                history.goBack()
+                                return
+                            }
+                            $.alert("No se registro")
+                        }).catch(err => {
+                        })
+                    }
+                },
+                cancel: function () {
+                    //close
+                },
+            },
+        });
+
+    }
+    function ComprobarBoleto() {
+        const reporte = {
+            "id_usuario": clienteInfo().id,
+            "forma_pago": nombres.forma_pago,
+            "link_comprobante": nombres.link_comprobante,
+            "id": nombres.id,
+            "numeroTransaccion": nombres.numeroTransaccion,
+            "cedula": nombres.cedula,
+            "estado": "Comprobar"
+        }
+        $.confirm({
+            title: 'Desea cambiar a comprobar',
+            type: 'red',
+            content: '',
+            buttons: {
+                formSubmit: {
+                    text: 'Aceptar',
+                    btnClass: 'btn-red',
                     action: function () {
                         registraPagos(reporte).then(ouput => {
                             if (ouput.success) {
@@ -452,12 +490,19 @@ export default function DetalleCompraView() {
     return (
         <PhotoProvider>
             <div>
+                <ConsiliarView {...nombre}/>
                 <ModalConfima />
                 <ModalConfirma />
                 <div className="row ">
                     <h1></h1>
                     <div className="d-flex justify-content-end  px-3">
-
+                        {nombres.forma_pago == "Deposito" ?
+                            <a className="  rounded-circle btn-primary mx-2 p-2 text-white"
+                                data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
+                                onClick={() => usedispatch(setModal({ nombre: "consiliacion", estado:{...nombres}}))}
+                            >
+                                <i className=" fa fa-check">  </i>
+                            </a> : ""}
                         <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
                             data-toggle="tooltip" data-placement="top" title="Generar Boleto"
                             onClick={() => Generarnew()}
@@ -508,11 +553,18 @@ export default function DetalleCompraView() {
                                         <div className="px-2">
                                             <div className="btn-group" >
                                                 {
-                                                    nombres.pdf == "SI" ? <a className=" btn btn-default btn-sm"><i className="bi bi-file-earmark-pdf text-danger"></i>
+                                                    nombres.pdf == "SI" ? <a className=" btn btn-default btn-sm "><i className="bi bi-file-earmark-pdf text-danger"></i>
                                                         {estado[nombres.pdf]}
                                                     </a> : ""
                                                 }
-                                                {nombres.estado_pago == "Pagado" ? <a className=" btn btn-default btn-sm"><i className="bi bi-file-earmark-pdf"></i> Imprimir </a> : ""}
+                                                {nombres.estado_pago == "Pagado" ? <a className=" btn btn-default btn-sm"
+                                                 
+                                                ><i className="bi bi-file-earmark-pdf"></i> Imprimir </a> : ""}
+                                                {nombres.forma_pago=="Deposito"?
+                                                    <a className=" btn btn-default btn-sm "
+                                                        onClick={ComprobarBoleto}
+                                                    ><i className="bi bi-exclamation-octagon text-warning "></i> Cambiar a Comprobar </a>
+                                                :""}
                                                 <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>
                                                 <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>
                                                 <a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" fa fa-calendar-check-o"> </i> Canjear Boletos</a>
