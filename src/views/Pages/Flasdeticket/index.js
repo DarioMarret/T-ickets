@@ -676,7 +676,7 @@ const IndexFlas = () => {
     document.getElementById('regeresiondos').innerHTML = " " + hours + "  :  " + minutes + "  :  " + seconds;
 
   }
-  let { data: eventos = [], isLoading } = useGetEventosQuery("ACTIVO")
+  let { data: eventos = [], isLoading } = useGetEventosQuery("")
   let {data:publici=[],isLoading:info}= useGetPubicidadQuery()
   function eventosmodal(){
     !(new Date("02/01/2023 19:10") < new Date()) ? usedispatch(setModal({ nombre: "noticia", estado: "" })) : ""
