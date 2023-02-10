@@ -1,34 +1,25 @@
 import React, { useEffect, useState } from "react";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Box, Tabs, Tooltip, Tab, Typography } from '@mui/material';
+import { Box, Tabs, Tooltip, Tab } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send, CheckBox, Summarize, Preview, } from '@mui/icons-material';
+import { Edit, Delete, Visibility } from '@mui/icons-material';
 import SweetAlert from "react-bootstrap-sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice.js";
 import { bancos } from "utils/Imgenesutils";
-import { ticketprocesoapro } from "utils/columnasub";
-import moment from "moment";
-import Chart from "react-google-charts";
 import ModalAprobarViews from "./Modalventas";
 import ModalBoletoApro from "./Modalboleto";
-import ListaderegistroView from "views/Pages/Flasdeticket/Listaregistro";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { listaRegistrototal } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useHistory } from "react-router";
-import { setdetalle } from "StoreRedux/Slice/SuscritorSlice";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import ExportToExcel from "utils/Exportelemin";
-import { ExportToCsv } from 'export-to-csv';
-import { listaRegistro } from "utils/columnasub";
-import PiecharViews from "views/Components/Piechar";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
-import { useGetRegistroCompraQuery } from "StoreRedux/Slicequery/querySlice";
 import { setLabels } from "StoreRedux/Slice/SuscritorSlice";
-import { DateRange, DateRangePicker, defaultStaticRanges, defaultInputRanges } from "react-date-range";
+import {  DateRangePicker, defaultStaticRanges, defaultInputRanges } from "react-date-range";
 import * as locales from 'react-date-range/dist/locale'
 import { setCompras } from "StoreRedux/Slice/SuscritorSlice";
 import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
@@ -130,6 +121,8 @@ export default function AprobarView() {
         12: 122,
         13: 67,
         14: 36,
+        23: 0,
+        22: 0
     }
     let localidades = {
         1: "General",
@@ -143,6 +136,8 @@ export default function AprobarView() {
         12: "SEN2 KBRN-Q",
         13: "SAUCES BOYZ-Q",
         14: "TODO-O-NADA-Q",
+        23: "participantes-jessi",
+        22: "participante-quito"
     }
     let Eventos = {
         1: "Ranchenato",
@@ -184,20 +179,9 @@ export default function AprobarView() {
         else {
             return localidades[localidad]
         }
-
     }
     const [datas, setDatas] = useState([])
-    /*const datas = [
-       ["Localida","evento", "ganancias"],
-       ["Work", 11],
-       ["Eat", 2],
-       ["Commute", 2],
-       ["Watch TV", 2],
-       ["Sleep", 7],
-   ];*/
     const sorter = (a, b) => new Date(a.fechaCreacion) < new Date(b.fechaCreacion) ? 1 : -1;
-
-    //console.log(regist)
     function rango(item) {
         if (item.selection.endDate == item.selection.startDate) {
             setTikes(compras)
@@ -208,18 +192,14 @@ export default function AprobarView() {
         else {
             setState([item.selection])
             let newdatos = compras.filter(e => new Date(e.fechaCreacion) >= new Date(item.selection.startDate) && new Date(e.fechaCreacion) <= new Date(item.selection.endDate))
-
             let nuevosValores = []
             let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-
             let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
             let arayReallocalidad = []
             newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                 JSON.parse(elm.info_concierto).map(loc => {
-
                     // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
                     // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: Eventos[loc.id_localidad] })
-
                     arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
 
                     if (parseInt(loc.id_localidad) == 10) {
@@ -239,10 +219,8 @@ export default function AprobarView() {
                     arrayIndividual[dat].cantidad = tota
                 }
                 else {
-                    //   console.log(elm)
                     arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad })
                 }
-
             })
             console.log(arrayIndividual)
             let datos = arrayIndividual.map(f => {
@@ -255,11 +233,7 @@ export default function AprobarView() {
             let order = newdatos.sort(sorter)
             setTikes(order)
         }
-
-
         console.log(item)
-        //   console.log(defaultStaticRanges)
-
     }
     useEffect(() => {
         listarRegistropanel({ "cedula": "" }).then(e => {
@@ -330,7 +304,7 @@ export default function AprobarView() {
         })
         //"dias hasta hoy"
         //"días a partir de hoy"
-       
+
     },
         [])
 
@@ -466,7 +440,7 @@ export default function AprobarView() {
         filename: 'Ticket vendidos',
         useKeysAsHeaders: false,
     };
-   
+
     const options = {
         title: "Ventas Globales Aprobadas",
         pieHole: 0.4,
@@ -533,26 +507,23 @@ export default function AprobarView() {
                     />
                 </div>
                 <div className="d-flex flex-wrap align-items-center justify-content-center mb-5 pb-5 ">
-                    {datas.length > 0 ? 
-                    <PiecharViewsSlect
-                        datas={datas}
-                        options={options}
+                    {datas.length > 0 ?
+                        <PiecharViewsSlect
+                            datas={datas}
+                            options={options}
 
-                    /> : ""}
-                    {datas.length > 0 ? 
-                    <PiecharViewsSlect
-                        datas={datas}
-                        options={options}
-                    /> : ""}
+                        /> : ""}
+                    {datas.length > 0 ?
+                        <PiecharViewsSlect
+                            datas={datas}
+                            options={options}
+                        /> : ""}
                 </div>
             </div>
             <div className=" container row"  >
-
-
-
             </div>
-            {tiketslist.length>0? <div className="container d-flex flex-wrap">
-                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagado").map(f => {
+            {tiketslist.length > 0 ? <div className="container d-flex flex-wrap">
+                {tiketslist.filter(e => e.estado_pago == "Pagado").length > 0 ? <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagado").map(f => {
                     return {
                         ID_Registro: f.id,
                         ID_USUARIO: f.id_usuario,
@@ -570,7 +541,52 @@ export default function AprobarView() {
                         NumerTransacion: f.numerTransacion
                     }
                 })} fileName={"Todos Pagados"} label={"Pagados"} />
-                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pendiente").map(f => {
+                    : ""
+                }
+                {
+                    tiketslist.filter(e => e.estado_pago == "Pendiente").length > 0 ?
+                        <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pendiente").map(f => {
+                            return {
+                                ID_Registro: f.id,
+                                ID_USUARIO: f.id_usuario,
+                                EVENTO: f.concierto,
+                                CEDULA: f.cedula,
+                                METODO: f.forma_pago,
+                                CANTIDAD: f.cantidad,
+                                TOTAL_COMISION: f.Valortotal,
+                                MEDIO: f.detalle,
+                                TOTAL: f.total_pago,
+                                CREACION: f.fechaCreacion,
+                                ESTADO: f.estado_pago,
+                                PAGOMEDIO_LINK: f.link_pago,
+                                COMPROBANTE_LINK: f.link_comprobante,
+                                NumerTransacion: f.numerTransacion
+                            }
+                        })} fileName={"Todos Pendientes"} label={"Pendientes"} /> : ""
+                }
+                {
+                    tiketslist.filter(e => e.estado_pago == "Expirado").length > 0 ?
+                        <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Expirado").map(f => {
+                            return {
+                                ID_Registro: f.id,
+                                ID_USUARIO: f.id_usuario,
+                                EVENTO: f.concierto,
+                                CEDULA: f.cedula,
+                                METODO: f.forma_pago,
+                                CANTIDAD: f.cantidad,
+                                TOTAL_COMISION: f.Valortotal,
+                                MEDIO: f.detalle,
+                                TOTAL: f.total_pago,
+                                CREACION: f.fechaCreacion,
+                                ESTADO: f.estado_pago,
+                                PAGOMEDIO_LINK: f.link_pago,
+                                COMPROBANTE_LINK: f.link_comprobante,
+                                NumerTransacion: f.numerTransacion
+                            }
+                        })} fileName={"Todos Expirados"} label={"Expirados"} /> :
+                        ""}
+                {tiketslist.filter(e => e.estado_pago == "Comprobar").length>0?
+                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Comprobar").map(f => {
                     return {
                         ID_Registro: f.id,
                         ID_USUARIO: f.id_usuario,
@@ -587,44 +603,9 @@ export default function AprobarView() {
                         COMPROBANTE_LINK: f.link_comprobante,
                         NumerTransacion: f.numerTransacion
                     }
-                })} fileName={"Todos Pendientes"} label={"Pendientes"} />
-                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Expirado").map(f => {
-                    return {
-                        ID_Registro: f.id,
-                        ID_USUARIO: f.id_usuario,
-                        EVENTO: f.concierto,
-                        CEDULA: f.cedula,
-                        METODO: f.forma_pago,
-                        CANTIDAD: f.cantidad,
-                        TOTAL_COMISION: f.Valortotal,
-                        MEDIO: f.detalle,
-                        TOTAL: f.total_pago,
-                        CREACION: f.fechaCreacion,
-                        ESTADO: f.estado_pago,
-                        PAGOMEDIO_LINK: f.link_pago,
-                        COMPROBANTE_LINK: f.link_comprobante,
-                        NumerTransacion: f.numerTransacion
-                    }
-                })} fileName={"Todos Expirados"} label={"Expirados"} />
-                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Comprobar").map(f => {
-                    return {
-                        ID_Registro: f.id,
-                        ID_USUARIO: f.id_usuario,
-                        EVENTO: f.concierto,
-                        CEDULA: f.cedula,
-                        METODO: f.forma_pago,
-                        CANTIDAD: f.cantidad,
-                        TOTAL_COMISION: f.Valortotal,
-                        MEDIO: f.detalle,
-                        TOTAL: f.total_pago,
-                        CREACION: f.fechaCreacion,
-                        ESTADO: f.estado_pago,
-                        PAGOMEDIO_LINK: f.link_pago,
-                        COMPROBANTE_LINK: f.link_comprobante,
-                        NumerTransacion: f.numerTransacion
-                    }
-                })} fileName={"Todos Comprobar"} label={"Comprobar"} />
-            </div>:""}
+                })} fileName={"Todos Comprobar"} label={"Comprobar"} />:
+                ""}
+            </div> : ""}
             <div className="   " style={{ minHeight: '250px' }} >
                 <div className='container-fluid  p-0'>
                     <Tabs value={value} onChange={handleChange}

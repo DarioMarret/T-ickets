@@ -251,6 +251,8 @@ let precio = {
     12: 122,
     13: 67,
     14: 36,
+    22:0,
+    23:0
 }
 let precioespacio = {
     9: 169,
@@ -259,6 +261,10 @@ let precioespacio = {
     12: 174,
     13: 172,
     14: 173,
+    15:0,
+    13:0,
+    22:0,
+    23:0
 }
 //precioespacio[e.id_localidad]
 

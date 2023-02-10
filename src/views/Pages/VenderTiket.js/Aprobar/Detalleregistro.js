@@ -51,7 +51,7 @@ export default function DetalleCompraView() {
     let usedispatch = useDispatch()
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
     let info = JSON.parse(sessionStorage.getItem("Suscritorid"))
-    //  console.log(nombres)
+      console.log(nombres)
     const [usuario, setUser] = useState({
         "id": "",
         "cedula": "",

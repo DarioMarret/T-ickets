@@ -74,7 +74,7 @@ import { useGetPubicidadQuery } from "StoreRedux/Slicequery/querySlice.js";
 import { Listarticketporestado } from "utils/userQuery.js";
 import { agregaReserva } from "utilsstile.js/guardarEventos.js";
 import Inframene from "views/Components/IFrame/index.js";
-import EventosView from "./Eventosindex/index.js";
+import PaginasView from "./Eventosindex/index.js";
 import NavbarView from "./Navbarindex/index.js";
 const TRACKING_ID = "G-LJN507B5NX"; 
 const IndexFlas = () => {
@@ -556,8 +556,8 @@ const IndexFlas = () => {
 
   }
   //*aqui debe agregarse*/
-  let { data: eventos = [], isLoading } = useGetEventosQuery("ACTIVO")
-  let {data:publici=[],isLoading:info}= useGetPubicidadQuery()
+  let { data: eventos = [], error: errorevento, isLoading } = useGetEventosQuery("ACTIVO")
+  let { data: publici = [], error: errorPubli, isLoading: info } = useGetPubicidadQuery()
   function eventosmodal(){
     !(new Date("02/01/2023 19:10") < new Date()) ? usedispatch(setModal({ nombre: "noticia", estado: "" })) : ""
   }
@@ -694,6 +694,9 @@ const IndexFlas = () => {
   //    (new Date("02/01/2023 19:10") < new Date()) ? usedispatch(setModal({ nombre: "noticia", estado: "" })) : ""
     const evento =() => {
       try {
+        if(!errorevento== undefined){
+          return
+        }
         if (!eventos == null) { return }
         let datos = isLoading ? eventos :eventos.data
         let publicin = publici
@@ -1135,7 +1138,7 @@ const IndexFlas = () => {
                   <b className="  "> Pagina: {userauthi.page} Eventos {eventoslist.slice(userauthi.inicio, userauthi.final).length} de {eventoslist.length} </b>
                 </h4>
               </div>
-                <EventosView
+                <PaginasView
                   eventoslist={eventoslist}
                 />
             </div>:
@@ -1445,7 +1448,7 @@ const IndexFlas = () => {
               </div>
             
             </div>
-            <EventosView
+            <PaginasView
               eventoslist={eventoslist}
             />
           </div>
