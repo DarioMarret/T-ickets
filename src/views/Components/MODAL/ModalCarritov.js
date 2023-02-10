@@ -307,6 +307,7 @@ const ModalCarritoView = (prop) => {
             // console.log(sleccionlocalidad)
             //console.log(clienteInfo())
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
+            console.log(this.classList[0],consulta)
             //clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/02/2023 08:30") < new Date())
             if (false) {
                 usedispatch(setToastes({
@@ -349,11 +350,12 @@ const ModalCarritoView = (prop) => {
                 return
             }
             else {
-                setSpiner("")
+                setSpiner("d-none")
 
 
                 localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
-                    // console.log(ouput)
+                    console.log(consulta)
+                     console.log(ouput)
                     let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
                     let nuevoObjeto = []
                     if (ouput.data.find(e => e.typo == "fila")) {

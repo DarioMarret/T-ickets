@@ -129,7 +129,7 @@ function Dashboard() {
   console.log(errordis)
   useEffect(() => {
     let arrayRegin = []
-  if (errordis!= undefined ){
+  if (errordis== undefined ){
     !boletosloading && !suscritoloading  ? setboletos({ ...boletos, pagados: nuevos.data!="" ? nuevos.data.filter(e => e.estado == "Pagado").length : [],
      suscritor: suscrito.users? suscrito.users.length :0}) : ""
     
@@ -147,9 +147,10 @@ function Dashboard() {
         arrayRegin.push({ region: region[dato], cantidad: 1 })
 
       }
-    }):[] : []}
+    }):[] : []
     //    !suscritoloading ? arrayRegin.map(e=>{return e.cantidad}).reduce():0
     !suscritoloading ? seTmapa(arrayRegin) : ""
+  }
     //!suscritoloading ? setboletos({ ...boletos, suscritor: suscrito.users.length }) :""
     /* ( async  () =>{
        await createTask({ "cedula": "1718910894" })

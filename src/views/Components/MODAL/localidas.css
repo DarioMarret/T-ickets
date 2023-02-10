@@ -151,6 +151,13 @@ li.agregados {
         width: 100% !important;
     }
 }
+@media (min-width:780px){
+    .img-evento{
+        height: 280px;
+        width: 600px;
+     
+    }
+}
 
 .modal-header {
     background-color: #212529 !important;

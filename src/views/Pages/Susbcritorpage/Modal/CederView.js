@@ -68,7 +68,7 @@ const CederView = () => {
                 color: 'bg-ganger', estado: 'Cambio exitoso '
             }))
         })
-        try {
+       /* try {
             let { data } = await axios.post("https://rec.netbot.ec/ms_login//api/v1/ceder_boleto", ceder, {
 
             }, {
@@ -80,13 +80,7 @@ const CederView = () => {
             console.log(data)
         } catch (error) {
             console.log(error)
-
-        }
-
-
-        //  usedispatch(setModal({ nombre: '', estado: '' }))
-
-
+        }*/
     }
     const hideAlert = () => {
         setAlert(null)
@@ -157,11 +151,11 @@ const CederView = () => {
         })
     }
     useEffect(() => {
-        GetSuscritores().then(oupt => {
+      /*  GetSuscritores().then(oupt => {
             if (oupt.users) setLista([...oupt.users])
         }).catch(erro => {
             console.log(erro)
-        })
+        })*/
 
     }, [estatusModal.nombre == "ceder" ? true : false])
     return (

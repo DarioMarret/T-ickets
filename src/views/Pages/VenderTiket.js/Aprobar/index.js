@@ -330,17 +330,7 @@ export default function AprobarView() {
         })
         //"dias hasta hoy"
         //"días a partir de hoy"
-        let labels = {
-            0: "Días hasta hoy",
-            1: "Días a partir de hoy"
-        }
-
-        //console.log(defaultInputRanges)
-        defaultInputRanges.map((e, i) => {
-            e.label = labels[i]
-            return { ...e }
-        })
-        // console.log(datos)
+       
     },
         [])
 
@@ -476,10 +466,7 @@ export default function AprobarView() {
         filename: 'Ticket vendidos',
         useKeysAsHeaders: false,
     };
-    const csvExporter = new ExportToCsv(csvOptions);
-    const handleExportRows = (rows) => {
-        csvExporter.generateCsv(rows.map((row) => row.original));
-    };
+   
     const options = {
         title: "Ventas Globales Aprobadas",
         pieHole: 0.4,
@@ -497,12 +484,8 @@ export default function AprobarView() {
             key: 'selection'
         }
     ]);
-    function handleSelect(date) {
-        console.log(date); // native Date object
-    }
 
     const [locale, setLocale] = React.useState('es');
-
     const label = {
         0: "Hoy",
         1: "Ayer",
@@ -510,9 +493,16 @@ export default function AprobarView() {
         3: "Ultima semana",
         4: "Este mes",
         5: "Ultimo mes"
-
     }
-    //  let datos = 
+    let labels = {
+        0: "Días hasta hoy",
+        1: "Días a partir de hoy"
+    }
+
+    defaultInputRanges.map((e, i) => {
+        e.label = labels[i]
+        return { ...e }
+    })
     return (
         <>
             {alert}
@@ -525,7 +515,7 @@ export default function AprobarView() {
             }
             <ModalConfima />
             <div className="row py-3">
-                <div className="col-12 col-lg-7 col-md-9 d-flex align-items-center ">
+                <div className=" d-flex align-items-center justify-content-center ">
                     <DateRangePicker
                         editableDateInputs={false}
                         onChange={item => rango(item)}
@@ -539,17 +529,20 @@ export default function AprobarView() {
                                 e.label = label[i]
                                 return { ...e }
                             }),
-
-
                         ]}
                     />
                 </div>
-                <div className="col-12 col-md-5  d-flex align-items-center ">
-                    {datas.length > 0 ? <PiecharViewsSlect
-
+                <div className="d-flex flex-wrap align-items-center justify-content-center ">
+                    {datas.length > 0 ? 
+                    <PiecharViewsSlect
                         datas={datas}
                         options={options}
 
+                    /> : ""}
+                    {datas.length > 0 ? 
+                    <PiecharViewsSlect
+                        datas={datas}
+                        options={options}
                     /> : ""}
                 </div>
             </div>
@@ -558,7 +551,7 @@ export default function AprobarView() {
 
 
             </div>
-            <div className="container d-flex flex-wrap">
+            {tiketslist.length>0? <div className="container d-flex flex-wrap">
                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagado").map(f => {
                     return {
                         ID_Registro: f.id,
@@ -631,7 +624,7 @@ export default function AprobarView() {
                         NumerTransacion: f.numerTransacion
                     }
                 })} fileName={"Todos Comprobar"} label={"Comprobar"} />
-            </div>
+            </div>:""}
             <div className="   " style={{ minHeight: '250px' }} >
                 <div className='container-fluid  p-0'>
                     <Tabs value={value} onChange={handleChange}

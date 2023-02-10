@@ -130,6 +130,12 @@ const Modalupdate = (props) => {
                 img.onerror = () => {
                     setImagen({ ...newimagen, mapaConcierto: '' })
                 }
+            }else{
+                setNewEventos({
+                    ...neweventos,
+                    [e.name]:e.value
+                })
+
             }
         } catch (error) {
             console.log(error)

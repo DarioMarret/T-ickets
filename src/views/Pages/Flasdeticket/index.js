@@ -74,13 +74,11 @@ import { useGetPubicidadQuery } from "StoreRedux/Slicequery/querySlice.js";
 import { Listarticketporestado } from "utils/userQuery.js";
 import { agregaReserva } from "utilsstile.js/guardarEventos.js";
 import Inframene from "views/Components/IFrame/index.js";
-
-const TRACKING_ID = "G-LJN507B5NX"; // G-MCFDXJPD98
-/*ReactGA.initialize(TRACKING_ID);
-ReactGA.hasLoaded();*/
+import EventosView from "./Eventosindex/index.js";
+import NavbarView from "./Navbarindex/index.js";
+const TRACKING_ID = "G-LJN507B5NX"; 
 const IndexFlas = () => {
   ReactGA.initialize(TRACKING_ID);
-  //ReactGA.hasLoaded();
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
   let modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -91,7 +89,6 @@ const IndexFlas = () => {
   })
   const [showDetalle, setDetalle] = useState(false)
   const [repShop, setrepShow] = useState(false);
-  //const [efectShow, efectiOpShow] = useState(false);
   const [spinervi, setspinervi] = useState("d-none")
   const [seleccion, SetSeleccion] = useState("");
   const [showshop, handleClosesop] = useState(false);
@@ -101,7 +98,6 @@ const IndexFlas = () => {
   const [alert, setAlert] = useState(null);
   const [intervalo, setcrono] = useState("")
   const datatime = useRef(null);
-
   const intervalolista = useRef(null)
   const localidadtimer = useRef(null);
   function velocidad() {
@@ -160,44 +156,7 @@ const IndexFlas = () => {
       }
     }, 1000);
   }
-  function obtentoken() {
-    setspinervi("")
-    GeneraToken({
-      "cedula": getDatosUsuariosLocalStorag().cedula
-    }).then(ouput => {
-      console.log(ouput)
-      if (ouput.success) {
-        setspinervi("d-none")
-        usedispatch(setToastes({
-          show: true,
-          message: "Recuerda verificar tu bandeja de entrada",
-          color: 'bg-success',
-          estado: "Se Genero su Token de compra con éxito "
-        }))
-      }
-      else {
-        setspinervi("d-none")
-        usedispatch(setToastes({
-          show: true,
-          message: "No puedes Generar token ",
-          color: 'bg-danger',
-          estado: "No se Genero el token "
-        }))
-
-      }
-    }).catch(erro => {
-      setspinervi("d-none")
-      console.log(erro)
-      usedispatch(setToastes({
-        show: true,
-        message: "Verifca o vuelve a intentar",
-        color: 'bg-warning',
-        estado: "Hubo un error "
-      }))
-
-    })
-
-  }
+  
   function filterlocal(id, consulta) {
     let nuevo = []
     id.forEach((elm, i) => {
@@ -226,22 +185,6 @@ const IndexFlas = () => {
         return false;
       }
     }
-  }
-  const consultarlocalidad = () => {
-    let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
-    localidadtimer.current = setInterval(function () {
-      ListarLocalidad().then(ouput => {
-        usedispatch(setToastes({
-          show: true,
-          message: "Recuerda verificar tu bandeja de entrada",
-          color: 'bg-success',
-          estado: "Se Genero su Token de compra con éxito "
-        }))
-        //console.log(ouput)
-        // filterlocal(id, ouput.data)
-      }
-      ).catch(exit => console.log(exit))
-    }, 2000);
   }
 
   function detenervelocidad() {
@@ -348,71 +291,7 @@ const IndexFlas = () => {
     Limpiarseleccion()
     LimpiarLocalStore()
   }
-  const tokenvalida = (e) => {
-    console.log(e)
-    $.confirm({
-      title: 'Canjear Token!',
-      type: 'blue',
-      content: '' +
-        '<form action="" className="formName">' +
-        '<div className="container form-group">' +
-        '<label>Ingrese su token de compra</label>' +
-        '<input  type="text" placeholder="Token" value="" className="form-control name" required />' +
-        '</div>' +
-        '</form>',
-      buttons: {
-        formSubmit: {
-          text: 'Canjear',
-          btnClass: 'btn-blue',
-          action: function () {
-            var name = this.$content.find('.name').val();
-            if (!name) {
-              $.alert('Ingese su token');
-              return false;
-            }
-            setspinervi("")
-            ValidarToken().then(ouput => {
-              if (ouput.success) {
-                sessionStorage.setItem("Tokencom", ouput.data)
-                usedispatch(setToastes({
-                  show: true,
-                  message: "Recuerda tienes 10 minutos para comprar luego tu token sera inválido",
-                  color: 'bg-success',
-                  estado: "Token verificado con éxito "
-                }))
-                abrir(e)
-                return
-              }
-              usedispatch(setToastes({
-                show: true,
-                message: "El token no es válido o ya espiro",
-                color: 'bg-danger',
-                estado: "Error de token"
-              }))
-
-            }).catch(erro => {
-
-            })
-            //validar el token que llega
-            //$.alert('Email ' + name);
-          }
-        },
-        cancel: function () {
-          //close
-        },
-      },
-      onContentReady: function () {
-        // bind to events
-        var jc = this;
-        this.$content.find('form').on('submit', function (e) {
-          // if the user submits the form by pressing enter in the fiel
-          //console.log(e)
-          e.preventDefault();
-          jc.$$formSubmit.trigger('click'); // reference the button and click it
-        });
-      }
-    });
-  }
+  
   const abrir = async (e) => {
    
     if (e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U"){
@@ -677,7 +556,7 @@ const IndexFlas = () => {
 
   }
   //*aqui debe agregarse*/
-  let { data: eventos = [], isLoading } = useGetEventosQuery("")
+  let { data: eventos = [], isLoading } = useGetEventosQuery("ACTIVO")
   let {data:publici=[],isLoading:info}= useGetPubicidadQuery()
   function eventosmodal(){
     !(new Date("02/01/2023 19:10") < new Date()) ? usedispatch(setModal({ nombre: "noticia", estado: "" })) : ""
@@ -708,8 +587,6 @@ const IndexFlas = () => {
           }else{
             setspinervi("d-none")
           }
-          console.log("resrva", Ouput)
-         // setspinervi("d-none")
         }).catch(err => {
           console.log(err)
         })
@@ -761,8 +638,6 @@ const IndexFlas = () => {
             if (Ouput.success) {
               setTimeout(function(){
                 setspinervi("d-none")
-                console.log("jessy")
-                //console.log("resrva", Ouput)
                 SetSeleccion("Tickets")
                 usedispatch(setToastes({
                   show: true,
@@ -770,8 +645,7 @@ const IndexFlas = () => {
                   color: 'bg-success',
                   estado: "Registro exitoso"
                 }))
-                usedispatch(setModal({ nombre: "pdfsshowpar", estado: "https://flash.t-ickets.com/store/img/img_8242.jpg" }))
-               
+                usedispatch(setModal({ nombre: "pdfsshowpar", estado: "https://flash.t-ickets.com/store/img/img_8242.jpg" }))      
               }, 8000)          
           }
           }).catch(err => {
@@ -792,16 +666,7 @@ const IndexFlas = () => {
         }
         return
       }
-
-
-
-
-      //  console.log("boletos", oup)
-      /* agregaReserva("").then(Ouput => {
-           console.log("resrva",Ouput)
-       }).catch(err => {
-           console.log(err)
-       })*/
+      
     }).catch(err => {
       console.log(err)
 
@@ -829,12 +694,9 @@ const IndexFlas = () => {
   //    (new Date("02/01/2023 19:10") < new Date()) ? usedispatch(setModal({ nombre: "noticia", estado: "" })) : ""
     const evento =() => {
       try {
-        //AGREGAR ESTADO
-       // const data = await cargarEventoActivo("ACTIVO")
         if (!eventos == null) { return }
         let datos = isLoading ? eventos :eventos.data
         let publicin = publici
-      //  console.log(info)
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         
@@ -922,13 +784,7 @@ const IndexFlas = () => {
     }, 6000)*/
 
   }, [isLoading, info])
-  /* function registronew(){
-     ReactGA.event({
-       category: "Registrado",
-       action: "registro",
-       label: "Button",
-     })
-   }*/
+
   function regsitronew() {
     usedispatch(setModal({ nombre: 'registro', estado: "" }))
     ReactGA.event({
@@ -937,15 +793,12 @@ const IndexFlas = () => {
       label: "Button",
     })
   }
-
   function eventocarrusel(e) {
     let datos = e.split("-")
     userauthi.login ? abrir({
       "nombreConcierto": datos[2],
       "codigoEvento": datos[0],
       "lugarConcierto": datos[1],
-
-
     }) :
       usedispatch(setModal({
         nombre: 'loginpage', estado: {
@@ -976,63 +829,14 @@ const IndexFlas = () => {
 
     <>
       <Noticiamodal />
-      <nav className="navbar border-bottom border-dark shadow navbar-expand-lg  navbar-dark    py-1"
-        style={{
-          backgroundColor: "#311C7C"
-        }}
-
-      >
-
-
-
-        <div className="container-fluid col-lg-8 py-0   ">
-          <a className="navbar-brand py-1  " aria-label="TICKETS" href="#">
-            <img src={icon} className="img-fluid p-0" alt="" style={{
-              height: 70
-            }} />
-          </a>
-
-          <button className="navbar-toggler  " data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            onClick={() => setVisible(!visible)}
-            aria-label="Toggle navigation" type="button">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-
-          <div className=" collapse navbar-collapse   " id="navbarSupportedContent"
-          >
-            <ul className=" navbar-nav  mb-2 mb-lg-0 navbar-nav  ml-md-auto  align-items-lg-center">
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#" onClick={() => SetSeleccion("")}>Inicio</a>
-              </li>
-              <li className="nav-item active  py-0 mx-lg-1" aria-current="page" onClick={() => SetSeleccion("")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <a className=" nav-link" href="#nuevoseventos"
-                  style={{ height: 70 }}>Eventos</a>
-              </li>
-              {userauthi.login ?
-                <li className="nav-item active " aria-current="page" onClick={() => SetSeleccion("Datos")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <a className="nav-link " >Datos</a>
-                </li> : ""
-              }
-              {userauthi.login ?
-                <li className="nav-item active" aria-current="page" onClick={() => SetSeleccion("Tickets")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <a className="nav-link " href="#">Tickets</a>
-                </li> : ""
-              }
-              {!userauthi.login ? <li className="  nav-item">
-                <a className=" btn btn-outline-nuevo  rounded-7 " href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i>
-                  <img src={avatar} className=" img-fluid"
-                    style={{
-                      height: 25
-                    }} />
-                </i> </a>
-              </li> : <li className="  nav-item">
-                <a className=" btn btn-outline-nuevo rounded-7  " href="#" onClick={salir}> Salir <i className="fa fa-window-close"></i> </a>
-              </li>}
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <NavbarView
+        icon={icon}
+        setVisible={setVisible}
+        visible={visible}
+        SetSeleccion={SetSeleccion}
+        salir={salir}
+      />
+     
       <Drawer
         anchor="left"
         PaperProps={{
@@ -1044,11 +848,9 @@ const IndexFlas = () => {
             backgroundColor: "#311C7C"
           }
         }}
-
         open={false}
         onClose={() => setVisible(!visible)}>
         <div className=" container-fluid">
-
         </div>
         <div className="">
           <ul className="nav nav-pills flex-column mb-auto">
@@ -1088,10 +890,7 @@ const IndexFlas = () => {
         </List>
 
       </Drawer>
-
-
       <Inframene/>
-
       {modal.nombre == "Modallocalida" ?
         <LocalidadmapViews
           intervalo={intervalo}
@@ -1115,7 +914,6 @@ const IndexFlas = () => {
           setListarCarritoDetalle={setListarCarritoDetalle}
           listarCarritoDetalle={listarCarritoDetalle}
         /> : ''}
-
       {
         modal.nombre == "ModalPago" ? <ModalPago intervalo={intervalo} detenervelocidad={detenervelocidad} para={para} setModalPago={setModalPago} modalPago={modalPago} setDatoToas={setDatoToas} /> : null
       }
@@ -1136,28 +934,25 @@ const IndexFlas = () => {
         setrepShow={setrepShow}
         comprar={sololimpiarlocal} />
       {alert}
-
       <ModalLogin
         showLogin={showLogin}
         setShowLogin={setShowLogin}
         abrir={abrir}
       />
-
       <ModalFacilitoView />
-
       <Iframe
         setEstadoFrame={modal.nombre == "pago" ? true : false}
         url={modal.estado}
         intervalo={intervalo}
         detener={detenervelocidad}
       />
-
       {/* header */}
-      {publicidad.length > 0 ? <div className="container-fluid   px-0" style={{
+      {publicidad.length > 0 ? 
+      <div className="container-fluid   px-0" style={{
         minHeight: '300px'
       }}>
         <Swiper
-          className="AnimatedSlides "
+          className="AnimatedSlides"
           parallax={true}
           loop={publicidad.length > 1 ? true : false}
           autoHeight={true}
@@ -1314,7 +1109,8 @@ const IndexFlas = () => {
               }) : ''
           }
         </Swiper>
-      </div> : <div className="container-fluid  p-0">
+      </div> : 
+      <div className="container-fluid  p-0">
         <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '300px', backgroundImage: `url(${header})` }}>
           <div className="container w-100 h-100 px-0">
             <div className="container btn-group-vertical  h-100 text-center px-0">
@@ -1328,16 +1124,21 @@ const IndexFlas = () => {
         </div>
       </div>}
       {/* eventos */}
-      {seleccion == "" ?
+      {seleccion ==""?
         <div className="container-fluid " id="nuevoseventos">
           <div className="container p-3">
-            <div className="row flex-wrap-reverse justify-content-center" id="accordion">
-              <div className="col-12 col-lg-9">
+            <div className="row  justify-content-center" id="accordion">
+              <EventosView
+                eventoslist={eventoslist}
+              />
+              <div className="col-12 col-lg-12">
                 <div className="row  p-0">
                   {eventoslist.length > 0 ?
-                    eventoslist.map((e, i) => {
+                    eventoslist.slice(userauthi.inicio,userauthi.final).map((e, i) => {
                       return (
-                        <div className="col-12 mx-auto my-3" id={"evento" + e.id} key={i}>
+                        <div className="col-12 col-md-6 mx-auto my-3" id={"evento" + e.id} key={i}
+                    
+                        >
                           <a id={"headingThree" + e.id} className="collapsed evento eventoss" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7  d-flex justify-content-center px-0">
@@ -1401,10 +1202,12 @@ const IndexFlas = () => {
                                 <i className="bi bi-cart-fill"></i>
                                 COMPRAR
                               </Button>
-                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md  btn-hover img-evento " alt="" />
+                              <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md  btn-hover img-evento " alt="" 
+                               
+                              />
                             </div>
                           </a>
-                          <div className="collapse container mt-4 px-0" aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">
+                          <div className="collapse float-end container mt-4 px-0" aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">
                             <div className="card row d-flex flex-row card-body rounded-7 py-5">
                               {e.estado == "PROCESO" ?
                                 <div className="col-12  text-center pb-n2  ">
@@ -1555,6 +1358,7 @@ const IndexFlas = () => {
                                         <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                           className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? "" : usedispatch(setModal({ nombre: 'registro', estado: null }))} >
                                           {!userauthi.login ? "SUSCRÍBETE" : "YA ESTAS SUSCRITO"}</p> : ""}
+
                                       {e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U" ?
                                         userauthi.login ?   <p className="btn btn-primary float-center" onClick={() => registraParticipante(e.codigoEvento, e.nombreConcierto)} >Participa </p>:
                                           <p className="btn btn-primary float-center" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: { codigoEvento: e.codigoEvento, nombreConcierto: e.nombreConcierto } })) } >Participa </p> 
@@ -1627,6 +1431,9 @@ const IndexFlas = () => {
                   </div>
                 </div>
               </div>
+              <EventosView
+                eventoslist={eventoslist}
+              />
             </div>
           </div>
           <div className="container p-3 d-none d-md-none  d-xl-block">
@@ -1670,11 +1477,8 @@ const IndexFlas = () => {
         </div> : ''}
       {userauthi.login && seleccion == "Tickets" ? <div className="container p-2"> <Tikes /></div> : ""}
       {userauthi.login && seleccion == "Datos" ? <div className="container p-2"><PerfilPage datosPerson={datosPerson} setDatoToas={setDatoToas} /></div> : ""}
-
       {/* flotter*/}
       <Footer logofla={logofla} />
-
-
       <Modalterminos />
       <ModalConfima
         setrepShow={setrepShow}
@@ -1718,13 +1522,6 @@ const IndexFlas = () => {
 
         </div>
       </div>
-
-
-      <div className="col-9" id="imprimecomprobante">
-
-      </div>
-
-
       <TOAST
         Toastestado={Toastestado}
         setDatoToas={setDatoToas}

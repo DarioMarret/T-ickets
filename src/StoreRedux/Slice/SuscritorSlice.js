@@ -11,9 +11,12 @@ const initialState = {
         pagados: "",
         inpagos: ""
     },
-    tabps:0,
-    labels:[],
-    compras:[]
+    inicio: 0,
+    final: 4,
+    page: 1,
+    tabps: 0,
+    labels: [],
+    compras: []
 }
 
 const SubscritorSlice = createSlice({
@@ -43,21 +46,26 @@ const SubscritorSlice = createSlice({
         setItervalo: (state, action) => {
             state.intervalo = action.payload.intervalo
         },
-        setdetalle:(state,action)=>{
+        setdetalle: (state, action) => {
             state.subscritor = { ...action.payload }
         },
-        setTabs:(state,action)=>{
-            state.tabps= action.payload.number
+        setTabs: (state, action) => {
+            state.tabps = action.payload.number
         },
-        setLabels:(state,action)=>{
-            state.labels= action.payload.labels
+        setLabels: (state, action) => {
+            state.labels = action.payload.labels
         },
-        setCompras:(state,action)=>{
-            state.compras= action.payload.compras
+        setCompras: (state, action) => {
+            state.compras = action.payload.compras
+        },
+        setPagination: (state, action) => {
+            state.inicio = action.payload.inicio,
+            state.final = action.payload.final,
+            state.page = action.payload.page
         }
 
     }
 
 })
-export const { addususcritor, setLabels, setCompras,deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad,setTabs, deleteloclidad, setdetalle } = SubscritorSlice.actions;
+export const { addususcritor, setLabels, setPagination, setCompras, deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad, setTabs, deleteloclidad, setdetalle } = SubscritorSlice.actions;
 export default SubscritorSlice.reducer
