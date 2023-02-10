@@ -63,7 +63,7 @@ export default function ConsiliarView() {
         else {
             setEstatus(true)
             console.log(parm)
-            
+
             $.ajax({
                 type: "POST",
                 url: "https://brisana.netbot.ec/js/consolidar.php",
@@ -162,10 +162,13 @@ export default function ConsiliarView() {
                         </div>
                         <div className="row">
                             <div className="col-12 col-md-6 py-1">
-                                <h5 style={{ fontSize: '1.0em' }}>
+                                {datos.metodo == "Deposito" ?<h5 style={{ fontSize: '1.0em' }}>
                                     Banco
-                                </h5>
-                                <select className=" form-control form-select" required
+                                </h5> : 
+                                <h5 style={{ fontSize: '1.0em' }}>
+                                    Tarjeta
+                                </h5>}
+                                {datos.metodo == "Deposito" ? <select className=" form-control form-select" required
                                     value={datos.banco}
                                     name="banco"
                                     onChange={(e) => HandeChange(e.target)}
@@ -175,7 +178,18 @@ export default function ConsiliarView() {
                                     <option value="Produbanco" >Produbanco</option>
                                     <option value="Pacifico" >Pacifico</option>
                                     <option value="Guayaquil" >Pacifico</option>
-                                </select>
+                                </select> :
+                                    <select className=" form-control form-select" required
+                                        value={datos.banco}
+                                        name="banco"
+                                        onChange={(e) => HandeChange(e.target)}
+                                    >
+                                        <option value={""}></option>
+                                        <option value="Visa" >Visa</option>
+                                        <option value="Master card" >Master card</option>
+                                        <option value="Alias" >Alias</option>
+                                        <option value="Guayaquil" >Pacifico</option>
+                                    </select>}
                             </div>
                             <div className="col-12 col-md-6  py-1">
                                 <h5 style={{ fontSize: '1.0em' }}>

@@ -147,17 +147,18 @@ li.agregados {
         border-top: 20px !important;
     }
     .img-evento {
-        height: 115px !important;
+        height: 135px !important;
         width: 100% !important;
     }
 }
+/*
 @media (min-width:780px){
     .img-evento{
         height: 280px;
-        width: 600px;
+       
      
     }
-}
+}*/
 
 .modal-header {
     background-color: #212529 !important;

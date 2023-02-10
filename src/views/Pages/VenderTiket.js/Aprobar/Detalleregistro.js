@@ -74,7 +74,18 @@ export default function DetalleCompraView() {
         "Pagado": "label label-success",
         "Expirado": "label label-danger"
     }
-
+    const [coniliacion, setConsilia] = useState({
+        Valor: "",
+        banco: "",
+        comprobante: "", cuenta: "",
+        fecha: "",
+        id: "",
+        id_registro: "",
+        imagen: "",
+        metodo: "",
+        propietario: "",
+        usuario: ""
+    })
     const Eliminara = (parm) => {
         console.log(parm)
         $.confirm({
@@ -111,6 +122,7 @@ export default function DetalleCompraView() {
         });
 
     }
+    //cons
     const [tiketslist, setTikes] = useState([])
     const [setDatos, setlocalida] = useState()
     function generaPDF(row) {
@@ -180,35 +192,53 @@ export default function DetalleCompraView() {
             console.log(err)
         })
 
-       /*consolidaid(id).then(ouput => {
-            console.log(ouput)
-        }).catch(err => {
-            console.log(err)
-        })*/
-       /* $.ajax({
-            type: "POST",
-            url: "https://brisana.netbot.ec/js/consolidar.php",
-            data: { ...parm },
+        $.ajax({
+            type: "GET",
+            url: "https://brisana.netbot.ec/js/listar.php?id=" + id,
             success: function (success) {
                 if (success.status) {
-                    usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
-                    usedispatch(setModal({ nombre: "", estado: "" }))
-                    setTimeout(function () {
-                        history.goBack()
-                        setEstatus(false)
-                    }, 1000)
+                    let info = success.result[0]
+                    setConsilia({...info})
+                    console.log(success)
                 }
                 else {
-                    usedispatch(setToastes({ show: true, message: success.result, color: 'bg-warning', estado: 'Datos vacios' }))
-                    setEstatus(false)
+                    console.log(success)
                 }
             },
             error: function (error) {
                 console.log(error)
-                setEstatus(false)
 
             }
-        })*/
+        })
+        /*consolidaid(id).then(ouput => {
+             console.log(ouput)
+         }).catch(err => {
+             console.log(err)
+         })*/
+        /* $.ajax({
+             type: "POST",
+             url: "https://brisana.netbot.ec/js/consolidar.php",
+             data: { ...parm },
+             success: function (success) {
+                 if (success.status) {
+                     usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
+                     usedispatch(setModal({ nombre: "", estado: "" }))
+                     setTimeout(function () {
+                         history.goBack()
+                         setEstatus(false)
+                     }, 1000)
+                 }
+                 else {
+                     usedispatch(setToastes({ show: true, message: success.result, color: 'bg-warning', estado: 'Datos vacios' }))
+                     setEstatus(false)
+                 }
+             },
+             error: function (error) {
+                 console.log(error)
+                 setEstatus(false)
+ 
+             }
+         })*/
 
     }, [])
     //ValidarToken
@@ -504,7 +534,7 @@ export default function DetalleCompraView() {
             console.log(err)
         })
     }
-    //Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
+
     return (
         <PhotoProvider>
             <div>
@@ -519,7 +549,7 @@ export default function DetalleCompraView() {
                                 data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
                                 onClick={() => usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres } }))}
                             >
-                                <i className=" fa fa-check">  </i>
+                                <i className="fa fa-info-circle">  </i>
                             </a> : ""}
                         <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
                             data-toggle="tooltip" data-placement="top" title="Generar Boleto"
@@ -543,7 +573,7 @@ export default function DetalleCompraView() {
                                 <i className=" fa fa-check">  </i>
                             </a> : ""}
                         <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
-                            data-toggle="tooltip" data-placement="top" title="atras"
+                            data-toggle=" " data-placement="top" title="atras"
                             onClick={() => history.goBack()}
                         >
                             <i className=" fa fa-arrow-left">  </i>
@@ -560,10 +590,11 @@ export default function DetalleCompraView() {
                                                     fontWeight: "bold"
                                                 }}
                                             >{usuario.nombreCompleto}</h4>
-                                            <div>
-                                                <span className={estado[nombres.estado_pago]}>
+                                            <div className="d-flex flex-column ">
+                                                <span className={"pb-1 "+estado[nombres.estado_pago]}>
                                                     {nombres.estado_pago}
                                                 </span>
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -630,6 +661,11 @@ export default function DetalleCompraView() {
                                             {nombres.fechaCreacion} <br></br>
                                             #{id} <br></br>
                                             {nombres.forma_pago}<br></br>
+                                            {nombres.forma_pago=="Deposito"?
+                                            <span className="">
+                                                {coniliacion.comprobante!=""?"Consolidado":"Sin Consolidar"}
+                                            </span>:
+                                            ""}
                                         </div>
                                     </div>
                                 </div>

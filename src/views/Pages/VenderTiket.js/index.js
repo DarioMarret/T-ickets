@@ -52,6 +52,8 @@ import ReporteView from "views/Components/MODAL/ModalReporte";
 import { Seleccionaruserlista } from "utils/userQuery";
 import { agregaReserva } from "utilsstile.js/guardarEventos";
 import { Listarticketporestado } from "utils/userQuery";
+import { useGetSuscritorQuery } from "StoreRedux/Slicequery/querySlice";
+import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -138,82 +140,6 @@ export default function StoreTickesViews() {
     const hideAlert = () => {
         setAlert(null);
     };
-    const borrar = async (e) => {
-        try {
-            setPrecios({
-                precios: [],
-                pathmapa: [],
-                mapa: ''
-            })
-
-            LimpiarLocalStore()
-            usedispatch(borrarseleccion({ vacio: [] }))
-            sessionStorage.setItem(listaasiento, JSON.stringify([]))
-            let obten = await listarpreciolocalidad(e.codigoEvento)
-            sessionStorage.consierto = e.nombreConcierto
-            const listalocal = await ListarLocalidad()
-            let localidades = await cargarMapa()
-            sessionStorage.eventoid = e.codigoEvento
-            if (obten.data.length > 0) {
-                let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-                let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-                let localidad = JSON.parse(mapa[0].localidad)
-                let path = JSON.parse(mapa[0].pathmap)
-                let newprecios = obten.data.map((e, i) => {
-                    let color = localidad.filter((f, i) => f.nombre == e.localidad)
-                    e.color = color[0].color
-                    e.idcolor = color[0].id
-                    e.typo = color[0].tipo
-                    return e
-                })
-                console.log(mapa)
-                let colornuevo = mapalocal.map((L) => {
-                    if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
-                        L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)]
-                        L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
-                        L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
-                        L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
-                        L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
-                        return L
-                    }
-                })
-                let pathnuevo = path.map((L) => {
-                    if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
-                        return L
-                    }
-                })
-                sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
-                    return e.id
-                }))]))
-                usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
-                let nuevosdatos = {
-                    precios: newprecios,
-                    pathmapa: pathnuevo.filter((e) => e != undefined),
-                    mapa: mapa[0].nombre_mapa
-                }
-                sessionStorage.eventoid = e.codigoEvento
-                setPrecios(nuevosdatos)
-                setDatoscon(e)
-                consultarlocalidad()
-                hideAlert()
-                Cargarsillas(colornuevo.filter((e) => e != undefined)).then(elem => {
-                    usedispatch(cargarsilla(elem))
-                    setTimeout(() => {
-
-                        handleClosesop(true)
-                        getVerTienda()
-                    }, 90)
-                }).catch(err => {
-                    console.log(err)
-
-                })
-            }
-
-        } catch (err) {
-            console.log(err)
-        }
-
-    }
     const venderevento = (e) => {
         usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
     }
@@ -423,7 +349,12 @@ export default function StoreTickesViews() {
     function cerrnewsuscr(e) {
         usedispatch(setModal({ nombre: e, estado: '' }))
     }
-    useEffect(() => {
+    let [boletos, setboletos] = useState({
+        pagados: 0,
+        suscritor: 0
+    })
+    let { data: nuevos, error: errorboleto, isLoading: boletosloading } = useGetBoletosQuery()
+     useEffect(() => {
         (async () => {
             await evento()
             Limpiarseleccion()
@@ -442,6 +373,14 @@ export default function StoreTickesViews() {
             }))
         } else {
             popUp.close();
+        }
+         if (errorboleto == undefined) {
+            !boletosloading  ? setboletos({
+                ...boletos, 
+                pagados: nuevos.data != "" ? 
+                nuevos.data.filter(e => e.estado == "Pagado").length :0,
+                suscritor:  0
+            }) : ""
         }
     }, [])
     return (
@@ -504,7 +443,7 @@ export default function StoreTickesViews() {
                                 <Col xs="7">
                                     <div className="numbers">
                                         <p className="card-category">Tickes Vendidos</p>
-                                        <Card.Title as="h4">{info.Ticket}</Card.Title>
+                                        <Card.Title as="h4">{boletos.pagados}</Card.Title>
                                     </div>
                                 </Col>
                             </Row>

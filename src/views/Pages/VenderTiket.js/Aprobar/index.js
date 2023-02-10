@@ -514,7 +514,7 @@ export default function AprobarView() {
                     <ModalBoletoApro /> : ""
             }
             <ModalConfima />
-            <div className="row py-3">
+            <div className="row py-5">
                 <div className=" d-flex align-items-center justify-content-center ">
                     <DateRangePicker
                         editableDateInputs={false}
@@ -532,7 +532,7 @@ export default function AprobarView() {
                         ]}
                     />
                 </div>
-                <div className="d-flex flex-wrap align-items-center justify-content-center ">
+                <div className="d-flex flex-wrap align-items-center justify-content-center mb-5 pb-5 ">
                     {datas.length > 0 ? 
                     <PiecharViewsSlect
                         datas={datas}

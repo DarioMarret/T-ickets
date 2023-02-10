@@ -1127,16 +1127,28 @@ const IndexFlas = () => {
       {seleccion ==""?
         <div className="container-fluid " id="nuevoseventos">
           <div className="container p-3">
+            {eventoslist.length > 4 ?
+              <div className="row mx-auto bg-gradient d-flex justify-content-center px-0 ">
+
+              <div className="col-12 col-lg-12 border-dark mb-3 text-end ">
+                <h4 className=" ">
+                  <b className="  "> Pagina: {userauthi.page} Eventos {eventoslist.slice(userauthi.inicio, userauthi.final).length} de {eventoslist.length} </b>
+                </h4>
+              </div>
+                <EventosView
+                  eventoslist={eventoslist}
+                />
+            </div>:
+            ""}
+            
             <div className="row  justify-content-center" id="accordion">
-              <EventosView
-                eventoslist={eventoslist}
-              />
-              <div className="col-12 col-lg-12">
+              
+              <div className="col-12 col-lg-9">
                 <div className="row  p-0">
                   {eventoslist.length > 0 ?
                     eventoslist.slice(userauthi.inicio,userauthi.final).map((e, i) => {
                       return (
-                        <div className="col-12 col-md-6 mx-auto my-3" id={"evento" + e.id} key={i}
+                        <div className="col-12  mx-auto my-3" id={"evento" + e.id} key={i}
                     
                         >
                           <a id={"headingThree" + e.id} className="collapsed evento eventoss" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
@@ -1210,7 +1222,7 @@ const IndexFlas = () => {
                           <div className="collapse float-end container mt-4 px-0" aria-labelledby={"headingThree" + e.id} id={"collapseid" + e.id} data-parent="#accordion">
                             <div className="card row d-flex flex-row card-body rounded-7 py-5">
                               {e.estado == "PROCESO" ?
-                                <div className="col-12  text-center pb-n2  ">
+                                <div className="col-12 col-lg-9  text-center pb-n2  ">
                                   <p className="" style={{ fontSize: '1.5em', }}><i className="bi bi-calendar-week-fill"></i> <b>Venta:<span >21 de Enero del 2023</span></b></p>
                                 </div> : ""
                               }
@@ -1431,10 +1443,11 @@ const IndexFlas = () => {
                   </div>
                 </div>
               </div>
-              <EventosView
-                eventoslist={eventoslist}
-              />
+            
             </div>
+            <EventosView
+              eventoslist={eventoslist}
+            />
           </div>
           <div className="container p-3 d-none d-md-none  d-xl-block">
             <div className="row d-flex justify-content-center " >

@@ -208,7 +208,7 @@ function Dashboard() {
       <Container fluid>
 
         <Row>
-          <Col lg="3" sm="6">
+          <Col lg="6" sm="12">
             <Card className="card-stats">
               <Card.Body>
                 <Row>
@@ -234,7 +234,7 @@ function Dashboard() {
               </Card.Footer>
             </Card>
           </Col>
-          <Col lg="3" sm="6">
+          <Col lg="6" sm="12">
             <Card className="card-stats">
               <Card.Body>
                 <Row>
@@ -260,7 +260,7 @@ function Dashboard() {
               </Card.Footer>
             </Card>
           </Col>
-          <Col lg="3" sm="6">
+          <Col className="d-none" lg="3" sm="6">
             <Card className="card-stats">
               <Card.Body>
                 <Row>
@@ -286,7 +286,7 @@ function Dashboard() {
               </Card.Footer>
             </Card>
           </Col>
-          <Col lg="3" sm="6">
+          <Col className="d-none" lg="3" sm="6">
             <Card className="card-stats">
               <Card.Body>
                 <Row>

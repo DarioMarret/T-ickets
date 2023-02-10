@@ -31,22 +31,16 @@ const EventosViews = () => {
     try {
       const lista = await ListarEventos("PROCESO")
       if (lista.success) {
-        //let arr = []
-        // console.log(lista.data)
         setEventos([...lista.data.filter((e) => e.codigoEvento != "001")])
       }
     } catch (error) {
       console.log(error)
     }
   }
-  function formatoFecha(fecha) {
-    //let fecha.split()
-  }
   async function Elimna(e) {
     let { codigo, fecha } = e
     var f1 = new Date(fecha);
     var fhoy = new Date();
-    //console.log(fecha,(f1>fhoy));
     if (f1 < fhoy) {
       hideAlert()
       dispatch(setToastes({ show: true, message: 'El evento ya no se puede elimnar', color: 'bg-danger', estado: 'Error' }))

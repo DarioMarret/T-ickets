@@ -6,18 +6,19 @@ export default function EventosView({ ...props }) {
     let page = useSelector(state => state.SuscritorSlice.page)
     let usedispatch = useDispatch()
     const handleChange = (event, value) => {
-        if(value==1){
-            usedispatch(setPagination({ inicio:0, final: 4, page:value }))
+        if (value == 1) {
+            usedispatch(setPagination({ inicio: 0, final: 4, page: value }))
             return
         }
-        let principio = value * 4 
-        usedispatch(setPagination({ inicio: parseInt(principio) / 4 + 2, final: parseInt(principio) / 4 + 5, page: value }))
+        let principio = value * 4
+        usedispatch(setPagination({ inicio: parseInt(principio) / 2, final: parseInt(principio) / 2 + 1, page: value }))
     };
     return (
         <div className=" container-fluid text-end">
             <Box my="2" display="flex" justifyContent="end" >
                 {props.eventoslist.length > 4 ?
-                    <Pagination className="pok" count={Math.round(props.eventoslist.length / 3)}
+                    <Pagination className="pok"
+                        count={Math.round(props.eventoslist.length / 3)}
                         size="large"
                         boundaryCount={5}
                         page={page}
