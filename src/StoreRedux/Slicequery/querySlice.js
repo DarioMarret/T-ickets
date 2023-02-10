@@ -34,10 +34,12 @@ export const sawerg = createApi({
                 method: 'POST',
                 body: parms
             })
-
+        }),
+        getLocalidad:builder.query({
+            query: () =>"/api/v1/listar_localidades/"
         })
 
     })
 })
 export const { useGetEventosQuery, useGetRegistroCompraMutation, useGetPubicidadQuery,useGetBoletosQuery
-,useGetSuscritorQuery } = sawerg
+,useGetSuscritorQuery,useGetLocalidadQuery } = sawerg

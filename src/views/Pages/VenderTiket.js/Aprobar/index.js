@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Box, Tabs, Tooltip, Tab } from '@mui/material';
+import { Box, Tabs, Tooltip, Tab, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Edit, Delete, Visibility } from '@mui/icons-material';
+import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send, CheckBox, Summarize, Preview, } from '@mui/icons-material';
 import SweetAlert from "react-bootstrap-sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice.js";
@@ -23,6 +23,8 @@ import {  DateRangePicker, defaultStaticRanges, defaultInputRanges } from "react
 import * as locales from 'react-date-range/dist/locale'
 import { setCompras } from "StoreRedux/Slice/SuscritorSlice";
 import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
+import { useGetLocalidadQuery } from "StoreRedux/Slicequery/querySlice";
+import { retry } from "@reduxjs/toolkit/dist/query";
 let { cedericon, atencion } = bancos
 export default function AprobarView() {
     let usedispatch = useDispatch()
@@ -152,7 +154,7 @@ export default function AprobarView() {
         13: "Eladio Carrión Quito",
         14: "Eladio Carrión Quito",
     }
-
+    let { data: publici = [], error: errorPubli, isLoading: info } = useGetLocalidadQuery()
     function localidada(evento, localidad) {
         if (evento == "Eladio Carrión Guayaquil") {
             if (localidad == 9 || localidad == 12) {
@@ -236,11 +238,18 @@ export default function AprobarView() {
         console.log(item)
     }
     useEffect(() => {
+        if (errorPubli!=undefined){
+            return
+        }
+        console.log(publici.data)
         listarRegistropanel({ "cedula": "" }).then(e => {
             if (e.data) {
                 let newdatos = e.data.map(row => {
                     let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-                    let valor = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+
+                    let valor = JSON.parse(row.info_concierto).map(e => { 
+                        
+                        return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                     let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                     row.Valortotal = parseFloat(valor)
                     row.cantidad = cantida
@@ -258,7 +267,7 @@ export default function AprobarView() {
 
                         // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
                         // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: Eventos[loc.id_localidad] })
-
+                    //    console.log(publici.data.filter(e => e.id == loc.id_localidad)[0].localidad)
                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
 
                         /*  if (parseInt(loc.id_localidad) == 10) {
