@@ -114,7 +114,6 @@ const ModalConfima = (prop) => {
         }
        
         if (comproba.banco == "") {
-
             usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
@@ -122,7 +121,7 @@ const ModalConfima = (prop) => {
             usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del Comprobante', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        if (isNaN(comproba.numeroTransaccion.trim())) usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobante ', color: 'bg-danger', estado: 'Datos vacios' }))
+        if (isNaN(comproba.numeroTransaccion.trim()) || clienteInfo()==null ) usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobantes ', color: 'bg-danger', estado: 'Datos vacios' }))
         else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
             try {
                 setEstado(true)
@@ -180,7 +179,7 @@ const ModalConfima = (prop) => {
             usedispatch(setToastes({ show: true, message: 'Escribe numero de lote', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        if (isNaN(comproba.numeroTransaccion.trim())) {
+        if (isNaN(comproba.numeroTransaccion.trim())&&clienteInfo()==null ) {
             usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobante ', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
@@ -191,7 +190,7 @@ const ModalConfima = (prop) => {
                 setTimeout(async function () {
                     const reporte = {
                         "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
-                        "forma_pago": clienteInfo() != null ? spiner : "Deposito",
+                        "forma_pago":  "Deposito",
                         "link_comprobante": comproba.link_comprobante,
                         "id": clienteInfo() ? modal.estado.id : modal.estado.id,
                         "numeroTransaccion": comproba.numeroTransaccion,

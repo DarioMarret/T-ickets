@@ -14,7 +14,7 @@ import { registraPagos } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { cambiarMetodo } from "utils/pagos/Queripagos";
 import { useHistory } from "react-router";
-export default function Pagarlink (){
+export default function Pagarlink() {
     let history = useHistory()
     let usedispatch = useDispatch()
     const [estado, setEstado] = useState(false)
@@ -27,9 +27,9 @@ export default function Pagarlink (){
     })
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     let intervalo = useSelector((state) => state.SuscritorSlice.intervalo)
- console.log(modal)
+    console.log(modal)
 
-    
+
     function onhandelChange(e) {
         if (e.name == "comprobante") {
             setcomprobante({
@@ -43,27 +43,25 @@ export default function Pagarlink (){
             })
         }
     }
- 
+
     async function onSubmitT(e) {
         e.preventDefault();
-     
-         if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
+        if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
             try {
                 setEstado(true)
-                //const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
                 setTimeout(async function () {
-                  const reporte ={
-                          "id_usuario": clienteInfo().id,
-                          "forma_pago": "Deposito",
-                          "link_pago": comproba.link_comprobante,
-                          "id": modal.estado.id,
-                          "numeroTransaccion": comproba.numeroTransaccion,
-                          "cedula": modal.estado.cedula,
-                          "estado": "Pagado",
-                          "link_comprobante": ""
+                    const reporte = {
+                        "id_usuario": clienteInfo().id,
+                        "forma_pago": "Deposito",
+                        "link_pago": "",
+                        "id": modal.estado.id,
+                        "numeroTransaccion": comproba.numeroTransaccion,
+                        "cedula": modal.estado.cedula,
+                        "estado": "Pagado",
+                        "link_comprobante": comproba.link_comprobante,
                     }
                     console.log(reporte)
-                   registraPagos(reporte).then(ouput => {
+                    registraPagos(reporte).then(ouput => {
                         console.log(ouput)
                         if (ouput.success) {
                             console.log(ouput)
@@ -85,7 +83,7 @@ export default function Pagarlink (){
                         usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
                     })
 
-                   // console.log(reporte)
+                    // console.log(reporte)
                     setEstado(false)
                 }, 2000)
 
@@ -95,7 +93,7 @@ export default function Pagarlink (){
             }
         }
     }
-    
+
     $(document).ready(function () {
         $(".numero").keypress(function (e) {
             var n = (e = e || window.event).keyCode || e.which,
@@ -104,12 +102,12 @@ export default function Pagarlink (){
         })
     });
 
-  
+
     return (
         <>
 
             <Modal
-                show={modal.nombre=="canjear"?true:false}
+                show={modal.nombre == "canjear" ? true : false}
                 fullscreen={'md-down'}
                 centered
             >
@@ -121,7 +119,7 @@ export default function Pagarlink (){
                     </div>
                     <div className=" float-left " style={{ marginTop: '-45px' }}>
                         <button type="button" className="text-light" onClick={() => usedispatch(setModal({ nombre: "", estado: "" }))} >
-                           X
+                            X
                         </button>
                     </div>
 
@@ -129,9 +127,9 @@ export default function Pagarlink (){
                 <Modal.Body className="d-flex align-items-center row">
                     <div className="container d-flex flex-column col-12 ">
                         <form onSubmit={(e) => onSubmitT(e)} className="was-validated">
-                             <div className="p-1" >
+                            <div className="p-1" >
                                 <h5 style={{ fontSize: '1.0em' }}>
-                                   Ingrese el número de lote
+                                    Ingrese el número de lote
                                 </h5>
                                 <input type="text" name="numeroTransaccion" id="numeroTransaccion"
                                     required
@@ -139,7 +137,7 @@ export default function Pagarlink (){
                                     onChange={(e) => onhandelChange(e.target)}
                                     className="form-control"
                                 />
-                              
+
                             </div>
                             <div className=" p-1">
                                 <h5 style={{ fontSize: '1.0em' }}>
@@ -153,8 +151,8 @@ export default function Pagarlink (){
                                     type={"text"}
                                 />
                             </div>
-                            
-                           
+
+
                             <div className="d-flex container justify-content-center  flex-column text-center">
                                 <div>
                                     {comproba.banco != "Efectivo" && comproba.banco != "transferencia" ?
@@ -175,7 +173,7 @@ export default function Pagarlink (){
                             </div>
                         </form>
                     </div>
-                
+
                     <div className="col-12 text-center">
 
                     </div>

@@ -361,3 +361,58 @@
                    fill: #373435;
                    fill-rule: nonzero
                  }
+
+
+                                    .cls-1 {
+                                      fill: #363435;
+                                    }
+                  
+                                    .cls-1,
+                                    .cls-2,
+                                    .cls-3,
+                                    .cls-4,
+                                    .cls-5,
+                                    .cls-6 {
+                                      fill-rule: evenodd;
+                                    }
+                  
+                                    .cls-2 {
+                                      fill: #949899;
+                                      stroke: #363435;
+                                      stroke-width: 3px;
+                                    }
+                  
+                                    .cls-2,
+                                    .cls-5 {
+                                      stroke-linejoin: round;
+                                    }
+                  
+                                    .cls-3 {
+                                      fill: #747472;
+                                      filter: url(#filter);
+                                    }
+                  
+                                    .cls-4,
+                                    .cls-8 {
+                                      fill: #fff;
+                                    }
+                  
+                                    .cls-5 {
+                                      fill: #4b4b4d;
+                                      stroke: #fff;
+                                      stroke-width: 1px;
+                                    }
+                  
+                                    .cls-6 {
+                                      fill: #a12120;
+                                    }
+                  
+                                    .cls-7,
+                                    .cls-8 {
+                                      font-size: 37.5px;
+                                      text-anchor: middle;
+                                    }
+                  
+                                    .cls-8 {
+                                      font-family: Ebrima;
+                                    }

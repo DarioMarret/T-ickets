@@ -25,7 +25,7 @@ const OpctionLocalidadView = (props) => {
 
                         let datos = mapas.data.filter((e) => e.nombre_espacio == localidaname.nombre)
                         if (datos.length > 0) {
-                                // console.log(datos[0])
+                                console.log(datos[0])
                                 setMaparegistro({ ...datos[0] })
                                 filterNames(datos[0].nombre_mapa.split("-")[0])
                                 setMapaselec(datos[0].nombre_mapa.split("-")[0])
@@ -103,6 +103,7 @@ const OpctionLocalidadView = (props) => {
                                                 array: ''
                                         })
                                         //$('[href*="mapa"]').removeClass('d-none'); 
+                                        window.location.reload()
                                         hideAlert()
                                 }
                                 else
@@ -123,6 +124,7 @@ const OpctionLocalidadView = (props) => {
                                         id: '',
                                         array: ''
                                 })
+                                window.location.reload()
                         }
                 } catch (error) {
                         console.log(error)

@@ -690,9 +690,7 @@ const IndexFlas = () => {
     usedispatch(borrarseleccion({ estado: "seleccionado" })) 
     Limpiarseleccion()
     eventosmodal()
-   // usedispatch(setModal({ nombre: "noticia", estado: "" }))
-  //    (new Date("02/01/2023 19:10") < new Date()) ? usedispatch(setModal({ nombre: "noticia", estado: "" })) : ""
-    const evento =() => {
+     const evento =() => {
       try {
         if(!errorevento== undefined){
           return
@@ -701,12 +699,10 @@ const IndexFlas = () => {
         let datos = isLoading ? eventos :eventos.data
         let publicin = publici
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
-        const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
+        const sorter = (a, b) => a.id > b.id || new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         
          isLoading? "": setEventos(filtro.sort(sorter))
          info?"": setpublicidad(publicin.data)
-        
-         //if (eventos.data == null) setEventos([])
       } catch (error) {
         console.log(error)
       }

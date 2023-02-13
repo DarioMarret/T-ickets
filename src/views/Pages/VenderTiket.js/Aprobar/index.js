@@ -19,7 +19,7 @@ import { eliminarRegistro } from "utils/pagos/Queripagos";
 import ExportToExcel from "utils/Exportelemin";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
 import { setLabels } from "StoreRedux/Slice/SuscritorSlice";
-import {  DateRangePicker, defaultStaticRanges, defaultInputRanges } from "react-date-range";
+import { DateRangePicker, defaultStaticRanges, defaultInputRanges } from "react-date-range";
 import * as locales from 'react-date-range/dist/locale'
 import { setCompras } from "StoreRedux/Slice/SuscritorSlice";
 import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
@@ -200,10 +200,7 @@ export default function AprobarView() {
             let arayReallocalidad = []
             newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                 JSON.parse(elm.info_concierto).map(loc => {
-                    // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-                    // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: Eventos[loc.id_localidad] })
                     arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-
                     if (parseInt(loc.id_localidad) == 10) {
                         nuevosValores.push(loc.id_localidad, loc.nombreConcierto, elm.cedula)
                     }
@@ -238,7 +235,7 @@ export default function AprobarView() {
         console.log(item)
     }
     useEffect(() => {
-        if (errorPubli!=undefined){
+        if (errorPubli != undefined) {
             return
         }
         console.log(publici.data)
@@ -246,10 +243,9 @@ export default function AprobarView() {
             if (e.data) {
                 let newdatos = e.data.map(row => {
                     let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-
-                    let valor = JSON.parse(row.info_concierto).map(e => { 
-                        
-                        return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                    let valor = JSON.parse(row.info_concierto).map(e => {
+                        return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
+                    }).reduce((a, b) => a + b, 0)
                     let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                     row.Valortotal = parseFloat(valor)
                     row.cantidad = cantida
@@ -259,39 +255,25 @@ export default function AprobarView() {
                 console.log(newdatos)
                 let nuevosValores = []
                 let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-
                 let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
                 let arayReallocalidad = []
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     JSON.parse(elm.info_concierto).map(loc => {
-
-                        // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-                        // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: Eventos[loc.id_localidad] })
-                    //    console.log(publici.data.filter(e => e.id == loc.id_localidad)[0].localidad)
                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-
-                        /*  if (parseInt(loc.id_localidad) == 10) {
-                              nuevosValores.push(loc.id_localidad, loc.nombreConcierto, elm.cedula)
-                          }*/
                     })
-
                 })
-                //  console.log(nuevosValores)
                 let arrayIndividual = []
                 console.log(consulat)
                 console.log(arayReallocalidad)
                 arayReallocalidad.forEach(elm => {
                     if (arrayIndividual.some(e => e.id == elm.id)) {
                         let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                        //  let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.precio)
                         let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
                         arrayIndividual[dat].cantidad = tota
                     }
                     else {
-                        //    arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.precio })
                         arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad })
                     }
-
                 })
                 console.log(arrayIndividual)
                 let datos = arrayIndividual.map(f => {
@@ -307,13 +289,9 @@ export default function AprobarView() {
                 usedispatch(setCompras({ compras: order }))
                 return
             }
-            //setTikes([])
         }).catch(err => {
             console.log(err)
         })
-        //"dias hasta hoy"
-        //"días a partir de hoy"
-
     },
         [])
 
@@ -594,26 +572,26 @@ export default function AprobarView() {
                             }
                         })} fileName={"Todos Expirados"} label={"Expirados"} /> :
                         ""}
-                {tiketslist.filter(e => e.estado_pago == "Comprobar").length>0?
-                 <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Comprobar").map(f => {
-                    return {
-                        ID_Registro: f.id,
-                        ID_USUARIO: f.id_usuario,
-                        EVENTO: f.concierto,
-                        CEDULA: f.cedula,
-                        METODO: f.forma_pago,
-                        CANTIDAD: f.cantidad,
-                        TOTAL_COMISION: f.Valortotal,
-                        MEDIO: f.detalle,
-                        TOTAL: f.total_pago,
-                        CREACION: f.fechaCreacion,
-                        ESTADO: f.estado_pago,
-                        PAGOMEDIO_LINK: f.link_pago,
-                        COMPROBANTE_LINK: f.link_comprobante,
-                        NumerTransacion: f.numerTransacion
-                    }
-                })} fileName={"Todos Comprobar"} label={"Comprobar"} />:
-                ""}
+                {tiketslist.filter(e => e.estado_pago == "Comprobar").length > 0 ?
+                    <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Comprobar").map(f => {
+                        return {
+                            ID_Registro: f.id,
+                            ID_USUARIO: f.id_usuario,
+                            EVENTO: f.concierto,
+                            CEDULA: f.cedula,
+                            METODO: f.forma_pago,
+                            CANTIDAD: f.cantidad,
+                            TOTAL_COMISION: f.Valortotal,
+                            MEDIO: f.detalle,
+                            TOTAL: f.total_pago,
+                            CREACION: f.fechaCreacion,
+                            ESTADO: f.estado_pago,
+                            PAGOMEDIO_LINK: f.link_pago,
+                            COMPROBANTE_LINK: f.link_comprobante,
+                            NumerTransacion: f.numerTransacion
+                        }
+                    })} fileName={"Todos Comprobar"} label={"Comprobar"} /> :
+                    ""}
             </div> : ""}
             <div className="   " style={{ minHeight: '250px' }} >
                 <div className='container-fluid  p-0'>

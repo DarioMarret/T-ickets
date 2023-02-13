@@ -54,6 +54,7 @@ import { agregaReserva } from "utilsstile.js/guardarEventos";
 import { Listarticketporestado } from "utils/userQuery";
 import { useGetSuscritorQuery } from "StoreRedux/Slicequery/querySlice";
 import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
+import EventosView from "../Flasdeticket/Eventosindex";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -292,16 +293,16 @@ export default function StoreTickesViews() {
                 return
             }
             if (oup.data.length == 0) {
-                agregaReserva(codigo,nombre).then(Ouput => {
+                agregaReserva(codigo, nombre).then(Ouput => {
                     console.log("resrva", Ouput)
                 }).catch(err => {
                     console.log(err)
                 })
                 return
             }
-            if (codigo == "ZKZX3U"){
-                if (!oup.data.some(e => e.codigoEvento == "ZKZX3U" )) {
-                    console.log(oup.data.some(e => e.codigoEvento == "ZKZX3U" ))
+            if (codigo == "ZKZX3U") {
+                if (!oup.data.some(e => e.codigoEvento == "ZKZX3U")) {
+                    console.log(oup.data.some(e => e.codigoEvento == "ZKZX3U"))
                     agregaReserva(codigo, nombre).then(Ouput => {
                         //console.log("resrva", Ouput)
                     }).catch(err => {
@@ -309,13 +310,13 @@ export default function StoreTickesViews() {
                     })
                     return
                 }
-         
+
                 else {
                     console.log("ya tiene boleos")
                 }
                 return
             }
-            if (codigo == "6E1FO4"){
+            if (codigo == "6E1FO4") {
                 if (!oup.data.some(e => e.codigoEvento == "6E1FO4")) {
                     console.log(oup.data.some(e => e.codigoEvento == "6E1FO4"))
                     agregaReserva(codigo, nombre).then(Ouput => {
@@ -331,10 +332,10 @@ export default function StoreTickesViews() {
                 return
             }
 
-           
-            
 
-          //  console.log("boletos", oup)
+
+
+            //  console.log("boletos", oup)
             /* agregaReserva("").then(Ouput => {
                  console.log("resrva",Ouput)
              }).catch(err => {
@@ -353,8 +354,9 @@ export default function StoreTickesViews() {
         pagados: 0,
         suscritor: 0
     })
+    const datospage = useSelector((state) => state.SuscritorSlice)
     let { data: nuevos, error: errorboleto, isLoading: boletosloading } = useGetBoletosQuery()
-     useEffect(() => {
+    useEffect(() => {
         (async () => {
             await evento()
             Limpiarseleccion()
@@ -374,12 +376,12 @@ export default function StoreTickesViews() {
         } else {
             popUp.close();
         }
-         if (errorboleto == undefined) {
-            !boletosloading  ? setboletos({
-                ...boletos, 
-                pagados: nuevos.data != "" ? 
-                nuevos.data.filter(e => e.estado == "Pagado").length :0,
-                suscritor:  0
+        if (errorboleto == undefined) {
+            !boletosloading ? setboletos({
+                ...boletos,
+                pagados: nuevos.data != "" ?
+                    nuevos.data.filter(e => e.estado == "Pagado").length : 0,
+                suscritor: 0
             }) : ""
         }
     }, [])
@@ -537,7 +539,7 @@ export default function StoreTickesViews() {
                 </Col>
             </Row>
             <Row>
-                <div className="col-12 d-flex flex-column align-items-center "  >
+                <div className="col-12 d-flex d-none flex-column align-items-center "  >
                     <h4 style={{
                         fontWeight: "bold"
                     }} >Conciertos Activos</h4>
@@ -596,6 +598,50 @@ export default function StoreTickesViews() {
                         </Swiper>
 
                     </div>
+                </div>
+                <div className="row d- justify-content-center" id="accordion">
+                    <div className="col-12 col-lg-12 border-dark mb-3 text-end ">
+                        <h4 className=" ">
+                            <b className="  "> Pagina: {datospage.page} Eventos {Eventos.slice(datospage.inicio, datospage.final).length} de {Eventos.length} </b>
+                        </h4>
+                    </div>
+                    <EventosView
+                        eventoslist={Eventos}
+                    />
+
+                    <div className="col-12 col-lg-9">
+                        {Eventos.length > 0 ?
+                            Eventos.slice(datospage.inicio, datospage.final).map((e, i) => {
+                                return (
+                                    <div className="row col-12 py-2 border rounded-7  mx-auto my-3" id={"evento" + e.id} key={i}
+                                    >
+                                        <div className="col-12 col-md-6">
+                                            <div className="d-flex justify-content-end px-4">
+                                                <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md  " alt="" />
+                                            </div>
+                                        </div>
+                                        <div className="col-12 col-md-6">
+                                            <div className="container col-12 text-center" >
+                                                <h1 style={{ fontSize: '1.6em' }}><span id="artista" className="fw-bold">{e.nombreConcierto}</span> </h1>
+                                                <div className="col-12 border border-bottom my-3"></div>
+
+                                                <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{e.fechaConcierto}</span></p>
+                                                <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.lugarConcierto + " " + e.lugarConcierto} </span></p>
+                                                <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}  </span></p>
+                                                {/* onClick={() => registraParticipante(e.codigoEvento, e.nombreConcierto)} */}
+                                                {e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U" ? <p className="btn btn-primary pb-2 float-center"  >Participa </p> :
+                                                    <p className="btn btn-primary pb-2 float-center" onClick={() => venderevento(e)} > Vender entrada</p>
+                                                }
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                )
+                            })
+                            :""}
+
+                    </div>
+
                 </div>
             </Row>
 

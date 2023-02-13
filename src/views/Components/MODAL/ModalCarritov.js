@@ -165,6 +165,7 @@ const ModalCarritoView = (prop) => {
         ).catch(err => console.log(err))*/
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
     function Abririlocalfirt(e) {
+        console.log(e)
         // console.log(sleccionlocalidad.pagados )
         // console.log((sleccionlocalidad.pagados > 10))
         //console.log(sleccionlocalidad)
@@ -211,6 +212,7 @@ const ModalCarritoView = (prop) => {
             return
         }
         if (sleccionlocalidad.pagados >= 10) {
+            console.log("aqui se quedo")
             usedispatch(setToastes({
                 show: true,
                 message: "Están en proceso, o llegaste al limite de compra",
@@ -223,6 +225,7 @@ const ModalCarritoView = (prop) => {
             setSpiner("")
             // console.log(e)
             let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
+            console.log(e.espacio,e.idcolor)
             localidaandespacio(e.espacio, e.idcolor).then(ouput => {
                 // console.log(e.espacio, e.idcolor)
                 // console.log(ouput)
@@ -354,7 +357,7 @@ const ModalCarritoView = (prop) => {
 
 
                 localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
-                    console.log(consulta)
+                    console.log(consulta.espacio, consulta.idcolor)
                      console.log(ouput)
                     let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
                     let nuevoObjeto = []

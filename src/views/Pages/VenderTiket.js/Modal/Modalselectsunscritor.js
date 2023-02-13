@@ -390,7 +390,7 @@ export default function ListaSuscritor(prop) {
                                                         <button className="btn btn-primary" onClick={successAlert} > <i className=" fa fa-check-circle"></i> </button>}
                                                 </div>
                                             </div>
-                                            <div className="col-6">
+                                            <div className="col-12 col-md-6">
                                                 <div className=" input-group mb-3" >
                                                     <div className="input-group-prepend">
                                                         <span className="input-group-text">
@@ -404,7 +404,7 @@ export default function ListaSuscritor(prop) {
                                                     </Form.Select>
                                                 </div>
                                             </div>
-                                            <div className="col-6">
+                                            <div className="col-12 col-md-6 py-sm-2">
                                                 <input id="cedula" type="text"
                                                     className="form-control numero"
                                                     name="cedula"

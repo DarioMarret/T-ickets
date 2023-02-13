@@ -11,14 +11,14 @@ export default function EventosView({ ...props }) {
             return
         }
         let principio = value * 4
-        usedispatch(setPagination({ inicio: parseInt(principio) / 2, final: parseInt(principio) / 2 + 1, page: value }))
+        usedispatch(setPagination({ inicio: parseInt(principio) / 2, final: parseInt(principio)/2 + 4, page: value }))
     };
     return (
         <div className=" container-fluid text-end">
             <Box my="2" display="flex" justifyContent="end" >
                 {props.eventoslist.length > 4 ?
                     <Pagination className="pok"
-                        count={Math.round(props.eventoslist.length / 3)}
+                        count={Math.round(props.eventoslist.length /3)}
                         size="large"
                         boundaryCount={5}
                         page={page}

@@ -19,7 +19,7 @@ const MapadelocalidadViews = (props) => {
                 name: "",
                 color: '#A12121',
         })
-
+console.log(localidaname)
         const [timer, settimer] = useState(false)
 
         const [mapa, setmapa] = useState([])
@@ -123,6 +123,7 @@ const MapadelocalidadViews = (props) => {
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Guardadas correctamente', color: 'bg-success', estado: 'Datos Guardado' }))
                                 console.log(datos)
                                 hideAlert()
+                                window.location.reload()
                         }
                         else {
                                 let valor = {
@@ -131,16 +132,14 @@ const MapadelocalidadViews = (props) => {
                                         "pathmap": getMapacolor(),
                                         "localidad": getLocalidadmapa(),
                                 }
-                                console.log(
-
-                                        valor
-                                )
+                                console.log(valor)
 
                                 let updatedatos = await editarMapa({ ...valores, id: localidadmap.id.toString() })
                                 //console.log({ ...valores, id: localidadmap.id.toString() })
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
                                 // console.log(updatedatos)
                                 hideAlert()
+                                window.location.reload()
                         }
                 } catch (error) {
                         console.log(error)

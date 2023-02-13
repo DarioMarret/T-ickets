@@ -94,19 +94,19 @@ const Modalupdate = (props) => {
         try {
             if (e.name == "imagenConcierto") {
                 // setNewEventos({ ...neweventos, imagenConcierto: e.files[0] })
-                //  console.log(e.files[0])
+                  console.log(e.files)
                 img.src = window.URL.createObjectURL(e.files[0])
                 //   console.log(window.URL.createObjectURL(e.files[0]))
                 //   img.src = window.URL.createObjectURL(e.files[0])
                 img.onload = () => {
-                    setImagen({ ...newimagen, imagenConcierto: e.files ? e.value : '' })
+                    setImagen({ ...newimagen, imagenConcierto: e.files })
                     // console.log(img.width)
                     if (img.width < 1100 || img.height < 400) {
                         e.value = ""
-                        setImagen({ ...newimagen, imagenConcierto: e.files })
+                        //setImagen({ ...newimagen, imagenConcierto: e.files[0] })
                         usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
                     }
-                    else setImagen({ ...newimagen, imagenConcierto: e.files ? e.files : '' })
+                    else setImagen({ ...newimagen, imagenConcierto: e.files  })
                 }
                 img.onerror = () => {
                     setImagen({ ...newimagen, imagenConcierto: '' })
@@ -362,6 +362,7 @@ const Modalupdate = (props) => {
                     "imagenConcierto": neweventos.imagenConcierto,
                     "mapaConcierto": oup.link
                 }
+                console.log("aqui")
                 setTimeout(function () {
                     actualizarDescription(info).then(oup => {
                         if (oup.success) {
@@ -386,15 +387,16 @@ const Modalupdate = (props) => {
 
 
     }
-     function ActualizarImagen(e) {     
+  async    function ActualizarImagen(e) {     
         if (newimagen.imagenConcierto[0] == undefined) {
             usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del evento', color: 'bg-danger', estado: 'Datos vacios' }))
           //  e.target.removeAttribute('disabled')
             return
         }
-        Obtenerlinkimagen(newimagen.imagenConcierto).then(ouput=>{
+        let ouput= await   Obtenerlinkimagen(newimagen.imagenConcierto)
             e.target.setAttribute('disabled', "true");
-            if(ouput.success){
+            console.log(ouput)
+            if (ouput.success){
                 let info = {
                     "id_evento": neweventos.id_evento,
                     "nombreConcierto": neweventos.nombreConcierto,
@@ -406,6 +408,7 @@ const Modalupdate = (props) => {
                     "imagenConcierto": ouput.link,
                     "mapaConcierto": neweventos.mapaConcierto
                 }
+                console.log(info)
                 setTimeout(function(){
                     actualizarDescription(info).then(oup => {
                         if (oup.success) {
@@ -420,9 +423,7 @@ const Modalupdate = (props) => {
 
                 },1000)
             }
-        }).catch(err=>{
-            e.target.removeAttribute('disabled')
-        })
+       
         console.log("evento",newimagen)
     }
     function cerrar(){

@@ -8,7 +8,6 @@ export const columns = [
   {
     accessorKey: 'id',
     header: 'ID',
-
   },
   {
     accessorKey: 'nombre',

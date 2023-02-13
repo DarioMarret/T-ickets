@@ -11,9 +11,9 @@ import NewEspacioView from "./MODAL/NuevoEspacio.js";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import axios from "axios";
 import RegistroViwstab from "./MODAL/Registrodos.js";
-import { columns } from "utils/ColumnTabla.js";
 import { ListarLocalidad } from "utils/LocalidadesQuery/index.js";
 import { EliminarLocalidad } from "utils/Querypanel.js";
+import { columns } from "utils/ColumnTabla.js";
 
 const EventosViews = () => {
   const [localidaname, setLocalidad] = useState({ id: '', nombre: '', descripcion: '' })
@@ -24,21 +24,19 @@ const EventosViews = () => {
   const [listaEsp, setListaEspa] = useState([])
 
   function AgregasSillasMesa(e) {
-
     setLocalidad(e)
-
-
+    sessionStorage.removeItem("mapa")  
     setShowToast(true)
   }
   async function Lista() {
     const cargarLista = await ListarEspacios()
     const { success, data } = cargarLista
     if (success) {
+      console.log(data)
       setListaEspa(data)
     }
   }
   async function Elimnar(e) {
-
     try {
       const listar = await ListarLocalidad()
       if (listar.data.length) {
@@ -49,7 +47,6 @@ const EventosViews = () => {
         if (elimonado.success) {
           await Lista()
           hideAlert()
-          //console.log(elimonado)
         }
       }
       else {
@@ -57,20 +54,10 @@ const EventosViews = () => {
         if (elimonado.success) {
           await Lista()
           hideAlert()
-          // console.log(elimonado)
         }
       }
-
-      //console.log(listar.data.filter(a => a.espacio == e.nombre))
-      // const elimonado = await EliminarEspacios(e.id)
-      /* if (elimonado.success) {
-         await Lista()
-         hideAlert()
-         console.log(elimonado)
-       }*/
     } catch (error) {
       console.log(error)
-
     }
   }
   function Editar(e, estado) {
