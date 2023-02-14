@@ -276,6 +276,9 @@ export default function NoticiasView() {
             setShowca(false)
         }
     }
+    function handelchangeCompos(e){
+
+    }
     const tipoevento = {
         Evento: <div className="row ">
             <div className="row col-12">
@@ -351,15 +354,13 @@ export default function NoticiasView() {
                         />
                     </div>
                 </div>
-                <div className="col-6 d-none">
-                    <label className=" form-label " > Tipo  </label>
+                <div className="col-6 ">
+                    <label className=" form-label " > Imagen version movil  </label>
                     <div className="custom-file" >
-                        <select className=" form-select" id="mas"
-                        >
-                            <option value="" disabled ></option>
-                            <option value="Venta">Venta </option>
-                            <option value="subscripcion">Subscripción</option>
-                        </select>
+                        <input className="  form-control" type="file"
+                            name="redirect"
+                        onChange={(e) => handelchangeComposeventos(e.target)}
+                        />
                     </div>
                 </div>
             </div>

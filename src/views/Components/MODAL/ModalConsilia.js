@@ -47,7 +47,7 @@ export default function ConsiliarView() {
             usuario: user.id,
             comprobante: datos.comprobante,
             imagen: datos.imagen,
-            Valor: datos.banco,
+            Valor: datos.Valor,
             id_registro: props.estado.id,
             cuenta: datos.cuenta,
             banco: datos.banco,
@@ -71,12 +71,8 @@ export default function ConsiliarView() {
                 success: function (success) {
                     
                     if (success.status) {
-                        //usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
-                        usedispatch(setModal({ nombre: "", estado: "" }))
-                        /*setTimeout(function () {
-                            history.goBack()
-                            setEstatus(false)
-                        }, 1000)*/
+                         usedispatch(setModal({ nombre: "", estado: "" }))
+                     
                         $.alert("" + JSON.stringify(success))
                     }
                     else {
@@ -119,6 +115,9 @@ export default function ConsiliarView() {
             show={(props.nombre == "consiliacion")}
         >
             <Modal.Header className=" py-3">
+                <h5>
+                    Consolidar Pago
+                </h5>
                 <button className="close" onClick={() => usedispatch(setModal({ nombre: "", estado: "" }))} >X</button>
             </Modal.Header>
             <Modal.Body>

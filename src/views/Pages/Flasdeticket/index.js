@@ -1041,12 +1041,12 @@ const IndexFlas = () => {
                         width: "100%",
                         height: "auto",
                       }}>
-                        {element.id == 112 ? <div style={{
-                          backgroundImage: "url('" + prubas + "')",
+                        {element.evento  ? <div style={{
+                          backgroundImage: "url('" + element.redirect + "')",
                           ...styleswiper.slideimg
                         }} >
                         </div> : < div style={{
-                          backgroundImage: "url('" + prubasdos + "')",
+                            backgroundImage: "url('" + element.redirect + "')",
                           ...styleswiper.slideimg
                         }} >
                         </div>}

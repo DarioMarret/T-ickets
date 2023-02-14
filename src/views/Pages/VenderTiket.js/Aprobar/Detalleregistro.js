@@ -206,7 +206,8 @@ export default function DetalleCompraView() {
                         Localidad: e.localidad,
                         Valor: e.valor,
                         Estado: e.estado,
-                        Canje: e.canje
+                        Canje: e.canje,
+                        Numero: e.sillas
                     }
                 }))
             }
@@ -514,8 +515,6 @@ export default function DetalleCompraView() {
         });
     }
     const [rowSelection, setRowSelection] = useState({});
-    //console.log(rowSelection)
-    //console.log(Object.keys(rowSelection))
     function quitarrepetifod() {
         console.log(Object.keys(rowSelection))
         let datos = tiketslist.map(e => {
@@ -566,8 +565,8 @@ export default function DetalleCompraView() {
                 <div className="row ">
                     <h1></h1>
                     <div className="d-flex justify-content-end  px-3">
-                        {nombres.forma_pago == "Deposito" ?
-                            <a className="  rounded-circle btn-primary mx-2 p-2 text-white"
+                        {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
+                            <a className="  rounded-circle btn-danger mx-2 p-2 text-white"
                                 data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
                                 onClick={() => usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres } }))}
                             >
@@ -683,8 +682,8 @@ export default function DetalleCompraView() {
                                             {nombres.fechaCreacion} <br></br>
                                             #{id} <br></br>
                                             {nombres.forma_pago}<br></br>
-                                            {nombres.forma_pago == "Deposito" ?
-                                                <span className="">
+                                            {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
+                                                <span className={coniliacion.comprobante != "" ?"p-1 label label-success":""}>
                                                     {coniliacion.comprobante != "" ? "Consolidado" : "Sin Consolidar"}
                                                 </span> :
                                                 ""}
