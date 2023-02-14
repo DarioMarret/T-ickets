@@ -579,7 +579,7 @@ export default function StoreTickesViews() {
                                                             <div className="col-12 border border-bottom my-3"></div>
 
                                                             <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{e.fechaConcierto}</span></p>
-                                                            <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.lugarConcierto + " " + e.lugarConcierto} </span></p>
+                                                            <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.lugarConcierto } </span></p>
                                                             <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}  </span></p>
                                                             {e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U" ? <p className="btn btn-primary float-center" onClick={() => registraParticipante(e.codigoEvento, e.nombreConcierto)} >Participa </p> :
                                                                 <p className="btn btn-primary float-center" onClick={() => venderevento(e)} > Vender entrada</p>

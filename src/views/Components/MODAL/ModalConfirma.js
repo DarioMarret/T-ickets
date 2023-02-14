@@ -53,12 +53,12 @@ export default function Pagarlink() {
                     const reporte = {
                         "id_usuario": clienteInfo().id,
                         "forma_pago": "Deposito",
-                        "link_pago": "",
+                        "link_pago": comproba.link_comprobante,
                         "id": modal.estado.id,
                         "numeroTransaccion": comproba.numeroTransaccion,
                         "cedula": modal.estado.cedula,
                         "estado": "Pagado",
-                        "link_comprobante": comproba.link_comprobante,
+                        "link_comprobante":"" ,
                     }
                     console.log(reporte)
                     registraPagos(reporte).then(ouput => {
@@ -114,7 +114,7 @@ export default function Pagarlink() {
                 <Modal.Header className=" d-flex  rounded-top-4 m-0   bg-dark   justify-content-between align-items-center">
                     <div className="d-flex  container   justify-content-center text-center" >
                         <h3 className=" p-2 ">
-                            Confirmación de Pago
+                            Confirmación de Pago TC
                         </h3>
                     </div>
                     <div className=" float-left " style={{ marginTop: '-45px' }}>

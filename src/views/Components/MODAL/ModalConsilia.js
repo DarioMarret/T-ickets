@@ -69,15 +69,18 @@ export default function ConsiliarView() {
                 url: "https://brisana.netbot.ec/js/consolidar.php",
                 data: { ...parm },
                 success: function (success) {
+                    
                     if (success.status) {
-                        usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
+                        //usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
                         usedispatch(setModal({ nombre: "", estado: "" }))
-                        setTimeout(function () {
+                        /*setTimeout(function () {
                             history.goBack()
                             setEstatus(false)
-                        }, 1000)
+                        }, 1000)*/
+                        $.alert("" + JSON.stringify(success))
                     }
                     else {
+                        //$.alert("" + JSON.stringify(success))
                         usedispatch(setToastes({ show: true, message: success.result, color: 'bg-warning', estado: 'Datos vacios' }))
                         setEstatus(false)
                     }

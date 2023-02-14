@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Pagination, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setPagination } from "StoreRedux/Slice/SuscritorSlice";
@@ -11,7 +10,7 @@ export default function EventosView({ ...props }) {
             return
         }
         let principio = value * 4
-        usedispatch(setPagination({ inicio: parseInt(principio) / 2, final: parseInt(principio)/2 + 4, page: value }))
+        usedispatch(setPagination({ inicio: parseInt(principio) -4, final: parseInt(principio)/2 + 4, page: value }))
     };
     return (
         <div className=" container-fluid text-end">

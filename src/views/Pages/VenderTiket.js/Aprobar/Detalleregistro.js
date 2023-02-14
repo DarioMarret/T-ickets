@@ -37,6 +37,7 @@ import { CanjearBoletoRegistro } from "utils/boletos/Queryboleto";
 import { ConsolidarReporte } from "utils/pagos/Queripagos";
 import ConsiliarView from "views/Components/MODAL/ModalConsilia";
 import axios from "axios";
+import ExportToExcel from "utils/Exportelemin";
 export const consolidaid = async (parm) => {
     try {
         let { data } = await axios.post("")
@@ -51,7 +52,7 @@ export default function DetalleCompraView() {
     let usedispatch = useDispatch()
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
     let info = JSON.parse(sessionStorage.getItem("Suscritorid"))
-      console.log(nombres)
+    console.log(nombres)
     const [usuario, setUser] = useState({
         "id": "",
         "cedula": "",
@@ -124,7 +125,7 @@ export default function DetalleCompraView() {
     }
     //cons
     const [tiketslist, setTikes] = useState([])
-    const [setDatos, setlocalida] = useState()
+    const [boletos, setlocalida] = useState([])
     function generaPDF(row) {
 
         generaTiketspdf({
@@ -167,7 +168,17 @@ export default function DetalleCompraView() {
 
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
         //  console.log(datos)
-        setlocalida(setlocalida(JSON.parse(nombres.info_concierto)))
+      /*  setlocalida(JSON.parse(nombres.info_concierto).map(e => {
+            return {
+                Comprador: nombres.nombreCompleto,
+                Cedula: e.cedula,
+                Evento: e.concierto,
+                Localidad: e.localidad,
+                Valor: e.Valor,
+                Estado: e.estado,
+                Canje: e.canje
+            }
+        }))*/
         buscarcliente({
             "cedula": datos.cedula,
             "email": ""
@@ -187,6 +198,17 @@ export default function DetalleCompraView() {
                 )
                 console.log(boletos.filter(e => e != undefined))
                 setTikes(boletos.filter(e => e != undefined))
+                setlocalida(boletos.filter(e => e != undefined).map(e => {
+                    return {
+                        Comprador: usuario.nombreCompleto,
+                        Cedula: e.cedula,
+                        Evento: e.concierto,
+                        Localidad: e.localidad,
+                        Valor: e.valor,
+                        Estado: e.estado,
+                        Canje: e.canje
+                    }
+                }))
             }
         }).catch(err => {
             console.log(err)
@@ -198,7 +220,7 @@ export default function DetalleCompraView() {
             success: function (success) {
                 if (success.status) {
                     let info = success.result[0]
-                    setConsilia({...info})
+                    setConsilia({ ...info })
                     console.log(success)
                 }
                 else {
@@ -591,10 +613,10 @@ export default function DetalleCompraView() {
                                                 }}
                                             >{usuario.nombreCompleto}</h4>
                                             <div className="d-flex flex-column ">
-                                                <span className={"pb-1 "+estado[nombres.estado_pago]}>
+                                                <span className={"pb-1 " + estado[nombres.estado_pago]}>
                                                     {nombres.estado_pago}
                                                 </span>
-                                               
+
                                             </div>
                                         </div>
                                     </div>
@@ -661,11 +683,11 @@ export default function DetalleCompraView() {
                                             {nombres.fechaCreacion} <br></br>
                                             #{id} <br></br>
                                             {nombres.forma_pago}<br></br>
-                                            {nombres.forma_pago=="Deposito"?
-                                            <span className="">
-                                                {coniliacion.comprobante!=""?"Consolidado":"Sin Consolidar"}
-                                            </span>:
-                                            ""}
+                                            {nombres.forma_pago == "Deposito" ?
+                                                <span className="">
+                                                    {coniliacion.comprobante != "" ? "Consolidado" : "Sin Consolidar"}
+                                                </span> :
+                                                ""}
                                         </div>
                                     </div>
                                 </div>
@@ -761,6 +783,18 @@ export default function DetalleCompraView() {
 
                                 </div> : ""
                             }
+                        </div>
+                        <div className="d-flex">
+                            {boletos.length>0?
+                            <ExportToExcel apiData={boletos.map(e=>{
+                                e.Comprador = usuario.nombreCompleto
+                                return{
+                                    ...e,
+                                    
+                                }
+                            })} fileName={"Boletos: "+usuario.nombreCompleto} label={"Boletos"} />
+                        :""}
+
                         </div>
                         <div className=" table-responsive">
                             <table className="table table-invoice">
