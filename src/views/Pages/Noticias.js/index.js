@@ -32,8 +32,9 @@ export default function NoticiasView() {
     const [show, setShowca] = useState(false)
     const [eventos, setEventos] = useState([])
     const [publicidad, setpublicidad] = useState([])
-    const [img, setImg] = useState("")
-    const [imgen, setimagen] = useState("")
+    const [img, setImg] = useState("");
+    const [imgen, setimagen] = useState("");
+    const [imgmovil,setImagenMo]= useState("");
     const [alert, setAlert] = useState(null)
     const [datos, setDatos] = useState({
         encabezado: '',
