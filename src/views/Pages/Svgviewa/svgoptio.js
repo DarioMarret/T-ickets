@@ -1159,7 +1159,7 @@ const SVGView = ({ text }) => {
                  <path id="" data-name="Rectángulo 1" className="cls-4" d="M342.2,204.943L694.108,249.9,528.719,521.178,167.451,471.054Z" />
                  <path id="" data-name="Rectángulo 2" className="cls-4" d="M392.789,138.047l321.342,41.1-33.316,45.521L360.047,182.918Z" />
                  <path id="" data-name="Rectángulo 2 copia" className="cls-5" d="M392.789,134.047l321.342,41.1-33.316,45.521L360.047,178.918Z" />
-                 <path id="mapas1" data-name="none" className="opciones" d="M341.2,201.943L693.108,246.9,527.719,518.178,166.451,468.054Z" />
+                 <path id="mapasm1"  className="opciones" d="M341.2,201.943L693.108,246.9,527.719,518.178,166.451,468.054Z" />
              </svg >
 
 

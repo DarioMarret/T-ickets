@@ -690,6 +690,9 @@ const LocalidadmapViews = (props) => {
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
             $("#mapas" + e.path).attr("fill", e.fill)
             $("#mapas" + e.path).removeAttr("class")
+          // console.log(e.path)
+            $("#mapas" + e.path).attr("fill", e.fill)
+            $("#mapas" + e.path).removeAttr("class")
         }) : ''
         let producto = {
             localidad: mapath.precio.localidad,

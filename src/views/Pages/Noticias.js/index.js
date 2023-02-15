@@ -34,7 +34,7 @@ export default function NoticiasView() {
     const [publicidad, setpublicidad] = useState([])
     const [img, setImg] = useState("");
     const [imgen, setimagen] = useState("");
-    const [imgmovil,setImagenMo]= useState("");
+    const [imgmovil, setImagenMo] = useState("");
     const [alert, setAlert] = useState(null)
     const [datos, setDatos] = useState({
         encabezado: '',
@@ -109,7 +109,7 @@ export default function NoticiasView() {
                 // let tipo = document.getElementById("mas").value
                 //console.log(tipo)
 
-                if (encabezado == "" || descipcion == "" || fechamax == "" || imgen == "") {
+                if (encabezado == "" || descipcion == "" || fechamax == "" || imgen == "" || imgmovil=="") {
                     usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
                 }
                 else {
@@ -118,18 +118,20 @@ export default function NoticiasView() {
                         let link = await Obtenerlinkimagen(imgen)
                         let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
                         setTimeout(async function () {
+                            let mobil = await Obtenerlinkimagen(imgmovil)
+                            if(mobil){
                             let datas = {
                                 "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"] + "-" + datos.mas["estado"],
                                 "encabezado": encabezado,
                                 "descripcion": descipcion,
                                 "link_img": link,
                                 "fecha_presentacion": fechamax,
-                                "redirect": ""
+                                "redirect": mobil
                             }
                             console.log(datas)
                             let carruse = await noticiasEvento(datas)
                             Evento()
-                            setCargando(false)
+                            setCargando(false)}
                         }, 3000)
                     } catch (error) {
                         console.log(error)
@@ -151,33 +153,43 @@ export default function NoticiasView() {
         }
         if (Tipo == "Evento") {
             try {
-                if (imgen == "" || ![encabezado, descipcion, fechamax, mas].some(e => e)) {
+                if (imgen == "" || imgmovil == "" || ![encabezado, descipcion, fechamax, mas].some(e => e)) {
                     usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
                     return
                 }
                 else {
                     let link = await Obtenerlinkimagen(imgen)
-                    let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
-                    let parametr = {
-                        "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"] + "-" + datos.mas["estado"],
-                        "encabezado": encabezado,
-                        "descripcion": descipcion,
-                        "link_img": link,
-                        "fecha_presentacion": fechamax,
-                        "redirect": ''
+                    if (link) {
+                        let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
+                        setTimeout(async function () {
+                            let mobil = await Obtenerlinkimagen(imgmovil)
+                            if (mobil) {
+                                let parametr = {
+                                    "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"] + "-" + datos.mas["estado"],
+                                    "encabezado": encabezado,
+                                    "descripcion": descipcion,
+                                    "link_img": link,
+                                    "fecha_presentacion": fechamax,
+                                    "redirect": mobil
+                                }
+                                let noticia = await Actualizarpublicdad(parametr)
+                                //    console.log("Eventos", parametr)
+                                if (noticia.success) {
+                                    setDatos({
+                                        encabezado: '',
+                                        descipcion: '',
+                                        fechamax: '',
+                                        link_img: '',
+                                        mas: '',
+                                        id: ''
+                                    })
+                                    setimagen("")
+                                    usedispatch(setToastes({ show: true, message: 'Evento actualizados', color: 'bg-success', estado: 'Actualizado' }))
+                                }
+                            }
+                        })
+
                     }
-                    //    let Actualizarpublicdad().then().catch()
-                    //    console.log("Eventos", parametr)
-                    setDatos({
-                        encabezado: '',
-                        descipcion: '',
-                        fechamax: '',
-                        link_img: '',
-                        mas: '',
-                        id: ''
-                    })
-                    setimagen("")
-                    usedispatch(setToastes({ show: true, message: 'Evento actualizados', color: 'bg-success', estado: 'Actualizado' }))
                 }
             } catch (error) {
                 console.log(error)
@@ -276,8 +288,29 @@ export default function NoticiasView() {
             setShowca(false)
         }
     }
-    function handelchangeCompos(e){
+    function handelchangeCompos(e) {
+        if (e.files) {
+          //  let img = new Image()
+          //  img.src = window.URL.createObjectURL(e.files[0])
 
+        //    setImg(img.src)
+            setImagenMo(e.files[0])
+            let totalBytes = e.files[0].size;
+            console.log(totalBytes)
+            if (totalBytes < 1000000) {
+                var _size = Math.floor(totalBytes / 1000) + 'KB';
+                console.log(_size);
+            } else {
+                var _size = Math.floor(totalBytes / 1000000) + 'MB';
+                console.log(_size);
+            }
+        }
+        else {
+
+          //  setImg("")
+         //   setimagen("")
+          //  setShowca(false)
+        }
     }
     const tipoevento = {
         Evento: <div className="row ">
@@ -359,7 +392,7 @@ export default function NoticiasView() {
                     <div className="custom-file" >
                         <input className="  form-control" type="file"
                             name="redirect"
-                        onChange={(e) => handelchangeComposeventos(e.target)}
+                            onChange={(e) => handelchangeCompos(e.target)}
                         />
                     </div>
                 </div>

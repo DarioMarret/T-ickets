@@ -246,6 +246,7 @@ export const Obtenerlinkimagen = async (parm) => {
         return data.link
 
     } catch (error) {
+        console.log(error)
         return null
 
     }
