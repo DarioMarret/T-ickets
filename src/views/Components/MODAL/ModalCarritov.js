@@ -170,13 +170,13 @@ const ModalCarritoView = (prop) => {
         // console.log((sleccionlocalidad.pagados > 10))
         //console.log(sleccionlocalidad)
         //if (clienteInfo() == null && CODIGO == "9EGM42") {
-            //clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/02/2023 08:30") < new Date())
-        if (false) {
+        //clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/02/2023 08:30") < new Date())
+        if (e.idcolor == 4) {
             usedispatch(setToastes({
                 show: true,
-                message: "Estaremos informando la fecha de canje de boletos",
+                message: "Esta localidad ya no tiene Disponibilidad",
                 color: 'bg-primary',
-                estado: "!Páramos la venta!"
+                estado: "Todos ocupados"
             }))
             return
         }
@@ -225,7 +225,7 @@ const ModalCarritoView = (prop) => {
             setSpiner("")
             // console.log(e)
             let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
-            console.log(e.espacio,e.idcolor)
+            console.log(e.espacio, e.idcolor)
             localidaandespacio(e.espacio, e.idcolor).then(ouput => {
                 // console.log(e.espacio, e.idcolor)
                 // console.log(ouput)
@@ -310,18 +310,18 @@ const ModalCarritoView = (prop) => {
             // console.log(sleccionlocalidad)
             //console.log(clienteInfo())
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
-            console.log(this.classList[0],consulta)
+            console.log(this.classList[0], consulta)
             //clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/02/2023 08:30") < new Date())
-            if (false) {
+            if (consulta.idcolor == 4) {
                 usedispatch(setToastes({
                     show: true,
-                    message: "Estaremos informando la fecha de canje de boletos",
+                    message: "Esta localidad ya no tiene Disponibilidad",
                     color: 'bg-primary',
-                    estado: "!Páramos la venta!"
+                    estado: "Todos ocupados"
                 }))
                 return
             }
-           // clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/02/2023 08:30") < new Date())
+            // clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/02/2023 08:30") < new Date())
             if (false) {
                 usedispatch(setToastes({
                     show: true,
@@ -358,7 +358,7 @@ const ModalCarritoView = (prop) => {
 
                 localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
                     console.log(consulta.espacio, consulta.idcolor)
-                     console.log(ouput)
+                    console.log(ouput)
                     let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
                     let nuevoObjeto = []
                     if (ouput.data.find(e => e.typo == "fila")) {
