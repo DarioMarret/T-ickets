@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
-
-
-
 export default function TablasViwe({...props}){
     const [spiner,setSpiner]=useState("d-none")
     const [spinerdos, setSpinerdos] = useState("d-none")
     useEffect(()=>{
         setSpinerdos("")
         setSpiner("d-none")
-        setTimeout(function(){
-           
+        setTimeout(function(){           
             if (!$.fn.DataTable.isDataTable("#doc")) {
                 $(document).ready(function () {
                     $("#doc").dataTable({
@@ -28,9 +24,7 @@ export default function TablasViwe({...props}){
                             }
                         },
                         "oLanguage": {
-
-                            "sSearch": "Quick Search:"
-
+                            "sSearch": ""
                         },
                         select: {
                             style: "single",
@@ -40,7 +34,7 @@ export default function TablasViwe({...props}){
 
                                  "responsivePriority": 1,
                                  className: "",
-                                 targets: 6,
+                                 targets: 5,
                                  visible: true,
                                  "responsive": false
                              },

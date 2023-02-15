@@ -107,12 +107,12 @@ const ModalConfima = (prop) => {
     }
     async function onSubmit(e) {
         e.preventDefault();
-       // console.log(comproba.numeroTransaccion.trim().length < 3)
+        // console.log(comproba.numeroTransaccion.trim().length < 3)
         if (comproba.numeroTransaccion.trim().length <= 3) {
             usedispatch(setToastes({ show: true, message: 'complete toda la información del número del recibo', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-       
+
         if (comproba.banco == "") {
             usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
             return
@@ -121,7 +121,10 @@ const ModalConfima = (prop) => {
             usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del Comprobante', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        if (isNaN(comproba.numeroTransaccion.trim()) || clienteInfo()==null ) usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobantes ', color: 'bg-danger', estado: 'Datos vacios' }))
+        if (isNaN(comproba.numeroTransaccion.trim()) || !clienteInfo() == null) {
+            usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobantes ', color: 'bg-danger', estado: 'Datos vacios' }))
+            return
+        }
         else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
             try {
                 setEstado(true)
@@ -179,7 +182,7 @@ const ModalConfima = (prop) => {
             usedispatch(setToastes({ show: true, message: 'Escribe numero de lote', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        if (isNaN(comproba.numeroTransaccion.trim())&&clienteInfo()==null ) {
+        if (isNaN(comproba.numeroTransaccion.trim()) && clienteInfo() == null) {
             usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobante ', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
@@ -190,7 +193,7 @@ const ModalConfima = (prop) => {
                 setTimeout(async function () {
                     const reporte = {
                         "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
-                        "forma_pago":  "Deposito",
+                        "forma_pago": "Deposito",
                         "link_comprobante": comproba.link_comprobante,
                         "id": clienteInfo() ? modal.estado.id : modal.estado.id,
                         "numeroTransaccion": comproba.numeroTransaccion,
@@ -343,9 +346,6 @@ const ModalConfima = (prop) => {
 
                                     </div>
                                     <h5 className=" font-weight-bold text-danger">Forma de Pagos</h5>
-
-
-
                                     {clienteInfo() != null ?
                                         <select className="form-select" value={spiner}
                                             onChange={(g) => setspiner(g.target.value)}
@@ -359,9 +359,7 @@ const ModalConfima = (prop) => {
                                         </select> : <select className="form-select" required value={spiner}
                                             onChange={(g) => setspiner(g.target.value)}>
                                             <option value={""} disabled></option>
-                                            <option value={"Efectivo"}>Deposito Efectivo facilito</option>
                                             <option value={"Deposito"}>Deposito</option>
-                                            <option value={"Deposito"}>Transferencia</option>
 
                                         </select>}
                                     <h5 className="mt-1" style={{ fontSize: "1.0em" }}>

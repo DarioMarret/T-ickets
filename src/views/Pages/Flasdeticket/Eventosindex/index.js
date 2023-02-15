@@ -16,8 +16,8 @@ export default function EventosView({ ...props }) {
         <div className=" container-fluid text-end">
             <Box my="2" display="flex" justifyContent="end" >
                 {props.eventoslist.length > 4 ?
-                    <Pagination className="pok"
-                        count={Math.round(props.eventoslist.length /3)}
+                    <Pagination 
+                        count={Math.round(props.eventoslist.length /4)}
                         size="large"
                         boundaryCount={5}
                         page={page}

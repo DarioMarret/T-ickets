@@ -81,23 +81,23 @@ function Example() {
 
     function generaPDF(row) {
         setSpiner("")
-        
-       /* if (row.original.forma_pago.includes("Local")){
 
-            setSpiner("d-none")
-            $.alert("Nuevos datos")
-            return
-        }*/
-     
+        /* if (row.original.forma_pago.includes("Local")){
+ 
+             setSpiner("d-none")
+             $.alert("Nuevos datos")
+             return
+         }*/
 
 
-       
+
+
         generaTiketspdf({
             "cedula": row.cedula,
             "codigoEvento": row.codigoEvento,
             "id_ticket_usuarios": row.id
         }).then(ouput => {
-            if (ouput.success ) {
+            if (ouput.success) {
                 usedispatch(setModal({ nombre: 'pdfsshow', estado: ouput.link }))
                 // window.open(ouput.link, "_blank");
                 setSpiner("d-none")
@@ -155,8 +155,8 @@ function Example() {
                     <th  >Detalle</th>
                     <th className="text-xs text-center"  >Boleto</th>
 
-                    <th className="text-xs text-center" >Valor</th>
-                    <th className="text-xs text-center" >Valor. emision</th>
+                    <th className="text-xs text-center" >Valor sin comisión</th>
+
                     <th className="text-xs text-center">Fecha</th>
                     <th className="text-xs text-center">Estado</th>
                     <th className="text-center"> Aciones</th>
@@ -175,15 +175,15 @@ function Example() {
         "Preferencia": 1,
         "Butacas": 1,
         "Butacas VIP": 1,
-       "Ranchenato BOX": 1,
+        "Ranchenato BOX": 1,
         "SEN2 KBRN": 2,
         "SAUCES BOYZ": 2,
         "TODO O NADA": 1,
-       "SEN2-KBRN": 2,
+        "SEN2-KBRN": 2,
         "SAUCES BOYZ": 2,
         "TODO-O-NADA": 1,
-        "participantes-jessi":0,
-        "participante-quito":0
+        "participantes-jessi": 0,
+        "participante-quito": 0
     }
     const showDatos = () => {
         try {
@@ -195,13 +195,12 @@ function Example() {
                         <td className="text-xs ">{item.concierto + " Localidad:" + item.localidad}</td>
                         <td className="text-xs text-center ">#{item.sillas.padStart(10, 0)}</td>
                         <td className="text-xs text-center">${item.valor}</td>
-                        <td className="text-xs text-center">${precio[item.localidad ].toFixed(2)}</td>
-                        <td className="text-xs text-center"></td>
+                        <td className="text-xs text-center">{item.fechaCreacion }</td>
                         <td className="text-xs text-center">
                             <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
                             <div className=" btn-group  " >
-                                {item.estado == "Pagado"  ?
+                                {item.estado == "Pagado" ?
                                     <Tooltip className="" title="Ver Ticket" placement="top">
                                         <a
                                             className="btn btn-default-su btn-sm text-danger"
@@ -325,7 +324,7 @@ function Example() {
                             positionActionsColumn="last"
                             renderRowActions={({ row }) => (
                                 <Box sx={{ display: 'flex' }}>
-                                    {row.original.estado != "reservado" && row.original.pdf != null && row.original.forma_pago != "Efectivo-Local"? <Tooltip className="" title="Ver Ticket" placement="top">
+                                    {row.original.estado != "reservado" && row.original.pdf != null && row.original.forma_pago != "Efectivo-Local" ? <Tooltip className="" title="Ver Ticket" placement="top">
                                         <IconButton
                                             color="primary"
                                             arial-label="Enviar"
@@ -349,7 +348,7 @@ function Example() {
                                     {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
                                         <IconButton
                                             color='success'
-                                            
+
                                         >
                                             <img src={cedericon}
                                                 style={
