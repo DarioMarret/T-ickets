@@ -618,6 +618,7 @@ export default function AprobarView() {
                                     }
                                 }}
                                 enableRowActions
+                               
                                 positionActionsColumn="first"
                                 renderRowActions={({ row }) => (
                                     <Box sx={{ display: 'flex' }}>
@@ -671,6 +672,7 @@ export default function AprobarView() {
 
                                     </Box>
                                 )}
+                                
                                 localization={MRT_Localization_ES}
                             />
                         </TabPanel>

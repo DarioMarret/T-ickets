@@ -222,10 +222,10 @@ export const listaRegistrototal = [
         size: 50
     },
     {
-        accessorKey:"Valortotal",
+        accessorKey:"total_pago",
         header:"Total",
         Cell:({cell})=>{
-            { parseFloat(cell.row.original.Valortotal).toFixed(2) }
+            { parseFloat(cell.row.original.total_pago).toFixed(2) }
         },
         size:50
     },

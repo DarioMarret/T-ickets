@@ -136,7 +136,11 @@ export const columnPublicidad = [
 ]
 
 export const Columnevento = [
-
+  {
+    accessorKey: 'fechaConcierto',
+    header: 'Fecha',
+    size: 50
+  },
   {
     accessorKey: 'nombreConcierto',
     header: 'Evento',
@@ -154,11 +158,7 @@ export const Columnevento = [
     accessorKey: 'lugarConcierto',
     header: 'Lugar'
   },
-  {
-    accessorKey: 'fechaConcierto',
-    header: 'Fecha',
-    size: 50
-  }, {
+   {
     accessorKey: 'horaConcierto',
     header: 'Hora',
     size: 50

@@ -23,11 +23,12 @@ export default function Pagarlink() {
     const [comproba, setcomprobante] = useState({
         numeroTransaccion: "",
         link_comprobante: "",
-        banco: ""
+        banco: "",
+        total_pago: ""
     })
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     let intervalo = useSelector((state) => state.SuscritorSlice.intervalo)
-    console.log(modal)
+   // console.log(modal)
 
 
     function onhandelChange(e) {
@@ -48,44 +49,61 @@ export default function Pagarlink() {
         e.preventDefault();
         if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
             try {
+                let datosTC = {
+                    "id": modal.estado.id,
+                    "forma_pago": "Tarjeta",
+                    "numeroTransaccion": "",
+                    "link_comprobante": "",
+                    "total_pago": modal.estado.Valortotal,
+                }
+
                 setEstado(true)
-                setTimeout(async function () {
-                    const reporte = {
-                        "id_usuario": clienteInfo().id,
-                        "forma_pago": "Deposito",
-                        "link_pago": comproba.link_comprobante,
-                        "id": modal.estado.id,
-                        "numeroTransaccion": comproba.numeroTransaccion,
-                        "cedula": modal.estado.cedula,
-                        "estado": "Pagado",
-                        "link_comprobante":"" ,
-                    }
-                    console.log(reporte)
-                    registraPagos(reporte).then(ouput => {
-                        console.log(ouput)
-                        if (ouput.success) {
-                            console.log(ouput)
+                cambiarMetodo(datosTC).then(e => {
+                    if (e.success) {
+                        setTimeout(async function () {
+                            const reporte = {
+                                "id_usuario": clienteInfo().id,
+                                "forma_pago": "Deposito",
+                                "link_pago": comproba.link_comprobante,
+                                "id": modal.estado.id,
+                                "numeroTransaccion": comproba.numeroTransaccion,
+                                "cedula": modal.estado.cedula,
+                                "estado": "Pagado",
+                                "link_comprobante": comproba.link_comprobante,
+                            }
                             console.log(reporte)
+                            registraPagos(reporte).then(ouput => {
+                                console.log(ouput)
+                                if (ouput.success) {
+                                    console.log(ouput)
+                                    console.log(reporte)
+                                    setEstado(false)
+                                    usedispatch(setModal({ nombre: '', estado: '' }))
+                                    usedispatch(setToastes({ show: true, message: 'Metodo de pago realizado con éxito ', color: 'bg-success', estado: 'Comprobante registrado' }))
+                                    usedispatch(setModal({ nombre: '', estado: '' }))
+                                    history.goBack()
+                                }
+                                else {
+                                    //console.log("aqui",ouput)
+                                    setEstado(false)
+                                    usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
+                                }
+                            }).catch(erro => {
+                                console.log(erro)
+                                setEstado(true)
+                                usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
+                            })
+
+                            // console.log(reporte)
                             setEstado(false)
-                            usedispatch(setModal({ nombre: '', estado: '' }))
-                            usedispatch(setToastes({ show: true, message: 'Metodo de pago realizado con éxito ', color: 'bg-success', estado: 'Comprobante registrado' }))
-                            usedispatch(setModal({ nombre: '', estado: '' }))
-                            history.goBack()
-                        }
-                        else {
-                            //console.log("aqui",ouput)
-                            setEstado(false)
-                            usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
-                        }
-                    }).catch(erro => {
-                        console.log(erro)
+                        }, 2000)
+                    } else {
                         setEstado(true)
                         usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
-                    })
 
-                    // console.log(reporte)
-                    setEstado(false)
-                }, 2000)
+                    }
+                })
+
 
             } catch (error) {
                 console.log(error)
@@ -101,11 +119,15 @@ export default function Pagarlink() {
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
     });
-
-
+    useEffect(() => {
+        setcomprobante({
+            ...comproba,
+            total_pago: modal.estado.Valortotal
+        })
+        console.log(modal)
+    }, [modal.nombre == "canjear" ? true : false])
     return (
         <>
-
             <Modal
                 show={modal.nombre == "canjear" ? true : false}
                 fullscreen={'md-down'}
@@ -143,13 +165,28 @@ export default function Pagarlink() {
                                 <h5 style={{ fontSize: '1.0em' }}>
                                     Ingrese el link del Voaucher
                                 </h5>
-                                <input className=" form-control numero"
+                                <input className=" form-control "
                                     name="link_comprobante"
                                     value={comproba.link_comprobante}
                                     required
                                     onChange={(e) => onhandelChange(e.target)}
                                     type={"text"}
                                 />
+                            </div>
+                            <div className=" p-1">
+                                <h5 style={{
+                                    fontSize: "1.0em"
+                                }}>
+                                    Valor
+
+                                </h5>
+                                <input className=" form-control numero"
+                                    name="total_pago"
+                                    value={comproba.total_pago}
+                                    required
+                                    onChange={(e) => onhandelChange(e.target)}
+                                    type={"text"} />
+
                             </div>
 
 

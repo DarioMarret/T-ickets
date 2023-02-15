@@ -25,6 +25,7 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import { ticketsboletos } from "utils/columnasub";
 import PiecharViews from "views/Components/Piechar";
+import ExportToExcel from "utils/Exportelemin";
 require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
@@ -407,8 +408,8 @@ const EventoEspecifico = () => {
             </Box>
           )}
 
-          enableRowActions
-          renderRowActions={({ row }) => (
+          /*enableRowActions
+         /*{ renderRowActions={({ row }) => (
             <Box sx={{ display: 'flex' }}>
               <IconButton
                 color="success"
@@ -424,7 +425,7 @@ const EventoEspecifico = () => {
               </IconButton>
 
             </Box>
-          )}
+          )}}*/
           positionToolbarAlertBanner="bottom"
           displayColumnDefOptions={{
             'mrt-row-numbers': {
@@ -435,16 +436,11 @@ const EventoEspecifico = () => {
             <Box
               sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
             >
-              <Button
-                color="primary"
-                disabled={table.getPrePaginationRowModel().rows.length === 0}
-                onClick={handleExportData}
-                startIcon={<FileDownloadIcon />}
-
-              >
-                Export Todos los Datos
-              </Button>
-              <Button
+           {tickes.length>0?   <ExportToExcel apiData={tickes}
+                fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY') } label={"Boletos"}
+             />:""}
+              
+              <Button className="d-none"
                 disabled={table.getPrePaginationRowModel().rows.length === 0}
                 onClick={() =>
                   handleExportRows(table.getPrePaginationRowModel().rows)
@@ -455,7 +451,7 @@ const EventoEspecifico = () => {
               >
                 Export Todas las filas
               </Button>
-              <Button
+              <Button className="d-none"
                 disabled={table.getRowModel().rows.length === 0}
                 onClick={() => handleExportRows(table.getRowModel().rows)}
                 startIcon={<FileDownloadIcon />}
@@ -463,7 +459,7 @@ const EventoEspecifico = () => {
               >
                 Export Filas de página
               </Button>
-              <Button
+              <Button className="d-none"
                 disabled={
                   !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
                 }

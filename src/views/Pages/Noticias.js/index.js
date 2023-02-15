@@ -142,7 +142,6 @@ export default function NoticiasView() {
     }
     const onaPutbmit = async (e) => {
         e.preventDefault()
-        // console.log("Datos --> actualizar", datos)
         const form = new FormData(e.target)
         let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
         console.log(Object.fromEntries(form.entries()), imgen)

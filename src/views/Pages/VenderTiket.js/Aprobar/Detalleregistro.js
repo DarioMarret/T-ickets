@@ -787,6 +787,7 @@ export default function DetalleCompraView() {
                             {boletos.length>0?
                             <ExportToExcel apiData={boletos.map(e=>{
                                 e.Comprador = usuario.nombreCompleto
+                                e.Metodos = nombres.forma_pago
                                 return{
                                     ...e,
                                     

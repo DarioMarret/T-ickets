@@ -955,10 +955,8 @@ const IndexFlas = () => {
           parallax={true}
           loop={publicidad.length > 1 ? true : false}
           autoHeight={true}
-          navigation={publicidad.length > 1 ? true : false}
-          pagination={{
-            clickable: true,
-          }}
+          
+            pagination={true}  
           autoplay={{
             delay: 3500,
             disableOnInteraction: true,

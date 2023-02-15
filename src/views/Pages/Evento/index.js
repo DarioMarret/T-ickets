@@ -24,11 +24,14 @@ const EventosViews = () => {
   const [show, setShow] = useState(false)
   const [eventoslist, setEventos] = useState([])
   const [alert, setAlert] = React.useState(null)
+  const sorter = (a, b) => a.id > b.id || new Date(a.fechaConcierto) < new Date(b.fechaConcierto) ? 1 : -1;
+
   function nuevoevento() {
     setShow(true)
   }
   async function GetEventos() {
     try {
+  
       const lista = await ListarEventos("PROCESO")
       if (lista.success) {
         setEventos([...lista.data.filter((e) => e.codigoEvento != "001")])
@@ -231,7 +234,7 @@ const EventosViews = () => {
             <div className="">
               <MaterialReactTable
                 columns={Columnevento}
-                data={eventoslist}
+                data={eventoslist.sort(sorter)}
                 muiTableProps={{
                   sx: {
                     tableLayout: 'flex'
