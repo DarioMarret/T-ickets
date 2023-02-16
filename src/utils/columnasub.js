@@ -146,6 +146,45 @@ export const ticketsboletos = [
         sixe: 50
     },
 ]
+export const Consiliaregistro = [
+    {
+        accessorKey: "id",
+        header: "ID",
+        size: 50
+    },
+    {
+        accessorKey: "comprobante",
+        header: "#Comprobante",
+        size:50
+    },
+    {
+        accessorKey: "cuenta",
+        header: "Cuenta",
+        size: 50
+    },
+    {
+        accessorKey: "fecha",
+        header: "Fecha",
+    },
+    {
+        accessorKey: "id_registro",
+        header: "#Registro",
+        size: 50,
+    },
+    {
+        accessorKey: "imagen",
+        header: "link",
+        Cell: ({ cell }) => (
+            <a className="btn btn-default btn-sm" href={cell.row.original.imagen} target="_blank">   <i className=" fa fa-check"> </i> </a>
+        ),
+        size:50
+
+    }, {
+        accessorKey: "propietario",
+        header: "Celuda",
+        size: 50
+    }
+]
 export const listaRegistro = [
     {
         accessorKey: "fechaCreacion",
@@ -161,7 +200,7 @@ export const listaRegistro = [
         ),
         size: 50
     },
-    
+
 
     {
         accessorKey: "cedula",
@@ -205,7 +244,7 @@ export const listaRegistrototal = [
         ),
         size: 50
     },
-   
+
     {
         accessorKey: "concierto",
         header: "Evento",
@@ -219,22 +258,25 @@ export const listaRegistrototal = [
     {
         accessorKey: "forma_pago",
         header: "Metodo",
+        Cell: ({ cell }) => {
+            cell.row.original.forma_pago != "Tarjeta" ? cell.row.original.forma_pago : cell.row.original.link_pago == null ? "Sin link" : cell.row.original.forma_pago
+        },
         size: 50
     },
     {
-        accessorKey:"total_pago",
-        header:"Total",
-        Cell:({cell})=>{
+        accessorKey: "total_pago",
+        header: "Total",
+        Cell: ({ cell }) => {
             { parseFloat(cell.row.original.total_pago).toFixed(2) }
         },
-        size:50
+        size: 50
     },
     {
         accessorKey: "cantidad",
-        header:"Cantidad",
-        size:25
+        header: "Cantidad",
+        size: 25
     },
-    
+
 
 ]
 
@@ -251,8 +293,8 @@ let precio = {
     12: 122,
     13: 67,
     14: 36,
-    22:0,
-    23:0
+    22: 0,
+    23: 0
 }
 let precioespacio = {
     9: 169,
@@ -261,10 +303,10 @@ let precioespacio = {
     12: 174,
     13: 172,
     14: 173,
-    15:0,
-    13:0,
-    22:0,
-    23:0
+    15: 0,
+    13: 0,
+    22: 0,
+    23: 0
 }
 //precioespacio[e.id_localidad]
 
@@ -274,12 +316,12 @@ function quitacomision(row) {
     let valores = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
     if ((new Date("2023-01-21 14:00:00 ") > new Date(row.fechaCreacion))) {
         let valor = parseFloat(valores) * 1.05
-        return Math.round(valores) 
+        return Math.round(valores)
     }
     else {
         // console.log(row.total_pago)
         let valor = parseFloat(valores) * 1.07
-        return Math.round(valores) 
+        return Math.round(valores)
     }
 
 }

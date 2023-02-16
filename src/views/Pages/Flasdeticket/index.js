@@ -1126,7 +1126,7 @@ const IndexFlas = () => {
         </div>}
       {/* eventos */}
       {seleccion == "" ?
-        <div className="container-fluid py-2   d-flex justify-content-end">
+        <div className="col-12 col-lg-9 py-2   d-flex justify-content-end">
           <div className=" col-12 col-md-6 ">
             <div className="input-group">
             <input className=" form-control "

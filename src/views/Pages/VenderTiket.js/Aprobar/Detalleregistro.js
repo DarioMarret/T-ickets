@@ -123,7 +123,6 @@ export default function DetalleCompraView() {
         });
 
     }
-    //cons
     const [tiketslist, setTikes] = useState([])
     const [boletos, setlocalida] = useState([])
     function generaPDF(row) {
@@ -160,25 +159,8 @@ export default function DetalleCompraView() {
     }
 
     useEffect(() => {
-        // Push.create('Hello World!')
-
         let concer = JSON.parse(nombres.info_concierto)
-        // console.log(id)
-        // console.log(nombres.cedula)
-
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
-        //  console.log(datos)
-      /*  setlocalida(JSON.parse(nombres.info_concierto).map(e => {
-            return {
-                Comprador: nombres.nombreCompleto,
-                Cedula: e.cedula,
-                Evento: e.concierto,
-                Localidad: e.localidad,
-                Valor: e.Valor,
-                Estado: e.estado,
-                Canje: e.canje
-            }
-        }))*/
         buscarcliente({
             "cedula": datos.cedula,
             "email": ""
@@ -191,11 +173,7 @@ export default function DetalleCompraView() {
         Listarticketporestado(datos.cedula).then(ouput => {
             if (ouput.success) {
                 let boletos = ouput.data.map((e) => {
-                    if (concer.find(f => f.nombreConcierto == e.concierto) != undefined) {
-                        return { ...e }
-                    }
-                }
-                )
+                if (concer.find(f => f.nombreConcierto == e.concierto) != undefined) { return { ...e }} })
                 console.log(boletos.filter(e => e != undefined))
                 setTikes(boletos.filter(e => e != undefined))
                 setlocalida(boletos.filter(e => e != undefined).map(e => {
@@ -214,7 +192,6 @@ export default function DetalleCompraView() {
         }).catch(err => {
             console.log(err)
         })
-
         $.ajax({
             type: "GET",
             url: "https://brisana.netbot.ec/js/listar.php?id=" + id,
@@ -335,6 +312,41 @@ export default function DetalleCompraView() {
                 },
             },
         });
+    }
+    function Comprobarboletos(){
+        const reporte = {
+            "id_usuario": clienteInfo().id,
+            "forma_pago": nombres.forma_pago,
+            "link_comprobante": nombres.link_comprobante,
+            "id": nombres.id,
+            "numeroTransaccion": nombres.numeroTransaccion,
+            "cedula": nombres.cedula,
+            "estado": "Comprobar"
+        }
+        $confirm({
+            title:"Desea cambiar a Comprobar",
+            type:"red",
+            content:"",
+            buttons:{
+                formSubmit:{
+                    text:"Aceptar",
+                    btnClass:"btn-danger",
+                    action: function () {
+                        registraPagos(reporte).then(ouput => {
+                            if (ouput.success) {
+                                history.goBack()
+                                return
+                            }
+                            $.alert("No se registro")
+                        }).catch(err => {
+                        })
+                    }
+                },
+                cancel: function () {
+                    //close
+                },
+            }
+        })
     }
     function ConsolidaBoleto() {
         const reporte = {
@@ -683,7 +695,7 @@ export default function DetalleCompraView() {
                                             #{id} <br></br>
                                             {nombres.forma_pago}<br></br>
                                             {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                                <span className={coniliacion.comprobante != "" ?"p-1 label label-success":""}>
+                                                <span className={coniliacion.comprobante != "" ? "p-1 label label-success" : ""}>
                                                     {coniliacion.comprobante != "" ? "Consolidado" : "Sin Consolidar"}
                                                 </span> :
                                                 ""}
@@ -706,6 +718,14 @@ export default function DetalleCompraView() {
                                                 nombres.forma_pago == "Deposito" ?
                                                     <a className=" btn btn-default btn-sm" onClick={ConsolidaBoleto}>
                                                         <i className="fa fa-credit-card"></i> Aprobar deposito
+                                                    </a>
+                                                    : ""
+                                            }
+                                            <br></br>
+                                            {
+                                                nombres.forma_pago == "Deposito" ?
+                                                    <a className=" btn btn-default btn-sm" onClick={ComprobarBoleto}>
+                                                        <i className="fa fa-credit-card"></i> Cambiar a Comprobar deposito
                                                     </a>
                                                     : ""
                                             }
@@ -784,16 +804,16 @@ export default function DetalleCompraView() {
                             }
                         </div>
                         <div className="d-flex">
-                            {boletos.length>0?
-                            <ExportToExcel apiData={boletos.map(e=>{
-                                e.Comprador = usuario.nombreCompleto
-                                e.Metodos = nombres.forma_pago
-                                return{
-                                    ...e,
-                                    
-                                }
-                            })} fileName={"Boletos: "+usuario.nombreCompleto} label={"Boletos"} />
-                        :""}
+                            {boletos.length > 0 ?
+                                <ExportToExcel apiData={boletos.map(e => {
+                                    e.Comprador = usuario.nombreCompleto
+                                    e.Metodos = nombres.forma_pago
+                                    return {
+                                        ...e,
+
+                                    }
+                                })} fileName={"Boletos: " + usuario.nombreCompleto} label={"Boletos"} />
+                                : ""}
 
                         </div>
                         <div className=" table-responsive">

@@ -48,6 +48,7 @@ import EmitirboView from "views/Pages/VenderTiket.js/Emitir";
 import TagsInput from "components/TagsInput/TagsInput";
 import DetalleCompraView from "views/Pages/VenderTiket.js/Aprobar/Detalleregistro";
 import InformeView from "views/Pages/VenderTiket.js/Aprobar/Informeventa";
+import ConsolidacionView from "views/Pages/Consolidados/index.js";
 
 var routes = [
   {
@@ -56,7 +57,7 @@ var routes = [
     name: "Inicio",
     icon: "nc-icon nc-layers-3",
     component: Dashboard,
-    permiso: ["superadmin", "super_admin", "vendedores","suscriptores"]
+    permiso: ["superadmin", "super_admin", "vendedores", "suscriptores"]
 
   },
   {
@@ -198,7 +199,15 @@ var routes = [
         mini: "*",
         component: AprobarView,
         permiso: ["superadmin", "super_admin", "vendedores"]
-      }, 
+      },
+      {
+        path:"/Consolidados",
+        layout:"/admin",
+        name:"Consolidados",
+        mini:"*",
+        component:ConsolidacionView,
+        permiso: ["superadmin", "super_admin", "vendedores"]
+      },
       {
         path: "/Informe",
         layout: "/admin",
@@ -206,19 +215,19 @@ var routes = [
         mini: "*",
         component: InformeView,
         permiso: ["suscriptores"]
-      }, 
+      },
       {
         path: "/Aprobar/:id",
         layout: "/admin",
-       
+
         component: AprobarViewid,
         permiso: ["superadmin", "super_admin", "vendedores"]
-      }, 
+      },
       {
-        path:"/Boletos",
-        layout:"/admin",
-        mini:"*",
-        name:"Boletos",
+        path: "/Boletos",
+        layout: "/admin",
+        mini: "*",
+        name: "Boletos",
         component: EmitirboView,
         permiso: ["superadmin", "super_admin", "vendedores"]
       },

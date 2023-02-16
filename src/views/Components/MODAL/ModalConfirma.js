@@ -54,9 +54,8 @@ export default function Pagarlink() {
                     "forma_pago": "Tarjeta",
                     "numeroTransaccion": "",
                     "link_comprobante": "",
-                    "total_pago": modal.estado.Valortotal,
+                    "total_pago": comproba.total_pago,
                 }
-
                 setEstado(true)
                 cambiarMetodo(datosTC).then(e => {
                     if (e.success) {
@@ -122,7 +121,7 @@ export default function Pagarlink() {
     useEffect(() => {
         setcomprobante({
             ...comproba,
-            total_pago: modal.estado.Valortotal
+            total_pago: modal.estado.total_pago
         })
         console.log(modal)
     }, [modal.nombre == "canjear" ? true : false])

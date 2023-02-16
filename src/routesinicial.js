@@ -35,6 +35,7 @@ import UserPage from "views/Pages/UserPage.js";
 import LoginPage from "views/Pages/LoginPage.js";
 import RegisterPage from "views/Pages/RegisterPage.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
+import ConsolidacionView from "views/Pages/Consolidados";
 
 var routes = [
   {

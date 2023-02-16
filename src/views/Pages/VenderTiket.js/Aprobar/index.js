@@ -500,7 +500,7 @@ export default function AprobarView() {
                             options={options}
 
                         /> : ""}
-                    {datas.length > 0 ?
+                    {datas.length < 0 ?
                         <PiecharViewsSlect
                             datas={datas}
                             options={options}
