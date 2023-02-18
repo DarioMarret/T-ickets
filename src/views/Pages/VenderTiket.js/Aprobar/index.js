@@ -183,6 +183,7 @@ export default function AprobarView() {
         }
     }
     const [datas, setDatas] = useState([])
+    const [dtos, setDts] = useState([])
     const sorter = (a, b) => new Date(a.fechaCreacion) < new Date(b.fechaCreacion) ? 1 : -1;
     function rango(item) {
         if (item.selection.endDate == item.selection.startDate) {
@@ -218,13 +219,20 @@ export default function AprobarView() {
                     arrayIndividual[dat].cantidad = tota
                 }
                 else {
-                    arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad })
+                    arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: precio[elm.id] })
                 }
             })
             console.log(arrayIndividual)
             let datos = arrayIndividual.map(f => {
                 return [f.localidad, f.evento, parseInt(f.cantidad)]
             })
+            let nuevo = arrayIndividual.map(f => {
+                return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
+            })
+            setDts([
+                ["Localidad", "evento", "cantidad", "precio"],
+                ...nuevo
+            ])
             setDatas([
                 ["Localida", "evento", "ganancias"],
                 ...datos
@@ -272,7 +280,7 @@ export default function AprobarView() {
                         arrayIndividual[dat].cantidad = tota
                     }
                     else {
-                        arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad })
+                        arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: precio[elm.id] })
                     }
                 })
                 console.log(arrayIndividual)
@@ -282,6 +290,14 @@ export default function AprobarView() {
                 setDatas([
                     ["Localida", "evento", "ganancias"],
                     ...datos
+                ])
+
+                let nuevo = arrayIndividual.map(f => {
+                    return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
+                })
+                setDts([
+                    ["Localidad", "evento", "cantidad", "precio"],
+                    ...nuevo
                 ])
                 usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
                 let order = newdatos.sort(sorter)
@@ -592,6 +608,11 @@ export default function AprobarView() {
                         }
                     })} fileName={"Todos Comprobar"} label={"Comprobar"} /> :
                     ""}
+                <ExportToExcel
+                    apiData={dtos}
+                    fileName={"Todos Eventos"}
+                    label={"Cantidad"}
+                />
             </div> : ""}
             <div className="   " style={{ minHeight: '250px' }} >
                 <div className='container-fluid  p-0'>
@@ -618,7 +639,7 @@ export default function AprobarView() {
                                     }
                                 }}
                                 enableRowActions
-                               
+
                                 positionActionsColumn="first"
                                 renderRowActions={({ row }) => (
                                     <Box sx={{ display: 'flex' }}>
@@ -672,7 +693,7 @@ export default function AprobarView() {
 
                                     </Box>
                                 )}
-                                
+
                                 localization={MRT_Localization_ES}
                             />
                         </TabPanel>
