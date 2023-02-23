@@ -8,6 +8,15 @@ import { Consiliaregistro } from "utils/columnasub";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import axios from "axios";
+import { ConsolidarReporte } from "utils/pagos/Queripagos";
+export const NuevosRegistro=()=>{
+    let datos = JSON.parse( sessionStorage.getItem("datoscompras"))
+    if(datos!=null){
+        return datos
+    }
+    return []
+}
  const ConsolidacionView=()=> {
     let usedispatch = useDispatch()
     const [lista,setLista]=useState([])
@@ -18,10 +27,32 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
             url: "https://brisana.netbot.ec/js/listar.php?id=",
             success: function (success) {
                 if (success.status) {
-                  //  let info = success.result
+                    //  let info = success.
                     setLista([...success.result])
+                   
                     console.log(success)
+                    // console.log(datos)  (async () => {
+                 let datos=  success.result.map(async (f) => {
+                  
+                     NuevosRegistro().map(async(g)=>{
+                         if (g.id == f.id_registro){
+                             
+                         await (await ConsolidarReporte({
+                             "id_registraCompra": f.id_registro,
+                             "estado": "Consolidado"
+                         }))
+                             console.log(f.id_registro, (g.id == f.id_registro))
+                        
+                        }
+                     })
+                       /* await (await ConsolidarReporte({
+                            "id_registraCompra": f.id_registro,
+                            "estado": "Sin Consolidar"
+                        }))*/
+                    }) 
+                    console.log(datos)
                 }
+              
                 else {
                     console.log(success)
                 }
@@ -37,6 +68,10 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 
             }
         })
+        
+          
+      
+        
     },[])
     function recargar(){
         $.ajax({

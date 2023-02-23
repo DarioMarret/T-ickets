@@ -25,7 +25,18 @@ import { setCompras } from "StoreRedux/Slice/SuscritorSlice";
 import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
 import { useGetLocalidadQuery } from "StoreRedux/Slicequery/querySlice";
 import { retry } from "@reduxjs/toolkit/dist/query";
+import { ListaPreciosEvent } from "utils/EventosQuery";
 let { cedericon, atencion } = bancos
+
+export const PreciosStore=()=>{
+    let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
+    if(datos!=null){
+        return datos
+    }else{
+        return []
+    }
+}
+
 export default function AprobarView() {
     let usedispatch = useDispatch()
     let history = useHistory()
@@ -242,11 +253,17 @@ export default function AprobarView() {
         }
         console.log(item)
     }
+    const ListaPrecio = async () => {
+        const info = await ListaPreciosEvent();
+       
+        return info
+    }
     useEffect(() => {
         if (errorPubli != undefined) {
             return
         }
         console.log(publici.data)
+        ListaPrecio()
         listarRegistropanel({ "cedula": "" }).then(e => {
             if (e.data) {
                 let newdatos = e.data.map(row => {
@@ -260,6 +277,7 @@ export default function AprobarView() {
                     row.concierto = nombre[0]
                     return { ...row }
                 })//.filter(e => e.forma_pago =="Efectivo-Local")
+                sessionStorage.setItem("datoscompras",JSON.stringify(newdatos))
                 console.log(newdatos)
                 let nuevosValores = []
                 let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
@@ -539,6 +557,7 @@ export default function AprobarView() {
                         TOTAL: f.total_pago,
                         CREACION: f.fechaCreacion,
                         ESTADO: f.estado_pago,
+                        Cosiliacion: f.consolidado,
                         PAGOMEDIO_LINK: f.link_pago,
                         COMPROBANTE_LINK: f.link_comprobante,
                         NumerTransacion: f.numerTransacion

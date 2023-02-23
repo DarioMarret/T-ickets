@@ -38,6 +38,9 @@ import { ConsolidarReporte } from "utils/pagos/Queripagos";
 import ConsiliarView from "views/Components/MODAL/ModalConsilia";
 import axios from "axios";
 import ExportToExcel from "utils/Exportelemin";
+import { BuscarTransacion } from "utils/pagos/Queripagos";
+import ConsolidaRegistr from "./ModalesAp/CosolidaRegis";
+import { ActualizarnumeroTransacion } from "utils/pagos/Queripagos";
 export const consolidaid = async (parm) => {
     try {
         let { data } = await axios.post("")
@@ -125,6 +128,9 @@ export default function DetalleCompraView() {
     }
     const [tiketslist, setTikes] = useState([])
     const [boletos, setlocalida] = useState([])
+
+
+
     function generaPDF(row) {
 
         generaTiketspdf({
@@ -173,7 +179,8 @@ export default function DetalleCompraView() {
         Listarticketporestado(datos.cedula).then(ouput => {
             if (ouput.success) {
                 let boletos = ouput.data.map((e) => {
-                if (concer.find(f => f.nombreConcierto == e.concierto) != undefined) { return { ...e }} })
+                    if (concer.find(f => f.nombreConcierto == e.concierto) != undefined) { return { ...e } }
+                })
                 console.log(boletos.filter(e => e != undefined))
                 setTikes(boletos.filter(e => e != undefined))
                 setlocalida(boletos.filter(e => e != undefined).map(e => {
@@ -192,7 +199,9 @@ export default function DetalleCompraView() {
         }).catch(err => {
             console.log(err)
         })
-        $.ajax({
+
+
+      /*  $.ajax({
             type: "GET",
             url: "https://brisana.netbot.ec/js/listar.php?id=" + id,
             success: function (success) {
@@ -209,39 +218,38 @@ export default function DetalleCompraView() {
                 console.log(error)
 
             }
-        })
-        /*consolidaid(id).then(ouput => {
-             console.log(ouput)
-         }).catch(err => {
-             console.log(err)
-         })*/
-        /* $.ajax({
-             type: "POST",
-             url: "https://brisana.netbot.ec/js/consolidar.php",
-             data: { ...parm },
-             success: function (success) {
-                 if (success.status) {
-                     usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
-                     usedispatch(setModal({ nombre: "", estado: "" }))
-                     setTimeout(function () {
-                         history.goBack()
-                         setEstatus(false)
-                     }, 1000)
-                 }
-                 else {
-                     usedispatch(setToastes({ show: true, message: success.result, color: 'bg-warning', estado: 'Datos vacios' }))
-                     setEstatus(false)
-                 }
-             },
-             error: function (error) {
-                 console.log(error)
-                 setEstatus(false)
- 
-             }
-         })*/
+        })*/
+      /*  BuscarTransacion({
+            "numeroTransaccion": nombres.numerTransacion
+        }).then(ouput => {
+            console.log(ouput)
+            if (ouput.success) {
+                ouput.message == "Numero de transaccion encontrado" ? console.log("Registro unico") : ""
+                $.alert(JSON.parse(ouput))
+            }
+        }).catch(err => {
+            console.log(err)
+        })*/
+
 
     }, [])
-    //ValidarToken
+   function ValidarComprobante(){
+       BuscarTransacion({
+           "numeroTransaccion": nombres.numerTransacion
+       }).then(ouput => {
+           console.log(ouput)
+           if (ouput.success) {
+               ouput.message == "Numero de transaccion encontrado" ? console.log("Registro unico") : ""
+               $.alert(JSON.stringify(ouput))
+               return
+           }
+           $.alert(JSON.stringify(ouput))
+       }).catch(err => {
+           console.log(err)
+       })
+
+    }
+
     function validar() {
         // console.log(nombres.id)
         // $.alert("Este boton ya no se debe usar ")
@@ -313,26 +321,24 @@ export default function DetalleCompraView() {
             },
         });
     }
-    function Comprobarboletos(){
-        const reporte = {
-            "id_usuario": clienteInfo().id,
-            "forma_pago": nombres.forma_pago,
-            "link_comprobante": nombres.link_comprobante,
-            "id": nombres.id,
-            "numeroTransaccion": nombres.numeroTransaccion,
-            "cedula": nombres.cedula,
-            "estado": "Comprobar"
+    function ConsolidarCompra() {
+        const reporte =
+        {
+            "id_registraCompra": nombres.id,
+            "estado": "Consolidado"
         }
-        $confirm({
-            title:"Desea cambiar a Comprobar",
-            type:"red",
-            content:"",
-            buttons:{
-                formSubmit:{
-                    text:"Aceptar",
-                    btnClass:"btn-danger",
+
+        $.confirm({
+            title: "Desea consolidar",
+            title: 'Este Registro de Compra',
+            type: 'blue',
+            content: '',
+            buttons: {
+                formSubmit: {
+                    text: 'Aceptar',
+                    btnClass: 'btn-blue',
                     action: function () {
-                        registraPagos(reporte).then(ouput => {
+                       ConsolidarReporte(reporte).then(ouput => {
                             if (ouput.success) {
                                 history.goBack()
                                 return
@@ -354,7 +360,7 @@ export default function DetalleCompraView() {
             "forma_pago": nombres.forma_pago,
             "link_comprobante": nombres.link_comprobante,
             "id": nombres.id,
-            "numeroTransaccion": nombres.numeroTransaccion,
+            "numeroTransaccion": nombres.numerTransacion,
             "cedula": nombres.cedula,
             "estado": "Pagado"
         }
@@ -378,7 +384,6 @@ export default function DetalleCompraView() {
                     }
                 },
                 cancel: function () {
-                    //close
                 },
             },
         });
@@ -526,6 +531,58 @@ export default function DetalleCompraView() {
             },
         });
     }
+    function CambiarComprobante(){
+        $.confirm({
+            title: 'Comprobante o lote!',
+            content: '' +
+                '<form action="" class="formName">' +
+                '<div class="form-group">' +
+                '<label>Ingrese el numero del comprobante</label>' +
+                '<input type="text" placeholder="numero" class="name form-control" required />' +
+                '</div>' +
+                '</form>',
+            buttons: {
+                formSubmit: {
+                    text: 'Actualizar',
+                    btnClass: 'btn-blue',
+                    action: function () {
+                        var name = this.$content.find('.name').val();
+                        if (!name) {
+                            $.alert('Ingrere Comprobante');
+                            return false;
+                        }
+                        //$.alert('Your name is ' + name);
+                        ActualizarnumeroTransacion(
+                            {
+                                "id_registraCompra": nombres.id,
+                                "numeroTransaccion": name
+                            }
+                        ).then(ouput=>{
+                            console.log(ouput)
+                            if (ouput.success){
+                                history.goBack()
+                            }
+
+                        }).catch(err=>{
+                            console.log(err)
+                        })
+                    }
+                },
+                cancel: function () {
+                    //close
+                },
+            },
+            onContentReady: function () {
+                // bind to events
+                var jc = this;
+                this.$content.find('form').on('submit', function (e) {
+                    // if the user submits the form by pressing enter in the field.
+                    e.preventDefault();
+                    jc.$$formSubmit.trigger('click'); // reference the button and click it
+                });
+            }
+        });
+    }
     const [rowSelection, setRowSelection] = useState({});
     function quitarrepetifod() {
         console.log(Object.keys(rowSelection))
@@ -639,9 +696,12 @@ export default function DetalleCompraView() {
                                                         {estado[nombres.pdf]}
                                                     </a> : ""
                                                 }
-                                                {nombres.estado_pago == "Pagado" ? <a className=" btn btn-default btn-sm"
-
-                                                ><i className="bi bi-file-earmark-pdf"></i> Imprimir </a> : ""}
+                                                {nombres.estado_pago == "Pagado" ?
+                                                    <a className=" btn btn-default btn-sm"
+                                                        onClick={ConsolidarCompra}
+                                                    >
+                                                        <i className="bi bi-check"></i> Consolidar </a>
+                                                    : ""}
                                                 {nombres.forma_pago == "Deposito" ?
                                                     <a className=" btn btn-default btn-sm "
                                                         onClick={ComprobarBoleto}
@@ -695,8 +755,8 @@ export default function DetalleCompraView() {
                                             #{id} <br></br>
                                             {nombres.forma_pago}<br></br>
                                             {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                                <span className={coniliacion.comprobante != "" ? "p-1 label label-success" : ""}>
-                                                    {coniliacion.comprobante != "" ? "Consolidado" : "Sin Consolidar"}
+                                                <span className={nombres.consolidado != null ? "p-1 label label-success" : ""}>
+                                                    {nombres.consolidado != "" ? nombres.consolidado : "Sin Consolidar"}
                                                 </span> :
                                                 ""}
                                         </div>
@@ -783,10 +843,25 @@ export default function DetalleCompraView() {
                                 <div className="invoice-from text-center ">
                                     <small>Comprobante</small>
                                     <br></br>
-                                    {nombres.link_comprobante == null ? "" : <a className=" btn btn-default btn-sm">
+                                    {nombres.link_comprobante == null ? "" :
+                                     <a className=" btn btn-default btn-sm">
                                         <i className="fa fa-copy"></i> copy
                                     </a>}
                                     <br></br>
+                                   
+                                    <a className=" btn btn-default btn-sm"
+                                        onClick={CambiarComprobante}
+                                     >
+                                        <i className=" fa fa-spinner"></i>Cambiar # comprobante
+                                    </a>
+                                  
+                                    <br></br>
+                                    <a className="btn btn-default btn-sm"
+                                        onClick={ValidarComprobante}
+                                    >
+                                        <i className="fa fa-check"></i>Verificar el Comprobante 
+                                    </a>
+                                    <br></br><br></br>
                                     <div className="m-t-5 m-b-5 rounded-4  ">
 
                                     </div>

@@ -38,12 +38,19 @@ let color = {
     "Pendiente": "warning",
     "Pagado": "success",
     null: "danger",
+    "": "danger",
     "null": "danger",
     "SI": "success",
     "NO": "danger",
     "Expirado": "danger",
-
-
+    "Consolidado": "success",
+    "Sin Consolidar": "warning"
+}
+let estados = {
+    null: "Sin Consolidar",
+    "": "Sin Consolidar",
+    "Consolidado": "Consolidado",
+    "Sin Consolidar": "Sin Consolidar"
 }
 export const ticketprocesoapro = [
     {
@@ -155,7 +162,7 @@ export const Consiliaregistro = [
     {
         accessorKey: "comprobante",
         header: "#Comprobante",
-        size:50
+        size: 50
     },
     {
         accessorKey: "cuenta",
@@ -177,7 +184,7 @@ export const Consiliaregistro = [
         Cell: ({ cell }) => (
             <a className="btn btn-default btn-sm" href={cell.row.original.imagen} target="_blank">   <i className=" fa fa-check"> </i> </a>
         ),
-        size:50
+        size: 50
 
     }, {
         accessorKey: "propietario",
@@ -232,17 +239,19 @@ export const listaRegistro = [
 ]
 export const listaRegistrototal = [
     {
-        accessorKey: "fechaCreacion",
+        accessorKey: "fechaReporte",
         header: "Fecha",
+        size:25
     },
+
     {
-        accessorKey: "estado_pago",
-        header: "Estado",
+        accessorKey: "consolidado",
+        header: "Verificado",
         Cell: ({ cell }) => (
-            <Badge bg={color[cell.row.original.estado_pago]}>
-                {cell.row.original.estado_pago}</Badge>
+            <Badge bg={color[cell.row.original.consolidado]}>
+                {estados[cell.row.original.consolidado]}</Badge>
         ),
-        size: 50
+        size:25
     },
 
     {
@@ -262,6 +271,14 @@ export const listaRegistrototal = [
             cell.row.original.forma_pago != "Tarjeta" ? cell.row.original.forma_pago : cell.row.original.link_pago == null ? "Sin link" : cell.row.original.forma_pago
         },
         size: 50
+    }, {
+        accessorKey: "estado_pago",
+        header: "Estado",
+        Cell: ({ cell }) => (
+            <Badge bg={color[cell.row.original.estado_pago]}>
+                {cell.row.original.estado_pago}</Badge>
+        ),
+        size: 50
     },
     {
         accessorKey: "total_pago",
@@ -276,11 +293,7 @@ export const listaRegistrototal = [
         header: "Cantidad",
         size: 25
     },
-
-
 ]
-
-
 let precio = {
     1: 21,
     2: 31,

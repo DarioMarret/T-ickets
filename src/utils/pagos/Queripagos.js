@@ -90,9 +90,50 @@ export const cambiarMetodo = async (parms) => {
 }
 export const ConsolidarReporte = async (parms) => {
     try {
-        let { data } = await axios.post("")
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/ConsolidarCompra",parms,{
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
         return data
     } catch (err) {
         return err
     }
+}
+export const BuscarTransacion=async (parms)=>{
+    try {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/BuscarNumeroTransaccion",parms,{
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data;
+    } catch (error) {
+        return error
+    }
+}
+export const ActualizarnumeroTransacion= async (parms)=>{
+    try {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/ActualizarNumeroTransaccion",parms,{
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='  
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+
+}
+export const EstadosCosolidados= async ()=>{
+ try {
+     let { data } = await axios.get(" https://rec.netbot.ec/ms_login/api/v1/estados_consolidados")
+    return data
+ } catch (error) {
+    return error
+ }
+
 }
