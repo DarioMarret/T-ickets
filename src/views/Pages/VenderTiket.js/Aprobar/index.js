@@ -193,6 +193,9 @@ export default function AprobarView() {
             return localidades[localidad]
         }
     }
+    function LocalidadPrecio(){
+        console.log(PreciosStore().filter(f => f.id == 140)[0].precio_normal)
+    }
     const [datas, setDatas] = useState([])
     const [dtos, setDts] = useState([])
     const sorter = (a, b) => new Date(a.fechaCreacion) < new Date(b.fechaCreacion) ? 1 : -1;
@@ -262,6 +265,7 @@ export default function AprobarView() {
         if (errorPubli != undefined) {
             return
         }
+        LocalidadPrecio()
         console.log(publici.data)
         ListaPrecio()
         listarRegistropanel({ "cedula": "" }).then(e => {

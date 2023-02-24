@@ -41,6 +41,7 @@ import ExportToExcel from "utils/Exportelemin";
 import { BuscarTransacion } from "utils/pagos/Queripagos";
 import ConsolidaRegistr from "./ModalesAp/CosolidaRegis";
 import { ActualizarnumeroTransacion } from "utils/pagos/Queripagos";
+import SweetAlert from "react-bootstrap-sweetalert";
 export const consolidaid = async (parm) => {
     try {
         let { data } = await axios.post("")
@@ -53,6 +54,7 @@ export default function DetalleCompraView() {
     let { id } = useParams()
     let history = useHistory()
     let usedispatch = useDispatch()
+    let modal = useSelector(state => state.SuscritorSlice.modal)
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
     let info = JSON.parse(sessionStorage.getItem("Suscritorid"))
     console.log(nombres)
@@ -128,9 +130,8 @@ export default function DetalleCompraView() {
     }
     const [tiketslist, setTikes] = useState([])
     const [boletos, setlocalida] = useState([])
-
-
-
+    const [repetidos, setRepetido] = useState([])
+    const [alert, setAlert] = useState(null)
     function generaPDF(row) {
 
         generaTiketspdf({
@@ -163,7 +164,6 @@ export default function DetalleCompraView() {
             //console.log(eror)
         })
     }
-
     useEffect(() => {
         let concer = JSON.parse(nombres.info_concierto)
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
@@ -201,55 +201,125 @@ export default function DetalleCompraView() {
         })
 
 
-      /*  $.ajax({
-            type: "GET",
-            url: "https://brisana.netbot.ec/js/listar.php?id=" + id,
-            success: function (success) {
-                if (success.status) {
-                    let info = success.result[0]
-                    setConsilia({ ...info })
-                    console.log(success)
-                }
-                else {
-                    console.log(success)
-                }
-            },
-            error: function (error) {
-                console.log(error)
+        /*  $.ajax({
+              type: "GET",
+              url: "https://brisana.netbot.ec/js/listar.php?id=" + id,
+              success: function (success) {
+                  if (success.status) {
+                      let info = success.result[0]
+                      setConsilia({ ...info })
+                      console.log(success)
+                  }
+                  else {
+                      console.log(success)
+                  }
+              },
+              error: function (error) {
+                  console.log(error)
+  
+              }
+          })*/
+        /*  BuscarTransacion({
+              "numeroTransaccion": nombres.numerTransacion
+          }).then(ouput => {
+              console.log(ouput)
+              if (ouput.success) {
+                  ouput.message == "Numero de transaccion encontrado" ? console.log("Registro unico") : ""
+                  $.alert(JSON.parse(ouput))
+              }
+          }).catch(err => {
+              console.log(err)
+          })*/
 
-            }
-        })*/
-      /*  BuscarTransacion({
+
+    }, [])
+    const [first, setfirst] = useState("")
+    function handelchange(e) {
+        setfirst(e.value)
+    }
+    function verRegistro() {
+        let selecion = document.getElementById("registro").value
+        //if (first.trim() != "") return
+       // let datos = modal.estado.filter(e => e.id == first)
+       sessionStorage.setItem("Detalleuid", JSON.stringify({ ...datos[0] }))
+        history.push("/admin/Reporte/" + datos[0].id)
+        console.log(selecion)
+    }
+    function ValidarComprobante() {
+        BuscarTransacion({
             "numeroTransaccion": nombres.numerTransacion
         }).then(ouput => {
             console.log(ouput)
             if (ouput.success) {
-                ouput.message == "Numero de transaccion encontrado" ? console.log("Registro unico") : ""
-                $.alert(JSON.parse(ouput))
+                if (ouput.data) {
+                    successAlert(ouput.data)
+                }
+                else {
+                    $.alert(ouput.message + " Único")
+                }
+                return
             }
+            //$.alert(JSON.stringify(ouput))
         }).catch(err => {
             console.log(err)
-        })*/
-
-
-    }, [])
-   function ValidarComprobante(){
-       BuscarTransacion({
-           "numeroTransaccion": nombres.numerTransacion
-       }).then(ouput => {
-           console.log(ouput)
-           if (ouput.success) {
-               ouput.message == "Numero de transaccion encontrado" ? console.log("Registro unico") : ""
-               $.alert(JSON.stringify(ouput))
-               return
-           }
-           $.alert(JSON.stringify(ouput))
-       }).catch(err => {
-           console.log(err)
-       })
+        })
 
     }
-
+    const successAlert = (re) => {
+        setAlert(
+            <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                closeOnClickOutside={false}
+                showCancel={false}
+                showConfirm={false}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}>
+                <div>
+                    <div className="px-2 d-flex  justify-content-center align-items-center">
+                        <div className="col-md-8">
+                            <label className="form-label">Comprobantes repetidos</label>
+                            <select className="form-select" aria-label="Default select example" id="registro">
+                                <option value="" >Selecione el registro</option>
+                                {re.length > 0 ?
+                                    re.map((e, i) => {
+                                        return (
+                                            <option value={e.id} key={i}>{e.id}</option>)
+                                    }) : ""}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div className='d-flex  justify-content-between py-4'>
+                    <div>
+                        <button className='btn btn-outline-danger  rounded-6'
+                            onClick={verRegistro}
+                        >
+                            <span style={{
+                                fontWeight: "bold"
+                            }}>Ver</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button className=' btn btn-warning rounded-5'  >
+                            <span style={{
+                                fontWeight: "bold"
+                            }}> Eliminar</span>
+                        </button>
+                    </div>
+                    <div  >
+                        <button className=' btn btn-secondary rounded-5' onClick={hideAlert} >
+                            <span style={{
+                                fontWeight: "bold"
+                            }}> Cerrar</span>
+                        </button>
+                    </div>
+                </div>
+            </SweetAlert>
+        )
+    }
+    const hideAlert = () => {
+        setAlert(null);
+    };
     function validar() {
         // console.log(nombres.id)
         // $.alert("Este boton ya no se debe usar ")
@@ -338,7 +408,7 @@ export default function DetalleCompraView() {
                     text: 'Aceptar',
                     btnClass: 'btn-blue',
                     action: function () {
-                       ConsolidarReporte(reporte).then(ouput => {
+                        ConsolidarReporte(reporte).then(ouput => {
                             if (ouput.success) {
                                 history.goBack()
                                 return
@@ -531,7 +601,7 @@ export default function DetalleCompraView() {
             },
         });
     }
-    function CambiarComprobante(){
+    function CambiarComprobante() {
         $.confirm({
             title: 'Comprobante o lote!',
             content: '' +
@@ -557,13 +627,13 @@ export default function DetalleCompraView() {
                                 "id_registraCompra": nombres.id,
                                 "numeroTransaccion": name
                             }
-                        ).then(ouput=>{
+                        ).then(ouput => {
                             console.log(ouput)
-                            if (ouput.success){
+                            if (ouput.success) {
                                 history.goBack()
                             }
 
-                        }).catch(err=>{
+                        }).catch(err => {
                             console.log(err)
                         })
                     }
@@ -615,8 +685,10 @@ export default function DetalleCompraView() {
     function Verificaexistencia() {
         Seleccionaruserlista({ "cedula": nombres.cedula }).then(ouput => {
             if (ouput.success) {
+                if (ouput.data) {
+                    $.alert("Tiene " + ouput.data.length + "  boletos selecion")
 
-                $.alert("Tiene " + ouput.data.length + "  boletos selecion")
+                }
             } else {
                 $.alert("No se encontró boleto seleccionado")
             }
@@ -628,7 +700,8 @@ export default function DetalleCompraView() {
     return (
         <PhotoProvider>
             <div>
-                <ConsiliarView {...nombre} />
+                {alert}
+                <ConsiliarView {...nombre} />               
                 <ModalConfima />
                 <ModalConfirma />
                 <div className="row ">
@@ -844,22 +917,22 @@ export default function DetalleCompraView() {
                                     <small>Comprobante</small>
                                     <br></br>
                                     {nombres.link_comprobante == null ? "" :
-                                     <a className=" btn btn-default btn-sm">
-                                        <i className="fa fa-copy"></i> copy
-                                    </a>}
+                                        <a className=" btn btn-default btn-sm">
+                                            <i className="fa fa-copy"></i> copy
+                                        </a>}
                                     <br></br>
-                                   
+
                                     <a className=" btn btn-default btn-sm"
                                         onClick={CambiarComprobante}
-                                     >
+                                    >
                                         <i className=" fa fa-spinner"></i>Cambiar # comprobante
                                     </a>
-                                  
+
                                     <br></br>
                                     <a className="btn btn-default btn-sm"
                                         onClick={ValidarComprobante}
                                     >
-                                        <i className="fa fa-check"></i>Verificar el Comprobante 
+                                        <i className="fa fa-check"></i>Verificar el Comprobante
                                     </a>
                                     <br></br><br></br>
                                     <div className="m-t-5 m-b-5 rounded-4  ">
