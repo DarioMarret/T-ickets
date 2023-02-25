@@ -99,6 +99,7 @@ export const ticketprocesoapro = [
     }
 
 ]
+
 export const ticketsboletos = [
     {
         accessorKey: "concierto",
@@ -192,6 +193,35 @@ export const Consiliaregistro = [
         size: 50
     }
 ]
+export const PreciosStore = () => {
+    let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
+    if (datos != null) {
+        return datos
+    } else {
+        return []
+    }
+}
+function ListarPrecio(evento, localidad) {
+    if (localidad == 9) {
+        return precio[9]
+    }
+    if (localidad == 10) {
+        return precio[10]
+    }
+    if (localidad == 11) {
+        return precio[11]
+    }
+    if (localidad == 12) {
+        return precio[12]
+    }
+    if (localidad == 13) {
+        return precio[13]
+    }
+    if (localidad == 14) {
+        return precio[14]
+    }
+    return PreciosStore().filter(f => f.id == evento)[0].precio_normal
+}
 export const listaRegistro = [
     {
         accessorKey: "fechaCreacion",
@@ -295,17 +325,17 @@ export const listaRegistrototal = [
     },
 ]
 let precio = {
-    1: 21,
-    2: 31,
-    3: 41.5,
-    4: 51.5,
-    5: 82,
-    9: 122,
-    10: 67,
-    11: 36,
-    12: 122,
-    13: 67,
-    14: 36,
+    1: 20,
+    2: 30,
+    3: 40,
+    4: 50,
+    5: 80,
+    9: 120,
+    10: 65,
+    11: 35,
+    12: 120,
+    13: 65,
+    14: 35,
     22: 0,
     23: 0
 }
@@ -326,7 +356,7 @@ let precioespacio = {
 function quitacomision(row) {
     // let tt = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad] * parseFloat(e.cantidad) ) })
     // console.log(tt)
-    let valores = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+    let valores = JSON.parse(row.info_concierto).map(e => { return ListarPrecio(e.idespaciolocalida,e.id_localidad) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
     if ((new Date("2023-01-21 14:00:00 ") > new Date(row.fechaCreacion))) {
         let valor = parseFloat(valores) * 1.05
         return Math.round(valores)

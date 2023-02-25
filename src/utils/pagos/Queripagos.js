@@ -90,8 +90,8 @@ export const cambiarMetodo = async (parms) => {
 }
 export const ConsolidarReporte = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/ConsolidarCompra",parms,{
-            headers:{
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/ConsolidarCompra", parms, {
+            headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
@@ -101,10 +101,10 @@ export const ConsolidarReporte = async (parms) => {
         return err
     }
 }
-export const BuscarTransacion=async (parms)=>{
+export const BuscarTransacion = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/BuscarNumeroTransaccion",parms,{
-            headers:{
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/BuscarNumeroTransaccion", parms, {
+            headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
@@ -114,12 +114,12 @@ export const BuscarTransacion=async (parms)=>{
         return error
     }
 }
-export const ActualizarnumeroTransacion= async (parms)=>{
+export const ActualizarnumeroTransacion = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/ActualizarNumeroTransaccion",parms,{
-            headers:{
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/ActualizarNumeroTransaccion", parms, {
+            headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='  
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -128,12 +128,27 @@ export const ActualizarnumeroTransacion= async (parms)=>{
     }
 
 }
-export const EstadosCosolidados= async ()=>{
- try {
-     let { data } = await axios.get(" https://rec.netbot.ec/ms_login/api/v1/estados_consolidados")
-    return data
- } catch (error) {
-    return error
- }
+export const EstadosCosolidados = async () => {
+    try {
+        let { data } = await axios.get(" https://rec.netbot.ec/ms_login/api/v1/estados_consolidados",
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                }
+            }
+        )
+        return data
+    } catch (error) {
+        return error
+    }
 
+}
+export const OCRConsult = async (parms) => {
+    try {
+        let { data } = await axios.get("")
+        return data
+    } catch (error) {
+        return error
+    }
 }

@@ -568,13 +568,55 @@ const ResgistroView = (prop) => {
                                             </div>
 
                                         </div>
+                                        <div className="col-12  text-start d-flex flex-column d-none d-sm-none d-md-block ">
+                                            <div className="d-flex text-start  flex-wrap-reverse ">
+                                                <div className="col-12 ">
+                                                    <p style={{ fontSize: "0.7em" }}>Acepto los <span style={{
+                                                        fontWeight: "bold"
+                                                    }}>Términos y condiciones</span> emitidas por
+                                                        t-icket</p>
+                                                </div>
+
+                                            </div>
+
+                                            <div className="d-flex   flex-wrap-reverse ">
+                                                <div className="col-12 d-flex ">
+                                                    <input className="form-check-input" type="checkbox"
+                                                        name="primero"
+                                                        checked={check.primero}
+                                                        onChange={(e) => handelMetodopago(e.target)}
+
+                                                        value="" id="invalidCheck" required />
+                                                    <p style={{ fontSize: "0.7em" }}>
+                                                        Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
+                                                        realizada la compra , caso contrario no podrá retirar los boletos duros sin opción a
+                                                        rembolso
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="d-flex ">
+                                                <div className="col-12 d-flex ">
+                                                    <input className="form-check-input"
+                                                        name="segunfo"
+                                                        type="checkbox" id="segunfo" required
+                                                        checked={check.segunfo}
+                                                        onChange={(e) => handelMetodopago(e.target)}
+                                                    />
+                                                    <p style={{
+                                                        fontSize: "0.8em",
+                                                        fontWeight: "bold"
+                                                    }}>
+                                                        Acepto que se crea mi cuenta de usuario en el portal de t-ickets, la misma que contiene mis datos personales, así como los
+                                                        datos de mis compras, también recibir las promociones por ese mismo medio.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div className="row">
                                             <div className="col-lg-12">
                                                 <button className="btn btn-block btn-success"
-
                                                     disabled={(!check.primero || !check.segunfo)}
                                                     type="submit"
-
                                                 >Crear Cuenta</button>
                                             </div>
                                         </div>
@@ -583,53 +625,7 @@ const ResgistroView = (prop) => {
 
 
                             </div>
-                            <div className="col-12  text-start d-flex flex-column d-none d-sm-none d-md-block ">
-                                <div className="d-flex text-start  flex-wrap-reverse ">
-                                    <div className="col-12 ">
-                                        <p style={{ fontSize: "0.7em" }}>Acepto los <span style={{
-                                            fontWeight: "bold"
-                                        }}>Términos y condiciones</span> emitidas por
-                                            t-icket</p>
-                                    </div>
-
-                                </div>
-
-                                <div className="d-flex   flex-wrap-reverse ">
-                                    <div className="col-12 d-flex ">
-                                        <input className="form-check-input" type="checkbox"
-                                            name="primero"
-                                            checked={check.primero}
-                                            onChange={(e) => handelMetodopago(e.target)}
-
-                                            value="" id="invalidCheck" required />
-                                        <p style={{ fontSize: "0.7em" }}>
-                                            Acepto que para canjear los tickets, debo presentar la tarjeta con la que fue
-                                            realizada la compra , caso contrario no podrá retirar los boletos duros sin opción a
-                                            rembolso
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="d-flex ">
-                                    <div className="col-12 d-flex ">
-                                        <input className="form-check-input"
-                                            name="segunfo"
-                                            type="checkbox" id="segunfo" required
-                                            checked={check.segunfo}
-                                            onChange={(e) => handelMetodopago(e.target)}
-                                        />
-                                        <p style={{
-                                            fontSize: "0.8em",
-                                            fontWeight: "bold"
-                                        }}>
-                                            Acepto que se crea mi cuenta de usuario en el portal de t-ickets, la misma que contiene mis datos personales, así como los
-                                            datos de mis compras, también recibir las promociones por ese mismo medio.
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
+                           
 
 
                         </div>

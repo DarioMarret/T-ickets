@@ -84,7 +84,6 @@ export default function ConsiliarView() {
                 error: function (error) {
                     console.log(error)
                     setEstatus(false)
-
                 }
             })
         }
@@ -101,7 +100,13 @@ export default function ConsiliarView() {
             usuario: user.id,
             propietario: ""
         })
-
+        $(document).ready(function () {
+            $(".modal-content").draggable({
+                handle: ".modal-header",
+                scroll: false,
+                containment: "#root",
+            })
+        })
     }, [props.nombre == "consiliacion" ? true : false])
     $(document).ready(function () {
         $(".numero").keypress(function (e) {

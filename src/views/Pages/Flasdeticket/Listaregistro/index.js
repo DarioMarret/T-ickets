@@ -13,12 +13,13 @@ import { useHistory } from "react-router";
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
-
+import SweetAlert from "react-bootstrap-sweetalert";
 export default function ListaderegistroView(props) {
     let { cedula } = props
     let usedispatch = useDispatch()
     let history = useHistory()
     const [datos, setDatos] = useState([])
+    const [alert,setAlert]=useState(null);
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         listarRegistropanel({ "cedula": user.cedula }).then(
@@ -26,7 +27,6 @@ export default function ListaderegistroView(props) {
                 if(!e.success){
                     return
                 }
-               // console.log(e)
                 setDatos(e.data)
             }
         ).catch(err =>
@@ -36,19 +36,14 @@ export default function ListaderegistroView(props) {
 
     }, [])
     function detalle(e) {
-
         sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
         history.push("/admin/Reporte/" + e.id)
     }
     function abrirModal(row) {
-        // console.log(row)
-
         usedispatch(setModal({ nombre: "confirmar", estado: { ...row } }))
-        //console.log({ cedula: row.original, numeroTransaccion: row.numeroTransaccion })
-        //confirmar
-    } const eliminarregistro = (row) => {
+    } 
+    const eliminarregistro = (row) => {
         //console.log(row)
-
         $.confirm({
             title: 'Desea eliminar el registro de compra ',
             content: '',
@@ -95,6 +90,61 @@ export default function ListaderegistroView(props) {
         });
 
     }
+
+    const successAlert = (re) => {
+        setAlert(
+            <SweetAlert
+                warning
+                style={{ display: "block", marginTop: "-100px" }}
+                closeOnClickOutside={false}
+                showCancel={false}
+                showConfirm={false}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}>
+                <div>
+                    <div className="px-2 d-flex  justify-content-center align-items-center">
+                        <div className="col-md-8">
+                            <label className="form-label">Cargar Comprobante</label>
+                            <select className="form-select" aria-label="Default select example" id="registro">
+                                <option value="" >Selecione el registro</option>
+                                {re.length > 0 ?
+                                    re.map((e, i) => {
+                                        return (
+                                            <option value={e.id} key={i}>{e.id}</option>)
+                                    }) : ""}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div className='d-flex  justify-content-between py-4'>
+                    <div>
+                        <button className='btn btn-outline-danger  rounded-6'>
+                            <span style={{
+                                fontWeight: "bold"
+                            }}>Ver</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button className=' btn btn-warning rounded-5'  >
+                            <span style={{
+                                fontWeight: "bold"
+                            }}> Eliminar</span>
+                        </button>
+                    </div>
+                    <div  >
+                        <button className=' btn btn-secondary rounded-5' onClick={hideAlert} >
+                            <span style={{
+                                fontWeight: "bold"
+                            }}> Cerrar</span>
+                        </button>
+                    </div>
+                </div>
+            </SweetAlert>
+        )
+    }
+    const hideAlert = () => {
+        setAlert(null);
+    };
+
 
     return (
         <>

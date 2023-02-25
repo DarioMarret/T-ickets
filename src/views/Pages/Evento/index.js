@@ -44,7 +44,7 @@ const EventosViews = () => {
     let { codigo, fecha } = e
     var f1 = new Date(fecha);
     var fhoy = new Date();
-    if (f1 < fhoy) {
+    if (false) {
       hideAlert()
       dispatch(setToastes({ show: true, message: 'El evento ya no se puede elimnar', color: 'bg-danger', estado: 'Error' }))
     }

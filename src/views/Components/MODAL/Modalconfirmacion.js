@@ -311,6 +311,13 @@ const ModalConfima = (prop) => {
 
     useEffect(() => {
         setspiner(modal.estado.forma_pago)
+        $(document).ready(function () {
+            $(".modal-content").draggable({
+                handle: ".modal-header",
+                containment: "#root",
+                scroll: false,
+            })
+        })
     }, [modal.nombre == "confirmar" ? true : false])
     return (
         <>

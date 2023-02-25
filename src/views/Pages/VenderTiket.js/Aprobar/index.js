@@ -123,17 +123,17 @@ export default function AprobarView() {
     }
 
     let precio = {
-        1: 21,
-        2: 31,
-        3: 41.5,
-        4: 51.5,
-        5: 82,
-        9: 122,
-        10: 67,
-        11: 36,
-        12: 122,
-        13: 67,
-        14: 36,
+        1: 20,
+        2: 30,
+        3: 40,
+        4: 50,
+        5: 80,
+        9: 120,
+        10: 65,
+        11: 35,
+        12: 120,
+        13: 65,
+        14: 35,
         23: 0,
         22: 0
     }
@@ -193,8 +193,47 @@ export default function AprobarView() {
             return localidades[localidad]
         }
     }
-    function LocalidadPrecio(){
-        console.log(PreciosStore().filter(f => f.id == 140)[0].precio_normal)
+    function LocalidadPrecio(evento, localidad){
+        if (localidad == 9 ) {
+            return "SEN2 KBRN-Guayaquil"
+        }
+        if (localidad == 10 ) {
+            return "SAUCES BOYZ-Guayaquil"
+        }
+        if (localidad == 11 ) {
+            return "TODO-O-NADA-Guayaquil"
+        }
+        if ( localidad == 12) {
+            return "SEN2 KBRN-Quito"
+        }
+        if ( localidad == 13) {
+            return "SAUCES BOYZ-Quito"
+        }
+        if (localidad == 14) {
+            return "TODO-O-NADA-Quito"
+        }
+        return PreciosStore().filter(f => f.id == evento)[0].localidad
+    }
+    function ListarPrecio(evento, localidad) {
+        if (localidad == 9) {
+            return precio[9]
+        }
+        if (localidad == 10) {
+            return precio[10]
+        }
+        if (localidad == 11) {
+            return precio[11]
+        }
+        if (localidad == 12) {
+            return precio[12]
+        }
+        if (localidad == 13) {
+            return precio[13]
+        }
+        if (localidad == 14) {
+            return precio[14]
+        }
+        return PreciosStore().filter(f => f.id == evento)[0].precio_normal
     }
     const [datas, setDatas] = useState([])
     const [dtos, setDts] = useState([])
@@ -265,7 +304,7 @@ export default function AprobarView() {
         if (errorPubli != undefined) {
             return
         }
-        LocalidadPrecio()
+       // LocalidadPrecio()
         console.log(publici.data)
         ListaPrecio()
         listarRegistropanel({ "cedula": "" }).then(e => {
@@ -289,7 +328,7 @@ export default function AprobarView() {
                 let arayReallocalidad = []
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     JSON.parse(elm.info_concierto).map(loc => {
-                        arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
+                        arayReallocalidad.push({ id: loc.id_localidad, localidad: LocalidadPrecio(loc.idespaciolocalida, loc.id_localidad), cantidad: loc.cantidad, precio: ListarPrecio(loc.idespaciolocalida, loc.id_localidad), concierto: loc.nombreConcierto })
                     })
                 })
                 let arrayIndividual = []
@@ -302,7 +341,7 @@ export default function AprobarView() {
                         arrayIndividual[dat].cantidad = tota
                     }
                     else {
-                        arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: precio[elm.id] })
+                        arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
                     }
                 })
                 console.log(arrayIndividual)

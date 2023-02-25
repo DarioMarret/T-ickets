@@ -18,12 +18,14 @@ import image2 from "assets/img/full-screen-image-2.jpg";
 import image3 from "assets/img/full-screen-image-3.jpg";
 import image4 from "assets/img/full-screen-image-4.jpg";
 import ToastViews from "views/Components/TOAST/toast";
+import { useEffect } from "react";
 
 function Admin() {
   let user = clienteInfo()
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("black");
   const getRoutes = (routes) => {
+  
     return routes.map((prop, key) => {
       if (prop.permiso != null && prop.permiso.every(e => e != user.perfil)) {
         return null
@@ -44,6 +46,9 @@ function Admin() {
       }
     });
   };
+  useEffect(()=>{
+    
+  },[])
   return (
     <>
       <div className="wrapper">

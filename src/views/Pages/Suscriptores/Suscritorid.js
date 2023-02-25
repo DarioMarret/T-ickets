@@ -21,7 +21,7 @@ import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { ticketsboletos } from "utils/columnasub";
 import { Listarticketporestado } from "utils/userQuery";
 import { setdetalle } from "StoreRedux/Slice/SuscritorSlice";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Triangle } from "react-loader-spinner";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
@@ -143,11 +143,11 @@ const SuscritoridView = () => {
   };
   const handleChange = (event, newValue) => {
     usedispatch(setTabs({ number: newValue }))
-  //  setValue(newValue);
+    //  setValue(newValue);
   };
   let value = useSelector((state) => state.SuscritorSlice.tabps)
 
- // const [value, setValue] = React.useState(0);
+  // const [value, setValue] = React.useState(0);
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -446,18 +446,18 @@ const SuscritoridView = () => {
     13: "SAUCES BOYZ-Q",
     14: "TODO-O-NADA-Q",
   }
-  const[global,setGlobal]=useState([])
+  const [global, setGlobal] = useState([])
   useEffect(() => {
     setsuscritor({ ...info })
-    Listarticketporestado("" + info.cedula).then(ouput=>{
+    Listarticketporestado("" + info.cedula).then(ouput => {
       ouput.success ? setBoletos(ouput.data)
-      :""
-    }).catch(err=>{
+        : ""
+    }).catch(err => {
       console.log(err)
     })
-    listarRegistropanel({ "cedula": info.cedula }).then(ouput=>{
-      
-     let datos= ouput.data.map(row => {
+    listarRegistropanel({ "cedula": info.cedula }).then(ouput => {
+
+      let datos = ouput.data.map(row => {
         let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
         let valor = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
         let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
@@ -466,9 +466,9 @@ const SuscritoridView = () => {
         return { ...row }
       })
       //console.log(datos)
-      ouput.success ? setTikes(datos) :""
+      ouput.success ? setTikes(datos) : ""
     })
-  
+
     /*BoletosTiketsGlobal(""+info.cedula).then(ouput=>{
       if(!ouput.success) return
       setGlobal(ouput.data.filter(e.cedula =="1726979659"))
@@ -577,7 +577,8 @@ const SuscritoridView = () => {
                       <Card.Title as="h4">Suscritor </Card.Title>
                       <p className="card-category">
                         {suscritoid ? suscritoid.nombreCompleto : ''}</p>
-
+                     
+                      <p className="card-category">{suscritoid ? suscritoid.cedula : ''} </p>
                     </div>
                   </Col>
                   <Col xl="5" xs="6">
@@ -845,7 +846,7 @@ const SuscritoridView = () => {
                     <Box sx={{ display: 'flex' }}>
 
                       <div className=" btn-group  " >
-                        {row.original.estado != "reservado"  ?
+                        {row.original.estado != "reservado" ?
                           <Tooltip className="" title="Ver Ticket" placement="top">
                             <a
                               className=" border  btn-default btn-sm"
@@ -942,7 +943,7 @@ const SuscritoridView = () => {
                 />
 
               </TabPanel>
-             
+
             </div>
           </div>
         </div>

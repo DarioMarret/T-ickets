@@ -76,6 +76,7 @@ import { agregaReserva } from "utilsstile.js/guardarEventos.js";
 import Inframene from "views/Components/IFrame/index.js";
 import PaginasView from "./Eventosindex/index.js";
 import NavbarView from "./Navbarindex/index.js";
+import { ListaPreciosEvent } from "utils/EventosQuery/index.js";
 const TRACKING_ID = "G-LJN507B5NX";
 const IndexFlas = () => {
   ReactGA.initialize(TRACKING_ID);
@@ -689,7 +690,10 @@ const IndexFlas = () => {
     }
 
   }
-
+  const ListaPrecios = async () => {
+    const info = await ListaPreciosEvent();    
+    return info
+  }
   useEffect(() => {
     //time.current = setInterval(showRemaining, 1000);
     /* addNotification({
@@ -699,6 +703,7 @@ const IndexFlas = () => {
        theme: 'darkblue',
        native: true // when using native, your OS will handle theming.
      });*/
+    ListaPrecios();
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     Limpiarseleccion()
@@ -706,6 +711,9 @@ const IndexFlas = () => {
     const evento = () => {
       try {
         if (!errorevento == undefined) {
+          return
+        }
+        if (!errorPubli == undefined) {
           return
         }
         if (!eventos == null) { return }

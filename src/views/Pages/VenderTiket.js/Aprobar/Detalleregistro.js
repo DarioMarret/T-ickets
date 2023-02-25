@@ -42,12 +42,12 @@ import { BuscarTransacion } from "utils/pagos/Queripagos";
 import ConsolidaRegistr from "./ModalesAp/CosolidaRegis";
 import { ActualizarnumeroTransacion } from "utils/pagos/Queripagos";
 import SweetAlert from "react-bootstrap-sweetalert";
-export const consolidaid = async (parm) => {
-    try {
-        let { data } = await axios.post("")
-        return data
-    } catch (err) {
-        return err
+export const PreciosStore = () => {
+    let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
+    if (datos != null) {
+        return datos
+    } else {
+        return []
     }
 }
 export default function DetalleCompraView() {
@@ -92,6 +92,21 @@ export default function DetalleCompraView() {
         propietario: "",
         usuario: ""
     })
+    let precio = {
+        1: 20,
+        2: 30,
+        3: 40,
+        4: 50,
+        5: 80,
+        9: 120,
+        10: 65,
+        11: 35,
+        12: 120,
+        13: 65,
+        14: 35,
+        23: 0,
+        22: 0
+    }
     const Eliminara = (parm) => {
         console.log(parm)
         $.confirm({
@@ -164,6 +179,48 @@ export default function DetalleCompraView() {
             //console.log(eror)
         })
     }
+    function LocalidadPrecio(evento, localidad) {
+        if (localidad == 9) {
+            return "SEN2 KBRN Guayaquil"
+        }
+        if (localidad == 10) {
+            return "SAUCES BOYZ Guayaquil"
+        }
+        if (localidad == 11) {
+            return "TODO O NADA Guayaquil"
+        }
+        if (localidad == 12) {
+            return "SEN2 KBRN Quito"
+        }
+        if (localidad == 13) {
+            return "SAUCES BOYZ Quito"
+        }
+        if (localidad == 14) {
+            return "TODO-O-NADA Quito"
+        }
+        return PreciosStore().filter(f => f.id == evento)[0].localidad
+    }
+    function ListarPrecio(evento, localidad) {
+        if (localidad == 9) {
+            return precio[9]
+        }
+        if (localidad == 10) {
+            return precio[10]
+        }
+        if (localidad == 11) {
+            return precio[11]
+        }
+        if (localidad == 12) {
+            return precio[12]
+        }
+        if (localidad == 13) {
+            return precio[13]
+        }
+        if (localidad == 14) {
+            return precio[14]
+        }
+        return PreciosStore().filter(f => f.id == evento)[0].precio_normal
+    }
     useEffect(() => {
         let concer = JSON.parse(nombres.info_concierto)
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
@@ -199,7 +256,7 @@ export default function DetalleCompraView() {
         }).catch(err => {
             console.log(err)
         })
-
+       
 
         /*  $.ajax({
               type: "GET",
@@ -969,9 +1026,10 @@ export default function DetalleCompraView() {
                                 <thead>
                                     <tr>
                                         <th>DESCRIPCION</th>
+                                        <th className="text-center" width="30%">loc </th>
                                         <th className="text-center">CANT.</th>
-                                        <th className="text-center" width="15%">loc id</th>
-                                        <th className="text-right" width="15%">espacioid</th>
+                                        
+                                        <th className=" text-center"  width="15%" >Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -979,11 +1037,16 @@ export default function DetalleCompraView() {
                                         return (
                                             <tr key={i}>
                                                 <td>{item.nombreConcierto}</td>
+                                               
+                                                <td className="text-center">
+                                                    {LocalidadPrecio(item.idespaciolocalida, item.id_localidad) }
+                                                       </td>
                                                 <td className="text-center">{item.cantidad}</td>
                                                 <td className="text-center">
-                                                    <a className="btn btn-primary btn-sm " onClick={() => nombre(item.id_localidad)}>  <i className="fa fa-eye text-white"></i></a>
+                                                    {"$"+parseInt(item.cantidad) * parseFloat(ListarPrecio(item.idespaciolocalida, item.id_localidad))}
+
                                                 </td>
-                                                <td className="text-right">{item.idespaciolocalida}</td>
+                                              
                                             </tr>
                                         )
                                     }) : ''}
