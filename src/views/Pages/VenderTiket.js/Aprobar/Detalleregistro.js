@@ -42,6 +42,7 @@ import { BuscarTransacion } from "utils/pagos/Queripagos";
 import ConsolidaRegistr from "./ModalesAp/CosolidaRegis";
 import { ActualizarnumeroTransacion } from "utils/pagos/Queripagos";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { infoTarjeta } from "utils/pagos/Queripagos";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -256,37 +257,13 @@ export default function DetalleCompraView() {
         }).catch(err => {
             console.log(err)
         })
-       
-
-        /*  $.ajax({
-              type: "GET",
-              url: "https://brisana.netbot.ec/js/listar.php?id=" + id,
-              success: function (success) {
-                  if (success.status) {
-                      let info = success.result[0]
-                      setConsilia({ ...info })
-                      console.log(success)
-                  }
-                  else {
-                      console.log(success)
-                  }
-              },
-              error: function (error) {
-                  console.log(error)
-  
-              }
-          })*/
-        /*  BuscarTransacion({
-              "numeroTransaccion": nombres.numerTransacion
-          }).then(ouput => {
-              console.log(ouput)
-              if (ouput.success) {
-                  ouput.message == "Numero de transaccion encontrado" ? console.log("Registro unico") : ""
-                  $.alert(JSON.parse(ouput))
-              }
-          }).catch(err => {
-              console.log(err)
-          })*/
+        nombres.forma_pago =="Tarjeta"? infoTarjeta({
+            "token": nombres.token_pago
+        }).then(ouput=>{
+            console.log(ouput)
+        }).catch(err=>{
+            console.log(err)
+        }):""
 
 
     }, [])
