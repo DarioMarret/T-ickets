@@ -930,7 +930,9 @@ export default function DetalleCompraView() {
                                         <div className="m-t-5 m-b-5">
                                             <strong className="text-inverse">Pago con Tarjeta</strong><br></br>
                                             <small>
-                                                {nombres.link_pago != null || nombres.link_comprobante != null ? <a className=" btn btn-default btn-sm" href={nombres.link_pago != null ? nombres.link_pago : nombres.link_comprobante} target="_blank">
+                                                {nombres.link_pago != null || nombres.link_comprobante != null ? <a className=" btn btn-default btn-sm" 
+                                                
+                                                    href={nombres.link_pago != null ? nombres.link_pago.replace("k/","k/voucher/") : nombres.link_comprobante} target="_blank">
                                                     <i className="fa fa-credit-card"></i> Link de pago
                                                 </a> : <a className=" btn btn-default btn-sm"><i className="fa fa-credit-card"></i> Sin Link</a>}
                                                 {
@@ -1006,7 +1008,11 @@ export default function DetalleCompraView() {
                                             <br></br>
                                             Fecha creación: {tarjetadata.created_at} <br></br>
                                             Fecha pago: {tarjetadata.payment_date} <br></br>
-                                            {tarjetadata.message} <br></br>
+                                            <p style={
+                                                {
+                                                    fontWeight:"bold"
+                                                }
+                                            }> {tarjetadata.message} <br></br></p> 
                                     </div>
                                 </div>
                             </div>}
