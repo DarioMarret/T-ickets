@@ -328,7 +328,8 @@ export default function AprobarView() {
                 let arayReallocalidad = []
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     JSON.parse(elm.info_concierto).map(loc => {
-                        arayReallocalidad.push({ id: loc.id_localidad, localidad: LocalidadPrecio(loc.idespaciolocalida, loc.id_localidad), cantidad: loc.cantidad, precio: ListarPrecio(loc.idespaciolocalida, loc.id_localidad), concierto: loc.nombreConcierto })
+                       // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
+                        arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
                     })
                 })
                 let arrayIndividual = []

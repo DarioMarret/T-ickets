@@ -39,7 +39,7 @@ function ModalDetalle(props) {
         email: '',
         whatsapp: '',
         metodoPago: '',
-         envio: "Portal web",
+        envio: "Portal web",
         direccion: '',
     })
     const detposito = () => usedispatch(setModal({ nombre: "modalpago", estado: "" }))
@@ -85,7 +85,7 @@ function ModalDetalle(props) {
                     var hoy = new Date();
                     let users = {
                         ...datos, cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil, telefono: data.movil, name: data.nombreCompleto,
-                        email: data.email, hora: String(hoy), enable: data.enable, id: data.id, metodoPago: datosPerson.metodoPago,  envio: "Portal web",
+                        email: data.email, hora: String(hoy), enable: data.enable, id: data.id, metodoPago: datosPerson.metodoPago, envio: "Portal web",
                     }
                     DatosUsuariosLocalStorag({ users })
                     sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
@@ -122,7 +122,9 @@ function ModalDetalle(props) {
         total: 0,
         subtotal: 0,
         comision: 0,
-        comision_bancaria: 0
+        comision_bancaria: 0,
+        desc: 0,
+        desctc: 0
     })
     async function handelchange(e) {
         let metodoPago = GetMetodo()
@@ -138,14 +140,14 @@ function ModalDetalle(props) {
             const { name, email, direccion, whatsapp, discapacidad } = datos
             //console.log(datos)
             if (name) {
-                DatosUsuariosLocalStorag({ ...datos, cedula: value,  envio: "Portal web", whatsapp: '', discapacidad: discapacidad })
+                DatosUsuariosLocalStorag({ ...datos, cedula: value, envio: "Portal web", whatsapp: '', discapacidad: discapacidad })
                 setPerson({
                     ...datosPerson,
                     email: email ? email : '',
                     name: name,
                     cedula: value,
                     direccion: direccion ? direccion : '',
-                     envio: "Portal web",
+                    envio: "Portal web",
                     whatsapp: '',
                     metodoPago: metodoPago
                 })
@@ -231,7 +233,7 @@ function ModalDetalle(props) {
                 name: datosPersonal ? datosPersonal.name : '',
                 whatsapp: datosPersonal ? datosPersonal.whatsapp : '',
                 cedula: datosPersonal ? datosPersonal.cedula : '',
-                 envio: "Portal web",
+                envio: "Portal web",
                 metodoPago: metodoPago,
                 direccion: datosPersonal ? datosPersonal.direccion : ''
             })
@@ -247,7 +249,7 @@ function ModalDetalle(props) {
                 cedula: clineteLogeado ? clineteLogeado.cedula : '',
                 metodoPago: metodoPago,
                 direccion: clineteLogeado ? clineteLogeado.direccion : '',
-                 envio: "Portal web",
+                envio: "Portal web",
                 metodoPago: metodoPago,
             })
         }
@@ -330,12 +332,12 @@ function ModalDetalle(props) {
                             <span>Forma de envío:</span>
                             <div>
                                 <input
-                                className='form-control'
-                                disabled
+                                    className='form-control'
+                                    disabled
                                     value={datosPerson.envio}
                                     id="envio" name="envio"
                                 />
-                                
+
                             </div>
 
                             <div className=" d-none col-12 border border-bottom mb-3"></div>
@@ -416,7 +418,7 @@ function ModalDetalle(props) {
                             <tbody>
                                 <tr>
                                     <th scope="row"></th>
-                                    <td  className='text-end' >Subtotal:</td>
+                                    <td className='text-end' >Subtotal:</td>
                                     <td className='text-center'>${parseInt(listaPrecio.subtotal).toFixed(2)}</td>
                                 </tr>
                                 <tr className={hidecomision}>
@@ -431,8 +433,13 @@ function ModalDetalle(props) {
                                 </tr>
                                 <tr>
                                     <th scope="row"></th>
-                                    <td  className='text-end' >Total:</td>
+                                    <td className='text-end' >Total:</td>
                                     <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td className='text-end' >Total Desc:</td>
+                                    <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.desctc).toFixed(2) : parseFloat(listaPrecio.desc).toFixed(2)}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -449,8 +456,11 @@ function ModalDetalle(props) {
                                 <p>Comisión Bancaria:</p>
                             </div>
                             <div>
-                                <h4>Total:</h4>
+                                <h4>Total</h4>
                             </div>
+                            <div className=''>
+                                <h4></h4>
+                            </div>Total Desc:
                         </div>
                         <div className="col-6 col-sm text-end align-items-end flex-column ">
                             <div className="container ">
@@ -464,6 +474,9 @@ function ModalDetalle(props) {
                             </div>
                             <div className="container  ">
                                 <h4 className="total-text"> ${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)} </h4>
+                            </div>
+                            <div className="container -none ">
+                                <h4 className="total-text"> ${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.desctc).toFixed(2) : parseFloat(listaPrecio.desc).toFixed(2)} </h4>
                             </div>
 
                         </div>
@@ -552,7 +565,7 @@ function ModalDetalle(props) {
                             }
                             {
                                 datosPerson.metodoPago === "Efectivo-Local" ?
-                                    <button id="pagarcuenta" className="btn btn-primary"                                       
+                                    <button id="pagarcuenta" className="btn btn-primary"
                                         disabled={!(datosPerson.envio != '')}
                                         onClick={() => { if (validarEmail(datosPerson.email)) { detposito() } }}
                                     >
