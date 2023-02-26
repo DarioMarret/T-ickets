@@ -437,7 +437,7 @@ function ModalDetalle(props) {
                                     <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"></th>
+                                    <th scope="row d-none"></th>
                                     <td className='text-end' >Total Desc:</td>
                                     <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.desctc).toFixed(2) : parseFloat(listaPrecio.desc).toFixed(2)}</td>
                                 </tr>
