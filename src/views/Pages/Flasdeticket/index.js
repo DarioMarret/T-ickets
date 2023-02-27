@@ -292,7 +292,44 @@ const IndexFlas = () => {
     Limpiarseleccion()
     LimpiarLocalStore()
   }
-
+ function abrirCodigo(e){
+   e.codigoEvento == "9EGM42" || e.codigoEvento == "ANNKV7" ? 
+   $.confirm({
+     title: 'Código Barcelona!',
+     content: '' +
+       '<form action="" class="formName">' +
+       '<div class="form-group">' +
+       '<label>Ingrese código de descuentos : Socio Barcelona</label>' +
+       '<input type="text" placeholder="Código" class="codigo form-control" required />' +
+       '</div>' +
+       '</form>',
+     buttons: {
+       formSubmit: {
+         text: 'Verificar',
+         btnClass: 'btn-blue',
+         action: function () {
+           var name = this.$content.find('.codigo').val();
+           if (!name) {
+             $.alert('Ingrese un código');
+             return false;
+           }
+           abrir(e)
+         }
+       },
+       cancel: function () {
+        
+       },
+       somethingElse: {
+         text: 'Continuar ',
+         btnClass: 'btn-blue',
+       
+         action: function () {
+           abrir(e)
+         }
+       }
+     }
+   }):abrir(e)
+ }
   const abrir = async (e) => {
 
     if (e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U") {
@@ -720,7 +757,7 @@ const IndexFlas = () => {
         let datos = isLoading ? eventos : eventos.data
         let publicin = publici
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
-        const sorter = (a, b) =>  new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
+        const sorter = (a, b) =>  new Date(a.fechaConcierto) < new Date(b.fechaConcierto) ? 1 : -1;
 
         isLoading ? "" : setEventos(filtro.sort(sorter))
         info ? "" : setpublicidad(publicin.data)
@@ -1084,7 +1121,7 @@ const IndexFlas = () => {
                                   >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
                                 </div>
                               </div>
-                              <h4 className=" font-weight-bold  d-none" style={styleswiper.titulo}>{element.encabezado}  </h4>
+                              <h4 className=" font-weight-bold " style={styleswiper.titulo}>{element.encabezado}  </h4>
                               <span className="d-none" style={styleswiper.subtitulo}>
                                 {element.descripcion}
                               </span>

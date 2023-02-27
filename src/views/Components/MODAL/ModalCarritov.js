@@ -856,7 +856,14 @@ const ModalCarritoView = (prop) => {
 
                     </div>
                     <div className="d-flex  mx-sm-auto   ">
-                        <div className=" ">
+                        <div className=" text-center ">
+                            <div className="py-1">
+                                <div class="input-group">
+                                <input className=" form-control-sm " placeholder="Código Barcelona"></input>
+                                <button className="btn  btn-primary"> <i className=" "></i></button>
+                                </div>
+                            </div>
+                            
                             {detalle.length > 0 ?
                                 <button className="btn btn-primary " disabled={check} onClick={handleContinuar}>Continuar</button> :
                                 <button className="btn btn-primary  float-right" disabled={true} >Continuar</button>

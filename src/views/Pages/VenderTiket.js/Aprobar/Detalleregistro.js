@@ -43,6 +43,9 @@ import ConsolidaRegistr from "./ModalesAp/CosolidaRegis";
 import { ActualizarnumeroTransacion } from "utils/pagos/Queripagos";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { infoTarjeta } from "utils/pagos/Queripagos";
+import Inframene from "views/Components/IFrame";
+import Iframe from "views/Components/IFrame/Iframe";
+import { infoabimedia } from "utils/pagos/Queripagos";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -147,15 +150,15 @@ export default function DetalleCompraView() {
     const [tiketslist, setTikes] = useState([])
     const [boletos, setlocalida] = useState([])
     const [repetidos, setRepetido] = useState([])
-    const [tarjetadata,setDataTarjeta]= useState({
-        acquirer:"",
-        cardholder:"",
-        display_number:"",
-        grand_total:"",
-        installments:"",
-        message:"",
-        payment_date:"",
-        transmitter:""
+    const [tarjetadata, setDataTarjeta] = useState({
+        acquirer: "",
+        cardholder: "",
+        display_number: "",
+        grand_total: "",
+        installments: "",
+        message: "",
+        payment_date: "",
+        transmitter: ""
     })
     const [alert, setAlert] = useState(null)
     function generaPDF(row) {
@@ -232,6 +235,16 @@ export default function DetalleCompraView() {
         }
         return PreciosStore().filter(f => f.id == evento)[0].precio_normal
     }
+    function Verificarnomnbre(e, f) {
+        let nuew = []
+        let listtarje = e.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+        let listnombre = f.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+        listnombre.forEach(element => {
+            nuew.push(listtarje.some(e => e == element))
+
+        });
+        console.log(listnombre, listtarje, nuew)
+    }
     useEffect(() => {
         let concer = JSON.parse(nombres.info_concierto)
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
@@ -249,7 +262,7 @@ export default function DetalleCompraView() {
                 let boletos = ouput.data.map((e) => {
                     if (concer.find(f => f.nombreConcierto == e.concierto) != undefined) { return { ...e } }
                 })
-                console.log(boletos.filter(e => e != undefined))
+                //   console.log(boletos.filter(e => e != undefined))
                 setTikes(boletos.filter(e => e != undefined))
                 setlocalida(boletos.filter(e => e != undefined).map(e => {
                     return {
@@ -267,16 +280,108 @@ export default function DetalleCompraView() {
         }).catch(err => {
             console.log(err)
         })
-        nombres.forma_pago == "Tarjeta" && nombres.token_pago!=null ? infoTarjeta({
-            "token": nombres.token_pago
-        }).then(ouput=>{
-            //console.log(ouput)
-            if(ouput.success){
-                setDataTarjeta({...ouput.data})
-            }
-        }).catch(err=>{
-            console.log(err)
-        }):""
+        nombres.forma_pago == "Tarjeta" && nombres.link_pago != null ?
+            !nombres.link_pago.includes("cloud.abitmedia.com") ?
+                infoTarjeta({
+                    "token": nombres.token_pago
+                }).then(ouput => {
+                    console.log(ouput.data)
+                    if (ouput.success) {
+                        setDataTarjeta({ ...ouput.data })
+                        console.log(nombres.nombreCompleto)
+                        Verificarnomnbre(ouput.data.cardholder, usuario.nombreCompleto)
+                    }
+                    else {
+                        infoabimedia(nombres.token_pago).then(ouput => {
+                            if (ouput.data) {
+                                let data = {
+
+                                    "payment_date": ouput.data.transactionDate,
+                                    "status": 1,
+                                    "payment_id": "",
+                                    "merchant_transaction_id": "",
+                                    "auth_code": ouput.data.authorizationCode,
+                                    "display_number": ouput.data.cardNumber,
+                                    "message": "Transaccion aprobada",
+                                    "card_brand": ouput.cardBrand,
+                                    "installments": "CORRIENTE",
+                                    "batch": "230225",
+                                    "credit_type": "00",
+                                    "cardholder": ouput.data.cardHolder,
+                                    "acquirer_code": "04",
+                                    "acquirer": "BANCO GUAYAQUIL",
+                                    "reference": null,
+                                    "created_at": ouput.data.transactionDate,
+                                    "interest": "0.00",
+                                    "transmitter": ouput.cardBrand,
+                                    "grand_total": "130.54",
+                                }
+                                setDataTarjeta({ ...data })
+                                if (usuario.nombreCompleto != " ") {
+                                    setTimeout(() => {
+                                        let nuew = []
+
+                                        let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                        let listnombre = usuario.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                        listnombre.forEach(element => {
+                                            nuew.push(listtarje.some(e => e == element))
+
+                                        });
+                                        console.log(listnombre, listtarje, nuew)
+                                    }, 5000);
+
+                                }
+                                console.log(ouput)
+                            }
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                    }
+                }).catch(err => {
+                    console.log(err)
+                }) : infoabimedia(nombres.token_pago).then(ouput => {
+                    if (ouput.data){
+                    let data ={
+                        
+                        "payment_date": ouput.data.transactionDate,
+                        "status": 1,
+                        "payment_id": "",
+                        "merchant_transaction_id": "",
+                        "auth_code": ouput.data.authorizationCode,
+                        "display_number": ouput.data.cardNumber,
+                        "message": "Transaccion aprobada",
+                        "card_brand": ouput.cardBrand,
+                        "installments": "CORRIENTE",
+                        "batch": "230225",
+                        "credit_type": "00",
+                        "cardholder": ouput.data.cardHolder,
+                        "acquirer_code": "04",
+                        "acquirer": "BANCO GUAYAQUIL",
+                        "reference": null,
+                        "created_at": ouput.data.transactionDate,
+                        "interest": "0.00",
+                        "transmitter": ouput.cardBrand,
+                        "grand_total": "130.54", 
+                    }
+                    setDataTarjeta({ ...data })
+                        if (usuario.nombreCompleto!=" "){
+                        setTimeout(() => {
+                            let nuew = []
+
+                            let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                            let listnombre = usuario.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                            listnombre.forEach(element => {
+                                nuew.push(listtarje.some(e => e == element))
+
+                            });
+                            console.log(listnombre, listtarje, nuew)   
+                        }, 5000);
+                       
+                    }
+                    console.log(ouput)}
+                }).catch(err => {
+                    console.log(err)
+                }) : ""
 
 
     }, [])
@@ -287,8 +392,8 @@ export default function DetalleCompraView() {
     function verRegistro() {
         let selecion = document.getElementById("registro").value
         //if (first.trim() != "") return
-       // let datos = modal.estado.filter(e => e.id == first)
-       sessionStorage.setItem("Detalleuid", JSON.stringify({ ...datos[0] }))
+        // let datos = modal.estado.filter(e => e.id == first)
+        sessionStorage.setItem("Detalleuid", JSON.stringify({ ...datos[0] }))
         history.push("/admin/Reporte/" + datos[0].id)
         console.log(selecion)
     }
@@ -648,6 +753,21 @@ export default function DetalleCompraView() {
             },
         });
     }
+    let [url, setUrl] = useState("")
+    function abririnframe(e, f) {
+        if (nombres.estado_pago == "Pagado") {
+            if (nombres.link_pago != null) {
+                setUrl(e.replace("k/", "k/voucher/"))
+                usedispatch(setModal({ nombre: "pago", estado: e.replace("k/", "k/voucher/") }))
+            }
+            if (nombres.link_comprobante != null) {
+                setUrl(nombres.link_comprobante)
+                usedispatch(setModal({ nombre: "pago", estado: nombres.link_comprobante }))
+            }
+        } else {
+            window.open(e, '_blank');
+        }
+    }
     function CambiarComprobante() {
         $.confirm({
             title: 'Comprobante o lote!',
@@ -668,7 +788,6 @@ export default function DetalleCompraView() {
                             $.alert('Ingrere Comprobante');
                             return false;
                         }
-                        //$.alert('Your name is ' + name);
                         ActualizarnumeroTransacion(
                             {
                                 "id_registraCompra": nombres.id,
@@ -690,7 +809,7 @@ export default function DetalleCompraView() {
                 },
             },
             onContentReady: function () {
-                // bind to events
+
                 var jc = this;
                 this.$content.find('form').on('submit', function (e) {
                     // if the user submits the form by pressing enter in the field.
@@ -744,11 +863,12 @@ export default function DetalleCompraView() {
         })
     }
 
+
     return (
         <PhotoProvider>
             <div>
                 {alert}
-                <ConsiliarView {...nombre} />               
+                <ConsiliarView {...nombre} />
                 <ModalConfima />
                 <ModalConfirma />
                 <div className="row ">
@@ -930,11 +1050,15 @@ export default function DetalleCompraView() {
                                         <div className="m-t-5 m-b-5">
                                             <strong className="text-inverse">Pago con Tarjeta</strong><br></br>
                                             <small>
-                                                {nombres.link_pago != null || nombres.link_comprobante != null ? <a className=" btn btn-default btn-sm" 
-                                                
-                                                    href={nombres.link_pago != null ? nombres.link_pago.replace("k/","k/voucher/") : nombres.link_comprobante} target="_blank">
-                                                    <i className="fa fa-credit-card"></i> Link de pago
-                                                </a> : <a className=" btn btn-default btn-sm"><i className="fa fa-credit-card"></i> Sin Link</a>}
+                                                {nombres.link_pago != null || nombres.link_comprobante != null ?
+
+
+                                                    <a className=" btn btn-default btn-sm"
+                                                        onClick={() => abririnframe(nombres.link_pago, nombres.link_comprobante)}>
+                                                        <i className="fa fa-credit-card"></i> Link de pago
+                                                    </a>
+                                                    : <a className=" btn btn-default btn-sm"><i className="fa fa-credit-card"></i> Sin Link</a>}
+
                                                 {
                                                     nombres.forma_pago == "Deposito" ?
                                                         <a className=" btn btn-default btn-sm">
@@ -944,18 +1068,21 @@ export default function DetalleCompraView() {
                                                 }
                                                 <br></br>
 
-
+                                                <a className=" btn btn-default btn-sm"
+                                                    onClick={() => linkcopy(nombres.link_pago != null ? nombres.link_pago : nombres.link_comprobante)}>
+                                                    <i className="fa fa-credit-card"></i>Copy Link de pago
+                                                </a>
                                                 {nombres.forma_pago == "Deposito" ? <a className=" btn btn-default btn-sm" onClick={() => linkcopy(nombres.link_comprobante)}>
                                                     <i className="fa fa-credit-card"></i> Copiar link de imagen
-                                                </a>:""}
+                                                </a> : ""}
 
                                                 <br></br>
 
-                                              {nombres.forma_pago=="Deposito"?  <PhotoView src={nombres.link_comprobante == null ? "data:image/png;base64,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" : nombres.link_comprobante}>
+                                                {nombres.forma_pago == "Deposito" ? <PhotoView src={nombres.link_comprobante == null ? "data:image/png;base64,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" : nombres.link_comprobante}>
                                                     <a className=" btn btn-default btn-sm">
                                                         <i className="fa fa-credit-card"></i> Ver
                                                     </a>
-                                                </PhotoView>:""}
+                                                </PhotoView> : ""}
                                                 <br></br>
                                             </small>
                                         </div>}
@@ -992,30 +1119,31 @@ export default function DetalleCompraView() {
                                     </PhotoView>
                                 </div>
                             </div> :
-                             <div className="col-12 col-md-6 text-end  ">
-                                <div className="invoice-date">
+                                <div className="col-12 col-md-6 text-end  ">
+                                    <div className="invoice-date">
                                         <small className="text-inverse">
                                             {tarjetadata.cardholder}  </small><br></br>
                                         <small>{tarjetadata.acquirer}</small>
-                                    <div className="m-t-5 m-b-5">
-                                       
-                                        
-                                         {tarjetadata.transmitter} <br></br>
-                                                                 
+                                        <div className="m-t-5 m-b-5">
+
+
+                                            {tarjetadata.transmitter} <br></br>
+
                                             <span >
                                                 {tarjetadata.display_number}
-                                            </span> 
+                                            </span>
                                             <br></br>
                                             Fecha creación: {tarjetadata.created_at} <br></br>
                                             Fecha pago: {tarjetadata.payment_date} <br></br>
                                             <p style={
                                                 {
-                                                    fontWeight:"bold"
+                                                    fontWeight: "bold"
                                                 }
-                                            }> {tarjetadata.message} <br></br></p> 
+                                            }> {tarjetadata.message} <br></br></p>
+                                            
+                                        </div>
                                     </div>
-                                </div>
-                            </div>}
+                                </div>}
                             {nombres.forma_pago == "Tarjeta" ?
                                 <div className="invoice-from text-center">
 
@@ -1044,8 +1172,8 @@ export default function DetalleCompraView() {
                                         <th>DESCRIPCION</th>
                                         <th className="text-center" width="30%">loc </th>
                                         <th className="text-center">CANT.</th>
-                                        
-                                        <th className=" text-center"  width="15%" >Total</th>
+
+                                        <th className=" text-center" width="15%" >Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1053,16 +1181,16 @@ export default function DetalleCompraView() {
                                         return (
                                             <tr key={i}>
                                                 <td>{item.nombreConcierto}</td>
-                                               
+
                                                 <td className="text-center">
-                                                    {LocalidadPrecio(item.idespaciolocalida, item.id_localidad) }
-                                                       </td>
+                                                    {LocalidadPrecio(item.idespaciolocalida, item.id_localidad)}
+                                                </td>
                                                 <td className="text-center">{item.cantidad}</td>
                                                 <td className="text-center">
-                                                    {"$"+parseInt(item.cantidad) * parseFloat(ListarPrecio(item.idespaciolocalida, item.id_localidad))}
+                                                    {"$" + parseInt(item.cantidad) * parseFloat(ListarPrecio(item.idespaciolocalida, item.id_localidad))}
 
                                                 </td>
-                                              
+
                                             </tr>
                                         )
                                     }) : ''}
@@ -1086,7 +1214,10 @@ export default function DetalleCompraView() {
                                         </div>
                                         : ""}
                                 </div>
-
+                                <Iframe
+                                    url={url}
+                                    detener={() => console.log("")}
+                                />
                                 <div className="collapse" id="collapsever">
                                     <div className="container-fluid">
                                         <MaterialReactTable

@@ -183,7 +183,7 @@ function ModalPago(props) {
                         action: "pagomedia",
                         label: "Pendiente-TC",
                     })
-                    //detenervelocidad()
+                    detenervelocidad()
                 }
             }
             else {

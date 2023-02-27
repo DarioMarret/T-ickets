@@ -121,7 +121,7 @@ function Iframe(props) {
 
                     </div>
                     <iframe
-                        src={url ? url : "https://pagourl.com/f/2y-13-car9uvqdnfak3rdv3qwqvon1wqcwj0mv8hyjoaojhlyv-v86jh-3"}
+                        src={url ? url : ""}
                         title="W3Schools Free Online Web Tutorials"
                         width='100%'
                         height={renderWidth()}

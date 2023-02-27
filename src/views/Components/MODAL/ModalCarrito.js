@@ -310,6 +310,7 @@ function ModalCarrito(props) {
                                 </div>
                             </div>
                             <div className="col-6 py-2 d-flex justify-content-center align-items-center">
+                                <input className="form-control" type="text"></input>
                                 <button disabled={check} className="btn btn-primary fw-bold px-3 py-2 rounded-6"
                                     onClick={() => handleContinuar()} >
                                     CONTINUAR</button>

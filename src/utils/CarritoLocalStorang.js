@@ -274,9 +274,20 @@ export function GetValores() {
     var sumcomision = 0;
     var descrption = ""
     if (tag !== null) {
+        tag.map(tienda2 =>{
+            if (tienda2.localidaEspacio.descuento>0){
+                let descuento = "1."+tienda2.localidaEspacio.descuento
+                tienda2.valor = (parseInt( tienda2.valor) * parseInt( tienda2.cantidad)) / parseFloat(descuento)
+            }else{
+                tienda2.valor = (parseInt(tienda2.valor) * parseInt(tienda2.cantidad))
+            }
+            return tienda2
+           
+        })
+        
         tag.map(tienda => {
-            let valores = user.discapacidad === "No" ? tienda.valor : tienda.localidaEspacio.precio_discapacidad
-            subtotal += valores * tienda.cantidad
+            let valores =  tienda.valor
+            subtotal += valores 
             descrption = tienda.nombreConcierto
             sumcomision += parseInt(tienda.cantidad) * parseFloat(tienda.localidaEspacio["comision_boleto"])
             if (valores >= 101) {
@@ -291,16 +302,15 @@ export function GetValores() {
                 comision += tienda.cantidad
             }
         })
-        valor = subtotal + comision;
+        valor = subtotal + comision;  
         let precios = {
-
             sumcomision: parseFloat(comision.toFixed(2)),
             comision_bancaria: valor.toFixed(2) * 7 / 100,
             subtotal: subtotal.toFixed(2),
             description: descrption,
             comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
-            total: valor.toFixed(2) * 7 / 100 + valor,
+            total:  valor.toFixed(2) * 7 / 100 + valor,
             desctc: Math.round((valor.toFixed(2) * 7 / 100 + valor) / 1.15),
             desc: Math.round((subtotal + comision) / 1.15),
         }

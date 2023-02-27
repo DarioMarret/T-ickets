@@ -28,6 +28,7 @@ function ModalDetalle(props) {
         check2: false,
         check3: false
     });
+    let codigoEvento = sessionStorage.getItem('eventoid')
     const [valorTotal, SetValor] = useState(0)
     const [clienteauth, setChecked] = useState(false)
     const [spinervi, setspiner] = useState("d-none")
@@ -419,7 +420,7 @@ function ModalDetalle(props) {
                                 <tr>
                                     <th scope="row"></th>
                                     <td className='text-end' >Subtotal:</td>
-                                    <td className='text-center'>${parseInt(listaPrecio.subtotal).toFixed(2)}</td>
+                                    <td className='text-center'>${parseFloat(listaPrecio.subtotal).toFixed(2)}</td>
                                 </tr>
                                 <tr className={hidecomision}>
                                     <th scope="row"></th>
@@ -433,14 +434,18 @@ function ModalDetalle(props) {
                                 </tr>
                                 <tr>
                                     <th scope="row"></th>
-                                    <td className='text-end' >Total:</td>
+                                    <td className='text-end' >
+                                        {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ? 
+                                        
+                                            "Total con Descuento" :"Total"}</td>
                                     <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)}</td>
-                                </tr>
-                                <tr>
+                                </tr >
+                                {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ? 
+                                <tr className="d-none">
                                     <th scope="row d-none"></th>
                                     <td className='text-end' >Total Desc:</td>
                                     <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.desctc).toFixed(2) : parseFloat(listaPrecio.desc).toFixed(2)}</td>
-                                </tr>
+                                </tr>:""}
                             </tbody>
                         </table>
                     </div>

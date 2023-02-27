@@ -6,6 +6,7 @@ import { clienteInfo, getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalSto
 
 /** reportar Pago */
 export const PagoRapido = async (transaccion) => {
+    let codigoEvento = sessionStorage.getItem('eventoid')
     let datosPersonal =  getDatosUsuariosLocalStorag().cedula
     let id = clienteInfo() !=null ? clienteInfo().id: getDatosUsuariosLocalStorag().id
     let metodo = GetMetodo() == "Transferencia" ? "Deposito" : GetMetodo()

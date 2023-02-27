@@ -157,7 +157,7 @@ export default function ListaderegistroView(props) {
                     }
                 }}
                 enableRowActions
-                positionActionsColumn="first"
+                positionActionsColumn="last"
                 renderRowActions={({ row }) => {
                     return (
 
@@ -168,7 +168,7 @@ export default function ListaderegistroView(props) {
                                 >
                                     <IconButton
                                         onClick={() => abrirModal(row.original)}
-                                        color="error"
+                                        color="error" 
                                         aria-label="Consolidar"
                                     >
                                         <Summarize />
@@ -183,9 +183,10 @@ export default function ListaderegistroView(props) {
                                         onClick={() => usedispatch(setModal({ nombre: 'pago', estado: row.original.link_pago }))}
                                  >
                                     <i className="fa fa-credit-card" ></i>
-                                    </a> : row.original.estado_pago != "Pagado"? <Tooltip
-                                    title="Eliminar" placement="top"
-                                >
+                                    </a> 
+                                    : row.original.estado_pago != "Pagado"? 
+                                    <Tooltip
+                                    title="Eliminar" placement="top">
                                     <Button
                                         color="error"
                                         
@@ -193,7 +194,16 @@ export default function ListaderegistroView(props) {
                                     >
                                             <Delete /> <span>Eliminar</span> 
                                         </Button>
-                                </Tooltip>:"" : ""
+                                </Tooltip>:"" :
+                                <a className=" btn btn-default btn-sm "
+                                style={{
+                                    fontWeight:"bold"
+                                }}
+
+                                    onClick={() => (row.original.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.original.link_comprobante })) : usedispatch(setModal({ nombre: 'pago', estado:  row.original.link_pago.replace("k/", "k/voucher/") }))}
+                                >
+                                    <i className="fa fa-print" > </i>Imprimir voucher
+                                </a> 
 
                             }
                             {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? 

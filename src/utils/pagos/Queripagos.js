@@ -146,13 +146,21 @@ export const EstadosCosolidados = async () => {
 }
 export const infoTarjeta = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/info_tarjeta",parms,
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/info_tarjeta", parms,
             {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                 }
             })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const infoabimedia = async (parms) => {
+    try {
+        let { data } = await axios.get("https://cloud.abitmedia.com/api/payments/status-transaction?access-token=2y-13-gi8r0tx2uwfjj4inqxfc2oyyivnx9wuz1-mt3n2ownqitrb6isc8elfmmdz7rirsh7z94xf2-&token=" + parms)
         return data
     } catch (error) {
         return error

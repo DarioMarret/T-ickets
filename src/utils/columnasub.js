@@ -2,6 +2,8 @@ import { Chip } from "@mui/material"
 import moment from "moment"
 import { Badge } from "react-bootstrap"
 import { clienteInfo } from "./DatosUsuarioLocalStorag"
+import { useDispatch } from "react-redux"
+import { setModal } from "StoreRedux/Slice/SuscritorSlice"
 export const ticketproceso = [
     {
         accessorKey: "concierto",
@@ -222,6 +224,7 @@ function ListarPrecio(evento, localidad) {
     }
     return PreciosStore().filter(f => f.id == evento)[0].precio_normal
 }
+
 export const listaRegistro = [
     {
         accessorKey: "fechaCreacion",
@@ -271,7 +274,7 @@ export const listaRegistrototal = [
     {
         accessorKey: "fechaReporte",
         header: "Fecha",
-        size:25
+        size: 25
     },
 
     {
@@ -281,7 +284,7 @@ export const listaRegistrototal = [
             <Badge bg={color[cell.row.original.consolidado]}>
                 {estados[cell.row.original.consolidado]}</Badge>
         ),
-        size:25
+        size: 25
     },
 
     {
@@ -356,7 +359,7 @@ let precioespacio = {
 function quitacomision(row) {
     // let tt = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad] * parseFloat(e.cantidad) ) })
     // console.log(tt)
-    let valores = JSON.parse(row.info_concierto).map(e => { return ListarPrecio(e.idespaciolocalida,e.id_localidad) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+    let valores = JSON.parse(row.info_concierto).map(e => { return ListarPrecio(e.idespaciolocalida, e.id_localidad) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
     if ((new Date("2023-01-21 14:00:00 ") > new Date(row.fechaCreacion))) {
         let valor = parseFloat(valores) * 1.05
         return Math.round(valores)
