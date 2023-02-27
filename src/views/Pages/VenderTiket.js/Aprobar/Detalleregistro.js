@@ -251,9 +251,113 @@ export default function DetalleCompraView() {
         buscarcliente({
             "cedula": datos.cedula,
             "email": ""
-        }).then(ouput => {
-            if (ouput.success) setUser({ ...ouput.data })
-            console.log(ouput)
+        }).then(ouputs => {
+            if (ouputs.success) {setUser({ ...ouputs.data })
+            nombres.forma_pago == "Tarjeta" && nombres.link_pago != null ?
+                !nombres.link_pago.includes("cloud.abitmedia.com") ?
+                    infoTarjeta({
+                        "token": nombres.token_pago
+                    }).then(ouput => {
+                        console.log(ouput.data)
+                        if (ouput.success) {
+                            setDataTarjeta({ ...ouput.data })
+                            console.log(nombres.nombreCompleto)
+                            Verificarnomnbre(ouput.data.cardholder, usuario.nombreCompleto)
+                        }
+                        else {
+                            infoabimedia(nombres.token_pago).then(ouput => {
+                                if (ouput.data) {
+                                    let data = {
+
+                                        "payment_date": ouput.data.transactionDate,
+                                        "status": 1,
+                                        "payment_id": "",
+                                        "merchant_transaction_id": "",
+                                        "auth_code": ouput.data.authorizationCode,
+                                        "display_number": ouput.data.cardNumber,
+                                        "message": "Transaccion aprobada",
+                                        "card_brand": ouput.cardBrand,
+                                        "installments": "CORRIENTE",
+                                        "batch": "230225",
+                                        "credit_type": "00",
+                                        "cardholder": ouput.data.cardHolder,
+                                        "acquirer_code": "04",
+                                        "acquirer": "BANCO GUAYAQUIL",
+                                        "reference": null,
+                                        "created_at": ouput.data.transactionDate,
+                                        "interest": "0.00",
+                                        "transmitter": ouput.cardBrand,
+                                        "grand_total": "130.54",
+                                    }
+                                    setDataTarjeta({ ...data })
+                                    if (usuario.nombreCompleto != " ") {
+                                        setTimeout(() => {
+                                            let nuew = []
+
+                                            let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                            let listnombre = usuario.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                            listnombre.forEach(element => {
+                                                nuew.push(listtarje.some(e => e == element))
+
+                                            });
+                                            console.log(listnombre, listtarje, nuew)
+                                        }, 5000);
+
+                                    }
+                                    console.log(ouput)
+                                }
+                            }).catch(err => {
+                                console.log(err)
+                            })
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    }) : infoabimedia(nombres.token_pago).then(ouput => {
+                        if (ouput.data) {
+                            let data = {
+
+                                "payment_date": ouput.data.transactionDate,
+                                "status": 1,
+                                "payment_id": "",
+                                "merchant_transaction_id": "",
+                                "auth_code": ouput.data.authorizationCode,
+                                "display_number": ouput.data.cardNumber,
+                                "message": "Transaccion aprobada",
+                                "card_brand": ouput.cardBrand,
+                                "installments": "CORRIENTE",
+                                "batch": "230225",
+                                "credit_type": "00",
+                                "cardholder": ouput.data.cardHolder,
+                                "acquirer_code": "04",
+                                "acquirer": "BANCO GUAYAQUIL",
+                                "reference": null,
+                                "created_at": ouput.data.transactionDate,
+                                "interest": "0.00",
+                                "transmitter": ouput.cardBrand,
+                                "grand_total": "130.54",
+                            }
+                            setDataTarjeta({ ...data })
+                            if (ouputs.data.nombreCompleto != " ") {
+                                setTimeout(() => {
+                                    let nuew = []
+
+                                    let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                    let listnombre = ouputs.data.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                    listnombre.forEach(element => {
+                                        nuew.push(listtarje.some(e => e == element))
+
+                                    });
+                                    
+                                    console.log(listnombre.length, listtarje, nuew.filter(e => e == true).length)
+                                }, 1000);
+
+                            }
+                            console.log(ouput)
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    }) : ""
+            console.log(ouputs)}
         }).catch(erro => {
             console.log(erro)
         })
@@ -280,108 +384,8 @@ export default function DetalleCompraView() {
         }).catch(err => {
             console.log(err)
         })
-        nombres.forma_pago == "Tarjeta" && nombres.link_pago != null ?
-            !nombres.link_pago.includes("cloud.abitmedia.com") ?
-                infoTarjeta({
-                    "token": nombres.token_pago
-                }).then(ouput => {
-                    console.log(ouput.data)
-                    if (ouput.success) {
-                        setDataTarjeta({ ...ouput.data })
-                        console.log(nombres.nombreCompleto)
-                        Verificarnomnbre(ouput.data.cardholder, usuario.nombreCompleto)
-                    }
-                    else {
-                        infoabimedia(nombres.token_pago).then(ouput => {
-                            if (ouput.data) {
-                                let data = {
-
-                                    "payment_date": ouput.data.transactionDate,
-                                    "status": 1,
-                                    "payment_id": "",
-                                    "merchant_transaction_id": "",
-                                    "auth_code": ouput.data.authorizationCode,
-                                    "display_number": ouput.data.cardNumber,
-                                    "message": "Transaccion aprobada",
-                                    "card_brand": ouput.cardBrand,
-                                    "installments": "CORRIENTE",
-                                    "batch": "230225",
-                                    "credit_type": "00",
-                                    "cardholder": ouput.data.cardHolder,
-                                    "acquirer_code": "04",
-                                    "acquirer": "BANCO GUAYAQUIL",
-                                    "reference": null,
-                                    "created_at": ouput.data.transactionDate,
-                                    "interest": "0.00",
-                                    "transmitter": ouput.cardBrand,
-                                    "grand_total": "130.54",
-                                }
-                                setDataTarjeta({ ...data })
-                                if (usuario.nombreCompleto != " ") {
-                                    setTimeout(() => {
-                                        let nuew = []
-
-                                        let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
-                                        let listnombre = usuario.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
-                                        listnombre.forEach(element => {
-                                            nuew.push(listtarje.some(e => e == element))
-
-                                        });
-                                        console.log(listnombre, listtarje, nuew)
-                                    }, 5000);
-
-                                }
-                                console.log(ouput)
-                            }
-                        }).catch(err => {
-                            console.log(err)
-                        })
-                    }
-                }).catch(err => {
-                    console.log(err)
-                }) : infoabimedia(nombres.token_pago).then(ouput => {
-                    if (ouput.data){
-                    let data ={
-                        
-                        "payment_date": ouput.data.transactionDate,
-                        "status": 1,
-                        "payment_id": "",
-                        "merchant_transaction_id": "",
-                        "auth_code": ouput.data.authorizationCode,
-                        "display_number": ouput.data.cardNumber,
-                        "message": "Transaccion aprobada",
-                        "card_brand": ouput.cardBrand,
-                        "installments": "CORRIENTE",
-                        "batch": "230225",
-                        "credit_type": "00",
-                        "cardholder": ouput.data.cardHolder,
-                        "acquirer_code": "04",
-                        "acquirer": "BANCO GUAYAQUIL",
-                        "reference": null,
-                        "created_at": ouput.data.transactionDate,
-                        "interest": "0.00",
-                        "transmitter": ouput.cardBrand,
-                        "grand_total": "130.54", 
-                    }
-                    setDataTarjeta({ ...data })
-                        if (usuario.nombreCompleto!=" "){
-                        setTimeout(() => {
-                            let nuew = []
-
-                            let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
-                            let listnombre = usuario.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
-                            listnombre.forEach(element => {
-                                nuew.push(listtarje.some(e => e == element))
-
-                            });
-                            console.log(listnombre, listtarje, nuew)   
-                        }, 5000);
-                       
-                    }
-                    console.log(ouput)}
-                }).catch(err => {
-                    console.log(err)
-                }) : ""
+        
+        
 
 
     }, [])
@@ -1140,7 +1144,7 @@ export default function DetalleCompraView() {
                                                     fontWeight: "bold"
                                                 }
                                             }> {tarjetadata.message} <br></br></p>
-                                            
+
                                         </div>
                                     </div>
                                 </div>}
