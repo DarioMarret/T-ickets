@@ -34,7 +34,7 @@ export const NuevosRegistro=()=>{
                     // console.log(datos)  (async () => {
                  let datos=  success.result.map(async (f) => {
                   
-                     NuevosRegistro().map(async(g)=>{
+                    /* NuevosRegistro().map(async(g)=>{
                          if (g.id == f.id_registro){
                              
                          await (await ConsolidarReporte({
@@ -44,7 +44,7 @@ export const NuevosRegistro=()=>{
                              console.log(f.id_registro, (g.id == f.id_registro))
                         
                         }
-                     })
+                     })*/
                        /* await (await ConsolidarReporte({
                             "id_registraCompra": f.id_registro,
                             "estado": "Sin Consolidar"

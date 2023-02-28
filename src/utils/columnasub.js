@@ -325,7 +325,14 @@ export const listaRegistrototal = [
         accessorKey: "cantidad",
         header: "Cantidad",
         size: 25
-    },
+    },{
+        accessorKey:"Comprobante",
+        header:"numero",
+        Cell:({cell})=>(
+            cell.row.original.numerTransacion == null ? "No registrado" : cell.row.original.numerTransacion
+        ),
+        size:25
+    }
 ]
 let precio = {
     1: 20,

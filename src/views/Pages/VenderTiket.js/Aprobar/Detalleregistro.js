@@ -158,7 +158,8 @@ export default function DetalleCompraView() {
         installments: "",
         message: "",
         payment_date: "",
-        transmitter: ""
+        transmitter: "",
+        card_brand:""
     })
     const [alert, setAlert] = useState(null)
     function generaPDF(row) {
@@ -243,8 +244,44 @@ export default function DetalleCompraView() {
             nuew.push(listtarje.some(e => e == element))
 
         });
+        if (listtarje.length == nuew.filter(e => e == true).length) {
+            setEstadoTC(
+                <div>
+                    <span className={" label label-success"}>
+                         TC Propia
+                    </span>
+                </div>
+            )
+            return
+        }
+        if (nuew.filter(e => e == true).length == 2) {
+            setEstadoTC(
+                <div>
+                    <span className={" label label-warning"}>
+                        Considencia minima tc
+                    </span>
+                </div>
+            )
+        }
+        if (nuew.filter(e => e == true).length == 1) {
+            setEstadoTC(<div>
+                <span className={"label label-warning"}>
+                    Solo una Considencia tc
+                </span>
+            </div>)
+        }
+        if (nuew.filter(e => e == true).length == 0) {
+            setEstadoTC(<div>
+                <span className={" label label-danger"}>
+                    TC de tercero
+                </span>
+            </div>)
+
+        }
+        console.log(listnombre, listtarje, nuew)
         console.log(listnombre, listtarje, nuew)
     }
+    let [estadotc, setEstadoTC] = useState(null)
     useEffect(() => {
         let concer = JSON.parse(nombres.info_concierto)
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
@@ -252,112 +289,182 @@ export default function DetalleCompraView() {
             "cedula": datos.cedula,
             "email": ""
         }).then(ouputs => {
-            if (ouputs.success) {setUser({ ...ouputs.data })
-            nombres.forma_pago == "Tarjeta" && nombres.link_pago != null ?
-                !nombres.link_pago.includes("cloud.abitmedia.com") ?
-                    infoTarjeta({
-                        "token": nombres.token_pago
-                    }).then(ouput => {
-                        console.log(ouput.data)
-                        if (ouput.success) {
-                            setDataTarjeta({ ...ouput.data })
-                            console.log(nombres.nombreCompleto)
-                            Verificarnomnbre(ouput.data.cardholder, usuario.nombreCompleto)
-                        }
-                        else {
-                            infoabimedia(nombres.token_pago).then(ouput => {
-                                if (ouput.data) {
-                                    let data = {
+            if (ouputs.success) {
+                setUser({ ...ouputs.data })
+                nombres.forma_pago == "Tarjeta" && nombres.link_pago != null ?
+                    !nombres.link_pago.includes("cloud.abitmedia.com") ?
+                        infoTarjeta({
+                            "token": nombres.token_pago
+                        }).then(ouput => {
+                            console.log(ouput.data)
+                            if (ouput.success) {
+                                setDataTarjeta({ ...ouput.data })
+                                console.log(nombres.nombreCompleto)
+                                Verificarnomnbre(ouput.data.cardholder, ouputs.data.nombreCompleto)
+                            }
+                            else {
+                                infoabimedia(nombres.token_pago).then(ouput => {
+                                    if (ouput.data) {
+                                        let data = {
 
-                                        "payment_date": ouput.data.transactionDate,
-                                        "status": 1,
-                                        "payment_id": "",
-                                        "merchant_transaction_id": "",
-                                        "auth_code": ouput.data.authorizationCode,
-                                        "display_number": ouput.data.cardNumber,
-                                        "message": "Transaccion aprobada",
-                                        "card_brand": ouput.cardBrand,
-                                        "installments": "CORRIENTE",
-                                        "batch": "230225",
-                                        "credit_type": "00",
-                                        "cardholder": ouput.data.cardHolder,
-                                        "acquirer_code": "04",
-                                        "acquirer": "BANCO GUAYAQUIL",
-                                        "reference": null,
-                                        "created_at": ouput.data.transactionDate,
-                                        "interest": "0.00",
-                                        "transmitter": ouput.cardBrand,
-                                        "grand_total": "130.54",
+                                            "payment_date": ouput.data.transactionDate,
+                                            "status": 1,
+                                            "payment_id": "",
+                                            "merchant_transaction_id": "",
+                                            "auth_code": ouput.data.authorizationCode,
+                                            "display_number": ouput.data.cardNumber,
+                                            "message": "Transaccion aprobada",
+                                            "card_brand": ouput.data.cardBrand,
+                                            "installments": "CORRIENTE",
+                                            "batch": "230225",
+                                            "credit_type": "00",
+                                            "cardholder": ouput.data.cardHolder,
+                                            "acquirer_code": "04",
+                                            "acquirer": "BANCO GUAYAQUIL",
+                                            "reference": null,
+                                            "created_at": ouput.data.transactionDate,
+                                            "interest": "0.00",
+                                            "transmitter": ouput.cardBrand,
+                                            "grand_total": "130.54",
+                                        }
+                                        setDataTarjeta({ ...data })
+                                        if (usuario.nombreCompleto != " ") {
+                                            setTimeout(() => {
+                                                let nuew = []
+
+                                                let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                                let listnombre = usuario.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                                listnombre.forEach(element => {
+                                                    nuew.push(listtarje.some(e => e == element))
+
+                                                });
+                                                console.log(nuew)
+                                                if (listtarje.length == nuew.filter(e => e == true).length) {
+                                                    setEstadoTC(                                                       
+                                                        <span className={"pb-1 label label-successtc"}>
+                                                            TC propio
+                                                        </span>
+                                                        
+                                                    )
+                                                    return
+                                                }
+                                                if (nuew.filter(e => e == true).length == 2) {
+                                                    setEstadoTC(
+                                                       
+                                                            <span className={"pb-1 label label-warning"}>
+                                                                Considencia minima tc
+                                                            </span>
+                                                       
+                                                    )
+                                                }
+                                                if (nuew.filter(e => e == true).length == 1) {
+                                                    setEstadoTC(
+                                                        <span className={"pb-1 label label-warning"}>
+                                                            Solo una Considencia tc
+                                                        </span>
+                                                   )
+                                                }
+                                                if (nuew.filter(e => e == true).length == 0) {
+                                                    setEstadoTC(
+                                                        <span className={"pb-1 label label-danger"}>
+                                                            TC de tercero
+                                                        </span>
+                                                    )
+
+                                                }
+                                                console.log(listnombre, listtarje, nuew)
+                                            }, 5000);
+
+                                        }
+                                        console.log(ouput)
                                     }
-                                    setDataTarjeta({ ...data })
-                                    if (usuario.nombreCompleto != " ") {
-                                        setTimeout(() => {
-                                            let nuew = []
+                                }).catch(err => {
+                                    console.log(err)
+                                })
+                            }
+                        }).catch(err => {
+                            console.log(err)
+                        }) : infoabimedia(nombres.token_pago).then(ouput => {
+                            if (ouput.data) {
+                                let data = {
 
-                                            let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
-                                            let listnombre = usuario.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
-                                            listnombre.forEach(element => {
-                                                nuew.push(listtarje.some(e => e == element))
-
-                                            });
-                                            console.log(listnombre, listtarje, nuew)
-                                        }, 5000);
-
-                                    }
-                                    console.log(ouput)
+                                    "payment_date": ouput.data.transactionDate,
+                                    "status": 1,
+                                    "payment_id": "",
+                                    "merchant_transaction_id": "",
+                                    "auth_code": ouput.data.authorizationCode,
+                                    "display_number": ouput.data.cardNumber,
+                                    "message": "Transaccion aprobada",
+                                    "card_brand": ouput.data.cardBrand,
+                                    "installments": "CORRIENTE",
+                                    "batch": "230225",
+                                    "credit_type": "00",
+                                    "cardholder": ouput.data.cardHolder,
+                                    "acquirer_code": "04",
+                                    "acquirer": "BANCO GUAYAQUIL",
+                                    "reference": null,
+                                    "created_at": ouput.data.transactionDate,
+                                    "interest": "0.00",
+                                    "transmitter": ouput.cardBrand,
+                                    "grand_total": "130.54",
                                 }
-                            }).catch(err => {
-                                console.log(err)
-                            })
-                        }
-                    }).catch(err => {
-                        console.log(err)
-                    }) : infoabimedia(nombres.token_pago).then(ouput => {
-                        if (ouput.data) {
-                            let data = {
+                                setDataTarjeta({ ...data })
+                                if (ouputs.data.nombreCompleto != " ") {
+                                    setTimeout(() => {
+                                        let nuew = []
 
-                                "payment_date": ouput.data.transactionDate,
-                                "status": 1,
-                                "payment_id": "",
-                                "merchant_transaction_id": "",
-                                "auth_code": ouput.data.authorizationCode,
-                                "display_number": ouput.data.cardNumber,
-                                "message": "Transaccion aprobada",
-                                "card_brand": ouput.cardBrand,
-                                "installments": "CORRIENTE",
-                                "batch": "230225",
-                                "credit_type": "00",
-                                "cardholder": ouput.data.cardHolder,
-                                "acquirer_code": "04",
-                                "acquirer": "BANCO GUAYAQUIL",
-                                "reference": null,
-                                "created_at": ouput.data.transactionDate,
-                                "interest": "0.00",
-                                "transmitter": ouput.cardBrand,
-                                "grand_total": "130.54",
+                                        let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                        let listnombre = ouputs.data.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                        listnombre.forEach(element => {
+                                            nuew.push(listtarje.some(e => e == element))
+
+                                        });
+                                        if (listtarje.length == nuew.filter(e => e == true).length) {
+                                            setEstadoTC(
+                                                <div>
+                                                    <span className={"pb-1 label label-successtc"}>
+                                                      TC propio
+                                                    </span>
+                                                </div>
+                                            )
+                                            return
+                                        }
+                                        if (nuew.filter(e => e == true).length == 2) {
+                                            setEstadoTC(
+                                                
+                                                    <span className={"pb-1 label label-warning"}>
+                                                        Considencia minima tc
+                                                    </span>
+                                                
+                                            )
+                                        }
+                                        if (nuew.filter(e => e == true).length == 1) {
+                                            setEstadoTC(<div>
+                                                <span className={"pb-1 label label-warning"}>
+                                                    Solo una Considencia tc
+                                                </span>
+                                            </div>)
+                                        }
+                                        if (nuew.filter(e => e == true).length == 0) {
+                                            setEstadoTC(
+                                                <span className={"pb-1 label label-danger"}>
+                                                    TC de tercero
+                                                </span>
+                                           )
+
+                                        }
+
+                                        console.log(listnombre.length, listtarje, nuew.filter(e => e == true).length)
+                                    }, 500);
+
+                                }
+                                console.log(ouput)
                             }
-                            setDataTarjeta({ ...data })
-                            if (ouputs.data.nombreCompleto != " ") {
-                                setTimeout(() => {
-                                    let nuew = []
-
-                                    let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
-                                    let listnombre = ouputs.data.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
-                                    listnombre.forEach(element => {
-                                        nuew.push(listtarje.some(e => e == element))
-
-                                    });
-                                    
-                                    console.log(listnombre.length, listtarje, nuew.filter(e => e == true).length)
-                                }, 1000);
-
-                            }
-                            console.log(ouput)
-                        }
-                    }).catch(err => {
-                        console.log(err)
-                    }) : ""
-            console.log(ouputs)}
+                        }).catch(err => {
+                            console.log(err)
+                        }) : ""
+                console.log(ouputs)
+            }
         }).catch(erro => {
             console.log(erro)
         })
@@ -384,8 +491,8 @@ export default function DetalleCompraView() {
         }).catch(err => {
             console.log(err)
         })
-        
-        
+
+
 
 
     }, [])
@@ -421,7 +528,9 @@ export default function DetalleCompraView() {
         })
 
     }
+    
     const successAlert = (re) => {
+        
         setAlert(
             <SweetAlert
                 warning
@@ -434,14 +543,16 @@ export default function DetalleCompraView() {
                     <div className="px-2 d-flex  justify-content-center align-items-center">
                         <div className="col-md-8">
                             <label className="form-label">Comprobantes repetidos</label>
-                            <select className="form-select" aria-label="Default select example" id="registro">
+                            <select className="form-select" aria-label="Default select example" id="registro"                               
+                            >
                                 <option value="" >Selecione el registro</option>
                                 {re.length > 0 ?
                                     re.map((e, i) => {
                                         return (
-                                            <option value={e.id} key={i}>{e.id}</option>)
+                                            <option value={e.id} key={i}>{e.id} : {e.cedula}</option>)
                                     }) : ""}
                             </select>
+                            <label className="form-label" id="cedulare">{$("#registro").val()}</label>
                         </div>
                     </div>
                 </div>
@@ -621,7 +732,7 @@ export default function DetalleCompraView() {
             "forma_pago": nombres.forma_pago,
             "link_comprobante": nombres.link_comprobante,
             "id": nombres.id,
-            "numeroTransaccion": nombres.numeroTransaccion,
+            "numeroTransaccion": nombres.numerTransacion,
             "cedula": nombres.cedula,
             "estado": "Comprobar"
         }
@@ -924,11 +1035,17 @@ export default function DetalleCompraView() {
                                                     fontWeight: "bold"
                                                 }}
                                             >{usuario.nombreCompleto}</h4>
-                                            <div className="d-flex flex-column ">
-                                                <span className={"pb-1 " + estado[nombres.estado_pago]}>
-                                                    {nombres.estado_pago}
-                                                </span>
-
+                                            <div className="d-flex  flex-wrap ">
+                                                <div>
+                                                    <span className={estado[nombres.estado_pago]}>
+                                                        {nombres.estado_pago}
+                                                    </span>
+                                                </div>
+                                                
+                                              {nombres.forma_pago=="Tarjeta"?  <div >
+                                                    {estadotc}
+                                                </div>:""}
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -998,8 +1115,9 @@ export default function DetalleCompraView() {
                                             {nombres.fechaCreacion} <br></br>
                                             #{id} <br></br>
                                             {nombres.forma_pago}<br></br>
+                                            {nombres.forma_pago=="Tarjeta" && nombres.link_pago==null?"Cambio de Deposito a Tarjeta":""}
                                             {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                                <span className={nombres.consolidado != null ? "p-1 label label-success" : ""}>
+                                                <span className={nombres.consolidado != "" ? "p-1 label label-success" : "label label-danger"}>
                                                     {nombres.consolidado != "" ? nombres.consolidado : "Sin Consolidar"}
                                                 </span> :
                                                 ""}
@@ -1128,23 +1246,27 @@ export default function DetalleCompraView() {
                                         <small className="text-inverse">
                                             {tarjetadata.cardholder}  </small><br></br>
                                         <small>{tarjetadata.acquirer}</small>
-                                        <div className="m-t-5 m-b-5">
+                                        <div className=" ">
 
 
                                             {tarjetadata.transmitter} <br></br>
-
+                                            <span>
+                                                {tarjetadata.card_brand}
+                                            </span>
+                                            <br></br>
                                             <span >
                                                 {tarjetadata.display_number}
                                             </span>
+                                            
                                             <br></br>
-                                            Fecha creación: {tarjetadata.created_at} <br></br>
-                                            Fecha pago: {tarjetadata.payment_date} <br></br>
+                                            {tarjetadata.created_at ? "Fecha creación:" + tarjetadata.created_at :""} <br></br>
+                                            {tarjetadata.payment_date ? " Fecha pago:" + tarjetadata.payment_date :""} <br></br>
                                             <p style={
                                                 {
                                                     fontWeight: "bold"
                                                 }
-                                            }> {tarjetadata.message} <br></br></p>
-
+                                            }> {tarjetadata.message} </p>
+                                            {estadotc}
                                         </div>
                                     </div>
                                 </div>}

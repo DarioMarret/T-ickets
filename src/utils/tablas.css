@@ -1,6 +1,7 @@
 :root {
     --main-color:#311C7C;
     --success: #094d15e5;
+    --successtc: #19a833e1;
     --danger:#f44336;
     --prymary:#448DAE;
     --prymary500:"#79C9EC";
@@ -83,6 +84,10 @@ table.dataTable .label {
 }
 .label.label-success {
     background-color: var(--success) !important;
+    text-transform: uppercase;
+}
+.label.label-successtc {
+    background-color: var(--successtc) !important;
     text-transform: uppercase;
 }
 .label.label-primary {

@@ -206,7 +206,7 @@ var routes = [
         name:"Consolidados",
         mini:"*",
         component:ConsolidacionView,
-        permiso: ["", "", ""]
+        permiso: ["superadmin", "super_admin", "vendedores"]
       },
       {
         path: "/Informe",
