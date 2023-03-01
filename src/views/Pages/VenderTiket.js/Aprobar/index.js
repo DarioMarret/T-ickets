@@ -319,7 +319,7 @@ export default function AprobarView() {
                     row.cantidad = cantida
                     row.concierto = nombre[0]
                     return { ...row }
-                })//.filter(e => e.forma_pago =="Efectivo-Local")
+                })//.filter(e => e.forma_pago =="Deposito")
                 sessionStorage.setItem("datoscompras",JSON.stringify(newdatos))
                 console.log(newdatos)
                 let nuevosValores = []

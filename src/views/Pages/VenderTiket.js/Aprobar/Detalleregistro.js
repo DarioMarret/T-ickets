@@ -320,7 +320,7 @@ export default function DetalleCompraView() {
                                             "credit_type": "00",
                                             "cardholder": ouput.data.cardHolder,
                                             "acquirer_code": "04",
-                                            "acquirer": "BANCO GUAYAQUIL",
+                                            "acquirer": "",
                                             "reference": null,
                                             "created_at": ouput.data.transactionDate,
                                             "interest": "0.00",
@@ -401,7 +401,7 @@ export default function DetalleCompraView() {
                                     "credit_type": "00",
                                     "cardholder": ouput.data.cardHolder,
                                     "acquirer_code": "04",
-                                    "acquirer": "BANCO GUAYAQUIL",
+                                    "acquirer": "",
                                     "reference": null,
                                     "created_at": ouput.data.transactionDate,
                                     "interest": "0.00",
@@ -412,7 +412,7 @@ export default function DetalleCompraView() {
                                 if (ouputs.data.nombreCompleto != " ") {
                                     setTimeout(() => {
                                         let nuew = []
-
+ 
                                         let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
                                         let listnombre = ouputs.data.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
                                         listnombre.forEach(element => {
@@ -491,6 +491,41 @@ export default function DetalleCompraView() {
         }).catch(err => {
             console.log(err)
         })
+        nombres.forma_pago == "Deposito"  ?
+            nombres.numerTransacion!=null ? 
+            BuscarTransacion({
+                "numeroTransaccion": nombres.numerTransacion
+            }).then(ouput => {
+                console.log(ouput)
+                if (ouput.success) {
+                    if (ouput.data) {
+                        usedispatch(setToastes({
+                            show: true,
+                            message: "número de comprobante repetidos",
+                            color: 'bg-danger',
+                            estado: "Atentos"
+                        }))
+                    }
+                    else {
+                        usedispatch(setToastes({
+                            show: true,
+                            message: "número de comprobante único",
+                            color: 'bg-success',
+                            estado: "Atentos"
+                        }))
+                    }
+                    return
+                }
+                //$.alert(JSON.stringify(ouput))
+            }).catch(err => {
+                console.log(err)
+            }):
+            usedispatch(setToastes({
+                show: true,
+                message: "número de comprobante no registrado",
+                color: 'bg-warning',
+                estado: "Atentos" }))
+            :""
 
 
 
@@ -1117,7 +1152,7 @@ export default function DetalleCompraView() {
                                             {nombres.forma_pago}<br></br>
                                             {nombres.forma_pago=="Tarjeta" && nombres.link_pago==null?"Cambio de Deposito a Tarjeta":""}
                                             {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                                <span className={nombres.consolidado != "" ? "p-1 label label-success" : "label label-danger"}>
+                                                <span className={nombres.consolidado != "" && nombres.consolidado !="Sin Consolidar"? "p-1 label label-success" : "label label-danger"}>
                                                     {nombres.consolidado != "" ? nombres.consolidado : "Sin Consolidar"}
                                                 </span> :
                                                 ""}
@@ -1245,7 +1280,7 @@ export default function DetalleCompraView() {
                                     <div className="invoice-date">
                                         <small className="text-inverse">
                                             {tarjetadata.cardholder}  </small><br></br>
-                                        <small>{tarjetadata.acquirer}</small>
+                                       
                                         <div className=" ">
 
 

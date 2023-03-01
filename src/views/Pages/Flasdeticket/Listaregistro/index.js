@@ -19,20 +19,20 @@ export default function ListaderegistroView(props) {
     let usedispatch = useDispatch()
     let history = useHistory()
     const [datos, setDatos] = useState([])
-    const [alert,setAlert]=useState(null);
+    const [alert, setAlert] = useState(null);
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         listarRegistropanel({ "cedula": user.cedula }).then(
             e => {
-                if(!e.success){
+                if (!e.success) {
                     return
                 }
                 setDatos(e.data)
             }
         ).catch(err =>
             console.log(err)
-            
-            )
+
+        )
 
     }, [])
     function detalle(e) {
@@ -41,7 +41,7 @@ export default function ListaderegistroView(props) {
     }
     function abrirModal(row) {
         usedispatch(setModal({ nombre: "confirmar", estado: { ...row } }))
-    } 
+    }
     const eliminarregistro = (row) => {
         //console.log(row)
         $.confirm({
@@ -54,23 +54,23 @@ export default function ListaderegistroView(props) {
                     text: 'Eliminar',
                     btnClass: 'btn-red',
                     action: function () {
-                        
+
                         eliminarRegistro({ "id": row.id }).then(ouput => {
                             console.log(ouput)
                             console.log(row.id)
                             if (!ouput.success) { return $.alert("" + ouput.message) }
 
-                             listarRegistropanel({ "cedula": cedula }).then(e => {
-                                  //console.log(e)
-                                 if (e.data) {
- 
-                                     setDatos(e.data)
-                                     return
-                                 }
-                                 //setTikes([])
-                             }).catch(err => {
-                                 console.log(err)
-                             })
+                            listarRegistropanel({ "cedula": cedula }).then(e => {
+                                //console.log(e)
+                                if (e.data) {
+
+                                    setDatos(e.data)
+                                    return
+                                }
+                                //setTikes([])
+                            }).catch(err => {
+                                console.log(err)
+                            })
 
                             $.alert("Registro eliminado correctamente")
                             setTimeout(function () {
@@ -144,6 +144,14 @@ export default function ListaderegistroView(props) {
     const hideAlert = () => {
         setAlert(null);
     };
+    function abrirvoucher(row) {
+        if (row.link_pago != null) {
+            (row.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante })) : usedispatch(setModal({ nombre: 'pago', estado: row.link_pago.replace("k/", "k/voucher/") }))
+        } if (row.link_comprobante) {
+            usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante }))
+
+        }
+    }
 
 
     return (
@@ -162,13 +170,13 @@ export default function ListaderegistroView(props) {
                     return (
 
                         <Box sx={{ display: 'flex' }}>
-                            {row.original.forma_pago == "Deposito" && row.original.estado_pago != "Pagado" && row.original.estado_pago!="Comprobar" ?
+                            {row.original.forma_pago == "Deposito" && row.original.estado_pago != "Pagado" && row.original.estado_pago != "Comprobar" ?
                                 <Tooltip
                                     title="Reportar pago" placement="top"
                                 >
                                     <IconButton
                                         onClick={() => abrirModal(row.original)}
-                                        color="error" 
+                                        color="error"
                                         aria-label="Consolidar"
                                     >
                                         <Summarize />
@@ -176,48 +184,48 @@ export default function ListaderegistroView(props) {
                                 </Tooltip> :
                                 ""
                             }
-                            {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone"  ?
-                                row.original.link_pago != null? 
-                                <a className=" btn btn-default btn-sm"
-                                
-                                        onClick={() => usedispatch(setModal({ nombre: 'pago', estado: row.original.link_pago }))}
-                                 >
-                                    <i className="fa fa-credit-card" ></i>
-                                    </a> 
-                                    : row.original.estado_pago != "Pagado"? 
-                                    <Tooltip
-                                    title="Eliminar" placement="top">
-                                    <Button
-                                        color="error"
-                                        
-                                            onClick={() => eliminarregistro(row.original)}
-                                    >
-                                            <Delete /> <span>Eliminar</span> 
-                                        </Button>
-                                </Tooltip>:"" :
-                                <a className=" btn btn-default btn-sm "
-                                style={{
-                                    fontWeight:"bold"
-                                }}
+                            {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone" ?
+                                row.original.link_pago != null ?
+                                    <a className=" btn btn-default btn-sm"
 
-                                    onClick={() => (row.original.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.original.link_comprobante })) : usedispatch(setModal({ nombre: 'pago', estado:  row.original.link_pago.replace("k/", "k/voucher/") }))}
+                                        onClick={() => usedispatch(setModal({ nombre: 'pago', estado: row.original.link_pago }))}
+                                    >
+                                        <i className="fa fa-credit-card" ></i>
+                                    </a>
+                                    : row.original.estado_pago != "Pagado" ?
+                                        <Tooltip
+                                            title="Eliminar" placement="top">
+                                            <Button
+                                                color="error"
+
+                                                onClick={() => eliminarregistro(row.original)}
+                                            >
+                                                <Delete /> <span>Eliminar</span>
+                                            </Button>
+                                        </Tooltip> : "" :
+                                <a className=" btn btn-default btn-sm "
+                                    style={{
+                                        fontWeight: "bold"
+                                    }}
+
+                                    onClick={() => abrirvoucher(row.original)}
                                 >
                                     <i className="fa fa-print" > </i>Imprimir voucher
-                                </a> 
+                                </a>
 
                             }
-                            {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ? 
-                            <Tooltip
-                                title="Comprobar" placement="top"
-                            >
-                                <IconButton
-                                    color="error"
-                                    onClick={() => detalle(row.original)}
+                            {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ?
+                                <Tooltip
+                                    title="Comprobar" placement="top"
                                 >
-                                    <Visibility />
-                                </IconButton>
-                            </Tooltip> : ""}
-                       
+                                    <IconButton
+                                        color="error"
+                                        onClick={() => detalle(row.original)}
+                                    >
+                                        <Visibility />
+                                    </IconButton>
+                                </Tooltip> : ""}
+
 
                         </Box>
                     )

@@ -204,7 +204,7 @@ const ModalSuscritoView = (props) => {
                     </div>
                     <input id="email"
                       value={datos.email}
-                      disabled={estado == "update" ? true : false}
+                     
                       type="email"
                       onChange={(e) => handelchnge(e.target)}
                       className="form-control"
