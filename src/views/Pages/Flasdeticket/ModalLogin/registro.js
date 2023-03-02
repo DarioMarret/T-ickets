@@ -148,6 +148,7 @@ const ResgistroView = (prop) => {
             direccion: direccion.trim(),
             cedula: cedula.trim(),
         }
+        console.log(datos)
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
 
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
@@ -204,7 +205,7 @@ const ResgistroView = (prop) => {
 
         else {
             try {
-                let nuemro = await ValidarWhatsapp()
+                //let nuemro = await ValidarWhatsapp()
                 /*if (nuemro != null) {
                     setDatoToas({
                         show: true,
@@ -226,6 +227,8 @@ const ResgistroView = (prop) => {
                             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                         }
                     })
+                    console.log(datos,registro)
+
                     if (registro.data.success) {
                         let usuario = getDatosUsuariosLocalStorag()
                         const { data } = await Authsucrito({ email: email, password: password },)
