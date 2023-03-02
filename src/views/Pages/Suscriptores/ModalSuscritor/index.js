@@ -9,15 +9,15 @@ const ModalSuscritoView = (props) => {
   const { show, datosperson, setshow, estado } = props
   let usedispatch = useDispatch()
   const [validate, setValidate] = useState("")
-  const [message, setmessage] = useState("");
-  const [showtoas, setShowToas] = useState(false);
   const [datos, setDatos] = useState({
     nombreCompleto: '',
     email: '',
     movil: '',
     ciudad: '',
     new_password: '',
-    id: ''
+    id: '',
+    direccion: '',
+    cedula: '',
   })
   function handelchnge(e) {
     setDatos({
@@ -33,7 +33,6 @@ const ModalSuscritoView = (props) => {
       "movil": datos.movil,
       "ciudad": datos.ciudad
     }
-
     if (datos.new_password.length < 7 || !Object.values(parms).every((e) => e)) {
       setValidate("was-validated")
       return true
@@ -52,7 +51,6 @@ const ModalSuscritoView = (props) => {
       }
     }
   }
-
   async function Crearsuscrito() {
     const numeroid = document.getElementById("cedula").value
     let params = {
@@ -60,9 +58,10 @@ const ModalSuscritoView = (props) => {
       "email": datos.email,
       "password": datos.new_password,
       "movil": datos.movil,
-      "ciudad": datos.ciudad
+      "ciudad": datos.ciudad,
+      "direccion": datos.direccion,
+      "cedula": numeroid,
     }
-    //console.log(params)
     if (!(numeroid.length == 10 || /^\s+$/.test(numeroid))) {
       setValidate("was-validated")
       return true
@@ -81,7 +80,6 @@ const ModalSuscritoView = (props) => {
         setValidate("")
         const useradd = await CrearSuscritor(params)
         const { success, message } = useradd
-        // console.log(useradd)
         if (success) {
           location.reload()
         }

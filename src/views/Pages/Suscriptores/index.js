@@ -11,9 +11,13 @@ import { Button } from "reactstrap";
 import { useHistory } from "react-router";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { Columnasubcrito } from "utils/ColumnTabla";
+import ResgistroView from "../Flasdeticket/ModalLogin/registro";
+import { useDispatch } from "react-redux";
+import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 
 const SuscritorViews = () => {
   let usehistory = useHistory()
+  let usedispatch= useDispatch()
   const [show, setshow] = useState(false)
   const [suscritores, setsuscritor] = useState([])
   const [suscritor, setSuscri] = useState({})
@@ -114,6 +118,10 @@ const SuscritorViews = () => {
   const hideAlert = () => {
     setAlert(null);
   };
+  function regsitronew() {    
+    console.log("modal")
+    usedispatch(setModal({ nombre: 'registro', estado: "" }))
+  }
   React.useEffect(() => {
     (async () => {
       await nuevoevento()
@@ -232,7 +240,7 @@ const SuscritorViews = () => {
       </Row>
       <div className="row">
         <div className="col-md-12">
-          <button className="btn btn-success" onClick={newsuscrito}><i className="mr-2 fa fa-plus"></i> Nuevo Suscritores</button>
+          <button className="btn btn-success" onClick={regsitronew}><i className="mr-2 fa fa-plus"></i> Nuevo Suscritores</button>
           <br /><br />
           <div className="card card-primary card-outline text-left">
             <div className="card-header">
@@ -271,6 +279,7 @@ const SuscritorViews = () => {
         estado={estado}
         datosperson={suscritor}
       />
+      <ResgistroView/>
     </div>
   )
 

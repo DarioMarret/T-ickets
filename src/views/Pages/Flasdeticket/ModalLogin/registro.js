@@ -18,6 +18,7 @@ import { buscarcliente } from "utils/Querypanelsigui"
 import ReactGA from 'react-ga';
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import addNotification from "react-push-notification/dist"
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 const ResgistroView = (prop) => {
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
@@ -230,6 +231,10 @@ const ResgistroView = (prop) => {
                     console.log(datos,registro)
 
                     if (registro.data.success) {
+                        if(clienteInfo()!=null){
+                            window.location.reload()
+                            return
+                        }
                         let usuario = getDatosUsuariosLocalStorag()
                         const { data } = await Authsucrito({ email: email, password: password },)
                         var hoy = new Date();

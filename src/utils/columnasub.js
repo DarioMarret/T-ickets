@@ -324,12 +324,13 @@ export const listaRegistrototal = [
     {
         accessorKey: "cantidad",
         header: "Cantidad",
-        size: 25
+        size: 20
     },{
-        accessorKey:"Comprobante",
-        header:"numero",
+        accessorKey:"numerTransacion",
+        header:"Comprobante",
         Cell:({cell})=>(
-            cell.row.original.numerTransacion == null ? "No registrado" : cell.row.original.numerTransacion
+            
+            cell.row.original.forma_pago == "Deposito"? cell.row.original.numerTransacion == null ? "vacio" : cell.row.original.numerTransacion:"Tarjeta o Efectivo"
         ),
         size:25
     }

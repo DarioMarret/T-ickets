@@ -46,6 +46,7 @@ import { infoTarjeta } from "utils/pagos/Queripagos";
 import Inframene from "views/Components/IFrame";
 import Iframe from "views/Components/IFrame/Iframe";
 import { infoabimedia } from "utils/pagos/Queripagos";
+import { eliminarRegistro } from "utils/pagos/Queripagos";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -159,7 +160,7 @@ export default function DetalleCompraView() {
         message: "",
         payment_date: "",
         transmitter: "",
-        card_brand:""
+        card_brand: ""
     })
     const [alert, setAlert] = useState(null)
     function generaPDF(row) {
@@ -248,7 +249,7 @@ export default function DetalleCompraView() {
             setEstadoTC(
                 <div>
                     <span className={" label label-success"}>
-                         TC Propia
+                        TC Propia
                     </span>
                 </div>
             )
@@ -340,21 +341,21 @@ export default function DetalleCompraView() {
                                                 });
                                                 console.log(nuew)
                                                 if (listtarje.length == nuew.filter(e => e == true).length) {
-                                                    setEstadoTC(                                                       
+                                                    setEstadoTC(
                                                         <span className={"pb-1 label label-successtc"}>
                                                             TC propio
                                                         </span>
-                                                        
+
                                                     )
                                                     return
                                                 }
                                                 if (nuew.filter(e => e == true).length == 2) {
                                                     setEstadoTC(
-                                                       
-                                                            <span className={"pb-1 label label-warning"}>
-                                                                Considencia minima tc
-                                                            </span>
-                                                       
+
+                                                        <span className={"pb-1 label label-warning"}>
+                                                            Considencia minima tc
+                                                        </span>
+
                                                     )
                                                 }
                                                 if (nuew.filter(e => e == true).length == 1) {
@@ -362,7 +363,7 @@ export default function DetalleCompraView() {
                                                         <span className={"pb-1 label label-warning"}>
                                                             Solo una Considencia tc
                                                         </span>
-                                                   )
+                                                    )
                                                 }
                                                 if (nuew.filter(e => e == true).length == 0) {
                                                     setEstadoTC(
@@ -412,7 +413,7 @@ export default function DetalleCompraView() {
                                 if (ouputs.data.nombreCompleto != " ") {
                                     setTimeout(() => {
                                         let nuew = []
- 
+
                                         let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
                                         let listnombre = ouputs.data.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
                                         listnombre.forEach(element => {
@@ -423,7 +424,7 @@ export default function DetalleCompraView() {
                                             setEstadoTC(
                                                 <div>
                                                     <span className={"pb-1 label label-successtc"}>
-                                                      TC propio
+                                                        TC propio
                                                     </span>
                                                 </div>
                                             )
@@ -431,11 +432,11 @@ export default function DetalleCompraView() {
                                         }
                                         if (nuew.filter(e => e == true).length == 2) {
                                             setEstadoTC(
-                                                
-                                                    <span className={"pb-1 label label-warning"}>
-                                                        Considencia minima tc
-                                                    </span>
-                                                
+
+                                                <span className={"pb-1 label label-warning"}>
+                                                    Considencia minima tc
+                                                </span>
+
                                             )
                                         }
                                         if (nuew.filter(e => e == true).length == 1) {
@@ -450,7 +451,7 @@ export default function DetalleCompraView() {
                                                 <span className={"pb-1 label label-danger"}>
                                                     TC de tercero
                                                 </span>
-                                           )
+                                            )
 
                                         }
 
@@ -491,45 +492,47 @@ export default function DetalleCompraView() {
         }).catch(err => {
             console.log(err)
         })
-        nombres.forma_pago == "Deposito"  ?
-            nombres.numerTransacion!=null ? 
-            BuscarTransacion({
-                "numeroTransaccion": nombres.numerTransacion
-            }).then(ouput => {
-                console.log(ouput)
-                if (ouput.success) {
-                    if (ouput.data) {
-                        usedispatch(setToastes({
-                            show: true,
-                            message: "número de comprobante repetidos",
-                            color: 'bg-danger',
-                            estado: "Atentos"
-                        }))
+        nombres.forma_pago == "Deposito" ?
+            nombres.numerTransacion != null ?
+                BuscarTransacion({
+                    "numeroTransaccion": nombres.numerTransacion
+                }).then(ouput => {
+                    console.log(ouput)
+                    if (ouput.success) {
+                        if (ouput.data) {
+                            usedispatch(setToastes({
+                                show: true,
+                                message: "número de comprobante repetidos",
+                                color: 'bg-danger',
+                                estado: "Atentos"
+                            }))
+                            setRepetido(ouput.data)
+                        }
+                        else {
+                            usedispatch(setToastes({
+                                show: true,
+                                message: "número de comprobante único",
+                                color: 'bg-success',
+                                estado: "Atentos"
+                            }))
+                        }
+                        return
                     }
-                    else {
-                        usedispatch(setToastes({
-                            show: true,
-                            message: "número de comprobante único",
-                            color: 'bg-success',
-                            estado: "Atentos"
-                        }))
-                    }
-                    return
-                }
-                //$.alert(JSON.stringify(ouput))
-            }).catch(err => {
-                console.log(err)
-            }):
-            usedispatch(setToastes({
-                show: true,
-                message: "número de comprobante no registrado",
-                color: 'bg-warning',
-                estado: "Atentos" }))
-            :""
+                    //$.alert(JSON.stringify(ouput))
+                }).catch(err => {
+                    console.log(err)
+                }) :
+                usedispatch(setToastes({
+                    show: true,
+                    message: "número de comprobante no registrado",
+                    color: 'bg-warning',
+                    estado: "Atentos"
+                }))
+            : ""
 
 
 
-
+/** location */
     }, [])
     const [first, setfirst] = useState("")
     function handelchange(e) {
@@ -537,12 +540,23 @@ export default function DetalleCompraView() {
     }
     function verRegistro() {
         let selecion = document.getElementById("registro").value
-        //if (first.trim() != "") return
-        // let datos = modal.estado.filter(e => e.id == first)
-        sessionStorage.setItem("Detalleuid", JSON.stringify({ ...datos[0] }))
-        history.push("/admin/Reporte/" + datos[0].id)
-        console.log(selecion)
+        if (selecion.trim() === "") return
+       
+        let datos = repetidos.filter(e => e.id == selecion)[0]
+        console.log(datos)
+        sessionStorage.setItem("Detalleuid", JSON.stringify({ ...datos }))
+        history.push("/admin/Reporte/" + datos.id)
+        window.location.reload()
+        
     }
+function elimini(){
+eliminarRegistro({id:""}).then(ouput=>{
+
+}).catch(err=>{
+    
+})
+   // eliminarRegistro({ "id": parms.id }).then(ouput => {
+}
     function ValidarComprobante() {
         BuscarTransacion({
             "numeroTransaccion": nombres.numerTransacion
@@ -550,6 +564,7 @@ export default function DetalleCompraView() {
             console.log(ouput)
             if (ouput.success) {
                 if (ouput.data) {
+                    setRepetido(ouput.data)
                     successAlert(ouput.data)
                 }
                 else {
@@ -563,9 +578,9 @@ export default function DetalleCompraView() {
         })
 
     }
-    
+
     const successAlert = (re) => {
-        
+
         setAlert(
             <SweetAlert
                 warning
@@ -578,7 +593,7 @@ export default function DetalleCompraView() {
                     <div className="px-2 d-flex  justify-content-center align-items-center">
                         <div className="col-md-8">
                             <label className="form-label">Comprobantes repetidos</label>
-                            <select className="form-select" aria-label="Default select example" id="registro"                               
+                            <select className="form-select" aria-label="Default select example" id="registro"
                             >
                                 <option value="" >Selecione el registro</option>
                                 {re.length > 0 ?
@@ -1076,11 +1091,11 @@ export default function DetalleCompraView() {
                                                         {nombres.estado_pago}
                                                     </span>
                                                 </div>
-                                                
-                                              {nombres.forma_pago=="Tarjeta"?  <div >
+
+                                                {nombres.forma_pago == "Tarjeta" ? <div >
                                                     {estadotc}
-                                                </div>:""}
-                                               
+                                                </div> : ""}
+
                                             </div>
                                         </div>
                                     </div>
@@ -1150,9 +1165,9 @@ export default function DetalleCompraView() {
                                             {nombres.fechaCreacion} <br></br>
                                             #{id} <br></br>
                                             {nombres.forma_pago}<br></br>
-                                            {nombres.forma_pago=="Tarjeta" && nombres.link_pago==null?"Cambio de Deposito a Tarjeta":""}
+                                            {nombres.forma_pago == "Tarjeta" && nombres.link_pago == null ? "Cambio de Deposito a Tarjeta" : ""}
                                             {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                                <span className={nombres.consolidado != "" && nombres.consolidado !="Sin Consolidar"? "p-1 label label-success" : "label label-danger"}>
+                                                <span className={nombres.consolidado != "" && nombres.consolidado != "Sin Consolidar" ? "p-1 label label-success" : "label label-danger"}>
                                                     {nombres.consolidado != "" ? nombres.consolidado : "Sin Consolidar"}
                                                 </span> :
                                                 ""}
@@ -1280,7 +1295,7 @@ export default function DetalleCompraView() {
                                     <div className="invoice-date">
                                         <small className="text-inverse">
                                             {tarjetadata.cardholder}  </small><br></br>
-                                       
+
                                         <div className=" ">
 
 
@@ -1292,10 +1307,10 @@ export default function DetalleCompraView() {
                                             <span >
                                                 {tarjetadata.display_number}
                                             </span>
-                                            
+
                                             <br></br>
-                                            {tarjetadata.created_at ? "Fecha creación:" + tarjetadata.created_at :""} <br></br>
-                                            {tarjetadata.payment_date ? " Fecha pago:" + tarjetadata.payment_date :""} <br></br>
+                                            {tarjetadata.created_at ? "Fecha creación:" + tarjetadata.created_at : ""} <br></br>
+                                            {tarjetadata.payment_date ? " Fecha pago:" + tarjetadata.payment_date : ""} <br></br>
                                             <p style={
                                                 {
                                                     fontWeight: "bold"
