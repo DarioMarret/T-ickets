@@ -19,13 +19,15 @@ import { eliminarRegistro } from "utils/pagos/Queripagos";
 import ExportToExcel from "utils/Exportelemin";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
 import { setLabels } from "StoreRedux/Slice/SuscritorSlice";
-import { DateRangePicker, defaultStaticRanges, defaultInputRanges } from "react-date-range";
+import { DateRangePicker, defaultStaticRanges, defaultInputRanges, DateRange } from "react-date-range";
 import * as locales from 'react-date-range/dist/locale'
 import { setCompras } from "StoreRedux/Slice/SuscritorSlice";
 import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
 import { useGetLocalidadQuery } from "StoreRedux/Slicequery/querySlice";
 import { retry } from "@reduxjs/toolkit/dist/query";
 import { ListaPreciosEvent } from "utils/EventosQuery";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import { setFecha } from "StoreRedux/Slice/SuscritorSlice";
 let { cedericon, atencion } = bancos
 
 export const PreciosStore=()=>{
@@ -44,7 +46,9 @@ export default function AprobarView() {
     let value = useSelector((state) => state.SuscritorSlice.tabps)
     let compras = useSelector((state) => state.SuscritorSlice.compras)
     let labelne = useSelector((state) => state.SuscritorSlice.labels)
+    let states = useSelector((state)=> state.SuscritorSlice.fecha )
 
+    //console.log(state)
     const [data, setData] = React.useState([]);
     const [tiketslist, setTikes] = useState([])
 
@@ -77,46 +81,7 @@ export default function AprobarView() {
             'aria-controls': `simple-tabpanel-${index}`,
         };
     }
-    const succesLimit = () => {
-        setAlert(
-            <SweetAlert
-                style={{ display: "block", marginTop: "-100px" }}
-
-                closeOnClickOutside={false}
-                showCancel={false}
-                showConfirm={false}
-                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-            >
-                <div>
-                    <div className='col-12 pb-3'>
-                        <img src={atencion} className="img-fluid"
-                            style={{
-                                height: 100
-                            }}
-                        ></img>
-                    </div>
-                    <h5>Has alcanzado la cantidad límite de entradas</h5>
-                    Deseas continuar editando la selección
-                    <div className='d-flex  justify-content-around py-4 px-2'>
-                        <div>
-                            <button className='btn btn-outline-danger  rounded-6' onClick={() => cerrar()}>
-                                <span style={{
-                                    fontWeight: "bold"
-                                }}>Ir al carrito</span>
-                            </button>
-                        </div>
-                        <div>
-                            <button className=' btn btn-warning rounded-5' onClick={() => hideAlert()} >
-                                <span style={{
-                                    fontWeight: "bold"
-                                }}> Si, Continuar</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </SweetAlert>
-        )
-    }
+ 
 
     const hideAlert = () => {
         setAlert(null)
@@ -242,11 +207,12 @@ export default function AprobarView() {
         if (item.selection.endDate == item.selection.startDate) {
             setTikes(compras)
             setDatas([...labelne])
-            setState([item.selection])
+        //    setState([item.selection])
+            usedispatch(setFecha({ fecha: [item.selection] }))
             return
         }
         else {
-            setState([item.selection])
+            usedispatch(setFecha({ fecha: [item.selection] }))
             let newdatos = compras.filter(e => new Date(e.fechaCreacion) >= new Date(item.selection.startDate) && new Date(e.fechaCreacion) <= new Date(item.selection.endDate))
             let nuevosValores = []
             let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
@@ -305,9 +271,18 @@ export default function AprobarView() {
             return
         }
        // LocalidadPrecio()
-        console.log(publici.data)
-        ListaPrecio()
+        //console.log(publici.data)
+     //   ListaPrecio()
         listarRegistropanel({ "cedula": "" }).then(e => {
+            if(!e.success){
+                usedispatch(setToastes({
+                    show: true,
+                    message: e.message,
+                    color: 'bg-warning',
+                    estado: "Todos ocupados"
+                }))
+                return
+            }           
             if (e.data) {
                 let newdatos = e.data.map(row => {
                     let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
@@ -554,35 +529,51 @@ export default function AprobarView() {
             }
             <ModalConfima />
             <div className="row py-5">
-                <div className=" d-flex align-items-center justify-content-center ">
-                    <DateRangePicker
-                        editableDateInputs={false}
-                        onChange={item => rango(item)}
-                        moveRangeOnFirstSelection={false}
-                        retainEndDateOnFirstSelection={false}
-                        ranges={state}
-                        months={1}
-                        locale={locales[locale]}
-                        staticRanges={[
-                            ...defaultStaticRanges.map((e, i) => {
-                                e.label = label[i]
-                                return { ...e }
-                            }),
-                        ]}
-                    />
-                </div>
-                <div className="d-flex flex-wrap align-items-center justify-content-center mb-5 pb-5 ">
-                    {datas.length > 0 ?
-                        <PiecharViewsSlect
-                            datas={datas}
-                            options={options}
+                <div className="col-12 d-flex justify-content-center ">
+                    <div className="card">
+                        <div className="card-body d-none d-sm-none d-md-block">
+                            <DateRangePicker
+                                editableDateInputs={false}
+                                onChange={item => rango(item)}
+                                moveRangeOnFirstSelection={false}
+                                retainEndDateOnFirstSelection={false}
+                                ranges={states}
+                                months={1}
+                                locale={locales[locale]}
+                                staticRanges={[
+                                    ...defaultStaticRanges.map((e, i) => {
+                                        e.label = label[i]
+                                        return { ...e }
+                                    }),
+                                ]}
+                            />
+                        </div>
+                        <div className="card-body d-block d-sm-block d-md-none">
+                            <DateRange
+                                editableDateInputs={false}
+                                onChange={item => rango(item)}
+                                moveRangeOnFirstSelection={false}
+                                ranges={states}
+                                locale={locales[locale]}
+                            />
 
-                        /> : ""}
-                    {datas.length < 0 ?
-                        <PiecharViewsSlect
-                            datas={datas}
-                            options={options}
-                        /> : ""}
+                        </div>
+
+                    </div>
+                 
+                </div>
+                <div className="col-12 col-md-6">
+                    <div className="card">
+                        <div className=" card-body">
+                            {datas.length > 0 ?
+                                <PiecharViewsSlect
+                                    datas={datas}
+                                    options={options}
+
+                                /> : ""}
+                        </div>
+                    </div>
+                   
                 </div>
             </div>
             <div className=" container row"  >

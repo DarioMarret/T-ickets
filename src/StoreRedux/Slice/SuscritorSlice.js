@@ -16,7 +16,12 @@ const initialState = {
     page: 1,
     tabps: 0,
     labels: [],
-    compras: []
+    compras: [],
+    fecha:[ {
+        startDate: new Date(),
+        endDate: new Date(),
+        key: 'selection'
+    }]
 }
 
 const SubscritorSlice = createSlice({
@@ -60,12 +65,15 @@ const SubscritorSlice = createSlice({
         },
         setPagination: (state, action) => {
             state.inicio = action.payload.inicio,
-            state.final = action.payload.final,
-            state.page = action.payload.page
+                state.final = action.payload.final,
+                state.page = action.payload.page
+        },
+        setFecha:(state,action)=>{
+            state.fecha = action.payload.fecha
         }
 
     }
 
 })
-export const { addususcritor, setLabels, setPagination, setCompras, deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad, setTabs, deleteloclidad, setdetalle } = SubscritorSlice.actions;
+export const { addususcritor, setLabels,setFecha, setPagination, setCompras, deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad, setTabs, deleteloclidad, setdetalle } = SubscritorSlice.actions;
 export default SubscritorSlice.reducer

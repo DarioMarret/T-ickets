@@ -47,6 +47,7 @@ import Inframene from "views/Components/IFrame";
 import Iframe from "views/Components/IFrame/Iframe";
 import { infoabimedia } from "utils/pagos/Queripagos";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
+import { ComentarioRegistro } from "utils/pagos/Queripagos";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -195,6 +196,56 @@ export default function DetalleCompraView() {
             //console.log(eror)
         })
     }
+    function agregarComentario() {
+        let id = nombres.id
+        let id_operador = clienteInfo()
+        $.confirm({
+            title: 'Observación',
+            type: 'green',
+            content: '' +
+                '<form action="" class="formName">' +
+                '<div class="form-group">' +
+                '<label>Agrege una comentario</label>' +
+                '<textarea class="exampleFormControlTextarea1 form-control" id="exampleFormControlTextarea1" rows="3"></textarea>' +
+                '</div>' +
+                '</form>',
+            typeAnimated: true,
+            buttons: {
+                formSubmit: {
+                    text: 'Comentar',
+                    btnClass: 'btn-blue',
+                    action: function () {
+                        var name = this.$content.find('.exampleFormControlTextarea1').val();
+                        if (!name) {
+                            $.alert('Ingrese un Comentario');
+                            return false;
+                        }
+                        ComentarioRegistro({
+                            "id_registro": id,
+                            "id_operador": id_operador.id,
+                            "comentario": name
+                        }).then(mensage=>{
+                            console.log(mensage)
+                        }).catch(err=>{
+                            console.log(err)
+                        })
+                    }
+                },
+                cancel: function () {
+                    //close
+                },
+            },
+            onContentReady: function () {
+                // bind to events
+                var jc = this;
+                this.$content.find('form').on('submit', function (e) {
+                    // if the user submits the form by pressing enter in the field.
+                    e.preventDefault();
+                    jc.$$formSubmit.trigger('click'); // reference the button and click it
+                });
+            }
+        });
+    }
     function LocalidadPrecio(evento, localidad) {
         if (localidad == 9) {
             return "SEN2 KBRN Guayaquil"
@@ -236,6 +287,27 @@ export default function DetalleCompraView() {
             return precio[14]
         }
         return PreciosStore().filter(f => f.id == evento)[0].precio_normal
+    }
+    function ListarComision(evento, localidad) {
+        if (localidad == 9) {
+            return 2
+        }
+        if (localidad == 10) {
+            return 2
+        }
+        if (localidad == 11) {
+            return 1
+        }
+        if (localidad == 12) {
+            return 2
+        }
+        if (localidad == 13) {
+            return 2
+        }
+        if (localidad == 14) {
+            return 1
+        }
+        return parseFloat( PreciosStore().filter(f => f.id == evento)[0].comision_boleto)
     }
     function Verificarnomnbre(e, f) {
         let nuew = []
@@ -283,6 +355,43 @@ export default function DetalleCompraView() {
         console.log(listnombre, listtarje, nuew)
     }
     let [estadotc, setEstadoTC] = useState(null)
+    function creaComprobante() {
+        var opciones = {
+            orientation: 'p',
+            unit: 'mm',
+            format: [240, 300]
+        };
+
+        var doc = new jsPDF(opciones);
+
+        doc.setFontSize(10);
+        doc.text(10, 30, 'Recibo de venta de orquídeas');
+        doc.text(10, 35, 'Comprobante No.: 785654544');
+        doc.text(10, 40, 'PDV: pablito ');
+        doc.text(10, 45, 'Operador: 123654');
+        doc.text(10, 55, 'Valor: 35.00');
+        doc.text(10, 60, 'TBX: 242985290');
+        doc.text(10, 65, 'Fecha/Hora: 2022-11-11 12:28:21');
+        doc.text(10, 75, '_______________________________');
+        doc.text(10, 80, 'Recibí conforme');
+
+
+        doc.autoPrint({ variant: 'non-conform' });
+
+        doc.save('comprobante.pdf');
+        doc.autoPrint();
+
+        doc.output('dataurlnewwindow', { filename: 'comprobante.pdf' });
+    }
+    function nuevoPrecio(){
+        let datos=JSON.parse(nombres.info_concierto).map((item, i) => {
+            let valor = item.cantidad * ListarComision(item.idespaciolocalida, item.id_localidad)
+
+            return valor
+        })
+       
+        return datos.reduce((a, b) => a + b, 0).toFixed(2)
+    } 
     useEffect(() => {
         let concer = JSON.parse(nombres.info_concierto)
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
@@ -529,10 +638,10 @@ export default function DetalleCompraView() {
                     estado: "Atentos"
                 }))
             : ""
+       
+       
 
-
-
-/** location */
+        /** location */
     }, [])
     const [first, setfirst] = useState("")
     function handelchange(e) {
@@ -541,22 +650,22 @@ export default function DetalleCompraView() {
     function verRegistro() {
         let selecion = document.getElementById("registro").value
         if (selecion.trim() === "") return
-       
+
         let datos = repetidos.filter(e => e.id == selecion)[0]
         console.log(datos)
         sessionStorage.setItem("Detalleuid", JSON.stringify({ ...datos }))
         history.push("/admin/Reporte/" + datos.id)
         window.location.reload()
-        
-    }
-function elimini(){
-eliminarRegistro({id:""}).then(ouput=>{
 
-}).catch(err=>{
-    
-})
-   // eliminarRegistro({ "id": parms.id }).then(ouput => {
-}
+    }
+    function elimini() {
+        eliminarRegistro({ id: "" }).then(ouput => {
+
+        }).catch(err => {
+
+        })
+        // eliminarRegistro({ "id": parms.id }).then(ouput => {
+    }
     function ValidarComprobante() {
         BuscarTransacion({
             "numeroTransaccion": nombres.numerTransacion
@@ -1038,7 +1147,42 @@ eliminarRegistro({id:""}).then(ouput=>{
                 <ModalConfirma />
                 <div className="row ">
                     <h1></h1>
-                    <div className="d-flex justify-content-end  px-3">
+                    <div className="col-12   d-flex  text-center justify-content-md-end  align-items-center">
+                        <div className="px-2">
+                            <div className="" >
+                                {
+                                    nombres.pdf == "SI" ? 
+                                    <a className=" btn btn-default btn-sm ">
+                                        <i className="bi bi-file-earmark-pdf text-danger"></i>
+                                        {estado[nombres.pdf]}
+                                    </a> : ""
+                                }
+                                {nombres.estado_pago == "Pagado" ?
+                                    <a className=" btn btn-default btn-sm"
+                                        onClick={() => usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres } }))}
+                                    >
+                                        <i className="bi bi-check"></i> Consolidar </a>
+                                    : ""}
+                                {nombres.forma_pago == "Deposito" ?
+                                    <a className=" btn btn-default btn-sm d-none"
+                                        onClick={ComprobarBoleto}
+                                    ><i className="bi bi-exclamation-octagon text-warning "></i> Cambiar a Comprobar </a>
+                                    : ""}
+
+                                {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
+                                    <a className="btn btn-default btn-sm"
+                                        data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
+                                        onClick={() => Generarnew()}
+                                    >
+                                        <i className="fa fa-info-circle">  </i>Recargar Boleto
+                                    </a> : ""}
+                                <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>
+                                <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>
+                                <a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" fa fa-calendar-check-o"> </i> Canjear Boletos</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="d-flex justify-content-end  px-3 d-none">
                         {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
                             <a className="  rounded-circle btn-danger mx-2 p-2 text-white"
                                 data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
@@ -1074,8 +1218,8 @@ eliminarRegistro({id:""}).then(ouput=>{
                             <i className=" fa fa-arrow-left">  </i>
                         </a>
                     </div>
-                    <div className="row ">
-                        <div className="col-12">
+                    <div className="row d-flex justify-content-center ">
+                        <div className="col-12 ">
                             <div className=" px-0 py-2 w-100  bg-white ">
                                 <div className=" d-flex flex-wrap flex-wrap-reverse">
                                     <div className="  col-12 col-md-6 ">
@@ -1099,31 +1243,7 @@ eliminarRegistro({id:""}).then(ouput=>{
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-12 col-md-6 d-flex  text-center justify-content-md-end  align-items-center">
-                                        <div className="px-2">
-                                            <div className="btn-group" >
-                                                {
-                                                    nombres.pdf == "SI" ? <a className=" btn btn-default btn-sm "><i className="bi bi-file-earmark-pdf text-danger"></i>
-                                                        {estado[nombres.pdf]}
-                                                    </a> : ""
-                                                }
-                                                {nombres.estado_pago == "Pagado" ?
-                                                    <a className=" btn btn-default btn-sm"
-                                                        onClick={ConsolidarCompra}
-                                                    >
-                                                        <i className="bi bi-check"></i> Consolidar </a>
-                                                    : ""}
-                                                {nombres.forma_pago == "Deposito" ?
-                                                    <a className=" btn btn-default btn-sm "
-                                                        onClick={ComprobarBoleto}
-                                                    ><i className="bi bi-exclamation-octagon text-warning "></i> Cambiar a Comprobar </a>
-                                                    : ""}
-                                                <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>
-                                                <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>
-                                                <a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" fa fa-calendar-check-o"> </i> Canjear Boletos</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                  
                                 </div>
                             </div>
                         </div>
@@ -1375,6 +1495,32 @@ eliminarRegistro({id:""}).then(ouput=>{
                             </table>
 
                         </div>
+                        <div>
+                            <table className="table table-borderless ">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td className='text-end' >Comisión por Boleto:</td>
+                                        <td width="15%" className='text-center'>$ {JSON.parse(nombres.info_concierto).length > 0 ? nuevoPrecio() : ""}</td>
+                                    </tr>
+                                  { nombres.forma_pago =="Deposito"? <tr >
+                                        <th scope="row"></th>
+                                        <td className={" text-end"} >Total</td>
+                                        <td className="text-center">${ (parseFloat(nombres.total_pago)/1.07).toFixed(2)}</td>
+                                    </tr>:""}
+                                    
+                                    {nombres.forma_pago =="Tarjeta"? <tr>
+                                        <th scope="row"></th>
+                                        <td className='text-end' >Total tarjeta:</td>
+                                        <td className='text-center'>$ {nombres.total_pago}</td>
+                                    </tr>:""}
+                                    
+                                   
+                                    
+                                   
+                                </tbody>
+                            </table>
+                        </div>
                         <div className=" d-flex col-12  pb-3 border-top pt-2">
                             <div className=" invoice-from col-12">
                                 <div className="row">
@@ -1489,7 +1635,27 @@ eliminarRegistro({id:""}).then(ouput=>{
                         </div>
                     </div>
 
+                    <div 
+                        className="sticky-bottom w-100 ">
+                        <div className="d-flex  justify-content-end">
+                            <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
+                                data-toggle="atras " data-placement="top" title="atras"
+                                onClick={() => history.goBack()}
+                            >
+                                <i className=" fa fa-arrow-left">  </i>
+                            </a>
 
+
+                            <a className=" rounded-circle btn-success mx-2 p-2 text-white"
+                                data-toggle=" " data-placement="top" title="Agregar Comentario"
+                                onClick={agregarComentario}
+                            >
+                                <i className=" fa fa-comments">  </i>
+                            </a>
+                        </div>
+                            
+                        
+                    </div>
                 </div>
 
             </div>

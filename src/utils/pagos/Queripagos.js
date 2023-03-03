@@ -19,7 +19,33 @@ export const registraPagos = async (parms) => {
 
 export const listarRegistropanel = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/listarRegistros", parms, {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/listarRegistros?init=0&size=50000", parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const listarRegistropanelComprobar = async (parms, estado) => {
+    try {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/listarRegistros?estado=Expirado?estado=" + estado, parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const listarRegistroEvento = async (ini, fin, parms) => {
+    try {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login//api/v1/listarRegistros?init=" + ini + "&size=" + fin + "", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -99,6 +125,32 @@ export const ConsolidarReporte = async (parms) => {
         return data
     } catch (err) {
         return err
+    }
+}
+export const Consiliarcompra = async (parms) => {
+    try {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/Conciliacion", parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const ComentarioRegistro= async (parms)=>{
+    try {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/Comentario_registro",parms,{
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
     }
 }
 export const BuscarTransacion = async (parms) => {

@@ -12,7 +12,9 @@ export default function PiecharViewsSlect({ ...props }) {
                    
                     chartArea: { left: 15, top: 15, right: 0, bottom: 0 },
                     pieSliceText: "label",
+                    //height:300
                 }}
+               
                 chartPackages={["corechart", "controls"]}
                 chartWrapperParams={{ view: { columns: [0, 2] } }}
                 controls={[

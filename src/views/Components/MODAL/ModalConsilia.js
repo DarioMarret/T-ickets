@@ -8,6 +8,7 @@ import { PhotoView } from "react-photo-view"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import axios from "axios"
 import { useHistory } from "react-router"
+import { Consiliarcompra } from "utils/pagos/Queripagos"
 export const DatosConsolidar = async (parms) => {
     try {
         let { data } = await axios.post("https://brisana.netbot.ec/js/consolidar.php", parms)
@@ -16,7 +17,6 @@ export const DatosConsolidar = async (parms) => {
         return error
     }
 }
-
 export default function ConsiliarView() {
     let usedispatch = useDispatch()
     let history = useHistory()
@@ -43,33 +43,38 @@ export default function ConsiliarView() {
     }
     async function guardarConsiliacion(e) {
         e.preventDefault()
-        let parm = {
-            usuario: user.id,
-            comprobante: datos.comprobante,
-            imagen: datos.imagen,
-            Valor: datos.Valor,
+        let parms = {
+            id_operador: 27,
             id_registro: props.estado.id,
-            cuenta: datos.cuenta,
             banco: datos.banco,
-            propietario: datos.propietario,
-            metodo: datos.metodo
+            cuenta: datos.comprobante,
+            total_pagado: datos.Valor,          
+            banco: datos.banco,           
         }
-
-        if (Object.values(parm).some(e => e == "")) {
+        if (Object.values(parms).some(e => e == "")) {
             usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
-            console.log(parm)
+            //console.log(parms)
             return
         }
         else {
-            setEstatus(true)
-            console.log(parm)
-
-            $.ajax({
+            //console.log(parms)
+           setEstatus(true)
+            console.log(parms)
+            Consiliarcompra(parms).then(salida=>{
+                setEstatus(false)
+                console.log(salida)
+                if (salida){
+                    
+                }
+            }).cath(err=>{
+                setEstatus(false)
+                console.log(err)
+            })
+           /* $.ajax({
                 type: "POST",
                 url: "https://brisana.netbot.ec/js/consolidar.php",
                 data: { ...parm },
                 success: function (success) {
-                    
                     if (success.status) {
                          usedispatch(setModal({ nombre: "", estado: "" }))
                      
@@ -85,21 +90,11 @@ export default function ConsiliarView() {
                     console.log(error)
                     setEstatus(false)
                 }
-            })
+            })*/
         }
     }
-    useEffect(() => {
-        setDatos({
-            comprobante: props.estado.numerTransacion,
-            imagen: props.estado.link_comprobante ? props.estado.link_comprobante : props.estado.link_pago,
-            metodo: props.estado.forma_pago,
-            Valor: props.estado.total_pago,
-            banco: "",
-            cuenta: "",
-            id_registro: props.estado.id,
-            usuario: user.id,
-            propietario: ""
-        })
+  
+    useEffect(() => {       
         $(document).ready(function () {
             $(".modal-content").draggable({
                 handle: ".modal-header",
@@ -111,7 +106,7 @@ export default function ConsiliarView() {
     $(document).ready(function () {
         $(".numero").keypress(function (e) {
             var n = (e = e || window.event).keyCode || e.which,
-                t = -1 != "0123456789".indexOf(String.fromCharCode(n));
+                t = -1 != "0123456789x".indexOf(String.fromCharCode(n));
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
     });
@@ -132,20 +127,25 @@ export default function ConsiliarView() {
                             <h5 style={{
                                 fontSize: '1.0em'
                             }} >
-                                Forma de pago
-                            </h5>
-                            <select className=" form-select" value={datos.metodo} required
-                                name="metodo"
-                                id="metodo"
+                               Banco o Tarjeta
+                            </h5>                           
+                            <select className=" form-select" value={datos.banco} required
+                                name="banco"
+                                id="banco"
                                 onChange={(e) => HandeChange(e.target)}>
                                 <option value={""} disabled></option>
-                                <option value={"Tarjeta"}>Tarjeta</option>
-                                <option value={"Deposito"}>Deposito</option>
-                            </select>
+                                <option value={"Visa"}>Visa</option>
+                                <option value={"Discover"}>Discover</option>
+                                <option value={"Alias"}>Alias</option>
+                                <option value={"Pichincha"}>Pichincha</option>
+                                <option value={"Produbanco"}>Produbanco</option>
+                                <option value={"Guayaquil"}>Guayaquil</option>
+                                <option value={"Pacífico"}>Pacífico</option>
+                             </select>
                         </div>
                         <div className="p-1" >
                             <h5 style={{ fontSize: '1.0em' }}>
-                                Ingrese el número de comprobante o lote
+                               Cuenta o Tarjeta
                             </h5>
                             <input type="text" name="comprobante" id="comprobante"
                                 value={datos.comprobante}
@@ -155,50 +155,8 @@ export default function ConsiliarView() {
                                 className="form-control numero"
                             />
                         </div>
-                        <div className=" p-1">
-                            <h5 style={{ fontSize: '1.0em' }}>
-                                link del comprobante o Pago
-                            </h5>
-                            <input className="form-control"
-                                value={datos.imagen}
-                                onChange={(e) => HandeChange(e.target)}
-                                name="imagen"
-                                required
-                                type={"text"}
-                            />
-                        </div>
-                        <div className="row">
-                            <div className="col-12 col-md-6 py-1">
-                                {datos.metodo == "Deposito" ?<h5 style={{ fontSize: '1.0em' }}>
-                                    Banco
-                                </h5> : 
-                                <h5 style={{ fontSize: '1.0em' }}>
-                                    Tarjeta
-                                </h5>}
-                                {datos.metodo == "Deposito" ? <select className=" form-control form-select" required
-                                    value={datos.banco}
-                                    name="banco"
-                                    onChange={(e) => HandeChange(e.target)}
-                                >
-                                    <option value={""}></option>
-                                    <option value="Pichincha" >Pichincha</option>
-                                    <option value="Produbanco" >Produbanco</option>
-                                    <option value="Pacifico" >Pacifico</option>
-                                    <option value="Guayaquil" >Pacifico</option>
-                                </select> :
-                                    <select className=" form-control form-select" required
-                                        value={datos.banco}
-                                        name="banco"
-                                        onChange={(e) => HandeChange(e.target)}
-                                    >
-                                        <option value={""}></option>
-                                        <option value="Visa" >Visa</option>
-                                        <option value="Master card" >Master card</option>
-                                        <option value="Alias" >Alias</option>
-                                        <option value="Guayaquil" >Pacifico</option>
-                                    </select>}
-                            </div>
-                            <div className="col-12 col-md-6  py-1">
+                        <div className="row">                            
+                            <div className="col-12 py-1">
                                 <h5 style={{ fontSize: '1.0em' }}>
                                     Monto del Pago
                                 </h5>
@@ -211,36 +169,7 @@ export default function ConsiliarView() {
                                     type={"text"}
                                 />
                             </div>
-                        </div>
-                        <div className="py-1">
-                            <h5 style={{ fontSize: '1.0em' }}>
-                                Numero del Cuenta
-                            </h5>
-                            <input className=" form-control numero"
-                                value={datos.cuenta}
-                                name="cuenta"
-                                id="cuenta"
-                                onChange={(e) => HandeChange(e.target)}
-                                minLength={5}
-                                required
-                                type={"text"}
-                            />
-                        </div>
-                        <div className="py-1">
-                            <h5 style={{ fontSize: '1.0em' }}>
-                                propietario
-                            </h5>
-                            <input className=" form-control "
-                                name="propietario"
-                                value={datos.propietario}
-                                id="propietario"
-                                onChange={(e) => HandeChange(e.target)}
-                                minLength={5}
-                                required
-                                type={"text"}
-                            />
-                        </div>
-
+                        </div>       
                         <div className=" container-fluid px-0 py-2 text-end">
                             <button className="btn btn-default-su"
                                 disabled={status}
