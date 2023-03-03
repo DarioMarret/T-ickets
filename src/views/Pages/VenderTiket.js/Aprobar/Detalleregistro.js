@@ -1182,7 +1182,7 @@ export default function DetalleCompraView() {
                             </div>
                         </div>
                     </div>
-                    <div className="d-flex justify-content-end  px-3 d-none">
+                    <div className="d-flex justify-content-end  px-3  pt-1">
                         {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
                             <a className="  rounded-circle btn-danger mx-2 p-2 text-white"
                                 data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
