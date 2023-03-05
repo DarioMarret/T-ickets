@@ -224,9 +224,13 @@ export default function DetalleCompraView() {
                             "id_registro": id,
                             "id_operador": id_operador.id,
                             "comentario": name
-                        }).then(mensage=>{
+                        }).then(mensage => {
+                            if (mensage.success) {
+                                console.log(mensage)
+                                history.goBack()
+                            }
                             console.log(mensage)
-                        }).catch(err=>{
+                        }).catch(err => {
                             console.log(err)
                         })
                     }
@@ -307,12 +311,12 @@ export default function DetalleCompraView() {
         if (localidad == 14) {
             return 1
         }
-        return parseFloat( PreciosStore().filter(f => f.id == evento)[0].comision_boleto)
+        return parseFloat(PreciosStore().filter(f => f.id == evento)[0].comision_boleto)
     }
     function Verificarnomnbre(e, f) {
         let nuew = []
         let listtarje = e.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
-        let listnombre = f.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+        let listnombre = f.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
         listnombre.forEach(element => {
             nuew.push(listtarje.some(e => e == element))
 
@@ -383,15 +387,15 @@ export default function DetalleCompraView() {
 
         doc.output('dataurlnewwindow', { filename: 'comprobante.pdf' });
     }
-    function nuevoPrecio(){
-        let datos=JSON.parse(nombres.info_concierto).map((item, i) => {
+    function nuevoPrecio() {
+        let datos = JSON.parse(nombres.info_concierto).map((item, i) => {
             let valor = item.cantidad * ListarComision(item.idespaciolocalida, item.id_localidad)
 
             return valor
         })
-       
+
         return datos.reduce((a, b) => a + b, 0).toFixed(2)
-    } 
+    }
     useEffect(() => {
         let concer = JSON.parse(nombres.info_concierto)
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
@@ -443,7 +447,7 @@ export default function DetalleCompraView() {
                                                 let nuew = []
 
                                                 let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
-                                                let listnombre = usuario.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                                let listnombre = usuario.nombreCompleto.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
                                                 listnombre.forEach(element => {
                                                     nuew.push(listtarje.some(e => e == element))
 
@@ -524,7 +528,7 @@ export default function DetalleCompraView() {
                                         let nuew = []
 
                                         let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
-                                        let listnombre = ouputs.data.nombreCompleto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
+                                        let listnombre = ouputs.data.nombreCompleto.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
                                         listnombre.forEach(element => {
                                             nuew.push(listtarje.some(e => e == element))
 
@@ -638,8 +642,10 @@ export default function DetalleCompraView() {
                     estado: "Atentos"
                 }))
             : ""
-       
-       
+
+        //  nombres.conciliacion
+          //nombres.comentarios
+
 
         /** location */
     }, [])
@@ -1136,7 +1142,12 @@ export default function DetalleCompraView() {
             console.log(err)
         })
     }
-
+function conciliacion(){
+   // console.log(nombres.conciliacion)
+    if(nombres.conciliacion==undefined) return
+    if(Object.keys(nombres.conciliacion).length>0) return
+    usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres } }))
+}
 
     return (
         <PhotoProvider>
@@ -1151,15 +1162,15 @@ export default function DetalleCompraView() {
                         <div className="px-2">
                             <div className="" >
                                 {
-                                    nombres.pdf == "SI" ? 
-                                    <a className=" btn btn-default btn-sm ">
-                                        <i className="bi bi-file-earmark-pdf text-danger"></i>
-                                        {estado[nombres.pdf]}
-                                    </a> : ""
+                                    nombres.pdf == "SI" ?
+                                        <a className=" btn btn-default btn-sm ">
+                                            <i className="bi bi-file-earmark-pdf text-danger"></i>
+                                            {estado[nombres.pdf]}
+                                        </a> : ""
                                 }
                                 {nombres.estado_pago == "Pagado" ?
-                                    <a className=" btn btn-default btn-sm"
-                                        onClick={() => usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres } }))}
+                                    <a className=" btn btn-default btn-sm  "
+                                        onClick={() => conciliacion()}
                                     >
                                         <i className="bi bi-check"></i> Consolidar </a>
                                     : ""}
@@ -1243,7 +1254,7 @@ export default function DetalleCompraView() {
                                             </div>
                                         </div>
                                     </div>
-                                  
+
                                 </div>
                             </div>
                         </div>
@@ -1503,23 +1514,54 @@ export default function DetalleCompraView() {
                                         <td className='text-end' >Comisión por Boleto:</td>
                                         <td width="15%" className='text-center'>$ {JSON.parse(nombres.info_concierto).length > 0 ? nuevoPrecio() : ""}</td>
                                     </tr>
-                                  { nombres.forma_pago =="Deposito"? <tr >
+                                    {nombres.forma_pago == "Deposito" ? <tr >
                                         <th scope="row"></th>
                                         <td className={" text-end"} >Total</td>
-                                        <td className="text-center">${ (parseFloat(nombres.total_pago)/1.07).toFixed(2)}</td>
-                                    </tr>:""}
-                                    
-                                    {nombres.forma_pago =="Tarjeta"? <tr>
+                                        <td className="text-center">${(parseFloat(nombres.total_pago) / 1.07).toFixed(2)}</td>
+                                    </tr> : ""}
+
+                                    {nombres.forma_pago == "Tarjeta" ? <tr>
                                         <th scope="row"></th>
                                         <td className='text-end' >Total tarjeta:</td>
                                         <td className='text-center'>$ {nombres.total_pago}</td>
-                                    </tr>:""}
-                                    
-                                   
-                                    
-                                   
+                                    </tr> : ""}
+
+
+
+
                                 </tbody>
                             </table>
+                        </div>
+                        <div className=" table-responsive">
+                            <table className="table table-invoice">
+                                <thead>
+                                    <tr>
+                                        <th>Observación</th>
+                                        <th  width="50%" >Usuario </th> 
+                                        <th  width="" >Editar </th>                                     
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {nombres.comentarios!=undefined && Object.keys(nombres.comentarios).length > 0 ? 
+                                    nombres.comentarios.map((item, i) => {
+                                        return (
+                                            <tr key={i}>
+                                                <td>{item.comentario}</td>
+
+                                                <td className="">
+                                                    {item.name}
+                                                </td>
+                                                
+                                                <td className="">
+                                                <button className="btn btn-secondary">editar</button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    }) : ''}
+
+                                </tbody>
+                            </table>
+
                         </div>
                         <div className=" d-flex col-12  pb-3 border-top pt-2">
                             <div className=" invoice-from col-12">
@@ -1635,7 +1677,7 @@ export default function DetalleCompraView() {
                         </div>
                     </div>
 
-                    <div 
+                    <div
                         className="sticky-bottom w-100 ">
                         <div className="d-flex  justify-content-end">
                             <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
@@ -1646,15 +1688,16 @@ export default function DetalleCompraView() {
                             </a>
 
 
-                            <a className=" rounded-circle btn-success mx-2 p-2 text-white"
+                            {nombres.comentarios==undefined || Object.keys(nombres.comentarios).length == 0  ? <a className=" rounded-circle btn-success mx-2 p-2 text-white"
                                 data-toggle=" " data-placement="top" title="Agregar Comentario"
                                 onClick={agregarComentario}
                             >
                                 <i className=" fa fa-comments">  </i>
-                            </a>
+                            </a>:""
+                                 }
                         </div>
-                            
-                        
+
+
                     </div>
                 </div>
 
