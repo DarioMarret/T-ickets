@@ -211,10 +211,10 @@ var routes = [
       {
         path: "/Informe",
         layout: "/admin",
-        name: "Informe",
+        name: "Informe de ventas",
         mini: "*",
         component: InformeView,
-        permiso: ["suscriptores","superadmin", "super_admin",]
+        permiso: ["suscriptores", "superadmin", "super_admin", "vendedores"]
       },
       {
         path: "/Aprobar/:id",

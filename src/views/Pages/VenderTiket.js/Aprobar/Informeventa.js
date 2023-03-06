@@ -336,6 +336,7 @@ export default function InformeView() {
 
         return info
     }
+    let user = [52,53,54]
     useEffect(() => {
         if (errorPubli != undefined) {
             return
@@ -357,7 +358,7 @@ export default function InformeView() {
                 return
             }
             if (e.data) {
-                let newdatos = e.data.map(row => {
+                let newdatos = clienteInfo().perfil =="vendedores"? e.data.map(row => {
                     let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
                     let valor = JSON.parse(row.info_concierto).map(e => {
                         return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
@@ -367,7 +368,18 @@ export default function InformeView() {
                     row.cantidad = cantida
                     row.concierto = nombre[0]
                     return { ...row }
-                })//.filter(e => e.forma_pago =="Deposito")
+                }).filter(e => e.id_usuario == clienteInfo().id)
+                    : e.data.map(row => {
+                        let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
+                        let valor = JSON.parse(row.info_concierto).map(e => {
+                            return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
+                        }).reduce((a, b) => a + b, 0)
+                        let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                        row.Valortotal = parseFloat(valor)
+                        row.cantidad = cantida
+                        row.concierto = nombre[0]
+                        return { ...row }
+                    })
                 sessionStorage.setItem("datoscompras", JSON.stringify(newdatos))
                 console.log(newdatos)
                 let nuevosValores = []

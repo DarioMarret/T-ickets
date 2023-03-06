@@ -364,6 +364,10 @@ export const listaRegistrototal = [
             cell.row.original.forma_pago == "Deposito"? cell.row.original.numerTransacion == null ? "vacio" : cell.row.original.numerTransacion:"Tarjeta o Efectivo"
         ),
         size:25
+    },{
+        accessorKey: "id_usuario",
+        header: "usuario",
+        size: 25
     }
 ]
 let precio = {
