@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 
-import icon from "assets/imagen/logo_Flash.png";
+import icon from "assets/imagen/logo-inicio.png";
 
 import imagen5 from "assets/imagen/logo-tickets.png"
 
