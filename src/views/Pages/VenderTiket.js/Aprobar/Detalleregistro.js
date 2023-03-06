@@ -48,6 +48,7 @@ import Iframe from "views/Components/IFrame/Iframe";
 import { infoabimedia } from "utils/pagos/Queripagos";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { ComentarioRegistro } from "utils/pagos/Queripagos";
+import { updateRegistro } from "utils/pagos/Queripagos";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -63,6 +64,7 @@ export default function DetalleCompraView() {
     let modal = useSelector(state => state.SuscritorSlice.modal)
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
     let info = JSON.parse(sessionStorage.getItem("Suscritorid"))
+    let useradmin = clienteInfo()
     console.log(nombres)
     const [usuario, setUser] = useState({
         "id": "",
@@ -84,7 +86,8 @@ export default function DetalleCompraView() {
         "Expirado": "Expirado",
         "Pendiente": "label label-warning",
         "Pagado": "label label-success",
-        "Expirado": "label label-danger"
+        "Expirado": "label label-danger",
+        "Comprobar": "label label-warning"
     }
     const [coniliacion, setConsilia] = useState({
         Valor: "",
@@ -250,6 +253,61 @@ export default function DetalleCompraView() {
             }
         });
     }
+    function editarComentario(e) {
+        let id = nombres.id
+        let id_operador = clienteInfo()
+        $.confirm({
+            title: 'Aptualizar Observación',
+            type: 'green',
+            content: '' +
+                '<form action="" class="formName">' +
+                '<div class="form-group">' +
+                '<label>Editar comentario</label>' +
+                '<textarea class="editarcoment form-control" id="exampleFormControlTextarea1" rows="3"></textarea>' +
+                '</div>' +
+                '</form>',
+            typeAnimated: true,
+            buttons: {
+                formSubmit: {
+                    text: 'Comentar',
+                    btnClass: 'btn-blue',
+                    action: function () {
+                        var name = this.$content.find('.editarcoment').val();
+                        if (!name) {
+                            $.alert('Ingrese un Comentario');
+                            return false;
+                        }
+                        updateRegistro({
+                            "id_registro": id,
+                            "id_operador": id_operador.id,
+                            "comentario": name
+                        }, e).then(mensage => {
+                            console.log(mensage)
+                            if (mensage.success) {
+                                console.log(mensage)
+                                history.goBack()
+                            }
+                            console.log(mensage)
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                    }
+                },
+                cancel: function () {
+                    //close
+                },
+            },
+            onContentReady: function () {
+                // bind to events
+                var jc = this;
+                this.$content.find('form').on('submit', function (e) {
+                    // if the user submits the form by pressing enter in the field.
+                    e.preventDefault();
+                    jc.$$formSubmit.trigger('click'); // reference the button and click it
+                });
+            }
+        });
+    }
     function LocalidadPrecio(evento, localidad) {
         if (localidad == 9) {
             return "SEN2 KBRN Guayaquil"
@@ -367,17 +425,20 @@ export default function DetalleCompraView() {
         };
 
         var doc = new jsPDF(opciones);
-
+        let pagnum = 80
         doc.setFontSize(10);
-        doc.text(10, 30, 'Recibo de venta de orquídeas');
-        doc.text(10, 35, 'Comprobante No.: 785654544');
-        doc.text(10, 40, 'PDV: pablito ');
-        doc.text(10, 45, 'Operador: 123654');
-        doc.text(10, 55, 'Valor: 35.00');
-        doc.text(10, 60, 'TBX: 242985290');
-        doc.text(10, 65, 'Fecha/Hora: 2022-11-11 12:28:21');
+        doc.text(10, 30, 'Recibo de venta de tickets');
+        doc.text(10, 35, 'Registro No.: ' + nombres.id);
+        doc.text(10, 40, 'Operador: 123654');
+        doc.text(10, 55, 'Valor: ' + nombres.valor);
+        doc.text(10, 65, 'Fecha Registro' + nombres.fechaCreacion);
         doc.text(10, 75, '_______________________________');
         doc.text(10, 80, 'Recibí conforme');
+        doc.text(10, 80, 'Concierto       LOC	CANT.');
+        JSON.parse(nombres.info_concierto).map(e=>{
+            doc.text(10, pagnum + 5, "" + LocalidadPrecio(e.idespaciolocalida, e.id_localidad) + "       " + parseInt(e.cantidad) * parseFloat(ListarPrecio(e.idespaciolocalida, e.id_localidad)) 
+        );
+        })
 
 
         doc.autoPrint({ variant: 'non-conform' });
@@ -643,11 +704,6 @@ export default function DetalleCompraView() {
                 }))
             : ""
 
-        //  nombres.conciliacion
-          //nombres.comentarios
-
-
-        /** location */
     }, [])
     const [first, setfirst] = useState("")
     function handelchange(e) {
@@ -663,14 +719,6 @@ export default function DetalleCompraView() {
         history.push("/admin/Reporte/" + datos.id)
         window.location.reload()
 
-    }
-    function elimini() {
-        eliminarRegistro({ id: "" }).then(ouput => {
-
-        }).catch(err => {
-
-        })
-        // eliminarRegistro({ "id": parms.id }).then(ouput => {
     }
     function ValidarComprobante() {
         BuscarTransacion({
@@ -781,9 +829,6 @@ export default function DetalleCompraView() {
             }
         });
     }
-    const consultarselecionados = () => {
-
-    }
     async function nombre(id) {
         let data = await ListarLocalidad("" + id)
         if (data.success) {
@@ -842,6 +887,7 @@ export default function DetalleCompraView() {
                     action: function () {
                         ConsolidarReporte(reporte).then(ouput => {
                             if (ouput.success) {
+                                console.log(ouput)
                                 history.goBack()
                                 return
                             }
@@ -1142,12 +1188,12 @@ export default function DetalleCompraView() {
             console.log(err)
         })
     }
-function conciliacion(){
-   // console.log(nombres.conciliacion)
-    if(nombres.conciliacion==undefined) return
-    if(Object.keys(nombres.conciliacion).length>0) return
-    usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres } }))
-}
+    function conciliacion() {
+        // console.log(nombres.conciliacion)
+        if (nombres.conciliacion == undefined) return
+        if (Object.keys(nombres.conciliacion).length > 0) return
+        usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres } }))
+    }
 
     return (
         <PhotoProvider>
@@ -1158,7 +1204,7 @@ function conciliacion(){
                 <ModalConfirma />
                 <div className="row ">
                     <h1></h1>
-                    <div className="col-12   d-flex  text-center justify-content-md-end  align-items-center">
+                    {useradmin.perfil == "suscriptores" ? "" : <div className="col-12   d-flex  text-center justify-content-md-end  align-items-center">
                         <div className="px-2">
                             <div className="" >
                                 {
@@ -1192,43 +1238,44 @@ function conciliacion(){
                                 <a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" fa fa-calendar-check-o"> </i> Canjear Boletos</a>
                             </div>
                         </div>
-                    </div>
-                    <div className="d-flex justify-content-end  px-3  pt-1">
-                        {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                            <a className="  rounded-circle btn-danger mx-2 p-2 text-white"
-                                data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
-                                onClick={() => usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres } }))}
+                    </div>}
+                    {
+                        useradmin.perfil == "suscriptores" ? "" : <div className="d-flex justify-content-end  px-3  pt-1">
+                            {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
+                                <a className="  rounded-circle btn-danger mx-2 p-2 text-white"
+                                    data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
+                                    onClick={() => usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres } }))}
+                                >
+                                    <i className="fa fa-info-circle">  </i>
+                                </a> : ""}
+                            <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
+                                data-toggle="tooltip" data-placement="top" title="Generar Boleto"
+                                onClick={() => Generarnew()}
                             >
-                                <i className="fa fa-info-circle">  </i>
-                            </a> : ""}
-                        <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
-                            data-toggle="tooltip" data-placement="top" title="Generar Boleto"
-                            onClick={() => Generarnew()}
-                        >
-                            <i className=" fa fa-spinner">  </i>
-                        </a>
+                                <i className=" fa fa-spinner">  </i>
+                            </a>
 
-                        <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
-                            data-toggle="tooltip" data-placement="top" title="Reportar"
-                            onClick={() => usedispatch(setModal({ nombre: "confirmar", estado: { ...nombres } }))}
-                        >
-                            <i className=" fa fa-file">  </i>
-                        </a>
-
-                        {nombres.forma_pago == "Tarjeta" ?
-                            <a className="  rounded-circle btn-primary mx-2 p-2 text-white"
-                                data-toggle="tooltip" data-placement="top" title="Aprobar Tarjeta"
-                                onClick={() => validar()}
+                            <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
+                                data-toggle="tooltip" data-placement="top" title="Reportar"
+                                onClick={() => usedispatch(setModal({ nombre: "confirmar", estado: { ...nombres } }))}
                             >
-                                <i className=" fa fa-check">  </i>
-                            </a> : ""}
-                        <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
-                            data-toggle=" " data-placement="top" title="atras"
-                            onClick={() => history.goBack()}
-                        >
-                            <i className=" fa fa-arrow-left">  </i>
-                        </a>
-                    </div>
+                                <i className=" fa fa-file">  </i>
+                            </a>
+
+                            {nombres.forma_pago == "Tarjeta" ?
+                                <a className="  rounded-circle btn-primary mx-2 p-2 text-white"
+                                    data-toggle="tooltip" data-placement="top" title="Aprobar Tarjeta"
+                                    onClick={() => validar()}
+                                >
+                                    <i className=" fa fa-check">  </i>
+                                </a> : ""}
+                            <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
+                                data-toggle=" " data-placement="top" title="atras"
+                                onClick={() => history.goBack()}
+                            >
+                                <i className=" fa fa-arrow-left">  </i>
+                            </a>
+                        </div>}
                     <div className="row d-flex justify-content-center ">
                         <div className="col-12 ">
                             <div className=" px-0 py-2 w-100  bg-white ">
@@ -1311,46 +1358,48 @@ function conciliacion(){
                             <div className="col-12 col-md-6 p-3" >
                                 <div className="invoice-from">
                                     <small>Informacion de Pago</small>
-                                    {nombres.forma_pago != "Tarjeta" ? <div className="m-t-5 m-b-5">
-                                        <strong className="text-inverse">{nombres.banco == null ? "No hay Deposito reportado" : nombres.banco}</strong><br></br>
-                                        <small>
-                                            Comprobante# {nombres.numerTransacion} <br></br>
-                                            <br></br>
+                                    {nombres.forma_pago != "Tarjeta" ?
+                                        useradmin.perfil == "suscriptores" ? "" : <div className="m-t-5 m-b-5">
+                                            <strong className="text-inverse">{nombres.banco == null ? "No hay Deposito reportado" : nombres.banco}</strong><br></br>
+                                            <small>
+                                                Comprobante# {nombres.numerTransacion} <br></br>
+                                                <br></br>
 
-                                            {
-                                                nombres.forma_pago == "Deposito" ?
-                                                    <a className=" btn btn-default btn-sm" onClick={ConsolidaBoleto}>
-                                                        <i className="fa fa-credit-card"></i> Aprobar deposito
-                                                    </a>
-                                                    : ""
-                                            }
-                                            <br></br>
-                                            {
-                                                nombres.forma_pago == "Deposito" ?
-                                                    <a className=" btn btn-default btn-sm" onClick={ComprobarBoleto}>
-                                                        <i className="fa fa-credit-card"></i> Cambiar a Comprobar deposito
-                                                    </a>
-                                                    : ""
-                                            }
-                                            <br></br>
+                                                {
+                                                    nombres.forma_pago == "Deposito" ?
+                                                        <a className=" btn btn-default btn-sm" onClick={ConsolidaBoleto}>
+                                                            <i className="fa fa-credit-card"></i> Aprobar deposito
+                                                        </a>
+                                                        : ""
+                                                }
+                                                <br></br>
+                                                {
+                                                    nombres.forma_pago == "Deposito" ?
+                                                        <a className=" btn btn-default btn-sm" onClick={ComprobarBoleto}>
+                                                            <i className="fa fa-credit-card"></i> Cambiar a Comprobar deposito
+                                                        </a>
+                                                        : ""
+                                                }
+                                                <br></br>
 
 
-                                            <a className=" btn btn-default btn-sm" onClick={() => linkcopy(nombres.link_comprobante)}>
-                                                <i className="fa fa-credit-card"></i> Copiar link de imagen
-                                            </a>
-
-                                            <br></br>
-
-                                            <PhotoView src={nombres.link_comprobante == null ? "data:image/png;base64,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" : nombres.link_comprobante}>
-                                                <a className=" btn btn-default btn-sm">
-                                                    <i className="fa fa-credit-card"></i> Ver
+                                                <a className=" btn btn-default btn-sm" onClick={() => linkcopy(nombres.link_comprobante)}>
+                                                    <i className="fa fa-credit-card"></i> Copiar link de imagen
                                                 </a>
-                                            </PhotoView>
-                                        </small>
 
-                                    </div> :
+                                                <br></br>
 
-                                        <div className="m-t-5 m-b-5">
+                                                <PhotoView src={nombres.link_comprobante == null ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAARVBMVEX///+wsbHu8PH39/jy9PSsra2ys7PExcXv7+/s7Oz7+/uqq6u4ubnT1NTGx8e0tbXn5+fb29u8vb3U1dXMzc3h4eGkpaXPa21KAAAHrElEQVR4nO2di5qcKBBGIYDITS5Cv/+jbhVqXyadTTZr98xo/V+mnSitcgSqgMJhjETqsvLMsp2B+PHZ9/GJ+rEx+MxS+MkiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiAExQBEDYoAiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiAExQBEDYoAiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiMEXZSDHTfYdl/uKDGQZVvH0jut9RQZj5KsUMSAG52bAnepy7rQM7Bw2yXdc740MbNB/qOkqPb/BOr6RQVX8v0vV10N4H4Nx+AsEnA+vrw7vY2D+ksH48jsjBp/LoNu/MzNQFz+FPNfi3MN+d9XRGSg/i3W/beXuQGxbl9H4YzNQtbf20vQM2nw74q9mwBZ1YAbKgwssc+ntgQ8j9pbVEwZHLgcR8pk9NocDNowxWCb0uRhEw+yk1FDbKGSaAUYRTPi1CZzbqnzg9kBlZsFtnrYHLgJHCGarKFcd2C4U7DmocHckD0rDTv5Uh2TQmFGqPhzKWDjkeRhAsa8ufugMauXh4ywMoBLICE/9UWlwhrWnfvMRGWTWunF8VFEzG89SDgbDgis/jYtMamLSn4QBBwaXD2NDNbAZLMOpGcTCwqkYJDZ/qAsWLOWp6kJvEx/zNbvEPOw3zxAckkGF5w1G4KYUi03cSZbPYhuxYwg+0jaAwiD7agQfCTzo8gzBIRmoBl6xm/plbQvFeQNWAZqJ8fnQ4hEZcPCK57XDMC5jatBdmM7VZ8LGoDpXElxZQp0w0IsEQ9GeIzgmAzSPtirHNQ6fpjoopwUT8VwMMKogFe4uKKdiuw85OAkDjrkWbSqRR68zdKCM/+Vcy1EZgF3AnFk59lfayn+bkT4sA66GmhYfwZo5/tuE23EZQFFQvtRai+fuF7k/PgNOc65/LGJwMAbPhwt/z+BIsTgsOPXf5ebfn/j/6p2xefP0p8F5tyi9j6Pwr9BXjNF8t4gBMUARA2KAIgZfiIEYxe8TvUZvZJA8uL22dt+3LoszxLTOOKUyxKFITFQ8KLDWPQNZ2utv7J0MLgYuxDFTdpjXXUtvIKuY24whe81p6FHXzDJHJ1n+FKrwAr2TgQMGxmn89TL1XdrV5chWHoDB2kdqF0x4SAZN4RzTfOnTrqP3fcZJ82vH6MbA8XxQBnVQjdkSe67nkhxmNE7XRM21sUfwZp65OSaDMpWJGTXjClYbZxahxBveI/X60t7mhoFjyFZWMhR7RAYihsRFiNLPS7kPTmwMLg7+D+XAJGCFDGypgh+PgVFNxKYnBv+YhkZhhAc9LnVB5s5gbQ+AAUtQH47HoMHPFMEIhmhH7sEKDgCicLEk+MCABeWOx2CG3DYMT4YswjMGVZVYXkxk+4mBLZeDMQAfSXso81j9k2p+sQY4DT+50lIunUFAMsgFLUc6WjmIo9XY+qGjLMrkF3+5FvjIZRi8bpgIXWVfWVtWMoRjMbCQqT6/KPqHlLfd8DmaZbv8WUmx7mb2DT2pL9Nv/EQRA2KAIgbEAEUM9mewnG61aGNrtxlTa4xZ3/m0GMfUMBRFwu71j0wzs6W/JetnwjTi7ryw7drp9RA7MxAa+3zg52PwoVbD3XssGk6hxoz5GqYehhWdtstMbEF3qafnmD5p/JIFT4kFcK5HjNbonafil3NlxXecj92ZgfXo9S0MimrjOLttfKSpbNJ0qSsD741MDTPZTPMYruc5pA+YwPRewo2BCsZUfEfOlQHPuAx0p9CEvctBueDDQQZN9SHhsL3jqPVfZtc6g3HrCAQMMBBRw7PtCStPzDg13jPog01DuGOwa2TG7gxiNAuDaVnAtw6QbAyE0p2B3JY4dgasFKt9r+xGzcDAQ4/6kQEONHwPBnDfebDIwA56ObNftisDW+JSF6pbZho6AxnrNqhouQYGqdT7ulBTK8jsVhdCnvNeb8zZncFkfUAGQq15Knq5xMKA6Wg7A1GVqgIzmcakXZLDWjCGAgyMUYbd2kRfPA/ivk0chqHs1Z3anwEU3TYDA/6UwbUcwMMPDor/7LhysUF9XxvPoZcDNg/ysT2I3t7VhWT3sowvYcBqrNza9X7HuD7ftT3gZWMAWYHMBZ4TGn+xshp57Qys1w8M2Hwx36U9mJa3eFhWVXcV2jY6vjBokJ8rAwHlP2yBZ5X39BnMCTKAxtQ9MGiX9I0Y4MJ2C3nok2VxW9/dGSReJLPY/GFRTsDnymDss3BjhPrRGbDuKlwZWO3k92CAhp5hGJ5FV6CEyq+vA22uTN71uWdoKqz3c8XB1aC27NzSm0tvOnq9UsigzLUvhiuqR6vJ7Apud5qT3rsc1F7ylzn1pH2p1wdmpmmqza6JbIaD2NS3em3er+lH3b+VwLNocCZZ8atYU8LyMj2Zlu3XZLBp6zrZh332/uh28C6Jtfb+632z/jyeaD3DTjdLfWdigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDO4YnFnbKrwza7fV46Tvrn8A2Mt2m9dX3zgAAAAASUVORK5CYII=" : nombres.link_comprobante}>
+                                                    <a className=" btn btn-default btn-sm">
+                                                        <i className="fa fa-credit-card"></i> Ver
+                                                    </a>
+                                                </PhotoView>
+                                            </small>
+
+                                        </div> :
+
+
+                                        useradmin.perfil == "suscriptores" ? "" : <div className="m-t-5 m-b-5">
                                             <strong className="text-inverse">Pago con Tarjeta</strong><br></br>
                                             <small>
                                                 {nombres.link_pago != null || nombres.link_comprobante != null ?
@@ -1391,37 +1440,69 @@ function conciliacion(){
                                         </div>}
                                 </div>
                             </div>
-                            {nombres.forma_pago != "Tarjeta" ? <div className="col-12  col-md-6 text-md-end p-3 text-center ">
-                                <div className="invoice-from text-center ">
-                                    <small>Comprobante</small>
-                                    <br></br>
-                                    {nombres.link_comprobante == null ? "" :
-                                        <a className=" btn btn-default btn-sm">
-                                            <i className="fa fa-copy"></i> copy
-                                        </a>}
-                                    <br></br>
+                            {useradmin.perfil == "suscriptores" ?"" : nombres.forma_pago != "Tarjeta" ?
+                                    <div className="col-12  col-md-6 text-md-end p-3 text-center ">
+                                        <div className="invoice-from text-center ">
+                                            <small>Comprobante</small>
+                                            <br></br>
+                                            {nombres.link_comprobante == null ? "" :
+                                                <a className=" btn btn-default btn-sm">
+                                                    <i className="fa fa-copy"></i> copy
+                                                </a>}
+                                            <br></br>
 
-                                    <a className=" btn btn-default btn-sm"
-                                        onClick={CambiarComprobante}
-                                    >
-                                        <i className=" fa fa-spinner"></i>Cambiar # comprobante
-                                    </a>
+                                            <a className=" btn btn-default btn-sm"
+                                                onClick={CambiarComprobante}
+                                            >
+                                                <i className=" fa fa-spinner"></i>Cambiar # comprobante
+                                            </a>
 
-                                    <br></br>
-                                    <a className="btn btn-default btn-sm"
-                                        onClick={ValidarComprobante}
-                                    >
-                                        <i className="fa fa-check"></i>Verificar el Comprobante
-                                    </a>
-                                    <br></br><br></br>
-                                    <div className="m-t-5 m-b-5 rounded-4  ">
+                                            <br></br>
+                                            <a className="btn btn-default btn-sm"
+                                                onClick={ValidarComprobante}
+                                            >
+                                                <i className="fa fa-check"></i>Verificar el Comprobante
+                                            </a>
+                                            <br></br><br></br>
+                                            <div className="m-t-5 m-b-5 rounded-4  ">
 
-                                    </div>
-                                    <PhotoView src={nombres.link_comprobante == null ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAARVBMVEX///+wsbHu8PH39/jy9PSsra2ys7PExcXv7+/s7Oz7+/uqq6u4ubnT1NTGx8e0tbXn5+fb29u8vb3U1dXMzc3h4eGkpaXPa21KAAAHrElEQVR4nO2di5qcKBBGIYDITS5Cv/+jbhVqXyadTTZr98xo/V+mnSitcgSqgMJhjETqsvLMsp2B+PHZ9/GJ+rEx+MxS+MkiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiAExQBEDYoAiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiAExQBEDYoAiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiMEXZSDHTfYdl/uKDGQZVvH0jut9RQZj5KsUMSAG52bAnepy7rQM7Bw2yXdc740MbNB/qOkqPb/BOr6RQVX8v0vV10N4H4Nx+AsEnA+vrw7vY2D+ksH48jsjBp/LoNu/MzNQFz+FPNfi3MN+d9XRGSg/i3W/beXuQGxbl9H4YzNQtbf20vQM2nw74q9mwBZ1YAbKgwssc+ntgQ8j9pbVEwZHLgcR8pk9NocDNowxWCb0uRhEw+yk1FDbKGSaAUYRTPi1CZzbqnzg9kBlZsFtnrYHLgJHCGarKFcd2C4U7DmocHckD0rDTv5Uh2TQmFGqPhzKWDjkeRhAsa8ufugMauXh4ywMoBLICE/9UWlwhrWnfvMRGWTWunF8VFEzG89SDgbDgis/jYtMamLSn4QBBwaXD2NDNbAZLMOpGcTCwqkYJDZ/qAsWLOWp6kJvEx/zNbvEPOw3zxAckkGF5w1G4KYUi03cSZbPYhuxYwg+0jaAwiD7agQfCTzo8gzBIRmoBl6xm/plbQvFeQNWAZqJ8fnQ4hEZcPCK57XDMC5jatBdmM7VZ8LGoDpXElxZQp0w0IsEQ9GeIzgmAzSPtirHNQ6fpjoopwUT8VwMMKogFe4uKKdiuw85OAkDjrkWbSqRR68zdKCM/+Vcy1EZgF3AnFk59lfayn+bkT4sA66GmhYfwZo5/tuE23EZQFFQvtRai+fuF7k/PgNOc65/LGJwMAbPhwt/z+BIsTgsOPXf5ebfn/j/6p2xefP0p8F5tyi9j6Pwr9BXjNF8t4gBMUARA2KAIgZfiIEYxe8TvUZvZJA8uL22dt+3LoszxLTOOKUyxKFITFQ8KLDWPQNZ2utv7J0MLgYuxDFTdpjXXUtvIKuY24whe81p6FHXzDJHJ1n+FKrwAr2TgQMGxmn89TL1XdrV5chWHoDB2kdqF0x4SAZN4RzTfOnTrqP3fcZJ82vH6MbA8XxQBnVQjdkSe67nkhxmNE7XRM21sUfwZp65OSaDMpWJGTXjClYbZxahxBveI/X60t7mhoFjyFZWMhR7RAYihsRFiNLPS7kPTmwMLg7+D+XAJGCFDGypgh+PgVFNxKYnBv+YhkZhhAc9LnVB5s5gbQ+AAUtQH47HoMHPFMEIhmhH7sEKDgCicLEk+MCABeWOx2CG3DYMT4YswjMGVZVYXkxk+4mBLZeDMQAfSXso81j9k2p+sQY4DT+50lIunUFAMsgFLUc6WjmIo9XY+qGjLMrkF3+5FvjIZRi8bpgIXWVfWVtWMoRjMbCQqT6/KPqHlLfd8DmaZbv8WUmx7mb2DT2pL9Nv/EQRA2KAIgbEAEUM9mewnG61aGNrtxlTa4xZ3/m0GMfUMBRFwu71j0wzs6W/JetnwjTi7ryw7drp9RA7MxAa+3zg52PwoVbD3XssGk6hxoz5GqYehhWdtstMbEF3qafnmD5p/JIFT4kFcK5HjNbonafil3NlxXecj92ZgfXo9S0MimrjOLttfKSpbNJ0qSsD741MDTPZTPMYruc5pA+YwPRewo2BCsZUfEfOlQHPuAx0p9CEvctBueDDQQZN9SHhsL3jqPVfZtc6g3HrCAQMMBBRw7PtCStPzDg13jPog01DuGOwa2TG7gxiNAuDaVnAtw6QbAyE0p2B3JY4dgasFKt9r+xGzcDAQ4/6kQEONHwPBnDfebDIwA56ObNftisDW+JSF6pbZho6AxnrNqhouQYGqdT7ulBTK8jsVhdCnvNeb8zZncFkfUAGQq15Knq5xMKA6Wg7A1GVqgIzmcakXZLDWjCGAgyMUYbd2kRfPA/ivk0chqHs1Z3anwEU3TYDA/6UwbUcwMMPDor/7LhysUF9XxvPoZcDNg/ysT2I3t7VhWT3sowvYcBqrNza9X7HuD7ftT3gZWMAWYHMBZ4TGn+xshp57Qys1w8M2Hwx36U9mJa3eFhWVXcV2jY6vjBokJ8rAwHlP2yBZ5X39BnMCTKAxtQ9MGiX9I0Y4MJ2C3nok2VxW9/dGSReJLPY/GFRTsDnymDss3BjhPrRGbDuKlwZWO3k92CAhp5hGJ5FV6CEyq+vA22uTN71uWdoKqz3c8XB1aC27NzSm0tvOnq9UsigzLUvhiuqR6vJ7Apud5qT3rsc1F7ylzn1pH2p1wdmpmmqza6JbIaD2NS3em3er+lH3b+VwLNocCZZ8atYU8LyMj2Zlu3XZLBp6zrZh332/uh28C6Jtfb+632z/jyeaD3DTjdLfWdigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDO4YnFnbKrwza7fV46Tvrn8A2Mt2m9dX3zgAAAAASUVORK5CYII=" : nombres.link_comprobante}>
-                                        <img className="img-fluid" style={{ height: 150 }} src={nombres.link_comprobante == null ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAARVBMVEX///+wsbHu8PH39/jy9PSsra2ys7PExcXv7+/s7Oz7+/uqq6u4ubnT1NTGx8e0tbXn5+fb29u8vb3U1dXMzc3h4eGkpaXPa21KAAAHrElEQVR4nO2di5qcKBBGIYDITS5Cv/+jbhVqXyadTTZr98xo/V+mnSitcgSqgMJhjETqsvLMsp2B+PHZ9/GJ+rEx+MxS+MkiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiAExQBEDYoAiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiAExQBEDYoAiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiMEXZSDHTfYdl/uKDGQZVvH0jut9RQZj5KsUMSAG52bAnepy7rQM7Bw2yXdc740MbNB/qOkqPb/BOr6RQVX8v0vV10N4H4Nx+AsEnA+vrw7vY2D+ksH48jsjBp/LoNu/MzNQFz+FPNfi3MN+d9XRGSg/i3W/beXuQGxbl9H4YzNQtbf20vQM2nw74q9mwBZ1YAbKgwssc+ntgQ8j9pbVEwZHLgcR8pk9NocDNowxWCb0uRhEw+yk1FDbKGSaAUYRTPi1CZzbqnzg9kBlZsFtnrYHLgJHCGarKFcd2C4U7DmocHckD0rDTv5Uh2TQmFGqPhzKWDjkeRhAsa8ufugMauXh4ywMoBLICE/9UWlwhrWnfvMRGWTWunF8VFEzG89SDgbDgis/jYtMamLSn4QBBwaXD2NDNbAZLMOpGcTCwqkYJDZ/qAsWLOWp6kJvEx/zNbvEPOw3zxAckkGF5w1G4KYUi03cSZbPYhuxYwg+0jaAwiD7agQfCTzo8gzBIRmoBl6xm/plbQvFeQNWAZqJ8fnQ4hEZcPCK57XDMC5jatBdmM7VZ8LGoDpXElxZQp0w0IsEQ9GeIzgmAzSPtirHNQ6fpjoopwUT8VwMMKogFe4uKKdiuw85OAkDjrkWbSqRR68zdKCM/+Vcy1EZgF3AnFk59lfayn+bkT4sA66GmhYfwZo5/tuE23EZQFFQvtRai+fuF7k/PgNOc65/LGJwMAbPhwt/z+BIsTgsOPXf5ebfn/j/6p2xefP0p8F5tyi9j6Pwr9BXjNF8t4gBMUARA2KAIgZfiIEYxe8TvUZvZJA8uL22dt+3LoszxLTOOKUyxKFITFQ8KLDWPQNZ2utv7J0MLgYuxDFTdpjXXUtvIKuY24whe81p6FHXzDJHJ1n+FKrwAr2TgQMGxmn89TL1XdrV5chWHoDB2kdqF0x4SAZN4RzTfOnTrqP3fcZJ82vH6MbA8XxQBnVQjdkSe67nkhxmNE7XRM21sUfwZp65OSaDMpWJGTXjClYbZxahxBveI/X60t7mhoFjyFZWMhR7RAYihsRFiNLPS7kPTmwMLg7+D+XAJGCFDGypgh+PgVFNxKYnBv+YhkZhhAc9LnVB5s5gbQ+AAUtQH47HoMHPFMEIhmhH7sEKDgCicLEk+MCABeWOx2CG3DYMT4YswjMGVZVYXkxk+4mBLZeDMQAfSXso81j9k2p+sQY4DT+50lIunUFAMsgFLUc6WjmIo9XY+qGjLMrkF3+5FvjIZRi8bpgIXWVfWVtWMoRjMbCQqT6/KPqHlLfd8DmaZbv8WUmx7mb2DT2pL9Nv/EQRA2KAIgbEAEUM9mewnG61aGNrtxlTa4xZ3/m0GMfUMBRFwu71j0wzs6W/JetnwjTi7ryw7drp9RA7MxAa+3zg52PwoVbD3XssGk6hxoz5GqYehhWdtstMbEF3qafnmD5p/JIFT4kFcK5HjNbonafil3NlxXecj92ZgfXo9S0MimrjOLttfKSpbNJ0qSsD741MDTPZTPMYruc5pA+YwPRewo2BCsZUfEfOlQHPuAx0p9CEvctBueDDQQZN9SHhsL3jqPVfZtc6g3HrCAQMMBBRw7PtCStPzDg13jPog01DuGOwa2TG7gxiNAuDaVnAtw6QbAyE0p2B3JY4dgasFKt9r+xGzcDAQ4/6kQEONHwPBnDfebDIwA56ObNftisDW+JSF6pbZho6AxnrNqhouQYGqdT7ulBTK8jsVhdCnvNeb8zZncFkfUAGQq15Knq5xMKA6Wg7A1GVqgIzmcakXZLDWjCGAgyMUYbd2kRfPA/ivk0chqHs1Z3anwEU3TYDA/6UwbUcwMMPDor/7LhysUF9XxvPoZcDNg/ysT2I3t7VhWT3sowvYcBqrNza9X7HuD7ftT3gZWMAWYHMBZ4TGn+xshp57Qys1w8M2Hwx36U9mJa3eFhWVXcV2jY6vjBokJ8rAwHlP2yBZ5X39BnMCTKAxtQ9MGiX9I0Y4MJ2C3nok2VxW9/dGSReJLPY/GFRTsDnymDss3BjhPrRGbDuKlwZWO3k92CAhp5hGJ5FV6CEyq+vA22uTN71uWdoKqz3c8XB1aC27NzSm0tvOnq9UsigzLUvhiuqR6vJ7Apud5qT3rsc1F7ylzn1pH2p1wdmpmmqza6JbIaD2NS3em3er+lH3b+VwLNocCZZ8atYU8LyMj2Zlu3XZLBp6zrZh332/uh28C6Jtfb+632z/jyeaD3DTjdLfWdigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDO4YnFnbKrwza7fV46Tvrn8A2Mt2m9dX3zgAAAAASUVORK5CYII=" : nombres.link_comprobante} alt="" />
-                                    </PhotoView>
-                                </div>
-                            </div> :
+                                            </div>
+                                            <PhotoView src={nombres.link_comprobante == null ? "data:image/png;base64,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" : nombres.link_comprobante}>
+                                                <img className="img-fluid" style={{ height: 150 }} src={nombres.link_comprobante == null ? "data:image/png;base64,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" : nombres.link_comprobante} alt="" />
+                                            </PhotoView>
+                                        </div>
+                                    </div> :
+                                    <div className="col-12 col-md-6 text-end  ">
+                                        <div className="invoice-date">
+                                            <small className="text-inverse">
+                                                {tarjetadata.cardholder}  </small><br></br>
+
+                                            <div className=" ">
+
+
+                                                {tarjetadata.transmitter} <br></br>
+                                                <span>
+                                                    {tarjetadata.card_brand}
+                                                </span>
+                                                <br></br>
+                                                <span >
+                                                    {tarjetadata.display_number}
+                                                </span>
+
+                                                <br></br>
+                                                {tarjetadata.created_at ? "Fecha creación:" + tarjetadata.created_at : ""} <br></br>
+                                                {tarjetadata.payment_date ? " Fecha pago:" + tarjetadata.payment_date : ""} <br></br>
+                                                <p style={
+                                                    {
+                                                        fontWeight: "bold"
+                                                    }
+                                                }> {tarjetadata.message} </p>
+                                                {estadotc}
+                                            </div>
+                                        </div>
+                                    </div>}
+                                    {
+                                useradmin.perfil == "suscriptores" && nombres.forma_pago == "Tarjeta" ? 
                                 <div className="col-12 col-md-6 text-end  ">
                                     <div className="invoice-date">
                                         <small className="text-inverse">
@@ -1450,7 +1531,8 @@ function conciliacion(){
                                             {estadotc}
                                         </div>
                                     </div>
-                                </div>}
+                                </div>:""
+                                    }
                             {nombres.forma_pago == "Tarjeta" ?
                                 <div className="invoice-from text-center">
 
@@ -1466,11 +1548,9 @@ function conciliacion(){
                                     e.Metodos = nombres.forma_pago
                                     return {
                                         ...e,
-
                                     }
                                 })} fileName={"Boletos: " + usuario.nombreCompleto} label={"Boletos"} />
                                 : ""}
-
                         </div>
                         <div className=" table-responsive">
                             <table className="table table-invoice">
@@ -1479,7 +1559,6 @@ function conciliacion(){
                                         <th>DESCRIPCION</th>
                                         <th className="text-center" width="30%">loc </th>
                                         <th className="text-center">CANT.</th>
-
                                         <th className=" text-center" width="15%" >Total</th>
                                     </tr>
                                 </thead>
@@ -1488,16 +1567,13 @@ function conciliacion(){
                                         return (
                                             <tr key={i}>
                                                 <td>{item.nombreConcierto}</td>
-
                                                 <td className="text-center">
                                                     {LocalidadPrecio(item.idespaciolocalida, item.id_localidad)}
                                                 </td>
                                                 <td className="text-center">{item.cantidad}</td>
                                                 <td className="text-center">
                                                     {"$" + parseInt(item.cantidad) * parseFloat(ListarPrecio(item.idespaciolocalida, item.id_localidad))}
-
                                                 </td>
-
                                             </tr>
                                         )
                                     }) : ''}
@@ -1532,38 +1608,63 @@ function conciliacion(){
                                 </tbody>
                             </table>
                         </div>
+
                         <div className=" table-responsive">
                             <table className="table table-invoice">
                                 <thead>
                                     <tr>
                                         <th>Observación</th>
-                                        <th  width="50%" >Usuario </th> 
-                                        <th  width="" >Editar </th>                                     
+                                        <th width="50%" >Usuario </th>
+                                        <th width="" >Editar </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {nombres.comentarios!=undefined && Object.keys(nombres.comentarios).length > 0 ? 
-                                    nombres.comentarios.map((item, i) => {
-                                        return (
-                                            <tr key={i}>
-                                                <td>{item.comentario}</td>
+                                    {nombres.comentarios != undefined && Object.keys(nombres.comentarios).length > 0 ?
+                                        Object.keys(nombres.comentarios).length == 3 ?
+                                            <tr >
+                                                <td>{nombres.comentarios.comentario}</td>
 
                                                 <td className="">
-                                                    {item.name}
+                                                    {nombres.comentarios.name.toLowerCase()}
                                                 </td>
-                                                
+
                                                 <td className="">
-                                                <button className="btn btn-secondary">editar</button>
+                                                    {
+                                                        useradmin.id == nombres.id ?
+                                                            "" :
+                                                            useradmin.perfil == "suscriptores" ? 
+                                                            <a className="btn btn-default btn-sm btn-disable" ><i className="fa fa-edit"></i></a> :
+                                                                <a className="btn btn-default btn-sm" onClick={() => editarComentario(nombres.comentarios.id)} ><i className="fa fa-edit"></i></a>
+                                                    }
                                                 </td>
                                             </tr>
-                                        )
-                                    }) : ''}
+                                            : nombres.comentarios.map((item, i) => {
+                                                return (
+                                                    <tr key={"l" + i}>
+                                                        <td>{item.comentario}</td>
+
+                                                        <td className="">
+                                                            {item.name.toLowerCase()}
+                                                        </td>
+
+                                                        <td className="">
+                                                            {
+                                                                useradmin.id == item.id ?
+                                                                    "" :
+                                                                    useradmin.perfil == "suscriptores" ?
+                                                                        <a className="btn btn-default btn-sm btn-disable" ><i className="fa fa-edit"></i></a>
+                                                                        :
+                                                                        <a className="btn btn-default btn-sm" onClick={() => editarComentario(item.id)} ><i className="fa fa-edit"></i></a>}
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            }) : ''}
 
                                 </tbody>
                             </table>
 
                         </div>
-                        <div className=" d-flex col-12  pb-3 border-top pt-2">
+                        {useradmin.perfil == "suscriptores" ? "" : <div className=" d-flex col-12  pb-3 border-top pt-2">
                             <div className=" invoice-from col-12">
                                 <div className="row">
                                     <p className="col-12 col-md-6">
@@ -1660,7 +1761,7 @@ function conciliacion(){
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                         <div className="mt-2 pt-2  border-top text-center ">
                             <span > CONTACTANOS </span>
                             <div className="d-flex justify-content-center align-items-center pb-2">
@@ -1688,13 +1789,22 @@ function conciliacion(){
                             </a>
 
 
-                            {nombres.comentarios==undefined || Object.keys(nombres.comentarios).length == 0  ? <a className=" rounded-circle btn-success mx-2 p-2 text-white"
+                            {/*nombres.comentarios==undefined || Object.keys(nombres.comentarios).length == 0  ? <a className=" rounded-circle btn-success mx-2 p-2 text-white"
                                 data-toggle=" " data-placement="top" title="Agregar Comentario"
                                 onClick={agregarComentario}
                             >
                                 <i className=" fa fa-comments">  </i>
                             </a>:""
-                                 }
+                                 */}
+                            {useradmin.perfil == "suscriptores" ? "" : <a className=" rounded-circle btn-success mx-2 p-2 text-white"
+                                data-toggle=" " data-placement="top" title="Agregar Comentario"
+                                onClick={agregarComentario}
+                            >
+                                <i className=" fa  fa-commenting">  </i>
+                            </a>}
+                            {useradmin.perfil == "suscriptores" ? "" : <a className="rounded-circle btn-success mx-2 p-2 text-white">
+                                <i className="bi bi-whatsapp"></i>
+                            </a>}
                         </div>
 
 

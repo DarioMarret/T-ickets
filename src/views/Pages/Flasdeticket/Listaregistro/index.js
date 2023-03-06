@@ -3,17 +3,16 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Button, Tooltip, } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Delete, Edit, Summarize, Visibility, } from '@mui/icons-material';
+import { Delete,  Summarize, Visibility, } from '@mui/icons-material';
 import { useDispatch, useSelector } from "react-redux";
-import { listaRegistro } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useHistory } from "react-router";
-import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import SweetAlert from "react-bootstrap-sweetalert";
+import { listaRegistrosuscri } from "utils/columnasub";
 export default function ListaderegistroView(props) {
     let { cedula } = props
     let usedispatch = useDispatch()
@@ -27,13 +26,12 @@ export default function ListaderegistroView(props) {
                 if (!e.success) {
                     return
                 }
+                console.log(e.data[0])
                 setDatos(e.data)
             }
         ).catch(err =>
             console.log(err)
-
         )
-
     }, [])
     function detalle(e) {
         sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
@@ -59,11 +57,9 @@ export default function ListaderegistroView(props) {
                             console.log(ouput)
                             console.log(row.id)
                             if (!ouput.success) { return $.alert("" + ouput.message) }
-
                             listarRegistropanel({ "cedula": cedula }).then(e => {
                                 //console.log(e)
                                 if (e.data) {
-
                                     setDatos(e.data)
                                     return
                                 }
@@ -71,93 +67,31 @@ export default function ListaderegistroView(props) {
                             }).catch(err => {
                                 console.log(err)
                             })
-
                             $.alert("Registro eliminado correctamente")
                             setTimeout(function () {
                                 window.location.reload()
                             }, 1000)
-
-
-                        }).catch(error => {
+                       }).catch(error => {
                             $.alert("hubo un error no se pudo eliminar este registro")
                         })
-
                     }
                 },
                 close: function () {
                 }
             }
         });
-
     }
-
-    const successAlert = (re) => {
-        setAlert(
-            <SweetAlert
-                warning
-                style={{ display: "block", marginTop: "-100px" }}
-                closeOnClickOutside={false}
-                showCancel={false}
-                showConfirm={false}
-                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}>
-                <div>
-                    <div className="px-2 d-flex  justify-content-center align-items-center">
-                        <div className="col-md-8">
-                            <label className="form-label">Cargar Comprobante</label>
-                            <select className="form-select" aria-label="Default select example" id="registro">
-                                <option value="" >Selecione el registro</option>
-                                {re.length > 0 ?
-                                    re.map((e, i) => {
-                                        return (
-                                            <option value={e.id} key={i}>{e.id}</option>)
-                                    }) : ""}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div className='d-flex  justify-content-between py-4'>
-                    <div>
-                        <button className='btn btn-outline-danger  rounded-6'>
-                            <span style={{
-                                fontWeight: "bold"
-                            }}>Ver</span>
-                        </button>
-                    </div>
-                    <div>
-                        <button className=' btn btn-warning rounded-5'  >
-                            <span style={{
-                                fontWeight: "bold"
-                            }}> Eliminar</span>
-                        </button>
-                    </div>
-                    <div  >
-                        <button className=' btn btn-secondary rounded-5' onClick={hideAlert} >
-                            <span style={{
-                                fontWeight: "bold"
-                            }}> Cerrar</span>
-                        </button>
-                    </div>
-                </div>
-            </SweetAlert>
-        )
-    }
-    const hideAlert = () => {
-        setAlert(null);
-    };
     function abrirvoucher(row) {
         if (row.link_pago != null) {
             (row.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante })) : usedispatch(setModal({ nombre: 'pago', estado: row.link_pago.replace("k/", "k/voucher/") }))
         } if (row.link_comprobante) {
             usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante }))
-
         }
     }
-
-
     return (
         <>
             <MaterialReactTable
-                columns={listaRegistro}
+                columns={listaRegistrosuscri}
                 data={datos}
                 muiTableProps={{
                     sx: {
@@ -203,6 +137,7 @@ export default function ListaderegistroView(props) {
                                                 <Delete /> <span>Eliminar</span>
                                             </Button>
                                         </Tooltip> : "" :
+                                row.original.forma_pago !="Tarjeta"?"":
                                 <a className=" btn btn-default btn-sm "
                                     style={{
                                         fontWeight: "bold"

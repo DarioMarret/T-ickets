@@ -9,7 +9,7 @@ export default function PiecharViewsSlect({ ...props }) {
                 chartType="PieChart"
                 data={props.datas}
                 options={{
-                   
+                    legend: "none",
                     chartArea: { left: 15, top: 15, right: 0, bottom: 0 },
                     pieSliceText: "label",
                     //height:300
@@ -43,7 +43,7 @@ export default function PiecharViewsSlect({ ...props }) {
                         },
                     },
                 ]}
-                width={"auto"}
+                width={"100%"}
                 height={"400px"}
             />
         </>

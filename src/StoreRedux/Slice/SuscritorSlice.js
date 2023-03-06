@@ -1,4 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+let dias = -15
+let fin = new Date() 
+fin.setDate(fin.getDate() + dias);
 const initialState = {
     subscritor: {},
     login: false,
@@ -18,11 +21,12 @@ const initialState = {
     labels: [],
     compras: [],
     fecha:[ {
-        startDate: new Date(),
+        startDate: new Date(JSON.stringify(fin).replace('"', '').replace('"', '')) ,
         endDate: new Date(),
         key: 'selection'
     }]
 }
+JSON.stringify
 
 const SubscritorSlice = createSlice({
     name: 'suscritor',

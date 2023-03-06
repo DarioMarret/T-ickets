@@ -35,7 +35,6 @@ export default function ConsiliarView() {
         propietario: ""
     })
     function HandeChange(e) {
-        // console.log(e.name, e.value)
         setDatos({
             ...datos,
             [e.name]: e.value
@@ -53,45 +52,22 @@ export default function ConsiliarView() {
         }
         if (Object.values(parms).some(e => e == "")) {
             usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
-            //console.log(parms)
             return
         }
         else {
-            //console.log(parms)
            setEstatus(true)
             console.log(parms)
             Consiliarcompra(parms).then(salida=>{
                 setEstatus(false)
                 console.log(salida)
                 if (salida){
-                    history.goBack()
-                    
+                    usedispatch(setModal({nombre:"",estado:""}))
+                    history.goBack()                    
                 }
             }).cath(err=>{
                 setEstatus(false)
                 console.log(err)
             })
-           /* $.ajax({
-                type: "POST",
-                url: "https://brisana.netbot.ec/js/consolidar.php",
-                data: { ...parm },
-                success: function (success) {
-                    if (success.status) {
-                         usedispatch(setModal({ nombre: "", estado: "" }))
-                     
-                        $.alert("" + JSON.stringify(success))
-                    }
-                    else {
-                        //$.alert("" + JSON.stringify(success))
-                        usedispatch(setToastes({ show: true, message: success.result, color: 'bg-warning', estado: 'Datos vacios' }))
-                        setEstatus(false)
-                    }
-                },
-                error: function (error) {
-                    console.log(error)
-                    setEstatus(false)
-                }
-            })*/
         }
     }
   
@@ -138,6 +114,7 @@ export default function ConsiliarView() {
                                 <option value={"Visa"}>Visa</option>
                                 <option value={"Discover"}>Discover</option>
                                 <option value={"Alias"}>Alias</option>
+                                <option value={"Diners"}>Diners</option>
                                 <option value={"Pichincha"}>Pichincha</option>
                                 <option value={"Produbanco"}>Produbanco</option>
                                 <option value={"Guayaquil"}>Guayaquil</option>

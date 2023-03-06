@@ -19,12 +19,30 @@ export const registraPagos = async (parms) => {
 
 export const listarRegistropanel = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/listarRegistros?init=0&size=50000", parms, {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/listarRegistros", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const ListarRegistropaneFecha = async (ini, fin) => {
+    console.log(fin,ini)
+    try {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/listarRegistros?fecha_init=" + ini + "&fecha_fin=" + fin + "",
+            {
+                "cedula": ""
+            }
+            , {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                }
+            })
         return data
     } catch (error) {
         return error
@@ -84,7 +102,6 @@ export const eliminarRegistro = async (parms) => {
     }
 }
 export const eliminartiket = async (parms) => {
-
     try {
         let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/eliminarTicketrepetido",
             {
@@ -140,10 +157,23 @@ export const Consiliarcompra = async (parms) => {
         return error
     }
 }
-export const ComentarioRegistro= async (parms)=>{
+export const ComentarioRegistro = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/Comentario_registro",parms,{
-            headers:{
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/Comentario_registro", parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const updateRegistro = async (parms, id) => {
+    try {
+        let { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/Comentario_registro/" + id, parms, {
+            headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }

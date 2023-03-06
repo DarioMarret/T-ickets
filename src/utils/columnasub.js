@@ -255,7 +255,7 @@ export const listaRegistro = [
         size: 50
     },
     {
-        accessorKey: "total_pago",
+        accessorKey: "info_concierto",
         header: "Total boletos",
         Cell: ({ cell }) => (
             <div>
@@ -269,6 +269,37 @@ export const listaRegistro = [
         ),
         size: 50
     }
+]
+export const listaRegistrosuscri = [
+    {
+        accessorKey: "fechaCreacion",
+        header: "Fecha",
+
+    },
+    {
+        accessorKey: "estado_pago",
+        header: "Estado",
+        Cell: ({ cell }) => (
+            <Badge bg={color[cell.row.original.estado_pago]}>
+                {cell.row.original.estado_pago}</Badge>
+        ),
+        size: 50
+    },
+
+
+    {
+        accessorKey: "cedula",
+        header: "Cedula",
+        size: 50
+    },
+
+
+    {
+        accessorKey: "forma_pago",
+        header: "Metodo",
+        size: 50
+    },
+   
 ]
 export const listaRegistrototal = [
     {

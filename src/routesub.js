@@ -142,14 +142,14 @@ var routes = [
     state: "openCliente",
     layout: "/admin",
 
-    component: SuscritoridView, permiso: ["superadmin", "super_admin", "vendedores"],
+    component: SuscritoridView, permiso: ["superadmin", "super_admin", ],
   },
   {
     path: "/Reporte/:id",
     state: "openCliente",
     layout: "/admin",
 
-    component: DetalleCompraView, permiso: ["superadmin", "super_admin", "vendedores"],
+    component: DetalleCompraView, permiso: ["superadmin", "suscriptores","super_admin", ],
   },
 
 
@@ -159,7 +159,7 @@ var routes = [
     name: "Clientes",
     state: "openCliente",
     icon: "nc-icon nc-single-02",
-    permiso: ["superadmin", "super_admin", "vendedores"],
+    permiso: ["superadmin", "super_admin",],
     views: [
 
 
@@ -169,7 +169,7 @@ var routes = [
         name: "Suscriptores",
         mini: "*",
         component: SuscritorViews,
-        permiso: ["superadmin", "super_admin", "vendedores"],
+        permiso: ["superadmin", "super_admin", ],
       },
 
 
@@ -198,7 +198,7 @@ var routes = [
         name: "Ventas Por Aprobar",
         mini: "*",
         component: AprobarView,
-        permiso: ["superadmin", "super_admin", "vendedores"]
+        permiso: ["superadmin", "super_admin", ]
       },
       {
         path:"/Consolidados",
@@ -206,7 +206,7 @@ var routes = [
         name:"Consolidados",
         mini:"*",
         component:ConsolidacionView,
-        permiso: ["superadmin", "super_admin", "vendedores"]
+        permiso: []
       },
       {
         path: "/Informe",
@@ -214,14 +214,14 @@ var routes = [
         name: "Informe",
         mini: "*",
         component: InformeView,
-        permiso: ["suscriptores"]
+        permiso: ["suscriptores","superadmin", "super_admin",]
       },
       {
         path: "/Aprobar/:id",
         layout: "/admin",
 
         component: AprobarViewid,
-        permiso: ["superadmin", "super_admin", "vendedores"]
+        permiso: ["superadmin", "super_admin", ]
       },
       {
         path: "/Boletos",
@@ -229,7 +229,7 @@ var routes = [
         mini: "*",
         name: "Boletos",
         component: EmitirboView,
-        permiso: ["superadmin", "super_admin", "vendedores"]
+        permiso: ["superadmin", "super_admin", ]
       },
       {
         path: "/Vender-Articulo",

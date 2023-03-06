@@ -34,7 +34,14 @@ import { BoletosTiketsGlobal } from "utils/userQuery";
 import { Liverarasiento } from "utils/userQuery";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
 
-
+export const PreciosStore = () => {
+  let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
+  if (datos != null) {
+    return datos
+  } else {
+    return []
+  }
+}
 const SuscritoridView = () => {
   let { id } = useParams()
   let history = useHistory()
@@ -446,6 +453,69 @@ const SuscritoridView = () => {
     13: "SAUCES BOYZ-Q",
     14: "TODO-O-NADA-Q",
   }
+  function LocalidadPrecio(evento, localidad) {
+    if (localidad == 9) {
+      return "SEN2 KBRN Guayaquil"
+    }
+    if (localidad == 10) {
+      return "SAUCES BOYZ Guayaquil"
+    }
+    if (localidad == 11) {
+      return "TODO O NADA Guayaquil"
+    }
+    if (localidad == 12) {
+      return "SEN2 KBRN Quito"
+    }
+    if (localidad == 13) {
+      return "SAUCES BOYZ Quito"
+    }
+    if (localidad == 14) {
+      return "TODO-O-NADA Quito"
+    }
+    return PreciosStore().filter(f => f.id == evento)[0].localidad
+  }
+  function ListarPrecio(evento, localidad) {
+    if (localidad == 9) {
+      return precio[9]
+    }
+    if (localidad == 10) {
+      return precio[10]
+    }
+    if (localidad == 11) {
+      return precio[11]
+    }
+    if (localidad == 12) {
+      return precio[12]
+    }
+    if (localidad == 13) {
+      return precio[13]
+    }
+    if (localidad == 14) {
+      return precio[14]
+    }
+    return PreciosStore().filter(f => f.id == evento)[0].precio_normal
+  }
+  function ListarComision(evento, localidad) {
+    if (localidad == 9) {
+      return 2
+    }
+    if (localidad == 10) {
+      return 2
+    }
+    if (localidad == 11) {
+      return 1
+    }
+    if (localidad == 12) {
+      return 2
+    }
+    if (localidad == 13) {
+      return 2
+    }
+    if (localidad == 14) {
+      return 1
+    }
+    return parseFloat(PreciosStore().filter(f => f.id == evento)[0].comision_boleto)
+  }
   const [global, setGlobal] = useState([])
   useEffect(() => {
     setsuscritor({ ...info })
@@ -458,8 +528,8 @@ const SuscritoridView = () => {
     listarRegistropanel({ "cedula": info.cedula }).then(ouput => {
 
       let datos = ouput.data.map(row => {
-        let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-        let valor = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+        let valor = JSON.parse(row.info_concierto).map(e => { return  LocalidadPrecio(e.idespaciolocalida, e.id_localidad)
+       }).reduce((a, b) => a + b, 0)
         let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
         row.Valortotal = parseFloat(valor)
         row.cantidad = cantida
