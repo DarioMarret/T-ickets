@@ -43,7 +43,7 @@ export default function ConsiliarView() {
     async function guardarConsiliacion(e) {
         e.preventDefault()
         let parms = {
-            id_operador: 27,
+            id_operador: clienteInfo().id,
             id_registro: props.estado.id,
             banco: datos.banco,
             cuenta: datos.comprobante,

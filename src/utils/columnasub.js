@@ -365,9 +365,20 @@ export const listaRegistrototal = [
         ),
         size:25
     },{
+        accessorKey: "info_registro",
+        header: "Tipo",
+        Cell: ({ cell }) => (
+            cell.row.original.info_registro[0].title + " " + cell.row.original.info_registro[0].name
+        ),
+    }, 
+    {
         accessorKey: "id_usuario",
-        header: "usuario",
-        size: 25
+        header: "user",
+        Cell:({cell})=>(
+            cell.row.original.info_registro[0].title != "Suscriptor" ? cell.row.original.id_usuario : ""
+        ),
+        filterVariant: 'range',
+        size:25
     }
 ]
 let precio = {

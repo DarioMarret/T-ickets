@@ -19,6 +19,7 @@ import ReactGA from 'react-ga';
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import addNotification from "react-push-notification/dist"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
+import ToastViews from "views/Components/TOAST/toast"
 const ResgistroView = (prop) => {
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
@@ -56,12 +57,12 @@ const ResgistroView = (prop) => {
                     const busacar = await buscarcliente({ "cedula": e.target.value, "email": "" })
                     console.log(busacar)
                     if (busacar.success == true) {
-                        setDatoToas({
+                       usedispatch(setToastes({
                             show: true,
                             message: "Por favor inicie sesión con el correo: " + busacar.data["email"],
                             color: 'bg-success',
                             estado: "Usuario Registrado",
-                        })
+                        }))
                         usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))
                         seTspine("d-none")
 
@@ -78,12 +79,12 @@ const ResgistroView = (prop) => {
                                 direccion: direccion,
                                 email: ''
                             })
-                            setDatoToas({
+                           usedispatch(setToastes({
                                 show: true,
                                 message: "Encontrado: " + name,
                                 color: 'bg-success',
                                 estado: "Hubo una coincidencia, Complete los datos restantes ",
-                            })
+                            }))
                             DatosUsuariosLocalStorag({
                                 ...usuario,
                                 ...datos
@@ -103,12 +104,12 @@ const ResgistroView = (prop) => {
                                 direccion: '',
                                 password: '',
                             })
-                            setDatoToas({
+                           usedispatch(setToastes({
                                 show: true,
                                 message: "Vuelva a interntarlo o cambie de metodo de identificación",
                                 color: 'bg-danger',
                                 estado: "No hubo coincidencia de cédula",
-                            })
+                            }))
                         }
                     }
                 } catch (error) {
@@ -153,32 +154,40 @@ const ResgistroView = (prop) => {
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
 
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
-            setDatoToas({
+           usedispatch(setToastes({
                 show: true,
                 message: "Falta datos por completar",
                 color: 'bg-danger',
                 estado: "Complete toda la información",
-            })
+            }))
             return
-        } if (
-            password.length < 8
-        ) {
-            setDatoToas({
+        }
+        if (parseInt(movil.substring(0, 1)) == 0) {
+           usedispatch(setToastes({
+                show: true,
+                message: "Ejemplo 999 999 999 ",
+                color: 'bg-danger',
+                estado: "El fromato celular no es el correcto ",
+            }))
+            return
+        }
+        if (password.length < 8) {
+           usedispatch(setToastes({
                 show: true,
                 message: "La contraseña debe tener almenos 8 caracteres",
                 color: 'bg-danger',
                 estado: "Email " + email + " Invalido",
-            })
+            }))
             return
         }
 
         if (!emailRegex.test(email)) {
-            setDatoToas({
+           usedispatch(setToastes({
                 show: true,
                 message: "Fromato de correo Erroneo",
                 color: 'bg-danger',
                 estado: "Email " + email + " Invalido",
-            })
+            }))
             return
         }
         if (password.length < 7 && movil.length != 9) {
@@ -208,7 +217,7 @@ const ResgistroView = (prop) => {
             try {
                 //let nuemro = await ValidarWhatsapp()
                 /*if (nuemro != null) {
-                    setDatoToas({
+                   usedispatch(setToastes({
                         show: true,
                         message: "Ingrese un numero de Whatsapp",
                         color: 'bg-danger',
@@ -228,10 +237,10 @@ const ResgistroView = (prop) => {
                             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                         }
                     })
-                    console.log(datos,registro)
+                    console.log(datos, registro)
 
                     if (registro.data.success) {
-                        if(clienteInfo()!=null){
+                        if (clienteInfo() != null) {
                             window.location.reload()
                             return
                         }
@@ -254,7 +263,7 @@ const ResgistroView = (prop) => {
                             color: 'bg-success',
                             estado: "Inicio Exitoso",
                         }))
-                        /*   setDatoToas({
+                        /*  usedispatch(setToastes({
                                show: true,
                                message: "Bienvenido " + data.nombreCompleto,
                                color: 'bg-success',
@@ -297,12 +306,12 @@ const ResgistroView = (prop) => {
             } catch (error) {
                 document.getElementById("cedula").classList.add("is-invalid")
                 document.getElementById("email").classList.add("is-invalid")
-                setDatoToas({
+                usedispatch(setToastes({
                     show: true,
                     message: "Hubo un error intente de nuevo",
                     color: 'bg-danger',
                     estado: "Error",
-                })
+                }))
                 console.log(error)
             }
 
@@ -328,7 +337,7 @@ const ResgistroView = (prop) => {
                 t = -1 === "0123456789".indexOf(String.fromCharCode(n));
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
-        const phoneInputField = document.querySelector("#movil");
+        // document.getElementById("movil");
         $("#movil").intlTelInput({
             initialCountry: "ec",
             separateDialCode: true,
@@ -340,18 +349,41 @@ const ResgistroView = (prop) => {
 
     });
 
-   /* useEffect(() => {
-        if("geolocation"in navigator){
-            navigator.geolocation.getCurrentPosition(function(position){
-                let lat = position.coords.latitude;
-                let log = position.coords.longitude;
-                console.log(lat,log)
+    useEffect(() => {
+        /* if("geolocation"in navigator){
+             navigator.geolocation.getCurrentPosition(function(position){
+                 let lat = position.coords.latitude;
+                 let log = position.coords.longitude;
+                 console.log(lat,log)
+             })
+         }
+         else{
+             console.log("no soport")
+         }*/
+        $(document).ready(function () {
+            $(".numero").keypress(function (e) {
+                var n = (e = e || window.event).keyCode || e.which,
+                    t = -1 != "0123456789".indexOf(String.fromCharCode(n));
+                (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
             })
-        }
-        else{
-            console.log("no soport")
-        }
-    }, []) */
+            $(".nombres").keypress(function (e) {
+                var n = (e = e || window.event).keyCode || e.which,
+                    t = -1 === "0123456789".indexOf(String.fromCharCode(n));
+                (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
+            })
+            // document.getElementById("movil");
+            var input = document.querySelector("#movil");
+            window.intlTelInput(input, {
+                initialCountry: "ec",
+                separateDialCode: true,
+                nationalMode: true,
+                utilsScript:
+                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+
+            })
+
+        });
+    }, [modal.nombre == "registro" ? true : false])
     return (
         <>
             <Modal
@@ -456,8 +488,8 @@ const ResgistroView = (prop) => {
                                                     <input
                                                         id="movil"
                                                         name="movil" type="tel"
-                                                        className="m-0 inptFielsd form-control numero" 
-                                                        size={100}
+                                                        className="m-0 inptFielsd  "
+
                                                         placeholder="999 999 999" />
                                                 </div>
                                             </div>
@@ -633,11 +665,15 @@ const ResgistroView = (prop) => {
 
 
                             </div>
-                           
+
 
 
                         </div>
 
+
+                    </div>
+                    <div >
+                        <ToastViews />
 
                     </div>
                     <div className={spinervi}

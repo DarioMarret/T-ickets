@@ -33,11 +33,11 @@ import moment from "moment";
 moment.defaultFormat = "MM-DD-YYYY ";
 let { cedericon, atencion } = bancos
 
-export const PreciosStore=()=>{
+export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
-    if(datos!=null){
+    if (datos != null) {
         return datos
-    }else{
+    } else {
         return []
     }
 }
@@ -49,7 +49,7 @@ export default function AprobarView() {
     let value = useSelector((state) => state.SuscritorSlice.tabps)
     let compras = useSelector((state) => state.SuscritorSlice.compras)
     let labelne = useSelector((state) => state.SuscritorSlice.labels)
-    let states = useSelector((state)=> state.SuscritorSlice.fecha )
+    let states = useSelector((state) => state.SuscritorSlice.fecha)
 
     //console.log(state)
     const [data, setData] = React.useState([]);
@@ -84,7 +84,7 @@ export default function AprobarView() {
             'aria-controls': `simple-tabpanel-${index}`,
         };
     }
- 
+
 
     const hideAlert = () => {
         setAlert(null)
@@ -161,20 +161,20 @@ export default function AprobarView() {
             return localidades[localidad]
         }
     }
-    function LocalidadPrecio(evento, localidad){
-        if (localidad == 9 ) {
+    function LocalidadPrecio(evento, localidad) {
+        if (localidad == 9) {
             return "SEN2 KBRN-Guayaquil"
         }
-        if (localidad == 10 ) {
+        if (localidad == 10) {
             return "SAUCES BOYZ-Guayaquil"
         }
-        if (localidad == 11 ) {
+        if (localidad == 11) {
             return "TODO-O-NADA-Guayaquil"
         }
-        if ( localidad == 12) {
+        if (localidad == 12) {
             return "SEN2 KBRN-Quito"
         }
-        if ( localidad == 13) {
+        if (localidad == 13) {
             return "SAUCES BOYZ-Quito"
         }
         if (localidad == 14) {
@@ -210,7 +210,7 @@ export default function AprobarView() {
         if (item.selection.endDate == item.selection.startDate) {
             setTikes(compras)
             setDatas([...labelne])
-        //    setState([item.selection])
+            //    setState([item.selection])
             usedispatch(setFecha({ fecha: [item.selection] }))
             console.log(moment(item.selection.startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format())
             /*ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(item.selection.endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format()).then(e => {
@@ -339,21 +339,21 @@ export default function AprobarView() {
     }
     const ListaPrecio = async () => {
         const info = await ListaPreciosEvent();
-       
+
         return info
     }
     useEffect(() => {
         if (errorPubli != undefined) {
             return
         }
-       // LocalidadPrecio()
+        // LocalidadPrecio()
         //console.log(publici.data) 
-     //   ListaPrecio()
-       console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"))
-        
-       ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), "0"+states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e=>{
-           console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"),e)
-        if (!e.success) {
+        //   ListaPrecio()
+        console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"))
+
+        ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+            console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
+            if (!e.success) {
                 usedispatch(setToastes({
                     show: true,
                     message: e.message,
@@ -387,8 +387,8 @@ export default function AprobarView() {
                     })
                 })
                 let arrayIndividual = []
-               // console.log(consulat)
-               // console.log(arayReallocalidad)
+                // console.log(consulat)
+                // console.log(arayReallocalidad)
                 arayReallocalidad.forEach(elm => {
                     if (arrayIndividual.some(e => e.id == elm.id)) {
                         let dat = arrayIndividual.findIndex(e => e.id == elm.id)
@@ -421,86 +421,86 @@ export default function AprobarView() {
                 usedispatch(setCompras({ compras: order }))
                 return
             }
-     }).catch(err=>{
-        console.log(err)
-     })
-       /* listarRegistropanel({ "cedula": "" }).then(e => {
-            if(!e.success){
-                usedispatch(setToastes({
-                    show: true,
-                    message: e.message,
-                    color: 'bg-warning',
-                    estado: "Todos ocupados"
-                }))
-                return
-            }           
-            if (e.data) {
-                let newdatos = e.data.map(row => {
-                    let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-                    let valor = JSON.parse(row.info_concierto).map(e => {
-                        return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
-                    }).reduce((a, b) => a + b, 0)
-                    let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                    row.Valortotal = parseFloat(valor)
-                    row.cantidad = cantida
-                    row.concierto = nombre[0]
-                    return { ...row }
-                })//.filter(e => e.forma_pago =="Deposito")
-                sessionStorage.setItem("datoscompras",JSON.stringify(newdatos))
-                console.log(newdatos)
-                let nuevosValores = []
-                let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
-                let arayReallocalidad = []
-                newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                    JSON.parse(elm.info_concierto).map(loc => {
-                       // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                        arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-                    })
-                })
-                let arrayIndividual = []
-                console.log(consulat)
-                console.log(arayReallocalidad)
-                arayReallocalidad.forEach(elm => {
-                    if (arrayIndividual.some(e => e.id == elm.id)) {
-                        let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                        let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
-                        arrayIndividual[dat].cantidad = tota
-                    }
-                    else {
-                        arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
-                    }
-                })
-                console.log(arrayIndividual)
-                let datos = arrayIndividual.map(f => {
-                    return [f.localidad, f.evento, parseInt(f.cantidad)]
-                })
-                setDatas([
-                    ["Localida", "evento", "ganancias"],
-                    ...datos
-                ])
-
-                let nuevo = arrayIndividual.map(f => {
-                    return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
-                })
-                setDts([
-                    ["Localidad", "evento", "cantidad", "precio"],
-                    ...nuevo
-                ])
-                usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
-                let order = newdatos.sort(sorter)
-                setTikes(order)
-                usedispatch(setCompras({ compras: order }))
-                return
-            }
         }).catch(err => {
             console.log(err)
-        })*/
+        })
+        /* listarRegistropanel({ "cedula": "" }).then(e => {
+             if(!e.success){
+                 usedispatch(setToastes({
+                     show: true,
+                     message: e.message,
+                     color: 'bg-warning',
+                     estado: "Todos ocupados"
+                 }))
+                 return
+             }           
+             if (e.data) {
+                 let newdatos = e.data.map(row => {
+                     let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
+                     let valor = JSON.parse(row.info_concierto).map(e => {
+                         return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
+                     }).reduce((a, b) => a + b, 0)
+                     let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                     row.Valortotal = parseFloat(valor)
+                     row.cantidad = cantida
+                     row.concierto = nombre[0]
+                     return { ...row }
+                 })//.filter(e => e.forma_pago =="Deposito")
+                 sessionStorage.setItem("datoscompras",JSON.stringify(newdatos))
+                 console.log(newdatos)
+                 let nuevosValores = []
+                 let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                 let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
+                 let arayReallocalidad = []
+                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                     JSON.parse(elm.info_concierto).map(loc => {
+                        // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
+                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
+                     })
+                 })
+                 let arrayIndividual = []
+                 console.log(consulat)
+                 console.log(arayReallocalidad)
+                 arayReallocalidad.forEach(elm => {
+                     if (arrayIndividual.some(e => e.id == elm.id)) {
+                         let dat = arrayIndividual.findIndex(e => e.id == elm.id)
+                         let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
+                         arrayIndividual[dat].cantidad = tota
+                     }
+                     else {
+                         arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
+                     }
+                 })
+                 console.log(arrayIndividual)
+                 let datos = arrayIndividual.map(f => {
+                     return [f.localidad, f.evento, parseInt(f.cantidad)]
+                 })
+                 setDatas([
+                     ["Localida", "evento", "ganancias"],
+                     ...datos
+                 ])
+ 
+                 let nuevo = arrayIndividual.map(f => {
+                     return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
+                 })
+                 setDts([
+                     ["Localidad", "evento", "cantidad", "precio"],
+                     ...nuevo
+                 ])
+                 usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
+                 let order = newdatos.sort(sorter)
+                 setTikes(order)
+                 usedispatch(setCompras({ compras: order }))
+                 return
+             }
+         }).catch(err => {
+             console.log(err)
+         })*/
     },
         [states])
 
     const Deliminarregistro = (parms) => {
-        console.log(parms)
+        console.log(parms.id)
 
         $.confirm({
             title: 'Desea eliminar Este registro de compra ',
@@ -512,60 +512,60 @@ export default function AprobarView() {
                     text: 'Eliminar',
                     btnClass: 'btn-red',
                     action: function () {
+                        console.log(parms.id)
                         eliminarRegistro({ "id": parms.id }).then(ouput => {
                             console.log(ouput)
                             console.log(parms.id)
                             if (!ouput.success) { return $.alert("" + ouput.message) }
-                            listarRegistropanel({ "cedula": "" }).then(e => {
-                                // console.log(e)
+                            ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+                                console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
+                                if (!e.success) {
+                                    usedispatch(setToastes({
+                                        show: true,
+                                        message: e.message,
+                                        color: 'bg-warning',
+                                        estado: "Todos ocupados"
+                                    }))
+                                    return
+                                }
                                 if (e.data) {
                                     let newdatos = e.data.map(row => {
                                         let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-                                        let valor = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                                        let valor = JSON.parse(row.info_concierto).map(e => {
+                                            return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
+                                        }).reduce((a, b) => a + b, 0)
                                         let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                                         row.Valortotal = parseFloat(valor)
                                         row.cantidad = cantida
                                         row.concierto = nombre[0]
                                         return { ...row }
-                                    })//.filter(e => e.forma_pago =="Efectivo-Local")
+                                    })//.filter(e => e.forma_pago =="Deposito")
+                                    sessionStorage.setItem("datoscompras", JSON.stringify(newdatos))
                                     console.log(newdatos)
                                     let nuevosValores = []
                                     let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-
                                     let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
                                     let arayReallocalidad = []
                                     newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                                         JSON.parse(elm.info_concierto).map(loc => {
-
-                                            // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-                                            // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: Eventos[loc.id_localidad] })
-
+                                            // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
                                             arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-
-                                            /*  if (parseInt(loc.id_localidad) == 10) {
-                                                  nuevosValores.push(loc.id_localidad, loc.nombreConcierto, elm.cedula)
-                                              }*/
                                         })
-
                                     })
-                                    //  console.log(nuevosValores)
                                     let arrayIndividual = []
-                                    console.log(consulat)
-                                    console.log(arayReallocalidad)
+                                    // console.log(consulat)
+                                    // console.log(arayReallocalidad)
                                     arayReallocalidad.forEach(elm => {
                                         if (arrayIndividual.some(e => e.id == elm.id)) {
                                             let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                                            //  let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.precio)
                                             let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
                                             arrayIndividual[dat].cantidad = tota
                                         }
                                         else {
-                                            //    arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.precio })
-                                            arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad })
+                                            arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
                                         }
-
                                     })
-                                    console.log(arrayIndividual)
+                                    //console.log(arrayIndividual)
                                     let datos = arrayIndividual.map(f => {
                                         return [f.localidad, f.evento, parseInt(f.cantidad)]
                                     })
@@ -573,13 +573,20 @@ export default function AprobarView() {
                                         ["Localida", "evento", "ganancias"],
                                         ...datos
                                     ])
+
+                                    let nuevo = arrayIndividual.map(f => {
+                                        return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
+                                    })
+                                    setDts([
+                                        ["Localidad", "evento", "cantidad", "precio"],
+                                        ...nuevo
+                                    ])
                                     usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
                                     let order = newdatos.sort(sorter)
                                     setTikes(order)
                                     usedispatch(setCompras({ compras: order }))
                                     return
                                 }
-                                //setTikes([])
                             }).catch(err => {
                                 console.log(err)
                             })
@@ -662,7 +669,7 @@ export default function AprobarView() {
         0: "Días hasta hoy",
         1: "Días a partir de hoy"
     }
-
+    let [fitro, setFiltro] = useState("")
     defaultInputRanges.map((e, i) => {
         e.label = labels[i]
         return { ...e }
@@ -710,7 +717,7 @@ export default function AprobarView() {
                         </div>
 
                     </div>
-                 
+
                 </div>
                 <div className="col-12 col-sm-12 col-md-4">
                     <div className="card">
@@ -723,7 +730,7 @@ export default function AprobarView() {
                                 /> : ""}
                         </div>
                     </div>
-                   
+
                 </div>
             </div>
             <div className=" container row"  >
@@ -829,8 +836,6 @@ export default function AprobarView() {
                         <Tab label={"Reportes Pendientes: " + tiketslist.filter(e => e.estado_pago == "Pendiente").length}{...a11yProps(1)} />
                         <Tab label={"Reportes expirado: " + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(2)} />
                         <Tab label={"Reportes comprobar: " + tiketslist.filter(e => e.estado_pago == "Comprobar").length} {...a11yProps(3)} />
-
-
                     </Tabs>
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">
@@ -843,7 +848,7 @@ export default function AprobarView() {
                                     }
                                 }}
                                 enableRowActions
-
+                                initialState={{ showColumnFilters: true }} //show filters by default
                                 positionActionsColumn="first"
                                 renderRowActions={({ row }) => (
                                     <Box sx={{ display: 'flex' }}>
@@ -897,7 +902,7 @@ export default function AprobarView() {
 
                                     </Box>
                                 )}
-
+                                enableGlobalFilterModes //enable the user to choose between multiple search filter modes
                                 localization={MRT_Localization_ES}
                             />
                         </TabPanel>
