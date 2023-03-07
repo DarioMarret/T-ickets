@@ -747,6 +747,8 @@ export default function AprobarView() {
                         TOTAL_COMISION: f.Valortotal,
                         MEDIO: f.detalle,
                         TOTAL: f.total_pago,
+                        CREO: f.info_registro.length>0? f.info_registro[0].name:"",
+                        TIPO: f.info_registro.length>0? f.info_registro[0].title:"",
                         CREACION: f.fechaCreacion,
                         ESTADO: f.estado_pago,
                         Cosiliacion: f.consolidado,
@@ -770,6 +772,8 @@ export default function AprobarView() {
                                 TOTAL_COMISION: f.Valortotal,
                                 MEDIO: f.detalle,
                                 TOTAL: f.total_pago,
+                                CREO: f.info_registro.length>0? f.info_registro[0].name:"",
+                                TIPO: f.info_registro.length>0? f.info_registro[0].title:"",
                                 CREACION: f.fechaCreacion,
                                 ESTADO: f.estado_pago,
                                 PAGOMEDIO_LINK: f.link_pago,
@@ -790,7 +794,9 @@ export default function AprobarView() {
                                 CANTIDAD: f.cantidad,
                                 TOTAL_COMISION: f.Valortotal,
                                 MEDIO: f.detalle,
-                                TOTAL: f.total_pago,
+                                TOTAL: f.total_pago.replace(".",","),
+                                CREO: f.info_registro.length>0? f.info_registro[0].name:"",
+                                TIPO: f.info_registro.length>0? f.info_registro[0].title:"",
                                 CREACION: f.fechaCreacion,
                                 ESTADO: f.estado_pago,
                                 PAGOMEDIO_LINK: f.link_pago,
@@ -811,6 +817,8 @@ export default function AprobarView() {
                             TOTAL_COMISION: f.Valortotal,
                             MEDIO: f.detalle,
                             TOTAL: f.total_pago,
+                            CREO: f.info_registro.length>0? f.info_registro[0].name:"",
+                            TIPO: f.info_registro.length>0? f.info_registro[0].title:"",
                             CREACION: f.fechaCreacion,
                             ESTADO: f.estado_pago,
                             PAGOMEDIO_LINK: f.link_pago,
@@ -848,7 +856,7 @@ export default function AprobarView() {
                                     }
                                 }}
                                 enableRowActions
-                                initialState={{ showColumnFilters: true }} //show filters by default
+                                initialState={{ showColumnFilters: false }} //show filters by default
                                 positionActionsColumn="first"
                                 renderRowActions={({ row }) => (
                                     <Box sx={{ display: 'flex' }}>

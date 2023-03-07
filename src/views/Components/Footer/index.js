@@ -168,7 +168,7 @@ export default function Footer(props) {
                                     <div className=' d-none d-sm-none d-md-block txt-white px-1' style={{ width: '225px', maxWidth: 225 }}>
                                         <h6 className='text-capitalize font-weight-bold '>Área de Clientes</h6>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
-                                            <span className=" text-white" style={{ fontFamily: '', }} >Reclamos o Devoluciones</span>
+                                            <span className=" text-white" style={{ fontFamily: '', }} >Reclamos </span>
                                         </a>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <span className=" text-white" style={{ fontFamily: '', }} >Vender con Nosotros</span>

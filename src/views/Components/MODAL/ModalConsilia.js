@@ -9,6 +9,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import axios from "axios"
 import { useHistory } from "react-router"
 import { Consiliarcompra } from "utils/pagos/Queripagos"
+import { ConsolidarReporte } from "utils/pagos/Queripagos"
 export const DatosConsolidar = async (parms) => {
     try {
         let { data } = await axios.post("https://brisana.netbot.ec/js/consolidar.php", parms)
@@ -40,6 +41,22 @@ export default function ConsiliarView() {
             [e.name]: e.value
         })
     }
+    function ConsolidarCompra() {
+        const reporte =
+        {
+            "id_registraCompra": props.estado.id,
+            "estado": "Consolidado"
+        }
+        ConsolidarReporte(reporte).then(ouput => {
+            if (ouput.success) {
+                usedispatch(setModal({ nombre: "", estado: "" }))
+                history.goBack() 
+                return
+            }
+            $.alert("No se registro")
+        }).catch(err => {
+        })
+    }
     async function guardarConsiliacion(e) {
         e.preventDefault()
         let parms = {
@@ -61,8 +78,8 @@ export default function ConsiliarView() {
                 setEstatus(false)
                 console.log(salida)
                 if (salida){
-                    usedispatch(setModal({nombre:"",estado:""}))
-                    history.goBack()                    
+                    ConsolidarCompra() 
+                                       
                 }
             }).cath(err=>{
                 setEstatus(false)
@@ -115,6 +132,7 @@ export default function ConsiliarView() {
                                 <option value={"Discover"}>Discover</option>
                                 <option value={"Alias"}>Alias</option>
                                 <option value={"Diners"}>Diners</option>
+                                <option value={"Mastercar"}>Mastercar</option>
                                 <option value={"Pichincha"}>Pichincha</option>
                                 <option value={"Produbanco"}>Produbanco</option>
                                 <option value={"Guayaquil"}>Guayaquil</option>

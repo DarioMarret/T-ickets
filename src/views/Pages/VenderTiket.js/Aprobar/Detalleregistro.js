@@ -874,32 +874,14 @@ export default function DetalleCompraView() {
             "id_registraCompra": nombres.id,
             "estado": "Consolidado"
         }
-
-        $.confirm({
-            title: "Desea consolidar",
-            title: 'Este Registro de Compra',
-            type: 'blue',
-            content: '',
-            buttons: {
-                formSubmit: {
-                    text: 'Aceptar',
-                    btnClass: 'btn-blue',
-                    action: function () {
-                        ConsolidarReporte(reporte).then(ouput => {
-                            if (ouput.success) {
-                                console.log(ouput)
-                                history.goBack()
-                                return
-                            }
-                            $.alert("No se registro")
-                        }).catch(err => {
-                        })
-                    }
-                },
-                cancel: function () {
-                    //close
-                },
+        ConsolidarReporte(reporte).then(ouput => {
+            if (ouput.success) {
+                console.log(ouput)
+                history.goBack()
+                return
             }
+            $.alert("No se registro")
+        }).catch(err => {
         })
     }
     function ConsolidaBoleto() {
@@ -1214,7 +1196,7 @@ export default function DetalleCompraView() {
                                             {estado[nombres.pdf]}
                                         </a> : ""
                                 }
-                                {nombres.estado_pago == "Pagado" ?
+                                {nombres.estado_pago == "Pagado" && nombres.conciliacion.length == 0 ?
                                     <a className=" btn btn-default btn-sm  "
                                         onClick={() => conciliacion()}
                                     >
@@ -1345,8 +1327,8 @@ export default function DetalleCompraView() {
                                             {nombres.forma_pago}<br></br>
                                             {nombres.forma_pago == "Tarjeta" && nombres.link_pago == null ? "Cambio de Deposito a Tarjeta" : ""}
                                             {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                                <span className={nombres.consolidado != "" && nombres.consolidado != "Sin Consolidar" ? "p-1 label label-success" : "label label-danger"}>
-                                                    {nombres.consolidado != "" ? nombres.consolidado : "Sin Consolidar"}
+                                                <span className={nombres.conciliacion.length>0 ? "p-1 label label-success" : "label label-danger"}>
+                                                    {nombres.conciliacion.length > 0 ? "consciliado" : "Sin Consolidar"}
                                                 </span> :
                                                 ""}
                                         </div>
@@ -1622,10 +1604,10 @@ export default function DetalleCompraView() {
                                     {nombres.comentarios != undefined && Object.keys(nombres.comentarios).length > 0 ?
                                         Object.keys(nombres.comentarios).length == 3 ?
                                             <tr >
-                                                <td>{nombres.comentarios.comentario}</td>
+                                                <td>{nombres.comentarios.comentario.toLowerCase()}</td>
 
                                                 <td className="">
-                                                    {nombres.comentarios.name.toLowerCase()}
+                                                    {nombres.operador != undefined ? nombres.operador.toLowerCase() : item.name.toLowerCase()}
                                                 </td>
 
                                                 <td className="">
@@ -1641,10 +1623,10 @@ export default function DetalleCompraView() {
                                             : nombres.comentarios.map((item, i) => {
                                                 return (
                                                     <tr key={"l" + i}>
-                                                        <td>{item.comentario}</td>
+                                                        <td>{item.comentario.toLowerCase()}</td>
 
                                                         <td className="">
-                                                            {item.name.toLowerCase()}
+                                                            {item.operador != undefined ? item.operador.toLowerCase() : item.name.toLowerCase()}
                                                         </td>
 
                                                         <td className="">

@@ -359,23 +359,19 @@ export const listaRegistrototal = [
     },{
         accessorKey:"numerTransacion",
         header:"Comprobante",
-        Cell:({cell})=>(
-            
-            cell.row.original.forma_pago == "Deposito"? cell.row.original.numerTransacion == null ? "vacio" : cell.row.original.numerTransacion:"Tarjeta o Efectivo"
-        ),
         size:25
     },{
         accessorKey: "info_registro",
         header: "Tipo",
         Cell: ({ cell }) => (
-            cell.row.original.info_registro[0].title + " " + cell.row.original.info_registro[0].name
+            cell.row.original.info_registro.length == 0 ? "" : cell.row.original.info_registro[0].title + " " + cell.row.original.info_registro.length == 0 ? "" :  cell.row.original.info_registro[0].name
         ),
     }, 
     {
         accessorKey: "id_usuario",
         header: "user",
         Cell:({cell})=>(
-            cell.row.original.info_registro[0].title != "Suscriptor" ? cell.row.original.id_usuario : ""
+            cell.row.original.info_registro.length == 0 ? "" :   cell.row.original.info_registro[0].title != "Suscriptor" ? cell.row.original.id_usuario : ""
         ),
         filterVariant: 'range',
         size:25
