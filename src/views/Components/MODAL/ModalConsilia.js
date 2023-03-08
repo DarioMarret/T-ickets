@@ -33,7 +33,8 @@ export default function ConsiliarView() {
         metodo: "",
         id_registro: "",
         usuario: "",
-        propietario: ""
+        propietario: "",
+        forma_pago:""
     })
     function HandeChange(e) {
         setDatos({
@@ -65,7 +66,8 @@ export default function ConsiliarView() {
             banco: datos.banco,
             cuenta: datos.comprobante,
             total_pagado: datos.Valor,          
-            banco: datos.banco,           
+            banco: datos.banco,   
+            forma_pago: datos.forma_pago        
         }
         if (Object.values(parms).some(e => e == "")) {
             usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))

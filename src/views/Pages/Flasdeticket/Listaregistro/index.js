@@ -124,7 +124,7 @@ export default function ListaderegistroView(props) {
 
                                         onClick={() => usedispatch(setModal({ nombre: 'pago', estado: row.original.link_pago }))}
                                     >
-                                        <i className="fa fa-credit-card" ></i>
+                                        <i className="fa fa-credit-card" ></i> Pagar
                                     </a>
                                     : row.original.estado_pago != "Pagado" ?
                                         <Tooltip

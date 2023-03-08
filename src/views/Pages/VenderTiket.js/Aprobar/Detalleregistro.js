@@ -1602,45 +1602,27 @@ export default function DetalleCompraView() {
                                 </thead>
                                 <tbody>
                                     {nombres.comentarios != undefined && Object.keys(nombres.comentarios).length > 0 ?
-                                        Object.keys(nombres.comentarios).length == 3 ?
-                                            <tr >
-                                                <td>{nombres.comentarios.comentario.toLowerCase()}</td>
+                                        nombres.comentarios.map((item, i) => {
+                                            return (
+                                                <tr key={"l" + i}>
+                                                    <td>{item.comentario.toLowerCase()}</td>
 
-                                                <td className="">
-                                                    {nombres.operador != undefined ? nombres.operador.toLowerCase() : item.name.toLowerCase()}
-                                                </td>
+                                                    <td className="">
+                                                        {item.operador != undefined ? item.operador.toLowerCase() : item.name.toLowerCase()}
+                                                    </td>
 
-                                                <td className="">
-                                                    {
-                                                        useradmin.id == nombres.id ?
-                                                            "" :
-                                                            useradmin.perfil == "suscriptores" ? 
-                                                            <a className="btn btn-default btn-sm btn-disable" ><i className="fa fa-edit"></i></a> :
-                                                                <a className="btn btn-default btn-sm" onClick={() => editarComentario(nombres.comentarios.id)} ><i className="fa fa-edit"></i></a>
-                                                    }
-                                                </td>
-                                            </tr>
-                                            : nombres.comentarios.map((item, i) => {
-                                                return (
-                                                    <tr key={"l" + i}>
-                                                        <td>{item.comentario.toLowerCase()}</td>
-
-                                                        <td className="">
-                                                            {item.operador != undefined ? item.operador.toLowerCase() : item.name.toLowerCase()}
-                                                        </td>
-
-                                                        <td className="">
-                                                            {
-                                                                useradmin.id == item.id ?
-                                                                    "" :
-                                                                    useradmin.perfil == "suscriptores" ?
-                                                                        <a className="btn btn-default btn-sm btn-disable" ><i className="fa fa-edit"></i></a>
-                                                                        :
-                                                                        <a className="btn btn-default btn-sm" onClick={() => editarComentario(item.id)} ><i className="fa fa-edit"></i></a>}
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            }) : ''}
+                                                    <td className="">
+                                                        {
+                                                            useradmin.id == item.id ?
+                                                                "" :
+                                                                useradmin.perfil == "suscriptores" ?
+                                                                    <a className="btn btn-default btn-sm btn-disable" ><i className="fa fa-edit"></i></a>
+                                                                    :
+                                                                    <a className="btn btn-default btn-sm" onClick={() => editarComentario(item.id)} ><i className="fa fa-edit"></i></a>}
+                                                    </td>
+                                                </tr>
+                                            )
+                                        }) : ''}
 
                                 </tbody>
                             </table>
