@@ -157,6 +157,22 @@ export const Consiliarcompra = async (parms) => {
         return error
     }
 }
+export const ActualizaConciliacion= async (parms,id)=>{
+    console.log(id)
+    try {
+        let { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/Conciliacion/"+id,parms,{
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+        
+    }
+
+}
 export const ComentarioRegistro = async (parms) => {
     try {
         let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/Comentario_registro", parms, {

@@ -1202,6 +1202,12 @@ export default function DetalleCompraView() {
                                     >
                                         <i className="bi bi-check"></i> Consolidar </a>
                                     : ""}
+                                {nombres.conciliacion.length > 0 ?
+                                    <a className=" btn btn-default btn-sm  "
+                                        onClick={() => usedispatch(setModal({ nombre: "actconsiliacion", estado: { ...nombres.conciliacion[0], id_registro:nombres.id } }))}
+                                    >
+                                        <i className="bi bi-check"></i> Actualizar conciliación </a>
+                                    : ""}
                                 {nombres.forma_pago == "Deposito" ?
                                     <a className=" btn btn-default btn-sm d-none"
                                         onClick={ComprobarBoleto}
@@ -1230,14 +1236,15 @@ export default function DetalleCompraView() {
                                 >
                                     <i className="fa fa-info-circle">  </i>
                                 </a> : ""}
-                            <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
+                            
+                            <a className=" rounded-circle btn-primary mx-2 p-2 text-white d-none"
                                 data-toggle="tooltip" data-placement="top" title="Generar Boleto"
                                 onClick={() => Generarnew()}
                             >
                                 <i className=" fa fa-spinner">  </i>
                             </a>
 
-                            <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
+                            <a className=" rounded-circle btn-primary mx-2 p-2 text-white d-none"
                                 data-toggle="tooltip" data-placement="top" title="Reportar"
                                 onClick={() => usedispatch(setModal({ nombre: "confirmar", estado: { ...nombres } }))}
                             >
