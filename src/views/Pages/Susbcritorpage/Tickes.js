@@ -34,6 +34,7 @@ import { generaPDF } from "utils/boletos/Queryboleto.js";
 import { generaTiketspdf } from "utils/Querycomnet.js";
 import { Triangle } from "react-loader-spinner";
 import Inframene from "views/Components/IFrame/index.js";
+import { setToastes } from "StoreRedux/Slice/ToastSlice.js";
 let { cedericon } = bancos
 function Example() {
     let usedispatch = useDispatch()
