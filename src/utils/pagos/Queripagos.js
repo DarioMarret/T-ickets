@@ -31,7 +31,7 @@ export const listarRegistropanel = async (parms) => {
     }
 }
 export const ListarRegistropaneFecha = async (ini, fin) => {
-    console.log(fin,ini)
+    console.log(fin, ini)
     try {
         let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/listarRegistros?fecha_init=" + ini + "&fecha_fin=" + fin + "",
             {
@@ -131,6 +131,14 @@ export const cambiarMetodo = async (parms) => {
         return error
     }
 }
+export const Comprobanteocr = async (parms) => {
+    try {
+        let { data } = await axios.post("")
+        return data
+    } catch (error) {
+        return error
+    }
+}
 export const ConsolidarReporte = async (parms) => {
     try {
         let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/ConsolidarCompra", parms, {
@@ -157,11 +165,11 @@ export const Consiliarcompra = async (parms) => {
         return error
     }
 }
-export const ActualizaConciliacion= async (parms,id)=>{
+export const ActualizaConciliacion = async (parms, id) => {
     console.log(id)
     try {
-        let { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/Conciliacion/"+id,parms,{
-            headers:{
+        let { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/Conciliacion/" + id, parms, {
+            headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
@@ -169,7 +177,7 @@ export const ActualizaConciliacion= async (parms,id)=>{
         return data
     } catch (error) {
         return error
-        
+
     }
 
 }
