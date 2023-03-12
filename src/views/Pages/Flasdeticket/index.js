@@ -292,44 +292,44 @@ const IndexFlas = () => {
     Limpiarseleccion()
     LimpiarLocalStore()
   }
- function abrirCodigo(e){
-   e.codigoEvento == "9EGM42" || e.codigoEvento == "ANNKV7" ? 
-   $.confirm({
-     title: 'Código Barcelona!',
-     content: '' +
-       '<form action="" class="formName">' +
-       '<div class="form-group">' +
-       '<label>Ingrese código de descuentos : Socio Barcelona</label>' +
-       '<input type="text" placeholder="Código" class="codigo form-control" required />' +
-       '</div>' +
-       '</form>',
-     buttons: {
-       formSubmit: {
-         text: 'Verificar',
-         btnClass: 'btn-blue',
-         action: function () {
-           var name = this.$content.find('.codigo').val();
-           if (!name) {
-             $.alert('Ingrese un código');
-             return false;
-           }
-           abrir(e)
-         }
-       },
-       cancel: function () {
-        
-       },
-       somethingElse: {
-         text: 'Continuar ',
-         btnClass: 'btn-blue',
-       
-         action: function () {
-           abrir(e)
-         }
-       }
-     }
-   }):abrir(e)
- }
+  function abrirCodigo(e) {
+    e.codigoEvento == "9EGM42" || e.codigoEvento == "ANNKV7" ?
+      $.confirm({
+        title: 'Código Barcelona!',
+        content: '' +
+          '<form action="" class="formName">' +
+          '<div class="form-group">' +
+          '<label>Ingrese código de descuentos : Socio Barcelona</label>' +
+          '<input type="text" placeholder="Código" class="codigo form-control" required />' +
+          '</div>' +
+          '</form>',
+        buttons: {
+          formSubmit: {
+            text: 'Verificar',
+            btnClass: 'btn-blue',
+            action: function () {
+              var name = this.$content.find('.codigo').val();
+              if (!name) {
+                $.alert('Ingrese un código');
+                return false;
+              }
+              abrir(e)
+            }
+          },
+          cancel: function () {
+
+          },
+          somethingElse: {
+            text: 'Continuar ',
+            btnClass: 'btn-blue',
+
+            action: function () {
+              abrir(e)
+            }
+          }
+        }
+      }) : abrir(e)
+  }
   const abrir = async (e) => {
 
     if (e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U") {
@@ -728,7 +728,7 @@ const IndexFlas = () => {
 
   }
   const ListaPrecios = async () => {
-    const info = await ListaPreciosEvent();    
+    const info = await ListaPreciosEvent();
     return info
   }
   useEffect(() => {
@@ -757,7 +757,7 @@ const IndexFlas = () => {
         let datos = isLoading ? eventos : eventos.data
         let publicin = publici
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
-        const sorter = (a, b) =>  new Date(a.fechaConcierto) < new Date(b.fechaConcierto) ? 1 : -1;
+        const sorter = (a, b) => new Date(a.fechaConcierto) < new Date(b.fechaConcierto) ? 1 : -1;
 
         isLoading ? "" : setEventos(filtro.sort(sorter))
         info ? "" : setpublicidad(publicin.data)
@@ -1173,19 +1173,25 @@ const IndexFlas = () => {
       {seleccion == "" ?
         <div className="col-12 col-lg-9 py-2   d-flex justify-content-end">
           <div className=" col-12 col-md-6 ">
-            <div className="input-group">
-            <input className=" form-control "
-                type="search" name="buscar" 
-              placeholder="Buscar por nombre de Evento"
-              onChange={(e) => Cambiarbusqueda(e.target.value)}
-              value={searchValue}
+            <form className="form" action="">
+              <input className="input" type="search"
+               onChange={(e) => Cambiarbusqueda(e.target.value)}
+              placeholder="Buscar eventos ..."/>
+                <i class="fas fa fa-search"></i>
+            </form>
+            <div className="input-group d-none">
+              <input className=" form-control "
+                type="search" name="buscar"
+                placeholder="Buscar por nombre de Evento"
+                onChange={(e) => Cambiarbusqueda(e.target.value)}
+                value={searchValue}
               />
               <div className="input-group-prepend">
-                <button className="input-group-text btn-primary text-white "  
-                onClick={()=>Cambiarbusqueda("")}            
+                <button className="input-group-text btn-primary text-white "
+                  onClick={() => Cambiarbusqueda("")}
                 >
                   {searchValue.length > 1 ? <i className="bi bi-x-lg"></i> :
-                    <i className="bi bi-search"></i> 
+                    <i className="bi bi-search"></i>
                   }</button>
               </div>
             </div>

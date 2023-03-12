@@ -10,6 +10,26 @@
     --white:#fff;
     --white500:#d9dfe2
 }
+body::-webkit-scrollbar {
+    width: 8px;     /* Tamaño del scroll en vertical */
+    height: 8px;    /* Tamaño del scroll en horizontal */
+      /* Ocultar scroll */
+}
+body::-webkit-scrollbar-thumb {
+    background: #adabab;
+    border-radius: 4px;
+}
+
+/* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+body::-webkit-scrollbar-thumb:hover {
+    background: #928e8e;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Cambiamos el fondo cuando esté en active */
+body::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+}
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
     background: none !important;
     color: var(--main-color) !important;
@@ -182,7 +202,7 @@ div.dataTables_wrapper div.dataTables_info {
 
 
 }
-.select2-container--open{
+.select2-body--open{
    
     z-index: 10000 !important;
 }

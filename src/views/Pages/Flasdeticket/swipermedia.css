@@ -12,6 +12,82 @@
     color: azure ;   
     z-index: 2;
 }
+.form{
+    position: relative;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%,-50%);
+    transition: all 1s;
+    width: 250px;
+    height: 50px;
+    background: white;
+    box-sizing: border-box;
+    border-radius: 25px;
+    border: 4px solid white;
+    padding: 5px;
+}
+.input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 42.5px;
+    line-height: 30px;
+    outline: 0;
+    border: 1;
+    display: none;
+    font-size: 1em;
+    border-radius: 20px;
+    padding: 0 20px;
+}
+
+.fas{
+    box-sizing: border-box;
+    padding: 10px;
+    width: 42.5px;
+    height: 42.5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+    border: 1 !important;
+    border-color: #07051a !important;
+    color: #07051a;
+    text-align: center;
+    font-size: 1.2em;
+    transition: all 1s;
+}
+
+.form{
+    width: 100%;
+    cursor: pointer;
+}
+
+
+.form input{
+    display: block;
+}
+
+.form .fa{
+    background: #07051a;
+    color: white;
+}
+/*
+.form:hover{
+    width: 300px;
+    cursor: pointer;
+}
+
+
+.form:hover input{
+    display: block;
+}
+
+.form:hover .fa{
+    background: #07051a;
+    color: white;
+}
+*/
 .contadordos{
     position: absolute;
     top:37%;
