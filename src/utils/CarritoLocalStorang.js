@@ -275,7 +275,8 @@ export function GetValores() {
     var descrption = ""
     if (tag !== null) {
         tag.map(tienda2 =>{
-            if (tienda2.localidaEspacio.descuento>0){
+            //tienda2.localidaEspacio.descuento>0
+            if (false){
                 let descuento = "1."+tienda2.localidaEspacio.descuento
                 tienda2.valor = (parseInt( tienda2.valor) * parseInt( tienda2.cantidad)) / parseFloat(descuento)
             }else{
