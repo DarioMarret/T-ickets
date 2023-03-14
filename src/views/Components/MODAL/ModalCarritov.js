@@ -733,7 +733,7 @@ const ModalCarritoView = (prop) => {
                                 <div className="col-12">
                                     <div className=" container-fluid d-flex  py-2  col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
                                         {precios.precios.length > 0 ?
-                                            precios.precios.sort(sorter).map((elm, i) => {
+                                            precios.precios.sort((a, b) => (a.precio_normal > b.precio_normal ? 1 : -1) &&  a.id < b.id ? 1 : -1).map((elm, i) => {
                                                 return (
                                                     <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                         <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 10, width: 10, backgroundColor: elm.color }}></div>

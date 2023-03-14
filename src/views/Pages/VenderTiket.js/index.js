@@ -55,6 +55,7 @@ import { Listarticketporestado } from "utils/userQuery";
 import { useGetSuscritorQuery } from "StoreRedux/Slicequery/querySlice";
 import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import EventosView from "../Flasdeticket/Eventosindex";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -357,6 +358,7 @@ export default function StoreTickesViews() {
     const datospage = useSelector((state) => state.SuscritorSlice)
     let { data: nuevos, error: errorboleto, isLoading: boletosloading } = useGetBoletosQuery()
     useEffect(() => {
+        
         (async () => {
             await evento()
             Limpiarseleccion()
@@ -364,6 +366,7 @@ export default function StoreTickesViews() {
             usedispatch(clearMapa({}))
             usedispatch(borrarseleccion({ estado: "seleccionado" }))
         })()
+       // console.log(clienteInfo())
         var popUp = window.open('url', '', 'options');
         if (popUp == null || typeof (popUp) == 'undefined') {
             //  popUp.close();     
@@ -432,7 +435,7 @@ export default function StoreTickesViews() {
                 }}
             />
             {alert}
-            <Row>
+            {clienteInfo().perfil !="vendedores"?   <Row className=" ">
                 <Col lg="3" sm="6">
                     <Card className="card-stats">
                         <Card.Body>
@@ -537,7 +540,7 @@ export default function StoreTickesViews() {
                         </Card.Footer>
                     </Card>
                 </Col>
-            </Row>
+            </Row>:""}
             <Row>
                 <div className="col-12 d-flex d-none flex-column align-items-center "  >
                     <h4 style={{
