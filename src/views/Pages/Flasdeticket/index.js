@@ -1121,7 +1121,7 @@ const IndexFlas = () => {
                                   >EVENTO -  <span className=" text-danger font-weight-bold"> PRESENCIAL </span> </h5>
                                 </div>
                               </div>
-                              <h4 className=" font-weight-bold " style={styleswiper.titulo}>{element.encabezado}  </h4>
+                              <h4 className=" font-weight-bold  text-danger" style={styleswiper.titulo}>{element.encabezado}  </h4>
                               <span className="d-none" style={styleswiper.subtitulo}>
                                 {element.descripcion}
                               </span>
@@ -1137,7 +1137,8 @@ const IndexFlas = () => {
                                     <button className="btn border rounded-6  btn-lg btn-light "
                                       onClick={() => eventocarrusel(element.evento)}
                                       style={styleswiper.button}
-                                    >COMPRAR</button>
+                                    >COMPRAR
+                                    </button>
 
                                 }
                               </div>

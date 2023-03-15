@@ -184,7 +184,7 @@ export default function ModalFacilitoView() {
                                                             fontWeight: "bold"
                                                         }}
                                                     >
-                                                        {Modalshow.nombre == "ordendepago" ? "$" + parseFloat(Modalshow.estado.total).toFixed(2) : '$0.00'}
+                                                        {Modalshow.nombre == "ordendepago" ? "$" + Math.round( parseFloat(Modalshow.estado.total).toFixed(2) / 1.07) : '$0.00'}
                                                     </h5>
                                                 </div>
                                             </div>

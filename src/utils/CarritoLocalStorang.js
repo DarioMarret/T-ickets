@@ -303,9 +303,10 @@ export function GetValores() {
                 comision += tienda.cantidad
             }
         })
-        valor = subtotal + comision;  
+        
+        valor = subtotal + sumcomision;  
         let precios = {
-            sumcomision: parseFloat(comision.toFixed(2)),
+            sumcomision: parseFloat(sumcomision.toFixed(2)),
             comision_bancaria: valor.toFixed(2) * 7 / 100,
             subtotal: subtotal.toFixed(2),
             description: descrption,
