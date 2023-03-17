@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
 import { ListarEventos } from "utils/Querypanel";
+import { ListaPreciosEvent } from "utils/EventosQuery";
 const ModalNewEvento = (props) => {
     const { show, Setshow } = props;
     let user = clienteInfo()
@@ -35,6 +36,12 @@ const ModalNewEvento = (props) => {
             setListaEspa(data)
             setLocalidades(datos.data)
         }
+    }
+    const ListaPrecios = async () => {
+        const info = await ListaPreciosEvent();
+        console.log(info)
+        //ListaPrecio()
+        return info
     }
     function toggleValueInArray(array, value) {
         //copia de array de localidades
@@ -99,6 +106,7 @@ const ModalNewEvento = (props) => {
                 console.log(defauldata)
                 if (evento.success) {
                     console.log(evento)
+                    ListaPrecios()
                     usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
                     setinput(false)
                     Setshow(false)

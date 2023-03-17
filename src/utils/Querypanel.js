@@ -45,8 +45,13 @@ export const CrearSuscritor = async (parms) => {
 }
 
 export const ListarTikets = async () => {
-    const { data } = await axios.get("https://rec.netbot.ec/pdfqr/api/v1/szchat/listar/")
-    return data
+    try {
+        const { data } = await axios.get("https://rec.netbot.ec/pdfqr/api/v1/szchat/listar/")
+        return data
+    } catch (error) {
+        return error
+    }
+
 }
 export const ListarConcierto = async (parms) => {
     const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/filtrar_concierto", parms, {

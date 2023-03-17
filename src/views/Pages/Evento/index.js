@@ -16,6 +16,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
+import { ListaPreciosEvent } from "utils/EventosQuery";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
@@ -108,9 +109,16 @@ const EventosViews = () => {
   const hideAlert = () => {
     setAlert(null);
   };
-
+  const ListaPrecios = async () => {
+    const info = await ListaPreciosEvent();
+    console.log(info)
+    //ListaPrecio()
+    return info
+  }
   useEffect(() => {
+    
     (async () => {
+      await ListaPrecios()
       await GetEventos()
     })()
   }, [show])

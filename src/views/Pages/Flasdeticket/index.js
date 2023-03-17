@@ -1178,7 +1178,7 @@ const IndexFlas = () => {
               <input className="input" type="search"
                onChange={(e) => Cambiarbusqueda(e.target.value)}
               placeholder="Buscar eventos ..."/>
-                <i class="fas fa fa-search"></i>
+                <i class="fass fa fa-search"></i>
             </form>
             <div className="input-group d-none">
               <input className=" form-control "

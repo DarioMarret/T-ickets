@@ -160,7 +160,7 @@ export default function ConsiliarView() {
         console.log(props)
         if (props.estado.forma_pago == "Deposito" && props.nombre != "actconsiliacion") {
             let valor = parseFloat(props.estado.total_pago) / 1.07
-            //console.log(props)
+            console.log(valor.toFixed(2))
             setDatos({
                 comprobante: "",
                 imagen: "",               
@@ -171,12 +171,13 @@ export default function ConsiliarView() {
                 usuario: "",
                 propietario: "",
                 forma_pago: "",
-                Valor: valor.toFixed(2)
+                Valor: parseFloat(valor.toFixed(2))
 
             })
         }
-        if (props.estado.forma_pago == "Deposito" && props.nombre == "actconsiliacion") {
-            let valor = parseFloat(props.estado.total_pagado) 
+        if (props.estado.forma_pago == "Deposito" && props.nombre == "consiliacion") {
+            let valor = parseFloat(props.estado.total_pago) / 1.07
+            console.log(valor.toFixed(2))
             //console.log(props)
             setDatos({
                 comprobante: props.estado.cuenta,
@@ -192,8 +193,8 @@ export default function ConsiliarView() {
 
             })
         }
-        if (props.estado.forma_pago == "Tarjeta" && props.nombre == "actconsiliacion") {
-            //let valor = parseFloat(props.total_pago) / 1.07
+        if (props.estado.forma_pago == "Tarjeta" && props.nombre == "consiliacion") {
+            let valor = parseFloat(props.estado.total_pago) 
             setDatos({
                 comprobante: props.estado.cuenta,
                 imagen: "",
@@ -204,12 +205,14 @@ export default function ConsiliarView() {
                 usuario: "",
                 propietario: "",
                 forma_pago: "",
-                Valor: parseFloat(props.estado.total_pagado).toFixed(2)
+                Valor: valor.toFixed(2)
+
 
             })
+            console.log(valor)
         }
-        if (props.estado.forma_pago == "Tarjeta" && props.nombre == "actconsiliacion") {
-            //let valor = parseFloat(props.total_pago) / 1.07
+      /*  if (props.estado.forma_pago == "Tarjeta" && props.nombre == "actconsiliacion") {
+            let valor = parseFloat(props.estado.total_pagado) 
             setDatos({
                 comprobante: props.estado.cuenta,
                 imagen: "",
@@ -220,10 +223,10 @@ export default function ConsiliarView() {
                 usuario: "",
                 propietario: "",
                 forma_pago: "",
-                Valor: parseFloat(props.estado.total_pago).toFixed(2)
+                Valor: valor.toFixed(2)
 
             })
-        }
+        }*/
         $(document).ready(function () {
             $(".modal-content").draggable({
                 handle: ".modal-header",
@@ -269,6 +272,7 @@ export default function ConsiliarView() {
                                     <option value={"Alias"}>Alias</option>
                                     <option value={"Diners"}>Diners</option>
                                     <option value={"Mastercar"}>Mastercar</option>
+                                    <option value={"America-Exxpres"}>America-Exxpres</option>
                                 </select>
                                 :
                                 <select className=" form-select" value={datos.banco} required

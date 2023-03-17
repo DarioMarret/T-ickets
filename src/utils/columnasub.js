@@ -222,6 +222,7 @@ function ListarPrecio(evento, localidad) {
     if (localidad == 14) {
         return precio[14]
     }
+    console.log(evento)
     return PreciosStore().filter(f => f.id == evento)[0].precio_normal
 }
 
@@ -310,11 +311,7 @@ export const listaRegistrototal = [
 
     {
         accessorKey: "consolidado",
-        header: "Verificado",
-        Cell: ({ cell }) => (
-            <Badge bg={color[cell.row.original.consolidado]}>
-                {estados[cell.row.original.consolidado]}</Badge>
-        ),
+        header: "Consolidado",      
         size: 25
     },
 
