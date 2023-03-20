@@ -1011,6 +1011,15 @@ export default function DetalleCompraView() {
 
 
     }
+
+    function boletoscanje (){
+        if(tiketslist.length> 0){
+           // console.log(tiketslist.every(e=> e.canje=="CANJEADO"))
+            return tiketslist.every(e=> e.canje=="CANJEADO")
+        }
+        return false
+    }
+
     function CanjeBole() {
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
         let cor = JSON.parse(nombres.info_concierto)
@@ -1231,7 +1240,7 @@ export default function DetalleCompraView() {
                                     </a> : ""}
                                 <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>
                                 <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>
-                                <a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" fa fa-calendar-check-o"> </i> Canjear Boletos</a>
+                                {boletoscanje() ?<a className=" bg-success  text-white p-3">Registro Canjedo  </a>:<a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" fa fa-calendar-check-o"> </i> Canjear Boletos</a>}
                             </div>
                         </div>
                     </div>}
