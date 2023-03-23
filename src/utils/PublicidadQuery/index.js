@@ -1,7 +1,7 @@
 import axios from "axios"
 export const agregarNoticia = async (datos) => {
     try {
-        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_publicidad", datos, {
+        const { data } = await axios.post("https://api.t-ickets.com/backend/api/v1/crear_publicidad", datos, {
             header: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -15,7 +15,7 @@ export const agregarNoticia = async (datos) => {
 }
 export const ListarNoticias = async () => {
     try {
-        const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_publicidad", {
+        const { data } = await axios.get("https://api.t-ickets.com/backend/api/v1/listar_publicidad", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -29,7 +29,7 @@ export const ListarNoticias = async () => {
 }
 export const Actualizarpublicdad = async (id, parms) => {
     try {
-        const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/actualizar_publicidad/" + id, parms, {
+        const { data } = await axios.put("https://api.t-ickets.com/backend/api/v1/actualizar_publicidad/" + id, parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -42,7 +42,7 @@ export const Actualizarpublicdad = async (id, parms) => {
 }
 export const Eliminarpublici = async (parms) => {
     try {
-        const { data } = await axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_publicidad/" + parms, {
+        const { data } = await axios.delete("https://api.t-ickets.com/backend/api/v1/eliminar_publicidad/" + parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

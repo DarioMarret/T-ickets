@@ -29,7 +29,7 @@ const ModalLogin = (props) => {
     if (credenciales.username !== '' && credenciales.pass !== '') {
 
       try {
-        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_suscriptor", { email: credenciales.username.trim(), password: credenciales.pass.trim() }, {
+        const { data } = await axios.post("https://api.t-ickets.com/backend/api/v1/auth_suscriptor", { email: credenciales.username.trim(), password: credenciales.pass.trim() }, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

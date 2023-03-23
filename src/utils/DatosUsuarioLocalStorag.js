@@ -24,7 +24,7 @@ export function getCliente() {
 }
 export async function getCedula(cedula) {
     try {
-        const { data } = await axios.get("https://rec.netbot.ec/ms_login/cedula/" + cedula)
+        const { data } = await axios.get("https://api.t-ickets.com/backend/cedula/" + cedula)
     //    console.log(data)
         const { success } = data
         if (success) {

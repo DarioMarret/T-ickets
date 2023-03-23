@@ -8,7 +8,7 @@ export const sawerg = createApi({
                 headers.set("Authorization", 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==');
             return headers;
         },
-        baseUrl: 'https://rec.netbot.ec/ms_login/'
+        baseUrl: 'https://api.t-ickets.com/backend/'
     }),
 
     endpoints: (builder) => ({

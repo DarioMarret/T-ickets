@@ -12,7 +12,7 @@ import { Host, Whatsappnumero, DatosUsuariocliente, Valores } from "./constantes
  */
 export const Authsucrito = async (parms) => {
     //console.log(parms)
-    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/auth_suscriptor", parms, {
+    const { data } = await axios.post("https://api.t-ickets.com/backend/api/v1/auth_suscriptor", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -33,7 +33,7 @@ export const GenerarLinkPagoMedios = async () => {
         concierto)
 
     if (datosPersonal != null && valores != null) {
-        const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio", {
+        const { data } = await axios.post("https://api.t-ickets.com/backend/pago_medio", {
             datosPersonal,
             valores,
             metodo,
@@ -68,7 +68,7 @@ export const GuardarDatosdelComprador = async () => {
         movil: datosPerson.whatsapp,
         password: datosPerson.cedula
     }
-    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor",
+    const { data } = await axios.post("https://api.t-ickets.com/backend/api/v1/crear_suscriptor",
         datos, {
         headers: {
             'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ export const ReportarDepositoCompra = async (transaccion) => {
     let concierto = getVerTienda()
     let valores = GetValores()
     let metodo = GetMetodo()
-    const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio", {
+    const { data } = await axios.post("https://api.t-ickets.com/backend/pago_medio", {
         datosPersonal,
         valores,
         metodo,
@@ -150,7 +150,7 @@ export const ReportarEfectivoCompra = async () => {
     let valores = GetValores()
     let metodo = GetMetodo()
     //console.log({datosPersonal,concierto,valores,metodo})
-    const { data } = await axios.post("https://rec.netbot.ec/ms_login/pago_medio", {
+    const { data } = await axios.post("https://api.t-ickets.com/backend/pago_medio", {
         datosPersonal,
         valores,
         concierto,
