@@ -144,7 +144,7 @@ export const ValidarToken = async (parms) => {
 }
 export const generaTiketspdf = async (parms) => {
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ticket/api/v1/ticket_pdf_link", parms, {
+        let { data } = await axios.post("https://api.t-ickets.com/ticket/api/v1/ticket_pdf_link", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
