@@ -1074,7 +1074,7 @@ const IndexFlas = () => {
                                     >COMPRAR</button>
 
                                 }
-                              </div>
+                              </div> 
                             </div>
                           </div>
                           <div className=" contador  "
