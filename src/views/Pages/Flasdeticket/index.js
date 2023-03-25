@@ -872,6 +872,12 @@ const IndexFlas = () => {
     }
   }
   const [visible, setVisible] = React.useState(false)
+  function abrirNuevoTab() {
+    // Abrir nuevo tab
+    var win = window.open('https://t-ickets.net/3FynwiC' , '_blank');
+    // Cambiar el foco al nuevo tab (punto opcional)
+    win.focus();
+  }
 
   return (
 
@@ -1060,8 +1066,8 @@ const IndexFlas = () => {
                                     <a className="btn border rounded-1  btn-lg btn-light "
                                       style={styleswiper.button}
                                       href={element.redirect}
-                                      onClick={() => !userauthi.login ? regsitronew() : ""}
-                                    >{userauthi.login ? "Atentos" : "Registrate"}</a> :
+                                      onClick={() => !userauthi.login ? regsitronew() : abrirNuevoTab()}
+                                    >{userauthi.login ? "Comprar" : "Registrate"}</a> :
                                     <button className="btn border rounded-1  btn-lg btn-light "
                                       onClick={() => eventocarrusel(element.evento)}
                                       style={styleswiper.button}

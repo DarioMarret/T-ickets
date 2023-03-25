@@ -118,7 +118,7 @@ export default function ListaderegistroView(props) {
                                 </Tooltip> :
                                 ""
                             }
-                            {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone" ?
+                            {row.original.estado_pago!="Expirado" &&row.original.estado_pago != "Pagado" && row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone" ?
                                 row.original.link_pago != null ?
                                     <a className=" btn btn-default btn-sm"
 
@@ -137,7 +137,7 @@ export default function ListaderegistroView(props) {
                                                 <Delete /> <span>Eliminar</span>
                                             </Button>
                                         </Tooltip> : "" :
-                                row.original.forma_pago !="Tarjeta"?"":
+                                row.original.estado_pago!="Pagado" || row.original.forma_pago !="Tarjeta"?"":
                                 <a className=" btn btn-default btn-sm "
                                     style={{
                                         fontWeight: "bold"
@@ -149,7 +149,7 @@ export default function ListaderegistroView(props) {
                                 </a>
 
                             }
-                            {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ?
+                            {clienteInfo() && row.original.forma_pago == "Deposito"  && row.original.link_comprobante == null ?
                                 <Tooltip
                                     title="Comprobar" placement="top"
                                 >
