@@ -436,7 +436,10 @@ const EventoEspecifico = () => {
             <Box
               sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
             >
-           {tickes.length>0?   <ExportToExcel apiData={tickes}
+           {tickes.length>0?   <ExportToExcel apiData={tickes.map(e=>{
+             e.valor.replace(".", ",")
+             return {...e}
+           })}
                 fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY') } label={"Boletos"}
              />:""}
               

@@ -126,7 +126,7 @@ const TablasEjemplos = () => {
     ];
     async function ConsultarTikets() {
         try {
-            const Datos = await ListarTikets()
+           /* const Datos = await ListarTikets()
             const infor = Datos.data.map((e, i) => {
                 return {
                     id: e.id,
@@ -142,7 +142,7 @@ const TablasEjemplos = () => {
 
                 };
             })
-            setdata(infor)
+            setdata(infor)*/
         } catch (error) {
             console.log(error)
 

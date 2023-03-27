@@ -19,7 +19,7 @@ export default function VentasView() {
 
     async function ListarUsuarios() {
         try {
-            const data = await ListarTikets()
+          /*  const data = await ListarTikets()
             const datos = data.data.map((e, i) => {
                 return {
                     id: e.id,
@@ -34,7 +34,7 @@ export default function VentasView() {
                     qr: e.qr,
 
                 };
-            })
+            })*/
             /*const valors = data.users.map((e, i) => {
               return {
                 ...e,
