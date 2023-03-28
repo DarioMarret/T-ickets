@@ -546,6 +546,8 @@ const ModalCarritoView = (prop) => {
     const hideAlert = () => {
         setAlert(null);
     };
+    let fechava = (new Date().getDay() !=6 && new Date().getDay() !=0)
+    //console.log(fechava)
     return (
         <>
             {alert}
@@ -783,7 +785,8 @@ const ModalCarritoView = (prop) => {
                                         Transferencia
                                     </label>
                                 </div> : ""}
-                            {clienteInfo() == null ? <div className="form-check ">
+                            {
+                                clienteInfo() == null && fechava ? <div className="form-check ">
                                 <input className="form-check-input" type="radio"
                                     checked={checked.Deposito == "Deposito" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
@@ -793,7 +796,7 @@ const ModalCarritoView = (prop) => {
                                 </label>
                             </div> : ""}
 
-                            {clienteInfo() == null ? <div className="form-check">
+                            {clienteInfo() == null ? <div className="form-check d-none">
                                 <input className="v-check form-check-input" type="radio"
                                     name="Efectivo" id="Efectivo"
                                     checked={checked.Efectivo == "Efectivo" ? true : false}
