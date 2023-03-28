@@ -1063,11 +1063,12 @@ const IndexFlas = () => {
                               <div className="pt-2  ">
                                 {
                                   element.evento == null ?
-                                    <a className="btn border rounded-1  btn-lg btn-light "
+                                    <button className="btn border rounded-1  btn-lg btn-light "
                                       style={styleswiper.button}
-                                      href={element.redirect}
+                                     
+                                      
                                       onClick={() => !userauthi.login ? regsitronew() : abrirNuevoTab()}
-                                    >{userauthi.login ? "Comprar" : "Registrate"}</a> :
+                                    >{userauthi.login ? "Comprar" : "Registrate"}</button> :
                                     <button className="btn border rounded-1  btn-lg btn-light "
                                       onClick={() => eventocarrusel(element.evento)}
                                       style={styleswiper.button}
@@ -1134,17 +1135,16 @@ const IndexFlas = () => {
                               <div className="pt-2 ">
                                 {
                                   element.evento == null ?
-                                    < button className="btn border rounded-6  btn-lg btn-light "
+                                    <button className="btn border rounded-1  btn-lg btn-light "
                                       style={styleswiper.button}
 
-                                      onClick={() => !userauthi.login ? usedispatch(setModal({ nombre: 'registro', estado: "" })) : ""}
 
-                                    >{"Registrate"}</button> :
-                                    <button className="btn border rounded-6  btn-lg btn-light "
+                                      onClick={() => !userauthi.login ? regsitronew() : abrirNuevoTab()}
+                                    >{userauthi.login ? "Comprar" : "Registrate"}</button> :
+                                    <button className="btn border rounded-1  btn-lg btn-light "
                                       onClick={() => eventocarrusel(element.evento)}
                                       style={styleswiper.button}
-                                    >COMPRAR
-                                    </button>
+                                    >COMPRAR</button>
 
                                 }
                               </div>

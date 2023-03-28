@@ -203,7 +203,7 @@ export default function StoreTickesViews() {
                 if (obten.data.length > 0) {
                     let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
                     let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-                    console.log(mapalocal, mapa)
+                    console.log(mapalocal, mapa, localidades)
                     let localidad = JSON.parse(mapa[0].localidad)
                     let path = JSON.parse(mapa[0].pathmap)
                     let newprecios = obten.data.map((g, i) => {

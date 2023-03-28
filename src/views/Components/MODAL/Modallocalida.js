@@ -130,7 +130,7 @@ const LocalidadmapViews = (props) => {
             }))
             return
         }
-        if ((sleccionlocalidad.pagados + TotalSelecion()) == 2) {
+        if ((sleccionlocalidad.pagados + TotalSelecion()) == 10) {
             succesLimit()
             return
         }

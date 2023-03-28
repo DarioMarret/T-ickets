@@ -270,149 +270,280 @@
    fill-rule: nonzero
  }
 
- .machr1 {stroke:#E6E7E8;stroke-width:20}
-    .machr0 {stroke:#FEFEFE;stroke-width:7.62}
-    .machfil7 {fill:#E6E7E8}
-    .machfil5 {fill:#D2D3D5}
-    .machfil3 {fill:#606062}
-    .machfil0 {fill:#4B4B4D}
-    .machfil1 {fill:#201E1E}
-    .machfil2 {fill:#0092C1}
-    .machfil4 {fill:#747472}
-    .machfil6 {fill:#B9B9B9}
-    .machfil8 {fill:#CF8E00}
-    .machfil9 {fill:#FEFEFE;fill-rule:nonzero}
-    .machfil1 {fill:#373435;fill-rule:nonzero}
-    .machfil10 {fill:#201E1E;fill-rule:nonzero}
+ .machr1 {
+   stroke: #E6E7E8;
+   stroke-width: 20
+ }
+
+ .machr0 {
+   stroke: #FEFEFE;
+   stroke-width: 7.62
+ }
+
+ .machfil7 {
+   fill: #E6E7E8
+ }
+
+ .machfil5 {
+   fill: #D2D3D5
+ }
+
+ .machfil3 {
+   fill: #606062
+ }
+
+ .machfil0 {
+   fill: #4B4B4D
+ }
+
+ .machfil1 {
+   fill: #201E1E
+ }
+
+ .machfil2 {
+   fill: #0092C1
+ }
+
+ .machfil4 {
+   fill: #747472
+ }
+
+ .machfil6 {
+   fill: #B9B9B9
+ }
+
+ .machfil8 {
+   fill: #CF8E00
+ }
+
+ .machfil9 {
+   fill: #FEFEFE;
+   fill-rule: nonzero
+ }
+
+ .machfil1 {
+   fill: #373435;
+   fill-rule: nonzero
+ }
+
+ .machfil10 {
+   fill: #201E1E;
+   fill-rule: nonzero
+ }
 
 
 
-                 .strline0 {
-                   stroke: #FEFEFE;
-                   stroke-width: 20
-                 }
-        
-                                    .strline2 {
-                                      stroke: #FEFEFE;
-                                      stroke-width: 25
-                                    }
-                                                     
-        
-                                    .strline1 {
-                                      stroke: #373435;
-                                      stroke-width: 20
-                                    }
-        
-                 .linefil1 {
-                   fill: #FEFEFE
-                 }
-                .linefil3 {
-                  fill: #544A6B
-                }
-                 .linefil5 {
-                   fill: #727376
-                 }
-        
-                 .linefil0 {
-                   fill: #373435
-                 }
-        
-                 .linefil2{
-                    fill: #292040
-                  }
-        .bordesvg {
-           fill: #FEFEFE
-         }
-                 .linefil4 {
-                   fill: #402580
-                 }
-        
-                 .linefil5 {
-                   fill: #544A6B
-                 }
-        
-                 .linefil8 {
-                   fill: #671952
-                 }
-        
-                 .linefil9 {
-                   fill: #B0BED7
-                 }
-        
-                 .linefil6 {
-                   fill:#B0BED7
-                 }
-        
-                 .linefil7 {
-                   fill: #FFE7BD
-                 }
-        
-                 .linefil11 {
-                   fill: #FEFEFE;
-                   fill-rule: nonzero
-                 }
-        
-                 .linefil0 {
-                   fill: #373435;
-                   fill-rule: nonzero
-                 }
-        
-                 .linefil2 {
-                   fill: #373435;
-                   fill-rule: nonzero
-                 }
+ .strline0 {
+   stroke: #FEFEFE;
+   stroke-width: 20
+ }
+
+ .strline2 {
+   stroke: #FEFEFE;
+   stroke-width: 25
+ }
 
 
-                                    .cls-1 {
-                                      fill: #363435;
-                                    }
-                  
-                                    .cls-1,
-                                    .cls-2,
-                                    .cls-3,
-                                    .cls-4,
-                                    .cls-5,
-                                    .cls-6 {
-                                      fill-rule: evenodd;
-                                    }
-                  
-                                    .cls-2 {
-                                      fill: #949899;
-                                      stroke: #363435;
-                                      stroke-width: 3px;
-                                    }
-                  
-                                    .cls-2,
-                                    .cls-5 {
-                                      stroke-linejoin: round;
-                                    }
-                  
-                                    .cls-3 {
-                                      fill: #747472;
-                                      filter: url(#filter);
-                                    }
-                  
-                                    .cls-4,
-                                    .cls-8 {
-                                      fill: #fff;
-                                    }
-                  
-                                    .cls-5 {
-                                      fill: #4b4b4d;
-                                      stroke: #fff;
-                                      stroke-width: 1px;
-                                    }
-                  
-                                    .cls-6 {
-                                      fill: #a12120;
-                                    }
-                  
-                                    .cls-7,
-                                    .cls-8 {
-                                      font-size: 37.5px;
-                                      text-anchor: middle;
-                                    }
-                  
-                                    .cls-8 {
-                                      font-family: Ebrima;
-                                    }
+ .strline1 {
+   stroke: #373435;
+   stroke-width: 20
+ }
+
+ .linefil1 {
+   fill: #FEFEFE
+ }
+
+ .linefil3 {
+   fill: #544A6B
+ }
+
+ .linefil5 {
+   fill: #727376
+ }
+
+ .linefil0 {
+   fill: #373435
+ }
+
+ .linefil2 {
+   fill: #292040
+ }
+
+ .bordesvg {
+   fill: #FEFEFE
+ }
+
+ .linefil4 {
+   fill: #402580
+ }
+
+ .linefil5 {
+   fill: #544A6B
+ }
+
+ .linefil8 {
+   fill: #671952
+ }
+
+ .linefil9 {
+   fill: #B0BED7
+ }
+
+ .linefil6 {
+   fill: #B0BED7
+ }
+
+ .linefil7 {
+   fill: #FFE7BD
+ }
+
+ .linefil11 {
+   fill: #FEFEFE;
+   fill-rule: nonzero
+ }
+
+ .linefil0 {
+   fill: #373435;
+   fill-rule: nonzero
+ }
+
+ .linefil2 {
+   fill: #373435;
+   fill-rule: nonzero
+ }
+
+
+ .cls-1 {
+   fill: #363435;
+ }
+
+ .cls-1,
+ .cls-2,
+ .cls-3,
+ .cls-4,
+ .cls-5,
+ .cls-6 {
+   fill-rule: evenodd;
+ }
+
+ .cls-2 {
+   fill: #949899;
+   stroke: #363435;
+   stroke-width: 3px;
+ }
+
+ .cls-2,
+ .cls-5 {
+   stroke-linejoin: round;
+ }
+
+ .cls-3 {
+   fill: #747472;
+   filter: url(#filter);
+ }
+
+ .cls-4,
+ .cls-8 {
+   fill: #fff;
+ }
+
+ .cls-5 {
+   fill: #4b4b4d;
+   stroke: #fff;
+   stroke-width: 1px;
+ }
+
+ .cls-6 {
+   fill: #a12120;
+ }
+
+ .cls-7,
+ .cls-8 {
+   font-size: 37.5px;
+   text-anchor: middle;
+ }
+
+ .cls-8 {
+   font-family: Ebrima;
+ }
+
+
+ /**/
+ .LINR3 {
+   stroke: #201E1E;
+   stroke-width: 75
+ }
+
+ .LINR2 {
+   stroke: #E6E7E8;
+   stroke-width: 20
+ }
+
+ .LINR0 {
+   stroke: #FEFEFE;
+   stroke-width: 7.62
+ }
+
+ .LINR4 {
+   stroke: #BBBBBB;
+   stroke-width: 7.62
+ }
+
+ .LINR1 {
+   stroke: #FEFEFE;
+   stroke-width: 7.62
+ }
+
+ .lineas6 {
+   fill: #FEFEFE
+ }
+
+ .lineas1 {
+   fill: #00AFEF
+ }
+
+ .lineas0 {
+   fill: #201E1E
+ }
+
+ .lineas3 {
+   fill: #0092C1
+ }
+
+ .lineas2 {
+   fill: #201E1E
+ }
+
+ .lineas9 {
+   fill: #4B4B4D
+ }
+
+ .lineas4 {
+   fill: #606062
+ }
+
+ .lineas5 {
+   fill: #747472
+ }
+
+ .lineas7 {
+   fill: #B29307
+ }
+
+ .lineas12 {
+   fill: #BBBBBB
+ }
+
+ .lineas8 {
+   fill: #E6E7E8
+ }
+
+ .lineas11 {
+   fill: #373435;
+   fill-rule: nonzero
+ }
+
+ .lineas10 {
+   fill: #FEFEFE;
+   fill-rule: nonzero
+ }
