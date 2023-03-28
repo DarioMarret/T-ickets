@@ -13,6 +13,7 @@ import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { listaRegistrosuscri } from "utils/columnasub";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 export default function ListaderegistroView(props) {
     let { cedula } = props
     let usedispatch = useDispatch()
@@ -82,6 +83,12 @@ export default function ListaderegistroView(props) {
         });
     }
     function abrirvoucher(row) {
+        usedispatch(setToastes({
+            show: true,
+            message: "Muy pronto te anunciaremos en canje de los boletos a través de redes",
+            color: 'bg-success',
+            estado: "Tu boleto ya están pagados"
+        }))
         if (row.link_pago != null) {
             (row.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante })) : usedispatch(setModal({ nombre: 'pago', estado: row.link_pago.replace("k/", "k/voucher/") }))
         } if (row.link_comprobante) {

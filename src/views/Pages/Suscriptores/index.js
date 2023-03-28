@@ -14,6 +14,7 @@ import { Columnasubcrito } from "utils/ColumnTabla";
 import ResgistroView from "../Flasdeticket/ModalLogin/registro";
 import { useDispatch } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import ModalTickte from "./ModalSuscritor/agregarTickte";
 
 const SuscritorViews = () => {
   let usehistory = useHistory()
@@ -279,6 +280,7 @@ const SuscritorViews = () => {
         estado={estado}
         datosperson={suscritor}
       />
+     
       <ResgistroView/>
     </div>
   )

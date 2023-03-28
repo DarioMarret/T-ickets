@@ -33,6 +33,8 @@ import { BoletosTikets } from "utils/userQuery";
 import { BoletosTiketsGlobal } from "utils/userQuery";
 import { Liverarasiento } from "utils/userQuery";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
+import ModalTickte from "./ModalSuscritor/agregarTickte";
+import axios from "axios";
 
 export const PreciosStore = () => {
   let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
@@ -128,6 +130,7 @@ const SuscritoridView = () => {
     );
   };
 
+  const [showdos, setshowdos] = useState(false)
 
 
   const cancelDetele = () => {
@@ -548,6 +551,9 @@ const SuscritoridView = () => {
     })*/
 
   }, []);
+
+
+
   return (
     <>
       {alert}
@@ -564,6 +570,9 @@ const SuscritoridView = () => {
               </span>
               Editar
             </Button>
+            <Button className=""
+              onClick={() => setshowdos(true)}
+            >Ticktefacil</Button>
             <Button className="btn-wd btn-outline mr-1"
               onClick={deleteAlert}
               type="button"
@@ -1042,6 +1051,12 @@ const SuscritoridView = () => {
         setshow={setshow}
         estado={"update"}
         datosperson={suscritoid} />
+      <ModalTickte
+        shows={showdos}
+        setshows={setshowdos}
+        estado={"update"}
+        datosperson={suscritoid}
+      />
       <div className={spinervi}
         style={{
           display: 'none',

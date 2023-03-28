@@ -35,6 +35,8 @@ import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
 import { useGetLocalidadQuery } from "StoreRedux/Slicequery/querySlice";
 import { ListarRegistropaneFecha } from "utils/pagos/Queripagos";
 import { setFecha } from "StoreRedux/Slice/SuscritorSlice";
+import TablasViwe from "layouts/Tablasdoc";
+import Tablasespo from "layouts/Tablasregistro";
 let { cedericon, atencion } = bancos
 export default function InformeView() {
     let usedispatch = useDispatch()
@@ -674,7 +676,40 @@ export default function InformeView() {
         e.label = labels[i]
         return { ...e }
     })
-    //  let datos = 
+    const thead = () => {
+        return (
+            <thead className="">
+                <tr className="border ">
+                    <th >Evento</th>
+                    <th className="text-xs text-center"  >Fecha</th>
+                    <th className="text-xs text-center" >Cédula</th>
+                    <th className="text-xs text-center">Estado</th>   
+                    <th className="text-xs text-center">valor</th>    
+                    <th className="text-xs text-center">nuevo</th>           
+                </tr>
+            </thead>
+        )
+
+    }
+    const showDatos = () => {
+        try {
+            return tiketslist.map((item, index) => {
+
+                return (
+                    <tr key={index}>
+
+                        <td className="text-xs ">{JSON.parse(item.info_concierto)[0]["nombreConcierto"]}</td>
+                        <td className="text-xs text-center ">{item.fechaCreacion}</td>
+                        <td className="text-xs text-center">{item.cedula}</td>                       
+                        <td className="text-xs text-center">{item.estado_pago}</td>   
+                        <td className="text-xs text-center">{item.total_pago}</td>   
+                        <td className="text-xs text-center">{item.forma_pago}</td>                     
+
+                    </tr>
+                )
+            });
+        } catch (error) { }
+    }
     return (
         <>
             {alert}
@@ -799,7 +834,7 @@ export default function InformeView() {
                     }
                 })} fileName={"Registros Comprobar"} label={"Comprobar"} />
             </div>
-            <div className="   " style={{ minHeight: '250px' }} >
+            <div className="" style={{ minHeight: '250px' }} >
                 <div className='container-fluid  p-0'>
                     <Tabs value={value} onChange={handleChange}
                         variant="scrollable"
@@ -1049,6 +1084,16 @@ export default function InformeView() {
                     </div>
                 </div>
 
+            </div>
+
+            <div className="container d-none">
+                {tiketslist.length > 0 ? 
+                <Tablasespo
+                    number={5}
+                    thead={thead}
+                    showDatos={showDatos}
+                    Titel={"nuevo"}
+                />:""}
             </div>
         </>
     );
