@@ -271,6 +271,31 @@ export const listaRegistro = [
         size: 50
     }
 ]
+
+export const listartecero = [
+    {
+        accessorKey: "id",
+        header: "Id",
+        size:25
+    },
+    {
+        accessorKey:"cedula",
+        header:"Cédula",
+        size:30
+    },
+    {
+        accessorKey:"fecha",
+        header:"Fecha",
+        Cell: ({ cell }) => (
+             moment(cell.row.original.fecha).format('L') 
+        ),
+    },
+    {
+        accessorKey:"observacion",
+        header:"Observación"
+    }
+]
+
 export const listaRegistrosuscri = [
     {
         accessorKey: "fechaCreacion",

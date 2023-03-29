@@ -22,7 +22,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
         console.log(info)
         if (Object.values(info).some(e => e == "")) {
             $.alert("Agrega los datos faltantes");
-            
+
             return
         }
         Reserva().then(ouput => {
@@ -31,22 +31,31 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                 $.alert("Localidad Agotada" + ouput[0].token_ocupadas);
                 return
             }
-                console.log(ouput[0].token_ocupadas)
-                Pagartickt(ouput[0].token_ocupadas, ouput[0].total).then(salida => {
-                    console.log(salida[0].estado, salida[0].link_factura)
-                    $.alert("" + salida[0].estado);
-                    var win = window.open(salida[0].link_factura, '_blank');
-                    if (salida[0].link_factura!= undefined){
-                        return
-                    }
-                    // Cambiar el foco al nuevo tab (punto opcional)
-                    setshows(false)
-                    win.focus();
-                  //$.alert("" + salida[0].link_factura);
-                }).catch(err => {
-                    console.log(err)
-                })
-            
+            console.log(ouput[0].token_ocupadas)
+            Pagartickt(ouput[0].token_ocupadas, ouput[0].total).then(salida => {
+                console.log(salida[0].estado, salida[0].link_factura)
+                $.alert("" + salida[0].estado);
+                var win = window.open(salida[0].link_factura, '_blank');
+                if (salida[0].link_factura != undefined) {
+                    Endpoitnuevo({
+                        "cedula": datosperson.cedula,
+                        "link_external": salida[0].link_factura,
+                        "observacion": "Urban fest 2 tickefacil"}).then(ou=>{
+                            console.log(ou)
+                            setshows(false)
+                            win.focus();
+                        }).catch(err=>{
+                            console.log(err)
+                        })
+                    return
+                }
+                // Cambiar el foco al nuevo tab (punto opcional)
+              
+                //$.alert("" + salida[0].link_factura);
+            }).catch(err => {
+                console.log(err)
+            })
+
 
         }).catch(err => {
             console.log(err)
@@ -69,9 +78,16 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
             return error
         }
     }
-    const Endpoitnuevo = async ()=>{
+    const Endpoitnuevo = async (parms) => {
         try {
-            let {data} = await axios.get("")
+            let { data } = await axios.post("https://rec.netbot.ec/ms_login/set_link_external_tickets", parms, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+
+                }
+            }
+            )
             return data
         } catch (error) {
             return error
@@ -86,7 +102,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                 onHide={() => setshows(false)}
             >
                 <Modal.Header>
-                    <h5 className="modal-title text-center py-3 justify-content-center">Agregar Urban </h5>  
+                    <h5 className="modal-title text-center py-3 justify-content-center">Agregar Urban </h5>
                     <button className="close" onClick={() => setshows(false)}>X</button>
                 </Modal.Header>
                 <Modal.Body>

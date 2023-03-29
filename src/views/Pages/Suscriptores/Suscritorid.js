@@ -35,6 +35,8 @@ import { Liverarasiento } from "utils/userQuery";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
 import ModalTickte from "./ModalSuscritor/agregarTickte";
 import axios from "axios";
+import { listartecero } from "utils/columnasub";
+import { EliminarTickteTercero } from "utils/TicktesT";
 
 export const PreciosStore = () => {
   let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
@@ -315,9 +317,9 @@ const SuscritoridView = () => {
 
   }
   const eliminarTiket = (parm) => {
-    console.log(parm)
+  //  console.log(parm)
     $.confirm({
-      title: 'Desea eliminar este boleto ',
+      title: 'Desea eliminar este registro ',
       content: '',
       type: 'red',
       typeAnimated: true,
@@ -326,17 +328,20 @@ const SuscritoridView = () => {
           text: 'Eliminar',
           btnClass: 'btn-red',
           action: function () {
-            /*eliminartiket({ "id": parm.id }).then(ouput => {
+            EliminarTickteTercero({ "id": parm.id }).then(ouput => {
               console.log(ouput)
               console.log(parm.id)
-              if (!ouput.success) { return $.alert("" + ouput.message) }
+              if (!ouput.success) { return $.alert("" + ouput.message) }              
+              //nuevoevento()
+              $.alert("Registro eliminado correctamente")
+              setTimeout(function(){
+                window.location.reload()
+              },1000)
               
-              nuevoevento()
-              $.alert("Boletos eliminado correctamente")
 
             }).catch(error => {
               $.alert("hubo un error no se pudo eliminar este registro")
-            })*/
+            })
           }
         },
         close: function () {
@@ -520,6 +525,20 @@ const SuscritoridView = () => {
     return parseFloat(PreciosStore().filter(f => f.id == evento)[0].comision_boleto)
   }
   const [global, setGlobal] = useState([])
+  const Listarfaci = async (parms) => {
+    try {
+      let { data } = await axios.post("https://rec.netbot.ec/ms_login/get_link_external_tickets", parms, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+        }
+      })
+      return data
+    } catch (error) {
+      return error
+    }
+  }
+  const [tikesele, setTicket] = useState([])
   useEffect(() => {
     setsuscritor({ ...info })
     Listarticketporestado("" + info.cedula).then(ouput => {
@@ -529,7 +548,8 @@ const SuscritoridView = () => {
       console.log(err)
     })
     listarRegistropanel({ "cedula": info.cedula }).then(ouput => {
-
+      //console.log(ouput)
+      if (ouput.success) {
       let datos = ouput.data.map(row => {
         let valor = JSON.parse(row.info_concierto).map(e => { return  LocalidadPrecio(e.idespaciolocalida, e.id_localidad)
        }).reduce((a, b) => a + b, 0)
@@ -539,7 +559,16 @@ const SuscritoridView = () => {
         return { ...row }
       })
       //console.log(datos)
-      ouput.success ? setTikes(datos) : ""
+      ouput.success ? setTikes(datos) : ""}
+    })
+    Listarfaci({ "cedula": info.cedula }).then(ouput => {
+      if (ouput.success) {
+      //  console.log(ouput)
+        setTicket([...ouput.data])
+      }
+      //console.log(ouput)
+    }).catch(err => {
+      console.log(err)
     })
 
     /*BoletosTiketsGlobal(""+info.cedula).then(ouput=>{
@@ -700,24 +729,21 @@ const SuscritoridView = () => {
         <ModalConfima />
         <div className="">
           <div className='container-fluid row p-0'>
-            <div className="col-10   ">
-
+            <div className="col-10">
               <ExportToExcel apiData={tiketslist} fileName={"Todos Boletos"} />
-
             </div>
             <Tabs value={value} onChange={handleChange}
               variant="scrollable"
               scrollButtons="auto"
               aria-label="scrollable auto tabs example"
             >
-              <Tab className="" label={"Registro " + tiketslist.length}{...a11yProps(0)} />
-              <Tab className="d-none" label={"Registro expirado :" + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(1)} />
+              <Tab className="" label={"Registro: " + tiketslist.length}{...a11yProps(0)} />
+              <Tab className="" label={"Registro tercero: " + tikesele.length} {...a11yProps(1)} />
               <Tab className="d-none" label={"Registro Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length} {...a11yProps(2)} />
               <Tab label={"Tickets: " + boletos.length} {...a11yProps(3)} />
             </Tabs>
             <div className=" text-center  py-2  ">
               {/** pendientes*/}
-
               <TabPanel value={value} index={0} className="text-center" >
                 <MaterialReactTable
                   columns={listaRegistro}
@@ -779,8 +805,8 @@ const SuscritoridView = () => {
               {/** expirado */}
               <TabPanel value={value} index={1} className="text-center">
                 <MaterialReactTable
-                  columns={listaRegistro}
-                  data={tiketslist.filter(e => e.estado_pago == "Expirado")}
+                  columns={listartecero}
+                  data={tikesele}
                   muiTableProps={{
                     sx: {
                       tableLayout: 'flex'
@@ -790,31 +816,19 @@ const SuscritoridView = () => {
                   positionActionsColumn="first"
                   renderRowActions={({ row }) => (
                     <Box sx={{ display: 'flex' }}>
-                      {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
-                        <Tooltip title="Reportar" placement="top">
-                          <IconButton
-                            color="error"
-                            aria-label="Bloquear"
-                            onClick={() => abrirModal(row.original)}
-                          >
-                            <Summarize />
-                          </IconButton>
-                        </Tooltip> : <IconButton
-                          disabled={true}
-                          color="error"
-                          aria-label="Consolidar"
-
-                        >
-                          <Summarize />
-                        </IconButton>}
+                      
                       <Tooltip
                         title="Comprobar" placement="top"
                       >
                         <IconButton
-                          color="error"
-                          onClick={() => detalle(row.original)}
+                          color="success"
+                          //onClick={() => detalle(row.original)}
                         >
-                          <Visibility />
+                          <a 
+                            href={row.original.link_external}
+                            target="_blank"
+                          >
+                            <Visibility /></a>
                         </IconButton>
                       </Tooltip>
                       <Tooltip
@@ -823,7 +837,7 @@ const SuscritoridView = () => {
                       >
                         <IconButton
                           color="error"
-                          onClick={() => eliminarregistro(row.original)}
+                          onClick={() => eliminarTiket(row.original)}
                         >
                           <Delete />
                         </IconButton>

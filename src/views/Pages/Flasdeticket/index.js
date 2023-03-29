@@ -1184,7 +1184,7 @@ const IndexFlas = () => {
               <input className="input" type="search"
                onChange={(e) => Cambiarbusqueda(e.target.value)}
               placeholder="Buscar eventos ..."/>
-                <i class="fass fa fa-search"></i>
+                <i className="fass fa fa-search"></i>
             </form>
             <div className="input-group d-none">
               <input className=" form-control "
@@ -1913,7 +1913,7 @@ const IndexFlas = () => {
 
           </div>
         </div> : ''}
-      {userauthi.login && seleccion == "Tickets" ? <div className="container p-2"> <Tikes /></div> : ""}
+      {userauthi.login && seleccion == "Tickets" ? <div className="container-fluid p-2"> <Tikes /></div> : ""}
       {userauthi.login && seleccion == "Datos" ? <div className="container p-2"><PerfilPage datosPerson={datosPerson} setDatoToas={setDatoToas} /></div> : ""}
       {/* flotter*/}
       <Footer logofla={logofla} />

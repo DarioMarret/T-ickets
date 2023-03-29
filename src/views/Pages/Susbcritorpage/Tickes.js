@@ -35,6 +35,7 @@ import { generaTiketspdf } from "utils/Querycomnet.js";
 import { Triangle } from "react-loader-spinner";
 import Inframene from "views/Components/IFrame/index.js";
 import { setToastes } from "StoreRedux/Slice/ToastSlice.js";
+import axios from "axios";
 let { cedericon } = bancos
 function Example() {
     let usedispatch = useDispatch()
@@ -193,10 +194,10 @@ function Example() {
                 return (
                     <tr key={index}>
 
-                        <td className="text-xs ">{item.concierto }</td>
+                        <td className="text-xs ">{item.concierto}</td>
                         <td className="text-xs text-center ">#{item.sillas.padStart(10, 0)}</td>
-                        <td className="text-xs text-center">{ item.localidad}</td>
-                        <td className="text-xs text-center">{item.fechaCreacion }</td>
+                        <td className="text-xs text-center">{item.localidad}</td>
+                        <td className="text-xs text-center">{item.fechaCreacion}</td>
                         <td className="text-xs text-center">
                             <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
@@ -270,11 +271,67 @@ function Example() {
     const hideAlert = () => {
         setAlert(null)
     }
+    const theads = () => {
+        return (
+            <thead className="">
+                <tr className="border ">
+                    <th  >#</th>
+                    <th  >Concierto</th>
+                    <th className="text-xs text-center"  >Boletos</th>
+                    <th className="text-xs text-center"  >Cédulas</th>
+                    <th className="text-xs text-center">Fecha</th>
+                    <th className="text-center"> Aciones</th>
+                </tr>
+            </thead>
+        )
+    }
+    const ShowFoder = () => {
+        try {
+            return tikesele.map((item, index) => {
+
+                return (
+                    <tr key={index}>
+                        <td className="text-xs text-center">{item.id}</td>
+                        <td className="text-xs text-center">{item.observacion}</td>
+                        <td className="text-xs text-center">Boletos terceros</td>
+                        <td className="text-xs text-center ">{item.cedula}</td>
+                        <td className="text-xs text-center">{moment(item.fecha).format('L')}</td>
+                        <td className="text-center ">
+                            <div className=" btn-group  " >
+                                <Tooltip className="" title="Ver Compra" placement="top">
+                                    <a
+                                        className="btn btn-default-su btn-sm text-danger"
+                                        href={item.link_external}
+                                        target="_blank"
+                                    >
+                                        <i className="fa fa-print"></i>
+                                    </a>
+                                </Tooltip>
+                            </div>
+
+                        </td>
+
+                    </tr>
+                )
+            });
+        } catch (error) { }
+    }
 
     function Pagar() {
-        let valor = Object.keys(rowSelection).length > 0 ? tiketslist.find(e => e.codigoEvento == Object.keys(rowSelection)[0]).detalle : ''
-
-        //s console.log(valor)
+        let valor = Object.keys(rowSelection).length > 0 ? tiketslist.find(e => e.codigoEvento == Object.keys(rowSelection)[0]).detalle : ''        //s console.log(valor)
+    }
+    const Listarfaci = async (parms) => {
+        try {
+            let { data } = await axios.post("https://rec.netbot.ec/ms_login/get_link_external_tickets", parms, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                }
+            })
+            return data
+        } catch (error) {
+            return error
+        }
     }
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
@@ -283,11 +340,20 @@ function Example() {
             if (!ouput.success) {
                 return
             }
-            setTikes(ouput.data)
+            setTikes(ouput.data.filter(e => e.canje != "CANJEADO"))
             //console.log(ouput.data.filter(e => e.canje != "CANJEADO"))
         }).catch(err => console.log(err))
-    },
-        [])
+
+        Listarfaci({ "cedula": user.cedula }).then(ouput => {
+            if (ouput.success) {
+                console.log(ouput)
+                setTicket([...ouput.data])
+            }
+            console.log(ouput)
+        }).catch(err => {
+            console.log(err)
+        })
+    }, [])
     function suma(item) {
         let tikets = tiketslist.find(e => e.codigoEvento == item).detalle.map((f) => { return parseFloat(f.valor) })
         try {
@@ -312,6 +378,7 @@ function Example() {
                     <Tab label="Reportar Compras" {...a11yProps(1)} />
                     <Tab className="d-none" label="Tickets" {...a11yProps(0)} />
                     <Tab className="" label="Tickets "{...a11yProps(2)} />
+                    <Tab className="" label="Otras compras  "{...a11yProps(3)} />
 
                 </Tabs>
 
@@ -413,6 +480,15 @@ function Example() {
                             showDatos={showDatos}
                             Titel={"nuevo"}
                         />
+                    </TabPanel>
+                    <TabPanel value={value} index={3}>
+                        <TablasViwe
+                            number={3}
+                            thead={theads}
+                            showDatos={ShowFoder}
+                            Titel={"OTROS TICKTES"}
+                        />
+
                     </TabPanel>
 
                 </div>
