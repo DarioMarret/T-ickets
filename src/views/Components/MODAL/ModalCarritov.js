@@ -738,10 +738,10 @@ const ModalCarritoView = (prop) => {
                                             precios.precios.sort((a, b) => (a.precio_normal > b.precio_normal ? 1 : -1) &&  a.id < b.id ? 1 : -1).map((elm, i) => {
                                                 return (
                                                     <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
-                                                        <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 10, width: 10, backgroundColor: elm.color }}></div>
+                                                        <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: elm.color }}></div>
                                                         <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '160px' }} >
-                                                            <span className="" style={{ fontFamily: '', fontSize: '0.8em' }} >{elm.localidad} </span>
-                                                            <span className="pl-1" style={{ fontFamily: '', fontSize: '0.8em' }} >${elm.precio_normal} </span>
+                                                            <span className="" style={{ fontFamily: '', fontSize: '1.11em' }} >{elm.localidad} </span>
+                                                            <span className="pl-1" style={{ fontFamily: '', fontSize: '1.11em' }} >${elm.precio_normal} </span>
                                                         </div>
                                                     </div>
                                                 )

@@ -29,10 +29,11 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                 console.log(ouput[0].token_ocupadas)
                 Pagartickt(ouput[0].token_ocupadas, ouput[0].total).then(salida => {
                     console.log(salida[0].estado, salida[0].link_factura)
+                    $.alert("" + salida[0].estado);
                     var win = window.open(salida[0].link_factura, '_blank');
                     // Cambiar el foco al nuevo tab (punto opcional)
                     win.focus();
-                    $.alert("" + JSON.stringify(salida));
+                  //$.alert("" + salida[0].link_factura);
                 }).catch(err => {
                     console.log(err)
                 })
