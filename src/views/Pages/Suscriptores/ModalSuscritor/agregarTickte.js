@@ -20,6 +20,11 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
     }
     function Summit() {
         console.log(info)
+        if (Object.values(info).some(e => e == "")) {
+            $.alert("Agrega los datos faltantes");
+            
+            return
+        }
         Reserva().then(ouput => {
             console.log(ouput)
             if (ouput[0].token_ocupadas.includes("solicita")) {
@@ -31,7 +36,11 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                     console.log(salida[0].estado, salida[0].link_factura)
                     $.alert("" + salida[0].estado);
                     var win = window.open(salida[0].link_factura, '_blank');
+                    if (salida[0].link_factura!= undefined){
+                        return
+                    }
                     // Cambiar el foco al nuevo tab (punto opcional)
+                    setshows(false)
                     win.focus();
                   //$.alert("" + salida[0].link_factura);
                 }).catch(err => {
@@ -59,7 +68,14 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
         } catch (error) {
             return error
         }
-
+    }
+    const Endpoitnuevo = async ()=>{
+        try {
+            let {data} = await axios.get("")
+            return data
+        } catch (error) {
+            return error
+        }
     }
 
 
@@ -70,6 +86,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                 onHide={() => setshows(false)}
             >
                 <Modal.Header>
+                    <h5 className="modal-title text-center py-3 justify-content-center">Agregar Urban </h5>  
                     <button className="close" onClick={() => setshows(false)}>X</button>
                 </Modal.Header>
                 <Modal.Body>
@@ -79,7 +96,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                                 <div className="col-md-12 d-flex justify-content-center">
                                     <div className="input-group mb-3">
                                         <div className="input-group-prepend">
-                                            <span className="input-group-text"><i className="fas fa-search"></i></span>
+                                            <span className="input-group-text"><i className="fas fa-map"></i></span>
                                         </div>
                                         <select className=" form-select" name="localidad" id="localidad"
                                             onChange={(e) => handelchnge(e.target)}
@@ -115,7 +132,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                                 <div className="col-md-12 d-flex justify-content-center">
                                     <div className="input-group mb-3">
                                         <div className="input-group-prepend">
-                                            <span className="input-group-text"><i className="fas fa-search"></i></span>
+                                            <span className="input-group-text"><i className="fas fa-money"></i></span>
                                         </div>
                                         <select className=" form-select" name="metodo" id="metodo"
                                             onChange={(e) => handelchnge(e.target)}
@@ -125,13 +142,10 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                                                 Seleccione froma de pago
                                             </option>
                                             <option value="1">
-                                                Efectivo
-                                            </option>
-                                            <option value="2">
                                                 Tarjeta
                                             </option>
                                             <option value="3">
-                                                Deposito
+                                                Transferencia
                                             </option>
 
                                         </select>
@@ -140,7 +154,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                                 <div className="col-md-12 d-flex justify-content-center">
                                     <div className="input-group mb-3">
                                         <div className="input-group-prepend">
-                                            <span className="input-group-text"><i className="fas fa-search"></i></span>
+                                            <span className="input-group-text"><i className="fas fa-plus"></i></span>
                                         </div>
                                         <input
                                             id="cantidad"

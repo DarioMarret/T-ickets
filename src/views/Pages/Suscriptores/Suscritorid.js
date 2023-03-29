@@ -570,7 +570,9 @@ const SuscritoridView = () => {
               </span>
               Editar
             </Button>
-            <Button className=""
+            <Button className="btn btn-wd btn-outline mr-1"
+              type="button"
+              variant="outline-warning"
               onClick={() => setshowdos(true)}
             >Ticktefacil</Button>
             <Button className="btn-wd btn-outline mr-1"
