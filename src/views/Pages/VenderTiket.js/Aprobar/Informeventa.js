@@ -85,7 +85,169 @@ export default function InformeView() {
     const hideAlert = () => {
         setAlert(null)
     }
+    const ListaPrecios = async () => {
+        const info = await ListaPreciosEvent();
+        //   console.log(info)
+        ListaPrecio()
+        return info
+    }
+    useEffect(() => {
+        ListaPrecios()
+        if (errorPubli != undefined) {
+            return
+        }
+        // LocalidadPrecio()
+        //console.log(publici.data) 
+        //   ListaPrecio()
+        console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"))
 
+        ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+            console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
+            if (!e.success) {
+                usedispatch(setToastes({
+                    show: true,
+                    message: e.message,
+                    color: 'bg-warning',
+                    estado: "Todos ocupados"
+                }))
+                return
+            }
+            if (e.data) {
+                let newdatos = e.data.map(row => {
+                    let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
+                    let valor = JSON.parse(row.info_concierto).map(e => {
+                        return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
+                    }).reduce((a, b) => a + b, 0)
+                    let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                    row.Valortotal = parseFloat(valor)
+                    row.cantidad = cantida
+                    row.concierto = nombre[0]
+                    return { ...row }
+                })//.filter(e => e.forma_pago =="Deposito")
+                sessionStorage.setItem("datoscompras", JSON.stringify(newdatos))
+                console.log(newdatos)
+                let nuevosValores = []
+                let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
+                let arayReallocalidad = []
+                newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                    JSON.parse(elm.info_concierto).map(loc => {
+                        // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
+                        arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
+                    })
+                })
+                let arrayIndividual = []
+                // console.log(consulat)
+                // console.log(arayReallocalidad)
+                arayReallocalidad.forEach(elm => {
+                    if (arrayIndividual.some(e => e.id == elm.id)) {
+                        let dat = arrayIndividual.findIndex(e => e.id == elm.id)
+                        let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
+                        arrayIndividual[dat].cantidad = tota
+                    }
+                    else {
+                        arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
+                    }
+                })
+                //console.log(arrayIndividual)
+                let datos = arrayIndividual.map(f => {
+                    return [f.localidad, f.evento, parseInt(f.cantidad)]
+                })
+                setDatas([
+                    ["Localida", "evento", "ganancias"],
+                    ...datos
+                ])
+
+                let nuevo = arrayIndividual.map(f => {
+                    return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
+                })
+                setDts([
+                    ["Localidad", "evento", "cantidad", "precio"],
+                    ...nuevo
+                ])
+                usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
+                let order = newdatos.sort(sorter)
+                setTikes(order)
+                usedispatch(setCompras({ compras: order }))
+                return
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+        /* listarRegistropanel({ "cedula": "" }).then(e => {
+             if(!e.success){
+                 usedispatch(setToastes({
+                     show: true,
+                     message: e.message,
+                     color: 'bg-warning',
+                     estado: "Todos ocupados"
+                 }))
+                 return
+             }           
+             if (e.data) {
+                 let newdatos = e.data.map(row => {
+                     let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
+                     let valor = JSON.parse(row.info_concierto).map(e => {
+                         return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
+                     }).reduce((a, b) => a + b, 0)
+                     let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                     row.Valortotal = parseFloat(valor)
+                     row.cantidad = cantida
+                     row.concierto = nombre[0]
+                     return { ...row }
+                 })//.filter(e => e.forma_pago =="Deposito")
+                 sessionStorage.setItem("datoscompras",JSON.stringify(newdatos))
+                 console.log(newdatos)
+                 let nuevosValores = []
+                 let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                 let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
+                 let arayReallocalidad = []
+                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                     JSON.parse(elm.info_concierto).map(loc => {
+                        // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
+                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
+                     })
+                 })
+                 let arrayIndividual = []
+                 console.log(consulat)
+                 console.log(arayReallocalidad)
+                 arayReallocalidad.forEach(elm => {
+                     if (arrayIndividual.some(e => e.id == elm.id)) {
+                         let dat = arrayIndividual.findIndex(e => e.id == elm.id)
+                         let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
+                         arrayIndividual[dat].cantidad = tota
+                     }
+                     else {
+                         arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
+                     }
+                 })
+                 console.log(arrayIndividual)
+                 let datos = arrayIndividual.map(f => {
+                     return [f.localidad, f.evento, parseInt(f.cantidad)]
+                 })
+                 setDatas([
+                     ["Localida", "evento", "ganancias"],
+                     ...datos
+                 ])
+ 
+                 let nuevo = arrayIndividual.map(f => {
+                     return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
+                 })
+                 setDts([
+                     ["Localidad", "evento", "cantidad", "precio"],
+                     ...nuevo
+                 ])
+                 usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
+                 let order = newdatos.sort(sorter)
+                 setTikes(order)
+                 usedispatch(setCompras({ compras: order }))
+                 return
+             }
+         }).catch(err => {
+             console.log(err)
+         })*/
+    },
+        [states])
     let precio = {
         1: 20,
         2: 30,
@@ -338,177 +500,10 @@ export default function InformeView() {
 
         return info
     }
-    let user = [52,53,54]
-    useEffect(() => {
-        if (errorPubli != undefined) {
-            return
-        }
-        // LocalidadPrecio()
-        //console.log(publici.data) 
-        //   ListaPrecio()
-        console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"))
 
-        ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
-            console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
-            if (!e.success) {
-                usedispatch(setToastes({
-                    show: true,
-                    message: e.message,
-                    color: 'bg-warning',
-                    estado: "Todos ocupados"
-                }))
-                return
-            }
-            if (e.data) {
-                let newdatos = clienteInfo().perfil =="vendedores"? e.data.map(row => {
-                    let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-                    let valor = JSON.parse(row.info_concierto).map(e => {
-                        return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
-                    }).reduce((a, b) => a + b, 0)
-                    let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                    row.Valortotal = parseFloat(valor)
-                    row.cantidad = cantida
-                    row.concierto = nombre[0]
-                    return { ...row }
-                }).filter(e => e.id_usuario == clienteInfo().id)
-                    : e.data.map(row => {
-                        let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-                        let valor = JSON.parse(row.info_concierto).map(e => {
-                            return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
-                        }).reduce((a, b) => a + b, 0)
-                        let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                        row.Valortotal = parseFloat(valor)
-                        row.cantidad = cantida
-                        row.concierto = nombre[0]
-                        return { ...row }
-                    })
-                sessionStorage.setItem("datoscompras", JSON.stringify(newdatos))
-                console.log(newdatos)
-                let nuevosValores = []
-                let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
-                let arayReallocalidad = []
-                newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                    JSON.parse(elm.info_concierto).map(loc => {
-                        // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                        arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-                    })
-                })
-                let arrayIndividual = []
-                // console.log(consulat)
-                // console.log(arayReallocalidad)
-                arayReallocalidad.forEach(elm => {
-                    if (arrayIndividual.some(e => e.id == elm.id)) {
-                        let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                        let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
-                        arrayIndividual[dat].cantidad = tota
-                    }
-                    else {
-                        arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
-                    }
-                })
-                //console.log(arrayIndividual)
-                let datos = arrayIndividual.map(f => {
-                    return [f.localidad, f.evento, parseInt(f.cantidad)]
-                })
-                setDatas([
-                    ["Localida", "evento", "ganancias"],
-                    ...datos
-                ])
-
-                let nuevo = arrayIndividual.map(f => {
-                    return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
-                })
-                setDts([
-                    ["Localidad", "evento", "cantidad", "precio"],
-                    ...nuevo
-                ])
-                usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
-                let order = newdatos.sort(sorter)
-                setTikes(order)
-                usedispatch(setCompras({ compras: order }))
-                return
-            }
-        }).catch(err => {
-            console.log(err)
-        })
-        /* listarRegistropanel({ "cedula": "" }).then(e => {
-             if(!e.success){
-                 usedispatch(setToastes({
-                     show: true,
-                     message: e.message,
-                     color: 'bg-warning',
-                     estado: "Todos ocupados"
-                 }))
-                 return
-             }           
-             if (e.data) {
-                 let newdatos = e.data.map(row => {
-                     let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-                     let valor = JSON.parse(row.info_concierto).map(e => {
-                         return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
-                     }).reduce((a, b) => a + b, 0)
-                     let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                     row.Valortotal = parseFloat(valor)
-                     row.cantidad = cantida
-                     row.concierto = nombre[0]
-                     return { ...row }
-                 })//.filter(e => e.forma_pago =="Deposito")
-                 sessionStorage.setItem("datoscompras",JSON.stringify(newdatos))
-                 console.log(newdatos)
-                 let nuevosValores = []
-                 let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                 let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
-                 let arayReallocalidad = []
-                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                     JSON.parse(elm.info_concierto).map(loc => {
-                        // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-                     })
-                 })
-                 let arrayIndividual = []
-                 console.log(consulat)
-                 console.log(arayReallocalidad)
-                 arayReallocalidad.forEach(elm => {
-                     if (arrayIndividual.some(e => e.id == elm.id)) {
-                         let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                         let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
-                         arrayIndividual[dat].cantidad = tota
-                     }
-                     else {
-                         arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
-                     }
-                 })
-                 console.log(arrayIndividual)
-                 let datos = arrayIndividual.map(f => {
-                     return [f.localidad, f.evento, parseInt(f.cantidad)]
-                 })
-                 setDatas([
-                     ["Localida", "evento", "ganancias"],
-                     ...datos
-                 ])
- 
-                 let nuevo = arrayIndividual.map(f => {
-                     return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
-                 })
-                 setDts([
-                     ["Localidad", "evento", "cantidad", "precio"],
-                     ...nuevo
-                 ])
-                 usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
-                 let order = newdatos.sort(sorter)
-                 setTikes(order)
-                 usedispatch(setCompras({ compras: order }))
-                 return
-             }
-         }).catch(err => {
-             console.log(err)
-         })*/
-    },
-        [states])
 
     const Deliminarregistro = (parms) => {
-        console.log(parms)
+        console.log(parms.id)
 
         $.confirm({
             title: 'Desea eliminar Este registro de compra ',
@@ -520,60 +515,60 @@ export default function InformeView() {
                     text: 'Eliminar',
                     btnClass: 'btn-red',
                     action: function () {
+                        console.log(parms.id)
                         eliminarRegistro({ "id": parms.id }).then(ouput => {
                             console.log(ouput)
                             console.log(parms.id)
                             if (!ouput.success) { return $.alert("" + ouput.message) }
-                            listarRegistropanel({ "cedula": "" }).then(e => {
-                                // console.log(e)
+                            ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+                                console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
+                                if (!e.success) {
+                                    usedispatch(setToastes({
+                                        show: true,
+                                        message: e.message,
+                                        color: 'bg-warning',
+                                        estado: "Todos ocupados"
+                                    }))
+                                    return
+                                }
                                 if (e.data) {
                                     let newdatos = e.data.map(row => {
                                         let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-                                        let valor = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                                        let valor = JSON.parse(row.info_concierto).map(e => {
+                                            return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
+                                        }).reduce((a, b) => a + b, 0)
                                         let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                                         row.Valortotal = parseFloat(valor)
                                         row.cantidad = cantida
                                         row.concierto = nombre[0]
                                         return { ...row }
-                                    })//.filter(e => e.forma_pago =="Efectivo-Local")
+                                    })//.filter(e => e.forma_pago =="Deposito")
+                                    sessionStorage.setItem("datoscompras", JSON.stringify(newdatos))
                                     console.log(newdatos)
                                     let nuevosValores = []
                                     let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-
                                     let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
                                     let arayReallocalidad = []
                                     newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                                         JSON.parse(elm.info_concierto).map(loc => {
-
-                                            // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-                                            // arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: Eventos[loc.id_localidad] })
-
+                                            // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
                                             arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-
-                                            /*  if (parseInt(loc.id_localidad) == 10) {
-                                                  nuevosValores.push(loc.id_localidad, loc.nombreConcierto, elm.cedula)
-                                              }*/
                                         })
-
                                     })
-                                    //  console.log(nuevosValores)
                                     let arrayIndividual = []
-                                    console.log(consulat)
-                                    console.log(arayReallocalidad)
+                                    // console.log(consulat)
+                                    // console.log(arayReallocalidad)
                                     arayReallocalidad.forEach(elm => {
                                         if (arrayIndividual.some(e => e.id == elm.id)) {
                                             let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                                            //  let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.precio)
                                             let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
                                             arrayIndividual[dat].cantidad = tota
                                         }
                                         else {
-                                            //    arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.precio })
-                                            arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad })
+                                            arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
                                         }
-
                                     })
-                                    console.log(arrayIndividual)
+                                    //console.log(arrayIndividual)
                                     let datos = arrayIndividual.map(f => {
                                         return [f.localidad, f.evento, parseInt(f.cantidad)]
                                     })
@@ -581,13 +576,20 @@ export default function InformeView() {
                                         ["Localida", "evento", "ganancias"],
                                         ...datos
                                     ])
+
+                                    let nuevo = arrayIndividual.map(f => {
+                                        return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
+                                    })
+                                    setDts([
+                                        ["Localidad", "evento", "cantidad", "precio"],
+                                        ...nuevo
+                                    ])
                                     usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
                                     let order = newdatos.sort(sorter)
                                     setTikes(order)
                                     usedispatch(setCompras({ compras: order }))
                                     return
                                 }
-                                //setTikes([])
                             }).catch(err => {
                                 console.log(err)
                             })
@@ -625,7 +627,6 @@ export default function InformeView() {
         //  console.log(e)
         sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
         history.push("/admin/Reporte/" + e.id)
-
     }
     function detalledos(e) {
         history.push("/admin/Aprobar/" + e.cedula)
@@ -658,6 +659,7 @@ export default function InformeView() {
         }
     ]);
 
+
     const [locale, setLocale] = React.useState('es');
     const label = {
         0: "Hoy",
@@ -671,45 +673,11 @@ export default function InformeView() {
         0: "Días hasta hoy",
         1: "Días a partir de hoy"
     }
-
+    let [fitro, setFiltro] = useState("")
     defaultInputRanges.map((e, i) => {
         e.label = labels[i]
         return { ...e }
     })
-    const thead = () => {
-        return (
-            <thead className="">
-                <tr className="border ">
-                    <th >Evento</th>
-                    <th className="text-xs text-center"  >Fecha</th>
-                    <th className="text-xs text-center" >Cédula</th>
-                    <th className="text-xs text-center">Estado</th>   
-                    <th className="text-xs text-center">valor</th>    
-                    <th className="text-xs text-center">nuevo</th>           
-                </tr>
-            </thead>
-        )
-
-    }
-    const showDatos = () => {
-        try {
-            return tiketslist.map((item, index) => {
-
-                return (
-                    <tr key={index}>
-
-                        <td className="text-xs ">{JSON.parse(item.info_concierto)[0]["nombreConcierto"]}</td>
-                        <td className="text-xs text-center ">{item.fechaCreacion}</td>
-                        <td className="text-xs text-center">{item.cedula}</td>                       
-                        <td className="text-xs text-center">{item.estado_pago}</td>   
-                        <td className="text-xs text-center">{item.total_pago}</td>   
-                        <td className="text-xs text-center">{item.forma_pago}</td>                     
-
-                    </tr>
-                )
-            });
-        } catch (error) { }
-    }
     return (
         <>
             {alert}
@@ -770,83 +738,116 @@ export default function InformeView() {
                 </div>
             </div>
             <div className=" container row"  >
-
-
-
             </div>
-            <div className="container d-flex flex-wrap">
-                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagado").map(f => {
+            {tiketslist.length > 0 ? <div className="container d-flex flex-wrap">
+                {tiketslist.filter(e => e.estado_pago == "Pagado").length > 0 ? <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagado").map(f => {
                     return {
-                       
+                        ID_Registro: f.id,
+                        ID_USUARIO: f.id_usuario,
                         EVENTO: f.concierto,
                         CEDULA: f.cedula,
                         METODO: f.forma_pago,
-                        CANTIDAD: f.cantidad,
+
                         TOTAL_COMISION: f.Valortotal,
                         MEDIO: f.detalle,
                         TOTAL: f.total_pago,
+                        CREO: f.info_registro.length > 0 ? f.info_registro[0].name : "",
+                        TIPO: f.info_registro.length > 0 ? f.info_registro[0].title : "",
                         CREACION: f.fechaCreacion,
-                        ESTADO: f.estado_pago
+                        ESTADO: f.estado_pago,
+                        Cosiliacion: f.consolidado,
+                        PAGOMEDIO_LINK: f.link_pago,
+                        COMPROBANTE_LINK: f.link_comprobante,
+                        NumerTransacion: f.numerTransacion
                     }
-                })} fileName={"Registros Pagados"} label={"Pagados"} />
-                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pendiente").map(f => {
-                    return {
-                        
-                        EVENTO: f.concierto,
-                        CEDULA: f.cedula,
-                        METODO: f.forma_pago,
-                        CANTIDAD: f.cantidad,
-                        TOTAL_COMISION: f.Valortotal,
-                        MEDIO: f.detalle,
-                        TOTAL: f.total_pago,
-                        CREACION: f.fechaCreacion,
-                        ESTADO: f.estado_pago
-                    }
-                })} fileName={"Registros Pendientes"} label={"Pendientes"} />
-                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Expirado").map(f => {
-                    return {
-                       
-                        
-                        EVENTO: f.concierto,
-                        CEDULA: f.cedula,
-                        METODO: f.forma_pago,
-                        CANTIDAD: f.cantidad,
-                        TOTAL_COMISION: f.Valortotal,
-                        MEDIO: f.detalle,
-                        TOTAL: f.total_pago,
-                        CREACION: f.fechaCreacion,
-                        ESTADO: f.estado_pago
-                    }
-                })} fileName={"Registros Expirados"} label={"Expirados"} />
-                <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Comprobar").map(f => {
-                    return {
-                        
-                        
-                        EVENTO: f.concierto,
-                        CEDULA: f.cedula,
-                        METODO: f.forma_pago,
-                        CANTIDAD: f.cantidad,
-                        TOTAL_COMISION: f.Valortotal,
-                        MEDIO: f.detalle,
-                        TOTAL: f.total_pago,
-                        CREACION: f.fechaCreacion,
-                        ESTADO: f.estado_pago
-                    }
-                })} fileName={"Registros Comprobar"} label={"Comprobar"} />
-            </div>
-            <div className="" style={{ minHeight: '250px' }} >
+                })} fileName={"Todos Pagados"} label={"Pagados"} />
+                    : ""
+                }
+                {
+                    tiketslist.filter(e => e.estado_pago == "Pendiente").length > 0 ?
+                        <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pendiente").map(f => {
+                            return {
+                                ID_Registro: f.id,
+                                ID_USUARIO: f.id_usuario,
+                                EVENTO: f.concierto,
+                                CEDULA: f.cedula,
+                                METODO: f.forma_pago,
+
+                                TOTAL_COMISION: f.Valortotal,
+                                MEDIO: f.detalle,
+                                TOTAL: f.total_pago,
+                                CREO: f.info_registro.length > 0 ? f.info_registro[0].name : "",
+                                TIPO: f.info_registro.length > 0 ? f.info_registro[0].title : "",
+                                CREACION: f.fechaCreacion,
+                                ESTADO: f.estado_pago,
+                                PAGOMEDIO_LINK: f.link_pago,
+                                COMPROBANTE_LINK: f.link_comprobante,
+                                NumerTransacion: f.numerTransacion
+                            }
+                        })} fileName={"Todos Pendientes"} label={"Pendientes"} /> : ""
+                }
+                {
+                    tiketslist.filter(e => e.estado_pago == "Expirado").length > 0 ?
+                        <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Expirado").map(f => {
+                            return {
+                                ID_Registro: f.id,
+                                ID_USUARIO: f.id_usuario,
+                                EVENTO: f.concierto,
+                                CEDULA: f.cedula,
+                                METODO: f.forma_pago,
+
+                                TOTAL_COMISION: f.Valortotal,
+                                MEDIO: f.detalle,
+                                TOTAL: f.total_pago.replace(".", ","),
+                                CREO: f.info_registro.length > 0 ? f.info_registro[0].name : "",
+                                TIPO: f.info_registro.length > 0 ? f.info_registro[0].title : "",
+                                CREACION: f.fechaCreacion,
+                                ESTADO: f.estado_pago,
+                                PAGOMEDIO_LINK: f.link_pago,
+                                COMPROBANTE_LINK: f.link_comprobante,
+                                NumerTransacion: f.numerTransacion
+                            }
+                        })} fileName={"Todos Expirados"} label={"Expirados"} /> :
+                        ""}
+                {tiketslist.filter(e => e.estado_pago == "Comprobar").length > 0 ?
+                    <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Comprobar").map(f => {
+                        return {
+                            ID_Registro: f.id,
+                            ID_USUARIO: f.id_usuario,
+                            EVENTO: f.concierto,
+                            CEDULA: f.cedula,
+                            METODO: f.forma_pago,
+                            CANTIDAD: f.cantidad,
+                            TOTAL_COMISION: f.Valortotal,
+                            MEDIO: f.detalle,
+                            TOTAL: f.total_pago,
+                            CREO: f.info_registro.length > 0 ? f.info_registro[0].name : "",
+                            TIPO: f.info_registro.length > 0 ? f.info_registro[0].title : "",
+                            CREACION: f.fechaCreacion,
+                            ESTADO: f.estado_pago,
+                            PAGOMEDIO_LINK: f.link_pago,
+                            COMPROBANTE_LINK: f.link_comprobante,
+                            NumerTransacion: f.numerTransacion
+                        }
+                    })} fileName={"Todos Comprobar"} label={"Comprobar"} /> :
+                    ""}
+                <ExportToExcel
+                    apiData={dtos}
+                    fileName={"Todos Eventos"}
+                    label={"Cantidad"}
+                />
+            </div> : ""}
+            <div className="   " style={{ minHeight: '250px' }} >
                 <div className='container-fluid  p-0'>
                     <Tabs value={value} onChange={handleChange}
                         variant="scrollable"
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
                     >
-                        <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length} {...a11yProps(0)} />
+                        <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length + " Cons " + tiketslist.filter(e => e.estado_pago == "Pagado").filter(f => f.consolidado == "Consolidado").length} {...a11yProps(0)} />
                         <Tab label={"Reportes Pendientes: " + tiketslist.filter(e => e.estado_pago == "Pendiente").length}{...a11yProps(1)} />
                         <Tab label={"Reportes expirado: " + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(2)} />
                         <Tab label={"Reportes comprobar: " + tiketslist.filter(e => e.estado_pago == "Comprobar").length} {...a11yProps(3)} />
-
-
                     </Tabs>
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">
@@ -1086,15 +1087,7 @@ export default function InformeView() {
 
             </div>
 
-            <div className="container d-none">
-                {tiketslist.length > 0 ? 
-                <Tablasespo
-                    number={5}
-                    thead={thead}
-                    showDatos={showDatos}
-                    Titel={"nuevo"}
-                />:""}
-            </div>
+            
         </>
     );
 }

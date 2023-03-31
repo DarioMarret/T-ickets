@@ -254,21 +254,6 @@ export const listaRegistro = [
         accessorKey: "forma_pago",
         header: "Metodo",
         size: 50
-    },
-    {
-        accessorKey: "info_concierto",
-        header: "Total boletos",
-        Cell: ({ cell }) => (
-            <div>
-                {
-                    !clienteInfo() ? parseFloat(cantidad(cell.row.original)) : parseFloat(quitacomision(cell.row.original)).toFixed(0) + ".00"
-                }
-            </div>
-
-
-
-        ),
-        size: 50
     }
 ]
 
@@ -375,10 +360,6 @@ export const listaRegistrototal = [
         size: 50
     },
     {
-        accessorKey: "cantidad",
-        header: "Cantidad",
-        size: 20
-    },{
         accessorKey:"numerTransacion",
         header:"Comprobante",
         size:25

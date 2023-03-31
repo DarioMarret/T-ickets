@@ -751,7 +751,7 @@ export default function AprobarView() {
                         EVENTO: f.concierto,
                         CEDULA: f.cedula,
                         METODO: f.forma_pago,
-                        CANTIDAD: f.cantidad,
+                        
                         TOTAL_COMISION: f.Valortotal,
                         MEDIO: f.detalle,
                         TOTAL: f.total_pago,
@@ -776,7 +776,7 @@ export default function AprobarView() {
                                 EVENTO: f.concierto,
                                 CEDULA: f.cedula,
                                 METODO: f.forma_pago,
-                                CANTIDAD: f.cantidad,
+                               
                                 TOTAL_COMISION: f.Valortotal,
                                 MEDIO: f.detalle,
                                 TOTAL: f.total_pago,
@@ -799,7 +799,7 @@ export default function AprobarView() {
                                 EVENTO: f.concierto,
                                 CEDULA: f.cedula,
                                 METODO: f.forma_pago,
-                                CANTIDAD: f.cantidad,
+                               
                                 TOTAL_COMISION: f.Valortotal,
                                 MEDIO: f.detalle,
                                 TOTAL: f.total_pago.replace(".",","),
@@ -1058,13 +1058,25 @@ export default function AprobarView() {
                                             title="Comprobar" placement="top"
                                         >
                                             <IconButton
-                                                color="error"
+                                                color="success"
                                                 onClick={() => detalle(row.original)}
                                             >
                                                 <Visibility />
                                             </IconButton>
                                         </Tooltip>
+                                        <Tooltip
+                                            title="Borrar"
+                                            placement="top"
 
+                                        >
+                                            <IconButton
+                                                onClick={() => Deliminarregistro(row.original)}
+                                                color="error">
+                                                <Delete />
+                                            </IconButton>
+
+
+                                        </Tooltip>
 
                                     </Box>
                                 )}
