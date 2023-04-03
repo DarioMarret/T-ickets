@@ -54,6 +54,17 @@ export const PagoRapido = async (transaccion) => {
 
     }
 }
+
+/** OCRAPI */
+export const OCRApi = async(parms)=>{
+    try {
+        let { data } = await axios.post("https://api.t-ickets.com/ocr/api/v1/ocr_space",parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
 /** Listar todos los reportes de tickes */
 export const AprobarTiket = async () => {
     try {

@@ -775,7 +775,7 @@ const ModalCarritoView = (prop) => {
                                     Tarjeta-credito
                                 </label>
                             </div>
-                            {clienteInfo() == null ?
+                            {clienteInfo() == null && fechava ?
                                 <div className="form-check">
                                     <input className="form-check-input" type="radio"
                                         checked={checked.Transferencia == "Transferencia" ? true : false}
@@ -861,7 +861,7 @@ const ModalCarritoView = (prop) => {
                     <div className="d-flex  mx-sm-auto   ">
                         <div className=" text-center ">
                             <div className="py-1 d-none" >
-                                <div class="input-group">
+                                <div className="input-group">
                                 <input className=" form-control-sm " placeholder="Código Barcelona"></input>
                                 <button className="btn  btn-primary"> <i className=" "></i></button>
                                 </div>

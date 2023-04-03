@@ -18,6 +18,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
             [e.name]: e.value
         })
     }
+    let [spiner,setSpiner]= useState(false);
     function Summit() {
         console.log(info)
         if (Object.values(info).some(e => e == "")) {
@@ -25,10 +26,12 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
 
             return
         }
+        setSpiner(true)
         Reserva().then(ouput => {
             console.log(ouput)
             if (ouput[0].token_ocupadas.includes("solicita")) {
                 $.alert("Localidad Agotada" + ouput[0].token_ocupadas);
+                setSpiner(false)
                 return
             }
             console.log(ouput[0].token_ocupadas)
@@ -54,6 +57,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                 //$.alert("" + salida[0].link_factura);
             }).catch(err => {
                 console.log(err)
+                setSpiner(true)
             })
 
 
@@ -63,7 +67,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
     }
     const Reserva = async () => {
         try {
-            let { data } = await axios.get("https://www.ticketfacil.ec/ticket2prueba/ticket/ajax.pventa.php?api_wts=ticketfacil_api&action=get&typedata=evento_valores&data=1102||" + info.localidad + "||" + info.metodo + "||" + info.cantidad + "")
+            let { data } = await axios.get("https://server1.ticketfacil.ec/ticket2/ajax.pventa.php?api_wts=ticketfacil_api&action=get&typedata=evento_valores&data=1102||" + info.localidad + "||" + info.metodo + "||" + info.cantidad + "")
 
             return data
         } catch (error) {
@@ -289,7 +293,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                         <div className="d-flex flex-wrap  justify-content-end ">
 
 
-                            <button className="btn btn-success float-right" onClick={Summit} >Agregar</button>
+                            {!spiner?  <button className="btn btn-success float-right" onClick={Summit} >Agregar</button>:""}
 
 
                         </div>

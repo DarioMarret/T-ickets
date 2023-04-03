@@ -551,9 +551,9 @@ const SuscritoridView = () => {
       //console.log(ouput)
       if (ouput.success) {
       let datos = ouput.data.map(row => {
-        let valor = JSON.parse(row.info_concierto).map(e => { return  LocalidadPrecio(e.idespaciolocalida, e.id_localidad)
+        let valor = row.info_concierto.map(e => { return  LocalidadPrecio(e.idespaciolocalida, e.id_localidad)
        }).reduce((a, b) => a + b, 0)
-        let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+        let cantida = row.info_concierto.map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
         row.Valortotal = parseFloat(valor)
         row.cantidad = cantida
         return { ...row }

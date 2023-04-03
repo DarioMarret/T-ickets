@@ -13,6 +13,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { registraPagos } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { cambiarMetodo } from "utils/pagos/Queripagos";
+import { OCRApi } from "utils/Querycomnet";
 const ModalConfima = (prop) => {
     const { pararcontador } = prop
     let usedispatch = useDispatch()
@@ -108,10 +109,10 @@ const ModalConfima = (prop) => {
     async function onSubmit(e) {
         e.preventDefault();
         // console.log(comproba.numeroTransaccion.trim().length < 3)
-        if (comproba.numeroTransaccion.trim().length <= 3) {
+        /*if (comproba.numeroTransaccion.trim().length <= 3) {
             usedispatch(setToastes({ show: true, message: 'complete toda la información del número del recibo', color: 'bg-danger', estado: 'Datos vacios' }))
             return
-        }
+        }*/
 
         if (comproba.banco == "") {
             usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
@@ -121,48 +122,70 @@ const ModalConfima = (prop) => {
             usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del Comprobante', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        if (isNaN(comproba.numeroTransaccion.trim()) || !clienteInfo() == null) {
+       /* if (isNaN(comproba.numeroTransaccion.trim()) || !clienteInfo() == null) {
             usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobantes ', color: 'bg-danger', estado: 'Datos vacios' }))
             return
-        }
-        else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
+        }*/
+        else if ([comproba.banco].some(e => e)) {
             try {
                 setEstado(true)
                 const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
                 setTimeout(async function () {
-                    const reporte = {
-                        "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
-                        "forma_pago": spiner,
-                        "link_comprobante": link,
-                        "id": clienteInfo() ? modal.estado.id : modal.estado.id,
-                        "numeroTransaccion": comproba.numeroTransaccion,
-                        "cedula": clienteInfo() != null ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
-                        "estado": "Comprobar"
-                    }
-                    registraPagos(reporte).then(ouput => {
-                        if (ouput.success) {
-                            setEstado(false)
-                            usedispatch(setModal({ nombre: '', estado: '' }))
-                            usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
-                            usedispatch(setModal({ nombre: '', estado: '' }))
-                            setTimeout(function () {
-                                window.location.reload()
-                            }, 1000)
+                  console.log(link)
+                    OCRApi({
+                        "cedulaBeneficiario": "0923980742",
+                        "url": link,
+                        "cedula": getDatosUsuariosLocalStorag().cedula,
+                        "valor_pagar": ""
 
-                        }
-                        else {
+                    }).then(ocroupt=>{
+                        console.log(ocroupt)
+                        if(ocroupt.success){
+                            let comprobante = ocroupt.data["numero_documento"]
+                            const reporte = {
+                                "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
+                                "forma_pago": spiner,
+                                "link_comprobante": link,
+                                "id": clienteInfo() ? modal.estado.id : modal.estado.id,
+                                "numeroTransaccion": comprobante,
+                                "cedula": clienteInfo() != null ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
+                                "estado": "Comprobar"
+                            }
+                        registraPagos(reporte).then(ouput => {
+                            if (ouput.success) {
+                                setEstado(false)
+                                usedispatch(setModal({ nombre: '', estado: '' }))
+                                usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
+                                usedispatch(setModal({ nombre: '', estado: '' }))
+                                setTimeout(function () {
+                                    window.location.reload()
+                                }, 1000)
+
+                            }
+                            else {
+                                setEstado(false)
+                                usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
+                            }
+                        }).catch(erro => {
+                            console.log(erro)
+                            setEstado(true)
+                            usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
+                        })
+                    }else{
+                            usedispatch(setToastes({ show: true, message: 'Comuníquese con un acceso al número +5930969200247', color: 'bg-danger', estado: "El número de transacción ya existe"}))
                             setEstado(false)
-                            usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
                         }
-                    }).catch(erro => {
-                        console.log(erro)
-                        setEstado(true)
-                        usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
-                    })
+                    }).catch(salid=>{
+                        usedispatch(setToastes({ show: true, message: 'Comuníquese con un acceso al número +5930969200247', color: 'bg-danger', estado: 'Hubo un error' }))
+                        console.log(salid)   
+                        setEstado(false)
+                                     })
+                   
                     //setEstado(true)
                 }, 2000)
 
             } catch (error) {
+                setEstado(false)
                 console.log(error)
 
             }
@@ -233,74 +256,7 @@ const ModalConfima = (prop) => {
             }
         }
     }
-    async function reportarTransferencia(e) {
-        e.preventDefault();
-        $("#valor").val()
-        console.log($("#valor").val())
-
-        if ($("#valor").val() == "") {
-            usedispatch(setToastes({ show: true, message: 'Ingrese monto', color: 'bg-danger', estado: 'Datos vacios' }))
-
-            return
-        }
-        if (comproba.numeroTransaccion == "") {
-            usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
-            return
-        } if (comproba.banco == "") {
-            usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
-            return
-        }
-        if (comproba.link_comprobante[0] == undefined) {
-            usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del Comprobante', color: 'bg-danger', estado: 'Datos vacios' }))
-            return
-        }
-        if (isNaN(comproba.numeroTransaccion.trim())) {
-            usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobante ', color: 'bg-danger', estado: 'Datos vacios' }))
-            return
-        }
-        else if ([comproba.banco, comproba.numeroTransaccion].some(e => e)) {
-            try {
-                setEstado(false)
-                const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
-                setTimeout(async function () {
-                    //  console.log(modal.estado)
-                    const reporte = {
-                        "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
-                        "forma_pago": "Efectivo",
-                        "link_comprobante": link,
-                        "id": clienteInfo() ? modal.estado.id : modal.estado.id,
-                        "numeroTransaccion": comproba.numeroTransaccion,
-                        "total_pago": $("#valor").val(),
-                        "estado": "Pagado"
-                    }
-                    console.log(reporte)
-                    cambiarMetodo(reporte).then(ouput => {
-                        // console.log(reporte)
-                        if (ouput.success) {
-                            setEstado(true)
-                            usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
-                            usedispatch(setModal({ nombre: '', estado: '' }))
-
-                        }
-                        else {
-                            //  console.log(ouput)
-                            setEstado(true)
-                            usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
-                        }
-                    }).catch(erro => {
-                        console.log(erro)
-                        setEstado(true)
-                        usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
-                    })
-                    setEstado(true)
-                }, 2000)
-
-            } catch (error) {
-                console.log(error)
-
-            }
-        }
-    }
+ 
     $(document).ready(function () {
         $(".numero").keypress(function (e) {
             var n = (e = e || window.event).keyCode || e.which,
@@ -388,7 +344,7 @@ const ModalConfima = (prop) => {
                                             <option value={"Alia"}>Alia</option>
                                         </select>}
                                 </div>
-                                {comproba.banco != "Efectivo" ? <div className=" p-1">
+                                {false ? <div className=" d-none p-1">
                                     <h5 style={{ fontSize: '1.0em' }}>
                                         Número de comprobante
                                     </h5>

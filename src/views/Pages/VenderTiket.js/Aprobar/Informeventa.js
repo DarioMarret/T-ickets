@@ -37,6 +37,7 @@ import { ListarRegistropaneFecha } from "utils/pagos/Queripagos";
 import { setFecha } from "StoreRedux/Slice/SuscritorSlice";
 import TablasViwe from "layouts/Tablasdoc";
 import Tablasespo from "layouts/Tablasregistro";
+import { ListaPreciosEvent } from "utils/EventosQuery";
 let { cedericon, atencion } = bancos
 export default function InformeView() {
     let usedispatch = useDispatch()
@@ -114,11 +115,12 @@ export default function InformeView() {
             }
             if (e.data) {
                 let newdatos = e.data.map(row => {
-                    let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-                    let valor = JSON.parse(row.info_concierto).map(e => {
+                    let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
+                    console.log(nombre)
+                    let valor = row.info_concierto.map(e => {
                         return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
                     }).reduce((a, b) => a + b, 0)
-                    let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                    let cantida = row.info_concierto.map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                     row.Valortotal = parseFloat(valor)
                     row.cantidad = cantida
                     row.concierto = nombre[0]
@@ -131,7 +133,7 @@ export default function InformeView() {
                 let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
                 let arayReallocalidad = []
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                    JSON.parse(elm.info_concierto).map(loc => {
+                    elm.info_concierto.map(loc => {
                         // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
                     })
@@ -453,7 +455,7 @@ export default function InformeView() {
             let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
             let arayReallocalidad = []
             newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                JSON.parse(elm.info_concierto).map(loc => {
+                elm.info_concierto.map(loc => {
                     arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
                     if (parseInt(loc.id_localidad) == 10) {
                         nuevosValores.push(loc.id_localidad, loc.nombreConcierto, elm.cedula)
@@ -533,8 +535,8 @@ export default function InformeView() {
                                 }
                                 if (e.data) {
                                     let newdatos = e.data.map(row => {
-                                        let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-                                        let valor = JSON.parse(row.info_concierto).map(e => {
+                                        let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
+                                        let valor = row.info_concierto.map(e => {
                                             return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
                                         }).reduce((a, b) => a + b, 0)
                                         let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)

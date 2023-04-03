@@ -436,7 +436,7 @@ export default function DetalleCompraView() {
         doc.text(10, 75, '_______________________________');
         doc.text(10, 80, 'Recibí conforme');
         doc.text(10, 80, 'Concierto       LOC	CANT.');
-        JSON.parse(nombres.info_concierto).map(e=>{
+        nombres.info_concierto.map(e=>{
             doc.text(10, pagnum + 5, "" + LocalidadPrecio(e.idespaciolocalida, e.id_localidad) + "       " + parseInt(e.cantidad) * parseFloat(ListarPrecio(e.idespaciolocalida, e.id_localidad)) 
         );
         })
@@ -450,7 +450,7 @@ export default function DetalleCompraView() {
         doc.output('dataurlnewwindow', { filename: 'comprobante.pdf' });
     }
     function nuevoPrecio() {
-        let datos = JSON.parse(nombres.info_concierto).map((item, i) => {
+        let datos = nombres.info_concierto.map((item, i) => {
             let valor = item.cantidad * ListarComision(item.idespaciolocalida, item.id_localidad)
 
             return valor
@@ -466,7 +466,7 @@ export default function DetalleCompraView() {
     }
     useEffect(() => {
         ListaPrecios()
-        let concer = JSON.parse(nombres.info_concierto)
+        let concer = nombres.info_concierto
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
         buscarcliente({
             "cedula": datos.cedula,
@@ -1022,7 +1022,7 @@ export default function DetalleCompraView() {
 
     function CanjeBole() {
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
-        let cor = JSON.parse(nombres.info_concierto)
+        let cor = nombres.info_concierto
         // console.log(id)
         $.confirm({
             title: 'Canjear boletos de este registro',
@@ -1569,7 +1569,7 @@ export default function DetalleCompraView() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {JSON.parse(nombres.info_concierto).length > 0 ? JSON.parse(nombres.info_concierto).map((item, i) => {
+                                    {nombres.info_concierto.length > 0 ? nombres.info_concierto.map((item, i) => {
                                         return (
                                             <tr key={i}>
                                                 <td>{item.nombreConcierto}</td>
@@ -1594,7 +1594,7 @@ export default function DetalleCompraView() {
                                     <tr>
                                         <th scope="row"></th>
                                         <td className='text-end' >Comisión por Boleto:</td>
-                                        <td width="15%" className='text-center'>$ {JSON.parse(nombres.info_concierto).length > 0 ? nuevoPrecio() : ""}</td>
+                                        <td width="15%" className='text-center'>$ {nombres.info_concierto.length > 0 ? nuevoPrecio() : ""}</td>
                                     </tr>
                                     {nombres.forma_pago == "Deposito" ? <tr >
                                         <th scope="row"></th>
