@@ -1013,9 +1013,9 @@ export default function DetalleCompraView() {
     }
 
     function boletoscanje (){
-        if(tiketslist.length> 0){
+        if (nombres.ticket_usuarios.length> 0){
            // console.log(tiketslist.every(e=> e.canje=="CANJEADO"))
-            return tiketslist.every(e=> e.canje=="CANJEADO")
+            return nombres.ticket_usuarios.every(e=> e.canje=="CANJEADO")
         }
         return false
     }
@@ -1147,7 +1147,7 @@ export default function DetalleCompraView() {
     const [rowSelection, setRowSelection] = useState({});
     function quitarrepetifod() {
         console.log(Object.keys(rowSelection))
-        let datos = tiketslist.map(e => {
+        let datos = nombres.ticket_usuarios.map(e => {
             if (!Object.keys(rowSelection).some(f => f == e.id)) {
                 return e.id
             }
@@ -1675,7 +1675,7 @@ export default function DetalleCompraView() {
                                     <div className="container-fluid">
                                         <MaterialReactTable
                                             columns={ticketsboletos}
-                                            data={tiketslist}
+                                            data={nombres.ticket_usuarios}
                                             muiTableProps={{
                                                 sx: {
                                                     tableLayout: 'flex'

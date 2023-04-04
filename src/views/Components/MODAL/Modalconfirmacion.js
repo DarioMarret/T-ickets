@@ -135,7 +135,7 @@ const ModalConfima = (prop) => {
                     OCRApi({
                         "cedulaBeneficiario": "0923980742",
                         "url": link,
-                        "cedula": getDatosUsuariosLocalStorag().cedula,
+                        "cedula": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
                         "valor_pagar": ""
 
                     }).then(ocroupt=>{
@@ -172,7 +172,7 @@ const ModalConfima = (prop) => {
                             usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
                         })
                     }else{
-                            usedispatch(setToastes({ show: true, message: 'Comuníquese con un acceso al número +5930969200247', color: 'bg-danger', estado: "El número de transacción ya existe"}))
+                            usedispatch(setToastes({ show: true, message: 'Comuníquese con un acceso al número +5930969200247', color: 'bg-danger', estado: "El número de transacción ya existe o el beneficiario  no es el correcto"}))
                             setEstado(false)
                         }
                     }).catch(salid=>{
