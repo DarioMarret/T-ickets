@@ -1352,7 +1352,7 @@ export default function DetalleCompraView() {
                                             {nombres.forma_pago == "Tarjeta" && nombres.link_pago == null ? "Cambio de Deposito a Tarjeta" : ""}
                                             {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
                                                 <span className={nombres.conciliacion.length>0 ? "p-1 label label-success" : "label label-danger"}>
-                                                    {nombres.conciliacion.length > 0 ? "consciliado" : "Sin Consolidar"}
+                                                    {nombres.conciliacion.length > 0 ? "Consolidado" : "Sin Consolidar"}
                                                 </span> :
                                                 ""}
                                         </div>
