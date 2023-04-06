@@ -4,6 +4,7 @@ import { ListarLocalidad } from "utils/Querypanel"
 import { insertLocalidad, getMapacolor, getLocalidadmapa } from "utils/Localidadmap"
 
 import "./isvg.css"
+import ExampleDataTable from "components/ReactTable/Datatable.js/ExampleTable"
 const Viewssvg = () => {
     const [localidadmap, setselection] = useState({
         name: "",
@@ -456,7 +457,7 @@ const Viewssvg = () => {
             </div>
             <div client="1" hall="2" session="0" id="rsr" className="hasSVG">
 
-
+                <ExampleDataTable/>
             </div>
         </>
     )

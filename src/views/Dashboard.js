@@ -135,9 +135,10 @@ function Dashboard() {
     let arrayRegin = []
     ListaPrecio()
   if (errordis== undefined ){
-    !boletosloading && !suscritoloading  ? setboletos({ ...boletos, pagados: nuevos.data!="" ? nuevos.data.filter(e => e.estado == "Pagado").length : [],
+    try{ 
+    !boletosloading && !suscritoloading  ? setboletos({ ...boletos, pagados: nuevos.data!="" && nuevos.data!=undefined ? nuevos.data.filter(e => e.estado == "Pagado").length : [],
      suscritor: suscrito.users? suscrito.users.length :0}) : ""
-    
+   
     !suscritoloading ? suscrito.users?suscrito.users.forEach(element => {
       let dato = element.cedula.substring(0, 2)
 
@@ -154,7 +155,10 @@ function Dashboard() {
       }
     }):[] : []
     //    !suscritoloading ? arrayRegin.map(e=>{return e.cantidad}).reduce():0
-    !suscritoloading ? seTmapa(arrayRegin) : ""
+    !suscritoloading ? seTmapa(arrayRegin) : ""}
+    catch(er){
+      console.log(er)
+    }
   }
     //!suscritoloading ? setboletos({ ...boletos, suscritor: suscrito.users.length }) :""
     /* ( async  () =>{

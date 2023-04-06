@@ -18,14 +18,83 @@ import {
   Col,
   Collapse,
 } from "react-bootstrap";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import { buscarcliente } from "utils/Querypanelsigui";
+import { useDispatch } from "react-redux";
 
 function AdminNavbar() {
   let location = useLocation();
   let history =useHistory();
+  let usedispatch= useDispatch()
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   function salir(){
+    let usehistory = use
     removeDatosUsuario()
     history.push("/")
+  }
+
+  const filterNames = async (e) => {
+    e.preventDefault();
+    let nombre = $('#cedulac').val()
+    /*if (user.subscritor.cedula == nombre) {
+      setDausuario({
+        nombreCompleto: '',
+        ciudad: '',
+        email: '',
+      })
+      usedispatch(setToastes({
+        show: true,
+        message: 'Ingrese un usuario diferente ',
+        color: 'bg-danger', estado: 'Proceso erroneo'
+      }))
+      return
+    }*/
+    if (nombre.trim().length >= 10) {
+      let informacion = {
+        "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
+        "email": isNaN(nombre.trim()) ? nombre.trim() : ''
+      }
+      buscarcliente({ ...informacion }).then(oupt => {
+        //console.log(informacion, oupt)
+        $("#search").removeClass("d-none")
+        if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
+          $('#cedulac').val("")
+          sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
+          history.push("/admin/suscritor/" + oupt.data.id + "")
+          /*setDausuario({
+            nombreCompleto: oupt.data.nombreCompleto,
+            ciudad: oupt.data.direccion,
+            email: oupt.data.email,
+            id: oupt.data.cedula
+          })*/
+        }
+        else {
+        
+          usedispatch(setToastes({
+            show: true,
+            message: 'Para ceder un ticket el usuario debe estar registrado',
+            color: 'bg-danger', estado: 'Usuaario no encontraron'
+          }))
+        }
+
+      }
+
+      ).catch(err => {
+        usedispatch(setToastes({
+          show: true,
+          message: 'Usuario no encontrado ',
+          color: 'bg-danger', estado: 'Hubo un error'
+        }))
+        console.log(err)
+      })
+
+    }else{
+      usedispatch(setToastes({
+        show: true,
+        message: 'Debe ser mayor a 10 dígito ',
+        color: 'bg-warning', estado: 'Atentos'
+      }))
+    }
   }
   return (
     <>
@@ -66,21 +135,32 @@ function AdminNavbar() {
             <span className="navbar-toggler-bar burger-lines"></span>
           </button>
           <Navbar.Collapse className="justify-content-end" in={collapseOpen}>
-            {/*<Nav className="nav mr-auto" navbar>
-              <Form
-                className="navbar-form navbar-left navbar-search-form px-2 ml-3 ml-lg-0"
-                role="search"
-              >
+            <Nav className="nav mrl-auto" navbar>
+              
                 <InputGroup>
-                  <i className="nc-icon nc-zoom-split mx-1"></i>
-                  <Form.Control
-                   className="form-control"
-                    placeholder="Search..."
+                  
+                  <input
+                    className=""
+                    style={{
+                      borderColor:"#e2e2e2",
+                      borderWidth:"0.5px",
+                      borderTopLeftRadius:"8px",
+                      borderBottomLeftRadius:"8px",
+                      padding:"3px"
+                      
+                    }}
+                    placeholder="cédula o correo..."
+                  id="cedulac"
                     type="text"
-                  ></Form.Control>
+                  ></input>
+                  <button 
+                  className="btn  btn-default"
+                    onClick={(e)=>filterNames(e)}
+                  ><i className="nc-icon nc-zoom-split mx-1"></i></button>
+                  
                 </InputGroup>
-              </Form>
-              </Nav>*/}
+              
+              </Nav>
             <Nav navbar>
               <Dropdown >
                 <Dropdown.Toggle

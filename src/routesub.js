@@ -305,7 +305,7 @@ var routes = [
         layout: "/admin",
         name: "Notificaciones Whatsapp",
         mini: "*",
-        component: ReactTables,
+        component: UsersView,
         permiso: ["admin", "super_admin"]
       },
       {
@@ -313,7 +313,7 @@ var routes = [
         layout: "/admin",
         name: "Notificaciones Push",
         mini: "*",
-        component: ReactTables,
+        component: UsersView,
         permiso: ["admin", "super_admin"]
       }
     ]
@@ -348,14 +348,14 @@ var routes = [
         layout: "/admin",
         name: "Servidor de Correo",
         mini: "*",
-        component: Reactabla,
+        component: UsersView,
         permiso: ["admin", "super_admin"]
       }, {
         path: "/Servidor-Correo",
         layout: "/admin",
         name: "Configurar WhatsApp",
         mini: "*",
-        component: Reactabla,
+        component: UsersView,
         permiso: ["admin", "super_admin"]
       }
     ]
@@ -373,7 +373,7 @@ var routes = [
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["admin", "", ""]
+    permiso: ["", "", ""]
   }
 
 
