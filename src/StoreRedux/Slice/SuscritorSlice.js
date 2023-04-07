@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-let dias = -15
+let dias = -2
 let fin = new Date() 
 fin.setDate(fin.getDate() + dias);
 const initialState = {
@@ -21,7 +21,7 @@ const initialState = {
     labels: [],
     compras: [],
     fecha:[ {
-        startDate: new Date(JSON.stringify(fin).replace('"', '').replace('"', '')) ,
+        startDate: new Date(JSON.stringify(fin).replace('"', '').replace('"', '')),
         endDate: new Date(),
         key: 'selection'
     }]

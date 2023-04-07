@@ -33,7 +33,7 @@ export const listarRegistropanel = async (parms) => {
 export const ListarRegistropaneFecha = async (ini, fin) => {
     console.log(fin, ini)
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/listarRegistros?fecha_init=" + ini + "&fecha_fin=" + fin + "",
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/listarRegistros?fecha_init="+ini+"&fecha_fin="+fin+"",
             {
                 "cedula": ""
             }

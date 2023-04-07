@@ -131,13 +131,23 @@ const ModalConfima = (prop) => {
             try {
                 setEstado(true)
                 const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
+                if(link==null){
+                    usedispatch(
+                        setToastes({
+                            show: true,
+                            message: 'La imagen no se pudo leer Comuníquese con un acceso al número +5930969200247',
+                            color: 'bg-warning',
+                            estado: 'Hubo un error'
+                        }))
+                    return;
+                }
                 setTimeout(async function () {
                     console.log(link)
                     OCRApi({
                         "cedulaBeneficiario": "0923980742",
                         "url": link,
                         "cedula": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
-                        "valor_pagar": (parseFloat(modal.estado.total_pago) / 1.07).toFixed(2)
+                        "valor_pagar": (parseFloat(modal.estado.total_pago) / 1.08).toFixed(2)
                     }).then(ocroupt => {
                         console.log(ocroupt)
                         if (ocroupt.success) {
@@ -184,11 +194,11 @@ const ModalConfima = (prop) => {
                                 usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
                             })
                         } else {
-                            usedispatch(setToastes({ show: true, message: 'Comuníquese con un acceso al número +5930969200247', color: 'bg-danger', estado: "El número de transacción ya existe o el beneficiario  no es el correcto" }))
+                            usedispatch(setToastes({ show: true, message: 'Comuníquese con un acceso al número +5930969200247', color: 'bg-danger', estado: ocroupt.message }))
                             setEstado(false)
                         }
                     }).catch(salid => {
-                        usedispatch(setToastes({ show: true, message: 'Comuníquese con un acceso al número +5930969200247', color: 'bg-danger', estado: 'Hubo un error' }))
+                        usedispatch(setToastes({ show: true, message: 'Comuníquese con un acceso al número +5930969200247', color: 'bg-danger', estado: "Comuníquese con un acceso al número +5930969200247" }))
                         console.log(salid)
                         setEstado(false)
                     })

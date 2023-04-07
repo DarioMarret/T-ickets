@@ -303,17 +303,16 @@ export function GetValores() {
                 comision += tienda.cantidad
             }
         })
-        
         valor = subtotal + sumcomision;  
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
-            comision_bancaria: valor.toFixed(2) * 7 / 100,
+            comision_bancaria: valor.toFixed(2) * 8 / 100,
             subtotal: subtotal.toFixed(2),
             description: descrption,
             comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
-            total:  valor.toFixed(2) * 7 / 100 + valor,
-            desctc: Math.round((valor.toFixed(2) * 7 / 100 + valor) / 1.15),
+            total:  valor.toFixed(2) * 8 / 100 + valor,
+            desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15),
             desc: Math.round((subtotal + comision) / 1.15),
         }
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))

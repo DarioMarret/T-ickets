@@ -24,7 +24,7 @@ const SuscritorViews = () => {
   const [suscritor, setSuscri] = useState({})
 
   const [estado, setEstado] = useState("")
-
+const[cantidad,setCantidad]=useState(0)
   const [alert, setAlert] = React.useState(null)
   const newsuscrito = () => {
     setEstado("")
@@ -43,6 +43,7 @@ const SuscritorViews = () => {
       if (data.users.length > 0) {
         //  console.log(data.users)
         setsuscritor(data.users)
+        setCantidad(data.total)
        // console.log(data.users.filter(f => f.id == "6670"))
 
       }
@@ -224,7 +225,7 @@ const SuscritorViews = () => {
                 <Col xs="8">
                   <div className="numbers">
                     <p className="card-category">Total Suscritores</p>
-                    <Card.Title as="h4">{suscritores.length}</Card.Title>
+                    <Card.Title as="h4">{cantidad}</Card.Title>
                   </div>
                 </Col>
               </Row>

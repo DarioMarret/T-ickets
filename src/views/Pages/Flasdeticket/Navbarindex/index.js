@@ -31,6 +31,11 @@ export default function NavbarView({...props}){
                             <li className="nav-item">
                                 <a className="nav-link active" aria-current="page" href="#" onClick={() => props.SetSeleccion("")}>Inicio</a>
                             </li>
+                            {userauthi.login ?
+                                <li className="nav-item active" aria-current="page" onClick={() => props.SetSeleccion("Tickets")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <a className="nav-link " href="#">Tickets</a>
+                                </li> : ""
+                            }
                             <li className="nav-item active  py-0 mx-lg-1" aria-current="page" onClick={() => props.SetSeleccion("")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <a className=" nav-link" href="#nuevoseventos"
                                     style={{ height: 70 }}>Eventos</a>
@@ -40,11 +45,7 @@ export default function NavbarView({...props}){
                                     <a className="nav-link " >Datos</a>
                                 </li> : ""
                             }
-                            {userauthi.login ?
-                                <li className="nav-item active" aria-current="page" onClick={() => props.SetSeleccion("Tickets")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                    <a className="nav-link " href="#">Tickets</a>
-                                </li> : ""
-                            }
+                            
                             {!userauthi.login ? <li className="  nav-item">
                                 <a className=" btn btn-outline-nuevo  rounded-7 " href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i>
                                     <img src={props.avatar} className=" img-fluid"

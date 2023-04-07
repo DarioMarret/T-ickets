@@ -94,6 +94,35 @@ export default function ConsiliarView() {
     }
     async function guardarConsiliacion(e) {
         e.preventDefault()
+
+        /**
+         * forma de pago cuando es tarjeta automaticamente pacifico
+         * lote
+         * autorizacion
+         * total 
+         * base
+         * valor pagado 
+         * retencion fuente
+         * comision
+         * comision iva
+         * 
+         *
+         *  let parms = {
+            id_operador: clienteInfo().id,
+            id_registro: props.estado.id,
+            banco: datos.banco,
+            cuenta: datos.comprobante,
+            total_pagado: datos.Valor,
+            banco: datos.banco,
+            lote:
+            autorizacion:
+            base:
+            retencion:
+            comision:
+            comisioniva:
+            forma_pago: props.estado.forma_pago
+        }
+         */
         let parms = {
             id_operador: clienteInfo().id,
             id_registro: props.estado.id,

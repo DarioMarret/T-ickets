@@ -1599,7 +1599,7 @@ export default function DetalleCompraView() {
                                     {nombres.forma_pago == "Deposito" ? <tr >
                                         <th scope="row"></th>
                                         <td className={" text-end"} >Total</td>
-                                        <td className="text-center">${(parseFloat(nombres.total_pago) / 1.07).toFixed(2)}</td>
+                                        <td className="text-center">${(parseFloat(nombres.total_pago) / 1.08).toFixed(2)}</td>
                                     </tr> : ""}
 
                                     {nombres.forma_pago == "Tarjeta" ? <tr>

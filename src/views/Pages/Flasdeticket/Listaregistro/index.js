@@ -121,6 +121,8 @@ export default function ListaderegistroView(props) {
                                         aria-label="Consolidar"
                                     >
                                         <Summarize />
+
+                                        Reportar pago
                                     </IconButton>
                                 </Tooltip> :
                                 ""

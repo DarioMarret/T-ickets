@@ -48,6 +48,7 @@
     "moment-timezone": "^0.5.37",
     "netlify-cli": "^12.2.9",
     "nouislider": "14.6.3",
+    "pdf-lib": "^1.17.1",
     "perfect-scrollbar": "1.5.5",
     "prop-types": "15.8.1",
     "push.js": "^1.0.12",

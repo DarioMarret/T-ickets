@@ -56,63 +56,7 @@ function Dashboard() {
       });
   };
 
-  /*$(document).ready(function () {
-    (function (w, d, s, g, js, fjs) {
-      g = w.gapi || (w.gapi = {}); g.analytics = { q: [], ready: function (cb) { this.q.push(cb) } };
-      js = d.createElement(s); fjs = d.getElementsByTagName(s)[0];
-      js.src = 'https://apis.google.com/js/platform.js';
-      fjs.parentNode.insertBefore(js, fjs); js.onload = function () { g.load('analytics') };
-    }(window, document, 'script'));
-
-    gapi.analytics.ready(function () {
-
-      // Step 3: Authorize the user.
-
-      var CLIENT_ID = '381358769148-30tglog14ossvhoe4oenpgocjvuem4b3.apps.googleusercontent.com';
-
-      gapi.analytics.auth.authorize({
-        container: 'auth-button',
-        clientid: CLIENT_ID,
-      });
-
-      // Step 4: Create the view selector.
-
-      var viewSelector = new gapi.analytics.ViewSelector({
-        container: 'view-selector'
-      });
-
-      // Step 5: Create the timeline chart.
-
-      var timeline = new gapi.analytics.googleCharts.DataChart({
-        reportType: 'ga',
-        query: {
-          'dimensions': 'ga:date',
-          'metrics': 'ga:sessions',
-          'start-date': '30daysAgo',
-          'end-date': 'yesterday',
-        },
-        chart: {
-          type: 'LINE',
-          container: 'timeline'
-        }
-      });
-
-      // Step 6: Hook up the components to work together.
-
-      gapi.analytics.auth.on('success', function (response) {
-        viewSelector.execute();
-      });
-
-      viewSelector.on('change', function (ids) {
-        var newIds = {
-          query: {
-            ids: ids
-          }
-        }
-        timeline.set(newIds).execute();
-      });
-    });
-  })*/
+ 
 
 
   // console.log(todos)
@@ -125,16 +69,16 @@ function Dashboard() {
   })
   let [mapas, seTmapa] = useState([])
   let datos = { cedula: "1718910894" }
-  let { data: nuevos, error: errorboleto, isLoading: boletosloading } = useGetBoletosQuery()
-  let { data: suscrito = [],error:errordis, isLoading: suscritoloading } = useGetSuscritorQuery()
+  //let { data: nuevos, error: errorboleto, isLoading: boletosloading } = useGetBoletosQuery()
+  //let { data: suscrito = [],error:errordis, isLoading: suscritoloading } = useGetSuscritorQuery()
   //console.log(errordis)
   const ListaPrecio = async ()=>{ const info = await ListaPreciosEvent();
     console.log(info)
   return info}
   useEffect(() => {
     let arrayRegin = []
-    ListaPrecio()
-  if (errordis== undefined ){
+ ListaPrecio()
+  /*  // if (errordis== undefined ){
     try{ 
     !boletosloading && !suscritoloading  ? setboletos({ ...boletos, pagados: nuevos.data!="" && nuevos.data!=undefined ? nuevos.data.filter(e => e.estado == "Pagado").length : [],
      suscritor: suscrito.users? suscrito.users.length :0}) : ""
@@ -159,7 +103,7 @@ function Dashboard() {
     catch(er){
       console.log(er)
     }
-  }
+  }*/
     //!suscritoloading ? setboletos({ ...boletos, suscritor: suscrito.users.length }) :""
     /* ( async  () =>{
        await createTask({ "cedula": "1718910894" })
@@ -176,43 +120,20 @@ function Dashboard() {
        })*/
     //createTask()
     /* window.gapi.load("auth2", init); //(1)
-     console.log(gapi, authorized)*/
-  }, [boletosloading, suscritoloading])
+     console.log(gapi, authorized)
+     boletosloading, suscritoloading
+     */
+  }, [])
 
   return (
     <>
       <div className=" container pb-3 d-flex justify-content-end   ">
-        {/* <GoogleLogin />*/}
+        
 
 
       </div>
       <div className=" container">
-        {/*<AnalyticsDashboard
-          authOptions={{
-            clientId:
-              "381358769148-bs6mm0ir6otvvk92dilpae0n59sif6n3.apps.googleusercontent.com",
-          }}
-          renderCharts={(gapi, viewId) => {
-            return (
-              < div >
-                < SessionsByDateChart
-                  gapi={gapi}
-                  viewId={viewId}
-                  showPageViews
-                  showUsers
-                />
-                < SessionsGeoChart gapi={gapi} viewId={viewId} showPageViews />
-                <ActiveUsersChart
-                  gapi={gapi}
-                  viewId={viewId}
-                  days={28}
-                  activeUserDays={7}
-                />
-              
-              </div>
-            );
-          }}
-        />*/}
+        
       </div>
       <Container fluid>
 

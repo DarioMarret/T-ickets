@@ -5,6 +5,7 @@ import { insertLocalidad, getMapacolor, getLocalidadmapa } from "utils/Localidad
 
 import "./isvg.css"
 import ExampleDataTable from "components/ReactTable/Datatable.js/ExampleTable"
+import ModalFirma from "views/Components/MODAL/Modalfirma"
 const Viewssvg = () => {
     const [localidadmap, setselection] = useState({
         name: "",
@@ -176,6 +177,7 @@ const Viewssvg = () => {
 
     return (
         <>
+        <ModalFirma/>
             <div className="d-flex flex-wrap">
                 <div className="col-12 col-md-6">
                     <form className="container">
