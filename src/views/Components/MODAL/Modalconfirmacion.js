@@ -139,6 +139,7 @@ const ModalConfima = (prop) => {
                             color: 'bg-warning',
                             estado: 'Hubo un error'
                         }))
+                        setEstado(false)
                     return;
                 }
                 setTimeout(async function () {

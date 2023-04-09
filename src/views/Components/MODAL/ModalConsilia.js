@@ -26,7 +26,7 @@ export default function ConsiliarView() {
     let props = useSelector(state => state.SuscritorSlice.modal)
     let user = clienteInfo()
     let [datos, setDatos] = useState({
-        id:"",
+        id: "",
         comprobante: "",
         imagen: "",
         Valor: "",
@@ -111,15 +111,20 @@ export default function ConsiliarView() {
             id_operador: clienteInfo().id,
             id_registro: props.estado.id,
             banco: datos.banco,
+            tarjeta:
             cuenta: datos.comprobante,
-            total_pagado: datos.Valor,
-            banco: datos.banco,
+            total_pagado: datos.Valor,           
             lote:
             autorizacion:
+            total:tarjeta
             base:
+            valor_pagado;
             retencion:
             comision:
-            comisioniva:
+            comisiniva;
+            emisionboleto:
+            totalsinemision:
+            evento:
             forma_pago: props.estado.forma_pago
         }
          */
@@ -144,7 +149,7 @@ export default function ConsiliarView() {
                 console.log(salida)
                 if (salida) {
                     ConsolidarCompra()
-                    
+
 
                 }
             }).cath(err => {
@@ -153,14 +158,14 @@ export default function ConsiliarView() {
             })
         }
     }
-    async function Actualizarconcilicacion(e){
+    async function Actualizarconcilicacion(e) {
         e.preventDefault()
         let parms = {
             id_operador: clienteInfo().id,
             id_registro: props.estado.id_registro,
             banco: datos.banco,
             cuenta: datos.comprobante,
-            total_pagado: datos.Valor,           
+            total_pagado: datos.Valor,
             forma_pago: props.estado.forma_pago
         }
         if (Object.values(parms).some(e => e == "")) {
@@ -170,12 +175,12 @@ export default function ConsiliarView() {
         else {
             setEstatus(true)
             console.log(parms)
-            ActualizaConciliacion(parms,props.estado.id).then(salida => {
+            ActualizaConciliacion(parms, props.estado.id).then(salida => {
                 setEstatus(false)
                 console.log(salida)
                 if (salida) {
                     history.goBack()
-                 //   ConsolidarCompra()
+                    //   ConsolidarCompra()
 
                 }
             }).cath(err => {
@@ -192,7 +197,7 @@ export default function ConsiliarView() {
             console.log(valor.toFixed(2))
             setDatos({
                 comprobante: "",
-                imagen: "",               
+                imagen: "",
                 banco: "",
                 cuenta: "",
                 metodo: "",
@@ -211,8 +216,8 @@ export default function ConsiliarView() {
             setDatos({
                 comprobante: props.estado.cuenta,
                 imagen: "",
-                banco: props.estado.banco,
-                cuenta: props.estado.cuenta,
+                banco: "",
+                cuenta: "",
                 metodo: "",
                 id_registro: "",
                 usuario: "",
@@ -223,12 +228,12 @@ export default function ConsiliarView() {
             })
         }
         if (props.estado.forma_pago == "Tarjeta" && props.nombre == "consiliacion") {
-            let valor = parseFloat(props.estado.total_pago) 
+            let valor = parseFloat(props.estado.total_pago)
             setDatos({
                 comprobante: props.estado.cuenta,
                 imagen: "",
-                banco: props.estado.banco,
-                cuenta: props.estado.cuenta,
+                banco: "Pacífico",
+                cuenta: "8069530",
                 metodo: "",
                 id_registro: "",
                 usuario: "",
@@ -240,22 +245,22 @@ export default function ConsiliarView() {
             })
             console.log(valor)
         }
-      /*  if (props.estado.forma_pago == "Tarjeta" && props.nombre == "actconsiliacion") {
-            let valor = parseFloat(props.estado.total_pagado) 
-            setDatos({
-                comprobante: props.estado.cuenta,
-                imagen: "",
-                banco: props.estado.forma_pago,
-                cuenta: "",
-                metodo: "",
-                id_registro: "",
-                usuario: "",
-                propietario: "",
-                forma_pago: "",
-                Valor: valor.toFixed(2)
-
-            })
-        }*/
+        /*  if (props.estado.forma_pago == "Tarjeta" && props.nombre == "actconsiliacion") {
+              let valor = parseFloat(props.estado.total_pagado) 
+              setDatos({
+                  comprobante: props.estado.cuenta,
+                  imagen: "",
+                  banco: props.estado.forma_pago,
+                  cuenta: "",
+                  metodo: "",
+                  id_registro: "",
+                  usuario: "",
+                  propietario: "",
+                  forma_pago: "",
+                  Valor: valor.toFixed(2)
+  
+              })
+          }*/
         $(document).ready(function () {
             $(".modal-content").draggable({
                 handle: ".modal-header",
@@ -274,6 +279,7 @@ export default function ConsiliarView() {
     return (
         <Modal
             show={(props.nombre == "consiliacion" || props.nombre == "actconsiliacion" ? true : false)}
+        size="lg"
         >
             <Modal.Header className=" py-3">
                 <h5>
@@ -291,18 +297,7 @@ export default function ConsiliarView() {
                                 Banco o Tarjeta
                             </h5>
                             {props.estado.forma_pago == "Tarjeta" ?
-                                <select className=" form-select" value={datos.banco} required
-                                    name="banco"
-                                    id="banco"
-                                    onChange={(e) => HandeChange(e.target)}>
-                                    <option value={""} disabled></option>
-                                    <option value={"Visa"}>Visa</option>
-                                    <option value={"Discover"}>Discover</option>
-                                    <option value={"Alias"}>Alias</option>
-                                    <option value={"Diners"}>Diners</option>
-                                    <option value={"Mastercar"}>Mastercar</option>
-                                    <option value={"America-Exxpres"}>America-Exxpres</option>
-                                </select>
+                                ""
                                 :
                                 <select className=" form-select" value={datos.banco} required
                                     name="banco"
@@ -312,7 +307,7 @@ export default function ConsiliarView() {
                                     <option value={"Pichincha"}>Pichincha</option>
                                     <option value={"Produbanco"}>Produbanco</option>
                                     <option value={"Guayaquil"}>Guayaquil</option>
-                                    <option value={"Pacífico"}>Pacífico</option>
+                                    <option value={"Pacifico"}>Pacífico</option>
                                 </select>}
                         </div>
                         <div className="p-1" >
@@ -338,13 +333,8 @@ export default function ConsiliarView() {
                                     <option value={"1058194005"}>1058194005</option>
                                     <option value={"18018624"}>18018624</option>
                                 </select> :
-                                <input type="text" name="comprobante" id="comprobante"
-                                    value={datos.comprobante}
-                                    onChange={(e) => HandeChange(e.target)}
-                                    required
-                                    minLength={4}
-                                    className="form-control numero"
-                                />}
+                                ""
+                            }
                         </div>
                         <div className="row">
                             <div className="col-12 py-1">
@@ -361,12 +351,68 @@ export default function ConsiliarView() {
                                 />
                             </div>
                         </div>
-                        {props.nombre != "actconsiliacion"? 
-                        <div className=" container-fluid px-0 py-2 text-end">
-                            <button className="btn btn-default-su"
-                                disabled={status}
-                                onClick={guardarConsiliacion}> CONSOLIDAR </button>
-                        </div>:
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label >lote</label>
+                                <input type="" className="form-control"name="lote" id="lote" placeholder="lote"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="">Autorización</label>
+                                <input type="" className="form-control" id="autorizacion" name="lote" placeholder="autorizacion"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label >Tarjeta</label>
+                                <input type=""
+                                value={props.estado.transmitter}
+                                className="form-control"name="tarjeta" id="tarjeta" placeholder="tarjeta"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="">Autorización</label>
+                                <input type="" className="form-control" id="autorizacion" name="lote" placeholder="autorizacion"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label >Base</label>
+                                <input type="" className="form-control"name="base" id="base" placeholder="base"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="">Valor Pagado T/C</label>
+                                <input type="" className="form-control" id="valor_pagado" name="valor_pagado" placeholder="valor_pagado"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label >Retencion T/C</label>
+                                <input type="" className="form-control"name="retencion" id="retencion" placeholder="retencion"/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="">comision T/C</label>
+                                <input type="" className="form-control" id="comision" name="comision" placeholder="comision"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label >Comision iva T/C</label>
+                                <input type="" className="form-control"name="comisiniva" id="comisiniva" placeholder="Comision iva"/>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">Emision boleto</label>
+                                <input type="" className="form-control" id="emisionboleto" name="emisionboleto" placeholder="emisionboleto"/>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">Total de compra sin emision</label>
+                                <input type="" className="form-control" id="totalsinemision" name="totalsinemision" placeholder="totalsinemision"/>
+                            </div>
+                        </div>
+                        {props.nombre != "actconsiliacion" ?
+                            <div className=" container-fluid px-0 py-2 text-end">
+                                <button className="btn btn-default-su"
+                                    disabled={status}
+                                    onClick={guardarConsiliacion}> CONSOLIDAR </button>
+                            </div> :
                             <div className=" container-fluid px-0 py-2 text-end">
                                 <button className="btn btn-default-su"
                                     disabled={status}

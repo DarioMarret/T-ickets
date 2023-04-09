@@ -1,3 +1,8 @@
+#canvas{
+    border-color: #212529;
+    border-style: solid;
+    
+}
 a.disponible {
     background-color: #198754;
     cursor: pointer;

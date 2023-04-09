@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 let dias = -2
-let fin = new Date() 
+let fin = new Date()
 fin.setDate(fin.getDate() + dias);
 const initialState = {
     subscritor: {},
@@ -14,13 +14,16 @@ const initialState = {
         pagados: "",
         inpagos: ""
     },
+    data: [],
+    tiketslist: [],
+    ticket: true,
     inicio: 0,
     final: 4,
     page: 1,
     tabps: 0,
     labels: [],
     compras: [],
-    fecha:[ {
+    fecha: [{
         startDate: new Date(JSON.stringify(fin).replace('"', '').replace('"', '')),
         endDate: new Date(),
         key: 'selection'
@@ -63,6 +66,7 @@ const SubscritorSlice = createSlice({
         },
         setLabels: (state, action) => {
             state.labels = action.payload.labels
+            state.data = action.payload.labels
         },
         setCompras: (state, action) => {
             state.compras = action.payload.compras
@@ -72,12 +76,20 @@ const SubscritorSlice = createSlice({
                 state.final = action.payload.final,
                 state.page = action.payload.page
         },
-        setFecha:(state,action)=>{
+        setFecha: (state, action) => {
             state.fecha = action.payload.fecha
+        },
+        setTicket: (state, actions) => {
+            state.tiketslist = actions.payload.tiketslist
+        },
+        setlisticket: (state, action) => {
+            state.ticket= action.payload.ticket
         }
+
+
 
     }
 
 })
-export const { addususcritor, setLabels,setFecha, setPagination, setCompras, deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad, setTabs, deleteloclidad, setdetalle } = SubscritorSlice.actions;
+export const { addususcritor, setTicket,setlisticket, setLabels, setFecha, setPagination, setCompras, deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad, setTabs, deleteloclidad, setdetalle } = SubscritorSlice.actions;
 export default SubscritorSlice.reducer
