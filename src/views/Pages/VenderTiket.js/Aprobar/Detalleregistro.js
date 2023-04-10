@@ -489,7 +489,7 @@ export default function DetalleCompraView() {
                                 infoabimedia(nombres.token_pago).then(ouput => {
                                     if (ouput.data) {
                                         let data = {
-
+                                            ...ouput.data,
                                             "payment_date": ouput.data.transactionDate,
                                             "status": 1,
                                             "payment_id": "",
@@ -1191,7 +1191,7 @@ export default function DetalleCompraView() {
         // console.log(nombres.conciliacion)
         if (nombres.conciliacion == undefined) return
         if (Object.keys(nombres.conciliacion).length > 0) return
-        usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres,...tarjetadata } }))
+        usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres,...tarjetadata } }))
     }
 
     return (
@@ -1221,7 +1221,7 @@ export default function DetalleCompraView() {
                                     : ""}
                                 {nombres.conciliacion.length > 0 ?
                                     <a className=" btn btn-default btn-sm  "
-                                        onClick={() => usedispatch(setModal({ nombre: "actconsiliacion", estado: { ...nombres.conciliacion[0], id_registro:nombres.id,...tarjetadata } }))}
+                                        onClick={() => usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto:  nombres.info_concierto[0].nombreConcierto,  ...nombres.conciliacion[0], id_registro:nombres.id,...tarjetadata } }))}
                                     >
                                         <i className="bi bi-check"></i> Actualizar conciliación </a>
                                     : ""}
@@ -1249,7 +1249,7 @@ export default function DetalleCompraView() {
                             {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
                                 <a className="  rounded-circle btn-danger mx-2 p-2 text-white"
                                     data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
-                                    onClick={() =>!nombres.conciliacion.length > 0 ? usedispatch(setModal({ nombre: "actconsiliacion", estado: { ...nombres.conciliacion[0], id_registro:nombres.id,...tarjetadata } })):usedispatch(setModal({ nombre: "consiliacion", estado: { ...nombres,...tarjetadata } }))}
+                                    onClick={() => !nombres.conciliacion.length > 0 ? usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres.conciliacion[0], id_registro: nombres.id, ...tarjetadata } })) : usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto,  ...nombres,...tarjetadata } }))}
                                 >
                                     <i className="fa fa-info-circle">  </i>
                                 </a> : ""}

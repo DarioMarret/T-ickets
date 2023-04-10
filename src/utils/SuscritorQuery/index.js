@@ -1,6 +1,6 @@
 import axios from "axios"
-export const GetSuscritores = async () => {
-    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listas_suscriptor", {
+export const GetSuscritores = async (ini,fin) => {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listas_suscriptor?init="+ini+"&size="+fin, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

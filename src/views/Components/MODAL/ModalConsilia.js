@@ -26,17 +26,28 @@ export default function ConsiliarView() {
     let props = useSelector(state => state.SuscritorSlice.modal)
     let user = clienteInfo()
     let [datos, setDatos] = useState({
-        id: "",
-        comprobante: "",
-        imagen: "",
+       
         Valor: "",
         banco: "",
         cuenta: "",
         metodo: "",
-        id_registro: "",
+
         usuario: "",
         propietario: "",
-        forma_pago: ""
+        
+
+        lote: "",
+        autorizacion: "",
+        total: "",
+        base: "",
+        valor_pagado: "",
+        retencion: "",
+        comision: "",
+        comision_sin_iva: "",
+        emision_boleto: "",
+        total_sin_emision: "",
+        transmitter: ""
+
     })
     function HandeChange(e) {
         setDatos({
@@ -47,7 +58,7 @@ export default function ConsiliarView() {
             setDatos({
                 ...datos,
                 banco: "Pichincha",
-                comprobante: "2100106995"
+                cuenta: "2100106995"
             })
         }
         if (e.name == "banco" && e.value == "Pacifico") {
@@ -55,7 +66,7 @@ export default function ConsiliarView() {
             setDatos({
                 ...datos,
                 banco: "Pacifico",
-                comprobante: "8069530"
+                cuenta: "8069530"
             })
 
         }
@@ -63,14 +74,32 @@ export default function ConsiliarView() {
             setDatos({
                 ...datos,
                 banco: "Produbanco",
-                comprobante: "1058194005"
+                cuenta: "1058194005"
             })
         }
         if (e.name == "banco" && e.value == "Guayaquil") {
             setDatos({
                 ...datos,
                 banco: "Guayaquil",
-                comprobante: "18018624"
+                cuenta: "18018624"
+            })
+        }
+        if (e.name == "banco" && e.value =="PACIFICARD" ){
+            setDatos({
+                ...datos,               
+                cuenta: "18018624"
+            })
+        }
+        if (e.name == "banco" && e.value == "DINERS CLUB") {
+            setDatos({
+                ...datos,
+                cuenta: "18018624"
+            })
+        }
+        if (e.name == "banco" && e.value == "BANCO GUAYAQUIL") {
+            setDatos({
+                ...datos,
+                cuenta: "18018624"
             })
         }
 
@@ -85,7 +114,45 @@ export default function ConsiliarView() {
         ConsolidarReporte(reporte).then(ouput => {
             if (ouput.success) {
                 usedispatch(setModal({ nombre: "", estado: "" }))
-                history.goBack()
+                let informacion = {
+                    "cedula": props.estado.cedula,
+                    "email": ""
+                }
+                buscarcliente({ ...informacion }).then(oupt => {
+                  
+                    
+                    if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
+                        $('#cedulac').val("")
+                        sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
+                        history.push("/admin/suscritor/" + oupt.data.id + "")
+                        /*setDausuario({
+                          nombreCompleto: oupt.data.nombreCompleto,
+                          ciudad: oupt.data.direccion,
+                          email: oupt.data.email,
+                          id: oupt.data.cedula
+                        })*/
+                    }
+                    else {
+
+                        usedispatch(setToastes({
+                            show: true,
+                            message: 'Hubo un error',
+                            color: 'bg-danger', estado: 'Hubo un error'
+                        }))
+                        history.goBack()
+                    }
+
+                }
+
+                ).catch(err => {
+                    usedispatch(setToastes({
+                        show: true,
+                        message: 'Usuario no encontrado ',
+                        color: 'bg-danger', estado: 'Hubo un error'
+                    }))
+                    console.log(err)
+                })
+
                 return
             }
             $.alert("No se registro")
@@ -121,9 +188,9 @@ export default function ConsiliarView() {
             valor_pagado;
             retencion:
             comision:
-            comisiniva;
-            emisionboleto:
-            totalsinemision:
+            comision_sin_iva;
+            emision_boleto:
+            total_sin_emision:
             evento:
             forma_pago: props.estado.forma_pago
         }
@@ -132,11 +199,13 @@ export default function ConsiliarView() {
             id_operador: clienteInfo().id,
             id_registro: props.estado.id,
             banco: datos.banco,
-            cuenta: datos.comprobante,
+            cuenta: datos.cuenta,
             total_pagado: datos.Valor,
+            evento:props.estado.concierto,
             banco: datos.banco,
             forma_pago: props.estado.forma_pago
         }
+      
         if (Object.values(parms).some(e => e == "")) {
             usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
             return
@@ -144,13 +213,11 @@ export default function ConsiliarView() {
         else {
             setEstatus(true)
             console.log(parms)
-            Consiliarcompra(parms).then(salida => {
+            Consiliarcompra({...parms,...datos}).then(salida => {
                 setEstatus(false)
                 console.log(salida)
                 if (salida) {
                     ConsolidarCompra()
-
-
                 }
             }).cath(err => {
                 setEstatus(false)
@@ -164,24 +231,25 @@ export default function ConsiliarView() {
             id_operador: clienteInfo().id,
             id_registro: props.estado.id_registro,
             banco: datos.banco,
-            cuenta: datos.comprobante,
+            cuenta: datos.cuenta,
             total_pagado: datos.Valor,
-            forma_pago: props.estado.forma_pago
+            evento: props.estado.concierto,
+            forma_pago: props.estado.forma_pago,
+            
         }
+        
         if (Object.values(parms).some(e => e == "")) {
             usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
         else {
             setEstatus(true)
-            console.log(parms)
-            ActualizaConciliacion(parms, props.estado.id).then(salida => {
+            console.log(parms, ...datos)
+            ActualizaConciliacion({ ...parms, ...datos }, props.estado.id).then(salida => {
                 setEstatus(false)
                 console.log(salida)
                 if (salida) {
                     history.goBack()
-                    //   ConsolidarCompra()
-
                 }
             }).cath(err => {
                 setEstatus(false)
@@ -192,75 +260,61 @@ export default function ConsiliarView() {
 
     useEffect(() => {
         console.log(props)
-        if (props.estado.forma_pago == "Deposito" && props.nombre != "actconsiliacion") {
-            let valor = parseFloat(props.estado.total_pago) / 1.07
+        if (props.estado.forma_pago == "Deposito" && props.nombre == "actconsiliacion") {
+            let valor = parseFloat(props.estado.total_pagado) 
             console.log(valor.toFixed(2))
             setDatos({
-                comprobante: "",
-                imagen: "",
-                banco: "",
-                cuenta: "",
+                ...datos,
+                banco: props.estado.banco,
+                cuenta: props.estado.cuenta,
                 metodo: "",
-                id_registro: "",
-                usuario: "",
-                propietario: "",
-                forma_pago: "",
+              
                 Valor: parseFloat(valor.toFixed(2))
 
             })
+          
         }
         if (props.estado.forma_pago == "Deposito" && props.nombre == "consiliacion") {
-            let valor = parseFloat(props.estado.total_pago) / 1.07
+            let valor = parseFloat(props.estado.total_pago) / 1.08
             console.log(valor.toFixed(2))
             //console.log(props)
             setDatos({
-                comprobante: props.estado.cuenta,
-                imagen: "",
-                banco: "",
-                cuenta: "",
-                metodo: "",
-                id_registro: "",
-                usuario: "",
-                propietario: "",
-                forma_pago: "",
+                ...datos,
                 Valor: valor.toFixed(2)
 
             })
+           
         }
         if (props.estado.forma_pago == "Tarjeta" && props.nombre == "consiliacion") {
             let valor = parseFloat(props.estado.total_pago)
             setDatos({
-                comprobante: props.estado.cuenta,
-                imagen: "",
-                banco: "Pacífico",
+               
+                ...datos,
+                banco: "Pacifico",
                 cuenta: "8069530",
-                metodo: "",
-                id_registro: "",
-                usuario: "",
-                propietario: "",
-                forma_pago: "",
+                autorizacion: props.estado.auth_code,
+                lote: props.estado.batch,
+                tarjeta: props.estado.transmitter,
+                
                 Valor: valor.toFixed(2)
-
-
             })
-            console.log(valor)
+            // console.log(valor)
+            
         }
-        /*  if (props.estado.forma_pago == "Tarjeta" && props.nombre == "actconsiliacion") {
-              let valor = parseFloat(props.estado.total_pagado) 
+       if (props.estado.forma_pago == "Tarjeta" && props.nombre == "actconsiliacion") {
+           let valor = parseFloat(props.estado.total_pagado) 
               setDatos({
-                  comprobante: props.estado.cuenta,
-                  imagen: "",
-                  banco: props.estado.forma_pago,
-                  cuenta: "",
-                  metodo: "",
-                  id_registro: "",
-                  usuario: "",
-                  propietario: "",
-                  forma_pago: "",
+                  cuenta: props.estado.cuenta,
+                  autorizacion: props.estado.auth_code,
+                 lote: props.estado.batch,
+                  tarjeta: props.estado.transmitter,
+                  banco: props.estado.banco,                 
+                  ...datos,
                   Valor: valor.toFixed(2)
   
               })
-          }*/
+              
+          }
         $(document).ready(function () {
             $(".modal-content").draggable({
                 handle: ".modal-header",
@@ -279,7 +333,7 @@ export default function ConsiliarView() {
     return (
         <Modal
             show={(props.nombre == "consiliacion" || props.nombre == "actconsiliacion" ? true : false)}
-        size="lg"
+            size="lg"
         >
             <Modal.Header className=" py-3">
                 <h5>
@@ -290,15 +344,15 @@ export default function ConsiliarView() {
             <Modal.Body>
                 <div className="container">
                     <form className="was-validated">
-                        <div className="p-1">
-                            <h5 style={{
-                                fontSize: '1.0em'
-                            }} >
-                                Banco o Tarjeta
-                            </h5>
-                            {props.estado.forma_pago == "Tarjeta" ?
-                                ""
-                                :
+                        
+                        <div className="row">
+                            <div className="col-6 py-1">
+                                <h5 style={{
+                                    fontSize: '1.0em'
+                                }} >
+                                   {props.estado.forma_pago!="Tarjeta" ?"Banco":" Banco adquiriente"}
+                                </h5>
+
                                 <select className=" form-select" value={datos.banco} required
                                     name="banco"
                                     id="banco"
@@ -308,36 +362,12 @@ export default function ConsiliarView() {
                                     <option value={"Produbanco"}>Produbanco</option>
                                     <option value={"Guayaquil"}>Guayaquil</option>
                                     <option value={"Pacifico"}>Pacífico</option>
-                                </select>}
-                        </div>
-                        <div className="p-1" >
-                            <h5 style={{ fontSize: '1.0em' }}>
-                                Cuenta o Tarjeta
-                            </h5>
-                            {/**
-                             * const cuentas = {
-        "pichincha": "2100106995",
-        "pacifico": "8069530",
-        "produbanco": "1058194005",
-        "guayaquil": "18018624"
-    }
-                             */}
-                            {props.estado.forma_pago == "Deposito" ?
-                                <select className=" form-select" value={datos.comprobante} required
-                                    name="comprobante"
-                                    id="comprobante"
-                                >
-                                    <option value={""} disabled></option>
-                                    <option value={"2100106995"}>2100106995</option>
-                                    <option value={"8069530"}>8069530</option>
-                                    <option value={"1058194005"}>1058194005</option>
-                                    <option value={"18018624"}>18018624</option>
-                                </select> :
-                                ""
-                            }
-                        </div>
-                        <div className="row">
-                            <div className="col-12 py-1">
+                                    <option value={"BANCO GUAYAQUIL"}>BANCO GUAYAQUIL</option>
+                                    <option value={"DINERS CLUB"}>DINERS CLUB</option>
+                                    <option value={"PACIFICARD"}>DINERS CLUB</option>
+                                </select>
+                            </div>
+                            <div className="col-6 py-1">
                                 <h5 style={{ fontSize: '1.0em' }}>
                                     Monto del Pago
                                 </h5>
@@ -351,61 +381,107 @@ export default function ConsiliarView() {
                                 />
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label >lote</label>
-                                <input type="" className="form-control"name="lote" id="lote" placeholder="lote"/>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="">Autorización</label>
-                                <input type="" className="form-control" id="autorizacion" name="lote" placeholder="autorizacion"/>
-                            </div>
+                        <div className="p-1" >
+                            {
+                                props.estado.forma_pago == "Tarjeta" ? "" : <h5 style={{ fontSize: '1.0em' }}>
+                                Cuenta
+                            </h5> }                            
+                                <select className=" d-none form-select" value={datos.cuenta} required
+                                    name="cuenta"
+                                    id="cuenta"
+                                >
+                                    <option value={""} disabled></option>
+                                    <option value={"2100106995"}>2100106995</option>
+                                    <option value={"8069530"}>8069530</option>
+                                    <option value={"1058194005"}>1058194005</option>
+                                    <option value={"18018624"}>18018624</option>
+                                </select>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
+                        
+                        {props.estado.forma_pago == "Deposito" ? "" : <div className="form-row">
+                            <div className="form-group col-md-6">
+                                <label >lote</label>
+                                <input type="" className="form-control"
+                                    value={datos.lote}
+                                    onChange={(e) => HandeChange(e.target)}
+                                    name="lote" id="lote" placeholder="lote" />
+                            </div>
+                            <div className="form-group col-md-6">
+                                <label for="">Autorización</label>
+                                <input type="" className="form-control"
+                                    value={datos.autorizacion}
+                                    onChange={(e) => HandeChange(e.target)}
+                                    id="autorizacion" name="autorizacion" placeholder="autorizacion" />
+                            </div>
+                        </div>}
+                        {props.estado.forma_pago == "Deposito" ? "" : <div className="form-row">
+                            <div className="form-group col-md-6">
                                 <label >Tarjeta</label>
                                 <input type=""
-                                value={props.estado.transmitter}
-                                className="form-control"name="tarjeta" id="tarjeta" placeholder="tarjeta"/>
+                                    value={datos.tarjeta}
+                                    onChange={(e) => HandeChange(e.target)}
+                                    className="form-control" name="tarjeta" id="tarjeta" placeholder="tarjeta" />
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="">Autorización</label>
-                                <input type="" className="form-control" id="autorizacion" name="lote" placeholder="autorizacion"/>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div className="form-group col-md-6">
                                 <label >Base</label>
-                                <input type="" className="form-control"name="base" id="base" placeholder="base"/>
+                                <input type="" className="form-control"
+                                    value={datos.base}
+                                    onChange={(e) => HandeChange(e.target)}
+                                    name="base" id="base" placeholder="base" />
+
+
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="">Valor Pagado T/C</label>
-                                <input type="" className="form-control" id="valor_pagado" name="valor_pagado" placeholder="valor_pagado"/>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label >Retencion T/C</label>
-                                <input type="" className="form-control"name="retencion" id="retencion" placeholder="retencion"/>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="">comision T/C</label>
-                                <input type="" className="form-control" id="comision" name="comision" placeholder="comision"/>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
+                        </div>}
+                        {props.estado.forma_pago == "Deposito" ? "" : <div className="form-row">
+                            <div className="form-group col-md-6">
+
                                 <label >Comision iva T/C</label>
-                                <input type="" className="form-control"name="comisiniva" id="comisiniva" placeholder="Comision iva"/>
+                                <input type="" className="form-control"
+                                    value={datos.comision_sin_iva}
+                                    onChange={(e) => HandeChange(e.target)}
+                                    name="comision_sin_iva" id="comision_sin_iva" placeholder="Comision iva" />
+
                             </div>
-                            <div class="form-group col-md-4">
-                                <label for="">Emision boleto</label>
-                                <input type="" className="form-control" id="emisionboleto" name="emisionboleto" placeholder="emisionboleto"/>
+                            <div className="form-group col-md-6">
+                                <label for="">Valor Pagado T/C</label>
+                                <input type="" className="form-control"
+                                    value={datos.valor_pagado}
+                                    onChange={(e) => HandeChange(e.target)}
+                                    id="valor_pagado" name="valor_pagado" placeholder="valor_pagado" />
                             </div>
-                            <div class="form-group col-md-4">
+                        </div>}
+                        {props.estado.forma_pago == "Deposito" ? "" : <div className="form-row">
+                            <div className="form-group col-md-6">
+                                <label >Retencion T/C</label>
+                                <input type="" className="form-control" name="retencion"
+                                    value={datos.retencion}
+                                    onChange={(e) => HandeChange(e.target)}
+                                    id="retencion" placeholder="retencion" />
+                            </div>
+                            <div className="form-group col-md-6">
+                                <label for="">comision T/C</label>
+                                <input type="" className="form-control"
+                                    value={datos.comision}
+                                    onChange={(e) => HandeChange(e.target)}
+                                    id="comision" name="comision" placeholder="comision" />
+                            </div>
+                        </div>}
+                        <div className="form-row">
+                            <div className="form-group col-md-6">
                                 <label for="">Total de compra sin emision</label>
-                                <input type="" className="form-control" id="totalsinemision" name="totalsinemision" placeholder="totalsinemision"/>
+                                <input type="" className="form-control"
+                                    value={datos.total_sin_emision}
+                                    onChange={(e) => HandeChange(e.target)}
+                                    id="total_sin_emision" name="total_sin_emision" placeholder="Total base" />
                             </div>
+                            <div className="form-group col-md-6">
+                                <label for="">Emision boleto</label>
+                                <input type="" className="form-control"
+                                    value={datos.emision_boleto}
+                                    onChange={(e) => HandeChange(e.target)}
+                                    id="emision_boleto" name="emision_boleto" placeholder="Total de emisión" />
+                            </div>
+                            
                         </div>
                         {props.nombre != "actconsiliacion" ?
                             <div className=" container-fluid px-0 py-2 text-end">

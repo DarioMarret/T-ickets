@@ -104,7 +104,8 @@ export default function AprobarView() {
         console.log(ticket.ticket)
         console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"))
 
-        !ticket.ticket ? "" : ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+        !ticket.ticket ? "" : 
+        ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
             console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
             if (!e.success) {
                 usedispatch(setToastes({
@@ -232,19 +233,7 @@ export default function AprobarView() {
         23: "participantes-jessi",
         22: "participante-quito"
     }
-    let Eventos = {
-        1: "Ranchenato",
-        2: "Ranchenato",
-        3: "Ranchenato",
-        4: "Ranchenato",
-        5: "Ranchenato",
-        9: "Eladio Carrión Guayaquil",
-        10: "Eladio Carrión Guayaquil",
-        11: "Eladio Carrión Guayaquil",
-        12: "Eladio Carrión Quito",
-        13: "Eladio Carrión Quito",
-        14: "Eladio Carrión Quito",
-    }
+ 
     let { data: publici = [], error: errorPubli, isLoading: info } = useGetLocalidadQuery()
     function localidada(evento, localidad) {
         if (evento == "Eladio Carrión Guayaquil") {
@@ -334,55 +323,7 @@ export default function AprobarView() {
         else {
             usedispatch(setlisticket({ ticket: true }))
             usedispatch(setFecha({ fecha: [item.selection] }))
-           /* let newdatos = compras.filter(e => new Date(e.fechaCreacion) >= new Date(item.selection.startDate) && new Date(e.fechaCreacion) <= new Date(item.selection.endDate))
-            let nuevosValores = []
-            let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-            let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
-            let arayReallocalidad = []
-            newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                elm.info_concierto.map(loc => {
-                    arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-                    if (parseInt(loc.id_localidad) == 10) {
-                        nuevosValores.push(loc.id_localidad, loc.nombreConcierto, elm.cedula)
-                    }
-                })
-
-            })
-            console.log(nuevosValores)
-            let arrayIndividual = []
-            console.log(consulat)
-            console.log(arayReallocalidad)
-            arayReallocalidad.forEach(elm => {
-                if (arrayIndividual.some(e => e.id == elm.id)) {
-                    let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                    let tota = parseInt(arrayIndividual[dat].cantidad) + parseInt(elm.cantidad)
-                    arrayIndividual[dat].cantidad = tota
-                }
-                else {
-                    arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: precio[elm.id] })
-                }
-            })
-            console.log(arrayIndividual)
-            let datos = arrayIndividual.map(f => {
-                return [f.localidad, f.evento, parseInt(f.cantidad)]
-            })
-            let nuevo = arrayIndividual.map(f => {
-                return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
-            })
-            setDts([
-                ["Localidad", "evento", "cantidad", "precio"],
-                ...nuevo
-            ])
-             setDatas([
-                 ["Localida", "evento", "ganancias"],
-                 ...datos
-             ])
-            usedispatch(setLabels({
-                labels: [["Localidad", "evento", "cantidad", "precio"],
-                ...nuevo]
-            }))*/
-            //usedispatch(setCompras({ compras: order }))
-          //  usedispatch(setlisticket({ ticket: false }))
+           
         }
         console.log(item)
     }
@@ -411,7 +352,7 @@ export default function AprobarView() {
                             console.log(ouput)
                             console.log(parms.id)
                             if (!ouput.success) { return $.alert("" + ouput.message) }
-                            ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+                            ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
                                 console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
                                 if (!e.success) {
                                     usedispatch(setToastes({
@@ -456,7 +397,7 @@ export default function AprobarView() {
                                             }
                                             //  console.log(item, arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
                                             if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
-                                                console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
+                                                //        console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
                                                 // let cantidad = arrprueb.filter(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)[0].cantidad + 1
                                                 let index = arrprueb.findIndex(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
                                                 let cantidad = arrprueb[index].cantidad + 1
@@ -483,10 +424,10 @@ export default function AprobarView() {
                                     let datos = arrprueb.map(f => {
                                         return [f.localidad, f.concierto, parseInt(f.cantidad)]
                                     })
-                                    setDatas([
+                                    /*setDatas([
                                         ["Localida", "evento", "ganancias"],
                                         ...datos
-                                    ])
+                                    ])*/
 
                                     let nuevo = arrprueb.map(f => {
                                         return [f.localidad, f.concierto, parseInt(f.cantidad), parseInt(f.precio)]
@@ -497,14 +438,15 @@ export default function AprobarView() {
                                     ])
                                     usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
                                     let order = newdatos.sort(sorter)
-                                    setTikes(order)
+                                    usedispatch(setTicket({ tiketslist: order }))
+                                    // setTikes(order)
                                     usedispatch(setCompras({ compras: order }))
+                                    usedispatch(setlisticket({ ticket: false }))
                                     return
                                 }
                             }).catch(err => {
                                 console.log(err)
                             })
-
                             $.alert("Registro Eliminado correctamente")
 
                         }).catch(error => {
@@ -851,7 +793,7 @@ export default function AprobarView() {
                                                 <Summarize />
                                             </IconButton>
                                         </Tooltip>
-                                        {clienteInfo() && row.original.link_comprobante == null ? <Tooltip
+                                        {clienteInfo() ? <Tooltip
                                             title="Comprobar" placement="top"
                                         >
                                             <IconButton

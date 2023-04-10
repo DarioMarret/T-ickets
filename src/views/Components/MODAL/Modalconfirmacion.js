@@ -131,6 +131,7 @@ const ModalConfima = (prop) => {
             try {
                 setEstado(true)
                 const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
+               console.log(link)
                 if(link==null){
                     usedispatch(
                         setToastes({
@@ -154,17 +155,6 @@ const ModalConfima = (prop) => {
                         if (ocroupt.success) {
                             let comprobante = ocroupt.data["numero_documento"]
                             let valor = ocroupt.data[valor]
-
-                         /*   if (valor != (parseFloat(modal.estado.total_pago) / 1.07).toFixed(2)) {
-                                usedispatch(
-                                    setToastes({
-                                        show: true,
-                                        message: 'Los Valores del depósito no Concuerdan',
-                                        color: 'bg-warning',
-                                        estado: 'Comuníquense con un accesor'
-                                    }))
-                                return
-                            }*/
                             const reporte = {
                                 "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
                                 "forma_pago": spiner,
@@ -183,7 +173,6 @@ const ModalConfima = (prop) => {
                                     setTimeout(function () {
                                         window.location.reload()
                                     }, 1000)
-
                                 }
                                 else {
                                     setEstado(false)
@@ -195,11 +184,16 @@ const ModalConfima = (prop) => {
                                 usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
                             })
                         } else {
-                            usedispatch(setToastes({ show: true, message: 'Comuníquese con un acceso al número +5930969200247', color: 'bg-danger', estado: ocroupt.message }))
+                            usedispatch(setToastes({
+                                show: true, message: ocroupt.message + "\n \n"
+
+                                    + "Beneficiario: " + ocroupt.data.beneficiario + "\n" + "Banco: " + ocroupt.data.banco + "\n" +"comprobante: "+ ocroupt.data.numero_documento + "\n"
+                                    + "fecha: " + ocroupt.data.fecha, color: 'bg-danger', estado: 'Comuníquese con un acceso al número +5930969200247'
+                        }))
                             setEstado(false)
                         }
                     }).catch(salid => {
-                        usedispatch(setToastes({ show: true, message: 'Comuníquese con un acceso al número +5930969200247', color: 'bg-danger', estado: "Comuníquese con un acceso al número +5930969200247" }))
+                        usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: "Comuníquese con un acceso al número +5930969200247" }))
                         console.log(salid)
                         setEstado(false)
                     })
