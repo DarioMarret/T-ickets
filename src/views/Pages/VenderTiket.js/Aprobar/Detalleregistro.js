@@ -424,7 +424,6 @@ export default function DetalleCompraView() {
             unit: 'mm',
             format: [240, 300]
         };
-
         var doc = new jsPDF(opciones);
         let pagnum = 80
         doc.setFontSize(10);
@@ -440,28 +439,22 @@ export default function DetalleCompraView() {
             doc.text(10, pagnum + 5, "" + LocalidadPrecio(e.idespaciolocalida, e.id_localidad) + "       " + parseInt(e.cantidad) * parseFloat(ListarPrecio(e.idespaciolocalida, e.id_localidad)) 
         );
         })
-
-
         doc.autoPrint({ variant: 'non-conform' });
-
         doc.save('comprobante.pdf');
         doc.autoPrint();
-
         doc.output('dataurlnewwindow', { filename: 'comprobante.pdf' });
     }
     function nuevoPrecio() {
         let datos = nombres.info_concierto.map((item, i) => {
             let valor = item.cantidad * ListarComision(item.idespaciolocalida, item.id_localidad)
-
             return valor
         })
-
         return datos.reduce((a, b) => a + b, 0).toFixed(2)
     }
     const ListaPrecios = async () => {
         const info = await ListaPreciosEvent();
         console.log(info)
-        //ListaPrecio()
+      
         return info
     }
     useEffect(() => {
@@ -714,9 +707,6 @@ export default function DetalleCompraView() {
 
     }, [])
     const [first, setfirst] = useState("")
-    function handelchange(e) {
-        setfirst(e.value)
-    }
     function verRegistro() {
         let selecion = document.getElementById("registro").value
         if (selecion.trim() === "") return
@@ -876,22 +866,6 @@ export default function DetalleCompraView() {
             },
         });
     }
-    function ConsolidarCompra() {
-        const reporte =
-        {
-            "id_registraCompra": nombres.id,
-            "estado": "Consolidado"
-        }
-        ConsolidarReporte(reporte).then(ouput => {
-            if (ouput.success) {
-                console.log(ouput)
-                history.goBack()
-                return
-            }
-            $.alert("No se registro")
-        }).catch(err => {
-        })
-    }
     function ConsolidaBoleto() {
         const reporte = {
             "id_usuario": clienteInfo().id,
@@ -1013,13 +987,11 @@ export default function DetalleCompraView() {
     }
 
     function boletoscanje (){
-        if (nombres.ticket_usuarios.length> 0){
-           // console.log(tiketslist.every(e=> e.canje=="CANJEADO"))
+        if (nombres.ticket_usuarios.length> 0){           
             return nombres.ticket_usuarios.every(e=> e.canje=="CANJEADO")
         }
         return false
     }
-
     function CanjeBole() {
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
         let cor = nombres.info_concierto
@@ -1073,7 +1045,6 @@ export default function DetalleCompraView() {
                     }
                 },
                 cancel: function () {
-                    //close
                 },
             },
         });
@@ -1188,7 +1159,6 @@ export default function DetalleCompraView() {
         })
     }
     function conciliacion() {
-        // console.log(nombres.conciliacion)
         if (nombres.conciliacion == undefined) return
         if (Object.keys(nombres.conciliacion).length > 0) return
         usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres,...tarjetadata } }))
@@ -1206,6 +1176,11 @@ export default function DetalleCompraView() {
                     {useradmin.perfil == "suscriptores" ? "" : <div className="col-12   d-flex  text-center justify-content-md-end  align-items-center">
                         <div className="px-2">
                             <div className="" >
+                                {boletoscanje() ? <a className=" btn btn-default-su btn-sm bg-success  text-white p-3">
+                                    
+                                    <span className=" font-weight-bold"> Registro Canjedo  </span>
+                                    
+                                </a> : <a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" bi bi-ticket-detailed"> </i> Canjear Boletos</a>}
                                 {
                                     nombres.pdf == "SI" ?
                                         <a className=" btn btn-default btn-sm ">
@@ -1213,12 +1188,14 @@ export default function DetalleCompraView() {
                                             {estado[nombres.pdf]}
                                         </a> : ""
                                 }
+                                
                                 {nombres.estado_pago == "Pagado" && nombres.conciliacion.length == 0 ?
                                     <a className=" btn btn-default btn-sm  "
                                         onClick={() => conciliacion()}
                                     >
                                         <i className="bi bi-check"></i> Consolidar </a>
                                     : ""}
+                                    
                                 {nombres.conciliacion.length > 0 ?
                                     <a className=" btn btn-default btn-sm  "
                                         onClick={() => usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto:  nombres.info_concierto[0].nombreConcierto,  ...nombres.conciliacion[0], id_registro:nombres.id,...tarjetadata } }))}
@@ -1232,15 +1209,16 @@ export default function DetalleCompraView() {
                                     : ""}
 
                                 {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                    <a className="btn btn-default btn-sm"
+                                     boletoscanje() ?  "": <a className="btn btn-default btn-sm"
                                         data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
                                         onClick={() => Generarnew()}
                                     >
                                         <i className="fa fa-info-circle">  </i>Recargar Boleto
                                     </a> : ""}
-                                <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>
-                                <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>
-                                {boletoscanje() ?<a className=" bg-success  text-white p-3">Registro Canjedo  </a>:<a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" fa fa-calendar-check-o"> </i> Canjear Boletos</a>}
+                               {nombres.forma_pago!="Deposito"?"": <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>}
+                               
+                                {boletoscanje() ? "" : <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>}
+                                
                             </div>
                         </div>
                     </div>}
@@ -1269,7 +1247,7 @@ export default function DetalleCompraView() {
                             </a>
 
                             {nombres.forma_pago == "Tarjeta" ?
-                                <a className="  rounded-circle btn-primary mx-2 p-2 text-white"
+                                boletoscanje() ? "" :  <a className="  rounded-circle btn-primary mx-2 p-2 text-white"
                                     data-toggle="tooltip" data-placement="top" title="Aprobar Tarjeta"
                                     onClick={() => validar()}
                                 >

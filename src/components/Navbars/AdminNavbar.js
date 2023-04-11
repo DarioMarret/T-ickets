@@ -54,6 +54,7 @@ function AdminNavbar() {
         "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
         "email": isNaN(nombre.trim()) ? nombre.trim() : ''
       }
+      history.goBack()
       buscarcliente({ ...informacion }).then(oupt => {
         //console.log(informacion, oupt)
         $("#search").removeClass("d-none")

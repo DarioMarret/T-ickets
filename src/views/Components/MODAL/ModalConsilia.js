@@ -11,6 +11,7 @@ import { useHistory } from "react-router"
 import { Consiliarcompra } from "utils/pagos/Queripagos"
 import { ConsolidarReporte } from "utils/pagos/Queripagos"
 import { ActualizaConciliacion } from "utils/pagos/Queripagos"
+import { buscarcliente } from "utils/Querypanelsigui"
 export const DatosConsolidar = async (parms) => {
     try {
         let { data } = await axios.post("https://brisana.netbot.ec/js/consolidar.php", parms)
@@ -118,11 +119,12 @@ export default function ConsiliarView() {
                     "cedula": props.estado.cedula,
                     "email": ""
                 }
+                console.log(reporte)
                 buscarcliente({ ...informacion }).then(oupt => {
-                  
-                    
+                   
+                    console.log(informacion)
                     if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
-                        $('#cedulac').val("")
+                        
                         sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
                         history.push("/admin/suscritor/" + oupt.data.id + "")
                         /*setDausuario({
@@ -139,7 +141,7 @@ export default function ConsiliarView() {
                             message: 'Hubo un error',
                             color: 'bg-danger', estado: 'Hubo un error'
                         }))
-                        history.goBack()
+                       // history.goBack()
                     }
 
                 }
@@ -216,7 +218,7 @@ export default function ConsiliarView() {
             Consiliarcompra({...parms,...datos}).then(salida => {
                 setEstatus(false)
                 console.log(salida)
-                if (salida) {
+                if (salida.message =="Consolidado guardado") {
                     ConsolidarCompra()
                 }
             }).cath(err => {
