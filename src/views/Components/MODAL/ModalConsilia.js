@@ -239,14 +239,14 @@ export default function ConsiliarView() {
             forma_pago: props.estado.forma_pago,
             
         }
-        
+        console.log({...parms, ...datos})
         if (Object.values(parms).some(e => e == "")) {
             usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
         else {
             setEstatus(true)
-            console.log(parms, ...datos)
+            //console.log(parms, ...datos)
             ActualizaConciliacion({ ...parms, ...datos }, props.estado.id).then(salida => {
                 setEstatus(false)
                 console.log(salida)

@@ -36,25 +36,13 @@ function AdminNavbar() {
   const filterNames = async (e) => {
     e.preventDefault();
     let nombre = $('#cedulac').val()
-    /*if (user.subscritor.cedula == nombre) {
-      setDausuario({
-        nombreCompleto: '',
-        ciudad: '',
-        email: '',
-      })
-      usedispatch(setToastes({
-        show: true,
-        message: 'Ingrese un usuario diferente ',
-        color: 'bg-danger', estado: 'Proceso erroneo'
-      }))
-      return
-    }*/
+    
     if (nombre.trim().length >= 10) {
       let informacion = {
         "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
         "email": isNaN(nombre.trim()) ? nombre.trim() : ''
       }
-      history.goBack()
+      history.push("/admin")
       buscarcliente({ ...informacion }).then(oupt => {
         //console.log(informacion, oupt)
         $("#search").removeClass("d-none")
