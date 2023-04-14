@@ -109,7 +109,7 @@ export default function ConsiliarView() {
     function ConsolidarCompra() {
         const reporte =
         {
-            "id_registraCompra": props.estado.id,
+            "id_registraCompra": props.estado.id_registro,
             "estado": "Consolidado"
         }
         ConsolidarReporte(reporte).then(ouput => {
@@ -199,7 +199,7 @@ export default function ConsiliarView() {
          */
         let parms = {
             id_operador: clienteInfo().id,
-            id_registro: props.estado.id,
+            id_registro: props.estado.id_registro,
             banco: datos.banco,
             cuenta: datos.cuenta,
             total_pagado: datos.Valor,

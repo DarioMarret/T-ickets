@@ -1161,7 +1161,7 @@ export default function DetalleCompraView() {
     function conciliacion() {
         if (nombres.conciliacion == undefined) return
         if (Object.keys(nombres.conciliacion).length > 0) return
-        usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres,...tarjetadata } }))
+        usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres, id_registro: nombres.id,...tarjetadata } }))
     }
 
     return (
@@ -1198,7 +1198,7 @@ export default function DetalleCompraView() {
                                     
                                 {nombres.conciliacion.length > 0 ?
                                     <a className=" btn btn-default btn-sm  "
-                                        onClick={() => usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto:  nombres.info_concierto[0].nombreConcierto,  ...nombres.conciliacion[0], id_registro:nombres.id,...tarjetadata } }))}
+                                        onClick={() => usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres.conciliacion[0], id_registro: nombres.id,...tarjetadata } }))}
                                     >
                                         <i className="bi bi-check"></i> Actualizar conciliación </a>
                                     : ""}
@@ -1227,7 +1227,7 @@ export default function DetalleCompraView() {
                             {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
                                 <a className="  rounded-circle btn-danger mx-2 p-2 text-white"
                                     data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
-                                    onClick={() => !nombres.conciliacion.length > 0 ? usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres.conciliacion[0], id_registro: nombres.id, ...tarjetadata } })) : usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto,  ...nombres,...tarjetadata } }))}
+                                    onClick={() => !nombres.conciliacion.length > 0 ? usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres.conciliacion[0], id_registro: nombres.id, ...tarjetadata } })) : usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, id_registro: nombres.id,  ...nombres,...tarjetadata } }))}
                                 >
                                     <i className="fa fa-info-circle">  </i>
                                 </a> : ""}
