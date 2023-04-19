@@ -28,7 +28,10 @@ function AdminNavbar() {
   let usedispatch= useDispatch()
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   function salir(){
-    let usehistory = use
+    //let usehistory = use
+    //162
+    //882
+    //404
     removeDatosUsuario()
     history.push("/")
   }

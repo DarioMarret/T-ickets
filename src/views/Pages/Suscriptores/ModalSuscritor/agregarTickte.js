@@ -37,7 +37,8 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
             console.log(ouput[0].token_ocupadas)
             Pagartickt(ouput[0].token_ocupadas, ouput[0].total).then(salida => {
                 console.log(salida[0].estado, salida[0].link_factura)
-                $.alert("" + salida[0].estado);
+                let info = !salida[0].qr_factura ? "":salida[0].qr_factura
+                $.alert("" + salida[0].estado + " " + info);
                 var win = window.open(salida[0].link_factura, '_blank');
                 if (salida[0].link_factura != undefined) {
                     Endpoitnuevo({
@@ -65,6 +66,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
             console.log(err)
         })
     }
+    //https://server1.ticketfacil.ec/ticket2/ajax.pventa.php?api_wts=ticketfacil_api&action=get&typedata=evento_valores&data=1102||13782||3||2"
     const Reserva = async () => {
         try {
             let { data } = await axios.get("https://server1.ticketfacil.ec/ticket2/ajax.pventa.php?api_wts=ticketfacil_api&action=get&typedata=evento_valores&data=1102||" + info.localidad + "||" + info.metodo + "||" + info.cantidad + "")
@@ -74,6 +76,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
             return error
         }
     }
+    //"https://server1.ticketfacil.ec/ticket2/ajax.pventa.php?api_wts=ticketfacil_api&action=create&typedata=factura_api&data=CISNEROS LOPEZ JENIFFER ELIZABETH||jennyfer.cisneros@hotmail.com||1723444285||992877204||2023041000161||54.50||79110216819188621378254$$21||1102||13782||2"
     const Pagartickt = async (token, valor) => {
         try {
             let { data } = await axios.get("https://server1.ticketfacil.ec/ticket2/ajax.pventa.php?api_wts=ticketfacil_api&action=create&typedata=factura_api&data=" + datosperson.nombreCompleto + "||" + datosperson.email + "||" + datosperson.cedula + "||" + datosperson.movil + "||" + info.protocolo + "||" + valor + "||" + token + "||1102||" + info.localidad + "||" + info.cantidad + "")
