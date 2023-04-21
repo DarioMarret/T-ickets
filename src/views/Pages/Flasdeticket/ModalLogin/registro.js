@@ -20,6 +20,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import addNotification from "react-push-notification/dist"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 import ToastViews from "views/Components/TOAST/toast"
+import { Emailcontec } from "utils/Emails"
 const ResgistroView = (prop) => {
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
@@ -255,6 +256,7 @@ const ResgistroView = (prop) => {
                             enable: data.enable, id: data.id,
                             envio: ''
                         }
+
                         DatosUsuariosLocalStorag({ ...usuario, ...users })
                         sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
                         usedispatch(setToastes({
@@ -269,13 +271,13 @@ const ResgistroView = (prop) => {
                                color: 'bg-success',
                                estado: "Inicio Exitoso",
                            })*/
-                        addNotification({
+                      /*  addNotification({
                             title: 'Bienvenido',
                             subtitle: 'registro exitosos ',
                             message: 'Atento tendremos Noticias sobre Eladio Carrión Guayaquil',
                             theme: 'darkblue',
                             native: true // when using native, your OS will handle theming.
-                        })
+                        })*/
                         modal.estado != null ? abrir(modal.estado) :
                             usedispatch(setModal({ nombre: "", estado: "" }))
                         usedispatch(addususcritor({ users }))
@@ -283,6 +285,12 @@ const ResgistroView = (prop) => {
                             category: "Registrado",
                             action: "registro",
                             label: "Button",
+                        })
+                        Emailcontec({ correo: data.email, nombre: data.nombreCompleto }).then(sal=>{
+                            console.log(sal)
+                        }).catch(err=>{
+                            console.log(err)
+
                         })
                     } else {
                         usedispatch(setToastes({

@@ -29,7 +29,7 @@ const initialState = {
         key: 'selection'
     }]
 }
-JSON.stringify
+//JSON.stringify
 
 const SubscritorSlice = createSlice({
     name: 'suscritor',

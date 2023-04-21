@@ -247,7 +247,7 @@ function Dashboard() {
           <Col md="12">
             <div className="pb-5">
               <iframe width="100%" height="1000px" src="https://lookerstudio.google.com/embed/reporting/024acead-3e96-4f28-b3ed-eaaac472ee08/page/6zXD"
-                frameborder="0" allowfullscreen>
+                 >
 
               </iframe>
             </div>
@@ -263,109 +263,7 @@ function Dashboard() {
               <Card.Body>
                 <Row>
                   <Col md="6">
-                    <Table responsive>
-                      <tbody className="region" >
-                        {
-                          mapas.length > 0 ?
-                            mapas.map((f, i) => {
-                              return (
-                                <tr key={i}>
-                                  <td>
-                                    <div className="flag">
-                                      <img
-                                        alt="..."
-                                        src={require("assets/img/flags/US.png")}
-                                      ></img>
-                                    </div>
-                                  </td>
-                                  <td>{f.region}</td>
-                                  <td className="text-right">{f.cantidad}</td>
-
-                                </tr>
-                              )
-                            })
-                            : ""
-                        }
-                        {/*<tr>
-                          <td>
-                            <div className="flag">
-                              <img
-                                alt="..."
-                                src={require("assets/img/flags/US.png")}
-                              ></img>
-                            </div>
-                          </td>
-                          <td>USA</td>
-                          <td className="text-right">2.920</td>
-                          <td className="text-right">53.23%</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div className="flag">
-                              <img
-                                alt="..."
-                                src={require("assets/img/flags/DE.png")}
-                              ></img>
-                            </div>
-                          </td>
-                          <td>Germany</td>
-                          <td className="text-right">1.300</td>
-                          <td className="text-right">20.43%</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div className="flag">
-                              <img
-                                alt="..."
-                                src={require("assets/img/flags/AU.png")}
-                              ></img>
-                            </div>
-                          </td>
-                          <td>Australia</td>
-                          <td className="text-right">760</td>
-                          <td className="text-right">10.35%</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div className="flag">
-                              <img
-                                alt="..."
-                                src={require("assets/img/flags/GB.png")}
-                              ></img>
-                            </div>
-                          </td>
-                          <td>United Kingdom</td>
-                          <td className="text-right">690</td>
-                          <td className="text-right">7.87%</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div className="flag">
-                              <img
-                                alt="..."
-                                src={require("assets/img/flags/RO.png")}
-                              ></img>
-                            </div>
-                          </td>
-                          <td>Romania</td>
-                          <td className="text-right">600</td>
-                          <td className="text-right">5.94%</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div className="flag">
-                              <img
-                                alt="..."
-                                src={require("assets/img/flags/BR.png")}
-                              ></img>
-                            </div>
-                          </td>
-                          <td>Brasil</td>
-                          <td className="text-right">550</td>
-                          <td className="text-right">4.34%</td>
-                        </tr>*/}
-                      </tbody>
-                    </Table>
+                    
                   </Col>
                   <Col className="ml-auto mr-auto" md="6">
                     <VectorMap

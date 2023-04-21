@@ -136,7 +136,7 @@ const ModalConfima = (prop) => {
                     usedispatch(
                         setToastes({
                             show: true,
-                            message: 'La imagen no se pudo leer Comuníquese con un acceso al número +5930969200247',
+                            message: 'La imagen no se pudo leer Comuníquese con un accesor al número +5930969200247',
                             color: 'bg-warning',
                             estado: 'Hubo un error'
                         }))

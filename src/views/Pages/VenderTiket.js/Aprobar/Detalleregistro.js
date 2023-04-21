@@ -50,6 +50,7 @@ import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { ComentarioRegistro } from "utils/pagos/Queripagos";
 import { updateRegistro } from "utils/pagos/Queripagos";
 import { ListaPreciosEvent } from "utils/EventosQuery";
+import WhastappWiev from "views/Components/MODAL/ModalWhast";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -167,6 +168,9 @@ export default function DetalleCompraView() {
         transmitter: "",
         card_brand: ""
     })
+    function Abrirwhastapp(){
+        usedispatch(setModal({ nombre: "whastapp", estado: usuario }))
+    }
     const [alert, setAlert] = useState(null)
     function generaPDF(row) {
 
@@ -1168,6 +1172,8 @@ export default function DetalleCompraView() {
         <PhotoProvider>
             <div>
                 {alert}
+
+                <WhastappWiev/>
                 <ConsiliarView {...nombre} />
                 <ModalConfima />
                 <ModalConfirma />
@@ -1768,7 +1774,10 @@ export default function DetalleCompraView() {
                             >
                                 <i className=" fa  fa-commenting">  </i>
                             </a>}
-                            {useradmin.perfil == "suscriptores" ? "" : <a className="rounded-circle btn-success mx-2 p-2 text-white">
+                            {useradmin.perfil == "suscriptores" ? "" : 
+                            <a className="rounded-circle btn-success mx-2 p-2 text-white"
+                                    onClick={Abrirwhastapp}
+                            >
                                 <i className="bi bi-whatsapp"></i>
                             </a>}
                         </div>
