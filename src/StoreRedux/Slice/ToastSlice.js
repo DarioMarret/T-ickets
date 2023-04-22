@@ -13,7 +13,7 @@ const  ToastSlice = createSlice({
     initialState,
     reducers:{
         setToastes:(state,action)=>{
-            state.toastmsg={...action.payload}
+            state.toastmsg={...action.payload} 
         },
         
     }
