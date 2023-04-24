@@ -14,20 +14,22 @@ export const Emailcontec = async (parms) =>{
         return error
     }
 }
-export const EnviaWhast = async (parms) => {
-    /**
+/**
      * {
     "phone": "593984040380@s.whatsapp.net",
     "message": "prueba",
     "link": ""
 }
      */
-    let movil = "593" + parms.movil + "@s.whatsapp.net"
+export const EnviaWhast = async (parms) => {
+    
+    let movil = "593" + parms.phone + "@s.whatsapp.net"
+   // console.log(parms,movil)
     try {
         let { data } = await axios.post("https://rec.netbot.ec/whatsapp_qr/api/v1/send", {
             "phone": movil,
-            "message": "prueba",
-            "link": ""
+            "message": parms.mensaje,
+            "link": parms.link
         },
             {
                 headers: {
@@ -36,9 +38,11 @@ export const EnviaWhast = async (parms) => {
                 }
             }
         )
+        console.log(data)
         return data
-
+           
     } catch (error) {
+        console.log(error)
         return error
 
     }

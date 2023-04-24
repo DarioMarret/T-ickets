@@ -63,62 +63,6 @@ export const ListarConcierto = async (parms) => {
     })
     return data
 }
-/*
-export const GuardarEspacio = async (parms) => {
-    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/gusdar_espacio", parms, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-
-        }
-    })
-    return data
-}
-
-export const ListarEspacios = async () => {
-    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_espacios", {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-
-        }
-    })
-    return data
-}
-/** Verificar error 500 internal server error */
-/*
-export const EliminarEspacios = async (parms) => {
-    const { data } = await axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_espacio/" + parms, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-
-        }
-    })
-    return data
-}
-export const ActualizarEspacio = async (parms) => {
-    const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/actualizar_espacio", parms, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-
-        }
-    })
-    return data
-}*/
-
-/*
-export const ListarLocalidad = async (parms) => {
-    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_localidades/" + parms, {
-        header: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-        }
-    })
-    return data
-}
-*/
 export const localidaandespacio = async (parms, id) => {
     const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_localidades_id_espacio/" + parms + "/" + id, {
         header: {
@@ -245,9 +189,15 @@ export const Obtenerlinkimagen = async (parm) => {
     try {
         const fordata = new FormData();
         fordata.append('image', parm);
-        const { data } = await axios.post("https://flash.t-ickets.com/store/api/img/", fordata)
+        const { data } = await axios.post("https://flash.t-ickets.com/store/api/img/", fordata,
+            {
+                header: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                }
+            })
         if (!data.success) return null
-        //  console.log(data)
+         console.log(data)
         return data.link
 
     } catch (error) {
@@ -256,4 +206,23 @@ export const Obtenerlinkimagen = async (parm) => {
 
     }
 
+}
+export const Iamegn = (parm)=>{
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==");
+
+    var formdata = new FormData();
+    formdata.append("image", fileInput.files);
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow'
+    };
+
+    fetch("https://flash.t-ickets.com/store/api/img/", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
 }
