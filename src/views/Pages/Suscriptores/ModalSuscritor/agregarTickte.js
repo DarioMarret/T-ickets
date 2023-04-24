@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 
 
@@ -12,13 +12,14 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
         cantidad: "",
         protocolo: ""
     })
+    let [localid,setLoacli]=useState([])
     function handelchnge(e) {
         setInfo({
             ...info,
             [e.name]: e.value
         })
     }
-    let [spiner,setSpiner]= useState(false);
+    let [spiner, setSpiner] = useState(false);
     function Summit() {
         console.log(info)
         if (Object.values(info).some(e => e == "")) {
@@ -37,24 +38,25 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
             console.log(ouput[0].token_ocupadas)
             Pagartickt(ouput[0].token_ocupadas, ouput[0].total).then(salida => {
                 console.log(salida[0].estado, salida[0].link_factura)
-                let info = !salida[0].qr_factura ? "":salida[0].qr_factura
+                let info = !salida[0].qr_factura ? "" : salida[0].qr_factura
                 $.alert("" + salida[0].estado + " " + info);
                 var win = window.open(salida[0].link_factura, '_blank');
                 if (salida[0].link_factura != undefined) {
                     Endpoitnuevo({
                         "cedula": datosperson.cedula,
                         "link_external": salida[0].link_factura,
-                        "observacion": "Urban fest 2 tickefacil"}).then(ou=>{
-                            console.log(ou)
-                            setshows(false)
-                            win.focus();
-                        }).catch(err=>{
-                            console.log(err)
-                        })
+                        "observacion": "Urban fest 2 tickefacil"
+                    }).then(ou => {
+                        console.log(ou)
+                        setshows(false)
+                        win.focus();
+                    }).catch(err => {
+                        console.log(err)
+                    })
                     return
                 }
                 // Cambiar el foco al nuevo tab (punto opcional)
-              
+
                 //$.alert("" + salida[0].link_factura);
             }).catch(err => {
                 console.log(err)
@@ -100,8 +102,16 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
             return error
         }
     }
-
-
+    useEffect(() => {
+        axios.get("https://www.portalapicon.somee.com/api/listApi/GetLocalidad").then(sali => {
+            console.log(sali)
+            if(sali.status==200){
+                setLoacli(sali.data)
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }, [shows])
     return (
         <>
             <Modal
@@ -121,7 +131,22 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                                         <div className="input-group-prepend">
                                             <span className="input-group-text"><i className="fas fa-map"></i></span>
                                         </div>
-                                        <select className=" form-select" name="localidad" id="localidad"
+                                        {localid.length > 0 ? <select className=" form-select" name="localidad" id="localidad"
+                                            onChange={(e) => handelchnge(e.target)}
+                                            value={info.localidad}
+                                        >
+                                            <option value="" >
+                                                Seleccione la localidad
+                                            </option>
+                                            {localid.map(e=>{
+                                                return(
+                                                    <option value={e.id} key={"nmu"+e.id} disabled={(e.disponibilidad<1)}>
+                                                        {e.nombre + " / " + "Dispo:" + e.disponibilidad + " $" + e.subtotal}
+                                                    </option>
+                                                )
+                                            })}
+                                          
+                                        </select> :   <select className=" form-select" name="localidad" id="localidad"
                                             onChange={(e) => handelchnge(e.target)}
                                             value={info.localidad}
                                         >
@@ -149,7 +174,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                                             <option value="13805">
                                                 URBAN BOX PREVENTA
                                             </option>
-                                        </select>
+                                        </select>}
                                     </div>
                                 </div>
                                 <div className="col-md-12 d-flex justify-content-center">
@@ -296,7 +321,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                         <div className="d-flex flex-wrap  justify-content-end ">
 
 
-                            {!spiner?  <button className="btn btn-success float-right" onClick={Summit} >Agregar</button>:""}
+                            {!spiner ? <button className="btn btn-success float-right" onClick={Summit} >Agregar</button> : ""}
 
 
                         </div>

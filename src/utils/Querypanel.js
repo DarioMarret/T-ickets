@@ -189,7 +189,7 @@ export const Obtenerlinkimagen = async (parm) => {
     try {
         const fordata = new FormData();
         fordata.append('image', parm);
-        const { data } = await axios.post("https://flash.t-ickets.com/store/api/img/", fordata,
+        const { data } = await axios.post("http://45.224.96.56:4001/api/img/", fordata,
             {
                 header: {
                     'Content-Type': 'application/json',
@@ -221,7 +221,7 @@ export const Iamegn = (parm)=>{
         redirect: 'follow'
     };
 
-    fetch("https://flash.t-ickets.com/store/api/img/", requestOptions)
+    fetch("http://45.224.96.56:4001/api/img/", requestOptions)
         .then(response => response.text())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));

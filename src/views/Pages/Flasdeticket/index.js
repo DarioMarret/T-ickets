@@ -77,6 +77,8 @@ import Inframene from "views/Components/IFrame/index.js";
 import PaginasView from "./Eventosindex/index.js";
 import NavbarView from "./Navbarindex/index.js";
 import { ListaPreciosEvent } from "utils/EventosQuery/index.js";
+import { ListarEventos } from "utils/Querypanel.js";
+import { EnviarDetalleCompras } from "utils/Emails/index.js";
 const TRACKING_ID = "G-LJN507B5NX";
 const IndexFlas = () => {
   ReactGA.initialize(TRACKING_ID);
@@ -273,6 +275,9 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
+    EnviarDetalleCompras().then(e => console.log(e)).catch(err=>{
+      console.log(err)
+    })
     array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
       console.log(ouput)
     }
@@ -289,6 +294,7 @@ const IndexFlas = () => {
         }, 20 * index)
       })
       : ''
+    
     Limpiarseleccion()
     LimpiarLocalStore()
   }
@@ -732,6 +738,13 @@ const IndexFlas = () => {
     return info
   }
   useEffect(() => {
+    $(document).keyup(function (evtobj) {
+      if (!(evtobj.altKey || evtobj.ctrlKey || evtobj.shiftKey)) {
+        if (evtobj.keyCode == 16) { return false; }
+        if (evtobj.keyCode == 17) { return false; }
+        $("body").append(evtobj.keyCode + " ");
+      }
+    });
     //time.current = setInterval(showRemaining, 1000);
     /* addNotification({
        title: 'Warning',
@@ -830,6 +843,11 @@ const IndexFlas = () => {
     /* setTimeout(function () {
        usedispatch(setModal({ nombre: "", estado: "" }))
      }, 6000)*/
+     /*ListarEventos("").then(sali=>{
+      console.log(sali)
+     }).catch(err=>{
+      console.log(err)
+     })*/
 
   }, [isLoading, info])
 

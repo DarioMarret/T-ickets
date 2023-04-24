@@ -79,6 +79,6 @@ export const ListaPreciosEvent = async () => {
          })
     })
 
-    console.log(newarr)
+   // console.log(newarr)
     return sessionStorage.setItem("PreciosLocalidad", JSON.stringify(newarr))
 }

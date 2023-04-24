@@ -1067,12 +1067,12 @@ const SuscritoridView = () => {
         setshow={setshow}
         estado={"update"}
         datosperson={suscritoid} />
-      <ModalTickte
+      {!showdos ?"": <ModalTickte
         shows={showdos}
         setshows={setshowdos}
         estado={"update"}
         datosperson={suscritoid}
-      />
+      />}
       <div className={spinervi}
         style={{
           display: 'none',
