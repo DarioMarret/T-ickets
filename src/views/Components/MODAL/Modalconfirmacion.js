@@ -199,7 +199,7 @@ const ModalConfima = (prop) => {
                     })
 
                     //setEstado(true)
-                }, 2000)
+                }, 1000)
 
             } catch (error) {
                 setEstado(false)

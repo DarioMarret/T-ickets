@@ -275,9 +275,9 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
-    EnviarDetalleCompras().then(e => console.log(e)).catch(err=>{
+   /* EnviarDetalleCompras().then(e => console.log(e)).catch(err=>{
       console.log(err)
-    })
+    })*/
     array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
       console.log(ouput)
     }

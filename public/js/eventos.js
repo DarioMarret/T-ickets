@@ -19,6 +19,17 @@ else {
   document.onmouseup = disableNS;
   document.oncontextmenu = disableIE;
 }
+function detectDevTools() {
+  const devtools = /./;
+  devtools.toString = function () {
+    if (!console._commandLineAPI) {
+      return 'Herramientas de desarrollador abiertas';
+    }
+  };
+  console.log(devtools);
+}
+detectDevTools();
+
 document.oncontextmenu = new Function("return false");
 document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener('scroll', function () {
