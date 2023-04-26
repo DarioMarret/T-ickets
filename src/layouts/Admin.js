@@ -27,7 +27,7 @@ function Admin() {
   const getRoutes = (routes) => {
   
     return routes.map((prop, key) => {
-      if (prop.permiso != null && prop.permiso.every(e => e != user.perfil)) {
+      if (prop.permiso != null && prop.permiso.every(e => e != user.id_perfil)) {
         return null
       }
       if (prop.collapse) {

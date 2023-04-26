@@ -54,14 +54,14 @@ function LoginPage() {
     event.preventDefault();
     if (credenciales.username.trim() !== '' && credenciales.password.trim() !== '') {
       try {
-        const data = await Loginadmin({ username: credenciales.username.trim() ,password:credenciales.password.trim()})
+        const data = await Loginadmin({ email: credenciales.username.trim() ,password:credenciales.password.trim()})
         const { success, token } = data
         if (success) {
-          //console.log("success-->",data)
+          console.log("success-->",data)
           setDatosUser(token)
           setShow(true)
           setmessage("Inicio de session exitoso")
-          history.push('/admin/inicio')
+         history.push('/admin/inicio')
         }
         else {
           setShow(true)

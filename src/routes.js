@@ -50,7 +50,7 @@ var routes = [
     name: "inicio",
     icon: "nc-icon nc-layers-3",
     component: Dashboardsub,
-    permiso: ["admin"]
+    permiso: ["1",]
   },
   {
     path: "/datos",
@@ -58,7 +58,7 @@ var routes = [
     name: "Datos",
     icon: "nc-icon nc-satisfied",
     component: PerfilPage,
-    permiso: ["admin"]
+    permiso: ["1",]
   },
   {
     path: "/tickets",
@@ -66,7 +66,7 @@ var routes = [
     name: "Tickets",
     icon: "nc-icon nc-notification-70",
     component: Reactabla,
-    permiso: ["admin"]
+    permiso: ["1",]
   },
   {
     path: "/suscritor/:id",

@@ -57,7 +57,7 @@ var routes = [
     name: "Inicio",
     icon: "nc-icon nc-layers-3",
     component: Dashboard,
-    permiso: ["admin", "super_admin", "vendedores", "suscriptores"]
+    permiso: ["1", "super_admin", "vendedores", "suscriptores"]
 
   },
   {
@@ -65,13 +65,13 @@ var routes = [
     name: "Noticias",
     layout: "/admin",
     component: NoticiasJs,
-    icon: " nc-icon nc-notification-70", permiso: ["admin", ],
+    icon: " nc-icon nc-notification-70", permiso: ["1", ],
   },
   {
     path: "/Evento/:id",
     layout: "/admin",
     component: EventoEspecifico,
-    permiso: ["admin",  "vendedores"],
+    permiso: ["1",  "vendedores"],
   },
   {
     collapse: true,
@@ -79,7 +79,7 @@ var routes = [
     name: "Gestion de Eventos",
     state: "openGestion",
     icon: "nc-icon nc-notes",
-    permiso: ["admin", ],
+    permiso: ["1", ],
     views: [
       {
         path: "/Espacio",
@@ -87,13 +87,13 @@ var routes = [
         name: "Crear Espacio",
         mini: "*",
         component: Espacios,
-        permiso: ["admin", ]
+        permiso: ["1", ]
       },
       {
         path: "/usuario/:id",
         layout: "/admin",
         component: UseridView,
-        permiso: ["admin", ]
+        permiso: ["1", ]
       },
       {
         path: "/Evento",
@@ -101,22 +101,22 @@ var routes = [
         name: "Evento",
         mini: "*",
         component: Eventos,
-        permiso: ["admin", ]
+        permiso: ["1", ]
       },
       {
         path: "/Informacion-tributaria",
         layout: "/admin",
-        name: "SRI",
+        name: "Promotor",
         mini: "*",
         component: AutorizacionView,
-        permiso: ["admin", ]
+        permiso: ["1", ]
       }, {
         path: "/configurar-comisiones",
         layout: "/admin",
         name: " Comisiones",
         mini: "*",
         component: AutorizacionView,
-        permiso: ["admin", ]
+        permiso: ["1", ]
       }
       , {
         path: "/Diseñar-Ticket",
@@ -124,7 +124,7 @@ var routes = [
         name: "Diseñar Ticket",
         mini: "*",
         component: DiseñoViewtickes,
-        permiso: ["admin", ]
+        permiso: ["1", ]
       },
       {
         path: "/Diseñar-PDF",
@@ -132,7 +132,7 @@ var routes = [
         name: "Diseñar PDF",
         mini: "*",
         component: DiseñoViwpdf,
-        permiso: ["admin", ]
+        permiso: ["1", ]
       }
     ]
   },
@@ -142,14 +142,14 @@ var routes = [
     state: "openCliente",
     layout: "/admin",
 
-    component: SuscritoridView, permiso: ["admin", "super_admin", ],
+    component: SuscritoridView, permiso: ["1", "super_admin", ],
   },
   {
     path: "/Reporte/:id",
     state: "openCliente",
     layout: "/admin",
 
-    component: DetalleCompraView, permiso: ["admin", "suscriptores","super_admin", ],
+    component: DetalleCompraView, permiso: ["1", "suscriptores","super_admin", ],
   },
 
 
@@ -159,7 +159,7 @@ var routes = [
     name: "Clientes",
     state: "openCliente",
     icon: "nc-icon nc-single-02",
-    permiso: ["admin", "super_admin",],
+    permiso: ["1", "super_admin",],
     views: [
 
 
@@ -169,7 +169,7 @@ var routes = [
         name: "Suscriptores",
         mini: "*",
         component: SuscritorViews,
-        permiso: ["admin", "super_admin", ],
+        permiso: ["1", "super_admin", ],
       },
 
 
@@ -181,7 +181,7 @@ var routes = [
     name: "Ventas",
     state: "openVentas",
     icon: "nc-icon nc-cart-simple",
-    permiso: ["admin", "super_admin", "vendedores", "suscriptores"],
+    permiso: ["1", "super_admin", "vendedores", "suscriptores"],
     views: [
       {
         path: "/Vender-Tickets",
@@ -189,7 +189,7 @@ var routes = [
         name: "Vender Tickets",
         mini: "*",
         component: Ventas,
-        permiso: ["admin", "super_admin", "vendedores"]
+        permiso: ["1", "super_admin", "vendedores"]
       },
 
       {
@@ -198,7 +198,7 @@ var routes = [
         name: "Ventas Por Aprobar",
         mini: "*",
         component: AprobarView,
-        permiso: ["admin", "super_admin", ]
+        permiso: ["1", "super_admin", ]
       },
       {
         path:"/Consolidados",
@@ -214,14 +214,14 @@ var routes = [
         name: "Informe de ventas",
         mini: "*",
         component: InformeView,
-        permiso: ["suscriptores", "admin", "super_admin", "vendedores"]
+        permiso: ["suscriptores", "1", "super_admin", "vendedores"]
       },
       {
         path: "/Aprobar/:id",
         layout: "/admin",
 
         component: AprobarViewid,
-        permiso: ["admin", "super_admin", ]
+        permiso: ["1", "super_admin", ]
       },
       {
         path: "/Boletos",
@@ -229,7 +229,7 @@ var routes = [
         mini: "*",
         name: "Boletos",
         component: EmitirboView,
-        permiso: ["admin", "super_admin", ]
+        permiso: ["1", "super_admin", ]
       },
       {
         path: "/Vender-Articulo",
@@ -237,7 +237,7 @@ var routes = [
         name: "Vender Articulo",
         mini: "*",
         component: EmitirboView,
-        permiso: ["admin", ]
+        permiso: ["1", ]
       }
 
     ]
@@ -256,7 +256,7 @@ var routes = [
         name: "Tickets",
         mini: "*",
         component: Ticket,
-        permiso: ["admin", "super_admin", "vendedores"],
+        permiso: ["1", "super_admin", "vendedores"],
       },
       {
         path: "/Facturas",
@@ -264,7 +264,7 @@ var routes = [
         name: "Facturas Electronicas",
         mini: "*",
         component: Reactabla,
-        permiso: ["admin", "super_admin", "vendedores"],
+        permiso: ["1", "super_admin", "vendedores"],
       },
       {
         path: "/Otros",
@@ -272,7 +272,7 @@ var routes = [
         name: "Otros Ingresos & Egresos",
         mini: "*",
         component: Reactabla,
-        permiso: ["admin", "super_admin",],
+        permiso: ["1", "super_admin",],
       },
       {
         path: "/Estadistica",
@@ -280,7 +280,7 @@ var routes = [
         name: "Estadisticas",
         mini: "*",
         component: Reactabla,
-        permiso: ["admin", "super_admin", "vendedores"],
+        permiso: ["1", "super_admin", "vendedores"],
       }
     ]
   },
@@ -290,7 +290,7 @@ var routes = [
     name: "Mensajeria",
     state: "openMensajeria",
     icon: "nc-icon nc-money-coins",
-    permiso: ["admin", ],
+    permiso: ["1", ],
     views: [
       {
         path: "/notificacion",
@@ -298,7 +298,7 @@ var routes = [
         name: "Notificaciones Email",
         mini: "*",
         component: UsersView,
-        permiso: ["admin", "super_admin"]
+        permiso: ["1", "super_admin"]
       },
       {
         path: "/whatsapp",
@@ -306,7 +306,7 @@ var routes = [
         name: "Notificaciones Whatsapp",
         mini: "*",
         component: UsersView,
-        permiso: ["admin", "super_admin"]
+        permiso: ["1", "super_admin"]
       },
       {
         path: "/Push",
@@ -314,7 +314,7 @@ var routes = [
         name: "Notificaciones Push",
         mini: "*",
         component: UsersView,
-        permiso: ["admin", "super_admin"]
+        permiso: ["1", "super_admin"]
       }
     ]
 
@@ -325,7 +325,7 @@ var routes = [
     name: "Ajustes",
     icon: "nc-icon nc-settings-gear-64",
     state: "openAjustes",
-    permiso: ["admin", "super_admin"],
+    permiso: ["1", "super_admin"],
     views: [
       {
         path: "/Gestion-Personal",
@@ -333,7 +333,7 @@ var routes = [
         name: "Gestión Personal",
         mini: "*",
         component: UsersView,
-        permiso: ["admin", "super_admin"]
+        permiso: ["1", "super_admin"]
       },
 
       {
@@ -342,21 +342,21 @@ var routes = [
         name: "Pasarela de Pago",
         mini: "*",
         component: Ventas,
-        permiso: ["admin", "super_admin"]
+        permiso: ["1", "super_admin"]
       }, {
         path: "/Servidor-Correo",
         layout: "/admin",
         name: "Servidor de Correo",
         mini: "*",
         component: UsersView,
-        permiso: ["admin", "super_admin"]
+        permiso: ["1", "super_admin"]
       }, {
         path: "/Servidor-Correo",
         layout: "/admin",
         name: "Configurar WhatsApp",
         mini: "*",
         component: UsersView,
-        permiso: ["admin", "super_admin"]
+        permiso: ["1", "super_admin"]
       }
     ]
   },
@@ -373,7 +373,7 @@ var routes = [
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["admin", "", ""]
+    permiso: ["1", "", ""]
   }
 
 

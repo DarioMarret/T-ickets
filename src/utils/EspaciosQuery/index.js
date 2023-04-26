@@ -1,43 +1,43 @@
 import axios from "axios"
+import { InstanciaAxio } from "utils/Instancias"
 export const GuardarEspacio = async (parms) => {
-    const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/gusdar_espacio", parms, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-
-        }
-    })
-    return data
+    try {
+        let { data } = await InstanciaAxio.post("crear_espacio", parms)
+        return data
+    } catch (error) {
+        return error
+    }
 }
 
 export const ListarEspacios = async () => {
-    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_espacios", {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-
-        }
-    })
-    return data
+    try {
+        const { data } = await InstanciaAxio.get("/listar_espacio")
+        return data
+    } catch (error) {
+        return error
+    }
 }
 /** Verificar error 500 internal server error */
 export const EliminarEspacios = async (parms) => {
-    const { data } = await axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_espacio/" + parms, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+    try {
+        const { data } = await InstanciaAxio.delete("eliminar_espacio/" + parms)
+        return data
+    } catch (error) {
+        return error
+    }
 
-        }
-    })
-    return data
 }
-export const ActualizarEspacio = async (parms) => {
-    const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/actualizar_espacio", parms, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-
-        }
-    })
-    return data
+export const ActualizarEspacio = async (parms, id) => {
+    try {
+        const { data } = await InstanciaAxio.put("actualizar_espacio/" + id, {
+            "nombre": parms.nombre,
+            "descripcion": parms.descripcion
+        })
+        console.log(data)
+        return data
+        
+    } catch (error) {
+        console.log(error)
+        return error
+    }
 }

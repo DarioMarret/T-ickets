@@ -56,7 +56,7 @@ function Sidebar({ routes, image, background }) {
      if(prop.name==null){
       return null
      }
-      if(prop.permiso!=null && prop.permiso.every(e=>e!=user.perfil) ){
+      if (prop.permiso != null && prop.permiso.every(e => e != user.id_perfil) ){
         return null
 
       }

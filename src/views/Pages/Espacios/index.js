@@ -25,7 +25,7 @@ const EventosViews = () => {
 
   function AgregasSillasMesa(e) {
     setLocalidad(e)
-    sessionStorage.removeItem("mapa")  
+    sessionStorage.removeItem("mapa")
     setShowToast(true)
   }
   async function Lista() {
@@ -38,23 +38,10 @@ const EventosViews = () => {
   }
   async function Elimnar(e) {
     try {
-      const listar = await ListarLocalidad()
-      if (listar.data.length) {
-        listar.data.filter((a) => a.espacio == e.nombre).map(async (element) => {
-          await EliminarLocalidad(element.id)
-        });
-        const elimonado = await EliminarEspacios(e.id)
-        if (elimonado.success) {
-          await Lista()
-          hideAlert()
-        }
-      }
-      else {
-        const elimonado = await EliminarEspacios(e.id)
-        if (elimonado.success) {
-          await Lista()
-          hideAlert()
-        }
+      const elimonado = await EliminarEspacios(e.id)
+      if (elimonado.success) {
+        await Lista()
+        hideAlert()
       }
     } catch (error) {
       console.log(error)
@@ -272,7 +259,7 @@ const EventosViews = () => {
                   <Box sx={{ display: 'flex' }}>
                     <IconButton
                       color="primary"
-                      onClick={() => AgregasSillasMesa(row.original)}
+                      onClick={() => {/* AgregasSillasMesa(row.original)*/ }}
                     >
                       <Visibility />
                     </IconButton>

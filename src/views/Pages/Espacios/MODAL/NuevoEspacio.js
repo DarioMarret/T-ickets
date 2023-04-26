@@ -32,6 +32,7 @@ const NewEspacioView = (props) => {
             const espaci = await GuardarEspacio(espacio)
             const { success } = espaci
             if (success) {
+               // console.log(espaci)
                 usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
                 SetShownuev(false)
             }
@@ -42,7 +43,7 @@ const NewEspacioView = (props) => {
     }
     async function Editar() {
         try {
-            const actualiza = await ActualizarEspacio(espacio)
+            const actualiza = await ActualizarEspacio(espacio,espacio.id)
             const { success } = actualiza
             if (success) {
 
