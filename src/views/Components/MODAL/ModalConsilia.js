@@ -251,7 +251,7 @@ export default function ConsiliarView() {
                 setEstatus(false)
                 console.log(salida)
                 if (salida) {
-                    history.goBack()
+                   // history.goBack()
                 }
             }).cath(err => {
                 setEstatus(false)
