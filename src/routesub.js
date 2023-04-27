@@ -96,6 +96,14 @@ var routes = [
         permiso: ["1", ]
       },
       {
+        path: "/Informacion-tributaria",
+        layout: "/admin",
+        name: "Promotor",
+        mini: "*",
+        component: AutorizacionView,
+        permiso: ["1",]
+      }, 
+      {
         path: "/Evento",
         layout: "/admin",
         name: "Evento",
@@ -104,13 +112,6 @@ var routes = [
         permiso: ["1", ]
       },
       {
-        path: "/Informacion-tributaria",
-        layout: "/admin",
-        name: "Promotor",
-        mini: "*",
-        component: AutorizacionView,
-        permiso: ["1", ]
-      }, {
         path: "/configurar-comisiones",
         layout: "/admin",
         name: " Comisiones",

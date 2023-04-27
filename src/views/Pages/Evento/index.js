@@ -17,6 +17,7 @@ import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
 import { ListaPreciosEvent } from "utils/EventosQuery";
+import ModalcreaEventoView from "./MODAL/ModalcreaEventos";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
@@ -125,6 +126,7 @@ const EventosViews = () => {
   return (
     <div className="container-fluid">
       {alert}
+      <ModalcreaEventoView/>
       <Row className="d-none">
         <Col lg="3" sm="6">
           <Card className="card-stats">

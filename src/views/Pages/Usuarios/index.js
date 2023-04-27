@@ -14,6 +14,7 @@ import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { GetUserList, Eliminaruser } from "utils/QueryUser/index";
+import { ObtenerPermisos } from "utils/QueryUser";
 const UsersView = () => {
   const [fecha, setFecha] = useState(new Date())
   let history = useHistory()
@@ -38,17 +39,16 @@ const UsersView = () => {
   async function ListarUsuarios() {
     try {
 
-      let Roles = await GetRoles()
-
-
+      let Roles = await ObtenerPermisos()
       const data = await GetUserList()
-      //  console.log(data)
-      if (data.users.length > 0) {
+        console.log(data)
+      if (data.data.length > 0) {
+        console.log(Roles)
         let dato = Roles.data.map((e, i) => {
-          return { "value": e.roles, "label": e.roles }
+          return { "value": e.perfil, "label": e.id }
         })
         setRoles(dato)
-        setListauser(data.users)
+        setListauser(data.data)
      
       }
     } catch (error) {
@@ -64,7 +64,7 @@ const UsersView = () => {
     //history.push("/admin/usuario")
   }
 
-  async function Eliminar(id) {
+  /*async function Eliminar(id) {
     if (id == user.id) {
       cancelDetele1()
     }
@@ -85,7 +85,7 @@ const UsersView = () => {
     }
 
 
-  }
+  }*/
   useEffect(() => {
     (async () => {
       await ListarUsuarios()
@@ -93,42 +93,12 @@ const UsersView = () => {
 
     })()
 
-    console.log(listUsuarios)
+    //console.log(listUsuarios)
   }, [])
 
 
-  const successAlert = (e) => {
-    setAlert(
-      <SweetAlert
-        warning
-        style={{ display: "block", marginTop: "-100px" }}
-        title="Estas Seguro?"
-        onConfirm={() => Eliminar(e)}
-        onCancel={() => cancelDetele()}
-        confirmBtnBsStyle="success"
-        cancelBtnBsStyle="danger"
-        confirmBtnText="Confirmar"
-        cancelBtnText="Cancelar"
-        showCancel
-      >
-        Esta seguro de eliminar este Usuario
-      </SweetAlert>
-    );
-  };
-  const successDelete = () => {
-    setAlert(
-      <SweetAlert
-        success
-        style={{ display: "block", marginTop: "-100px" }}
-        title="Eliminado!"
-        onConfirm={() => hideAlert()}
-        onCancel={() => hideAlert()}
-        confirmBtnBsStyle="success"
-      >
-        El usuario se elimino correctamenta
-      </SweetAlert>
-    );
-  };
+  
+
   const cancelDetele = () => {
     setAlert(
       <SweetAlert
@@ -143,20 +113,7 @@ const UsersView = () => {
       </SweetAlert>
     );
   };
-  const cancelDetele1 = () => {
-    setAlert(
-      <SweetAlert
-        danger
-        style={{ display: "block", marginTop: "-100px" }}
-        title="Session Activa"
-        onConfirm={() => hideAlert()}
-        onCancel={() => hideAlert()}
-        confirmBtnBsStyle="success"
-      >
-        La seccion esta activa no se puede eliminar
-      </SweetAlert>
-    );
-  };
+ 
   const hideAlert = () => {
     setAlert(null);
   };

@@ -96,7 +96,7 @@ export const Columnusuarios = [
     header: 'Email',
   },
   {
-    accessorKey: 'perfil',
+    accessorKey: 'id_perfil',
     header: 'Perfil',
 
   },
