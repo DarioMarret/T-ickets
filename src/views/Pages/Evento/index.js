@@ -18,6 +18,8 @@ import 'moment-timezone'
 import 'moment/locale/es';
 import { ListaPreciosEvent } from "utils/EventosQuery";
 import ModalcreaEventoView from "./MODAL/ModalcreaEventos";
+import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import Modalpreciolocalidad from "./MODAL/Modalpreciolocalidad";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
@@ -29,7 +31,9 @@ const EventosViews = () => {
   const sorter = (a, b) => a.id > b.id || new Date(a.fechaConcierto) < new Date(b.fechaConcierto) ? 1 : -1;
 
   function nuevoevento() {
-    setShow(true)
+    dispatch(setModal({ nombre: "ModalcreaEventoView",estado:""}))
+    /*
+    setShow(true)*/
   }
   async function GetEventos() {
     try {
@@ -127,6 +131,7 @@ const EventosViews = () => {
     <div className="container-fluid">
       {alert}
       <ModalcreaEventoView/>
+      <Modalpreciolocalidad/>
       <Row className="d-none">
         <Col lg="3" sm="6">
           <Card className="card-stats">

@@ -1,7 +1,17 @@
+import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { ListarEspacios } from "utils/EspaciosQuery";
+import { CrearEvento } from "utils/EventosQuery";
+import {listar_promotores} from "utils/PromotorQuerys"
+import { ObtenerEstadosforEventos } from "utils/QueryUser";
+import { Obtenerlinkimagen } from "utils/Querypanel";
 export default function ModalcreaEventoView() {
+    let user = clienteInfo()
+    let modal = useSelector(state=>state.SuscritorSlice.modal)
     const [evento, setEventos] = useState(
         {
             "nombreConcierto": "",
@@ -13,7 +23,7 @@ export default function ModalcreaEventoView() {
             "imagenConcierto": "",
             "id_espacio": 0,
             "promotor_eventosId": 0,
-            "id_username": 0,
+            "id_username": user.id,
             "id_estado": 0,
             "mapaConcierto": ""
         }
@@ -24,7 +34,8 @@ export default function ModalcreaEventoView() {
     function handelchangeComposeventos(e) {
         let img = new Image()
         if (e.name == "imagenConcierto") {
-            // setNewEventos({ ...neweventos, imagenConcierto: e.files[0] ? e.files[0] : '' })
+            setEventos({
+                ...evento, imagenConcierto: e.files[0] ? e.files[0] : '' })
             /* 
              img.src = window.URL.createObjectURL(e.files[0])
              img.onload = () => {
@@ -42,7 +53,7 @@ export default function ModalcreaEventoView() {
                  setNewEventos({ ...neweventos, imagenConcierto: '' })
              }*/
         } else if (e.name == "mapaConcierto") {
-            //  setNewEventos({ ...neweventos, mapaConcierto: e.files[0] ? e.files[0] : '' })
+            setEventos({...evento, mapaConcierto: e.files[0] ? e.files[0] : '' })
             /* 
               img.src = window.URL.createObjectURL(e.files[0])
               img.onload = () => {
@@ -57,34 +68,98 @@ export default function ModalcreaEventoView() {
               img.onerror = () => {
                   setNewEventos({ ...neweventos, mapaConcierto: '' })
               }*/
-        } else if (e.name == "autorizacion") {
-            /* setNewEventos({
-                 ...neweventos,
-                 [e.name]: e.value,
-                 codigo: e.value == "preventa" ? 'preventa' : '',
-             })*/
-        }
+        } 
         else {
-            /* setNewEventos({
-                 ...neweventos,
+             setEventos({
+                 ...evento,
                  [e.name]: e.value,
-             })*/
+             })
         }
     }
+    function handelchange(e){
+        setEventos({
+            ...evento,
+            [e.name]: e.value,
+        })
+    }
+    let usedispatch = useDispatch();
+  async  function Guardar(){
+        console.log(evento)
+      if (Object.values(evento).some(e => e == "")) {
+          usedispatch(setToastes({
+              show: true,
+              message: "Falta información por completar",
+              color: 'bg-primary',
+              estado: "Campos vacios"
+          }))
+          return
+      }
+      if (evento.imagenConcierto == undefined || evento.imagenConcierto=="") {
+          usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del   Evento', color: 'bg-danger', estado: 'Datos vacios' }))
+          return
+      }
+      if (evento.mapaConcierto == undefined || evento.mapaConcierto == "")  {
+          usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del al  Evento', color: 'bg-danger', estado: 'Datos vacios' }))
+          return
+      }
+      Obtenerlinkimagen(evento.imagenConcierto).then(img=>{
+        if(img!=null){
+            Obtenerlinkimagen(evento.mapaConcierto).then(imgdos=>{
+                if(imgdos!=null){
+                    let parms={
+                        ...evento,
+                        imagenConcierto:img,
+                        mapaConcierto: imgdos
+                    }
+                    CrearEvento(parms).then(output => {
+                        console.log(output)
+                        usedispatch(setModal({ nombre:"Modalpreciolocalidad",estado:output.data}))
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
+            }).catch(err=>{
+                console.log(err)
+            })
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
+      
+    }
+    
     useEffect(()=>{
         ListarEspacios().then(salida=>{
-            console.log(salida)
-            if(salida.data>0){
+            //console.log(salida)
+            if (salida.data.length >0){
                 setListaEspa(salida.data)
             }
         }).catch(err=>{
             console.log(err)
         })
-    },[])
+        listar_promotores().then(output=>{
+            if (output.message.length>0){
+                setPromotor(output.message)
+            }
+            //console.log(output)
+        }).catch(errr=>{
+            console.log(errr)
+        })
+        ObtenerEstadosforEventos().then(output=>{
+            if(output.data.length>0){
+                setEstados(output.data)
+
+            }
+            console.log(output)
+        }).catch(err=>{
+            console.log(err)
+        })
+            
+    }, [(modal.nombre =="ModalcreaEventoView")])
     return (
 
         <Modal
-            show={true}
+            show={(modal.nombre == "ModalcreaEventoView")}
             size='lg'
         >
             <Modal.Header>
@@ -153,13 +228,29 @@ export default function ModalcreaEventoView() {
                                                 <option value={""}>Seleccione el promotor</option>
                                                 {promotor.map((e, i) => {
                                                     return (
-                                                        <option value={e.id} key={i + "n" + e.id}>{e.nombre}</option>
+                                                        <option value={e.id} key={i + "n" + e.id}>{e.promotor}</option>
                                                     )
                                                 })}
                                             </select>
                                         </div>
                                     </div>
                                     <div className="col-12 col-md-6">
+                                        <div className="input-group mb-3">
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text"><i className="fa fa-map"></i></span>
+                                            </div>
+                                            <select className="form-control" name="id_estado" id="id_estado" onChange={(e) => handelchange(e.target)} placeholder="Seleccione localidad">
+                                                <option value={""}>Seleccione el estado</option>
+                                                {estados.map((e, i) => {
+                                                    return (
+                                                        <option value={e.id} key={i + "n" + e.id}>{e.estado}</option>
+                                                    )
+                                                })}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="col-12 col-md-6">
+                                        <label className="form-label">Descriptión</label>
                                         <div className="input-group mb-3">
                                            <input type="text" name="descripcionConcierto" className="form-control "
                                                 onChange={(e) => handelchangeComposeventos(e.target)}
@@ -202,7 +293,7 @@ export default function ModalcreaEventoView() {
                                                 id="imagenConcierto" placeholder="Imagen del concierto" />
                                         </div>
                                     </div>
-                                    <div className="col-12 col-md-6">
+                                    <div className="col-12 col-md-12">
                                         <label className="form-label"> {true ? "Hay un mapa Cargada " : "Subir imagen del mapa"}</label>
                                         <div className="input-group mb-3">
 
@@ -214,7 +305,7 @@ export default function ModalcreaEventoView() {
                                     </div>
                                 </div>
                                 <div className=" d-flex justify-content-end">
-                                    <button className="btn btn-success">Guardar</button>
+                                    <button className="btn btn-success"  onClick={Guardar} >Guardar</button>
                                 </div>
                             </div>
 

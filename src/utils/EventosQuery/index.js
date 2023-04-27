@@ -1,6 +1,39 @@
 import axios from "axios";
+import { InstanciaAxio } from "utils/Instancias";
 import { ListarLocalidad } from "utils/LocalidadesQuery";
 
+export const CrearEvento =async(parms)=>{
+    try {
+        let { data } = await InstanciaAxio.post("crear_evento",parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const ActualizarEvento = async (parms,id)=>{
+    try {
+        let { data } = await InstanciaAxio.put("actualizar_evento/"+id,parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const EliminarEventoid = async (id)=>{
+    try {
+        let { data } = InstanciaAxio.delete("eliminar_evento"+id)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const ListarEventos = async()=>{
+    try {
+        let { data } = InstanciaAxio.get("listar_eventos")
+        return data
+    } catch (error) {
+        return error
+    }
+} 
 export const Actualisardescripcionevento = async () => {
     try {
         let { data } = axios.get("https://rec.netbot.ec/ms_login/api/v1/actualisar_descripcion_evento", {
@@ -47,20 +80,6 @@ const traerprecios = async (path) => {
         return error
     }
 
-}
-const TraerLocalidad = async () => {
-    try {
-        let { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_localidades/", {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-            }
-        })
-        //console.log(data.data)
-        return data.data
-    } catch (error) {
-        return error
-    }
 }
 
 export const ListaPreciosEvent = async () => {

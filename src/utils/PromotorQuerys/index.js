@@ -1,6 +1,5 @@
 import { InstanciaAxio } from "utils/Instancias"
-
-export const ListarPromotor = async () => {
+export const listar_promotores = async () => {
     try {
         let { data } = await InstanciaAxio.get("listar_promotores")
         return data
