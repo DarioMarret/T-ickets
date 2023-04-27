@@ -106,6 +106,7 @@ export default function ConsiliarView() {
         if (e.name == "banco" && e.value == "Efectivo") {
             setDatos({
                 ...datos,
+                banco: "Efectivo",
                 cuenta: "efectivo"
             })
         }
@@ -127,19 +128,11 @@ export default function ConsiliarView() {
                     "email": ""
                 }
                 console.log(reporte)
-                buscarcliente({ ...informacion }).then(oupt => {
-                   
+                buscarcliente({ ...informacion }).then(oupt => {                   
                     console.log(informacion)
-                    if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
-                        
+                    if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {                        
                         sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
                         history.push("/admin/suscritor/" + oupt.data.id + "")
-                        /*setDausuario({
-                          nombreCompleto: oupt.data.nombreCompleto,
-                          ciudad: oupt.data.direccion,
-                          email: oupt.data.email,
-                          id: oupt.data.cedula
-                        })*/
                     }
                     else {
 
@@ -214,6 +207,7 @@ export default function ConsiliarView() {
             banco: datos.banco,
             forma_pago: props.estado.forma_pago
         }
+        console.log(parms)
       
         if (Object.values(parms).some(e => e == "")) {
             usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
@@ -405,10 +399,11 @@ export default function ConsiliarView() {
                                     <option value={"8069530"}>8069530</option>
                                     <option value={"1058194005"}>1058194005</option>
                                     <option value={"18018624"}>18018624</option>
+                                <option value={"efectivo"}>efectivo</option>
                                 </select>
                         </div>
                         
-                        {props.estado.forma_pago == "Deposito" ? "" : <div className="form-row">
+                        {props.estado.forma_pago == "Deposito" || props.estado.forma_pago == "Efectivo-Local" ? "" : <div className="form-row">
                             <div className="form-group col-md-6">
                                 <label >lote</label>
                                 <input type="" className="form-control"
@@ -424,7 +419,7 @@ export default function ConsiliarView() {
                                     id="autorizacion" name="autorizacion" placeholder="autorizacion" />
                             </div>
                         </div>}
-                        {props.estado.forma_pago == "Deposito" ? "" : <div className="form-row">
+                        {props.estado.forma_pago == "Deposito" || props.estado.forma_pago =="Efectivo-Local" ? "" : <div className="form-row">
                             <div className="form-group col-md-6">
                                 <label >Tarjeta</label>
                                 <input type=""
@@ -442,7 +437,7 @@ export default function ConsiliarView() {
 
                             </div>
                         </div>}
-                        {props.estado.forma_pago == "Deposito" ? "" : <div className="form-row">
+                        {props.estado.forma_pago == "Deposito" || props.estado.forma_pago == "Efectivo-Local" ? "" : <div className="form-row">
                             <div className="form-group col-md-6">
 
                                 <label >Comision iva T/C</label>
@@ -460,7 +455,7 @@ export default function ConsiliarView() {
                                     id="valor_pagado" name="valor_pagado" placeholder="valor_pagado" />
                             </div>
                         </div>}
-                        {props.estado.forma_pago == "Deposito" ? "" : <div className="form-row">
+                        {props.estado.forma_pago == "Deposito" || props.estado.forma_pago == "Efectivo-Local" ? "" : <div className="form-row">
                             <div className="form-group col-md-6">
                                 <label >Retencion T/C</label>
                                 <input type="" className="form-control" name="retencion"

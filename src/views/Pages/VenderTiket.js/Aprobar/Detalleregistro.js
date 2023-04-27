@@ -168,7 +168,7 @@ export default function DetalleCompraView() {
         transmitter: "",
         card_brand: ""
     })
-    function Abrirwhastapp(){
+    function Abrirwhastapp() {
         usedispatch(setModal({ nombre: "whastapp", estado: usuario }))
     }
     const [alert, setAlert] = useState(null)
@@ -332,7 +332,11 @@ export default function DetalleCompraView() {
         if (localidad == 14) {
             return "TODO-O-NADA Quito"
         }
-        return PreciosStore().filter(f => f.id == evento)[0].localidad
+        if (PreciosStore().filter(f => f.id == evento).length>0) {
+
+            return PreciosStore().filter(f => f.id == evento)[0].localidad;
+        }
+        return localidad
     }
     function ListarPrecio(evento, localidad) {
         if (localidad == 9) {
@@ -353,7 +357,10 @@ export default function DetalleCompraView() {
         if (localidad == 14) {
             return precio[14]
         }
-        return PreciosStore().filter(f => f.id == evento)[0].precio_normal
+        if (PreciosStore().filter(f => f.id == evento).length > 0){
+            return PreciosStore().filter(f => f.id == evento)[0].precio_normal
+        }
+        return 0
     }
     function ListarComision(evento, localidad) {
         if (localidad == 9) {
@@ -374,7 +381,10 @@ export default function DetalleCompraView() {
         if (localidad == 14) {
             return 1
         }
-        return parseFloat(PreciosStore().filter(f => f.id == evento)[0].comision_boleto)
+        if (PreciosStore().filter(f => f.id == evento).length > 0) {
+            return parseFloat(PreciosStore().filter(f => f.id == evento)[0].comision_boleto)
+        }
+        return 0
     }
     function Verificarnomnbre(e, f) {
         let nuew = []
@@ -439,9 +449,9 @@ export default function DetalleCompraView() {
         doc.text(10, 75, '_______________________________');
         doc.text(10, 80, 'Recibí conforme');
         doc.text(10, 80, 'Concierto       LOC	CANT.');
-        nombres.info_concierto.map(e=>{
-            doc.text(10, pagnum + 5, "" + LocalidadPrecio(e.idespaciolocalida, e.id_localidad) + "       " + parseInt(e.cantidad) * parseFloat(ListarPrecio(e.idespaciolocalida, e.id_localidad)) 
-        );
+        nombres.info_concierto.map(e => {
+            doc.text(10, pagnum + 5, "" + LocalidadPrecio(e.idespaciolocalida, e.id_localidad) + "       " + parseInt(e.cantidad) * parseFloat(ListarPrecio(e.idespaciolocalida, e.id_localidad))
+            );
         })
         doc.autoPrint({ variant: 'non-conform' });
         doc.save('comprobante.pdf');
@@ -458,7 +468,7 @@ export default function DetalleCompraView() {
     const ListaPrecios = async () => {
         const info = await ListaPreciosEvent();
         console.log(info)
-      
+
         return info
     }
     useEffect(() => {
@@ -990,9 +1000,9 @@ export default function DetalleCompraView() {
 
     }
 
-    function boletoscanje (){
-        if (nombres.ticket_usuarios.length> 0){           
-            return nombres.ticket_usuarios.every(e=> e.canje=="CANJEADO")
+    function boletoscanje() {
+        if (nombres.ticket_usuarios.length > 0) {
+            return nombres.ticket_usuarios.every(e => e.canje == "CANJEADO")
         }
         return false
     }
@@ -1165,7 +1175,7 @@ export default function DetalleCompraView() {
     function conciliacion() {
         if (nombres.conciliacion == undefined) return
         if (Object.keys(nombres.conciliacion).length > 0) return
-        usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres, id_registro: nombres.id,...tarjetadata } }))
+        usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres, id_registro: nombres.id, ...tarjetadata } }))
     }
 
     return (
@@ -1173,7 +1183,7 @@ export default function DetalleCompraView() {
             <div>
                 {alert}
 
-                <WhastappWiev/>
+                <WhastappWiev />
                 <ConsiliarView {...nombre} />
                 <ModalConfima />
                 <ModalConfirma />
@@ -1183,9 +1193,9 @@ export default function DetalleCompraView() {
                         <div className="px-2">
                             <div className="" >
                                 {boletoscanje() ? <a className=" btn btn-default-su btn-sm bg-success  text-white p-3">
-                                    
+
                                     <span className=" font-weight-bold"> Registro Canjedo  </span>
-                                    
+
                                 </a> : <a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" bi bi-ticket-detailed"> </i> Canjear Boletos</a>}
                                 {
                                     nombres.pdf == "SI" ?
@@ -1194,17 +1204,17 @@ export default function DetalleCompraView() {
                                             {estado[nombres.pdf]}
                                         </a> : ""
                                 }
-                                
+
                                 {nombres.estado_pago == "Pagado" && nombres.conciliacion.length == 0 ?
                                     <a className=" btn btn-default btn-sm  "
                                         onClick={() => conciliacion()}
                                     >
                                         <i className="bi bi-check"></i> Consolidar </a>
                                     : ""}
-                                    
+
                                 {nombres.conciliacion.length > 0 ?
                                     <a className=" btn btn-default btn-sm  "
-                                        onClick={() => usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres.conciliacion[0], id_registro: nombres.id,...tarjetadata } }))}
+                                        onClick={() => usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres.conciliacion[0], id_registro: nombres.id, ...tarjetadata } }))}
                                     >
                                         <i className="bi bi-check"></i> Actualizar conciliación </a>
                                     : ""}
@@ -1215,16 +1225,16 @@ export default function DetalleCompraView() {
                                     : ""}
 
                                 {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                     boletoscanje() ?  "": <a className="btn btn-default btn-sm"
+                                    boletoscanje() ? "" : <a className="btn btn-default btn-sm"
                                         data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
                                         onClick={() => Generarnew()}
                                     >
                                         <i className="fa fa-info-circle">  </i>Recargar Boleto
                                     </a> : ""}
-                               {nombres.forma_pago!="Deposito"?"": <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>}
-                               
+                                {nombres.forma_pago != "Deposito" ? "" : <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>}
+
                                 {boletoscanje() ? "" : <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>}
-                                
+
                             </div>
                         </div>
                     </div>}
@@ -1233,11 +1243,11 @@ export default function DetalleCompraView() {
                             {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
                                 <a className="  rounded-circle btn-danger mx-2 p-2 text-white"
                                     data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
-                                    onClick={() => !nombres.conciliacion.length > 0 ? usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres.conciliacion[0], id_registro: nombres.id, ...tarjetadata } })) : usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, id_registro: nombres.id,  ...nombres,...tarjetadata } }))}
+                                    onClick={() => !nombres.conciliacion.length > 0 ? usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres.conciliacion[0], id_registro: nombres.id, ...tarjetadata } })) : usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, id_registro: nombres.id, ...nombres, ...tarjetadata } }))}
                                 >
                                     <i className="fa fa-info-circle">  </i>
                                 </a> : ""}
-                            
+
                             <a className=" rounded-circle btn-primary mx-2 p-2 text-white d-none"
                                 data-toggle="tooltip" data-placement="top" title="Generar Boleto"
                                 onClick={() => Generarnew()}
@@ -1253,7 +1263,7 @@ export default function DetalleCompraView() {
                             </a>
 
                             {nombres.forma_pago == "Tarjeta" ?
-                                boletoscanje() ? "" :  <a className="  rounded-circle btn-primary mx-2 p-2 text-white"
+                                boletoscanje() ? "" : <a className="  rounded-circle btn-primary mx-2 p-2 text-white"
                                     data-toggle="tooltip" data-placement="top" title="Aprobar Tarjeta"
                                     onClick={() => validar()}
                                 >
@@ -1334,8 +1344,8 @@ export default function DetalleCompraView() {
                                             #{id} <br></br>
                                             {nombres.forma_pago}<br></br>
                                             {nombres.forma_pago == "Tarjeta" && nombres.link_pago == null ? "Cambio de Deposito a Tarjeta" : ""}
-                                            {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                                <span className={nombres.conciliacion.length>0 ? "p-1 label label-success" : "label label-danger"}>
+                                            {true ?
+                                                <span className={nombres.conciliacion.length > 0 ? "p-1 label label-success" : "label label-danger"}>
                                                     {nombres.conciliacion.length > 0 ? "Consolidado" : "Sin Consolidar"}
                                                 </span> :
                                                 ""}
@@ -1430,69 +1440,38 @@ export default function DetalleCompraView() {
                                         </div>}
                                 </div>
                             </div>
-                            {useradmin.perfil == "suscriptores" ?"" : nombres.forma_pago != "Tarjeta" ?
-                                    <div className="col-12  col-md-6 text-md-end p-3 text-center ">
-                                        <div className="invoice-from text-center ">
-                                            <small>Comprobante</small>
-                                            <br></br>
-                                            {nombres.link_comprobante == null ? "" :
-                                                <a className=" btn btn-default btn-sm">
-                                                    <i className="fa fa-copy"></i> copy
-                                                </a>}
-                                            <br></br>
+                            {useradmin.perfil == "suscriptores" ? "" : nombres.forma_pago != "Tarjeta" ?
+                                <div className="col-12  col-md-6 text-md-end p-3 text-center ">
+                                    <div className="invoice-from text-center ">
+                                        <small>Comprobante</small>
+                                        <br></br>
+                                        {nombres.link_comprobante == null ? "" :
+                                            <a className=" btn btn-default btn-sm">
+                                                <i className="fa fa-copy"></i> copy
+                                            </a>}
+                                        <br></br>
 
-                                            <a className=" btn btn-default btn-sm"
-                                                onClick={CambiarComprobante}
-                                            >
-                                                <i className=" fa fa-spinner"></i>Cambiar # comprobante
-                                            </a>
+                                        <a className=" btn btn-default btn-sm"
+                                            onClick={CambiarComprobante}
+                                        >
+                                            <i className=" fa fa-spinner"></i>Cambiar # comprobante
+                                        </a>
 
-                                            <br></br>
-                                            <a className="btn btn-default btn-sm"
-                                                onClick={ValidarComprobante}
-                                            >
-                                                <i className="fa fa-check"></i>Verificar el Comprobante
-                                            </a>
-                                            <br></br><br></br>
-                                            <div className="m-t-5 m-b-5 rounded-4  ">
+                                        <br></br>
+                                        <a className="btn btn-default btn-sm"
+                                            onClick={ValidarComprobante}
+                                        >
+                                            <i className="fa fa-check"></i>Verificar el Comprobante
+                                        </a>
+                                        <br></br><br></br>
+                                        <div className="m-t-5 m-b-5 rounded-4  ">
 
-                                            </div>
-                                            <PhotoView src={nombres.link_comprobante == null ? "data:image/png;base64,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" : nombres.link_comprobante}>
-                                                <img className="img-fluid" style={{ height: 150 }} src={nombres.link_comprobante == null ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAARVBMVEX///+wsbHu8PH39/jy9PSsra2ys7PExcXv7+/s7Oz7+/uqq6u4ubnT1NTGx8e0tbXn5+fb29u8vb3U1dXMzc3h4eGkpaXPa21KAAAHrElEQVR4nO2di5qcKBBGIYDITS5Cv/+jbhVqXyadTTZr98xo/V+mnSitcgSqgMJhjETqsvLMsp2B+PHZ9/GJ+rEx+MxS+MkiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiAExQBEDYoAiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiAExQBEDYoAiBsQARQyIAYoYEAMUMSAGKGJADFDEgBigiMEXZSDHTfYdl/uKDGQZVvH0jut9RQZj5KsUMSAG52bAnepy7rQM7Bw2yXdc740MbNB/qOkqPb/BOr6RQVX8v0vV10N4H4Nx+AsEnA+vrw7vY2D+ksH48jsjBp/LoNu/MzNQFz+FPNfi3MN+d9XRGSg/i3W/beXuQGxbl9H4YzNQtbf20vQM2nw74q9mwBZ1YAbKgwssc+ntgQ8j9pbVEwZHLgcR8pk9NocDNowxWCb0uRhEw+yk1FDbKGSaAUYRTPi1CZzbqnzg9kBlZsFtnrYHLgJHCGarKFcd2C4U7DmocHckD0rDTv5Uh2TQmFGqPhzKWDjkeRhAsa8ufugMauXh4ywMoBLICE/9UWlwhrWnfvMRGWTWunF8VFEzG89SDgbDgis/jYtMamLSn4QBBwaXD2NDNbAZLMOpGcTCwqkYJDZ/qAsWLOWp6kJvEx/zNbvEPOw3zxAckkGF5w1G4KYUi03cSZbPYhuxYwg+0jaAwiD7agQfCTzo8gzBIRmoBl6xm/plbQvFeQNWAZqJ8fnQ4hEZcPCK57XDMC5jatBdmM7VZ8LGoDpXElxZQp0w0IsEQ9GeIzgmAzSPtirHNQ6fpjoopwUT8VwMMKogFe4uKKdiuw85OAkDjrkWbSqRR68zdKCM/+Vcy1EZgF3AnFk59lfayn+bkT4sA66GmhYfwZo5/tuE23EZQFFQvtRai+fuF7k/PgNOc65/LGJwMAbPhwt/z+BIsTgsOPXf5ebfn/j/6p2xefP0p8F5tyi9j6Pwr9BXjNF8t4gBMUARA2KAIgZfiIEYxe8TvUZvZJA8uL22dt+3LoszxLTOOKUyxKFITFQ8KLDWPQNZ2utv7J0MLgYuxDFTdpjXXUtvIKuY24whe81p6FHXzDJHJ1n+FKrwAr2TgQMGxmn89TL1XdrV5chWHoDB2kdqF0x4SAZN4RzTfOnTrqP3fcZJ82vH6MbA8XxQBnVQjdkSe67nkhxmNE7XRM21sUfwZp65OSaDMpWJGTXjClYbZxahxBveI/X60t7mhoFjyFZWMhR7RAYihsRFiNLPS7kPTmwMLg7+D+XAJGCFDGypgh+PgVFNxKYnBv+YhkZhhAc9LnVB5s5gbQ+AAUtQH47HoMHPFMEIhmhH7sEKDgCicLEk+MCABeWOx2CG3DYMT4YswjMGVZVYXkxk+4mBLZeDMQAfSXso81j9k2p+sQY4DT+50lIunUFAMsgFLUc6WjmIo9XY+qGjLMrkF3+5FvjIZRi8bpgIXWVfWVtWMoRjMbCQqT6/KPqHlLfd8DmaZbv8WUmx7mb2DT2pL9Nv/EQRA2KAIgbEAEUM9mewnG61aGNrtxlTa4xZ3/m0GMfUMBRFwu71j0wzs6W/JetnwjTi7ryw7drp9RA7MxAa+3zg52PwoVbD3XssGk6hxoz5GqYehhWdtstMbEF3qafnmD5p/JIFT4kFcK5HjNbonafil3NlxXecj92ZgfXo9S0MimrjOLttfKSpbNJ0qSsD741MDTPZTPMYruc5pA+YwPRewo2BCsZUfEfOlQHPuAx0p9CEvctBueDDQQZN9SHhsL3jqPVfZtc6g3HrCAQMMBBRw7PtCStPzDg13jPog01DuGOwa2TG7gxiNAuDaVnAtw6QbAyE0p2B3JY4dgasFKt9r+xGzcDAQ4/6kQEONHwPBnDfebDIwA56ObNftisDW+JSF6pbZho6AxnrNqhouQYGqdT7ulBTK8jsVhdCnvNeb8zZncFkfUAGQq15Knq5xMKA6Wg7A1GVqgIzmcakXZLDWjCGAgyMUYbd2kRfPA/ivk0chqHs1Z3anwEU3TYDA/6UwbUcwMMPDor/7LhysUF9XxvPoZcDNg/ysT2I3t7VhWT3sowvYcBqrNza9X7HuD7ftT3gZWMAWYHMBZ4TGn+xshp57Qys1w8M2Hwx36U9mJa3eFhWVXcV2jY6vjBokJ8rAwHlP2yBZ5X39BnMCTKAxtQ9MGiX9I0Y4MJ2C3nok2VxW9/dGSReJLPY/GFRTsDnymDss3BjhPrRGbDuKlwZWO3k92CAhp5hGJ5FV6CEyq+vA22uTN71uWdoKqz3c8XB1aC27NzSm0tvOnq9UsigzLUvhiuqR6vJ7Apud5qT3rsc1F7ylzn1pH2p1wdmpmmqza6JbIaD2NS3em3er+lH3b+VwLNocCZZ8atYU8LyMj2Zlu3XZLBp6zrZh332/uh28C6Jtfb+632z/jyeaD3DTjdLfWdigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDIgBihgQAxQxIAYoYkAMUMSAGKCIATFAEQNigCIGxABFDO4YnFnbKrwza7fV46Tvrn8A2Mt2m9dX3zgAAAAASUVORK5CYII=" : nombres.link_comprobante} alt="" />
-                                            </PhotoView>
                                         </div>
-                                    </div> :
-                                    <div className="col-12 col-md-6 text-end  ">
-                                        <div className="invoice-date">
-                                            <small className="text-inverse">
-                                                {tarjetadata.cardholder}  </small><br></br>
-
-                                            <div className=" ">
-
-
-                                                {tarjetadata.transmitter} <br></br>
-                                                <span>
-                                                    {tarjetadata.card_brand}
-                                                </span>
-                                                <br></br>
-                                                <span >
-                                                    {tarjetadata.display_number}
-                                                </span>
-
-                                                <br></br>
-                                                {tarjetadata.created_at ? "Fecha creación:" + tarjetadata.created_at : ""} <br></br>
-                                                {tarjetadata.payment_date ? " Fecha pago:" + tarjetadata.payment_date : ""} <br></br>
-                                                <p style={
-                                                    {
-                                                        fontWeight: "bold"
-                                                    }
-                                                }> {tarjetadata.message} </p>
-                                                {estadotc}
-                                            </div>
-                                        </div>
-                                    </div>}
-                                    {
-                                useradmin.perfil == "suscriptores" && nombres.forma_pago == "Tarjeta" ? 
+                                        <PhotoView src={nombres.link_comprobante == null ? "data:image/png;base64,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" : nombres.link_comprobante}>
+                                            <img className="img-fluid" style={{ height: 150 }} src={nombres.link_comprobante == null ? "data:image/png;base64,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" : nombres.link_comprobante} alt="" />
+                                        </PhotoView>
+                                    </div>
+                                </div> :
                                 <div className="col-12 col-md-6 text-end  ">
                                     <div className="invoice-date">
                                         <small className="text-inverse">
@@ -1521,8 +1500,39 @@ export default function DetalleCompraView() {
                                             {estadotc}
                                         </div>
                                     </div>
-                                </div>:""
-                                    }
+                                </div>}
+                            {
+                                useradmin.perfil == "suscriptores" && nombres.forma_pago == "Tarjeta" ?
+                                    <div className="col-12 col-md-6 text-end  ">
+                                        <div className="invoice-date">
+                                            <small className="text-inverse">
+                                                {tarjetadata.cardholder}  </small><br></br>
+
+                                            <div className=" ">
+
+
+                                                {tarjetadata.transmitter} <br></br>
+                                                <span>
+                                                    {tarjetadata.card_brand}
+                                                </span>
+                                                <br></br>
+                                                <span >
+                                                    {tarjetadata.display_number}
+                                                </span>
+
+                                                <br></br>
+                                                {tarjetadata.created_at ? "Fecha creación:" + tarjetadata.created_at : ""} <br></br>
+                                                {tarjetadata.payment_date ? " Fecha pago:" + tarjetadata.payment_date : ""} <br></br>
+                                                <p style={
+                                                    {
+                                                        fontWeight: "bold"
+                                                    }
+                                                }> {tarjetadata.message} </p>
+                                                {estadotc}
+                                            </div>
+                                        </div>
+                                    </div> : ""
+                            }
                             {nombres.forma_pago == "Tarjeta" ?
                                 <div className="invoice-from text-center">
 
@@ -1774,12 +1784,12 @@ export default function DetalleCompraView() {
                             >
                                 <i className=" fa  fa-commenting">  </i>
                             </a>}
-                            {useradmin.perfil == "suscriptores" ? "" : 
-                            <a className="rounded-circle btn-success mx-2 p-2 text-white"
+                            {useradmin.perfil == "suscriptores" ? "" :
+                                <a className="rounded-circle btn-success mx-2 p-2 text-white"
                                     onClick={Abrirwhastapp}
-                            >
-                                <i className="bi bi-whatsapp"></i>
-                            </a>}
+                                >
+                                    <i className="bi bi-whatsapp"></i>
+                                </a>}
                         </div>
 
 
