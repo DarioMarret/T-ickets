@@ -103,6 +103,13 @@ export default function ConsiliarView() {
                 cuenta: "18018624"
             })
         }
+        if (e.name == "banco" && e.value == "Efectivo") {
+            setDatos({
+                ...datos,
+                cuenta: "efectivo"
+            })
+        }
+        
 
     }
 
@@ -364,6 +371,7 @@ export default function ConsiliarView() {
                                     <option value={"Produbanco"}>Produbanco</option>
                                     <option value={"Guayaquil"}>Guayaquil</option>
                                     <option value={"Pacifico"}>Pacífico</option>
+                                    <option value={"Efectivo"}>Efectivo</option>
                                     <option value={"BANCO GUAYAQUIL"}>BANCO GUAYAQUIL</option>
                                     <option value={"DINERS CLUB"}>DINERS CLUB</option>
                                     <option value={"PACIFICARD"}>DINERS CLUB</option>
