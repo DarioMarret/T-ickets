@@ -3,7 +3,7 @@ import { ListarLocalidad } from "utils/LocalidadesQuery";
 
 export const Actualisardescripcionevento = async () => {
     try {
-        let { data } = axios.get("https://rec.netbot.ec/ms_login/api/v1/actualisar_descripcion_evento", {
+        let { data } = axios.get("https://flash.t-ickets.com/ms_login/api/v1/actualisar_descripcion_evento", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -18,7 +18,7 @@ export const Actualisardescripcionevento = async () => {
 
 const ListarEventosLis = async () => {
     try {
-        const { data } = await axios.get("https://rec.netbot.ec/ms_login/listareventos/", {
+        const { data } = await axios.get("https://flash.t-ickets.com/ms_login/listareventos/", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -50,7 +50,7 @@ const traerprecios = async (path) => {
 }
 const TraerLocalidad = async () => {
     try {
-        let { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listar_localidades/", {
+        let { data } = await axios.get("https://flash.t-ickets.com/ms_login/api/v1/listar_localidades/", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -69,7 +69,7 @@ export const ListaPreciosEvent = async () => {
     let newarr = []
     const data = await Promise.all(
         resultado.map(async (e) => {
-            const info = await traerprecios("https://rec.netbot.ec/ms_login/ListaPreciosLocalidades/" + e.codigoEvento)
+            const info = await traerprecios("https://flash.t-ickets.com/ms_login/ListaPreciosLocalidades/" + e.codigoEvento)
             e.Precios = info
             return e
         }))

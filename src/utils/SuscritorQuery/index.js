@@ -1,6 +1,6 @@
 import axios from "axios"
 export const GetSuscritores = async (ini,fin) => {
-    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listas_suscriptor?init="+ini+"&size="+fin, {
+    const { data } = await axios.get("https://flash.t-ickets.com/ms_login/api/v1/listas_suscriptor?init="+ini+"&size="+fin, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -11,7 +11,7 @@ export const GetSuscritores = async (ini,fin) => {
 /**Editar subscritores */
 export const EditarSuscrito = async (id, parms) => {
     console.log(parms, id)
-    const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/actualizar_suscriptor/" + id, parms, {
+    const { data } = await axios.put("https://flash.t-ickets.com/ms_login/api/v1/actualizar_suscriptor/" + id, parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -24,7 +24,7 @@ export const EditarSuscrito = async (id, parms) => {
  * * Eliminar suscritor especifico
  */
 export const EliminarSuscrito = async (id) => {
-    const { data } = await axios.delete("https://rec.netbot.ec/ms_login/api/v1/eliminar_suscriptor/" + id, {
+    const { data } = await axios.delete("https://flash.t-ickets.com/ms_login/api/v1/eliminar_suscriptor/" + id, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -35,7 +35,7 @@ export const EliminarSuscrito = async (id) => {
 }
 export const CancelarSubscriptor = async (id) => {
     //console.log("query",id)   
-    const { data } = await axios.put("https://rec.netbot.ec/ms_login/api/v1/cancelation_suscriptor/" + id, {
+    const { data } = await axios.put("https://flash.t-ickets.com/ms_login/api/v1/cancelation_suscriptor/" + id, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
