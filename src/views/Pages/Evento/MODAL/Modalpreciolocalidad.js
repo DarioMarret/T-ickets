@@ -149,7 +149,6 @@ export default function Modalpreciolocalidad(){
                                 type="switch"
                                 id="habilitar_cortesia"
                                 name="habilitar_cortesia"
-                                checked={precios.habilitar_cortesia}
                                 value="Stripe"
                                
                                
@@ -162,7 +161,6 @@ export default function Modalpreciolocalidad(){
                                 type="switch"
                                 id="habilitar"
                                 name="habilitar"
-                                checked={precios.habilitar}
                                 value="Stripe"
 
 
