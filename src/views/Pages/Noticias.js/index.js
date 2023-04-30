@@ -23,7 +23,7 @@ import { columnPublicidad } from "utils/ColumnTabla";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { ListarEventos } from "utils/Querypanel";
+import { ListarEventos } from "utils/EventosQuery";
 export default function NoticiasView() {
     let usedispatch = useDispatch()
     let fechamin = new Date().toISOString().slice(0, -14);

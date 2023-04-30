@@ -140,7 +140,7 @@ export const GuardarEvento = async (parms) => {
     })
     return data;
 }
-export const ListarEventos = async (parms) => {
+/*export const ListarEventos = async (parms) => {
     const { data } = await axios.get("https://rec.netbot.ec/ms_login/listareventos/", {
         headers: {
             'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ export const ListarEventos = async (parms) => {
         }
     })
     return data;
-}
+}*/
 export const EventosActivos = async () => {
     const { data } = await axios.get("https://rec.netbot.ec/ms_login/listareventos/ACTIVO", {
         headers: {

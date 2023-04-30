@@ -9,7 +9,8 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { Edit, Delete, Share } from '@mui/icons-material';
 import { ExportToCsv } from 'export-to-csv';
 import { columnsTicket } from "utils/ColumnTabla";
-import { EliminareventoLocalidad, listarpreciolocalidad, ListarEventos } from "utils/Querypanel"
+import { EliminareventoLocalidad, listarpreciolocalidad,  } from "utils/Querypanel"
+import { ListarEventos } from "utils/EventosQuery";
 import Modalupdate from "./ModalupdateEvento"
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";

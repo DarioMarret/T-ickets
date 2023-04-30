@@ -20,7 +20,7 @@ export const ActualizarEvento = async (parms,id)=>{
 }
 export const EliminarEventoid = async (id)=>{
     try {
-        let { data } = InstanciaAxio.delete("eliminar_evento"+id)
+        let { data } = await InstanciaAxio.delete("eliminar_evento/"+id)
         return data
     } catch (error) {
         return error
@@ -28,7 +28,7 @@ export const EliminarEventoid = async (id)=>{
 }
 export const ListarEventos = async()=>{
     try {
-        let { data } = InstanciaAxio.get("listar_eventos")
+        let { data } = await InstanciaAxio.get("listar_eventos")
         return data
     } catch (error) {
         return error

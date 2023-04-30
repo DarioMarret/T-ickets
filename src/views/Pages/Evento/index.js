@@ -6,7 +6,7 @@ import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
-import { ListarLocalidad, ListarEspacios, ListarEventos } from "utils/Querypanel.js";
+import { ListarLocalidad, ListarEspacios } from "utils/Querypanel.js";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { Columnevento } from "utils/ColumnTabla";
 import { EliminarEvento } from "utils/Querypanel";
@@ -16,7 +16,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
-import { ListaPreciosEvent } from "utils/EventosQuery";
+import { ListaPreciosEvent,EliminarEventoid,ActualizarEvento,ListarEventos } from "utils/EventosQuery";
 import ModalcreaEventoView from "./MODAL/ModalcreaEventos";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import Modalpreciolocalidad from "./MODAL/Modalpreciolocalidad";
@@ -38,7 +38,8 @@ const EventosViews = () => {
   async function GetEventos() {
     try {
   
-      const lista = await ListarEventos("PROCESO")
+      const lista = await ListarEventos()
+      console.log(lista)
       if (lista.success) {
         setEventos([...lista.data.filter((e) => e.codigoEvento != "001")])
       }
@@ -47,7 +48,7 @@ const EventosViews = () => {
     }
   }
   async function Elimna(e) {
-    let { codigo, fecha } = e
+    let { codigo, fecha,id } = e
     var f1 = new Date(fecha);
     var fhoy = new Date();
     if (false) {
@@ -55,9 +56,10 @@ const EventosViews = () => {
       dispatch(setToastes({ show: true, message: 'El evento ya no se puede elimnar', color: 'bg-danger', estado: 'Error' }))
     }
     else
+    hideAlert()
       try {
-        const elimina = await EliminarEvento(codigo)
-        const lista = await ListarEventos("PROCESO")
+        const elimina = await EliminarEventoid(id)
+        const lista = await ListarEventos()
         if (elimina.success) {
           setEventos([...lista.data])
           successDelete()
@@ -277,7 +279,7 @@ const EventosViews = () => {
                     <IconButton
                       color="error"
                       aria-label="Bloquear"
-                      onClick={() => successAlert({ codigo: row.original.codigoEvento, fecha: row.original.fechaConcierto })}
+                      onClick={() => successAlert({id:row.original.id, codigo: row.original.codigoEvento, fecha: row.original.fechaConcierto })}
                     >
                       <Delete />
                     </IconButton>

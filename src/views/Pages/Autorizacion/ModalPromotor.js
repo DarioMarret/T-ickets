@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
-import { CrearPromotor } from "utils/PromotorQuery";
+import { CrearPromotor } from "utils/PromotorQuerys";
 
 export default function ModalPromotor({...props}) {
     let [campos, setCampso] = useState({

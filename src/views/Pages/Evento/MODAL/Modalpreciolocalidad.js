@@ -3,10 +3,10 @@ import { useState } from "react";
 import { Form, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function Modalpreciolocalidad(){
+export default function Modalpreciolocalidad() {
     let modal = useSelector(state => state.SuscritorSlice.modal)
-    let usedispatch= useDispatch()
-    let [precios,setPrecios]=useState(
+    let usedispatch = useDispatch()
+    let [precios, setPrecios] = useState(
         {
             "id_evento": 0,
             "nombre_localidad": "string",
@@ -20,14 +20,31 @@ export default function Modalpreciolocalidad(){
             "habilitar": false
         }
     )
+    function Handelchange(e) {
+        setPrecios(
+            {
+                ...precios,
+                [e.name]: e.value
+            }
+        )
+    }
+    function Handelcheck(e){
+        setPrecios({
+            ...precios,
+            [e.name]:e.checked
+        })
+    }
+    function handleSubmit(e) {
+        console.log("", precios)
+    }
 
-    return(
+    return (
         <Modal
             show={(modal.nombre == "Modalpreciolocalidad")}
             size="lg"
         >
             <Modal.Body>
-                <button className="close" onClick={()=>usedispatch(setModal({nombre:"",estado:""}))}>x</button>
+                <button className="close" onClick={() => usedispatch(setModal({ nombre: "", estado: "" }))}>x</button>
             </Modal.Body>
             <Modal.Body>
                 <div className="row">
@@ -36,78 +53,82 @@ export default function Modalpreciolocalidad(){
                     <div className="d-flex flex-wrap">
                         <div className="input-group mb-3 col-6">
                             <div className="input-group-prepend">
-                               
+
                             </div>
-                            
+
                         </div>
-                        
-                      
+
+
                     </div>
                     <div className="col-12 col-md-6">
                         <label >Nombre</label>
                         <div className="input-group mb-3">
-                          
+
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fa fa dollar"></i></span>
                             </div>
                             <input className="form-control" id="nombre_localidad" name="nombre_localidad"
-                              
-                              
+                                onChange={(e) => Handelchange(e.target)}
+                                value={precios.nombre_localidad}
                                 placeholder="Nombre del Evento" />
                         </div>
                     </div>
                     <div className="col-12 col-md-6">
-                      
-                            <label >PRECIO NORMAL</label>
-                        
+
+                        <label >PRECIO NORMAL</label>
+
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fa fa dollar"></i></span>
                             </div>
                             <input className="form-control" id="precio_normal" name="precio_normal"
-
+                                onChange={(e) => Handelchange(e.target)}
+                                value={precios.precio_normal}
 
                                 placeholder="Precio Normal" />
                         </div>
                     </div>
                     <div className="col-12 col-md-6">
-                       
-                            <label >PRECIO DISCAPACIDAD</label>
-                       
+
+                        <label >PRECIO DISCAPACIDAD</label>
+
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fa fa dollar"></i></span>
                             </div>
                             <input className="form-control" id="precio_discapacidad" name="precio_discapacidad"
-
+                                onChange={(e) => Handelchange(e.target)}
+                                value={precios.precio_discapacidad}
 
                                 placeholder="Precio Discapacidad" />
                         </div>
                     </div>
                     <div className="col-12 col-md-6">
-                       
-                            <label >PRECIO TARJETA</label>
-                        
+
+                        <label >PRECIO TARJETA</label>
+
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fa fa dollar"></i></span>
                             </div>
                             <input className="form-control" id="precio_tarjeta" name="precio_tarjeta"
-
+                                onChange={(e) => Handelchange(e.target)}
+                                value={precios.precio_tarjeta}
 
                                 placeholder="Precio Tarjeta" />
                         </div>
                     </div>
                     <div className="col-12 col-md-6">
-                       
-                            <label >PRECIO DESCUENTO</label>
-                       
+
+                        <label >PRECIO DESCUENTO</label>
+
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fa fa dollar"></i></span>
                             </div>
                             <input className="form-control" id="precio_descuento" name="precio_descuento"
-
+onChange={(e) => Handelchange(e.target)}
+value={precios.precio_descuento}
 
                                 placeholder="Precio Descuento" />
                         </div>
@@ -122,7 +143,9 @@ export default function Modalpreciolocalidad(){
                             </div>
                             <input className="form-control" id="comision_boleto" name="comision_boleto"
 
+onChange={(e) => Handelchange(e.target)}
 
+value={precios.comision_boleto}
                                 placeholder="Comisión del Boleto" />
                         </div>
                     </div>
@@ -141,8 +164,8 @@ export default function Modalpreciolocalidad(){
                         </div>
                     </div>
                     <div className="d-flex flex-wrap mb-2">
-                        
-                        
+
+
                         <div className=" d-flex  justify-content-center px-2">
 
                             <Form.Check className="py-1 pr-1"
@@ -150,8 +173,10 @@ export default function Modalpreciolocalidad(){
                                 id="habilitar_cortesia"
                                 name="habilitar_cortesia"
                                 value="Stripe"
-                               
-                               
+                                checked={precios.habilitar_cortesia}
+                                onChange={e=>Handelcheck(e.target)}
+
+
                             />
                             <label className=" ">Habilitar Cortesia</label>
                         </div>
@@ -161,17 +186,18 @@ export default function Modalpreciolocalidad(){
                                 type="switch"
                                 id="habilitar"
                                 name="habilitar"
+                                onChange={e=>Handelcheck(e.target)}
                                 value="Stripe"
-
+                                    checked={precios.habilitar}
 
                             />
                             <label className=" ">Habilitar </label>
                         </div>
-                    </div>        
-                </div> 
+                    </div>
+                </div>
                 <div className="d-flex  justify-content-end">
                     <div>
-                        <button className="btn btn-success" >Crear precios </button>
+                        <button className="btn btn-success" onClick={handleSubmit} >Crear precios </button>
                     </div>
                     <div>
                         <button className=" btn btn-primary ml-2">Continuar</button>
