@@ -33,7 +33,41 @@ export const ListarEventos = async()=>{
     } catch (error) {
         return error
     }
-} 
+}
+export const Crearprecios= async(parms)=>{
+    try {
+        let {data}= await InstanciaAxio.post("crear_preciolocalidad",parms)
+        return data
+    } catch (error) {
+    return error        
+    }
+}
+export const Listar_preciolocalidad= async (id)=>{
+    try {
+        let {data}= await InstanciaAxio.get("listar_preciolocalidad")
+        return data
+    } catch (error) {
+        return error
+        
+    }
+}
+export const Actualizar_preciolocalidad = async(parms,id)=>{
+    try {
+        let {data}=await InstanciaAxio.put("actualizar_preciolocalidad/"+id,parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Eliminar_preciolocalidad = async(id)=>{
+    try {
+        let {data} = await InstanciaAxio.delete("eliminar_preciolocalidad/"+id)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+/* 
 export const Actualisardescripcionevento = async () => {
     try {
         let { data } = axios.get("https://rec.netbot.ec/ms_login/api/v1/actualisar_descripcion_evento", {
@@ -100,4 +134,4 @@ export const ListaPreciosEvent = async () => {
 
     console.log(newarr)
     return sessionStorage.setItem("PreciosLocalidad", JSON.stringify(newarr))
-}
+}*/

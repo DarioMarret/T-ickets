@@ -37,7 +37,6 @@ import { ListarRegistropaneFecha } from "utils/pagos/Queripagos";
 import { setFecha } from "StoreRedux/Slice/SuscritorSlice";
 import TablasViwe from "layouts/Tablasdoc";
 import Tablasespo from "layouts/Tablasregistro";
-import { ListaPreciosEvent } from "utils/EventosQuery";
 let { cedericon, atencion } = bancos
 export default function InformeView() {
     let usedispatch = useDispatch()

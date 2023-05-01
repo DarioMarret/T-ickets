@@ -33,7 +33,6 @@ import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import { useState } from "react";
 import { useGetSuscritorQuery } from "StoreRedux/Slicequery/querySlice";
 import { region } from "utils/Regionescedula";
-import { ListaPreciosEvent } from "utils/EventosQuery";
 
 function Dashboard() {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
@@ -67,17 +66,9 @@ function Dashboard() {
     pagados: 0,
     suscritor: 0
   })
-  let [mapas, seTmapa] = useState([])
-  let datos = { cedula: "1718910894" }
-  //let { data: nuevos, error: errorboleto, isLoading: boletosloading } = useGetBoletosQuery()
-  //let { data: suscrito = [],error:errordis, isLoading: suscritoloading } = useGetSuscritorQuery()
-  //console.log(errordis)
-  const ListaPrecio = async ()=>{ const info = await ListaPreciosEvent();
-    console.log(info)
-  return info}
   useEffect(() => {
     let arrayRegin = []
- ListaPrecio()
+ 
   /*  // if (errordis== undefined ){
     try{ 
     !boletosloading && !suscritoloading  ? setboletos({ ...boletos, pagados: nuevos.data!="" && nuevos.data!=undefined ? nuevos.data.filter(e => e.estado == "Pagado").length : [],

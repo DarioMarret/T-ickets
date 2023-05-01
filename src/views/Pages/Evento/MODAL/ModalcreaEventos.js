@@ -31,6 +31,7 @@ export default function ModalcreaEventoView() {
     const [espacios, setListaEspa] = useState([])
     const [promotor,setPromotor]= useState([])
     const [estados,setEstados]=useState([])
+    const [disable,setdisable]=useState(false)
     function handelchangeComposeventos(e) {
         let img = new Image()
         if (e.name == "imagenConcierto") {
@@ -102,6 +103,7 @@ export default function ModalcreaEventoView() {
           usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del al  Evento', color: 'bg-danger', estado: 'Datos vacios' }))
           return
       }
+      setdisable(true)
       Obtenerlinkimagen(evento.imagenConcierto).then(img=>{
         if(img!=null){
             Obtenerlinkimagen(evento.mapaConcierto).then(imgdos=>{
@@ -114,15 +116,19 @@ export default function ModalcreaEventoView() {
                     CrearEvento(parms).then(output => {
                         console.log(output)
                         usedispatch(setModal({ nombre:"Modalpreciolocalidad",estado:output.data}))
+                        setdisable(false)
                     }).catch(err => {
+                        setdisable(false)
                         console.log(err)
                     })
                 }
             }).catch(err=>{
+                setdisable(false)
                 console.log(err)
             })
         }
       }).catch(err=>{
+        setdisable(false)
         console.log(err)
       })
       
@@ -305,7 +311,7 @@ export default function ModalcreaEventoView() {
                                     </div>
                                 </div>
                                 <div className=" d-flex justify-content-end">
-                                    <button className="btn btn-success"  onClick={Guardar} >Guardar</button>
+                                    <button className="btn btn-success"  disabled={disable}  onClick={Guardar} >Guardar</button>
                                 </div>
                             </div>
 

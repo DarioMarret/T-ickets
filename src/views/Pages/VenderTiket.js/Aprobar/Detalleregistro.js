@@ -49,7 +49,6 @@ import { infoabimedia } from "utils/pagos/Queripagos";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { ComentarioRegistro } from "utils/pagos/Queripagos";
 import { updateRegistro } from "utils/pagos/Queripagos";
-import { ListaPreciosEvent } from "utils/EventosQuery";
 import WhastappWiev from "views/Components/MODAL/ModalWhast";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
@@ -455,12 +454,12 @@ export default function DetalleCompraView() {
         })
         return datos.reduce((a, b) => a + b, 0).toFixed(2)
     }
-    const ListaPrecios = async () => {
+    /*const ListaPrecios = async () => {
         const info = await ListaPreciosEvent();
         console.log(info)
       
         return info
-    }
+    }*/
     useEffect(() => {
         ListaPrecios()
         let concer = nombres.info_concierto

@@ -25,7 +25,6 @@ import { setCompras } from "StoreRedux/Slice/SuscritorSlice";
 import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
 import { useGetLocalidadQuery } from "StoreRedux/Slicequery/querySlice";
 import { retry } from "@reduxjs/toolkit/dist/query";
-import { ListaPreciosEvent } from "utils/EventosQuery";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { setFecha } from "StoreRedux/Slice/SuscritorSlice";
 import { ListarRegistropaneFecha } from "utils/pagos/Queripagos";
@@ -93,12 +92,13 @@ export default function AprobarView() {
     const hideAlert = () => {
         setAlert(null)
     }
+    /*
     const ListaPrecios = async () => {
         const info = await ListaPreciosEvent();
         //   console.log(info)
         ListaPrecio()
         return info
-    }
+    }*/
     useEffect(() => {
         // ListaPrecios()
         console.log(ticket.ticket)

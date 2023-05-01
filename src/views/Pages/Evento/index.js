@@ -16,7 +16,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
-import { ListaPreciosEvent,EliminarEventoid,ActualizarEvento,ListarEventos } from "utils/EventosQuery";
+import { EliminarEventoid,ActualizarEvento,ListarEventos } from "utils/EventosQuery";
 import ModalcreaEventoView from "./MODAL/ModalcreaEventos";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import Modalpreciolocalidad from "./MODAL/Modalpreciolocalidad";
@@ -116,16 +116,10 @@ const EventosViews = () => {
   const hideAlert = () => {
     setAlert(null);
   };
-  const ListaPrecios = async () => {
-    const info = await ListaPreciosEvent();
-    console.log(info)
-    //ListaPrecio()
-    return info
-  }
+  
   useEffect(() => {
     
     (async () => {
-      await ListaPrecios()
       await GetEventos()
     })()
   }, [show])

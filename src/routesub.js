@@ -208,7 +208,7 @@ var routes = [
         mini:"*",
         component:ConsolidacionView,
         permiso: []
-      },
+      },/*
       {
         path: "/Informe",
         layout: "/admin",
@@ -216,7 +216,7 @@ var routes = [
         mini: "*",
         component: InformeView,
         permiso: ["suscriptores", "1", "super_admin", "vendedores"]
-      },
+      },*/
       {
         path: "/Aprobar/:id",
         layout: "/admin",
