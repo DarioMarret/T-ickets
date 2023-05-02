@@ -169,7 +169,7 @@ export default function ModalcreaEventoView() {
             size='lg'
         >
             <Modal.Header>
-                <button className="close">x</button>
+                <button className="close" onClick={(e)=> usedispatch(setModal({nombre:"",estado:""}))}  >x</button>
             </Modal.Header>
             <Modal.Body>
                 <Modal.Body>

@@ -7,11 +7,11 @@ import { Crearprecios } from "utils/EventosQuery";
 export default function Modalpreciolocalidad() {
     let modal = useSelector(state => state.SuscritorSlice.modal)
     let usedispatch = useDispatch()
-    let [disable,setDisable] = useState(false)
+    let [disable, setDisable] = useState(false)
     let [precios, setPrecios] = useState(
         {
-            "id_evento": 0,
-            "nombre_localidad": "string",
+            "id_evento": modal.estado.id,
+            "nombre_localidad": "",
             "precio_normal": 0,
             "precio_discapacidad": 0,
             "precio_tarjeta": 0,
@@ -30,20 +30,23 @@ export default function Modalpreciolocalidad() {
             }
         )
     }
-    function Handelcheck(e){
+    function Handelcheck(e) {
         setPrecios({
             ...precios,
-            [e.name]:e.checked
+            [e.name]: e.checked
         })
     }
     function handleSubmit(e) {
         console.log("", precios)
-        if (Object.values(precios).some(e=>e)) {
+        if (Object.values(precios).some(e => e==" ")) {
+            console.log("falta valor")
             return
         }
+        console.log("Completo")
         setDisable(true)
         Crearprecios(precios).then(prec => {
-setDisable(false)
+            console.log(prec)
+            setDisable(false)
         }).catch(e => {
             setDisable(false)
             console.log("error de creacion precios", e)
@@ -139,8 +142,8 @@ setDisable(false)
                                 <span className="input-group-text"><i className="fa fa dollar"></i></span>
                             </div>
                             <input className="form-control" id="precio_descuento" name="precio_descuento"
-onChange={(e) => Handelchange(e.target)}
-value={precios.precio_descuento}
+                                onChange={(e) => Handelchange(e.target)}
+                                value={precios.precio_descuento}
 
                                 placeholder="Precio Descuento" />
                         </div>
@@ -155,9 +158,9 @@ value={precios.precio_descuento}
                             </div>
                             <input className="form-control" id="comision_boleto" name="comision_boleto"
 
-onChange={(e) => Handelchange(e.target)}
+                                onChange={(e) => Handelchange(e.target)}
 
-value={precios.comision_boleto}
+                                value={precios.comision_boleto}
                                 placeholder="Comisión del Boleto" />
                         </div>
                     </div>
@@ -170,7 +173,9 @@ value={precios.comision_boleto}
                                 <span className="input-group-text"><i className="fa fa dollar"></i></span>
                             </div>
                             <input className="form-control" id="descuento" name="descuento"
+                                onChange={(e) => Handelchange(e.target)}
 
+                                value={precios.descuento}
 
                                 placeholder="Descuento" />
                         </div>
@@ -186,7 +191,7 @@ value={precios.comision_boleto}
                                 name="habilitar_cortesia"
                                 value="Stripe"
                                 checked={precios.habilitar_cortesia}
-                                onChange={e=>Handelcheck(e.target)}
+                                onChange={e => Handelcheck(e.target)}
 
 
                             />
@@ -198,9 +203,9 @@ value={precios.comision_boleto}
                                 type="switch"
                                 id="habilitar"
                                 name="habilitar"
-                                onChange={e=>Handelcheck(e.target)}
+                                onChange={e => Handelcheck(e.target)}
                                 value="Stripe"
-                                    checked={precios.habilitar}
+                                checked={precios.habilitar}
 
                             />
                             <label className=" ">Habilitar </label>
