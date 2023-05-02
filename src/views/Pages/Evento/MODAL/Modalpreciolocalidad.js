@@ -2,10 +2,12 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { useState } from "react";
 import { Form, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { Crearprecios } from "utils/EventosQuery";
 
 export default function Modalpreciolocalidad() {
     let modal = useSelector(state => state.SuscritorSlice.modal)
     let usedispatch = useDispatch()
+    let [disable,setDisable] = useState(false)
     let [precios, setPrecios] = useState(
         {
             "id_evento": 0,
@@ -36,6 +38,16 @@ export default function Modalpreciolocalidad() {
     }
     function handleSubmit(e) {
         console.log("", precios)
+        if (Object.values(precios).some(e=>e)) {
+            return
+        }
+        setDisable(true)
+        Crearprecios(precios).then(prec => {
+setDisable(false)
+        }).catch(e => {
+            setDisable(false)
+            console.log("error de creacion precios", e)
+        })
     }
 
     return (
@@ -197,7 +209,7 @@ value={precios.comision_boleto}
                 </div>
                 <div className="d-flex  justify-content-end">
                     <div>
-                        <button className="btn btn-success" onClick={handleSubmit} >Crear precios </button>
+                        <button className="btn btn-success" disabled={disable} onClick={handleSubmit} >Crear precios </button>
                     </div>
                     <div>
                         <button className=" btn btn-primary ml-2">Continuar</button>
