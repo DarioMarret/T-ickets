@@ -24,6 +24,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ListarEventos } from "utils/EventosQuery";
+import { Listar_carrusel } from "utils/CarruselQuery";
 export default function NoticiasView() {
     let usedispatch = useDispatch()
     let fechamin = new Date().toISOString().slice(0, -14);
@@ -121,12 +122,19 @@ export default function NoticiasView() {
                             let mobil = await Obtenerlinkimagen(imgmovil)
                             if(mobil){
                             let datas = {
-                                "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"] + "-" + datos.mas["estado"],
-                                "encabezado": encabezado,
+                                "id_evento": datos.mas["id"],
+                                "id_estado": 0,
+                              "encabezado": encabezado,
                                 "descripcion": descipcion,
                                 "link_img": link,
                                 "fecha_presentacion": fechamax,
-                                "redirect": mobil
+                                "redirect": mobil,
+                                "info_carrusel": {
+                                   "imgen": mobil,
+                                   "info":datos.mas,
+                                   "tipo":"Evento"
+                                
+                                }
                             }
                             console.log(datas)
                             let carruse = await noticiasEvento(datas)
@@ -333,6 +341,25 @@ export default function NoticiasView() {
                         </select>
                     </div>
                 </div>
+                <div className="col-6 ">
+                    <label className="form-label">Seleccione el Estado </label>
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text"><i className="fa fa-search"></i></span>
+                        </div>
+                        <select className="form-select" defaultValue={""} onChange={(e) => handelchangeEvento(e.target)} >
+                            <option disabled value="">Estado </option>
+                            {
+                                eventos.length > 0 ? eventos.map((el, i) => {
+                                    return (
+                                        <option key={i} value={el.id} >{el.nombreConcierto}</option>
+                                    )
+                                }) : ''
+                            }
+                        </select>
+                    </div>
+                </div>
+                
                 <div className="col-6">
                     <label className=" form-label">Fecha maxima de presentación</label>
                     <div className=" input-group mb-3">
@@ -491,12 +518,19 @@ export default function NoticiasView() {
         >VER MÁS</a>
     }
     function Evento() {
-
-        ListarNoticias().then(oupt => {
+        Listar_carrusel().then(oupt=>{
+            console.log(oupt)
+            if(oupt.success){
+                setpublicidad(oupt.message)
+            }
+        }).catch(err=>{
+            console.log(err)
+        })
+     /*   ListarNoticias().then(oupt => {
             setpublicidad(oupt.data)
             // console.log(oupt)
         }).catch(err => console.log(err))
-
+*/
     }
     function obtenervento(e) {
         console.log(e)

@@ -10,7 +10,7 @@ export default function Modalpreciolocalidad() {
     let [disable, setDisable] = useState(false)
     let [precios, setPrecios] = useState(
         {
-            "id_evento": modal.estado.id,
+            
             "nombre_localidad": "",
             "precio_normal": 0,
             "precio_discapacidad": 0,
@@ -37,15 +37,16 @@ export default function Modalpreciolocalidad() {
         })
     }
     function handleSubmit(e) {
-        console.log("", precios)
+        console.log("", modal.estado.id)
         if (Object.values(precios).some(e => e==" ")) {
             console.log("falta valor")
             return
         }
         console.log("Completo")
         setDisable(true)
-        Crearprecios(precios).then(prec => {
+        Crearprecios({ ...precios, "id_evento": modal.estado.id, }).then(prec => {
             console.log(prec)
+            console.log({...precios, "id_evento": modal.estado.id})
             setDisable(false)
         }).catch(e => {
             setDisable(false)

@@ -1,4 +1,8 @@
 import axios from "axios"
+import { Listar_carrusel } from "utils/CarruselQuery"
+import { InstanciaAxio } from "utils/Instancias"
+
+
 export const agregarNoticia = async (datos) => {
     try {
         const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_publicidad", datos, {
