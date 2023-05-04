@@ -20,6 +20,7 @@ import { EliminarEventoid,ActualizarEvento,ListarEventos } from "utils/EventosQu
 import ModalcreaEventoView from "./MODAL/ModalcreaEventos";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import Modalpreciolocalidad from "./MODAL/Modalpreciolocalidad";
+import ListarPreciView from "./MODAL/ModalListaprecio";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
@@ -56,15 +57,22 @@ const EventosViews = () => {
       dispatch(setToastes({ show: true, message: 'El evento ya no se puede elimnar', color: 'bg-danger', estado: 'Error' }))
     }
     else
-    hideAlert()
+    //hideAlert()
       try {
-        const elimina = await EliminarEventoid(id)
+        console.log(e)
+        EliminarEventoid(id).then(Output=>{
+          console.log(Output)
+        }).catch(err=>{
+          console.log(err)
+        })
+       /* const elimina = await EliminarEventoid(id)
         const lista = await ListarEventos()
         if (elimina.success) {
+          console.log(lista,elimina)
           setEventos([...lista.data])
           successDelete()
           dispatch(setToastes({ show: true, message: 'Evento Eliminado con éxito', color: 'bg-success', estado: 'Correcto' }))
-        }
+        }*/
       } catch (error) {
         dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
       }
@@ -128,6 +136,7 @@ const EventosViews = () => {
       {alert}
       <ModalcreaEventoView/>
       <Modalpreciolocalidad/>
+      <ListarPreciView/>
       <Row className="d-none">
         <Col lg="3" sm="6">
           <Card className="card-stats">

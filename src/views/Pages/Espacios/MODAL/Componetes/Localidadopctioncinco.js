@@ -198,37 +198,7 @@ console.log(localidaname)
                 }) : ''
                 colores.length > 0 ? listadecolores() : ''
         }
-        $(document).on("click", ".none", function () {
-                let co = document.getElementById("color").value;
-                let id = document.getElementById("names").value;
-
-                if (this.classList.contains('none')) {
-                        if (id.trim() === "") {
-                                usedispatch(setToastes({ show: true, message: 'Para asignar debe Seleccionar una localidad', color: 'bg-warning', estado: 'Advertencia' }))
-                                return
-                        }
-                        else {
-                                agergaraALarray(this.getAttribute('id'), id, co)
-                                this.removeAttribute("class", "none")
-                                this.setAttribute("class", "seleccion")
-                                var t = document.createElementNS("http://www.w3.org/2000/svg", "title");
-                                t.setAttribute("id", "titel" + id)
-                                //t.setAttribute("class","card tooltip")                 
-                                t.textContent = document.getElementById("names").text;
-                                this.append(t);
-                        }
-                }
-                return
-        })
-        $(document).on("click", ".seleccion", function () {
-                if (this.classList.contains('seleccion')) {
-                        this.removeAttribute("fill")
-                        agergaraALarray(this.getAttribute('id'), '', '')
-                        this.removeAttribute("class", "seleccion")
-                        this.setAttribute("class", "none")
-                        $("#titel" + this.getAttribute('id')).remove();
-                }
-        })
+        
         useEffect(() => {
 
                 (async () => {

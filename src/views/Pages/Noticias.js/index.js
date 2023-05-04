@@ -25,12 +25,15 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ListarEventos } from "utils/EventosQuery";
 import { Listar_carrusel } from "utils/CarruselQuery";
+import { ObtenerEstadosforEventos } from "utils/QueryUser";
+import { Crear_carrusel } from "utils/CarruselQuery";
 export default function NoticiasView() {
     let usedispatch = useDispatch()
     let fechamin = new Date().toISOString().slice(0, -14);
     const [cargando, setCargando] = useState(false)
     const [Tipo, setTipo] = useState("Evento")
     const [show, setShowca] = useState(false)
+    const [estados, setEstados] = useState([])
     const [eventos, setEventos] = useState([])
     const [publicidad, setpublicidad] = useState([])
     const [img, setImg] = useState("");
@@ -71,7 +74,7 @@ export default function NoticiasView() {
         e.preventDefault()
         const form = new FormData(e.target)
         if (Object.values(Object.fromEntries(form.entries())).some(e => e)) {
-            let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
+            let { encabezado, descipcion, fechamax, mas ,id_estado} = Object.fromEntries(form.entries())
             if (Tipo != "Evento") {
                 if (imgen == "" || ![encabezado, descipcion, fechamax, mas].some(e => e)) {
                     usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
@@ -109,8 +112,8 @@ export default function NoticiasView() {
             else if (Tipo == "Evento") {
                 // let tipo = document.getElementById("mas").value
                 //console.log(tipo)
-
-                if (encabezado == "" || descipcion == "" || fechamax == "" || imgen == "" || imgmovil=="") {
+                console.log(Object.fromEntries(form.entries()))
+                if (id_estado == "" || encabezado == "" || descipcion == "" || fechamax == "" || imgen == "" || imgmovil == "") {
                     usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
                 }
                 else {
@@ -120,26 +123,37 @@ export default function NoticiasView() {
                         let { encabezado, descipcion, fechamax } = Object.fromEntries(form.entries())
                         setTimeout(async function () {
                             let mobil = await Obtenerlinkimagen(imgmovil)
-                            if(mobil){
-                            let datas = {
-                                "id_evento": datos.mas["id"],
-                                "id_estado": 0,
-                              "encabezado": encabezado,
-                                "descripcion": descipcion,
-                                "link_img": link,
-                                "fecha_presentacion": fechamax,
-                                "redirect": mobil,
-                                "info_carrusel": {
-                                   "imgen": mobil,
-                                   "info":datos.mas,
-                                   "tipo":"Evento"
-                                
+                            if (mobil) {
+                                let datas = {
+                                    "id_evento": datos.mas["id"],
+                                    "id_estado": id_estado,
+                                    "encabezado": encabezado,
+                                    "descripcion": descipcion,
+                                    "link_img": link,
+                                    "fecha_presentacion": fechamax,
+                                    
+                                    "info_carrusel": {
+                                        "imgen": mobil,
+                                        "info": datos.mas,
+                                        "tipo": "Evento"
+
+                                    }
                                 }
+                                console.log("datos", datas)
+                                Crear_carrusel(datas).then(sali=>{
+                                    console.log("datos apoi", datas)
+                                    console.log("se creo",sali)
+                                    Listar_carrusel().then(sal=>{
+                                        console.log(sal)
+                                    }).catch(err=>{
+                                        console.log(err)
+                                    })
+                                }).catch(err=>{
+                                    console.log(err)
+                                })
+                               // Evento()
+                                setCargando(false)
                             }
-                            console.log(datas)
-                            let carruse = await noticiasEvento(datas)
-                            Evento()
-                            setCargando(false)}
                         }, 3000)
                     } catch (error) {
                         console.log(error)
@@ -298,10 +312,10 @@ export default function NoticiasView() {
     }
     function handelchangeCompos(e) {
         if (e.files) {
-          //  let img = new Image()
-          //  img.src = window.URL.createObjectURL(e.files[0])
+            //  let img = new Image()
+            //  img.src = window.URL.createObjectURL(e.files[0])
 
-        //    setImg(img.src)
+            //    setImg(img.src)
             setImagenMo(e.files[0])
             let totalBytes = e.files[0].size;
             console.log(totalBytes)
@@ -315,9 +329,9 @@ export default function NoticiasView() {
         }
         else {
 
-          //  setImg("")
-         //   setimagen("")
-          //  setShowca(false)
+            //  setImg("")
+            //   setimagen("")
+            //  setShowca(false)
         }
     }
     const tipoevento = {
@@ -329,7 +343,8 @@ export default function NoticiasView() {
                         <div className="input-group-prepend">
                             <span className="input-group-text"><i className="fa fa-search"></i></span>
                         </div>
-                        <select className="form-select" defaultValue={""} onChange={(e) => handelchangeEvento(e.target)} >
+                        <select className="form-select" defaultValue={""} onChange={(e) => handelchangeEvento(e.target)}
+                            name="id_evento" >
                             <option disabled value="">Seleccione el el evento </option>
                             {
                                 eventos.length > 0 ? eventos.map((el, i) => {
@@ -341,25 +356,7 @@ export default function NoticiasView() {
                         </select>
                     </div>
                 </div>
-                <div className="col-6 ">
-                    <label className="form-label">Seleccione el Estado </label>
-                    <div className="input-group mb-3">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text"><i className="fa fa-search"></i></span>
-                        </div>
-                        <select className="form-select" defaultValue={""} onChange={(e) => handelchangeEvento(e.target)} >
-                            <option disabled value="">Estado </option>
-                            {
-                                eventos.length > 0 ? eventos.map((el, i) => {
-                                    return (
-                                        <option key={i} value={el.id} >{el.nombreConcierto}</option>
-                                    )
-                                }) : ''
-                            }
-                        </select>
-                    </div>
-                </div>
-                
+
                 <div className="col-6">
                     <label className=" form-label">Fecha maxima de presentación</label>
                     <div className=" input-group mb-3">
@@ -390,6 +387,27 @@ export default function NoticiasView() {
                             onChange={(e) => handelchangedatos(e.target)}
                         />  </div>
                 </div>
+                <div className="col-6 ">
+                    <label className="form-label">Seleccione el Estado </label>
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text"><i className="fa fa-search"></i></span>
+                        </div>
+                        <select className="form-select" defaultValue={""} onChange={(e) => handelchangeEvento(e.target)}
+                        name="id_estado"
+                        >
+                            <option disabled value="">Estados </option>
+                            {
+                                estados.length > 0 ? estados.map((el, i) => {
+                                    return (
+                                        <option key={i} value={el.id} >{el.estado}</option>
+                                    )
+                                }) : ''
+                            }
+                        </select>
+                    </div>
+                </div>
+
                 <div className="col-6">
                     <label className="form-label" >Breve descripción </label>
                     <div className=" input-group mb-3">
@@ -517,21 +535,7 @@ export default function NoticiasView() {
             target="_blank"
         >VER MÁS</a>
     }
-    function Evento() {
-        Listar_carrusel().then(oupt=>{
-            console.log(oupt)
-            if(oupt.success){
-                setpublicidad(oupt.message)
-            }
-        }).catch(err=>{
-            console.log(err)
-        })
-     /*   ListarNoticias().then(oupt => {
-            setpublicidad(oupt.data)
-            // console.log(oupt)
-        }).catch(err => console.log(err))
-*/
-    }
+
     function obtenervento(e) {
         console.log(e)
         /*{
@@ -577,10 +581,31 @@ export default function NoticiasView() {
     }
     useEffect(() => {
         ListarEventos("").then(oupt => {
-            setEventos(oupt.data.filter(e => e.estado == "PROCESO" || e.estado == "ACTIVO"))
-            console.log(oupt.data.filter(e => e.estado == "PROCESO" || e.estado == "ACTIVO"))
+
+            setEventos(oupt.data)
+            console.log(oupt.data)
         }).catch(err => console.log(err))
-        Evento()
+        Listar_carrusel().then(oupt => {
+            console.log(oupt)
+            if (oupt.success) {
+                setpublicidad(oupt.message)
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+        ObtenerEstadosforEventos().then(oupt => {
+            if (oupt.success) {
+                console.log(oupt)
+                setEstados(oupt.data)
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+        Listar_carrusel().then(sal => {
+            console.log(sal)
+        }).catch(err => {
+            console.log(err)
+        })
     }, [])
     return (
         <>

@@ -5,6 +5,12 @@ import { cargarMapa, guardarMapar, eliminaMapa, editarMapa } from "utils/MapaQue
 import SweetAlert from "react-bootstrap-sweetalert";
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
+
+import SvgselectView from "views/Pages/Svgviewa/svgseleccion.js"
+import { Listar_preciolocalidad } from "utils/EventosQuery";
+import { getMapacolor } from "utils/Localidadmap";
+import { getLocalidadmapa } from "utils/Localidadmap";
+import { insertLocalidad } from "utils/Localidadmap";
 const OpctionLocalidadView = (props) => {
         const { localidaname, datalocalidad, SetDataloca } = props
         let usedispatch = useDispatch()
@@ -12,6 +18,7 @@ const OpctionLocalidadView = (props) => {
         const [provincia, setProvincia] = useState("")
         const [mapaselet, setMapaselec] = useState("")
         const [alert, setAlert] = useState(null);
+        const [list,setList]=useState(false)
         const [mapaRegstro, setMaparegistro] = useState({
                 id: "",
                 localidad: [],
@@ -19,6 +26,19 @@ const OpctionLocalidadView = (props) => {
                 nombre_mapa: "",
                 pathmap: []
         })
+        const [mapa, setmapa] = useState([])
+        const [localidadmap, setselection] = useState({
+                id: '',
+                name: "",
+                color: '#A12121',
+        })
+        function handelChange(e) {
+                setselection({
+                        ...localidadmap,
+                        [e.name]: e.value
+                })
+
+        }
         async function getMapa() {
                 try {
                         let mapas = await cargarMapa()
@@ -47,6 +67,7 @@ const OpctionLocalidadView = (props) => {
 
                 }
         }
+        let [precios,setprecios]=useState([])
         function HandelProvincia(e) {
                 let Valor = []
                 let provincias = e.value ? "." + e.value : ""
@@ -78,7 +99,11 @@ const OpctionLocalidadView = (props) => {
                         }
                 })
         };
-        const GuardarSeleccion = async () => {
+        function Seleccionarmapa(e){
+                console.log(e)
+                setMapaselec(e.nombre)
+        }
+        /*const GuardarSeleccion = async () => {
                 if (mapaselet == "") {
                         return
                 }
@@ -132,8 +157,8 @@ const OpctionLocalidadView = (props) => {
                         hideAlert()
                 }
 
-        }
-        const EliminarMapados = async () => {
+        }*/
+        /*const EliminarMapados = async () => {
                 try {
                         let eliminar = await eliminaMapa(mapaRegstro.id)
                         await getMapa()
@@ -154,8 +179,10 @@ const OpctionLocalidadView = (props) => {
                 })()
 
         }, [localidaname])
+        */
         const AlerGuarda = () => {
-                setAlert(
+                setList(true)
+                /*setAlert(
                         <SweetAlert
                                 warning
                                 style={{ display: "block", marginTop: "-100px" }}
@@ -172,8 +199,9 @@ const OpctionLocalidadView = (props) => {
                         >
                                 Estas seguro de {mapaRegstro.id != '' ? "Actualizar ,perderas el registro anterior" : "guardar la Selecccion del mapa"}
                         </SweetAlert>
-                );
+                );*/
         };
+        /*
         const Elimna = () => {
                 setAlert(
                         <SweetAlert
@@ -196,12 +224,122 @@ const OpctionLocalidadView = (props) => {
         };
         const hideAlert = () => {
                 setAlert(null);
-        };
+        };*/
+        function agergaraALarray(dato, id, color) {
+               // settimer(!timer)
+                let array = getMapacolor()
+
+                var index = array.findIndex(obj => obj.path == dato);
+                if (index == -1) {
+                      //  console.log(mapaselet)
+                        array.push({ path: dato, id: id, fill: color,  });
+
+                } else {
+                        do {
+                                array.splice(index, 1);
+                                index = array.indexOf({ path: dato, id: id, fill: color });
+                        } while (index != -1);
+                }
+                insertLocalidad(array, { path: dato, id: id, fill: color })
+                cargarcolores()
+        }
+        function listadecolores() {
+                let nuevo = getLocalidadmapa()
+                let colores = getMapacolor()
+                const valorDuplicadas = [];
+                nuevo.length > 0 && colores.length > 0 ? colores.forEach(p => {
+                        if (valorDuplicadas.findIndex(pd => pd.id === p.id) === -1) {
+                                let index = nuevo.findIndex((e) => parseInt(e.id) === parseInt(p.id))
+                                valorDuplicadas.push({ id: p.id, nombre: nuevo[index] ? nuevo[index].nombre : '', color: p.fill});
+                        }
+                }) : ''
+                nuevo.length > 0 && colores.length > 0 ? nuevo.map((L) => {
+                        if (valorDuplicadas.findIndex((e) => parseInt(e.id) === parseInt(L.id)) != -1) {
+                                $("#precios" + L.id).css('background', valorDuplicadas[valorDuplicadas.findIndex((e) => parseInt(e.id) === parseInt(L.id))].color);
+                                L.color = valorDuplicadas[valorDuplicadas.findIndex((e) => parseInt(e.id) === parseInt(L.id))].color;
+                                return L
+                        } else {
+                                $("#" + L.id).attr("background-color", '')
+                                return L
+                        }
+                }) : ''
+                sessionStorage.localidad = JSON.stringify(nuevo)
+                setTimeout(function () {
+                       // setmapa(nuevo)
+                }, 90);
+
+
+        }
+
+        function cargarcolores() {
+                let colores = getMapacolor()
+                //  console.log(colores)
+                colores.length > 0 ? colores.map((e, i) => {
+                        $("#" + e.path).attr("class", "seleccion")
+                        $("#" + e.path).attr("fill", e.fill, "class", "seleccion")
+                }) : ''
+                colores.length > 0 ? listadecolores() : ''
+        }
+        $(document).on("click", ".none", function () {
+                let co = document.getElementById("color").value;
+                let id = document.getElementById("names").value;
+
+                if (this.classList.contains('none')) {
+                        if (id.trim() === "") {
+                                usedispatch(setToastes({ show: true, message: 'Para asignar debe Seleccionar una localidad', color: 'bg-warning', estado: 'Advertencia' }))
+                                return
+                        }
+                        else {
+                                console.log(this.getAttribute('id'), id, co)
+                               agergaraALarray(this.getAttribute('id'), id, co)
+                                this.removeAttribute("class", "none")
+                                this.setAttribute("class", "seleccion")
+                                var t = document.createElementNS("http://www.w3.org/2000/svg", "title");
+                                t.setAttribute("id", "titel" + id)
+                                //t.setAttribute("class","card tooltip")                 
+                                t.textContent = document.getElementById("names").text;
+                                this.append(t);
+                        }
+                }
+                return
+        })
+        $(document).on("click", ".seleccion", function () {
+                if (this.classList.contains('seleccion')) {
+                        this.removeAttribute("fill")
+                        console.log(this.getAttribute('id'))
+                        agergaraALarray(this.getAttribute('id'), '', '')
+                       // console.log(this.getAttribute('id'))
+                        this.removeAttribute("class", "seleccion")
+                        this.setAttribute("class", "none")
+                        $("#titel" + this.getAttribute('id')).remove();
+                }
+        })
+        useEffect(() => {
+                Listar_preciolocalidad(0).then(ouput => {
+                        console.log(ouput)
+                        if (ouput.success) {
+                                 setprecios(ouput.data)
+                                //setPrecios(ouput.data)
+                                console.log(ouput.data)
+                                const filtrado = ouput.data
+                                const obten = filtrado.map((e, i) => {
+                                       
+                                        return { id: e.id, nombre: e.nombre_localidad,  color: '' }
+                                })
+                // console.log("localidada",obten)
+                //setLocalidad(filtrado)
+                //setmapa(obten)
+                  sessionStorage.localidad = JSON.stringify(obten)
+                        }
+                }).catch(err => {
+                        console.log(err)
+                })
+        }, [])
         return (
                 <>
                         {alert}
                         <h4 className=" text-capitalize"> {mapaselet ? "Mapa Selecionado: " + mapaselet : 'Lista de Mapas'} </h4>
-                        <div className="row">
+                        {list ?"":<div className="row">
 
                                 <div className="col-12" >
                                         <div className="d-flex flex-wrap"
@@ -254,11 +392,13 @@ const OpctionLocalidadView = (props) => {
                                                 <div className="col-sm  d-flex flex-row"  >
                                                         <button className="btn btn-primary mx-3"
                                                                 disabled={!(mapaselet)}
-                                                                onClick={AlerGuarda}> {
-                                                                        !mapaRegstro.id ? "Guardar" : "Actualizar"} </button>
-                                                        {
+                                                                onClick={AlerGuarda}
+                                                                
+                                                                > {
+                                                                        !mapaRegstro.id ? "Continuar" : "Actualizar"} </button>
+                                                        {/*
                                                                 mapaRegstro.id ?
-                                                                        <button className="btn btn-danger " onClick={Elimna} >Eliminar</button> : ''}
+                                                                        <button className="btn btn-danger " onClick={Elimna} >Eliminar</button> : ''*/}
                                                 </div>
                                         </div>
 
@@ -273,7 +413,7 @@ const OpctionLocalidadView = (props) => {
                                                                                 provincias.mapas.map((mapa, i) => {
                                                                                         return (
                                                                                                 <div id={mapa.nombre}
-                                                                                                        onClick={() => setMapaselec(mapa.nombre)}
+                                                                                                        onClick={() => Seleccionarmapa(mapa) }
                                                                                                         className={"border rounded-2 text-center   m-3 esquema grid-item element-item transition justify-content-center  " + mapa.ciudad + " " + provincias.provincia} key={"pla" + i} style={{ width: "200px", height: '250px' }} >
 
                                                                                                         <h4 className="nombre text-capitalize d-none " style={{ fontSize: '0.9em' }} >{mapa.nombre}</h4>
@@ -305,7 +445,58 @@ const OpctionLocalidadView = (props) => {
                                 </div>
 
 
-                        </div>
+                        </div>}
+                        {!list? "":<div className="container-fluid col-12 col-sm-8 d-flex flex-column " style={{ height: 'auto', width: '100%', overflowX: 'auto' }}>
+                           <div className="d-flex justify-content-center align-items-center pb-2">
+                                                <div className="col-6">
+                                                        <label className="form-label">Selecione localidad  </label>
+                                                        <Form.Select className="form-control" value={localidadmap.name} name="name" id="names" onChange={(e) => handelChange(e.target)}>
+                                                                <option value={""}></option>
+                                                        {precios.length > 0 ?
+                                                                precios.map((e, i) => {
+                                                                                return (
+                                                                                        <option key={"index" + i} value={e.id} >{e.nombre_localidad}</option>
+                                                                                )
+                                                                        })
+                                                                        : ''
+                                                                }
+                                                        </Form.Select>
+                                                </div>
+                                                <div className="col-sm">
+                                                        <label className="form-label text-white" >.</label>
+                                                        <input
+                                                                className="form-control form-control-color"
+                                                                value={localidadmap.color} name="color" id="color"
+                                                                type="color"
+                                                                onChange={(e) => handelChange(e.target)}
+                                                        />
+                                                </div>
+                                                <div className="col-sm d-flex flex-column align-items-center" >
+                                                        <div>
+                                                                <label className="form-label text-white" >.</label>
+                                                                {localidadmap.id ?
+                                                                        <button className="btn btn-success"  >Recargar mapa</button> : ''}
+                                                        </div>
+                                                        <div>
+                                                                <label className="form-label text-white " >.</label>
+                                                                {!localidadmap.id ?
+                                                                <button className="btn btn-primary" onClick={() =>setList(true)} >Guardar </button> :
+                                                                <button className="btn btn-primary" onClick={() => setList(false)} >Actualizar </button>}
+                                                        <button className="btn btn-primary" onClick={() => setList(false)} >Regresar </button>
+                                                        </div>
+
+                                                </div>
+                                        </div>    
+                                <div className="d-flex justify-content-center" >
+
+                                        <SvgselectView text={mapaselet} />
+
+
+
+                                        {/*estadio=="grado"?<EcenarioGradoView localidaname={localidaname}/>:''*/}
+                                </div>
+
+                        </div>}
 
                 </>
         )

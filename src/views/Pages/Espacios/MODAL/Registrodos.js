@@ -145,13 +145,13 @@ const RegistroViwstab = (props) => {
                                 />
                             </div>
                             <div className="tab-pane  container-fluid " id="mapa">
-                                <MapadelocalidadViews
+                              {/*  <MapadelocalidadViews
                                     show={show}
                                     mapaset={mapaset}
                                     datalocalidad={datalocalidad}
                                     SetDataloca={SetDataloca}
                                     ObtenLocalidad={ObtenLocalidad}
-                                    localidaname={localidaname} />
+                                    localidaname={localidaname} /*/}
 
                             </div>
 

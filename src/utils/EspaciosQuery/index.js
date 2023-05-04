@@ -11,7 +11,7 @@ export const GuardarEspacio = async (parms) => {
 
 export const ListarEspacios = async () => {
     try {
-        const { data } = await InstanciaAxio.get("/listar_espacio")
+        const { data } = await InstanciaAxio.get("listar_espacio")
         return data
     } catch (error) {
         return error

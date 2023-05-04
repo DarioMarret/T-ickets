@@ -135,16 +135,17 @@ export default function ModalcreaEventoView() {
     }
     
     useEffect(()=>{
-        ListarEspacios().then(salida=>{
-            //console.log(salida)
-            if (salida.data.length >0){
+       ListarEspacios().then(salida=>{
+            console.log(salida)
+           if (salida.success){
                 setListaEspa(salida.data)
             }
         }).catch(err=>{
             console.log(err)
         })
         listar_promotores().then(output=>{
-            if (output.message.length>0){
+            console.log(output)
+            if (output.success){
                 setPromotor(output.message)
             }
             //console.log(output)

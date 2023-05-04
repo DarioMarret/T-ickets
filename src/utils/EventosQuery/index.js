@@ -44,7 +44,7 @@ export const Crearprecios= async(parms)=>{
 }
 export const Listar_preciolocalidad= async (id)=>{
     try {
-        let {data}= await InstanciaAxio.get("listar_preciolocalidad")
+        let {data}= await InstanciaAxio.get("listar_preciolocalidad/"+id)
         return data
     } catch (error) {
         return error

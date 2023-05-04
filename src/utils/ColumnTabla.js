@@ -77,6 +77,47 @@ export const Columnasubcrito = [
   },
 
 ]
+export const ColumnaLocalida=[
+    {
+    accessorKey:"nombre_localidad",
+      header:"Nombre"
+    },
+    {
+      accessorKey:"precio_normal",
+      header:"Precio Nor.",
+    },
+    {
+      accessorKey:"precio_discapacidad",
+      header:"Precio Disc."
+    },
+    {
+      accessorKey:"precio_tarjeta",
+      header:"Precio Tarj."
+    },
+    {
+      accessorKey:"precio_descuento",
+      header:"Precio Des."
+    },
+    {
+      accessorKey:"comision_boleto",
+      header:"Comision"
+    },
+    {
+      accessorKey:"descuento",
+      header:"Descuento"
+    },
+    {
+      accessorKey:"habilitar_cortesia",
+      header:"# Cortesia"
+    },
+    {
+      accessorKey:"habilitar",
+      header:"Cartesia estado",
+      Cell: ({ cell, column }) => (
+        cell.getValue() ? 'Habilitado' : 'Desabilitado'
+      ),
+    }
+]
 export const Columnusuarios = [
   {
     accessorKey: "id",

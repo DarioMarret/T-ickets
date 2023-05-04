@@ -32,7 +32,7 @@ const NewEspacioView = (props) => {
             const espaci = await GuardarEspacio(espacio)
             const { success } = espaci
             if (success) {
-               // console.log(espaci)
+               console.log(espaci)
                 usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
                 SetShownuev(false)
             }
