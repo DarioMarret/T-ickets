@@ -77,8 +77,8 @@ import Inframene from "views/Components/IFrame/index.js";
 import PaginasView from "./Eventosindex/index.js";
 import NavbarView from "./Navbarindex/index.js";
 import { ListaPreciosEvent } from "utils/EventosQuery/index.js";
-import { ListarEventos } from "utils/Querypanel.js";
 import { EnviarDetalleCompras } from "utils/Emails/index.js";
+import { ListarEventosFinalizados } from "utils/EventosQuery/index.js";
 const TRACKING_ID = "G-LJN507B5NX";
 const IndexFlas = () => {
   ReactGA.initialize(TRACKING_ID);
@@ -737,6 +737,8 @@ const IndexFlas = () => {
     const info = await ListaPreciosEvent();
     return info
   }
+  const [estafun,setfunc]=useState(false)
+  const [final,setFinal]=useState([])
   useEffect(() => {
     $(document).keyup(function (evtobj) {
       if (!(evtobj.altKey || evtobj.ctrlKey || evtobj.shiftKey)) {
@@ -759,6 +761,7 @@ const IndexFlas = () => {
     Limpiarseleccion()
     eventosmodal()
     const evento = () => {
+      setfunc(false)
       try {
         if (!errorevento == undefined) {
           return
@@ -771,7 +774,7 @@ const IndexFlas = () => {
         let publicin = publici
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
         const sorter = (a, b) => new Date(a.fechaConcierto) < new Date(b.fechaConcierto) ? 1 : -1;
-
+        setfunc(true)
         isLoading ? "" : setEventos(filtro.sort(sorter))
         info ? "" : setpublicidad(publicin.data)
         isLoading ? "" : setShear(filtro.sort(sorter))
@@ -813,6 +816,15 @@ const IndexFlas = () => {
       })
       usedispatch(addususcritor({ ...clineteLogeado }))
     }
+    
+    ListarEventosFinalizados().then(oup=>{
+      if(oup.length>0){
+        setFinal(oup)
+        console.log()
+      }
+    }).catch(err=>{
+      console.log(err)
+    })
     /* (function (s, z, c, h, a, t) {
        s.webchat = s.webchat || function () {
          (s.webchat.q = s.webchat.q || []).push(arguments);
@@ -843,11 +855,7 @@ const IndexFlas = () => {
     /* setTimeout(function () {
        usedispatch(setModal({ nombre: "", estado: "" }))
      }, 6000)*/
-     /*ListarEventos("").then(sali=>{
-      console.log(sali)
-     }).catch(err=>{
-      console.log(err)
-     })*/
+
 
   }, [isLoading, info])
 
@@ -1503,7 +1511,7 @@ const IndexFlas = () => {
                         </div>
                       )
                     })
-                    : <div className="col-12  mx-auto my-5" >
+                    :!estafun? <div className="col-12  mx-auto my-5" >
                       <div>
                         <div className="container rounded-7-md px-0" style={{ height: 300 }}>
 
@@ -1515,31 +1523,32 @@ const IndexFlas = () => {
                         </div>
                       </div>
 
-                    </div>}
+                    </div>:
+                      <div className="col-12  col-lg-6 mx-auto my-5" >
+                        <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                          aria-controls="collapseExample">
+                          <div className="container  px-0">
+                            <img src={valla} className="img-fluid  " alt="" />
+                          </div>
+                        </div>
+                        <div className="collapse container mt-4 px-0" id="collapseExample4">
+                          <div className="card card-body rounded-7 py-5">
+                            <div className="container ">
+                              <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">Proximo evento</span> </h1>
+                              <h4 style={{ fontSize: '1.4em' }}></h4>
+                              <div className="col-12 border border-bottom my-3"></div>
+                              <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">Proximamente</span></p>
+                              <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> Proximamente</span></p>
+                              <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> Proximamente</span></p>
+                              <p href="#" className="evento d-none btn btn-primary fw-bold px-3 py-2 rounded-6" id="comprar">
+                                Proximamente</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>}
                   {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
                   <SubscrtitoViews />
-                  <div className="col-12 d-none col-lg-6 mx-auto my-5" >
-                    <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                      aria-controls="collapseExample">
-                      <div className="container  px-0">
-                        <img src={valla} className="img-fluid  " alt="" />
-                      </div>
-                    </div>
-                    <div className="collapse container mt-4 px-0" id="collapseExample4">
-                      <div className="card card-body rounded-7 py-5">
-                        <div className="container ">
-                          <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">Proximo evento</span> </h1>
-                          <h4 style={{ fontSize: '1.4em' }}></h4>
-                          <div className="col-12 border border-bottom my-3"></div>
-                          <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">Proximamente</span></p>
-                          <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> Proximamente</span></p>
-                          <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> Proximamente</span></p>
-                          <p href="#" className="evento d-none btn btn-primary fw-bold px-3 py-2 rounded-6" id="comprar">
-                            Proximamente</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  
                 </div>
               </div>
 
@@ -1559,16 +1568,16 @@ const IndexFlas = () => {
                     </h4>
                   </div>
 
-                  <div className="row d-none d-flex justify-content-center " >
-                    {
-                      [...pasados].map((element, index) => {
+                  <div className="row  d-flex justify-content-center " >
+                    {final.length>0?
+                    [...final].filter(e => new Date(e.fechaConcierto + " 23:59:59") < new Date()).map((element, index) => {
                         return (
-                          <div className="col-12 col-sm-6 col-md-4 px-1" key={index} >
+                          <div className="col-12 col-sm-6 col-md-4 px-1 pb-1" key={index} >
                             <div
                               className="  rounded-7   "
                               style={{
                                 height: '150px', width: '100%',
-                                backgroundImage: "url('" + element + "')",
+                                backgroundImage: "url('" + element.imagenConcierto + "')",
                                 backgroundSize: 'cover',
                                 backgroundRepeat: "no-repeat",
                               }}
@@ -1578,7 +1587,7 @@ const IndexFlas = () => {
                         )
                       })
 
-                    }
+                   :"" }
 
                   </div>
                 </div>

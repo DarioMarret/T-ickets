@@ -15,8 +15,23 @@ export const Actualisardescripcionevento = async () => {
         return error
     }
 }
+export const ListarEventosFinalizados= async()=>{
+    try {
+        const { data } = await axios.get("https://flash.t-ickets.com/ms_login/listareventos/", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
-const ListarEventosLis = async () => {
+            }
+        })
+        // console.log(data)
+        return data.data
+    } catch (error) {
+        return error;
+
+    }
+}
+ const ListarEventosLis = async () => {
     try {
         const { data } = await axios.get("https://flash.t-ickets.com/ms_login/listareventos/", {
             headers: {
