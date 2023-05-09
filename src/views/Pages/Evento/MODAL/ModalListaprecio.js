@@ -26,12 +26,13 @@ export default function ListarPreciView(){
     }, [(modal.nombre =="ListarPreciView")])
     return(
         <Modal
-            show={(modal.nombre != "ListarPreciView")}
-       fullscreen={true}
+            show={(modal.nombre == "ListarPreciView")}
+       fullscreen={false}
+       size="lg"
         >
             <Modal.Body className="">
-                <OpctionLocalidadView/>
-               {/* <MaterialReactTable
+               {/* <OpctionLocalidadView/>*/}
+                <MaterialReactTable
                     columns={ColumnaLocalida}
                     data={precios}
                     muiTableProps={{
@@ -49,8 +50,8 @@ export default function ListarPreciView(){
                                 <Visibility />
                             </IconButton>
                         </Box>
-                    )}
-                    /*
+                    )}/>
+                    {/*
                     localization={MRT_Localization_ES}
                     *
                     positionToolbarAlertBanner="bottom"

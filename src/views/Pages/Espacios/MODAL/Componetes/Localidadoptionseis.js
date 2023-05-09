@@ -181,6 +181,16 @@ const OpctionLocalidadView = (props) => {
         }, [localidaname])
         */
         const AlerGuarda = () => {
+                console.log(getLocalidadmapa())
+                console.log(getMapacolor())
+                let valores = {
+                        "id_evento": "estadio",
+                        "nombre_espacio": "localidaname.nombre",
+                        "pathmap": JSON.stringify(getMapacolor()),
+                        "localidad": JSON.stringify(getLocalidadmapa()),
+                }
+                console.log(valores)
+                //438106
                 setList(true)
                 /*setAlert(
                         <SweetAlert
@@ -265,7 +275,7 @@ const OpctionLocalidadView = (props) => {
                 }) : ''
                 sessionStorage.localidad = JSON.stringify(nuevo)
                 setTimeout(function () {
-                       // setmapa(nuevo)
+                        setmapa(nuevo)
                 }, 90);
 
 
@@ -480,7 +490,7 @@ const OpctionLocalidadView = (props) => {
                                                         <div>
                                                                 <label className="form-label text-white " >.</label>
                                                                 {!localidadmap.id ?
-                                                                <button className="btn btn-primary" onClick={() =>setList(true)} >Guardar </button> :
+                                                                <button className="btn btn-primary" onClick={AlerGuarda} >Guardar </button> :
                                                                 <button className="btn btn-primary" onClick={() => setList(false)} >Actualizar </button>}
                                                         <button className="btn btn-primary" onClick={() => setList(false)} >Regresar </button>
                                                         </div>

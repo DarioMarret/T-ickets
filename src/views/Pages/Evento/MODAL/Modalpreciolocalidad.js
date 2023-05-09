@@ -4,9 +4,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Form, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Listar_preciolocalidad } from "utils/EventosQuery";
 import { Crearprecios } from "utils/EventosQuery";
-import { listarpreciolocalidad } from "utils/Querypanel";
 
 export default function Modalpreciolocalidad() {
     let modal = useSelector(state => state.SuscritorSlice.modal)

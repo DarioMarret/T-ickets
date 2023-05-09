@@ -8,7 +8,6 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
-import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
 import { ListarEventos } from "utils/EventosQuery";
 const ModalNewEvento = (props) => {
     const { show, Setshow } = props;
