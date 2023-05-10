@@ -6,6 +6,7 @@ import { setDatosUser } from "utils/DatosUsuarioLocalStorag";
 import { Loginadmin } from "utils/Querypanel";
 let { logo, portada } = bancos
 import { Badge, Button, Card, Form, Navbar, Nav, Toast, Container, Col, Row } from "react-bootstrap";
+import { DatoTokenusuario } from "utils/constantes";
 function LoginPage() {
   const history = useHistory();
   const [cardClasses, setCardClasses] = React.useState("card-hidden");
@@ -53,11 +54,13 @@ function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (credenciales.username.trim() !== '' && credenciales.password.trim() !== '') {
+      sessionStorage.removeItem(DatoTokenusuario)
       try {
         const data = await Loginadmin({ email: credenciales.username.trim() ,password:credenciales.password.trim()})
         const { success, token } = data
         if (success) {
           console.log("success-->",data)
+         
           setDatosUser(token)
           setShow(true)
           setmessage("Inicio de session exitoso")

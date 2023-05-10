@@ -26,3 +26,7 @@ $("#crear-imagen").click(function() {
           $(".response").append(canvas);
    });
   });
+  {
+  "email": "tickets@gmail.com",
+  "password": "Tickets2023."
+}
