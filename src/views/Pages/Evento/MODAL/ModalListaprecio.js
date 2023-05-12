@@ -14,6 +14,9 @@ export default function ListarPreciView(){
     let modal = useSelector(state=> state.SuscritorSlice.modal)
     let usedispatch = useDispatch()
     let [precios,setPrecios]=useState([])
+    function CrearLocalidaditems(){
+        usedispatch(setModal({ nombre: "Modalpreciolocalidad", estado: modal.estado }))
+    }
     useEffect(()=>{
         Listar_preciolocalidad(0).then(ouput=>{
             console.log(ouput)
@@ -24,6 +27,7 @@ export default function ListarPreciView(){
             console.log(err)
         })
     }, [(modal.nombre =="ListarPreciView")])
+
     return(
         <Modal
             show={(modal.nombre == "ListarPreciView")}
@@ -58,9 +62,9 @@ export default function ListarPreciView(){
                 />*/}
             </Modal.Body>
             <Modal.Footer>
-                <div className=" container-fluid d-flex ">
+                <div className=" container-fluid d-flex  justify-content-between ">
                     <button className=" btn btn-success" onClick={() => usedispatch(setModal({ nombre:"Modalpreciolocalidad",estado:modal.estado}))}> Regresar</button>
-
+                    <button className=" btn btn-primary" > Mapa  </button>
                 </div>
             </Modal.Footer>
         </Modal>

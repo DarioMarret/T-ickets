@@ -75,10 +75,6 @@ export default function Modalpreciolocalidad() {
             console.log("error de creacion precios", e)
         })
     }
-    useEffect(()=>{
-      // Listar_preciolocalidad(0).then(ouput)
-    },[])
-
     return (
         <Modal
             show={(modal.nombre == "Modalpreciolocalidad")}
@@ -90,7 +86,7 @@ export default function Modalpreciolocalidad() {
             <Modal.Body>
                 <div className="row">
 
-                    <h3>Precios de Localidades </h3>
+                    <h3>Agregar Localidades y sus Precios </h3>
                     <div className="d-flex flex-wrap">
                         <div className="input-group mb-3 col-6">
                             <div className="input-group-prepend">

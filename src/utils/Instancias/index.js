@@ -9,6 +9,9 @@ export const InstanciaAxio = axios.create({
         'Authorization': 'Bearer ' + tocken,
 
     },
+    validateStatus:function(status){
+        return status>=200&&status<500
+    },
     timeout: 1000
 })
 export const InstanciaGETAxios = axios.create({

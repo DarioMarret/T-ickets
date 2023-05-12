@@ -143,18 +143,7 @@ const RegistroViwstab = (props) => {
                                     datalocalidad={datalocalidad}
                                     SetDataloca={SetDataloca}
                                 />
-                            </div>
-                            <div className="tab-pane  container-fluid " id="mapa">
-                              {/*  <MapadelocalidadViews
-                                    show={show}
-                                    mapaset={mapaset}
-                                    datalocalidad={datalocalidad}
-                                    SetDataloca={SetDataloca}
-                                    ObtenLocalidad={ObtenLocalidad}
-                                    localidaname={localidaname} /*/}
-
-                            </div>
-
+                            </div>                            
                         </div>
                     </div>
                 </Modal.Body>

@@ -11,7 +11,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { Columnevento } from "utils/ColumnTabla";
 import { EliminarEvento } from "utils/Querypanel";
 import { useHistory } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import moment from "moment";
 import 'moment-timezone'
@@ -22,11 +22,14 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import Modalpreciolocalidad from "./MODAL/Modalpreciolocalidad";
 import ListarPreciView from "./MODAL/ModalListaprecio";
 import { removeDatosUsuario } from "utils/DatosUsuarioLocalStorag";
+import NewEspacioView from "../Espacios/MODAL/NuevoEspacio";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
   let history = useHistory()
   let dispatch = useDispatch()
+  let modal = useSelector(state => state.SuscritorSlice.modal)
+  const [localidaname, setLocalidad] = useState({ id: '', nombre: '', descripcion: '' })
   const [show, setShow] = useState(false)
   const [eventoslist, setEventos] = useState([])
   const [alert, setAlert] = React.useState(null)
@@ -41,13 +44,19 @@ const EventosViews = () => {
     try {
   
       const lista = await ListarEventos()
-      if (lista.response.status==401){
+      /*if (lista.response.status==401){
         removeDatosUsuario()
         history.push("/")
+      }*/
+     // console.log(lista.response.status)
+     // console.log(lista.response)
+      if (lista.success  ) {
+        setEventos([...lista.data])
+        return;
       }
-      console.log(lista.response.status)
-      if (lista.success) {
-        setEventos([...lista.data.filter((e) => e.codigoEvento != "001")])
+      if (lista.response.status == 401) {
+        removeDatosUsuario()
+        history.push("/")
       }
     } catch (error) {
       console.log(error)
@@ -65,17 +74,22 @@ const EventosViews = () => {
       try {
         console.log(e, e.id)
         EliminarEventoid(e.id).then(Output=>{
-          if (Output.response.status == 401) {
-            removeDatosUsuario()
-            history.push("/")
-          }
-          if(Output.success){
-            hideAlert()
-            dispatch(setToastes({ show: true, message: 'Hubo un error al elimnar el evento', color: 'bg-danger', estado: 'Error' }))
+          console.log(Output.status,Output)
+          if (Output.status == 200) {
+            if (Output.success) {
+              hideAlert()
+              dispatch(setToastes({ show: true, message: 'Se elimino el evento el evento', color: 'bg-success', estado: 'Eliminado' }))
+              window.location.reload()
 
+            } else {
+              console.log(Output)
+              hideAlert()
+              dispatch(setToastes({ show: true, message: 'Hubo un error al elimnar el evento', color: 'bg-danger', estado: 'Error' }))
+            }           
           }else{
-            console.log(Output)
+           
           }
+         
           
         }).catch(err=>{
           console.log(err)
@@ -145,6 +159,10 @@ const EventosViews = () => {
       <ModalcreaEventoView/>
       <Modalpreciolocalidad/>
       <ListarPreciView/>
+     {/* <NewEspacioView
+      showNuevo={(modal.nombre=="NewEspacioView")}
+      
+  />*/}
       <Row className="d-none">
         <Col lg="3" sm="6">
           <Card className="card-stats">

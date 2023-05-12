@@ -21,11 +21,7 @@ function LoginPage() {
       setCardClasses("");
     }, 500);
   });
-  React.useEffect(() => {
-    (async () => {
-      //await Perfils()
-    })()
-  }, [])
+
   const Logincredet = async () => {
     try {
       if (credenciales.email != '' && credenciales.password != '') {
@@ -59,12 +55,12 @@ function LoginPage() {
         const data = await Loginadmin({ email: credenciales.username.trim() ,password:credenciales.password.trim()})
         const { success, token } = data
         if (success) {
-          console.log("success-->",data)
-         
-          setDatosUser(token)
-          setShow(true)
-          setmessage("Inicio de session exitoso")
-         history.push('/admin/inicio')
+          // console.log("success-->",data)        
+           setDatosUser(token)
+           setShow(true)
+           setmessage("Inicio de session exitoso")
+           history.push('/admin/inicio')
+           window.location.reload()
         }
         else {
           setShow(true)
