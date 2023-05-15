@@ -1,12 +1,15 @@
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { useState } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Localidaditmes_create } from "utils/EventosQuery";
+import { Agregaitemsmap } from "utils/EventosQuery/mpalocal";
 
 export default function Viewsilla(props) {
     let { localidades, setItems } = props;
-    console.log(localidades);
+    //console.log(localidades);
     let usedispatch = useDispatch();
+    let modal = useSelector(state => state.SuscritorSlice.modal)
     let ListadeFilas = []
     const [nmobretabuno, setLocalidad] = useState({
         nombre: '',
@@ -99,8 +102,8 @@ export default function Viewsilla(props) {
             ListaFilas.forEach((obj, i) => {
                 asiento[i] = obj.asientos.length
             })
-            console.log(asiento)
-            console.log(Object.values(asiento).every(isValido))
+            //console.log(asiento)
+            //console.log(Object.values(asiento).every(isValido))
             if (Object.values(asiento).every(isValido)) { return true }
             else return false
         }
@@ -120,8 +123,49 @@ export default function Viewsilla(props) {
         }
         else {
             try {
-                console.log(ListaFilas)
-               /* const guardad = await GuardarLocalidad({ "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "id_espacio": localidaname.id, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
+                let info = {
+                    "id_localidad": nmobretabuno.nombre,
+                    "id_evento": modal.estado.id,
+                    "id_estado": 1,
+                    "estado_asientoId": 1,
+                    "array_mesas": { Typo: 'fila', datos: ListaFilas }
+                }
+                let nuevo = localidades.find(e => e.id == nmobretabuno.nombre)
+                let set = localidades.filter(e => e.id != nmobretabuno.nombre)
+                console.log(info)
+                if(false){
+                    return
+                }
+              //  if (nuevo != undefined && nuevo != undefined) {
+                   
+                    console.log(nuevo,set)
+                    Localidaditmes_create(info).then(ouput => {
+                        console.log(ouput)
+                        if (ouput.success) {
+                            //let nuevo = localidades.filter(e => e.id = !nmobretabuno.nombre)
+                            setLocalidad({
+                                nombre: '',
+                                description: '',
+                                id: ''
+                            })
+                            setItems(set)
+                            Agregaitemsmap(nuevo)
+                            setLocalidad({
+                                nombre: '',
+                                description: '',
+                                id: ''
+                            })
+
+                        }
+                       /// console.log(ouput)
+                    }).catch(err => {
+                        console.log(err)
+                    })
+              //  }
+              
+               // Agregaitemsmap(nuevo)
+               
+                /* const guardad = await GuardarLocalidad({ "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "id_espacio": localidaname.id, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
                 if (guardad.success) {
                     SetDataloca({
                         typo: '',

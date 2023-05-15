@@ -294,12 +294,12 @@ const EventosViews = () => {
         setShowToast={setShowToast}
         localidaname={localidaname}
       />
-      {/*<NewEspacioView
+      {<NewEspacioView
         showNuevo={showNuevo}
         localidaname={localidaname}
         estado={estado}
         SetShownuev={SetShownuev}
-                />*/}
+                />}
     </div>
 
   )

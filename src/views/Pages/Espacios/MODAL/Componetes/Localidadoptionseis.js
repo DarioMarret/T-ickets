@@ -11,8 +11,9 @@ import { Listar_preciolocalidad } from "utils/EventosQuery";
 import { getMapacolor } from "utils/Localidadmap";
 import { getLocalidadmapa } from "utils/Localidadmap";
 import { insertLocalidad } from "utils/Localidadmap";
-const OpctionLocalidadView = (props) => {
-        const { localidaname, datalocalidad, SetDataloca } = props
+import { GetlistPrecios } from "utils/EventosQuery/mpalocal";
+const OpctionLocalidadView = () => {
+       // const { localidaname, datalocalidad, SetDataloca } = props
         let usedispatch = useDispatch()
         const [ciudadname, setCiudad] = useState([])
         const [provincia, setProvincia] = useState("")
@@ -325,7 +326,9 @@ const OpctionLocalidadView = (props) => {
                 }
         })
         useEffect(() => {
-                Listar_preciolocalidad(0).then(ouput => {
+                
+                setprecios(GetlistPrecios())
+               /* Listar_preciolocalidad(0).then(ouput => {
                         console.log(ouput)
                         if (ouput.success) {
                                  setprecios(ouput.data)
@@ -343,7 +346,7 @@ const OpctionLocalidadView = (props) => {
                         }
                 }).catch(err => {
                         console.log(err)
-                })
+                })*/
         }, [])
         return (
                 <>

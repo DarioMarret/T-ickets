@@ -16,7 +16,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
-import { EliminarEventoid,ActualizarEvento,ListarEventos } from "utils/EventosQuery";
+import { EliminarEventoid, ActualizarEvento, ListarEventos } from "utils/EventosQuery";
 import ModalcreaEventoView from "./MODAL/ModalcreaEventos";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import Modalpreciolocalidad from "./MODAL/Modalpreciolocalidad";
@@ -24,6 +24,7 @@ import ListarPreciView from "./MODAL/ModalListaprecio";
 import { removeDatosUsuario } from "utils/DatosUsuarioLocalStorag";
 import NewEspacioView from "../Espacios/MODAL/NuevoEspacio";
 import Newitemview from "./Componentes/Newitems";
+import OpcionMapaViews from "./Componentes/Opcionmapa";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
@@ -37,23 +38,24 @@ const EventosViews = () => {
   const sorter = (a, b) => a.id > b.id || new Date(a.fechaConcierto) < new Date(b.fechaConcierto) ? 1 : -1;
 
   function nuevoevento() {
-    dispatch(setModal({ nombre: "ModalcreaEventoView",estado:""}))
+    dispatch(setModal({ nombre: "ModalcreaEventoView", estado: "" }))
     /*
     setShow(true)*/
   }
   async function GetEventos() {
     try {
-  
+
       const lista = await ListarEventos()
-      /*if (lista.response.status==401){
-        removeDatosUsuario()
-        history.push("/")
-      }*/
-     // console.log(lista.response.status)
-      console.log(lista.response)
-      if (lista.success  ) {
+
+      console.log(lista)
+      if (lista.success) {
         setEventos([...lista.data])
         return;
+      }
+      if (!lista.success) {
+        dispatch(setToastes({ show: true, message: lista.message, color: 'bg-danger', estado: 'Error' }))
+
+        return
       }
       if (lista.response.status == 401) {
         removeDatosUsuario()
@@ -64,7 +66,7 @@ const EventosViews = () => {
     }
   }
   async function Elimna(e) {
-    let { codigo, fecha,id } = e
+    let { codigo, fecha, id } = e
     var f1 = new Date(fecha);
     var fhoy = new Date();
     if (false) {
@@ -74,28 +76,32 @@ const EventosViews = () => {
     else
       try {
         console.log(e, e.id)
-        EliminarEventoid(e.id).then(Output=>{
-          console.log(Output.status,Output)
-          if (Output.status == 200) {
-            if (Output.success) {
-              hideAlert()
-              dispatch(setToastes({ show: true, message: 'Se elimino el evento el evento', color: 'bg-success', estado: 'Eliminado' }))
-              window.location.reload()
+        EliminarEventoid(e.id).then(Output => {
+          console.log(Output.status, Output)
 
-            } else {
-              console.log(Output)
-              hideAlert()
-              dispatch(setToastes({ show: true, message: 'Hubo un error al elimnar el evento', color: 'bg-danger', estado: 'Error' }))
-            }           
-          }else{
-           
+          if (Output.success) {
+            hideAlert()
+            dispatch(setToastes({ show: true, message: 'Se elimino el evento el evento', color: 'bg-success', estado: 'Eliminado' }))
+            window.location.reload()
+            return
+
           }
-         
-          
-        }).catch(err=>{
+          if (!Output.success) {
+            hideAlert()
+            dispatch(setToastes({ show: true, message: 'El evento tiene localidades anidadas ', color: 'bg-success', estado: 'No se puede eliminar' }))
+          }
+          else {
+            console.log(Output)
+            hideAlert()
+            dispatch(setToastes({ show: true, message: 'Hubo un error al elimnar el evento', color: 'bg-danger', estado: 'Error' }))
+          }
+
+
+
+        }).catch(err => {
           console.log(err)
         })
-     
+
       } catch (error) {
         dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
       }
@@ -118,7 +124,7 @@ const EventosViews = () => {
       </SweetAlert>
     );
   };
-  
+
   const cancelDetele = () => {
     setAlert(
       <SweetAlert
@@ -135,9 +141,9 @@ const EventosViews = () => {
   const hideAlert = () => {
     setAlert(null);
   };
-  
+
   useEffect(() => {
-    
+
     (async () => {
       await GetEventos()
     })()
@@ -145,13 +151,14 @@ const EventosViews = () => {
   return (
     <div className="container-fluid">
       {alert}
-      <ModalcreaEventoView/>
-      <Modalpreciolocalidad/>
-    {(modal.nombre =="ListarPreciView")?  <ListarPreciView/>:""}
-    {
-      (modal.nombre =="Newitemview")?  <Newitemview/>:""
-    }
-     {/* <NewEspacioView
+      <ModalcreaEventoView />
+      <Modalpreciolocalidad />
+      {(modal.nombre == "OpcionMapaViews") ? <OpcionMapaViews /> : ""}
+      {(modal.nombre == "ListarPreciView") ? <ListarPreciView /> : ""}
+      {
+        (modal.nombre == "Newitemview") ? <Newitemview /> : ""
+      }
+      {/* <NewEspacioView
       showNuevo={(modal.nombre=="NewEspacioView")}
       
   />*/}
@@ -300,14 +307,14 @@ const EventosViews = () => {
                     <IconButton
                       color="error"
                       aria-label="Bloquear"
-                      onClick={() => successAlert({id:row.original.id, codigo: row.original.codigoEvento, fecha: row.original.fechaConcierto })}
+                      onClick={() => successAlert({ id: row.original.id, codigo: row.original.codigoEvento, fecha: row.original.fechaConcierto })}
                     >
                       <Delete />
                     </IconButton>
                     <IconButton
                       color="primary"
                       aria-label="Ver"
-                      onClick={() => history.push("/admin/Evento/" + row.original.codigoEvento)}
+                      onClick={() => history.push("/admin/Evento/" + row.original.id)}
                     ><Visibility />
                     </IconButton>
                   </Box>

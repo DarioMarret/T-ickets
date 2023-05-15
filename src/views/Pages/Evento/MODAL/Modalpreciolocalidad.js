@@ -59,7 +59,7 @@ export default function Modalpreciolocalidad() {
                     "precio_discapacidad": 0,
                     "precio_tarjeta": 0,
                     "precio_descuento": 0,
-                    "habilitar_cortesia": false,
+                    "habilitar_cortesia": 0,
                     "comision_boleto": 0,
                     "descuento": 0,
                     "habilitar": false
@@ -107,7 +107,7 @@ export default function Modalpreciolocalidad() {
                             <input className="form-control" id="nombre_localidad" name="nombre_localidad"
                                 onChange={(e) => Handelchange(e.target)}
                                 value={precios.nombre_localidad}
-                                placeholder="Nombre del Evento" />
+                                placeholder="Nombre de Localidad" />
                         </div>
                     </div>
                     <div className="col-12 col-md-6">

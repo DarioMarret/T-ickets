@@ -27,6 +27,7 @@ import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import { ticketsboletos } from "utils/columnasub";
 import PiecharViews from "views/Components/Piechar";
 import ExportToExcel from "utils/Exportelemin";
+import { Listar_preciolocalidad } from "utils/EventosQuery";
 require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
@@ -96,12 +97,15 @@ const EventoEspecifico = () => {
     })
     try {
       const cargar = await ListarEventos()
-      const precio = await listarpreciolocalidad(id)
+      console.log(cargar)
+      const precio = await Listar_preciolocalidad(id)
+      console.log(precio)
+    //  const precio = await listarpreciolocalidad(id)
       if (cargar.success) {
-        let datos = cargar.data.filter((e) => e.codigoEvento == id)
+        let datos = cargar.data.filter((e) => e.id == id)
         let shortDate = new Date(datos[0].fechaConcierto);
         SetEvento({
-          ...datos[0], LocalodadPrecios: precio.data,
+          ...datos[0], //LocalodadPrecios: precio.data,
         })
         // console.log(precio, cargar)
         SetPrecios(precio.data)

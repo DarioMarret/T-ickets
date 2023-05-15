@@ -67,71 +67,35 @@ export const Eliminar_preciolocalidad = async(id)=>{
         return error
     }
 }
-/* 
-export const Actualisardescripcionevento = async () => {
+export const Localidaitmes_content = async ()=>{
     try {
-        let { data } = axios.get("https://rec.netbot.ec/ms_login/api/v1/actualisar_descripcion_evento", {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-
-            }
-        })
+        let { data } = await InstanciaAxio.get("localidaditems_content")
         return data
     } catch (error) {
         return error
     }
 }
-
-const ListarEventosLis = async () => {
+export const Localidaditmes_create =async(parms)=>{
     try {
-        const { data } = await axios.get("https://rec.netbot.ec/ms_login/listareventos/", {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-
-            }
-        })
-        // console.log(data)
-        return data.data
-    } catch (error) {
-        return error;
-
-    }
-}
-
-const traerprecios = async (path) => {
-    try {
-        let { data } = await axios.get(path, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-            }
-        })
-        //console.log(data.data)
-        return data.data
+        let { data } = await InstanciaAxio.post("localidaditems_create",parms)
+        return data
     } catch (error) {
         return error
     }
-
 }
-
-export const ListaPreciosEvent = async () => {
-    const resultado = await ListarEventosLis()
-    //const data = await TraerLocalidad()
-    let newarr = []
-    const data = await Promise.all(
-        resultado.map(async (e) => {
-            const info = await traerprecios("https://rec.netbot.ec/ms_login/ListaPreciosLocalidades/" + e.codigoEvento)
-            e.Precios = info
-            return e
-        }))
-    let datos = await data.map((e) => {
-         e.Precios.map(f=>{
-            newarr.push({...f})
-         })
-    })
-
-    console.log(newarr)
-    return sessionStorage.setItem("PreciosLocalidad", JSON.stringify(newarr))
-}*/
+export const Localidaditems_delete= async(id_localidad,id_evento)=>{
+    try {
+        let { data } = await InstanciaAxio.delete("localidaditems_delete/"+id_localidad+"/"+id_evento)
+        return data;
+    } catch (error) {
+        return error
+    }
+}
+export const Localidaditems_seleccion_correlativo = async(parms)=>{
+    try {
+        let { data } = await InstanciaAxio.post("localidaditems_seleccion_correlativo",parms)
+        return data
+    } catch (error) {
+        return error
+    }
+}

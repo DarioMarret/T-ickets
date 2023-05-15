@@ -1,18 +1,20 @@
 
 import { Modal } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Viewcorrelativos from "./OpcionNumero";
 import { Listar_preciolocalidad } from "utils/EventosQuery";
 import Viewsilla from "./Opcionsilla";
 import { useEffect ,useState} from "react";
+import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 
 export default function Newitemview() {
     let moda = useSelector(state => state.SuscritorSlice.modal);
+    let usedispatch = useDispatch()
     let [items, setItems] = useState([])
     useEffect(() => {
         console.log(moda.estado.id)
         Listar_preciolocalidad(moda.estado.id).then(ouput=>{
-            console.log(ouput)
+            console.log(ouput.data)
             if(ouput.success){
                 setItems(ouput.data)
             }
@@ -20,7 +22,7 @@ export default function Newitemview() {
             console.log(err)
         })
        // setItems(itemlocalidad)
-    }, [(moda.nombre == "Newitemview")])
+    }, [true])
     return (<Modal
         show={(moda.nombre == "Newitemview")}
         fullscreen={true}
@@ -46,19 +48,9 @@ export default function Newitemview() {
                         <li className="nav-item">
                             <a className="nav-link" data-toggle="tab" href="#correlativos">Números Correlativos</a>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link " data-toggle="tab" href="#listas"
-                            >Localidades Agregadas</a>
-                        </li>
-                        <li className="nav-item  ">
-                            <a className="nav-link  d-none" data-toggle="tab" href="#seleclocalidad"
-                            >Seleccionar locación</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" data-toggle="tab" href="#mapa"
-
-                            >Diseñar Mapa</a>
-                        </li>
+                       
+                       
+                        
 
                     </ul>
                 </div>
@@ -87,5 +79,14 @@ export default function Newitemview() {
                 </div>
             </div>
         </Modal.Body>
+        <Modal.Footer>
+            <div className=" container">
+            <div className=" text-end">
+                    {items.length==0?  <button className="btn  btn-success" 
+                        onClick={() => usedispatch(setModal({ nombre:"OpcionMapaViews",estado:moda.estado})) }
+                    >Crear Mapa </button>:""}
+            </div>
+            </div>
+        </Modal.Footer>
     </Modal>)
 }

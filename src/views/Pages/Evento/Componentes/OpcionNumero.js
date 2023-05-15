@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Modal, ProgressBar } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { Localidaditmes_create } from "utils/EventosQuery";
+import { Agregaitemsmap } from "utils/EventosQuery/mpalocal";
 
 export default function Viewcorrelativos(props) {
-    let { localidades ,setItems} = props
-
+    let { localidades, setItems } = props
+    let nombre = useSelector(state => state.SuscritorSlice.modal)
     const [localidaname, setLocalidad] = useState({
         nombre: '',
         description: '',
@@ -18,7 +21,47 @@ export default function Viewcorrelativos(props) {
             [e.name]: e.value
         })
     }
-    function Guardar(e) {}
+    console.log(localidades)
+    function Guardar(e) {
+        console.log(localidaname)
+        if(localidaname.nombre==""|| localidaname.cantidad=="" || localidaname.inicio==""){
+            return
+        }
+        let info = {
+            "id_localidad": localidaname.nombre,
+            "id_evento": nombre.estado.id,
+            "id_estado": 1,
+            "estado_asientoId": 1,
+            "array_mesas": {
+                "Typo":"correlativo",
+                "datos":{
+                    "inicio":localidaname.inicio,
+                    "cantidad":localidaname.cantidad
+                }
+            }
+        }
+        console.log(info)
+        let nuevo = localidades.find(e => e.id == localidaname.nombre)
+        let set = localidades.filter(e => e.id != localidaname.nombre)
+        if (nuevo != null && nuevo != undefined) {
+            Agregaitemsmap(nuevo)
+        }
+        
+        // console.log(localidades.filter(e => e.id != localidaname.nombre))
+
+        //  console.log(nuevo)
+        Localidaditmes_create(info).then(ouput => {
+            if (ouput.success) {
+                let nuevo = localidades.filter(e => e.id = !nmobretabuno.nombre)
+                setItems(nuevo)
+            }
+            console.log(ouput)
+        }).catch(err => {
+            console.log(err)
+        })
+
+        //console.log(info)
+    }
     return (
         <div className="d-flex flex-column">
             <div className='row col-12 pt-2'>
@@ -32,13 +75,13 @@ export default function Viewcorrelativos(props) {
                                         <div className="input-group-prepend">
                                             <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                         </div>
-                                        <select className=" form-select" name="" value={localidaname.nombre} onChange={(e)=> handelchangelocalidad(e.target)}>
-                                            <option value={""} disabled required ></option>
+                                        <select className=" form-select" name="nombre" value={localidaname.nombre} onChange={(e) => handelchangelocalidad(e.target)}>
+                                            <option value={""}   ></option>
                                             {localidades.length > 0 ?
                                                 localidades.map(e => {
                                                     {
-                                                        return(  <option value={e.id }>{e.nombre_localidad } </option>)
-                                                      }
+                                                        return (<option value={e.id}>{e.nombre_localidad} </option>)
+                                                    }
                                                 })
                                                 : ""}
                                         </select>{/*
@@ -68,14 +111,14 @@ export default function Viewcorrelativos(props) {
                             <div className="d-flex text-end row">
                                 {/*datalocalidad.typo == "correlativo" ?
                                     <button className="btn btn-primary col-12" onClick={Actualiza}>Actualizar</button> : ''*/}
-                                {true ?
+                                {false ?
                                     <button className="btn btn-primary" disabled={true} >
                                         <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                                         Guardando</button>
                                     : ''
 
                                 }
-                                {!false ? <button className="btn btn-success col-12" onClick={Guardar}>Guardar</button> : ''}
+                                <button className="btn btn-success col-12" onClick={Guardar}>Guardar</button>
                             </div>
                         </div>
                     </div>
