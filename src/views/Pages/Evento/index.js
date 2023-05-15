@@ -23,6 +23,7 @@ import Modalpreciolocalidad from "./MODAL/Modalpreciolocalidad";
 import ListarPreciView from "./MODAL/ModalListaprecio";
 import { removeDatosUsuario } from "utils/DatosUsuarioLocalStorag";
 import NewEspacioView from "../Espacios/MODAL/NuevoEspacio";
+import Newitemview from "./Componentes/Newitems";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
@@ -49,7 +50,7 @@ const EventosViews = () => {
         history.push("/")
       }*/
      // console.log(lista.response.status)
-     // console.log(lista.response)
+      console.log(lista.response)
       if (lista.success  ) {
         setEventos([...lista.data])
         return;
@@ -117,19 +118,7 @@ const EventosViews = () => {
       </SweetAlert>
     );
   };
-  const successDelete = () => {
-    setAlert(
-      <SweetAlert
-        success
-        style={{ display: "block", marginTop: "-100px" }}
-        title="Eliminado!"
-        onConfirm={() => hideAlert()}
-        onCancel={() => hideAlert()}
-        confirmBtnBsStyle="success">
-        El evento se elimino correctamenta
-      </SweetAlert>
-    );
-  };
+  
   const cancelDetele = () => {
     setAlert(
       <SweetAlert
@@ -158,7 +147,10 @@ const EventosViews = () => {
       {alert}
       <ModalcreaEventoView/>
       <Modalpreciolocalidad/>
-      <ListarPreciView/>
+    {(modal.nombre =="ListarPreciView")?  <ListarPreciView/>:""}
+    {
+      (modal.nombre =="Newitemview")?  <Newitemview/>:""
+    }
      {/* <NewEspacioView
       showNuevo={(modal.nombre=="NewEspacioView")}
       

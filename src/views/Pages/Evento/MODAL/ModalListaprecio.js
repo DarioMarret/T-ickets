@@ -18,7 +18,7 @@ export default function ListarPreciView(){
         usedispatch(setModal({ nombre: "Modalpreciolocalidad", estado: modal.estado }))
     }
     useEffect(()=>{
-        Listar_preciolocalidad(0).then(ouput=>{
+        Listar_preciolocalidad(modal.estado.id).then(ouput=>{
             console.log(ouput)
             if(ouput.success){
                 setPrecios(ouput.data)
@@ -64,7 +64,7 @@ export default function ListarPreciView(){
             <Modal.Footer>
                 <div className=" container-fluid d-flex  justify-content-between ">
                     <button className=" btn btn-success" onClick={() => usedispatch(setModal({ nombre:"Modalpreciolocalidad",estado:modal.estado}))}> Regresar</button>
-                    <button className=" btn btn-primary" > Mapa  </button>
+                    <button className=" btn btn-primary" onClick={()=> usedispatch(setModal({nombre:"Newitemview",estado:modal.estado}))} > Agregar items  </button>
                 </div>
             </Modal.Footer>
         </Modal>

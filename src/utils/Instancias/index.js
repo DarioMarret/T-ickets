@@ -11,8 +11,7 @@ export const InstanciaAxio = axios.create({
     },
     validateStatus:function(status){
         return status>=200&&status<500
-    },
-    timeout: 1000
+    }
 })
 export const InstanciaGETAxios = axios.create({
     baseURL: "https://rec.netbot.ec/back_dev_tickets/",
@@ -20,6 +19,5 @@ export const InstanciaGETAxios = axios.create({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + tockendos,
 
-    },
-    timeout: 1000
+    }
 })

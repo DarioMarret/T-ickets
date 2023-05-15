@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, ProgressBar } from "react-bootstrap";
 
-export default function Viewcorrelativos(props){
-    let {localidades}= props
+export default function Viewcorrelativos(props) {
+    let { localidades ,setItems} = props
 
     const [localidaname, setLocalidad] = useState({
         nombre: '',
@@ -18,7 +18,8 @@ export default function Viewcorrelativos(props){
             [e.name]: e.value
         })
     }
-    return(
+    function Guardar(e) {}
+    return (
         <div className="d-flex flex-column">
             <div className='row col-12 pt-2'>
                 <div className="col-sm-5">
@@ -31,16 +32,20 @@ export default function Viewcorrelativos(props){
                                         <div className="input-group-prepend">
                                             <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                         </div>
-                                        <select>
+                                        <select className=" form-select" name="" value={localidaname.nombre} onChange={(e)=> handelchangelocalidad(e.target)}>
                                             <option value={""} disabled required ></option>
-                                            {localidades.length>0?
-                                                <option value={"Tarjeta"}>Tarjeta</option>
-                                            :""}
-                                        </select>
+                                            {localidades.length > 0 ?
+                                                localidades.map(e => {
+                                                    {
+                                                        return(  <option value={e.id }>{e.nombre_localidad } </option>)
+                                                      }
+                                                })
+                                                : ""}
+                                        </select>{/*
                                         <input type="text" className="form-control" id="nombre" name="nombre"
                                             value={localidaname.nombre}
                                             onChange={(e) => handelchangelocalidad(e.target)}
-                                            placeholder="Ingrese el nombre del espacio" />
+                                            placeholder="Ingrese el nombre del espacio" />*/}
                                     </div>
                                 </div>
                             </div>
@@ -61,16 +66,16 @@ export default function Viewcorrelativos(props){
                                 </div>
                             </div>
                             <div className="d-flex text-end row">
-                                {datalocalidad.typo == "correlativo" ?
-                                    <button className="btn btn-primary col-12" onClick={Actualiza}>Actualizar</button> : ''}
-                                {inputdisable ?
+                                {/*datalocalidad.typo == "correlativo" ?
+                                    <button className="btn btn-primary col-12" onClick={Actualiza}>Actualizar</button> : ''*/}
+                                {true ?
                                     <button className="btn btn-primary" disabled={true} >
                                         <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                                         Guardando</button>
                                     : ''
 
                                 }
-                                {!inputdisable ? <button className="btn btn-success col-12" onClick={Guardar}>Guardar</button> : ''}
+                                {!false ? <button className="btn btn-success col-12" onClick={Guardar}>Guardar</button> : ''}
                             </div>
                         </div>
                     </div>
@@ -122,9 +127,9 @@ export default function Viewcorrelativos(props){
                             <ProgressBar variant="success" label={localidaname.cantidad} now={parseInt(localidaname.cantidad)} key={2} />
                         </ProgressBar>
                     </div>
-                
+
                 </div>
-               
+
 
 
 
