@@ -133,38 +133,51 @@ export default function Viewsilla(props) {
                 let nuevo = localidades.find(e => e.id == nmobretabuno.nombre)
                 let set = localidades.filter(e => e.id != nmobretabuno.nombre)
                 console.log(info)
-                if(false){
+                if (false) {
                     return
                 }
-              //  if (nuevo != undefined && nuevo != undefined) {
-                   
-                    console.log(nuevo,set)
-                    Localidaditmes_create(info).then(ouput => {
-                        console.log(ouput)
-                        if (ouput.success) {
-                            //let nuevo = localidades.filter(e => e.id = !nmobretabuno.nombre)
-                            setLocalidad({
-                                nombre: '',
-                                description: '',
-                                id: ''
-                            })
-                            setItems(set)
-                            Agregaitemsmap(nuevo)
-                            setLocalidad({
-                                nombre: '',
-                                description: '',
-                                id: ''
-                            })
+                //  if (nuevo != undefined && nuevo != undefined) {
 
-                        }
-                       /// console.log(ouput)
-                    }).catch(err => {
-                        console.log(err)
-                    })
-              //  }
-              
-               // Agregaitemsmap(nuevo)
-               
+                console.log(nuevo, set)
+                console.log(sessionStorage.getItem("SeccionToken"))
+                Localidaditmes_create(info).then(ouput => {
+                    //console.log(ouput)
+                    if (ouput.success) {
+                        //let nuevo = localidades.filter(e => e.id = !nmobretabuno.nombre)
+                        setLocalidad({
+                            nombre: '',
+                            description: '',
+                            id: ''
+                        })
+                        setItems(set)
+                        Agregaitemsmap(nuevo)
+                        setLocalidad({
+                            nombre: '',
+                            description: '',
+                            id: ''
+                        })
+
+                    }
+                    else if (!ouput.success && ouput.error != "jwt expired") {
+                        console.log(ouput)
+
+                    }
+                    else if (!ouput.success && ouput.error == "jwt expired") {
+                        console.log(ouput)
+                        usedispatch(setToastes({ show: true, message: 'En breve se cerrara', color: 'bg-danger', estado: 'La sessión a caducado ' }))
+                        setTimeout(function () {
+
+                        }, 1000)
+
+                    }
+                    /// console.log(ouput)
+                }).catch(err => {
+                    console.log(err)
+                })
+                //  }
+
+                // Agregaitemsmap(nuevo)
+
                 /* const guardad = await GuardarLocalidad({ "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "id_espacio": localidaname.id, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
                 if (guardad.success) {
                     SetDataloca({
@@ -195,17 +208,17 @@ export default function Viewsilla(props) {
         }
         else {
             try {
-               /* const actualiza = await AptualizarLocalida({ "id": nmobretabuno.id, "espacio": localidaname.nombre, "id_espacio": localidaname.id, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
-                if (actualiza.success) {
-
-                    setLocalidad({
-                        nombre: '',
-                        description: '',
-                        id: ''
-                    })
-                    setFilas([])
-                    usedispatch(setToastes({ show: true, message: 'Localidad actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
-                }*/
+                /* const actualiza = await AptualizarLocalida({ "id": nmobretabuno.id, "espacio": localidaname.nombre, "id_espacio": localidaname.id, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
+                 if (actualiza.success) {
+ 
+                     setLocalidad({
+                         nombre: '',
+                         description: '',
+                         id: ''
+                     })
+                     setFilas([])
+                     usedispatch(setToastes({ show: true, message: 'Localidad actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
+                 }*/
 
             } catch (error) {
                 usedispatch(setToastes({ show: true, message: 'Hubo un error, Complete todos los datos y verifique no sobrepasar el limite de  sillas', color: 'bg-danger', estado: 'Datos incompletos' }))
@@ -230,13 +243,13 @@ export default function Viewsilla(props) {
                                         <div className="input-group-prepend">
                                             <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                         </div>
-                                        <select className=" form-select" name="nombre" value={nmobretabuno.nombre} onChange={(e)=> handelchangelocalidad(e.target)}>
+                                        <select className=" form-select" name="nombre" value={nmobretabuno.nombre} onChange={(e) => handelchangelocalidad(e.target)}>
                                             <option value={""} disabled required ></option>
                                             {localidades.length > 0 ?
                                                 localidades.map(e => {
-                                                  return(  <option value={e.id }>{e.nombre_localidad } </option>)
+                                                    return (<option value={e.id}>{e.nombre_localidad} </option>)
                                                 }
-                                                    )
+                                                )
                                                 : ""}
                                         </select>
                                     </div>
@@ -257,7 +270,7 @@ export default function Viewsilla(props) {
                                     </div>
                                 </div>
                             </div>
-                            
+
 
                             <div className="d-flex row">
                                 {nmobretabuno.id !== "" ? <button onClick={actualizalocalidad} className="btn btn-primary col-12">Actualizar</button> : ''}
@@ -353,7 +366,7 @@ export default function Viewsilla(props) {
                             ListaFilas.map((e, i) => {
 
                                 {
-                                    return ( 
+                                    return (
                                         <div className={"d-flex  flex-row "} key={"lista" + i}>
                                             <OverlayTrigger placement='right' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length > 0 ? e.asientos.length : ""}</Tooltip>}>
                                                 <span className="d-inline-block " disabled >

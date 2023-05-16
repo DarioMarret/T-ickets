@@ -3,7 +3,7 @@ import { ProvinciasMap } from "utils/Mapassvg"
 import { useState, useEffect, useMemo } from "react"
 import { cargarMapa, guardarMapar, eliminaMapa, editarMapa } from "utils/MapaQuery"
 import SweetAlert from "react-bootstrap-sweetalert";
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 
 import SvgselectView from "views/Pages/Svgviewa/svgseleccion.js"
@@ -12,8 +12,13 @@ import { getMapacolor } from "utils/Localidadmap";
 import { getLocalidadmapa } from "utils/Localidadmap";
 import { insertLocalidad } from "utils/Localidadmap";
 import { GetlistPrecios } from "utils/EventosQuery/mpalocal";
+import { Crear_mapa } from "utils/MapaQuery";
+import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import { useHistory } from "react-router";
 const OpctionLocalidadView = () => {
        // const { localidaname, datalocalidad, SetDataloca } = props
+        let moda = useSelector(state => state.SuscritorSlice.modal)
+        let history = useHistory();
         let usedispatch = useDispatch()
         const [ciudadname, setCiudad] = useState([])
         const [provincia, setProvincia] = useState("")
@@ -181,18 +186,43 @@ const OpctionLocalidadView = () => {
 
         }, [localidaname])
         */
+        function AlerGuardas(){
+                setList(true)
+        }
         const AlerGuarda = () => {
                 console.log(getLocalidadmapa())
                 console.log(getMapacolor())
                 let valores = {
-                        "id_evento": "estadio",
-                        "nombre_espacio": "localidaname.nombre",
-                        "pathmap": JSON.stringify(getMapacolor()),
-                        "localidad": JSON.stringify(getLocalidadmapa()),
+                        "id_evento": moda.estado.id,
+                        "nombre": mapaselet + "-" + Math.random().toString(36).slice(-10),
+                        "array_mapa": getMapacolor(),
+                        "array_path": JSON.parse(sessionStorage.getItem("itmeslocalidad")),
                 }
                 console.log(valores)
                 //438106
-                setList(true)
+               // setList(true)
+
+                Crear_mapa(valores).then(ouput=>{
+                        console.log(ouput)
+                        if (ouput.success){
+                                console.log(success)
+                                usedispatch(setModal({nombre:"",estado:""}))
+                                sessionStorage.removeItem("itmeslocalidad")
+                        }
+                        else if (!ouput.success){
+                                console.log(ouput)
+                                usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
+
+                        }
+                        else if (ouput.response.status == 401) {
+                                usedispatch(setToastes({ show: true, message: 'La sessión a caducado ', color: 'bg-danger', estado: 'Hubo un error' }))
+                                setTimeout(function(){
+                                        removeDatosUsuario()
+                                        history.push("/")
+                                },1000)
+                               
+                        }
+                })
                 /*setAlert(
                         <SweetAlert
                                 warning
@@ -312,7 +342,7 @@ const OpctionLocalidadView = () => {
                                 this.append(t);
                         }
                 }
-                return
+                return 
         })
         $(document).on("click", ".seleccion", function () {
                 if (this.classList.contains('seleccion')) {
@@ -325,28 +355,14 @@ const OpctionLocalidadView = () => {
                         $("#titel" + this.getAttribute('id')).remove();
                 }
         })
+        function Regresar(){
+                setList(false)
+                sessionStorage.removeItem("mapa")
+        }
         useEffect(() => {
                 
                 setprecios(GetlistPrecios())
-               /* Listar_preciolocalidad(0).then(ouput => {
-                        console.log(ouput)
-                        if (ouput.success) {
-                                 setprecios(ouput.data)
-                                //setPrecios(ouput.data)
-                                console.log(ouput.data)
-                                const filtrado = ouput.data
-                                const obten = filtrado.map((e, i) => {
-                                       
-                                        return { id: e.id, nombre: e.nombre_localidad,  color: '' }
-                                })
-                // console.log("localidada",obten)
-                //setLocalidad(filtrado)
-                //setmapa(obten)
-                  sessionStorage.localidad = JSON.stringify(obten)
-                        }
-                }).catch(err => {
-                        console.log(err)
-                })*/
+         
         }, [])
         return (
                 <>
@@ -405,10 +421,10 @@ const OpctionLocalidadView = () => {
                                                 <div className="col-sm  d-flex flex-row"  >
                                                         <button className="btn btn-primary mx-3"
                                                                 disabled={!(mapaselet)}
-                                                                onClick={AlerGuarda}
+                                                                onClick={AlerGuardas}
                                                                 
                                                                 > {
-                                                                        !mapaRegstro.id ? "Continuar" : "Actualizar"} </button>
+                                                                        !mapaRegstro.id ? "Continuars" : "Actualizar"} </button>
                                                         {/*
                                                                 mapaRegstro.id ?
                                                                         <button className="btn btn-danger " onClick={Elimna} >Eliminar</button> : ''*/}
@@ -495,7 +511,7 @@ const OpctionLocalidadView = () => {
                                                                 {!localidadmap.id ?
                                                                 <button className="btn btn-primary" onClick={AlerGuarda} >Guardar </button> :
                                                                 <button className="btn btn-primary" onClick={() => setList(false)} >Actualizar </button>}
-                                                        <button className="btn btn-primary" onClick={() => setList(false)} >Regresar </button>
+                                                        <button className="btn btn-primary" onClick={() => Regresar()} >Regresar </button>
                                                         </div>
 
                                                 </div>

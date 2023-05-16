@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Modal, ProgressBar } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import { removeDatosUsuario } from "utils/DatosUsuarioLocalStorag";
 import { Localidaditmes_create } from "utils/EventosQuery";
 import { Agregaitemsmap } from "utils/EventosQuery/mpalocal";
 
 export default function Viewcorrelativos(props) {
     let { localidades, setItems } = props
     let nombre = useSelector(state => state.SuscritorSlice.modal)
+    let history = useHistory();
     const [localidaname, setLocalidad] = useState({
         nombre: '',
         description: '',
@@ -54,6 +57,14 @@ export default function Viewcorrelativos(props) {
             if (ouput.success) {
                 let nuevo = localidades.filter(e => e.id = !nmobretabuno.nombre)
                 setItems(nuevo)
+            }
+            else if (ouput.response.status == 401) {
+                usedispatch(setToastes({ show: true, message: 'La sessión a caducado ', color: 'bg-danger', estado: 'Hubo un error' }))
+                setTimeout(function () {
+                    removeDatosUsuario()
+                    history.push("/")
+                }, 1000)
+
             }
             console.log(ouput)
         }).catch(err => {
@@ -158,7 +169,7 @@ export default function Viewcorrelativos(props) {
 
                 <div className=' d-flex flex-wrap '>
                     <div className='col-3'>
-                        <h3>
+                        <h3 className="d-none">
                             {localidaname.nombre}
                         </h3>
                     </div>

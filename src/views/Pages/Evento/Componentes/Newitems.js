@@ -6,18 +6,35 @@ import { Listar_preciolocalidad } from "utils/EventosQuery";
 import Viewsilla from "./Opcionsilla";
 import { useEffect ,useState} from "react";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import { useHistory } from "react-router";
+import { removeDatosUsuario } from "utils/DatosUsuarioLocalStorag";
 
 export default function Newitemview() {
     let moda = useSelector(state => state.SuscritorSlice.modal);
     let usedispatch = useDispatch()
+    let history = useHistory();
     let [items, setItems] = useState([])
     useEffect(() => {
         console.log(moda.estado.id)
         Listar_preciolocalidad(moda.estado.id).then(ouput=>{
-            console.log(ouput.data)
+           // console.log(ouput.response)
             if(ouput.success){
                 setItems(ouput.data)
             }
+            else if (!ouput.success && ouput.error != "jwt expired"){
+                console.log(ouput)
+                usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
+            }
+           /* else if (!ouput.success && ouput.error == "jwt expired") {
+                console.log(ouput.data)
+                usedispatch(setToastes({ show: true, message: 'La sessión a caducado ', color: 'bg-danger', estado: 'Hubo un error' }))
+                setTimeout(function () {
+                    removeDatosUsuario()
+                    history.push("/")
+                }, 1000)
+
+            }*/
         }).catch(err=>{
             console.log(err)
         })
