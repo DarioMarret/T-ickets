@@ -2576,6 +2576,13 @@ textarea.form-control-lg {
   font-size: 0.875rem;
   border-radius: 0.2rem;
 }
+.custom-select-sm{
+  padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+    padding-left: 0.5rem !important;
+    font-size: 0.875rem !important;
+    border-radius: 0.2rem !important;
+}
 
 .form-select-lg {
   padding-top: 0.5rem;

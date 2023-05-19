@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Row, Modal } from "react-bootstrap";
-import ModalNewEvento from "./MODAL/ModalnewEvento";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
-import { ListarLocalidad, ListarEspacios } from "utils/Querypanel.js";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { Columnevento } from "utils/ColumnTabla";
-import { EliminarEvento } from "utils/Querypanel";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
@@ -22,9 +19,9 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import Modalpreciolocalidad from "./MODAL/Modalpreciolocalidad";
 import ListarPreciView from "./MODAL/ModalListaprecio";
 import { removeDatosUsuario } from "utils/DatosUsuarioLocalStorag";
-import NewEspacioView from "../Espacios/MODAL/NuevoEspacio";
 import Newitemview from "./Componentes/Newitems";
 import OpcionMapaViews from "./Componentes/Opcionmapa";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
@@ -43,23 +40,24 @@ const EventosViews = () => {
     setShow(true)*/
   }
   async function GetEventos() {
+    //console.log(clienteInfo())
     try {
 
       const lista = await ListarEventos()
 
-      console.log(lista)
+      console.log(lista, )
       if (lista.success) {
         setEventos([...lista.data])
         return;
       }
-      if (!lista.success) {
+      if (!lista.success && lista.error!="jwt expired") {
         dispatch(setToastes({ show: true, message: lista.message, color: 'bg-danger', estado: 'Error' }))
-
+        
         return
       }
-      if (lista.response.status == 401) {
+      if (!lista.success && lista.error == "jwt expired") {
         removeDatosUsuario()
-        history.push("/")
+        history.push("/admin")
       }
     } catch (error) {
       console.log(error)
@@ -151,8 +149,8 @@ const EventosViews = () => {
   return (
     <div className="container-fluid">
       {alert}
-      <ModalcreaEventoView />
-      <Modalpreciolocalidad />
+      {(modal.nombre == "ModalcreaEventoView") ? <ModalcreaEventoView />:""}
+      {(modal.nombre == "Modalpreciolocalidad") ?<Modalpreciolocalidad />:""}
       {(modal.nombre == "OpcionMapaViews") ? <OpcionMapaViews /> : ""}
       {(modal.nombre == "ListarPreciView") ? <ListarPreciView /> : ""}
       {
@@ -326,10 +324,7 @@ const EventosViews = () => {
           </div>
         </div>
       </div>
-      <ModalNewEvento
-        show={show}
-        Setshow={setShow}
-      />
+    
     </div>
   )
 

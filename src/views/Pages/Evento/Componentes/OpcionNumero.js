@@ -58,7 +58,11 @@ export default function Viewcorrelativos(props) {
                 let nuevo = localidades.filter(e => e.id = !nmobretabuno.nombre)
                 setItems(nuevo)
             }
-            else if (ouput.response.status == 401) {
+            if (!ouput.success && ouput.error != "jwt expired"){
+                usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
+
+            }
+            else if (!ouput.success && ouput.error == "jwt expired") {
                 usedispatch(setToastes({ show: true, message: 'La sessión a caducado ', color: 'bg-danger', estado: 'Hubo un error' }))
                 setTimeout(function () {
                     removeDatosUsuario()

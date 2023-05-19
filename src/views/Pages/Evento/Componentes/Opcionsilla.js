@@ -141,7 +141,7 @@ export default function Viewsilla(props) {
                 console.log(nuevo, set)
                 console.log(sessionStorage.getItem("SeccionToken"))
                 Localidaditmes_create(info).then(ouput => {
-                    //console.log(ouput)
+                    console.log(ouput)
                     if (ouput.success) {
                         //let nuevo = localidades.filter(e => e.id = !nmobretabuno.nombre)
                         setLocalidad({

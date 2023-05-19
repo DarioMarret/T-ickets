@@ -29,25 +29,19 @@ import Ventas from "views/Pages/VenderTiket.js"
 import Espacios from "views/Pages/Espacios";
 import Eventos from "views/Pages/Evento";
 import EventoEspecifico from "views/Pages/Evento/MODAL/Evetoespecifico";
-import DiseñoViwpdf from "views/Pages/Diseñador/Diseñopdf.js";
 import AutorizacionView from "views/Pages/Autorizacion";
 import Reactabla from "views/Pages/Susbcritorpage/Tickes.js";
-import ReactTables from "views/Tables/ReactTables.js";
 import SuscritorViews from "views/Pages/Suscriptores";
 import UsersView from "views/Pages/Usuarios";
 import SuscritoridView from "views/Pages/Suscriptores/Suscritorid";
 import UseridView from "views/Pages/Usuarios/Usuarioid";
 import Viesvg from "views/Pages/Svgviewa"
-import AjustesView from "views/Pages/Ajustes";
-import { DiseñoViewtickes } from "views/Pages/Diseñador/Diseñodeticke";
 import EsquemaViews from "views/Pages/Esquemas";
 import NoticiasJs from "views/Pages/Noticias.js";
 import AprobarView from "views/Pages/VenderTiket.js/Aprobar";
 import AprobarViewid from "views/Pages/VenderTiket.js/Aprobar/Aprobobarid";
 import EmitirboView from "views/Pages/VenderTiket.js/Emitir";
-import TagsInput from "components/TagsInput/TagsInput";
 import DetalleCompraView from "views/Pages/VenderTiket.js/Aprobar/Detalleregistro";
-import InformeView from "views/Pages/VenderTiket.js/Aprobar/Informeventa";
 import ConsolidacionView from "views/Pages/Consolidados/index.js";
 
 var routes = [
@@ -125,14 +119,6 @@ var routes = [
         name: "Diseñar Ticket",
         mini: "*",
         component: DiseñoViewtickes,
-        permiso: ["1", ]
-      },
-      {
-        path: "/Diseñar-PDF",
-        layout: "/admin",
-        name: "Diseñar PDF",
-        mini: "*",
-        component: DiseñoViwpdf,
         permiso: ["1", ]
       }
     ]

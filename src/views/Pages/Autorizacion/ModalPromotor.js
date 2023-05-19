@@ -1,8 +1,12 @@
+import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { CrearPromotor } from "utils/PromotorQuerys";
 
 export default function ModalPromotor({...props}) {
+    let usedispatch = useDispatch()
     let [campos, setCampso] = useState({
         "promotor": "",
         "responsable": "",
@@ -24,7 +28,17 @@ export default function ModalPromotor({...props}) {
         if (!Object.values(campos).every(e => e)) return
         CrearPromotor(campos).then(outpot => {
             if (outpot.success) {
-                console.log(outpot)
+                props.setShow(false)
+                usedispatch(setModal({nombre:"",estado:""}))
+                usedispatch(setToastes({}))
+                
+            }
+            if (!outpot.success && ouput.error != "jwt expired") {
+
+            }
+            if (!outpot.success && ouput.error == "jwt expired") {
+                removeDatosUsuario()
+                history.push("/")
             }
         }).catch(err => {
             console.log(err)

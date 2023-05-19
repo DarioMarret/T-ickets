@@ -205,16 +205,18 @@ const OpctionLocalidadView = () => {
                 Crear_mapa(valores).then(ouput=>{
                         console.log(ouput)
                         if (ouput.success){
-                                console.log(success)
+                                console.log(ouput)
                                 usedispatch(setModal({nombre:"",estado:""}))
                                 sessionStorage.removeItem("itmeslocalidad")
+                                usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
+
                         }
-                        else if (!ouput.success){
+                        else if (!ouput.success && ouput.error != "jwt expired"){
                                 console.log(ouput)
                                 usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
 
                         }
-                        else if (ouput.response.status == 401) {
+                        else if (!ouput.success && ouput.error == "jwt expired") {
                                 usedispatch(setToastes({ show: true, message: 'La sessión a caducado ', color: 'bg-danger', estado: 'Hubo un error' }))
                                 setTimeout(function(){
                                         removeDatosUsuario()
