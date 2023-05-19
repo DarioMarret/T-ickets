@@ -303,10 +303,10 @@ const IndexFlas = () => {
       $.confirm({
         title: 'Código Barcelona!',
         content: '' +
-          '<form action="" class="formName">' +
-          '<div class="form-group">' +
+          '<form action="" className="formName">' +
+          '<div className="form-group">' +
           '<label>Ingrese código de descuentos : Socio Barcelona</label>' +
-          '<input type="text" placeholder="Código" class="codigo form-control" required />' +
+          '<input type="text" placeholder="Código" className="codigo form-control" required />' +
           '</div>' +
           '</form>',
         buttons: {
@@ -844,6 +844,29 @@ const IndexFlas = () => {
     ReactGA.set({
       username: localStorage.getItem('DatoCliente'),
     })
+    setTimeout(function(){
+      $('.logos-slider').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 1800,
+        arrows: false,
+        dots: false,
+        pauseOnHover: false,
+        responsive: [{
+          breakpoint: 750,
+          settings: {
+            slidesToShow: 2
+          }
+        }, {
+          breakpoint: 520,
+          settings: {
+            slidesToShow: 1
+          }
+        }]
+      });
+    },1000)
+  
     /* userauthi.login ? (new Date("02/01/2023 19:00 ") > new Date())? addNotification({
        title: 'Recuerda',
        subtitle: 'Recuerda ',
@@ -1029,7 +1052,7 @@ const IndexFlas = () => {
       {/* header */}
       {publicidad.length > 0 ?
         <div className="container-fluid   px-0" style={{
-          minHeight: '300px'
+          minHeight: '300px' 
         }}>
           <Swiper
             className="AnimatedSlides"
@@ -1557,7 +1580,7 @@ const IndexFlas = () => {
               eventoslist={eventoslist}
             />
           </div>
-          <div className="container p-3 d-none d-md-none  d-xl-block">
+          <div className="container p-3   d-xl-block">
             <div className="row d-flex justify-content-center " >
               <div className="col-12 col-lg-9 px-0 pb-3   ">
 
@@ -1568,11 +1591,13 @@ const IndexFlas = () => {
                     </h4>
                   </div>
 
-                  <div className="row  d-flex justify-content-center " >
+                  
+                  <section className="logos-slider slider d-flex flex-wrap">
+                    
                     {final.length>0?
                     [...final].filter(e => new Date(e.fechaConcierto + " 23:59:59") < new Date()).map((element, index) => {
                         return (
-                          <div className="col-12 col-sm-6 col-md-4 px-1 pb-1" key={index} >
+                          <div className="slide col-12 col-sm-6 col-md-4 px-0 pb-1" key={index} >
                             <div
                               className="  rounded-7   "
                               style={{
@@ -1589,7 +1614,7 @@ const IndexFlas = () => {
 
                    :"" }
 
-                  </div>
+                  </section>
                 </div>
               </div>
             </div>
