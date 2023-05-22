@@ -111,7 +111,7 @@ var routes = [
         name: " Comisiones",
         mini: "*",
         component: AutorizacionView,
-        permiso: ["1", ]
+        permiso: ["", ]
       }
      
     ]
@@ -139,7 +139,7 @@ var routes = [
     name: "Clientes",
     state: "openCliente",
     icon: "nc-icon nc-single-02",
-    permiso: ["1", "super_admin",],
+    permiso: [],
     views: [
 
 
@@ -161,7 +161,7 @@ var routes = [
     name: "Ventas",
     state: "openVentas",
     icon: "nc-icon nc-cart-simple",
-    permiso: ["1", "super_admin", "vendedores", "suscriptores"],
+    permiso: [],
     views: [
       {
         path: "/Vender-Tickets",
@@ -270,7 +270,7 @@ var routes = [
     name: "Mensajeria",
     state: "openMensajeria",
     icon: "nc-icon nc-money-coins",
-    permiso: ["1", ],
+    permiso: [ ],
     views: [
       {
         path: "/notificacion",
@@ -353,7 +353,7 @@ var routes = [
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["1", "", ""]
+    permiso: ["", "", ""]
   }
 
 
