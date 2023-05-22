@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
 import { setModal } from "StoreRedux/Slice/SuscritorSlice"
 
-export default function NavbarView({...props}){
+export default function NavbarView({ ...props }) {
     let userauthi = useSelector((state) => state.SuscritorSlice)
     let usedispatch = useDispatch()
-    return(
+    return (
         <>
             <nav className="navbar border-bottom border-dark shadow navbar-expand-lg  navbar-dark    py-1"
                 style={{
@@ -17,13 +17,16 @@ export default function NavbarView({...props}){
                             height: 70
                         }} />
                     </a>
+                    <div className=" d-flex flex-column justify-content-end align-items-end text-edn">
+                        <button className="navbar-toggler " data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                            onClick={() => props.setVisible(!props.visible)}
+                            aria-label="Toggle navigation" type="button">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+                        <p className=" text-white">Menú</p>
+                    </div>
 
-                    <button className="navbar-toggler  " data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                        onClick={() => props.setVisible(!props.visible)}
-                        aria-label="Toggle navigation" type="button">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
 
                     <div className=" collapse navbar-collapse   " id="navbarSupportedContent"
                     >
@@ -45,7 +48,7 @@ export default function NavbarView({...props}){
                                     <a className="nav-link " >Datos</a>
                                 </li> : ""
                             }
-                            
+
                             {!userauthi.login ? <li className="  nav-item">
                                 <a className=" btn btn-outline-nuevo  rounded-7 " href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i>
                                     <img src={props.avatar} className=" img-fluid"
@@ -60,7 +63,7 @@ export default function NavbarView({...props}){
                     </div>
                 </div>
             </nav>
-        
+
         </>
     )
 }
