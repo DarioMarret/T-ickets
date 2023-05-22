@@ -5,6 +5,7 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import SweetAlert from "react-bootstrap-sweetalert";
 
 const MesadosView = ({ text, list }) => {
+  console.log(list)
   let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
   const [alert, setAlert] = useState(null)
   let user = getDatosUsuariosLocalStorag()
@@ -22,7 +23,7 @@ function sillasid(e){
   console.log(estado)
 }
 
-  function MesaEstado(e) {
+  function MesaEstado() {
     let asiento = list.map(function (k) {
       {
         if (k.cedula != undefined) {

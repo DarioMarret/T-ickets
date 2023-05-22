@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Viewcorrelativos from "./OpcionNumero";
 import { Listar_preciolocalidad } from "utils/EventosQuery";
 import Viewsilla from "./Opcionsilla";
+import OpcionMesas from "./OpcionMesa";
 import { useEffect ,useState} from "react";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
@@ -41,7 +42,7 @@ export default function Newitemview() {
        // setItems(itemlocalidad)
     }, [true])
     return (<Modal
-        show={(moda.nombre == "Newitemview")}
+        show={(moda.nombre != "Newitemview")}
         fullscreen={true}
     >
         <Modal.Header className="py-4">
@@ -80,7 +81,10 @@ export default function Newitemview() {
 
                     </div>
                     <div className="tab-pane  container " id="mesas">
-
+                        <OpcionMesas 
+                            localidades={items}
+                            setItems={setItems}
+                        />
 
                     </div>
                     <div className="tab-pane  container " id="correlativos">
@@ -91,7 +95,7 @@ export default function Newitemview() {
 
                     </div>
                     <div className="tab-pane container" id="seleclocalidad" >
-
+                        
                     </div>
                 </div>
             </div>

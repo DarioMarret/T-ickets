@@ -36,11 +36,7 @@ const TabdosView = (props) => {
         mesas: '',
         filas: 1
     })
-    const [SillasMesas, SetSillasmes] = useState({
-        fila: '',
-        Mesa: '',
-        cantidad: ''
-    })
+   
     const [localidaname, setLocalidad] = useState({
         nombre: '',
         description: '',

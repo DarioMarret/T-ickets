@@ -1,10 +1,39 @@
-import { Accordion } from "react-bootstrap";
+import { Accordion, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-
-export default function OpcionMesa(props){
+import Select from "react-select"
+import MesaiView from "../../Mesas/Plantillas/indice"
+import MesasView from "../../Mesas"
+import { Letras } from "utils/constantes";
+import React, { useState } from "react";
+import { Localidaditmes_create } from "utils/EventosQuery";
+import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import { removeDatosUsuario } from "utils/DatosUsuarioLocalStorag";
+import { useHistory } from "react-router";
+export default function OpcionMesa(props) {
     let { localidades, setItems } = props;
     let usedispatch = useDispatch();
     let moda = useSelector(state => state.SuscritorSlice.modal)
+
+    let history = useHistory();
+    const [inputdisable, setdisable] = useState(false)
+    let ListadeMesas = []
+    //array global 
+    const [FilasLocalidad, SetFilaLocalidad] = useState([])
+    const [Mesas, SetMesasLocalidad] = useState([])
+    //lista para selecionar mesa especifica
+    const [ListaMesa, setMesas] = useState([])
+    const [selet, Fila] = useState([])
+    const [singleSelect, setSingleSelect] = React.useState({ value: "", label: "", });
+    const [singleSelecttwo, setSingleSelectwo] = React.useState({ value: "", label: "", });
+    const [multipleSelect, setMultipleSelect] = React.useState({ value: "", label: "", });
+    const [singleSelecttres, setSingleSelectres] = React.useState({ value: "", label: "", });
+
+    const [Mesass, setMesass] = useState({
+        me_cantidad: 'todas',
+        me_inicial: '',
+        mesas: '',
+        filas: 1
+    })
     const [localidaname, setLocalidad] = useState({
         nombre: '',
         description: '',
@@ -13,6 +42,153 @@ export default function OpcionMesa(props){
         inicio: '',
         id: '',
     })
+    function handelchangeMesa(e) {
+        setMesass({
+            ...Mesass,
+            [e.name]: e.value
+        })
+    }
+    function cambiaFila(value) {
+        setSingleSelectwo(value)
+        var index = FilasLocalidad.filter(obj => obj.fila == value.value)
+        //console.log(index)
+        setMultipleSelect("")
+
+        SetMesasLocalidad(index.length > 0 ? [...index[0].Mesas] : [])
+    }
+    const AgregarFilas = () => {
+        let fila = parseInt(Mesass.filas)
+        const data = Letras.slice(0, fila).map((e, i) => {
+            return { fila: e, Mesas: [] }
+        })
+        SetFilaLocalidad(data)
+        const datos = data.map((e, i) => {
+            return { value: e.fila, label: e.fila }
+        })
+        Fila(datos)
+        setSingleSelect("")
+
+    }
+    const AgregasMesas = () => {
+        if (singleSelect.value != "" && singleSelect.value == "Todas" && Mesass.me_inicial != "") {
+            ListadeMesas = FilasLocalidad
+            let sillas = []
+            for (var i = 0; i < ListadeMesas.length; i++) {
+                var letra = ListadeMesas[i].fila
+                for (var f = 0; f < parseInt(Mesass.me_inicial); f++) {
+                    let valor = parseInt(f) + 1
+                    sillas[f] = { mesa: letra + "" + valor, sillas: 0, asientos: [] }
+                }
+                ListadeMesas[i].Mesas = [...sillas]
+            }
+            SetFilaLocalidad([])
+            setTimeout(function () {
+                SetFilaLocalidad(ListadeMesas)
+                setSingleSelect({ value: "", label: "", })
+            }, 90);
+
+        } else if (singleSelect.value != "" && Mesass.me_inicial != "") {
+            ListadeMesas = FilasLocalidad
+            SetFilaLocalidad([])
+            let sillas = []
+            var index = ListadeMesas.findIndex(obj => obj.fila == singleSelect.value);
+            console.log(index, ListadeMesas[index].fila)
+            var letra = ListadeMesas[index].fila
+            console.log(letra)
+            const repeticiones = parseInt(Mesass.me_inicial)
+            for (var i = 0; i < repeticiones; i++) {
+                let valor = parseInt(i) + 1
+                sillas.push({ mesa: letra + "" + valor, sillas: repeticiones, asientos: [] });
+            }
+            ListadeMesas[index].Mesas = [...sillas]
+            console.log(ListadeMesas)
+            setTimeout(function () {
+                SetFilaLocalidad(ListadeMesas)
+                setSingleSelect({ value: "", label: "", })
+            }, 90);
+        }
+
+    }
+    const AgregasSillasMesa = () => {
+        //Todas las filas Todas las mesas
+        try {
+            if (multipleSelect.value == "Todas" && singleSelecttwo.value == "Todas" && singleSelecttres.value != "") {
+                ListadeMesas = FilasLocalidad
+                for (var i = 0; i < ListadeMesas.length; i++) {
+                    for (var j = 0; j < ListadeMesas[i].Mesas.length; j++) {
+                        ListadeMesas[i].Mesas[j]["sillas"] = singleSelecttres.value
+                        for (var f = 0; f < parseInt(singleSelecttres.value); f++) {
+                            let valor = parseInt(f) + 1
+                            ListadeMesas[i].Mesas[j]["asientos"][f] = { silla: ListadeMesas[i].Mesas[j].mesa + "-s-" + valor, estado: "disponible" };
+                        }
+                    }
+
+                }
+                SetFilaLocalidad([])
+                setTimeout(function () {
+                    SetFilaLocalidad(ListadeMesas)
+                    setSingleSelectwo({ value: "", label: "", })
+                    setMultipleSelect({ value: "", label: "", })
+                    setSingleSelectres({ value: "", label: "", })
+                }, 90);
+
+            } else if (multipleSelect.value != "" && singleSelecttwo.value != "" && multipleSelect.value == "Todas" && singleSelecttwo.value != "Todas" && singleSelecttres.value != "") {
+                //Fila especifica Todas las mesas   
+                ListadeMesas = FilasLocalidad
+                var index = ListadeMesas.findIndex(obj => obj.fila == singleSelecttwo.value);
+                console.log(singleSelecttwo.value, index)
+                let fila = ListadeMesas[index].Mesas
+                if (fila.length > 0) {
+                    for (var i = 0; i < fila.length; i++) {
+                        fila[i]["asientos"] = []
+                        var numfila = fila[i].mesa
+                        //aqui asigna la cantidad de sillas 
+                        for (var f = 0; f < parseInt(singleSelecttres.value); f++) {
+                            let valor = parseInt(f) + 1
+                            fila[i]["asientos"][f] = { silla: numfila + "-s-" + valor, estado: "disponible" };
+                        }
+                    }
+                    ListadeMesas[index].Mesas = fila
+                    SetFilaLocalidad([])
+                    setTimeout(function () {
+                        SetFilaLocalidad(ListadeMesas)
+                        setSingleSelectwo({ value: "", label: "", })
+                        setMultipleSelect({ value: "", label: "", })
+                        setSingleSelectres({ value: "", label: "", })
+                    }, 90);
+                }
+            }
+            else if (multipleSelect.value != undefined && singleSelecttwo.value != undefined && multipleSelect.value != "Todas" && singleSelecttwo.value != "Todas" && singleSelecttres.value != undefined) {
+
+                //Fila especifica mesa especifica 
+                ListadeMesas = FilasLocalidad
+                var index = ListadeMesas.findIndex(obj => obj.fila == singleSelecttwo.value);
+                var fila = ListadeMesas[index].Mesas.findIndex(obj => obj.mesa == multipleSelect.value);
+                var numfila = singleSelecttwo.value
+                ListadeMesas[index].Mesas[fila]["asientos"] = []
+                for (var f = 0; f < parseInt(singleSelecttres.value); f++) {
+
+                    let valor = parseInt(f) + 1
+                    ListadeMesas[index].Mesas[fila]["asientos"][f] = { silla: multipleSelect.value + "-s-" + valor, estado: "disponible" };
+                    ListadeMesas[index].Mesas[fila]["sillas"] = parseInt(singleSelecttres.value)
+                }
+                SetFilaLocalidad([])
+                setTimeout(function () {
+                    SetFilaLocalidad(ListadeMesas)
+                    setSingleSelectwo({ value: "", label: "", })
+                    setMultipleSelect({ value: "", label: "", })
+                    setSingleSelectres({ value: "", label: "", })
+                }, 90);
+
+            } else {
+                usedispatch(setToastes({ show: true, message: 'Complete todos los campos', color: 'bg-warning', estado: 'Advertencia' }))
+
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
     function handelchangelocalidad(e) {
         setLocalidad({
             ...localidaname,
@@ -20,7 +196,100 @@ export default function OpcionMesa(props){
         })
     }
 
-    return(
+    //valida la cantidad de Mesas por Mesa
+    function ValidarMesas() {
+        const isValido = (currentValue) => currentValue > 1;
+        let asiento = []
+        if (FilasLocalidad.length > 0) {
+            FilasLocalidad.forEach((obj, i) => { asiento[i] = obj.Mesas.length })
+            if (Object.values(asiento).every(isValido)) return true
+            else return false
+        }
+        else
+            return false
+    }
+    //validad la cantidad de sillas x mesa
+    function ValidaSillasenMesas() {
+        const isValido = (currentValue) => currentValue > 1;
+        let asiento = []
+        if (FilasLocalidad.length > 0) {
+            FilasLocalidad.map((obj, i) => {
+                obj.Mesas.map((sillas) => {
+                    asiento.push(sillas.asientos.length)
+                })
+            })
+            //console.log(asiento)
+            //console.log(Object.values(asiento).every(isValido))
+            if (Object.values(asiento).every(isValido)) return true
+            else return false
+
+        }
+        else return false
+
+    }
+    async function agregaLocaliad() {
+        console.log(FilasLocalidad)
+
+    }
+    function Guardar(e) {
+        console.log(localidaname)
+        if (localidaname.nombre == "") {
+            return
+        }
+        if (!ValidarMesas()) {
+            usedispatch(setToastes({ show: true, message: 'Verifique que todas las Filas tengan mínimo 2 mesa', color: 'bg-danger', estado: 'Faltan Mesas' }))
+            return
+        }
+        if (!ValidaSillasenMesas()) {
+            usedispatch(setToastes({ show: true, message: 'Verifique que todas las Mesas tengan mínimo 2 sillas', color: 'bg-danger', estado: 'Faltan Sillas' }))
+            return
+        }
+        let info = {
+            "id_localidad": localidaname.nombre,
+            "id_evento": moda.estado.id,
+            "id_estado": 1,
+            "estado_asientoId": 1,
+            "array_mesas": {
+                "Typo": "correlativo",
+                "datos": FilasLocalidad
+            }
+        }
+        console.log(info)
+        let nuevo = localidades.find(e => e.id == localidaname.nombre)
+        let set = localidades.filter(e => e.id != localidaname.nombre)
+        if (nuevo != null && nuevo != undefined) {
+            Agregaitemsmap(nuevo)
+        }
+
+        // console.log(localidades.filter(e => e.id != localidaname.nombre))
+
+        //  console.log(nuevo)
+        Localidaditmes_create(info).then(ouput => {
+            if (ouput.success) {
+                let nuevo = localidades.filter(e => e.id = !nmobretabuno.nombre)
+                setItems(nuevo)
+            }
+            if (!ouput.success && ouput.error != "jwt expired") {
+                usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
+
+            }
+            else if (!ouput.success && ouput.error == "jwt expired") {
+                usedispatch(setToastes({ show: true, message: 'La sessión a caducado ', color: 'bg-danger', estado: 'Hubo un error' }))
+                setTimeout(function () {
+                    removeDatosUsuario()
+                    history.push("/")
+                }, 1000)
+
+            }
+            console.log(ouput)
+        }).catch(err => {
+            console.log(err)
+        })
+
+        //console.log(info)
+    }
+    console.log(FilasLocalidad)
+    return (
         <div className=" container-fluid d-flex  flex-column">
             <div className="row col-12 pt-2">
                 <div className="col-sm-5">
@@ -58,7 +327,6 @@ export default function OpcionMesa(props){
                             </div>
 
                             <div className="d-flex text-end row">
-                                {localidaname.id !== "" ? <button className="btn btn-primary col-12" onClick={actualizalocalidad}>Actualizar</button> : ''}
                                 {inputdisable ? '' : <button className="btn btn-success" onClick={agregaLocaliad}>Guardar</button>}
                             </div>
                         </div>
@@ -77,19 +345,251 @@ export default function OpcionMesa(props){
                                             <label className=" form-label">
                                                 Filas
                                             </label>
+                                            <Form.Control className=" form-control"
+                                                type="numero"
+                                                name="filas"
+                                                min={1}
+                                                max={28}
+                                                value={Mesass.filas}
+                                                onChange={(e) => handelchangeMesa(e.target)}
+                                            />
                                         </div>
-                                        
+                                        <div className="col-12 col-md-6">
+                                            <label className=" form-label" style={{ color: "white" }}><b>.</b> </label>
+                                            <br />
+                                            <button className=" btn btn-success" onClick={AgregarFilas} >Crear </button>
+                                        </div>
+
                                     </div>
                                 </div>
                             </Accordion.Body>
                         </Accordion.Item>
+                        {FilasLocalidad.length > 0 ?
+                            <Accordion.Item eventKey="1">
+                                <Accordion.Header> Agregar Mesas </Accordion.Header>
+                                <Accordion.Body>
+                                    <div className="row">
+                                        <div className="col-12 col-sm-12 col-md-12 col-lg-6">
+                                            <label className=" form-label"><b>Filas</b></label>
+                                            <Select
+                                                className="react-select primary"
+                                                name="singleSelect"
+                                                value={singleSelect}
+                                                onChange={(value) => setSingleSelect(value)}
+                                                options={[
+                                                    {
+                                                        value: "",
+                                                        label: "Seleccione una Opcion",
+                                                        isDisabled: true,
+                                                    },
+                                                    {
+                                                        value: "Todas",
+                                                        label: "Todas",
+                                                    },
+                                                    ...FilasLocalidad.map((e, i) => {
+                                                        return { value: e.fila, label: e.fila }
+                                                    })
+
+                                                ]}
+                                                placeholder="Seleccione "
+                                            />
+                                        </div>
+                                        <div className="col-12 col-sm-12 col-md-12 col-lg-4">
+                                            <label className=" form-label"><b>Mesas x Filas </b> </label>
+                                            <Form.Control
+                                                type="number"
+                                                name="me_inicial"
+                                                value={Mesass.me_inicial}
+                                                onChange={(e) => handelchangeMesa(e.target)}
+                                                className=" form-control"
+                                                id="numero_partida"
+                                                placeholder="10"
+                                            />
+                                        </div>
+                                        <div className=" col-12 col-md-2 text-left">
+                                            <label className=" form-label" style={{
+                                                color: "white"
+                                            }}>
+                                                <b>.</b>
+                                            </label>
+                                            <button className=" btn btn-success"
+                                                onClick={AgregasMesas}
+                                            >
+                                                Agregar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </Accordion.Body>
+                            </Accordion.Item>
+                            : ""}
+                        {FilasLocalidad.length > 0 ?
+                            <Accordion.Item eventKey="2" >
+                                <Accordion.Header>
+                                    Agregar sillas
+                                </Accordion.Header>
+                                <Accordion.Body>
+                                    <div className="row">
+                                        <div className="d-flex px-0 flex-column col-6">
+                                            <div className=" col-12">
+                                                <label className=" form-label"> <b>Seleccione Fila </b> </label>
+                                                <Select
+                                                    className="react-select"
+                                                    classNamePrefix="react-select"
+                                                    name="singleSelecttwo"
+                                                    value={singleSelecttwo}
+                                                    onChange={(value) => cambiaFila(value)}
+                                                    options={[
+                                                        {
+                                                            value: "",
+                                                            label: "Seleccione una Opcion",
+                                                            isDisabled: true,
+                                                        },
+                                                        {
+                                                            value: "Todas",
+                                                            label: "Todas",
+                                                        },
+                                                        ...FilasLocalidad.map((e, i) => {
+                                                            return { value: e.fila, label: e.fila }
+                                                        })
+
+                                                    ]}
+                                                    placeholder="Selecione"
+                                                />
+                                            </div>
+                                            <div className=" col-12">
+                                                <label className=" form-label"> <b>Selecciona Mesa</b> </label>
+                                                <Select
+                                                    className="react-select info"
+                                                    classNamePrefix="react-select"
+                                                    placeholder="Mesas"
+                                                    name="multipleSelect"
+                                                    value={multipleSelect}
+                                                    onChange={(value) => setMultipleSelect(value)
+
+                                                    }
+                                                    options={[
+                                                        {
+                                                            value: "",
+                                                            label: "Seleccione Mesa",
+                                                            isDisabled: true,
+                                                        },
+                                                        FilasLocalidad ? {
+                                                            value: "Todas",
+                                                            label: "Todas",
+
+                                                        } : {
+                                                            value: "",
+                                                            label: "Todas",
+                                                            isDisabled: true,
+                                                        },
+                                                        ...Mesas.map((e, i) => {
+                                                            return { value: e.mesa, label: e.mesa }
+                                                        })
+                                                    ]}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="col-12">
+                                                <label className=" form-label"><b># de Sillas</b></label>
+                                                <Select
+                                                    className="react-select primary"
+                                                    classNamePrefix="react-select"
+                                                    name="singleSelecttres"
+                                                    value={singleSelecttres}
+                                                    onChange={(value) => setSingleSelectres(value)}
+                                                    options={[
+                                                        {
+                                                            value: "",
+                                                            label: "Seleccione una Opcion",
+                                                            isDisabled: true,
+                                                        },
+                                                        {
+                                                            value: 2,
+                                                            label: "2 Sillas",
+                                                        },
+                                                        {
+                                                            value: 4,
+                                                            label: "4 Sillas",
+                                                        },
+                                                        {
+                                                            value: 6,
+                                                            label: "6 Sillas",
+                                                        },
+                                                        {
+                                                            value: 8,
+                                                            label: "8 Sillas",
+                                                        }, {
+                                                            value: 10,
+                                                            label: "10 Sillas",
+                                                        },
+
+                                                    ]}
+                                                    placeholder="Selecione"
+                                                />
+                                            </div>
+                                            <div className="col-12 pt-3">
+                                                <label className=" form-label" style={{ color: "white" }} >
+                                                    <b>.</b>
+                                                </label>
+                                                <button className=" btn  btn-success "
+                                                    onClick={AgregasSillasMesa}
+                                                >
+                                                    Agregar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Accordion.Body>
+                            </Accordion.Item>
+                            :
+                            ""}
+
                     </Accordion>
                 </div>
             </div>
-            <div className=" container-fluid ">
+            <div className=" container-fluid  ">
+                <div className=" col-12 text-center"
+                    style={{
+                        height: '400px', overflowY: 'hidden', overflowX: 'auto'
+                    }}
+                >
+                    {
+                        FilasLocalidad.length > 0 ?
+                            FilasLocalidad.map((e, index) => {
+                                return (
+                                    <div className="  d-flex px-3 align-items-center" key={index}>
+                                        <div className=" d-flex pb-2">
+                                            <MesaiView text={e.fila} />
+                                        </div>
+                                        <div
+                                            className="d-flex pb-2"
+                                        >
+                                            {e.Mesas.length > 0 ?
+                                                e.Mesas.map((e, i) => {
+                                                    return (
+                                                        <div key={i}>
+                                                            <MesasView
+                                                                status={e.asientos.length}
+                                                                text={e.mesa}
+                                                                list={e.asientos}
+                                                            />
+                                                        </div>
+                                                    )
+                                                })
+                                                : ""}
+                                        </div>
 
-                
+                                    </div>
+                                )
+                            })
+                            : ""
+                    }
+
+                </div>
+
+
             </div>
         </div>
-        )
+    )
 }
