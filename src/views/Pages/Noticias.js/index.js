@@ -27,8 +27,11 @@ import { ListarEventos } from "utils/EventosQuery";
 import { Listar_carrusel } from "utils/CarruselQuery";
 import { ObtenerEstadosforEventos } from "utils/QueryUser";
 import { Crear_carrusel } from "utils/CarruselQuery";
+import { removeDatosUsuario } from "utils/DatosUsuarioLocalStorag";
+import { useHistory } from "react-router";
 export default function NoticiasView() {
     let usedispatch = useDispatch()
+    let history = useHistory()
     let fechamin = new Date().toISOString().slice(0, -14);
     const [cargando, setCargando] = useState(false)
     const [Tipo, setTipo] = useState("Evento")
@@ -74,7 +77,7 @@ export default function NoticiasView() {
         e.preventDefault()
         const form = new FormData(e.target)
         if (Object.values(Object.fromEntries(form.entries())).some(e => e)) {
-            let { encabezado, descipcion, fechamax, mas ,id_estado} = Object.fromEntries(form.entries())
+            let { encabezado, descipcion, fechamax, mas, id_estado } = Object.fromEntries(form.entries())
             if (Tipo != "Evento") {
                 if (imgen == "" || ![encabezado, descipcion, fechamax, mas].some(e => e)) {
                     usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
@@ -131,7 +134,7 @@ export default function NoticiasView() {
                                     "descripcion": descipcion,
                                     "link_img": link,
                                     "fecha_presentacion": fechamax,
-                                    
+
                                     "info_carrusel": {
                                         "imgen": mobil,
                                         "info": datos.mas,
@@ -140,18 +143,18 @@ export default function NoticiasView() {
                                     }
                                 }
                                 console.log("datos", datas)
-                                Crear_carrusel(datas).then(sali=>{
+                                Crear_carrusel(datas).then(sali => {
                                     console.log("datos apoi", datas)
-                                    console.log("se creo",sali)
-                                    Listar_carrusel().then(sal=>{
+                                    console.log("se creo", sali)
+                                    Listar_carrusel().then(sal => {
                                         console.log(sal)
-                                    }).catch(err=>{
+                                    }).catch(err => {
                                         console.log(err)
                                     })
-                                }).catch(err=>{
+                                }).catch(err => {
                                     console.log(err)
                                 })
-                               // Evento()
+                                // Evento()
                                 setCargando(false)
                             }
                         }, 3000)
@@ -394,7 +397,7 @@ export default function NoticiasView() {
                             <span className="input-group-text"><i className="fa fa-search"></i></span>
                         </div>
                         <select className="form-select" defaultValue={""} onChange={(e) => handelchangeEvento(e.target)}
-                        name="id_estado"
+                            name="id_estado"
                         >
                             <option disabled value="">Estados </option>
                             {
@@ -581,9 +584,18 @@ export default function NoticiasView() {
     }
     useEffect(() => {
         ListarEventos("").then(oupt => {
+            if (oupt.success) {
 
-            setEventos(oupt.data)
-            console.log(oupt.data)
+                setEventos(oupt.data)
+                console.log(oupt.data)
+
+            }
+            if (!oupt.success && oupt.error=='jwt expired'){
+                removeDatosUsuario()
+                history.push("/")
+               
+            }
+
         }).catch(err => console.log(err))
         Listar_carrusel().then(oupt => {
             console.log(oupt)
@@ -602,7 +614,9 @@ export default function NoticiasView() {
             console.log(err)
         })
         Listar_carrusel().then(sal => {
-            console.log(sal)
+            if (sal.success) {
+                console.log(sal)
+            }
         }).catch(err => {
             console.log(err)
         })

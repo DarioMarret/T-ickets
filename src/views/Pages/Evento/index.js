@@ -154,7 +154,7 @@ const EventosViews = () => {
       {(modal.nombre == "OpcionMapaViews") ? <OpcionMapaViews /> : ""}
       {(modal.nombre == "ListarPreciView") ? <ListarPreciView /> : ""}
       {
-        (modal.nombre != "Newitemview") ? <Newitemview /> : ""
+        (modal.nombre == "Newitemview") ? <Newitemview /> : ""
       }
       {/* <NewEspacioView
       showNuevo={(modal.nombre=="NewEspacioView")}
