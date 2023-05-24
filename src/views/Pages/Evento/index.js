@@ -36,23 +36,18 @@ const EventosViews = () => {
 
   function nuevoevento() {
     dispatch(setModal({ nombre: "ModalcreaEventoView", estado: "" }))
-    /*
-    setShow(true)*/
   }
   async function GetEventos() {
-    //console.log(clienteInfo())
     try {
-
       const lista = await ListarEventos()
-
-      console.log(lista, )
+      console.log(lista,)
       if (lista.success) {
         setEventos([...lista.data])
         return;
       }
-      if (!lista.success && lista.error!="jwt expired") {
+      if (!lista.success && lista.error != "jwt expired") {
         dispatch(setToastes({ show: true, message: lista.message, color: 'bg-danger', estado: 'Error' }))
-        
+
         return
       }
       if (!lista.success && lista.error == "jwt expired") {
@@ -149,8 +144,8 @@ const EventosViews = () => {
   return (
     <div className="container-fluid">
       {alert}
-      {(modal.nombre == "ModalcreaEventoView") ? <ModalcreaEventoView />:""}
-      {(modal.nombre == "Modalpreciolocalidad") ?<Modalpreciolocalidad />:""}
+      {(modal.nombre == "ModalcreaEventoView") ? <ModalcreaEventoView /> : ""}
+      {(modal.nombre == "Modalpreciolocalidad") ? <Modalpreciolocalidad /> : ""}
       {(modal.nombre == "OpcionMapaViews") ? <OpcionMapaViews /> : ""}
       {(modal.nombre == "ListarPreciView") ? <ListarPreciView /> : ""}
       {
@@ -324,7 +319,7 @@ const EventosViews = () => {
           </div>
         </div>
       </div>
-    
+
     </div>
   )
 

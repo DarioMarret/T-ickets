@@ -92,13 +92,6 @@ export default function AprobarView() {
     const hideAlert = () => {
         setAlert(null)
     }
-    /*
-    const ListaPrecios = async () => {
-        const info = await ListaPreciosEvent();
-        //   console.log(info)
-        ListaPrecio()
-        return info
-    }*/
     useEffect(() => {
         // ListaPrecios()
         console.log(ticket.ticket)
@@ -163,25 +156,11 @@ export default function AprobarView() {
                 let arrayIndividual = []
                 // console.log(consulat)
                 console.log(arayReallocalidad, arrprueb)
-                /* arayReallocalidad.forEach(elm => {
-                     if (arrayIndividual.some(e => e.id == elm.id)) {
-                         let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                         let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
-                         arrayIndividual[dat].cantidad = tota
-                     }
-                     else {
-                         arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
-                     }
-                 })*/
-                //console.log(arrayIndividual)
+          
                 let datos = arrprueb.map(f => {
                     return [f.localidad, f.concierto, parseInt(f.cantidad)]
                 })
-                /*setDatas([
-                    ["Localida", "evento", "ganancias"],
-                    ...datos
-                ])*/
-
+              
                 let nuevo = arrprueb.map(f => {
                     return [f.localidad, f.concierto, parseInt(f.cantidad), parseInt(f.precio)]
                 })
@@ -232,89 +211,13 @@ export default function AprobarView() {
         14: "TODO-O-NADA-Q",
         23: "participantes-jessi",
         22: "participante-quito"
-    }
- 
-    let { data: publici = [], error: errorPubli, isLoading: info } = useGetLocalidadQuery()
-    function localidada(evento, localidad) {
-        if (evento == "Eladio Carrión Guayaquil") {
-            if (localidad == 9 || localidad == 12) {
-                return "SEN2 KBRN-Guayaquil"
-            }
-            if (localidad == 10 || localidad == 13) {
-                return "SAUCES BOYZ-Guayaquil"
-            }
-            if (localidad == 11 || localidad == 14) {
-                return "TODO-O-NADA-Guayaquil"
-            }
-
-        } else if (evento == "Eladio Carrión Quito") {
-            if (localidad == 9 || localidad == 12) {
-                return "SEN2 KBRN-Quito"
-            }
-            if (localidad == 10 || localidad == 13) {
-                return "SAUCES BOYZ-Quito"
-            }
-            if (localidad == 11 || localidad == 14) {
-                return "TODO-O-NADA-Quito"
-            }
-        }
-        else {
-            return localidades[localidad]
-        }
-    }
-    function LocalidadPrecio(evento, localidad) {
-        if (localidad == 9) {
-            return "SEN2 KBRN-Guayaquil"
-        }
-        if (localidad == 10) {
-            return "SAUCES BOYZ-Guayaquil"
-        }
-        if (localidad == 11) {
-            return "TODO-O-NADA-Guayaquil"
-        }
-        if (localidad == 12) {
-            return "SEN2 KBRN-Quito"
-        }
-        if (localidad == 13) {
-            return "SAUCES BOYZ-Quito"
-        }
-        if (localidad == 14) {
-            return "TODO-O-NADA-Quito"
-        }
-        return PreciosStore().filter(f => f.id == evento)[0].localidad
-    }
-    function ListarPrecio(evento, localidad) {
-        if (localidad == 9) {
-            return precio[9]
-        }
-        if (localidad == 10) {
-            return precio[10]
-        }
-        if (localidad == 11) {
-            return precio[11]
-        }
-        if (localidad == 12) {
-            return precio[12]
-        }
-        if (localidad == 13) {
-            return precio[13]
-        }
-        if (localidad == 14) {
-            return precio[14]
-        }
-        return PreciosStore().filter(f => f.id == evento)[0].precio_normal
-    }
-    //const [datas1, setDatas] = useState([])
+    }  
     const [dtos, setDts] = useState([])
     const sorter = (a, b) => new Date(a.fechaCreacion) < new Date(b.fechaCreacion) ? 1 : -1;
     function rango(item) {
         if (item.selection.endDate == item.selection.startDate) {
             usedispatch(setCompras({ compras: compras }))
-
-            // setDatas([...labelne])
-
             usedispatch(setLabels({ labels: [...labelne] }))
-            //    setState([item.selection])
             usedispatch(setFecha({ fecha: [item.selection] }))
             console.log(moment(item.selection.startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format())
 
@@ -327,13 +230,7 @@ export default function AprobarView() {
         }
         console.log(item)
     }
-    const ListaPrecio = async () => {
-        const info = await ListaPreciosEvent();
-
-        return info
-    }
-
-
+    
     const Deliminarregistro = (parms) => {
         console.log(parms.id)
 
@@ -462,38 +359,19 @@ export default function AprobarView() {
     }
     const handleChange = (event, newValue) => {
         usedispatch(setTabs({ number: newValue }))
-        // setValue(newValue);
-        // console.log(newValue)
     };
-    function Aprobarvarios() {
-        usedispatch(setModal({ nombre: "Aprobar", estado: data }))
-    }
-    function Aprobar(e) {
-        //console.log(e)
-        usedispatch(setModal({ nombre: "boleto", estado: e }))
-
-    }
+   
+  
     function abrirModal(e) {
         usedispatch(setModal({ nombre: "confirmar", estado: e }))
     }
-    function detalle(e) {
-        //  console.log(e)
+    function detalle(e) {        
         sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
         history.push("/admin/Reporte/" + e.id)
     }
     function detalledos(e) {
         history.push("/admin/Aprobar/" + e.cedula)
     }
-    const csvOptions = {
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true,
-        useBom: true,
-        filename: 'Ticket vendidos',
-        useKeysAsHeaders: false,
-    };
-
     const options = {
         title: "Ventas Globales Aprobadas",
         pieHole: 0.4,
@@ -504,13 +382,7 @@ export default function AprobarView() {
         endDate: new Date(),
         key: 'selection'
     }
-    const [state, setState] = useState([
-        {
-            startDate: new Date(),
-            endDate: new Date(),
-            key: 'selection'
-        }
-    ]);
+ 
 
 
     const [locale, setLocale] = React.useState('es');
@@ -526,11 +398,7 @@ export default function AprobarView() {
         0: "Días hasta hoy",
         1: "Días a partir de hoy"
     }
-    let [fitro, setFiltro] = useState("")
-    defaultInputRanges.map((e, i) => {
-        e.label = labels[i]
-        return { ...e }
-    })
+    
     return (
         <>
             {alert}
