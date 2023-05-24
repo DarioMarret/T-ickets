@@ -1720,7 +1720,6 @@ const IndexFlas = () => {
                                                 fontSize: '0.8em',
                                                 fontWeight: "normal"
                                               }}
-
                                               >  <span style={{
                                                 fontWeight: "bold"
                                               }}>RESPONSABLE: </span><span id="lugarEvento">BLASCHKE SERRANO JOSE ENRIQUE</span></p>
@@ -1728,23 +1727,18 @@ const IndexFlas = () => {
                                                 fontSize: '0.8em',
                                                 fontWeight: "normal"
                                               }}
-
                                               >  <span style={{
                                                 fontWeight: "bold"
                                               }}>RUC: </span><span id="lugarEvento">09910904614001</span></p>
                                             </div>
-
-
                                             <div>
                                             </div>
                                           </div> :
                                           e.id == 18 ?
-
                                             <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
                                               <p style={{ fontSize: '0.8em' }}>    <b className="   "
                                                 style={{
                                                   fontWeight: "normal"
-
                                                 }}
                                               >  <span style={{
                                                 fontWeight: "bold"
@@ -1754,7 +1748,6 @@ const IndexFlas = () => {
                                                   fontSize: '0.8em',
                                                   fontWeight: "normal"
                                                 }}
-
                                                 >  <span style={{
                                                   fontWeight: "bold"
                                                 }}>WEB: </span> <span id="horaEvento">WWW.ASBEVENTOS.COM</span></p>
@@ -1762,7 +1755,6 @@ const IndexFlas = () => {
                                                   fontSize: '0.8em',
                                                   fontWeight: "normal"
                                                 }}
-
                                                 >  <span style={{
                                                   fontWeight: "bold"
                                                 }}>RESPONSABLE: </span><span id="lugarEvento   " className="  text-uppercase">Alan Israel Andrade Logacho </span></p>
@@ -1770,27 +1762,17 @@ const IndexFlas = () => {
                                                   fontSize: '0.8em',
                                                   fontWeight: "normal"
                                                 }}
-
                                                 >  <span style={{
                                                   fontWeight: "bold"
                                                 }}>RUC: </span><span id="lugarEvento">1715820906001 </span></p>
                                               </div>
-
-
                                               <div>
                                               </div>
                                             </div> : ""
-
                                         }
-
                                       </div>
                                       : ""}
                                     <div className=" text-center">
-                                      {/*e.estado == "PROCESO" ?
-                                        <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? tokenvalida(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
-                                          Comprar Entrada</p>
-                                        : ""*/}
                                       {e.estado == "cancelar" ?
                                         <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                           className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? "" : usedispatch(setModal({ nombre: 'registro', estado: null }))} >
@@ -1803,18 +1785,7 @@ const IndexFlas = () => {
                                         : <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                           className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
                                           {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
-                                      }
-
-
-                                      {/*e.estado == "ACTIVO" ?
-                                        <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                          className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
-                                          {e.estado == "ACTIVO" ? "Comprar Entrada" : "RESERVAR"}</p>
-                                        : ""*/}
-                                      {/* 
-                                        validar la hora de pago  cuando sea false permita comprar con token
-                                        (new Date("01/20/2023 23:59 ")>new Date())
-                                        */}
+                                      }                                
                                     </div>
                                   </div>
                                 </div>
