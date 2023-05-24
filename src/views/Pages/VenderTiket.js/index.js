@@ -435,6 +435,7 @@ export default function StoreTickesViews() {
                 }}
             />
             {alert}
+            
             {clienteInfo().perfil !="vendedores"?   <Row className=" ">
                 <Col lg="3" sm="6">
                     <Card className="card-stats">

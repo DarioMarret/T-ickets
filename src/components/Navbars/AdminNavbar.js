@@ -159,6 +159,7 @@ function AdminNavbar() {
                   as={Nav.Link}
                   id="dropdown-165516306"
                   variant="default"
+                  className="d-none"
                 >
                   <i className="nc-icon nc-planet"></i>
                 </Dropdown.Toggle>
@@ -204,13 +205,14 @@ function AdminNavbar() {
                   as={Nav.Link}
                   id="dropdown-414718872"
                   variant="default"
+                  className="d-none"
                 >
                   <i className="nc-icon nc-bell-55 mr-1"></i>
                   <span className="notification">5</span>
                   <span className="d-lg-none">Notification</span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu                 
-                   align="end"
+                   align="end" 
                 >
                   <Dropdown.Item
                   >
@@ -254,6 +256,7 @@ function AdminNavbar() {
                   <Dropdown.Item
                     
                     onClick={(e) => e.preventDefault()}
+                    className="d-none"
                   >
                     <i className="nc-icon nc-settings-90"></i>
                     Settings
@@ -266,7 +269,7 @@ function AdminNavbar() {
                     onClick={() => salir()}
                   >
                     <i className="nc-icon nc-button-power"></i>
-                    Log out
+                    Salir
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

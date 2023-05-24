@@ -45,12 +45,13 @@ const ModalNewEvento = (props) => {
     }
     function toggleValueInArray(array, value) {
         //copia de array de localidades
-        //console.log(value)
+        console.log(value)
         let ArrayCopia = array;
+        console.log(ArrayCopia)
         let arr = selectLocalidad
-        var index = ArrayCopia.findIndex(obj => obj.id == value.identificador);
-        var i = arr.findIndex(obj => obj.id == value.identificador
-        );
+        console.log(arr)
+        var index = ArrayCopia.findIndex(obj => obj.identificador == value.identificador);
+        var i = arr.findIndex(obj => obj.id == value.identificador);
         //console.log(value, array)
         //console.log(arr[i])
         if (index == -1) {
