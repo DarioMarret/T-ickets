@@ -56,6 +56,7 @@ import { useGetSuscritorQuery } from "StoreRedux/Slicequery/querySlice";
 import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import EventosView from "../Flasdeticket/Eventosindex";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { Listar_mapaeventos } from "utils/MapaQuery";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -167,6 +168,18 @@ export default function StoreTickesViews() {
         } catch (error) {
             console.log(error)
         }
+    }
+    const ListarEventosMap = async () => {
+        Listar_mapaeventos().then(oup => {
+            if(oup.success){
+                const filtro = oup.message != null ? oup.message.filter((e) => new Date(e.eventoID.fechaConcierto + " 23:59:59") > new Date()) : []
+                console.log(filtro)
+                const sorter = (a, b) => new Date(a.eventoID.fechaConcierto) > new Date(b.eventoID.fechaConcierto) ? 1 : -1;
+                setEvento(filtro.sort(sorter))
+        }
+        }).catch(err => {
+            console.log(err)
+        })
     }
     const abrir = async (e) => {
         sessionStorage.setItem("estadoevento", e.estado)
@@ -358,15 +371,15 @@ export default function StoreTickesViews() {
     const datospage = useSelector((state) => state.SuscritorSlice)
     let { data: nuevos, error: errorboleto, isLoading: boletosloading } = useGetBoletosQuery()
     useEffect(() => {
-        
+
         (async () => {
-            await evento()
+            await ListarEventosMap()
             Limpiarseleccion()
             LimpiarLocalStore()
             usedispatch(clearMapa({}))
             usedispatch(borrarseleccion({ estado: "seleccionado" }))
         })()
-       // console.log(clienteInfo())
+        // console.log(clienteInfo())
         var popUp = window.open('url', '', 'options');
         if (popUp == null || typeof (popUp) == 'undefined') {
             //  popUp.close();     
@@ -435,7 +448,7 @@ export default function StoreTickesViews() {
                 }}
             />
             {alert}
-            {clienteInfo().perfil !="vendedores"?   <Row className=" ">
+            {clienteInfo().perfil != "vendedores" ? <Row className=" ">
                 <Col lg="3" sm="6">
                     <Card className="card-stats">
                         <Card.Body>
@@ -540,7 +553,7 @@ export default function StoreTickesViews() {
                         </Card.Footer>
                     </Card>
                 </Col>
-            </Row>:""}
+            </Row> : ""}
             <Row>
                 <div className="col-12 d-flex d-none flex-column align-items-center "  >
                     <h4 style={{
@@ -582,7 +595,7 @@ export default function StoreTickesViews() {
                                                             <div className="col-12 border border-bottom my-3"></div>
 
                                                             <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{e.fechaConcierto}</span></p>
-                                                            <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.lugarConcierto } </span></p>
+                                                            <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.lugarConcierto} </span></p>
                                                             <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}  </span></p>
                                                             {e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U" ? <p className="btn btn-primary float-center" onClick={() => registraParticipante(e.codigoEvento, e.nombreConcierto)} >Participa </p> :
                                                                 <p className="btn btn-primary float-center" onClick={() => venderevento(e)} > Vender entrada</p>
@@ -620,28 +633,28 @@ export default function StoreTickesViews() {
                                     >
                                         <div className="col-12 col-md-6">
                                             <div className="d-flex justify-content-end px-4">
-                                                <img src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md  " alt="" />
+                                                <img src={e.eventoID.imagenConcierto} className="img-fluid rounded-7 shadow-md  " alt="" />
                                             </div>
                                         </div>
                                         <div className="col-12 col-md-6">
                                             <div className="container col-12 text-center" >
-                                                <h1 style={{ fontSize: '1.6em' }}><span id="artista" className="fw-bold">{e.nombreConcierto}</span> </h1>
+                                                <h1 style={{ fontSize: '1.6em' }}><span id="artista" className="fw-bold">{e.nombreConcierto}</span> </h1>                                               
                                                 <div className="col-12 border border-bottom my-3"></div>
 
-                                                <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{e.fechaConcierto}</span></p>
-                                                <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.lugarConcierto + " " + e.lugarConcierto} </span></p>
-                                                <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}  </span></p>
+                                                <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{e.eventoID.fechaConcierto}</span></p>
+                                                <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.eventoID.lugarConcierto + " " + e.eventoID.lugarConcierto} </span></p>
+                                                <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.eventoID.horaConcierto}  </span></p>
                                                 {/* onClick={() => registraParticipante(e.codigoEvento, e.nombreConcierto)} */}
                                                 {e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U" ? <p className="btn btn-primary pb-2 float-center"  >Participa </p> :
                                                     <p className="btn btn-primary pb-2 float-center" onClick={() => venderevento(e)} > Vender entrada</p>
                                                 }
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 )
                             })
-                            :""}
+                            : ""}
 
                     </div>
 

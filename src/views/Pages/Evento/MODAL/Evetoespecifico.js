@@ -9,7 +9,6 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { Edit, Delete, Share } from '@mui/icons-material';
 import { ExportToCsv } from 'export-to-csv';
 import { columnsTicket } from "utils/ColumnTabla";
-import { EliminareventoLocalidad, listarpreciolocalidad,  } from "utils/Querypanel"
 import { ListarEventos } from "utils/EventosQuery";
 import Modalupdate from "./ModalupdateEvento"
 import { useDispatch } from "react-redux";
@@ -28,6 +27,7 @@ import { ticketsboletos } from "utils/columnasub";
 import PiecharViews from "views/Components/Piechar";
 import ExportToExcel from "utils/Exportelemin";
 import { Listar_preciolocalidad } from "utils/EventosQuery";
+import { Eliminar_preciolocalidad } from "utils/EventosQuery";
 require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
@@ -74,6 +74,17 @@ const EventoEspecifico = () => {
        await Evento()
      }*/
   }
+  function EliminarPrecio(e) {
+    console.log(e)
+    Eliminar_preciolocalidad(e).then(salida => {
+      console.log(salida)
+      if (salida.success) {
+      
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }
   function GetDay(e) {
     var da = new Date(e).getDay()
     return Dias[da]
@@ -100,7 +111,7 @@ const EventoEspecifico = () => {
       console.log(cargar)
       const precio = await Listar_preciolocalidad(id)
       console.log(precio)
-    //  const precio = await listarpreciolocalidad(id)
+      //  const precio = await listarpreciolocalidad(id)
       if (cargar.success) {
         let datos = cargar.data.filter((e) => e.id == id)
         let shortDate = new Date(datos[0].fechaConcierto);
@@ -162,34 +173,34 @@ const EventoEspecifico = () => {
       await Evento()
 
     })()
-    boletosloading ? "" : setTikes(nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado"))
-    //  if(boletosloading){
-    // let mapa = nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado")
-    let arrayIndividual = []
-    //console.log(nuevos.data.filter(e => e.codigoEvento == id))
-    // console.log(arayReallocalidad)
-    boletosloading ? "" : nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado").forEach(elm => {
-      if (arrayIndividual.some(e => e.id == elm.localidad)) {
-        let dat = arrayIndividual.findIndex(e => e.id == elm.localidad)
-        let tota = parseInt(arrayIndividual[dat].cantidad) + 1
-        arrayIndividual[dat].cantidad = parseInt(tota)
-      } else {
-        arrayIndividual.push({ id: elm.localidad, localidad: elm.localidad, cantidad: 1 })
-        // arrayIndividual.push({  })
-
-      }
-    })
-
-    boletosloading ? "" : console.log(arrayIndividual)
-    //  }
-    let newdatos = boletosloading ? [] : arrayIndividual.map(f => {
-      return [f.localidad, parseInt(f.cantidad)]
-    })
-    boletosloading ? [] : setDatas([
-      ["Localida", "ganancias"],
-      ...newdatos
-    ])
-    console.log(datas)
+    /* boletosloading ? "" : setTikes(nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado"))
+     //  if(boletosloading){
+     // let mapa = nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado")
+     let arrayIndividual = []
+     //console.log(nuevos.data.filter(e => e.codigoEvento == id))
+     // console.log(arayReallocalidad)
+     boletosloading ? "" : nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado").forEach(elm => {
+       if (arrayIndividual.some(e => e.id == elm.localidad)) {
+         let dat = arrayIndividual.findIndex(e => e.id == elm.localidad)
+         let tota = parseInt(arrayIndividual[dat].cantidad) + 1
+         arrayIndividual[dat].cantidad = parseInt(tota)
+       } else {
+         arrayIndividual.push({ id: elm.localidad, localidad: elm.localidad, cantidad: 1 })
+         // arrayIndividual.push({  })
+ 
+       }
+     })
+ 
+     boletosloading ? "" : console.log(arrayIndividual)
+     //  }
+     let newdatos = boletosloading ? [] : arrayIndividual.map(f => {
+       return [f.localidad, parseInt(f.cantidad)]
+     })
+     boletosloading ? [] : setDatas([
+       ["Localida", "ganancias"],
+       ...newdatos
+     ])
+     console.log(datas)*/
   }, [boletosloading])
 
   const successAlert = (i) => {
@@ -346,6 +357,9 @@ const EventoEspecifico = () => {
                             <button className="btn btn-primary"
                               onClick={() => Eliminar(e)}
                             >Editar </button>
+                            <button className=" btn btn-danger d-none"
+                              onClick={() => EliminarPrecio(e.id)}
+                            >Eliminar</button>
                           </div>
                         </div>
 
@@ -379,7 +393,7 @@ const EventoEspecifico = () => {
         <MaterialReactTable
           columns={ticketsboletos}
           data={tickes}
-        
+
           muiTableProps={{
             sx: {
               tableLayout: 'flex'
@@ -441,13 +455,13 @@ const EventoEspecifico = () => {
             <Box
               sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
             >
-           {tickes.length>0?   <ExportToExcel apiData={tickes.map(e=>{
-             e.valor.replace(".", ",")
-             return {...e}
-           })}
-                fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY') } label={"Boletos"}
-             />:""}
-              
+              {tickes.length > 0 ? <ExportToExcel apiData={tickes.map(e => {
+                e.valor.replace(".", ",")
+                return { ...e }
+              })}
+                fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY')} label={"Boletos"}
+              /> : ""}
+
               <Button className="d-none"
                 disabled={table.getPrePaginationRowModel().rows.length === 0}
                 onClick={() =>

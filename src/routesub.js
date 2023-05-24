@@ -161,7 +161,7 @@ var routes = [
     name: "Ventas",
     state: "openVentas",
     icon: "nc-icon nc-cart-simple",
-    permiso: [],
+    permiso: ["1"],
     views: [
       {
         path: "/Vender-Tickets",

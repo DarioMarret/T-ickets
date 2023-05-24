@@ -29,6 +29,7 @@ import { ObtenerEstadosforEventos } from "utils/QueryUser";
 import { Crear_carrusel } from "utils/CarruselQuery";
 import { removeDatosUsuario } from "utils/DatosUsuarioLocalStorag";
 import { useHistory } from "react-router";
+import { Eliminar_carrusel } from "utils/CarruselQuery";
 export default function NoticiasView() {
     let usedispatch = useDispatch()
     let history = useHistory()
@@ -104,7 +105,7 @@ export default function NoticiasView() {
                             }
                             let carruse = await agregarNoticia(parametr)
                             console.log(carruse)
-                            Evento()
+                            //Evento()
                             setCargando(false)
                         }, 3000)
                     } catch (error) {
@@ -144,13 +145,18 @@ export default function NoticiasView() {
                                 }
                                 console.log("datos", datas)
                                 Crear_carrusel(datas).then(sali => {
-                                    console.log("datos apoi", datas)
+                                    console.log("datos api", datas)
                                     console.log("se creo", sali)
-                                    Listar_carrusel().then(sal => {
-                                        console.log(sal)
-                                    }).catch(err => {
-                                        console.log(err)
-                                    })
+                                    if (sali.success) {
+                                        Listar_carrusel().then(sal => {
+                                            if(sal.success){
+                                                setpublicidad(sal.message)
+                                            }
+                                            console.log(sal)
+                                        }).catch(err => {
+                                            console.log(err)
+                                        })
+                                    }
                                 }).catch(err => {
                                     console.log(err)
                                 })
@@ -260,13 +266,20 @@ export default function NoticiasView() {
 
     }
     function EliminaNoticias(e) {
-        Eliminarpublici(e).then(oupt => {
+        Eliminar_carrusel(e).then(oupt=>{
+            if(oupt.success){
+
+            }
+        }).catch(err=>{
+            console.log(err)
+        })
+       /* Eliminarpublici(e).then(oupt => {
             console.log(oupt)
-            Evento()
+            // Evento()
             hideAlert()
         }).catch(err => {
             console.log(err)
-        })
+        })*/
     }
     const successAlert = (e) => {
         setAlert(
@@ -560,17 +573,7 @@ export default function NoticiasView() {
             "redirect": ""
         }
         */
-        if (e.evento == null) {
-            setTipo("informativo")
-            setDatos({
-                encabezado: e.encabezado,
-                descipcion: e.descripcion,
-                fechamax: e.fecha_presentacion,
-                link_img: e.link_img,
-                mas: e.redirect,
-                id: e.id
-            })
-        } else {
+       
             setTipo("Evento")
             setDatos({
                 encabezado: e.encabezado,
@@ -580,7 +583,7 @@ export default function NoticiasView() {
                 mas: e.redirect,
                 id: e.id
             })
-        }
+        
     }
     useEffect(() => {
         ListarEventos("").then(oupt => {
@@ -590,19 +593,35 @@ export default function NoticiasView() {
                 console.log(oupt.data)
 
             }
-            if (!oupt.success && oupt.error=='jwt expired'){
+            if (!oupt.success && oupt.error == 'jwt expired') {
                 removeDatosUsuario()
                 history.push("/")
-               
+
             }
 
-        }).catch(err => console.log(err))
+        }).catch(err => {
+
+            usedispatch(setToastes({
+                show: true,
+                message: 'Verifique su conexión o intente mas tarde',
+                color: 'bg-warning',
+                estado: 'Hubo un error'
+            }))
+
+            console.log(err)
+        })
         Listar_carrusel().then(oupt => {
             console.log(oupt)
             if (oupt.success) {
                 setpublicidad(oupt.message)
             }
         }).catch(err => {
+            usedispatch(setToastes({
+                show: true,
+                message: 'Verifique su conexión o intente mas tarde',
+                color: 'bg-warning',
+                estado: 'Hubo un error'
+            }))
             console.log(err)
         })
         ObtenerEstadosforEventos().then(oupt => {
@@ -611,6 +630,12 @@ export default function NoticiasView() {
                 setEstados(oupt.data)
             }
         }).catch(err => {
+            usedispatch(setToastes({
+                show: true,
+                message: 'Verifique su conexión o intente mas tarde',
+                color: 'bg-warning',
+                estado: 'Hubo un error'
+            }))
             console.log(err)
         })
         Listar_carrusel().then(sal => {
@@ -618,6 +643,12 @@ export default function NoticiasView() {
                 console.log(sal)
             }
         }).catch(err => {
+            usedispatch(setToastes({
+                show: true,
+                message: 'Verifique su conexión o intente mas tarde',
+                color: 'bg-warning',
+                estado: 'Hubo un error'
+            }))
             console.log(err)
         })
     }, [])
@@ -703,7 +734,9 @@ export default function NoticiasView() {
                                                     </div>
                                                     <select className="form-select" value={Tipo} onChange={(e) => handelchange(e.target)} required>
                                                         <option value="Evento">Evento </option>
-                                                        <option value={"informativo"}>Informativo</option>
+                                                        <option className="d-none" value={"informativo"}>Informativo</option>
+                                                        <option className="d-none" value={"Publicida"}>Publicidad</option>
+                                                        <option className="d-none" value={"venta"}>Venta Whastapp</option>
                                                     </select>
                                                 </div>
                                             </div>
