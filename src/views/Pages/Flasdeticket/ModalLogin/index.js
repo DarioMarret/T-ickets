@@ -89,6 +89,36 @@ const ModalLogin = (props) => {
 
     }
   };
+  function RecuperarContraseña() {
+  /*
+      $.confirm({
+        title: 'Recuperar Contraseña!',
+        content: '' +
+          '<form action="" className="formName">' +
+          '<div className="form-group">' +
+          '<label>Ingrese su correo electrónico</label>' +
+          '<input type="text" placeholder="Correo" class="form-control codigo " required />' +
+          '</div>' +
+          '</form>',
+        buttons: {
+          formSubmit: {
+            text: 'Enviar',
+            btnClass: 'btn-blue',
+            action: function () {
+              var name = this.$content.find('.codigo').val();
+              if (!name) {
+                $.alert('Ingrese un correo validso');
+                return false;
+              }
+              //abrir(e)
+            }
+          },
+          cancel: function () {
+
+          }
+        }
+      }) */
+  }
   function regsitronew() {
     setShowLogin(false)
     usedispatch(setModal({ nombre: 'registro', estado: Modalstatus.estado }))
@@ -169,7 +199,7 @@ const ModalLogin = (props) => {
                     >Crear Cuenta</a>
                   </div>
                   <div className="col-12 ">
-                    <a className=" nav-link btn btn-link" href="#" > Olvide mi contraseña </a>
+                    <a className=" nav-link btn btn-link" href="#" onClick={RecuperarContraseña} > Olvide mi contraseña </a>
 
                   </div>
                 </div>

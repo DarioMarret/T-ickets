@@ -275,9 +275,9 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
-   /* EnviarDetalleCompras().then(e => console.log(e)).catch(err=>{
-      console.log(err)
-    })*/
+    /* EnviarDetalleCompras().then(e => console.log(e)).catch(err=>{
+       console.log(err)
+     })*/
     array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
       console.log(ouput)
     }
@@ -294,7 +294,7 @@ const IndexFlas = () => {
         }, 20 * index)
       })
       : ''
-    
+
     Limpiarseleccion()
     LimpiarLocalStore()
   }
@@ -737,8 +737,8 @@ const IndexFlas = () => {
     const info = await ListaPreciosEvent();
     return info
   }
-  const [estafun,setfunc]=useState(false)
-  const [final,setFinal]=useState([])
+  const [estafun, setfunc] = useState(false)
+  const [final, setFinal] = useState([])
   useEffect(() => {
     $(document).keyup(function (evtobj) {
       if (!(evtobj.altKey || evtobj.ctrlKey || evtobj.shiftKey)) {
@@ -816,13 +816,13 @@ const IndexFlas = () => {
       })
       usedispatch(addususcritor({ ...clineteLogeado }))
     }
-    
-    ListarEventosFinalizados().then(oup=>{
-      if(oup.length>0){
+
+    ListarEventosFinalizados().then(oup => {
+      if (oup.length > 0) {
         setFinal(oup)
         console.log()
       }
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err)
     })
     /* (function (s, z, c, h, a, t) {
@@ -844,7 +844,7 @@ const IndexFlas = () => {
     ReactGA.set({
       username: localStorage.getItem('DatoCliente'),
     })
-    setTimeout(function(){
+    setTimeout(function () {
       $('.logos-slider').slick({
         slidesToShow: 3,
         slidesToScroll: 1,
@@ -865,8 +865,8 @@ const IndexFlas = () => {
           }
         }]
       });
-    },1000)
-  
+    }, 1000)
+
     /* userauthi.login ? (new Date("02/01/2023 19:00 ") > new Date())? addNotification({
        title: 'Recuerda',
        subtitle: 'Recuerda ',
@@ -923,7 +923,7 @@ const IndexFlas = () => {
   const [visible, setVisible] = React.useState(false)
   function abrirNuevoTab() {
     // Abrir nuevo tab
-    var win = window.open('https://t-ickets.net/3FynwiC' , '_blank');
+    var win = window.open('https://t-ickets.net/3FynwiC', '_blank');
     // Cambiar el foco al nuevo tab (punto opcional)
     win.focus();
   }
@@ -940,59 +940,7 @@ const IndexFlas = () => {
         salir={salir}
       />
 
-      <Drawer
-        anchor="left"
-        PaperProps={{
-          elevation: 8,
-          sx: {
-            width: 240,
-            height: "100%",
-            color: "rgba(225,249,27,1)",
-            backgroundColor: "#311C7C"
-          }
-        }}
-        open={false}
-        onClose={() => setVisible(!visible)}>
-        <div className=" container-fluid">
-        </div>
-        <div className="">
-          <ul className="nav nav-pills flex-column mb-auto">
-            <li className="nav-item">
-              <a href="#" className="nav-link active" aria-current="page">
-                <svg className="bi me-2" width="16" height="16"></svg>
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#" onClick={() => SetSeleccion("")}>Inicio</a>
-            </li>
-            <li>
-              <a href="#" className="nav-link link-dark">
-                <svg className="bi me-2" width="16" height="16"></svg>
-                Orders
-              </a>
-            </li>
-            <li>
-              <a href="#" className="nav-link link-dark">
-                <svg className="bi me-2" width="16" height="16"></svg>
-                Products
-              </a>
-            </li>
-            <li>
-              <a href="#" className="nav-link link-dark">
-                <svg className="bi me-2" width="16" height="16"></svg>
-                Customers
-              </a>
-            </li>
-          </ul>
-
-        </div>
-
-        <List>
-
-        </List>
-
-      </Drawer>
+      
       <Inframene />
       {modal.nombre == "Modallocalida" ?
         <LocalidadmapViews
@@ -1052,7 +1000,7 @@ const IndexFlas = () => {
       {/* header */}
       {publicidad.length > 0 ?
         <div className="container-fluid   px-0" style={{
-          minHeight: '300px' 
+          minHeight: '300px'
         }}>
           <Swiper
             className="AnimatedSlides"
@@ -1114,8 +1062,8 @@ const IndexFlas = () => {
                                   element.evento == null ?
                                     <button className="btn border rounded-1  btn-lg btn-light "
                                       style={styleswiper.button}
-                                     
-                                      
+
+
                                       onClick={() => !userauthi.login ? regsitronew() : abrirNuevoTab()}
                                     >{userauthi.login ? "Comprar" : "Registrate"}</button> :
                                     <button className="btn border rounded-1  btn-lg btn-light "
@@ -1124,7 +1072,7 @@ const IndexFlas = () => {
                                     >COMPRAR</button>
 
                                 }
-                              </div> 
+                              </div>
                             </div>
                           </div>
                           <div className=" contador  "
@@ -1231,9 +1179,9 @@ const IndexFlas = () => {
           <div className=" col-12 col-md-6 ">
             <form className="form" action="">
               <input className="input" type="search"
-               onChange={(e) => Cambiarbusqueda(e.target.value)}
-              placeholder="Buscar eventos ..."/>
-                <i className="fass fa fa-search"></i>
+                onChange={(e) => Cambiarbusqueda(e.target.value)}
+                placeholder="Buscar eventos ..." />
+              <i className="fass fa fa-search"></i>
             </form>
             <div className="input-group d-none">
               <input className=" form-control "
@@ -1254,6 +1202,7 @@ const IndexFlas = () => {
           </div>
 
         </div> : ""}
+      {/*Listar evento sin filtro  */}
       {seleccion == "" && mostrar ?
         <div className="container-fluid " id="nuevoseventos">
           <div className="container p-3">
@@ -1265,12 +1214,13 @@ const IndexFlas = () => {
                     <b className="  "> Pagina: {userauthi.page} Eventos {eventoslist.slice(userauthi.inicio, userauthi.final).length} de {eventoslist.length} </b>
                   </h4>
                 </div>
+                {/* Paginacion del evento */}
                 <PaginasView
                   eventoslist={eventoslist}
                 />
               </div> :
               ""}
-
+            {/* Listar Eventos */}
             <div className="row  justify-content-center" id="accordion">
 
               <div className="col-12 col-lg-9">
@@ -1534,7 +1484,7 @@ const IndexFlas = () => {
                         </div>
                       )
                     })
-                    :!estafun? <div className="col-12  mx-auto my-5" >
+                    : !estafun ? <div className="col-12  mx-auto my-5" >
                       <div>
                         <div className="container rounded-7-md px-0" style={{ height: 300 }}>
 
@@ -1546,7 +1496,7 @@ const IndexFlas = () => {
                         </div>
                       </div>
 
-                    </div>:
+                    </div> :
                       <div className="col-12  col-lg-6 mx-auto my-5" >
                         <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
                           aria-controls="collapseExample">
@@ -1571,11 +1521,12 @@ const IndexFlas = () => {
                       </div>}
                   {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
                   <SubscrtitoViews />
-                  
+
                 </div>
               </div>
 
             </div>
+            {/* Paginacion del evento */}
             <PaginasView
               eventoslist={eventoslist}
             />
@@ -1591,11 +1542,11 @@ const IndexFlas = () => {
                     </h4>
                   </div>
 
-                  
+
                   <section className="logos-slider slider d-flex flex-wrap">
-                    
-                    {final.length>0?
-                    [...final].filter(e => new Date(e.fechaConcierto + " 23:59:59") < new Date()).map((element, index) => {
+
+                    {final.length > 0 ?
+                      [...final].filter(e => new Date(e.fechaConcierto + " 23:59:59") < new Date()).map((element, index) => {
                         return (
                           <div className="slide col-12 col-sm-6 col-md-4 px-0 pb-1" key={index} >
                             <div
@@ -1612,7 +1563,7 @@ const IndexFlas = () => {
                         )
                       })
 
-                   :"" }
+                      : ""}
 
                   </section>
                 </div>
@@ -1621,6 +1572,7 @@ const IndexFlas = () => {
 
           </div>
         </div> : ''}
+        {/*Listar evento con Filtro  */}
       {seleccion == "" && !mostrar ?
         <div className="container-fluid " id="nuevoseventos">
           <div className="container p-3">
