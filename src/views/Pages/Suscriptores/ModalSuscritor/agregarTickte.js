@@ -103,7 +103,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
         }
     }
     useEffect(() => {
-        axios.get("https://flash.t-ickets.com/mikroti/api/listApi/GetLocalidad").then(sali => {
+        axios.get("https://portalapicon.somee.com/api/listApi/GetLocalidad").then(sali => {
             console.log(sali)
             if(sali.status==200){
                 setLoacli(sali.data)
