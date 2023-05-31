@@ -18,13 +18,14 @@ export default function NavbarView({ ...props }) {
                         }} />
                     </a>
                     <div className=" d-flex flex-column justify-content-end align-items-end text-edn">
-                        <button className="navbar-toggler " data-bs-toggle="collapse"
+                        <button className="navbar-toggler text-center " data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                             onClick={() => props.setVisible(!props.visible)}
                             aria-label="Toggle navigation" type="button">
                             <span className="navbar-toggler-icon"></span>
+                            
                         </button>
-                        <p className=" text-white">Menú</p>
+                        <p className=" text-white d-block d-sm-block d-md-none">Menú</p>
                     </div>
 
 
