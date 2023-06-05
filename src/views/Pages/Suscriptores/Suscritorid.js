@@ -592,11 +592,11 @@ const SuscritoridView = () => {
               </span>
               Editar
             </Button>
-            <Button className="btn btn-wd btn-outline mr-1"
+           {/* <Button className="btn btn-wd btn-outline mr-1"
               type="button"
               variant="outline-warning"
               onClick={() => setshowdos(true)}
-            >Ticktefacil</Button>
+            >Ticktefacil</Button>*/}
             <Button className="btn-wd btn-outline mr-1"
               onClick={deleteAlert}
               type="button"
