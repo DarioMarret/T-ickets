@@ -923,9 +923,9 @@ const IndexFlas = () => {
   const [visible, setVisible] = React.useState(false)
   function abrirNuevoTab() {
     // Abrir nuevo tab
-    var win = window.open('https://t-ickets.net/3FynwiC', '_blank');
+  //  var win = window.open('https://t-ickets.net/3FynwiC', '_blank');
     // Cambiar el foco al nuevo tab (punto opcional)
-    win.focus();
+   // win.focus();
   }
 
   return (
@@ -1065,7 +1065,7 @@ const IndexFlas = () => {
 
 
                                       onClick={() => !userauthi.login ? regsitronew() : abrirNuevoTab()}
-                                    >{userauthi.login ? "Comprar" : "Registrate"}</button> :
+                                    >{userauthi.login ? element.evento == null ? "Muy Pronto": "Comprar" : "Registrate"}</button> :
                                     <button className="btn border rounded-1  btn-lg btn-light "
                                       onClick={() => eventocarrusel(element.evento)}
                                       style={styleswiper.button}
@@ -1137,7 +1137,7 @@ const IndexFlas = () => {
 
 
                                       onClick={() => !userauthi.login ? regsitronew() : abrirNuevoTab()}
-                                    >{userauthi.login ? "Comprar" : "Registrate"}</button> :
+                                    >{userauthi.login ? element.evento == null ? "Muy Pronto" : "Comprar" : "Registrate"}</button> :
                                     <button className="btn border rounded-1  btn-lg btn-light "
                                       onClick={() => eventocarrusel(element.evento)}
                                       style={styleswiper.button}
