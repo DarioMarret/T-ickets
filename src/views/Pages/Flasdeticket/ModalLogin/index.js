@@ -62,7 +62,7 @@ const ModalLogin = (props) => {
              color: 'bg-success',
              estado: "Inicio Exitoso",
            })*/
-          Modalstatus.estado != null ? abrir(Modalstatus.estado) : ''
+           Modalstatus.estado != "" ? abrir(Modalstatus.estado) : ''
           usedispatch(setModal({ nombre: '', estado: '' }))
         }
         else {

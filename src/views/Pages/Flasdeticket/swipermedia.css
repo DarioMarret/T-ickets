@@ -191,7 +191,33 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active {
     fill-rule: evenodd;
     clip-rule: evenodd
 }
-
+.hamburger {
+    font: inherit;
+    display: inline-block;
+    overflow: visible;
+    margin: 0;
+    padding: 15px;
+    cursor: pointer;
+    transition-timing-function: linear;
+    transition-duration: .15s;
+    transition-property: opacity, filter;
+    text-transform: none;
+    color: inherit;
+    border: 0;
+    background-color: transparent;
+}
+@media (min-width: 768px) {
+    .navbar-toggle-visible {
+        display: inline;
+    }
+}
+.hamburger-box {
+    position: relative;
+    display: inline-block;
+    width: 25px;
+    height: 24px;
+    color:#fff !important;
+}
 a[aria-expanded="true"] svg {
     transform: rotate(180deg);
     translate: 0 0;

@@ -1,5 +1,5 @@
 
-function disableIE() {
+/*function disableIE() {
   if (document.all) {
     return false;
   }
@@ -28,7 +28,7 @@ function detectDevTools() {
   };
   console.log(devtools);
 }
-detectDevTools();
+detectDevTools();*/
 
 document.oncontextmenu = new Function("return false");
 document.addEventListener("DOMContentLoaded", function () {
