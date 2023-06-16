@@ -239,24 +239,27 @@ const ModalNewEvento = (props) => {
 
     }
     function soloSelectespacio(e) {
-        var index = selectLocalidad.findIndex(obj => obj.id == e.value);
-        console.log(e)
-        console.log(index)
+        var index = localidadPreci.filter(obj => obj.identificador == e.value)[0];
+        console.log(e.value)
+        console.log(selectLocalidad)
         var dato = selectLocalidad.find(D => D.id == e.value)
-        console.log(dato)
+        console.log(dato.nombre, index, localidadPreci.filter(obj => obj.identificador == e.value))
         if (dato != undefined) {
             setPrecios({
-                precio_normal: localidadPreci[index] ? localidadPreci[index].precio_normal : 0,
-                precio_discapacidad: localidadPreci[index] ? localidadPreci[index].precio_discapacidad : 0,
-                precio_tarjeta: localidadPreci[index] ? localidadPreci[index].precio_tarjeta : 0,
-                precio_descuento: localidadPreci[index] ? localidadPreci[index].precio_descuento : 0,
-                habilitar_cortesia: localidadPreci[index] ? localidadPreci[index].habilitar_cortesia : 0,
+                precio_normal: index!=undefined ? index.precio_normal : 0,
+                precio_discapacidad: index != undefined ? index.precio_discapacidad : 0,
+                precio_tarjeta: index != undefined ? index.precio_tarjeta : 0,
+                precio_descuento: index != undefined ? index.precio_descuento : 0,
+                habilitar_cortesia: index != undefined ? index.habilitar_cortesia : 0,
                 localidad: dato.nombre,
-                comision_boleto: localidadPreci[index] ? localidadPreci[index].comision_boleto : 0,
-                habilitar: localidadPreci[index] ? localidadPreci[index].habilitar : "NO",
+                comision_boleto: index != undefined ? index.comision_boleto : 0,
+                habilitar: index != undefined ? index.habilitar : "NO",
                 identificador: e.value,
             })
-            console.log(precios)
+            //console.log(precios)
+        }
+        else{
+            
         }
     }
     function handelchangeLocalidad(e) {

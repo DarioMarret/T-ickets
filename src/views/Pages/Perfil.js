@@ -35,6 +35,7 @@ import { display } from "@mui/system";
 import { Button } from "@mui/material";
 import { cargarEventoActivo } from "utils/Querypanelsigui";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import { buscarcliente } from "utils/Querypanelsigui";
 
 function PerfilPage(props) {
   const { setDatoToas } = props
@@ -197,13 +198,32 @@ function PerfilPage(props) {
     } catch (error) {
       console.log(error)
     }
+  } 
+  function obtener(cedula){
+
+    let informacion = {
+      "cedula": cedula,
+      "email": ""
+    }
+   // history.push("/admin")
+    buscarcliente({ ...informacion }).then(output=>{
+      console.log(output)
+      if(output.success){
+        setPerson({ ...output.data, whatsapp: output.data.movil, direccion: output.data.ciudad ? output.data.ciudad :"",name:output.data.nombreCompleto, new_password: ''})
+      }
+    }).catch(err=>{
+      console.log(err)
+    })
   }
   useEffect(() => {
-
+   // let da = getDatosUsuariosLocalStorag()
+  // console.log(da)
+    // obtener(da.cedula)
     (async () => {
-      let info = getDatosUsuariosLocalStorag()
 
-      try {
+      let info = getDatosUsuariosLocalStorag()
+      obtener(info.cedula)
+     /* try {
         const suscrito = await GetSuscritores()
         console.log()
         const dato = suscrito.users.filter((e) => e.cedula == info.cedula)
@@ -214,7 +234,7 @@ function PerfilPage(props) {
       } catch (error) {
         console.log(error)
 
-      }
+      }*/
       await evento()
     })()
 

@@ -136,7 +136,7 @@ const ModalConfima = (prop) => {
                     usedispatch(
                         setToastes({
                             show: true,
-                            message: 'La imagen no se pudo leer Comuníquese con un accesor al número +5930969200247',
+                            message: 'La imagen no se pudo leer Comuníquese con un accesor al número  +5930969200247/+593969305316',
                             color: 'bg-warning',
                             estado: 'Hubo un error'
                         }))
@@ -188,12 +188,12 @@ const ModalConfima = (prop) => {
                                 show: true, message: ocroupt.message + "\n \n"
 
                                     + "Beneficiario: " + ocroupt.data.beneficiario + "\n" + "Banco: " + ocroupt.data.banco + "\n" +"comprobante: "+ ocroupt.data.numero_documento + "\n"
-                                    + "fecha: " + ocroupt.data.fecha, color: 'bg-danger', estado: 'Comuníquese con un acceso al número +5930969200247'
+                                    + "fecha: " + ocroupt.data.fecha, color: 'bg-danger', estado: 'Comuníquese con un acceso al número  +5930969200247/+593969305316'
                         }))
                             setEstado(false)
                         }
                     }).catch(salid => {
-                        usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: "Comuníquese con un acceso al número +5930969200247" }))
+                        usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: "Comuníquese con un acceso al número  +5930969200247/+593969305316" }))
                         console.log(salid)
                         setEstado(false)
                     })

@@ -140,10 +140,11 @@ export default function AprobarView() {
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     elm.ticket_usuarios.map(item => {
                         // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                        if (arrprueb.length == 0) {
+                        /*if (arrprueb.length == 0) {
                             arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
-                        }
+                        }*/
                         //  console.log(item, arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
+                        arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
                         if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
                             //        console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
                             // let cantidad = arrprueb.filter(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)[0].cantidad + 1
@@ -242,10 +243,11 @@ export default function AprobarView() {
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     elm.ticket_usuarios.map(item => {
                         // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                        if (arrprueb.length == 0) {
+                        /*if (arrprueb.length == 0) {
                             arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
-                        }
+                        }*/
                         //  console.log(item, arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
+                        console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
                         if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
                             //        console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
                             // let cantidad = arrprueb.filter(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)[0].cantidad + 1
@@ -259,7 +261,7 @@ export default function AprobarView() {
                 })
                 let arrayIndividual = []
                 // console.log(consulat)
-                console.log(arayReallocalidad, arrprueb)
+                console.log("aqui",arayReallocalidad, arrprueb)
                 /* arayReallocalidad.forEach(elm => {
                      if (arrayIndividual.some(e => e.id == elm.id)) {
                          let dat = arrayIndividual.findIndex(e => e.id == elm.id)
@@ -298,8 +300,7 @@ export default function AprobarView() {
             console.log(err)
         })
 
-    },
-        [ticket.ticket])
+    }, [ticket.ticket])
     let precio = {
         1: 20,
         2: 30,

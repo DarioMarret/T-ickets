@@ -105,7 +105,7 @@ const ModalCarritoView = (prop) => {
 
 
     useEffect(() => {
-
+        //console.log("aqui")
         let user = getDatosUsuariosLocalStorag()
         setDetalle(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
@@ -496,6 +496,14 @@ const ModalCarritoView = (prop) => {
             </SweetAlert>
         )
     }
+    const clickt=()=>{
+        usedispatch(setToastes({
+            show: true,
+            message: "Toca el palco requerido en el mapa",
+            color: 'bg-primary',
+            estado: "Selecciona tu compra en el mapa"
+        }))
+    }
 
     const EliminaLocalidad = (e) => {
         setAlert(
@@ -546,7 +554,7 @@ const ModalCarritoView = (prop) => {
     const hideAlert = () => {
         setAlert(null);
     };
-    let fechava = (new Date().getDay() !=6 && new Date().getDay() !=0)
+    let fechava = (new Date().getDay() != 6 && new Date().getDay() != 0)
     //console.log(fechava)
     return (
         <>
@@ -734,8 +742,8 @@ const ModalCarritoView = (prop) => {
                                 </div>
                                 <div className="col-12">
                                     <div className=" container-fluid d-flex  py-2  col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
-                                        {precios.precios.length > 0 ?
-                                            precios.precios.sort((a, b) => (a.precio_normal > b.precio_normal ? 1 : -1) &&  a.id < b.id ? 1 : -1).map((elm, i) => {
+                                        {sessionStorage.getItem("eventoid") != "YZPQQ3" && precios.precios.length > 0 ?
+                                            precios.precios.sort((a, b) => (a.precio_normal > b.precio_normal ? 1 : -1) && a.id < b.id ? 1 : -1).map((elm, i) => {
                                                 return (
                                                     <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                         <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: elm.color }}></div>
@@ -745,7 +753,31 @@ const ModalCarritoView = (prop) => {
                                                         </div>
                                                     </div>
                                                 )
-                                            }) : ''
+                                            }) :
+
+                                            <div className="container-fluid d-flex  py-2  col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
+                                                <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={()=>clickt()}   >
+                                                    <div id="" className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: "#c69b30" }}></div>
+                                                    <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '160px' }} >
+                                                        <span className="" style={{ fontFamily: '', fontSize: '1.11em' }} >Golden x 10 </span>
+                                                        <span className="pl-1" style={{ fontFamily: '', fontSize: '1.11em' }} >$750 </span>
+                                                    </div>
+                                                </div>
+                                                <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => clickt()} >
+                                                    <div id="" className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: "#b2b2b2" }}></div>
+                                                    <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '160px' }} >
+                                                        <span className="" style={{ fontFamily: '', fontSize: '1.11em' }} >Platinum </span>
+                                                        <span className="pl-1" style={{ fontFamily: '', fontSize: '1.11em' }} >$40 </span>
+                                                    </div>
+                                                </div>
+                                                <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => clickt()} >
+                                                    <div id="" className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: "#609ffe" }}></div>
+                                                    <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '160px' }} >
+                                                        <span className="" style={{ fontFamily: '', fontSize: '1.11em' }} >Vip </span>
+                                                        <span className="pl-1" style={{ fontFamily: '', fontSize: '1.11em' }} >$25 </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         }
                                     </div>
                                 </div>
@@ -787,14 +819,14 @@ const ModalCarritoView = (prop) => {
                                 </div> : ""}
                             {
                                 clienteInfo() == null && fechava ? <div className="form-check ">
-                                <input className="form-check-input" type="radio"
-                                    checked={checked.Deposito == "Deposito" ? true : false}
-                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
-                                    name="Deposito" id="Deposito" />
-                                <label className="form-check-label" htmlFor="Deposito">
-                                    Deposito
-                                </label>
-                            </div> : ""}
+                                    <input className="form-check-input" type="radio"
+                                        checked={checked.Deposito == "Deposito" ? true : false}
+                                        onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
+                                        name="Deposito" id="Deposito" />
+                                    <label className="form-check-label" htmlFor="Deposito">
+                                        Deposito
+                                    </label>
+                                </div> : ""}
 
                             {clienteInfo() == null ? <div className="form-check d-none">
                                 <input className="v-check form-check-input" type="radio"
@@ -862,11 +894,11 @@ const ModalCarritoView = (prop) => {
                         <div className=" text-center ">
                             <div className="py-1 d-none" >
                                 <div className="input-group">
-                                <input className=" form-control-sm " placeholder="Código Barcelona"></input>
-                                <button className="btn  btn-primary"> <i className=" "></i></button>
+                                    <input className=" form-control-sm " placeholder="Código Barcelona"></input>
+                                    <button className="btn  btn-primary"> <i className=" "></i></button>
                                 </div>
                             </div>
-                            
+
                             {detalle.length > 0 ?
                                 <button className="btn btn-primary " disabled={check} onClick={handleContinuar}>Continuar</button> :
                                 <button className="btn btn-primary  float-right" disabled={true} >Continuar</button>

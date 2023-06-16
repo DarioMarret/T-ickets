@@ -734,8 +734,14 @@ const IndexFlas = () => {
 
   }
   const ListaPrecios = async () => {
-    const info = await ListaPreciosEvent();
-    return info
+    try {
+      const info = await ListaPreciosEvent();
+      return info
+      
+    } catch (error) {
+      return error
+    }
+    
   }
   const [estafun, setfunc] = useState(false)
   const [final, setFinal] = useState([])
@@ -762,7 +768,14 @@ const IndexFlas = () => {
     eventosmodal()
     const evento = () => {
       setfunc(false)
-      try {
+     try {
+       console.log()
+       /*if (errorPubli.status != undefined){
+        return
+       }*/
+     //  console.log(isLoading, errorPubli)
+    
+   
         if (!errorevento == undefined) {
           return
         }
@@ -818,6 +831,7 @@ const IndexFlas = () => {
     }
 
     ListarEventosFinalizados().then(oup => {
+    // if(true) return
       if (oup.length > 0) {
         setFinal(oup)
         console.log()
@@ -844,6 +858,24 @@ const IndexFlas = () => {
     ReactGA.set({
       username: localStorage.getItem('DatoCliente'),
     })
+    /**aqui */
+    
+
+    /* userauthi.login ? (new Date("02/01/2023 19:00 ") > new Date())? addNotification({
+       title: 'Recuerda',
+       subtitle: 'Recuerda ',
+       message: ' Eladio Carrión Guayaquil 1 de Febrero 19:00 PM',
+       theme: 'darkblue',
+       native: true // when using native, your OS will handle theming.
+     }):"" : ""*/
+
+    /* setTimeout(function () {
+       usedispatch(setModal({ nombre: "", estado: "" }))
+     }, 6000)*/
+
+
+  }, [isLoading, info])
+  seleccion == "" ?
     setTimeout(function () {
       $('.logos-slider').slick({
         slidesToShow: 3,
@@ -865,23 +897,7 @@ const IndexFlas = () => {
           }
         }]
       });
-    }, 1000)
-
-    /* userauthi.login ? (new Date("02/01/2023 19:00 ") > new Date())? addNotification({
-       title: 'Recuerda',
-       subtitle: 'Recuerda ',
-       message: ' Eladio Carrión Guayaquil 1 de Febrero 19:00 PM',
-       theme: 'darkblue',
-       native: true // when using native, your OS will handle theming.
-     }):"" : ""*/
-
-    /* setTimeout(function () {
-       usedispatch(setModal({ nombre: "", estado: "" }))
-     }, 6000)*/
-
-
-  }, [isLoading, info])
-
+    }, 1000) : ""
   function regsitronew() {
     usedispatch(setModal({ nombre: 'registro', estado: "" }))
     ReactGA.event({
@@ -998,7 +1014,7 @@ const IndexFlas = () => {
         detener={detenervelocidad}
       />
       {/* header */}
-      {publicidad.length > 0 ?
+      {publicidad!=undefined&& publicidad.length > 0 ?
         <div className="container-fluid   px-0" style={{
           minHeight: '300px'
         }}>

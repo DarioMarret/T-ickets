@@ -96,7 +96,7 @@ function LoginPage() {
             <div className="card p-4 col-12 px-0 shadow-md">
               <div className="card-body">
                 <div className="container text-center">
-                  <img src={"https://flash.t-ickets.com/store/img/logo-t-ickets.png"} className="mb-4 img-fluid" style={{ height: '80px' }} alt="" />
+                  <img src={"https://flash.t-ickets.com/store/img/tckets-texto-azul.png"} className="mb-4 img-fluid" style={{ height: '80px' }} alt="" />
                 </div>
                 <form onSubmit={(e) => handleSubmit(e)} method="post">
                   <div className="input-group mb-4">

@@ -89,6 +89,7 @@ const LocalidadmapViews = (props) => {
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto"),
         }
+        setDisable(true)
         getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : correlativosadd({
             "id": mapath.precio.idcolor,
             "estado": "reservado",
@@ -104,6 +105,7 @@ const LocalidadmapViews = (props) => {
                 console.log(oupt)
                   getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
         setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
+                setDisable(false)
       
             }
             //console.log(oupt)
@@ -115,9 +117,11 @@ const LocalidadmapViews = (props) => {
                 "cantidad": 1
             })
         }).catch(err => {
+            setDisable(false)
             console.log(err)
         })
     }
+    const [disable,setDisable]=useState(false)
     function agregar() {
         let user = getDatosUsuariosLocalStorag()
         
@@ -147,6 +151,7 @@ const LocalidadmapViews = (props) => {
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
         if (TotalSelecion() < 10) {
+            setDisable(true)
             correlativosadd({
                 "id": mapath.precio.idcolor,
                 "estado": "reservado",
@@ -157,6 +162,10 @@ const LocalidadmapViews = (props) => {
                 if (oupt.success) {
                     getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
+                    setTimeout(function(){
+                        setDisable(false)
+                    },1000)
+                    
 
                 }
                 console.log({
@@ -170,10 +179,13 @@ const LocalidadmapViews = (props) => {
                 //console.log(oupt)
             }
 
-            ).catch(erro => console.log(erro))
+            ).catch(erro =>{
+                setDisable(false)
+                console.log(erro)})
         }
-        else
-            succesLimit()
+        else{
+            setDisable(false)
+            succesLimit()}
     }
     function Eliminar(e) {
         EliminarByStora(e.localidad)
@@ -688,11 +700,19 @@ const LocalidadmapViews = (props) => {
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
+            if (sessionStorage.getItem("eventoid") != "YZPQQ3"){
             $("#mapas" + e.path).attr("fill", e.fill)
             $("#mapas" + e.path).removeAttr("class")
           // console.log(e.path)
             $("#mapas" + e.path).attr("fill", e.fill)
-            $("#mapas" + e.path).removeAttr("class")
+            $("#mapas" + e.path).removeAttr("class")}
+        else{
+                $("#mapas" + e.path).attr("fill", "red")
+                $("#mapas" + e.path).removeAttr("class")
+                // console.log(e.path)
+                $("#mapas" + e.path).attr("fill", "red")
+                $("#mapas" + e.path).removeAttr("class")
+        }
         }) : ''
         let producto = {
             localidad: mapath.precio.localidad,
@@ -754,7 +774,7 @@ const LocalidadmapViews = (props) => {
                                 <h5 className="d-none">Libres: {sleccionlocalidad.disponibles}</h5>
                                 <h5 style={{
                                     fontWeight: "bold"
-                                }}>Localidad: {mapath.precio.idcolor=="12"?mapath.precio.localidad:""}</h5>
+                                }}>{mapath.precio.localidad}</h5>
                                 <h6 className="px-1"
                                     style={{
                                         fontWeight: "bold",
@@ -895,11 +915,13 @@ const LocalidadmapViews = (props) => {
 
                                             <button className="resta  btn-danger rounded-circle "
                                                 onClick={restaprecio}
+                                                disabled={disable}
                                             >
                                                 <i className="fa fa-minus"></i>
                                             </button>
                                             <hr className="mx-2" ></hr>
                                             <button className="suma   btn-success rounded-circle"
+                                                disabled={disable}
                                                 onClick={agregar}
 
                                             >
