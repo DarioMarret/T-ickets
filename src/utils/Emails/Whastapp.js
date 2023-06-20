@@ -16,7 +16,7 @@ export const Whatsappsend= async(parms)=>{
      */
     let movil = "593" + parms.movil +"@s.whatsapp.net"
     try {
-        let { data } = await axios.post("https://flash.t-ickets.com/whatsapp_qr/api/v1/send", {
+        let { data } = await axios.post("https://rec.netbot.ec/whatsapp_qr/api/v1/send", {
             "phone": movil,
             "message": "prueba",
             "link": ""

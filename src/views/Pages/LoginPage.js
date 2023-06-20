@@ -28,7 +28,7 @@ function LoginPage() {
   const Logincredet = async () => {
     try {
       if (credenciales.email != '' && credenciales.password != '') {
-        const { data, status } = await axios.post("https://flash.t-ickets.com/ms_login//api/v1/auth_admin", credenciales, {
+        const { data, status } = await axios.post("https://rec.netbot.ec/ms_login//api/v1/auth_admin", credenciales, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -96,7 +96,7 @@ function LoginPage() {
             <div className="card p-4 col-12 px-0 shadow-md">
               <div className="card-body">
                 <div className="container text-center">
-                  <img src={"https://flash.t-ickets.com/store/img/tckets-texto-azul.png"} className="mb-4 img-fluid" style={{ height: '80px' }} alt="" />
+                  <img src={"https://rec.netbot.ec/store/img/tckets-texto-azul.png"} className="mb-4 img-fluid" style={{ height: '80px' }} alt="" />
                 </div>
                 <form onSubmit={(e) => handleSubmit(e)} method="post">
                   <div className="input-group mb-4">
@@ -131,7 +131,7 @@ function LoginPage() {
             <div className="card px-0  shadow-md text-white py-5 d-none d-lg-block "
               style={{
                 width: '100%', backgroundImage:
-                  "url('https://flash.t-ickets.com/store/img/portada-login.jpeg')", backgroundSize: 'cover'
+                  "url('https://rec.netbot.ec/store/img/portada-login.jpeg')", backgroundSize: 'cover'
               }}>
               <div className="card-body text-center">
                 <div>

@@ -89,7 +89,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
     }
     const Endpoitnuevo = async (parms) => {
         try {
-            let { data } = await axios.post("https://flash.t-ickets.com/ms_login/set_link_external_tickets", parms, {
+            let { data } = await axios.post("https://rec.netbot.ec/ms_login/set_link_external_tickets", parms, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

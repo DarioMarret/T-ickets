@@ -101,7 +101,7 @@ export default function ListaSuscritor(prop) {
 
 
             try {
-                const registro = await axios.post("https://flash.t-ickets.com/ms_login/api/v1/crear_suscriptor", datosend, {
+                const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datosend, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

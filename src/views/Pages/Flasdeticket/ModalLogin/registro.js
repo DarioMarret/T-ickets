@@ -232,7 +232,7 @@ const ResgistroView = (prop) => {
                     // console.log("condireccion-->", datos)
 
 
-                    const registro = await axios.post("https://flash.t-ickets.com/ms_login/api/v1/crear_suscriptor", datos, {
+                    const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

@@ -49,6 +49,7 @@ function sillasid(e){
     return estado
   }
   function enviarsillas(text) {
+    console.log(text)
     modalshow.nombre == "Modallocalida" ? succesLimit(text) : ''
     modalshow.nombre == "Modallocalida" ? console.log(list) : ''
   }

@@ -2,7 +2,10 @@ a.disponible{
     background-color: #198754;
     cursor: pointer;
 }
-
+a.disponible {
+    background-color: #198754;
+    cursor: pointer;
+}
 a.ocupado{
     background-color: #dc3545;
 }

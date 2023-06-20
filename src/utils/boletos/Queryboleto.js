@@ -42,7 +42,7 @@ export const enviarEmail = async (parm) => {
 
 export const CanjearBoletoRegistro = async (parms) => {
     try {
-        let { data } = await axios.post("https://flash.t-ickets.com/ms_login/api/v1/canje_boleto", parms, {
+        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/canje_boleto", parms, {
             Headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

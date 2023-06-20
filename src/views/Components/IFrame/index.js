@@ -31,7 +31,7 @@ export default function Inframene() {
                         }}
                     ></iframe>:
                     <div className=" h-75" >
-                            <img className=" img-fluid" src={"https://flash.t-ickets.com/store/img/mesa de trabajo 1.jpg"} ></img>
+                            <img className=" img-fluid" src={"https://rec.netbot.ec/store/img/mesa de trabajo 1.jpg"} ></img>
                     </div>
                     
                 }

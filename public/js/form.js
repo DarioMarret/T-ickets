@@ -68,7 +68,7 @@ const validacedula = async (e) => {
   $(".spinner").attr("disabled", true);
   $('.search').addClass('d-none')
   try {
-    const { data } = await axios.get("https://flash.t-ickets.com/pdfqr/api/v1/cedula/" + numero)
+    const { data } = await axios.get("https://rec.netbot.ec/pdfqr/api/v1/cedula/" + numero)
     const { message } = await data;
     const email = message['email'] ? message['email'] : '';
     const edad = message['fecha_nacimiento'] ? message['fecha_nacimiento'] : '';
@@ -133,7 +133,7 @@ reporte.addEventListener('click', async function (event) {
     u_telefono: document.getElementById('celular').value
   }
   try {
-    const { data, status } = await axios.post('https://flash.t-ickets.com/pdfqr/api/v1/registro', _datos)
+    const { data, status } = await axios.post('https://rec.netbot.ec/pdfqr/api/v1/registro', _datos)
     if (!data.success) {
       Swal.fire('Erro', 'hubo un error intente de nuevo', 'warning')
     } else {
@@ -164,7 +164,7 @@ const validacedula2 = async (e) => {
   const numero = document.getElementById(e).value;
   if (!numero) return
   try {
-    const { data } = await axios.get("https://flash.t-ickets.com/pdfqr/api/v1/cedula/" + numero)
+    const { data } = await axios.get("https://rec.netbot.ec/pdfqr/api/v1/cedula/" + numero)
     const { message } = await data;
     const email = message['email'] ? message['email'] : '';
     const edad = message['fecha_nacimiento'] ? message['fecha_nacimiento'] : '';

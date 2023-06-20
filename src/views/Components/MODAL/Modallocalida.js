@@ -528,7 +528,7 @@ const LocalidadmapViews = (props) => {
             return
         }
     })
-    $(document).on('click', 'a.disponible', function () {
+    /*$(document).on('click', 'a.disponible', function () {
         if (!this.classList.contains('seleccionado')) {
             let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
             if (TotalSelecion() < 10) {
@@ -585,7 +585,7 @@ const LocalidadmapViews = (props) => {
             succesElimAlert(this, { id: nombres.idcolor, "localidad": nombres.localidad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
         }
         return
-    })
+    })*/
     $(document).on("click", "div.mesadisponible", function () {
         /*if (!this.classList.contains("mesaselecion")) {
             if (TotalSelecion() < 10) {
@@ -596,11 +596,11 @@ const LocalidadmapViews = (props) => {
         }
         return*/
     })
-    $(document).on("click", "div.mesaselecion", function () {
+    /*$(document).on("click", "div.mesaselecion", function () {
         if (!this.classList.contains("mesadisponible")) {
             Elimnamesa(this.classList[0], this.classList[1])
         }
-    })
+    })*/
 
     const hideAlert = () => {
         setAlert(null);
@@ -638,12 +638,12 @@ const LocalidadmapViews = (props) => {
                     let nuevoObjeto = []
                     ouput.data.forEach(x => {
                         if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                            nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+                            nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id,cedula:x.cedula }] })
                         }
                         else {
                             let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
                             nuevoObjeto[indixe].asientos.push({
-                                silla: x.silla, estado: x.estado, idsilla: x.id
+                                silla: x.silla, estado: x.estado, idsilla: x.id,cedula:x.cedula
                             })
                         }
                     })
@@ -666,9 +666,11 @@ const LocalidadmapViews = (props) => {
                         let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
                         let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
                         nuevoObjeto[index].Mesas[sillas].asientos.push({
-                            silla: x.silla, estado: x.estado, idsilla: x.id
+                            silla: x.silla, estado: x.estado, idsilla: x.id,cedula:x.cedula
                         })
-                    }) : ''
+                    })
+                     : ''
+                   //  console.log("aqui")
                     mapath.precio.typo == "mesa" ? usedispatch(filtrarlocali(nuevoObjeto)) : ''
                     //console.log(nuevoObjeto)
                 }

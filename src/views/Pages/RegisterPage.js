@@ -71,7 +71,7 @@ function RegisterPage() {
     })()
   }, [registro])
   const Perfils = async () => {
-    const { data } = await axios.get("https://flash.t-ickets.com/ms_login/api/v1/listas_suscriptor", {
+    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listas_suscriptor", {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -88,7 +88,7 @@ function RegisterPage() {
     try {
       setSpiner("");
       setCedulaapi("d-none");
-      const res = await axios.get("https://flash.t-ickets.com/ms_login//cedula/" + consulta)
+      const res = await axios.get("https://rec.netbot.ec/ms_login//cedula/" + consulta)
 
       const { data } = res
       const { message } = data
