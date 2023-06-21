@@ -85,6 +85,7 @@ export default function ModalcreaEventoView() {
     }
     let usedispatch = useDispatch();
   async  function Guardar(){
+      sessionStorage.removeItem("itmeslocalidad")
         console.log(evento)
       if (Object.values(evento).some(e => e == "")) {
           usedispatch(setToastes({

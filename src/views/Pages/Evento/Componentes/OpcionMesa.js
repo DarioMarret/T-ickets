@@ -227,11 +227,11 @@ export default function OpcionMesa(props) {
         else return false
 
     }
-    async function agregaLocaliad() {
+    async function agregaLocaliads() {
         console.log(FilasLocalidad)
 
     }
-    function Guardar(e) {
+    function agregaLocaliad(e) {
         console.log(localidaname)
         if (localidaname.nombre == "") {
             return
@@ -245,10 +245,10 @@ export default function OpcionMesa(props) {
             return
         }
         let info = {
-            "id_localidad": localidaname.nombre,
-            "id_evento": moda.estado.id,
+            "id_localidad": parseInt(localidaname.nombre),
+            "id_evento": parseInt(moda.estado.id),
             "id_estado": 1,
-            "estado_asientoId": 1,
+            "estado_asientosId": 1,
             "array_mesas": {
                 "Typo": "correlativo",
                 "datos": FilasLocalidad
@@ -266,8 +266,22 @@ export default function OpcionMesa(props) {
         //  console.log(nuevo)
         Localidaditmes_create(info).then(ouput => {
             if (ouput.success) {
-                let nuevo = localidades.filter(e => e.id = !nmobretabuno.nombre)
-                setItems(nuevo)
+                let set = localidades.filter(e => e.id != nmobretabuno.nombre)
+                setItems(set)
+                setLocalidad({
+                    ...localidaname,
+                    nombre: '',
+                    description: '',
+                    id: ''
+                })
+                setItems(set)
+                Agregaitemsmap(nuevo)
+                setLocalidad({
+                    ...localidaname,
+                    nombre: '',
+                    description: '',
+                    id: ''
+                })
             }
             if (!ouput.success && ouput.error != "jwt expired") {
                 usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
@@ -302,10 +316,16 @@ export default function OpcionMesa(props) {
                                         <div className="input-group-prepend">
                                             <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
                                         </div>
-                                        <input type="text" className="form-control" id="nombre" name="nombre"
-                                            value={localidaname.nombre}
-                                            onChange={(e) => handelchangelocalidad(e.target)}
-                                            placeholder="Ingrese el nombre del espacio" />
+                                        <select className=" form-select" name="nombre" value={localidaname.nombre} onChange={(e) => handelchangelocalidad(e.target)}>
+                                            <option value={""}   ></option>
+                                            {localidades.length > 0 ?
+                                                localidades.map(e => {
+                                                    {
+                                                        return (<option value={e.id}>{e.nombre_localidad} </option>)
+                                                    }
+                                                })
+                                                : ""}
+                                        </select>
                                     </div>
                                 </div>
                             </div>

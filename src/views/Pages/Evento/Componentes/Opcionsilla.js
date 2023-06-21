@@ -4,11 +4,13 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Localidaditmes_create } from "utils/EventosQuery";
 import { Agregaitemsmap } from "utils/EventosQuery/mpalocal";
+import satori from "satori";
 
 export default function Viewsilla(props) {
     let { localidades, setItems } = props;
     //console.log(localidades);
     let usedispatch = useDispatch();
+    
     let modal = useSelector(state => state.SuscritorSlice.modal)
     let ListadeFilas = []
     const [nmobretabuno, setLocalidad] = useState({
@@ -37,7 +39,7 @@ export default function Viewsilla(props) {
         }
         setFilas(ListadeFilas)
     }
-    const AgregasSillasFila = () => {
+    const AgregasSillasFila = async () => {
         ListadeFilas = ListaFilas
         // console.log(filass.fila,filass.sillas)
         let interar = parseInt(filass.sillas);
@@ -79,6 +81,59 @@ export default function Viewsilla(props) {
 
             }
         }
+        const svg = await satori(
+            
+                ListaFilas.length > 0 ?
+
+                    ListaFilas.map((e, i) => {
+
+                        {
+                            return (
+                                <div className={"d-flex  flex-row "} key={"lista" + i}>
+                                    <OverlayTrigger placement='right' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length > 0 ? e.asientos.length : ""}</Tooltip>}>
+                                        <span className="d-inline-block " disabled >
+                                            <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
+                                                <div className="d-flex justify-content-center">
+                                                    <span style={{ fontSize: '0.7em' }}>    {e.fila} </span>
+                                                </div>
+
+                                            </div>
+                                        </span>
+                                    </OverlayTrigger>
+                                    <div className='d-flex  px-3 p-1 justify-content-ce  ' style={{ width: '' }}>
+                                        {e.asientos.length > 0 ?
+                                            <div className=' d-flex px-1  align-items-stretch  ' style={{ width: '' }}>
+                                                {e.asientos.map((silla, index, arr) => {
+                                                    let numero = index + 1
+                                                    return (
+                                                        <div key={"silla" + index} className='d-flex  bg-success   rounded-5 text-center  justify-content-center align-items-center '
+                                                            style={{ height: '30px', width: '30px', marginLeft: '1px' }} >
+                                                            <div className={'px-3 ' + silla.silla + 'd-flex   text-white justify-content-center  '} >
+                                                                <div className="d-flex justify-content-center">
+                                                                    <span style={{ fontSize: '0.7em' }}>    {numero} </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    )
+                                                })}
+                                            </div> : ""}
+
+
+
+
+                                    </div>
+                                </div>
+
+                            )
+                        }
+
+
+                    })
+                    : ""
+            
+        )
+        console.log(svg)
     }
     function handelchange(e) {
         setFilass({
@@ -124,10 +179,10 @@ export default function Viewsilla(props) {
         else {
             try {
                 let info = {
-                    "id_localidad": nmobretabuno.nombre,
+                    "id_localidad": parseInt(nmobretabuno.nombre),
                     "id_evento": modal.estado.id,
                     "id_estado": 1,
-                    "estado_asientoId": 1,
+                    "estado_asientosId": 1,
                     "array_mesas": { Typo: 'fila', datos: ListaFilas }
                 }
                 let nuevo = localidades.find(e => e.id == nmobretabuno.nombre)
@@ -367,7 +422,7 @@ export default function Viewsilla(props) {
 
                                 {
                                     return (
-                                        <div className={"d-flex  flex-row "} key={"lista" + i}>
+                                        <div id="sillas" className={"d-flex  flex-row "} key={"lista" + i}>
                                             <OverlayTrigger placement='right' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length > 0 ? e.asientos.length : ""}</Tooltip>}>
                                                 <span className="d-inline-block " disabled >
                                                     <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
@@ -410,6 +465,7 @@ export default function Viewsilla(props) {
                             })
                             : ""}
 
+                        
                     </div>
                     <div className='d-flex justify-content-end pt-2'>
 

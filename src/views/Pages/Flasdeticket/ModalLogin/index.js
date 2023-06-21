@@ -11,6 +11,7 @@ import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
+import { Olvide_password } from "utils/SuscritorQuery";
 
 const ModalLogin = (props) => {
   const { showLogin, setShowLogin, abrir } = props
@@ -93,6 +94,72 @@ const ModalLogin = (props) => {
     setShowLogin(false)
     usedispatch(setModal({ nombre: 'registro', estado: Modalstatus.estado }))
   }
+  function olvide(){
+    usedispatch(setModal({ nombre: '', estado: "" }))
+    $.confirm({
+      title: 'Recuperar contraseña',
+      type: 'blue',
+      content: '' +
+        '<form action="" class="formName">' +
+        '<div class="container form-group">' +
+        '<label>Ingrese email</label>' +
+        '<input  type="text" placeholder="Email" class="form-control name" required />' +
+        '</div>' +
+        '</form>',
+      buttons: {
+        formSubmit: {
+          text: 'Enviar',
+          btnClass: 'btn-blue',
+          action: function () {
+            var name = this.$content.find('.name').val();
+            if (!name) {
+              $.alert('Ingrese el correo registrado');
+              return false;
+            }
+            Olvide_password({
+              "email": name
+            
+            }).then(ou=>{
+              console.log(ou)
+              if(ou.success){
+                $.confirm({
+                  title: 'Contraseña Generada ',
+                  content: ou.message,
+                  autoClose: 'confirm|5000', // Auto cierre después de 5 segundos
+                  buttons: {
+                    confirm: {
+                      text: 'Aceptar',
+                      btnClass: 'btn-blue',
+                      action: function () {
+                        // No es necesario realizar ninguna acción aquí
+                      }
+                    }
+                  },
+                });
+              }
+            }).catch(err=>{
+              console.log(err)
+            })
+
+           // $.alert('Email ' + name);
+          }
+        },
+        cancel: function () {
+          //close
+        },
+      },
+      onContentReady: function () {
+        // bind to events
+        var jc = this;
+        this.$content.find('form').on('submit', function (e) {
+          // if the user submits the form by pressing enter in the fiel
+          console.log(e)
+          e.preventDefault();
+          jc.$$formSubmit.trigger('click'); // reference the button and click it
+        });
+      }
+    });
+  }
   const handleChange = (target) => {
     const { name, value } = target
     setnombre({
@@ -169,7 +236,7 @@ const ModalLogin = (props) => {
                     >Crear Cuenta</a>
                   </div>
                   <div className="col-12 ">
-                    <a className=" nav-link btn btn-link" href="#" > Olvide mi contraseña </a>
+                    <a className=" nav-link btn btn-link" href="#" onClick={olvide} > Olvide mi contraseña </a>
 
                   </div>
                 </div>

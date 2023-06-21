@@ -42,7 +42,7 @@ export default function Newitemview() {
        // setItems(itemlocalidad)
     }, [true])
     return (<Modal
-        show={(moda.nombre != "Newitemview")}
+        show={(moda.nombre == "Newitemview")}
         fullscreen={true}
     >
         <Modal.Header className="py-4">

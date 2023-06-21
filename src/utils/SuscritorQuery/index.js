@@ -1,12 +1,17 @@
 import axios from "axios"
-export const GetSuscritores = async (ini,fin) => {
-    const { data } = await axios.get("https://rec.netbot.ec/ms_login/api/v1/listas_suscriptor?init="+ini+"&size="+fin, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-        }
-    })
+import { InstanciaGETAxios } from "utils/Instancias"
+import { InstanciaAxio } from "utils/Instancias"
+export const GetSuscritores = async (ini, fin) => {
+    const { data } = await InstanciaAxio.get("/listar_suscriptores?init=" + ini + "&size=" + fin)
     return data
+}
+export const Olvide_password = async (parms) => {
+    try {
+        let { data } = await InstanciaGETAxios.post("/olvide_password", parms)
+        return data
+    } catch (error) {
+        return error
+    }
 }
 /**Editar subscritores */
 export const EditarSuscrito = async (id, parms) => {

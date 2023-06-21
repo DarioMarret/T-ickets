@@ -44,16 +44,17 @@ const SuscritorViews = () => {
   const nuevoevento = async () => {
     try {
       const data = await GetSuscritores(paginasu.init,paginasu.size)
-      if (data.users.length > 0) {
+     console.log(data)
+      if (data.data.length > 0) {
         //  console.log(data.users)
-        setsuscritor(data.users)
-        setCantidad(data.total)
-        setpagina({
+        setsuscritor(data.data)
+       // setCantidad(data.total)
+        /*setpagina({
           ...paginasu,
           "init": data.init,
           "size": data.size,
           "total": data.total,
-        })
+        })*/
         // console.log(data.users.filter(f => f.id == "6670"))
       }
     } catch (error) {
@@ -63,16 +64,17 @@ const SuscritorViews = () => {
   const nuevoeventos = async (ini,fin,paga) => {
     try {
       const data = await GetSuscritores(ini, fin)
-      if (data.users.length > 0) {
-        //  console.log(data.users)
-        setsuscritor(data.users)
-        setCantidad(data.total)
-        setpagina({
+      console.log(data)
+      if (data) {
+         console.log(data)
+       // setsuscritor(data.users)
+      //  setCantidad(data.total)
+      /*  setpagina({
           page: paga,
           "init": data.init,
           "size": data.size,
           "total": data.total,
-        })
+        })*/
         // console.log(data.users.filter(f => f.id == "6670"))
       }
     } catch (error) {

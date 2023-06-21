@@ -21,6 +21,7 @@ import addNotification from "react-push-notification/dist"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 import ToastViews from "views/Components/TOAST/toast"
 import { Emailcontec } from "utils/Emails"
+import { InstanciaGETAxios } from "utils/Instancias"
 const ResgistroView = (prop) => {
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
@@ -57,7 +58,7 @@ const ResgistroView = (prop) => {
                     seTspine("")
                     const busacar = await buscarcliente({ "cedula": e.target.value, "email": "" })
                     console.log(busacar)
-                    if (busacar.success == true) {
+                    if (busacar.success == false) {
                        usedispatch(setToastes({
                             show: true,
                             message: "Por favor inicie sesión con el correo: " + busacar.data["email"],
@@ -231,13 +232,8 @@ const ResgistroView = (prop) => {
                 try {
                     // console.log("condireccion-->", datos)
 
-
-                    const registro = await axios.post("https://rec.netbot.ec/ms_login/api/v1/crear_suscriptor", datos, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                        }
-                    })
+                    
+                    const registro = await InstanciaGETAxios.post("/crear_suscriptor", datos)
                     console.log(datos, registro)
 
                     if (registro.data.success) {

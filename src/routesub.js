@@ -139,10 +139,8 @@ var routes = [
     name: "Clientes",
     state: "openCliente",
     icon: "nc-icon nc-single-02",
-    permiso: [],
+    permiso: ["1"],
     views: [
-
-
       {
         path: "/suscritor",
         layout: "/admin",
