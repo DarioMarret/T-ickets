@@ -9,11 +9,10 @@ import { AgregarAsiento } from "utils/CarritoLocalStorang";
 import { addSillas } from "StoreRedux/Slice/sillasSlice";
 import { deleteSillas } from "StoreRedux/Slice/sillasSlice";
 import { EliminarsilladeMesa } from "utils/CarritoLocalStorang";
+import { setSpinersli } from "StoreRedux/Slice/SuscritorSlice";
 const MesacuatroView = ({ text, list }) => {
-  let usedispatch = useDispatch();
-  //console.log(list)
   let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
-
+  let usedispatch = useDispatch();
   const [alert, setAlert] = useState(null)
   let user = getDatosUsuariosLocalStorag()
   const modalshow = useSelector((state) => state.SuscritorSlice.modal)
@@ -22,7 +21,7 @@ const MesacuatroView = ({ text, list }) => {
     let estado = list.find(f => f.silla == e)
     if (estado.cedula != null && estado.cedula != "") {
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
-       else return "reservado"
+      else return "reservado"
     }
     else return estado.estado.toLowerCase()
   }
@@ -63,15 +62,130 @@ const MesacuatroView = ({ text, list }) => {
   }
 
   function sillasid(e) {
+    let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
     let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).idsilla : ""
+    let silla = list.find(f => f.silla == e)
+    if (silla.estado.toLowerCase().includes("reservado") && (info.cedula != silla.cedula)) {
+      return
+    }
+    if (silla.estado.toLowerCase().includes("reservado") && (info.cedula == silla.cedula)) {
+      let datos = {
+        "cedula": info.cedula,
+        "estado": "disponible",
+        "mesa": [
+          {
+            id_silla: silla.idsilla,
+            id: mapath[0].id,
+            cedula: info.cedula,
+            estado: "",
+            ...silla
+          }
+        ]
+      }
+      hideAlert()
+      correlativosadd(datos).then(ou => {
+        
+        usedispatch(setSpinersli({ spiner: false }))
+        if (ou.success) {
+          console.log(ou)
+          ou.insert.map((e => {
+            let asiento = silla
+            AgregarAsiento({
+              "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+              seleccionmapa: nombre.localidad + "-" + asiento.silla,
+              "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado"
+            })
+            usedispatch(addSillas({
+              "localidad": nombre.localidad, "localidaEspacio": nombre,
+              "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+              seleccionmapa: nombre.localidad + "-" + asiento.silla, "fila": asiento.silla.split("-")[0],
+              "silla": asiento.silla, "estado": "seleccionado"
+            }))
+
+          }))
+          ou.update.map((e) => {
+            let asiento = silla
+            usedispatch(deleteSillas({
+              "localidad": nombre.localidad,
+              "fila": asiento.silla.split("-")[0],
+              "silla": asiento.silla,
+              "estado": "seleccionado"
+            }))
+            EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento.silla })
+          })
+          usedispatch(setSpinersli({ spiner: true }))
+          // hideAlert()
+
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+      return
+    }
+
+    if (silla.estado.toLowerCase().includes("disponible")) {
+      let datos = {
+        "cedula": info.cedula,
+        "estado": "disponible",
+        "mesa": [
+          {
+            id_silla: silla.idsilla,
+            id: mapath[0].id,
+            cedula: info.cedula,
+            estado: "",
+            ...silla
+          }
+        ]
+      }
+      hideAlert()
+      correlativosadd(datos).then(ou => {
+        
+        usedispatch(setSpinersli({ spiner: false }))
+        if (ou.success) {
+          console.log(ou)
+          ou.insert.map((e => {
+            let asiento = silla
+            AgregarAsiento({
+              "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+              seleccionmapa: nombre.localidad + "-" + asiento.silla,
+              "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado"
+            })
+            usedispatch(addSillas({
+              "localidad": nombre.localidad, "localidaEspacio": nombre,
+              "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+              seleccionmapa: nombre.localidad + "-" + asiento.silla, "fila": asiento.silla.split("-")[0],
+              "silla": asiento.silla, "estado": "seleccionado"
+            }))
+
+          }))
+          ou.update.map((e) => {
+            let asiento = silla
+            usedispatch(deleteSillas({
+              "localidad": nombre.localidad,
+              "fila": asiento.silla.split("-")[0],
+              "silla": asiento.silla,
+              "estado": "seleccionado"
+            }))
+            EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento.silla })
+          })
+
+          usedispatch(setSpinersli({ spiner: true }))
+
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+
     console.log(estado, list.find(f => f.silla == e))
+    // console.log("%c%s", "color: red; background: yellow; font-size: 24px;", "ADVERTENCIA")
   }
   function enviarsillas(text) {
     let datos = document.getElementById(text).classList.value
-    if (datos.includes("mesareserva")){
+    if (datos.includes("mesareserva")) {
       return
     }
-    if (datos.includes("mesaselecion")){      
+    if (datos.includes("mesaselecion")) {
       modalshow.nombre == "Modallocalida" ? succesLimit(text) : ''
       return
     }
@@ -98,14 +212,18 @@ const MesacuatroView = ({ text, list }) => {
       </SweetAlert>
     )
   }
-  const succesSilla =(lim)=>{
-    console.log(lim)
-    /*setAlert(
+  const succesSilla = (e) => {
+    let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
+    let silla = list.find(f => f.silla == e)
+    if (silla.estado.toLowerCase().includes("reservado") && (info.cedula != silla.cedula)) {
+      return
+    }
+    setAlert(
       <SweetAlert
         warning
         style={{ display: "block", marginTop: "-100px" }}
-        title={"Deseas selecionar la sillas "+ list }
-        onConfirm={() => timeposlimites()}
+        title={"Deseas selecionar/desmarcar "}
+        onConfirm={() => sillasid(e)}
         onCancel={() => hideAlert()}
         confirmBtnBsStyle="success"
         cancelBtnBsStyle="danger"
@@ -113,14 +231,16 @@ const MesacuatroView = ({ text, list }) => {
         cancelBtnText="Cancelar"
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
         showCancel>
-          
-      </SweetAlert>)*/
+        {"la sillas " + e}
+      </SweetAlert>)
   }
   function timeposlimites() {
     let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
     let nuevo = list.filter(es => es.estado == "disponible" || es.estado == "DISPONIBLE").map(({ idsilla, ...e }) => {
+      // console.log(idsilla)
+      let id = idsilla
       return {
-        id_silla: idsilla,
+        id_silla: id,
         id: mapath[0].id,
         cedula: info.cedula,
         estado: "",
@@ -144,11 +264,16 @@ const MesacuatroView = ({ text, list }) => {
         , ...data
       ]
     }
+    hideAlert()
     correlativosadd(datos).then(ou => {
+      usedispatch(setSpinersli({ spiner: false }))
+      
       if (ou.success) {
+
         console.log(ou)
         ou.insert.map((e => {
-          let asiento = nuevo.filter(f => f.id_silla = e)
+          let asiento = list.filter(ef => ef.idsilla == e)
+          console.log(asiento, e)
           AgregarAsiento({
             "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
             seleccionmapa: nombre.localidad + "-" + asiento[0].silla,
@@ -163,7 +288,8 @@ const MesacuatroView = ({ text, list }) => {
 
         }))
         ou.update.map((e) => {
-          let asiento = data.filter(f => f.id_silla = e)
+          let asiento = list.filter(ef => ef.idsilla == e)
+          console.log(asiento)
           usedispatch(deleteSillas({
             "localidad": nombre.localidad,
             "fila": asiento[0].silla.split("-")[0],
@@ -172,19 +298,13 @@ const MesacuatroView = ({ text, list }) => {
           }))
           EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento[0].silla })
         })
-        hideAlert()
+        usedispatch(setSpinersli({ spiner: true }))
 
       }
     }).catch(err => {
       console.log(err)
     })
     console.log(datos)
-    /*
-    list.map((e, i) => {
-      setTimeout(function () {
-        console.log(e)
-      }, 1000 * i)
-    })*/
 
   }
   const hideAlert = () => setAlert(null)
@@ -206,11 +326,11 @@ const MesacuatroView = ({ text, list }) => {
       <div className=" d-flex  align-items-center">
         <div className="d-flex flex-column align-items-center">
           <a id={obtenerid(text + "-s-1")}
-            onClick={() => sillasid(text + "-s-1")}
+            onClick={() => succesSilla(text + "-s-1")}
             className={text + "-s-1 sillas  " + Estado(text + "-s-1")} style={Stylesilla.asientos}>
           </a>
           <a id={obtenerid(text + "-s-2")}
-            onClick={() => sillasid(text + "-s-2")}
+            onClick={() => succesSilla(text + "-s-2")}
             className={text + "-s-2 sillas  " + Estado(text + "-s-2")} style={Stylesilla.asientos}>
           </a>
         </div>
@@ -223,11 +343,11 @@ const MesacuatroView = ({ text, list }) => {
 
         <div className="d-flex flex-column align-items-center">
           <a id={obtenerid(text + "-s-3")}
-            onClick={() => sillasid(text + "-s-3")}
+            onClick={() => succesSilla(text + "-s-3")}
             className={text + "-s-3 sillas  " + Estado(text + "-s-3")} style={Stylesilla.asientos}>
           </a>
           <a id={obtenerid(text + "-s-4")}
-            onClick={() => sillasid(text + "-s-4")}
+            onClick={() => succesSilla(text + "-s-4")}
             className={text + "-s-4 sillas  " + Estado(text + "-s-4")} style={Stylesilla.asientos}>
           </a>
         </div>

@@ -17,6 +17,7 @@ const initialState = {
     data: [],
     tiketslist: [],
     ticket: true,
+    spiner: true,
     inicio: 0,
     final: 4,
     page: 1,
@@ -83,13 +84,18 @@ const SubscritorSlice = createSlice({
             state.tiketslist = actions.payload.tiketslist
         },
         setlisticket: (state, action) => {
-            state.ticket= action.payload.ticket
+            state.ticket = action.payload.ticket
+        },
+        setSpinersli: (state, action) => {
+            state.spiner = action.payload.spiner
         }
-
-
-
     }
 
 })
-export const { addususcritor, setTicket,setlisticket, setLabels, setFecha, setPagination, setCompras, deletesuscrito, setModal, updateboletos, setItervalo, addLocalidad, setTabs, deleteloclidad, setdetalle } = SubscritorSlice.actions;
+export const {
+    addususcritor, setTicket, setlisticket,
+    setLabels, setFecha, setSpinersli, setPagination,
+    setCompras, deletesuscrito, setModal, updateboletos,
+    setItervalo, addLocalidad, setTabs, deleteloclidad, setdetalle
+} = SubscritorSlice.actions;
 export default SubscritorSlice.reducer

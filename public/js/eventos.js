@@ -1,5 +1,5 @@
 
-/*function disableIE() {
+function disableIE() {
   if (document.all) {
     return false;
   }
@@ -26,9 +26,13 @@ function detectDevTools() {
       return 'Herramientas de desarrollador abiertas';
     }
   };
-  console.log(devtools);
+  //console.log(devtools);
+
+  console.log("%c%s", "color: red; background: yellow; font-size: 24px;", "ADVERTENCIA")
+  console.log("%c%s", "font-size: 18px;", "Si usas esta consola, otras personas podr\u00edan suplantar tu identidad y robarte datos mediante un ataque Self-XSS.\nNo escribas ni pegues ning\u00fan c\u00f3digo que no entiendas.")
+
 }
-detectDevTools();*/
+detectDevTools();
 
 document.oncontextmenu = new Function("return false");
 document.addEventListener("DOMContentLoaded", function () {

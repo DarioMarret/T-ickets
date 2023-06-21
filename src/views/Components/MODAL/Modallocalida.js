@@ -23,6 +23,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { updateboletos } from "StoreRedux/Slice/SuscritorSlice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { bancos } from "utils/Imgenesutils";
+import { Triangle } from "react-loader-spinner";
 let { atencion } = bancos
 const LocalidadmapViews = (props) => {
     const { intervalo, intervalolista } = props
@@ -32,6 +33,8 @@ const LocalidadmapViews = (props) => {
     const [detalle, setDetalle] = useState([])
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localidad))
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
+    const spinervi = useSelector((state) => state.SuscritorSlice.spiner)
+   
     const [alert, setAlert] = useState(null);
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
     function MesaVerifica(M, C) {
@@ -612,9 +615,9 @@ const LocalidadmapViews = (props) => {
         if (d.cedula != undefined) {
             if (user != null && user.cedula == d.cedula) return "seleccionado  " + nombres.idcolor + "silla"
             else
-                return d.estado == "seleccionado" ? "reservado" : d.estado
+                return d.estado.toLowerCase() == "seleccionado" ? "reservado" : d.estado.toLowerCase()
         }
-        else return d.estado
+        else return d.estado.toLowerCase()
     }
     $(document).ready(function () {
         let disponible = document.querySelectorAll("div.disponible, a.disponible")
@@ -941,7 +944,45 @@ const LocalidadmapViews = (props) => {
 
                     </div>
 
+                   {spinervi?"":
+                   <div 
+                        style={{
+                            display: 'none',
+                            position: 'fixed',
+                            top: '0',
+                            left: '0',
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            zIndex: '1000'
+                        }}
+                    >
 
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: '10px',
+                            padding: '10px',
+                        }}>
+                            <Triangle
+                                height="80"
+                                width="80"
+                                color="#4fa94d"
+                                ariaLabel="triangle-loading"
+                                wrapperStyle={{}}
+                                wrapperClassName=""
+                                visible={true}
+                            />
+                            <h4 className='text-light'>Seleccionando ...</h4>
+
+
+                        </div>
+                    </div>}
                 </Modal.Body>
                 <Modal.Footer className="px-0 bg" >
                     <div className=" container-fluid  text-dark  border-top justify-content-between p-3" style={{ minHeight: '50px', maxHeight: '188px', width: '100%' }} >

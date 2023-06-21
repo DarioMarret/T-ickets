@@ -875,7 +875,7 @@ const IndexFlas = () => {
 
 
   }, [isLoading, info])
-  seleccion == "" ?
+  seleccion == "" && final.length>0 ?
     setTimeout(function () {
       $('.logos-slider').slick({
         slidesToShow: 3,
