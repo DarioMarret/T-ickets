@@ -34,7 +34,7 @@ const LocalidadmapViews = (props) => {
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localidad))
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const spinervi = useSelector((state) => state.SuscritorSlice.spiner)
-   
+
     const [alert, setAlert] = useState(null);
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
     function MesaVerifica(M, C) {
@@ -104,12 +104,12 @@ const LocalidadmapViews = (props) => {
         }).then(oupt => {
             console.log(oupt)
             if (oupt.success) {
-               
+
                 console.log(oupt)
-                  getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
-        setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
+                getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
+                setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
                 setDisable(false)
-      
+
             }
             //console.log(oupt)
             console.log({
@@ -124,10 +124,10 @@ const LocalidadmapViews = (props) => {
             console.log(err)
         })
     }
-    const [disable,setDisable]=useState(false)
+    const [disable, setDisable] = useState(false)
     function agregar() {
         let user = getDatosUsuariosLocalStorag()
-        
+
         if (sleccionlocalidad.disponibles == 0) {
             usedispatch(setToastes({
                 show: true,
@@ -161,14 +161,14 @@ const LocalidadmapViews = (props) => {
                 "cedula": user.cedula,
                 "mas": "mas",
                 "cantidad": 1
-             }).then(oupt => {
+            }).then(oupt => {
                 if (oupt.success) {
                     getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
-                    setTimeout(function(){
+                    setTimeout(function () {
                         setDisable(false)
-                    },1000)
-                    
+                    }, 1000)
+
 
                 }
                 console.log({
@@ -182,13 +182,15 @@ const LocalidadmapViews = (props) => {
                 //console.log(oupt)
             }
 
-            ).catch(erro =>{
+            ).catch(erro => {
                 setDisable(false)
-                console.log(erro)})
+                console.log(erro)
+            })
         }
-        else{
+        else {
             setDisable(false)
-            succesLimit()}
+            succesLimit()
+        }
     }
     function Eliminar(e) {
         EliminarByStora(e.localidad)
@@ -430,8 +432,41 @@ const LocalidadmapViews = (props) => {
 
     }
     function sillasselecion(e) {
+        let user = getDatosUsuariosLocalStorag()
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-        enviasilla({ id: nombres.idcolor, silla: e.silla }).then(ouput => {
+        if (e.cedula == user.cedula){
+
+        }
+        else if(e.estado.toLowerCase()=="disponible"){
+
+        }else {
+
+        }
+      /*  
+        setAlert(
+            <SweetAlert
+                success
+                style={{ display: "block", marginTop: "-100px" }}
+                title="Se agrego"
+                onConfirm={() => hideAlert()}
+                onCancel={() => cerrar()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                confirmBtnText="Seguir Agregando"
+                cancelBtnText="Ir al carrito"
+                closeOnClickOutside={false}
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                showCancel
+            >
+                <div className="d-flex flex-row justify-content-center text-center">
+                    <div className="d-flex">
+                        <h4 style={{ fontSize: '0.9em' }} >
+                            De la Localidad {nombres.localidad} En la Fila:  {e.silla.replace("-", " ").split(" ")[0]} la Silla #{e.silla.split("-")[1]}  </h4>
+                    </div>
+                </div>
+            </SweetAlert>
+        )
+       /* enviasilla({ id: nombres.idcolor, silla: e.silla }).then(ouput => {
             setAlert(
                 <SweetAlert
                     success
@@ -462,63 +497,171 @@ const LocalidadmapViews = (props) => {
         }
         ).catch(exit => {
             console.log(exit)
+        })*/
+    }
+    function Agregarsilla(e) {
+        console.log(e)
+        let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
+        let user = getDatosUsuariosLocalStorag()
+        let variant = document.getElementById(e.idsilla)
+        variant.classList.remove('disponible')
+        variant.classList.add('seleccionado')
+        let datos = {
+            "cedula": info.cedula,
+            "estado": "disponible",
+            "mesa": [
+                {
+                    id_silla: e.idsilla,
+                    id: mapath.pathmap[0].id,
+                    "cedula": user.cedula,
+                    estado: "",
+                    ...e
+
+                }
+                // , ...data
+            ]
+        }
+        correlativosadd(datos).then(ou => {
+            if (ou.success) {
+                ou.insert.map((g => {
+                    let asiento = e
+                    AgregarAsiento({
+                        "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+                        seleccionmapa: nombre.localidad + "-" + asiento.silla,
+                        "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado"
+                    })
+                    usedispatch(addSillas({
+                        "localidad": nombre.localidad, "localidaEspacio": nombre,
+                        "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+                        seleccionmapa: nombre.localidad + "-" + asiento.silla, "fila": asiento.silla.split("-")[0],
+                        "silla": asiento.silla, "estado": "seleccionado"
+                    }))
+                    let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
+                    setAlert(
+                        <SweetAlert
+                            success
+                            style={{ display: "block", marginTop: "-100px" }}
+                            title="Se agrego"
+                            onConfirm={() => hideAlert()}
+                            onCancel={() => cerrar()}
+                            confirmBtnBsStyle="success"
+                            cancelBtnBsStyle="danger"
+                            confirmBtnText="Seguir Agregando"
+                            cancelBtnText="Ir al carrito"
+                            closeOnClickOutside={false}
+                            closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                            showCancel
+                        >
+                            <div className="d-flex flex-row justify-content-center text-center">
+                                <div className="d-flex">
+                                    <h4 style={{ fontSize: '0.9em' }} >
+                                        De la Localidad {nombres.localidad} En la Fila:  {e.silla.replace("-", " ").split(" ")[0]} la Silla #{e.silla.split("-")[1]}  </h4>
+                                </div>
+                            </div>
+                        </SweetAlert>
+                    )
+                }))
+                ou.update.map((g => {
+                    let asiento = e
+                    AgregarAsiento({
+                        "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+                        seleccionmapa: nombre.localidad + "-" + asiento.silla,
+                        "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado"
+                    })
+                    usedispatch(addSillas({
+                        "localidad": nombre.localidad, "localidaEspacio": nombre,
+                        "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+                        seleccionmapa: nombre.localidad + "-" + asiento.silla, "fila": asiento.silla.split("-")[0],
+                        "silla": asiento.silla, "estado": "seleccionado"
+                    }))
+                    let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
+                    setAlert(
+                        <SweetAlert
+                            success
+                            style={{ display: "block", marginTop: "-100px" }}
+                            title="Se elimino"
+                            onConfirm={() => hideAlert()}
+                            onCancel={() => cerrar()}
+                            confirmBtnBsStyle="success"
+                            cancelBtnBsStyle="danger"
+                            confirmBtnText="Seguir Agregando"
+                            cancelBtnText="Ir al carrito"
+                            closeOnClickOutside={false}
+                            closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                            showCancel
+                        >
+                            <div className="d-flex flex-row justify-content-center text-center">
+                                <div className="d-flex">
+                                    <h4 style={{ fontSize: '0.9em' }} >
+                                        De la Localidad {nombres.localidad} En la Fila:  {e.silla.replace("-", " ").split(" ")[0]} la Silla #{e.silla.split("-")[1]}  </h4>
+                                </div>
+                            </div>
+                        </SweetAlert>
+                    )
+                }))
+            }
+            console.log(ou)
+        }).catch(err => {
+            console.log(err)
         })
+        console.log(datos)
     }
 
-    $(document).on('click', 'div.disponible', function (e) {
-        e.preventDefault();
-        if (this.classList.contains("disponible")) {
-            if (!this.classList.contains('seleccionado') && !this.classList.contains('ocupado') && !this.classList.contains("reservado")) {
-                let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-                if (TotalSelecion() < 10) {
-
-                    //successAlert(this.classList[0], nombres.localidad, "Fila")
-                    let silla = this.classList[0].replace("-", " ").split(" ")[1]
-                    // console.log("sillas->", this.id)
-
-                    this.classList.remove('disponible')
-                    this.classList.add('seleccionado')
-                    this.classList.add("" + nombres.idcolor + "silla")
-
-                    enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
-                        console.log(ouput)
-                        setAlert(
-                            <SweetAlert
-                                success
-                                style={{ display: "block", marginTop: "-100px" }}
-                                title="Se agrego"
-                                onConfirm={() => hideAlert()}
-                                onCancel={() => cerrar()}
-                                confirmBtnBsStyle="success"
-                                cancelBtnBsStyle="danger"
-                                confirmBtnText="Seguir Agregando"
-                                cancelBtnText="Ir al carrito"
-                                closeOnClickOutside={false}
-                                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                                showCancel
-                            >
-                                <div className="d-flex flex-row justify-content-center text-center">
-                                    <div className="d-flex">
-                                        <h4 style={{ fontSize: '0.9em' }} >
-                                            De la Localidad {nombres.localidad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
-                                    </div>
-                                </div>
-                            </SweetAlert>
-                        )
-                        // usedispatch(filtrarlocali(ouput))
-                        AgregarAsiento({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                        usedispatch(addSillas({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
-
-                    }
-                    ).catch(exit => {
-                        console.log(exit)
-                    })
-                } else
-                    succesLimit()
-            }
-            return
-        }
-    })
+    /* $(document).on('click', 'div.disponible', function (e) {
+         e.preventDefault();
+         if (this.classList.contains("disponible")) {
+             if (!this.classList.contains('seleccionado') && !this.classList.contains('ocupado') && !this.classList.contains("reservado")) {
+                 let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
+                 if (TotalSelecion() < 10) {
+ 
+                     //successAlert(this.classList[0], nombres.localidad, "Fila")
+                     let silla = this.classList[0].replace("-", " ").split(" ")[1]
+                     // console.log("sillas->", this.id)
+ 
+                     this.classList.remove('disponible')
+                     this.classList.add('seleccionado')
+                     this.classList.add("" + nombres.idcolor + "silla")
+ 
+                     enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
+                         console.log(ouput)
+                         setAlert(
+                             <SweetAlert
+                                 success
+                                 style={{ display: "block", marginTop: "-100px" }}
+                                 title="Se agrego"
+                                 onConfirm={() => hideAlert()}
+                                 onCancel={() => cerrar()}
+                                 confirmBtnBsStyle="success"
+                                 cancelBtnBsStyle="danger"
+                                 confirmBtnText="Seguir Agregando"
+                                 cancelBtnText="Ir al carrito"
+                                 closeOnClickOutside={false}
+                                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                                 showCancel
+                             >
+                                 <div className="d-flex flex-row justify-content-center text-center">
+                                     <div className="d-flex">
+                                         <h4 style={{ fontSize: '0.9em' }} >
+                                             De la Localidad {nombres.localidad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
+                                     </div>
+                                 </div>
+                             </SweetAlert>
+                         )
+                         // usedispatch(filtrarlocali(ouput))
+                         AgregarAsiento({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+                         usedispatch(addSillas({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+ 
+                     }
+                     ).catch(exit => {
+                         console.log(exit)
+                     })
+                 } else
+                     succesLimit()
+             }
+             return
+         }
+     })*/
+    /*
     $(document).on('click', 'div.seleccionado', function (e) {
         e.preventDefault();
         if (this.classList.contains("seleccionado")) {
@@ -530,7 +673,7 @@ const LocalidadmapViews = (props) => {
             }
             return
         }
-    })
+    })*/
     /*$(document).on('click', 'a.disponible', function () {
         if (!this.classList.contains('seleccionado')) {
             let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
@@ -589,7 +732,7 @@ const LocalidadmapViews = (props) => {
         }
         return
     })*/
-    $(document).on("click", "div.mesadisponible", function () {
+    /*$(document).on("click", "div.mesadisponible", function () {
         /*if (!this.classList.contains("mesaselecion")) {
             if (TotalSelecion() < 10) {
                 Alertmesas(this.classList[0], this.classList[1])
@@ -597,8 +740,8 @@ const LocalidadmapViews = (props) => {
             else
                 succesLimit()
         }
-        return*/
-    })
+        return*
+    })*/
     /*$(document).on("click", "div.mesaselecion", function () {
         if (!this.classList.contains("mesadisponible")) {
             Elimnamesa(this.classList[0], this.classList[1])
@@ -641,12 +784,12 @@ const LocalidadmapViews = (props) => {
                     let nuevoObjeto = []
                     ouput.data.forEach(x => {
                         if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                            nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id,cedula:x.cedula }] })
+                            nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula }] })
                         }
                         else {
                             let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
                             nuevoObjeto[indixe].asientos.push({
-                                silla: x.silla, estado: x.estado, idsilla: x.id,cedula:x.cedula
+                                silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula
                             })
                         }
                     })
@@ -669,11 +812,11 @@ const LocalidadmapViews = (props) => {
                         let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
                         let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
                         nuevoObjeto[index].Mesas[sillas].asientos.push({
-                            silla: x.silla, estado: x.estado, idsilla: x.id,cedula:x.cedula
+                            silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula
                         })
                     })
-                     : ''
-                   //  console.log("aqui")
+                        : ''
+                    //  console.log("aqui")
                     mapath.precio.typo == "mesa" ? usedispatch(filtrarlocali(nuevoObjeto)) : ''
                     //console.log(nuevoObjeto)
                 }
@@ -705,19 +848,20 @@ const LocalidadmapViews = (props) => {
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
-            if (sessionStorage.getItem("eventoid") != "YZPQQ3"){
-            $("#mapas" + e.path).attr("fill", e.fill)
-            $("#mapas" + e.path).removeAttr("class")
-          // console.log(e.path)
-            $("#mapas" + e.path).attr("fill", e.fill)
-            $("#mapas" + e.path).removeAttr("class")}
-        else{
+            if (sessionStorage.getItem("eventoid") != "YZPQQ3") {
+                $("#mapas" + e.path).attr("fill", e.fill)
+                $("#mapas" + e.path).removeAttr("class")
+                // console.log(e.path)
+                $("#mapas" + e.path).attr("fill", e.fill)
+                $("#mapas" + e.path).removeAttr("class")
+            }
+            else {
                 $("#mapas" + e.path).attr("fill", "red")
                 $("#mapas" + e.path).removeAttr("class")
                 // console.log(e.path)
                 $("#mapas" + e.path).attr("fill", "red")
                 $("#mapas" + e.path).removeAttr("class")
-        }
+            }
         }) : ''
         let producto = {
             localidad: mapath.precio.localidad,
@@ -855,7 +999,7 @@ const LocalidadmapViews = (props) => {
                                                                         <div key={"silla" + index} id={silla.idsilla}
                                                                             className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 sillasfila text-center  justify-content-center align-items-center '}
                                                                             style={{ height: '30px', width: '30px', marginLeft: '1px', }}
-                                                                            onClick={() => console.log(silla)}
+                                                                            onClick={() => Agregarsilla(silla)}
                                                                         >
                                                                             <div className={'px-3 d-flex   text-white justify-content-center  '} >
                                                                                 <div className="d-flex justify-content-center">
@@ -944,45 +1088,45 @@ const LocalidadmapViews = (props) => {
 
                     </div>
 
-                   {spinervi?"":
-                   <div 
-                        style={{
-                            display: 'none',
-                            position: 'fixed',
-                            top: '0',
-                            left: '0',
-                            width: '100%',
-                            height: '100%',
-                            backgroundColor: 'rgba(0,0,0,0.5)',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            zIndex: '1000'
-                        }}
-                    >
+                    {spinervi ? "" :
+                        <div
+                            style={{
+                                display: 'none',
+                                position: 'fixed',
+                                top: '0',
+                                left: '0',
+                                width: '100%',
+                                height: '100%',
+                                backgroundColor: 'rgba(0,0,0,0.5)',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                zIndex: '1000'
+                            }}
+                        >
 
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: '10px',
-                            padding: '10px',
-                        }}>
-                            <Triangle
-                                height="80"
-                                width="80"
-                                color="#4fa94d"
-                                ariaLabel="triangle-loading"
-                                wrapperStyle={{}}
-                                wrapperClassName=""
-                                visible={true}
-                            />
-                            <h4 className='text-light'>Seleccionando ...</h4>
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: '10px',
+                                padding: '10px',
+                            }}>
+                                <Triangle
+                                    height="80"
+                                    width="80"
+                                    color="#4fa94d"
+                                    ariaLabel="triangle-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClassName=""
+                                    visible={true}
+                                />
+                                <h4 className='text-light'>Seleccionando ...</h4>
 
 
-                        </div>
-                    </div>}
+                            </div>
+                        </div>}
                 </Modal.Body>
                 <Modal.Footer className="px-0 bg" >
                     <div className=" container-fluid  text-dark  border-top justify-content-between p-3" style={{ minHeight: '50px', maxHeight: '188px', width: '100%' }} >
