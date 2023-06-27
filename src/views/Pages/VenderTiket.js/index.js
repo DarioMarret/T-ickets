@@ -56,6 +56,7 @@ import { useGetSuscritorQuery } from "StoreRedux/Slicequery/querySlice";
 import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import EventosView from "../Flasdeticket/Eventosindex";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { verAsientos } from "utils/CarritoLocalStorang";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -101,6 +102,7 @@ export default function StoreTickesViews() {
          }, 2000);*/
     }
     function detenervelocidad() {
+        let datos = verAsientos()
         let user = getDatosUsuariosLocalStorag()
         console.log("qitoa")
         clearInterval(intervalRef.current)
@@ -131,7 +133,23 @@ export default function StoreTickesViews() {
                     })
                 }, 20 * index)
             })
-            : ''
+            : datos().map((elem, index) => {
+                setTimeout(function () {
+                    correlativosadd({                        
+                        "estado": "disponible",                        
+                        "cedula": user.cedula,
+                        "cantidad": "",
+                         "mesa": [
+                            {...elem}
+                            // , ...data
+                        ]
+                    }).then(ouput => {
+                        console.log(ouput)
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }, 20 * index)
+            })
         Limpiarseleccion()
         LimpiarLocalStore()
     }

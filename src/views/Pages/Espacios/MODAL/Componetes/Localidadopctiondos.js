@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Modal, ProgressBar, OverlayTrigger, Tooltip, Button, Form } from "react-bootstrap"
-import {  AptualizarLocalida } from 'utils/Querypanel';
+import { AptualizarLocalida } from 'utils/Querypanel';
 import { GuardarLocalidad } from "utils/LocalidadesQuery/index.js";
 import MesasView from 'views/Pages/Mesas';
 import MesacerView from 'views/Pages/Mesas/Plantillas/Mesacer';
@@ -205,7 +205,7 @@ const TabdosView = (props) => {
         let asiento = []
         if (FilasLocalidad.length > 0) {
             FilasLocalidad.forEach((obj, i) => { asiento[i] = obj.Mesas.length })
-            if (Object.values(asiento).every(isValido)) return true
+            if (Object.values(asiento).every(isValido)) return false
             else return false
         }
         else
@@ -236,11 +236,11 @@ const TabdosView = (props) => {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guardar', color: 'bg-warning', estado: 'Advertencia' }))
             return
         }
-        if (!ValidarMesas()) {
+        if (false) {
             usedispatch(setToastes({ show: true, message: 'Verifique que todas las Filas tengan mínimo 2 mesa', color: 'bg-danger', estado: 'Faltan Mesas' }))
             return
         }
-        if (!ValidaSillasenMesas()) {
+        if (false) {
             usedispatch(setToastes({ show: true, message: 'Verifique que todas las Mesas tengan mínimo 2 sillas', color: 'bg-danger', estado: 'Faltan Sillas' }))
             return
         }
@@ -278,14 +278,15 @@ const TabdosView = (props) => {
         if (localidaname.nombre == "" || localidaname.description == "" || ListaMesa.length < 0) {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guardar', color: 'bg-warning', estado: 'Advertencia' }))
             return
-        } if (!ValidarMesas()) {
-            usedispatch(setToastes({ show: true, message: 'Verifique que todas las Filas tengan mínimo 2 mesa', color: 'bg-danger', estado: 'Faltan Mesas' }))
-            return
         }
-        if (!ValidaSillasenMesas()) {
-            usedispatch(setToastes({ show: true, message: 'Verifique que todas las Mesas tengan mínimo 2 sillas', color: 'bg-danger', estado: 'Faltan Sillas' }))
-            return
-        }
+        /*if (!ValidarMesas()) {
+           usedispatch(setToastes({ show: true, message: 'Verifique que todas las Filas tengan mínimo 2 mesa', color: 'bg-danger', estado: 'Faltan Mesas' }))
+           return
+       }
+       if (!ValidaSillasenMesas()) {
+           usedispatch(setToastes({ show: true, message: 'Verifique que todas las Mesas tengan mínimo 2 sillas', color: 'bg-danger', estado: 'Faltan Sillas' }))
+           return
+       }*/
         else {
             try {
                 setdisable(true)

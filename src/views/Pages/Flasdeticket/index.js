@@ -207,20 +207,20 @@ const IndexFlas = () => {
       console.log(ouput)
     }
     ).catch(err => console.log(err)) : ''
-    getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
-      getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
+    getVerTienda().filter(e => e.tipo == e.tipo).length > 0 ?
+      getVerTienda().map((elem, index) => {
         setTimeout(function () {
           console.log(elem, {
             "id": elem.id,
             "estado": "disponible",
-            "mas": "eliminar",
+            "mas": "menos",
             "cedula": user.cedula,
             "cantidad": elem.cantidad
           })
           correlativosadd({
             "id": elem.id,
             "estado": "disponible",
-            "mas": "eliminar",
+            "mas": "menos",
             "cedula": user.cedula,
             "cantidad": elem.cantidad
           }).then(ouput => {

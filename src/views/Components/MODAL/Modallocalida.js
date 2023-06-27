@@ -37,27 +37,8 @@ const LocalidadmapViews = (props) => {
 
     const [alert, setAlert] = useState(null);
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
-    function MesaVerifica(M, C) {
-        let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-        hideAlert()
-        let nuevo = []
-        for (let i = 1; i < parseInt(C) + 1; i++) {
-            let valid = seleccion.some(e => e.seleccionmapa == nombre.localidad + "-" + M + "-s-" + i)
-            if (valid) { }
-            nuevo.push({ id: nombres.idcolor, silla: M + "-s-" + i })
-        }
-        nuevo.length > 0 && TotalSelecion() < 10 ? nuevo.map((e, index) => {
-            setTimeout(() => {
-                TotalSelecion() < 10 ? $("." + e.silla).hasClass('disponible') ? enviasilla({ ...e }).then(ouput => {
-                    AgregarAsiento({ "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localidad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" })
-                    usedispatch(addSillas({ "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal, seleccionmapa: nombre.localidad + "-" + e.silla, "fila": e.silla.split("-")[0], "silla": e.silla, "estado": "seleccionado" }))
-                }
-                ).catch(exit => {
-                    console.log(exit)
-                }) : '' : succesLimit()
-            }, 20 * index)
-        }) : succesLimit()
-    }
+   // console.log(sleccionlocalidad)
+    
     const eliminarmesas = (M, C) => {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
         let user = getDatosUsuariosLocalStorag()
@@ -171,6 +152,12 @@ const LocalidadmapViews = (props) => {
 
 
                 }
+                usedispatch(setToastes({
+                    show: true,
+                    message: "No hay más disponibilida en la localidad",
+                    color: 'bg-danger',
+                    estado: "Localidad llena"
+                }))
                 console.log({
                     "id": mapath.precio.idcolor,
                     "estado": "reservado",
@@ -354,7 +341,7 @@ const LocalidadmapViews = (props) => {
                 warning
                 style={{ display: "block", marginTop: "-100px" }}
                 title="Desea selecionar los asientos dispobles de esta mesa"
-                onConfirm={() => MesaVerifica(e, f)}
+                onConfirm={() => ConsolidacionView.log(e, f)}
                 onCancel={() => cerrar()}
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
@@ -434,70 +421,70 @@ const LocalidadmapViews = (props) => {
     function sillasselecion(e) {
         let user = getDatosUsuariosLocalStorag()
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-        if (e.cedula == user.cedula){
+        if (e.cedula == user.cedula) {
 
         }
-        else if(e.estado.toLowerCase()=="disponible"){
+        else if (e.estado.toLowerCase() == "disponible") {
 
-        }else {
-
-        }
-      /*  
-        setAlert(
-            <SweetAlert
-                success
-                style={{ display: "block", marginTop: "-100px" }}
-                title="Se agrego"
-                onConfirm={() => hideAlert()}
-                onCancel={() => cerrar()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                confirmBtnText="Seguir Agregando"
-                cancelBtnText="Ir al carrito"
-                closeOnClickOutside={false}
-                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel
-            >
-                <div className="d-flex flex-row justify-content-center text-center">
-                    <div className="d-flex">
-                        <h4 style={{ fontSize: '0.9em' }} >
-                            De la Localidad {nombres.localidad} En la Fila:  {e.silla.replace("-", " ").split(" ")[0]} la Silla #{e.silla.split("-")[1]}  </h4>
-                    </div>
-                </div>
-            </SweetAlert>
-        )
-       /* enviasilla({ id: nombres.idcolor, silla: e.silla }).then(ouput => {
-            setAlert(
-                <SweetAlert
-                    success
-                    style={{ display: "block", marginTop: "-100px" }}
-                    title="Se agrego"
-                    onConfirm={() => hideAlert()}
-                    onCancel={() => cerrar()}
-                    confirmBtnBsStyle="success"
-                    cancelBtnBsStyle="danger"
-                    confirmBtnText="Seguir Agregando"
-                    cancelBtnText="Ir al carrito"
-                    closeOnClickOutside={false}
-                    closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                    showCancel
-                >
-                    <div className="d-flex flex-row justify-content-center text-center">
-                        <div className="d-flex">
-                            <h4 style={{ fontSize: '0.9em' }} >
-                                De la Localidad {nombres.localidad} En la Fila:  {e.silla.replace("-", " ").split(" ")[0]} la Silla #{e.silla.split("-")[1]}  </h4>
-                        </div>
-                    </div>
-                </SweetAlert>
-            )
-            // usedispatch(filtrarlocali(ouput))
-            AgregarAsiento({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-            usedispatch(addSillas({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+        } else {
 
         }
-        ).catch(exit => {
-            console.log(exit)
-        })*/
+        /*  
+          setAlert(
+              <SweetAlert
+                  success
+                  style={{ display: "block", marginTop: "-100px" }}
+                  title="Se agrego"
+                  onConfirm={() => hideAlert()}
+                  onCancel={() => cerrar()}
+                  confirmBtnBsStyle="success"
+                  cancelBtnBsStyle="danger"
+                  confirmBtnText="Seguir Agregando"
+                  cancelBtnText="Ir al carrito"
+                  closeOnClickOutside={false}
+                  closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                  showCancel
+              >
+                  <div className="d-flex flex-row justify-content-center text-center">
+                      <div className="d-flex">
+                          <h4 style={{ fontSize: '0.9em' }} >
+                              De la Localidad {nombres.localidad} En la Fila:  {e.silla.replace("-", " ").split(" ")[0]} la Silla #{e.silla.split("-")[1]}  </h4>
+                      </div>
+                  </div>
+              </SweetAlert>
+          )
+         /* enviasilla({ id: nombres.idcolor, silla: e.silla }).then(ouput => {
+              setAlert(
+                  <SweetAlert
+                      success
+                      style={{ display: "block", marginTop: "-100px" }}
+                      title="Se agrego"
+                      onConfirm={() => hideAlert()}
+                      onCancel={() => cerrar()}
+                      confirmBtnBsStyle="success"
+                      cancelBtnBsStyle="danger"
+                      confirmBtnText="Seguir Agregando"
+                      cancelBtnText="Ir al carrito"
+                      closeOnClickOutside={false}
+                      closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                      showCancel
+                  >
+                      <div className="d-flex flex-row justify-content-center text-center">
+                          <div className="d-flex">
+                              <h4 style={{ fontSize: '0.9em' }} >
+                                  De la Localidad {nombres.localidad} En la Fila:  {e.silla.replace("-", " ").split(" ")[0]} la Silla #{e.silla.split("-")[1]}  </h4>
+                          </div>
+                      </div>
+                  </SweetAlert>
+              )
+              // usedispatch(filtrarlocali(ouput))
+              AgregarAsiento({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
+              usedispatch(addSillas({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
+  
+          }
+          ).catch(exit => {
+              console.log(exit)
+          })*/
     }
     function Agregarsilla(e) {
         console.log(e)
@@ -506,6 +493,10 @@ const LocalidadmapViews = (props) => {
         let variant = document.getElementById(e.idsilla)
         variant.classList.remove('disponible')
         variant.classList.add('seleccionado')
+        if (e.estado.toLowerCase() != "disponible" && e.cedula != user.cedula) {
+
+            return
+        }
         let datos = {
             "cedula": info.cedula,
             "estado": "disponible",
@@ -528,7 +519,7 @@ const LocalidadmapViews = (props) => {
                     AgregarAsiento({
                         "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
                         seleccionmapa: nombre.localidad + "-" + asiento.silla,
-                        "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado"
+                        "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado", "ids": e.idsilla, "cedula": user.cedula
                     })
                     usedispatch(addSillas({
                         "localidad": nombre.localidad, "localidaEspacio": nombre,
@@ -563,7 +554,14 @@ const LocalidadmapViews = (props) => {
                 }))
                 ou.update.map((g => {
                     let asiento = e
-                    AgregarAsiento({
+                    usedispatch(deleteSillas({
+                        "localidad": nombre.localidad,
+                        "fila": asiento.silla.split("-")[0],
+                        "silla": asiento.silla,
+                        "estado": "seleccionado"
+                    }))
+                    EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento.silla })
+                    /*elim({
                         "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
                         seleccionmapa: nombre.localidad + "-" + asiento.silla,
                         "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado"
@@ -573,7 +571,7 @@ const LocalidadmapViews = (props) => {
                         "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
                         seleccionmapa: nombre.localidad + "-" + asiento.silla, "fila": asiento.silla.split("-")[0],
                         "silla": asiento.silla, "estado": "seleccionado"
-                    }))
+                    }))*/
                     let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
                     setAlert(
                         <SweetAlert
@@ -756,7 +754,7 @@ const LocalidadmapViews = (props) => {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
         //  console.log(d.estado)
         if (d.cedula != undefined) {
-            if (user != null && user.cedula == d.cedula) return "seleccionado  " + nombres.idcolor + "silla"
+            if (user.cedula == d.cedula) return "seleccionado  " + nombres.idcolor + "silla"
             else
                 return d.estado.toLowerCase() == "seleccionado" ? "reservado" : d.estado.toLowerCase()
         }
@@ -1139,7 +1137,7 @@ const LocalidadmapViews = (props) => {
                                             seleccion.filter((e) => e.estado == "seleccionado").map((elm, id) => {
                                                 return (
                                                     <li key={id} className={elm.silla + '  d-flex agregados rounded-5  bg-success justify-content-center align-items-center '}
-                                                        onClick={() => succesElimAlertli({ "localidad": elm.localidad, tipo: mapath.precio.typo, "localidaEspacio": elm.localidaEspacio, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "borrar" })}
+                                                        onClick={() => console.log({ /*"localidad": elm.localidad, tipo: mapath.precio.typo, "localidaEspacio": elm.localidaEspacio, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "borrar" */})}
                                                         style={{ height: '30px', width: '80px', margin: '1px' }} >
                                                         <div className={'d-flex   text-white justify-content-center  '} >
                                                             <div className="d-flex  justify-content-center text-center p-2">

@@ -36,6 +36,9 @@ const MesaseisView = ({ text, list }) => {
       {
         if (k.cedula != "") {
           // console.log(k.cedula)
+          if (user == undefined) {
+            return k.estado
+          }
           if (k.cedula == user.cedula) {
             // console.log(k.cedula, user.cedula)
             return ["seleccionado"];
@@ -67,6 +70,9 @@ const MesaseisView = ({ text, list }) => {
     let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
     let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).idsilla : ""
     let silla = list.find(f => f.silla == e)
+    if (info == undefined) {
+      return
+    }
     if (silla.estado.toLowerCase().includes("reservado") && (info.cedula != silla.cedula)) {
       return
     }
@@ -94,7 +100,7 @@ const MesaseisView = ({ text, list }) => {
             AgregarAsiento({
               "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
               seleccionmapa: nombre.localidad + "-" + asiento.silla,
-              "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado"
+              "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado", "ids": asiento.idsilla, "cedula": info.cedula
             })
             usedispatch(addSillas({
               "localidad": nombre.localidad, "localidaEspacio": nombre,
@@ -149,7 +155,7 @@ const MesaseisView = ({ text, list }) => {
             AgregarAsiento({
               "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
               seleccionmapa: nombre.localidad + "-" + asiento.silla,
-              "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado"
+              "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado", "ids": asiento.idsilla, "cedula": info.cedula
             })
             usedispatch(addSillas({
               "localidad": nombre.localidad, "localidaEspacio": nombre,
@@ -192,11 +198,11 @@ const MesaseisView = ({ text, list }) => {
     }
     //console.log(datos.includes("mesareserva"))
     let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
-    if (TotalSelecion() >= 10) {
+    if (TotalSelecion() >= 5) {
 
       usedispatch(setToastes({
         show: true,
-        message: 'Has alcanzado el límite de selección',
+        message: 'Debes desmarcar la selección anterior para poder comprar la mesa completa',
         color: 'bg-warning', estado: 'Límite alcanzado'
       }))
 
@@ -206,12 +212,10 @@ const MesaseisView = ({ text, list }) => {
     modalshow.nombre == "Modallocalida" ? succesLimit(text) : ''
   }
   const succesLimit = (me) => {
-    // list.filter(es => es.estado == "disponible")
-
-    if (TotalSelecion() > 2) {
+    if (TotalSelecion() >= 10) {
       usedispatch(setToastes({
         show: true,
-        message: 'Ya tienes una selección, debes seleccionar la silla de esta mesa de manera individal  ',
+        message: 'Has alcanzado el limite de selección',
         color: 'bg-warning', estado: 'No puedes seleccionar toda la mesa'
       }))
       return
@@ -238,6 +242,9 @@ const MesaseisView = ({ text, list }) => {
     /**/
     let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
     let silla = list.find(f => f.silla == e)
+    if (info == undefined) {
+      return
+    }
     // console.log(silla)
     if (silla.estado.toLowerCase().includes("reservado") && (info.cedula != silla.cedula)) {
       return
@@ -330,7 +337,7 @@ const MesaseisView = ({ text, list }) => {
           AgregarAsiento({
             "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
             seleccionmapa: nombre.localidad + "-" + asiento[0].silla,
-            "fila": asiento[0].silla.split("-")[0], "silla": asiento[0].silla, "estado": "seleccionado"
+            "fila": asiento[0].silla.split("-")[0], "silla": asiento[0].silla, "estado": "seleccionado", "ids": asiento.idsilla, "cedula": info.cedula
           })
           usedispatch(addSillas({
             "localidad": nombre.localidad, "localidaEspacio": nombre,
@@ -394,7 +401,7 @@ const MesaseisView = ({ text, list }) => {
           AgregarAsiento({
             "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
             seleccionmapa: nombre.localidad + "-" + asiento[0].silla,
-            "fila": asiento[0].silla.split("-")[0], "silla": asiento[0].silla, "estado": "seleccionado"
+            "fila": asiento[0].silla.split("-")[0], "silla": asiento[0].silla, "estado": "seleccionado", "ids": asiento.idsilla, "cedula": info.cedula
           })
           usedispatch(addSillas({
             "localidad": nombre.localidad, "localidaEspacio": nombre,

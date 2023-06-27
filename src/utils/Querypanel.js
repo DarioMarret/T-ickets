@@ -174,22 +174,13 @@ export const EliminareventoLocalidad = async (parm, id) => {
     return data
 }
 //
-export const ActualizarLocalidad = async (id, parms) => {
-    const { data } = await axios.put("https://rec.netbot.ec/ms_login/actualizarevento/" + id, parms, {
-        header: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-        }
-    })
-    return data
-}
 
-//
 export const Obtenerlinkimagen = async (parm) => {
     try {
         const fordata = new FormData();
         fordata.append('image', parm);
-        const { data } = await axios.post("https://rec.netbot.ec/store/api/img/", fordata,
+        console.log(parm)
+        const { data } = await axios.post("https://flash.t-ickets.com/store/api/img/", fordata,
             {
                 header: {
                     'Content-Type': 'application/json',
@@ -197,7 +188,7 @@ export const Obtenerlinkimagen = async (parm) => {
                 }
             })
         if (!data.success) return null
-         console.log(data)
+        console.log(data)
         return data.link
 
     } catch (error) {
@@ -207,7 +198,7 @@ export const Obtenerlinkimagen = async (parm) => {
     }
 
 }
-export const Iamegn = (parm)=>{
+export const Iamegn = (parm) => {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==");
 
@@ -221,7 +212,7 @@ export const Iamegn = (parm)=>{
         redirect: 'follow'
     };
 
-    fetch("https://rec.netbot.ec/store/api/img/", requestOptions)
+    fetch("https://flash.t-ickets.com/store/api/img/", requestOptions)
         .then(response => response.text())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));

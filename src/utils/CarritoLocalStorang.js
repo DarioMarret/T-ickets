@@ -73,6 +73,26 @@ export function getVerTienda() {
         console.log(error);
     }
 }
+export function verAsientos() {
+    try {
+        let item = JSON.parse(sessionStorage.getItem("asientosList"))
+        if (item != null) {
+            return item.map(e=>{
+                return {
+                    id_silla: e.ids,
+                    id: e.localidaEspacio.idcolor,
+                    cedula: e.cedula,
+                    estado: "",
+                    ...e
+}
+            })
+        } else {
+            return []
+        }
+    } catch (error) {
+        return []
+    }
+}
 export function EliminarByStora(localidad) {
     let iten = JSON.parse(sessionStorage.getItem(CarritoTicket));
     let Cost = []
@@ -274,21 +294,21 @@ export function GetValores() {
     var sumcomision = 0;
     var descrption = ""
     if (tag !== null) {
-        tag.map(tienda2 =>{
+        tag.map(tienda2 => {
             //tienda2.localidaEspacio.descuento>0
-            if (false){
-                let descuento = "1."+tienda2.localidaEspacio.descuento
-                tienda2.valor = (parseInt( tienda2.valor) * parseInt( tienda2.cantidad)) / parseFloat(descuento)
-            }else{
+            if (false) {
+                let descuento = "1." + tienda2.localidaEspacio.descuento
+                tienda2.valor = (parseInt(tienda2.valor) * parseInt(tienda2.cantidad)) / parseFloat(descuento)
+            } else {
                 tienda2.valor = (parseInt(tienda2.valor) * parseInt(tienda2.cantidad))
             }
             return tienda2
-           
+
         })
-        
+
         tag.map(tienda => {
-            let valores =  tienda.valor
-            subtotal += valores 
+            let valores = tienda.valor
+            subtotal += valores
             descrption = tienda.nombreConcierto
             sumcomision += parseInt(tienda.cantidad) * parseFloat(tienda.localidaEspacio["comision_boleto"])
             if (valores >= 101) {
@@ -303,7 +323,7 @@ export function GetValores() {
                 comision += tienda.cantidad
             }
         })
-        valor = subtotal + sumcomision;  
+        valor = subtotal + sumcomision;
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
             comision_bancaria: valor.toFixed(2) * 8 / 100,
@@ -311,7 +331,7 @@ export function GetValores() {
             description: descrption,
             comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
-            total:  valor.toFixed(2) * 8 / 100 + valor,
+            total: valor.toFixed(2) * 8 / 100 + valor,
             desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15),
             desc: Math.round((subtotal + comision) / 1.15),
         }

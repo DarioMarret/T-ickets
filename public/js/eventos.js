@@ -32,7 +32,7 @@ function detectDevTools() {
   console.log("%c%s", "font-size: 18px;", "Si usas esta consola, otras personas podr\u00edan suplantar tu identidad y robarte datos mediante un ataque Self-XSS.\nNo escribas ni pegues ning\u00fan c\u00f3digo que no entiendas.")
 
 }
-detectDevTools();
+//detectDevTools();
 
 document.oncontextmenu = new Function("return false");
 document.addEventListener("DOMContentLoaded", function () {

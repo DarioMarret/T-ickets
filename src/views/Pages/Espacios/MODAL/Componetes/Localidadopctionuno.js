@@ -102,10 +102,10 @@ const TabunoView = (props) => {
             console.log(asiento)
             console.log(Object.values(asiento).every(isValido))
             if (Object.values(asiento).every(isValido)) { return true }
-            else return false
+            else return true
         }
         else
-            return false
+            return true
     }
 
     async function AgregaLocalidad() {
@@ -114,10 +114,10 @@ const TabunoView = (props) => {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guaradar', color: 'bg-danger', estado: 'Datos incompletos' }))
             return
         }
-        if (!ValidarSillas()) {
+       /* if (!ValidarSillas()) {
             usedispatch(setToastes({ show: true, message: 'Verifica que todas las filas tengan más de 6 sillas ', color: 'bg-danger', estado: 'Hay filas sin Asientos ' }))
             return
-        }
+        }*/
         else {
             try {
                 console.log(ListaFilas)
