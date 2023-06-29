@@ -131,7 +131,7 @@ function LoginPage() {
             <div className="card px-0  shadow-md text-white py-5 d-none d-lg-block "
               style={{
                 width: '100%', backgroundImage:
-                  "url('https://rec.netbot.ec/store/img/portada-login.jpeg')", backgroundSize: 'cover'
+                  "url('https://rec.netbot.ec/store/img/portada-login.png')", backgroundSize: 'cover'
               }}>
               <div className="card-body text-center">
                 <div>
