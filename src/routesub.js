@@ -90,7 +90,7 @@ var routes = [
         permiso: ["1", ]
       },
       {
-        path: "/Informacion-tributaria",
+        path: "/promotores",
         layout: "/admin",
         name: "Promotor",
         mini: "*",

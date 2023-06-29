@@ -30,7 +30,7 @@ export default function ModalPromotor({...props}) {
             if (outpot.success) {
                 props.setShow(false)
                 usedispatch(setModal({nombre:"",estado:""}))
-                usedispatch(setToastes({}))
+                usedispatch(setToastes({ show: true, message: 'Promotor registrado correctamente', color: 'bg-success', estado: 'Guardado' }))
                 
             }
             if (!outpot.success && ouput.error != "jwt expired") {

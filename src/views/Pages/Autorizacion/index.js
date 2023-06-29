@@ -18,14 +18,53 @@ import "datatables.net-responsive-bs5"
 import $ from "jquery"
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import SweetAlert from "react-bootstrap-sweetalert";
+import { EliminarPromotor } from "utils/PromotorQuerys";
 
 export default function AutorizacionView() {
     let history = useHistory()
-    let usedispatch= useDispatch()
+    let usedispatch = useDispatch()
     const [Eventos, setEventos] = useState([])
     const [Promotor, setPromotor] = useState([])
     const [show, setShow] = useState(false)
+    const [alert, setAlert] = useState(null)
+    function Eliminar(e) {
+        EliminarPromotor(e.id).then(salida => {
+            hideAlert()
+            console.log(salida)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+    const successAlert = (e) => {
+        setAlert(
+            <SweetAlert
+                info
+                style={{ display: "block", marginTop: "-100px" }}
+                title={"Estas Seguro?"}
+                onConfirm={() => Eliminar(e)}
+                onCancel={() => hideAlert()}
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                closeOnClickOutside={false}
+                confirmBtnText="Si, Ceder"
+                cancelBtnText="Cancelar"
 
+                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+                showCancel
+            >
+                <div className="d-flex flex-row justify-content-center text-center">
+                    <div className="d-flex">
+                        <h4 style={{ fontSize: '0.9em' }} >
+                            Estas seguro de eliminar este promotor</h4>
+                    </div>
+                </div>
+            </SweetAlert>
+        );
+    };
+    const hideAlert = () => {
+        setAlert(null)
+    }
     useEffect(() => {
         listar_promotores().then(ouput => {
             console.log(ouput)
@@ -81,9 +120,10 @@ export default function AutorizacionView() {
         })
 
 
-    }, [])
+    }, [!show])
     return (
         <>
+            {alert}
             <ModalPromotor
                 show={show}
                 setShow={setShow}
@@ -112,12 +152,18 @@ export default function AutorizacionView() {
                                     return (
                                         <tr key={i}>
                                             <th>
-                                               
+
                                             </th>
                                             <th>
-                                                <button className=" btn btn-sm btn-success">
-                                                    Editar
-                                                </button>
+                                                <div className=" btn-group">
+                                                    <button onClick={() => successAlert(e)} className="btn btn-sm btn-danger">
+                                                        Elimina
+                                                    </button>
+                                                    <button className=" btn btn-sm btn-success">
+                                                        Editar
+                                                    </button>
+                                                </div>
+
                                             </th>
                                             <th scope="row">{e.id}</th>
                                             <td>{e.promotor}</td>

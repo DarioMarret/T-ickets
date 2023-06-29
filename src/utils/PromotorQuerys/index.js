@@ -25,7 +25,7 @@ export const ActualizarPromotor = async (parms) => {
 }
 export const EliminarPromotor = async (parms)=>{
     try {
-        let { data } = await InstanciaAxio.delete("eliminar_promotor/{id}"+parms)
+        let { data } = await InstanciaAxio.delete("eliminar_promotor/"+parms)
         return data
     } catch (error) {
         return error
