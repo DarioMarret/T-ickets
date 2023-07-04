@@ -30,6 +30,7 @@ const MesadiesView = ({ text, list }) => {
   }
   //*estado de mesa
   function MesaEstado(e) {
+    
     if (list.length == 0) {
       return
     }
@@ -51,7 +52,7 @@ const MesadiesView = ({ text, list }) => {
     });
     //console.log(asiento)
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
-    const isOcupado = (currentValue) => currentValue == "ocupado";
+    const isOcupado = (currentValue) => currentValue == "Ocupado" || currentValue=="OCUPADO";
     const isReserva = (currentValue) => currentValue == "RESERVADO" || currentValue == "reservado";
     const isDispon = (currentValue) => currentValue == "disponible" || currentValue == "DISPONIBLE";
     if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
@@ -189,8 +190,12 @@ const MesadiesView = ({ text, list }) => {
     // console.log("%c%s", "color: red; background: yellow; font-size: 24px;", "ADVERTENCIA")
   }
   function enviarsillas(text) {
+    console.log(list)
     let datos = document.getElementById(text).classList.value
     if (datos.includes("mesareserva")) {
+      return
+    }
+    if (datos.includes("mesaocupado")){
       return
     }
     if (datos.includes("mesaselecion")) {

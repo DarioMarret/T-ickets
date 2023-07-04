@@ -750,7 +750,7 @@ const IndexFlas = () => {
       if (!(evtobj.altKey || evtobj.ctrlKey || evtobj.shiftKey)) {
         if (evtobj.keyCode == 16) { return false; }
         if (evtobj.keyCode == 17) { return false; }
-        $("body").append(evtobj.keyCode + " ");
+       // $("body").append(evtobj.keyCode + " ");
       }
     });
     //time.current = setInterval(showRemaining, 1000);
@@ -786,7 +786,7 @@ const IndexFlas = () => {
         let datos = isLoading ? eventos : eventos.data
         let publicin = publici
         const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
-        const sorter = (a, b) => new Date(a.fechaConcierto) < new Date(b.fechaConcierto) ? 1 : -1;
+        const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
         setfunc(true)
         isLoading ? "" : setEventos(filtro.sort(sorter))
         info ? "" : setpublicidad(publicin.data)

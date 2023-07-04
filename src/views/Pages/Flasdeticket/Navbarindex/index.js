@@ -33,16 +33,7 @@ export default function NavbarView({ ...props }) {
                             aria-label="Toggle navigation"
                         >
 
-                            {!props.visible == true ? <div class="hamburger hamburger--spin js-hamburger ">
-                                <div class="hamburger-box">
-                                    <div class="hamburger-inner"></div>
-                                </div>
-                            </div> :
-                                <div class="hamburger  text-white  hamburger--spin js-hamburger is-active">
-                                    <div class="hamburger-box text-white">
-                                        <div class="hamburger-inner text-white"></div>
-                                    </div>
-                                </div>}
+                            
                             <p className=" text-white d-block d-sm-block d-md-none">Menú</p>
 
                         </div>

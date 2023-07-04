@@ -37,7 +37,7 @@ const LocalidadmapViews = (props) => {
 
     const [alert, setAlert] = useState(null);
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
-   // console.log(sleccionlocalidad)
+    console.log(sleccionlocalidad)
     
     const eliminarmesas = (M, C) => {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
@@ -152,12 +152,12 @@ const LocalidadmapViews = (props) => {
 
 
                 }
-                usedispatch(setToastes({
+                /*usedispatch(setToastes({
                     show: true,
                     message: "No hay más disponibilida en la localidad",
                     color: 'bg-danger',
                     estado: "Localidad llena"
-                }))
+                }))*/
                 console.log({
                     "id": mapath.precio.idcolor,
                     "estado": "reservado",

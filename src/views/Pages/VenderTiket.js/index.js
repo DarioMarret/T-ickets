@@ -166,7 +166,9 @@ export default function StoreTickesViews() {
     const evento = async () => {
         try {
             const data = await cargarEventoActivo("")
-            const filtro = data != null ? clienteInfo().id == "58" ? data.filter(e => e.codigoEvento ="YZPQQ3").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
+            console.log(clienteInfo())
+            const filtro = data != null ? clienteInfo().id == "58" ? data.filter(e => e.codigoEvento == "YZPQQ3").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : clienteInfo().id == "59" ? data.filter(e => e.codigoEvento == "SAZKD1").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
+            
             setEvento(filtro.sort(sorter))
             const susct = await GetSuscritores()
             //console.log(data, susct)
