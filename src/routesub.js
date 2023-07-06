@@ -93,7 +93,7 @@ var routes = [
         path: "/usuario/:id",
         layout: "/admin",
         component: UseridView,
-        permiso: ["admin", ]
+        permiso: ["admin","suscriptores" ]
       },
       {
         path: "/Evento",
@@ -141,15 +141,15 @@ var routes = [
     path: "/suscritor/:id",
     state: "openCliente",
     layout: "/admin",
-
-    component: SuscritoridView, permiso: ["admin", "super_admin", ],
+    component: SuscritoridView, 
+    permiso: ["admin", "super_admin", "vendedores", "suscriptores"],
   },
   {
     path: "/Reporte/:id",
     state: "openCliente",
     layout: "/admin",
 
-    component: DetalleCompraView, permiso: ["admin", "suscriptores","super_admin", ],
+    component: DetalleCompraView, permiso: ["admin", "super_admin", "vendedores", "suscriptores"],
   },
 
 
@@ -159,7 +159,7 @@ var routes = [
     name: "Clientes",
     state: "openCliente",
     icon: "nc-icon nc-single-02",
-    permiso: ["admin", "super_admin",],
+    permiso: ["admin", "super_admin", "vendedores"],
     views: [
 
 
@@ -169,7 +169,7 @@ var routes = [
         name: "Suscriptores",
         mini: "*",
         component: SuscritorViews,
-        permiso: ["admin", "super_admin", ],
+        permiso: ["admin", "super_admin", "vendedores" ],
       },
 
 

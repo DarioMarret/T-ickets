@@ -38,7 +38,18 @@ import { setFecha } from "StoreRedux/Slice/SuscritorSlice";
 import TablasViwe from "layouts/Tablasdoc";
 import Tablasespo from "layouts/Tablasregistro";
 import { ListaPreciosEvent } from "utils/EventosQuery";
+import { setTicket } from "StoreRedux/Slice/SuscritorSlice";
+import { setlisticket } from "StoreRedux/Slice/SuscritorSlice";
 let { cedericon, atencion } = bancos
+export const PreciosStore = () => {
+    let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
+    if (datos != null) {
+        return datos
+    } else {
+        return []
+    }
+}
+
 export default function InformeView() {
     let usedispatch = useDispatch()
     let history = useHistory()
@@ -47,10 +58,12 @@ export default function InformeView() {
     let compras = useSelector((state) => state.SuscritorSlice.compras)
     let labelne = useSelector((state) => state.SuscritorSlice.labels)
     let states = useSelector((state) => state.SuscritorSlice.fecha)
-
+    let ticket = useSelector((state) => state.SuscritorSlice)
+    let datas = useSelector(state => state.SuscritorSlice.data)
+    let tiketslist = useSelector(state => state.SuscritorSlice.compras)
     //console.log(state)
-    const [data, setData] = React.useState([]);
-    const [tiketslist, setTikes] = useState([])
+
+
 
     const [alert, setAlert] = useState(null)
     const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })), hideAlert() }
@@ -92,17 +105,8 @@ export default function InformeView() {
         ListaPrecio()
         return info
     }
-    useEffect(() => {
-        ListaPrecios()
-        if (errorPubli != undefined) {
-            return
-        }
-        // LocalidadPrecio()
-        //console.log(publici.data) 
-        //   ListaPrecio()
-        console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"))
-
-        ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+    function refrescar() {
+        ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
             console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
             if (!e.success) {
                 usedispatch(setToastes({
@@ -116,7 +120,7 @@ export default function InformeView() {
             if (e.data) {
                 let newdatos = e.data.map(row => {
                     let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
-                    console.log(nombre)
+                    //    console.log(nombre)
                     let valor = row.info_concierto.map(e => {
                         return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
                     }).reduce((a, b) => a + b, 0)
@@ -132,88 +136,36 @@ export default function InformeView() {
                 let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                 let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
                 let arayReallocalidad = []
+                let arrprueb = []
+                /* newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                     elm.info_concierto.map(loc => {
+                         // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
+                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto, codigo: elm.codigoEvento })
+                     })
+                 })*/
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                    elm.info_concierto.map(loc => {
+                    elm.ticket_usuarios.map(item => {
                         // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                        arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
+                        /*if (arrprueb.length == 0) {
+                            arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
+                        }*/
+                        //  console.log(item, arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
+                        arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
+                        if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
+                            //        console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
+                            // let cantidad = arrprueb.filter(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)[0].cantidad + 1
+                            let index = arrprueb.findIndex(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
+                            let cantidad = arrprueb[index].cantidad + 1
+                            arrprueb[index].cantidad = cantidad
+                        } else {
+                            arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
+                        }
                     })
                 })
                 let arrayIndividual = []
                 // console.log(consulat)
-                // console.log(arayReallocalidad)
-                arayReallocalidad.forEach(elm => {
-                    if (arrayIndividual.some(e => e.id == elm.id)) {
-                        let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                        let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
-                        arrayIndividual[dat].cantidad = tota
-                    }
-                    else {
-                        arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
-                    }
-                })
-                //console.log(arrayIndividual)
-                let datos = arrayIndividual.map(f => {
-                    return [f.localidad, f.evento, parseInt(f.cantidad)]
-                })
-                setDatas([
-                    ["Localida", "evento", "ganancias"],
-                    ...datos
-                ])
-
-                let nuevo = arrayIndividual.map(f => {
-                    return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
-                })
-                setDts([
-                    ["Localidad", "evento", "cantidad", "precio"],
-                    ...nuevo
-                ])
-                usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
-                let order = newdatos.sort(sorter)
-                setTikes(order)
-                usedispatch(setCompras({ compras: order }))
-                return
-            }
-        }).catch(err => {
-            console.log(err)
-        })
-        /* listarRegistropanel({ "cedula": "" }).then(e => {
-             if(!e.success){
-                 usedispatch(setToastes({
-                     show: true,
-                     message: e.message,
-                     color: 'bg-warning',
-                     estado: "Todos ocupados"
-                 }))
-                 return
-             }           
-             if (e.data) {
-                 let newdatos = e.data.map(row => {
-                     let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-                     let valor = JSON.parse(row.info_concierto).map(e => {
-                         return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
-                     }).reduce((a, b) => a + b, 0)
-                     let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                     row.Valortotal = parseFloat(valor)
-                     row.cantidad = cantida
-                     row.concierto = nombre[0]
-                     return { ...row }
-                 })//.filter(e => e.forma_pago =="Deposito")
-                 sessionStorage.setItem("datoscompras",JSON.stringify(newdatos))
-                 console.log(newdatos)
-                 let nuevosValores = []
-                 let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                 let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
-                 let arayReallocalidad = []
-                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                     JSON.parse(elm.info_concierto).map(loc => {
-                        // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-                     })
-                 })
-                 let arrayIndividual = []
-                 console.log(consulat)
-                 console.log(arayReallocalidad)
-                 arayReallocalidad.forEach(elm => {
+                console.log(arayReallocalidad, arrprueb)
+                /* arayReallocalidad.forEach(elm => {
                      if (arrayIndividual.some(e => e.id == elm.id)) {
                          let dat = arrayIndividual.findIndex(e => e.id == elm.id)
                          let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
@@ -222,34 +174,139 @@ export default function InformeView() {
                      else {
                          arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
                      }
-                 })
-                 console.log(arrayIndividual)
-                 let datos = arrayIndividual.map(f => {
-                     return [f.localidad, f.evento, parseInt(f.cantidad)]
-                 })
-                 setDatas([
-                     ["Localida", "evento", "ganancias"],
-                     ...datos
-                 ])
- 
-                 let nuevo = arrayIndividual.map(f => {
-                     return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
-                 })
-                 setDts([
-                     ["Localidad", "evento", "cantidad", "precio"],
-                     ...nuevo
-                 ])
-                 usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
-                 let order = newdatos.sort(sorter)
-                 setTikes(order)
-                 usedispatch(setCompras({ compras: order }))
-                 return
-             }
-         }).catch(err => {
-             console.log(err)
-         })*/
-    },
-        [states])
+                 })*/
+                //console.log(arrayIndividual)
+                let datos = arrprueb.map(f => {
+                    return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                })
+                /*setDatas([
+                    ["Localida", "evento", "ganancias"],
+                    ...datos
+                ])*/
+
+                let nuevo = arrprueb.map(f => {
+                    return [f.localidad, f.concierto, parseInt(f.cantidad), parseInt(f.precio)]
+                })
+                setDts([
+                    ["Localidad", "evento", "cantidad", "precio"],
+                    ...nuevo
+                ])
+                usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
+                let order = newdatos.sort(sorter)
+                usedispatch(setTicket({ tiketslist: order }))
+                // setTikes(order)
+                usedispatch(setCompras({ compras: order }))
+                usedispatch(setlisticket({ ticket: false }))
+                return
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+    useEffect(() => {
+        // ListaPrecios()
+        console.log(ticket.ticket)
+        console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"))
+
+        !ticket.ticket ? "" :
+            ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+                console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
+                if (!e.success) {
+                    usedispatch(setToastes({
+                        show: true,
+                        message: e.message,
+                        color: 'bg-warning',
+                        estado: "Todos ocupados"
+                    }))
+                    return
+                }
+                if (e.data) {
+                    let newdatos = e.data.map(row => {
+                        let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
+                        //    console.log(nombre)
+                        let valor = row.info_concierto.map(e => {
+                            return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
+                        }).reduce((a, b) => a + b, 0)
+                        let cantida = row.info_concierto.map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                        row.Valortotal = parseFloat(valor)
+                        row.cantidad = cantida
+                        row.concierto = nombre[0]
+                        return { ...row }
+                    })//.filter(e => e.forma_pago =="Deposito")
+                    sessionStorage.setItem("datoscompras", JSON.stringify(newdatos))
+                    console.log(newdatos)
+                    let nuevosValores = []
+                    let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                    let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
+                    let arayReallocalidad = []
+                    let arrprueb = []
+                    /* newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                         elm.info_concierto.map(loc => {
+                             // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
+                             arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto, codigo: elm.codigoEvento })
+                         })
+                     })*/
+                    newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                        elm.ticket_usuarios.map(item => {
+                            // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
+                            /*if (arrprueb.length == 0) {
+                                arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
+                            }*/
+                            //  console.log(item, arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
+                            console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
+                            if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
+                                //        console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
+                                // let cantidad = arrprueb.filter(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)[0].cantidad + 1
+                                let index = arrprueb.findIndex(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
+                                let cantidad = arrprueb[index].cantidad + 1
+                                arrprueb[index].cantidad = cantidad
+                            } else {
+                                arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
+                            }
+                        })
+                    })
+                    let arrayIndividual = []
+                    // console.log(consulat)
+                    console.log("aqui", arayReallocalidad, arrprueb)
+                    /* arayReallocalidad.forEach(elm => {
+                         if (arrayIndividual.some(e => e.id == elm.id)) {
+                             let dat = arrayIndividual.findIndex(e => e.id == elm.id)
+                             let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
+                             arrayIndividual[dat].cantidad = tota
+                         }
+                         else {
+                             arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
+                         }
+                     })*/
+                    //console.log(arrayIndividual)
+                    let datos = arrprueb.map(f => {
+                        return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                    })
+                    /*setDatas([
+                        ["Localida", "evento", "ganancias"],
+                        ...datos
+                    ])*/
+
+                    let nuevo = arrprueb.map(f => {
+                        return [f.localidad, f.concierto, parseInt(f.cantidad), parseInt(f.precio)]
+                    })
+                    setDts([
+                        ["Localidad", "evento", "cantidad", "precio"],
+                        ...nuevo
+                    ])
+                    usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
+                    let order = newdatos.sort(sorter)
+                    usedispatch(setTicket({ tiketslist: order }))
+                    // setTikes(order)
+                    usedispatch(setCompras({ compras: order }))
+                    usedispatch(setlisticket({ ticket: false }))
+                    return
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+
+    }, [ticket.ticket])
     let precio = {
         1: 20,
         2: 30,
@@ -280,19 +337,7 @@ export default function InformeView() {
         23: "participantes-jessi",
         22: "participante-quito"
     }
-    let Eventos = {
-        1: "Ranchenato",
-        2: "Ranchenato",
-        3: "Ranchenato",
-        4: "Ranchenato",
-        5: "Ranchenato",
-        9: "Eladio Carrión Guayaquil",
-        10: "Eladio Carrión Guayaquil",
-        11: "Eladio Carrión Guayaquil",
-        12: "Eladio Carrión Quito",
-        13: "Eladio Carrión Quito",
-        14: "Eladio Carrión Quito",
-    }
+
     let { data: publici = [], error: errorPubli, isLoading: info } = useGetLocalidadQuery()
     function localidada(evento, localidad) {
         if (evento == "Eladio Carrión Guayaquil") {
@@ -363,137 +408,26 @@ export default function InformeView() {
         }
         return PreciosStore().filter(f => f.id == evento)[0].precio_normal
     }
-    const [datas, setDatas] = useState([])
+    //const [datas1, setDatas] = useState([])
     const [dtos, setDts] = useState([])
     const sorter = (a, b) => new Date(a.fechaCreacion) < new Date(b.fechaCreacion) ? 1 : -1;
     function rango(item) {
         if (item.selection.endDate == item.selection.startDate) {
-            setTikes(compras)
-            setDatas([...labelne])
+            usedispatch(setCompras({ compras: compras }))
+
+            // setDatas([...labelne])
+
+            usedispatch(setLabels({ labels: [...labelne] }))
             //    setState([item.selection])
             usedispatch(setFecha({ fecha: [item.selection] }))
             console.log(moment(item.selection.startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format())
-            /*ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(item.selection.endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format()).then(e => {
-                if (!e.success) {
-                    usedispatch(setToastes({
-                        show: true,
-                        message: e.message,
-                        color: 'bg-warning',
-                        estado: "Todos ocupados"
-                    }))
-                    return
-                }
-                if (e.data) {
-                    let newdatos = e.data.map(row => {
-                        let nombre = JSON.parse(row.info_concierto).map(e => { return e.nombreConcierto })
-                        let valor = JSON.parse(row.info_concierto).map(e => {
-                            return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
-                        }).reduce((a, b) => a + b, 0)
-                        let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                        row.Valortotal = parseFloat(valor)
-                        row.cantidad = cantida
-                        row.concierto = nombre[0]
-                        return { ...row }
-                    })//.filter(e => e.forma_pago =="Deposito")
-                    sessionStorage.setItem("datoscompras", JSON.stringify(newdatos))
-                    console.log(newdatos)
-                    let nuevosValores = []
-                    let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                    let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
-                    let arayReallocalidad = []
-                    newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                        JSON.parse(elm.info_concierto).map(loc => {
-                            // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                            arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-                        })
-                    })
-                    let arrayIndividual = []
-                    console.log(consulat)
-                    console.log(arayReallocalidad)
-                    arayReallocalidad.forEach(elm => {
-                        if (arrayIndividual.some(e => e.id == elm.id)) {
-                            let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                            let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
-                            arrayIndividual[dat].cantidad = tota
-                        }
-                        else {
-                            arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
-                        }
-                    })
-                    console.log(arrayIndividual)
-                    let datos = arrayIndividual.map(f => {
-                        return [f.localidad, f.evento, parseInt(f.cantidad)]
-                    })
-                    setDatas([
-                        ["Localida", "evento", "ganancias"],
-                        ...datos
-                    ])
 
-                    let nuevo = arrayIndividual.map(f => {
-                        return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
-                    })
-                    setDts([
-                        ["Localidad", "evento", "cantidad", "precio"],
-                        ...nuevo
-                    ])
-                    usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
-                    let order = newdatos.sort(sorter)
-                    setTikes(order)
-                    usedispatch(setCompras({ compras: order }))
-                    return
-                }
-            }).catch(err => {
-                console.log(err)
-            })*/
             return
         }
         else {
+            usedispatch(setlisticket({ ticket: true }))
             usedispatch(setFecha({ fecha: [item.selection] }))
-            let newdatos = compras.filter(e => new Date(e.fechaCreacion) >= new Date(item.selection.startDate) && new Date(e.fechaCreacion) <= new Date(item.selection.endDate))
-            let nuevosValores = []
-            let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-            let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
-            let arayReallocalidad = []
-            newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                elm.info_concierto.map(loc => {
-                    arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
-                    if (parseInt(loc.id_localidad) == 10) {
-                        nuevosValores.push(loc.id_localidad, loc.nombreConcierto, elm.cedula)
-                    }
-                })
 
-            })
-            console.log(nuevosValores)
-            let arrayIndividual = []
-            console.log(consulat)
-            console.log(arayReallocalidad)
-            arayReallocalidad.forEach(elm => {
-                if (arrayIndividual.some(e => e.id == elm.id)) {
-                    let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                    let tota = parseInt(arrayIndividual[dat].cantidad) + parseInt(elm.cantidad)
-                    arrayIndividual[dat].cantidad = tota
-                }
-                else {
-                    arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: precio[elm.id] })
-                }
-            })
-            console.log(arrayIndividual)
-            let datos = arrayIndividual.map(f => {
-                return [f.localidad, f.evento, parseInt(f.cantidad)]
-            })
-            let nuevo = arrayIndividual.map(f => {
-                return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
-            })
-            setDts([
-                ["Localidad", "evento", "cantidad", "precio"],
-                ...nuevo
-            ])
-            setDatas([
-                ["Localida", "evento", "ganancias"],
-                ...datos
-            ])
-            let order = newdatos.sort(sorter)
-            setTikes(order)
         }
         console.log(item)
     }
@@ -508,7 +442,7 @@ export default function InformeView() {
         console.log(parms.id)
 
         $.confirm({
-            title: 'Desea eliminar Este registro de compra ',
+            title: 'Deseas eliminar Este registro de compra ',
             content: '',
             type: 'red',
             typeAnimated: true,
@@ -522,7 +456,7 @@ export default function InformeView() {
                             console.log(ouput)
                             console.log(parms.id)
                             if (!ouput.success) { return $.alert("" + ouput.message) }
-                            ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+                            ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
                                 console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
                                 if (!e.success) {
                                     usedispatch(setToastes({
@@ -536,10 +470,11 @@ export default function InformeView() {
                                 if (e.data) {
                                     let newdatos = e.data.map(row => {
                                         let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
+                                        //    console.log(nombre)
                                         let valor = row.info_concierto.map(e => {
                                             return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
                                         }).reduce((a, b) => a + b, 0)
-                                        let cantida = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                                        let cantida = row.info_concierto.map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                                         row.Valortotal = parseFloat(valor)
                                         row.cantidad = cantida
                                         row.concierto = nombre[0]
@@ -551,36 +486,55 @@ export default function InformeView() {
                                     let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                                     let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
                                     let arayReallocalidad = []
+                                    let arrprueb = []
+                                    /* newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                                         elm.info_concierto.map(loc => {
+                                             // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
+                                             arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto, codigo: elm.codigoEvento })
+                                         })
+                                     })*/
                                     newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                                        JSON.parse(elm.info_concierto).map(loc => {
+                                        elm.ticket_usuarios.map(item => {
                                             // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                                            arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto })
+                                            if (arrprueb.length == 0) {
+                                                arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
+                                            }
+                                            //  console.log(item, arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
+                                            if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
+                                                //        console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
+                                                // let cantidad = arrprueb.filter(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)[0].cantidad + 1
+                                                let index = arrprueb.findIndex(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
+                                                let cantidad = arrprueb[index].cantidad + 1
+                                                arrprueb[index].cantidad = cantidad
+                                            } else {
+                                                arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
+                                            }
                                         })
                                     })
                                     let arrayIndividual = []
                                     // console.log(consulat)
-                                    // console.log(arayReallocalidad)
-                                    arayReallocalidad.forEach(elm => {
-                                        if (arrayIndividual.some(e => e.id == elm.id)) {
-                                            let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                                            let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
-                                            arrayIndividual[dat].cantidad = tota
-                                        }
-                                        else {
-                                            arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
-                                        }
-                                    })
+                                    console.log(arayReallocalidad, arrprueb)
+                                    /* arayReallocalidad.forEach(elm => {
+                                         if (arrayIndividual.some(e => e.id == elm.id)) {
+                                             let dat = arrayIndividual.findIndex(e => e.id == elm.id)
+                                             let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
+                                             arrayIndividual[dat].cantidad = tota
+                                         }
+                                         else {
+                                             arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
+                                         }
+                                     })*/
                                     //console.log(arrayIndividual)
-                                    let datos = arrayIndividual.map(f => {
-                                        return [f.localidad, f.evento, parseInt(f.cantidad)]
+                                    let datos = arrprueb.map(f => {
+                                        return [f.localidad, f.concierto, parseInt(f.cantidad)]
                                     })
-                                    setDatas([
+                                    /*setDatas([
                                         ["Localida", "evento", "ganancias"],
                                         ...datos
-                                    ])
+                                    ])*/
 
-                                    let nuevo = arrayIndividual.map(f => {
-                                        return [f.localidad, f.evento, parseInt(f.cantidad), parseInt(f.precio)]
+                                    let nuevo = arrprueb.map(f => {
+                                        return [f.localidad, f.concierto, parseInt(f.cantidad), parseInt(f.precio)]
                                     })
                                     setDts([
                                         ["Localidad", "evento", "cantidad", "precio"],
@@ -588,14 +542,15 @@ export default function InformeView() {
                                     ])
                                     usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
                                     let order = newdatos.sort(sorter)
-                                    setTikes(order)
+                                    usedispatch(setTicket({ tiketslist: order }))
+                                    // setTikes(order)
                                     usedispatch(setCompras({ compras: order }))
+                                    usedispatch(setlisticket({ ticket: false }))
                                     return
                                 }
                             }).catch(err => {
                                 console.log(err)
                             })
-
                             $.alert("Registro Eliminado correctamente")
 
                         }).catch(error => {
@@ -748,11 +703,10 @@ export default function InformeView() {
                         ID_USUARIO: f.id_usuario,
                         EVENTO: f.concierto,
                         CEDULA: f.cedula,
-                        METODO: f.forma_pago,
-
-                        TOTAL_COMISION: f.Valortotal,
+                        METODO: f.forma_pago,                      
                         MEDIO: f.detalle,
-                        TOTAL: f.total_pago,
+                        TOTAL: (parseFloat(f.total_pago) / 1.08),
+                        TOTAL_tarjeta: f.total_pago,
                         CREO: f.info_registro.length > 0 ? f.info_registro[0].name : "",
                         TIPO: f.info_registro.length > 0 ? f.info_registro[0].title : "",
                         CREACION: f.fechaCreacion,

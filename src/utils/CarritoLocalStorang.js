@@ -307,10 +307,11 @@ export function GetValores() {
         })
 
         tag.map(tienda => {
+            let comisioreal = (tienda.localidaEspacio["id"] == 285 && sessionStorage.getItem("Metodo-pago") == "Efectivo-Local") ? 1 : tienda.localidaEspacio["comision_boleto"]
             let valores = tienda.valor
             subtotal += valores
             descrption = tienda.nombreConcierto
-            sumcomision += parseInt(tienda.cantidad) * parseFloat(tienda.localidaEspacio["comision_boleto"])
+            sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
             if (valores >= 101) {
                 comision += tienda.cantidad * 2
             } else if (valores >= 201) {

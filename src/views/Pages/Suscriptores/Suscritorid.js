@@ -37,6 +37,7 @@ import ModalTickte from "./ModalSuscritor/agregarTickte";
 import axios from "axios";
 import { listartecero } from "utils/columnasub";
 import { EliminarTickteTercero } from "utils/TicktesT";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 
 export const PreciosStore = () => {
   let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
@@ -82,6 +83,7 @@ const SuscritoridView = () => {
     }
 
   }
+  //console.log(clienteInfo())
   async function EliminarS() {
     try {
       const deleter = await EliminarSuscrito(id)
@@ -597,7 +599,7 @@ const SuscritoridView = () => {
               variant="outline-warning"
               onClick={() => setshowdos(true)}
             >Ticktefacil</Button>*/}
-            <Button className="btn-wd btn-outline mr-1"
+            {clienteInfo().perfil == "vendedores"?"": <Button className="btn-wd btn-outline mr-1"
               onClick={deleteAlert}
               type="button"
               variant="danger">
@@ -605,8 +607,8 @@ const SuscritoridView = () => {
                 <i className="fas fa-trash"></i>
               </span>
               Eliminar
-            </Button>
-            <Button className="btn-wd btn-outline mr-1"
+            </Button>}
+            {clienteInfo().perfil == "vendedores" ? "" : <Button className="btn-wd btn-outline mr-1"
               onClick={successAlert}
               type="button"
               variant={suscritoid.enable == 0 ? "danger" : "success"}>
@@ -614,7 +616,7 @@ const SuscritoridView = () => {
                 <i className="fas fa-trash"></i>
               </span>
               {suscritoid.enable == 0 ? " Cancelar Suscripción " : "Habilitar Suscripción"}
-            </Button>
+            </Button>}
           </div>
         </div>
         <Row>
@@ -749,7 +751,8 @@ const SuscritoridView = () => {
                   enableRowActions
                   positionActionsColumn="first"
                   renderRowActions={({ row }) => (
-                    <Box sx={{ display: 'flex' }}>
+                     
+                     <Box sx={{ display: 'flex' }}>
                       {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
                         <Tooltip title="Reportar" placement="top">
                           <IconButton
@@ -778,7 +781,7 @@ const SuscritoridView = () => {
                           <Visibility />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip
+                      {clienteInfo().perfil == "vendedores" ? "" : <Tooltip
                         title="Eliminar"
                         placement="top"
                       >
@@ -788,7 +791,7 @@ const SuscritoridView = () => {
                         >
                           <Delete />
                         </IconButton>
-                      </Tooltip>
+                      </Tooltip>}
                     </Box>
                   )}
 
@@ -808,7 +811,7 @@ const SuscritoridView = () => {
                   enableRowActions
                   positionActionsColumn="first"
                   renderRowActions={({ row }) => (
-                    <Box sx={{ display: 'flex' }}>
+                    clienteInfo().perfil == "vendedores" ? "" :  <Box sx={{ display: 'flex' }}>
                       
                       <Tooltip
                         title="Comprobar" placement="top"
@@ -854,7 +857,7 @@ const SuscritoridView = () => {
                   enableRowActions
                   positionActionsColumn="first"
                   renderRowActions={({ row }) => (
-                    <Box sx={{ display: 'flex' }}>
+                    clienteInfo().perfil == "vendedores" ? "" : <Box sx={{ display: 'flex' }}>
                       {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
                         <Tooltip title="Reportar" placement="top">
                           <IconButton
@@ -931,7 +934,7 @@ const SuscritoridView = () => {
                   enableRowActions
                   positionActionsColumn="first"
                   renderRowActions={({ row }) => (
-                    <Box sx={{ display: 'flex' }}>
+                    clienteInfo().perfil == "vendedores" ? "" :  <Box sx={{ display: 'flex' }}>
 
                       <div className=" btn-group  " >
                         {row.original.estado != "reservado" ?

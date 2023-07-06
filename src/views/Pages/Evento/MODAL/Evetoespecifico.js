@@ -102,7 +102,7 @@ const EventoEspecifico = () => {
         SetEvento({
           ...datos[0], LocalodadPrecios: precio.data,
         })
-        // console.log(precio, cargar)
+         console.log(precio)
         SetPrecios(precio.data)
       }
     } catch (error) {

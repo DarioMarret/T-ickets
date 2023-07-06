@@ -442,9 +442,9 @@ export default function ListaSuscritor(prop) {
                                                         name="movil" type="tel"
                                                         className="m-0 inptFielsd form-control " id="movil"
                                                         size={100}
-                                                        onChange={(e) => handelChange(e.target)}
+                                                     
                                                         required
-                                                        value={datos.movil}
+                                                      
                                                         placeholder="999 999 999" />
                                                     <div className="invalid-feedback">
                                                         Ingrese un numero de Whatsapp

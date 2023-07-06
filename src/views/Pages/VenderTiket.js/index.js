@@ -102,7 +102,7 @@ export default function StoreTickesViews() {
          }, 2000);*/
     }
     function detenervelocidad() {
-        let datos = verAsientos()
+        let sillasatos = verAsientos()
         let user = getDatosUsuariosLocalStorag()
         console.log("qitoa")
         clearInterval(intervalRef.current)
@@ -133,12 +133,21 @@ export default function StoreTickesViews() {
                     })
                 }, 20 * index)
             })
-            : datos().map((elem, index) => {
+            : sillasatos.map((elem, index) => {
                 setTimeout(function () {
+                    console.log({
+                        "estado": "disponible",
+                        "cedula": user.cedula,
+                        "cantidad": 0,
+                        "mesa": [
+                            { ...elem }
+                            // , ...data
+                        ]
+                    })
                     correlativosadd({                        
                         "estado": "disponible",                        
                         "cedula": user.cedula,
-                        "cantidad": "",
+                        "cantidad": 0,
                          "mesa": [
                             {...elem}
                             // , ...data
@@ -154,7 +163,7 @@ export default function StoreTickesViews() {
         LimpiarLocalStore()
     }
     function para() {
-        console.log("no quito")
+       // console.log("no quito")
         clearInterval(intervalRef.current)
     }
     const hideAlert = () => {
@@ -166,22 +175,22 @@ export default function StoreTickesViews() {
     const evento = async () => {
         try {
             const data = await cargarEventoActivo("")
-            console.log(clienteInfo())
+            //console.log(clienteInfo())
             const filtro = data != null ? clienteInfo().id == "58" ? data.filter(e => e.codigoEvento == "YZPQQ3").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : clienteInfo().id == "59" ? data.filter(e => e.codigoEvento == "SAZKD1").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
             
             setEvento(filtro.sort(sorter))
             const susct = await GetSuscritores()
             //console.log(data, susct)
-            const Datos = await ListarTikets()
+          //  const Datos = await ListarTikets()
             const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
             if (data != null) {
 
-                if (Datos.data) setInfo({
+              /*  if (Datos.data) setInfo({
                     ...info,
                     Ticket: Datos.data.length,
                     Activos: filtro.sort(sorter).length,
                     Venta: 0, suscritor: susct.users.length
-                })
+                })*/
             }
             else if (data == null) setEvento([])
         } catch (error) {
@@ -211,6 +220,18 @@ export default function StoreTickesViews() {
                 usedispatch(setModal({ nombre: '', estado: '' }))
                 // history.push("/admin/suscritor/" + getDatosUsuariosLocalStorag().id + "")
                 history.push("/admin/Aprobar/" + getDatosUsuariosLocalStorag().cedula)
+                return
+            }
+            if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")) {
+                setspinervi("d-none")
+                //SetSeleccion("Tickets")
+
+                usedispatch(setToastes({
+                    show: true,
+                    message: "Espera a que un agente verifique tu transeferenciao deposito",
+                    color: 'bg-info',
+                    estado: "El cliente Tienes un reporte por combrobar"
+                }))
                 return
             }
 

@@ -497,8 +497,8 @@ const ResgistroView = (prop) => {
                                                         id="movil"
                                                         name="movil" type="tel"
                                                         className="m-0 inptFielsd  "
-
-                                                        placeholder="999 999 999" />
+                                                        onChange={(e)=>console.log(e.target.value)}
+                                                        placeholder="999 999 99" />
                                                 </div>
                                             </div>
                                             <div className="col-12 col-lg-6">
