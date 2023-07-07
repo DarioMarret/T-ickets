@@ -23,6 +23,7 @@ const MesadiesView = ({ text, list }) => {
   function Estado(e) {
     let estado = list.find(f => f.silla == e)
     if (estado.cedula != null && estado.cedula != "") {
+      if (estado.estado.toLowerCase() == "ocupado") return estado.estado.toLowerCase()
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
       else return estado.estado.toLowerCase()
     }
@@ -30,7 +31,7 @@ const MesadiesView = ({ text, list }) => {
   }
   //*estado de mesa
   function MesaEstado(e) {
-    
+
     if (list.length == 0) {
       return
     }
@@ -38,8 +39,8 @@ const MesadiesView = ({ text, list }) => {
       {
         if (k.cedula != "") {
           // console.log(k.cedula)
-          if (user == undefined){
-             return k.estado 
+          if (user == undefined) {
+            return k.estado
           }
           if (k.cedula == user.cedula) {
             // console.log(k.cedula, user.cedula)
@@ -52,7 +53,7 @@ const MesadiesView = ({ text, list }) => {
     });
     //console.log(asiento)
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
-    const isOcupado = (currentValue) => currentValue == "Ocupado" || currentValue=="OCUPADO";
+    const isOcupado = (currentValue) => currentValue == "Ocupado" || currentValue == "OCUPADO";
     const isReserva = (currentValue) => currentValue == "RESERVADO" || currentValue == "reservado";
     const isDispon = (currentValue) => currentValue == "disponible" || currentValue == "DISPONIBLE";
     if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
@@ -95,8 +96,9 @@ const MesadiesView = ({ text, list }) => {
         ]
       }
       hideAlert()
+      usedispatch(setSpinersli({ spiner: false }))
       correlativosadd(datos).then(ou => {
-        usedispatch(setSpinersli({ spiner: false }))
+
         if (ou.success) {
           //console.log(ou)
           ou.insert.map((e => {
@@ -112,6 +114,9 @@ const MesadiesView = ({ text, list }) => {
               seleccionmapa: nombre.localidad + "-" + asiento.silla, "fila": asiento.silla.split("-")[0],
               "silla": asiento.silla, "estado": "seleccionado"
             }))
+            let sillaids = document.getElementById("silla-" + e)
+            sillaids.classList.remove('disponible')
+            sillaids.classList.add('seleccionado')
 
           }))
           ou.update.map((e) => {
@@ -122,11 +127,22 @@ const MesadiesView = ({ text, list }) => {
               "silla": asiento.silla,
               "estado": "seleccionado"
             }))
+            //console.log(e)
+            let sillaids = document.getElementById("silla-" + e)
+            sillaids.classList.add('disponible')
+            sillaids.classList.remove('seleccionado')
+           
             EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento.silla })
           })
-          usedispatch(setSpinersli({ spiner: true }))
+          setTimeout(function () {
+            usedispatch(setSpinersli({ spiner: true }))
+            //    
+          }, 5000)
+
           // hideAlert()
 
+        } else {
+          usedispatch(setSpinersli({ spiner: true }))
         }
       }).catch(err => {
         console.log(err)
@@ -149,6 +165,7 @@ const MesadiesView = ({ text, list }) => {
         ]
       }
       hideAlert()
+      usedispatch(setSpinersli({ spiner: false }))
       correlativosadd(datos).then(ou => {
 
         usedispatch(setSpinersli({ spiner: false }))
@@ -179,12 +196,19 @@ const MesadiesView = ({ text, list }) => {
             }))
             EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento.silla })
           })
+          setTimeout(() => {
+            usedispatch(setSpinersli({ spiner: true }))
+            //   
+          }, 5000);
 
+
+        }
+        else {
           usedispatch(setSpinersli({ spiner: true }))
-
         }
       }).catch(err => {
         console.log(err)
+        usedispatch(setSpinersli({ spiner: true }))
       })
     }
 
@@ -197,7 +221,7 @@ const MesadiesView = ({ text, list }) => {
     if (datos.includes("mesareserva")) {
       return
     }
-    if (datos.includes("mesaocupado")){
+    if (datos.includes("mesaocupado")) {
       return
     }
     if (datos.includes("mesaselecion")) {
@@ -246,7 +270,7 @@ const MesadiesView = ({ text, list }) => {
     /**/
     let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
     let silla = list.find(f => f.silla == e)
-    if (info==undefined){
+    if (info == undefined) {
       return
     }
     if (silla.estado.toLowerCase().includes("ocupado")) {
@@ -352,6 +376,10 @@ const MesadiesView = ({ text, list }) => {
             seleccionmapa: nombre.localidad + "-" + asiento[0].silla, "fila": asiento[0].silla.split("-")[0],
             "silla": asiento[0].silla, "estado": "seleccionado"
           }))
+          console.log(e)
+          let sillaids = document.getElementById("silla-" + e)
+          sillaids.classList.remove('disponible')
+          sillaids.classList.add('seleccionado')
         }))
         ou.update.map((e) => {
           let asiento = list.filter(ef => ef.idsilla == e)
@@ -362,12 +390,18 @@ const MesadiesView = ({ text, list }) => {
             "silla": asiento[0].silla,
             "estado": "seleccionado"
           }))
+         
           EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento[0].silla })
         })
-        usedispatch(setSpinersli({ spiner: true }))
+        setTimeout(() => {
+          usedispatch(setSpinersli({ spiner: true }))
 
+        }, 5000);
+
+      } else {
+        usedispatch(setSpinersli({ spiner: true }))
       }
-      usedispatch(setSpinersli({ spiner: true }))
+      //usedispatch(setSpinersli({ spiner: true }))
     }).catch(err => {
       usedispatch(setSpinersli({ spiner: true }))
       console.log(err)
@@ -426,6 +460,10 @@ const MesadiesView = ({ text, list }) => {
             "silla": asiento[0].silla,
             "estado": "seleccionado"
           }))
+          console.log(e)
+          let sillaids = document.getElementById("silla-" + e)
+          sillaids.classList.remove('seleccionado')
+          sillaids.classList.add('disponible')
           EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento[0].silla })
         })
         usedispatch(setSpinersli({ spiner: true }))

@@ -544,13 +544,14 @@ const SuscritoridView = () => {
   useEffect(() => {
     setsuscritor({ ...info })
     Listarticketporestado("" + info.cedula).then(ouput => {
+      console.log(ouput)
       ouput.success ? setBoletos(ouput.data)
         : ""
     }).catch(err => {
       console.log(err)
     })
     listarRegistropanel({ "cedula": info.cedula }).then(ouput => {
-      //console.log(ouput)
+      console.log(ouput)
       if (ouput.success) {
       let datos = ouput.data
       //console.log(datos)

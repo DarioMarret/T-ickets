@@ -124,7 +124,6 @@ export const ticketsboletos = [
     {
         accessorKey: "id_localidades_items",
         header: "Boleto",
-
         size: 30
     },
 

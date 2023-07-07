@@ -83,17 +83,6 @@ function Example() {
 
     function generaPDF(row) {
         setSpiner("")
-
-        /* if (row.original.forma_pago.includes("Local")){
- 
-             setSpiner("d-none")
-             $.alert("Nuevos datos")
-             return
-         }*/
-
-
-
-
         generaTiketspdf({
             "cedula": row.cedula,
             "codigoEvento": row.codigoEvento,
@@ -195,14 +184,14 @@ function Example() {
                     <tr key={index}>
 
                         <td className="text-xs ">{item.concierto}</td>
-                        <td className="text-xs text-center ">#{item.sillas.padStart(10, 0)}</td>
+                        <td className="text-xs text-center ">#{item.asientos["silla"] == null ? item.id_localidades_items :item.asientos["silla"]}</td>
                         <td className="text-xs text-center">{item.localidad}</td>
                         <td className="text-xs text-center">{item.fechaCreacion}</td>
                         <td className="text-xs text-center">
                             <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
                             <div className=" btn-group  " >
-                                {item.estado == "Pagado" ?
+                                {item.estado == "Pagado" && item.canje !="CANJEADO" ?
                                     <Tooltip className="" title="Ver Ticket" placement="top">
                                         <a
                                             className="btn btn-default-su btn-sm text-danger"
@@ -225,7 +214,7 @@ function Example() {
                                     </a>
                                 }
                                 {item.estado == "Pagado" && item.pdf != null && item.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
-                                    <a className=" btn btn-default btn-sm"
+                                    <a className=" btn btn-default btn-sm d-none"
 
 
                                         onClick={() => successAlert(item)}
@@ -240,7 +229,7 @@ function Example() {
                                     </a>
                                 </Tooltip> :
                                     <a
-                                        className=" btn btn-default btn-sm btn-disable"
+                                        className=" btn btn-default btn-sm btn-disable d-none"
                                         disabled
 
                                     >
@@ -340,7 +329,8 @@ function Example() {
             if (!ouput.success) {
                 return
             }
-            setTikes(ouput.data.filter(e => e.canje != "CANJEADO"))
+            console.log(ouput)
+            setTikes(ouput.data)
             //console.log(ouput.data.filter(e => e.canje != "CANJEADO"))
         }).catch(err => console.log(err))
 

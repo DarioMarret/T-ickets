@@ -57,7 +57,7 @@ export default function WhastappWiev() {
             usedispacth(
                 setToastes({
                     show: true,
-                    message: 'La imagen no se pudo leer Comuníquese con un accesor al número +5930969200247',
+                    message: 'La imagen no se pudo leer Comuníquese con un accesor al número +593980008000',
                     color: 'bg-warning',
                     estado: 'Hubo un error'
                 }))
