@@ -410,8 +410,15 @@ export default function ListaSuscritor(prop) {
                                                     name="cedula"
                                                     minLength={10}
                                                     maxLength={code == "cedula" ? 10 : 20}
-
-                                                    placeholder={(code == "cedula") ? "Ingrese cédula" : "Ingrese su número de identificación"} required />
+                                                    onChange={() => setDausuario({
+                                                        nombreCompleto: '',
+                                                        ciudad: '',
+                                                        email: '',
+                                                        movil: '',
+                                                        resgistro: '',
+                                                        password: ''
+                                                    })}
+                                                placeholder={(code == "cedula") ? "Ingrese cédula" : "Ingrese su número de identificación"} required />
                                             </div>
 
 
@@ -442,9 +449,9 @@ export default function ListaSuscritor(prop) {
                                                         name="movil" type="tel"
                                                         className="m-0 inptFielsd form-control " id="movil"
                                                         size={100}
-                                                     
+
                                                         required
-                                                      
+
                                                         placeholder="999 999 999" />
                                                     <div className="invalid-feedback">
                                                         Ingrese un numero de Whatsapp

@@ -39,7 +39,8 @@ const MesadiesView = ({ text, list }) => {
       {
         if (k.cedula != "") {
           // console.log(k.cedula)
-          if (user == undefined) {
+          if (user == undefined  ) {
+            if (k.estado.toLowerCase() == "reservado"&&( k.cedula==null ||  k.cedula == "" || k.cedula==undefined)) return "disponible"
             return k.estado
           }
           if (k.cedula == user.cedula) {
