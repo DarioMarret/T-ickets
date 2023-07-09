@@ -24,6 +24,7 @@ import { updateboletos } from "StoreRedux/Slice/SuscritorSlice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { bancos } from "utils/Imgenesutils";
 import { Triangle } from "react-loader-spinner";
+import { setSpinersli } from "StoreRedux/Slice/SuscritorSlice";
 let { atencion } = bancos
 const LocalidadmapViews = (props) => {
     const { intervalo, intervalolista } = props
@@ -38,7 +39,7 @@ const LocalidadmapViews = (props) => {
     const [alert, setAlert] = useState(null);
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
     console.log(sleccionlocalidad)
-    
+
     const eliminarmesas = (M, C) => {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
         let user = getDatosUsuariosLocalStorag()
@@ -74,6 +75,8 @@ const LocalidadmapViews = (props) => {
             nombreConcierto: sessionStorage.getItem("consierto"),
         }
         setDisable(true)
+
+        usedispatch(setSpinersli({ spiner: false }))
         getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : correlativosadd({
             "id": mapath.precio.idcolor,
             "estado": "reservado",
@@ -90,8 +93,13 @@ const LocalidadmapViews = (props) => {
                 getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                 setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
                 setDisable(false)
+                setTimeout(function () {
 
+                    usedispatch(setSpinersli({ spiner: true }))
+                }, 3000)
+                return
             }
+            usedispatch(setSpinersli({ spiner: true }))
             //console.log(oupt)
             console.log({
                 "id": mapath.precio.idcolor,
@@ -134,8 +142,10 @@ const LocalidadmapViews = (props) => {
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
+
         if (TotalSelecion() < 10) {
             setDisable(true)
+            usedispatch(setSpinersli({ spiner: false }))
             correlativosadd({
                 "id": mapath.precio.idcolor,
                 "estado": "reservado",
@@ -148,10 +158,12 @@ const LocalidadmapViews = (props) => {
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
                     setTimeout(function () {
                         setDisable(false)
-                    }, 1000)
+                        usedispatch(setSpinersli({ spiner: true }))
+                    }, 3000)
 
-
+                    return
                 }
+                usedispatch(setSpinersli({ spiner: true }))
                 /*usedispatch(setToastes({
                     show: true,
                     message: "No hay más disponibilida en la localidad",
@@ -512,6 +524,7 @@ const LocalidadmapViews = (props) => {
                 // , ...data
             ]
         }
+        usedispatch(setSpinersli({ spiner: false }))
         correlativosadd(datos).then(ou => {
             if (ou.success) {
                 ou.insert.map((g => {
@@ -597,7 +610,13 @@ const LocalidadmapViews = (props) => {
                         </SweetAlert>
                     )
                 }))
+                setTimeout(function () {
+
+                    usedispatch(setSpinersli({ spiner: true }))
+                }, 3000)
+                return
             }
+            usedispatch(setSpinersli({ spiner: true }))
             console.log(ou)
         }).catch(err => {
             console.log(err)
@@ -1137,7 +1156,7 @@ const LocalidadmapViews = (props) => {
                                             seleccion.filter((e) => e.estado == "seleccionado").map((elm, id) => {
                                                 return (
                                                     <li key={id} className={elm.silla + '  d-flex agregados rounded-5  bg-success justify-content-center align-items-center '}
-                                                        onClick={() => console.log({ /*"localidad": elm.localidad, tipo: mapath.precio.typo, "localidaEspacio": elm.localidaEspacio, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "borrar" */})}
+                                                        onClick={() => console.log({ /*"localidad": elm.localidad, tipo: mapath.precio.typo, "localidaEspacio": elm.localidaEspacio, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "borrar" */ })}
                                                         style={{ height: '30px', width: '80px', margin: '1px' }} >
                                                         <div className={'d-flex   text-white justify-content-center  '} >
                                                             <div className="d-flex  justify-content-center text-center p-2">
