@@ -450,7 +450,7 @@ const IndexFlas = () => {
                 // console.log(seleccionuser)
                 if (seleccionuser.success) {
                   //console.log( registro.data.find(f => f.estado_pago == "Pendiente"))
-                  Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "" }).then(outp => {
+                  Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
                     console.log(outp)
                   }).catch(error => {
                     console.log(error)

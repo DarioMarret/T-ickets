@@ -25,8 +25,11 @@ const MesadiesView = ({ text, list }) => {
     if (estado.cedula != null && estado.cedula != "") {
       if (estado.estado.toLowerCase() == "ocupado") return estado.estado.toLowerCase()
       if (user != null && estado.cedula == user.cedula) return "seleccionado"
+
       else return estado.estado.toLowerCase()
+      return
     }
+    //if ((estado.cedula == null && estado.estado.toLowerCase() == "reservado")) return "disponible"
     else return estado.estado.toLowerCase()
   }
   //*estado de mesa
@@ -39,8 +42,8 @@ const MesadiesView = ({ text, list }) => {
       {
         if (k.cedula != "") {
           // console.log(k.cedula)
-          if (user == undefined  ) {
-            if (k.estado.toLowerCase() == "reservado"&&( k.cedula==null ||  k.cedula == "" || k.cedula==undefined)) return "disponible"
+          if (user == undefined) {
+            if (k.estado.toLowerCase() == "reservado" && (k.cedula == null || k.cedula == "" || k.cedula == undefined)) return "disponible"
             return k.estado
           }
           if (k.cedula == user.cedula) {
@@ -78,6 +81,67 @@ const MesadiesView = ({ text, list }) => {
     let silla = list.find(f => f.silla == e)
     if (info == undefined) {
       return
+    }
+    if (silla.estado.toLowerCase().includes("reservado") && silla.cedula == null) {
+      let datos = {
+        "cedula": info.cedula,
+        "estado": "disponible",
+        "mesa": [
+          {
+            id_silla: silla.idsilla,
+            id: mapath[0].id,
+            cedula: info.cedula,
+            estado: "",
+            ...silla
+          }
+        ]
+      }
+      hideAlert()
+      usedispatch(setSpinersli({ spiner: false }))
+      correlativosadd(datos).then(ou => {
+        console.log(datos, ou)
+        usedispatch(setSpinersli({ spiner: false }))
+        if (ou.success) {
+          console.log(ou)
+          ou.insert.map((e => {
+            let asiento = silla
+            AgregarAsiento({
+              "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+              seleccionmapa: nombre.localidad + "-" + asiento.silla,
+              "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado", "ids": asiento.idsilla, "cedula": info.cedula
+            })
+            usedispatch(addSillas({
+              "localidad": nombre.localidad, "localidaEspacio": nombre,
+              "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+              seleccionmapa: nombre.localidad + "-" + asiento.silla, "fila": asiento.silla.split("-")[0],
+              "silla": asiento.silla, "estado": "seleccionado"
+            }))
+
+          }))
+          ou.update.map((e) => {
+            let asiento = silla
+            usedispatch(deleteSillas({
+              "localidad": nombre.localidad,
+              "fila": asiento.silla.split("-")[0],
+              "silla": asiento.silla,
+              "estado": "seleccionado"
+            }))
+            EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento.silla })
+          })
+          setTimeout(() => {
+            usedispatch(setSpinersli({ spiner: true }))
+            //   
+          }, 5000);
+
+
+        }
+        else {
+          usedispatch(setSpinersli({ spiner: true }))
+        }
+      }).catch(err => {
+        console.log(err)
+        usedispatch(setSpinersli({ spiner: true }))
+      })
     }
     if (silla.estado.toLowerCase().includes("reservado") && (info.cedula != silla.cedula)) {
       return
@@ -132,7 +196,7 @@ const MesadiesView = ({ text, list }) => {
             let sillaids = document.getElementById("silla-" + e)
             sillaids.classList.add('disponible')
             sillaids.classList.remove('seleccionado')
-           
+
             EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento.silla })
           })
           setTimeout(function () {
@@ -151,7 +215,7 @@ const MesadiesView = ({ text, list }) => {
       return
     }
 
-    if (silla.estado.toLowerCase().includes("disponible")) {
+    if (silla.estado.toLowerCase().includes("disponible") || silla.cedula == null) {
       let datos = {
         "cedula": info.cedula,
         "estado": "disponible",
@@ -278,6 +342,26 @@ const MesadiesView = ({ text, list }) => {
       return
     }
     // console.log(silla)
+    if (silla.estado.toLowerCase().includes("reservado") && (silla.cedula == null)) {
+      if (TotalSelecion() < 10) {
+        setAlert(
+          <SweetAlert
+            warning
+            style={{ display: "block", marginTop: "-100px" }}
+            title={"Deseas selecionar "}
+            onConfirm={() => sillasid(e)}
+            onCancel={() => hideAlert()}
+            confirmBtnBsStyle="success"
+            cancelBtnBsStyle="danger"
+            confirmBtnText="Si, Continuar"
+            cancelBtnText="Cancelar"
+            closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+            showCancel>
+            {"la sillas " + e}
+          </SweetAlert>)
+      }
+      return
+    }
     if (silla.estado.toLowerCase().includes("reservado") && (info.cedula != silla.cedula)) {
       return
     }
@@ -391,7 +475,7 @@ const MesadiesView = ({ text, list }) => {
             "silla": asiento[0].silla,
             "estado": "seleccionado"
           }))
-         
+
           EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento[0].silla })
         })
         setTimeout(() => {

@@ -77,14 +77,13 @@ const LocalidadmapViews = (props) => {
         setDisable(true)
 
         usedispatch(setSpinersli({ spiner: false }))
-        getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : correlativosadd({
+        getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : 
+        correlativosadd({
             "id": mapath.precio.idcolor,
             "estado": "reservado",
             "cedula": user.cedula,
             "mas": "menos",
             "cantidad": 1
-
-            // "cantidad": getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad == 1 ? getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad : (parseInt(getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).cantidad - 1))
         }).then(oupt => {
             console.log(oupt)
             if (oupt.success) {
@@ -100,7 +99,6 @@ const LocalidadmapViews = (props) => {
                 return
             }
             usedispatch(setSpinersli({ spiner: true }))
-            //console.log(oupt)
             console.log({
                 "id": mapath.precio.idcolor,
                 "estado": "reservado",
@@ -178,7 +176,6 @@ const LocalidadmapViews = (props) => {
                     "cantidad": 1
                 })
                 console.log(oupt)
-                //console.log(oupt)
             }
 
             ).catch(erro => {
@@ -382,14 +379,12 @@ const LocalidadmapViews = (props) => {
                             style={{
                                 height: 100
                             }}>
-
                         </img>
                     </div>
                     <h5 >Desea quitar los asientos seleccionados de esta mesa </h5>
                     <div className='d-flex  justify-content-around py-4'>
                         <div>
                             <button className='btn btn-outline-danger  rounded-6' onClick={() => cerrar()}>
-
                                 <span style={{
                                     fontWeight: "bold"
                                 }}>Cancelar</span>
@@ -427,8 +422,6 @@ const LocalidadmapViews = (props) => {
             EliminarSillas({ ...e })
             usedispatch(deleteSillas({ ...e }))
         }).catch(err => console.log(err))
-
-
     }
     function sillasselecion(e) {
         let user = getDatosUsuariosLocalStorag()
@@ -519,9 +512,7 @@ const LocalidadmapViews = (props) => {
                     "cedula": user.cedula,
                     estado: "",
                     ...e
-
                 }
-                // , ...data
             ]
         }
         usedispatch(setSpinersli({ spiner: false }))
@@ -574,17 +565,6 @@ const LocalidadmapViews = (props) => {
                         "estado": "seleccionado"
                     }))
                     EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento.silla })
-                    /*elim({
-                        "localidad": nombre.localidad, "localidaEspacio": nombre, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
-                        seleccionmapa: nombre.localidad + "-" + asiento.silla,
-                        "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado"
-                    })
-                    usedispatch(addSillas({
-                        "localidad": nombre.localidad, "localidaEspacio": nombre,
-                        "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
-                        seleccionmapa: nombre.localidad + "-" + asiento.silla, "fila": asiento.silla.split("-")[0],
-                        "silla": asiento.silla, "estado": "seleccionado"
-                    }))*/
                     let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
                     setAlert(
                         <SweetAlert
@@ -623,148 +603,6 @@ const LocalidadmapViews = (props) => {
         })
         console.log(datos)
     }
-
-    /* $(document).on('click', 'div.disponible', function (e) {
-         e.preventDefault();
-         if (this.classList.contains("disponible")) {
-             if (!this.classList.contains('seleccionado') && !this.classList.contains('ocupado') && !this.classList.contains("reservado")) {
-                 let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-                 if (TotalSelecion() < 10) {
- 
-                     //successAlert(this.classList[0], nombres.localidad, "Fila")
-                     let silla = this.classList[0].replace("-", " ").split(" ")[1]
-                     // console.log("sillas->", this.id)
- 
-                     this.classList.remove('disponible')
-                     this.classList.add('seleccionado')
-                     this.classList.add("" + nombres.idcolor + "silla")
- 
-                     enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
-                         console.log(ouput)
-                         setAlert(
-                             <SweetAlert
-                                 success
-                                 style={{ display: "block", marginTop: "-100px" }}
-                                 title="Se agrego"
-                                 onConfirm={() => hideAlert()}
-                                 onCancel={() => cerrar()}
-                                 confirmBtnBsStyle="success"
-                                 cancelBtnBsStyle="danger"
-                                 confirmBtnText="Seguir Agregando"
-                                 cancelBtnText="Ir al carrito"
-                                 closeOnClickOutside={false}
-                                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                                 showCancel
-                             >
-                                 <div className="d-flex flex-row justify-content-center text-center">
-                                     <div className="d-flex">
-                                         <h4 style={{ fontSize: '0.9em' }} >
-                                             De la Localidad {nombres.localidad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
-                                     </div>
-                                 </div>
-                             </SweetAlert>
-                         )
-                         // usedispatch(filtrarlocali(ouput))
-                         AgregarAsiento({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                         usedispatch(addSillas({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
- 
-                     }
-                     ).catch(exit => {
-                         console.log(exit)
-                     })
-                 } else
-                     succesLimit()
-             }
-             return
-         }
-     })*/
-    /*
-    $(document).on('click', 'div.seleccionado', function (e) {
-        e.preventDefault();
-        if (this.classList.contains("seleccionado")) {
-            if (!this.classList.contains('disponible')) {
-                let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-                //                
-                succesElimAlert(this, { "id": nombres.idcolor, "localidad": nombres.localidad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
-
-            }
-            return
-        }
-    })*/
-    /*$(document).on('click', 'a.disponible', function () {
-        if (!this.classList.contains('seleccionado')) {
-            let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-            if (TotalSelecion() < 10) {
-                // successAlert(this.classList[0], nombres.localidad, "Mesa")
-                let silla = this.classList[0].replace("-", " ").split(" ")[1]
-                console.log(this.id)
-                setAlert(
-                    <SweetAlert
-                        success
-                        style={{ display: "block", marginTop: "-100px" }}
-                        title="Se agrego"
-                        onConfirm={() => hideAlert()}
-                        onCancel={() => cerrar()}
-                        confirmBtnBsStyle="success"
-                        cancelBtnBsStyle="danger"
-                        confirmBtnText="Seguir Agregando"
-                        cancelBtnText="Ir al carrito"
-                        closeOnClickOutside={false}
-                        closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                        showCancel
-                    >
-                        <div className="d-flex flex-row justify-content-center text-center">
-                            <div className="d-flex">
-                                <h4 style={{ fontSize: '0.9em' }} >
-                                    De la Localidad {nombres.localidad} En la Fila:  {this.classList[0].replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
-                            </div>
-                        </div>
-                    </SweetAlert>
-                )
-                this.classList.remove('disponible')
-                this.classList.add('seleccionado')
-
-
-                //console.log({ id: nombres.idcolor, silla: this.classList[0] })
-                enviasilla({ id: nombres.idcolor, silla: this.classList[0] }).then(ouput => {
-                    //console.log(ouput)
-
-                    //usedispatch(filtrarlocali(ouput))
-
-                    AgregarAsiento({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" })
-                    usedispatch(addSillas({ "localidad": nombres.localidad, "localidaEspacio": nombres, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombres.precio_normal, seleccionmapa: nombres.localidad + "-" + this.classList[0], "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "seleccionado" }))
-                    // console.log(ouput)
-                }
-                ).catch(exit => console.log(exit))
-            } else {
-                succesLimit()
-            }
-        }
-        return
-    })
-    $(document).on("click", "a.seleccionado", function () {
-        if (!this.classList.contains('disponible')) {
-            let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-            succesElimAlert(this, { id: nombres.idcolor, "localidad": nombres.localidad, "fila": this.classList[0].split("-")[0], "silla": this.classList[0], "estado": "disponible" })
-        }
-        return
-    })*/
-    /*$(document).on("click", "div.mesadisponible", function () {
-        /*if (!this.classList.contains("mesaselecion")) {
-            if (TotalSelecion() < 10) {
-                Alertmesas(this.classList[0], this.classList[1])
-            }
-            else
-                succesLimit()
-        }
-        return*
-    })*/
-    /*$(document).on("click", "div.mesaselecion", function () {
-        if (!this.classList.contains("mesadisponible")) {
-            Elimnamesa(this.classList[0], this.classList[1])
-        }
-    })*/
-
     const hideAlert = () => {
         setAlert(null);
     }
@@ -1079,12 +917,17 @@ const LocalidadmapViews = (props) => {
 
 
 
-                                            <button className="resta  btn-danger rounded-circle "
+                                            {detalle.length > 0 ? <button className="resta  btn-danger rounded-circle "
                                                 onClick={restaprecio}
                                                 disabled={disable}
                                             >
                                                 <i className="fa fa-minus"></i>
-                                            </button>
+                                            </button> : <button className="resta btn-disable border rounded-circle "
+
+                                                disabled={false}
+                                            >
+                                                <i className="fa fa-minus"></i>
+                                            </button>}
                                             <hr className="mx-2" ></hr>
                                             <button className="suma   btn-success rounded-circle"
                                                 disabled={disable}

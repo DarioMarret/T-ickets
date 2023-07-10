@@ -40,7 +40,7 @@ function AdminNavbar() {
     e.preventDefault();
     let nombre = $('#cedulac').val()
     
-    if (nombre.trim().length >= 10) {
+    if (nombre.trim().length >= 4) {
       let informacion = {
         "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
         "email": isNaN(nombre.trim()) ? nombre.trim() : ''
