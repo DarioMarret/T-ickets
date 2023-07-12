@@ -87,22 +87,22 @@ export default function NoticiasView() {
                                 usedispatch(setToastes({ show: true, message: "La imagen tiene un peso de " + Math.floor(imgen.size / 1000000) + "MB", color: 'bg-warning', estado: 'Imagen demasiada pesada' }))
                                 setCargando(false)
                                 return
-                            }
-                     
-
+                            }                    
                             let mobil = await Obtenerlinkimagen(imgmovil)
-                            console.log(mobil)
-                            let parametr = {
-                                "encabezado": encabezado,
-                                "descripcion": descipcion,
-                                "link_img": link,
-                                "fecha_presentacion": fechamax,
-                                "redirect": mobil
-                            }
-                            let carruse = await agregarNoticia(parametr)
-                            //let carruse = await noticiasEvento(datas)
-                            Evento()
-                            setCargando(false)
+                            setTimeout(async function(){
+                                console.log(mobil)
+                                let parametr = {
+                                    "encabezado": encabezado,
+                                    "descripcion": descipcion,
+                                    "link_img": link,
+                                    "fecha_presentacion": fechamax,
+                                    "redirect": mobil
+                                }
+                                let carruse = await agregarNoticia(parametr)
+                                Evento()
+                                setCargando(false)
+                            },3000)
+                            
                         }, 3000)
                     } catch (error) {
                         console.log(error)
@@ -110,9 +110,6 @@ export default function NoticiasView() {
                 }
             }
             else if (Tipo == "Evento") {
-                // let tipo = document.getElementById("mas").value
-                //console.log(tipo)
-
                 if (encabezado == "" || descipcion == "" || fechamax == "" || imgen == "" || imgmovil == "") {
                     usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
                 }
@@ -514,7 +511,7 @@ export default function NoticiasView() {
                 "evento": "CU1E1Q-Medio Estadio Atahualpa -ELADIO CARRION",
                     "encabezado": "ELADIO CARRION",
                         "descripcion": "Evento Bahia",
-                            "link_img": "https://rec.netbot.ec/store/img/cabecera.png",
+                            "link_img": "https://api.t-ickets.com/store/img/cabecera.png",
                                 "fecha_presentacion": "2022-12-31",
                                     "redirect": ""
         }
@@ -523,7 +520,7 @@ export default function NoticiasView() {
             "evento": null,
             "encabezado": "ELADIO CARRION",
             "descripcion": "Evento Bahia",
-            "link_img": "https://rec.netbot.ec/store/img/cabecera.png",
+            "link_img": "https://api.t-ickets.com/store/img/cabecera.png",
             "fecha_presentacion": "2022-12-22",
             "redirect": ""
         }

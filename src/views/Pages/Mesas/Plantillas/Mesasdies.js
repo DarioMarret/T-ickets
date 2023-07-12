@@ -32,7 +32,6 @@ const MesadiesView = ({ text, list }) => {
     //if ((estado.cedula == null && estado.estado.toLowerCase() == "reservado")) return "disponible"
     else return estado.estado.toLowerCase()
   }
-  //*estado de mesa
   function MesaEstado(e) {
 
     if (list.length == 0) {
@@ -41,7 +40,6 @@ const MesadiesView = ({ text, list }) => {
     let asiento = list.map(function (k) {
       {
         if (k.cedula != "") {
-          // console.log(k.cedula)
           if (user == undefined) {
             if (k.estado.toLowerCase() == "reservado" && (k.cedula == null || k.cedula == "" || k.cedula == undefined)) return "disponible"
             return k.estado

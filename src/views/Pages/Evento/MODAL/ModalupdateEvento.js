@@ -113,20 +113,20 @@ const Modalupdate = (props) => {
                 setImagen({ ...newimagen, imagenConcierto: '' })
             }
         } else if (e.name == "mapaConcierto") {
-            setImagen({ ...neweventos, mapaConcierto: e.files[0] })
-            // console.log({ mapaConcierto: e.value })
-            // img.src = window.URL.createObjectURL(e.files[0])
-            /*  img.onload = () => {
+            setImagen({ ...neweventos, mapaConcierto: e.files })
+            console.log({ mapaConcierto: e.files[0] })
+           /*  img.src = window.URL.createObjectURL(e.files[0])
+             img.onload = () => {
                   //const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)
                   console.log(img.width)
-                  setImagen({ ...newimagen, mapaConcierto: e.files })
+                 setImagen({ ...newimagen, mapaConcierto: e.files[0] })
                   console.log(e.value)
                   if (img.width < 400 || img.height < 400) {
                       e.value = ""
                       setImagen({ ...newimagen, imagenConcierto: '' })
                       usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
                   }
-                  else setImagen({ ...newimagen, mapaConcierto: e.files ? e.files : '' })
+                  else setImagen({ ...newimagen, mapaConcierto: e.files ? e.files[0] : '' })
               }
               img.onerror = () => {
                   setImagen({ ...newimagen, mapaConcierto: '' })
@@ -342,14 +342,18 @@ const Modalupdate = (props) => {
     async function ActualizarMapa(e) {
         // console.log(e.target.setatr('disabled') == true)
         e.target.setAttribute('disabled', "true");
-        // e.setAttribute('disabled', true);             
+        // e.setAttribute('disabled', true);     
+        console.log(newimagen.mapaConcierto)     
+       // newimagen.mapaConcierto[0] == undefined   
         if (newimagen.mapaConcierto[0] == undefined) {
             usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del los precios', color: 'bg-danger', estado: 'Datos vacios' }))
             e.target.removeAttribute('disabled')
             return
         }
-        Obtenerlinkimagen(newimagen.mapaConcierto).then(oup => {
-            if (oup.success) {
+       // let ouput = await Obtenerlinkimagen(newimagen.imagenConcierto[0])
+        Obtenerlinkimagen(newimagen.mapaConcierto[0]).then(oup => {
+            console.log(oup)
+            if (oup!=null) {
                 let info = {
                     "id_evento": neweventos.id_evento,
                     "nombreConcierto": neweventos.nombreConcierto,
@@ -359,15 +363,16 @@ const Modalupdate = (props) => {
                     "cuidadConcert": neweventos.cuidadConcert,
                     "descripcionConcierto": neweventos.descripcionConcierto,
                     "imagenConcierto": neweventos.imagenConcierto,
-                    "mapaConcierto": oup.link
+                    "mapaConcierto": oup
                 }
-                console.log("aqui")
+                console.log("aqui", info)
                 setTimeout(function () {
                     actualizarDescription(info).then(oup => {
                         if (oup.success) {
+                            console.log(oup,info)
                             e.target.removeAttribute('disabled')
                             Setshow(false)
-                            window.location.reload()
+                           // window.location.reload()
                         }
                         //console.log(oup)
                     }).catch(err => {
@@ -378,6 +383,18 @@ const Modalupdate = (props) => {
                 }, 1000)
 
             }
+            let info = {
+                "id_evento": neweventos.id_evento,
+                "nombreConcierto": neweventos.nombreConcierto,
+                "fechaConcierto": neweventos.fechaConcierto,
+                "horaConcierto": neweventos.horaConcierto,
+                "lugarConcierto": neweventos.lugarConcierto,
+                "cuidadConcert": neweventos.cuidadConcert,
+                "descripcionConcierto": neweventos.descripcionConcierto,
+                "imagenConcierto": neweventos.imagenConcierto,
+                "mapaConcierto": oup.link
+            }
+            console.log("aqui", info)
         }).catch(err => {
             console.log(err)
         })
@@ -693,7 +710,7 @@ const Modalupdate = (props) => {
 
                     </div>
                     <div className="col-12">
-                        <div className="col-12 col-md-12 d-none ">
+                        <div className="col-12 col-md-12  ">
                             <label className="form-label"> {neweventos.mapaConcierto ? "Hay un mapa Cargada " : "Subir imagen del mapa"}</label>
                             <div className="input-group mb-3">
 
@@ -703,7 +720,7 @@ const Modalupdate = (props) => {
 
                             </div>
                         </div>
-                        <div className="text-center d-none">
+                        <div className="text-center ">
                             <button className="btn btn-success" onClick={(e) => ActualizarMapa(e)}>Actualizar imagen de precios</button>
                         </div>
                     </div>

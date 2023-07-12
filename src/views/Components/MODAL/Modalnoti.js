@@ -17,7 +17,7 @@ export default function Noticiamodal() {
                     <button className="close " onClick={()=>usedispatch(setModal({ nombre: "", estado: "" }))}>X</button>
                 </Modal.Header>
                 
-                <img className=" img-fluid" src="https://rec.netbot.ec/store/img/whatsapp image 2023-01-30 at 18.48.09.jpeg"></img>
+                <img className=" img-fluid" src="https://api.t-ickets.com/store/img/whatsapp image 2023-01-30 at 18.48.09.jpeg"></img>
             </Modal>
         </>
     )

@@ -69,7 +69,7 @@ const CederView = () => {
             }))
         })
        /* try {
-            let { data } = await axios.post("https://rec.netbot.ec/ms_login//api/v1/ceder_boleto", ceder, {
+            let { data } = await axios.post("https://api.t-ickets.com/ms_login//api/v1/ceder_boleto", ceder, {
 
             }, {
                 header: {

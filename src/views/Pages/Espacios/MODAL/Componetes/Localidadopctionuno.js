@@ -17,7 +17,8 @@ const TabunoView = (props) => {
         cantidad: '',
         inicial: '',
         fila: '',
-        sillas: ''
+        sillas: '',
+        inicio:''
 
     })
     const [ListaFilas, setFilas] = useState([])
@@ -318,6 +319,21 @@ const TabunoView = (props) => {
                                     }) : ""}
                             </select>
                         </div>
+                    </div>
+                    <div className="col-6">
+                        <label className="form-label"><b>Número inicial</b></label>
+                        <div className="input-group mb-3">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
+                            </div>
+                            <input type="number" name="inicio" className="form-control"
+                                id="inicio"
+                                value={filass.inicio}
+                                max={39}
+                                onChange={(e) => handelchange(e.target)}
+                                placeholder="# Sillas" />
+                        </div>
+
                     </div>
                     <div className="col-sm-2">
                         <label className="form-label" style={{ color: 'white' }}><b>.</b></label><br />

@@ -89,7 +89,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
     }
     const Endpoitnuevo = async (parms) => {
         try {
-            let { data } = await axios.post("https://rec.netbot.ec/ms_login/set_link_external_tickets", parms, {
+            let { data } = await axios.post("https://api.t-ickets.com/ms_login/set_link_external_tickets", parms, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -103,7 +103,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
         }
     }
     useEffect(() => {
-        axios.get("https://rec.netbot.ec/mikroti/api/listApi/GetLocalidad").then(sali => {
+        axios.get("https://api.t-ickets.com/mikroti/api/listApi/GetLocalidad").then(sali => {
             console.log(sali)
             if(sali.status==200){
                 setLoacli(sali.data)

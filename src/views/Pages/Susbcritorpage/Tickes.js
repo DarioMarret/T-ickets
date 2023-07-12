@@ -311,7 +311,7 @@ function Example() {
     }
     const Listarfaci = async (parms) => {
         try {
-            let { data } = await axios.post("https://rec.netbot.ec/ms_login/get_link_external_tickets", parms, {
+            let { data } = await axios.post("https://api.t-ickets.com/ms_login/get_link_external_tickets", parms, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

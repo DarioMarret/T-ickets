@@ -640,7 +640,7 @@ const IndexFlas = () => {
                 color: 'bg-success',
                 estado: "Registro exitoso"
               }))
-              usedispatch(setModal({ nombre: "pdfsshowpar", estado: "https://rec.netbot.ec/store/img/img_8242.jpg" }))
+              usedispatch(setModal({ nombre: "pdfsshowpar", estado: "https://api.t-ickets.com/store/img/img_8242.jpg" }))
 
             }, 8000)
           } else {
@@ -667,7 +667,7 @@ const IndexFlas = () => {
                   estado: "Registro exitoso"
                 }))
 
-                usedispatch(setModal({ nombre: "pdfsshowpar", estado: "https://rec.netbot.ec/store/img/img_8242.jpg" }))
+                usedispatch(setModal({ nombre: "pdfsshowpar", estado: "https://api.t-ickets.com/store/img/img_8242.jpg" }))
 
               }, 8000)
             }
@@ -704,7 +704,7 @@ const IndexFlas = () => {
                   color: 'bg-success',
                   estado: "Registro exitoso"
                 }))
-                usedispatch(setModal({ nombre: "pdfsshowpar", estado: "https://rec.netbot.ec/store/img/img_8242.jpg" }))
+                usedispatch(setModal({ nombre: "pdfsshowpar", estado: "https://api.t-ickets.com/store/img/img_8242.jpg" }))
               }, 8000)
             }
           }).catch(err => {
@@ -1503,7 +1503,7 @@ const IndexFlas = () => {
                                 </div>
                               </div>
                               <div className="container col-12 col-md-6 rounded-7  px-0">
-                                <img src={e.codigoEvento == "9EGM42" ? "https://rec.netbot.ec/store/img/whatsapp%20image%202023-01-30%20at%2019.51.02.jpeg" : e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
+                                <img src={e.codigoEvento == "9EGM42" ? "https://api.t-ickets.com/store/img/whatsapp%20image%202023-01-30%20at%2019.51.02.jpeg" : e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
                               </div>
 
                             </div>
@@ -1857,7 +1857,7 @@ const IndexFlas = () => {
                                 </div>
                               </div>
                               <div className="container col-12 col-md-6 rounded-7  px-0">
-                                <img src={e.codigoEvento == "9EGM42" ? "https://rec.netbot.ec/store/img/whatsapp%20image%202023-01-30%20at%2019.51.02.jpeg" : e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
+                                <img src={e.codigoEvento == "9EGM42" ? "https://api.t-ickets.com/store/img/whatsapp%20image%202023-01-30%20at%2019.51.02.jpeg" : e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
                               </div>
 
                             </div>

@@ -4,7 +4,7 @@ import { Host } from "./constantes"
 //*api boletos
 export const Listarticketporestado = async (parms) => {
     try {
-        const { data } = await axios.post("https://rec.netbot.ec/ms_login/ticket_usuario", {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/ticket_usuario", {
             "cedula": parms
         }, {
             headers: {
@@ -22,7 +22,7 @@ export const Listarticketporestado = async (parms) => {
 //Compra/post_api_v1_liverar_asiento
 export const Liverarasiento = async(parms)=>{
     try {
-        const { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/liverar_asiento",{
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/liverar_asiento",{
             "id_ticket_usuarios": parms
         },{
 
@@ -38,7 +38,7 @@ export const Liverarasiento = async(parms)=>{
 export const BoletosTiketsGlobal=async(parms)=>{   
    // console.log(parms)
     try {
-        const { data } = await axios.get("https://rec.netbot.ec/ms_login/ticket_admin",
+        const { data } = await axios.get("https://api.t-ickets.com/ms_login/ticket_admin",
             {
                 "cedula":parms
             }, {
@@ -56,7 +56,7 @@ export const BoletosTiketsGlobal=async(parms)=>{
 //validar_existencia_asientos
 export const GEnerarBoletos=async(parms)=>{
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/validar_existencia_asientos",
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/validar_existencia_asientos",
             parms, {
             headers: {
                 'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export const GEnerarBoletos=async(parms)=>{
 //post_api_v1_selecion_usuario
 export const Seleccionaruserlista=async(parms)=>{
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/selecion_usuario",parms,{
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/selecion_usuario",parms,{
             headers:{
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -87,7 +87,7 @@ export const Seleccionaruserlista=async(parms)=>{
 //post_api_v1_actualisar_descripcion_evento
 export const actualizarDescription = async (parms)=>{
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/actualisar_descripcion_evento", parms, {
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/actualisar_descripcion_evento", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -102,7 +102,7 @@ export const actualizarDescription = async (parms)=>{
 //post_api_v1_actualisar_precio_localidad
 export const actualizarPrecios= async(parms)=>{
     try {
-        let { data } = await axios.post("https://rec.netbot.ec/ms_login/api/v1/actualisar_precio_localidad",parms,{
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/actualisar_precio_localidad",parms,{
             headers:{
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -118,7 +118,7 @@ export const actualizarPrecios= async(parms)=>{
 ///api/v1/actualisar_descripcion_evento
 export const Putdescriptionevent = (parms) => {
     try {
-        let { data } = axios.post("https://rec.netbot.ec/ms_login/api/v1/actualisar_descripcion_evento",
+        let { data } = axios.post("https://api.t-ickets.com/ms_login/api/v1/actualisar_descripcion_evento",
             parms, {
             headers: {
                 'Content-Type': 'application/json',
