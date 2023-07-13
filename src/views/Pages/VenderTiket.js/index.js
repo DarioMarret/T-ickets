@@ -144,12 +144,12 @@ export default function StoreTickesViews() {
                             // , ...data
                         ]
                     })
-                    correlativosadd({                        
-                        "estado": "disponible",                        
+                    correlativosadd({
+                        "estado": "disponible",
                         "cedula": user.cedula,
                         "cantidad": 0,
-                         "mesa": [
-                            {...elem}
+                        "mesa": [
+                            { ...elem }
                             // , ...data
                         ]
                     }).then(ouput => {
@@ -163,7 +163,7 @@ export default function StoreTickesViews() {
         LimpiarLocalStore()
     }
     function para() {
-       // console.log("no quito")
+        // console.log("no quito")
         clearInterval(intervalRef.current)
     }
     const hideAlert = () => {
@@ -177,20 +177,20 @@ export default function StoreTickesViews() {
             const data = await cargarEventoActivo("")
             //console.log(clienteInfo())
             const filtro = data != null ? clienteInfo().id == "58" ? data.filter(e => e.codigoEvento == "YZPQQ3").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : clienteInfo().id == "59" ? data.filter(e => e.codigoEvento == "SAZKD1").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
-            
+
             setEvento(filtro.sort(sorter))
             const susct = await GetSuscritores()
             //console.log(data, susct)
-          //  const Datos = await ListarTikets()
+            //  const Datos = await ListarTikets()
             const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
             if (data != null) {
 
-              /*  if (Datos.data) setInfo({
-                    ...info,
-                    Ticket: Datos.data.length,
-                    Activos: filtro.sort(sorter).length,
-                    Venta: 0, suscritor: susct.users.length
-                })*/
+                /*  if (Datos.data) setInfo({
+                      ...info,
+                      Ticket: Datos.data.length,
+                      Activos: filtro.sort(sorter).length,
+                      Venta: 0, suscritor: susct.users.length
+                  })*/
             }
             else if (data == null) setEvento([])
         } catch (error) {
@@ -249,17 +249,22 @@ export default function StoreTickesViews() {
                     let path = JSON.parse(mapa[0].pathmap)
                     let newprecios = obten.data.map((g, i) => {
                         let color = localidad.filter((f, i) => f.nombre == g.localidad)
-                        g.color = color[0].color
-                        g.idcolor = color[0].id
-                        g.typo = color[0].tipo
-                        g.ideprecio = g.id
-                        g.espacio = color[0].espacio
-                        sessionStorage.setItem(espacio, color[0].espacio)
-                        return g
+                        console.log(color)
+                        if (color.length> 0) {
+                            g.color = color[0].color
+                            g.idcolor = color[0].id
+                            g.typo = color[0].tipo
+                            g.ideprecio = g.id
+                            g.espacio = color[0].espacio
+                            sessionStorage.setItem(espacio, color[0].espacio)
+                            return g
+                        }
                     })
 
                     let colornuevo = mapalocal.map((L) => {
-                        if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+                        console.log(newprecios.filter(e => e != undefined))
+                       
+                        if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {{
                             L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
                             L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
                             L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
@@ -267,11 +272,12 @@ export default function StoreTickesViews() {
                             L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
                             L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
                             L.espacioid = L.id_espacio
-                            return L
+                            return L}
                         }
                     })
+                    console.log(newprecios)
                     let pathnuevo = path.map((L) => {
-                        if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+                        if (newprecios.filter(e=>e!=undefined).findIndex(e => e.idcolor == L.id) != -1) {
                             return L
                         }
                     })
@@ -399,7 +405,7 @@ export default function StoreTickesViews() {
     const datospage = useSelector((state) => state.SuscritorSlice)
     let { data: nuevos, error: errorboleto, isLoading: boletosloading } = useGetBoletosQuery()
     useEffect(() => {
-        
+
         (async () => {
             await evento()
             Limpiarseleccion()
@@ -407,7 +413,7 @@ export default function StoreTickesViews() {
             usedispatch(clearMapa({}))
             usedispatch(borrarseleccion({ estado: "seleccionado" }))
         })()
-       // console.log(clienteInfo())
+        // console.log(clienteInfo())
         var popUp = window.open('url', '', 'options');
         if (popUp == null || typeof (popUp) == 'undefined') {
             //  popUp.close();     
@@ -476,8 +482,8 @@ export default function StoreTickesViews() {
                 }}
             />
             {alert}
-            
-            {clienteInfo().perfil !="vendedores"?   <Row className=" ">
+
+            {clienteInfo().perfil != "vendedores" ? <Row className=" ">
                 <Col lg="3" sm="6">
                     <Card className="card-stats">
                         <Card.Body>
@@ -582,7 +588,7 @@ export default function StoreTickesViews() {
                         </Card.Footer>
                     </Card>
                 </Col>
-            </Row>:""}
+            </Row> : ""}
             <Row>
                 <div className="col-12 d-flex d-none flex-column align-items-center "  >
                     <h4 style={{
@@ -624,7 +630,7 @@ export default function StoreTickesViews() {
                                                             <div className="col-12 border border-bottom my-3"></div>
 
                                                             <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">{e.fechaConcierto}</span></p>
-                                                            <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.lugarConcierto } </span></p>
+                                                            <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> {e.lugarConcierto} </span></p>
                                                             <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> {e.horaConcierto}  </span></p>
                                                             {e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U" ? <p className="btn btn-primary float-center" onClick={() => registraParticipante(e.codigoEvento, e.nombreConcierto)} >Participa </p> :
                                                                 <p className="btn btn-primary float-center" onClick={() => venderevento(e)} > Vender entrada</p>
@@ -679,11 +685,11 @@ export default function StoreTickesViews() {
                                                 }
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 )
                             })
-                            :""}
+                            : ""}
 
                     </div>
 

@@ -364,7 +364,7 @@ const IndexFlas = () => {
         }))
         return
       }
-      if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")){
+      if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")) {
         setspinervi("d-none")
         //SetSeleccion("Tickets")
 
@@ -398,24 +398,33 @@ const IndexFlas = () => {
               //    console.log(obten.data)
               let newprecios = obten.data.map((g, i) => {
                 let color = localidad.filter((f, i) => f.nombre == g.localidad)
-                g.color = color[0].color
-                g.idcolor = color[0].id
-                g.typo = color[0].tipo
-                g.ideprecio = g.id
-                g.espacio = color[0].espacio
-                sessionStorage.setItem(espacio, color[0].espacio)
-                return g
+                console.log(color)
+                if (color.length > 0) {
+                  g.color = color[0].color
+                  g.idcolor = color[0].id
+                  g.typo = color[0].tipo
+                  g.ideprecio = g.id
+                  g.espacio = color[0].espacio
+                  sessionStorage.setItem(espacio, color[0].espacio)
+                  return g
+                }
               })
+
+
+
               let colornuevo = mapalocal.map((L) => {
-                if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
-                  L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
-                  L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
-                  L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
-                  L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
-                  L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
-                  L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
-                  L.espacioid = L.id_espacio
-                  return L
+                console.log(newprecios.filter(e => e != undefined))
+                if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
+                  {
+                    L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
+                    L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
+                    L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
+                    L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
+                    L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
+                    L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
+                    L.espacioid = L.id_espacio
+                    return L
+                  }
                 }
               })
               let pathnuevo = path.map((L) => {
@@ -749,11 +758,11 @@ const IndexFlas = () => {
     try {
       const info = await ListaPreciosEvent();
       return info
-      
+
     } catch (error) {
       return error
     }
-    
+
   }
   const [estafun, setfunc] = useState(false)
   const [final, setFinal] = useState([])
@@ -762,7 +771,7 @@ const IndexFlas = () => {
       if (!(evtobj.altKey || evtobj.ctrlKey || evtobj.shiftKey)) {
         if (evtobj.keyCode == 16) { return false; }
         if (evtobj.keyCode == 17) { return false; }
-       // $("body").append(evtobj.keyCode + " ");
+        // $("body").append(evtobj.keyCode + " ");
       }
     });
     //time.current = setInterval(showRemaining, 1000);
@@ -780,14 +789,14 @@ const IndexFlas = () => {
     eventosmodal()
     const evento = () => {
       setfunc(false)
-     try {
-       console.log()
-       /*if (errorPubli.status != undefined){
-        return
-       }*/
-     //  console.log(isLoading, errorPubli)
-    
-   
+      try {
+        console.log()
+        /*if (errorPubli.status != undefined){
+         return
+        }*/
+        //  console.log(isLoading, errorPubli)
+
+
         if (!errorevento == undefined) {
           return
         }
@@ -843,7 +852,7 @@ const IndexFlas = () => {
     }
 
     ListarEventosFinalizados().then(oup => {
-    // if(true) return
+      // if(true) return
       if (oup.length > 0) {
         setFinal(oup)
         console.log()
@@ -871,7 +880,7 @@ const IndexFlas = () => {
       username: localStorage.getItem('DatoCliente'),
     })
     /**aqui */
-    
+
 
     /* userauthi.login ? (new Date("02/01/2023 19:00 ") > new Date())? addNotification({
        title: 'Recuerda',
@@ -887,7 +896,7 @@ const IndexFlas = () => {
 
 
   }, [isLoading, info])
-  seleccion == "" && final.length>0 ?
+  seleccion == "" && final.length > 0 ?
     setTimeout(function () {
       $('.logos-slider').slick({
         slidesToShow: 3,
@@ -951,9 +960,9 @@ const IndexFlas = () => {
   const [visible, setVisible] = React.useState(false)
   function abrirNuevoTab() {
     // Abrir nuevo tab
-  //  var win = window.open('https://t-ickets.net/3FynwiC', '_blank');
+    //  var win = window.open('https://t-ickets.net/3FynwiC', '_blank');
     // Cambiar el foco al nuevo tab (punto opcional)
-   // win.focus();
+    // win.focus();
   }
 
   return (
@@ -968,7 +977,7 @@ const IndexFlas = () => {
         salir={salir}
       />
 
-      
+
       <Inframene />
       {modal.nombre == "Modallocalida" ?
         <LocalidadmapViews
@@ -1026,7 +1035,7 @@ const IndexFlas = () => {
         detener={detenervelocidad}
       />
       {/* header */}
-      {publicidad!=undefined&& publicidad.length > 0 ?
+      {publicidad != undefined && publicidad.length > 0 ?
         <div className="container-fluid   px-0" style={{
           minHeight: '300px'
         }}>
@@ -1093,7 +1102,7 @@ const IndexFlas = () => {
 
 
                                       onClick={() => !userauthi.login ? regsitronew() : abrirNuevoTab()}
-                                    >{userauthi.login ? element.evento == null ? "Muy Pronto": "Comprar" : "Registrate"}</button> :
+                                    >{userauthi.login ? element.evento == null ? "Muy Pronto" : "Comprar" : "Registrate"}</button> :
                                     <button className="btn border rounded-1  btn-lg btn-light "
                                       onClick={() => eventocarrusel(element.evento)}
                                       style={styleswiper.button}
@@ -1600,7 +1609,7 @@ const IndexFlas = () => {
 
           </div>
         </div> : ''}
-        {/*Listar evento con Filtro  */}
+      {/*Listar evento con Filtro  */}
       {seleccion == "" && !mostrar ?
         <div className="container-fluid " id="nuevoseventos">
           <div className="container p-3">
