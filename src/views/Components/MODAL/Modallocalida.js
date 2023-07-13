@@ -702,6 +702,7 @@ const LocalidadmapViews = (props) => {
     }
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
+        console.log(mapath.pathmap)
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
             if (sessionStorage.getItem("eventoid") != "YZPQQ3") {
                 $("#mapas" + e.path).attr("fill", e.fill)

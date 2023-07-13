@@ -428,7 +428,7 @@ const IndexFlas = () => {
                 }
               })
               let pathnuevo = path.map((L) => {
-                if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
+                if (newprecios.filter(e => e != undefined).findIndex(e => e.idcolor == L.id) != -1) {
                   return L
                 }
               })
