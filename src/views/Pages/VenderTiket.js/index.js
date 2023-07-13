@@ -247,8 +247,9 @@ export default function StoreTickesViews() {
                     console.log(mapalocal, mapa, localidades)
                     let localidad = JSON.parse(mapa[0].localidad)
                     let path = JSON.parse(mapa[0].pathmap)
-                    let newprecios = obten.data.map((g, i) => {
-                        let color = localidad.filter((f, i) => f.nombre == g.localidad)
+                    console.log(obten.data.filter(e=>e!=undefined))
+                    let newprecios = obten.data.filter(e=>e!=undefined).map((g, i) => {
+                        let color = localidad.filter((f, i) => f.nombre == g.localidad).filter(e=>e!=undefined)
                         console.log(color)
                         if (color.length> 0) {
                             g.color = color[0].color
@@ -259,7 +260,7 @@ export default function StoreTickesViews() {
                             sessionStorage.setItem(espacio, color[0].espacio)
                             return g
                         }
-                    })
+                    }).filter(e => e != undefined)
 
                     let colornuevo = mapalocal.map((L) => {
                         console.log(newprecios.filter(e => e != undefined))

@@ -120,6 +120,7 @@ const ModalCarritoView = (prop) => {
 
         ListaPrecioset(GetValores())
         let asientos = JSON.parse(sessionStorage.getItem("asientosList"))
+        console.log(precios.pathmapa)
         asientos != null ? usedispatch(cargarsilla(asientos)) : ''
         precios.pathmapa.length > 0 ? precios.pathmapa.map((e, i) => {
             $("#" + e.path).attr("class", e.id + "  disponible " + e.tipo)

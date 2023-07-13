@@ -396,8 +396,8 @@ const IndexFlas = () => {
               let localidad = JSON.parse(mapa[0].localidad)
               let path = JSON.parse(mapa[0].pathmap)
               //    console.log(obten.data)
-              let newprecios = obten.data.map((g, i) => {
-                let color = localidad.filter((f, i) => f.nombre == g.localidad)
+              let newprecios = obten.data.filter(e => e != undefined).map((g, i) => {
+                let color = localidad.filter((f, i) => f.nombre == g.localidad).filter(e => e != undefined)
                 console.log(color)
                 if (color.length > 0) {
                   g.color = color[0].color
@@ -408,12 +408,11 @@ const IndexFlas = () => {
                   sessionStorage.setItem(espacio, color[0].espacio)
                   return g
                 }
-              })
-
-
+              }).filter(e => e != undefined)
 
               let colornuevo = mapalocal.map((L) => {
                 console.log(newprecios.filter(e => e != undefined))
+
                 if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
                   {
                     L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
