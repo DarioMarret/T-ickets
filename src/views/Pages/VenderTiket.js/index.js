@@ -275,7 +275,7 @@ export default function StoreTickesViews() {
                             return L}
                         }
                     })
-                    console.log(newprecios)
+                    //console.log(newprecios)
                     let pathnuevo = path.map((L) => {
                         if (newprecios.filter(e=>e!=undefined).findIndex(e => e.idcolor == L.id) != -1) {
                             return L
