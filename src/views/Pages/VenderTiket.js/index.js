@@ -301,7 +301,7 @@ export default function StoreTickesViews() {
                         usedispatch(cargarsilla(outp))
                         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
                         if (seleccionuser.data.length > 0) {
-                            Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "" }).then(outp => {
+                            Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula }).then(outp => {
                                 console.log(outp)
                             }).catch(error => {
                                 console.log(error)

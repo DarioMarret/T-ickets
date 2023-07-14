@@ -278,7 +278,7 @@ const ModalCarritoView = (prop) => {
                 }
                 else if (ouput.data.find(e => e.typo == "correlativo")) {
                     usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != " " && e.cedula != null)))
-                    ouput.data.filter(e => e.estado == "disponible").length == 0 ?
+                    ouput.data.filter(e =>e.estado == "disponible" || e.estado==null).length == 0 ?
                         usedispatch(setToastes({
                             show: true,
                             message: "Estan en proceso o vendidos",
@@ -288,12 +288,12 @@ const ModalCarritoView = (prop) => {
                     usedispatch(cargarmapa(color))
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                     console.log({
-                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                        disponibles: ouput.data.filter(e =>e.estado == "disponible" || e.estado==null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado").length,
                         inpagos: sleccionlocalidad.inpagos
                     })
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                        disponibles: ouput.data.filter(e =>e.estado == "disponible" || e.estado==null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado").length,
                         inpagos: sleccionlocalidad.inpagos
                     }))
@@ -415,7 +415,7 @@ const ModalCarritoView = (prop) => {
                         //  usedispatch(filtrarlocali(nuevoObjeto))
                         filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
                         // console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
-                        ouput.data.filter(e => e.estado == "disponible").length == 0 ? usedispatch(setToastes({
+                        ouput.data.filter(e =>e.estado == "disponible" || e.estado==null).length == 0 ? usedispatch(setToastes({
                             show: true,
                             message: "Estan en proceso o vendidos",
                             color: 'bg-primary',
@@ -424,7 +424,7 @@ const ModalCarritoView = (prop) => {
                         // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
                         console.log(ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length)
                         usedispatch(updateboletos({
-                            disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                            disponibles: ouput.data.filter(e =>e.estado == "disponible" || e.estado==null).length,
                             proceso: ouput.data.filter(e => e.estado == "reservado" && usuario.cedula).length,
                             pagados: sleccionlocalidad.pagados,
                             inpagos: sleccionlocalidad.inpagos

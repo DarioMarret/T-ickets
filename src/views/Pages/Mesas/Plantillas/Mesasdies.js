@@ -84,11 +84,13 @@ const MesadiesView = ({ text, list }) => {
       let datos = {
         "cedula": info.cedula,
         "estado": "disponible",
+        random: sessionStorage.getItem("random"),
         "mesa": [
           {
             id_silla: silla.idsilla,
             id: mapath[0].id,
             cedula: info.cedula,
+            random: sessionStorage.getItem("random"),
             estado: "",
             ...silla
           }
@@ -148,11 +150,13 @@ const MesadiesView = ({ text, list }) => {
       let datos = {
         "cedula": info.cedula,
         "estado": "disponible",
+        random: sessionStorage.getItem("random"),
         "mesa": [
           {
             id_silla: silla.idsilla,
             id: mapath[0].id,
             cedula: info.cedula,
+            random: sessionStorage.getItem("random"),
             estado: "",
             ...silla
           }
@@ -217,11 +221,13 @@ const MesadiesView = ({ text, list }) => {
       let datos = {
         "cedula": info.cedula,
         "estado": "disponible",
+        random: sessionStorage.getItem("random"),
         "mesa": [
           {
             id_silla: silla.idsilla,
             id: mapath[0].id,
             cedula: info.cedula,
+            random: sessionStorage.getItem("random"),
             estado: "",
             ...silla
           }
@@ -427,6 +433,7 @@ const MesadiesView = ({ text, list }) => {
         id_silla: id,
         id: mapath[0].id,
         cedula: info.cedula,
+        random: sessionStorage.getItem("random"),
         estado: "",
         ...e
       }
@@ -435,8 +442,9 @@ const MesadiesView = ({ text, list }) => {
     let datos = {
       "cedula": info.cedula,
       "estado": "disponible",
+      random: sessionStorage.getItem("random"),
       "mesa": [
-        ...nuevo
+        ...nuevo,
         // , ...data
       ]
     }
@@ -500,6 +508,7 @@ const MesadiesView = ({ text, list }) => {
         id_silla: id,
         id: mapath[0].id,
         cedula: info.cedula,
+        random: sessionStorage.getItem("random"),
         estado: "",
         ...e
       }
@@ -508,6 +517,7 @@ const MesadiesView = ({ text, list }) => {
     let datos = {
       "cedula": info.cedula,
       "estado": "disponible",
+      random: sessionStorage.getItem("random"),
       "mesa": [
         ...nuevo
         // , ...data

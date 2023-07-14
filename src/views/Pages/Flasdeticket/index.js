@@ -341,13 +341,14 @@ const IndexFlas = () => {
     if (e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U") {
       usedispatch(setModal({ nombre: "", estado: "" }))
       registraParticipante(e.codigoEvento, e.codigoEvento)
-
+    //  Math.random().toString(36).slice(-10)
       return
     }
 
     sessionStorage.setItem("estadoevento", e.estado)
     setspinervi("")
     try {
+      sessionStorage.setItem("random", Math.random().toString(36).slice(-10))
       let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
       let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
       // console.log(seleccionuser)
@@ -398,7 +399,7 @@ const IndexFlas = () => {
               //    console.log(obten.data)
               let newprecios = obten.data.filter(e => e != undefined).map((g, i) => {
                 let color = localidad.filter((f, i) => f.nombre == g.localidad).filter(e => e != undefined)
-                console.log(color)
+                //console.log(color)
                 if (color.length > 0) {
                   g.color = color[0].color
                   g.idcolor = color[0].id
@@ -411,7 +412,7 @@ const IndexFlas = () => {
               }).filter(e => e != undefined)
 
               let colornuevo = mapalocal.map((L) => {
-                console.log(newprecios.filter(e => e != undefined))
+               // console.log(newprecios.filter(e => e != undefined))
 
                 if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
                   {
@@ -458,27 +459,14 @@ const IndexFlas = () => {
                 // console.log(seleccionuser)
                 if (seleccionuser.success) {
                   //console.log( registro.data.find(f => f.estado_pago == "Pendiente"))
-                  Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
+                  /*Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
                     console.log(outp)
                   }).catch(error => {
                     console.log(error)
-                  })
+                  })*/
                 }
-                console.log(registro.data)
-                /*if (registro.success){
-                if (registro.data.some(f => f.estado_pago == "Pendiente")){
-                  eliminarRegistro({ "id": registro.data.find(f => f.estado_pago == "Pendiente").id}).then(outp=>{
-                    ReactGA.event({
-                      category: "Elimino",
-                      action: "registroCompra",
-                      label: "Pendiente-TC",
-                    })
-                   // console.log(outp)
-                  }).catch(err=>{
-                    console.log(err)
-                  })
-                }
-              }*/
+                //console.log(registro.data)
+               
               }).catch(err => {
                 console.log(err)
               })
@@ -959,9 +947,9 @@ const IndexFlas = () => {
   const [visible, setVisible] = React.useState(false)
   function abrirNuevoTab() {
     // Abrir nuevo tab
-    //  var win = window.open('https://t-ickets.net/3FynwiC', '_blank');
+    var win = window.open('https://urbanfest.com.ec/', '_blank');
     // Cambiar el foco al nuevo tab (punto opcional)
-    // win.focus();
+   win.focus();
   }
 
   return (

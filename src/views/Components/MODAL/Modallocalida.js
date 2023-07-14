@@ -83,6 +83,7 @@ const LocalidadmapViews = (props) => {
             "estado": "reservado",
             "cedula": user.cedula,
             "mas": "menos",
+            random: sessionStorage.getItem("random"),
             "cantidad": 1
         }).then(oupt => {
             console.log(oupt)
@@ -149,6 +150,7 @@ const LocalidadmapViews = (props) => {
                 "estado": "reservado",
                 "cedula": user.cedula,
                 "mas": "mas",
+                random: sessionStorage.getItem("random"),
                 "cantidad": 1
             }).then(oupt => {
                 if (oupt.success) {
@@ -505,11 +507,13 @@ const LocalidadmapViews = (props) => {
         let datos = {
             "cedula": info.cedula,
             "estado": "disponible",
+            random: sessionStorage.getItem("random"),
             "mesa": [
                 {
                     id_silla: e.idsilla,
                     id: mapath.pathmap[0].id,
                     "cedula": user.cedula,
+                    random: sessionStorage.getItem("random"),
                     estado: "",
                     ...e
                 }
@@ -676,14 +680,14 @@ const LocalidadmapViews = (props) => {
                     //console.log(nuevoObjeto)
                 }
                 else if (ouput.data.some(e => e.typo == "correlativo")) {
-                    mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == "disponible"))) : ''
-                    //    console.log(ouput.data.filter(e => e.estado == "disponible").length)
-                    let dispo = ouput.data.filter(e => e.estado == "disponible").length
+                    mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e =>e.estado == "disponible" || e.estado==null))) : ''
+                    //    console.log(ouput.data.filter(e =>e.estado == "disponible" || e.estado==null).length)
+                    let dispo = ouput.data.filter(e =>e.estado == "disponible" || e.estado==null).length
                     // console.log(ouput.data.filter(e=>e.cedula!=""))
                     // console.log(ouput.data.filter(e=>e.cedula!=null).length)
                     //console.log(ouput.data)
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e => e.estado == "disponible").length,
+                        disponibles: ouput.data.filter(e =>e.estado == "disponible" || e.estado==null).length,
                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
                         pagados: sleccionlocalidad.pagados,
                         inpagos: sleccionlocalidad.inpagos
