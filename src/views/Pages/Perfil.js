@@ -508,6 +508,7 @@ function PerfilPage(props) {
 
                       </Row>
                       <Row>
+                        {/*   onChange={(e) => handelchange(e.target)}*/}
                         <Col className="pr-1 pl-1" md="6">
                           <Form.Group>
                             <label>Whatsapp </label>
@@ -515,7 +516,7 @@ function PerfilPage(props) {
                               name="whatsapp"
                               required
                               value={datosPersons.whatsapp}
-                              onChange={(e) => handelchange(e.target)}
+                        
                               placeholder=""
                               type="text"
                             ></Form.Control>
