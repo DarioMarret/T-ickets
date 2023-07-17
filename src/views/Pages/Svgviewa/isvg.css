@@ -697,3 +697,77 @@
  .clsvg13 {
    letter-spacing: -1.1;
  }
+ 
+
+
+
+        .tulcan2 {
+          stroke: #E6E7E8;
+          stroke-width: 7.87;
+          stroke-miterlimit: 22.9256
+        }
+    
+        .tulcan0 {
+          stroke: #FEFEFE;
+          stroke-width: 3;
+          stroke-miterlimit: 22.9256
+        }
+    
+        .tulcan1 {
+          stroke: #FEFEFE;
+          stroke-width: 3;
+          stroke-miterlimit: 22.9256
+        }
+    
+        .tulcanfila5 {
+          fill: #FEFEFE
+        }
+    
+        .tulcanfila1 {
+          fill: #A9ABAE
+        }
+    
+        .tulcanfila2 {
+          fill: #52658C
+        }
+    
+        .tulcanfila0 {
+          fill: #201E1E
+        }
+    
+        .tulcanfila3 {
+          fill: #201E1E
+        }
+    
+        .tulcanfila8 {
+          fill: #4B4B4D
+        }
+    
+        .tulcanfila4 {
+          fill: #747472
+        }
+    
+        .tulcanfila6 {
+          fill: #B29307
+        }
+    
+        .tulcanfila7 {
+          fill: #E6E7E8
+        }
+    
+        .tulcanfila9 {
+          fill: #FEFEFE;
+          fill-rule: nonzero
+        }
+    
+        .tulcanfnt1 {
+          font-weight: bold;
+          font-size: 466.01px;
+          font-family: 'Montserrat'
+        }
+    
+        .tulcanfnt0 {
+          font-weight: bold;
+          font-size: 553.28px;
+          font-family: 'Montserrat'
+        }

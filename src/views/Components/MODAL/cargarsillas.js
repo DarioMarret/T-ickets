@@ -5,9 +5,12 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 
 export const Cargarsillas = (colornuevo) => {
     const user = getDatosUsuariosLocalStorag()
+    console.log(colornuevo)
     return ListarLocalidad().then(ouput => {
         // console.log(colornuevo, user)
+       
         colornuevo.map((f) => {
+            
             if (ouput.data.find(ins => ins.id == f.id) != undefined) {
                 if (JSON.parse(ouput.data.find(ins => ins.id == f.id).mesas_array).Typo == "fila") {
                     //console.log(JSON.parse(ouput.data.find(ind => ind.id == f.id).mesas_array))
@@ -70,6 +73,6 @@ export const Cargarsillas = (colornuevo) => {
     }
     ).catch(exit => {
         console.log(exit)
-        return exit
+        return []
     })
 }

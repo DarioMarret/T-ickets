@@ -49,6 +49,7 @@ import TagsInput from "components/TagsInput/TagsInput";
 import DetalleCompraView from "views/Pages/VenderTiket.js/Aprobar/Detalleregistro";
 import InformeView from "views/Pages/VenderTiket.js/Aprobar/Informeventa";
 import ConsolidacionView from "views/Pages/Consolidados/index.js";
+import FacturaView from "views/Pages/Autorizacion/Facturacion";
 
 var routes = [
   {
@@ -337,26 +338,26 @@ var routes = [
       },
 
       {
-        path: "/Pasarela-Pago",
+        path: "/Facturacion",
         layout: "/admin",
-        name: "Pasarela de Pago",
+        name: "Facturación",
         mini: "*",
-        component: Ventas,
-        permiso: ["admin", "super_admin"]
+        component: FacturaView,
+        permiso: ["admin", ""]
       }, {
         path: "/Servidor-Correo",
         layout: "/admin",
         name: "Servidor de Correo",
         mini: "*",
         component: UsersView,
-        permiso: ["admin", "super_admin"]
+        permiso: ["", ""]
       }, {
         path: "/Servidor-Correo",
         layout: "/admin",
         name: "Configurar WhatsApp",
         mini: "*",
         component: UsersView,
-        permiso: ["admin", "super_admin"]
+        permiso: ["", ""]
       }
     ]
   },

@@ -263,7 +263,7 @@ export default function StoreTickesViews() {
                     }).filter(e => e != undefined)
 
                     let colornuevo = mapalocal.map((L) => {
-                        console.log(newprecios.filter(e => e != undefined))
+                       // console.log(newprecios.filter(e => e != undefined))
                        
                         if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {{
                             L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
@@ -296,8 +296,10 @@ export default function StoreTickesViews() {
                     setPrecios(nuevosdatos)
                     setDatoscon(e)
                     consultarlocalidad()
-                    Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
+                    console.log(colornuevo.filter((e) => e != undefined))
+                    Cargarsillas([...colornuevo.filter((e) => e != undefined)]).then(outp => {
                         setspinervi("d-none")
+                        console.log(outp)
                         usedispatch(cargarsilla(outp))
                         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
                         if (seleccionuser.data.length > 0) {

@@ -446,7 +446,7 @@ const IndexFlas = () => {
               setPrecios(nuevosdatos)
               setDatoscon(e)
               //consultarlocalidad()
-              Cargarsillas(colornuevo.filter((e) => e != undefined)).then(outp => {
+              Cargarsillas([...colornuevo.filter((e) => e != undefined)]).then(outp => {
                 setspinervi("d-none")
                 velocidad()
                 usedispatch(cargarsilla(outp))

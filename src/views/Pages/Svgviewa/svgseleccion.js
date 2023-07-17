@@ -963,7 +963,7 @@ const svgselectView = ({ text }) => {
             <polygon id="5" className=" none" points="12854,10561 11883,10561 11883,11340 12854,11340 12854,11340 14109,11340 14109,9586 12854,9586 " />
 
 
-       
+
 
             <rect className="linefil3 strline2" x="4991" y="11845" width="13111" height="1747" />
             <rect className="linefil3 strline2" x="4984" y="13592" width="13111" height="2404" />
@@ -1138,217 +1138,217 @@ const svgselectView = ({ text }) => {
 
         </svg>,
         "discoteca":
-             <svg xmlns = "http://www.w3.org/2000/svg" width = "90%" height = "90%" viewBox = "0 0 925 753" >
-                 <defs>
-                     <filter id="filter" x="96" y="102" width="718.75" height="489.062" filterUnits="userSpaceOnUse">
-                         <feOffset result="offset" dx="-3.611" dy="-4.792" in="SourceAlpha" />
-                         <feGaussianBlur result="blur" />
-                         <feFlood result="flood" flood-color="#121012" flood-opacity="0.54" />
-                         <feComposite result="composite" operator="in" in2="blur" />
-                         <feBlend result="blend" in="SourceGraphic" />
-                     </filter>
-                     <path id="text-path" />
-                 </defs>
-                 <path id="" data-name="Rectángulo redondeado 1 copia 2" class="cls-1" d="M474.671,69.372L789.74,126.389c95.084,17.208,127.748,108.019,73.317,203.479L739.124,547.222c-55.531,97.39-179.774,164.48-277.886,149.2l-325.2-50.663C34.55,629.944-.028,535.725,59.2,436L191.342,213.5C249.363,115.808,376.381,51.584,474.671,69.372Z" />
-                 <path id="" data-name="Rectángulo redondeado 1" class="cls-2" d="M455.674,61.865l326.144,41.024c101.182,12.726,136.2,97.924,78,189.8l-130.094,205.4c-57.671,91.051-184.669,151.831-282.7,138.034L128.48,591.287C31.8,577.679-2.215,494.867,52.318,405.855L176.261,203.547C231.265,113.765,355.922,49.318,455.674,61.865Z" />
-                 <path id="" data-name="Rectángulo redondeado 1 copia" class="cls-3" d="M462.535,109.113l268.488,37.106c82.615,11.417,108.38,83.408,57.914,160.071l-111.906,170C627.771,551.121,523.4,600.758,444,589.473L183.936,552.506c-79.574-11.31-107.159-80.115-61.3-154.358L227.726,228.036C274.7,152,379.76,97.674,462.535,109.113Z" />
-                 <path id="" data-name="Rectángulo 1" class="cls-4" d="M342.2,204.943L694.108,249.9,528.719,521.178,167.451,471.054Z" />
-                 <path id="" data-name="Rectángulo 2" class="cls-4" d="M392.789,138.047l321.342,41.1-33.316,45.521L360.047,182.918Z" />
-                 <path id="" data-name="Rectángulo 2 copia" class="cls-5" d="M392.789,134.047l321.342,41.1-33.316,45.521L360.047,178.918Z" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="90%" height="90%" viewBox="0 0 925 753" >
+                <defs>
+                    <filter id="filter" x="96" y="102" width="718.75" height="489.062" filterUnits="userSpaceOnUse">
+                        <feOffset result="offset" dx="-3.611" dy="-4.792" in="SourceAlpha" />
+                        <feGaussianBlur result="blur" />
+                        <feFlood result="flood" flood-color="#121012" flood-opacity="0.54" />
+                        <feComposite result="composite" operator="in" in2="blur" />
+                        <feBlend result="blend" in="SourceGraphic" />
+                    </filter>
+                    <path id="text-path" />
+                </defs>
+                <path id="" data-name="Rectángulo redondeado 1 copia 2" class="cls-1" d="M474.671,69.372L789.74,126.389c95.084,17.208,127.748,108.019,73.317,203.479L739.124,547.222c-55.531,97.39-179.774,164.48-277.886,149.2l-325.2-50.663C34.55,629.944-.028,535.725,59.2,436L191.342,213.5C249.363,115.808,376.381,51.584,474.671,69.372Z" />
+                <path id="" data-name="Rectángulo redondeado 1" class="cls-2" d="M455.674,61.865l326.144,41.024c101.182,12.726,136.2,97.924,78,189.8l-130.094,205.4c-57.671,91.051-184.669,151.831-282.7,138.034L128.48,591.287C31.8,577.679-2.215,494.867,52.318,405.855L176.261,203.547C231.265,113.765,355.922,49.318,455.674,61.865Z" />
+                <path id="" data-name="Rectángulo redondeado 1 copia" class="cls-3" d="M462.535,109.113l268.488,37.106c82.615,11.417,108.38,83.408,57.914,160.071l-111.906,170C627.771,551.121,523.4,600.758,444,589.473L183.936,552.506c-79.574-11.31-107.159-80.115-61.3-154.358L227.726,228.036C274.7,152,379.76,97.674,462.535,109.113Z" />
+                <path id="" data-name="Rectángulo 1" class="cls-4" d="M342.2,204.943L694.108,249.9,528.719,521.178,167.451,471.054Z" />
+                <path id="" data-name="Rectángulo 2" class="cls-4" d="M392.789,138.047l321.342,41.1-33.316,45.521L360.047,182.918Z" />
+                <path id="" data-name="Rectángulo 2 copia" class="cls-5" d="M392.789,134.047l321.342,41.1-33.316,45.521L360.047,178.918Z" />
                 <path id="m1" data-name="none" class="none" d="M341.2,201.943L693.108,246.9,527.719,518.178,166.451,468.054Z" />
-             </svg >,
-     "babahoyo": 
-            <svg xmlns ="http://www.w3.org/2000/svg" width = "90%" height = "90%" version = "1.1" className = "mapanuevo"
-    viewBox = "0 0 21000 16000"
-        >
-
-        <g id="Capa_x0020_1">
-            <metadata id="CorelCorpID_0Corel-Layer" />
-            <path className="lineas0" d="M17088 2485l-3976 -676c-804,-122 -1736,-208 -2547,-111 -2299,278 -4196,1057 -5399,2715l-4497 6660c160,1285 386,2712 3471,3284l4754 834c3170,170 5705,-599 7288,-2775l3696 -5553c666,-818 600,-1677 456,-2371 -80,-381 -189,-757 -366,-1140 -359,-777 -1750,-725 -2880,-867z" />
-            <path className="lineas1" d="M16994 2229l-3993 -678c-807,-123 -1743,-210 -2557,-112 -2310,279 -4215,1061 -5423,2727l-4516 6689c161,1290 387,2723 3486,3297l4774 838c3184,171 5730,-602 7319,-2787l3713 -5577c668,-822 603,-1684 457,-2381 -80,-383 -189,-760 -367,-1145 -360,-780 -1757,-728 -2893,-871z" />
-            <path className="lineas2 " d="M16766 1278l-4016 -682c-812,-123 -1753,-210 -2572,-112 -2323,280 -4239,1067 -5454,2742l-3472 5252c-1633,2259 -680,4215 2437,4792l4808 838c3084,282 5178,-702 6958,-2224 398,-340 490,-474 779,-905l3478 -5204c1444,-2751 -407,-3931 -2946,-4497z" />
-            <path className="none" id="1" d="M16784 1276l-4007 -681c-809,-123 -1749,-210 -2565,-112 -1419,172 -2686,532 -3733,1170 1043,-628 2301,-984 3709,-1154 818,-99 1758,-11 2569,112l4011 681c2532,564 4379,1741 2949,4479l7 -9c1440,-2744 -407,-3923 -2940,-4486zm-12632 2879l-2845 4303c-1629,2253 -678,4205 2431,4780l4797 837c3077,281 5166,-700 6941,-2219 398,-339 490,-472 777,-903l2492 -3727 -8135 557 -4189 -1382 -2269 -2246z" />
-            <path className="lineas4" d="M16782 1296l-4011 -681c-811,-123 -1751,-211 -2569,-112 -2319,280 -4233,1066 -5447,2739l-599 907 2279 2256 4189 1382 8136 -557 965 -1443c1442,-2747 -407,-3926 -2943,-4491z" />
-            <path className="lineas2" d="M15682 2189l-3376 -573c-682,-104 -1473,-177 -2161,-94 -1952,235 -3563,896 -4584,2304l-2918 4414c-1373,1899 -572,3543 2048,4028l4041 705c2592,236 4352,-590 5848,-1870 335,-286 412,-398 655,-760l2923 -4374c1214,-2312 -342,-3305 -2476,-3780z" />
-            <path className="lineas5" d="M15697 2258l-3362 -571c-679,-104 -1467,-177 -2152,-94 -1944,235 -3548,893 -4565,2295l-2906 4395c-1367,1891 -569,3528 2039,4011l4025 702c2581,235 4334,-588 5823,-1861 334,-286 411,-397 652,-758l2912 -4356c1208,-2302 -341,-3290 -2466,-3763z" />
-            <path className="lineas6 LINR0" d="M8901 3154l6771 1289c317,114 464,382 331,644l-4160 6482c-51,71 -60,92 -108,143 -311,336 -691,448 -1083,402l-6208 -1139c-474,-130 -867,-613 -652,-1038l4194 -6532c164,-192 388,-310 915,-251z" />
-            <path className="none" id="2" d="M8863 2993l6772 1289c316,114 464,382 330,644l-4160 6482c-51,71 -59,91 -107,143 -312,336 -691,448 -1084,401l-6208 -1138c-474,-130 -867,-613 -652,-1038l4195 -6532c163,-192 387,-310 914,-251z" />
-            <polygon className="lineas8 LINR2" points="9607,2814 8835,4004 15015,4825 15711,3607 " />
-            <polygon className="lineas9 LINR2" points="9660,2731 8910,3906 14878,4748 15547,3584 " />
-            <polygon className="lineas10" points="10472,3144 10426,3238 10132,3190 10055,3346 10319,3389 10275,3477 10012,3434 9934,3592 10237,3641 10191,3735 9795,3670 10085,3081 " />
-            <path id="_1" className="lineas10" d="M10729 3269c-27,-4 -52,-2 -76,7 -23,9 -40,26 -52,50 -12,23 -12,43 -1,59 11,15 41,35 91,58 49,24 81,51 97,83 15,31 11,72 -15,123 -25,52 -64,90 -116,117 -52,26 -107,34 -166,25 -86,-14 -147,-59 -182,-133l95 -65c30,60 75,95 135,105 30,5 57,2 81,-9 25,-11 43,-28 54,-50 11,-23 11,-42 1,-58 -10,-15 -33,-31 -68,-48 -36,-17 -62,-31 -78,-44 -17,-12 -30,-26 -39,-43 -20,-31 -16,-75 11,-129 26,-55 66,-94 117,-117 52,-24 105,-31 159,-22 36,6 68,18 96,36 29,18 50,40 64,66l-86 67c-9,-18 -25,-35 -48,-49 -22,-15 -47,-24 -74,-29z" />
-            <path id="_2" className="lineas10" d="M11102 3785c32,5 62,4 91,-4 29,-8 62,-22 100,-43l27 75c-92,60 -180,83 -263,69 -83,-13 -138,-53 -165,-119 -27,-67 -18,-143 25,-231 43,-88 107,-156 192,-206 84,-49 170,-67 255,-53 85,14 140,59 164,136l-93 59c-13,-31 -29,-54 -47,-68 -18,-15 -43,-24 -74,-30 -56,-9 -112,3 -169,36 -57,32 -100,78 -129,138 -30,60 -36,113 -18,159 18,46 52,74 104,82z" />
-            <polygon id="_3" className="lineas10" points="12063,3402 12017,3495 11723,3448 11646,3604 11910,3646 11866,3735 11603,3692 11525,3850 11828,3899 11782,3992 11386,3928 11676,3339 " />
-            <polygon id="_4" className="lineas10" points="12604,3490 12697,3505 12407,4094 12306,4077 12206,3597 11994,4027 11901,4012 12191,3423 12284,3438 12387,3929 " />
-            <path id="_5" className="lineas10" d="M12703 3997l-121 125 -99 -16 533 -550 99 16 -48 629 -99 -16 11 -143 -276 -45zm283 -53l20 -259 -220 226 200 33z" />
-            <path id="_6" className="lineas10" d="M13779 3887c-48,97 -118,152 -209,164l38 238 -118 -20 -34 -219 -122 -20 -97 198 -93 -15 290 -589 205 33c84,14 136,39 158,75 21,36 15,88 -18,155zm-285 72c53,8 93,5 120,-9 28,-14 51,-41 70,-79 19,-39 22,-67 10,-84 -12,-18 -43,-30 -93,-39l-118 -19 -104 211 115 19z" />
-            <polygon id="_7" className="lineas10" points="14007,3717 14100,3732 13810,4321 13717,4306 " />
-            <path id="_8" className="lineas10" d="M14577 3960c-17,-48 -53,-76 -107,-85 -55,-9 -111,4 -169,40 -58,35 -102,83 -131,142 -29,59 -35,113 -18,160 17,48 53,76 107,85 55,9 111,-4 169,-40 58,-35 102,-83 131,-142 29,-59 35,-113 18,-160zm-113 379c-85,49 -168,67 -250,54 -82,-13 -136,-53 -163,-121 -27,-67 -19,-144 24,-231 42,-86 106,-154 190,-204 85,-49 168,-67 250,-53 81,13 136,53 163,120 27,68 19,145 -24,231 -43,87 -106,155 -190,204z" />
-            <g id="_2624438319712">
-                <polygon className="lineas0 LINR3" points="8513,4357 9148,4411 8880,4825 8242,4762 " />
-                <polygon className="lineas0 LINR3" points="9389,4515 10024,4568 9756,4982 9117,4920 " />
-                <polygon className="lineas0 LINR3" points="10264,4672 10899,4726 10632,5140 9993,5077 " />
-                <polygon className="lineas0 LINR3" points="11140,4830 11775,4883 11507,5297 10869,5235 " />
-                <polygon className="lineas0 LINR3" points="12016,4987 12651,5041 12383,5455 11744,5392 " />
-                <polygon className="lineas0 LINR3" points="12891,5145 13526,5198 13259,5612 12620,5550 " />
-                <polygon className="lineas0 LINR3" points="13767,5302 14402,5356 14134,5770 13496,5707 " />
-                <polygon className="lineas0 LINR3" points="8119,4938 8754,4992 8487,5406 7848,5343 " />
-                <polygon className="lineas0 LINR3" points="8995,5096 9630,5149 9362,5564 8724,5501 " />
-                <polygon className="lineas0 LINR3" points="9871,5253 10506,5307 10238,5721 9599,5658 " />
-                <polygon className="lineas0 LINR3" points="10746,5411 11381,5464 11114,5879 10475,5816 " />
-                <polygon className="lineas0 LINR3" points="11622,5568 12257,5622 11989,6036 11351,5973 " />
-                <polygon className="lineas0 LINR3" points="12498,5726 13133,5779 12865,6194 12226,6131 " />
-                <polygon className="lineas0 LINR3" points="13373,5883 14008,5937 13741,6351 13102,6288 " />
-                <polygon className="lineas0 LINR3" points="7726,5520 8361,5573 8093,5987 7455,5924 " />
-                <polygon className="lineas0 LINR3" points="8602,5677 9237,5730 8969,6145 8330,6082 " />
-                <polygon className="lineas0 LINR3" points="9477,5835 10112,5888 9844,6302 9206,6239 " />
-                <polygon className="lineas0 LINR3" points="10353,5992 10988,6045 10720,6460 10082,6397 " />
-                <polygon className="lineas0 LINR3" points="11229,6150 11864,6203 11596,6617 10957,6554 " />
-                <polygon className="lineas0 LINR3" points="12104,6307 12739,6360 12471,6775 11833,6712 " />
-                <polygon className="lineas0 LINR3" points="12980,6465 13615,6518 13347,6932 12709,6869 " />
-                <polygon className="lineas0 LINR3" points="7332,6101 7967,6154 7699,6568 7061,6506 " />
-                <polygon className="lineas0 LINR3" points="8208,6258 8843,6312 8575,6726 7937,6663 " />
-                <polygon className="lineas0 LINR3" points="9084,6416 9719,6469 9451,6883 8812,6821 " />
-                <polygon className="lineas0 LINR3" points="9959,6573 10594,6627 10326,7041 9688,6978 " />
-                <polygon className="lineas0 LINR3" points="10835,6731 11470,6784 11202,7198 10564,7136 " />
-                <polygon className="lineas0 LINR3" points="11711,6888 12346,6942 12078,7356 11439,7293 " />
-                <polygon className="lineas0 LINR3" points="12586,7046 13221,7099 12954,7513 12315,7451 " />
-                <polygon className="lineas0 LINR3" points="6939,6682 7574,6735 7306,7150 6667,7087 " />
-                <polygon className="lineas0 LINR3" points="7814,6839 8449,6893 8182,7307 7543,7244 " />
-                <polygon className="lineas0 LINR3" points="8690,6997 9325,7050 9057,7465 8419,7402 " />
-                <polygon className="lineas0 LINR3" points="9566,7154 10201,7208 9933,7622 9294,7559 " />
-                <polygon className="lineas0 LINR3" points="10441,7312 11076,7365 10809,7780 10170,7717 " />
-                <polygon className="lineas0 LINR3" points="11317,7469 11952,7523 11684,7937 11046,7874 " />
-                <polygon className="lineas0 LINR3" points="12193,7627 12828,7680 12560,8095 11921,8032 " />
-                <polygon className="lineas0 LINR3" points="6545,7263 7180,7316 6912,7731 6274,7668 " />
-                <polygon className="lineas0 LINR3" points="7421,7421 8056,7474 7788,7888 7149,7825 " />
-                <polygon className="lineas0 LINR3" points="8296,7578 8931,7631 8664,8046 8025,7983 " />
-                <polygon className="lineas0 LINR3" points="9172,7736 9807,7789 9539,8203 8901,8140 " />
-                <polygon className="lineas0 LINR3" points="10048,7893 10683,7946 10415,8361 9776,8298 " />
-                <polygon className="lineas0 LINR3" points="10923,8051 11559,8104 11291,8518 10652,8455 " />
-                <polygon className="lineas0 LINR3" points="11799,8208 12434,8261 12166,8676 11528,8613 " />
-                <polygon className="lineas0 LINR3" points="6152,7844 6787,7898 6519,8312 5880,8249 " />
-                <polygon className="lineas0 LINR3" points="7027,8002 7662,8055 7394,8469 6756,8407 " />
-                <polygon className="lineas0 LINR3" points="7903,8159 8538,8213 8270,8627 7632,8564 " />
-                <polygon className="lineas0 LINR3" points="8779,8317 9414,8370 9146,8784 8507,8722 " />
-                <polygon className="lineas0 LINR3" points="9654,8474 10289,8528 10021,8942 9383,8879 " />
-                <polygon className="lineas0 LINR3" points="10530,8632 11165,8685 10897,9099 10259,9037 " />
-                <polygon className="lineas0 LINR3" points="11406,8789 12041,8843 11773,9257 11134,9194 " />
-                <polygon className="lineas0 LINR3" points="5758,8425 6393,8479 6125,8893 5487,8830 " />
-                <polygon className="lineas0 LINR3" points="6634,8583 7269,8636 7001,9051 6362,8988 " />
-                <polygon className="lineas0 LINR3" points="7509,8740 8144,8794 7877,9208 7238,9145 " />
-                <polygon className="lineas0 LINR3" points="8385,8898 9020,8951 8752,9366 8114,9303 " />
-                <polygon className="lineas0 LINR3" points="9261,9055 9896,9109 9628,9523 8989,9460 " />
-                <polygon className="lineas0 LINR3" points="10136,9213 10771,9266 10504,9681 9865,9618 " />
-                <polygon className="lineas0 LINR3" points="11012,9370 11647,9424 11379,9838 10741,9775 " />
-                <polygon className="lineas0 LINR3" points="5364,9007 5999,9060 5732,9474 5093,9411 " />
-                <polygon className="lineas0 LINR3" points="6240,9164 6875,9217 6607,9632 5969,9569 " />
-                <polygon className="lineas0 LINR3" points="7116,9322 7751,9375 7483,9789 6844,9726 " />
-                <polygon className="lineas0 LINR3" points="7991,9479 8626,9532 8359,9947 7720,9884 " />
-                <polygon className="lineas0 LINR3" points="8867,9637 9502,9690 9234,10104 8596,10041 " />
-                <polygon className="lineas0 LINR3" points="9743,9794 10378,9847 10110,10262 9471,10199 " />
-                <polygon className="lineas0 LINR3" points="10618,9952 11253,10005 10986,10419 10347,10356 " />
-                <polygon className="lineas0 LINR3" points="4971,9588 5606,9641 5338,10055 4699,9993 " />
-                <polygon className="lineas0 LINR3" points="5847,9745 6482,9799 6214,10213 5575,10150 " />
-                <polygon className="lineas0 LINR3" points="6722,9903 7357,9956 7089,10370 6451,10308 " />
-                <polygon className="lineas0 LINR3" points="7598,10060 8233,10114 7965,10528 7326,10465 " />
-                <polygon className="lineas0 LINR3" points="8474,10218 9109,10271 8841,10685 8202,10623 " />
-                <polygon className="lineas0 LINR3" points="9349,10375 9984,10429 9716,10843 9078,10780 " />
-                <polygon className="lineas0 LINR3" points="10225,10533 10860,10586 10592,11000 9953,10937 " />
-            </g>
-            <g id="_2625802073504">
-                <polygon className="lineas12" points="8566,4331 9201,4384 8933,4798 8295,4735 " />
-                <polygon className="lineas12" points="9442,4488 10077,4541 9809,4956 9170,4893 " />
-                <polygon className="lineas12" points="10317,4646 10952,4699 10685,5113 10046,5050 " />
-                <polygon className="lineas12" points="11193,4803 11828,4856 11560,5271 10922,5208 " />
-                <polygon className="lineas12" points="12069,4961 12704,5014 12436,5428 11797,5365 " />
-                <polygon className="lineas12" points="12944,5118 13579,5171 13312,5586 12673,5523 " />
-                <polygon className="lineas12" points="13820,5275 14455,5329 14187,5743 13549,5680 " />
-                <polygon className="lineas12" points="8173,4912 8808,4965 8540,5379 7901,5317 " />
-                <polygon className="lineas12" points="9048,5069 9683,5123 9415,5537 8777,5474 " />
-                <polygon className="lineas12" points="9924,5227 10559,5280 10291,5694 9653,5632 " />
-                <polygon className="lineas12" points="10800,5384 11435,5438 11167,5852 10528,5789 " />
-                <polygon className="lineas12" points="11675,5542 12310,5595 12042,6009 11404,5946 " />
-                <polygon className="lineas12" points="12551,5699 13186,5752 12918,6167 12280,6104 " />
-                <polygon className="lineas12" points="13427,5857 14062,5910 13794,6324 13155,6261 " />
-                <polygon className="lineas12" points="7779,5493 8414,5546 8146,5961 7508,5898 " />
-                <polygon className="lineas12" points="8655,5650 9290,5704 9022,6118 8383,6055 " />
-                <polygon className="lineas12" points="9530,5808 10165,5861 9897,6275 9259,6213 " />
-                <polygon className="lineas12" points="10406,5965 11041,6019 10773,6433 10135,6370 " />
-                <polygon className="lineas12" points="11282,6123 11917,6176 11649,6590 11010,6528 " />
-                <polygon className="lineas12" points="12157,6280 12792,6334 12525,6748 11886,6685 " />
-                <polygon className="lineas12" points="13033,6438 13668,6491 13400,6905 12762,6843 " />
-                <polygon className="lineas12" points="7385,6074 8020,6127 7753,6542 7114,6479 " />
-                <polygon className="lineas12" points="8261,6232 8896,6285 8628,6699 7990,6636 " />
-                <polygon className="lineas12" points="9137,6389 9772,6442 9504,6857 8865,6794 " />
-                <polygon className="lineas12" points="10012,6546 10647,6600 10380,7014 9741,6951 " />
-                <polygon className="lineas12" points="10888,6704 11523,6757 11255,7172 10617,7109 " />
-                <polygon className="lineas12" points="11764,6861 12399,6915 12131,7329 11492,7266 " />
-                <polygon className="lineas12" points="12639,7019 13274,7072 13007,7487 12368,7424 " />
-                <polygon className="lineas12" points="6992,6655 7627,6709 7359,7123 6720,7060 " />
-                <polygon className="lineas12" points="7867,6813 8503,6866 8235,7280 7596,7217 " />
-                <polygon className="lineas12" points="8743,6970 9378,7024 9110,7438 8472,7375 " />
-                <polygon className="lineas12" points="9619,7128 10254,7181 9986,7595 9347,7532 " />
-                <polygon className="lineas12" points="10495,7285 11130,7338 10862,7753 10223,7690 " />
-                <polygon className="lineas12 LINR4" points="11370,7443 12005,7496 11737,7910 11099,7847 " />
-                <polygon className="lineas12" points="12246,7600 12881,7653 12613,8068 11974,8005 " />
-                <polygon className="lineas12" points="6598,7236 7233,7290 6965,7704 6327,7641 " />
-                <polygon className="lineas12" points="7474,7394 8109,7447 7841,7861 7203,7799 " />
-                <polygon className="lineas12" points="8350,7551 8985,7605 8717,8019 8078,7956 " />
-                <polygon className="lineas12" points="9225,7709 9860,7762 9592,8176 8954,8114 " />
-                <polygon className="lineas12" points="10101,7866 10736,7920 10468,8334 9830,8271 " />
-                <polygon className="lineas12" points="10977,8024 11612,8077 11344,8491 10705,8429 " />
-                <polygon className="lineas12" points="11852,8181 12487,8235 12219,8649 11581,8586 " />
-                <polygon className="lineas12" points="6205,7818 6840,7871 6572,8285 5933,8222 " />
-                <polygon className="lineas12" points="7080,7975 7715,8028 7448,8443 6809,8380 " />
-                <polygon className="lineas12" points="7956,8132 8591,8186 8323,8600 7685,8537 " />
-                <polygon className="lineas12" points="8832,8290 9467,8343 9199,8758 8560,8695 " />
-                <polygon className="lineas12" points="9707,8447 10342,8501 10075,8915 9436,8852 " />
-                <polygon className="lineas12 LINR4" points="10583,8605 11218,8658 10950,9073 10312,9010 " />
-                <polygon className="lineas12" points="11459,8762 12094,8816 11826,9230 11187,9167 " />
-                <polygon className="lineas12" points="5811,8399 6446,8452 6178,8866 5540,8803 " />
-                <polygon className="lineas12" points="6687,8556 7322,8609 7054,9024 6415,8961 " />
-                <polygon className="lineas12" points="7562,8714 8197,8767 7930,9181 7291,9118 " />
-                <polygon className="lineas12" points="8438,8871 9073,8924 8805,9339 8167,9276 " />
-                <polygon className="lineas12" points="9314,9029 9949,9082 9681,9496 9042,9433 " />
-                <polygon className="lineas12" points="10189,9186 10824,9239 10557,9654 9918,9591 " />
-                <polygon className="lineas12" points="11065,9344 11700,9397 11432,9811 10794,9748 " />
-                <polygon className="lineas12" points="5418,8980 6053,9033 5785,9447 5146,9385 " />
-                <polygon className="lineas12" points="6293,9137 6928,9191 6660,9605 6022,9542 " />
-                <polygon className="lineas12" points="7169,9295 7804,9348 7536,9762 6897,9700 " />
-                <polygon className="lineas12" points="8045,9452 8680,9506 8412,9920 7773,9857 " />
-                <polygon className="lineas12" points="8920,9610 9555,9663 9287,10077 8649,10015 " />
-                <polygon className="lineas12" points="9796,9767 10431,9821 10163,10235 9524,10172 " />
-                <polygon className="lineas12" points="10672,9925 11307,9978 11039,10392 10400,10330 " />
-                <polygon className="lineas12 LINR4" points="5024,9561 5659,9614 5391,10029 4753,9966 " />
-                <polygon className="lineas12" points="5900,9718 6535,9772 6267,10186 5628,10123 " />
-                <polygon className="lineas12" points="6775,9876 7410,9929 7142,10344 6504,10281 " />
-                <polygon className="lineas12" points="7651,10033 8286,10087 8018,10501 7380,10438 " />
-                <polygon className="lineas12" points="8527,10191 9162,10244 8894,10659 8255,10596 " />
-                <polygon className="lineas12" points="9402,10348 10037,10402 9769,10816 9131,10753 " />
-                <polygon className="lineas12" points="10278,10506 10913,10559 10645,10974 10007,10911 " />
-            </g>
-        </g>
             </svg >,
-    "jimenez":
-        <svg xmlns="http://www.w3.org/2000/svg" width="90%" height="90%" version="1.1" className="opciones mapanuevo"
-            viewBox="0 0 21000 29700"
-        >
+        "babahoyo":
+            <svg xmlns="http://www.w3.org/2000/svg" width="90%" height="90%" version="1.1" className="mapanuevo"
+                viewBox="0 0 21000 16000"
+            >
+
+                <g id="Capa_x0020_1">
+                    <metadata id="CorelCorpID_0Corel-Layer" />
+                    <path className="lineas0" d="M17088 2485l-3976 -676c-804,-122 -1736,-208 -2547,-111 -2299,278 -4196,1057 -5399,2715l-4497 6660c160,1285 386,2712 3471,3284l4754 834c3170,170 5705,-599 7288,-2775l3696 -5553c666,-818 600,-1677 456,-2371 -80,-381 -189,-757 -366,-1140 -359,-777 -1750,-725 -2880,-867z" />
+                    <path className="lineas1" d="M16994 2229l-3993 -678c-807,-123 -1743,-210 -2557,-112 -2310,279 -4215,1061 -5423,2727l-4516 6689c161,1290 387,2723 3486,3297l4774 838c3184,171 5730,-602 7319,-2787l3713 -5577c668,-822 603,-1684 457,-2381 -80,-383 -189,-760 -367,-1145 -360,-780 -1757,-728 -2893,-871z" />
+                    <path className="lineas2 " d="M16766 1278l-4016 -682c-812,-123 -1753,-210 -2572,-112 -2323,280 -4239,1067 -5454,2742l-3472 5252c-1633,2259 -680,4215 2437,4792l4808 838c3084,282 5178,-702 6958,-2224 398,-340 490,-474 779,-905l3478 -5204c1444,-2751 -407,-3931 -2946,-4497z" />
+                    <path className="none" id="1" d="M16784 1276l-4007 -681c-809,-123 -1749,-210 -2565,-112 -1419,172 -2686,532 -3733,1170 1043,-628 2301,-984 3709,-1154 818,-99 1758,-11 2569,112l4011 681c2532,564 4379,1741 2949,4479l7 -9c1440,-2744 -407,-3923 -2940,-4486zm-12632 2879l-2845 4303c-1629,2253 -678,4205 2431,4780l4797 837c3077,281 5166,-700 6941,-2219 398,-339 490,-472 777,-903l2492 -3727 -8135 557 -4189 -1382 -2269 -2246z" />
+                    <path className="lineas4" d="M16782 1296l-4011 -681c-811,-123 -1751,-211 -2569,-112 -2319,280 -4233,1066 -5447,2739l-599 907 2279 2256 4189 1382 8136 -557 965 -1443c1442,-2747 -407,-3926 -2943,-4491z" />
+                    <path className="lineas2" d="M15682 2189l-3376 -573c-682,-104 -1473,-177 -2161,-94 -1952,235 -3563,896 -4584,2304l-2918 4414c-1373,1899 -572,3543 2048,4028l4041 705c2592,236 4352,-590 5848,-1870 335,-286 412,-398 655,-760l2923 -4374c1214,-2312 -342,-3305 -2476,-3780z" />
+                    <path className="lineas5" d="M15697 2258l-3362 -571c-679,-104 -1467,-177 -2152,-94 -1944,235 -3548,893 -4565,2295l-2906 4395c-1367,1891 -569,3528 2039,4011l4025 702c2581,235 4334,-588 5823,-1861 334,-286 411,-397 652,-758l2912 -4356c1208,-2302 -341,-3290 -2466,-3763z" />
+                    <path className="lineas6 LINR0" d="M8901 3154l6771 1289c317,114 464,382 331,644l-4160 6482c-51,71 -60,92 -108,143 -311,336 -691,448 -1083,402l-6208 -1139c-474,-130 -867,-613 -652,-1038l4194 -6532c164,-192 388,-310 915,-251z" />
+                    <path className="none" id="2" d="M8863 2993l6772 1289c316,114 464,382 330,644l-4160 6482c-51,71 -59,91 -107,143 -312,336 -691,448 -1084,401l-6208 -1138c-474,-130 -867,-613 -652,-1038l4195 -6532c163,-192 387,-310 914,-251z" />
+                    <polygon className="lineas8 LINR2" points="9607,2814 8835,4004 15015,4825 15711,3607 " />
+                    <polygon className="lineas9 LINR2" points="9660,2731 8910,3906 14878,4748 15547,3584 " />
+                    <polygon className="lineas10" points="10472,3144 10426,3238 10132,3190 10055,3346 10319,3389 10275,3477 10012,3434 9934,3592 10237,3641 10191,3735 9795,3670 10085,3081 " />
+                    <path id="_1" className="lineas10" d="M10729 3269c-27,-4 -52,-2 -76,7 -23,9 -40,26 -52,50 -12,23 -12,43 -1,59 11,15 41,35 91,58 49,24 81,51 97,83 15,31 11,72 -15,123 -25,52 -64,90 -116,117 -52,26 -107,34 -166,25 -86,-14 -147,-59 -182,-133l95 -65c30,60 75,95 135,105 30,5 57,2 81,-9 25,-11 43,-28 54,-50 11,-23 11,-42 1,-58 -10,-15 -33,-31 -68,-48 -36,-17 -62,-31 -78,-44 -17,-12 -30,-26 -39,-43 -20,-31 -16,-75 11,-129 26,-55 66,-94 117,-117 52,-24 105,-31 159,-22 36,6 68,18 96,36 29,18 50,40 64,66l-86 67c-9,-18 -25,-35 -48,-49 -22,-15 -47,-24 -74,-29z" />
+                    <path id="_2" className="lineas10" d="M11102 3785c32,5 62,4 91,-4 29,-8 62,-22 100,-43l27 75c-92,60 -180,83 -263,69 -83,-13 -138,-53 -165,-119 -27,-67 -18,-143 25,-231 43,-88 107,-156 192,-206 84,-49 170,-67 255,-53 85,14 140,59 164,136l-93 59c-13,-31 -29,-54 -47,-68 -18,-15 -43,-24 -74,-30 -56,-9 -112,3 -169,36 -57,32 -100,78 -129,138 -30,60 -36,113 -18,159 18,46 52,74 104,82z" />
+                    <polygon id="_3" className="lineas10" points="12063,3402 12017,3495 11723,3448 11646,3604 11910,3646 11866,3735 11603,3692 11525,3850 11828,3899 11782,3992 11386,3928 11676,3339 " />
+                    <polygon id="_4" className="lineas10" points="12604,3490 12697,3505 12407,4094 12306,4077 12206,3597 11994,4027 11901,4012 12191,3423 12284,3438 12387,3929 " />
+                    <path id="_5" className="lineas10" d="M12703 3997l-121 125 -99 -16 533 -550 99 16 -48 629 -99 -16 11 -143 -276 -45zm283 -53l20 -259 -220 226 200 33z" />
+                    <path id="_6" className="lineas10" d="M13779 3887c-48,97 -118,152 -209,164l38 238 -118 -20 -34 -219 -122 -20 -97 198 -93 -15 290 -589 205 33c84,14 136,39 158,75 21,36 15,88 -18,155zm-285 72c53,8 93,5 120,-9 28,-14 51,-41 70,-79 19,-39 22,-67 10,-84 -12,-18 -43,-30 -93,-39l-118 -19 -104 211 115 19z" />
+                    <polygon id="_7" className="lineas10" points="14007,3717 14100,3732 13810,4321 13717,4306 " />
+                    <path id="_8" className="lineas10" d="M14577 3960c-17,-48 -53,-76 -107,-85 -55,-9 -111,4 -169,40 -58,35 -102,83 -131,142 -29,59 -35,113 -18,160 17,48 53,76 107,85 55,9 111,-4 169,-40 58,-35 102,-83 131,-142 29,-59 35,-113 18,-160zm-113 379c-85,49 -168,67 -250,54 -82,-13 -136,-53 -163,-121 -27,-67 -19,-144 24,-231 42,-86 106,-154 190,-204 85,-49 168,-67 250,-53 81,13 136,53 163,120 27,68 19,145 -24,231 -43,87 -106,155 -190,204z" />
+                    <g id="_2624438319712">
+                        <polygon className="lineas0 LINR3" points="8513,4357 9148,4411 8880,4825 8242,4762 " />
+                        <polygon className="lineas0 LINR3" points="9389,4515 10024,4568 9756,4982 9117,4920 " />
+                        <polygon className="lineas0 LINR3" points="10264,4672 10899,4726 10632,5140 9993,5077 " />
+                        <polygon className="lineas0 LINR3" points="11140,4830 11775,4883 11507,5297 10869,5235 " />
+                        <polygon className="lineas0 LINR3" points="12016,4987 12651,5041 12383,5455 11744,5392 " />
+                        <polygon className="lineas0 LINR3" points="12891,5145 13526,5198 13259,5612 12620,5550 " />
+                        <polygon className="lineas0 LINR3" points="13767,5302 14402,5356 14134,5770 13496,5707 " />
+                        <polygon className="lineas0 LINR3" points="8119,4938 8754,4992 8487,5406 7848,5343 " />
+                        <polygon className="lineas0 LINR3" points="8995,5096 9630,5149 9362,5564 8724,5501 " />
+                        <polygon className="lineas0 LINR3" points="9871,5253 10506,5307 10238,5721 9599,5658 " />
+                        <polygon className="lineas0 LINR3" points="10746,5411 11381,5464 11114,5879 10475,5816 " />
+                        <polygon className="lineas0 LINR3" points="11622,5568 12257,5622 11989,6036 11351,5973 " />
+                        <polygon className="lineas0 LINR3" points="12498,5726 13133,5779 12865,6194 12226,6131 " />
+                        <polygon className="lineas0 LINR3" points="13373,5883 14008,5937 13741,6351 13102,6288 " />
+                        <polygon className="lineas0 LINR3" points="7726,5520 8361,5573 8093,5987 7455,5924 " />
+                        <polygon className="lineas0 LINR3" points="8602,5677 9237,5730 8969,6145 8330,6082 " />
+                        <polygon className="lineas0 LINR3" points="9477,5835 10112,5888 9844,6302 9206,6239 " />
+                        <polygon className="lineas0 LINR3" points="10353,5992 10988,6045 10720,6460 10082,6397 " />
+                        <polygon className="lineas0 LINR3" points="11229,6150 11864,6203 11596,6617 10957,6554 " />
+                        <polygon className="lineas0 LINR3" points="12104,6307 12739,6360 12471,6775 11833,6712 " />
+                        <polygon className="lineas0 LINR3" points="12980,6465 13615,6518 13347,6932 12709,6869 " />
+                        <polygon className="lineas0 LINR3" points="7332,6101 7967,6154 7699,6568 7061,6506 " />
+                        <polygon className="lineas0 LINR3" points="8208,6258 8843,6312 8575,6726 7937,6663 " />
+                        <polygon className="lineas0 LINR3" points="9084,6416 9719,6469 9451,6883 8812,6821 " />
+                        <polygon className="lineas0 LINR3" points="9959,6573 10594,6627 10326,7041 9688,6978 " />
+                        <polygon className="lineas0 LINR3" points="10835,6731 11470,6784 11202,7198 10564,7136 " />
+                        <polygon className="lineas0 LINR3" points="11711,6888 12346,6942 12078,7356 11439,7293 " />
+                        <polygon className="lineas0 LINR3" points="12586,7046 13221,7099 12954,7513 12315,7451 " />
+                        <polygon className="lineas0 LINR3" points="6939,6682 7574,6735 7306,7150 6667,7087 " />
+                        <polygon className="lineas0 LINR3" points="7814,6839 8449,6893 8182,7307 7543,7244 " />
+                        <polygon className="lineas0 LINR3" points="8690,6997 9325,7050 9057,7465 8419,7402 " />
+                        <polygon className="lineas0 LINR3" points="9566,7154 10201,7208 9933,7622 9294,7559 " />
+                        <polygon className="lineas0 LINR3" points="10441,7312 11076,7365 10809,7780 10170,7717 " />
+                        <polygon className="lineas0 LINR3" points="11317,7469 11952,7523 11684,7937 11046,7874 " />
+                        <polygon className="lineas0 LINR3" points="12193,7627 12828,7680 12560,8095 11921,8032 " />
+                        <polygon className="lineas0 LINR3" points="6545,7263 7180,7316 6912,7731 6274,7668 " />
+                        <polygon className="lineas0 LINR3" points="7421,7421 8056,7474 7788,7888 7149,7825 " />
+                        <polygon className="lineas0 LINR3" points="8296,7578 8931,7631 8664,8046 8025,7983 " />
+                        <polygon className="lineas0 LINR3" points="9172,7736 9807,7789 9539,8203 8901,8140 " />
+                        <polygon className="lineas0 LINR3" points="10048,7893 10683,7946 10415,8361 9776,8298 " />
+                        <polygon className="lineas0 LINR3" points="10923,8051 11559,8104 11291,8518 10652,8455 " />
+                        <polygon className="lineas0 LINR3" points="11799,8208 12434,8261 12166,8676 11528,8613 " />
+                        <polygon className="lineas0 LINR3" points="6152,7844 6787,7898 6519,8312 5880,8249 " />
+                        <polygon className="lineas0 LINR3" points="7027,8002 7662,8055 7394,8469 6756,8407 " />
+                        <polygon className="lineas0 LINR3" points="7903,8159 8538,8213 8270,8627 7632,8564 " />
+                        <polygon className="lineas0 LINR3" points="8779,8317 9414,8370 9146,8784 8507,8722 " />
+                        <polygon className="lineas0 LINR3" points="9654,8474 10289,8528 10021,8942 9383,8879 " />
+                        <polygon className="lineas0 LINR3" points="10530,8632 11165,8685 10897,9099 10259,9037 " />
+                        <polygon className="lineas0 LINR3" points="11406,8789 12041,8843 11773,9257 11134,9194 " />
+                        <polygon className="lineas0 LINR3" points="5758,8425 6393,8479 6125,8893 5487,8830 " />
+                        <polygon className="lineas0 LINR3" points="6634,8583 7269,8636 7001,9051 6362,8988 " />
+                        <polygon className="lineas0 LINR3" points="7509,8740 8144,8794 7877,9208 7238,9145 " />
+                        <polygon className="lineas0 LINR3" points="8385,8898 9020,8951 8752,9366 8114,9303 " />
+                        <polygon className="lineas0 LINR3" points="9261,9055 9896,9109 9628,9523 8989,9460 " />
+                        <polygon className="lineas0 LINR3" points="10136,9213 10771,9266 10504,9681 9865,9618 " />
+                        <polygon className="lineas0 LINR3" points="11012,9370 11647,9424 11379,9838 10741,9775 " />
+                        <polygon className="lineas0 LINR3" points="5364,9007 5999,9060 5732,9474 5093,9411 " />
+                        <polygon className="lineas0 LINR3" points="6240,9164 6875,9217 6607,9632 5969,9569 " />
+                        <polygon className="lineas0 LINR3" points="7116,9322 7751,9375 7483,9789 6844,9726 " />
+                        <polygon className="lineas0 LINR3" points="7991,9479 8626,9532 8359,9947 7720,9884 " />
+                        <polygon className="lineas0 LINR3" points="8867,9637 9502,9690 9234,10104 8596,10041 " />
+                        <polygon className="lineas0 LINR3" points="9743,9794 10378,9847 10110,10262 9471,10199 " />
+                        <polygon className="lineas0 LINR3" points="10618,9952 11253,10005 10986,10419 10347,10356 " />
+                        <polygon className="lineas0 LINR3" points="4971,9588 5606,9641 5338,10055 4699,9993 " />
+                        <polygon className="lineas0 LINR3" points="5847,9745 6482,9799 6214,10213 5575,10150 " />
+                        <polygon className="lineas0 LINR3" points="6722,9903 7357,9956 7089,10370 6451,10308 " />
+                        <polygon className="lineas0 LINR3" points="7598,10060 8233,10114 7965,10528 7326,10465 " />
+                        <polygon className="lineas0 LINR3" points="8474,10218 9109,10271 8841,10685 8202,10623 " />
+                        <polygon className="lineas0 LINR3" points="9349,10375 9984,10429 9716,10843 9078,10780 " />
+                        <polygon className="lineas0 LINR3" points="10225,10533 10860,10586 10592,11000 9953,10937 " />
+                    </g>
+                    <g id="_2625802073504">
+                        <polygon className="lineas12" points="8566,4331 9201,4384 8933,4798 8295,4735 " />
+                        <polygon className="lineas12" points="9442,4488 10077,4541 9809,4956 9170,4893 " />
+                        <polygon className="lineas12" points="10317,4646 10952,4699 10685,5113 10046,5050 " />
+                        <polygon className="lineas12" points="11193,4803 11828,4856 11560,5271 10922,5208 " />
+                        <polygon className="lineas12" points="12069,4961 12704,5014 12436,5428 11797,5365 " />
+                        <polygon className="lineas12" points="12944,5118 13579,5171 13312,5586 12673,5523 " />
+                        <polygon className="lineas12" points="13820,5275 14455,5329 14187,5743 13549,5680 " />
+                        <polygon className="lineas12" points="8173,4912 8808,4965 8540,5379 7901,5317 " />
+                        <polygon className="lineas12" points="9048,5069 9683,5123 9415,5537 8777,5474 " />
+                        <polygon className="lineas12" points="9924,5227 10559,5280 10291,5694 9653,5632 " />
+                        <polygon className="lineas12" points="10800,5384 11435,5438 11167,5852 10528,5789 " />
+                        <polygon className="lineas12" points="11675,5542 12310,5595 12042,6009 11404,5946 " />
+                        <polygon className="lineas12" points="12551,5699 13186,5752 12918,6167 12280,6104 " />
+                        <polygon className="lineas12" points="13427,5857 14062,5910 13794,6324 13155,6261 " />
+                        <polygon className="lineas12" points="7779,5493 8414,5546 8146,5961 7508,5898 " />
+                        <polygon className="lineas12" points="8655,5650 9290,5704 9022,6118 8383,6055 " />
+                        <polygon className="lineas12" points="9530,5808 10165,5861 9897,6275 9259,6213 " />
+                        <polygon className="lineas12" points="10406,5965 11041,6019 10773,6433 10135,6370 " />
+                        <polygon className="lineas12" points="11282,6123 11917,6176 11649,6590 11010,6528 " />
+                        <polygon className="lineas12" points="12157,6280 12792,6334 12525,6748 11886,6685 " />
+                        <polygon className="lineas12" points="13033,6438 13668,6491 13400,6905 12762,6843 " />
+                        <polygon className="lineas12" points="7385,6074 8020,6127 7753,6542 7114,6479 " />
+                        <polygon className="lineas12" points="8261,6232 8896,6285 8628,6699 7990,6636 " />
+                        <polygon className="lineas12" points="9137,6389 9772,6442 9504,6857 8865,6794 " />
+                        <polygon className="lineas12" points="10012,6546 10647,6600 10380,7014 9741,6951 " />
+                        <polygon className="lineas12" points="10888,6704 11523,6757 11255,7172 10617,7109 " />
+                        <polygon className="lineas12" points="11764,6861 12399,6915 12131,7329 11492,7266 " />
+                        <polygon className="lineas12" points="12639,7019 13274,7072 13007,7487 12368,7424 " />
+                        <polygon className="lineas12" points="6992,6655 7627,6709 7359,7123 6720,7060 " />
+                        <polygon className="lineas12" points="7867,6813 8503,6866 8235,7280 7596,7217 " />
+                        <polygon className="lineas12" points="8743,6970 9378,7024 9110,7438 8472,7375 " />
+                        <polygon className="lineas12" points="9619,7128 10254,7181 9986,7595 9347,7532 " />
+                        <polygon className="lineas12" points="10495,7285 11130,7338 10862,7753 10223,7690 " />
+                        <polygon className="lineas12 LINR4" points="11370,7443 12005,7496 11737,7910 11099,7847 " />
+                        <polygon className="lineas12" points="12246,7600 12881,7653 12613,8068 11974,8005 " />
+                        <polygon className="lineas12" points="6598,7236 7233,7290 6965,7704 6327,7641 " />
+                        <polygon className="lineas12" points="7474,7394 8109,7447 7841,7861 7203,7799 " />
+                        <polygon className="lineas12" points="8350,7551 8985,7605 8717,8019 8078,7956 " />
+                        <polygon className="lineas12" points="9225,7709 9860,7762 9592,8176 8954,8114 " />
+                        <polygon className="lineas12" points="10101,7866 10736,7920 10468,8334 9830,8271 " />
+                        <polygon className="lineas12" points="10977,8024 11612,8077 11344,8491 10705,8429 " />
+                        <polygon className="lineas12" points="11852,8181 12487,8235 12219,8649 11581,8586 " />
+                        <polygon className="lineas12" points="6205,7818 6840,7871 6572,8285 5933,8222 " />
+                        <polygon className="lineas12" points="7080,7975 7715,8028 7448,8443 6809,8380 " />
+                        <polygon className="lineas12" points="7956,8132 8591,8186 8323,8600 7685,8537 " />
+                        <polygon className="lineas12" points="8832,8290 9467,8343 9199,8758 8560,8695 " />
+                        <polygon className="lineas12" points="9707,8447 10342,8501 10075,8915 9436,8852 " />
+                        <polygon className="lineas12 LINR4" points="10583,8605 11218,8658 10950,9073 10312,9010 " />
+                        <polygon className="lineas12" points="11459,8762 12094,8816 11826,9230 11187,9167 " />
+                        <polygon className="lineas12" points="5811,8399 6446,8452 6178,8866 5540,8803 " />
+                        <polygon className="lineas12" points="6687,8556 7322,8609 7054,9024 6415,8961 " />
+                        <polygon className="lineas12" points="7562,8714 8197,8767 7930,9181 7291,9118 " />
+                        <polygon className="lineas12" points="8438,8871 9073,8924 8805,9339 8167,9276 " />
+                        <polygon className="lineas12" points="9314,9029 9949,9082 9681,9496 9042,9433 " />
+                        <polygon className="lineas12" points="10189,9186 10824,9239 10557,9654 9918,9591 " />
+                        <polygon className="lineas12" points="11065,9344 11700,9397 11432,9811 10794,9748 " />
+                        <polygon className="lineas12" points="5418,8980 6053,9033 5785,9447 5146,9385 " />
+                        <polygon className="lineas12" points="6293,9137 6928,9191 6660,9605 6022,9542 " />
+                        <polygon className="lineas12" points="7169,9295 7804,9348 7536,9762 6897,9700 " />
+                        <polygon className="lineas12" points="8045,9452 8680,9506 8412,9920 7773,9857 " />
+                        <polygon className="lineas12" points="8920,9610 9555,9663 9287,10077 8649,10015 " />
+                        <polygon className="lineas12" points="9796,9767 10431,9821 10163,10235 9524,10172 " />
+                        <polygon className="lineas12" points="10672,9925 11307,9978 11039,10392 10400,10330 " />
+                        <polygon className="lineas12 LINR4" points="5024,9561 5659,9614 5391,10029 4753,9966 " />
+                        <polygon className="lineas12" points="5900,9718 6535,9772 6267,10186 5628,10123 " />
+                        <polygon className="lineas12" points="6775,9876 7410,9929 7142,10344 6504,10281 " />
+                        <polygon className="lineas12" points="7651,10033 8286,10087 8018,10501 7380,10438 " />
+                        <polygon className="lineas12" points="8527,10191 9162,10244 8894,10659 8255,10596 " />
+                        <polygon className="lineas12" points="9402,10348 10037,10402 9769,10816 9131,10753 " />
+                        <polygon className="lineas12" points="10278,10506 10913,10559 10645,10974 10007,10911 " />
+                    </g>
+                </g>
+            </svg >,
+        "jimenez":
+            <svg xmlns="http://www.w3.org/2000/svg" width="90%" height="90%" version="1.1" className="opciones mapanuevo"
+                viewBox="0 0 21000 29700"
+            >
 
 
-            <ellipse className="fil0" cx="10242.86" cy="15284.64" rx="9241.73" ry="6238.09" />
-            <ellipse className="fila12" cx="10282.98" cy="15267.31" rx="8717.09" ry="6179.28" />
-            <path id="1" className="none" d="M10227.28 9194.62c1702.58,0 3288.88,352.51 4621.91,960.11l0 1939.62c-1287.74,-550 -2796.29,-866.6 -4409.38,-866.6 -1803.66,0 -3476.72,395.62 -4856.41,1071.02l0 -2133.84c1337.59,-613.79 2931.91,-970.31 4643.88,-970.31z" />
-            <path id="2" className="none" d="M10217.71 21369.62c1702.58,0 3288.88,-352.51 4621.91,-960.11l0 -1939.62c-1287.74,550 -2796.29,866.6 -4409.38,866.6 -1803.66,0 -3476.72,-395.62 -4856.41,-1071.02l0 2133.84c1337.59,613.79 2931.91,970.31 4643.88,970.31z" />
-            <path id="3" className="none" d="M14209.97 18612.15c-1116.86,337.11 -2473.86,610.42 -3859.66,610.42 -1385.8,0 -2648.38,-317.42 -3856.47,-727.8l0 -871.16c1201.89,405.27 2502.66,724.98 3888.37,724.98 1385.71,0 2704.7,-281.7 3827.76,-623.46l0 887.02zm-12381.06 -5403.67l4.65 -56.32c2.73,18.86 6.29,37.54 9.38,56.32l-14.03 0z" />
-            <path id="4" className="none" d="M14054.86 11920.92c-1116.86,-337.11 -2473.86,-610.42 -3859.66,-610.42 -1385.8,0 -2648.39,317.42 -3856.47,727.8l0 871.16c1201.89,-405.27 2502.66,-724.97 3888.37,-724.97 1385.7,0 2704.7,281.69 3827.76,623.45l0 -887.02zm-12381.06 5403.67l4.65 56.32c2.73,-18.86 6.28,-37.54 9.38,-56.32l-14.03 0z" />
-            <rect className="fila13 str0" x="6532.32" y="13351.06" width="7627.45" height="3722.26" />
-            <ellipse className="fil1 str0" cx="10323.38" cy="15225.91" rx="847.49" ry="926.89" />
-            <polygon className="fil str0" points="10325.86,13341.85 10325.86,17073.31 " />
-            <rect className="fil6 str0" x="6532.32" y="14475.87" width="301.02" height="1500.67" />
-            <rect className="fil6 str0" x="13847.6" y="14470.88" width="301.02" height="1500.67" />
+                <ellipse className="fil0" cx="10242.86" cy="15284.64" rx="9241.73" ry="6238.09" />
+                <ellipse className="fila12" cx="10282.98" cy="15267.31" rx="8717.09" ry="6179.28" />
+                <path id="1" className="none" d="M10227.28 9194.62c1702.58,0 3288.88,352.51 4621.91,960.11l0 1939.62c-1287.74,-550 -2796.29,-866.6 -4409.38,-866.6 -1803.66,0 -3476.72,395.62 -4856.41,1071.02l0 -2133.84c1337.59,-613.79 2931.91,-970.31 4643.88,-970.31z" />
+                <path id="2" className="none" d="M10217.71 21369.62c1702.58,0 3288.88,-352.51 4621.91,-960.11l0 -1939.62c-1287.74,550 -2796.29,866.6 -4409.38,866.6 -1803.66,0 -3476.72,-395.62 -4856.41,-1071.02l0 2133.84c1337.59,613.79 2931.91,970.31 4643.88,970.31z" />
+                <path id="3" className="none" d="M14209.97 18612.15c-1116.86,337.11 -2473.86,610.42 -3859.66,610.42 -1385.8,0 -2648.38,-317.42 -3856.47,-727.8l0 -871.16c1201.89,405.27 2502.66,724.98 3888.37,724.98 1385.71,0 2704.7,-281.7 3827.76,-623.46l0 887.02zm-12381.06 -5403.67l4.65 -56.32c2.73,18.86 6.29,37.54 9.38,56.32l-14.03 0z" />
+                <path id="4" className="none" d="M14054.86 11920.92c-1116.86,-337.11 -2473.86,-610.42 -3859.66,-610.42 -1385.8,0 -2648.39,317.42 -3856.47,727.8l0 871.16c1201.89,-405.27 2502.66,-724.97 3888.37,-724.97 1385.7,0 2704.7,281.69 3827.76,623.45l0 -887.02zm-12381.06 5403.67l4.65 56.32c2.73,-18.86 6.28,-37.54 9.38,-56.32l-14.03 0z" />
+                <rect className="fila13 str0" x="6532.32" y="13351.06" width="7627.45" height="3722.26" />
+                <ellipse className="fil1 str0" cx="10323.38" cy="15225.91" rx="847.49" ry="926.89" />
+                <polygon className="fil str0" points="10325.86,13341.85 10325.86,17073.31 " />
+                <rect className="fil6 str0" x="6532.32" y="14475.87" width="301.02" height="1500.67" />
+                <rect className="fil6 str0" x="13847.6" y="14470.88" width="301.02" height="1500.67" />
 
-        </svg>,
+            </svg>,
         "hotel": <svg id="Capa_1" width="90%" height="90%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 595.28 453.54">
 
             <path className="cls-1"
@@ -1541,13 +1541,13 @@ const svgselectView = ({ text }) => {
             <line className="cls-10" x1="80.89" y1="316.85" x2="138.51" y2="317.45" />
             <line className="cls-10" x1="393.85" y1="357.87" x2="408.81" y2="320.28" />
             <line className="cls-10" x1="433.37" y1="320.54" x2="408.81" y2="320.28" />
-            
+
             <text className="cls-13" transform="matrix(0.35, -0.88, 1, 0.01, 120.67, 305.74)">PL<tspan
                 className="cls-14" x="24.47" y="0">A</tspan><tspan x="37.51" y="0">TINUM</tspan></text>
             <text className="cls-15" transform="matrix(0.35, -0.88, 1, 0.01, 173.82, 172.22)">GOLDEN</text>
-           
+
         </svg>,
-        "cancha": 
+        "cancha":
             <svg width="90%" height="90%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 595.3 453.5">
 
                 <path class="clsvg0" d="M378.3,448.4l-303.4-3.2C58.8,445,40.7,418,46.7,403.1L204,36.8c3.5-8.8,12.1-14.5,21.5-14.4L524.4,13
@@ -1777,8 +1777,38 @@ const svgselectView = ({ text }) => {
 
 
 
-            </svg>
-        
+            </svg>,
+        "tulcan":
+            <svg className="p-0 m-0" width="90%" height="90%" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 8267.72 6299.21" >
+
+                <g id="Capa_x0020_1">
+                    <path className="tulcanfila0" d="M6816.55 925.98l-1610.02 -273.74c-325.57,-49.41 -702.97,-84.23 -1031.37,-44.95 -930.95,112.57 -1699.11,428.02 -2186.25,1099.4l-1821 2696.87c64.79,520.34 156.31,1098.19 1405.53,1329.81l1925.07 337.72c1283.65,68.84 2310.16,-242.56 2951.18,-1123.7l1496.64 -2248.61c269.69,-331.24 242.96,-679.08 184.65,-960.11 -32.4,-154.28 -76.54,-306.54 -148.21,-461.63 -145.37,-314.63 -708.64,-293.58 -1166.22,-351.08z" />
+                    <path className="tulcanfila1" d="M6778.48 822.32l-1616.91 -274.55c-326.78,-49.81 -705.8,-85.04 -1035.42,-45.35 -935.41,112.98 -1706.81,429.64 -2195.97,1104.26l-1828.69 2708.62c65.19,522.37 156.71,1102.64 1411.61,1335.07l1933.17 339.33c1289.32,69.24 2320.28,-243.77 2963.73,-1128.56l1503.53 -2258.33c270.5,-332.86 244.18,-681.91 185.06,-964.15 -32.39,-155.09 -76.53,-307.75 -148.61,-463.65 -145.78,-315.85 -711.47,-294.8 -1171.48,-352.7z" />
+                    <path id="1" className="none" d="M6686.16 437.22l-1626.22 -276.17c-328.81,-49.81 -709.85,-85.04 -1041.5,-45.35 -940.67,113.38 -1716.53,432.07 -2208.52,1110.33l-1405.94 2126.72c-661.26,914.75 -275.36,1706.81 986.83,1940.46l1946.93 339.33c1248.82,114.19 2096.76,-284.26 2817.55,-900.58 161.17,-137.68 198.42,-191.94 315.44,-366.46l1408.37 -2107.29c584.72,-1113.98 -164.81,-1591.81 -1192.94,-1821z" />
+                    <path className="tulcanfila3" d="M6247.21 806.12l-1367.07 -232.03c-276.17,-42.11 -596.47,-71.67 -875.07,-38.06 -790.43,95.16 -1442.79,362.82 -1856.22,932.97l-1181.61 1787.39c-555.98,768.98 -231.62,1434.69 829.31,1631.08l1636.35 285.48c1049.59,95.57 1762.28,-238.91 2368.07,-757.23 135.65,-115.81 166.83,-161.17 265.23,-307.75l1183.63 -1771.19c491.59,-936.21 -138.49,-1338.31 -1002.62,-1530.66z" />
+                    <path className="tulcanfila4" d="M6253.28 834.06l-1361.4 -231.22c-274.95,-42.11 -594.04,-71.67 -871.42,-38.06 -787.2,95.16 -1436.71,361.61 -1848.54,929.33l-1176.74 1779.69c-553.55,765.73 -230.41,1428.61 825.67,1624.2l1629.87 284.26c1045.14,95.16 1754.99,-238.1 2357.94,-753.59 135.25,-115.81 166.43,-160.76 264.02,-306.94l1179.17 -1763.9c489.16,-932.17 -138.08,-1332.24 -998.57,-1523.78z" />
+                    <path className="tulcanfila5 tulcan0" d="M3501.34 1196.81l2742.16 522c128.21,46.11 187.86,154.37 133.93,260.48l-1684.59 2624.78c-20.8,29.07 -24.15,37.23 -43.62,58.22 -126.09,135.92 -279.78,181.42 -438.82,162.43l-2513.64 -460.87c-192.04,-52.61 -351.06,-248.55 -264.19,-420.43l1698.58 -2645.13c66.1,-77.85 156.93,-125.44 370.19,-101.49z" />
+                    <path id="2" className="none tulcan1" d="M3486.07 1131.59l2742.16 522c128.21,46.11 187.86,154.37 133.94,260.48l-1684.59 2624.78c-20.81,29.07 -24.15,37.23 -43.62,58.22 -126.08,135.92 -279.77,181.42 -438.82,162.43l-2513.64 -460.87c-192.04,-52.61 -351.06,-248.55 -264.19,-420.43l1698.58 -2645.13c66.1,-77.85 156.93,-125.44 370.19,-101.49z" />
+                    <path id="3" className="none tulcan1" d="M5775.67 2827.91l-1096.24 1714.61c-20.81,29.07 -24.15,37.23 -43.62,58.22 -126.08,135.92 -279.78,181.42 -438.82,162.43l-2513.65 -460.87c-192.04,-52.61 -351.06,-248.55 -264.19,-420.43l969.93 -1516.96 3386.59 463z" />
+                    <polygon className="tulcanfila7 tulcan2" points="3787.37,1059.2 3474.67,1541.02 5977.21,1873.17 6259.02,1380.17 " />
+                    <polygon className="tulcanfila8 tulcan2" points="3808.96,1025.4 3504.96,1501.37 5921.98,1842.33 6192.72,1370.66 " />
+                    <polygon className="tulcanfila9" points="4137.49,1192.83 4118.86,1230.9 3999.81,1211.46 3968.63,1274.63 4075.54,1292.05 4057.72,1327.68 3951.22,1310.27 3919.63,1374.25 4042.33,1394.09 4023.7,1432.15 3863.35,1405.83 3980.78,1167.33 " />
+                    <path id="_1" className="tulcanfila9" d="M4241.56 1243.45c-10.93,-1.62 -21.06,-0.81 -30.78,2.83 -9.31,3.65 -16.2,10.53 -21.06,20.25 -4.86,9.31 -4.86,17.41 -0.41,23.89 4.45,6.07 16.6,14.17 36.85,23.49 19.84,9.72 32.8,20.65 39.28,33.61 6.07,12.55 4.46,29.15 -6.07,49.81 -10.13,21.06 -25.92,36.44 -46.97,47.37 -21.06,10.53 -43.33,13.77 -67.22,10.13 -34.83,-5.67 -59.53,-23.89 -73.7,-53.86l38.47 -26.32c12.15,24.3 30.37,38.47 54.67,42.52 12.15,2.03 23.08,0.81 32.8,-3.64 10.12,-4.46 17.41,-11.34 21.87,-20.25 4.45,-9.31 4.45,-17.01 0.41,-23.48 -4.05,-6.07 -13.36,-12.56 -27.54,-19.44 -14.58,-6.89 -25.11,-12.56 -31.59,-17.82 -6.88,-4.86 -12.15,-10.53 -15.79,-17.41 -8.1,-12.55 -6.48,-30.37 4.45,-52.24 10.53,-22.27 26.73,-38.06 47.38,-47.38 21.06,-9.72 42.52,-12.55 64.39,-8.91 14.58,2.43 27.54,7.29 38.87,14.58 11.74,7.29 20.25,16.2 25.92,26.73l-34.83 27.13c-3.65,-7.29 -10.12,-14.17 -19.44,-19.84 -8.91,-6.07 -19.03,-9.72 -29.96,-11.74z" />
+                    <path id="_2" className="tulcanfila9" d="M4392.6 1452.4c12.96,2.02 25.11,1.62 36.85,-1.62 11.74,-3.24 25.11,-8.91 40.5,-17.41l10.93 30.37c-37.26,24.3 -72.89,33.61 -106.5,27.94 -33.61,-5.26 -55.88,-21.46 -66.81,-48.19 -10.93,-27.13 -7.29,-57.91 10.13,-93.54 17.41,-35.63 43.33,-63.17 77.74,-83.42 34.02,-19.84 68.84,-27.13 103.26,-21.46 34.42,5.67 56.69,23.89 66.41,55.07l-37.66 23.89c-5.26,-12.55 -11.74,-21.87 -19.03,-27.54 -7.29,-6.07 -17.41,-9.72 -29.97,-12.15 -22.67,-3.64 -45.35,1.22 -68.43,14.58 -23.08,12.96 -40.49,31.59 -52.24,55.88 -12.15,24.3 -14.58,45.76 -7.29,64.39 7.29,18.63 21.06,29.96 42.11,33.2z" />
+                    <polygon id="_3" className="tulcanfila9" points="4781.74,1297.31 4763.12,1334.97 4644.07,1315.94 4612.89,1379.11 4719.79,1396.11 4701.97,1432.15 4595.47,1414.74 4563.89,1478.72 4686.58,1498.56 4667.96,1536.22 4507.6,1510.31 4625.04,1271.8 " />
+                    <polygon id="_4" className="tulcanfila9" points="5000.81,1332.94 5038.47,1339.02 4921.04,1577.53 4880.14,1570.64 4839.65,1376.27 4753.8,1550.39 4716.15,1544.32 4833.57,1305.81 4871.24,1311.89 4912.94,1510.71 " />
+                    <path id="_5" className="tulcanfila9" d="M5040.9 1538.25l-49 50.61 -40.09 -6.48 215.83 -222.72 40.09 6.48 -19.44 254.7 -40.09 -6.48 4.45 -57.91 -111.76 -18.22zm114.6 -21.46l8.1 -104.88 -89.09 91.52 80.99 13.36z" />
+                    <path id="_6" className="tulcanfila9" d="M5476.61 1493.7c-19.44,39.28 -47.78,61.55 -84.63,66.41l15.39 96.37 -47.78 -8.1 -13.77 -88.68 -49.4 -8.1 -39.28 80.18 -37.66 -6.07 117.43 -238.51 83.02 13.36c34.01,5.67 55.07,15.8 63.98,30.37 8.5,14.58 6.07,35.64 -7.29,62.77zm-115.41 29.15c21.46,3.24 37.66,2.03 48.59,-3.64 11.34,-5.67 20.65,-16.6 28.35,-31.99 7.69,-15.79 8.91,-27.13 4.05,-34.02 -4.86,-7.29 -17.41,-12.15 -37.66,-15.79l-47.78 -7.69 -42.11 85.44 46.57 7.69z" />
+                    <polygon id="_7" className="tulcanfila9" points="5568.94,1424.87 5606.6,1430.94 5489.17,1669.44 5451.51,1663.37 " />
+                    <path id="_8" className="tulcanfila9" d="M5799.75 1523.26c-6.88,-19.44 -21.46,-30.78 -43.33,-34.42 -22.27,-3.65 -44.95,1.62 -68.43,16.2 -23.49,14.17 -41.3,33.61 -53.05,57.5 -11.74,23.89 -14.17,45.76 -7.29,64.79 6.88,19.43 21.46,30.77 43.33,34.42 22.27,3.65 44.95,-1.62 68.43,-16.2 23.49,-14.17 41.3,-33.61 53.05,-57.5 11.74,-23.89 14.17,-45.76 7.29,-64.79zm-45.76 153.47c-34.42,19.84 -68.03,27.13 -101.24,21.87 -33.2,-5.26 -55.07,-21.46 -66,-49 -10.93,-27.13 -7.69,-58.31 9.72,-93.54 17.01,-34.82 42.92,-62.36 76.94,-82.61 34.42,-19.84 68.03,-27.13 101.23,-21.46 32.8,5.26 55.07,21.46 66.01,48.59 10.93,27.54 7.69,58.72 -9.72,93.54 -17.41,35.23 -42.92,62.76 -76.94,82.61z" />
+                    <text x="2125.48" y="3672.08" className="tulcanfila5 tulcanfnt0">GENERAL</text>
+                    <text x="3831.74" y="2468.63" className="tulcanfila5 tulcanfnt1">VIP</text>
+                </g>
+
+            </svg >
+
+
     }
     return (
         text ? plantilla[text.split("-")[0] ? text.split("-")[0] : text] : ''

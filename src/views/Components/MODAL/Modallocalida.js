@@ -32,10 +32,11 @@ const LocalidadmapViews = (props) => {
     let nombre = JSON.parse(sessionStorage.getItem(seleccionmapa))
     const usedispatch = useDispatch()
     const [detalle, setDetalle] = useState([])
+    
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localidad))
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const spinervi = useSelector((state) => state.SuscritorSlice.spiner)
-
+    console.log(seleccion, mapath.precio.localidad)
     const [alert, setAlert] = useState(null);
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
     console.log(sleccionlocalidad)
@@ -45,7 +46,7 @@ const LocalidadmapViews = (props) => {
         let user = getDatosUsuariosLocalStorag()
         let nuevo = []
         for (let i = 1; i < parseInt(C) + 1; i++) {
-            let valid = seleccion.some(e => e.seleccionmapa == nombre.localidad + "-" + M + "-s-" + i && e.estado == "seleccionado")
+            let valid = seleccion.some(e => e.seleccionmapa == nombre.localidad + "-" + M + "-s-" + i && e.estado.toLowerCase() == "seleccionado")
             if (valid) {
                 nuevo.push({ id: nombres.idcolor, silla: M + "-s-" + i })
             }
@@ -431,7 +432,7 @@ const LocalidadmapViews = (props) => {
         if (e.cedula == user.cedula) {
 
         }
-        else if (e.estado.toLowerCase() == "disponible") {
+        else if (e.estado.toLowerCase().toLowerCase() == "disponible") {
 
         } else {
 
@@ -500,7 +501,7 @@ const LocalidadmapViews = (props) => {
         let variant = document.getElementById(e.idsilla)
         variant.classList.remove('disponible')
         variant.classList.add('seleccionado')
-        if (e.estado.toLowerCase() != "disponible" && e.cedula != user.cedula) {
+        if (e.estado.toLowerCase().toLowerCase() != "disponible" && e.cedula != user.cedula) {
 
             return
         }
@@ -680,21 +681,21 @@ const LocalidadmapViews = (props) => {
                     //console.log(nuevoObjeto)
                 }
                 else if (ouput.data.some(e => e.typo == "correlativo")) {
-                    mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e =>e.estado == "disponible" || e.estado==null))) : ''
-                    //    console.log(ouput.data.filter(e =>e.estado == "disponible" || e.estado==null).length)
-                    let dispo = ouput.data.filter(e =>e.estado == "disponible" || e.estado==null).length
+                    mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e => e.estado.toLowerCase()==null))) : ''
+                    //    console.log(ouput.data.filter(e =>e.estado.toLowerCase() == "disponible" || e.estado.toLowerCase()==null).length)
+                    let dispo = ouput.data.filter(e =>e.estado.toLowerCase() == "disponible" || e.estado.toLowerCase()==null).length
                     // console.log(ouput.data.filter(e=>e.cedula!=""))
                     // console.log(ouput.data.filter(e=>e.cedula!=null).length)
                     //console.log(ouput.data)
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e =>e.estado == "disponible" || e.estado==null).length,
-                        proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
+                        disponibles: ouput.data.filter(e =>e.estado.toLowerCase() == "disponible" || e.estado.toLowerCase()==null).length,
+                        proceso: ouput.data.filter(e => e.estado.toLowerCase() == "reservado" && e.cedula == user.cedula).length,
                         pagados: sleccionlocalidad.pagados,
                         inpagos: sleccionlocalidad.inpagos
                     }))
                     /* console.log({
                          disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
-                         proceso: ouput.data.filter(e => e.estado == "reservado" && e.cedula == user.cedula).length,
+                         proceso: ouput.data.filter(e => e.estado.toLowerCase() == "reservado" && e.cedula == user.cedula).length,
                          pagados: sleccionlocalidad.pagados,  inpagos: sleccionlocalidad.inpagos
                      })*/
                 }
@@ -1001,7 +1002,7 @@ const LocalidadmapViews = (props) => {
                                 <div className="d-flex flex-wrap" style={{ minHeight: '10px', maxHeight: '150px', overflowY: 'auto', overflowX: 'hide', }}>
                                     {
                                         seleccion.length > 0 ?
-                                            seleccion.filter((e) => e.estado == "seleccionado").map((elm, id) => {
+                                            seleccion.filter((e) => e.estado.toLowerCase() == "seleccionado").map((elm, id) => {
                                                 return (
                                                     <li key={id} className={elm.silla + '  d-flex agregados rounded-5  bg-success justify-content-center align-items-center '}
                                                         onClick={() => console.log({ /*"localidad": elm.localidad, tipo: mapath.precio.typo, "localidaEspacio": elm.localidaEspacio, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "borrar" */ })}

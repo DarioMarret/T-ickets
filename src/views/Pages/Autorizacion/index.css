@@ -1,0 +1,31 @@
+.cardt {
+    border-radius: 10px !important;
+    filter: drop-shadow(0 5px 10px 0 #ffffff) !important;
+    height: auto !important;
+    background-color: #ffffff !important;
+    padding: 20px !important;
+    position: relative !important;
+    z-index: 0 !important;
+    overflow: hidden !important;
+    transition: 0.6s ease-in !important;
+}
+
+.cardt-dark::before {
+    content: "";
+    position: absolute !important;
+    z-index: -1 !important;
+    top: -15px !important;
+    right: 0px !important;
+    background: rgb(57, 117, 129) !important;
+    height: 30px !important;
+    width: 100% !important;
+    
+    transform: scale(1) !important;
+    transform-origin: 50% 50% !important;
+    transition: transform 0.25s ease-out !important;
+}
+.boxshadow {
+    box-shadow: -2px 8px 9px -1px rgba(173, 173, 173, 0.75);
+    -webkit-box-shadow: -2px 8px 9px -1px rgba(173, 173, 173, 0.75);
+    -moz-box-shadow: -2px 8px 9px -1px rgba(173, 173, 173, 0.75);
+}

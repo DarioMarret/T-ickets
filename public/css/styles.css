@@ -115,3 +115,101 @@ a.list-group-item:hover {
 
   color: white;
 }
+
+
+/* input line */
+.group {
+  position: relative;
+  margin-bottom: 15px;
+  margin-top: 2px;
+}
+
+.textbox {
+  font-size: 15px;
+  padding: 10px 10px 5px 5px;
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #757575;
+}
+
+.textbox:focus {
+  outline: none;
+
+}
+
+.group label {
+  color: #999;
+  font-size: 12px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+}
+
+.textbox:focus~label,
+.textbox:valid~label {
+  top: -10px;
+  font-size: 10px;
+  color: #1742ed;
+}
+
+.bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.bar:before,
+.bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #5264AE;
+  transition: 0.2s ease all;
+}
+
+
+.bar:before {
+  left: 50%;
+}
+
+.bar:after {
+  right: 50%;
+}
+
+.textbox:focus~.bar:before,
+.textbox:focus~.bar:after {
+  width: 50%;
+}
+
+.highlight {
+  position: absolute;
+  height: 60%;
+  width: 100px;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.textbox:focus~.highlight {
+  animation: inputHighlighter 0.3s ease;
+}
+
+@keyframes inputHighlighter {
+  from {
+    background: #5264AE;
+  }
+
+  to {
+    width: 0;
+    background: transparent;
+  }
+}
+
+/*termina inpiut line */
