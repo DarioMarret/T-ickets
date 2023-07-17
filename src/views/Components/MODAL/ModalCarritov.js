@@ -132,8 +132,8 @@ const ModalCarritoView = (prop) => {
             usedispatch(updateboletos({
                 disponibles: sleccionlocalidad.disponibles,
                 proceso: 0,
-                pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado.toLowerCase() == "Pagado" || e.estado.toLowerCase() == "reservado").length,
-                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado.toLowerCase() == "reservado").length
+                pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado.toLowerCase() == "Pagado" || e.estado!=null && e.estado.toLowerCase() == "reservado").length,
+                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado!=null && e.estado.toLowerCase() == "reservado").length
             }))
             /*console.log({
                 disponibles: 0,
@@ -156,10 +156,10 @@ const ModalCarritoView = (prop) => {
               }))*
 
             let precioslocal = JSON.parse(sessionStorage.getItem(Eventolocalidad))
-            let cantidad = oupt.data.filter(e => e.estado.toLowerCase() == "reservado" && e.typo == "correlativo").length
+            let cantidad = oupt.data.filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado" && e.typo == "correlativo").length
             precioslocal.map((elm, im) => {
-                if (oupt.data.filter(el => el.id_localidades == elm.id).filter(e => e.estado.toLowerCase() == "reservado" && e.typo == "correlativo").length > 0) {
-                    console.log(oupt.data.filter(el => el.id_localidades == elm.id).filter(e => e.estado.toLowerCase() == "reservado" && e.typo == "correlativo"))
+                if (oupt.data.filter(el => el.id_localidades == elm.id).filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado" && e.typo == "correlativo").length > 0) {
+                    console.log(oupt.data.filter(el => el.id_localidades == elm.id).filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado" && e.typo == "correlativo"))
                 }
             })
         }
@@ -278,7 +278,7 @@ const ModalCarritoView = (prop) => {
                 }
                 else if (ouput.data.find(e => e.typo == "correlativo")) {
                     usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != " " && e.cedula != null)))
-                    ouput.data.filter(e => e.estado.toLowerCase()==null).length == 0 ?
+                    ouput.data.filter(e => e.estado==null).length == 0 ?
                         usedispatch(setToastes({
                             show: true,
                             message: "Estan en proceso o vendidos",
@@ -288,13 +288,13 @@ const ModalCarritoView = (prop) => {
                     usedispatch(cargarmapa(color))
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                     console.log({
-                        disponibles: ouput.data.filter(e =>e.estado.toLowerCase() == "disponible" || e.estado.toLowerCase()==null).length,
-                        proceso: ouput.data.filter(e => e.estado.toLowerCase() == "reservado").length,
+                        disponibles: ouput.data.filter(e =>e.estado==null || e.estado.toLowerCase() == "disponible").length,
+                        proceso: ouput.data.filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado").length,
                         inpagos: sleccionlocalidad.inpagos
                     })
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e =>e.estado.toLowerCase() == "disponible" || e.estado.toLowerCase()==null).length,
-                        proceso: ouput.data.filter(e => e.estado.toLowerCase() == "reservado").length,
+                        disponibles: ouput.data.filter(e =>e.estado==null || e.estado.toLowerCase() == "disponible").length,
+                        proceso: ouput.data.filter(e =>  e.estado!=null && e.estado.toLowerCase() == "reservado").length,
                         inpagos: sleccionlocalidad.inpagos
                     }))
                     sessionStorage.seleccionmapa = JSON.stringify(e)
@@ -415,17 +415,17 @@ const ModalCarritoView = (prop) => {
                         //  usedispatch(filtrarlocali(nuevoObjeto))
                         filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
                         // console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
-                        ouput.data.filter(e =>e.estado.toLowerCase() == "disponible" || e.estado.toLowerCase()==null).length == 0 ? usedispatch(setToastes({
+                        ouput.data.filter(e =>e.estado==null || e.estado.toLowerCase() == "disponible").length == 0 ? usedispatch(setToastes({
                             show: true,
                             message: "Estan en proceso o vendidos",
                             color: 'bg-primary',
                             estado: "Esta loclidad no tiene disponibles  "
                         })) : ''
                         // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
-                        console.log(ouput.data.filter(e => e.estado.toLowerCase() == "reservado" && usuario.cedula).length)
+                        console.log(ouput.data.filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length)
                         usedispatch(updateboletos({
-                            disponibles: ouput.data.filter(e =>e.estado.toLowerCase() == "disponible" || e.estado.toLowerCase()==null).length,
-                            proceso: ouput.data.filter(e => e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
+                            disponibles: ouput.data.filter(e =>e.estado==null || e.estado.toLowerCase() == "disponible").length,
+                            proceso: ouput.data.filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
                             pagados: sleccionlocalidad.pagados,
                             inpagos: sleccionlocalidad.inpagos
                         }))
