@@ -139,7 +139,7 @@ a.list-group-item:hover {
 }
 
 .group label {
-  color: #999;
+  color: #999 !important;
   font-size: 12px;
   font-weight: normal;
   position: absolute;

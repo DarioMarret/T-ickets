@@ -97,7 +97,7 @@ const LocalidadmapViews = (props) => {
                 setTimeout(function () {
 
                     usedispatch(setSpinersli({ spiner: true }))
-                }, 3000)
+                }, 1500)
                 return
             }
             usedispatch(setSpinersli({ spiner: true }))
@@ -160,7 +160,7 @@ const LocalidadmapViews = (props) => {
                     setTimeout(function () {
                         setDisable(false)
                         usedispatch(setSpinersli({ spiner: true }))
-                    }, 3000)
+                    }, 1500)
 
                     return
                 }
@@ -598,7 +598,7 @@ const LocalidadmapViews = (props) => {
                 setTimeout(function () {
 
                     usedispatch(setSpinersli({ spiner: true }))
-                }, 3000)
+                }, 1500)
                 return
             }
             usedispatch(setSpinersli({ spiner: true }))
@@ -771,7 +771,7 @@ const LocalidadmapViews = (props) => {
                             <i className="fa fa-arrow-left">  </i>
                         </button>
                         <button className=" btn  btn-outline-light mx-1" onClick={() => cerrar()} >
-                            <i className="fa fa-shopping-cart">  </i>
+                            Regresar <i className="fa fa-shopping-cart">  </i>
                         </button>
                     </div>
 

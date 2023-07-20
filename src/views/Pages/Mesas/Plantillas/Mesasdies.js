@@ -131,7 +131,7 @@ const MesadiesView = ({ text, list }) => {
           setTimeout(() => {
             usedispatch(setSpinersli({ spiner: true }))
             //   
-          }, 5000);
+          }, 3000);
 
 
         }
@@ -150,13 +150,13 @@ const MesadiesView = ({ text, list }) => {
       let datos = {
         "cedula": info.cedula,
         "estado": "disponible",
-        random: sessionStorage.getItem("random"),
+        "random": sessionStorage.getItem("random"),
         "mesa": [
           {
             id_silla: silla.idsilla,
             id: mapath[0].id,
             cedula: info.cedula,
-            random: sessionStorage.getItem("random"),
+            "random": sessionStorage.getItem("random"),
             estado: "",
             ...silla
           }
@@ -165,7 +165,7 @@ const MesadiesView = ({ text, list }) => {
       hideAlert()
       usedispatch(setSpinersli({ spiner: false }))
       correlativosadd(datos).then(ou => {
-
+        console.log(datos,ou)
         if (ou.success) {
           //console.log(ou)
           ou.insert.map((e => {
@@ -204,7 +204,7 @@ const MesadiesView = ({ text, list }) => {
           setTimeout(function () {
             usedispatch(setSpinersli({ spiner: true }))
             //    
-          }, 5000)
+          }, 3000)
 
           // hideAlert()
 
@@ -268,7 +268,7 @@ const MesadiesView = ({ text, list }) => {
           setTimeout(() => {
             usedispatch(setSpinersli({ spiner: true }))
             //   
-          }, 5000);
+          }, 3000);
 
 
         }
@@ -487,7 +487,7 @@ const MesadiesView = ({ text, list }) => {
         setTimeout(() => {
           usedispatch(setSpinersli({ spiner: true }))
 
-        }, 5000);
+        }, 3000);
 
       } else {
         usedispatch(setSpinersli({ spiner: true }))

@@ -1225,7 +1225,7 @@ export default function DetalleCompraView() {
                                     : ""}
 
                                 {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                    boletoscanje() ? "" : <a className="btn btn-default btn-sm"
+                                    !boletoscanje() ? "" : <a className="btn btn-default btn-sm"
                                         data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
                                         onClick={() => Generarnew()}
                                     >
@@ -1248,12 +1248,12 @@ export default function DetalleCompraView() {
                                     <i className="fa fa-info-circle">  </i>
                                 </a> : ""}
 
-                            <a className=" rounded-circle btn-primary mx-2 p-2 text-white d-none"
+                            {nombres.ticket_usuarios.length==0? <a className=" rounded-circle btn-primary mx-2 p-2 text-white "
                                 data-toggle="tooltip" data-placement="top" title="Generar Boleto"
                                 onClick={() => Generarnew()}
                             >
                                 <i className=" fa fa-spinner">  </i>
-                            </a>
+                            </a>:""}
 
                             <a className=" rounded-circle btn-primary mx-2 p-2 text-white d-none"
                                 data-toggle="tooltip" data-placement="top" title="Reportar"

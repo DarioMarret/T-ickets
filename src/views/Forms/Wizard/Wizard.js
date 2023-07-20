@@ -34,8 +34,8 @@ function Wizard() {
   return (
     <>
       <Container fluid>
-        <Row>
-          <Col className="ml-auto mr-auto" md="8">
+       
+         
             <ReactWizard
               steps={steps}
               navSteps
@@ -66,8 +66,8 @@ function Wizard() {
                 );
               }}
             />
-          </Col>
-        </Row>
+         
+    
       </Container>
       {alertState}
     </>
