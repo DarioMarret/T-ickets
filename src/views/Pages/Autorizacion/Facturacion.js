@@ -20,7 +20,7 @@ export default function FacturaView() {
                                     height: "78px",
                                     zIndex: 2
                                 }}>
-                                    <img src="https://api.t-ickets.com/store/img/tckets-texto-azul.png" className="p-2 img-fluid" />
+                                    <img src="https://api.ticketsecuador.ec/store/img/tckets-texto-azul.png" className="p-2 img-fluid" />
                                 </div>
                             </div>
                         </div>

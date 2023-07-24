@@ -4,7 +4,7 @@ import { Host } from "utils/constantes";
 
 export const registraPagos = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/registraPagos ", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/registraPagos ", parms, {
             Headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -19,7 +19,7 @@ export const registraPagos = async (parms) => {
 
 export const listarRegistropanel = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/listarRegistros", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -33,7 +33,7 @@ export const listarRegistropanel = async (parms) => {
 export const ListarRegistropaneFecha = async (ini, fin) => {
     console.log(fin, ini)
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros?fecha_init="+ini+"&fecha_fin="+fin+"",
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/listarRegistros?fecha_init="+ini+"&fecha_fin="+fin+"",
             {
                 "cedula": ""
             }
@@ -50,7 +50,7 @@ export const ListarRegistropaneFecha = async (ini, fin) => {
 }
 export const listarRegistropanelComprobar = async (parms, estado) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros?estado=Expirado?estado=" + estado, parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/listarRegistros?estado=Expirado?estado=" + estado, parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -63,7 +63,7 @@ export const listarRegistropanelComprobar = async (parms, estado) => {
 }
 export const listarRegistroEvento = async (ini, fin, parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login//api/v1/listarRegistros?init=" + ini + "&size=" + fin + "", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login//api/v1/listarRegistros?init=" + ini + "&size=" + fin + "", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -76,7 +76,7 @@ export const listarRegistroEvento = async (ini, fin, parms) => {
 }
 export const generarBoleto = async () => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/generarBoleto", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/generarBoleto", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -89,7 +89,7 @@ export const generarBoleto = async () => {
 }
 export const eliminarRegistro = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/eliminarRegistro",
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/eliminarRegistro",
             parms, {
             headers: {
                 'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ export const eliminarRegistro = async (parms) => {
 }
 export const eliminartiket = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/eliminarTicketrepetido",
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/eliminarTicketrepetido",
             {
                 "id_ticket_usuarios": parms
             }, {
@@ -120,7 +120,7 @@ export const eliminartiket = async (parms) => {
 }
 export const cambiarMetodo = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/cambiandoMetodoPago", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/cambiandoMetodoPago", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -141,7 +141,7 @@ export const Comprobanteocr = async (parms) => {
 }
 export const ConsolidarReporte = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/ConsolidarCompra", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/ConsolidarCompra", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -154,7 +154,7 @@ export const ConsolidarReporte = async (parms) => {
 }
 export const Consiliarcompra = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/Conciliacion", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/Conciliacion", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -168,7 +168,7 @@ export const Consiliarcompra = async (parms) => {
 export const ActualizaConciliacion = async (parms, id) => {
     console.log(id)
     try {
-        let { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/Conciliacion/" + id, parms, {
+        let { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/Conciliacion/" + id, parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -183,7 +183,7 @@ export const ActualizaConciliacion = async (parms, id) => {
 }
 export const ComentarioRegistro = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/Comentario_registro", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/Comentario_registro", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -196,7 +196,7 @@ export const ComentarioRegistro = async (parms) => {
 }
 export const updateRegistro = async (parms, id) => {
     try {
-        let { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/Comentario_registro/" + id, parms, {
+        let { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/Comentario_registro/" + id, parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -209,7 +209,7 @@ export const updateRegistro = async (parms, id) => {
 }
 export const BuscarTransacion = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/BuscarNumeroTransaccion", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/BuscarNumeroTransaccion", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -222,7 +222,7 @@ export const BuscarTransacion = async (parms) => {
 }
 export const ActualizarnumeroTransacion = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/ActualizarNumeroTransaccion", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/ActualizarNumeroTransaccion", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -236,7 +236,7 @@ export const ActualizarnumeroTransacion = async (parms) => {
 }
 export const EstadosCosolidados = async () => {
     try {
-        let { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/estados_consolidados",
+        let { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/api/v1/estados_consolidados",
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -252,7 +252,7 @@ export const EstadosCosolidados = async () => {
 }
 export const infoTarjeta = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/info_tarjeta", parms,
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/info_tarjeta", parms,
             {
                 headers: {
                     'Content-Type': 'application/json',

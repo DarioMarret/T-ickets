@@ -26,7 +26,7 @@ el servidor esta adelantado
 //reportar pago desde el administrador seria de poner Paagado directo ?
 
 //un edpoit para consultar 
-// https://api.t-ickets.com/ms_login/doc/static/index.html#/Compra/post_api_v1_registraPagos
+// https://api.ticketsecuador.ec/ms_login/doc/static/index.html#/Compra/post_api_v1_registraPagos
 // agreagar efectivo
 // terminar endpoit para cambiar canje de boleto
 // liberar boletos

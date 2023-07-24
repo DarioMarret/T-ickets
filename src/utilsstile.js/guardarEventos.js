@@ -38,7 +38,7 @@ export const ReservaEvento = async (codigo,nombre) => {
     // console.log(datos, concierto)
     try {
         //console.log(datos)
-        const { data } = await axios.post("https://api.t-ickets.com/ms_login//api/v1/registraCompra ", datos, {
+        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login//api/v1/registraCompra ", datos, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

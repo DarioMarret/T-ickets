@@ -44,7 +44,7 @@ export const PagoRapido = async (transaccion) => {
 
         console.log(datos)
       
-        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/registraCompra ", datos, {
+        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/registraCompra ", datos, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -78,7 +78,7 @@ export const PagoRapido = async (transaccion) => {
     tabla = tabla + "</tbody></table></td></tr>"
     let final = Headerhtml + cuerpouno + tabla + Bodyhtml
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/email/api/v1/sendEmail_html", {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/email/api/v1/sendEmail_html", {
             "to": email,
             "html": final
         },
@@ -97,7 +97,7 @@ export const PagoRapido = async (transaccion) => {
 /** OCRAPI */
 export const OCRApi = async(parms)=>{
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ocr/api/v1/ocr_space",parms)
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ocr/api/v1/ocr_space",parms)
         return data
     } catch (error) {
         return error
@@ -107,7 +107,7 @@ export const OCRApi = async(parms)=>{
 /** Listar todos los reportes de tickes */
 export const AprobarTiket = async () => {
     try {
-        let { data } = await axios.get("https://api.t-ickets.com/ms_login/ticket_admin", {
+        let { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/ticket_admin", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -121,7 +121,7 @@ export const AprobarTiket = async () => {
 /**  */
 export const ConsolidaBoleto = async () => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/boletos", {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/boletos", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -134,7 +134,7 @@ export const ConsolidaBoleto = async () => {
 }
 export const Pagofisico = async () => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/pagosefectivi", {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/pagosefectivi", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -147,7 +147,7 @@ export const Pagofisico = async () => {
 }
 export const cederboleto = async (ceder) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login//api/v1/ceder_boleto", ceder, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login//api/v1/ceder_boleto", ceder, {
 
         }, {
             header: {
@@ -164,7 +164,7 @@ export const cederboleto = async (ceder) => {
 
 export const GeneraToken = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/generar_token", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/generar_token", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -177,7 +177,7 @@ export const GeneraToken = async (parms) => {
 }
 export const ValidarToken = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/confirmarpago", {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/confirmarpago", {
             
             "id": parms
             }
@@ -194,7 +194,7 @@ export const ValidarToken = async (parms) => {
 }
 export const generaTiketspdf = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ticket/api/v1/ticket_pdf_link", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ticket/api/v1/ticket_pdf_link", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -221,5 +221,5 @@ export const CambiarPagoTC =async (parms)=>{
     }
 }
 
-//https://api.t-ickets.com/ms_login/doc/static/index.html#/Compra/post_api_v1_liverar_asiento
-//https://api.t-ickets.com/ms_login/doc/static/index.html#/Compra/post_api_v1_generarBoleto     
+//https://api.ticketsecuador.ec/ms_login/doc/static/index.html#/Compra/post_api_v1_liverar_asiento
+//https://api.ticketsecuador.ec/ms_login/doc/static/index.html#/Compra/post_api_v1_generarBoleto     

@@ -8,7 +8,7 @@ export const sawerg = createApi({
                 headers.set("Authorization", 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==');
             return headers;
         },
-        baseUrl: 'https://api.t-ickets.com/ms_login/'
+        baseUrl: 'https://api.ticketsecuador.ec/ms_login/'
     }),
 
     endpoints: (builder) => ({
