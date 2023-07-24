@@ -1199,13 +1199,13 @@ const IndexFlas = () => {
         </div>}
       {/* eventos */}
       {seleccion == "" ?
-        <div className="col-12 col-lg-9 py-2   d-flex justify-content-end">
-          <div className=" col-12 col-md-6 ">
+        <div className="col-12    d-flex  justify-content-center">
+          <div className=" col-12 col-md-6 col-lg-8 d-flex  justify-content-center ">
             <form className="form" action="">
               <input className="input" type="search"
                 onChange={(e) => Cambiarbusqueda(e.target.value)}
                 placeholder="Buscar eventos ..." />
-              <i className="fass fa fa-search"></i>
+              <i className="fass fa fa-search "></i>
             </form>
             <div className="input-group d-none">
               <input className=" form-control "
@@ -1560,15 +1560,12 @@ const IndexFlas = () => {
               <div className="col-12 col-lg-9 px-0 pb-3   ">
 
                 <div className="row mx-auto bg-gradient d-flex justify-content-center px-0 ">
-                  <div className="col-12  border-bottom border-3 border-dark mb-3">
+                  <div className="col-12  border-bottom border-3 border-dark-sm mb-3">
                     <h4 className="text-capitalize font-weight-bolds">
-                      <b className="  "> Eventos Pasados</b>
+                      <b className=""> Eventos Pasados</b>
                     </h4>
                   </div>
-
-
                   <section className="logos-slider slider d-flex flex-wrap">
-
                     {final.length > 0 ?
                       [...final].filter(e => new Date(e.fechaConcierto + " 23:59:59") < new Date()).map((element, index) => {
                         return (
@@ -1586,9 +1583,7 @@ const IndexFlas = () => {
                           </div>
                         )
                       })
-
                       : ""}
-
                   </section>
                 </div>
               </div>

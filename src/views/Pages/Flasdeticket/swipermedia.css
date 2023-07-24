@@ -3,75 +3,89 @@
     left: 100px;
     bottom: 50px;
 }
-.contador{
+
+.contador {
     position: absolute;
-    top:45%;
+    top: 45%;
     width: 100%;
     height: 45px;
     text-align: center;
-    color: azure ;   
+    color: azure;
     z-index: 2;
 }
-.form{
+
+.form {
     position: relative;
     top: 50%;
-    left: 60%;
-    transform: translate(-50%,-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
     transition: all 1s;
     width: 250px;
     height: 50px;
     background: white;
     box-sizing: border-box;
-    border-radius: 25px;
-    border: 4px solid white;
+    border-radius: 5px;
+    border: 1px solid rgb(141, 140, 140);
+    margin: 5px;
     padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-.input{
+
+.input {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 90%;
     height: 42.5px;
     line-height: 30px;
     outline: 0;
-    border: 1;
+    border: none;
     display: none;
     font-size: 1em;
     border-radius: 20px;
     padding: 0 20px;
 }
 
-.fass{
+.fass {
     box-sizing: border-box;
     padding: 10px;
-    width: 42.5px;
-    height: 42.5px;
+    width: 10%;
+    height: 49px;
     position: absolute;
     top: 0;
     right: 0;
-    border-radius: 50%;
-    border: 1 !important;
-    border-color: #07051a !important;
-    color: #07051a;
+    margin-left: 5px;
+    
+    border-top-right-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    border-color: rgb(141, 140, 140);
+    color:rgb(141, 140, 140);
     text-align: center;
     font-size: 1.2em;
     transition: all 1s;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.form{
+.form {
     width: 100%;
     cursor: pointer;
 }
 
 
-.form input{
+.form input {
     display: block;
 }
 
-.form .fa{
-    background: #07051a;
+.form .fa {
+    background: rgb(141, 140, 140);
     color: white;
 }
+
 /*
 .form:hover{
     width: 300px;
@@ -88,31 +102,35 @@
     color: white;
 }
 */
-.contadordos{
+.contadordos {
     position: absolute;
-    top:37%;
+    top: 37%;
     width: 100%;
-        height: 35px;
-        text-align: center;
-        color: azure;
-        
+    height: 35px;
+    text-align: center;
+    color: azure;
+
 }
-.tiempo{
+
+.tiempo {
     text-transform: capitalize;
-    font-weight: bold ;
+    font-weight: bold;
     font-size: 60px;
 }
+
 span.swiper-pagination-bullet.swiper-pagination-bullet-active {
     background-color: #fff;
     opacity: 1
 }
+
 .swiper-pagination-bullet {
     background-color: rgba(175, 170, 170, 0.884);
 }
 
 .pl-n1 {
-  padding-left: 0.05rem !important;
+    padding-left: 0.05rem !important;
 }
+
 @media (max-width: 570px) {
     .descripciones {
         position: absolute;
@@ -191,6 +209,7 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active {
     fill-rule: evenodd;
     clip-rule: evenodd
 }
+
 .hamburger {
     font: inherit;
     display: inline-block;
@@ -206,18 +225,21 @@ span.swiper-pagination-bullet.swiper-pagination-bullet-active {
     border: 0;
     background-color: transparent;
 }
+
 @media (min-width: 768px) {
     .navbar-toggle-visible {
         display: inline;
     }
 }
+
 .hamburger-box {
     position: relative;
     display: inline-block;
     width: 25px;
     height: 24px;
-    color:#fff !important;
+    color: #fff !important;
 }
+
 a[aria-expanded="true"] svg {
     transform: rotate(180deg);
     translate: 0 0;
@@ -229,9 +251,11 @@ a[aria-expanded="true"] svg {
         color: #F58634 !important;
     }
 }
-.toast{
+
+.toast {
     z-index: 1000000 !important;
 }
+
 .nuevos .modal-dialog {
     max-width: 90%;
 }
@@ -244,7 +268,8 @@ a[aria-expanded="true"] svg {
 .evento {
     cursor: pointer;
 }
-.cursor{
+
+.cursor {
     cursor: pointer;
 }
 
@@ -255,20 +280,23 @@ a[aria-expanded="true"] svg {
     fill-rule: evenodd;
     clip-rule: evenodd
 }
+
 .btn-disable {
-     cursor: not-allowed !important;
+    cursor: not-allowed !important;
 }
+
 /*
 .MuiPaper-root{
     background-color: #442d97 !important;
 }*/
-table> tbody.region{
- 
-            height: 100px !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-        
+table>tbody.region {
+
+    height: 100px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
 }
+
 .slick-slide {
     margin: 0px 20px;
 }

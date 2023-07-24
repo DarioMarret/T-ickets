@@ -7839,12 +7839,20 @@ fieldset:disabled .btn {
   border-color: #212529 !important;
 }
 
+.border-dark-sm {
+  border-color: rgb(141, 140, 140) !important;
+}
+
 .border-white {
   border-color: #fff !important;
 }
 
 .border-1 {
   border-width: 1px !important;
+}
+
+.border-1 {
+  border-width: 0.5px !important;
 }
 
 .border-2 {
