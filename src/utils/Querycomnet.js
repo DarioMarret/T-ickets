@@ -33,7 +33,8 @@ export const PagoRapido = async (transaccion) => {
             "comision": parseFloat(GetValores().comision),
             "subtotal": parseFloat(GetValores().subtotal),
             "comision_bancaria": parseFloat(GetValores().comision_bancaria),
-            "description": GetValores().description
+            "description": GetValores().description,
+            "iva":GetValores().iva
         },
         "idfactura": "",
         "transaccion": transaccion

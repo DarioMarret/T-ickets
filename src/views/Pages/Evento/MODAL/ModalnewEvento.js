@@ -143,7 +143,9 @@ const ModalNewEvento = (props) => {
             descripcionConcierto: '',
             imagenConcierto: '',
             idUsuario: '' + user.id,
-            mapaConcierto: ''
+            mapaConcierto: '',
+            iva: "",
+            tarjeta: "",
         })
     function handelchangeComposeventos(e) {
         let img = new Image()
@@ -427,7 +429,46 @@ const ModalNewEvento = (props) => {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="col-12 col-md-6">
+                                    <label className="form-label">Porsentaje Iva </label>
+                                    <div className="input-group mb-3">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text">
+                                                <i className="fa fa-bookmark"></i>
+                                            </span>
+                                        </div>
+                                        <select className="form-control" name="iva" value={neweventos.iva} onChange={(e) => handelchangeComposeventos(e.target)}>
+                                            <option disabled value={""}>Seleccione el porsentaje del iva </option>
+                                            <option value={"00"} >0%</option>
+                                            <option value={"08"} >8%</option>
+                                            <option value={"12"} >12%</option>
+                                            <option value={"14"} >14%</option>
 
+                                        </select>
+
+
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <label className="form-label">Porsentaje Tarjeta </label>
+                                    <div className="input-group mb-3">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text">
+                                                <i className="fa fa-bookmark"></i>
+                                            </span>
+                                        </div>
+                                        <select className="form-control" name="tarjeta" value={neweventos.tarjeta} onChange={(e) => handelchangeComposeventos(e.target)}>
+                                            <option disabled value={""}>Seleccione el porsentaje del tarjeta </option>
+                                            <option value={"00"} >0%</option>
+                                            <option value={"08"} >8%</option>
+                                            <option value={"12"} >12%</option>
+                                            <option value={"14"} >14%</option>
+
+                                        </select>
+
+
+                                    </div>
+                                </div>
                                 <div className="col-12 col-md-12">
                                     <label className="form-label">{neweventos.imagenConcierto ? "Hay una imagen Cargada " : "Seleccione una imagen"}</label>
                                     <div className="input-group mb-3">

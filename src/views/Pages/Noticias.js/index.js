@@ -122,7 +122,7 @@ export default function NoticiasView() {
                             let mobil = await Obtenerlinkimagen(imgmovil)
                             if (mobil) {
                                 let datas = {
-                                    "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"] + "-" + datos.mas["estado"],
+                                    "evento": datos.mas["codigoEvento"] + "-" + datos.mas["lugarConcierto"] + "-" + datos.mas["nombreConcierto"] + "-" + datos.mas["estado"] + " - " + JSON.stringify(datos.mas),
                                     "encabezado": encabezado,
                                     "descripcion": descipcion,
                                     "link_img": link,

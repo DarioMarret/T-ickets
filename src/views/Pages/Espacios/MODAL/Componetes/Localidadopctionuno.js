@@ -123,7 +123,7 @@ const TabunoView = (props) => {
             try {
                 console.log(ListaFilas)
                 console.log({ Typo: 'fila', datos: ListaFilas })
-                const guardad = await GuardarLocalidad({ "espacio": localidaname.nombre, "descripcion": nmobretabuno.description, "id_espacio": localidaname.id, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
+                const guardad = await GuardarLocalidad({ "espacio": localidaname.nombre.trim(), "descripcion": nmobretabuno.description.trim(), "id_espacio": localidaname.id, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
                 if (guardad.success) {
                     SetDataloca({
                         typo: '',
@@ -153,7 +153,7 @@ const TabunoView = (props) => {
         }
         else {
             try {
-                const actualiza = await AptualizarLocalida({ "id": nmobretabuno.id, "espacio": localidaname.nombre, "id_espacio": localidaname.id, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
+                const actualiza = await AptualizarLocalida({ "id": nmobretabuno.id, "espacio": localidaname.nombre.trim(), "id_espacio": localidaname.id, "descripcion": nmobretabuno.description, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
                 if (actualiza.success) {
 
                     setLocalidad({

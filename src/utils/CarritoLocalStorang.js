@@ -77,14 +77,14 @@ export function verAsientos() {
     try {
         let item = JSON.parse(sessionStorage.getItem("asientosList"))
         if (item != null) {
-            return item.map(e=>{
+            return item.map(e => {
                 return {
                     id_silla: e.ids,
                     id: e.localidaEspacio.idcolor,
                     cedula: e.cedula,
                     estado: "",
                     ...e
-}
+                }
             })
         } else {
             return []
@@ -287,12 +287,18 @@ export function GetEstadousu() {
 }
 export function GetValores() {
     let tag = JSON.parse(sessionStorage.getItem(CarritoTicket));
+    let evento = JSON.parse(sessionStorage.getItem("infoevento"))
+
+    let eventoiva = evento != null && evento.hasOwnProperty(iva) ? "1.00" : evento.iva
+
     let user = JSON.parse(sessionStorage.getItem(DatosUsuarioLocalStorang)) ? JSON.parse(sessionStorage.getItem(DatosUsuarioLocalStorang)) : { discapacidad: "No" }
     var valor = 0;
     var subtotal = 0;
     var comision = 0;
     var sumcomision = 0;
     var descrption = ""
+
+    var iva = 0
     if (tag !== null) {
         tag.map(tienda2 => {
             //tienda2.localidaEspacio.descuento>0
@@ -324,7 +330,9 @@ export function GetValores() {
                 comision += tienda.cantidad
             }
         })
-        valor = subtotal + sumcomision;
+
+        valor = (subtotal + sumcomision) * parseFloat(eventoiva);
+        iva = (subtotal + sumcomision) *0.12;
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
             comision_bancaria: valor.toFixed(2) * 8 / 100,
@@ -332,10 +340,24 @@ export function GetValores() {
             description: descrption,
             comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
-            total: valor.toFixed(2) * 8 / 100 + valor,
-            desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15),
+            iva: iva,
+            total: (valor.toFixed(2) * 8 / 100 + valor).toFixed(2),
+            desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15).toFixed(2),
             desc: Math.round((subtotal + comision) / 1.15),
         }
+        let preciosdos={
+            sumcomision: parseFloat(sumcomision.toFixed(2)),
+            comision_bancaria: valor.toFixed(2) * 8 / 100,
+            subtotal: subtotal.toFixed(2),
+            description: descrption,
+            comision: parseFloat(sumcomision).toFixed(2),
+            envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
+            iva: iva,
+            total: (valor.toFixed(2) * 8 / 100 + valor).toFixed(2),
+            desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15).toFixed(2),
+            desc: Math.round((subtotal + comision) / 1.15),
+        }
+
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))
         return precios
     } else {

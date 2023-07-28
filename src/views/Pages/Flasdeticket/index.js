@@ -341,11 +341,10 @@ const IndexFlas = () => {
     if (e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U") {
       usedispatch(setModal({ nombre: "", estado: "" }))
       registraParticipante(e.codigoEvento, e.codigoEvento)
-    //  Math.random().toString(36).slice(-10)
       return
     }
-
     sessionStorage.setItem("estadoevento", e.estado)
+    sessionStorage.setItem("infoevento", JSON.stringify( e))
     setspinervi("")
     try {
       sessionStorage.setItem("random", Math.random().toString(36).slice(-10))
@@ -1199,8 +1198,11 @@ const IndexFlas = () => {
         </div>}
       {/* eventos */}
       {seleccion == "" ?
-        <div className="col-12    d-flex  justify-content-center">
-          <div className=" col-12 col-md-6 col-lg-8 d-flex  justify-content-center ">
+        <div className="container-fluid ">
+          <div className="row px-3 d-flex justify-content-center  align-items-center " >
+
+          <div className="col-12 col-lg-9  d-flex justify-content-center"> 
+          <div className=" col-9 col-md-6 col-lg-6 d-flex  justify-content-center ">
             <form className="form" action="">
               <input className="input" type="search"
                 onChange={(e) => Cambiarbusqueda(e.target.value)}
@@ -1223,6 +1225,8 @@ const IndexFlas = () => {
                   }</button>
               </div>
             </div>
+            </div>
+          </div>
           </div>
 
         </div> : ""}

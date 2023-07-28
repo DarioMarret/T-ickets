@@ -125,6 +125,7 @@ function ModalDetalle(props) {
         comision: 0,
         comision_bancaria: 0,
         desc: 0,
+        iva:0,
         desctc: 0
     })
     async function handelchange(e) {
@@ -432,13 +433,19 @@ function ModalDetalle(props) {
                                     <td className='text-end' >Comisión por Boleto:</td>
                                     <td className='text-center'>${parseFloat(listaPrecio.comision).toFixed(2)}</td>
                                 </tr>
+                                <tr className=''>
+                                    <th scope="row"></th>
+                                    <td className='text-end' >Iva 12%:</td>
+                                    <td className='text-center'>${parseFloat(listaPrecio.iva).toFixed(2)}</td>
+                                </tr>
                                 <tr>
+                                    
                                     <th scope="row"></th>
                                     <td className='text-end' >
                                         {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ? 
                                         
                                             "Total con Descuento" :"Total"}</td>
-                                    <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)}</td>
+                                    <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (((parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision) + parseFloat(listaPrecio.iva)).toFixed(2))  )}</td>
                                 </tr >
                                 {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ? 
                                 <tr className="d-none">
@@ -457,6 +464,9 @@ function ModalDetalle(props) {
                             <div>
                                 <p>Comisión por Boleto:</p>
                             </div>
+                            <div>
+                                <p>Iva:</p>
+                            </div>
                             <div className={hidecomision}>
                                 <p>Comisión Bancaria:</p>
                             </div>
@@ -470,6 +480,9 @@ function ModalDetalle(props) {
                         <div className="col-6 col-sm text-end align-items-end flex-column ">
                             <div className="container ">
                                 <h4 className="subtotal">${parseInt(listaPrecio.subtotal).toFixed(2)} </h4>
+                            </div>
+                            <div className="container-fluid">
+                                <h4 className="comision-boleto text-end">${parseInt(listaPrecio.comision).toFixed(2)} </h4>
                             </div>
                             <div className="container-fluid">
                                 <h4 className="comision-boleto text-end">${parseInt(listaPrecio.comision).toFixed(2)} </h4>

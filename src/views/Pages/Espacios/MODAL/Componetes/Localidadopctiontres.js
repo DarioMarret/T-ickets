@@ -26,7 +26,7 @@ const TabtresView = (props) => {
         if (localidaname.id != "" && localidaname.nombre != "" && localidaname.cantidad != "" && localidaname.inicio != "") {
             try {
                 setdisable(true)
-                const actualiza = await AptualizarLocalida({ "id": localidaname.id, "espacio": espacioname.nombre, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: localidaname.info } }) })
+                const actualiza = await AptualizarLocalida({ "id": localidaname.id, "espacio":  espacioname.nombre.trim(), "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: localidaname.info } }) })
                 if (actualiza.success) {
                     SetDataloca({
                         typo: '',
@@ -57,11 +57,11 @@ const TabtresView = (props) => {
         }
     }
     async function Guardar() {
-        console.log({ "espacio": espacioname.nombre, "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: [] } }) })
+        console.log({ "espacio":  espacioname.nombre.trim(), "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: [] } }) })
         if (localidaname.nombre != "" && localidaname.description != "" && localidaname.cantidad != "" && localidaname.inicio != "") {
             try {
                 setdisable(true)
-                const guardar = await GuardarLocalidad({ "espacio": espacioname.nombre, "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: [] } }) })
+                const guardar = await GuardarLocalidad({ "espacio":  espacioname.nombre.trim(), "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: [] } }) })
                 if (guardar.success) {
                     SetDataloca({
                         typo: '',

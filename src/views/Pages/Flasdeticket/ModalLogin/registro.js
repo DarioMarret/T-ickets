@@ -70,8 +70,8 @@ const ResgistroView = (prop) => {
                     } else {
                         const datos = await getCedula(e.target.value)
                         console.log(datos)
-                        const { name, direccion } = datos
-                        if (name) {
+                        const { name, direccion,cedula } = datos
+                        if (cedula) {
 
                             seTspine("d-none")
                             setPerson({
@@ -80,6 +80,7 @@ const ResgistroView = (prop) => {
                                 direccion: direccion,
                                 email: ''
                             })
+                            if(name){
                            usedispatch(setToastes({
                                 show: true,
                                 message: "Encontrado: " + name,
@@ -89,7 +90,18 @@ const ResgistroView = (prop) => {
                             DatosUsuariosLocalStorag({
                                 ...usuario,
                                 ...datos
-                            })
+                            })}else{
+                                usedispatch(setToastes({
+                                    show: true,
+                                    message: "Encontrado: " + cedula,
+                                    color: 'bg-success',
+                                    estado: "Hubo una coincidencia, Complete los datos restantes ",
+                                }))
+                                DatosUsuariosLocalStorag({
+                                    ...usuario,
+                                    ...datos
+                                })
+                            }
                         }
                         else {
                             seTspine("d-none")

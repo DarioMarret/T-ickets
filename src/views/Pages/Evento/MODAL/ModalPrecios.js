@@ -12,7 +12,7 @@ const PreciosViews = (prop) => {
     let valores = useSelector(state => state.SuscritorSlice.modal)
     let dispatch = useDispatch()
     const [precios, setPrecios] = useState({
-
+        localidad:'',
         id_precios: '',
         precio_normal: '',
         precio_discapacidad: '',
@@ -56,6 +56,7 @@ const PreciosViews = (prop) => {
     }
     useEffect(() => {
         setPrecios({
+            localidad: valores.estado.localidad,
             id_precios: valores.estado.id,
             precio_normal: valores.estado.precio_normal,
             precio_discapacidad: valores.estado.precio_discapacidad,
@@ -83,6 +84,17 @@ const PreciosViews = (prop) => {
                     <div className="col-12">
                         <h3>Localidad:{valores.estado.localidad} </h3>
                         <div className="row">
+                            <div className="d-flex flex-wrap col-12 col-md-6">
+                                <label className="form-label">Nombre Localidad</label>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text">
+                                            <i className="fa fa-map"></i>
+                                        </span>
+                                    </div>
+                                    <input className="numero form-control " value={precios.localidad} name="localidad" onChange={(e) => handelchangeLocalidad(e.target)} />
+                                </div>
+                            </div>
                             <div className="d-flex flex-wrap col-12 col-md-6">
                                 <label className="form-label">PRECIO NORMAL</label>
                                 <div className="input-group mb-3">

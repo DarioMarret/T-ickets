@@ -199,6 +199,7 @@ export default function StoreTickesViews() {
     }
     const abrir = async (e) => {
         sessionStorage.setItem("estadoevento", e.estado)
+        sessionStorage.setItem("infoevento", JSON.stringify(e))
         let id = sessionStorage.getItem(Eventoid)
         setspinervi("")
         if (id != null && id != e.codigoEvento) {
@@ -247,11 +248,12 @@ export default function StoreTickesViews() {
                     console.log(mapalocal, mapa, localidades)
                     let localidad = JSON.parse(mapa[0].localidad)
                     let path = JSON.parse(mapa[0].pathmap)
-                    console.log(obten.data.filter(e=>e!=undefined))
-                    let newprecios = obten.data.filter(e=>e!=undefined).map((g, i) => {
-                        let color = localidad.filter((f, i) => f.nombre == g.localidad).filter(e=>e!=undefined)
-                        console.log(color)
-                        if (color.length> 0) {
+                    console.log(obten.data.filter(e => e != undefined))
+                    let newprecios = obten.data.filter(e => e != undefined).map((g, i) => {
+                        console.log(obten.data)
+                        let color = localidad.filter((f, i) => f.nombre.trim() == g.localidad.trim()).filter(e => e != undefined)
+                        console.log(localidad)
+                        if (color.length > 0) {
                             g.color = color[0].color
                             g.idcolor = color[0].id
                             g.typo = color[0].tipo
@@ -263,28 +265,31 @@ export default function StoreTickesViews() {
                     }).filter(e => e != undefined)
 
                     let colornuevo = mapalocal.map((L) => {
-                       // console.log(newprecios.filter(e => e != undefined))
-                       
-                        if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {{
-                            L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
-                            L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
-                            L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
-                            L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
-                            L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
-                            L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
-                            L.espacioid = L.id_espacio
-                            return L}
+                        // console.log(newprecios.filter(e => e != undefined))
+
+                        if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
+                            {
+                                L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
+                                L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
+                                L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
+                                L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
+                                L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
+                                L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
+                                L.espacioid = L.id_espacio
+                                return L
+                            }
                         }
                     })
                     //console.log(newprecios)
                     let pathnuevo = path.map((L) => {
-                        if (newprecios.filter(e=>e!=undefined).findIndex(e => e.idcolor == L.id) != -1) {
+                        if (newprecios.filter(e => e != undefined).findIndex(e => e.idcolor == L.id) != -1) {
                             return L
                         }
                     })
                     sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
                         return e
                     }))]))
+                    console.log(colornuevo)
                     usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
                     let nuevosdatos = {
                         precios: newprecios,
@@ -454,18 +459,22 @@ export default function StoreTickesViews() {
                     setMapashow={setMapashow}
                 /> : ''
             }
-            <ModalDetalle
-                intervalo={intervalo}
-                setListarCarritoDetalle={setListarCarritoDetalle}
-                listarCarritoDetalle={listarCarritoDetalle}
-            />
+            {modalshow.modal.nombre == "ModalDetalle" ?
+                <ModalDetalle
+                    intervalo={intervalo}
+                    setListarCarritoDetalle={setListarCarritoDetalle}
+                    listarCarritoDetalle={listarCarritoDetalle}
+                />
+                : ''
+            }
             {modalshow.modal.nombre == "suscritor" || modalshow.modal.nombre == false ? <ListaSuscritor abrir={abrir} /> : ''}
             {
                 modalshow.modal.nombre == "ModalPago" ? <ModalPago intervalo={intervalo} detenervelocidad={detenervelocidad} para={para} setModalPago={setModalPago} modalPago={modalPago} /> : null
             }
-            <ModalEfectivo
-                comprar={para}
-            />
+            {modalshow.modal.nombre == "modalpago" ?
+                <ModalEfectivo
+                    comprar={para}
+                /> : ""}
             <ReporteView
                 setrepShow={""}
                 comprar={para}

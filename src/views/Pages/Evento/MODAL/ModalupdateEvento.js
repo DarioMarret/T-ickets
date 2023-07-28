@@ -28,6 +28,9 @@ const Modalupdate = (props) => {
             imagenConcierto: '',
             mapaConcierto: '',
             id_evento: "",
+            iva:"",
+            tarjeta:"",
+
 
         })
     const [newimagen, setImagen] = useState({
@@ -41,7 +44,6 @@ const Modalupdate = (props) => {
         precio_tarjeta: 0,
         precio_descuento: 0,
         id: '',
-
         habilitar_cortesia: 0,
         comision_boleto: 0,
         habilitar: ""
@@ -78,7 +80,7 @@ const Modalupdate = (props) => {
             precio_descuento: 0,
             habilitar_cortesia: 0,
             comision_boleto: 0,
-            habilitar: "NO"
+            habilitar: "NO",
 
         })
     }
@@ -185,7 +187,9 @@ const Modalupdate = (props) => {
             "cuidadConcert": neweventos.cuidadConcert,
             "descripcionConcierto": neweventos.descripcionConcierto,
             "imagenConcierto": neweventos.imagenConcierto,
-            "mapaConcierto": neweventos.mapaConcierto
+            "mapaConcierto": neweventos.mapaConcierto,
+            "iva": neweventos.iva,
+            "tarjeta": neweventos.tarjeta,
         }
         if (Object.values(neweventos).some(e => e == "")) {
             console.log("aqui llega")
@@ -424,6 +428,7 @@ const Modalupdate = (props) => {
                 "descripcionConcierto": neweventos.descripcionConcierto,
                 "imagenConcierto": ouput,
                 
+                
             }
             console.log(info)
             setTimeout(async function () {
@@ -465,6 +470,8 @@ const Modalupdate = (props) => {
                 imagenConcierto: evento.imagenConcierto ? evento.imagenConcierto : '',
                 mapaConcierto: evento.mapaConcierto ? evento.mapaConcierto : '',
                 id_evento: evento.id,
+                iva:"",
+                tarjeta:""
             })
         //  console.log(evento.LocalodadPrecios)
         setLocalidad(evento.LocalodadPrecios)
@@ -561,6 +568,46 @@ const Modalupdate = (props) => {
                                             onChange={(e) => handelchangeComposeventos(e.target)}
                                             value={neweventos.descripcionConcierto}
                                             id="descripcionConcierto" placeholder="Descriptión del concierto" />
+
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <label className="form-label">Porsentaje Iva </label>
+                                    <div className="input-group mb-3">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text">
+                                                <i className="fa fa-bookmark"></i>
+                                            </span>
+                                        </div>
+                                        <select className="form-control" name="iva" value={neweventos.iva} onChange={(e) => handelchangeComposeventos(e.target)}>
+                                            <option disabled value={""}>Seleccione el porsentaje del iva </option>
+                                            <option value={".00"} >0%</option>
+                                            <option value={".08"} >8%</option>
+                                            <option value={".12"} >12%</option>
+                                            <option value={".14"} >14%</option>
+
+                                        </select>
+                                        
+
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <label className="form-label">Porsentaje Tarjeta </label>
+                                    <div className="input-group mb-3">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text">
+                                                <i className="fa fa-bookmark"></i>
+                                            </span>
+                                        </div>
+                                        <select className="form-control" name="tarjeta" value={neweventos.tarjeta} onChange={(e) => handelchangeComposeventos(e.target)}>
+                                            <option disabled value={""}>Seleccione el porsentaje del tarjeta </option>
+                                            <option value={"1.00"} >0%</option>
+                                            <option value={"1.08"} >8%</option>
+                                            <option value={"1.12"} >12%</option>
+                                            <option value={"1.14"} >14%</option>
+
+                                        </select>
+
 
                                     </div>
                                 </div>
