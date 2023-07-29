@@ -1230,7 +1230,12 @@ export default function DetalleCompraView() {
                                         onClick={() => Generarnew()}
                                     >
                                         <i className="fa fa-info-circle">  </i>Recargar Boleto
-                                    </a> : ""}
+                                    </a> : <a className="btn btn-default btn-sm"
+                                        data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
+                                        onClick={() => Generarnew()}
+                                    >
+                                        <i className="fa fa-info-circle">  </i>Recargar Boleto
+                                    </a>}
                                 {nombres.forma_pago != "Deposito" ? "" : <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>}
 
                                 {boletoscanje() ? "" : <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>}

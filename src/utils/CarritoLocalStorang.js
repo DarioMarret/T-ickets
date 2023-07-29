@@ -331,8 +331,10 @@ export function GetValores() {
             }
         })
 
-        valor = (subtotal + sumcomision) * parseFloat(eventoiva);
-        iva = (subtotal + sumcomision) *0.12;
+        valor = (subtotal + sumcomision) * parseFloat(1.12);
+        let ivados = (eventoiva).replace("1.","0.")
+        iva = (subtotal + sumcomision) *parseFloat(ivados);
+        //console.log("" + ivados)
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
             comision_bancaria: valor.toFixed(2) * 8 / 100,
