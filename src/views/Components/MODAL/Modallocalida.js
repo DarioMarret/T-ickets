@@ -146,6 +146,14 @@ const LocalidadmapViews = (props) => {
         if (TotalSelecion() < 10) {
             setDisable(true)
             usedispatch(setSpinersli({ spiner: false }))
+            console.log({
+                "id": mapath.precio.idcolor,
+                "estado": "reservado",
+                "cedula": user.cedula,
+                "mas": "mas",
+                random: sessionStorage.getItem("random"),
+                "cantidad": 1
+            })
             correlativosadd({
                 "id": mapath.precio.idcolor,
                 "estado": "reservado",
@@ -155,6 +163,7 @@ const LocalidadmapViews = (props) => {
                 "cantidad": 1
             }).then(oupt => {
                 if (oupt.success) {
+                    console.log(oupt)
                     getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
                     setTimeout(function () {

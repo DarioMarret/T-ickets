@@ -445,7 +445,7 @@ function ModalDetalle(props) {
                                         {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ? 
                                         
                                             "Total con Descuento" :"Total"}</td>
-                                    <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (((parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision) + parseFloat(listaPrecio.iva)).toFixed(2))  )}</td>
+                                    <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (((parseFloat(listaPrecio.subtotal)  + parseFloat(listaPrecio.iva) ).toFixed(2))  )}</td>
                                 </tr >
                                 {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ? 
                                 <tr className="d-none">

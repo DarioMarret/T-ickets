@@ -297,6 +297,7 @@ export function GetValores() {
     var comision = 0;
     var sumcomision = 0;
     var descrption = ""
+    let total=0
 
     var iva = 0
     if (tag !== null) {
@@ -318,7 +319,7 @@ export function GetValores() {
             subtotal += valores
             descrption = tienda.nombreConcierto
             sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
-            if (valores >= 101) {
+           /* if (valores >= 101) {
                 comision += tienda.cantidad * 2
             } else if (valores >= 201) {
                 comision += tienda.cantidad * 3
@@ -328,25 +329,28 @@ export function GetValores() {
                 comision += tienda.cantidad * 5
             } else {
                 comision += tienda.cantidad
-            }
+            }*/
         })
-
-        valor = (subtotal + sumcomision) * parseFloat(1.12);
-        let ivados = (eventoiva).replace("1.","0.")
-        iva = (subtotal + sumcomision) *parseFloat(ivados);
-        //console.log("" + ivados)
+        let ivados = (eventoiva).replace("1.", "0.")
+        valor = ivados == 0 ? (subtotal + sumcomision) / 1.12 : (subtotal ) ;
+       // let ivados = (eventoiva).replace("1.","0.")
+        
+        iva = ivados == 0 ? (valor * 0.12) : (subtotal + sumcomision) * parseFloat( ivados)
+        total = (valor + iva)
+        let totav = (parseFloat(valor) + comision) + iva 
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
-            comision_bancaria: valor.toFixed(2) * 8 / 100,
-            subtotal: subtotal.toFixed(2),
+            comision_bancaria: total.toFixed(2) *0.08,
+            subtotal: (parseFloat(valor) ).toFixed(2),
             description: descrption,
             comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
             iva: iva,
-            total: (valor.toFixed(2) * 8 / 100 + valor).toFixed(2),
+            total: (totav * 1.08).toFixed(2),
             desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15).toFixed(2),
             desc: Math.round((subtotal + comision) / 1.15),
         }
+        console.log(precios)
         let preciosdos={
             sumcomision: parseFloat(sumcomision.toFixed(2)),
             comision_bancaria: valor.toFixed(2) * 8 / 100,
@@ -355,7 +359,7 @@ export function GetValores() {
             comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
             iva: iva,
-            total: (valor.toFixed(2) * 8 / 100 + valor).toFixed(2),
+            total: (total.toFixed(2) * 8 / 100 ).toFixed(2),
             desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15).toFixed(2),
             desc: Math.round((subtotal + comision) / 1.15),
         }

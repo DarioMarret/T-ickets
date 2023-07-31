@@ -914,28 +914,26 @@ const IndexFlas = () => {
     })
   }
   function eventocarrusel(e) {
-    let datos = e.split("-")
+    let datos = e
+    console.log(e)
+    let info = JSON.parse(datos)
     userauthi.login ? abrir({
-      "nombreConcierto": datos[2],
-      "codigoEvento": datos[0],
-      "lugarConcierto": datos[1],
+      ...info,
     }) :
       usedispatch(setModal({
         nombre: 'loginpage', estado: {
-          "nombreConcierto": datos[2],
-          "codigoEvento": datos[0],
-          "lugarConcierto": datos[1],
+          ...info,
         }
       }))
     ReactGA.event({
       category: "Comprar",
       action: "carrusel",
-      label: datos[0],
+      label: info.codigoEvento
     })
     return {
-      nombreConcierto: datos[2],
-      codigoEvento: datos[0],
-      lugarConcierto: datos[3]
+      
+      ...info,
+    
     }
   }
   const styles = {

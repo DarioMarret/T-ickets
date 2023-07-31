@@ -201,6 +201,7 @@ export default function StoreTickesViews() {
         sessionStorage.setItem("estadoevento", e.estado)
         sessionStorage.setItem("infoevento", JSON.stringify(e))
         let id = sessionStorage.getItem(Eventoid)
+        sessionStorage.setItem("random", Math.random().toString(36).slice(-10))
         setspinervi("")
         if (id != null && id != e.codigoEvento) {
             usedispatch(setModal({ nombre: '', estado: '' }))
