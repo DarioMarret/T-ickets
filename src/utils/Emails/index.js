@@ -26,7 +26,7 @@ export const Emailcontec = async (parms) => {
     "link": ""
 }
      */
-export const EnviaWhast = async (parms) => {
+export const EnviarmasivoWhastapp = async (parms) => {
 
     let movil = "593" + parms.phone + "@s.whatsapp.net"
     // console.log(parms,movil)
@@ -51,21 +51,33 @@ export const EnviaWhast = async (parms) => {
 
     }
 }
-export const EnviarmasivoWhastapp = async () => {
+export const EnviaWhast = async (parms) => {
     /*
     {
     "user_ids":["593993713942"],
     "message":"Hola buenas tardes",
-     "link":"Hola"
+     "link":"Hola"
     }
     */
     try {
-        let { data } = await axios.post("")
+        let { data } = await axios.post("https://core.xfiv.chat/whatsapp_qr_ticket/api/v1/send",parms)
         return data
     } catch (error) {
         return error
     }
 }
+export function formatearNumero(numero) {
+    const regex = /^\+?593\d{9}$/;
+    let dato = numero.trim()
+    // Comprobar si el número coincide con la expresión regular
+    if (regex.test(dato)) {
+        return dato
+    }
+    else if (dato.length === 9) {
+        return "593" + dato
+    } else return undefined;
+}
+
 export const EnviarDetalleCompras = async () => {
 
     let nombres = getDatosUsuariosLocalStorag()

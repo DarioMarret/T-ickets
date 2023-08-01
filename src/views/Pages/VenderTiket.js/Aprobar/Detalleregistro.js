@@ -180,7 +180,7 @@ export default function DetalleCompraView() {
             "id_ticket_usuarios": row.id
         }).then(ouput => {
             if (ouput.success) {
-                window.open(ouput.link, "_blank");
+                window.open(ouput.link.replace("flash", "api"), "_blank");
 
 
             } else {

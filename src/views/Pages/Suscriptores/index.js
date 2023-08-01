@@ -121,9 +121,13 @@ const SuscritorViews = () => {
   React.useEffect(() => {
     (async () => {
       await nuevoevento()
+      console.log(suscritores)
     })()
+    //data = { suscritores }
+    
   }, [])
   const handleChange = (event, value) => {
+  
   //  console.log(value,event)
     if (value == 1) {
       // usedispatch(setPagination({ inicio: 0, final: 4, page: value }))

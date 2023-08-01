@@ -362,7 +362,7 @@ const SuscritoridView = () => {
     }).then(ouput => {
       console.log(ouput)
       //window.open('Prosjektplan.pdf')
-      window.open(ouput.link, "_blank");
+      window.open(ouput.link.replace("flash", "api"), "_blank");
       console.log(ouput)
     }).catch(eror => {
       console.log(eror)
