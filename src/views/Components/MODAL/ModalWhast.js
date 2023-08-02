@@ -127,6 +127,100 @@ export default function WhastappWiev() {
         })
 
     }
+    async function EnviarmensajeadjuntoMasivo() {
+        let Celular = datos.estado["movil"].replace(/\s+/g, '').length == 10 ? datos.estado["movil"].replace(/\s+/g, '').slice(1) : datos.estado["movil"].replace(/\s+/g, '')
+
+        if (info.mensaje.trim() == "" || info.mensaje==undefined) {
+            usedispacth(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
+            return
+        }
+       
+        if (info.link == undefined || info.link[0]== undefined) {
+            usedispacth(setToastes({ show: true, message: 'Adjunte una imagen ', color: 'bg-danger', estado: 'Datos vacios' }))
+            return
+        }
+        console.log(info.mensaje,info.link[0])
+        setDisanbe(true)
+        const link = await Obtenerlinkimagen(info.link[0])
+        console.log(link)
+        if (link == null) {
+            setDisanbe(false)
+            usedispacth(
+                setToastes({
+                    show: true,
+                    message: 'La imagen no se pudo leer Comuníquese con un accesor al número +593980008000',
+                    color: 'bg-warning',
+                    estado: 'Hubo un error'
+                }))
+            return;
+        }
+        setDisanbe(true)
+        setTimeout(function () {
+            let informa = {
+                "user_id": [Celular],
+                "message": info.mensaje,
+                "link": info.link
+            }
+          
+            EnviaWhast(informa).then(sal => {
+                if (sal.status == 200) {
+                    usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
+                    usedispacth(setModal({ nombre: "", estado: "" }))
+                    setDisanbe(false)
+                } else {
+                    usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
+                    setDisanbe(false)
+                }
+                console.log(sal)
+            }).catch(err => {
+                usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
+                setDisanbe(false)
+                console.log(err)
+            })
+        },
+            1000)
+
+    }
+    function EnviarMendajeMasivo() {
+
+       // let Celular = datos.estado["movil"].replace(/\s+/g, '').length == 10 ? datos.estado["movil"].replace(/\s+/g, '').slice(1) : datos.estado["movil"].replace(/\s+/g, '')
+       /* console.log(formatearNumero(Celular),Celular)
+        if (formatearNumero(Celular)==undefined){
+            usedispacth(setToastes({ show: true, message: 'Formato de celular incorrecto', color: 'bg-danger', estado: 'invalido' }))
+            return 
+        }*/
+        if (info.mensaje.trim() == " ") {
+            usedispacth(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
+            return
+        }
+        //console.log(datos.estado["movil"])
+        let informa = {
+            "user_id": [...datos.estado],
+            "message": info.mensaje
+        }
+        console.log(informa)
+        setDisanbe(true)
+        EnviaWhast(informa).then(sal => {
+            if (sal.status == 200) {
+                usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
+                usedispacth(setModal({ nombre: "", estado: "" }))
+                setDisanbe(false)
+            }else{
+                usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
+                setDisanbe(false)
+            }
+            console.log(sal)
+        }).catch(err => {
+            usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
+            setDisanbe(false)
+            console.log(err)
+        })
+
+    }
+    
+
+
+
     useEffect(() => {
         $(document).ready(function () {
             $(".modal-content").draggable({
@@ -139,7 +233,7 @@ export default function WhastappWiev() {
     return (
         <>
             <Modal
-                show={(datos.nombre == "whastapp")}>
+                show={(datos.nombre == "whastapp"||datos.nombre == "masivos")}>
                 <Modal.Header className="p-3">
                     <h5>Enviar mensaje</h5>
                     <button className="close" onClick={() => usedispacth(setModal({ nombre: "", estado: "" }))}>X</button>
@@ -153,12 +247,12 @@ export default function WhastappWiev() {
                         <div className="invoice-from">
                             <small>Para:</small>
                             <div className="m-t-5 m-b-5">
-                                <strong className="text-inverse">{datos.estado["nombreCompleto"]}</strong>
-                                <small>
+                                <strong className="text-inverse">{datos.nombre == "whastapp"?datos.estado["nombreCompleto"]:"total de números masivos"+datos.estado.length}</strong>
+                              { datos.nombre == "whastapp"? <small>
                                     <br></br>
                                     Celular:{datos.estado["movil"]} <br></br>
 
-                                </small>
+                                </small>:""}
                             </div>
 
                         </div>

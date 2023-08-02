@@ -15,6 +15,7 @@ import ResgistroView from "../Flasdeticket/ModalLogin/registro";
 import { useDispatch } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import ModalTickte from "./ModalSuscritor/agregarTickte";
+import { formatearNumero } from "utils/Emails";
 
 const SuscritorViews = () => {
   let usehistory = useHistory()
@@ -121,13 +122,17 @@ const SuscritorViews = () => {
   React.useEffect(() => {
     (async () => {
       await nuevoevento()
-      console.log(suscritores)
+      
     })()
-    //data = { suscritores }
+    console.log(suscritores.map(suscritores => {return formatearNumero(suscritores.movil)}).filter(suscr=>suscr!=undefined))
+    //data = { suscritores } 
     
   }, [])
+  function enviarMensaje(){
+    let telefonos=suscritores.map(suscritores => {return formatearNumero(suscritores.movil)})
+  }
   const handleChange = (event, value) => {
-  
+ 
   //  console.log(value,event)
     if (value == 1) {
       // usedispatch(setPagination({ inicio: 0, final: 4, page: value }))
@@ -258,6 +263,7 @@ const SuscritorViews = () => {
       <div className="row">
         <div className="col-md-12">
           <button className="btn btn-success" onClick={regsitronew}><i className="mr-2 fa fa-plus"></i> Nuevo Suscritores</button>
+          <button className="btn btn-success mx-1">Enviar masivo desde {paginasu.init} hasta {paginasu.size + paginasu.init} </button>
           <br /><br />
           <div className=" container-fluid m-auto">
             <Pagination
