@@ -9,9 +9,8 @@ import { Bodyhtml, Headerhtml } from "./Emails/cuerpo";
 export const PagoRapido = async (transaccion) => {
     let codigoEvento = sessionStorage.getItem('eventoid')
     let datosPersonal =  getDatosUsuariosLocalStorag().cedula
-    let id = clienteInfo() !=null ? clienteInfo().id: getDatosUsuariosLocalStorag().id
-    let parm = clienteInfo() != null ? clienteInfo().name : getDatosUsuariosLocalStorag().name
-    let email = clienteInfo() != null ? clienteInfo().email : getDatosUsuariosLocalStorag().email
+    let id = clienteInfo() !=null ? clienteInfo().id: 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id    
     let metodo = GetMetodo() == "Transferencia" ? "Deposito" : GetMetodo()
     let tienda= getVerTienda();
    //  si discrimino lo tengo que guardar  let total = GetMetodo() == "Tarjeta" ? parseFloat(GetValores().total) : parseFloat(GetValores().comision) + parseFloat(GetValores().subtotal)
@@ -25,7 +24,8 @@ export const PagoRapido = async (transaccion) => {
     })
     let datos = {
         "cedula": datosPersonal,
-        "id_usuario": parseInt(id),
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
         "forma_pago": metodo,
         "concierto": [...concierto],
         "valores": {
@@ -147,8 +147,15 @@ export const Pagofisico = async () => {
     }
 }
 export const cederboleto = async (ceder) => {
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    let parmspro = {
+        ...ceder,
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
+    }
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login//api/v1/ceder_boleto", ceder, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/ceder_boleto", parmspro, {
 
         }, {
             header: {
@@ -177,10 +184,16 @@ export const GeneraToken = async (parms) => {
     }
 }
 export const ValidarToken = async (parms) => {
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    let parmspro = {
+        "id": parms,
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
+    }
     try {
         let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/confirmarpago", {
-            
-            "id": parms
+            ...parmspro
             }
         , {
             headers: {

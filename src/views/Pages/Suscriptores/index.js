@@ -16,6 +16,8 @@ import { useDispatch } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import ModalTickte from "./ModalSuscritor/agregarTickte";
 import { formatearNumero } from "utils/Emails";
+import WhastappWiev from "views/Components/MODAL/ModalWhast";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 
 const SuscritorViews = () => {
   let usehistory = useHistory()
@@ -117,7 +119,11 @@ const SuscritorViews = () => {
   };
   function regsitronew() {
     //console.log("modal")
-    usedispatch(setModal({ nombre: 'registro', estado: "" }))
+    usedispatch(setModal({ nombre: 'masivos', estado: suscritores.map(suscritores => { return formatearNumero(suscritores.movil) }).filter(suscr => suscr != undefined) }))
+  }
+  function masivosNew() {
+    //console.log("modal")
+    usedispatch(setModal({ nombre: 'masivos', estado: suscritores.map(suscritores => { return formatearNumero(suscritores.movil) }).filter(suscr => suscr != undefined) }))
   }
   React.useEffect(() => {
     (async () => {
@@ -149,9 +155,11 @@ const SuscritorViews = () => {
     return
     // usedispatch(setPagination({ inicio: parseInt(principio) - 4, final: parseInt(principio) / 2 + 4, page: value }))
   };
+  console.log(clienteInfo())
   return (
     <div className="container-fluid">
       {alert}
+      <WhastappWiev />
       <Row>
 
         <Col lg="3" sm="6">
@@ -263,7 +271,7 @@ const SuscritorViews = () => {
       <div className="row">
         <div className="col-md-12">
           <button className="btn btn-success" onClick={regsitronew}><i className="mr-2 fa fa-plus"></i> Nuevo Suscritores</button>
-          <button className="btn btn-success mx-1">Enviar masivo desde {paginasu.init} hasta {paginasu.size + paginasu.init} </button>
+          {clienteInfo().perfil =="admin"?  <button className="btn btn-success mx-1" onClick={masivosNew} >Enviar masivo desde {paginasu.init} hasta {paginasu.size + paginasu.init} </button>:""}
           <br /><br />
           <div className=" container-fluid m-auto">
             <Pagination
