@@ -345,6 +345,7 @@ const IndexFlas = () => {
     }
     sessionStorage.setItem("estadoevento", e.estado)
     sessionStorage.setItem("infoevento", JSON.stringify( e))
+    sessionStorage.removeItem("sillascorre")
     setspinervi("")
     try {
       sessionStorage.setItem("random", Math.random().toString(36).slice(-10))

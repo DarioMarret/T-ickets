@@ -200,6 +200,7 @@ export default function StoreTickesViews() {
     const abrir = async (e) => {
         sessionStorage.setItem("estadoevento", e.estado)
         sessionStorage.setItem("infoevento", JSON.stringify(e))
+        sessionStorage.removeItem("sillascorre")
         let id = sessionStorage.getItem(Eventoid)
         sessionStorage.setItem("random", Math.random().toString(36).slice(-10))
         setspinervi("")

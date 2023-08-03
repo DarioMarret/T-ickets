@@ -22,7 +22,7 @@ export const PagoRapido = async (transaccion) => {
             "id_localidad": e.localidaEspacio["idcolor"],
             "idespaciolocalida": e.localidaEspacio["ideprecio"],
             "cantidad": e.cantidad,
-            "id_sillas":[...asientos]
+            "id_sillas": [...asientos, ...array]
         }
     })
     let datos = {
