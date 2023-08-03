@@ -72,7 +72,7 @@ var routes = [
     path: "/Evento/:id",
     layout: "/admin",
     component: EventoEspecifico,
-    permiso: ["admin",  "vendedores"],
+    permiso: ["admin",  "super_admin"],
   },
   {
     collapse: true,
@@ -80,7 +80,7 @@ var routes = [
     name: "Gestion de Eventos",
     state: "openGestion",
     icon: "nc-icon nc-notes",
-    permiso: ["admin", ],
+    permiso: ["admin","super_admin" ],
     views: [
       {
         path: "/Espacio",
@@ -102,7 +102,7 @@ var routes = [
         name: "Evento",
         mini: "*",
         component: Eventos,
-        permiso: ["admin", ]
+        permiso: ["admin","super_admin" ]
       },
       {
         path: "/Informacion-tributaria",

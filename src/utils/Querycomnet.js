@@ -8,11 +8,13 @@ import { Bodyhtml, Headerhtml } from "./Emails/cuerpo";
 /** reportar Pago */
 export const PagoRapido = async (transaccion) => {
     let codigoEvento = sessionStorage.getItem('eventoid')
+    let asientos = sessionStorage.getItem("asientosList") != null ? JSON.parse(sessionStorage.getItem("asientosList")).map(e=>{ return e.ids}):[]
+    let array = sessionStorage.getItem("sillascorre") != null ? JSON.parse(sessionStorage.getItem("sillascorre")):[]
     let datosPersonal =  getDatosUsuariosLocalStorag().cedula
     let id = clienteInfo() !=null ? clienteInfo().id: 0
     let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id    
     let metodo = GetMetodo() == "Transferencia" ? "Deposito" : GetMetodo()
-    let tienda= getVerTienda();
+    //let tienda= getVerTienda();
    //  si discrimino lo tengo que guardar  let total = GetMetodo() == "Tarjeta" ? parseFloat(GetValores().total) : parseFloat(GetValores().comision) + parseFloat(GetValores().subtotal)
     let concierto = getVerTienda().map((e) => {
         return {
@@ -20,6 +22,7 @@ export const PagoRapido = async (transaccion) => {
             "id_localidad": e.localidaEspacio["idcolor"],
             "idespaciolocalida": e.localidaEspacio["ideprecio"],
             "cantidad": e.cantidad,
+            "id_sillas":[...asientos]
         }
     })
     let datos = {

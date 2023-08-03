@@ -876,7 +876,7 @@ const ModalCarritoView = (prop) => {
 
                         </div>
                     </div>
-                    <div className="d-flex flex-row  align-items-center" >
+                    <div className="d-flex flex-row  align-items-center d-none" >
                         <h4
                             style={{
                                 fontSize: '1.5rem',
@@ -891,7 +891,7 @@ const ModalCarritoView = (prop) => {
                             className="px-1 text-danger total-detalle"> {listaPrecio.subtotal ? "$" + listaPrecio.subtotal : null}</h4>
 
                     </div>
-                    <div className="d-flex  mx-sm-auto   ">
+                    <div className="d-flex   bg-danger  ">
                         <div className=" text-center ">
                             <div className="py-1 d-none" >
                                 <div className="input-group">
@@ -901,7 +901,7 @@ const ModalCarritoView = (prop) => {
                             </div>
 
                             {detalle.length > 0 ?
-                                <button className="btn btn-primary " disabled={check} onClick={handleContinuar}>Continuar</button> :
+                                <button className="btn btn-primary float-right " disabled={check} onClick={handleContinuar}>Continuar </button> :
                                 <button className="btn btn-primary  float-right" disabled={true} >Continuar</button>
                             }
 

@@ -26,6 +26,10 @@ import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import { ticketsboletos } from "utils/columnasub";
 import PiecharViews from "views/Components/Piechar";
 import ExportToExcel from "utils/Exportelemin";
+import { ListarEspacios } from "utils/EspaciosQuery";
+import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
+import { Listarlocalidadid } from "utils/Querypanel";
+import { ListarLocalidad } from "utils/LocalidadesQuery";
 require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
@@ -37,6 +41,7 @@ const EventoEspecifico = () => {
   const [showpr, setShowpr] = useState(false)
   const [precios, SetPrecios] = useState([])
   const [open, setOpen] = useState(true);
+  const [dispoible, setDisponible] = useState([])
   const [valores, setvalores] = useState({
     localidad: '',
     precio_normal: '',
@@ -95,17 +100,49 @@ const EventoEspecifico = () => {
     })
     try {
       const cargar = await ListarEventos()
+      const espacios = await ListarEspacios()
       const precio = await listarpreciolocalidad(id)
+      const dat = await ListarLocalidad("")
+      // ListarLocalidad
       if (cargar.success) {
         let datos = cargar.data.filter((e) => e.codigoEvento == id)
+        let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
+
         let shortDate = new Date(datos[0].fechaConcierto);
         SetEvento({
           ...datos[0], LocalodadPrecios: precio.data,
         })
-         console.log(precio)
+        console.log(precio)
         SetPrecios(precio.data)
+        const disponibles = await listarLocalidadaEspeci(infoes[0].id)
+        let filtros = disponibles.data
+        let listo = dat.data
+        console.log(listo)
+        const estadosPermitidos = new Set(["Pendiente", "Ocupado", "pendiente", "ocupado"]);
+
+        const acumuladorPorNombre = filtros.reduce((acc, elemento) => {
+          const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre //elemento.id_localidades;
+          if (!estadosPermitidos.has(elemento.estado)) {
+            acc[nombre] = (acc[nombre] || 0) + 1;
+          }
+          return acc;
+        }, {});
+        /*
+                const resultado = Object.entries(grupos).map(([estado, elementos]) => {
+                  return { estado, elementos };
+                });
+        */
+
+        console.log(acumuladorPorNombre);
+
+        const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
+          return { nombreMesa, cantidad };
+        });
+        console.log(disponibles, arrayMesas)
+        setDisponible(arrayMesas)
       }
     } catch (error) {
+      console.log(error)
       dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
     }
   }
@@ -302,59 +339,101 @@ const EventoEspecifico = () => {
 
           </div>
           <div className="col-12 col-lg-8 mx-auto my-5" id="evento4">
-            <Accordion defaultActiveKey="0" flush>
-              {precios.length > 0 ?
-                precios.map((e, i) => {
-                  return (
-                    <Accordion.Item eventKey={i} key={i}>
-                      <Accordion.Header>Localidad: {e.localidad}</Accordion.Header>
-                      <Accordion.Body>
-                        <div className="d-flex flex-row  justify-content-between">
-                          <div className="d-flex flex-column">
-                            <div>
-                              <h5 >
-                                Precio normal : {e.precio_normal}
-                              </h5>
-                            </div>
-                            <div>
-                              <h5>
-                                Precio discapacida : {e.precio_discapacidad}
-                              </h5>
-                            </div>
-                            <div>
-                              <h5>
-                                Precio TC/TD : {e.precio_tarjeta}
-                              </h5>
-                            </div>
-                            <div>
-                              <h5>
-                                Precio Descuento : {e.precio_descuento}
-                              </h5>
-                            </div>
-                            <div>
-                              <h5>
-                                Habilitar Cortesia : {e.habilitar_cortesia}
-                              </h5>
-                            </div>
-                          </div>
-                          <div className="d-flex flex-column ">
-                            <button className="btn btn-primary"
-                              onClick={() => Eliminar(e)}
-                            >Editar </button>
-                          </div>
-                        </div>
+            <Accordion>
+              <Accordion.Item eventKey={0} >
+                <Accordion.Header>Precios </Accordion.Header>
+                <Accordion.Body>
+                  <Accordion defaultActiveKey="0" flush>
+                    {precios.length > 0 ?
+                      precios.map((e, i) => {
+                        return (
+                          <Accordion.Item eventKey={i} key={i}>
+                            <Accordion.Header>Localidad: {e.localidad}</Accordion.Header>
+                            <Accordion.Body>
+                              <div className="d-flex flex-row  justify-content-between">
+                                <div className="d-flex flex-column">
+                                  <div>
+                                    <h5 >
+                                      Precio normal : {e.precio_normal}
+                                    </h5>
+                                  </div>
+                                  <div>
+                                    <h5>
+                                      Precio discapacida : {e.precio_discapacidad}
+                                    </h5>
+                                  </div>
+                                  <div>
+                                    <h5>
+                                      Precio TC/TD : {e.precio_tarjeta}
+                                    </h5>
+                                  </div>
+                                  <div>
+                                    <h5>
+                                      Precio Descuento : {e.precio_descuento}
+                                    </h5>
+                                  </div>
+                                  <div>
+                                    <h5>
+                                      Habilitar Cortesia : {e.habilitar_cortesia}
+                                    </h5>
+                                  </div>
+                                </div>
+                                <div className="d-flex flex-column ">
+                                  <button className="btn btn-primary"
+                                    onClick={() => Eliminar(e)}
+                                  >Editar </button>
+                                </div>
+                              </div>
 
 
-                      </Accordion.Body>
-                    </Accordion.Item>
+                            </Accordion.Body>
+                          </Accordion.Item>
 
-                  )
-                })
-                : ''
+                        )
+                      })
+                      : ''
 
-              }
+                    }
+
+                  </Accordion>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey={1} >
+                <Accordion.Header>Disponibles </Accordion.Header>
+                <Accordion.Body>
+                  <div className="row">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th >Localidad</th>
+                          <th >Cantidad</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {dispoible.length > 0 ? dispoible.map(e=>{
+                          return(
+                            <tr>
+                             
+                              <td>{e.nombreMesa}</td>
+                              <td>{e.cantidad}</td>
+                            </tr>
+                          )
+                        }) : <tr>
+
+                          <td></td>
+                          <td></td>
+                        </tr>}
+                        
+                        
+                      </tbody>
+                    </table>
+
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
 
             </Accordion>
+            
           </div>
         </div>
         <div className="row" >
@@ -374,7 +453,7 @@ const EventoEspecifico = () => {
         <MaterialReactTable
           columns={ticketsboletos}
           data={tickes}
-        
+
           muiTableProps={{
             sx: {
               tableLayout: 'flex'
@@ -436,13 +515,13 @@ const EventoEspecifico = () => {
             <Box
               sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
             >
-           {tickes.length>0?   <ExportToExcel apiData={tickes.map(e=>{
-             e.valor.replace(".", ",")
-             return {...e}
-           })}
-                fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY') } label={"Boletos"}
-             />:""}
-              
+              {tickes.length > 0 ? <ExportToExcel apiData={tickes.map(e => {
+                e.valor.replace(".", ",")
+                return { ...e }
+              })}
+                fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY')} label={"Boletos"}
+              /> : ""}
+
               <Button className="d-none"
                 disabled={table.getPrePaginationRowModel().rows.length === 0}
                 onClick={() =>

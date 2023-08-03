@@ -705,7 +705,7 @@ export default function InformeView() {
                         CEDULA: f.cedula,
                         METODO: f.forma_pago,                      
                         MEDIO: f.detalle,
-                        TOTAL: (parseFloat(f.total_pago) / 1.08),
+                        TOTAL: (parseFloat(f.total_pago)),
                         TOTAL_tarjeta: f.total_pago,
                         CREO: f.info_registro.length > 0 ? f.info_registro[0].name : "",
                         TIPO: f.info_registro.length > 0 ? f.info_registro[0].title : "",

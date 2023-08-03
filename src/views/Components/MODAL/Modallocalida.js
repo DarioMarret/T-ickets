@@ -89,7 +89,8 @@ const LocalidadmapViews = (props) => {
         }).then(oupt => {
             console.log(oupt)
             if (oupt.success) {
-
+                let array = oupt.idLocalidadesSillas
+                sessionStorage.setItem("sillascorre", JSON.stringify([...array]))
                 console.log(oupt)
                 getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                 setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
@@ -163,7 +164,9 @@ const LocalidadmapViews = (props) => {
                 "cantidad": 1
             }).then(oupt => {
                 if (oupt.success) {
-                    console.log(oupt)
+                    console.log(oupt) 
+                    let array = oupt.idLocalidadesSillas
+                    sessionStorage.setItem("sillascorre", JSON.stringify([...array]))
                     getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
                     setTimeout(function () {
@@ -690,14 +693,17 @@ const LocalidadmapViews = (props) => {
                     //console.log(nuevoObjeto)
                 }
                 else if (ouput.data.some(e => e.typo == "correlativo")) {
-                    mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e => e.estado.toLowerCase()==null))) : ''
+                    console.log("aqui es ",ouput.data)
+                    mapath.precio.typo == "correlativo" ? 
+                    
+                    usedispatch(filtrarlocali(ouput.data.filter(e => e.estado==null))) : ''
                     //    console.log(ouput.data.filter(e =>e.estado.toLowerCase() == "disponible" || e.estado.toLowerCase()==null).length)
-                    let dispo = ouput.data.filter(e =>e.estado.toLowerCase() == "disponible" || e.estado.toLowerCase()==null).length
+                    let dispo = ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length
                     // console.log(ouput.data.filter(e=>e.cedula!=""))
                     // console.log(ouput.data.filter(e=>e.cedula!=null).length)
                     //console.log(ouput.data)
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e =>e.estado.toLowerCase() == "disponible" || e.estado.toLowerCase()==null).length,
+                        disponibles: ouput.data.filter(e => e.estado.toLowerCase() ==null||e.estado.toLowerCase() == "disponible" ).length,
                         proceso: ouput.data.filter(e => e.estado.toLowerCase() == "reservado" && e.cedula == user.cedula).length,
                         pagados: sleccionlocalidad.pagados,
                         inpagos: sleccionlocalidad.inpagos

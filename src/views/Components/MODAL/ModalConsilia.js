@@ -278,7 +278,7 @@ export default function ConsiliarView() {
           
         }
         if (props.estado.forma_pago == "Deposito" && props.nombre == "consiliacion") {
-            let valor = parseFloat(props.estado.total_pago) / 1.08
+            let valor = parseFloat(props.estado.total_pago) 
             console.log(valor.toFixed(2))
             //console.log(props)
             setDatos({

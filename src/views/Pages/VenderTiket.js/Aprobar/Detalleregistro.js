@@ -1354,6 +1354,10 @@ export default function DetalleCompraView() {
                                                     {nombres.conciliacion.length > 0 ? "Consolidado" : "Sin Consolidar"}
                                                 </span> :
                                                 ""}
+                                                <br></br>
+                                            <span>{nombres.clave_acceso == null ? "NO EMITIDO" : nombres.estado_autorizacion_sri}</span>
+                                            <br></br>
+                                            <span>{nombres.clave_acceso == null ? "" : nombres.clave_acceso}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1372,7 +1376,7 @@ export default function DetalleCompraView() {
 
                                                 {
                                                     nombres.forma_pago == "Deposito" ?
-                                                        <a className=" btn btn-default btn-sm" onClick={ConsolidaBoleto}>
+                                                       nombres.clave_acceso!=null?"": <a className=" btn btn-default btn-sm" onClick={ConsolidaBoleto}>
                                                             <i className="fa fa-credit-card"></i> Aprobar deposito
                                                         </a>
                                                         : ""
@@ -1380,10 +1384,12 @@ export default function DetalleCompraView() {
                                                 <br></br>
                                                 {
                                                     nombres.forma_pago == "Deposito" ?
-                                                        <a className=" btn btn-default btn-sm" onClick={ComprobarBoleto}>
+                                                        nombres.clave_acceso != null ? "" : <a className=" btn btn-default btn-sm" onClick={ComprobarBoleto}>
                                                             <i className="fa fa-credit-card"></i> Cambiar a Comprobar deposito
                                                         </a>
-                                                        : ""
+                                                        : <a className=" btn btn-default btn-sm" >
+                                                            <i className="fa fa-credit-card"></i> Ya se genero autoriazaion
+                                                        </a>
                                                 }
                                                 <br></br>
 
@@ -1598,7 +1604,7 @@ export default function DetalleCompraView() {
                                     {nombres.forma_pago == "Deposito" ? <tr >
                                         <th scope="row"></th>
                                         <td className={" text-end"} >Total</td>
-                                        <td className="text-center">${(parseFloat(nombres.total_pago) / 1.08).toFixed(2)}</td>
+                                        <td className="text-center">${(parseFloat(nombres.total_pago) ).toFixed(2)}</td>
                                     </tr> : ""}
 
                                     {nombres.forma_pago == "Tarjeta" ? <tr>

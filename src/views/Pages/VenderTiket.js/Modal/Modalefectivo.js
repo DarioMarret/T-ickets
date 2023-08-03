@@ -65,7 +65,7 @@ const ModalEfectivo = () => {
     }
 
     function onchange(e) {
-        let total = parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)
+        let total = parseFloat(GetValores().total) 
         let valor = parseFloat(total) - parseFloat(e.value)
         SetSuelto(valor)
     }
@@ -149,7 +149,7 @@ const ModalEfectivo = () => {
                                     <tr>
                                         <th scope="row"></th>
                                         <td className='text-end' >Total:</td>
-                                        <td className='text-center'>${GetMetodo() === "Tarjeta" ? GetValores().total : (parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)).toFixed(2)}</td>
+                                        <td className='text-center'>${GetMetodo() === "Tarjeta" ? GetValores().total : (parseFloat(GetValores().total) ).toFixed(2)}</td>
                                     </tr>
                                     <tr>
                                         <th scope="row"></th>
@@ -181,7 +181,7 @@ const ModalEfectivo = () => {
                                         <h6 >Total <span className=' text-white'>......</span>:  </h6>
                                     </div>
                                     <div className='col-6 d-flex align-content-end' >
-                                        <h6 >  <strong> ${GetMetodo() === "Tarjeta" ? GetValores().total : (parseFloat(GetValores().subtotal) + parseFloat(GetValores().comision)).toFixed(2)}  </strong></h6>
+                                        <h6 >  <strong> ${GetMetodo()!= "Tarjeta" ? GetValores().total : ""}  </strong></h6>
                                     </div>
                                 </div>
                                 <div className="d-flex justify-content-center pt-3  p-1">

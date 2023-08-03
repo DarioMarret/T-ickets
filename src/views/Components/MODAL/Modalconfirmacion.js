@@ -144,12 +144,17 @@ const ModalConfima = (prop) => {
                     return;
                 }
                 setTimeout(async function () {
-                    console.log(link)
+                    console.log({
+                        "cedulaBeneficiario": "0923980742",
+                        "url": link,
+                        "cedula": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
+                        "valor_pagar": (parseFloat(modal.estado.total_pago)).toFixed(2)
+                })
                     OCRApi({
                         "cedulaBeneficiario": "0923980742",
                         "url": link,
                         "cedula": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
-                        "valor_pagar": (parseFloat(modal.estado.total_pago) / 1.08).toFixed(2)
+                        "valor_pagar": (parseFloat(modal.estado.total_pago) ).toFixed(2)
                     }).then(ocroupt => {
                         console.log(ocroupt)
                         if (ocroupt.success) {

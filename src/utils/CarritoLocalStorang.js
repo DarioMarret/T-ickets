@@ -332,12 +332,14 @@ export function GetValores() {
             }*/
         })
         let ivados = (eventoiva).replace("1.", "0.")
-        valor = ivados == 0 ? (subtotal + sumcomision) / 1.12 : (subtotal ) ;
+        valor = ivados == 0 ? (subtotal) / 1.12 : (subtotal ) ;
        // let ivados = (eventoiva).replace("1.","0.")
         
-        iva = ivados == 0 ? (valor * 0.12) : (subtotal + sumcomision) * parseFloat( ivados)
+        iva = ivados == 0 ? (valor * 0.12) : (subtotal) * parseFloat( ivados)
         total = (valor + iva)
-        let totav = (parseFloat(valor) + comision) + iva 
+    
+        let totav = sessionStorage.getItem("Metodo-pago") == "Tarjeta" ? ((parseFloat(valor) + comision) + iva )*1.08:(parseFloat(valor) + comision) + iva 
+
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
             comision_bancaria: total.toFixed(2) *0.08,
@@ -346,23 +348,12 @@ export function GetValores() {
             comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
             iva: iva,
-            total: (totav * 1.08).toFixed(2),
+            total: (totav).toFixed(2),
             desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15).toFixed(2),
             desc: Math.round((subtotal + comision) / 1.15),
         }
-        console.log(precios)
-        let preciosdos={
-            sumcomision: parseFloat(sumcomision.toFixed(2)),
-            comision_bancaria: valor.toFixed(2) * 8 / 100,
-            subtotal: subtotal.toFixed(2),
-            description: descrption,
-            comision: parseFloat(sumcomision).toFixed(2),
-            envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
-            iva: iva,
-            total: (total.toFixed(2) * 8 / 100 ).toFixed(2),
-            desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15).toFixed(2),
-            desc: Math.round((subtotal + comision) / 1.15),
-        }
+        //console.log(precios)
+        
 
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))
         return precios
@@ -389,6 +380,7 @@ export function Limpiarseleccion() {
     sessionStorage.removeItem(seleccionmapa)
     sessionStorage.removeItem(Eventoid)
     sessionStorage.removeItem(concierto)
+    sessionStorage.removeItem("sillascorre")
 }
 export function GetMetodo() {
     let tag = sessionStorage.getItem(Metodos);

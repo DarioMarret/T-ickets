@@ -17,6 +17,7 @@ import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
 import { ListaPreciosEvent } from "utils/EventosQuery";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
@@ -267,13 +268,13 @@ const EventosViews = () => {
                 )}
                 renderRowActions={({ row }) => (
                   <Box sx={{ display: 'flex' }}>
-                    <IconButton
+                    {clienteInfo().perfil?"":<IconButton
                       color="error"
                       aria-label="Bloquear"
                       onClick={() => successAlert({ codigo: row.original.codigoEvento, fecha: row.original.fechaConcierto })}
                     >
                       <Delete />
-                    </IconButton>
+                    </IconButton>}
                     <IconButton
                       color="primary"
                       aria-label="Ver"

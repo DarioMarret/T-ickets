@@ -155,7 +155,7 @@ export const listar_beneficiariosocr = async (parms) => {
 
 export const actualizar_beneficiario = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ocr/api/v1/actualizar_beneficiario", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ocr/api/v1/actualizar_beneficiario", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
