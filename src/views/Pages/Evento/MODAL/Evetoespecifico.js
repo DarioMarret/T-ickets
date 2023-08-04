@@ -107,7 +107,7 @@ const EventoEspecifico = () => {
       const dat = await ListarLocalidad("")
       // ListarLocalidad
       if (cargar.success) {
-        let datos = [...cargar.data.filter((e) => e.codigoEvento == id), ...cargasd.data]
+        let datos = [...cargar.data.filter((e) => e.codigoEvento == id), ...cargasd.data.filter((e) => e.codigoEvento == id)]
         let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
 
         let shortDate = new Date(datos[0].fechaConcierto);
