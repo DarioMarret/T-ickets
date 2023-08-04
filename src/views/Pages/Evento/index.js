@@ -18,6 +18,7 @@ import 'moment-timezone'
 import 'moment/locale/es';
 import { ListaPreciosEvent } from "utils/EventosQuery";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { EventosActivos } from "utils/Querypanel";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
@@ -35,8 +36,9 @@ const EventosViews = () => {
     try {
   
       const lista = await ListarEventos("PROCESO")
+      const lsyt = await EventosActivos("PROCESO")
       if (lista.success) {
-        setEventos([...lista.data.filter((e) => e.codigoEvento != "001")])
+        setEventos([...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data])
       }
     } catch (error) {
       console.log(error)

@@ -155,10 +155,11 @@ export const ListarEventos = async (parms) => {
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     })
+    
     return data;
 }
-export const EventosActivos = async () => {
-    const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/ACTIVO/", {
+export const EventosActivos = async (parms) => {
+    const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/" + parms +"/", {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

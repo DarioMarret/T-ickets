@@ -30,6 +30,7 @@ import { ListarEspacios } from "utils/EspaciosQuery";
 import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
 import { Listarlocalidadid } from "utils/Querypanel";
 import { ListarLocalidad } from "utils/LocalidadesQuery";
+import { EventosActivos } from "utils/Querypanel";
 require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
@@ -99,13 +100,14 @@ const EventoEspecifico = () => {
       LocalodadPrecios: []
     })
     try {
-      const cargar = await ListarEventos()
+      const cargar = await EventosActivos("PROCESO")
+      const cargasd = await EventosActivos("ACTIVO")
       const espacios = await ListarEspacios()
       const precio = await listarpreciolocalidad(id)
       const dat = await ListarLocalidad("")
       // ListarLocalidad
       if (cargar.success) {
-        let datos = cargar.data.filter((e) => e.codigoEvento == id)
+        let datos = [...cargar.data.filter((e) => e.codigoEvento == id), ...cargasd.data]
         let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
 
         let shortDate = new Date(datos[0].fechaConcierto);
