@@ -1,4 +1,6 @@
 import axios from "axios"
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 /**Crear nuevo usuario */
 export const CrearUser = async (parms) => {
     const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/crear_user", parms, {
@@ -24,7 +26,13 @@ export const GetUserList = async () => {
  * @parms campos a editar
  */
 export const EditUser = async (id, parms) => {
-    const { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/actualizar_user/" + id, parms, {
+    let ids = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    let parmspro = {
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(ids),
+    }
+    const { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/actualizar_user/" + id, {...parms,...parmspro}, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -34,7 +42,13 @@ export const EditUser = async (id, parms) => {
 }
 /**Eliminar Usuario por el is */
 export const EliminaUser = async (id) => {
-    const { data } = await axios.delete("https://api.ticketsecuador.ec/ms_login/api/v1/eliminar/" + id, {
+    let ids = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    let parmspro = {
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(ids),
+    }
+    const { data } = await axios.delete("https://api.ticketsecuador.ec/ms_login/api/v1/eliminar/" + id,parmspro,{
         headers: {
             'Content-Type': 'aplication/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

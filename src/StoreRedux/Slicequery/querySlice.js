@@ -13,7 +13,7 @@ export const sawerg = createApi({
 
     endpoints: (builder) => ({
         getEventos: builder.query({
-            query: (parms) => "listareventos/" + parms,
+            query: (parms) => "listareventos/" + parms+"/",
         }),
         getPubicidad: builder.query({
             query: () => "api/v1/listar_publicidad",

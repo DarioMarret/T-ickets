@@ -28,7 +28,7 @@ function LoginPage() {
   const Logincredet = async () => {
     try {
       if (credenciales.email != '' && credenciales.password != '') {
-        const { data, status } = await axios.post("https://api.ticketsecuador.ec/ms_login//api/v1/auth_admin", credenciales, {
+        const { data, status } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/auth_admin", credenciales, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

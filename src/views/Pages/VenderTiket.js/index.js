@@ -174,11 +174,13 @@ export default function StoreTickesViews() {
     }
     const evento = async () => {
         try {
-            const data = await cargarEventoActivo("")
+            const data = await cargarEventoActivo("ACTIVO")
+            const dataS = await cargarEventoActivo("PROCESO")
             //console.log(clienteInfo())
             const filtro = data != null ? clienteInfo().id == "58" ? data.filter(e => e.codigoEvento == "YZPQQ3").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : clienteInfo().id == "59" ? data.filter(e => e.codigoEvento == "SAZKD1").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
+            const filtroS = dataS != null ? clienteInfo().id == "58" ? dataS.filter(e => e.codigoEvento == "YZPQQ3").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : clienteInfo().id == "59" ? dataS.filter(e => e.codigoEvento == "SAZKD1").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : dataS.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
 
-            setEvento(filtro.sort(sorter))
+            setEvento([...filtro, ...filtroS].sort(sorter))
             const susct = await GetSuscritores()
             //console.log(data, susct)
             //  const Datos = await ListarTikets()

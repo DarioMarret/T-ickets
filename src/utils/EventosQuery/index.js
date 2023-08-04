@@ -17,7 +17,7 @@ export const Actualisardescripcionevento = async () => {
 }
 export const ListarEventosFinalizados= async()=>{
     try {
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/", {
+        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/ACTIVO/", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -33,7 +33,7 @@ export const ListarEventosFinalizados= async()=>{
 }
  const ListarEventosLis = async () => {
     try {
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/", {
+        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/ACTIVO/", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

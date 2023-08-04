@@ -22,9 +22,17 @@ export const Listarticketporestado = async (parms) => {
 }
 //Compra/post_api_v1_liverar_asiento
 export const Liverarasiento = async (parms) => {
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    //                                      getDatosUsuariosLocalStorag
+    let parmspro = {
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
+    }
     try {
         const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/liverar_asiento", {
-            "id_ticket_usuarios": parms
+            "id_ticket_usuarios": parms,
+            ...parmspro
         }, {
 
         }, {
@@ -79,8 +87,15 @@ export const GEnerarBoletos = async (parms) => {
 }
 //post_api_v1_selecion_usuario
 export const Seleccionaruserlista = async (parms) => {
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    let parmspro = {
+        ...parms,
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
+    }
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/selecion_usuario", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/selecion_usuario", {...parms,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -94,8 +109,15 @@ export const Seleccionaruserlista = async (parms) => {
 
 //post_api_v1_actualisar_descripcion_evento
 export const actualizarDescription = async (parms) => {
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    //                                      getDatosUsuariosLocalStorag
+    let parmspro = {
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
+    }
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actualisar_descripcion_evento", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actualisar_descripcion_evento", {...parms,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -109,8 +131,15 @@ export const actualizarDescription = async (parms) => {
 
 //post_api_v1_actualisar_precio_localidad
 export const actualizarPrecios = async (parms) => {
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    //                                      getDatosUsuariosLocalStorag
+    let parmspro = {
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
+    }
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actualisar_precio_localidad", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actualisar_precio_localidad", {...parms,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -125,9 +154,16 @@ export const actualizarPrecios = async (parms) => {
 
 ///api/v1/actualisar_descripcion_evento
 export const Putdescriptionevent = async (parms) => {
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    //                                      getDatosUsuariosLocalStorag
+    let parmspro = {
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
+    }
     try {
         let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actualisar_descripcion_evento",
-            parms, {
+            {...parms,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -154,8 +190,15 @@ export const listar_beneficiariosocr = async (parms) => {
 }
 
 export const actualizar_beneficiario = async (parms) => {
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    //                                      getDatosUsuariosLocalStorag
+    let parmspro = {
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
+    }
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ocr/api/v1/actualizar_beneficiario", parms, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ocr/api/v1/actualizar_beneficiario", {...parms,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

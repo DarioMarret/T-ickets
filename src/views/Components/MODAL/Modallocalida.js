@@ -703,7 +703,7 @@ const LocalidadmapViews = (props) => {
                     // console.log(ouput.data.filter(e=>e.cedula!=null).length)
                     //console.log(ouput.data)
                     usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e => e.estado.toLowerCase() ==null||e.estado.toLowerCase() == "disponible" ).length,
+                        disponibles: ouput.data.filter(e => e.estado ==null||e.estado.toLowerCase() == "disponible" ).length,
                         proceso: ouput.data.filter(e => e.estado.toLowerCase() == "reservado" && e.cedula == user.cedula).length,
                         pagados: sleccionlocalidad.pagados,
                         inpagos: sleccionlocalidad.inpagos

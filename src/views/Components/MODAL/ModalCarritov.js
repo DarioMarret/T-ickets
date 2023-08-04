@@ -354,7 +354,8 @@ const ModalCarritoView = (prop) => {
                 return
             }
             else {
-                setSpiner("d-none")
+                setSpiner("")
+                //setSpiner("d-none")
 
 
                 localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {

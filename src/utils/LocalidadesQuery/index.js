@@ -1,8 +1,15 @@
 import axios from "axios";
 
 export const GuardarLocalidad = async (parms) => {
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    //                                      getDatosUsuariosLocalStorag
+    let parmspro = {
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
+    }
     try{
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/guardar_localidad", parms, {
+        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/guardar_localidad", {...parms,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

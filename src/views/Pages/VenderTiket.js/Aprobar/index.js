@@ -863,7 +863,7 @@ export default function AprobarView() {
                                                 <Preview />
                                             </IconButton>
                                         </Tooltip>
-                                        <Tooltip
+                                        {/*<Tooltip
                                             title="Borrar"
                                             placement="top"
                                         >
@@ -872,7 +872,7 @@ export default function AprobarView() {
                                                 color="error">
                                                 <Delete />
                                             </IconButton>
-                                        </Tooltip>
+                                        </Tooltip>*/}
 
                                     </Box>
                                 )}
@@ -912,7 +912,7 @@ export default function AprobarView() {
                                                 <Visibility />
                                             </IconButton>
                                         </Tooltip> : ""}
-                                        <Tooltip
+                                       {/* <Tooltip
                                             title="Borrar"
                                             placement="top"
 
@@ -924,7 +924,7 @@ export default function AprobarView() {
                                             </IconButton>
 
 
-                                        </Tooltip>
+                                        </Tooltip>*/}
                                         <Tooltip
                                             title="Boletos especificos" placement="top"
                                         >
@@ -1022,7 +1022,7 @@ export default function AprobarView() {
                                                 <Visibility />
                                             </IconButton>
                                         </Tooltip>
-                                        <Tooltip
+                                       {/*<Tooltip
                                             title="Borrar"
                                             placement="top"
 
@@ -1034,7 +1034,7 @@ export default function AprobarView() {
                                             </IconButton>
 
 
-                                        </Tooltip>
+                                        </Tooltip>*/}
 
                                     </Box>
                                 )}

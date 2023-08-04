@@ -782,7 +782,8 @@ const SuscritoridView = () => {
                           <Visibility />
                         </IconButton>
                       </Tooltip>
-                      {clienteInfo().perfil == "vendedores" ? "" : <Tooltip
+                      {clienteInfo().perfil == "vendedores"  ? "" :
+                        row.original.estado_pago == "Pendiente" ? <Tooltip
                         title="Eliminar"
                         placement="top"
                       >
@@ -792,7 +793,7 @@ const SuscritoridView = () => {
                         >
                           <Delete />
                         </IconButton>
-                      </Tooltip>}
+                      </Tooltip>:""}
                     </Box>
                   )}
 

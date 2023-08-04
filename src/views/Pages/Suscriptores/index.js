@@ -46,7 +46,7 @@ const SuscritorViews = () => {
   }
   const nuevoevento = async () => {
     try {
-      const data = await GetSuscritores(paginasu.init,paginasu.size)
+      const data = await GetSuscritores(paginasu.init, paginasu.size)
       if (data.users.length > 0) {
         //  console.log(data.users)
         setsuscritor(data.users)
@@ -63,7 +63,7 @@ const SuscritorViews = () => {
       console.log(error)
     }
   }
-  const nuevoeventos = async (ini,fin,paga) => {
+  const nuevoeventos = async (ini, fin, paga) => {
     try {
       const data = await GetSuscritores(ini, fin)
       if (data.users.length > 0) {
@@ -119,7 +119,7 @@ const SuscritorViews = () => {
   };
   function regsitronew() {
     //console.log("modal")
-    usedispatch(setModal({ nombre: 'masivos', estado: suscritores.map(suscritores => { return formatearNumero(suscritores.movil) }).filter(suscr => suscr != undefined) }))
+    usedispatch(setModal({ nombre: 'registro', estado: "" }))
   }
   function masivosNew() {
     //console.log("modal")
@@ -128,29 +128,30 @@ const SuscritorViews = () => {
   React.useEffect(() => {
     (async () => {
       await nuevoevento()
-      
+
     })()
-    console.log(suscritores.map(suscritores => {return formatearNumero(suscritores.movil)}).filter(suscr=>suscr!=undefined))
+    console.log(suscritores.map(suscritores => { return formatearNumero(suscritores.movil) }).filter(suscr => suscr != undefined))
     //data = { suscritores } 
-    
+
   }, [])
-  function enviarMensaje(){
-    let telefonos=suscritores.map(suscritores => {return formatearNumero(suscritores.movil)})
+  function enviarMensaje() {
+    let telefonos = suscritores.map(suscritores => { return formatearNumero(suscritores.movil) })
   }
   const handleChange = (event, value) => {
- 
-  //  console.log(value,event)
+
+    //  console.log(value,event)
     if (value == 1) {
       // usedispatch(setPagination({ inicio: 0, final: 4, page: value }))
-      setpagina({...paginasu,
+      setpagina({
+        ...paginasu,
         page: value
 
       })
       nuevoeventos(ini, 500, value)
       return
     }
-    let principio = (parseInt(value)-1) * 500
-    
+    let principio = (parseInt(value) - 1) * 500
+
     nuevoeventos(principio, 500, value)
     return
     // usedispatch(setPagination({ inicio: parseInt(principio) - 4, final: parseInt(principio) / 2 + 4, page: value }))
@@ -267,11 +268,11 @@ const SuscritorViews = () => {
           </Card>
         </Col>
       </Row>
-     
+
       <div className="row">
         <div className="col-md-12">
           <button className="btn btn-success" onClick={regsitronew}><i className="mr-2 fa fa-plus"></i> Nuevo Suscritores</button>
-          {clienteInfo().perfil =="admin"?  <button className="btn btn-success mx-1" onClick={masivosNew} >Enviar masivo desde {paginasu.init} hasta {paginasu.size + paginasu.init} </button>:""}
+          {clienteInfo().perfil == "admin" ? <button className="btn btn-success mx-1" onClick={masivosNew} >Enviar masivo desde {paginasu.init} hasta {paginasu.size + paginasu.init} </button> : ""}
           <br /><br />
           <div className=" container-fluid m-auto">
             <Pagination

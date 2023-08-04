@@ -291,7 +291,7 @@ var routes = [
     name: "Mensajeria",
     state: "openMensajeria",
     icon: "nc-icon nc-money-coins",
-    permiso: ["admin", ],
+    permiso: ["", ],
     views: [
       {
         path: "/notificacion",
@@ -374,7 +374,7 @@ var routes = [
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["admin", "", ""]
+    permiso: ["", "", ""]
   }
 
 

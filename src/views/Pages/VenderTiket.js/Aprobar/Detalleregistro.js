@@ -1019,7 +1019,7 @@ export default function DetalleCompraView() {
                     text: 'Aceptar',
                     btnClass: 'btn-blue',
                     action: function () {
-                        CanjearBoletoRegistro({ "id_registraCompra": id }).then(ouput => {
+                        CanjearBoletoRegistro({ "id_registraCompra": id, "canjeado": "CANJEADO" }).then(ouput => {
                             if (ouput.success) {
                                 usedispatch(setToastes({
                                     show: true,
@@ -1029,7 +1029,9 @@ export default function DetalleCompraView() {
                                 }))
                                 Listarticketporestado(datos.cedula).then(ouput => {
                                     if (ouput.success) {
+                                        history.goBack()
                                         let boletos = ouput.data.map((e) => {
+
                                             if (cor.find(f => f.nombreConcierto == e.concierto) != undefined) {
                                                 return { ...e }
                                             }

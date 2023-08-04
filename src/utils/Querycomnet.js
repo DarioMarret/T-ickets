@@ -223,6 +223,7 @@ export const generaTiketspdf = async (parms) => {
         return error
     }
 }
+//verificar pago tarjeta 
 export const CambiarPagoTC =async (parms)=>{
     try {
         let {data} = await axios.post("",parms,{

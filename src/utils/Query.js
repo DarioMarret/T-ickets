@@ -1,5 +1,5 @@
 import axios from "axios"
-import { getDatosUsuariosLocalStorag, getCliente } from "./DatosUsuarioLocalStorag"
+import { getDatosUsuariosLocalStorag, getCliente, clienteInfo } from "./DatosUsuarioLocalStorag"
 import { GetValores, GetMetodo, getVerTienda } from "./CarritoLocalStorang"
 import { Host, Whatsappnumero, DatosUsuariocliente, Valores } from "./constantes"
 /**
@@ -24,7 +24,10 @@ export const Authsucrito = async (parms) => {
 export const GenerarLinkPagoMedios = async () => {
     let datosPersonal = getDatosUsuariosLocalStorag()
     let concierto = getVerTienda()
+
     let valores = GetValores()
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
     let metodo = { "forma_paago": GetMetodo() }
     console.log("se esta generando")
     console.log(datosPersonal,
@@ -37,7 +40,8 @@ export const GenerarLinkPagoMedios = async () => {
             datosPersonal,
             valores,
             metodo,
-            concierto
+            concierto, "id_usuario": parseInt(idop),
+            "id_operador": parseInt(id),
         }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -122,11 +126,18 @@ export const ReportarDepositoCompra = async (transaccion) => {
     let concierto = getVerTienda()
     let valores = GetValores()
     let metodo = GetMetodo()
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    //                                      getDatosUsuariosLocalStorag
+    let parmspro = {
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
+    }
     const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/pago_medio", {
         datosPersonal,
         valores,
         metodo,
-        concierto,
+        concierto,...parmspro,
         "transaccion": transaccion
     }, {
         headers: {
@@ -149,12 +160,19 @@ export const ReportarEfectivoCompra = async () => {
     let concierto = getVerTienda()
     let valores = GetValores()
     let metodo = GetMetodo()
+    let id = clienteInfo() != null ? clienteInfo().id : 0
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    //                                      getDatosUsuariosLocalStorag
+    let parmspro = {
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(id),
+    }
     //console.log({datosPersonal,concierto,valores,metodo})
     const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/pago_medio", {
         datosPersonal,
         valores,
         concierto,
-        metodo,
+        metodo,...parmspro
     }, {
         headers: {
             'Content-Type': 'application/json',
