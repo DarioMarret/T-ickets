@@ -365,7 +365,7 @@ const IndexFlas = () => {
         }))
         return
       }
-      if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")) {
+     /* if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")) {
         setspinervi("d-none")
         //SetSeleccion("Tickets")
 
@@ -376,7 +376,7 @@ const IndexFlas = () => {
           estado: "Tienes un reporte por combrobar"
         }))
         return
-      }
+      }*/
       else {
         let id = sessionStorage.getItem(Eventoid)
         if (id != null && id != e.codigoEvento) {
@@ -459,11 +459,11 @@ const IndexFlas = () => {
                 // console.log(seleccionuser)
                 if (seleccionuser.success) {
                   //console.log( registro.data.find(f => f.estado_pago == "Pendiente"))
-                  /*Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
+                  Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
                     console.log(outp)
                   }).catch(error => {
                     console.log(error)
-                  })*/
+                  })
                 }
                 //console.log(registro.data)
                

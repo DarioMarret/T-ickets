@@ -227,7 +227,7 @@ export default function StoreTickesViews() {
                 history.push("/admin/Aprobar/" + getDatosUsuariosLocalStorag().cedula)
                 return
             }
-            if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")) {
+           /* if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")) {
                 setspinervi("d-none")
                 //SetSeleccion("Tickets")
 
@@ -238,7 +238,7 @@ export default function StoreTickesViews() {
                     estado: "El cliente Tienes un reporte por combrobar"
                 }))
                 return
-            }
+            }*/
 
             else {
                 //seleccionuser.data.length > 0  datos= await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
@@ -312,7 +312,7 @@ export default function StoreTickesViews() {
                         usedispatch(cargarsilla(outp))
                         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
                         if (seleccionuser.data.length > 0) {
-                            Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula }).then(outp => {
+                            Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
                                 console.log(outp)
                             }).catch(error => {
                                 console.log(error)
