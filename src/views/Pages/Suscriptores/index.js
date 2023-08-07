@@ -270,7 +270,7 @@ const SuscritorViews = () => {
       </Row>
 
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-md-12 ">
           <button className="btn btn-success" onClick={regsitronew}><i className="mr-2 fa fa-plus"></i> Nuevo Suscritores</button>
           {clienteInfo().perfil == "admin" ? <button className="btn btn-success mx-1" onClick={masivosNew} >Enviar masivo desde {paginasu.init} hasta {paginasu.size + paginasu.init} </button> : ""}
           <br /><br />

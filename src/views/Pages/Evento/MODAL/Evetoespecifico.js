@@ -43,6 +43,7 @@ const EventoEspecifico = () => {
   const [precios, SetPrecios] = useState([])
   const [open, setOpen] = useState(true);
   const [dispoible, setDisponible] = useState([])
+  const [global, setGobal] = useState([])
   const [valores, setvalores] = useState({
     localidad: '',
     precio_normal: '',
@@ -129,18 +130,26 @@ const EventoEspecifico = () => {
           }
           return acc;
         }, {});
-        /*
-                const resultado = Object.entries(grupos).map(([estado, elementos]) => {
-                  return { estado, elementos };
-                });
-        */
+        const acumuladorPorNombres = filtros.reduce((acc, elemento) => {
+          const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre //elemento.id_localidades;
+           acc[nombre] = (acc[nombre] || 0) + 1;
+          
+          return acc;
+        }, {});
+        
+        
+        const resultado = Object.entries(acumuladorPorNombres).map(([nombreMesa, cantidad]) => {
+          return { nombreMesa, cantidad };
+        });
+        
 
-        console.log(acumuladorPorNombre);
+        //console.log(acumuladorPorNombres);
 
         const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
           return { nombreMesa, cantidad };
         });
-        console.log(disponibles, arrayMesas)
+        console.log(resultado, arrayMesas)
+        setGobal(resultado)
         setDisponible(arrayMesas)
       }
     } catch (error) {
@@ -427,6 +436,39 @@ const EventoEspecifico = () => {
                         </tr>}
                         
                         
+                      </tbody>
+                    </table>
+
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey={2} >
+                <Accordion.Header>Total </Accordion.Header>
+                <Accordion.Body>
+                  <div className="row">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th >Localidad</th>
+                          <th >Cantidad</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {global.length > 0 ? global.map(e => {
+                          return (
+                            <tr>
+
+                              <td>{e.nombreMesa}</td>
+                              <td>{e.cantidad}</td>
+                            </tr>
+                          )
+                        }) : <tr>
+
+                          <td></td>
+                          <td></td>
+                        </tr>}
+
+
                       </tbody>
                     </table>
 

@@ -201,7 +201,7 @@ const SuscritoridView = () => {
         let registro = await listarRegistropanel({ "cedula": info.cedula })
         setTimeout(async function () {
           let tiket = await Listarticketporestado("" + info.cedula)
-          console.log(registro)
+          console.log(tiket)
           if (registro.success) {
             if (tiket.success)
               setTikes(registro.data)
@@ -783,17 +783,17 @@ const SuscritoridView = () => {
                         </IconButton>
                       </Tooltip>
                       {clienteInfo().perfil == "vendedores"  ? "" :
-                        row.original.estado_pago == "Pendiente" ? <Tooltip
+                        <Tooltip
                         title="Eliminar"
                         placement="top"
                       >
                         <IconButton
                           color="error"
                           onClick={() => eliminarregistro(row.original)}
-                        >
+                        > 
                           <Delete />
                         </IconButton>
-                      </Tooltip>:""}
+                      </Tooltip>}
                     </Box>
                   )}
 

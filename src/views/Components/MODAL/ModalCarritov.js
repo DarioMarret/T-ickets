@@ -50,6 +50,7 @@ const ModalCarritoView = (prop) => {
         Deposito: "",
         Transferencia: ""
     })
+    const [select, setSelecte] = useState("")
     const [listaPrecio, ListaPrecioset] = useState({
         total: 0,
         subtotal: 0,
@@ -59,11 +60,24 @@ const ModalCarritoView = (prop) => {
     const handleContinuar = () => usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
     const [check, setCheck] = useState(true)
     function handelMetodopago(target, value) {
-        setChecked({
-            [target.name]: value,
-        })
-        sessionStorage.setItem(Metodos, value)
-        setCheck(false)
+        if (target.name == "selctmet") {
+            setSelecte(target.value)
+            let names = target.value.replace("Efectivo-Local", "Fisico")
+            setChecked({
+                [names]: target.value,
+            })
+            sessionStorage.setItem(Metodos, target.value)
+            //setCheck(false)
+
+        } else {
+            setChecked({
+                [target.name]: value,
+            })
+            setSelecte(value)
+            sessionStorage.setItem(Metodos, value)
+            setCheck(false)
+        }
+
     }
     function Eliminar(e) {
         let user = getDatosUsuariosLocalStorag()
@@ -132,8 +146,8 @@ const ModalCarritoView = (prop) => {
             usedispatch(updateboletos({
                 disponibles: sleccionlocalidad.disponibles,
                 proceso: 0,
-                pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado.toLowerCase() == "Pagado" || e.estado!=null && e.estado.toLowerCase() == "reservado").length,
-                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado!=null && e.estado.toLowerCase() == "reservado").length
+                pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado.toLowerCase() == "Pagado" || e.estado != null && e.estado.toLowerCase() == "reservado").length,
+                inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado != null && e.estado.toLowerCase() == "reservado").length
             }))
             /*console.log({
                 disponibles: 0,
@@ -277,8 +291,15 @@ const ModalCarritoView = (prop) => {
 
                 }
                 else if (ouput.data.find(e => e.typo == "correlativo")) {
+                    usedispatch(updateboletos({
+                        disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
+                        proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
+                        pagados: sleccionlocalidad.pagados,
+                        inpagos: sleccionlocalidad.inpagos
+                    }))
                     usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != " " && e.cedula != null)))
-                    ouput.data.filter(e => e.estado==null).length == 0 ?
+                   
+                    ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length == 0 ?
                         usedispatch(setToastes({
                             show: true,
                             message: "Estan en proceso o vendidos",
@@ -288,17 +309,15 @@ const ModalCarritoView = (prop) => {
                     usedispatch(cargarmapa(color))
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                     console.log({
-                        disponibles: ouput.data.filter(e =>e.estado==null || e.estado.toLowerCase() == "disponible").length,
-                        proceso: ouput.data.filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado").length,
+                        disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
+                        proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado").length,
                         inpagos: sleccionlocalidad.inpagos
                     })
-                    usedispatch(updateboletos({
-                        disponibles: ouput.data.filter(e =>e.estado==null || e.estado.toLowerCase() == "disponible").length,
-                        proceso: ouput.data.filter(e =>  e.estado!=null && e.estado.toLowerCase() == "reservado").length,
-                        inpagos: sleccionlocalidad.inpagos
-                    }))
+                    
+                   
                     sessionStorage.seleccionmapa = JSON.stringify(e)
                     abrirlocalidad()
+                    return
                 }
             }
             ).catch(err =>
@@ -308,11 +327,8 @@ const ModalCarritoView = (prop) => {
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
     modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
         E.addEventListener("click", function () {
-            // console.log(sleccionlocalidad)
-            //console.log(clienteInfo())
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
             console.log(this.classList[0], consulta)
-            //clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/02/2023 08:30") < new Date())
             if (consulta.idcolor == 4) {
                 usedispatch(setToastes({
                     show: true,
@@ -355,9 +371,6 @@ const ModalCarritoView = (prop) => {
             }
             else {
                 setSpiner("")
-                //setSpiner("d-none")
-
-
                 localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
                     console.log(consulta.espacio, consulta.idcolor)
                     console.log(ouput)
@@ -416,17 +429,24 @@ const ModalCarritoView = (prop) => {
                         //  usedispatch(filtrarlocali(nuevoObjeto))
                         filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
                         // console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
-                        ouput.data.filter(e =>e.estado==null || e.estado.toLowerCase() == "disponible").length == 0 ? usedispatch(setToastes({
+                        ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length == 0 ? usedispatch(setToastes({
                             show: true,
                             message: "Estan en proceso o vendidos",
                             color: 'bg-primary',
                             estado: "Esta loclidad no tiene disponibles  "
                         })) : ''
                         // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
-                        console.log(ouput.data.filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length)
-                        usedispatch(updateboletos({
-                            disponibles: ouput.data.filter(e =>e.estado==null || e.estado.toLowerCase() == "disponible").length,
-                            proceso: ouput.data.filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
+                        console.log(
+                            {
+                                disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
+                                proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
+                                pagados: sleccionlocalidad.pagados,
+                                inpagos: sleccionlocalidad.inpagos
+                            }   
+                        )
+                            usedispatch(updateboletos({
+                            disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
+                            proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
                             pagados: sleccionlocalidad.pagados,
                             inpagos: sleccionlocalidad.inpagos
                         }))
@@ -498,7 +518,7 @@ const ModalCarritoView = (prop) => {
             </SweetAlert>
         )
     }
-    const clickt=()=>{
+    const clickt = () => {
         usedispatch(setToastes({
             show: true,
             message: "Toca el palco requerido en el mapa",
@@ -717,7 +737,7 @@ const ModalCarritoView = (prop) => {
                                             : ''
                                         }
                                         <div className="d-flex   justify-content-center my-1 row list-group-item" role="rowgroup">
-                                            {sleccionlocalidad.inpagos > 0 ? "Tienes " + sleccionlocalidad.inpagos + " boletos por pagar" : ''}
+                                            {/*sleccionlocalidad.inpagos > 0 ? "Tienes " + sleccionlocalidad.inpagos + " boletos por pagar" : ''*/}
                                         </div>
                                     </div>
                                 </div>
@@ -758,7 +778,7 @@ const ModalCarritoView = (prop) => {
                                             }) :
 
                                             <div className="container-fluid d-flex  py-2  col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
-                                                <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={()=>clickt()}   >
+                                                <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => clickt()}   >
                                                     <div id="" className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: "#c69b30" }}></div>
                                                     <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '160px' }} >
                                                         <span className="" style={{ fontFamily: '', fontSize: '1.11em' }} >Golden x 10 </span>
@@ -793,65 +813,89 @@ const ModalCarritoView = (prop) => {
                 </Modal.Body>
                 <Modal.Footer className="d-flex  p-3 border-top  justify-content-between align-items-center">
                     <div className="d-flex  col-12 justify-content-center my-1" role="rowgroup">
-                        {sleccionlocalidad.proceso > 0 ? "Tienes " + sleccionlocalidad.proceso + " boletos por pagar" : ''}
+                        {/*sleccionlocalidad.proceso > 0 ? "Tienes " + sleccionlocalidad.proceso + " boletos por pagar" : ''*/}
                     </div>
                     <div className="d-flex flex-column">
-                        <div className=""
-                        >
-                            <strong> Método de pago</strong>
+                        {
+                            clienteInfo() != null ?
+                                <div>
+                                    <strong> Método de pago</strong>
+                                    <select className=" form-select form-select-lg" name="selctmet" value={select}
+                                        onChange={(e) => handelMetodopago(e.target)}
+                                    >
+                                        <option value={"Tarjeta"}>
+                                            Tarjeta credito
+                                        </option>
+                                        
+                                        <option value={"Transferencia"}>
+                                            Transferencia
+                                        </option>
+                                        <option value={"Efectivo-Local"}>
+                                            Efectivo-Local
+                                        </option>
+                                    </select>
+                                </div>
+                                :
 
-                            <div className="form-check">
-                                <input className="v-check form-check-input" type="radio"
-                                    checked={checked.Tarjeta == "Tarjeta" ? true : false}
-                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
-                                    name="Tarjeta" id="Tarjeta" />
-                                <label className="form-check-label" htmlFor="Tarjeta">
-                                    Tarjeta-credito
-                                </label>
-                            </div>
-                            {clienteInfo() == null && fechava ?
-                                <div className="form-check">
-                                    <input className="form-check-input" type="radio"
-                                        checked={checked.Transferencia == "Transferencia" ? true : false}
-                                        onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
-                                        name="Transferencia" id="Transferencia" />
-                                    <label className="form-check-label" htmlFor="Transferencia">
-                                        Transferencia
-                                    </label>
-                                </div> : ""}
-                            {
-                                clienteInfo() == null && fechava ? <div className="form-check ">
-                                    <input className="form-check-input" type="radio"
-                                        checked={checked.Deposito == "Deposito" ? true : false}
-                                        onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
-                                        name="Deposito" id="Deposito" />
-                                    <label className="form-check-label" htmlFor="Deposito">
-                                        Deposito
-                                    </label>
-                                </div> : ""}
 
-                            {clienteInfo() == null ? <div className="form-check d-none">
-                                <input className="v-check form-check-input" type="radio"
-                                    name="Efectivo" id="Efectivo"
-                                    checked={checked.Efectivo == "Efectivo" ? true : false}
-                                    onChange={(e) => handelMetodopago(e.target, "Efectivo")}
-                                />
-                                <label className="form-check-label" htmlFor="Efectivo">
-                                    Efectivo
-                                </label>
-                            </div> : ""}
+                                <div className=""
+                                >
+                                    <strong> Método de pago</strong>
 
-                            {clienteInfo() != null ? <div className="form-check">
-                                <input className="v-check form-check-input" type="radio"
-                                    name="Fisico" id="Fisico"
-                                    checked={checked.Fisico == "Efectivo-Local" ? true : false}
-                                    onChange={(e) => handelMetodopago(e.target, "Efectivo-Local")}
-                                />
-                                <label className="form-check-label" htmlFor="Fisico">
-                                    Efectivo punto de pagos
-                                </label>
-                            </div> : ""}
-                            {/*
+                                    <div className="form-check">
+                                        <input className="v-check form-check-input" type="radio"
+                                            checked={checked.Tarjeta == "Tarjeta" ? true : false}
+                                            onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
+                                            name="Tarjeta" id="Tarjeta" />
+                                        <label className="form-check-label" htmlFor="Tarjeta">
+                                            Tarjeta-credito
+                                        </label>
+                                    </div>
+                                    {clienteInfo() == null && fechava ?
+                                        <div className="form-check">
+                                            <input className="form-check-input" type="radio"
+                                                checked={checked.Transferencia == "Transferencia" ? true : false}
+                                                onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
+                                                name="Transferencia" id="Transferencia" />
+                                            <label className="form-check-label" htmlFor="Transferencia">
+                                                Transferencia
+                                            </label>
+                                        </div> : ""}
+
+                                    {
+                                        clienteInfo() == null && fechava ? <div className="form-check ">
+                                            <input className="form-check-input" type="radio"
+                                                checked={checked.Deposito == "Deposito" ? true : false}
+                                                onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
+                                                name="Deposito" id="Deposito" />
+                                            <label className="form-check-label" htmlFor="Deposito">
+                                                Deposito
+                                            </label>
+                                        </div> : ""}
+
+
+                                    {clienteInfo() == null ? <div className="form-check d-none">
+                                        <input className="v-check form-check-input" type="radio"
+                                            name="Efectivo" id="Efectivo"
+                                            checked={checked.Efectivo == "Efectivo" ? true : false}
+                                            onChange={(e) => handelMetodopago(e.target, "Efectivo")}
+                                        />
+                                        <label className="form-check-label" htmlFor="Efectivo">
+                                            Efectivo
+                                        </label>
+                                    </div> : ""}
+
+                                    {clienteInfo() != null ? <div className="form-check">
+                                        <input className="v-check form-check-input" type="radio"
+                                            name="Fisico" id="Fisico"
+                                            checked={checked.Fisico == "Efectivo-Local" ? true : false}
+                                            onChange={(e) => handelMetodopago(e.target, "Efectivo-Local")}
+                                        />
+                                        <label className="form-check-label" htmlFor="Fisico">
+                                            Efectivo punto de pagos
+                                        </label>
+                                    </div> : ""}
+                                    {/*
                                 estdo != "ACTIVO" ? <div className="form-check ">
                                     <input className="form-check-input" type="radio"
                                         checked={checked.Deposito == "Deposito" ? true : false}
@@ -862,20 +906,20 @@ const ModalCarritoView = (prop) => {
                                     </label>
                                 </div> : ""
                             */}
-                            {clienteInfo() != null ?
-                                <div className="form-check">
-                                    <input className="form-check-input" type="radio"
-                                        checked={checked.Transferencia == "Transferencia" ? true : false}
-                                        onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
-                                        name="Transferencia" id="Transferencia" />
-                                    <label className="form-check-label" htmlFor="Transferencia">
-                                        Transferencia
-                                    </label>
-                                </div>
-                                : ""}
+                                    {clienteInfo() != null ?
+                                        <div className="form-check">
+                                            <input className="form-check-input" type="radio"
+                                                checked={checked.Transferencia == "Transferencia" ? true : false}
+                                                onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
+                                                name="Transferencia" id="Transferencia" />
+                                            <label className="form-check-label" htmlFor="Transferencia">
+                                                Transferencia
+                                            </label>
+                                        </div>
+                                        : ""}
 
 
-                        </div>
+                                </div>}
                     </div>
                     <div className="d-flex flex-row  align-items-center d-none" >
                         <h4

@@ -865,7 +865,7 @@ export default function DetalleCompraView() {
                             "cedula": nombres.cedula
                         }).then(ouput => {
                             ouput.success ? history.goBack() : ""
-                            // console.log(ouput)
+                            console.log(ouput)
                         }).catch(errr => {
                             console.log(errr)
                         })

@@ -117,13 +117,16 @@ export const ticketsboletos = [
     {
         accessorKey: "localidad",
         header: "localidad",
-
+        
         size: 50
     },
 
     {
         accessorKey: "id_localidades_items",
         header: "Boleto",
+        Cell: ({ cell }) => (
+            cell.row.original.asientos  !=undefined&&   cell.row.original.asientos.fila != null ? cell.row.original.asientos.silla : cell.row.original.id_localidades_items
+        ),
         size: 30
     },
 

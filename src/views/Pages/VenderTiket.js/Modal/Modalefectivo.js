@@ -27,7 +27,30 @@ const ModalEfectivo = () => {
     const [spiner,setSpiner]= useState(false)
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [alert, setAlert] = useState(null)
+    const [inputValue, setInputValue] = useState('');
+    const [ticktes,setTickets]=useState([])
 
+    const handleInputChange = (event) => {
+        setInputValue(event.target.value);
+       // console.log('Contenido cambiado:', event.target.value);
+    };
+
+    const handleKeyPress = (event) => {
+        let arrgelo = ticktes
+        if (event.key === 'Enter') {
+            if(inputValue!=""){
+                if(arrgelo.includes(inputValue)){
+
+                }else{
+                    arrgelo.push(inputValue)
+                    setInputValue("")
+                    setTickets(arrgelo)
+                }
+            }
+           //console.log('Presionaste la tecla Enter');
+           // Aquí puedes agregar la lógica que deseas realizar cuando se presiona Enter
+        }
+    };
     function borrar() {
         Limpiarseleccion()
         LimpiarLocalStore()
@@ -72,6 +95,7 @@ const ModalEfectivo = () => {
     function creaComprobante() {
         console.log("vender")
         setSpiner(true)
+        sessionStorage.setItem("ticktesfisio",JSON.stringify(ticktes))
         PagoRapido("").then(ouput => {
             console.log(ouput)
             if (ouput.success) {
@@ -100,7 +124,13 @@ const ModalEfectivo = () => {
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
     });
+    function Qitar(e){
+        if(e!=""){
+            let arr = ticktes.filter(f=>f!=e)
+            setTickets(arr)
 
+        }
+    }
     useEffect(() => {
         // detenervelocidad()
     }, [modalshow.nombre == "modalpago" ? true : false])
@@ -110,6 +140,7 @@ const ModalEfectivo = () => {
             <iframe className='d-none' id="main-iframe" ></iframe>
             <Modal
                 show={modalshow.nombre == "modalpago" ? true : false}
+                size='lg'
             >
                 <Modal.Header className='py-3'>
                     <h5><span className="text-danger" ></span> </h5>
@@ -184,6 +215,28 @@ const ModalEfectivo = () => {
                                         <h6 >  <strong> ${GetMetodo()!= "Tarjeta" ? GetValores().total : ""}  </strong></h6>
                                     </div>
                                 </div>
+                                <div className='row '>
+
+                                    <strong>Agregar Boletos</strong>
+                                    <div className='container'>
+                                        <input className='numero form-control'
+                                            type="text"
+                                            value={inputValue}
+                                            onChange={handleInputChange}
+                                            onKeyPress={handleKeyPress}
+                                            placeholder='ticktes'
+                                        >
+                                        </input>
+                                    </div>
+                                    <div className='d-flex flex-row-reverse col-12'
+                                    style={{
+                                        maxHeight:"100px"
+                                    }}
+                                    >
+                                        
+
+                                    </div>
+                                </div>
                                 <div className="d-flex justify-content-center pt-3  p-1">
                                     <button className="btn btn-primary 
                                     col-12"
@@ -195,6 +248,29 @@ const ModalEfectivo = () => {
                         </div>
                     </div>
                 </Modal.Body>
+                <Modal.Footer>
+                    <div className="d-flex flex-wrap" style={{ minHeight: '10px', maxHeight: '150px', overflowY: 'auto', overflowX: 'hide', }}>
+                        {ticktes.length > 0 ?
+                            ticktes.map(e=> {
+                                return (<div>
+                                    <li  className= '  d-flex agregados rounded-5  bg-success justify-content-center align-items-center '
+                                        onClick={() =>  Qitar(e)}
+                                        style={{ height: '30px', width: '120px', margin: '1px' }} >
+                                        <div className={'d-flex   text-white justify-content-center  '} >
+                                            <div className="d-flex  justify-content-center text-center p-2">
+                                                <span className="mx-1" style={{ fontSize: '0.8em' }}>{e}</span>
+                                                
+                                            </div>
+                                        </div>
+                                    </li>
+                                   
+
+                                </div>)
+                            }) : ""
+                        }
+                    </div>
+
+                </Modal.Footer>
             </Modal>
         </>
     )
