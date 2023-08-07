@@ -1227,7 +1227,7 @@ export default function DetalleCompraView() {
                                     : ""}
 
                                 {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                    !boletoscanje() ? "" : <a className="btn btn-default btn-sm"
+                                    boletoscanje() ? "" : <a className="btn btn-default btn-sm"
                                         data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
                                         onClick={() => Generarnew()}
                                     >
