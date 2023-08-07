@@ -1520,10 +1520,7 @@ export default function DetalleCompraView() {
                                         <div className="invoice-date">
                                             <small className="text-inverse">
                                                 {tarjetadata.cardholder}  </small><br></br>
-
                                             <div className=" ">
-
-
                                                 {tarjetadata.transmitter} <br></br>
                                                 <span>
                                                     {tarjetadata.card_brand}
@@ -1532,7 +1529,6 @@ export default function DetalleCompraView() {
                                                 <span >
                                                     {tarjetadata.display_number}
                                                 </span>
-
                                                 <br></br>
                                                 {tarjetadata.created_at ? "Fecha creación:" + tarjetadata.created_at : ""} <br></br>
                                                 {tarjetadata.payment_date ? " Fecha pago:" + tarjetadata.payment_date : ""} <br></br>
@@ -1548,9 +1544,6 @@ export default function DetalleCompraView() {
                             }
                             {nombres.forma_pago == "Tarjeta" ?
                                 <div className="invoice-from text-center">
-
-
-
                                 </div> : ""
                             }
                         </div>
