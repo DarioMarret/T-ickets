@@ -1,5 +1,7 @@
 /*eslint-disable*/
 import React from "react";
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import {
   useTable,
   useFilters,
@@ -45,7 +47,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
 // Our table component
-function Table({ columns, data }) {
+function Tables({ columns, data }) {
   const [numberOfRows, setNumberOfRows] = React.useState({
     value: 10,
     label: "10 rows",
@@ -133,12 +135,13 @@ function Table({ columns, data }) {
         <div className="pagination-top">
          
         </div>
-        <table {...getTableProps()} className="rt-table ">
+        <Table {...getTableProps()} className="">
           <thead className="rt-thead -header  text-center">
+            <Tr>
             {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()} className="rt-tr ">
+              <>
                 {headerGroup.headers.map((column, key) => (
-                  <th
+                  <Th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     className={classnames("rt-th rt-resizable-header text-center", {
                       "-cursor-pointer": headerGroup.headers.length - 1 !== key,
@@ -149,7 +152,10 @@ function Table({ columns, data }) {
                     <div className="rt-resizable-header-content">
                       {column.render("Header")}
                     </div>
-                    {/* Render the columns filter UI */}
+                    {/* Render the columns filter UI
+                    
+                    
+                    */}
                     <div>
                       {headerGroup.headers.length - 1 === key
                         ? null
@@ -157,35 +163,36 @@ function Table({ columns, data }) {
                         ? column.render("Filter")
                         : null}
                     </div>
-                  </th>
+                  </Th>
                 ))}
-              </tr>
+              </>
             ))}
+            </Tr>
           </thead>
-          <tbody {...getTableBodyProps()} className="rt-tbody text-center ">
+          <Tbody {...getTableBodyProps()} className="text-center ">
             {page.map((row, i) => {
               prepareRow(row);
               return (
-                <tr
+                <Tr
                   {...row.getRowProps()}
                   className={classnames(
-                    "rt-tr",
+                    "",
                     { " -odd": i % 2 === 0 },
                     { " -even": i % 2 === 1 }
                   )}
                 >
                   {row.cells.map((cell) => {
                     return (
-                      <td {...cell.getCellProps()} className="rt-td ">
+                      <Td {...cell.getCellProps()} className="rt-td ">
                         {cell.render("Cell")}
-                      </td>
+                      </Td>
                     );
                   })}
-                </tr>
+                </Tr>
               );
             })}
-          </tbody>
-        </table>
+          </Tbody>
+        </Table>
         <div className="pagination-bottom">
         <div className="-pagination">
             <div className="-previous">
@@ -273,4 +280,4 @@ function filterGreaterThan(rows, id, filterValue) {
 // check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = (val) => typeof val !== "number";
 
-export default Table;
+export default Tables;

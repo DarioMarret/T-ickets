@@ -427,7 +427,7 @@ const MesadiesView = ({ text, list }) => {
   }
   function timeposlimites() {
     let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
-    let nuevo = list.filter(es => es.estado == "disponible" || es.estado == "DISPONIBLE").map(({ idsilla, ...e }) => {
+    let nuevo = list.filter(es => es.estado.toLowerCase() == "disponible" ).map(({ idsilla, ...e }) => {
       let id = idsilla
       return {
         id_silla: id,

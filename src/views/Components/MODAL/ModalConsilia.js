@@ -297,8 +297,7 @@ export default function ConsiliarView() {
                 cuenta: "8069530",
                 autorizacion: props.estado.auth_code,
                 lote: props.estado.batch,
-                tarjeta: props.estado.transmitter,
-                
+                tarjeta: props.estado.transmitter,                
                 Valor: valor.toFixed(2)
             })
             // console.log(valor)

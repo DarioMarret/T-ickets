@@ -184,7 +184,7 @@ const ModalEfectivo = () => {
                                     </tr>
                                     <tr>
                                         <th scope="row"></th>
-                                        <td className='text-end' >Suelto:</td>
+                                        <td className='text-end' >Cambio:</td>
                                         <td className='text-center'>${suelto.toFixed(2)}</td>
                                     </tr>
                                 </tbody>

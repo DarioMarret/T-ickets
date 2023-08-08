@@ -51,6 +51,7 @@ import InformeView from "views/Pages/VenderTiket.js/Aprobar/Informeventa";
 import ConsolidacionView from "views/Pages/Consolidados/index.js";
 import FacturaView from "views/Pages/Autorizacion/Facturacion";
 import OCRApiViews from "views/Pages/Autorizacion/OCRapi";
+import ListarLogs from "views/Pages/Infolog";
 
 var routes = [
   {
@@ -352,6 +353,14 @@ var routes = [
         name: "OCR",
         mini: "*",
         component: OCRApiViews,
+        permiso: ["admin", ""]
+      },      
+      {
+        path: "/info",
+        layout: "/admin",
+        name: "info",
+        mini: "*",
+        component: ListarLogs,
         permiso: ["admin", ""]
       },
       {

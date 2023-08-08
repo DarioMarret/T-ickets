@@ -117,76 +117,7 @@ function ReactTables() {
         position: prop[1],
         office: prop[2],
         age: prop[3],
-        actions: (
-          // we've added some custom button actions
-          <div className="actions-right">
-            {/* use this button to add a like kind of action */}
-            <Button
-              onClick={() => {
-                let obj = data.find((o) => o.id === key);
-                alert(
-                  "You've clicked LIKE button on \n{ \nName: " +
-                    obj.name +
-                    ", \nposition: " +
-                    obj.position +
-                    ", \noffice: " +
-                    obj.office +
-                    ", \nage: " +
-                    obj.age +
-                    "\n}."
-                );
-              }}
-              variant="info"
-              size="sm"
-              className="text-info btn-link like"
-            >
-              <i className="fa fa-heart" />
-            </Button>{" "}
-            {/* use this button to add a edit kind of action */}
-            <Button
-              onClick={() => {
-                let obj = data.find((o) => o.id === key);
-                alert(
-                  "You've clicked EDIT button on \n{ \nName: " +
-                    obj.name +
-                    ", \nposition: " +
-                    obj.position +
-                    ", \noffice: " +
-                    obj.office +
-                    ", \nage: " +
-                    obj.age +
-                    "\n}."
-                );
-              }}
-              variant="warning"
-              size="sm"
-              className="text-warning btn-link edit"
-            >
-              <i className="fa fa-edit" />
-            </Button>{" "}
-            {/* use this button to remove the data row */}
-            <Button
-              onClick={() => {
-                var newData = data;
-                newData.find((o, i) => {
-                  if (o.id === key) {
-                    // here you should add some custom code so you can delete the data
-                    // from this component and from your server as well
-                    newData.splice(i, 1);
-                    return true;
-                  }
-                  return false;
-                });
-                setData([...newData]);
-              }}
-              variant="danger"
-              size="sm"
-              className="btn-link remove text-danger"
-            >
-              <i className="fa fa-times" />
-            </Button>{" "}
-          </div>
-        ),
+        
       };
     })
   );

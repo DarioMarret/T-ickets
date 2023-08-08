@@ -81,6 +81,7 @@ export default function TablasViwe({...props}){
                                     {props.showDatos()}
                                 </tbody>
                             </table>
+                            
               </div>
 
                   
