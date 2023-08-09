@@ -42,6 +42,7 @@ const LocalidadesagreViews = (props) => {
     console.log({ "id": parms })
     try {
       const accion = await EliminarLocalidad(parms)
+      console.log(accion)
       const { success } = accion
       if (success) {
         await ObtenLocalidad()

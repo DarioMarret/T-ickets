@@ -105,6 +105,7 @@ const ModalNewEvento = (props) => {
                 }
                 const evento = await GuardarEvento(defauldata)
                 console.log(defauldata)
+                console.log(evento)
                 if (evento.success) {
                     console.log(evento)
                     ListaPrecios()
@@ -439,10 +440,10 @@ const ModalNewEvento = (props) => {
                                         </div>
                                         <select className="form-control" name="iva" value={neweventos.iva} onChange={(e) => handelchangeComposeventos(e.target)}>
                                             <option disabled value={""}>Seleccione el porsentaje del iva </option>
-                                            <option value={"00"} >0%</option>
-                                            <option value={"08"} >8%</option>
-                                            <option value={"12"} >12%</option>
-                                            <option value={"14"} >14%</option>
+                                            <option value={"1.00"} >0%</option>
+                                            <option value={"1.08"} >8%</option>
+                                            <option value={"1.12"} >12%</option>
+                                            <option value={"1.14"} >14%</option>
 
                                         </select>
 
@@ -459,10 +460,10 @@ const ModalNewEvento = (props) => {
                                         </div>
                                         <select className="form-control" name="tarjeta" value={neweventos.tarjeta} onChange={(e) => handelchangeComposeventos(e.target)}>
                                             <option disabled value={""}>Seleccione el porsentaje del tarjeta </option>
-                                            <option value={"00"} >0%</option>
-                                            <option value={"08"} >8%</option>
-                                            <option value={"12"} >12%</option>
-                                            <option value={"14"} >14%</option>
+                                            <option value={"1.00"} >0%</option>
+                                            <option value={"1.08"} >8%</option>
+                                            <option value={"1.12"} >12%</option>
+                                            <option value={"1.14"} >14%</option>
 
                                         </select>
 

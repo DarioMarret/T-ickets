@@ -40,7 +40,7 @@ export const PagoRapido = async (transaccion) => {
             "description": GetValores().description,
             "iva":GetValores().iva
         },
-        "boleto_fisico": [...tiktefisic],
+        "codigo_boletos": [...tiktefisic],
         "idfactura": "",
         "transaccion": transaccion
     }

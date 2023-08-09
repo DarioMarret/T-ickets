@@ -1,4 +1,6 @@
 import axios from "axios";
+import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 
 export const GuardarLocalidad = async (parms) => {
     let id = clienteInfo() != null ? clienteInfo().id : 0

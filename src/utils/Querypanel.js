@@ -111,7 +111,7 @@ export const EliminarLocalidad = async (parms) => {
         "id_operador": parseInt(ids),
     }
 
-    const { data } = await axios.delete("https://api.ticketsecuador.ec/ms_login/api/v1/eliminar_localidad/" + {...parms,...parmspro}, {
+    const { data } = await axios.delete("https://api.ticketsecuador.ec/ms_login/api/v1/eliminar_localidad/" + parms ,{...parmspro}, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
