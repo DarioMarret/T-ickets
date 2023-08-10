@@ -40,8 +40,15 @@ export const ListarEventosFinalizados= async()=>{
 
             }
         })
-        // console.log(data)
-        return data.data
+         const  datas = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/PROCESO/", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+
+            }
+        })
+         console.log(datas.data.data)
+        return [...data.data, ...datas.data.data]
     } catch (error) {
         return error;
 

@@ -167,7 +167,7 @@ export default function WhastappWiev() {
             }
           
             EnviaWhast(informa).then(sal => {
-                if (sal.status == "PENDING") {
+                if (sal.status) {
                     usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
                     usedispacth(setModal({ nombre: "", estado: "" }))
                     setDisanbe(false)
@@ -204,8 +204,9 @@ export default function WhastappWiev() {
         }
         console.log(informa)
         setDisanbe(true)
+      
         EnviaWhast(informa).then(sal => {
-            if (sal.status == "PENDING") {
+            if (sal.status) {
                 usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
                 usedispacth(setModal({ nombre: "", estado: "" }))
                 setDisanbe(false)

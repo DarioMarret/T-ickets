@@ -118,16 +118,18 @@ const EventoEspecifico = () => {
      
         SetPrecios(precio.data)
         const disponibles = await listarLocalidadaEspeci(infoes[0].id)
-        let filtros = disponibles.data
-        let listo = dat.data
-        console.log("precio",filtros)
-        console.log("ListarLocalidad",listo,"")
+        let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id)
+        //console.log(disponibles.data.find(e => e.id_espacio == infoes[0].id))
+        let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
+       // console.log("precio",filtros)
+       // console.log("ListarLocalidad",listo,"")
         const estadosPermitidos = new Set(["Pendiente", "Ocupado", "pendiente", "ocupado"]);
-
+        //console.log()
         const acumuladorPorNombre = filtros.reduce((acc, elemento) => {
+       //  console.log(elemento.id_localidades)
           //console.log(listo.filter(e => e.id == elemento.id_localidades))
           const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre //elemento.id_localidades;
-          console.log(nombre)
+          //console.log(nombre)
           if (!estadosPermitidos.has(elemento.estado)) {
             acc[nombre] = (acc[nombre] || 0) + 1;
           }
