@@ -97,6 +97,7 @@ export default function ListaSuscritor(prop) {
             }))
             return
         }
+        console.log(Object.values(datosend).every(e => e), datosend)
         if (Object.values(datosend).every(e => e)) {
 
 
@@ -118,11 +119,12 @@ export default function ListaSuscritor(prop) {
                     successAlert()
                 }
                 else {
+                    console.log(registro)
                     usedispatch(setToastes({
                         show: true,
-                        message: "Atentos",
+                        message: "ya existe una cuienta con este correo registro",
                         color: 'bg-warning',
-                        estado: "hubo un error",
+                        estado: "hubo un error ",
                     }))
                 }
 
