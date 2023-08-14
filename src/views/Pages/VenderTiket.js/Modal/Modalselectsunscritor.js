@@ -127,7 +127,6 @@ export default function ListaSuscritor(prop) {
                         estado: "hubo un error ",
                     }))
                 }
-
             } catch (error) {
                 usedispatch(setToastes({
                     show: true,

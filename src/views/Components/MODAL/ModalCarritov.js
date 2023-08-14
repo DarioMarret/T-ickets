@@ -825,19 +825,19 @@ const ModalCarritoView = (prop) => {
                                     >
                                         <option value={"Tarjeta"}>
                                             Tarjeta credito
-                                        </option>
-                                        
+                                        </option>                                        
                                         <option value={"Transferencia"}>
                                             Transferencia
                                         </option>
                                         <option value={"Efectivo-Local"}>
                                             Efectivo-Local
                                         </option>
+                                        <option className="d-none" value={"Tarjeta-Local"}>
+                                            Tarjeta-Local
+                                        </option>
                                     </select>
                                 </div>
                                 :
-
-
                                 <div className=""
                                 >
                                     <strong> Método de pago</strong>

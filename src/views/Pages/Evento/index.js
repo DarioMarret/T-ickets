@@ -37,8 +37,9 @@ const EventosViews = () => {
   
       const lista = await ListarEventos("PROCESO")
       const lsyt = await EventosActivos("PROCESO")
+      const cancelados = await EventosActivos("CANCELADO")
       if (lista.success) {
-        setEventos([...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data])
+        setEventos([...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data])
       }
     } catch (error) {
       console.log(error)

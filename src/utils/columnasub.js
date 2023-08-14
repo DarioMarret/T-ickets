@@ -243,6 +243,14 @@ export const listaRegistro = [
         ),
         size: 50
     },
+    {
+        accessorKey: "concierto",
+        header: "Evento",
+        Cell: ({ cell }) => (            
+            cell.row.original.info_concierto.length > 0 ? cell.row.original.info_concierto[0].nombreConcierto :""
+        ),
+        size: 70
+    },
 
 
     {
@@ -369,7 +377,7 @@ export const listaRegistrototal = [
         accessorKey: "info_registro",
         header: "Tipo",
         Cell: ({ cell }) => (
-            cell.row.original.info_registro.length == 0 ? "" : cell.row.original.info_registro[0].title + " " + cell.row.original.info_registro.length == 0 ? "" :  cell.row.original.info_registro[0].name
+            cell.row.original.info_registro.length == 0 ? "Id operador:" + cell.row.original.id_usuario_registro_pago : cell.row.original.info_registro[0].title + " " + cell.row.original.info_registro.length == 0 ? "" :  cell.row.original.info_registro[0].name
         ),
     }, 
     {

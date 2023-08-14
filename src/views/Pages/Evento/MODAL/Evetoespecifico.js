@@ -103,12 +103,13 @@ const EventoEspecifico = () => {
     try {
       const cargar = await EventosActivos("PROCESO")
       const cargasd = await EventosActivos("ACTIVO")
+      const cancelados = await EventosActivos("CANCELADO")
       const espacios = await ListarEspacios()
       const precio = await listarpreciolocalidad(id)
       const dat = await ListarLocalidad("")
       // ListarLocalidad
       if (cargar.success) {
-        let datos = [...cargar.data.filter((e) => e.codigoEvento == id), ...cargasd.data.filter((e) => e.codigoEvento == id)]
+        let datos = [...cargar.data.filter((e) => e.codigoEvento == id), ...cargasd.data.filter((e) => e.codigoEvento == id),...cancelados.data.filter((e) => e.codigoEvento == id)]
         let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
         console.log(infoes)
         let shortDate = new Date(datos[0].fechaConcierto);
