@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
+import { logs } from "utils/userQuery";
 import ReactTables from "views/Tables/ReactTables";
 
 
@@ -41,6 +42,12 @@ export default function ListarLogs() {
         } catch (error) { }
     }
     useEffect(()=>{
+        logs().then(salida=>{
+            setLogst(salida.data)
+            console.log(salida)
+        }).catch(err=>{
+            console.log(err)
+        })
 
     },[])
    return (<>
