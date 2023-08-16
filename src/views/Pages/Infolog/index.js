@@ -35,7 +35,7 @@ export default function ListarLogs() {
                         <td className="text-xs text-center">{item.usuario}</td>
                         <td className="text-xs text-center ">{item.operador}</td>
                         <td className="text-xs text-center ">{item.accion}</td>
-                        <td className="text-xs text-center">{moment(item.fecha).format('L')}</td>
+                        <td className="text-xs text-center">{item.fecha}</td>
                     </tr>
                 )
             });

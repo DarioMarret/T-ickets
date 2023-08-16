@@ -36,6 +36,7 @@ import { Triangle } from "react-loader-spinner";
 import Inframene from "views/Components/IFrame/index.js";
 import { setToastes } from "StoreRedux/Slice/ToastSlice.js";
 import axios from "axios";
+import { listarRegistropanel } from "utils/pagos/Queripagos.js";
 let { cedericon } = bancos
 function Example() {
     let usedispatch = useDispatch()
@@ -325,16 +326,33 @@ function Example() {
     }
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
-        Listarticketporestado(user.cedula).then(ouput => {
-            //console.log(ouput)
-            if (!ouput.success) {
-                return
-            }
-            console.log(ouput)
-            setTikes(ouput.data)
-            //console.log(ouput.data.filter(e => e.canje != "CANJEADO"))
-        }).catch(err => console.log(err))
+        listarRegistropanel({ "cedula": user.cedula }).then(
+            salida=> {
+                if (!salida.success) {
+                    return
+                }
+               // console.log(e.data[0])
+               // setDatos(e.data)
+                Listarticketporestado(user.cedula).then(ouput => {
+                    //console.log(ouput)
+                    if (!ouput.success) {
+                        return
+                    }
+                    console.log(ouput.data)
+                    let tikets= ouput.data.map(e=>{
 
+                        e.estado = salida.data.filter(f => f.id == e.id_registraCompra).length > 0 ? salida.data.filter(f => f.id == e.id_registraCompra)[0].estado_pago :"NO Registro"
+                        return { ...e}
+                    })
+                    setTikes(tikets)
+                    //console.log(ouput.data.filter(e => e.canje != "CANJEADO"))
+                }).catch(err => console.log(err))
+
+            }
+        ).catch(err =>
+            console.log(err)
+        )
+        
         Listarfaci({ "cedula": user.cedula }).then(ouput => {
             if (ouput.success) {
                 console.log(ouput)
@@ -344,6 +362,7 @@ function Example() {
         }).catch(err => {
             console.log(err)
         })
+       
     }, [])
     function suma(item) {
         let tikets = tiketslist.find(e => e.codigoEvento == item).detalle.map((f) => { return parseFloat(f.valor) })
@@ -355,6 +374,7 @@ function Example() {
         }
 
     }
+     console.log(tiketslist)
     return (
         <>
             {alert}

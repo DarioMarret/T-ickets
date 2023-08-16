@@ -199,7 +199,8 @@ const ModalLogin = (props) => {
                     >Crear Cuenta</a>
                   </div>
                   <div className="col-12 ">
-                    <a className=" nav-link btn btn-link" href="#" onClick={RecuperarContraseña} > Olvide mi contraseña </a>
+                    {/**onClick={RecuperarContraseña} */}
+                    <a className=" nav-link btn btn-link" href="https://n9.cl/nsj8f" target="_blank"  > Olvide mi contraseña </a>
 
                   </div>
                 </div>
