@@ -1338,7 +1338,7 @@ export default function DetalleCompraView() {
                                                 <div className="invoice-from">
                                                     <small>De</small>
                                                     <div className="m-t-5 m-b-5">
-                                                        <strong className="text-inverse">COMNET - SPEED - T-ICKETS  (COMPUTECNICSNET S.A)</strong>
+                                                        <strong className="text-inverse">COMNET - SPEED - T-ICKETS  (TICKETSECUADORS.A)</strong>
                                                         <small>
                                                             <br></br>
                                                             Edificio City Officce Oficina 301 <br></br>

@@ -391,11 +391,11 @@ const Reporte = (props) => {
                     <img src={GUAYAQUIL} className="img-fluid" onClick={() => Confirmar("guayaquil")} />
                   </div>
 
-                  <div className='pagos'>
+                  <div className='pagos d-none'>
                     <img src={pacifico} className="img-fluid" onClick={() => Confirmar("pacifico")} />
                   </div>
 
-                  <div className='py-2 pagos'>
+                  <div className='py-2 pagos d-none'>
                     <img src={produbanco} className="img-fluid" onClick={() => Confirmar("produbanco")} />
                   </div>
 
@@ -461,22 +461,22 @@ const Reporte = (props) => {
                 <div className='d-flex px-0'>
 
                   <h5 className="modal-title pb-3 px-0 text-center " style={{ fontSize: '0.7em' }}>Para completar la compra, deberá transferir el valor total <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> ${GetMetodo() != "Tarjeta" ? parseFloat(GetValores().total).toFixed(2) : (GetValores().total).toFixed(2)} </strong> </span> <span className=' border rounded-5 p-1 text-danger'> <strong className='mx-2' style={{ fontSize: '1.5em' }}> {intervalo}</strong> </span> Minutos a nombre de:
-                    <strong>COMPUTECNICSNET S.A.</strong> RUC No. <strong>0992782129001</strong>, a una de las siguientes cuentas:</h5>
+                    <strong>TICKETSECUADOR S.A.</strong> RUC No. <strong>0993377293001</strong>, a una de las siguientes cuentas:</h5>
 
                 </div>
                 <div className='d-fex border rounded-5' style={{ width: '90%' }}>
                   <div className='d-flex flex-column  '>
                     <div className='  m-2'>
-                      <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO DE GUAYAQUIL: 18018624 </h4>
+                      <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO DE GUAYAQUIL: 18057352 </h4>
                     </div>
 
                     <div className='m-2' >
-                      <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO PICHINCHA: 2100106995 </h4>
+                      <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO PICHINCHA: 2100298093 </h4>
                     </div>
-                    <div className='m-2' >
+                    <div className='m-2 d-none' >
                       <h4 style={{ fontSize: '0.7em' }}> CUENTA CORRIENTE BANCO PACIFICO: 8069530 </h4>
                     </div>
-                    <div className='m-2'>
+                    <div className='m-2 d-none'>
                       <h4 style={{ fontSize: '0.7em' }}>
                         CUENTA CORRIENTE BANCO PRODUBANCO: 1058194005
                       </h4>

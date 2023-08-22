@@ -59,7 +59,7 @@ export default function ConsiliarView() {
             setDatos({
                 ...datos,
                 banco: "Pichincha",
-                cuenta: "2100106995"
+                cuenta: "2100298093"
             })
         }
         if (e.name == "banco" && e.value == "Pacifico") {
@@ -82,25 +82,25 @@ export default function ConsiliarView() {
             setDatos({
                 ...datos,
                 banco: "Guayaquil",
-                cuenta: "18018624"
+                cuenta: "18057352"
             })
         }
         if (e.name == "banco" && e.value =="PACIFICARD" ){
             setDatos({
                 ...datos,               
-                cuenta: "18018624"
+                cuenta: "18057352"
             })
         }
         if (e.name == "banco" && e.value == "DINERS CLUB") {
             setDatos({
                 ...datos,
-                cuenta: "18018624"
+                cuenta: "18057352"
             })
         }
         if (e.name == "banco" && e.value == "BANCO GUAYAQUIL") {
             setDatos({
                 ...datos,
-                cuenta: "18018624"
+                cuenta: "18057352"
             })
         }
         if (e.name == "banco" && e.value == "Efectivo") {
@@ -394,10 +394,10 @@ export default function ConsiliarView() {
                                     id="cuenta"
                                 >
                                     <option value={""} disabled></option>
-                                    <option value={"2100106995"}>2100106995</option>
+                                    <option value={"2100298093"}>2100298093</option>
                                     <option value={"8069530"}>8069530</option>
                                     <option value={"1058194005"}>1058194005</option>
-                                    <option value={"18018624"}>18018624</option>
+                                    <option value={"18057352"}>18057352</option>
                                 <option value={"efectivo"}>efectivo</option>
                                 </select>
                         </div>

@@ -203,7 +203,7 @@ export default function Footer(props) {
                             </a> </span>
                     </div>
                     <div className="col-12 text-center px-1 d-flex  flex-column pb-2" style={{ minWidth: '120px', maxWidth: '' }} >
-                        <span className=" text-white" style={{ fontSize: '0.65em', }} >COPYRIGHT © 2022 TICKETS ECUADOR S.A | COMPUTECNICSNET S.A | TODOS LOS DERECHOS RESERVADOS </span>
+                        <span className=" text-white" style={{ fontSize: '0.65em', }} >COPYRIGHT © 2022 TICKETS ECUADOR S.A | TICKETSECUADORS.A | TODOS LOS DERECHOS RESERVADOS </span>
                     </div>
 
 

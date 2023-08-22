@@ -33,10 +33,10 @@ export default function ReporteView(prop) {
         "guayaquil": "#d2006e"
     }
     const cuentas = {
-        "pichincha": "2100106995",
+        "pichincha": "2100298093",
         "pacifico": "8069530",
         "produbanco": "1058194005",
-        "guayaquil": "18018624"
+        "guayaquil": "18057352"
     }
     const nuevo = () => {
         html2canvas(document.querySelector("#COMPROBANTE")).then(canvas => {
@@ -182,10 +182,10 @@ export default function ReporteView(prop) {
                             <div className=" container pt-2">
                                 <h5><strong> Tipo de cuenta: </strong><span> Corriente</span></h5>
                                 <h5><strong> Número de cuenta: </strong> <span>{cuentas[modalshow.nombre]}  </span>  </h5>
-                                <h5><strong> Titular de la Cuenta : </strong> <span>COMPUTECNICSNET S.A.</span> </h5>
-                                <h5><strong> RUC: </strong> <span>0992782129001</span></h5>
-                                <h5><strong> Email: </strong> <span>recaudacion@t-ickets.com</span> </h5>
-                                <h5><strong> Whastapp: </strong> <span>0969200247</span> </h5>
+                                <h5><strong> Titular de la Cuenta : </strong> <span>TICKETSECUADORS.A.</span> </h5>
+                                <h5><strong> RUC: </strong> <span>0993377293001</span></h5>
+                                <h5><strong> Email: </strong> <span>ventas@t-ickets.com</span> </h5>
+                                <h5><strong> Whastapp: </strong> <span>0980008000</span> </h5>
 
                                 <h5><strong> Valor a Dépositar </strong>{"$" + (parseFloat(modalshow.estado.subtotal) + parseFloat(modalshow.estado.comision)).toFixed(2)}</h5>
                             </div>
