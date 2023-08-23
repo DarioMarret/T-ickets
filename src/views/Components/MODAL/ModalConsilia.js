@@ -245,6 +245,7 @@ export default function ConsiliarView() {
             usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
+        /*
         else {
             setEstatus(true)
             //console.log(parms, ...datos)
@@ -258,7 +259,7 @@ export default function ConsiliarView() {
                 setEstatus(false)
                 console.log(err)
             })
-        }
+        }*/
     }
 
     useEffect(() => {
@@ -271,6 +272,7 @@ export default function ConsiliarView() {
                 banco: props.estado.banco,
                 cuenta: props.estado.cuenta,
                 metodo: "",
+                id:props.estado.id,
               
                 Valor: parseFloat(valor.toFixed(2))
 
@@ -310,6 +312,7 @@ export default function ConsiliarView() {
                   autorizacion: props.estado.auth_code,
                  lote: props.estado.batch,
                   tarjeta: props.estado.transmitter,
+                  id: props.estado.id,
                   banco: props.estado.banco,                 
                   ...datos,
                   Valor: valor.toFixed(2)
