@@ -5,12 +5,12 @@ export const agregarNoticia = async (datos) => {
     let ids = clienteInfo() != null ? clienteInfo().id : 0
     let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
     let parmspro = {
-        ...parms,
+        ...datos,
         "id_usuario": parseInt(idop),
         "id_operador": parseInt(ids),
     }
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/crear_publicidad", datos, {
+        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/crear_publicidad", parmspro, {
             header: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

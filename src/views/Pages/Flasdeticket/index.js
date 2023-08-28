@@ -945,7 +945,7 @@ const IndexFlas = () => {
   const [visible, setVisible] = React.useState(false)
   function abrirNuevoTab() {
     // Abrir nuevo tab
-    var win = window.open('https://urbanfest.com.ec/', '_blank');
+    var win = window.open('https://wa.me/09800080000/?text=%27Quiero%20informaci%C3%B3n%27', '_blank');
     // Cambiar el foco al nuevo tab (punto opcional)
    win.focus();
   }

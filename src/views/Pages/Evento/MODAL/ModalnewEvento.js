@@ -77,6 +77,7 @@ const ModalNewEvento = (props) => {
         setinput(true)
         try {
             console.log(neweventos)
+           // if(true) return
             //const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)codigo: neweventos.autorizacion == "preventa" ? 'preventa' : neweventos.codigo,
             const conci = await Obtenerlinkimagen(neweventos.imagenConcierto)
 
@@ -146,7 +147,7 @@ const ModalNewEvento = (props) => {
             idUsuario: '' + user.id,
             mapaConcierto: '',
             iva: "",
-            tarjeta: "",
+            comisionBoleto: "",
         })
     function handelchangeComposeventos(e) {
         let img = new Image()
@@ -458,7 +459,7 @@ const ModalNewEvento = (props) => {
                                                 <i className="fa fa-bookmark"></i>
                                             </span>
                                         </div>
-                                        <select className="form-control" name="tarjeta" value={neweventos.tarjeta} onChange={(e) => handelchangeComposeventos(e.target)}>
+                                        <select className="form-control" name="comisionBoleto" value={neweventos.comisionBoleto} onChange={(e) => handelchangeComposeventos(e.target)}>
                                             <option disabled value={""}>Seleccione el porsentaje del tarjeta </option>
                                             <option value={"1.00"} >0%</option>
                                             <option value={"1.08"} >8%</option>
@@ -613,13 +614,13 @@ const ModalNewEvento = (props) => {
                     {!selectLocalidad.length > 0 && Object.values(neweventos).every(e => e) ?
                         <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button> :
                         ""}
-                    {selectLocalidad.length > 0 && selectLocalidad.length == localidadPreci.length && !inputdisable ?
+                    {selectLocalidad.length > 0 && selectLocalidad.length == localidadPreci.length && inputdisable ?
                         <button disabled={!Object.values(neweventos).every(e => e)}
                             onClick={gaurdaPrueba}
                             className="btn btn-primary close-modal float-rigth">Grabar</button>
                         :
                         ""}
-                    {inputdisable ?
+                    {!inputdisable ?
                         <button className="btn btn-primary" disabled={true} >
                             <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                             Guardando</button>

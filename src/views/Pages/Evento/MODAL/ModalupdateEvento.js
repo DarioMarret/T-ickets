@@ -187,11 +187,9 @@ const Modalupdate = (props) => {
             "cuidadConcert": neweventos.cuidadConcert,
             "descripcionConcierto": neweventos.descripcionConcierto,
             "imagenConcierto": neweventos.imagenConcierto,
-            "mapaConcierto": neweventos.mapaConcierto,
-            "iva": neweventos.iva,
-            "tarjeta": neweventos.tarjeta,
+            "mapaConcierto": neweventos.mapaConcierto
         }
-        if (Object.values(neweventos).some(e => e == "")) {
+        if (Object.values(info).some(e => e == "")) {
             console.log("aqui llega")
             return
         }
