@@ -221,8 +221,8 @@ export default function InformeView() {
                     return
                 }
                 if (e.data) {
-                    let newdatos = e.data.map(row => {
-                        let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
+                    let newdatos = e.data.filter(fe => moment(fe.fechaCreacion).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && fe.fechaCreacion <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).map(row => {
+                    let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
                         //    console.log(nombre)
                         let valor = row.info_concierto.map(e => {
                             return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)

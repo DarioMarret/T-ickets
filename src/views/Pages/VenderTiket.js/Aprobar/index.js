@@ -178,10 +178,7 @@ export default function AprobarView() {
                 let datos = arrprueb.map(f => {
                     return [f.localidad, f.concierto, parseInt(f.cantidad)]
                 })
-                /*setDatas([
-                    ["Localida", "evento", "ganancias"],
-                    ...datos
-                ])*/
+           
 
                 let nuevo = arrprueb.map(f => {
                     return [f.localidad, f.concierto, parseInt(f.cantidad), parseInt(f.precio)]
@@ -220,7 +217,18 @@ export default function AprobarView() {
                 return
             }
             if (e.data) {
-                let newdatos = e.data.map(row => {
+                const nombresUnicos = new Set();
+
+                // Itera a través del JSON y agrega los nombres al conjunto
+                e.data.filter(fe => moment(fe.fechaCreacion).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && fe.fechaCreacion <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).forEach(item => {
+                    nombresUnicos.add(item.info_concierto[0].nombreConcierto);
+                });
+
+                // Convierte el conjunto de nombres únicos en un array
+                const nombresArray = Array.from(nombresUnicos);
+                setDatas(nombresArray)
+                console.log(nombresArray);
+                let newdatos = e.data.filter(fe => moment(fe.fechaCreacion).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && fe.fechaCreacion<=states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-") ).map(row => {
                     let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
                     //    console.log(nombre)
                     let valor = row.info_concierto.map(e => {
@@ -242,53 +250,20 @@ export default function AprobarView() {
                 let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
                 let arayReallocalidad = []
                 let arrprueb = []
-                /* newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                     elm.info_concierto.map(loc => {
-                         // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                         arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto, codigo: elm.codigoEvento })
-                     })
-                 })*/
-                newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                          newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     elm.ticket_usuarios.map(item => {
-                        // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                        /*if (arrprueb.length == 0) {
-                            arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
-                        }*/
-                        //  console.log(item, arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
-                      //  console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
-                        if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
-                            //        console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
-                            // let cantidad = arrprueb.filter(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)[0].cantidad + 1
-                            let index = arrprueb.findIndex(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
+                                  if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
+                                 let index = arrprueb.findIndex(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
                             let cantidad = arrprueb[index].cantidad + 1
                             arrprueb[index].cantidad = cantidad
                         } else {
                             arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
                         }
                     })
-                })
-               
-                let arrayIndividual = []
-                // console.log(consulat)
-                console.log("aqui",arayReallocalidad, arrprueb)
-                /* arayReallocalidad.forEach(elm => {
-                     if (arrayIndividual.some(e => e.id == elm.id)) {
-                         let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                         let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
-                         arrayIndividual[dat].cantidad = tota
-                     }
-                     else {
-                         arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
-                     }
-                 })*/
-                //console.log(arrayIndividual)
+                })               
                 let datos = arrprueb.map(f => {
                     return [f.localidad, f.concierto, parseInt(f.cantidad)]
                 })
-                /*setDatas([
-                    ["Localida", "evento", "ganancias"],
-                    ...datos
-                ])*/
 
                 let nuevo = arrprueb.map(f => {
                     return [f.localidad, f.concierto, parseInt(f.cantidad), parseInt(f.precio)]
@@ -297,10 +272,7 @@ export default function AprobarView() {
                     ["Localidad", "evento", "cantidad", "precio"],
                     ...nuevo
                 ])
-                usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
-                
-                // setTikes(order)
-             
+                usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))           
                 usedispatch(setlisticket({ ticket: false }))
                 return
             }
@@ -326,39 +298,29 @@ export default function AprobarView() {
     }
     
   
-    //const [datas1, setDatas] = useState([])
+    const [datas1, setDatas] = useState([])
     const [dtos, setDts] = useState([])
     const sorter = (a, b) => new Date(a.fechaCreacion) < new Date(b.fechaCreacion) ? 1 : -1;
     function rango(item) {
         if (item.selection.endDate == item.selection.startDate) {
             usedispatch(setCompras({ compras: compras }))
-
-            // setDatas([...labelne])
-
             usedispatch(setLabels({ labels: [...labelne] }))
-            //    setState([item.selection])
             usedispatch(setFecha({ fecha: [item.selection] }))
             console.log(moment(item.selection.startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format())
-
             return
         }
         else {
             usedispatch(setlisticket({ ticket: true }))
             usedispatch(setFecha({ fecha: [item.selection] }))
-           
         }
         console.log(item)
     }
     const ListaPrecio = async () => {
         const info = await ListaPreciosEvent();
-
         return info
     }
-
-
     const Deliminarregistro = (parms) => {
-        console.log(parms.id)
-
+       // console.log(parms.id)
         $.confirm({
             title: 'Deseas eliminar Este registro de compra ',
             content: '',
@@ -451,10 +413,7 @@ export default function AprobarView() {
                                     let datos = arrprueb.map(f => {
                                         return [f.localidad, f.concierto, parseInt(f.cantidad)]
                                     })
-                                    /*setDatas([
-                                        ["Localida", "evento", "ganancias"],
-                                        ...datos
-                                    ])*/
+                                   
 
                                     let nuevo = arrprueb.map(f => {
                                         return [f.localidad, f.concierto, parseInt(f.cantidad), parseInt(f.precio)]
@@ -489,53 +448,22 @@ export default function AprobarView() {
         // setValue(newValue);
         // console.log(newValue)
     };
-    function Aprobarvarios() {
-        usedispatch(setModal({ nombre: "Aprobar", estado: data }))
-    }
-    function Aprobar(e) {
-        //console.log(e)
-        usedispatch(setModal({ nombre: "boleto", estado: e }))
-
-    }
     function abrirModal(e) {
         usedispatch(setModal({ nombre: "confirmar", estado: e }))
     }
-    function detalle(e) {
-        //  console.log(e)
+    function detalle(e) {    
         sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
         history.push("/admin/Reporte/" + e.id)
     }
     function detalledos(e) {
         history.push("/admin/Aprobar/" + e.cedula)
     }
-    const csvOptions = {
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true,
-        useBom: true,
-        filename: 'Ticket vendidos',
-        useKeysAsHeaders: false,
-    };
 
     const options = {
         title: "Ventas Globales Aprobadas",
         pieHole: 0.4,
         is3D: false,
     };
-    const selectionRange = {
-        startDate: new Date(),
-        endDate: new Date(),
-        key: 'selection'
-    }
-    const [state, setState] = useState([
-        {
-            startDate: new Date(),
-            endDate: new Date(),
-            key: 'selection'
-        }
-    ]);
-
 
     const [locale, setLocale] = React.useState('es');
     const label = {
@@ -550,7 +478,6 @@ export default function AprobarView() {
         0: "Días hasta hoy",
         1: "Días a partir de hoy"
     }
-    let [fitro, setFiltro] = useState("")
     defaultInputRanges.map((e, i) => {
         e.label = labels[i]
         return { ...e }
@@ -734,10 +661,10 @@ export default function AprobarView() {
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
                     >
-                        <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length + " Cons " + tiketslist.filter(e => e.estado_pago == "Pagado").filter(f => f.consolidado == "Consolidado").length} {...a11yProps(0)} />
-                        <Tab label={"Reportes Pendientes: " + tiketslist.filter(e => e.estado_pago == "Pendiente").length}{...a11yProps(1)} />
-                        <Tab label={"Reportes expirado: " + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(2)} />
-                        <Tab label={"Reportes comprobar: " + tiketslist.filter(e => e.estado_pago == "Comprobar").length} {...a11yProps(3)} />
+                        <Tab label={"Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length + " Cons " + tiketslist.filter(e => e.estado_pago == "Pagado").filter(f => f.consolidado == "Consolidado").length} {...a11yProps(0)} />
+                        <Tab label={"Pendientes: " + tiketslist.filter(e => e.estado_pago == "Pendiente").length}{...a11yProps(1)} />
+                        <Tab label={"Expirado: " + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(2)} />
+                        <Tab label={"Comprobar: " + tiketslist.filter(e => e.estado_pago == "Comprobar").length} {...a11yProps(3)} />
                     </Tabs>
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">

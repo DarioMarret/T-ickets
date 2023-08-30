@@ -14,6 +14,7 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { listaRegistrosuscri } from "utils/columnasub";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
+import moment from "moment";
 export default function ListaderegistroView(props) {
     let { cedula } = props
     let usedispatch = useDispatch()
@@ -21,14 +22,24 @@ export default function ListaderegistroView(props) {
     const [datos, setDatos] = useState([])
     const [alert, setAlert] = useState(null);
     useEffect(() => {
+        const fechaActual = new Date();
+
+        // Calcula la fecha límite (hoy menos dos días)
+        const fechaLimite = new Date();
+        fechaLimite.setDate(fechaActual.getDate() - 1);
         let user = getDatosUsuariosLocalStorag()
+        console.log(fechaLimite)
         listarRegistropanel({ "cedula": user.cedula }).then(
             e => {
                 if (!e.success) {
                     return
                 }
-                console.log(e.data[0])
-                setDatos(e.data)
+                //console.log(e.data[0])
+                /*e.data.forEach(element => {
+                    console.log(moment(element.fechaCreacion).format() +"aqui"+ moment( fechaLimite).format())
+                    console.log(moment(element.fechaCreacion).format()> moment(fechaLimite).format())
+                })*/
+                setDatos(e.data.filter(e => moment(e.fechaCreacion).format() > moment(fechaLimite).format())) 
             }
         ).catch(err =>
             console.log(err)
