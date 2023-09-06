@@ -505,7 +505,7 @@ export default function StoreTickesViews() {
                         <Card.Body>
                             <Row>
                                 <Col xs="5">
-                                    <div className="icon-big text-center icon-warning">
+                                    <div className="icon-big text-center ">
                                         <i className="nc-icon nc-chart text-warning"></i>
                                     </div>
                                 </Col>
@@ -531,7 +531,7 @@ export default function StoreTickesViews() {
                         <Card.Body>
                             <Row>
                                 <Col xs="5">
-                                    <div className="icon-big text-center icon-warning">
+                                    <div className="icon-big text-center ">
                                         <i className="nc-icon nc-light-3 text-success"></i>
                                     </div>
                                 </Col>
@@ -557,7 +557,7 @@ export default function StoreTickesViews() {
                         <Card.Body>
                             <Row>
                                 <Col xs="5">
-                                    <div className="icon-big text-center icon-warning">
+                                    <div className="icon-big text-center ">
                                         <i className="nc-icon nc-vector text-danger"></i>
                                     </div>
                                 </Col>
@@ -583,7 +583,7 @@ export default function StoreTickesViews() {
                         <Card.Body >
                             <Row>
                                 <Col xs="5">
-                                    <div className="icon-big text-center icon-warning">
+                                    <div className="icon-big text-center ">
                                         <i className="nc-icon nc-single-02 text-primary"></i>
                                     </div>
                                 </Col>

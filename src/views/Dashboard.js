@@ -143,7 +143,7 @@ function Dashboard() {
               <Card.Body>
                 <Row>
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="icon-big text-center ">
                       <i className="nc-icon nc-chart text-warning"></i>
                     </div>
                   </Col>
@@ -169,7 +169,7 @@ function Dashboard() {
               <Card.Body>
                 <Row>
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="icon-big text-center ">
                       <i className="nc-icon nc-light-3 text-success"></i>
                     </div>
                   </Col>
@@ -195,7 +195,7 @@ function Dashboard() {
               <Card.Body>
                 <Row>
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="icon-big text-center ">
                       <i className="nc-icon nc-vector text-danger"></i>
                     </div>
                   </Col>
@@ -221,7 +221,7 @@ function Dashboard() {
               <Card.Body>
                 <Row>
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="icon-big text-center ">
                       <i className="nc-icon nc-favourite-28 text-primary"></i>
                     </div>
                   </Col>

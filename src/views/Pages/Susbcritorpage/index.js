@@ -46,7 +46,7 @@ function Dashboardsub() {
               <Card.Body>
                 <Row className="">
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="icon-big text-center ">
                       <i className="nc-icon nc-headphones-2 text-warning"></i>
                     </div>
                   </Col>
@@ -72,7 +72,7 @@ function Dashboardsub() {
               <Card.Body>
                 <Row>
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="icon-big text-center ">
                       <i className="nc-icon nc-cart-simple text-success"></i>
                     </div>
                   </Col>
@@ -105,7 +105,7 @@ function Dashboardsub() {
                     </div>
                   </Col>
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning">
+                    <div className="icon-big text-center ">
                       <i className="nc-icon nc-satisfied text-danger"></i>
                     </div>
                   </Col>

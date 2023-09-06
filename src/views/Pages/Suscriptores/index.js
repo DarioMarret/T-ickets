@@ -168,7 +168,7 @@ const SuscritorViews = () => {
             <Card.Body>
               <Row>
                 <Col xs="5">
-                  <div className="icon-big text-center icon-warning">
+                  <div className="icon-big text-center ">
                     <i className="nc-icon nc-light-3 text-success"></i>
                   </div>
                 </Col>
@@ -194,7 +194,7 @@ const SuscritorViews = () => {
             <Card.Body>
               <Row>
                 <Col xs="5">
-                  <div className="icon-big text-center icon-warning">
+                  <div className="icon-big text-center ">
                     <i className="nc-icon nc-vector text-danger"></i>
                   </div>
                 </Col>
@@ -220,7 +220,7 @@ const SuscritorViews = () => {
             <Card.Body>
               <Row>
                 <Col xs="5">
-                  <div className="icon-big text-center icon-warning">
+                  <div className="icon-big text-center ">
                     <i className="nc-icon nc-favourite-28 text-primary"></i>
                   </div>
                 </Col>
@@ -246,7 +246,7 @@ const SuscritorViews = () => {
             <Card.Body>
               <Row>
                 <Col xs="4">
-                  <div className="icon-big text-center icon-warning">
+                  <div className="icon-big text-center ">
                     <i className=" fa fa-users text-warning"></i>
                   </div>
                 </Col>

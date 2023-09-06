@@ -204,6 +204,8 @@ const SuscritoridView = () => {
           console.log(tiket)
           if (registro.success) {
             if (tiket.success)
+            console.log(registro)
+
               setTikes(registro.data)
             setBoletos(tiket.data)
           }
@@ -554,7 +556,7 @@ const SuscritoridView = () => {
       console.log(ouput)
       if (ouput.success) {
       let datos = ouput.data
-      //console.log(datos)
+      console.log(datos)
       ouput.success ? setTikes(datos) : ""}
     })
     Listarfaci({ "cedula": info.cedula }).then(ouput => {
@@ -659,7 +661,7 @@ const SuscritoridView = () => {
                   <Col xs="7">
                     <div className="numbers">
                       <p className="card-category">Compras</p>
-                      <Card.Title as="h4">${tiketslist.map(e => { return parseFloat(e.Valortotal) }).reduce((a, b) => a + b, 0)}</Card.Title>
+                      <Card.Title as="h4">${boletos.length == 0 ? "0" : boletos.map(e => { return parseFloat(e.valor) }).reduce((a, b) => a + b, 0)}</Card.Title>
                     </div>
                   </Col>
                 </Row>

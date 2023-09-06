@@ -65,6 +65,15 @@
 *::after {
   box-sizing: border-box;
 }
+.card-stats .icon-big {
+  font-size: 3em;
+  min-height: 64px;
+}
+
+.card-stats .icon-big i {
+  font-weight: bold;
+  line-height: 59px;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   :root {
