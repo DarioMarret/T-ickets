@@ -121,7 +121,7 @@ var routes = [
         component: AutorizacionView,
         permiso: ["admin", ]
       }
-      , {
+     /* , {
         path: "/Diseñar-Ticket",
         layout: "/admin",
         name: "Diseñar Ticket",
@@ -136,7 +136,7 @@ var routes = [
         mini: "*",
         component: DiseñoViwpdf,
         permiso: ["admin", ]
-      }
+      }*/
     ]
   },
 
