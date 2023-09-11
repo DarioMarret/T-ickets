@@ -68,6 +68,8 @@ import ReactGA from 'react-ga';
 import { eliminarRegistro } from "utils/pagos/Queripagos.js";
 import addNotification from "react-push-notification";
 import { Home } from "@mui/icons-material";
+import { bancos } from "utils/Imgenesutils";
+let { atencion } = bancos
 import Noticiamodal from "views/Components/MODAL/Modalnoti.js";
 import { useGetEventosQuery } from "StoreRedux/Slicequery/querySlice.js";
 import { useGetPubicidadQuery } from "StoreRedux/Slicequery/querySlice.js";
@@ -336,6 +338,66 @@ const IndexFlas = () => {
         }
       }) : abrir(e)
   }
+  const succesAlert = (e, i) => {
+    setAlert(
+      <SweetAlert
+        style={{ display: "block", marginTop: "-100px" }}
+        closeOnClickOutside={false}
+        showCancel={false}
+        showConfirm={false}
+        closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+      >
+        <div>
+          <div className='col-12 pb-3'>
+            <img src={atencion} className="img-fluid"
+              style={{
+                height: 100
+              }}>
+
+            </img>
+          </div>
+          <h5 >Tienes reportes Pendientes </h5>
+          Deseas Reportar el pago o eliminar el reporte y continuar con la compra
+          <div className='d-flex  justify-content-around py-4'>
+            <div>
+              <button className='btn btn-outline-danger  rounded-6' >
+
+                <span style={{
+                  fontWeight: "bold"
+                }} onClick={continuar} >Reportar pago</span>
+              </button>
+            </div>
+            <div>
+              <button className=' btn btn-warning rounded-5'
+                onClick={() => eliminaCompra(i, e)}
+              >
+                <span style={{
+                  fontWeight: "bold"
+                }}> Eliminar y continuar </span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </SweetAlert>
+    )
+  }
+  function continuar() {
+    setspinervi("d-none")
+    SetSeleccion("Tickets")
+    setAlert(null)
+    usedispatch(setToastes({
+      show: true,
+      message: "Antes de realizar una compra nueva debes de completar el proceso de pago del anterior",
+      color: 'bg-warning',
+      estado: "Tienes una compra pendiente "
+    }))
+  }
+  async function eliminaCompra(pams, e) {
+    await eliminarRegistro({ "id": pams })
+    setAlert(null)
+    abrir(e)
+  }
   const abrir = async (e) => {
 
     if (e.codigoEvento == "6E1FO4" || e.codigoEvento == "ZKZX3U") {
@@ -344,7 +406,7 @@ const IndexFlas = () => {
       return
     }
     sessionStorage.setItem("estadoevento", e.estado)
-    sessionStorage.setItem("infoevento", JSON.stringify( e))
+    sessionStorage.setItem("infoevento", JSON.stringify(e))
     sessionStorage.removeItem("sillascorre")
     setspinervi("")
     try {
@@ -354,7 +416,10 @@ const IndexFlas = () => {
       // console.log(seleccionuser)
       //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
       if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
-        setspinervi("d-none")
+        let comprapendiente = registro.data.find(f => f.estado_pago == "Pendiente")
+        // Modal verifica 
+        succesAlert(e, comprapendiente.id)
+        /*setspinervi("d-none")
         SetSeleccion("Tickets")
 
         usedispatch(setToastes({
@@ -362,21 +427,9 @@ const IndexFlas = () => {
           message: "Antes de realizar una compra nueva debes de completar el proceso de pago del anterior",
           color: 'bg-warning',
           estado: "Tienes una compra pendiente "
-        }))
+        }))*/
         return
       }
-     /* if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")) {
-        setspinervi("d-none")
-        //SetSeleccion("Tickets")
-
-        usedispatch(setToastes({
-          show: true,
-          message: "Espera a que un agente verifique tu transeferenciao deposito",
-          color: 'bg-info',
-          estado: "Tienes un reporte por combrobar"
-        }))
-        return
-      }*/
       else {
         let id = sessionStorage.getItem(Eventoid)
         if (id != null && id != e.codigoEvento) {
@@ -384,101 +437,104 @@ const IndexFlas = () => {
           successAlert(e)
         }
         else {
-          try {
-            let obten = await listarpreciolocalidad(e.codigoEvento)
-            const listalocal = await ListarLocalidad("")
-            let localidades = await cargarMapa()
-            sessionStorage.consierto = e.nombreConcierto
-            // console.log(listalocal, localidades, obten)
-            if (obten.data.length > 0) {
-              let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-              let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-              //   console.log(mapalocal, mapa)
-              let localidad = JSON.parse(mapa[0].localidad)
-              let path = JSON.parse(mapa[0].pathmap)
-              //    console.log(obten.data)
-              let newprecios = obten.data.filter(e => e != undefined).map((g, i) => {
-                let color = localidad.filter((f, i) => f.nombre == g.localidad).filter(e => e != undefined)
-                //console.log(color)
-                if (color.length > 0) {
-                  g.color = color[0].color
-                  g.idcolor = color[0].id
-                  g.typo = color[0].tipo
-                  g.ideprecio = g.id
-                  g.espacio = color[0].espacio
-                  sessionStorage.setItem(espacio, color[0].espacio)
-                  return g
-                }
-              }).filter(e => e != undefined)
-
-              let colornuevo = mapalocal.map((L) => {
-               // console.log(newprecios.filter(e => e != undefined))
-
-                if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
-                  {
-                    L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
-                    L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
-                    L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
-                    L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
-                    L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
-                    L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
-                    L.espacioid = L.id_espacio
-                    return L
-                  }
-                }
-              })
-              let pathnuevo = path.map((L) => {
-                if (newprecios.filter(e => e != undefined).findIndex(e => e.idcolor == L.id) != -1) {
-                  return L
-                }
-              })
-              sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
-                return e
-              }))]))
-              usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
-              let nuevosdatos = {
-                precios: newprecios,
-                pathmapa: pathnuevo.filter((e) => e != undefined),
-                mapa: mapa[0].nombre_mapa
-              }
-              // console.log(nuevosdatos)
-              sessionStorage.eventoid = e.codigoEvento
-              setPrecios(nuevosdatos)
-              setDatoscon(e)
-              //consultarlocalidad()
-              Cargarsillas([...colornuevo.filter((e) => e != undefined)]).then(outp => {
-                setspinervi("d-none")
-                velocidad()
-                usedispatch(cargarsilla(outp))
-                usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-                ReactGA.event({
-                  category: "Comprar",
-                  action: "Eventos",
-                  label: "" + e.codigoEvento,
-                })
-                // console.log(seleccionuser)
-                if (seleccionuser.success) {
-                  //console.log( registro.data.find(f => f.estado_pago == "Pendiente"))
-                  Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
-                    console.log(outp)
-                  }).catch(error => {
-                    console.log(error)
-                  })
-                }
-                //console.log(registro.data)
-               
-              }).catch(err => {
-                console.log(err)
-              })
-            }
-          } catch (err) {
-            console.log(err)
-            setspinervi("d-none")
-          }
+          Abrirelevento(e)
         }
       }
     } catch (error) {
       console.log(error)
+    }
+  }
+  async function Abrirelevento(e) {
+    try {
+      let obten = await listarpreciolocalidad(e.codigoEvento)
+      const listalocal = await ListarLocalidad("")
+      let localidades = await cargarMapa()
+      sessionStorage.consierto = e.nombreConcierto
+      // console.log(listalocal, localidades, obten)
+      if (obten.data.length > 0) {
+        let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
+        let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
+        //   console.log(mapalocal, mapa)
+        let localidad = JSON.parse(mapa[0].localidad)
+        let path = JSON.parse(mapa[0].pathmap)
+        //    console.log(obten.data)
+        let newprecios = obten.data.filter(e => e != undefined).map((g, i) => {
+          let color = localidad.filter((f, i) => f.nombre == g.localidad).filter(e => e != undefined)
+          //console.log(color)
+          if (color.length > 0) {
+            g.color = color[0].color
+            g.idcolor = color[0].id
+            g.typo = color[0].tipo
+            g.ideprecio = g.id
+            g.espacio = color[0].espacio
+            sessionStorage.setItem(espacio, color[0].espacio)
+            return g
+          }
+        }).filter(e => e != undefined)
+
+        let colornuevo = mapalocal.map((L) => {
+          // console.log(newprecios.filter(e => e != undefined))
+
+          if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
+            {
+              L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
+              L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
+              L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
+              L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
+              L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
+              L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
+              L.espacioid = L.id_espacio
+              return L
+            }
+          }
+        })
+        let pathnuevo = path.map((L) => {
+          if (newprecios.filter(e => e != undefined).findIndex(e => e.idcolor == L.id) != -1) {
+            return L
+          }
+        })
+        sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
+          return e
+        }))]))
+        usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
+        let nuevosdatos = {
+          precios: newprecios,
+          pathmapa: pathnuevo.filter((e) => e != undefined),
+          mapa: mapa[0].nombre_mapa
+        }
+        // console.log(nuevosdatos)
+        sessionStorage.eventoid = e.codigoEvento
+        setPrecios(nuevosdatos)
+        setDatoscon(e)
+        //consultarlocalidad()
+        Cargarsillas([...colornuevo.filter((e) => e != undefined)]).then(outp => {
+          setspinervi("d-none")
+          velocidad()
+          usedispatch(cargarsilla(outp))
+          usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+          ReactGA.event({
+            category: "Comprar",
+            action: "Eventos",
+            label: "" + e.codigoEvento,
+          })
+          // console.log(seleccionuser)
+          if (seleccionuser.success) {
+            //console.log( registro.data.find(f => f.estado_pago == "Pendiente"))
+            Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
+              console.log(outp)
+            }).catch(error => {
+              console.log(error)
+            })
+          }
+          //console.log(registro.data)
+
+        }).catch(err => {
+          console.log(err)
+        })
+      }
+    } catch (err) {
+      console.log(err)
+      setspinervi("d-none")
     }
   }
   const borrar = async (e) => {
@@ -777,13 +833,6 @@ const IndexFlas = () => {
     const evento = () => {
       setfunc(false)
       try {
-        console.log()
-        /*if (errorPubli.status != undefined){
-         return
-        }*/
-        //  console.log(isLoading, errorPubli)
-
-
         if (!errorevento == undefined) {
           return
         }
@@ -932,9 +981,9 @@ const IndexFlas = () => {
       label: info.codigoEvento
     })
     return {
-      
+
       ...info,
-    
+
     }
   }
   const styles = {
@@ -947,7 +996,7 @@ const IndexFlas = () => {
     // Abrir nuevo tab
     var win = window.open('https://wa.me/09800080000/?text=%27Quiero%20informaci%C3%B3n%27', '_blank');
     // Cambiar el foco al nuevo tab (punto opcional)
-   win.focus();
+    win.focus();
   }
 
   return (
@@ -1200,32 +1249,32 @@ const IndexFlas = () => {
         <div className="container-fluid ">
           <div className="row px-3 d-flex justify-content-center  align-items-center " >
 
-          <div className="col-12 col-lg-9  d-flex justify-content-center"> 
-          <div className=" col-9 col-md-6 col-lg-6 d-flex  justify-content-center ">
-            <form className="form" action="">
-              <input className="input" type="search"
-                onChange={(e) => Cambiarbusqueda(e.target.value)}
-                placeholder="Buscar eventos ..." />
-              <i className="fass fa fa-search "></i>
-            </form>
-            <div className="input-group d-none">
-              <input className=" form-control "
-                type="search" name="buscar"
-                placeholder="Buscar por nombre de Evento"
-                onChange={(e) => Cambiarbusqueda(e.target.value)}
-                value={searchValue}
-              />
-              <div className="input-group-prepend">
-                <button className="input-group-text btn-primary text-white "
-                  onClick={() => Cambiarbusqueda("")}
-                >
-                  {searchValue.length > 1 ? <i className="bi bi-x-lg"></i> :
-                    <i className="bi bi-search"></i>
-                  }</button>
+            <div className="col-12 col-lg-9  d-flex justify-content-center">
+              <div className=" col-9 col-md-6 col-lg-6 d-flex  justify-content-center ">
+                <form className="form" action="">
+                  <input className="input" type="search"
+                    onChange={(e) => Cambiarbusqueda(e.target.value)}
+                    placeholder="Buscar eventos ..." />
+                  <i className="fass fa fa-search "></i>
+                </form>
+                <div className="input-group d-none">
+                  <input className=" form-control "
+                    type="search" name="buscar"
+                    placeholder="Buscar por nombre de Evento"
+                    onChange={(e) => Cambiarbusqueda(e.target.value)}
+                    value={searchValue}
+                  />
+                  <div className="input-group-prepend">
+                    <button className="input-group-text btn-primary text-white "
+                      onClick={() => Cambiarbusqueda("")}
+                    >
+                      {searchValue.length > 1 ? <i className="bi bi-x-lg"></i> :
+                        <i className="bi bi-search"></i>
+                      }</button>
+                  </div>
+                </div>
               </div>
             </div>
-            </div>
-          </div>
           </div>
 
         </div> : ""}
