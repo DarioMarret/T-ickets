@@ -483,7 +483,7 @@ export default function DetalleCompraView() {
                         infoTarjeta({
                             "token": nombres.token_pago
                         }).then(ouput => {
-                            console.log(ouput.data)
+                            console.log(ouput)
                             if (ouput.success) {
                                 setDataTarjeta({ ...ouput.data })
                                 console.log(nombres.nombreCompleto)
@@ -492,6 +492,7 @@ export default function DetalleCompraView() {
                             else {
                                 infoabimedia(nombres.token_pago).then(ouput => {
                                     if (ouput.data) {
+                                        console.log(ouput)
                                         let data = {
                                             ...ouput.data,
                                             "payment_date": ouput.data.transactionDate,

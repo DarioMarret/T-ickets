@@ -423,11 +423,11 @@
    fill: #363435;
  }
 
- 
+
  .cls-5,
  .cls-6 {
-  /*/ fill-rule: evenodd;*/
-   cursor:not-allowed;
+   /*/ fill-rule: evenodd;*/
+   cursor: not-allowed;
  }
 
  .cls-2 {
@@ -697,147 +697,420 @@
  .clsvg13 {
    letter-spacing: -1.1;
  }
- 
 
 
 
-        .tulcan2 {
-          stroke: #E6E7E8;
-          stroke-width: 7.87;
-          stroke-miterlimit: 22.9256
-        }
-    
-        .tulcan0 {
-          stroke: #FEFEFE;
-          stroke-width: 3;
-          stroke-miterlimit: 22.9256
-        }
-    
-        .tulcan1 {
-          stroke: #FEFEFE;
-          stroke-width: 3;
-          stroke-miterlimit: 22.9256
-        }
-    
-        .tulcanfila5 {
-          fill: #FEFEFE
-        }
-    
-        .tulcanfila1 {
-          fill: #A9ABAE
-        }
-    
-        .tulcanfila2 {
-          fill: #52658C
-        }
-    
-        .tulcanfila0 {
-          fill: #201E1E
-        }
-    
-        .tulcanfila3 {
-          fill: #201E1E
-        }
-    
-        .tulcanfila8 {
-          fill: #4B4B4D
-        }
-    
-        .tulcanfila4 {
-          fill: #747472
-        }
-    
-        .tulcanfila6 {
-          fill: #B29307
-        }
-    
-        .tulcanfila7 {
-          fill: #E6E7E8
-        }
-    
-        .tulcanfila9 {
-          fill: #FEFEFE;
-          fill-rule: nonzero
-        }
-    
-        .tulcanfnt1 {
-          font-weight: bold;
-          font-size: 466.01px;
-          font-family: 'Montserrat'
-        }
-    
-        .tulcanfnt0 {
-          font-weight: bold;
-          font-size: 553.28px;
-          font-family: 'Montserrat'
-        }
 
-                         .strumi11 {
-                           stroke: #FEFEFE;
-                           stroke-width: 29.53;
-                           stroke-miterlimit: 2.61313
-                         }
-            
-                         .strumi0 {
-                           stroke: #96989A;
-                           stroke-width: 7.87;
-                           stroke-miterlimit: 2.61313
-                         }
-            
-                         .rumi3 {
-                           fill: #213858
-                         }
-            
-                         .rumi8 {
-                           fill: #373435
-                         }
-            
-                         .rumi6 {
-                           fill: #4494D3
-                         }
-            
-                         .rumi11 {
-                           fill: #4B4B4D
-                         }
-            
-                         .rumi4 {
-                           fill: #4E76B8
-                         }
-            
-                         .rumi7 {
-                           fill: #84716B
-                         }
-            
-                         .rumi1 {
-                           fill: #96989A
-                         }
-            
-                         .rumi5 {
-                           fill: #9D98CA
-                         }
-            
-                         .rumi9 {
-                           fill: #A9ABAE
-                         }
-            
-                         .rumi0 {
-                           fill: #BDBFC1
-                         }
-            
-                         .rumi10 {
-                           fill: #E6E7E8
-                         }
-            
-                         .rumi2 {
-                           fill: #FEFEFE
-                         }
-            
-                         .rumi13 {
-                           fill: #FEFEFE;
-                           fill-rule: nonzero
-                         }
-            
-                         .rumi12 {
-                           fill: #FEFEFE;
-                           fill-rule: nonzero
-                         }
+ .tulcan2 {
+   stroke: #E6E7E8;
+   stroke-width: 7.87;
+   stroke-miterlimit: 22.9256
+ }
+
+ .tulcan0 {
+   stroke: #FEFEFE;
+   stroke-width: 3;
+   stroke-miterlimit: 22.9256
+ }
+
+ .tulcan1 {
+   stroke: #FEFEFE;
+   stroke-width: 3;
+   stroke-miterlimit: 22.9256
+ }
+
+ .tulcanfila5 {
+   fill: #FEFEFE
+ }
+
+ .tulcanfila1 {
+   fill: #A9ABAE
+ }
+
+ .tulcanfila2 {
+   fill: #52658C
+ }
+
+ .tulcanfila0 {
+   fill: #201E1E
+ }
+
+ .tulcanfila3 {
+   fill: #201E1E
+ }
+
+ .tulcanfila8 {
+   fill: #4B4B4D
+ }
+
+ .tulcanfila4 {
+   fill: #747472
+ }
+
+ .tulcanfila6 {
+   fill: #B29307
+ }
+
+ .tulcanfila7 {
+   fill: #E6E7E8
+ }
+
+ .tulcanfila9 {
+   fill: #FEFEFE;
+   fill-rule: nonzero
+ }
+
+ .tulcanfnt1 {
+   font-weight: bold;
+   font-size: 466.01px;
+   font-family: 'Montserrat'
+ }
+
+ .tulcanfnt0 {
+   font-weight: bold;
+   font-size: 553.28px;
+   font-family: 'Montserrat'
+ }
+
+ .strumi11 {
+   stroke: #FEFEFE;
+   stroke-width: 29.53;
+   stroke-miterlimit: 2.61313
+ }
+
+ .strumi0 {
+   stroke: #96989A;
+   stroke-width: 7.87;
+   stroke-miterlimit: 2.61313
+ }
+
+ .rumi3 {
+   fill: #213858
+ }
+
+ .rumi8 {
+   fill: #373435
+ }
+
+ .rumi6 {
+   fill: #4494D3
+ }
+
+ .rumi11 {
+   fill: #4B4B4D
+ }
+
+ .rumi4 {
+   fill: #4E76B8
+ }
+
+ .rumi7 {
+   fill: #84716B
+ }
+
+ .rumi1 {
+   fill: #96989A
+ }
+
+ .rumi5 {
+   fill: #9D98CA
+ }
+
+ .rumi9 {
+   fill: #A9ABAE
+ }
+
+ .rumi0 {
+   fill: #BDBFC1
+ }
+
+ .rumi10 {
+   fill: #E6E7E8
+ }
+
+ .rumi2 {
+   fill: #FEFEFE
+ }
+
+ .rumi13 {
+   fill: #FEFEFE;
+   fill-rule: nonzero
+ }
+
+ .rumi12 {
+   fill: #FEFEFE;
+   fill-rule: nonzero
+ }
+
+ .stpath0 {
+   fill: #FAF7D7;
+ }
+
+ .stpath1 {
+   fill: #F4A417;
+ }
+
+ .stpath2 {
+   fill: #E58007;
+ }
+
+ .stpath4 {
+   fill: #A68B18;
+ }
+
+ .stpath6 {
+   fill: #525655;
+ }
+
+ .stpath8 {
+   fill: none;
+   stroke: #F6AF33;
+   stroke-width: 3;
+   stroke-miterlimit: 10;
+ }
+
+ .stpath9 {
+   fill: #B1B1B1;
+ }
+
+ .stpath10 {
+   clip-path: url(#SVGID_00000086673032576179575450000010463235739957249207_);
+   fill: #E9D892;
+ }
+
+ .stpath11 {
+   opacity: 0.49;
+   clip-path: url(#SVGID_00000155850120322819277600000009719520586754723988_);
+ }
+
+ .stpath12 {
+   fill: none;
+   stroke: #7A6A58;
+   stroke-width: 2;
+   stroke-miterlimit: 10;
+ }
+
+ .stpath13 {
+   fill: #F8FAF9;
+ }
+
+ .stpath14 {
+   fill: #E4E4E4;
+ }
+
+ .stpath15 {
+   clip-path: url(#SVGID_00000055696280677487499200000008605892845894403727_);
+ }
+
+ .stpath16 {
+   fill: #E4E4E4;
+   stroke: #C4C4C3;
+   stroke-width: 2;
+   stroke-miterlimit: 10;
+ }
+
+ .st17 {
+   clip-path: url(#SVGID_00000183959743465281368860000017086736598618832807_);
+   fill: none;
+   stroke: #C79B66;
+   stroke-width: 7;
+   stroke-miterlimit: 10;
+ }
+
+ .st18 {
+   clip-path: url(#SVGID_00000163073667195004321950000009702627244023847356_);
+   fill: #FFFFFF;
+   stroke: #683B11;
+   stroke-width: 2;
+   stroke-miterlimit: 10;
+ }
+
+ .st19 {
+   clip-path: url(#SVGID_00000047045078045599014680000013447741629953879482_);
+   fill: #B1B1B1;
+   stroke: #FFFFFF;
+   stroke-width: 2;
+   stroke-miterlimit: 10;
+ }
+
+ .st20 {
+   clip-path: url(#SVGID_00000175314855735219104020000005913684140795901334_);
+   fill: #B1B1B1;
+ }
+
+ .st21 {
+   clip-path: url(#SVGID_00000102532346674645664100000006619849320947635877_);
+   fill: none;
+   stroke: #F6AF33;
+   stroke-width: 5;
+   stroke-miterlimit: 10;
+ }
+
+ .st22 {
+   fill: none;
+   stroke: #6F6F6E;
+   stroke-width: 2;
+   stroke-miterlimit: 10;
+ }
+
+ .st23 {
+   fill: #E00613;
+ }
+
+ .st24 {
+   fill: #FFFFFF;
+ }
+
+ .st25 {
+   fill: #35A6DE;
+ }
+
+ .st26 {
+   fill: #1D1D1B;
+ }
+
+ .st27 {
+   fill: #FFEA00;
+ }
+
+ .st28 {
+   fill: none;
+ }
+
+ .st29 {
+   fill: #E3007E;
+ }
+
+ .st30 {
+   font-family: 'ArialMT';
+ }
+
+ .st31 {
+   font-size: 19.4603px;
+ }
+
+ .st32 {
+   font-family: 'BerlinSansFBDemi-Bold';
+ }
+
+ .st33 {
+   font-size: 38.9202px;
+ }
+
+ .st34 {
+   font-size: 38.9204px;
+ }
+
+ .st35 {
+   font-size: 38.9205px;
+ }
+
+ .st36 {
+   font-size: 38.9207px;
+ }
+
+ .st37 {
+   font-size: 38.9203px;
+ }
+
+ .st38 {
+   font-size: 38.9206px;
+ }
+
+ .st39 {
+   fill: #00FF00;
+ }
+
+ .st40 {
+   fill: #FFFF00;
+ }
+
+ .st41 {
+   fill: #AE812B;
+ }
+
+ .st42 {
+   fill: #8E0300;
+ }
+
+ .st43 {
+   fill: #F0EFE6;
+ }
+
+ .st44 {
+   fill: #131512;
+ }
+
+ .st45 {
+   fill: #900C00;
+ }
+
+ .st46 {
+   fill: #808080;
+ }
+
+ .st47 {
+   fill: #1D4E55;
+ }
+
+ .st48 {
+   fill: none;
+   stroke: #8E0300;
+   stroke-width: 22;
+   stroke-miterlimit: 10;
+ }
+
+ .st49 {
+   fill: #BA7B15;
+ }
+
+ .st50 {
+   fill: #606060;
+ }
+
+ .st51 {
+   fill: #900C00;
+   stroke: #AE812B;
+   stroke-width: 8;
+   stroke-miterlimit: 10;
+ }
+
+ .st52 {
+   fill: #8E0300;
+   stroke: #8E0300;
+   stroke-width: 7;
+   stroke-miterlimit: 10;
+ }
+
+ .st53 {
+   fill-rule: evenodd;
+   clip-rule: evenodd;
+   fill: #FFFFFF;
+ }
+
+ .st54 {
+   fill-rule: evenodd;
+   clip-rule: evenodd;
+   fill: #1D4E55;
+ }
+
+ .st55 {
+   fill-rule: evenodd;
+   clip-rule: evenodd;
+   fill: #82716B;
+ }
+
+ .st56 {
+   fill-rule: evenodd;
+   clip-rule: evenodd;
+   fill: #FFFFFF;
+   stroke: #FFFFFF;
+   stroke-width: 0.4997;
+   stroke-miterlimit: 10;
+ }
+
+ .st57 {
+   fill-rule: evenodd;
+   clip-rule: evenodd;
+   fill: #FCFCFC;
+ }
