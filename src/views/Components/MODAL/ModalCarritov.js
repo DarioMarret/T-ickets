@@ -750,7 +750,7 @@ const ModalCarritoView = (prop) => {
                                     <h5 style={{ fontSize: '1.1em', fontWeight: "bold" }} >
                                         SELECCIONE LA LOCALIDAD EN EL MAPA O EN EL NOMBRE
                                     </h5>
-                                    <div className="col-12 col-md-9  col-lg-10 mx-auto text-center " style={{
+                                    <div className="col-12 col-md-9 py-0 col-lg-10 mx-auto text-center " style={{
                                         height: "auto"
                                     }}>
                                         {modalshow.nombre == "ModalCarritov" ?
@@ -762,14 +762,14 @@ const ModalCarritoView = (prop) => {
                                     </div>
 
                                 </div>
-                                <div className="col-12">
-                                    <div className=" container-fluid d-flex  py-2  col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
+                                <div className="col-12 d-flex justify-content-center">
+                                    <div className=" container-fluid d-flex  justify-content-between py-2  px-0 flex-wrap pb-2   align-items-center  p-0">
                                         {sessionStorage.getItem("eventoid") != "YZPQQ3" && precios.precios.length > 0 ?
                                             precios.precios.sort((a, b) => (a.precio_normal > b.precio_normal ? 1 : -1) && (a.id > b.id ? 1 : -1)).map((elm, i) => {
                                                 return (
-                                                    <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
+                                                    <div className="d-flex flex-row mx-1 mb-1 py-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                         <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: elm.color }}></div>
-                                                        <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '160px' }} >
+                                                        <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '170px' }} >
                                                             <span className="" style={{ fontFamily: '', fontSize: '1.11em' }} >{elm.localidad} </span>
                                                             <span className="pl-1" style={{ fontFamily: '', fontSize: '1.11em' }} >${elm.precio_normal} </span>
                                                         </div>

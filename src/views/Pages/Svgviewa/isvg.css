@@ -6,6 +6,10 @@
    fill: rgb(61, 64, 64);
 
  }
+ ellipse.none {
+   fill: rgb(61, 64, 64);
+
+ }
 
  :root {
    --swiper-navigation-color: #000000;
@@ -841,17 +845,20 @@
    fill: #FEFEFE;
    fill-rule: nonzero
  }
+ .riobamba {
+  enable-background: 'new 0 0 1920 1920';
+ }
 
  .stpath0 {
-   fill: #FAF7D7;
+   fill: #FAF7D7 !important;
  }
 
  .stpath1 {
-   fill: #F4A417;
+   fill: #F4A417 !important;
  }
 
  .stpath2 {
-   fill: #E58007;
+   fill: #E58007 !important;
  }
 
  .stpath4 {
