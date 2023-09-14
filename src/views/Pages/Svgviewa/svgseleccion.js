@@ -2091,7 +2091,7 @@ const svgselectView = ({ text }) => {
                 <path id="1" className="none" d="M198.14,891.58c0,0,20.21-123.31,234.19-208.91s502.06-121.71,826.78-57.25c0,0,406.48,79.02,418.77,291.47
 	c0,0-25.09,45.1-85.41,81.12c0,0,63.76-182.28-331.65-283.86c0,0-395.17-107.7-752.35,32.9c0,0-239.67,90.99-215.59,248.26
 	C292.88,995.32,245.17,974.69,198.14,891.58z"/>
-                <g>
+                <g className="d-none">
                     <g>
                         <g>
                             <path className="st24" d="M342.34,814.29c0.47,0.42,0.45,0.88-0.05,1.36c-0.31,0.31-1.41,1.02-3.29,2.12
@@ -2325,7 +2325,7 @@ const svgselectView = ({ text }) => {
 	c206.46,0.89,484.27,59.68,595.71,181.03c0,0,68.14,61.38,49.12,143.02c0,0-21.57,17.01-76.35,44.45c0,0,66.64-95.68-54.23-190.58
 	c0,0-188.21-157.56-601.3-130.27c0,0-364.54,9.57-487.95,186.32c0,0-45.62,59.52-5.72,129.88
 	C366.89,1039.44,331.13,1024.6,292.88,996.94z"/>
-                <g>
+                <g className="d-none">
                     <path className="st26" d="M376.42,855.22c2.27,2.4,3.47,4.93,3.63,7.62c0.15,2.85-0.97,5.4-3.34,7.64c-0.41,0.37-1.02,0.92-1.85,1.62
 		c-0.84,0.71-1.46,1.25-1.85,1.62c-0.42,0.41-0.47,0.79-0.11,1.15c0.44,0.45,1.12,1.09,2.06,1.91c0.94,0.81,1.62,1.44,2.04,1.9
 		c0.21,0.23,0.23,0.44,0.02,0.63c-0.6,0.57-1.52,1.41-2.77,2.53c-1.25,1.1-2.17,1.95-2.77,2.51c-0.29,0.28-0.57,0.26-0.84-0.02
@@ -2437,7 +2437,7 @@ const svgselectView = ({ text }) => {
 		c-0.05,2.25-0.02,3.55,0.1,3.91c0.08,0.23,0.5,0.24,1.3,0.02c0.41-0.1,1.07-0.31,1.99-0.6c0.86-0.28,1.3-0.54,1.31-0.78
 		c0-0.08-0.02-0.16-0.05-0.28c-0.13-0.44-0.81-1.51-2.04-3.26C585.17,743.26,584.36,742.2,583.92,741.78z"/>
                 </g>
-                <g>
+                <g className="d-none">
                     <path className="st26" d="M1025.83,695.56c-0.19,3.29-1.23,5.92-3.1,7.85c-1.98,2.06-4.61,2.97-7.87,2.77
 		c-0.55-0.03-1.36-0.11-2.45-0.24c-1.09-0.13-1.91-0.21-2.45-0.24c-0.58-0.03-0.89,0.19-0.92,0.7c-0.03,0.63-0.03,1.57,0.02,2.81
 		c0.05,1.25,0.05,2.17,0.02,2.79c-0.02,0.31-0.16,0.45-0.45,0.44c-0.83-0.05-2.08-0.15-3.73-0.31c-1.65-0.15-2.9-0.24-3.73-0.31
@@ -4005,92 +4005,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADDg9Xr9H8b8Z+/7YMnTAAAAAElFTkSuQmCC" transf
                 <path id="SVGID_x5F_00000040547608563353682620000016816440893532295865_x5F__00000135690742648849276130000013027237694655143860_" className="st28" d="
 	M507.29,1087.46c0,0-153.1-99.25,13.12-212.34c0,0,172.56-117.78,505.07-92.74c0,0,430.9,21.91,406.85,218.89
 	c0,0-3.54,50.01-103.8,103.22"/>
-                <text transform="matrix(0.3706 -0.9288 0.9288 0.3706 448.5601 955.1822)" className="st30 st31"> </text>
-                <text transform="matrix(0.4977 -0.8673 0.8673 0.4977 449.7507 949.8095)" className="st24 st32 st33">V</text>
-                <text transform="matrix(0.6122 -0.7907 0.7907 0.6122 462.9936 928.0093)" className="st24 st32 st34">I</text>
-                <text transform="matrix(0.6936 -0.7204 0.7204 0.6936 469.8074 918.8038)" className="st24 st32 st35">P</text>
-                <text transform="matrix(0.7502 -0.6613 0.6613 0.7502 487.7278 900.6909)" className="st24 st32 st35"> </text>
-                <text transform="matrix(0.7751 -0.6318 0.6318 0.7751 495.0402 894.2704)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.7962 -0.605 0.605 0.7962 502.5963 888.1151)" className="st24 st32 st35"> </text>
-                <text transform="matrix(0.8145 -0.5802 0.5802 0.8145 510.4764 882.2446)" className="st24 st32 st36"> </text>
-                <text transform="matrix(0.862 -0.5069 0.5069 0.862 518.097 876.1722)" className="st24 st32 st35">V</text>
-                <text transform="matrix(0.8868 -0.4621 0.4621 0.8868 540.0844 863.6469)" className="st24 st32 st35">I</text>
-                <text transform="matrix(0.9039 -0.4279 0.4279 0.9039 550.2667 858.1236)" className="st24 st32 st34">P</text>
-                <text transform="matrix(0.9168 -0.3994 0.3994 0.9168 573.1511 847.3084)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9231 -0.3846 0.3846 0.9231 582.128 843.5224)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.9288 -0.3705 0.3705 0.9288 591.1864 839.6349)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.9382 -0.3461 0.3461 0.9382 600.1147 835.9703)" className="st24 st32 st37">V</text>
-                <text transform="matrix(0.9469 -0.3216 0.3216 0.9469 623.9923 827.2593)" className="st24 st32 st37">I</text>
-                <text transform="matrix(0.9545 -0.2982 0.2982 0.9545 634.9074 823.4517)" className="st24 st32 st37">P</text>
-                <text transform="matrix(0.9609 -0.2768 0.2768 0.9609 659.23 815.9062)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9642 -0.2651 0.2651 0.9642 668.4926 813.3262)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9673 -0.2537 0.2537 0.9673 677.8654 810.7448)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9702 -0.2424 0.2424 0.9702 687.3998 808.4337)" className="st24 st32 st38"> </text>
-                <text transform="matrix(0.9749 -0.2225 0.2225 0.9749 696.8693 805.8252)" className="st24 st32 st35">V</text>
-                <text transform="matrix(0.9794 -0.2021 0.2021 0.9794 721.718 800.3102)" className="st24 st32 st38">I</text>
-                <text transform="matrix(0.9833 -0.1821 0.1821 0.9833 732.8246 797.8011)" className="st24 st32 st37">P</text>
-                <text transform="matrix(0.9865 -0.1635 0.1635 0.9865 757.9402 793.3901)" className="st24 st32 st35"> </text>
-                <text transform="matrix(0.9882 -0.1534 0.1534 0.9882 767.5117 791.6997)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.9897 -0.1434 0.1434 0.9897 777.081 790.221)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.9921 -0.1257 0.1257 0.9921 786.6516 788.6791)" className="st24 st32 st37">V</text>
-                <text transform="matrix(0.9942 -0.1073 0.1073 0.9942 811.9163 785.488)" className="st24 st32 st37">I</text>
-                <text transform="matrix(0.996 -0.0894 0.0894 0.996 823.4476 784.4398)" className="st24 st32 st35">P</text>
-                <text transform="matrix(0.9974 -0.0727 0.0727 0.9974 848.7805 782.2737)" className="st24 st32 st38"> </text>
-                <text transform="matrix(0.998 -0.0636 0.0636 0.998 858.4432 781.4899)" className="st24 st32 st35"> </text>
-                <text transform="matrix(0.9985 -0.0545 0.0545 0.9985 868.1389 780.7332)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.999 -0.0456 0.0456 0.999 877.8887 780.2621)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.9996 -0.0297 0.0297 0.9996 887.5557 779.8577)" className="st24 st32 st35">V</text>
-                <text transform="matrix(0.9999 -0.0133 0.0133 0.9999 913.019 778.9683)" className="st24 st32 st34">I</text>
-                <text transform="matrix(1 2.730000e-03 -2.730000e-03 1 924.5924 778.8849)" className="st24 st32 st38">P</text>
-                <text transform="matrix(0.9998 0.0177 -0.0177 0.9998 949.8163 778.9399)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9997 0.0258 -0.0258 0.9997 959.7488 779.2337)" className="st24 st32 st38"> </text>
-                <text transform="matrix(0.9994 0.0339 -0.0339 0.9994 969.2397 779.3582)" className="st24 st32 st33"> </text>
-                <text transform="matrix(0.9988 0.0483 -0.0483 0.9988 979.0367 779.5961)" className="st24 st32 st37">V</text>
-                <text transform="matrix(0.998 0.0631 -0.0631 0.998 1004.6277 780.9548)" className="st24 st32 st35">I</text>
-                <text transform="matrix(0.998 0.0631 -0.0631 0.998 1016.071 781.8177)" className="st24 st32 st35">P</text>
-                <text transform="matrix(0.9963 0.0859 -0.0859 0.9963 1041.3193 783.4072)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9954 0.0954 -0.0954 0.9954 1051.0587 784.2111)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9946 0.1042 -0.1042 0.9946 1060.6547 785.2588)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9936 0.1126 -0.1126 0.9936 1070.3115 786.2448)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9919 0.1274 -0.1274 0.9919 1080.0775 787.3553)" className="st24 st32 st35">V</text>
-                <text transform="matrix(0.9897 0.143 -0.143 0.9897 1105.3003 790.4824)" className="st24 st32 st37">I</text>
-                <text transform="matrix(0.9873 0.1589 -0.1589 0.9873 1116.744 792.097)" className="st24 st32 st37">P</text>
-                <text transform="matrix(0.9846 0.1746 -0.1746 0.9846 1141.8121 796.1728)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.983 0.1836 -0.1836 0.983 1151.2914 797.9463)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9812 0.1929 -0.1929 0.9812 1160.9944 799.8698)" className="st24 st32 st38"> </text>
-                <text transform="matrix(0.9776 0.2104 -0.2104 0.9776 1170.568 801.5513)" className="st24 st32 st34">V</text>
-                <text transform="matrix(0.9732 0.2301 -0.2301 0.9732 1195.3226 807.0007)" className="st24 st32 st34">I</text>
-                <text transform="matrix(0.9679 0.2514 -0.2514 0.9679 1206.6703 809.4645)" className="st24 st32 st37">P</text>
-                <text transform="matrix(0.9619 0.2734 -0.2734 0.9619 1231.2205 816.0438)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.9581 0.2865 -0.2865 0.9581 1240.4103 818.6605)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9539 0.3002 -0.3002 0.9539 1249.8561 821.3888)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.9492 0.3147 -0.3147 0.9492 1259.2434 824.5291)" className="st24 st32 st38"> </text>
-                <text transform="matrix(0.9393 0.343 -0.343 0.9393 1268.4451 827.339)" className="st24 st32 st34">V</text>
-                <text transform="matrix(0.9265 0.3762 -0.3762 0.9265 1292.2618 836.2663)" className="st24 st32 st35">I</text>
-                <text transform="matrix(0.9105 0.4136 -0.4136 0.9105 1302.9568 840.3656)" className="st24 st32 st37">P</text>
-                <text transform="matrix(0.8911 0.4537 -0.4537 0.8911 1326.0409 851.0692)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.8783 0.4782 -0.4782 0.8783 1334.7249 855.4351)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.8634 0.5045 -0.5045 0.8634 1343.2384 860.1373)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.8306 0.5568 -0.5568 0.8306 1351.8658 864.8739)" className="st24 st32 st35">V</text>
-                <text transform="matrix(0.7851 0.6194 -0.6194 0.7851 1372.7772 879.1566)" className="st24 st32 st34">I</text>
-                <text transform="matrix(0.7241 0.6897 -0.6897 0.7241 1382.2195 886.1808)" className="st24 st32 st38">P</text>
-                <text transform="matrix(0.6474 0.7622 -0.7622 0.6474 1400.2321 903.7677)" className="st24 st32 st37"> </text>
-                <text transform="matrix(0.5954 0.8035 -0.8035 0.5954 1406.5682 911.3411)" className="st24 st32 st35"> </text>
-                <text transform="matrix(0.5359 0.8443 -0.8443 0.5359 1412.3636 919.0748)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.4689 0.8832 -0.8832 0.4689 1417.5237 927.2567)" className="st24 st32 st34"> </text>
-                <text transform="matrix(0.3312 0.9436 -0.9436 0.3312 1422.7736 935.6862)" className="st24 st32 st34">V</text>
-                <text transform="matrix(0.1718 0.9851 -0.9851 0.1718 1430.6665 959.9325)" className="st24 st32 st35">I</text>
-                <text transform="matrix(0.0137 0.9999 -0.9999 0.0137 1433.0789 971.3054)" className="st24 st32 st38">P</text>
-                <text transform="matrix(-0.1044 0.9945 -0.9945 -0.1044 1432.8304 996.5299)" className="st24 st32 st37"> </text>
-                <text transform="matrix(-0.3396 0.9406 -0.9406 -0.3396 1431.7135 1006.2707)" className="st24 st32 st33"> </text>
-                <text transform="matrix(-0.4525 0.8917 -0.8917 -0.4525 1428.2373 1015.3887)" className="st24 st32 st37"> </text>
-                <text transform="matrix(-0.5874 0.8093 -0.8093 -0.5874 1424.2415 1024.3826)" className="st24 st32 st34">V</text>
-                <text transform="matrix(-0.681 0.7323 -0.7323 -0.681 1408.9034 1044.6741)" className="st24 st32 st35">I</text>
-                <text transform="matrix(-0.7461 0.6658 -0.6658 -0.7461 1401.3578 1053.2463)" className="st24 st32 st34">P</text>
-                <text transform="matrix(-0.7925 0.6098 -0.6098 -0.7925 1382.0354 1070.0739)" className="st24 st32 st38"> </text>
-                <text transform="matrix(-0.813 0.5822 -0.5822 -0.813 1374.3553 1075.9969)" className="st24 st32 st35"> </text>
-                <text transform="matrix(-0.8308 0.5565 -0.5565 -0.8308 1366.4713 1081.5857)" className="st24 st32 st34"> </text>
-                <text transform="matrix(-0.8464 0.5326 -0.5326 -0.8464 1358.4224 1087.0206)" className="st24 st32 st33"> </text>
+                
                 <path className="st28" d="M781.74,904.06c0,0-179.07,44.66-39.37,134.18" />
                 <ellipse className="" cx="937.41"
                     fill="black" cy="974.18" rx="481.45" ry="187.65" />
