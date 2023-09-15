@@ -201,7 +201,7 @@ export default function AprobarView() {
     useEffect(() => {
         // ListaPrecios()
         console.log(ticket.ticket)
-        console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"))
+        console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format())
 
         !ticket.ticket ? "" : 
         ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
@@ -220,15 +220,16 @@ export default function AprobarView() {
                 const nombresUnicos = new Set();
 
                 // Itera a través del JSON y agrega los nombres al conjunto
-                e.data.filter(fe => moment(fe.fechaCreacion).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && fe.fechaCreacion <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).forEach(item => {
+                e.data.filter(fe => moment(fe.fechaCreacion.split(" ")[0]).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).forEach(item => {
                     nombresUnicos.add(item.info_concierto[0].nombreConcierto);
                 });
-
+                console.log(e.data)
                 // Convierte el conjunto de nombres únicos en un array
                 const nombresArray = Array.from(nombresUnicos);
                 setDatas(nombresArray)
                 console.log(nombresArray);
-                let newdatos = e.data.filter(fe => moment(fe.fechaCreacion).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && fe.fechaCreacion<=states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-") ).map(row => {
+                let newdatos = e.data.filter(fe => moment(fe.fechaCreacion).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <=moment( states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() ).map(row => {
+                    console.log(moment(row.fechaCreacion).format())
                     let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
                     //    console.log(nombre)
                     let valor = row.info_concierto.map(e => {
