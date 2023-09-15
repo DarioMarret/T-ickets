@@ -287,7 +287,8 @@ const ModalNewEvento = (props) => {
         }, "1500")
 
     }
-
+console.log(Object.values(neweventos).every(e => e))
+console.log(neweventos)
     useEffect(() => {
         (async () => {
             await Lista()
@@ -614,13 +615,13 @@ const ModalNewEvento = (props) => {
                     {!selectLocalidad.length > 0 && Object.values(neweventos).every(e => e) ?
                         <button disabled={true} className="btn btn-primary close-modal float-rigth">Grabar</button> :
                         ""}
-                    {selectLocalidad.length > 0 && selectLocalidad.length == localidadPreci.length && inputdisable ?
+                    {selectLocalidad.length > 0 && selectLocalidad.length == localidadPreci.length && !inputdisable ?
                         <button disabled={!Object.values(neweventos).every(e => e)}
                             onClick={gaurdaPrueba}
                             className="btn btn-primary close-modal float-rigth">Grabar</button>
                         :
                         ""}
-                    {!inputdisable ?
+                    {inputdisable ?
                         <button className="btn btn-primary" disabled={true} >
                             <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                             Guardando</button>
