@@ -337,8 +337,16 @@ const MesadiesView = ({ text, list }) => {
   }
   const succesSilla = (e) => {
     /**/
+    console.log(text)
+    let mesas = ["A","B","C","D"]
     let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
+    let envotid = sessionStorage.getItem("eventoid")
+    console.log((envotid == "0W2S1V"), mesas.includes( text.split("")[0]))
+    if ((envotid == "0W2S1V")&&mesas.includes(text.split("")[0])){
+        return
+    }
     let silla = list.find(f => f.silla == e)
+    console.log(silla)
     if (info == undefined) {
       return
     }

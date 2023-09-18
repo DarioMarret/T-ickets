@@ -6,6 +6,7 @@ import { setDatosUser } from "utils/DatosUsuarioLocalStorag";
 import { Loginadmin } from "utils/Querypanel";
 let { logo, portada } = bancos
 import { Badge, Button, Card, Form, Navbar, Nav, Toast, Container, Col, Row } from "react-bootstrap";
+import jwtDecode from "jwt-decode";
 function LoginPage() {
   const history = useHistory();
   const [cardClasses, setCardClasses] = React.useState("card-hidden");
@@ -57,7 +58,14 @@ function LoginPage() {
         const data = await Loginadmin({ username: credenciales.username.trim() ,password:credenciales.password.trim()})
         const { success, token } = data
         if (success) {
-          //console.log("success-->",data)
+        
+          let usuario = jwtDecode(token)
+          console.log("success-->", usuario)
+          if (usuario.status==0){
+            setShow(true)
+            setmessage("Usuario o contraeña incorrecta")
+            return
+          }
           setDatosUser(token)
           setShow(true)
           setmessage("Inicio de session exitoso")
