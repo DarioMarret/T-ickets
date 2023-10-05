@@ -1211,6 +1211,45 @@ export default function DetalleCompraView() {
                     <div className="tab-content col-sm-12">
                         <div className="tab-pane active container " id="filas">
                             <div className="row ">
+
+                                <div className=" table-responsive">
+                                    <table className="table table-invoice">
+                                        <thead>
+                                            <tr>
+                                                <th>Observación</th>
+                                                <th width="50%" >Usuario </th>
+                                                <th width="" >Editar </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {nombres.comentarios != undefined && Object.keys(nombres.comentarios).length > 0 ?
+                                                nombres.comentarios.map((item, i) => {
+                                                    return (
+                                                        <tr key={"l" + i}>
+                                                            <td>{item.comentario.toLowerCase()}</td>
+
+                                                            <td className="">
+                                                                {item.operador != undefined ? item.operador.toLowerCase() : item.name.toLowerCase()}
+                                                            </td>
+
+                                                            <td className="">
+                                                                {
+                                                                    useradmin.id == item.id ?
+                                                                        "" :
+                                                                        useradmin.perfil == "suscriptores" ?
+                                                                            <a className="btn btn-default btn-sm btn-disable" ><i className="fa fa-edit"></i></a>
+                                                                            :
+                                                                            <a className="btn btn-default btn-sm" onClick={() => editarComentario(item.id)} ><i className="fa fa-edit"></i></a>}
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                }) : ''}
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
                                 <h1></h1>
                                 {useradmin.perfil == "suscriptores" ? "" : <div className="col-12   d-flex  text-center justify-content-md-end  align-items-center">
                                     <div className="px-2">
@@ -1636,44 +1675,6 @@ export default function DetalleCompraView() {
                                         </table>
                                     </div>
 
-                                    <div className=" table-responsive">
-                                        <table className="table table-invoice">
-                                            <thead>
-                                                <tr>
-                                                    <th>Observación</th>
-                                                    <th width="50%" >Usuario </th>
-                                                    <th width="" >Editar </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {nombres.comentarios != undefined && Object.keys(nombres.comentarios).length > 0 ?
-                                                    nombres.comentarios.map((item, i) => {
-                                                        return (
-                                                            <tr key={"l" + i}>
-                                                                <td>{item.comentario.toLowerCase()}</td>
-
-                                                                <td className="">
-                                                                    {item.operador != undefined ? item.operador.toLowerCase() : item.name.toLowerCase()}
-                                                                </td>
-
-                                                                <td className="">
-                                                                    {
-                                                                        useradmin.id == item.id ?
-                                                                            "" :
-                                                                            useradmin.perfil == "suscriptores" ?
-                                                                                <a className="btn btn-default btn-sm btn-disable" ><i className="fa fa-edit"></i></a>
-                                                                                :
-                                                                                <a className="btn btn-default btn-sm" onClick={() => editarComentario(item.id)} ><i className="fa fa-edit"></i></a>}
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    }) : ''}
-
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                  
                                     <div className="mt-2 pt-2  border-top text-center ">
                                         <span > CONTACTANOS </span>
                                         <div className="d-flex justify-content-center align-items-center pb-2">

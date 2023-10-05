@@ -353,15 +353,15 @@ var routes = [
         name: "OCR",
         mini: "*",
         component: OCRApiViews,
-        permiso: ["admin", ""]
+        permiso: ["admin", "super_admin"]
       },      
       {
         path: "/info",
         layout: "/admin",
-        name: "info",
+        name: "historial",
         mini: "*",
         component: ListarLogs,
-        permiso: ["admin", ""]
+        permiso: ["admin", "super_admin"]
       },
       {
         path: "/Servidor-Correo",
