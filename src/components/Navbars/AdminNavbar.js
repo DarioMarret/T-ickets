@@ -144,9 +144,11 @@ function AdminNavbar() {
                     placeholder="cédula o correo..."
                   id="cedulac"
                     type="text"
+                  onKeyPress={(e) => filterNames(e)}
                   ></input>
                   <button 
                   className="btn  btn-default"
+                  
                     onClick={(e)=>filterNames(e)}
                   ><i className="nc-icon nc-zoom-split mx-1"></i></button>
                   
