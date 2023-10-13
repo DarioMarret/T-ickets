@@ -341,8 +341,8 @@ const MesadiesView = ({ text, list }) => {
     let mesas = ["A","B","C","D"]
     let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
     let envotid = sessionStorage.getItem("eventoid")
-    console.log((envotid == "0W2S1V"), mesas.includes( text.split("")[0]))
-    if ((envotid == "0W2S1V")&&mesas.includes(text.split("")[0])){
+    console.log((envotid == "0W2S1V"), (mesas.includes(text.split("")[0]) && text != "D2"))
+    if ((envotid == "0W2S1V")&&(mesas.includes(text.split("")[0])&&text!="D2")){
         return
     }
     let silla = list.find(f => f.silla == e)

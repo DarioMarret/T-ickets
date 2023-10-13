@@ -11,14 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "@mui/material";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Box, Typography, Tabs, Tab, } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import { Edit, Delete, Visibility, Summarize } from '@mui/icons-material';
+import { Box } from '@mui/material';
 import { Listarticketporestado } from "utils/userQuery";
-import { carrusel } from "views/Pages/Flasdeticket/imagenstatctic";
-import { ChangeCircle } from "@mui/icons-material";
 import { ListarLocalidad } from "utils/LocalidadesQuery/index.js";
-import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { ValidarToken } from "utils/Querycomnet";
 import { eliminartiket } from "utils/pagos/Queripagos";
 import { ticketsboletos } from "utils/columnasub";
@@ -31,10 +26,8 @@ import ModalConfirma from "views/Components/MODAL/ModalConfirma";
 import { registraPagos } from "utils/pagos/Queripagos";
 import { Liverarasiento } from "utils/userQuery";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-import addNotification from "react-push-notification";
 import { Seleccionaruserlista } from "utils/userQuery";
 import { CanjearBoletoRegistro } from "utils/boletos/Queryboleto";
-import { ConsolidarReporte } from "utils/pagos/Queripagos";
 import ConsiliarView from "views/Components/MODAL/ModalConsilia";
 import axios from "axios";
 import ExportToExcel from "utils/Exportelemin";
@@ -51,6 +44,7 @@ import { ListaPreciosEvent } from "utils/EventosQuery";
 import WhastappWiev from "views/Components/MODAL/ModalWhast";
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
+import jsPDF from "jspdf"
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -63,9 +57,7 @@ export default function DetalleCompraView() {
     let { id } = useParams()
     let history = useHistory()
     let usedispatch = useDispatch()
-    let modal = useSelector(state => state.SuscritorSlice.modal)
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
-    //let info = JSON.parse(sessionStorage.getItem("Suscritorid"))
     let useradmin = clienteInfo()
     console.log(nombres)
     const [usuario, setUser] = useState({
@@ -80,6 +72,76 @@ export default function DetalleCompraView() {
         "ciudad": "",
         "direccion": ""
     })
+    function generaComprobante(){
+        const result2 = new Date().toLocaleString('en-GB', {
+            hour12: false,
+        });
+        const sumaCantidad = nombres.info_concierto.reduce((acumulador, elemento) => {
+            const cantidad = parseInt(elemento.cantidad, 10); // Convertir a número
+            return acumulador + cantidad;
+        }, 0);
+        var opciones = {
+            format: [69, 140]
+        };
+        var doc = new jsPDF(opciones)
+        doc.setFontSize(7);
+        doc.text(12, 3, 'T-ICKETS (TICKETSECUADOR S.A.)');
+        doc.text(20, 12, 'RUC 0993377293001');
+        doc.text(15, 15, 'Edifico City Officce Oficina 310');
+        doc.text(3, 18, 'Fecha:' + result2);
+        doc.text(3, 21, '*******************************************************************');
+        doc.text(25, 23, 'DESCRIPCIÓN');
+        doc.text(3, 26, '*******************************************************************');
+        doc.text(3, 29, "Evento: " + nombres.info_concierto[0].nombreConcierto);
+        let num = 29
+        nombres.info_concierto.forEach(function(val,index){
+            num= num+5
+            doc.text(3, num, "Localidad:"+ LocalidadPrecio(val.idespaciolocalida, val.id_localidad))  
+            doc.text(50, num, "Cantidad:" +val.cantidad)    
+        })
+       // doc.text(3, 34, "Boletos:" + sumaCantidad);
+       // doc.text(3, 38, "facturación del " + descri.factura.emitido + " " + descri.factura.vencimiento);
+       
+        //nombres.info_concierto[nombreConcierto]
+        
+        doc.text(3, 49, "*******************************************************************");
+        //doc.text(35, 54, "DESCUENTO $0.00");
+        doc.text(40, 58, "TOTAL: " + (parseFloat(nombres.total_pago)).toFixed(2));
+        doc.text(40, 62, "SALDO: $0.00");
+        doc.text(3, 65, "*******************************************************************");
+        doc.text(4, 69, "CLIENTE")
+        doc.text(3, 73, "Nombres: " + usuario.nombreCompleto)
+        doc.text(3, 76, "Correo: " + usuario.email)
+        doc.text(3, 79, "Cédula: " + usuario.cedula)
+        doc.text(3, 84, "Fecha registro: " + nombres.fechaCreacion)
+        doc.text(3, 88, "*******************************************************************");
+       // doc.text(3, 94, "Operador " + nombres.usuario);
+        doc.text(3, 92, "Impresión:" + result2);
+        doc.text(3, 95, "*******************************************************************");
+        if(nombres.forma_pago=="Tarjeta"){
+            doc.text(25, 100, "Infoirmacion de tarjeta ");
+            doc.text(35, 105, "Forma de pago: " + nombres.forma_pago);
+            doc.text(3,105, tarjetadata.cardholder)
+            doc.text(3,110, tarjetadata.transmitter)
+            doc.text(3,115,tarjetadata.display_number)
+            doc.text(3,120,"Fecha pago :"+tarjetadata.payment_date)
+            doc.text(3, 125, "*******************************************************************");
+            doc.text(25, 130, "Recibi conforme:")
+            doc.text(20, 135, "_____________________")
+        } else if (nombres.forma_pago == "Deposito"){
+            doc.text(35, 105, "Forma de pago: " + nombres.forma_pago);
+            doc.text(8, 100, "Número de comprobate "+nombres.numerTransacion);
+            doc.text(3, 110, "*******************************************************************");
+            doc.text(25, 115, "Recibi conforme:")
+            doc.text(20, 120, "_____________________")
+        }else{
+            doc.text(3, 100, "Forma de pago: " + nombres.forma_pago);
+            doc.text(3, 105, "*******************************************************************");
+            doc.text(25, 110, "Recibi conforme:")
+            doc.text(20, 115, "_____________________")
+        }       
+        doc.output('dataurlnewwindow');
+    }
     let estado = {
         "reservado": "bg-warning",
         "NO": "Generar",
@@ -91,18 +153,6 @@ export default function DetalleCompraView() {
         "Expirado": "label label-danger",
         "Comprobar": "label label-warning"
     }
-    const [coniliacion, setConsilia] = useState({
-        Valor: "",
-        banco: "",
-        comprobante: "", cuenta: "",
-        fecha: "",
-        id: "",
-        id_registro: "",
-        imagen: "",
-        metodo: "",
-        propietario: "",
-        usuario: ""
-    })
     let precio = {
         1: 20,
         2: 30,
@@ -131,12 +181,9 @@ export default function DetalleCompraView() {
                     btnClass: 'btn-red',
                     action: function () {
                         eliminartiket([parm]).then(ouput => {
-                            // console.log(ouput)
                             if (ouput.success) {
                                 console.log(ouput)
                                 history.goBack()
-                                //window.location.reload()
-                                //setTikes(ouput.data)
                             }
                             if (!ouput.success) {
                                 return $.alert("" + ouput.message)
@@ -152,7 +199,6 @@ export default function DetalleCompraView() {
                 }
             }
         });
-
     }
     const [tiketslist, setTikes] = useState([])
     const [boletos, setlocalida] = useState([])
@@ -477,6 +523,7 @@ export default function DetalleCompraView() {
             "email": ""
         }).then(ouputs => {
             if (ouputs.success) {
+              //  generaComprobante()
                 setUser({ ...ouputs.data })
                 nombres.forma_pago == "Tarjeta" && nombres.link_pago != null ?
                     !nombres.link_pago.includes("cloud.abitmedia.com") ?
@@ -558,7 +605,6 @@ export default function DetalleCompraView() {
                                                             TC de tercero
                                                         </span>
                                                     )
-
                                                 }
                                                 console.log(listnombre, listtarje, nuew)
                                             }, 5000);
@@ -575,7 +621,6 @@ export default function DetalleCompraView() {
                         }) : infoabimedia(nombres.token_pago).then(ouput => {
                             if (ouput.data) {
                                 let data = {
-
                                     "payment_date": ouput.data.transactionDate,
                                     "status": 1,
                                     "payment_id": "",
@@ -600,7 +645,6 @@ export default function DetalleCompraView() {
                                 if (ouputs.data.nombreCompleto != " ") {
                                     setTimeout(() => {
                                         let nuew = []
-
                                         let listtarje = ouput.data.cardHolder.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
                                         let listnombre = ouputs.data.nombreCompleto.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
                                         listnombre.forEach(element => {
@@ -641,10 +685,8 @@ export default function DetalleCompraView() {
                                             )
 
                                         }
-
                                         console.log(listnombre.length, listtarje, nuew.filter(e => e == true).length)
                                     }, 500);
-
                                 }
                                 console.log(ouput)
                             }
@@ -661,7 +703,6 @@ export default function DetalleCompraView() {
                 let boletos = ouput.data.map((e) => {
                     if (concer.find(f => f.nombreConcierto == e.concierto) != undefined) { return { ...e } }
                 })
-                //   console.log(boletos.filter(e => e != undefined))
                 setTikes(boletos.filter(e => e != undefined))
                 setlocalida(boletos.filter(e => e != undefined).map(e => {
                     return {
@@ -705,7 +746,6 @@ export default function DetalleCompraView() {
                         }
                         return
                     }
-                    //$.alert(JSON.stringify(ouput))
                 }).catch(err => {
                     console.log(err)
                 }) :
@@ -716,13 +756,11 @@ export default function DetalleCompraView() {
                     estado: "Atentos"
                 }))
             : ""
-
     }, [])
     const [first, setfirst] = useState("")
     function verRegistro() {
         let selecion = document.getElementById("registro").value
         if (selecion.trim() === "") return
-
         let datos = repetidos.filter(e => e.id == selecion)[0]
         console.log(datos)
         sessionStorage.setItem("Detalleuid", JSON.stringify({ ...datos }))
@@ -745,15 +783,11 @@ export default function DetalleCompraView() {
                 }
                 return
             }
-            //$.alert(JSON.stringify(ouput))
         }).catch(err => {
             console.log(err)
         })
-
     }
-
     const successAlert = (re) => {
-
         setAlert(
             <SweetAlert
                 warning
@@ -811,8 +845,6 @@ export default function DetalleCompraView() {
         setAlert(null);
     };
     function validar() {
-        // console.log(nombres.id)
-        // $.alert("Este boton ya no se debe usar ")
         $.confirm({
             title: 'Desea Aprobar el este Registro',
             content: '',
@@ -825,9 +857,7 @@ export default function DetalleCompraView() {
                     action: function () {
                         ValidarToken(nombres.id).then(ouput => {
                             if (ouput.success) {
-                                // window.location.reload()
                                 history.goBack()
-                                //console.log(ouput)
                             }
                         }).catch(err => {
                             console.log(err)
@@ -867,13 +897,9 @@ export default function DetalleCompraView() {
                         }).catch(errr => {
                             console.log(errr)
                         })
-
-
-
                     }
                 },
                 cancel: function () {
-                    //close
                 },
             },
         });
@@ -943,11 +969,9 @@ export default function DetalleCompraView() {
                     }
                 },
                 cancel: function () {
-                    //close
                 },
             },
         });
-
     }
     function linkcopy(row) {
         //  var text = document.getElementById("content").value;
@@ -977,28 +1001,18 @@ export default function DetalleCompraView() {
                         Liverarasiento(parms).then(ouput => {
                             if (ouput.success) {
                                 history.goBack()
-                                //window.location.reload()
                                 return
                             }
                             $.alert("No se registro")
-
-
                         }).catch(err => {
-
                         })
-
-
                     }
                 },
                 cancel: function () {
-                    //close
                 },
             },
         });
-
-
     }
-
     function boletoscanje() {
         if (nombres.ticket_usuarios.length > 0) {
             return nombres.ticket_usuarios.every(e => e.canje == "CANJEADO")
@@ -1721,6 +1735,11 @@ export default function DetalleCompraView() {
                                             >
                                                 <i className="bi bi-whatsapp"></i>
                                             </a>}
+                                        <a className="rounded-circle btn-success mx-2 p-2 text-white"
+                                            onClick={generaComprobante}
+                                        >
+                                            <i className="bi bi-printer"></i>
+                                        </a>
                                     </div>
 
 
