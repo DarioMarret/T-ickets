@@ -43,7 +43,60 @@ function AdminNavbar() {
     if (nombre.trim().length >= 4) {
       let informacion = {
         "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
-        "email": isNaN(nombre.trim()) ? nombre.trim() : ''
+        "email": isNaN(nombre.trim()) ? nombre.trim().replace(/"/g, '@') : ''
+      }
+      history.push("/admin")
+      buscarcliente({ ...informacion }).then(oupt => {
+        //console.log(informacion, oupt)
+        $("#search").removeClass("d-none")
+        if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
+          $('#cedulac').val("")
+          sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
+          history.push("/admin/suscritor/" + oupt.data.id + "")
+          /*setDausuario({
+            nombreCompleto: oupt.data.nombreCompleto,
+            ciudad: oupt.data.direccion,
+            email: oupt.data.email,
+            id: oupt.data.cedula
+          })*/
+        }
+        else {
+        
+          usedispatch(setToastes({
+            show: true,
+            message: 'Para ceder un ticket el usuario debe estar registrado',
+            color: 'bg-danger', estado: 'Usuaario no encontraron'
+          }))
+        }
+
+      }
+
+      ).catch(err => {
+        usedispatch(setToastes({
+          show: true,
+          message: 'Usuario no encontrado ',
+          color: 'bg-danger', estado: 'Hubo un error'
+        }))
+        console.log(err)
+      })
+
+    }else{
+      usedispatch(setToastes({
+        show: true,
+        message: 'Debe ser mayor a 10 dígito ',
+        color: 'bg-warning', estado: 'Atentos'
+      }))
+    }
+  }
+  const filterNamess = async (e) => {
+    e.preventDefault();
+    
+    let nombre = $('#cedulac').val()
+    
+    if (nombre.trim().length >= 4) {
+      let informacion = {
+        "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
+        "email": isNaN(nombre.trim()) ? nombre.trim().replace(/"/g, '@') : ''
       }
       history.push("/admin")
       buscarcliente({ ...informacion }).then(oupt => {
@@ -144,7 +197,11 @@ function AdminNavbar() {
                     placeholder="cédula o correo..."
                   id="cedulac"
                     type="text"
-                  onKeyPress={(e) => filterNames(e)}
+                  onKeyPress={event => {
+                if (event.key === 'Enter') {
+                  filterNamess(event)
+                }
+              }}
                   ></input>
                   <button 
                   className="btn  btn-default"
