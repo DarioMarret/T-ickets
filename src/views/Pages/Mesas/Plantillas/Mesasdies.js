@@ -339,10 +339,11 @@ const MesadiesView = ({ text, list }) => {
     /**/
     console.log(text)
     let mesas = ["A","B","C","D"]
+    let sillabloquea = ["D2", "B10"]
     let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
     let envotid = sessionStorage.getItem("eventoid")
-    console.log((envotid == "0W2S1V"), (mesas.includes(text.split("")[0]) && text != "D2"))
-    if ((envotid == "0W2S1V")&&(mesas.includes(text.split("")[0])&&text!="D2")){
+    console.log((envotid == "0W2S1V"), (mesas.includes(text.split("")[0]) && !sillabloquea.includes(text)), text)
+    if (((envotid == "0W2S1V") && (mesas.includes(text.split("")[0])) && !sillabloquea.includes(text))){
         return
     }
     let silla = list.find(f => f.silla == e)
