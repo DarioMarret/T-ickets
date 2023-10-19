@@ -72,7 +72,7 @@ export default function DetalleCompraView() {
         "ciudad": "",
         "direccion": ""
     })
-    function generaComprobante(){
+    function generaComprobante() {
         const result2 = new Date().toLocaleString('en-GB', {
             hour12: false,
         });
@@ -94,16 +94,16 @@ export default function DetalleCompraView() {
         doc.text(3, 26, '*******************************************************************');
         doc.text(3, 29, "Evento: " + nombres.info_concierto[0].nombreConcierto);
         let num = 29
-        nombres.info_concierto.forEach(function(val,index){
-            num= num+5
-            doc.text(3, num, "Localidad:"+ LocalidadPrecio(val.idespaciolocalida, val.id_localidad))  
-            doc.text(50, num, "Cantidad:" +val.cantidad)    
+        nombres.info_concierto.forEach(function (val, index) {
+            num = num + 5
+            doc.text(3, num, "Localidad:" + LocalidadPrecio(val.idespaciolocalida, val.id_localidad))
+            doc.text(50, num, "Cantidad:" + val.cantidad)
         })
-       // doc.text(3, 34, "Boletos:" + sumaCantidad);
-       // doc.text(3, 38, "facturación del " + descri.factura.emitido + " " + descri.factura.vencimiento);
-       
+        // doc.text(3, 34, "Boletos:" + sumaCantidad);
+        // doc.text(3, 38, "facturación del " + descri.factura.emitido + " " + descri.factura.vencimiento);
+
         //nombres.info_concierto[nombreConcierto]
-        
+
         doc.text(3, 49, "*******************************************************************");
         //doc.text(35, 54, "DESCUENTO $0.00");
         doc.text(40, 58, "TOTAL: " + (parseFloat(nombres.total_pago)).toFixed(2));
@@ -115,31 +115,31 @@ export default function DetalleCompraView() {
         doc.text(3, 79, "Cédula: " + usuario.cedula)
         doc.text(3, 84, "Fecha registro: " + nombres.fechaCreacion)
         doc.text(3, 88, "*******************************************************************");
-       // doc.text(3, 94, "Operador " + nombres.usuario);
+        // doc.text(3, 94, "Operador " + nombres.usuario);
         doc.text(3, 92, "Impresión:" + result2);
         doc.text(3, 95, "*******************************************************************");
-        if(nombres.forma_pago=="Tarjeta"){
-            doc.text(25, 100, "Infoirmacion de tarjeta ");
+        if (nombres.forma_pago == "Tarjeta") {
+            doc.text(25, 95, "Información de tarjeta ");
             doc.text(35, 105, "Forma de pago: " + nombres.forma_pago);
-            doc.text(3,105, tarjetadata.cardholder)
-            doc.text(3,110, tarjetadata.transmitter)
-            doc.text(3,115,tarjetadata.display_number)
-            doc.text(3,120,"Fecha pago :"+tarjetadata.payment_date)
+            doc.text(3, 105, tarjetadata.cardholder)
+            doc.text(3, 110, tarjetadata.transmitter)
+            doc.text(3, 115, tarjetadata.display_number)
+            doc.text(3, 120, "Fecha pago :" + tarjetadata.payment_date)
             doc.text(3, 125, "*******************************************************************");
-            doc.text(25, 130, "Recibi conforme:")
+            doc.text(25, 130, "Recibí conforme:")
             doc.text(20, 135, "_____________________")
-        } else if (nombres.forma_pago == "Deposito"){
+        } else if (nombres.forma_pago == "Deposito") {
             doc.text(35, 105, "Forma de pago: " + nombres.forma_pago);
-            doc.text(8, 100, "Número de comprobate "+nombres.numerTransacion);
+            doc.text(8, 100, "Número de comprobate " + nombres.numerTransacion);
             doc.text(3, 110, "*******************************************************************");
-            doc.text(25, 115, "Recibi conforme:")
+            doc.text(25, 115, "Recibí conforme:")
             doc.text(20, 120, "_____________________")
-        }else{
+        } else {
             doc.text(3, 100, "Forma de pago: " + nombres.forma_pago);
             doc.text(3, 105, "*******************************************************************");
-            doc.text(25, 110, "Recibi conforme:")
+            doc.text(25, 110, "Recibí conforme:")
             doc.text(20, 115, "_____________________")
-        }       
+        }
         doc.output('dataurlnewwindow');
     }
     let estado = {
@@ -375,7 +375,7 @@ export default function DetalleCompraView() {
         if (localidad == 14) {
             return "TODO-O-NADA Quito"
         }
-        if (PreciosStore().filter(f => f.id == evento).length>0) {
+        if (PreciosStore().filter(f => f.id == evento).length > 0) {
 
             return PreciosStore().filter(f => f.id == evento)[0].localidad;
         }
@@ -400,7 +400,7 @@ export default function DetalleCompraView() {
         if (localidad == 14) {
             return precio[14]
         }
-        if (PreciosStore().filter(f => f.id == evento).length > 0){
+        if (PreciosStore().filter(f => f.id == evento).length > 0) {
             return PreciosStore().filter(f => f.id == evento)[0].precio_normal
         }
         return 0
@@ -523,7 +523,7 @@ export default function DetalleCompraView() {
             "email": ""
         }).then(ouputs => {
             if (ouputs.success) {
-              //  generaComprobante()
+                //  generaComprobante()
                 setUser({ ...ouputs.data })
                 nombres.forma_pago == "Tarjeta" && nombres.link_pago != null ?
                     !nombres.link_pago.includes("cloud.abitmedia.com") ?
@@ -1215,10 +1215,10 @@ export default function DetalleCompraView() {
                             </li>
                             {nombres.codigo_boletos != null && JSON.parse(nombres.codigo_boletos).lengt > 0 ? <li className="nav-item">
                                 <a className="nav-link" data-toggle="tab" href="#correlativos">id Boletos fisicos</a>
-                            </li> : ""}  
-                            
-                            
-                           
+                            </li> : ""}
+
+
+
 
                         </ul>
                     </div>
@@ -1748,108 +1748,108 @@ export default function DetalleCompraView() {
                         </div>
                         <div className="tab-pane  container " id="mesas">
                             {useradmin.perfil == "suscriptores" ? "" :
-                             <div className=" container-fluid d-flex ">
-                                <div className=" invoice-from col-12">
-                                    <div className="row d-none">
-                                        <p className="col-12 col-md-6">
-                                            <a className="btn btn-primary" data-toggle="collapse" href="#collapsever" role="button" aria-expanded="true" aria-controls="collapsever">
-                                                <i className=" fa fa-eye"></i>
-                                            </a>
-                                        </p>
-                                        {Object.keys(rowSelection).length > 0 ?
-                                            <div className="col-12 col-md-6 text-center">
-                                                <button className=" btn btn-success" onClick={quitarrepetifod}  >Quitar los repetidos</button>
+                                <div className=" container-fluid d-flex ">
+                                    <div className=" invoice-from col-12">
+                                        <div className="row d-none">
+                                            <p className="col-12 col-md-6">
+                                                <a className="btn btn-primary" data-toggle="collapse" href="#collapsever" role="button" aria-expanded="true" aria-controls="collapsever">
+                                                    <i className=" fa fa-eye"></i>
+                                                </a>
+                                            </p>
+                                            {Object.keys(rowSelection).length > 0 ?
+                                                <div className="col-12 col-md-6 text-center">
+                                                    <button className=" btn btn-success" onClick={quitarrepetifod}  >Quitar los repetidos</button>
 
-                                            </div>
-                                            : ""}
-                                    </div>
-                                    <Iframe
-                                        url={url}
-                                        detener={() => console.log("")}
-                                    />
-                                 
-                                       
-                                            <MaterialReactTable
-                                                columns={ticketsboletos}
-                                                data={nombres.ticket_usuarios}
-                                                muiTableProps={{
-                                                    sx: {
-                                                        tableLayout: 'flex'
-                                                    }
-                                                }}
-                                                enableRowActions
-                                                enableRowSelection
-                                                positionActionsColumn="first"
-                                                renderRowActions={({ row }) => (
-                                                    <Box sx={{ display: 'flex' }}>
-
-                                                        <div className=" btn-group  " >
+                                                </div>
+                                                : ""}
+                                        </div>
+                                        <Iframe
+                                            url={url}
+                                            detener={() => console.log("")}
+                                        />
 
 
-                                                            <a
-                                                                onClick={() => Eliminara(row.original.id)}
-                                                                className="border  btn-default btn-sm  "
+                                        <MaterialReactTable
+                                            columns={ticketsboletos}
+                                            data={nombres.ticket_usuarios}
+                                            muiTableProps={{
+                                                sx: {
+                                                    tableLayout: 'flex'
+                                                }
+                                            }}
+                                            enableRowActions
+                                            enableRowSelection
+                                            positionActionsColumn="first"
+                                            renderRowActions={({ row }) => (
+                                                <Box sx={{ display: 'flex' }}>
+
+                                                    <div className=" btn-group  " >
 
 
-                                                            >
-                                                                Eliminar
+                                                        <a
+                                                            onClick={() => Eliminara(row.original.id)}
+                                                            className="border  btn-default btn-sm  "
 
 
-                                                            </a>
-
-                                                            <a
-                                                                onClick={() => Licerarrasientos(row.original.id)}
-                                                                className="border  btn-default btn-sm  "
+                                                        >
+                                                            Eliminar
 
 
-                                                            >
-                                                                Liberar
+                                                        </a>
+
+                                                        <a
+                                                            onClick={() => Licerarrasientos(row.original.id)}
+                                                            className="border  btn-default btn-sm  "
 
 
-                                                            </a>
+                                                        >
+                                                            Liberar
 
-                                                            {row.original.estado == "Pagado" ?
-                                                                <Tooltip className="" title="Ver Ticket" placement="top">
-                                                                    <a
-                                                                        className=" btn btn-default-su btn-sm "
-                                                                        onClick={() => generaPDF(row.original)}
-                                                                    //href={item.pdf}
-                                                                    //target="_black"
-                                                                    >
-                                                                        <i className="fa fa-download   "></i>
 
-                                                                    </a>
-                                                                </Tooltip> :
+                                                        </a>
+
+                                                        {row.original.estado == "Pagado" ?
+                                                            <Tooltip className="" title="Ver Ticket" placement="top">
                                                                 <a
-                                                                    className=" btn btn-default btn-sm btn-disable"
-                                                                    disabled
-
+                                                                    className=" btn btn-default-su btn-sm "
+                                                                    onClick={() => generaPDF(row.original)}
+                                                                //href={item.pdf}
+                                                                //target="_black"
                                                                 >
-                                                                    <i className="fa fa-download "></i>
-
+                                                                    <i className="fa fa-download   "></i>
 
                                                                 </a>
-                                                            }
+                                                            </Tooltip> :
+                                                            <a
+                                                                className=" btn btn-default btn-sm btn-disable"
+                                                                disabled
 
-                                                        </div>
-                                                    </Box>
-                                                )}
-                                                getRowId={(row) => row.id}
-
-                                                onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
-                                                state={{ rowSelection }}
+                                                            >
+                                                                <i className="fa fa-download "></i>
 
 
-                                                localization={MRT_Localization_ES}
-                                            />
-                                      
-                                   
-                                </div>
-                            </div>}
+                                                            </a>
+                                                        }
+
+                                                    </div>
+                                                </Box>
+                                            )}
+                                            getRowId={(row) => row.id}
+
+                                            onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
+                                            state={{ rowSelection }}
+
+
+                                            localization={MRT_Localization_ES}
+                                        />
+
+
+                                    </div>
+                                </div>}
 
                         </div>
                         <div className="tab-pane  container " id="correlativos">
-                            {nombres.codigo_boletos != null && JSON.parse(nombres.codigo_boletos).lengt>0?
+                            {nombres.codigo_boletos != null && JSON.parse(nombres.codigo_boletos).lengt > 0 ?
                                 <Table>
                                     <Thead>
                                         <Tr>
@@ -1876,15 +1876,15 @@ export default function DetalleCompraView() {
                                         </Tr>
                                     </Tbody>
                                 </Table>
-                           
-                            :""}
-                         
+
+                                : ""}
+
                         </div>
-                       
+
 
                     </div>
                 </div>
-               
+
 
             </div>
         </PhotoProvider>

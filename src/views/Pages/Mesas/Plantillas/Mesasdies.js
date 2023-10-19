@@ -339,7 +339,7 @@ const MesadiesView = ({ text, list }) => {
     /**/
     console.log(text)
     let mesas = ["A","B","C","D"]
-    let sillabloquea = ["D2", "B10"]
+    let sillabloquea = ["C2","D2", "B10","D9"]
     let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
     let envotid = sessionStorage.getItem("eventoid")
     console.log((envotid == "0W2S1V"), (mesas.includes(text.split("")[0]) && !sillabloquea.includes(text)), text)

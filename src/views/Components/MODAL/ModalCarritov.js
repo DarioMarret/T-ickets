@@ -242,8 +242,6 @@ const ModalCarritoView = (prop) => {
             let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
             console.log(e.espacio, e.idcolor)
             localidaandespacio(e.espacio, e.idcolor).then(ouput => {
-                // console.log(e.espacio, e.idcolor)
-                // console.log(ouput)
                 let nuevoObjeto = []
                 if (ouput.data.find(e => e.typo == "fila")) {
                     ouput.data.forEach(x => {
@@ -298,7 +296,7 @@ const ModalCarritoView = (prop) => {
                         inpagos: sleccionlocalidad.inpagos
                     }))
                     usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != " " && e.cedula != null)))
-                   
+
                     ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length == 0 ?
                         usedispatch(setToastes({
                             show: true,
@@ -313,8 +311,8 @@ const ModalCarritoView = (prop) => {
                         proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado").length,
                         inpagos: sleccionlocalidad.inpagos
                     })
-                    
-                   
+
+
                     sessionStorage.seleccionmapa = JSON.stringify(e)
                     abrirlocalidad()
                     return
@@ -442,9 +440,9 @@ const ModalCarritoView = (prop) => {
                                 proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
                                 pagados: sleccionlocalidad.pagados,
                                 inpagos: sleccionlocalidad.inpagos
-                            }   
+                            }
                         )
-                            usedispatch(updateboletos({
+                        usedispatch(updateboletos({
                             disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
                             proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
                             pagados: sleccionlocalidad.pagados,
@@ -825,7 +823,7 @@ const ModalCarritoView = (prop) => {
                                     >
                                         <option value={"Tarjeta"}>
                                             Tarjeta credito
-                                        </option>                                        
+                                        </option>
                                         <option value={"Transferencia"}>
                                             Transferencia
                                         </option>
