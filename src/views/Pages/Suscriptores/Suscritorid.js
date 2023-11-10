@@ -38,6 +38,7 @@ import axios from "axios";
 import { listartecero } from "utils/columnasub";
 import { EliminarTickteTercero } from "utils/TicktesT";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import PdfViewticketApp from "./Pdfwie";
 
 export const PreciosStore = () => {
   let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
@@ -354,6 +355,12 @@ const SuscritoridView = () => {
     });
 
   }
+  const ms = ()=>{
+    return (<PdfViewticketApp
+      link={li}
+    />)
+  }
+  const [li,setlik]=useState("")
   function generaPDF(row) {
     // console.log(row)
     //window.open("https://tickets.com.ec/", "_blank");
@@ -584,9 +591,12 @@ const SuscritoridView = () => {
   return (
     <>
       {alert}
-      <div className="container-fluid">
+      {li==""?"":ms}
+      <div className="container-fluid ">
+    
         <div className="d-flex justify-content-end align-row.originals-end pb-2" >
           <div>
+            
 
             <Button className="btn btn-wd btn-outline mr-1"
               type="button"
@@ -597,6 +607,7 @@ const SuscritoridView = () => {
               </span>
               Editar
             </Button>
+            
            {/* <Button className="btn btn-wd btn-outline mr-1"
               type="button"
               variant="outline-warning"

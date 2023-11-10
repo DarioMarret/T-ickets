@@ -344,6 +344,7 @@ function Example() {
                         e.estado = salida.data.filter(f => f.id == e.id_registraCompra).length > 0 ? salida.data.filter(f => f.id == e.id_registraCompra)[0].estado_pago :"NO Registro"
                         return { ...e}
                     })
+                    console.log(tikets)
                     setTikes(tikets)
                     //console.log(ouput.data.filter(e => e.canje != "CANJEADO"))
                 }).catch(err => console.log(err))

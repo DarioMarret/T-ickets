@@ -34,12 +34,13 @@ export default function ListaderegistroView(props) {
                 if (!e.success) {
                     return
                 }
-                //console.log(e.data[0])
+               console.log(e)
                 /*e.data.forEach(element => {
                     console.log(moment(element.fechaCreacion).format() +"aqui"+ moment( fechaLimite).format())
                     console.log(moment(element.fechaCreacion).format()> moment(fechaLimite).format())
                 })*/
-                setDatos(e.data.filter(e => moment(e.fechaCreacion).format() > moment(fechaLimite).format())) 
+                /*/.filter(e => moment(e.fechaCreacion).format() > moment(fechaLimite).format())*/
+                setDatos(e.data) 
             }
         ).catch(err =>
             console.log(err)
