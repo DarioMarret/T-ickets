@@ -15,7 +15,7 @@ export const Actualisardescripcionevento = async () => {
         return error
     }
 }
-export const ListarEventosFinalizados= async()=>{
+export const ListarEventosFinalizados = async () => {
     try {
         const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/ACTIVO/", {
             headers: {
@@ -31,7 +31,7 @@ export const ListarEventosFinalizados= async()=>{
 
     }
 }
- const ListarEventosLis = async () => {
+const ListarEventosLis = async () => {
     try {
         const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/ACTIVO/", {
             headers: {
@@ -40,14 +40,14 @@ export const ListarEventosFinalizados= async()=>{
 
             }
         })
-         const  datas = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/PROCESO/", {
+        const datas = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/PROCESO/", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
             }
         })
-         console.log(datas.data.data)
+        console.log(datas.data.data)
         return [...data.data, ...datas.data.data]
     } catch (error) {
         return error;
@@ -78,8 +78,16 @@ const TraerLocalidad = async () => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-        //console.log(data.data)
-        return data.data
+       // sessionStorage.setItem("nombrelocalidades", JSON.stringify(data.data))
+        console.log(data.data)
+        let info = data.data.map(e=>{
+            return { nombre: e.nombre,
+            id:e.id
+            }
+        })
+
+        sessionStorage.setItem("localidadesnombres", JSON.stringify(info))
+        return info
     } catch (error) {
         return error
     }
@@ -87,7 +95,7 @@ const TraerLocalidad = async () => {
 
 export const ListaPreciosEvent = async () => {
     const resultado = await ListarEventosLis()
-    //const data = await TraerLocalidad()
+    const dat= await TraerLocalidad()
     let newarr = []
     const data = await Promise.all(
         resultado.map(async (e) => {
@@ -96,11 +104,11 @@ export const ListaPreciosEvent = async () => {
             return e
         }))
     let datos = await data.map((e) => {
-         e.Precios.map(f=>{
-            newarr.push({...f})
-         })
+        e.Precios.map(f => {
+            newarr.push({ ...f })
+        })
     })
 
-   // console.log(newarr)
+    console.log(resultado, data)
     return sessionStorage.setItem("PreciosLocalidad", JSON.stringify(newarr))
 }

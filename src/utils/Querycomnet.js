@@ -16,6 +16,10 @@ export const PagoRapido = async (transaccion) => {
     let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id    
     let metodo = GetMetodo() == "Transferencia" ? "Deposito" : GetMetodo()
     //let tienda= getVerTienda();
+    let cantidadTotal = getVerTienda().reduce((total, concierto) => {
+        return total + concierto.cantidad;
+    }, 0);
+   let sillas=  [...asientos, ...array]
    //  si discrimino lo tengo que guardar  let total = GetMetodo() == "Tarjeta" ? parseFloat(GetValores().total) : parseFloat(GetValores().comision) + parseFloat(GetValores().subtotal)
     let concierto = getVerTienda().map((e) => {
         return {
@@ -23,7 +27,7 @@ export const PagoRapido = async (transaccion) => {
             "id_localidad": e.localidaEspacio["idcolor"],
             "idespaciolocalida": e.localidaEspacio["ideprecio"],
             "cantidad": e.cantidad,
-            "id_sillas": [...asientos, ...array]
+            "id_sillas": cantidadTotal == sillas.length?[...sillas]:[]
         }
     })
     let datos = {
