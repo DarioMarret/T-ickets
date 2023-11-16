@@ -187,7 +187,7 @@ export default function ReporteView(prop) {
                                 <h5><strong> Email: </strong> <span>ventas@t-ickets.com</span> </h5>
                                 <h5><strong> Whastapp: </strong> <span>0980008000</span> </h5>
 
-                                <h5><strong> Valor a Dépositar </strong>{"$" + (parseFloat(modalshow.estado.subtotal) + parseFloat(modalshow.estado.comision)).toFixed(2)}</h5>
+                                <h5><strong> Valor a Dépositar </strong>{"$" + parseFloat(modalshow.estado.total).toFixed(2)}</h5>
                             </div>
 
                             <div >
