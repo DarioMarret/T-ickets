@@ -510,7 +510,7 @@ export default function DetalleCompraView() {
     }
     const ListaPrecios = async () => {
         const info = await ListaPreciosEvent();
-        console.log(info)
+       // console.log(info)
 
         return info
     }

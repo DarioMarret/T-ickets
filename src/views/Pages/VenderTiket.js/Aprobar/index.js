@@ -576,7 +576,9 @@ export default function AprobarView() {
                         Cosiliacion: f.consolidado,
                         PAGOMEDIO_LINK: f.link_pago,
                         COMPROBANTE_LINK: f.link_comprobante,
-                        NumerTransacion: f.numerTransacion
+                        NumerTransacion: f.numerTransacion,
+                        comentario: (f.comentarios.length>0),
+                        asuntos: JSON.stringify(f.comentarios)
                     }
                 })} fileName={"Todos Pagados"} label={"Pagados"} />
                     : ""
