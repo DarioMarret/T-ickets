@@ -1309,7 +1309,10 @@ const IndexFlas = () => {
                         >
                           <a id={"headingThree" + e.id} className="collapsed evento eventoss" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
-                            <div className="container rounded-7  d-flex justify-content-center px-0">
+                            <div className="container rounded-7  d-flex justify-content-center px-0" style={{
+                              height: "215px !important;",
+                              width: "100% !important;"
+                            }}>
                               <i className="  text-info btn-hover" style={{
                                 position: "absolute",
                                 margin: "auto",

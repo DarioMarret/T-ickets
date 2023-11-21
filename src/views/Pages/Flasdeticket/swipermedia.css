@@ -267,6 +267,8 @@ a[aria-expanded="true"] svg {
 
 .evento {
     cursor: pointer;
+    height: 215px !important;
+    width: 100% !important;
 }
 
 .cursor {

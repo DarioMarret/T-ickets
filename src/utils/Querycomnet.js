@@ -27,6 +27,9 @@ export const PagoRapido = async (transaccion) => {
             "id_localidad": e.localidaEspacio["idcolor"],
             "idespaciolocalida": e.localidaEspacio["ideprecio"],
             "cantidad": e.cantidad,
+            "localidad_nombre": e.localidad,
+            "localidad_precio": parseInt(e.cantidad)* parseFloat(e.valor),
+            "comision_por_boleto": e.localidaEspacio["comision_boleto"],
             "id_sillas": cantidadTotal == sillas.length?[...sillas]:[]
         }
     })
