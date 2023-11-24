@@ -1,1 +1,0 @@
-export const datachar = JSON.parse(sessionStorage.getItem("data"))

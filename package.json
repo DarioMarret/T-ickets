@@ -1,6 +1,7 @@
 {
   "name": "t-ickets",
   "version": "2.0.1",
+  "homepage": "",
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "^2.16.0",

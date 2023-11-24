@@ -101,6 +101,19 @@ export const GEnerarBoletos = async (parms) => {
         return error
     }
 }
+export const Generar_Boleto_nuevos = async(parms,id)=>{
+    let datos = {
+        parsm: parms
+    }
+    try {
+        let { data } = await axios.put("https://api.t-ickets.com/mikroti/Boleteria/tickets"+id,{
+            datos
+        })
+        return data
+    } catch (error) {
+        return data
+    }
+}
 //post_api_v1_selecion_usuario
 export const Seleccionaruserlista = async (parms) => {
     let id = clienteInfo() != null ? clienteInfo().id : 0

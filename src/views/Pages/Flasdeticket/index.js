@@ -1299,20 +1299,17 @@ const IndexFlas = () => {
             {/* Listar Eventos */}
             <div className="row  justify-content-center" id="accordion">
 
-              <div className="col-12 col-lg-9">
+              <div className="col-12 col-lg-9 col-sm-9 col-md-9 ">
                 <div className="row  p-0">
                   {eventoslist.length > 0 ?
                     eventoslist.slice(userauthi.inicio, userauthi.final).map((e, i) => {
                       return (
-                        <div className="col-12  mx-auto my-3" id={"evento" + e.id} key={i}
-
+                        <div className="col-12  mx-auto my-3 " id={"evento" + e.id} key={i}
+                          
                         >
                           <a id={"headingThree" + e.id} className="collapsed evento eventoss" data-toggle="collapse" data-target={"#collapseid" + e.id} aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
-                            <div className="container rounded-7  d-flex justify-content-center px-0" style={{
-                              height: "215px !important;",
-                              width: "100% !important;"
-                            }}>
+                            <div className="container rounded-7  d-flex justify-content-center px-0" >
                               <i className="  text-info btn-hover" style={{
                                 position: "absolute",
                                 margin: "auto",

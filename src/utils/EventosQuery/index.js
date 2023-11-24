@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ListarLocalidad } from "utils/LocalidadesQuery";
+import { boleteriaAxios } from "utils/index";
 
 export const Actualisardescripcionevento = async () => {
     try {
@@ -78,11 +79,12 @@ const TraerLocalidad = async () => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-       // sessionStorage.setItem("nombrelocalidades", JSON.stringify(data.data))
+        // sessionStorage.setItem("nombrelocalidades", JSON.stringify(data.data))
         console.log(data.data)
-        let info = data.data.map(e=>{
-            return { nombre: e.nombre,
-            id:e.id
+        let info = data.data.map(e => {
+            return {
+                nombre: e.nombre,
+                id: e.id
             }
         })
 
@@ -95,7 +97,7 @@ const TraerLocalidad = async () => {
 
 export const ListaPreciosEvent = async () => {
     const resultado = await ListarEventosLis()
-    const dat= await TraerLocalidad()
+    const dat = await TraerLocalidad()
     let newarr = []
     const data = await Promise.all(
         resultado.map(async (e) => {
@@ -111,4 +113,29 @@ export const ListaPreciosEvent = async () => {
 
     console.log(resultado, data)
     return sessionStorage.setItem("PreciosLocalidad", JSON.stringify(newarr))
+}
+export const Boleteria_canje = async (codigoEvento) => {
+    try {
+        let { data } = await boleteriaAxios.get("Boleteria/canje/" + codigoEvento)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+export const Boleteria_Boletos = async (codigoEvento) => {
+    try {
+        let { data } = await boleteriaAxios.get("Boleteria/boletos/" + codigoEvento)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Boleteria_Nombre = async (nombre) => {
+    try {
+        let { data } = await boleteriaAxios.post("Boleteria/evento_valor", { "nombre": nombre })
+        return data
+    } catch (error) {
+        return error
+    }
 }
