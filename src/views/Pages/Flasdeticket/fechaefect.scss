@@ -1,10 +1,11 @@
+
 .eventoss :hover {
     .btn-hover svg {
         transition: all .3s ease-in-out;
         animation: identifier 1.3s linear infinite;
         translate: 0 10px;
     }
-
+   cursor: pointer;
     .line1 {
 
         animation: path1 1.2s linear infinite;

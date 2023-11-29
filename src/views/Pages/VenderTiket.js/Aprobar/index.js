@@ -60,7 +60,7 @@ export default function AprobarView() {
 
 
     const [alert, setAlert] = useState(null)
-    const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })), hideAlert() }
+    
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
@@ -90,15 +90,6 @@ export default function AprobarView() {
     }
 
 
-    const hideAlert = () => {
-        setAlert(null)
-    }
-    const ListaPrecios = async () => {
-        const info = await ListaPreciosEvent();
-        //   console.log(info)
-        ListaPrecio()
-        return info
-    }
     function refrescar(){
         ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
             console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
@@ -198,6 +189,7 @@ export default function AprobarView() {
             console.log(err)
         })
     }
+    let [datos,stDatos]=useState([])
     useEffect(() => {
         // ListaPrecios()
         console.log(ticket.ticket)
@@ -218,7 +210,7 @@ export default function AprobarView() {
             }
             if (e.data) {
                 const nombresUnicos = new Set();
-
+                stDatos(e.data)
                 // Itera a través del JSON y agrega los nombres al conjunto
                 e.data.filter(fe => moment(fe.fechaCreacion.split(" ")[0]).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).forEach(item => {
                     nombresUnicos.add(item.info_concierto[0].nombreConcierto);
@@ -509,6 +501,7 @@ export default function AprobarView() {
                 <div className="col-12 col-md-8 d-flex justify-content-center ">
                     <div className="card">
                         <div className="card-body d-none d-sm-none d-md-block">
+                        
                             <DateRangePicker
                                 editableDateInputs={false}
                                 onChange={item => rango(item)}
@@ -556,28 +549,28 @@ export default function AprobarView() {
             <div className=" container row"  >
             </div>
             {tiketslist.length > 0 ? <div className="container d-flex flex-wrap">
-                {tiketslist.filter(e => e.estado_pago == "Pagado").length > 0 ? <ExportToExcel apiData={tiketslist.filter(e => e.estado_pago == "Pagado").map(f => {
+                {tiketslist.filter(e => e.estado_pago == "Pagado").length > 0 ? <ExportToExcel apiData={datos.filter(e => e.estado_pago == "Pagado").map(f => {
                     return {
                         ID_Registro: f.id,
                         ID_USUARIO: f.id_usuario,
-                        EVENTO: f.concierto,
+                        EVENTO: f.info_concierto[0].nombreConcierto,
                         CEDULA: f.cedula,
                         METODO: f.forma_pago,
-                        iva:f.iva,
+                        iva: f.iva,
                         TOTAL_COMISION: f.comision_boleto,
-                       
+                        TOTAL:f.subtotal==""?0:(parseFloat(f.subtotal)+parseFloat(f.iva)) ,
+                        //CREO: f.info_registro.length > 0 ? f.info_registro[0].name : "",
+                       // TIPO: f.info_registro.length > 0 ? f.info_registro[0].title : "",
                         Subtotal: f.subtotal,
-                        TOTAL: f.total_pago,
+
                         MEDIO: f.detalle,
-                        CREO: f.info_registro.length > 0 ? f.info_registro[0].name : "",
-                        TIPO: f.info_registro.length > 0 ? f.info_registro[0].title : "",
                         CREACION: f.fechaCreacion,
                         ESTADO: f.estado_pago,
                         Cosiliacion: f.consolidado,
                         PAGOMEDIO_LINK: f.link_pago,
                         COMPROBANTE_LINK: f.link_comprobante,
                         NumerTransacion: f.numerTransacion,
-                        comentario: (f.comentarios.length>0),
+                        comentario: (f.comentarios.length > 0),
                         asuntos: JSON.stringify(f.comentarios)
                     }
                 })} fileName={"Todos Pagados"} label={"Pagados"} />

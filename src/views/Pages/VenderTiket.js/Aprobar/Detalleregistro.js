@@ -45,6 +45,7 @@ import WhastappWiev from "views/Components/MODAL/ModalWhast";
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import jsPDF from "jspdf"
+import { DateRangePicker } from "../../../../../node_modules/rsuite/esm/index";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -510,7 +511,7 @@ export default function DetalleCompraView() {
     }
     const ListaPrecios = async () => {
         const info = await ListaPreciosEvent();
-       // console.log(info)
+        // console.log(info)
 
         return info
     }
@@ -721,7 +722,7 @@ export default function DetalleCompraView() {
             console.log(err)
         })
         nombres.forma_pago == "Deposito" ?
-            nombres.numerTransacion != null ?
+            nombres.numerTransacion != null && nombres.numerTransacion != "null" ?
                 BuscarTransacion({
                     "numeroTransaccion": nombres.numerTransacion
                 }).then(ouput => {
@@ -748,13 +749,7 @@ export default function DetalleCompraView() {
                     }
                 }).catch(err => {
                     console.log(err)
-                }) :
-                usedispatch(setToastes({
-                    show: true,
-                    message: "número de comprobante no registrado",
-                    color: 'bg-warning',
-                    estado: "Atentos"
-                }))
+                }) : ""
             : ""
     }, [])
     const [first, setfirst] = useState("")
@@ -769,6 +764,7 @@ export default function DetalleCompraView() {
 
     }
     function ValidarComprobante() {
+        if (nombres.numerTransacion == " ") return
         BuscarTransacion({
             "numeroTransaccion": nombres.numerTransacion
         }).then(ouput => {
@@ -1196,6 +1192,8 @@ export default function DetalleCompraView() {
     return (
         <PhotoProvider>
             <div>
+
+
                 {alert}
 
                 <WhastappWiev />
@@ -1459,7 +1457,7 @@ export default function DetalleCompraView() {
                                                             }
                                                             <br></br>
                                                             {
-                                                                nombres.forma_pago == "Deposito" ?
+                                                                nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
                                                                     nombres.clave_acceso != null ? "" : <a className=" btn btn-default btn-sm" onClick={ComprobarBoleto}>
                                                                         <i className="fa fa-credit-card"></i> Cambiar a Comprobar deposito
                                                                     </a>
@@ -1497,6 +1495,15 @@ export default function DetalleCompraView() {
                                                                     <i className="fa fa-credit-card"></i> Link de pago
                                                                 </a>
                                                                 : <a className=" btn btn-default btn-sm"><i className="fa fa-credit-card"></i> Sin Link</a>}
+                                                            {
+                                                                nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
+                                                                    nombres.clave_acceso != null ? "" : <a className=" btn btn-default btn-sm" onClick={ComprobarBoleto}>
+                                                                        <i className="fa fa-credit-card"></i> Cambiar a Comprobar 
+                                                                    </a>
+                                                                    : <a className=" btn btn-default btn-sm" >
+                                                                        <i className="fa fa-credit-card"></i> Ya se genero autoriazaion
+                                                                    </a>
+                                                            }
 
                                                             {
                                                                 nombres.forma_pago == "Deposito" ?

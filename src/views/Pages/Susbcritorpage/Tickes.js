@@ -31,7 +31,7 @@ import DataTableBos from "components/ReactTable/Datatable.js/index.js";
 import { ticketsboletos } from "utils/columnasub.js";
 import TablasViwe from "layouts/Tablasdoc.js";
 import { generaPDF } from "utils/boletos/Queryboleto.js";
-import { generaTiketspdf } from "utils/Querycomnet.js";
+import { generaTiketsBingo, generaTiketspdf } from "utils/Querycomnet.js";
 import { Triangle } from "react-loader-spinner";
 import Inframene from "views/Components/IFrame/index.js";
 import { setToastes } from "StoreRedux/Slice/ToastSlice.js";
@@ -90,10 +90,65 @@ function Example() {
             "id_ticket_usuarios": row.id
         }).then(ouput => {
             if (ouput.success) {
-                usedispatch(setModal({ nombre: 'pdfsshow', estado: ouput.link.replace("flash","api")}))
-               // console.log(ouput.link)
+                usedispatch(setModal({ nombre: 'pdfsshow', estado: ouput.link.replace("flash", "api") }))
+                // console.log(ouput.link)
                 // window.open(ouput.link, "_blank");
                 setSpiner("d-none")
+
+            } else {
+                usedispatch(setToastes({
+                    show: true,
+                    message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
+                    color: 'bg-primary',
+                    estado: "Hubo un error intenta mas tarder"
+                }))
+                setSpiner("d-none")
+            }
+
+        }).catch(eror => {
+            setSpiner("d-none")
+            usedispatch(setToastes({
+                show: true,
+                message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
+                color: 'bg-primary',
+                estado: "Hubo un error intenta mas tarder"
+            }))
+            //console.log(eror)
+        })
+    }
+    function generaBingo(row) {
+        setSpiner("")
+        generaTiketspdf({
+            "cedula": row.cedula,
+            "codigoEvento": row.codigoEvento,
+            "id_ticket_usuarios": row.id
+        }).then(ouput => {
+            if (ouput.success) {
+                //usedispatch(setModal({ nombre: 'pdfsshow', estado: ouput.link.replace("flash", "api") }))
+                // console.log(ouput.link)
+                // window.open(ouput.link, "_blank");
+                generaTiketsBingo({
+                    "cedula": row.cedula,
+                    "Codigoevento": row.codigoEvento,
+                    "id_ticket_usuarios": row.id,
+                    "Bingo": ""
+                }, row.id).then(ouputs => {
+                    console.log(ouput)
+                    if (ouputs.estado) {
+                        usedispatch(setModal({ nombre: 'pdfsshowBingo', Bingo: ouputs.data["Bingo"], estado: ouput.link.replace("flash", "api"), }))
+                        setSpiner("d-none")
+                    }
+
+                }).catch(err => {
+                    setSpiner("d-none")
+                    usedispatch(setToastes({
+                        show: true,
+                        message: "No te preocupes tu tabla ya está comprada los pdf se generará pronto, paciencia gracias",
+                        color: 'bg-primary',
+                        estado: "Hubo un error intenta mas tarder"
+                    }))
+                })
+                //setSpiner("d-none")
 
             } else {
                 usedispatch(setToastes({
@@ -186,14 +241,14 @@ function Example() {
                     <tr key={index}>
 
                         <td className="text-xs ">{item.concierto}</td>
-                        <td className="text-xs text-center ">#{item.asientos["silla"] == null ? item.id_localidades_items :item.asientos["silla"]}</td>
+                        <td className="text-xs text-center ">#{item.asientos["silla"] == null ? item.id_localidades_items : item.asientos["silla"]}</td>
                         <td className="text-xs text-center">{item.localidad}</td>
                         <td className="text-xs text-center">{item.fechaCreacion}</td>
                         <td className="text-xs text-center">
                             <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
                             <div className=" btn-group  " >
-                                {item.estado == "Pagado" && item.canje !="CANJEADO" ?
+                                {item.estado == "Pagado" && item.canje != "CANJEADO" ?
                                     <Tooltip className="" title="Ver Ticket" placement="top">
                                         <a
                                             className="btn btn-default-su btn-sm text-danger"
@@ -215,6 +270,29 @@ function Example() {
 
                                     </a>
                                 }
+                                {item.estado == "Pagado" && item.canje != "CANJEADO" ?
+                                    <Tooltip className="" title="Ver Tabla" placement="top">
+
+                                        <a
+                                            className="btn btn-default-su btn-sm text-danger"
+                                            onClick={() => generaBingo(item)}
+                                        //href={item.pdf}
+                                        //target="_black"
+                                        >
+                                            <i className="fa fa-table  "></i>
+
+                                        </a>
+                                    </Tooltip> :
+                                    <a
+                                        className=" btn btn-default btn-sm btn-disable"
+                                        disabled
+
+                                    >
+                                        <i className="fa fa-table "></i>
+
+
+                                    </a>
+                            }
                                 {item.estado == "Pagado" && item.pdf != null && item.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
                                     <a className=" btn btn-default btn-sm d-none"
 
@@ -327,22 +405,22 @@ function Example() {
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
         listarRegistropanel({ "cedula": user.cedula }).then(
-            salida=> {
+            salida => {
                 if (!salida.success) {
                     return
                 }
-               // console.log(e.data[0])
-               // setDatos(e.data)
+                // console.log(e.data[0])
+                // setDatos(e.data)
                 Listarticketporestado(user.cedula).then(ouput => {
                     //console.log(ouput)
                     if (!ouput.success) {
                         return
                     }
                     console.log(ouput.data)
-                    let tikets= ouput.data.map(e=>{
+                    let tikets = ouput.data.map(e => {
 
-                        e.estado = salida.data.filter(f => f.id == e.id_registraCompra).length > 0 ? salida.data.filter(f => f.id == e.id_registraCompra)[0].estado_pago :"NO Registro"
-                        return { ...e}
+                        e.estado = salida.data.filter(f => f.id == e.id_registraCompra).length > 0 ? salida.data.filter(f => f.id == e.id_registraCompra)[0].estado_pago : "NO Registro"
+                        return { ...e }
                     })
                     console.log(tikets)
                     setTikes(tikets)
@@ -353,7 +431,7 @@ function Example() {
         ).catch(err =>
             console.log(err)
         )
-        
+
         Listarfaci({ "cedula": user.cedula }).then(ouput => {
             if (ouput.success) {
                 console.log(ouput)
@@ -363,7 +441,7 @@ function Example() {
         }).catch(err => {
             console.log(err)
         })
-       
+
     }, [])
     function suma(item) {
         let tikets = tiketslist.find(e => e.codigoEvento == item).detalle.map((f) => { return parseFloat(f.valor) })
@@ -375,7 +453,7 @@ function Example() {
         }
 
     }
-     console.log(tiketslist)
+    console.log(tiketslist)
     return (
         <>
             {alert}

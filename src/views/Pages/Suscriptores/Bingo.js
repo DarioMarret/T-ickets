@@ -13,8 +13,8 @@ import "./Pdfwie.css"
     imprimir, armas, mascotas, mascarilla, bebidas, card, cedula, comidas, desiectante, social, tc
 } = staticimg*/
 
-function PdfViewticketApp({...props}) {
-    let { link } = props
+function BingoViewticketApp({ ...props }) {
+    let { link, Bingo } = props
 
     const [data, setData] = useState({
         concierto: "",
@@ -36,65 +36,95 @@ function PdfViewticketApp({...props}) {
 
     });
     const [qr, setQr] = useState("Ayuda")
-
+    const [arr, SetArr] = useState([])
     const [loader, setLoader] = useState(true)
 
     useEffect(() => {
         //if (props.split('http://localhost:3001/ticket_pdf/')[1]) {
         try {
             if (link.split('https://api.t-ickets.com/ticket_pdf/')[1]) {
-                console.log('entro', link.split("https://api.t-ickets.com/ticket_pdf/")[1])
-                console.log('entro', JSON.parse(decode(link.split("https://api.t-ickets.com/ticket_pdf/")[1])))
+                //           console.log('entro', link.split("https://api.t-ickets.com/ticket_pdf/")[1])
+                //          console.log('entro', JSON.parse(decode(link.split("https://api.t-ickets.com/ticket_pdf/")[1])))
                 //let dat = JSON.parse(decode(props.split("http://localhost:3001/ticket_pdf/")[1]))
                 let dat = JSON.parse(decode(link.split("https://api.t-ickets.com/ticket_pdf/")[1]))
-                console.log(dat)
+                // console.log(dat)
 
                 setData(dat)
                 dataQr(dat)
 
-
+                let html = '';
+                let cards = JSON.parse(Bingo);
+                SetArr(cards[0])
+                console.log(cards)
+                /*cards[0].forEach(card => {
+                    html += `<table>
+      <thead>
+      <tr>
+        <th>B</th>
+        <th>I</th>
+        <th>N</th>
+        <th>G</th>
+        <th>O</th>
+      </tr>
+      </thead>
+      <tbody>`;
+                    for (let i = 0; i < 5; i++) {
+                        html += `
+      <tr>
+        <td>${card[0][i]}</td>
+        <td>${card[1][i]}</td>
+        <td>${card[2][i]}</td>
+        <td>${card[3][i]}</td>
+        <td>${card[4][i]}</td>
+      </tr>
+        `;
+                    }
+                    html += '</tbody></table>';
+                });
+                document.querySelector('#bingo-cards').innerHTML = html;*/
                 //const imagenContainer = document.getElementById('imagenContainer');
-                function toDataURL(src, callback) {
-                    var image = new Image();
-                    image.crossOrigin = 'Anonymous';
+                /* function toDataURL(src, callback) {
+                     var image = new Image();
+                     image.crossOrigin = 'Anonymous';
+ 
+                     image.onload = function () {
+                         var canvas = document.createElement('canvas');
+                         var context = canvas.getContext('2d');
+                         canvas.height = this.naturalHeight;
+                         canvas.width = this.naturalWidth;
+                         context.drawImage(this, 0, 0);
+                         var dataURL = canvas.toDataURL('image/jpeg');
+                         callback(dataURL);
+                     };
+                     image.src = src;
+                     let imagens = document.getElementById('imagenContainer');
+                     imagens.src = src
+                 }
+                 toDataURL(dat.imagenConcierto, function (dataURL) {
+                     //console.log(dataURL);
+                     let imagen = document.getElementById('imagenContainer');
+                     imagen.src = dataURL
+                 })*/
 
-                    image.onload = function () {
-                        var canvas = document.createElement('canvas');
-                        var context = canvas.getContext('2d');
-                        canvas.height = this.naturalHeight;
-                        canvas.width = this.naturalWidth;
-                        context.drawImage(this, 0, 0);
-                        var dataURL = canvas.toDataURL('image/jpeg');
-                        callback(dataURL);
-                    };
-                    image.src = src;
-                    let imagens = document.getElementById('imagenContainer');
-                    imagens.src = src
-                }
-                toDataURL(dat.imagenConcierto, function (dataURL) {
-                    console.log(dataURL);
-                    let imagen = document.getElementById('imagenContainer');
-                    imagen.src = dataURL
-                })
                 //imagenContainer.appendChild(imgElement);
 
-               /* setTimeout(function () {
-                    html2canvas(document.querySelector("#printe")).then(canvas => {
-                        var imgWidth = 130;
-                        var imgHeight = canvas.height * imgWidth / canvas.width;
-                        const contentDataURL = canvas.toDataURL('image/png')
-                        let pdf = new jsPDF('p', 'mm', 'a5'); // a5 size page of PDF
-                        var position = 10;
-                        pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
-                        let frame = document.querySelector("#frame")
-                        //frame.src = pdf.output("bloburl");
-                        // setTimeout(function () { document.querySelector("#printe").remove() }, 1000)
-                        //document.querySelector("#printe").remove()
-                        //return
-                        //pdf.save()
-                         window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
-                    });
-                }, 1500)*/
+                /* setTimeout(function () {
+                     html2canvas(document.querySelector("#printe")).then(canvas => {
+                         var imgWidth = 130;
+                         var imgHeight = canvas.height * imgWidth / canvas.width;
+                         const contentDataURL = canvas.toDataURL('image/png')
+                         let pdf = new jsPDF('p', 'mm', 'a5'); // a5 size page of PDF
+                         var position = 10;
+                         pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
+                         let frame = document.querySelector("#frame")
+                         //frame.src = pdf.output("bloburl");
+                         // setTimeout(function () { document.querySelector("#printe").remove() }, 1000)
+                         //document.querySelector("#printe").remove()
+                         //return
+                         //pdf.save()
+                          window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
+                     });
+                 }, 1500)*/
 
 
             } else {
@@ -123,120 +153,6 @@ function PdfViewticketApp({...props}) {
         }
         setQr(dat.email)
     }
-
-    const Bloque = () => {
-        if (data.sillas.split("-")[1]) {
-            let bloque = data.sillas.split("-")[1]
-            return (
-                <div className="row  py-3">
-                    <div className="col-3 d-flex    flex-column  ">
-                        <div className=" text-center">
-                            <strong>BLOQUE</strong>
-                        </div>
-                        <div className="d-flex justify-content-center" >
-                            <div className="border rounded-4" style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                height: 40,
-                                width: "80%"
-                            }}>
-                                {data.localidad}
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className="col-3 d-flex  flex-column ">
-                        <div className=" text-center">
-                            <strong>FILA</strong>
-                        </div>
-                        <div className="d-flex justify-content-center">
-                            <div className="border rounded-4" style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                height: 40,
-                                width: "80%"
-                            }}>
-                                {data.sillas.split("-")[0]}
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <div className="col-3 d-flex  flex-column ">
-                        <div className=" text-center">
-                            <strong>ASIENTO</strong>
-                        </div>
-                        <div className="d-flex justify-content-center">
-                            <div className="border rounded-4" style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                height: 40,
-                                width: "80%"
-                            }}>
-                                {data.sillas.split("-")[2]}
-
-                            </div>
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-            )
-        } else {
-            return (
-                <div className="row  py-3">
-                    <div className="col-3 d-flex  flex-column ">
-                        <div className=" text-center">
-                            <strong>CORRELATIVO</strong>
-                        </div>
-                        <div className="d-flex justify-content-center">
-                            <div className="border rounded-4" style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                height: 40,
-                                width: "80%"
-                            }}>
-                                {data.sillas}
-
-                            </div>
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-            )
-        }
-    }
-    const nuevo = () => {
-
-        // Agrega la imagen al contenedor
-
-        html2canvas(document.querySelector("#printe")).then(canvas => {
-            var imgWidth = 130;
-            var imgHeight = canvas.height * imgWidth / canvas.width;
-            const contentDataURL = canvas.toDataURL('image/png')
-            let pdf = new jsPDF('p', 'mm', 'a5'); // a5 size page of PDF
-            var position = 10;
-            pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
-            let frame = document.querySelector("#frame")
-            //frame.src = pdf.output("bloburl");
-           // setTimeout(function () { document.querySelector("#printe").remove() }, 1000)
-            //document.querySelector("#printe").remove()
-            //return
-            //pdf.save()
-           // window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
-        });
-
-    }
     if (!loader) return (<div></div>)
     return (
         <div className='d-flex' style={{
@@ -244,13 +160,13 @@ function PdfViewticketApp({...props}) {
             justifyContent: "center",
             overflowX: "auto"
         }}>
-          
+
 
             <div id="printe" className="   "
                 style={{
                     position: "absolute",
-                    width: '210mm',
-
+                    width: '200mm',
+                    height: "auto",
                     backgroundColor: "#f75900"
 
                 }}>
@@ -322,7 +238,7 @@ function PdfViewticketApp({...props}) {
                                 position: "absolute"
 
                             }}>
-                                <h3 style={{ fontSize: "0.8em" }} className=''>BOLETO DIGITAL #{data.id}</h3></div>
+                                <h3 style={{ fontSize: "0.8em" }} className='p-1'>TABLA DE BINGO #{data.id}</h3></div>
 
                         </div>
                         <div className='col-4 col-lg-6 d-flex justify-content-end   pl-0' style={{
@@ -347,111 +263,123 @@ function PdfViewticketApp({...props}) {
 
                 </div>
                 <div className=' bg-light m-4  rounded-5   justify-content-center '
-                    style={{ height: '240mm', }}>
+                    style={{ height: '245mm', }}>
                     <div className='p-3 px-5 text-end'>
-                        <h3 className=' text-secondary fw-bold text-uppercase' style={{ fontSize: "1.3em" }}> CONCIERTO: {data.concierto}</h3>
+                        <h3 className=' text-secondary fw-bold text-uppercase' style={{ fontSize: "1.3em" }}> CLIENTE: {data.nombreCompleto}</h3>
+                        <div className='d-flex  justify-content-end'>
+                            <p className=' text-secondary fw-bold text-uppercase' style={{ fontSize: "1em" }}> Fecha: {data.fechaConcierto}</p>
+                            <p className=' text-secondary fw-bold text-uppercase px-4' style={{ fontSize: "1em" }}> Premios: "Desconocido"</p>
+                        </div>
+                        <p className=' text-secondary fw-bold text-uppercase px-4' style={{ fontSize: "1em" }}> Lugar: "Desconocido"</p>
+
                     </div>
-                    <div className="col-12 px-lg-5   " >
+                    <div className="col-12 px-lg-5  eventos  pb-5 " style={{
+                        height: "215px !important;",
+
+                    }} >
                         <img id='imagenContainer' style={{
-                            background: 'url(' + data.imagenConcierto + ')',
+
                             height: "215px !important;",
                             width: "100% !important;",
                             backgroundSize: "cover",
                             backgroundRepeat: "no-repeat"
                         }} className="img-fluid rounded-7 shadow-md img-evento   " alt="" />
+                        <img className='img-fluid rounded-7' src='/img/Bingonu.png' />
                     </div>
-                    <div className="col-12 px-lg-5    pt-3" >
-                        <div className='rounded-7 d-flex border  shadow-md  '
-                            style={{
-                                height: " 215px",
-                                width: "100% !important;"
-                            }}
-                        >
-                            <div className='  border-end border-secondary px-0 h-100 col-3'>
-                                <p className=' text-secondary fw-bold pt-1  px-3' style={{ fontSize: "0.8em" }}>ESTADO</p>
-                                <div className='bg-danger px-0 pt-1 pb-1 d-flex  align-items-center justify-content-center'>
-                                    <h6 className=' fw-bold text-light '>CLIENTE:</h6>
-                                </div>
-                                <div className=' texte-start px-3 lineHeight' >
-                                    <p className=' text-secondary fw-bold pt-1' style={{ fontSize: "0.7em" }}>Fecha de cobro:</p>
-                                    <p className=' text-secondary fw-bold pt-1' style={{ fontSize: "0.7em" }}>Estado:</p>
-                                    <p className=' text-secondary fw-bold pt-1' style={{ fontSize: "0.7em" }}>Valor pagado:</p>
-                                    <p className=' text-secondary fw-bold pt-1' style={{ fontSize: "0.7em" }}>Fecha del Concierto:</p>
-                                    <p className=' text-secondary fw-bold pt-1' style={{ fontSize: "0.7em" }}>Localidad:</p>
 
+                    <div className='pt-5'>
+                        <div className='row pt-5'>
+                            <div className='col-8 '>
+                                <div className='mx-5 pb-2 bg-primary d-flex  justify-content-center  border-top rounded-7 '  >
+                                    <table className='tablesta text-center   '>
+                                        <thead className=' pb-3 bg-primary'>
+                                            <tr>
+                                                <th className=''
+                                                    style={{
+                                                        fontSize: "3rem"
+                                                    }}
+                                                >B</th>
+                                                <th className=''
+                                                    style={{
+                                                        fontSize: "3rem"
+                                                    }}>I</th>
+                                                <th className=' '
+                                                    style={{
+                                                        fontSize: "3rem"
+                                                    }}>N</th>
+                                                <th className=''
+                                                    style={{
+                                                        fontSize: "3rem"
+                                                    }}>G</th>
+                                                <th className=''
+                                                    style={{
+                                                        fontSize: "3rem"
+                                                    }}>O</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                // let nuevodd = JSON.parse( Bingo)[0]
+                                                arr.map((e, i) => {
+                                                    return (<tr style={{
+                                                        fontSize: "2rem"
+                                                    }}>
+                                                        <td style={{
+                                                            margin: "5px"
+                                                        }} >{arr[0][i]}</td>
+                                                        <td style={{
+                                                            margin: "5px"
+                                                        }} >{arr[1][i]}</td>
+                                                        <td style={{
+                                                            margin: "5px"
+                                                        }} >{i == 2 ? <img className=' img-fluid' src='/img/estrella.png' /> :arr[2][i]}</td>
+                                                        <td style={{
+                                                            margin: "5px"
+                                                        }} >{arr[3][i]}</td>
+                                                        <td style={{
+                                                            borderBottomLeftRadius: "10px;"
+                                                        }} >{arr[4][i]}</td>
+                                                    </tr>)
+                                                })
+
+                                            }
+                                        </tbody>
+
+                                    </table>
                                 </div>
+
+
                             </div>
-                            <div className='  col-9 mx-0  '>
-                                <div className='row px-0'>
-                                    <div className='col-6 text-secondary fw-bold pt-1  px-3 pb-2'>
-                                        <p className=' text-secondary fw-bold pt-1  px-3 align-items-center ' style={{ fontSize: "0.8em" }}>{data.estado}</p>
-                                    </div>
-                                    <div className='col-6 text-secondary fw-bold pt-1  px-3  pr-0 text-end'>
-                                        <p className=' text-secondary fw-bold pt-1  px-3' style={{ fontSize: "0.8em" }}>CORRELATIVO: {data.sillas}</p>
-
-                                    </div>
-                                    <div className='bg-danger px-3 pt-1 pb-1 d-flex  align-items-center '>
-                                        <h6 className=' fw-bold text-light text-uppercase '>{data.nombreCompleto}</h6>
-                                    </div>
-                                </div>
-                                <div className='row px-3'>
-                                    <div className='col-6 pl-0 pb-2'>
-                                        <div className=' texte-start ' style={{
-                                            lineHeight: "0.6"
-                                        }}>
-                                            <p className=' text-secondary fw-bold pt-1' style={{ fontSize: "0.75em" }}>{data.fechaCompra}</p>
-                                            <p className=' text-secondary fw-bold pt-1 text-uppercase' style={{ fontSize: "0.75em" }}>{data.estado}</p>
-                                            <p className=' text-secondary fw-bold pt-1' style={{ fontSize: "0.75em" }}>${data.valor}</p>
-                                            <p className=' text-secondary fw-bold pt-1' style={{ fontSize: "0.75em" }}>{data.fechaConcierto}</p>
-                                            <p className=' text-secondary fw-bold pt-1' style={{ fontSize: "0.75em" }}>{data.localidad}</p>
-
-                                        </div>
-                                    </div>
-                                    <div className='col-6   row ' style={{
-
+                            <div className='col-4   ' >
+                                <div className=' d-flex  flex-column align-items-center p-0 '
+                                    style={{
 
                                     }}>
-                                        <div className='col-12 align-items-center p-0 '
-                                            style={{
+                                    <QRCode className='mt-2' value={qr} size={110} style={{
 
-                                            }}>
-                                            <QRCode className='mt-2' value={qr} size={150} style={{
+                                        maxHeight: "50%",
+                                    }}
 
-                                                maxHeight: "60%",
-                                            }}
-
-                                            />
-                                        </div>
-
-
+                                    />
+                                    <div>
+                                        <span className="text-danger">  <strong> INFORMACIÓN IMPORTANTE</strong> </span>
                                     </div>
-                                    <div className='m-5' style={{
-                                        transform: "rotate(270deg)",
-                                        fontSize: "0.3em",
-                                        maxHeight: "50px",
-                                        maxWidth: "130px",
-                                        position: "absolute",
-                                        left: "60%"
-                                    }}>
-                                        <div>
-                                            <span className="text-danger">  <strong> INFORMACIÓN IMPORTANTE</strong> </span>
-                                        </div>
-                                        <div> <span>  <strong>
+                                    <div style={{
+                                        fontSize: "10px"
+                                    }}> <span>  <strong>
 
-                                            Este ticket es de un solo uso, no compartir la información
-                                            del mismo con nadie, es de responsabilidad del cliente.
-                                            El Código QR permite solamente un ingreso o un canje
-                                            Cualquier duplicado o venta no autorizada de este
-                                            boleto se dará por no valido el mismo</strong></span>
-                                        </div>
-                                      
+                                        Esta tabla de bingo es de un slo uso, no\n compartir la imformación del mismo\n con nadie, es de responsabilidad del cliente.\n cualquier duplicado o venta de este bleto se dara por no valido el mismo</strong></span>
+                                    </div>
+                                    <div>
+                                        <img className=' img-fluid' src='/img/BINGOtabla.png' />
                                     </div>
                                 </div>
+
+
                             </div>
                         </div>
-
                     </div>
-                    <div className=' px-0 mt-3 col-7 d-flex  justify-content-end text-end ' style={{
+                    <div className=' d-none px-0 mt-3 col-7 d-flex  justify-content-end text-end ' style={{
                         height: "25px",
                         backgroundColor: "#f75800",
                         borderTopRightRadius: "10px",
@@ -467,7 +395,7 @@ function PdfViewticketApp({...props}) {
 
                         </div>
                     </div>
-                    <div className='row px-3'>
+                    <div className='row px-3 d-none'>
                         <div className='col-6 pl-4'>
                             <p className=' pt-2 fw-bold text-secondary' style={{
                                 fontSize: "0.7em",
@@ -544,7 +472,7 @@ function PdfViewticketApp({...props}) {
                             </div>
                         </div>
                     </div>
-                    <div className='row px-0 '>
+                    <div className='row px-0 d-none'>
                         <div className='col-6 px-0'>
                             <div className=' px-0 mt-3 col-9 d-flex  justify-content-center text-end ' style={{
                                 height: "25px",
@@ -717,4 +645,4 @@ function PdfViewticketApp({...props}) {
     );
 }
 
-export default PdfViewticketApp;
+export default BingoViewticketApp;

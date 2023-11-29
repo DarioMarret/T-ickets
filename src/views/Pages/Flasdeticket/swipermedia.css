@@ -265,9 +265,9 @@ a[aria-expanded="true"] svg {
     background-color: #dee2e6 !important;
 }
 
-.evento {
+.eventos {
     cursor: pointer;
-    height: 315px !important;
+    height: 215px !important;
     width: 100% !important;
 }
 

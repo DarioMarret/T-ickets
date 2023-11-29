@@ -164,7 +164,7 @@ function Dashboard() {
               </Card.Footer>
             </Card>
           </Col>
-          <Col lg="6" sm="12">
+                  <Col lg="6" sm="12" className="d-none">
             <Card className="card-stats">
               <Card.Body>
                 <Row>

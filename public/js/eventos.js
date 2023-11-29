@@ -34,7 +34,7 @@ function detectDevTools() {
 }
 detectDevTools();
 
-document.oncontextmenu = new Function("return false");
+//document.oncontextmenu = new Function("return false");
 document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener('scroll', function () {
     if (window.scrollY > 4) {
