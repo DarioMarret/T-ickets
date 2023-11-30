@@ -56,55 +56,55 @@ function BingoViewticketApp({ ...props }) {
                 let cards = JSON.parse(Bingo);
                 SetArr(cards[0])
                 console.log(cards)
-                /*cards[0].forEach(card => {
-                    html += `<table>
-      <thead>
-      <tr>
-        <th>B</th>
-        <th>I</th>
-        <th>N</th>
-        <th>G</th>
-        <th>O</th>
-      </tr>
-      </thead>
-      <tbody>`;
-                    for (let i = 0; i < 5; i++) {
-                        html += `
-      <tr>
-        <td>${card[0][i]}</td>
-        <td>${card[1][i]}</td>
-        <td>${card[2][i]}</td>
-        <td>${card[3][i]}</td>
-        <td>${card[4][i]}</td>
-      </tr>
-        `;
+                    /*cards[0].forEach(card => {
+                        html += `<table>
+          <thead>
+          <tr>
+            <th>B</th>
+            <th>I</th>
+            <th>N</th>
+            <th>G</th>
+            <th>O</th>
+          </tr>
+          </thead>
+          <tbody>`;
+                        for (let i = 0; i < 5; i++) {
+                            html += `
+          <tr>
+            <td>${card[0][i]}</td>
+            <td>${card[1][i]}</td>
+            <td>${card[2][i]}</td>
+            <td>${card[3][i]}</td>
+            <td>${card[4][i]}</td>
+          </tr>
+            `;
+                        }
+                        html += '</tbody></table>';
+                    });
+                    document.querySelector('#bingo-cards').innerHTML = html;*/
+                    //const imagenContainer = document.getElementById('imagenContainer');
+                    /* function toDataURL(src, callback) {
+                        var image = new Image();
+                        image.crossOrigin = 'Anonymous';
+
+                        image.onload = function () {
+                            var canvas = document.createElement('canvas');
+                            var context = canvas.getContext('2d');
+                            canvas.height = this.naturalHeight;
+                            canvas.width = this.naturalWidth;
+                            context.drawImage(this, 0, 0);
+                            var dataURL = canvas.toDataURL('image/jpeg');
+                            callback(dataURL);
+                        };
+                        image.src = src;
+                        let imagens = document.getElementById('imagenContainer');
+                        imagens.src = src
                     }
-                    html += '</tbody></table>';
-                });
-                document.querySelector('#bingo-cards').innerHTML = html;*/
-                //const imagenContainer = document.getElementById('imagenContainer');
-                /* function toDataURL(src, callback) {
-                     var image = new Image();
-                     image.crossOrigin = 'Anonymous';
- 
-                     image.onload = function () {
-                         var canvas = document.createElement('canvas');
-                         var context = canvas.getContext('2d');
-                         canvas.height = this.naturalHeight;
-                         canvas.width = this.naturalWidth;
-                         context.drawImage(this, 0, 0);
-                         var dataURL = canvas.toDataURL('image/jpeg');
-                         callback(dataURL);
-                     };
-                     image.src = src;
-                     let imagens = document.getElementById('imagenContainer');
-                     imagens.src = src
-                 }
-                 toDataURL(dat.imagenConcierto, function (dataURL) {
-                     //console.log(dataURL);
-                     let imagen = document.getElementById('imagenContainer');
-                     imagen.src = dataURL
-                 })*/
+                toDataURL("/img/Bingonu.png", function (dataURL) {
+                    //console.log(dataURL);
+                    let imagen = document.getElementById('imagenContainer');
+                    imagen.src = dataURL
+                })*/
 
                 //imagenContainer.appendChild(imgElement);
 
@@ -273,24 +273,21 @@ function BingoViewticketApp({ ...props }) {
                         <p className=' text-secondary fw-bold text-uppercase px-4' style={{ fontSize: "1em" }}> Lugar: "Desconocido"</p>
 
                     </div>
-                    <div className="col-12 px-lg-5  eventos  pb-5 " style={{
-                        height: "215px !important;",
-
-                    }} >
-                        <img id='imagenContainer' style={{
-
-                            height: "215px !important;",
+                    <div className="col-12 px-lg-5    eventos ">
+                        <img id='imagenContainer  eventos' src='/img/Bingonu.png' style={{
+                            background:"/img/Bingonu.png",
+                            
                             width: "100% !important;",
                             backgroundSize: "cover",
                             backgroundRepeat: "no-repeat"
-                        }} className="img-fluid rounded-7 shadow-md img-evento   " alt="" />
-                        <img className='img-fluid rounded-7' src='/img/Bingonu.png' />
+                        }} className=" rounded-7 shadow-md  eventos " alt="" />
+                      
                     </div>
 
-                    <div className='pt-5'>
-                        <div className='row pt-5'>
+                    <div className='pt-5 '>
+                        <div className='row  pt-5'>
                             <div className='col-8 '>
-                                <div className='mx-5 pb-2 bg-primary d-flex  justify-content-center  border-top rounded-7 '  >
+                                <div className='mx-5 pb-2 bg-primary  justify-content-center  border-top rounded-7 '  >
                                     <table className='tablesta text-center   '>
                                         <thead className=' pb-3 bg-primary'>
                                             <tr>
@@ -332,7 +329,7 @@ function BingoViewticketApp({ ...props }) {
                                                         }} >{arr[1][i]}</td>
                                                         <td style={{
                                                             margin: "5px"
-                                                        }} >{i == 2 ? <img className=' img-fluid' src='/img/estrella.png' /> :arr[2][i]}</td>
+                                                        }} >{i == 2 ? <img className=' img-fluid' src='/img/estrella.png' /> : arr[2][i]}</td>
                                                         <td style={{
                                                             margin: "5px"
                                                         }} >{arr[3][i]}</td>

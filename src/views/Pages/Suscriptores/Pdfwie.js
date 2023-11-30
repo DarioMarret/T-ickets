@@ -358,7 +358,7 @@ function PdfViewticketApp({...props}) {
                             width: "100% !important;",
                             backgroundSize: "cover",
                             backgroundRepeat: "no-repeat"
-                        }} className="img-fluid rounded-7 shadow-md img-evento   " alt="" />
+                        }} className="img-fluid rounded-7 shadow-md eventos   " alt="" />
                     </div>
                     <div className="col-12 px-lg-5    pt-3" >
                         <div className='rounded-7 d-flex border  shadow-md  '

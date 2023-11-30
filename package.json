@@ -5,6 +5,7 @@
   "homepage": "",
   "dependencies": {
     "@date-io/date-fns": "^2.16.0",
+    "@files-ui/react": "^1.0.8",
     "@fortawesome/fontawesome-free": "5.15.2",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
@@ -18,8 +19,10 @@
     "@progress/kendo-react-excel-export": "^5.10.0",
     "@react-pdf/renderer": "^3.1.13",
     "@reduxjs/toolkit": "^1.8.5",
+    "antd": "^5.11.5",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.2",
+    "buffer": "^6.0.3",
     "chartist": "0.11.4",
     "datatables.net": "^1.13.1",
     "datatables.net-bs5": "^1.13.1",

@@ -25,7 +25,7 @@ export const ListarEventosFinalizados = async () => {
 
             }
         })
-         console.log(data)
+         //console.log(data)
         return data.data
     } catch (error) {
         return error;
