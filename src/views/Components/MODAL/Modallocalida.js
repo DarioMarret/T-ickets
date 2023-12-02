@@ -127,7 +127,7 @@ const LocalidadmapViews = (props) => {
             }))
             return
         }
-        if ((sleccionlocalidad.pagados + TotalSelecion()) == 10) {
+        if ((sleccionlocalidad.pagados + TotalSelecion()) == 100) {
             succesLimit()
             return
         }
@@ -144,7 +144,7 @@ const LocalidadmapViews = (props) => {
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
 
-        if (TotalSelecion() < 10) {
+        if (TotalSelecion() < 100) {
             setDisable(true)
             usedispatch(setSpinersli({ spiner: false }))
             console.log({

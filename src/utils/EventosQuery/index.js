@@ -48,8 +48,15 @@ const ListarEventosLis = async () => {
 
             }
         })
+        const event = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/CANCELADO/", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+
+            }
+        })
         //console.log(datas.data.data)
-        return [...data.data, ...datas.data.data]
+        return [...data.data, ...datas.data.data, ...event.data.data]
     } catch (error) {
         return error;
 

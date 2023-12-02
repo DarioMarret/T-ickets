@@ -270,7 +270,7 @@ function Example() {
 
                                     </a>
                                 }
-                                {item.estado == "Pagado" && item.canje != "CANJEADO" ?
+                                {item.estado == "Pagado" && item.codigoEvento == "5UY4DT" ?
                                     <Tooltip className="" title="Ver Tabla" placement="top">
 
                                         <a

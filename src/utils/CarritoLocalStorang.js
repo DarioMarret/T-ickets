@@ -305,17 +305,17 @@ export function GetValores() {
             //tienda2.localidaEspacio.descuento>0
             if (false) {
                 let descuento = "1." + tienda2.localidaEspacio.descuento
-                tienda2.valor = (parseInt(tienda2.valor) * parseInt(tienda2.cantidad)) / parseFloat(descuento)
+                tienda2.valor = (parseFloat(tienda2.valor) * parseInt(tienda2.cantidad)) / parseFloat(descuento)
             } else {
-                tienda2.valor = (parseInt(tienda2.valor) * parseInt(tienda2.cantidad))
+                tienda2.valor = (parseFloat(tienda2.valor) * parseInt(tienda2.cantidad))
             }
             return tienda2
 
         })
 
         tag.map(tienda => {
-            let comisioreal = (tienda.localidaEspacio["id"] == 285 && sessionStorage.getItem("Metodo-pago") == "Efectivo-Local") ? 1 : tienda.localidaEspacio["comision_boleto"]
-            let valores = tienda.valor
+            let comisioreal =  tienda.localidaEspacio["comision_boleto"]
+            let valores =  tienda.valor
             subtotal += valores
             descrption = tienda.nombreConcierto
             sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
@@ -334,10 +334,10 @@ export function GetValores() {
         let ivados = (eventoiva).replace("1.", "0.")
         valor = ivados == 0 ? (subtotal) / 1.12 : (subtotal ) ;
        // let ivados = (eventoiva).replace("1.","0.")
-        
-        iva = ivados == 0 ? (valor * 0.12) : (subtotal) * parseFloat( ivados)
+        console.log(subtotal, valor, ivados)
+        iva = parseInt(ivados) == 0 ? (valor * 0.12) : (subtotal) * parseFloat( ivados)
         total = (valor + iva)
-    
+        console.log(iva, total)
         let totav = sessionStorage.getItem("Metodo-pago") == "Tarjeta" ? ((parseFloat(valor) + comision) + iva )*1.08:(parseFloat(valor) + comision) + iva 
 
         let precios = {
@@ -352,7 +352,7 @@ export function GetValores() {
             desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15).toFixed(2),
             desc: Math.round((subtotal + comision) / 1.15),
         }
-        //console.log(precios)
+        console.log(precios)
         
 
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))

@@ -479,6 +479,7 @@ export default function StoreTickesViews() {
                 <ModalEfectivo
                     comprar={para}
                 /> : ""}
+                <ModalConfima/>
             <ReporteView
                 setrepShow={""}
                 comprar={para}

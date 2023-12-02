@@ -10,7 +10,20 @@
    fill: rgb(61, 64, 64);
 
  }
+.Bingo0 {
+  fill: #FFFFFF;
+}
 
+.Bingo1 {
+  fill: #009EE2;
+}
+
+.Bingo2 {
+  fill: none;
+  stroke: #FFFFFF;
+  stroke-width: 1.0863;
+  stroke-miterlimit: 10;
+}
  :root {
    --swiper-navigation-color: #000000;
  }

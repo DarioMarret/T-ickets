@@ -66,7 +66,7 @@ export const PagoRapido = async (transaccion) => {
         )
 
         console.log(data)
-        return data;
+        return { ...data, id: data.idRegistro,...datos };
         // await EnviarDetalleCompra(email, parm)
 
     } catch (error) {

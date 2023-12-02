@@ -324,9 +324,7 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          usedispatch(setModal({
-            nombre: "", estado: ""
-          }))
+          usedispatch(setModal({ nombre: "confirmar", estado: { ...oupt } }))
           usedispatch(setToastes({
             show: true,
             message: 'Recuerda reportar el comprobante al WhatsApp o desde la opción tickets, tienes un tiempo de 2 hora para reportarlo',

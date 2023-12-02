@@ -222,7 +222,7 @@ const ModalEfectivo = (props) => {
                   />
 
                 </div>
-                <div className="row pagos d-flex justify-content-center   m-1 p-2">
+                <div className="row pagos d-none d-flex justify-content-center   m-1 p-2">
                   <img src={redacti} className=" img-fluid   " />
                 </div>
                 <div className="col-12  d-flex  justify-content-center  p-1 mt-2">

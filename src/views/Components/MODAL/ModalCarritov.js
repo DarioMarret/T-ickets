@@ -752,13 +752,21 @@ const ModalCarritoView = (prop) => {
                                         height: "auto"
                                     }}>
                                         {modalshow.nombre == "ModalCarritov" ?
+                                            (sessionStorage.getItem("eventoid") == "5UY4DT")?
+                                                
+                                                    precios.precios.sort((a, b) => (a.precio_normal > b.precio_normal ? 1 : -1) && (a.id > b.id ? 1 : -1)).map((elm, i) => {
+                                                        return (
+                                                            <div className="" onClick={() => Abririlocalfirt(elm)} key={i}  >
+                                                                <SvgselectView
+                                                                    text={precios.mapa} />
+                                                            </div>
+                                                        )
+                                                    })
+                                            :
                                             <SvgselectView
-
-
                                                 text={precios.mapa} />
                                             : ''}
                                     </div>
-
                                 </div>
                                 <div className="col-12 d-flex justify-content-center">
                                     <div className=" container-fluid d-flex  justify-content-between py-2  px-0 flex-wrap pb-2   align-items-center  p-0">
@@ -774,7 +782,6 @@ const ModalCarritoView = (prop) => {
                                                     </div>
                                                 )
                                             }) :
-
                                             <div className="container-fluid d-flex  py-2  col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
                                                 <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => clickt()}   >
                                                     <div id="" className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: "#c69b30" }}></div>
@@ -802,10 +809,6 @@ const ModalCarritoView = (prop) => {
                                     </div>
                                 </div>
                             </div>
-
-
-
-
                         </div>
                     </div>
                 </Modal.Body>

@@ -116,15 +116,82 @@ export default function ListaSuscritor(prop) {
                         color: 'bg-success',
                         estado: "Inicio Exitoso",
                     }))
-                    successAlert()
+                    let nombre = $('#cedula').val()
+                    if (nombre.trim().length < 9) {
+                        console.log("error", nombre)
+                        return
+                    }
+                    let informacion = {
+                        "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
+                        "email": isNaN(nombre.trim()) ? nombre.trim() : ''
+                    }
+                    buscarcliente({ ...informacion }).then(ouput => {
+                        //  console.log(ouput)
+                        if (!ouput.success) {
+                            getCedula(nombre).then(salida => {
+                                if (salida.success) {
+                                    usedispatch(setToastes({
+                                        show: true, message: ouput.message
+                                        , color: 'bg-warning', estado:
+                                            "No hubo ninguna coincidencia"
+                                    }))
+                                    setDausuario({
+                                        nombreCompleto: "",
+                                        ciudad: "",
+                                        email: "",
+                                        movil: "",
+                                        resgistro: "",
+                                        password: '',
+                                        whatsapp: "", password: '', resgistro: false
+                                    })
+                                    return
+                                }
+                                else {
+                                    setDausuario({
+                                        nombreCompleto: salida.name,
+                                        ciudad: salida.direccion != null ? salida.direccion : ' ',
+                                        email: '',
+                                        movil: "",
+                                        resgistro: "",
+                                        whatsapp: '', password: '', resgistro: false
+                                    })
+                                    DatosUsuariosLocalStorag({ ...salida })
+                                    sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...salida }))
+                                    //$('#movil').val("")
+                                    $("#search").addClass("d-none")
+                                }
+                            }).catch(erro => {
+                                console.log(erro)
+                            })
+
+
+                            return
+                        }
+                        else {
+                            setDausuario({
+                                nombreCompleto: ouput.data.nombreCompleto,
+                                ciudad: ouput.data.ciudad,
+                                email: ouput.data.email,
+                                movil: "0" + ouput.data.movil,
+                                resgistro: ouput.data.registro,
+                                password: '',
+                                whatsapp: ouput.data.movil, password: '', resgistro: true
+                            })
+                            DatosUsuariosLocalStorag({ ...ouput.data })
+                            successAlert()
+                        }
+
+                    }).catch(erro => {
+                        console.log(erro)
+                    })
                 }
                 else {
                     console.log(registro)
                     usedispatch(setToastes({
                         show: true,
-                        message: "ya existe una cuienta con este correo registro",
+                        message: "Ya existe una cuenta con este correo registro",
                         color: 'bg-warning',
-                        estado: "hubo un error ",
+                        estado: "cédula o correo ya registrado ",
                     }))
                 }
             } catch (error) {
@@ -419,7 +486,7 @@ export default function ListaSuscritor(prop) {
                                                         resgistro: '',
                                                         password: ''
                                                     })}
-                                                placeholder={(code == "cedula") ? "Ingrese cédula" : "Ingrese su número de identificación"} required />
+                                                    placeholder={(code == "cedula") ? "Ingrese cédula" : "Ingrese su número de identificación"} required />
                                             </div>
 
 

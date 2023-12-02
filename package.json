@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "",
   "dependencies": {
+    "@bytescale/upload-widget": "^4.18.0",
     "@date-io/date-fns": "^2.16.0",
     "@files-ui/react": "^1.0.8",
     "@fortawesome/fontawesome-free": "5.15.2",
