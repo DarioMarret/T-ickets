@@ -135,7 +135,8 @@ function Example() {
                 }, row.id).then(ouputs => {
                     console.log(ouput)
                     if (ouputs.estado) {
-                        usedispatch(setModal({ nombre: 'pdfsshowBingo', Bingo: ouputs.data["Bingo"], estado: ouput.link.replace("flash", "api"), }))
+                        window.open(ouputs.link, "_blank");
+                        //usedispatch(setModal({ nombre: 'pdfsshowBingo', Bingo: ouputs.data["Bingo"], estado: ouput.link.replace("flash", "api"), }))
                         setSpiner("d-none")
                     }
 

@@ -1,6 +1,6 @@
 table.tablesta {
     
-    margin: 5px !important;
+    margin: 2px !important;
    
     font-weight: bold !important;
    /* border: 3px #3387c3 solid !important;*/
@@ -10,7 +10,7 @@ table.tablesta td {
     border: 3px #3387c3 solid !important;
     background: white !important;
     border-radius: 10px;
-    padding: 10px 20px !important;
+    padding: 7px 15px !important;
     text-align: center !important;
 }
 table.tablesta th:first-child {
@@ -23,7 +23,11 @@ table.tablesta th:last-child {
 table.tablesta td:first-child() {
     border-radius: 10px;
 }
-
+.eventos {
+    cursor: pointer;
+    height: 265px !important;
+    width: 100% !important;
+}
 table.tablesta td:last-child() {
     border-radius: 10px;
 }

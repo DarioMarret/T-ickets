@@ -27,7 +27,7 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { eliminartiket } from "utils/pagos/Queripagos";
-import { generaTiketspdf } from "utils/Querycomnet";
+import { generaTiketsBingo, generaTiketspdf } from "utils/Querycomnet";
 import ExportToExcel from "utils/Exportelemin";
 import { BoletosTikets } from "utils/userQuery";
 import { BoletosTiketsGlobal } from "utils/userQuery";
@@ -205,9 +205,9 @@ const SuscritoridView = () => {
           console.log(tiket)
           if (registro.success) {
             if (tiket.success)
-            console.log(registro)
+              console.log(registro)
 
-              setTikes(registro.data)
+            setTikes(registro.data)
             setBoletos(tiket.data)
           }
 
@@ -322,7 +322,7 @@ const SuscritoridView = () => {
 
   }
   const eliminarTiket = (parm) => {
-  //  console.log(parm)
+    //  console.log(parm)
     $.confirm({
       title: 'Desea eliminar este registro ',
       content: '',
@@ -336,13 +336,13 @@ const SuscritoridView = () => {
             EliminarTickteTercero({ "id": parm.id }).then(ouput => {
               console.log(ouput)
               console.log(parm.id)
-              if (!ouput.success) { return $.alert("" + ouput.message) }              
+              if (!ouput.success) { return $.alert("" + ouput.message) }
               //nuevoevento()
               $.alert("Registro eliminado correctamente")
-              setTimeout(function(){
+              setTimeout(function () {
                 window.location.reload()
-              },1000)
-              
+              }, 1000)
+
 
             }).catch(error => {
               $.alert("hubo un error no se pudo eliminar este registro")
@@ -355,14 +355,14 @@ const SuscritoridView = () => {
     });
 
   }
-  const ms = ()=>{
+  const ms = () => {
     return (<PdfViewticketApp
       link={li}
     />)
   }
-  const [li,setlik]=useState("")
+  const [li, setlik] = useState("")
   function generaPDF(row) {
-    // console.log(row)
+     console.log(row)
     //window.open("https://tickets.com.ec/", "_blank");
     generaTiketspdf({
       "cedula": row.cedula,
@@ -412,6 +412,46 @@ const SuscritoridView = () => {
       }
     });
 
+  }
+  function linkcopy(row) {
+    //  var text = document.getElementById("content").value;
+    if (row == null) {
+      $.alert('No se registra imegen de comprobante')
+      return
+    }
+
+    navigator.clipboard.writeText(row)
+      .then(() => {
+        $.alert('Link Copiado');
+      })
+      .catch(err => {
+        $.alert('Error no se  copio : ', err);
+      });
+  }
+  function generaBingo(row) {
+    generaTiketsBingo({
+      "cedula": row.cedula,
+      "Codigoevento": row.codigoEvento,
+      "id_ticket_usuarios": row.id,
+      "Bingo": ""
+    }, row.id).then(ouputs => {
+      console.log(ouputs)
+      if (ouputs.estado) {
+        linkcopy(ouputs.link)
+       // window.open(ouputs.link, "_blank");
+        //usedispatch(setModal({ nombre: 'pdfsshowBingo', Bingo: ouputs.data["Bingo"], estado: ouput.link.replace("flash", "api"), }))
+        // setSpiner("d-none")
+      }
+
+    }).catch(err => {
+      setSpiner("d-none")
+      /* usedispatch(setToastes({
+         show: true,
+         message: "No te preocupes tu tabla ya está comprada los pdf se generará pronto, paciencia gracias",
+         color: 'bg-primary',
+         estado: "Hubo un error intenta mas tarder"
+       }))*/
+    })
   }
   const Licerarrasientos = (parms) => {
     $.confirm({
@@ -562,13 +602,14 @@ const SuscritoridView = () => {
     listarRegistropanel({ "cedula": info.cedula }).then(ouput => {
       console.log(ouput)
       if (ouput.success) {
-      let datos = ouput.data
-      console.log(datos)
-      ouput.success ? setTikes(datos) : ""}
+        let datos = ouput.data
+        console.log(datos)
+        ouput.success ? setTikes(datos) : ""
+      }
     })
     Listarfaci({ "cedula": info.cedula }).then(ouput => {
       if (ouput.success) {
-      //  console.log(ouput)
+        //  console.log(ouput)
         setTicket([...ouput.data])
       }
       //console.log(ouput)
@@ -591,12 +632,12 @@ const SuscritoridView = () => {
   return (
     <>
       {alert}
-      {li==""?"":ms}
+      {li == "" ? "" : ms}
       <div className="container-fluid ">
-    
+
         <div className="d-flex justify-content-end align-row.originals-end pb-2" >
           <div>
-            
+
 
             <Button className="btn btn-wd btn-outline mr-1"
               type="button"
@@ -607,13 +648,13 @@ const SuscritoridView = () => {
               </span>
               Editar
             </Button>
-            
-           {/* <Button className="btn btn-wd btn-outline mr-1"
+
+            {/* <Button className="btn btn-wd btn-outline mr-1"
               type="button"
               variant="outline-warning"
               onClick={() => setshowdos(true)}
             >Ticktefacil</Button>*/}
-            {clienteInfo().perfil == "vendedores"?"": <Button className="btn-wd btn-outline mr-1"
+            {clienteInfo().perfil == "vendedores" ? "" : <Button className="btn-wd btn-outline mr-1"
               onClick={deleteAlert}
               type="button"
               variant="danger">
@@ -696,7 +737,7 @@ const SuscritoridView = () => {
                       <Card.Title as="h4">Suscritor </Card.Title>
                       <p className="card-category">
                         {suscritoid ? suscritoid.nombreCompleto : ''}</p>
-                     
+
                       <p className="card-category">{suscritoid ? suscritoid.cedula : ''} </p>
                     </div>
                   </Col>
@@ -765,8 +806,8 @@ const SuscritoridView = () => {
                   enableRowActions
                   positionActionsColumn="first"
                   renderRowActions={({ row }) => (
-                     
-                     <Box sx={{ display: 'flex' }}>
+
+                    <Box sx={{ display: 'flex' }}>
                       {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
                         <Tooltip title="Reportar" placement="top">
                           <IconButton
@@ -795,18 +836,18 @@ const SuscritoridView = () => {
                           <Visibility />
                         </IconButton>
                       </Tooltip>
-                      {clienteInfo().perfil == "vendedores"  ? "" :
+                      {clienteInfo().perfil == "vendedores" ? "" :
                         <Tooltip
-                        title="Eliminar"
-                        placement="top"
-                      >
-                        <IconButton
-                          color="error"
-                          onClick={() => eliminarregistro(row.original)}
-                        > 
-                          <Delete />
-                        </IconButton>
-                      </Tooltip>}
+                          title="Eliminar"
+                          placement="top"
+                        >
+                          <IconButton
+                            color="error"
+                            onClick={() => eliminarregistro(row.original)}
+                          >
+                            <Delete />
+                          </IconButton>
+                        </Tooltip>}
                     </Box>
                   )}
 
@@ -826,16 +867,16 @@ const SuscritoridView = () => {
                   enableRowActions
                   positionActionsColumn="first"
                   renderRowActions={({ row }) => (
-                    clienteInfo().perfil == "vendedores" ? "" :  <Box sx={{ display: 'flex' }}>
-                      
+                    clienteInfo().perfil == "vendedores" ? "" : <Box sx={{ display: 'flex' }}>
+
                       <Tooltip
                         title="Comprobar" placement="top"
                       >
                         <IconButton
                           color="success"
-                          //onClick={() => detalle(row.original)}
+                        //onClick={() => detalle(row.original)}
                         >
-                          <a 
+                          <a
                             href={row.original.link_external}
                             target="_blank"
                           >
@@ -949,7 +990,7 @@ const SuscritoridView = () => {
                   enableRowActions
                   positionActionsColumn="first"
                   renderRowActions={({ row }) => (
-                    clienteInfo().perfil == "vendedores" ? "" :  <Box sx={{ display: 'flex' }}>
+                    clienteInfo().perfil == "vendedores" ? "" : <Box sx={{ display: 'flex' }}>
 
                       <div className=" btn-group  " >
                         {row.original.estado != "reservado" ?
@@ -974,7 +1015,7 @@ const SuscritoridView = () => {
 
                           </a>
                         }
-
+                        {<a className="border btn-default btn-sm" onClick={() => generaBingo(row.original)}> <i className="fa fa-table "></i> </a>}
                         <a
                           onClick={() => Eliminara(row.original.id)}
                           className="border  btn-default btn-sm cursor "
@@ -1078,7 +1119,7 @@ const SuscritoridView = () => {
         setshow={setshow}
         estado={"update"}
         datosperson={suscritoid} />
-      {!showdos ?"": <ModalTickte
+      {!showdos ? "" : <ModalTickte
         shows={showdos}
         setshows={setshowdos}
         estado={"update"}
