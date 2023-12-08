@@ -25,7 +25,7 @@ export function getCliente() {
 export async function getCedula(cedula) {
     try {
         const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/cedula/" + cedula)
-    //    console.log(data)
+       console.log(data)
         const { success } = data
         if (success) {
             return data.data;
@@ -33,7 +33,7 @@ export async function getCedula(cedula) {
             return false
         }
     } catch (error) {
-        return error;
+        return false;
     }
 }
 

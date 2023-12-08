@@ -68,10 +68,12 @@ const ResgistroView = (prop) => {
                         seTspine("d-none")
 
                     } else {
+                        console.log("Retorna aqeui")
                         const datos = await getCedula(e.target.value)
                         console.log(datos)
                         const { name, direccion,cedula } = datos
-                        if (cedula) {
+                        console.log(datos)
+                        if (false) {
 
                             seTspine("d-none")
                             setPerson({
@@ -119,7 +121,7 @@ const ResgistroView = (prop) => {
                             })
                            usedispatch(setToastes({
                                 show: true,
-                                message: "Vuelva a interntarlo o cambie de metodo de identificación",
+                               message: "Por favor complete los datos cambie de método de identificación",
                                 color: 'bg-danger',
                                 estado: "No hubo coincidencia de cédula",
                             }))

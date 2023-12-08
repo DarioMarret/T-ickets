@@ -46,6 +46,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import jsPDF from "jspdf"
 import { DateRangePicker } from "../../../../../node_modules/rsuite/esm/index";
+import Bingo_tablas from "./components/Tablaspdf";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -59,8 +60,8 @@ export default function DetalleCompraView() {
     let history = useHistory()
     let usedispatch = useDispatch()
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
-    let useradmin = clienteInfo()
     console.log(nombres)
+    let useradmin = clienteInfo()
     const [usuario, setUser] = useState({
         "id": "",
         "cedula": "",
@@ -201,7 +202,6 @@ export default function DetalleCompraView() {
             }
         });
     }
-    const [tiketslist, setTikes] = useState([])
     const [boletos, setlocalida] = useState([])
     const [repetidos, setRepetido] = useState([])
     const [tarjetadata, setDataTarjeta] = useState({
@@ -436,7 +436,6 @@ export default function DetalleCompraView() {
         let listnombre = f.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
         listnombre.forEach(element => {
             nuew.push(listtarje.some(e => e == element))
-
         });
         if (listtarje.length == nuew.filter(e => e == true).length) {
             setEstadoTC(
@@ -472,36 +471,9 @@ export default function DetalleCompraView() {
             </div>)
 
         }
-        console.log(listnombre, listtarje, nuew)
-        console.log(listnombre, listtarje, nuew)
     }
     let [estadotc, setEstadoTC] = useState(null)
-    function creaComprobante() {
-        var opciones = {
-            orientation: 'p',
-            unit: 'mm',
-            format: [240, 300]
-        };
-        var doc = new jsPDF(opciones);
-        let pagnum = 80
-        doc.setFontSize(10);
-        doc.text(10, 30, 'Recibo de venta de tickets');
-        doc.text(10, 35, 'Registro No.: ' + nombres.id);
-        doc.text(10, 40, 'Operador: 123654');
-        doc.text(10, 55, 'Valor: ' + nombres.valor);
-        doc.text(10, 65, 'Fecha Registro' + nombres.fechaCreacion);
-        doc.text(10, 75, '_______________________________');
-        doc.text(10, 80, 'Recibí conforme');
-        doc.text(10, 80, 'Concierto       LOC	CANT.');
-        nombres.info_concierto.map(e => {
-            doc.text(10, pagnum + 5, "" + LocalidadPrecio(e.idespaciolocalida, e.id_localidad) + "       " + parseInt(e.cantidad) * parseFloat(ListarPrecio(e.idespaciolocalida, e.id_localidad))
-            );
-        })
-        doc.autoPrint({ variant: 'non-conform' });
-        doc.save('comprobante.pdf');
-        doc.autoPrint();
-        doc.output('dataurlnewwindow', { filename: 'comprobante.pdf' });
-    }
+
     function nuevoPrecio() {
         let datos = nombres.info_concierto.map((item, i) => {
             let valor = item.cantidad * ListarComision(item.idespaciolocalida, item.id_localidad)
@@ -511,8 +483,6 @@ export default function DetalleCompraView() {
     }
     const ListaPrecios = async () => {
         const info = await ListaPreciosEvent();
-        // console.log(info)
-
         return info
     }
     useEffect(() => {
@@ -694,7 +664,6 @@ export default function DetalleCompraView() {
                         }).catch(err => {
                             console.log(err)
                         }) : ""
-                console.log(ouputs)
             }
         }).catch(erro => {
             console.log(erro)
@@ -704,7 +673,6 @@ export default function DetalleCompraView() {
                 let boletos = ouput.data.map((e) => {
                     if (concer.find(f => f.nombreConcierto == e.concierto) != undefined) { return { ...e } }
                 })
-                setTikes(boletos.filter(e => e != undefined))
                 setlocalida(boletos.filter(e => e != undefined).map(e => {
                     return {
                         Comprador: usuario.nombreCompleto,
@@ -729,35 +697,26 @@ export default function DetalleCompraView() {
                     console.log(ouput)
                     if (ouput.success) {
                         if (ouput.data) {
-                            usedispatch(setToastes({
-                                show: true,
-                                message: "número de comprobante repetidos",
-                                color: 'bg-danger',
-                                estado: "Atentos"
-                            }))
+                            let comprobanteSpan = document.getElementById('comprobante');
+                            comprobanteSpan.classList.add('label-danger');
+                            comprobanteSpan.textContent = 'Comprobante repetdo';
                             setRepetido(ouput.data)
                         }
                         else {
-                            usedispatch(setToastes({
-                                show: true,
-                                message: "número de comprobante único",
-                                color: 'bg-success',
-                                estado: "Atentos"
-                            }))
+                            let comprobanteSpan = document.getElementById('comprobante');
+                            comprobanteSpan.classList.add('label-success');
+                            comprobanteSpan.textContent = 'Comprobante único';                           
                         }
                         return
                     }
                 }).catch(err => {
-                    console.log(err)
                 }) : ""
             : ""
     }, [])
-    const [first, setfirst] = useState("")
     function verRegistro() {
         let selecion = document.getElementById("registro").value
         if (selecion.trim() === "") return
         let datos = repetidos.filter(e => e.id == selecion)[0]
-        console.log(datos)
         sessionStorage.setItem("Detalleuid", JSON.stringify({ ...datos }))
         history.push("/admin/Reporte/" + datos.id)
         window.location.reload()
@@ -768,7 +727,6 @@ export default function DetalleCompraView() {
         BuscarTransacion({
             "numeroTransaccion": nombres.numerTransacion
         }).then(ouput => {
-            console.log(ouput)
             if (ouput.success) {
                 if (ouput.data) {
                     setRepetido(ouput.data)
@@ -780,7 +738,6 @@ export default function DetalleCompraView() {
                 return
             }
         }).catch(err => {
-            console.log(err)
         })
     }
     const successAlert = (re) => {
@@ -856,7 +813,6 @@ export default function DetalleCompraView() {
                                 history.goBack()
                             }
                         }).catch(err => {
-                            console.log(err)
                         })
                     }
                 },
@@ -874,7 +830,6 @@ export default function DetalleCompraView() {
         }
     }
     function Generarnew() {
-        console.log(nombres)
         $.confirm({
             title: 'Generar de nuevo los Boletos',
             type: 'blue',
@@ -889,7 +844,6 @@ export default function DetalleCompraView() {
                             "cedula": nombres.cedula
                         }).then(ouput => {
                             ouput.success ? history.goBack() : ""
-                            console.log(ouput)
                         }).catch(errr => {
                             console.log(errr)
                         })
@@ -1046,8 +1000,6 @@ export default function DetalleCompraView() {
                                             }
                                         }
                                         )
-                                        //  console.log(boletos.filter(e=>e!= undefined))
-                                        setTikes(boletos.filter(e => e != undefined))
                                     }
                                 }).catch(err => {
                                     console.log(err)
@@ -1156,7 +1108,7 @@ export default function DetalleCompraView() {
                 if (ouput.success) {
                     console.log(ouput)
                     window.location.reload()
-                    //setTikes(ouput.data)
+
                 }
                 if (!ouput.success) {
                     console.log(ouput)
@@ -1192,10 +1144,7 @@ export default function DetalleCompraView() {
     return (
         <PhotoProvider>
             <div>
-
-
                 {alert}
-
                 <WhastappWiev />
                 <ConsiliarView {...nombre} />
                 <ModalConfima />
@@ -1214,16 +1163,14 @@ export default function DetalleCompraView() {
                             {nombres.codigo_boletos != null && JSON.parse(nombres.codigo_boletos).lengt > 0 ? <li className="nav-item">
                                 <a className="nav-link" data-toggle="tab" href="#correlativos">id Boletos fisicos</a>
                             </li> : ""}
-
-
-
-
+                            <li className="nav-item">
+                                <a className="nav-link " data-toggle="tab" href="#boletos">Tablas</a>
+                            </li>
                         </ul>
                     </div>
                     <div className="tab-content col-sm-12">
                         <div className="tab-pane active container " id="filas">
                             <div className="row ">
-
                                 <div className=" table-responsive">
                                     <table className="table table-invoice">
                                         <thead>
@@ -1371,6 +1318,7 @@ export default function DetalleCompraView() {
                                                                 <span className={estado[nombres.estado_pago]}>
                                                                     {nombres.estado_pago}
                                                                 </span>
+
                                                             </div>
 
                                                             {nombres.forma_pago == "Tarjeta" ? <div >
@@ -1386,6 +1334,9 @@ export default function DetalleCompraView() {
                                     </div>
                                     <div className="col-12 bg-secondary-sm">
                                         <div className="d-flex flex-wrap pt-3 datos px-0 ">
+                                            <span id="comprobante" className=" fw-bold   container-fluid px-5 mx-5 label">
+
+                                            </span>
                                             <div className="col-12 col-md-4 border-bottom p-3">
                                                 <div className="invoice-from">
                                                     <small>De</small>
@@ -1414,7 +1365,9 @@ export default function DetalleCompraView() {
                                                 </div>
                                             </div>
                                             <div className="col-12 col-md-4 text-md-end border-bottom p-3 ">
+
                                                 <div className="invoice-date">
+
                                                     <small>Registro</small>
                                                     <div className="m-t-5 m-b-5">
                                                         <small className="text-inverse">
@@ -1498,7 +1451,7 @@ export default function DetalleCompraView() {
                                                             {
                                                                 nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
                                                                     nombres.clave_acceso != null ? "" : <a className=" btn btn-default btn-sm" onClick={ComprobarBoleto}>
-                                                                        <i className="fa fa-credit-card"></i> Cambiar a Comprobar 
+                                                                        <i className="fa fa-credit-card"></i> Cambiar a Comprobar
                                                                     </a>
                                                                     : <a className=" btn btn-default btn-sm" >
                                                                         <i className="fa fa-credit-card"></i> Ya se genero autoriazaion
@@ -1659,7 +1612,7 @@ export default function DetalleCompraView() {
                                                             </td>
                                                             <td className="text-center">{item.cantidad}</td>
                                                             <td className="text-center">
-                                                                {"$" + parseInt(item.cantidad) * parseFloat(ListarPrecio(item.idespaciolocalida, item.id_localidad))}
+                                                                ${(item.localidad_precio) ? ((item.localidad_precio * parseInt(item.cantidad)) - parseFloat(item.comision_por_boleto)).toFixed(2) : (parseInt(item.cantidad) * parseFloat(ListarPrecio(item.idespaciolocalida, item.id_localidad))).toFixed(2)}
                                                             </td>
                                                         </tr>
                                                     )
@@ -1677,25 +1630,14 @@ export default function DetalleCompraView() {
                                                     <td className='text-end' >Comisión por Boleto:</td>
                                                     <td width="15%" className='text-center'>$ {nombres.info_concierto.length > 0 ? nuevoPrecio() : ""}</td>
                                                 </tr>
-                                                {nombres.forma_pago == "Deposito" ? <tr >
+                                                <tr >
                                                     <th scope="row"></th>
-                                                    <td className={" text-end"} >Total</td>
+                                                    {nombres.forma_pago != "Tarjeta" ? <td className={" text-end"} >Total</td> : <td className='text-end' >Total tarjeta:</td>}
                                                     <td className="text-center">${(parseFloat(nombres.total_pago)).toFixed(2)}</td>
-                                                </tr> : ""}
-
-                                                {nombres.forma_pago == "Tarjeta" ? <tr>
-                                                    <th scope="row"></th>
-                                                    <td className='text-end' >Total tarjeta:</td>
-                                                    <td className='text-center'>$ {nombres.total_pago}</td>
-                                                </tr> : ""}
-
-
-
-
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
-
                                     <div className="mt-2 pt-2  border-top text-center ">
                                         <span > CONTACTANOS </span>
                                         <div className="d-flex justify-content-center align-items-center pb-2">
@@ -1711,7 +1653,6 @@ export default function DetalleCompraView() {
 
                                     </div>
                                 </div>
-
                                 <div
                                     className="sticky-bottom w-100 ">
                                     <div className="d-flex  justify-content-end">
@@ -1721,15 +1662,6 @@ export default function DetalleCompraView() {
                                         >
                                             <i className=" fa fa-arrow-left">  </i>
                                         </a>
-
-
-                                        {/*nombres.comentarios==undefined || Object.keys(nombres.comentarios).length == 0  ? <a className=" rounded-circle btn-success mx-2 p-2 text-white"
-                                data-toggle=" " data-placement="top" title="Agregar Comentario"
-                                onClick={agregarComentario}
-                            >
-                                <i className=" fa fa-comments">  </i>
-                            </a>:""
-                                 */}
                                         {useradmin.perfil == "suscriptores" ? "" : <a className=" rounded-circle btn-success mx-2 p-2 text-white"
                                             data-toggle=" " data-placement="top" title="Agregar Comentario"
                                             onClick={agregarComentario}
@@ -1748,8 +1680,6 @@ export default function DetalleCompraView() {
                                             <i className="bi bi-printer"></i>
                                         </a>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -1789,71 +1719,41 @@ export default function DetalleCompraView() {
                                             positionActionsColumn="first"
                                             renderRowActions={({ row }) => (
                                                 <Box sx={{ display: 'flex' }}>
-
-                                                    <div className=" btn-group  " >
-
-
-                                                        <a
-                                                            onClick={() => Eliminara(row.original.id)}
-                                                            className="border  btn-default btn-sm  "
-
-
-                                                        >
-                                                            Eliminar
-
-
-                                                        </a>
-
+                                                    <div className=" btn-group" ><a onClick={() => Eliminara(row.original.id)}
+                                                        className="border  btn-default btn-sm">
+                                                        Eliminar
+                                                    </a>
                                                         <a
                                                             onClick={() => Licerarrasientos(row.original.id)}
                                                             className="border  btn-default btn-sm  "
-
-
                                                         >
                                                             Liberar
-
-
                                                         </a>
-
                                                         {row.original.estado == "Pagado" ?
                                                             <Tooltip className="" title="Ver Ticket" placement="top">
                                                                 <a
                                                                     className=" btn btn-default-su btn-sm "
                                                                     onClick={() => generaPDF(row.original)}
-                                                                //href={item.pdf}
-                                                                //target="_black"
                                                                 >
                                                                     <i className="fa fa-download   "></i>
-
                                                                 </a>
                                                             </Tooltip> :
                                                             <a
                                                                 className=" btn btn-default btn-sm btn-disable"
                                                                 disabled
-
-                                                            >
-                                                                <i className="fa fa-download "></i>
-
-
-                                                            </a>
+                                                            ><i className="fa fa-download "></i></a>
                                                         }
 
                                                     </div>
                                                 </Box>
                                             )}
                                             getRowId={(row) => row.id}
-
                                             onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
                                             state={{ rowSelection }}
-
-
                                             localization={MRT_Localization_ES}
                                         />
-
-
                                     </div>
                                 </div>}
-
                         </div>
                         <div className="tab-pane  container " id="correlativos">
                             {nombres.codigo_boletos != null && JSON.parse(nombres.codigo_boletos).lengt > 0 ?
@@ -1886,6 +1786,13 @@ export default function DetalleCompraView() {
 
                                 : ""}
 
+                        </div>
+                        <div className=" tab-pane container" id="boletos">
+                            {usuario.movil != "" ? "" : nombres.info_concierto[0].nombreConcierto == "AUTO BINGO " ? <Bingo_tablas
+                                Bingo={nombres.ticket_usuarios}
+                                cedula={nombres.cedula}
+                                ID={id}
+                            /> : ""}
                         </div>
 
 

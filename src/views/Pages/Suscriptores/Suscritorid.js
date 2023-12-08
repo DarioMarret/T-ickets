@@ -713,7 +713,7 @@ const SuscritoridView = () => {
                   <Col xs="7">
                     <div className="numbers">
                       <p className="card-category">Compras</p>
-                      <Card.Title as="h4">${boletos.length == 0 ? "0" : boletos.map(e => { return parseFloat(e.valor) }).reduce((a, b) => a + b, 0)}</Card.Title>
+                      <Card.Title as="h4">${boletos.length == 0 ? "0" : boletos.map(e => { return parseFloat(e.valor) }).reduce((a, b) => a + b, 0).toFixed(2)}</Card.Title>
                     </div>
                   </Col>
                 </Row>

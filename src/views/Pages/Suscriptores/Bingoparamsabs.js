@@ -14,7 +14,7 @@ import { useParams, useHistory } from "react-router";
     imprimir, armas, mascotas, mascarilla, bebidas, card, cedula, comidas, desiectante, social, tc
 } = staticimg*/
 
-function BingoViewtiparams() {
+function BingoViewtiparamsasb() {
     // let { link, Bingo } = props
     let { id } = useParams()
 
@@ -165,7 +165,7 @@ function BingoViewtiparams() {
             //document.querySelector("#printe").remove()
             //return
             pdf.save('new-file.pdf')
-           // window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
+            // window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
 
         })
     }
@@ -312,9 +312,9 @@ function BingoViewtiparams() {
                     <div className=' bg-light m-4  rounded-5   justify-content-center '
                         style={{ height: '270mm', }}>
                         <div className='p-3 px-5 text-end'>
-                            <h3 className=' text-secondary fw-bold text-uppercase' style={{ fontSize: "1.3em" }}> CLIENTE: {data.nombreCompleto}</h3>
+                            <h3 className=' text-secondary fw-bold text-uppercase' style={{ fontSize: "1.3em" }}> VENDEDOR: {data.nombreCompleto}</h3>
                             <div className='d-flex  justify-content-end'>
-                                <p className=' text-secondary fw-bold text-uppercase' style={{ fontSize: "1em" }}> Fecha: 2024-01-06</p>
+                                <p className=' text-secondary fw-bold text-uppercase' style={{ fontSize: "1em" }}> Fecha: 2024-01-31</p>
                                 <p className=' text-secondary fw-bold text-uppercase px-4' style={{ fontSize: "1em" }}> Premios: ARRIZOS 5PRO</p>
                             </div>
                             <p className=' text-secondary fw-bold text-uppercase px-4' style={{ fontSize: "1em" }}> Lugar: Transmisión en Vivo-Facebook @tickets.com.ec</p>
@@ -327,7 +327,10 @@ function BingoViewtiparams() {
                                 width: "100% !important;",
                                 backgroundSize: "cover",
                                 backgroundRepeat: "no-repeat"
-                            }} className=" rounded-7 shadow-md  eventos " alt="" />
+                            }} className=" rounded-7 shadow-md  eventos-asb " alt="" />
+
+                        </div>
+                        <div className='d-flex'>
 
                         </div>
 
@@ -403,7 +406,7 @@ function BingoViewtiparams() {
                                             <div className='p-3 '>
 
 
-                                                <QRCode value={qr} size={120} style={{
+                                                <QRCode value={qr} size={110} style={{
 
                                                     maxHeight: "50%",
                                                 }}
@@ -416,7 +419,7 @@ function BingoViewtiparams() {
                                                     <span className="text-danger">  <strong> INFORMACIÓN IMPORTANTE</strong> </span>
                                                 </div>
                                                 <div style={{
-                                                    fontSize: "10px"
+                                                    fontSize: "7px"
                                                 }}> <span>  <strong>
 
                                                     Esta tabla de bingo es de un solo uso, no compartir la imformación del mismo con nadie, es de responsabilidad del cliente. cualquier duplicado o venta de este bleto se dara por no valido el mismo</strong></span>
@@ -428,7 +431,7 @@ function BingoViewtiparams() {
                                 </div>
 
                                 <div className='col-6  px-0  ' >
-                                    <div className=' d-flex  flex-column align-items-center p-0 '
+                                    <div className='d-flex  flex-column align-items-center p-0 '
 
                                         style={{
 
@@ -438,12 +441,26 @@ function BingoViewtiparams() {
                                             paddingLeft: "-25px"
                                         }} className=' img-fluid' src='/img/recursotickte.png' />
                                         <img className=' img-fluid'
-                                            src='/img/terminosycondiciones.png'
+                                            src='/img/terminosasb.png'
                                             style={{
-                                                height: "490px"
+                                                height: "290px"
                                             }} />
 
 
+                                    </div>
+                                    <div className='d-flex  flex-column pt-5'>
+                                        <div className=' text-center'>
+                                            <p className=' fw-bold'> DATOS DEL BENEFICIARIO </p>
+                                        </div>
+                                        <div className=''>
+                                            <p>Nombre:</p>
+                                            <hr></hr>
+
+                                        </div>
+                                        <div className=''>
+                                            <p>Cedula:</p>
+                                            <hr></hr>
+                                        </div>
                                     </div>
 
 
@@ -476,4 +493,4 @@ function BingoViewtiparams() {
     );
 }
 
-export default BingoViewtiparams;
+export default BingoViewtiparamsasb;

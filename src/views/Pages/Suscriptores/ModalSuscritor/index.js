@@ -239,7 +239,7 @@ const ModalSuscritoView = (props) => {
 
               <div className="row">
                 <div className="col-md-6">
-                  <label className="form-label"><b>Celuar</b></label>
+                  <label className="form-label"><b>Celular</b></label>
                   <div className="input-group mb-3">
                     <div className="input-group-prepend">
                       <span className="input-group-text"><i className="fas fa-phone"></i></span>

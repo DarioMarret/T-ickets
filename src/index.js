@@ -22,6 +22,7 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
 import Loadable from "views/Components/Loadable/index";
 import BingoViewtiparams from "views/Pages/Suscriptores/Bingoparams";
+import BingoViewtiparamsasb from "views/Pages/Suscriptores/Bingoparamsabs";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 /*<Route path="/panel" render={(props)=> <Subcr {...props}/> }/>*/
 
@@ -32,7 +33,7 @@ root.render(
       <Switch>
         <Route path="/auth" render={(props) => !clienteInfo() ? <AuthLayout {...props} /> : <Redirect from="/" to="/admin/inicio" />} />
         <Route path="/admin" render={(props) => clienteInfo() ? <AdminLayout {...props} /> : <Redirect from="/" to="/auth/login" />} />
-        <Route path="/bingo/:id" render={()=><BingoViewtiparams/>} />
+        <Route path="/bingo/:id" render={()=><BingoViewtiparamsasb/> } />
         <Route path="/" render={() => <Indexflas /> } />
         <Route path="*" to="/" />
       </Switch>

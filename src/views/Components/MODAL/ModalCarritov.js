@@ -661,7 +661,7 @@ const ModalCarritoView = (prop) => {
                                                             style={{
                                                                 fontSize: "0.9em",
                                                             }} >{e.localidad}</div>
-                                                        <div className="d-none d-sm-block  flex-row text-center col-2">${GetEstadousu().discapacidad === "No" ? e.valor * e.cantidad : e.discapacidad * e.cantidad}</div>
+                                                        <div className="d-none d-sm-block  flex-row text-center col-2">${GetEstadousu().discapacidad === "No" ? (e.valor * e.cantidad).toFixed(2) : (e.discapacidad * e.cantidad).toFixed(2)}</div>
                                                         <div className="d-none d-sm-block flex-row  text-center  col-2 mx-auto justify-content-center">{e.cantidad}</div>
                                                         <div className="d-none d-sm-block d-flex d-sm-flex flex-row   mx-auto  justify-content-center col-sm">
                                                             <button className=" d-none d-sm-block  btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >

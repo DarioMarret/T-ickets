@@ -101,7 +101,7 @@ const ModalEfectivo = () => {
             if (ouput.success) {
                 usedispatch(setModal({ nombre: "", estado: "" }))
                 usedispatch(setToastes({ show: true, message: 'Registro generado exitosamente verifica los Boletos como canjeados', color: 'bg-success', estado: "compra guardada" }))
-                history.push("/admin/Aprobar/" + user.cedula)
+                //history.push("/admin/Aprobar/" + user.cedula)
                 setSpiner(false)
                 //history.push("/admin/suscritor/" + user.id + "")
                 //usedispatch(setModal())

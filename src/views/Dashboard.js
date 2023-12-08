@@ -25,14 +25,7 @@ import {
   Col
 } from "react-bootstrap";
 import { renderButton, checkSignedIn } from "utils/Analyti";
-import GoogleLogin from "utils/Analyti/AnalityButton";
-import { useGetEventosQuery } from "StoreRedux/Slicequery/querySlice";
-import { useGetRegistroCompraQuery } from "StoreRedux/Slicequery/querySlice";
-import { useGetRegistroCompraMutation } from "StoreRedux/Slicequery/querySlice";
-import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import { useState } from "react";
-import { useGetSuscritorQuery } from "StoreRedux/Slicequery/querySlice";
-import { region } from "utils/Regionescedula";
 import { ListaPreciosEvent } from "utils/EventosQuery";
 
 function Dashboard() {
@@ -46,83 +39,17 @@ function Dashboard() {
   };
 
 
-  const init = () => {
-    checkSignedIn()
-      .then((signedIn) => {
-        updateSignin(signedIn);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
 
  
-
-
-  // console.log(todos)
-  //  let [getRegistroCompra,response] = useGetRegistroCompraMutation()
-  //const { data: lista, isLoading } = useGetEventosQuery(9)
-  const { gapi, authorized } = useAnalyticsApi({ "cedula": "" });
   let [boletos, setboletos] = useState({
     pagados: 0,
     suscritor: 0
   })
-  let [mapas, seTmapa] = useState([])
-  let datos = { cedula: "1718910894" }
-  //let { data: nuevos, error: errorboleto, isLoading: boletosloading } = useGetBoletosQuery()
-  //let { data: suscrito = [],error:errordis, isLoading: suscritoloading } = useGetSuscritorQuery()
-  //console.log(errordis)
   const ListaPrecio = async ()=>{ const info = await ListaPreciosEvent();
     console.log(info)
   return info}
   useEffect(() => {
-    let arrayRegin = []
  ListaPrecio()
-  /*  // if (errordis== undefined ){
-    try{ 
-    !boletosloading && !suscritoloading  ? setboletos({ ...boletos, pagados: nuevos.data!="" && nuevos.data!=undefined ? nuevos.data.filter(e => e.estado == "Pagado").length : [],
-     suscritor: suscrito.users? suscrito.users.length :0}) : ""
-   
-    !suscritoloading ? suscrito.users?suscrito.users.forEach(element => {
-      let dato = element.cedula.substring(0, 2)
-
-      // console.log(element.cedula, region[dato])
-      if (arrayRegin.some(e => e.region == region[dato])) {
-        let dat = arrayRegin.findIndex(e => e.region == region[dato])
-        let tota = parseInt(arrayRegin[dat].cantidad) + 1
-        arrayRegin[dat].cantidad = tota
-        // arrayRegin.cantidad
-      }
-      else {
-        arrayRegin.push({ region: region[dato], cantidad: 1 })
-
-      }
-    }):[] : []
-    //    !suscritoloading ? arrayRegin.map(e=>{return e.cantidad}).reduce():0
-    !suscritoloading ? seTmapa(arrayRegin) : ""}
-    catch(er){
-      console.log(er)
-    }
-  }*/
-    //!suscritoloading ? setboletos({ ...boletos, suscritor: suscrito.users.length }) :""
-    /* ( async  () =>{
-       await createTask({ "cedula": "1718910894" })
-     })()*/
-    /*getRegistroCompra(datos)
-      .unwrap()
-      .then((co) => console.log(co))
-      .then((error) => {
-        console.log(error)
-      })*/
-    /* createTask({ "cedula": "1718910894" }).then(oup=>
-       console.log(oup)).catch(err=>{
-         console.log(err)
-       })*/
-    //createTask()
-    /* window.gapi.load("auth2", init); //(1)
-     console.log(gapi, authorized)
-     boletosloading, suscritoloading
-     */
   }, [])
 
   return (
@@ -139,8 +66,8 @@ function Dashboard() {
 
         <Row>
           <Col lg="6" sm="12">
-            <Card className="card-stats">
-              <Card.Body>
+            <Card className="card-stats d-none">
+              <Card.Body className="">
                 <Row>
                   <Col xs="5">
                     <div className="icon-big text-center ">

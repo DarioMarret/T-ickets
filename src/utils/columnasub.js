@@ -117,7 +117,7 @@ export const ticketsboletos = [
     {
         accessorKey: "localidad",
         header: "localidad",
-        
+
         size: 50
     },
 
@@ -125,7 +125,7 @@ export const ticketsboletos = [
         accessorKey: "id_localidades_items",
         header: "Boleto",
         Cell: ({ cell }) => (
-            cell.row.original.asientos  !=undefined&&   cell.row.original.asientos.fila != null ? cell.row.original.asientos.silla : cell.row.original.id_localidades_items
+            cell.row.original.asientos != undefined && cell.row.original.asientos.fila != null ? cell.row.original.asientos.silla : cell.row.original.id_localidades_items
         ),
         size: 30
     },
@@ -230,6 +230,11 @@ function ListarPrecio(evento, localidad) {
 
 export const listaRegistro = [
     {
+        accessorKey: "id",
+        header: "Registro",
+        size: 10
+    },
+    {
         accessorKey: "fechaCreacion",
         header: "Fecha",
 
@@ -246,8 +251,8 @@ export const listaRegistro = [
     {
         accessorKey: "concierto",
         header: "Evento",
-        Cell: ({ cell }) => (            
-            cell.row.original.info_concierto.length > 0 ? cell.row.original.info_concierto[0].nombreConcierto :""
+        Cell: ({ cell }) => (
+            cell.row.original.info_concierto.length > 0 ? cell.row.original.info_concierto[0].nombreConcierto : ""
         ),
         size: 70
     },
@@ -271,23 +276,23 @@ export const listartecero = [
     {
         accessorKey: "id",
         header: "Id",
-        size:25
+        size: 25
     },
     {
-        accessorKey:"cedula",
-        header:"Cédula",
-        size:30
+        accessorKey: "cedula",
+        header: "Cédula",
+        size: 30
     },
     {
-        accessorKey:"fecha",
-        header:"Fecha",
+        accessorKey: "fecha",
+        header: "Fecha",
         Cell: ({ cell }) => (
-             moment(cell.row.original.fecha).format('L') 
+            moment(cell.row.original.fecha).format('L')
         ),
     },
     {
-        accessorKey:"observacion",
-        header:"Observación"
+        accessorKey: "observacion",
+        header: "Observación"
     }
 ]
 
@@ -320,7 +325,7 @@ export const listaRegistrosuscri = [
         header: "Metodo",
         size: 50
     },
-   
+
 ]
 export const listaRegistrototal = [
     {
@@ -331,7 +336,7 @@ export const listaRegistrototal = [
 
     {
         accessorKey: "consolidado",
-        header: "Consolidado",      
+        header: "Consolidado",
         size: 25
     },
 
@@ -370,24 +375,24 @@ export const listaRegistrototal = [
         size: 50
     },
     {
-        accessorKey:"numerTransacion",
-        header:"Comprobante",
-        size:25
-    },{
+        accessorKey: "numerTransacion",
+        header: "Comprobante",
+        size: 25
+    }, {
         accessorKey: "info_registro",
         header: "Tipo",
         Cell: ({ cell }) => (
-            cell.row.original.info_registro.length == 0 ? "Id operador:" + cell.row.original.id_usuario_registro_pago : cell.row.original.info_registro[0].title + " " + cell.row.original.info_registro.length == 0 ? "" :  cell.row.original.info_registro[0].name
+            cell.row.original.info_registro.length == 0 ? "Id operador:" + cell.row.original.id_usuario_registro_pago : cell.row.original.info_registro[0].title + " " + cell.row.original.info_registro.length == 0 ? "" : cell.row.original.info_registro[0].name
         ),
-    }, 
+    },
     {
         accessorKey: "id_usuario",
         header: "user",
-        Cell:({cell})=>(
-            cell.row.original.info_registro.length == 0 ? "" :   cell.row.original.info_registro[0].title != "Suscriptor" ? cell.row.original.id_usuario : ""
+        Cell: ({ cell }) => (
+            cell.row.original.info_registro.length == 0 ? "" : cell.row.original.info_registro[0].title != "Suscriptor" ? cell.row.original.id_usuario : ""
         ),
         filterVariant: 'range',
-        size:25
+        size: 25
     }
 ]
 let precio = {

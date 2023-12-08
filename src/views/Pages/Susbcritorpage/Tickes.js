@@ -251,60 +251,32 @@ function Example() {
                             <div className=" btn-group  " >
                                 {item.estado == "Pagado" && item.canje != "CANJEADO" ?
                                     <Tooltip className="" title="Ver Ticket" placement="top">
-                                        <a
-                                            className="btn btn-default-su btn-sm text-danger"
-                                            onClick={() => generaPDF(item)}
-                                        //href={item.pdf}
-                                        //target="_black"
-                                        >
+                                        <a className="btn btn-default-su btn-sm text-danger" onClick={() => generaPDF(item)}>
                                             <i className="fa fa-download  "></i>
-
                                         </a>
                                     </Tooltip> :
                                     <a
                                         className=" btn btn-default btn-sm btn-disable"
                                         disabled
-
                                     >
                                         <i className="fa fa-download "></i>
-
-
                                     </a>
                                 }
-                                {item.estado == "Pagado" && item.codigoEvento == "5UY4DT" ?
+                                {item.estado == "Pagado" && item.codigoEvento == "5UY4DT" && item.cedula != "0993379741" ?
                                     <Tooltip className="" title="Ver Tabla" placement="top">
-
-                                        <a
-                                            className="btn btn-default-su btn-sm text-danger"
-                                            onClick={() => generaBingo(item)}
-                                        //href={item.pdf}
-                                        //target="_black"
-                                        >
-                                            <i className="fa fa-table  "></i>
-
+                                        <a className="btn btn-default-su btn-sm text-danger"
+                                            onClick={() => generaBingo(item)}>
+                                            <i className="fa fa-table"></i>
                                         </a>
                                     </Tooltip> :
-                                    <a
-                                        className=" btn btn-default btn-sm btn-disable"
-                                        disabled
-
-                                    >
-                                        <i className="fa fa-table "></i>
-
-
-                                    </a>
-                            }
+                                    ""
+                                }
                                 {item.estado == "Pagado" && item.pdf != null && item.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
                                     <a className=" btn btn-default btn-sm d-none"
-
-
-                                        onClick={() => successAlert(item)}
-                                    >
+                                        onClick={() => successAlert(item)}>
                                         <img src={cedericon}
                                             style={
-                                                {
-                                                    height: 20
-                                                }
+                                                { height: 20 }
                                             }
                                         />
                                     </a>
@@ -312,23 +284,12 @@ function Example() {
                                     <a
                                         className=" btn btn-default btn-sm btn-disable d-none"
                                         disabled
-
                                     >
                                         <img src={cedericon}
-                                            style={
-                                                {
-                                                    height: 20
-                                                }
-                                            }
+                                            style={{ height: 20 }}
                                         />
-
-
                                     </a>
                                 }
-
-
-
-
                             </div>
 
                         </td>
@@ -410,29 +371,22 @@ function Example() {
                 if (!salida.success) {
                     return
                 }
-                // console.log(e.data[0])
-                // setDatos(e.data)
                 Listarticketporestado(user.cedula).then(ouput => {
-                    //console.log(ouput)
                     if (!ouput.success) {
                         return
                     }
                     console.log(ouput.data)
                     let tikets = ouput.data.map(e => {
-
                         e.estado = salida.data.filter(f => f.id == e.id_registraCompra).length > 0 ? salida.data.filter(f => f.id == e.id_registraCompra)[0].estado_pago : "NO Registro"
                         return { ...e }
                     })
                     console.log(tikets)
                     setTikes(tikets)
-                    //console.log(ouput.data.filter(e => e.canje != "CANJEADO"))
                 }).catch(err => console.log(err))
-
             }
         ).catch(err =>
             console.log(err)
         )
-
         Listarfaci({ "cedula": user.cedula }).then(ouput => {
             if (ouput.success) {
                 console.log(ouput)
@@ -442,7 +396,6 @@ function Example() {
         }).catch(err => {
             console.log(err)
         })
-
     }, [])
     function suma(item) {
         let tikets = tiketslist.find(e => e.codigoEvento == item).detalle.map((f) => { return parseFloat(f.valor) })
@@ -452,9 +405,7 @@ function Example() {
         } catch (error) {
             console.log(error)
         }
-
     }
-    console.log(tiketslist)
     return (
         <>
             {alert}

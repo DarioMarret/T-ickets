@@ -73,7 +73,7 @@ export default function ListaSuscritor(prop) {
         if ($("#movil").val() == " ") {
             usedispatch(setToastes({
                 show: true,
-                message: "Falta Celualar",
+                message: "Falta Celular",
                 color: 'bg-warning',
                 estado: "hubo un error",
             }))

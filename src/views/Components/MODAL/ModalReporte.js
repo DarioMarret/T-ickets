@@ -11,7 +11,7 @@ import { GetValores } from 'utils/CarritoLocalStorang';
 import { bancos } from 'utils/Imgenesutils';
 import { PagoRapido } from 'utils/Querycomnet';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
-import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
+import { clienteInfo, getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import ReactGA from "react-ga"
 let { GUAYAQUIL, numero,
   pacifico, pichincha,
@@ -169,8 +169,9 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
+         
           usedispatch(setModal({
-            nombre: e, estado: valores
+            nombre: e, estado: { ...valores, id: oupt.idRegistro }
           }))
           usedispatch(setToastes({
             show: true,
@@ -324,7 +325,9 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
-          usedispatch(setModal({ nombre: "confirmar", estado: { ...oupt } }))
+          console.log(oupt, valores)
+          let datosPersonal = getDatosUsuariosLocalStorag().cedula
+          usedispatch(setModal({ nombre: "confirmar", estado: { id: oupt.idRegistro, total_pago:valores.total, ...valores, cedula: datosPersonal } }))
           usedispatch(setToastes({
             show: true,
             message: 'Recuerda reportar el comprobante al WhatsApp o desde la opción tickets, tienes un tiempo de 2 hora para reportarlo',
