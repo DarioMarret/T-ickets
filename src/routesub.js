@@ -68,13 +68,13 @@ var routes = [
     name: "Noticias",
     layout: "/admin",
     component: NoticiasJs,
-    icon: " nc-icon nc-notification-70", permiso: ["admin", ],
+    icon: " nc-icon nc-notification-70", permiso: ["admin",],
   },
   {
     path: "/Evento/:id",
     layout: "/admin",
     component: EventoEspecifico,
-    permiso: ["admin",  "super_admin"],
+    permiso: ["admin", "super_admin"],
   },
   {
     collapse: true,
@@ -82,7 +82,7 @@ var routes = [
     name: "Gestion de Eventos",
     state: "openGestion",
     icon: "nc-icon nc-notes",
-    permiso: ["admin","super_admin" ],
+    permiso: ["admin", "super_admin"],
     views: [
       {
         path: "/Espacio",
@@ -90,13 +90,13 @@ var routes = [
         name: "Crear Espacio",
         mini: "*",
         component: Espacios,
-        permiso: ["admin", ]
+        permiso: ["admin",]
       },
       {
         path: "/usuario/:id",
         layout: "/admin",
         component: UseridView,
-        permiso: ["admin","suscriptores" ]
+        permiso: ["admin", "suscriptores"]
       },
       {
         path: "/Evento",
@@ -104,39 +104,39 @@ var routes = [
         name: "Evento",
         mini: "*",
         component: Eventos,
-        permiso: ["admin","super_admin" ]
+        permiso: ["admin", "super_admin"]
       },
-      {
-        path: "/Informacion-tributaria",
-        layout: "/admin",
-        name: "SRI",
-        mini: "*",
-        component: AutorizacionView,
-        permiso: ["admin", ]
-      }, {
-        path: "/configurar-comisiones",
-        layout: "/admin",
-        name: " Comisiones",
-        mini: "*",
-        component: AutorizacionView,
-        permiso: ["admin", ]
-      }
-     /* , {
-        path: "/Diseñar-Ticket",
-        layout: "/admin",
-        name: "Diseñar Ticket",
-        mini: "*",
-        component: DiseñoViewtickes,
-        permiso: ["admin", ]
-      },
-      {
-        path: "/Diseñar-PDF",
-        layout: "/admin",
-        name: "Diseñar PDF",
-        mini: "*",
-        component: DiseñoViwpdf,
-        permiso: ["admin", ]
-      }*/
+      /* {
+         path: "/Informacion-tributaria",
+         layout: "/admin",
+         name: "SRI",
+         mini: "*",
+         component: AutorizacionView,
+         permiso: ["admin", ]
+       }, {
+         path: "/configurar-comisiones",
+         layout: "/admin",
+         name: " Comisiones",
+         mini: "*",
+         component: AutorizacionView,
+         permiso: ["admin", ]
+       }
+       , {
+         path: "/Diseñar-Ticket",
+         layout: "/admin",
+         name: "Diseñar Ticket",
+         mini: "*",
+         component: DiseñoViewtickes,
+         permiso: ["admin", ]
+       },
+       {
+         path: "/Diseñar-PDF",
+         layout: "/admin",
+         name: "Diseñar PDF",
+         mini: "*",
+         component: DiseñoViwpdf,
+         permiso: ["admin", ]
+       }*/
     ]
   },
 
@@ -144,7 +144,7 @@ var routes = [
     path: "/suscritor/:id",
     state: "openCliente",
     layout: "/admin",
-    component: SuscritoridView, 
+    component: SuscritoridView,
     permiso: ["admin", "super_admin", "vendedores", "suscriptores"],
   },
   {
@@ -172,7 +172,7 @@ var routes = [
         name: "Suscriptores",
         mini: "*",
         component: SuscritorViews,
-        permiso: ["admin", "super_admin", "vendedores" ],
+        permiso: ["admin", "super_admin", "vendedores"],
       },
 
 
@@ -201,14 +201,14 @@ var routes = [
         name: "Ventas Por Aprobar",
         mini: "*",
         component: AprobarView,
-        permiso: ["admin", "super_admin", ]
+        permiso: ["admin", "super_admin",]
       },
       {
-        path:"/Consolidados",
-        layout:"/admin",
-        name:"Consolidados",
-        mini:"*",
-        component:ConsolidacionView,
+        path: "/Consolidados",
+        layout: "/admin",
+        name: "Consolidados",
+        mini: "*",
+        component: ConsolidacionView,
         permiso: []
       },
       {
@@ -224,7 +224,7 @@ var routes = [
         layout: "/admin",
 
         component: AprobarViewid,
-        permiso: ["admin", "super_admin", ]
+        permiso: ["admin", "super_admin",]
       },
       {
         path: "/Boletos",
@@ -232,7 +232,7 @@ var routes = [
         mini: "*",
         name: "Boletos",
         component: EmitirboView,
-        permiso: ["admin", "super_admin", ]
+        permiso: ["admin", "super_admin",]
       },
       {
         path: "/Vender-Articulo",
@@ -240,7 +240,7 @@ var routes = [
         name: "Vender Articulo",
         mini: "*",
         component: EmitirboView,
-        permiso: ["admin", ]
+        permiso: ["admin",]
       }
 
     ]
@@ -293,7 +293,7 @@ var routes = [
     name: "Mensajeria",
     state: "openMensajeria",
     icon: "nc-icon nc-money-coins",
-    permiso: ["", ],
+    permiso: ["",],
     views: [
       {
         path: "/notificacion",
@@ -346,7 +346,7 @@ var routes = [
         mini: "*",
         component: FacturaView,
         permiso: ["admin", ""]
-      }, 
+      },
       {
         path: "/OCR",
         layout: "/admin",
@@ -354,7 +354,7 @@ var routes = [
         mini: "*",
         component: OCRApiViews,
         permiso: ["admin", "super_admin"]
-      },      
+      },
       {
         path: "/info",
         layout: "/admin",

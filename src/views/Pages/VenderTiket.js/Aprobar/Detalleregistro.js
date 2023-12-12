@@ -705,7 +705,7 @@ export default function DetalleCompraView() {
                         else {
                             let comprobanteSpan = document.getElementById('comprobante');
                             comprobanteSpan.classList.add('label-success');
-                            comprobanteSpan.textContent = 'Comprobante único';                           
+                            comprobanteSpan.textContent = 'Comprobante único';
                         }
                         return
                     }
@@ -1092,35 +1092,8 @@ export default function DetalleCompraView() {
             }
         });
     }
-    const [rowSelection, setRowSelection] = useState({});
-    function quitarrepetifod() {
-        console.log(Object.keys(rowSelection))
-        let datos = nombres.ticket_usuarios.map(e => {
-            if (!Object.keys(rowSelection).some(f => f == e.id)) {
-                return e.id
-            }
-        }).filter(g => g != undefined)
-        console.log(datos)
-        if (datos.length > 0) {
-            eliminartiket([datos]).then(ouput => {
-                // console.log(ouput)
-
-                if (ouput.success) {
-                    console.log(ouput)
-                    window.location.reload()
-
-                }
-                if (!ouput.success) {
-                    console.log(ouput)
-                    return
-                }
-
-            }).catch(error => {
-                console.log(error)
-                $.alert("hubo un error no se pudo eliminar este registro")
-            })
-        }
-    }
+    
+    /*
     function Verificaexistencia() {
         Seleccionaruserlista({ "cedula": nombres.cedula }).then(ouput => {
             if (ouput.success) {
@@ -1134,7 +1107,7 @@ export default function DetalleCompraView() {
         }).catch(err => {
             console.log(err)
         })
-    }
+    }*/
     function conciliacion() {
         if (nombres.conciliacion == undefined) return
         if (Object.keys(nombres.conciliacion).length > 0) return
@@ -1259,7 +1232,7 @@ export default function DetalleCompraView() {
                                                 </a>}
                                             {nombres.forma_pago != "Deposito" ? "" : <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>}
 
-                                            {boletoscanje() ? "" : <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>}
+                                            {/*boletoscanje() ? "" : <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>*/}
 
                                         </div>
                                     </div>
@@ -1491,19 +1464,12 @@ export default function DetalleCompraView() {
                                             <div className="col-12  col-md-6 text-md-end p-3 text-center ">
                                                 <div className="invoice-from text-center ">
                                                     <small>Comprobante</small>
-                                                    <br></br>
-                                                    {nombres.link_comprobante == null ? "" :
-                                                        <a className=" btn btn-default btn-sm">
-                                                            <i className="fa fa-copy"></i> copy
-                                                        </a>}
-                                                    <br></br>
-
+                                                    <br></br>                                               
                                                     <a className=" btn btn-default btn-sm"
                                                         onClick={CambiarComprobante}
                                                     >
                                                         <i className=" fa fa-spinner"></i>Cambiar # comprobante
                                                     </a>
-
                                                     <br></br>
                                                     <a className="btn btn-default btn-sm"
                                                         onClick={ValidarComprobante}
@@ -1693,12 +1659,7 @@ export default function DetalleCompraView() {
                                                     <i className=" fa fa-eye"></i>
                                                 </a>
                                             </p>
-                                            {Object.keys(rowSelection).length > 0 ?
-                                                <div className="col-12 col-md-6 text-center">
-                                                    <button className=" btn btn-success" onClick={quitarrepetifod}  >Quitar los repetidos</button>
-
-                                                </div>
-                                                : ""}
+                                            
                                         </div>
                                         <Iframe
                                             url={url}
@@ -1715,8 +1676,6 @@ export default function DetalleCompraView() {
                                                 }
                                             }}
                                             enableRowActions
-                                            enableRowSelection
-                                            positionActionsColumn="first"
                                             renderRowActions={({ row }) => (
                                                 <Box sx={{ display: 'flex' }}>
                                                     <div className=" btn-group" ><a onClick={() => Eliminara(row.original.id)}
@@ -1747,9 +1706,7 @@ export default function DetalleCompraView() {
                                                     </div>
                                                 </Box>
                                             )}
-                                            getRowId={(row) => row.id}
-                                            onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
-                                            state={{ rowSelection }}
+                                            
                                             localization={MRT_Localization_ES}
                                         />
                                     </div>

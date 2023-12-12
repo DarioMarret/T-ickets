@@ -128,7 +128,7 @@ function Bingo_tablas(props) {
        
         elm.forEach((elementId, index) => {
             const element = document.getElementById(`printe${elementId.id}`);
-            html2canvas(element).then(canvas => {
+            html2canvas(element, { scale: 0.8 }).then(canvas => {
                 var imgWidth = 180;
                 var imgHeight = canvas.height * imgWidth / canvas.width;
                 const contentDataURL = canvas.toDataURL('image/png')
@@ -154,7 +154,7 @@ function Bingo_tablas(props) {
         })
     }
     function compartir() {
-        html2canvas(document.querySelector("#printe")).then(canvas => {
+        html2canvas(document.querySelector("#printe"), { scale: 0.5 }).then(canvas => {
             var imgWidth = 130;
             var imgHeight = canvas.height * imgWidth / canvas.width;
             const contentDataURL = canvas.toDataURL('image/png')
