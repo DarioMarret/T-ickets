@@ -3,7 +3,7 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Button, Tooltip, } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Delete,  Summarize, Visibility, } from '@mui/icons-material';
+import { Delete, Summarize, Visibility, } from '@mui/icons-material';
 import { useDispatch, useSelector } from "react-redux";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
@@ -34,13 +34,13 @@ export default function ListaderegistroView(props) {
                 if (!e.success) {
                     return
                 }
-               console.log(e)
+                console.log(e)
                 /*e.data.forEach(element => {
                     console.log(moment(element.fechaCreacion).format() +"aqui"+ moment( fechaLimite).format())
                     console.log(moment(element.fechaCreacion).format()> moment(fechaLimite).format())
                 })*/
                 /*/.filter(e => moment(e.fechaCreacion).format() > moment(fechaLimite).format())*/
-                setDatos(e.data) 
+                setDatos(e.data)
             }
         ).catch(err =>
             console.log(err)
@@ -84,7 +84,7 @@ export default function ListaderegistroView(props) {
                             setTimeout(function () {
                                 window.location.reload()
                             }, 1000)
-                       }).catch(error => {
+                        }).catch(error => {
                             $.alert("hubo un error no se pudo eliminar este registro")
                         })
                     }
@@ -109,85 +109,86 @@ export default function ListaderegistroView(props) {
     }
     return (
         <>
-            <MaterialReactTable
-                columns={listaRegistrosuscri}
-                data={datos}
-                muiTableProps={{
-                    sx: {
-                        tableLayout: 'flex'
-                    }
-                }}
-                enableRowActions
-                positionActionsColumn="last"
-                renderRowActions={({ row }) => {
-                    return (
+            {datos.length > 0 ?
+                <MaterialReactTable
+                    columns={listaRegistrosuscri}
+                    data={datos}
+                    muiTableProps={{
+                        sx: {
+                            tableLayout: 'flex'
+                        }
+                    }}
+                    enableRowActions
+                    positionActionsColumn="last"
+                    renderRowActions={({ row }) => {
+                        return (
 
-                        <Box sx={{ display: 'flex' }}>
-                            {row.original.forma_pago == "Deposito" && row.original.estado_pago != "Pagado" && row.original.estado_pago != "Comprobar" ?
-                                <Tooltip
-                                    title="Reportar pago" placement="top"
-                                >
-                                    <IconButton
-                                        onClick={() => abrirModal(row.original)}
-                                        color="error"
-                                        aria-label="Consolidar"
+                            <Box sx={{ display: 'flex' }}>
+                                {row.original.forma_pago == "Deposito" && row.original.estado_pago != "Pagado" && row.original.estado_pago != "Comprobar" ?
+                                    <Tooltip
+                                        title="Reportar pago" placement="top"
                                     >
-                                        <Summarize />
+                                        <IconButton
+                                            onClick={() => abrirModal(row.original)}
+                                            color="error"
+                                            aria-label="Consolidar"
+                                        >
+                                            <Summarize />
 
-                                        Reportar pago
-                                    </IconButton>
-                                </Tooltip> :
-                                ""
-                            }
-                            {row.original.estado_pago!="Expirado" &&row.original.estado_pago != "Pagado" && row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone" ?
-                                row.original.link_pago != null ?
-                                    <a className=" btn btn-default btn-sm"
+                                            Reportar pago
+                                        </IconButton>
+                                    </Tooltip> :
+                                    ""
+                                }
+                                {row.original.estado_pago != "Expirado" && row.original.estado_pago != "Pagado" && row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone" ?
+                                    row.original.link_pago != null ?
+                                        <a className=" btn btn-default btn-sm"
 
-                                        onClick={() => usedispatch(setModal({ nombre: 'pago', estado: row.original.link_pago }))}
+                                            onClick={() => usedispatch(setModal({ nombre: 'pago', estado: row.original.link_pago }))}
+                                        >
+                                            <i className="fa fa-credit-card" ></i> Pagar
+                                        </a>
+                                        : row.original.estado_pago != "Pagado" ?
+                                            <Tooltip
+                                                title="Eliminar" placement="top">
+                                                <Button
+                                                    color="error"
+
+                                                    onClick={() => eliminarregistro(row.original)}
+                                                >
+                                                    <Delete /> <span>Eliminar</span>
+                                                </Button>
+                                            </Tooltip> : "" :
+                                    row.original.estado_pago != "Pagado" || row.original.forma_pago != "Tarjeta" ? "" :
+                                        <a className=" btn btn-default btn-sm "
+                                            style={{
+                                                fontWeight: "bold"
+                                            }}
+
+                                            onClick={() => abrirvoucher(row.original)}
+                                        >
+                                            <i className="fa fa-print" > </i>Imprimir voucher
+                                        </a>
+
+                                }
+                                {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ?
+                                    <Tooltip
+                                        title="Comprobar" placement="top"
                                     >
-                                        <i className="fa fa-credit-card" ></i> Pagar
-                                    </a>
-                                    : row.original.estado_pago != "Pagado" ?
-                                        <Tooltip
-                                            title="Eliminar" placement="top">
-                                            <Button
-                                                color="error"
-
-                                                onClick={() => eliminarregistro(row.original)}
-                                            >
-                                                <Delete /> <span>Eliminar</span>
-                                            </Button>
-                                        </Tooltip> : "" :
-                                row.original.estado_pago!="Pagado" || row.original.forma_pago !="Tarjeta"?"":
-                                <a className=" btn btn-default btn-sm "
-                                    style={{
-                                        fontWeight: "bold"
-                                    }}
-
-                                    onClick={() => abrirvoucher(row.original)}
-                                >
-                                    <i className="fa fa-print" > </i>Imprimir voucher
-                                </a>
-
-                            }
-                            {clienteInfo() && row.original.forma_pago == "Deposito"  && row.original.link_comprobante == null ?
-                                <Tooltip
-                                    title="Comprobar" placement="top"
-                                >
-                                    <IconButton
-                                        color="error"
-                                        onClick={() => detalle(row.original)}
-                                    >
-                                        <Visibility />
-                                    </IconButton>
-                                </Tooltip> : ""}
+                                        <IconButton
+                                            color="error"
+                                            onClick={() => detalle(row.original)}
+                                        >
+                                            <Visibility />
+                                        </IconButton>
+                                    </Tooltip> : ""}
 
 
-                        </Box>
-                    )
-                }}
-                localization={MRT_Localization_ES}
-            />
+                            </Box>
+                        )
+                    }}
+                    localization={MRT_Localization_ES}
+                /> : ""}
 
 
 

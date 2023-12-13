@@ -907,6 +907,7 @@ const IndexFlas = () => {
                 }) : ''
             }
           </Swiper>
+          
         </div> :
         <div className="container-fluid  p-0">
           <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '300px', backgroundImage: `url(${header})` }}>

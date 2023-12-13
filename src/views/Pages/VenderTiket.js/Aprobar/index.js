@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Box, Tabs, Tooltip, Tab, Typography } from '@mui/material';
+import { Box, Tabs, Tooltip, Tab } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Edit, Delete, Visibility, ContactsOutlined, Share, FileDownload, Send, CheckBox, Summarize, Preview, } from '@mui/icons-material';
-import SweetAlert from "react-bootstrap-sweetalert";
+import { Delete, Visibility, Summarize, Preview, } from '@mui/icons-material';
+
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice.js";
-import { bancos } from "utils/Imgenesutils";
 import ModalAprobarViews from "./Modalventas";
 import ModalBoletoApro from "./Modalboleto";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { listaRegistrototal } from "utils/columnasub";
-import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useHistory } from "react-router";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
@@ -23,8 +21,6 @@ import { DateRangePicker, defaultStaticRanges, defaultInputRanges, DateRange } f
 import * as locales from 'react-date-range/dist/locale'
 import { setCompras } from "StoreRedux/Slice/SuscritorSlice";
 import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
-import { useGetLocalidadQuery } from "StoreRedux/Slicequery/querySlice";
-import { retry } from "@reduxjs/toolkit/dist/query";
 import { ListaPreciosEvent } from "utils/EventosQuery";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { setFecha } from "StoreRedux/Slice/SuscritorSlice";
@@ -32,8 +28,8 @@ import { ListarRegistropaneFecha } from "utils/pagos/Queripagos";
 import moment from "moment";
 import { setTicket } from "StoreRedux/Slice/SuscritorSlice";
 import { setlisticket } from "StoreRedux/Slice/SuscritorSlice";
+import { ExampleSlideout, Slideout } from "views/Components/slider";
 moment.defaultFormat = "MM-DD-YYYY ";
-let { cedericon, atencion } = bancos
 
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
@@ -193,6 +189,7 @@ export default function AprobarView() {
     useEffect(() => {
         // ListaPrecios()
         console.log(ticket.ticket)
+
         console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format())
 
         !ticket.ticket ? "" :
@@ -289,6 +286,71 @@ export default function AprobarView() {
         23: 0,
         22: 0
     }
+
+    const [fecha, setFechaRange] = useState()
+    $(function () {
+        $('input[name="datefilter"]').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear',
+                "applyLabel": "Aceptar",
+                "cancelLabel": "Cancelar", "daysOfWeek": [
+                    "Dom",
+                    "Lun",
+                    "Mar",
+                    "Mie",
+                    "Jue",
+                    "Vie",
+                    "Sáb"
+                ],
+                "monthNames": [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],
+            }
+        });
+
+        $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+            console.log(picker)
+
+
+            let items = {
+               
+                startDate: moment(picker.startDate.format('MM-DD-YYYY')).format('YYYY-MM-DD-T00:00:00.000Z'),
+                endDate: moment(picker.endDate.format('MM-DD-YYYY')).format('YYYY-MM-DD-T00:00:00.000Z')
+                
+            }
+            // usedispatch(setCompras({ compras: compras }))
+            //usedispatch(setLabels({ labels: [...labelne] }))
+            usedispatch(setFecha({ fecha: [items] }))
+            //console.log(moment(item.selection.startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format())
+            //return
+
+
+
+
+            setFechaRange(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'))
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+            setFechaRange(moment(item.selection.startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() - moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format())
+            usedispatch(setlisticket({ ticket: true }))
+            usedispatch(setFecha({ fecha: [item.selection] }))
+            $(this).val('');
+        });
+
+    });
 
 
     const [datas1, setDatas] = useState([])
@@ -458,7 +520,7 @@ export default function AprobarView() {
         is3D: false,
     };
 
-    const [locale, setLocale] = React.useState('es');
+    const locale = 'es'
     const label = {
         0: "Hoy",
         1: "Ayer",
@@ -475,8 +537,10 @@ export default function AprobarView() {
         e.label = labels[i]
         return { ...e }
     })
+
     return (
         <>
+
             {alert}
             {
                 modal.nombre == "Aprobar" ?
@@ -493,13 +557,38 @@ export default function AprobarView() {
                         onClick={refrescar}
 
                     >
-                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                        <i className="fa fa-refresh" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>
             <div className="row py-5">
                 <div className="col-12 col-md-8 d-flex justify-content-center ">
                     <div className="card">
+                        <Slideout
+
+                            btnText="Click Me"
+                            title="Datos de evento"
+                        >
+                            <div className="row col-12">
+                                <div className="col-12 my-2">
+                                    <input className=" form-control" name="datefilter" value={fecha} />
+                                </div>
+                                <div className="col-12">
+
+                                    <div className="card">
+                                        <div className=" card-body">
+                                            {datas.length > 0 ?
+                                                <PiecharViewsSlect
+                                                    datas={datas}
+                                                    options={options}
+
+                                                /> : ""}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </Slideout>
                         <div className="card-body d-none d-sm-none d-md-block">
 
                             <DateRangePicker
@@ -532,19 +621,7 @@ export default function AprobarView() {
                     </div>
 
                 </div>
-                <div className="col-12 col-sm-12 col-md-4">
-                    <div className="card">
-                        <div className=" card-body">
-                            {datas.length > 0 ?
-                                <PiecharViewsSlect
-                                    datas={datas}
-                                    options={options}
 
-                                /> : ""}
-                        </div>
-                    </div>
-
-                </div>
             </div>
             <div className=" container row"  >
             </div>
