@@ -10,14 +10,14 @@ export default function PiecharViewsSlect({ ...props }) {
                 data={props.datas}
                 options={{
                     legend: "none",
-                    chartArea: { left: 15, top: 15, right: 0, bottom: 0 },
+                    chartArea: { left: 10, top: 18, right:10, bottom: 45 },
                     pieSliceText: "label",
                     //height:300
                 }}
                
                 chartPackages={["corechart", "controls"]}
                 chartWrapperParams={{ view: { columns: [0, 2] } }}
-                controls={[
+               /* controls={[
                     {
                         controlEvents: [
                             {
@@ -42,9 +42,9 @@ export default function PiecharViewsSlect({ ...props }) {
                             },
                         },
                     },
-                ]}
+                ]}*/
                 width={"100%"}
-                height={"400px"}
+                height={"360px"}
             />
         </>
     )
