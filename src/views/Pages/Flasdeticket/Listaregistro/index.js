@@ -97,12 +97,12 @@ export default function ListaderegistroView(props) {
     function abrirvoucher(row) {
         usedispatch(setToastes({
             show: true,
-            message: "Muy pronto te anunciaremos en canje de los boletos a través de redes",
+            message: "Muy pronto te anunciaremos el canje de los boletos a través de redes",
             color: 'bg-success',
             estado: "Tu boleto ya están pagados"
         }))
         if (row.link_pago != null) {
-            (row.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante })) : usedispatch(setModal({ nombre: 'pago', estado: row.link_pago.replace("k/", "k/voucher/") }))
+            (row.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante })) : usedispatch(setModal({ nombre: 'firma', estado: { link: row.link_pago.replace("k/", "k/voucher/"), id: row.id } }))
         } if (row.link_comprobante) {
             usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante }))
         }
@@ -143,7 +143,6 @@ export default function ListaderegistroView(props) {
                                 {row.original.estado_pago != "Expirado" && row.original.estado_pago != "Pagado" && row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone" ?
                                     row.original.link_pago != null ?
                                         <a className=" btn btn-default btn-sm"
-
                                             onClick={() => usedispatch(setModal({ nombre: 'pago', estado: row.original.link_pago }))}
                                         >
                                             <i className="fa fa-credit-card" ></i> Pagar
@@ -153,22 +152,20 @@ export default function ListaderegistroView(props) {
                                                 title="Eliminar" placement="top">
                                                 <Button
                                                     color="error"
-
                                                     onClick={() => eliminarregistro(row.original)}
                                                 >
                                                     <Delete /> <span>Eliminar</span>
                                                 </Button>
                                             </Tooltip> : "" :
                                     row.original.estado_pago != "Pagado" || row.original.forma_pago != "Tarjeta" ? "" :
-                                        <a className=" btn btn-default btn-sm "
+                                        row.original.id_espacio_localida == null || row.original.id_espacio_localida == "" ? <a className=" btn btn-default btn-sm "
                                             style={{
                                                 fontWeight: "bold"
                                             }}
-
                                             onClick={() => abrirvoucher(row.original)}
                                         >
-                                            <i className="fa fa-print" > </i>Imprimir voucher
-                                        </a>
+                                            <i className="fa fa-print" > </i>Firmar voucher
+                                        </a> : ""
 
                                 }
                                 {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ?

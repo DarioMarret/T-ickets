@@ -518,7 +518,7 @@ export default function AprobarView() {
             }
             <ModalConfima />
             <div className=" container-fluid">
-                <div >
+                <div className="pb-2" >
                     <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
                         data-toggle="atras " data-placement="top" title="atras"
                         onClick={refrescar}
@@ -526,62 +526,65 @@ export default function AprobarView() {
                     >
                         <i className="fa fa-refresh" aria-hidden="true"></i>
                     </a>
+                    <Slideout
+
+                        btnText="Filtrar"
+                        title="Eventos"
+                    >
+                        <div className="row col-12">
+                            <div className="col-12 my-2">
+                                <label className=" form-label">Rango de Fecha</label>
+                                <input className=" form-control" name="datefilter" value={fecha} />
+                            </div>
+                            <div className=" col-12 mb-2">
+                                <label className=" form-label">Lista de eventos</label>
+                                <select
+                                    onChange={(e) => setAlert(e.target.value)}
+                                    className=" form form-control">
+                                    <option className=" form-label" value={""}>
+                                        Todos
+                                    </option>
+                                    {
+                                        Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => info_concierto[0].nombreConcierto)).length > 0 ?
+                                            Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => info_concierto[0].nombreConcierto)).map((e, i) => {
+                                                if (e) {
+                                                    return (
+
+                                                        <option key={i} className=" form-label" value={e}>
+                                                            {e}
+                                                        </option>)
+                                                }
+                                            })
+                                            : ""
+                                    }
+                                </select>
+
+                            </div>
+                            <div className="col-12">
+
+                                <div className="card">
+                                    <div className=" card-body">
+                                        {datas.length > 0 ?
+                                            <PiecharViewsSlect
+                                                datas={
+                                                    filtrarPorNombre(datas, alert)
+                                                }
+                                                options={options}
+
+                                            /> : ""}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </Slideout>
                 </div>
             </div>
-            <div className="row py-5">
+            <div className="row py-5 d-none">
                 <div className="col-12 col-md-8 d-flex justify-content-center ">
-                    <div className="card">
-                        <Slideout
+                    {/** <div className="card">
 
-                            btnText="Filtrar"
-                            title="Datos de evento"
-                        >
-                            <div className="row col-12">
-                                <div className="col-12 my-2">
-                                    <input className=" form-control" name="datefilter" value={fecha} />
-                                </div>
-                                <div className=" col-12 mb-2">
-                                    <select
-                                        onChange={(e) => setAlert(e.target.value)}
-                                        className=" form form-control">
-                                        <option className=" form-label" value={""}>
-                                            Todos
-                                        </option>
-                                        {
-                                            Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => info_concierto[0].nombreConcierto)).length > 0 ?
-                                                Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => info_concierto[0].nombreConcierto)).map((e, i) => {
-                                                    if (e) {
-                                                        return (
-
-                                                            <option key={i} className=" form-label" value={e}>
-                                                                {e}
-                                                            </option>)
-                                                    }
-                                                })
-                                                : ""
-                                        }
-                                    </select>
-
-                                </div>
-                                <div className="col-12">
-
-                                    <div className="card">
-                                        <div className=" card-body">
-                                            {datas.length > 0 ?
-                                                <PiecharViewsSlect
-                                                    datas={
-                                                        filtrarPorNombre(datas, alert)
-                                                    }
-                                                    options={options}
-
-                                                /> : ""}
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </Slideout>
-                        {/** <div className="card-body d-none d-sm-none d-md-block"> */}
+                        {/** <div className="card-body d-none d-sm-none d-md-block"> *}
                         <div className="card-body d-none">
 
                             <DateRangePicker
@@ -600,8 +603,8 @@ export default function AprobarView() {
                                 ]}
                             />
                         </div>
-                        {/** card-body d-block d-sm-block d-md-none */}
-                        <div className="card-body ">
+                        {/** card-body d-block d-sm-block d-md-none *}
+                        <div className="card-body  d-none">
                             <DateRange
                                 editableDateInputs={false}
                                 onChange={item => rango(item)}
@@ -612,7 +615,7 @@ export default function AprobarView() {
 
                         </div>
 
-                    </div>
+                </div> */}
 
                 </div>
 

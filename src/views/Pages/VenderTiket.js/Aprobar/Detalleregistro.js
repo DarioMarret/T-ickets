@@ -1,4 +1,4 @@
-import moment from "moment";
+
 import "moment"
 import 'moment/locale/es';
 import { useState } from "react"
@@ -26,13 +26,10 @@ import ModalConfirma from "views/Components/MODAL/ModalConfirma";
 import { registraPagos } from "utils/pagos/Queripagos";
 import { Liverarasiento } from "utils/userQuery";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-import { Seleccionaruserlista } from "utils/userQuery";
 import { CanjearBoletoRegistro } from "utils/boletos/Queryboleto";
 import ConsiliarView from "views/Components/MODAL/ModalConsilia";
-import axios from "axios";
 import ExportToExcel from "utils/Exportelemin";
 import { BuscarTransacion } from "utils/pagos/Queripagos";
-import ConsolidaRegistr from "./ModalesAp/CosolidaRegis";
 import { ActualizarnumeroTransacion } from "utils/pagos/Queripagos";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { infoTarjeta } from "utils/pagos/Queripagos";
@@ -47,6 +44,7 @@ import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import jsPDF from "jspdf"
 import { DateRangePicker } from "../../../../../node_modules/rsuite/esm/index";
 import Bingo_tablas from "./components/Tablaspdf";
+import ModalFirma from "views/Components/MODAL/Modalfirma";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -78,10 +76,6 @@ export default function DetalleCompraView() {
         const result2 = new Date().toLocaleString('en-GB', {
             hour12: false,
         });
-        const sumaCantidad = nombres.info_concierto.reduce((acumulador, elemento) => {
-            const cantidad = parseInt(elemento.cantidad, 10); // Convertir a número
-            return acumulador + cantidad;
-        }, 0);
         var opciones = {
             format: [69, 140]
         };
@@ -343,16 +337,13 @@ export default function DetalleCompraView() {
                     }
                 },
                 cancel: function () {
-                    //close
                 },
             },
             onContentReady: function () {
-                // bind to events
                 var jc = this;
                 this.$content.find('form').on('submit', function (e) {
-                    // if the user submits the form by pressing enter in the field.
                     e.preventDefault();
-                    jc.$$formSubmit.trigger('click'); // reference the button and click it
+                    jc.$$formSubmit.trigger('click');
                 });
             }
         });
@@ -494,7 +485,6 @@ export default function DetalleCompraView() {
             "email": ""
         }).then(ouputs => {
             if (ouputs.success) {
-                //  generaComprobante()
                 setUser({ ...ouputs.data })
                 nombres.forma_pago == "Tarjeta" && nombres.link_pago != null ?
                     !nombres.link_pago.includes("cloud.abitmedia.com") ?
@@ -620,7 +610,6 @@ export default function DetalleCompraView() {
                                         let listnombre = ouputs.data.nombreCompleto.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
                                         listnombre.forEach(element => {
                                             nuew.push(listtarje.some(e => e == element))
-
                                         });
                                         if (listtarje.length == nuew.filter(e => e == true).length) {
                                             setEstadoTC(
@@ -634,11 +623,9 @@ export default function DetalleCompraView() {
                                         }
                                         if (nuew.filter(e => e == true).length == 2) {
                                             setEstadoTC(
-
                                                 <span className={"pb-1 label label-warning"}>
                                                     Considencia minima tc
                                                 </span>
-
                                             )
                                         }
                                         if (nuew.filter(e => e == true).length == 1) {
@@ -799,7 +786,7 @@ export default function DetalleCompraView() {
     };
     function validar() {
         $.confirm({
-            title: 'Desea Aprobar el este Registro',
+            title: 'Desea Aprobar este Registro',
             content: '',
             type: 'red',
             typeAnimated: true,
@@ -1092,22 +1079,6 @@ export default function DetalleCompraView() {
             }
         });
     }
-    
-    /*
-    function Verificaexistencia() {
-        Seleccionaruserlista({ "cedula": nombres.cedula }).then(ouput => {
-            if (ouput.success) {
-                if (ouput.data) {
-                    $.alert("Tiene " + ouput.data.length + "  boletos selecion")
-
-                }
-            } else {
-                $.alert("No se encontró boleto seleccionado")
-            }
-        }).catch(err => {
-            console.log(err)
-        })
-    }*/
     function conciliacion() {
         if (nombres.conciliacion == undefined) return
         if (Object.keys(nombres.conciliacion).length > 0) return
@@ -1122,6 +1093,7 @@ export default function DetalleCompraView() {
                 <ConsiliarView {...nombre} />
                 <ModalConfima />
                 <ModalConfirma />
+                <ModalFirma />
                 <div className='container-fluid row p-0'>
                     <div className='col-12'>
                         <ul className="nav nav-tabs">
@@ -1183,60 +1155,61 @@ export default function DetalleCompraView() {
                                 </div>
 
                                 <h1></h1>
-                                {useradmin.perfil == "suscriptores" ? "" : <div className="col-12   d-flex  text-center justify-content-md-end  align-items-center">
-                                    <div className="px-2">
-                                        <div className="" >
-                                            {boletoscanje() ? <a className=" btn btn-default-su btn-sm bg-success  text-white p-3">
+                                {useradmin.perfil == "suscriptores" ? "" :
+                                    <div className="col-12   d-flex  text-center justify-content-md-end  align-items-center">
+                                        <div className="px-2">
+                                            <div className="" >
+                                                {boletoscanje() ? <a className=" btn btn-default-su btn-sm bg-success  text-white p-3">
 
-                                                <span className=" font-weight-bold"> Registro Canjedo  </span>
+                                                    <span className=" font-weight-bold"> Registro Canjedo  </span>
 
-                                            </a> : <a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" bi bi-ticket-detailed"> </i> Canjear Boletos</a>}
-                                            {
-                                                nombres.pdf == "SI" ?
-                                                    <a className=" btn btn-default btn-sm ">
-                                                        <i className="bi bi-file-earmark-pdf text-danger"></i>
-                                                        {estado[nombres.pdf]}
-                                                    </a> : ""
-                                            }
+                                                </a> : <a className=" btn btn-default btn-sm" onClick={CanjeBole} ><i className=" bi bi-ticket-detailed"> </i> Canjear Boletos</a>}
+                                                {
+                                                    nombres.pdf == "SI" ?
+                                                        <a className=" btn btn-default btn-sm ">
+                                                            <i className="bi bi-file-earmark-pdf text-danger"></i>
+                                                            {estado[nombres.pdf]}
+                                                        </a> : ""
+                                                }
 
-                                            {nombres.estado_pago == "Pagado" && nombres.conciliacion.length == 0 ?
-                                                <a className=" btn btn-default btn-sm  "
-                                                    onClick={() => conciliacion()}
-                                                >
-                                                    <i className="bi bi-check"></i> Consolidar </a>
-                                                : ""}
+                                                {nombres.estado_pago == "Pagado" && nombres.conciliacion.length == 0 ?
+                                                    <a className=" btn btn-default btn-sm  "
+                                                        onClick={() => conciliacion()}
+                                                    >
+                                                        <i className="bi bi-check"></i> Consolidar </a>
+                                                    : ""}
 
-                                            {nombres.conciliacion.length > 0 ?
-                                                <a className=" btn btn-default btn-sm  "
-                                                    onClick={() => usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres.conciliacion[0], id_registro: nombres.id, ...tarjetadata } }))}
-                                                >
-                                                    <i className="bi bi-check"></i> Actualizar conciliación </a>
-                                                : ""}
-                                            {nombres.forma_pago == "Deposito" ?
-                                                <a className=" btn btn-default btn-sm d-none"
-                                                    onClick={ComprobarBoleto}
-                                                ><i className="bi bi-exclamation-octagon text-warning "></i> Cambiar a Comprobar </a>
-                                                : ""}
+                                                {nombres.conciliacion.length > 0 ?
+                                                    <a className=" btn btn-default btn-sm  "
+                                                        onClick={() => usedispatch(setModal({ nombre: "actconsiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres.conciliacion[0], id_registro: nombres.id, ...tarjetadata } }))}
+                                                    >
+                                                        <i className="bi bi-check"></i> Actualizar conciliación </a>
+                                                    : ""}
+                                                {nombres.forma_pago == "Deposito" ?
+                                                    <a className=" btn btn-default btn-sm d-none"
+                                                        onClick={ComprobarBoleto}
+                                                    ><i className="bi bi-exclamation-octagon text-warning "></i> Cambiar a Comprobar </a>
+                                                    : ""}
 
-                                            {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
-                                                boletoscanje() ? "" : <a className="btn btn-default btn-sm"
-                                                    data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
-                                                    onClick={() => Generarnew()}
-                                                >
-                                                    <i className="fa fa-info-circle">  </i>Recargar Boleto
-                                                </a> : <a className="btn btn-default btn-sm"
-                                                    data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
-                                                    onClick={() => Generarnew()}
-                                                >
-                                                    <i className="fa fa-info-circle">  </i>Recargar Boleto
-                                                </a>}
-                                            {nombres.forma_pago != "Deposito" ? "" : <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>}
+                                                {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
+                                                    boletoscanje() ? "" : <a className="btn btn-default btn-sm"
+                                                        data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
+                                                        onClick={() => Generarnew()}
+                                                    >
+                                                        <i className="fa fa-info-circle">  </i>Recargar Boleto
+                                                    </a> : <a className="btn btn-default btn-sm"
+                                                        data-toggle="tooltip" data-placement="top" title="Consolidar Deposito"
+                                                        onClick={() => Generarnew()}
+                                                    >
+                                                        <i className="fa fa-info-circle">  </i>Recargar Boleto
+                                                    </a>}
+                                                {nombres.forma_pago != "Deposito" ? "" : <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>}
 
-                                            {/*boletoscanje() ? "" : <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>*/}
+                                                {/*boletoscanje() ? "" : <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>*/}
 
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>}
+                                    </div>}
                                 {
                                     useradmin.perfil == "suscriptores" ? "" : <div className="d-flex justify-content-end  px-3  pt-1">
                                         {nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
@@ -1464,7 +1437,7 @@ export default function DetalleCompraView() {
                                             <div className="col-12  col-md-6 text-md-end p-3 text-center ">
                                                 <div className="invoice-from text-center ">
                                                     <small>Comprobante</small>
-                                                    <br></br>                                               
+                                                    <br></br>
                                                     <a className=" btn btn-default btn-sm"
                                                         onClick={CambiarComprobante}
                                                     >
@@ -1659,7 +1632,7 @@ export default function DetalleCompraView() {
                                                     <i className=" fa fa-eye"></i>
                                                 </a>
                                             </p>
-                                            
+
                                         </div>
                                         <Iframe
                                             url={url}
@@ -1706,7 +1679,7 @@ export default function DetalleCompraView() {
                                                     </div>
                                                 </Box>
                                             )}
-                                            
+
                                             localization={MRT_Localization_ES}
                                         />
                                     </div>

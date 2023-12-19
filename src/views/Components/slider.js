@@ -41,11 +41,14 @@ export const Slideout = ({
         ReactDOM.createPortal(
             <div className={`cc-slideout-container${addedClasses}`} id={slideoutId}>
 
-                <button
+              
+              <button
                     className="cc-slideout-overlay"
                     onClick={() => setOpen(false)}
                     aria-label="Close Slideout"
                 />
+
+               
                 <div className="cc-slideout" style={{ width: `${width}px` }}>
 
                     <div className="cc-slideout-header">
@@ -63,23 +66,22 @@ export const Slideout = ({
 
                 </div>
 
-            </div>,
-            document.body
+            </div >,
+    document.body
         )
     );
 
-    return (<>
-        <button
-            className="cc-open-slideout cc-button shrink  btn-default btn"
-            onClick={() => setOpen(!open)}
-            aria-haspopup="dialog"
-            aria-controls={slideoutId}
-        >
-            {btnText}
-        </button>
-        {slideoutComponent}
-    </>
-    )
+return (<>
+    <a className=" rounded-circle btn-primary mx-2 p-2 text-white"  onClick={() => setOpen(!open)}
+        aria-haspopup="dialog"
+        aria-controls={slideoutId}
+    >
+        <i className="fa fa-filter" aria-hidden="true"></i>
+        {/*btnText*/}
+    </a>
+    {slideoutComponent}
+</>
+)
 };
 
 Slideout.propTypes = {

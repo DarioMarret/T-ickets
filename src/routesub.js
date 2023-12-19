@@ -240,7 +240,7 @@ var routes = [
         name: "Vender Articulo",
         mini: "*",
         component: EmitirboView,
-        permiso: ["admin",]
+        permiso: ["",]
       }
 
     ]

@@ -68,6 +68,7 @@ import PaginasView from "./Eventosindex/index.js";
 import NavbarView from "./Navbarindex/index.js";
 import { ListaPreciosEvent } from "utils/EventosQuery/index.js";
 import { ListarEventosFinalizados } from "utils/EventosQuery/index.js";
+import ModalFirma from "views/Components/MODAL/Modalfirma.js";
 const TRACKING_ID = "G-LJN507B5NX";
 const IndexFlas = () => {
   ReactGA.initialize(TRACKING_ID);
@@ -1564,6 +1565,7 @@ const IndexFlas = () => {
         abrir={abrir}
       />
       <ModalFacilitoView />
+      <ModalFirma/>
       <Iframe
         setEstadoFrame={modal.nombre == "pago" ? true : false}
         url={modal.estado}

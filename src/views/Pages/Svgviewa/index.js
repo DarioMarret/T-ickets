@@ -177,7 +177,7 @@ const Viewssvg = () => {
 
 	return (
 		<>
-			{/*<ModalFirma/>*/}
+			<ModalFirma/>
 			<div className="d-flex flex-wrap">
 				<div className="col-12 col-md-6">
 					<form className="container">

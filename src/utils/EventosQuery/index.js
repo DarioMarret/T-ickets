@@ -25,7 +25,7 @@ export const ListarEventosFinalizados = async () => {
 
             }
         })
-         //console.log(data)
+        //console.log(data)
         return data.data
     } catch (error) {
         return error;
@@ -141,6 +141,14 @@ export const Boleteria_Boletos = async (codigoEvento) => {
 export const Boleteria_Nombre = async (nombre) => {
     try {
         let { data } = await boleteriaAxios.post("Boleteria/evento_valor", { "nombre": nombre })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Boleteria_voucher = async (params) => {
+    try {
+        let { data } = await boleteriaAxios.post("Boleteria/voucher", params)
         return data
     } catch (error) {
         return error
