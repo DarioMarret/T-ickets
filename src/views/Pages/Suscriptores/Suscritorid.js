@@ -134,10 +134,7 @@ const SuscritoridView = () => {
       </SweetAlert>
     );
   };
-
   const [showdos, setshowdos] = useState(false)
-
-
   const cancelDetele = () => {
     setAlert(
       <SweetAlert
@@ -189,36 +186,6 @@ const SuscritoridView = () => {
       'aria-controls': `simple-tabpanel-${index}`,
     };
   }
-  const nuevoevento = async () => {
-    console.log(info)
-
-    try {
-      const data = await GetSuscritores()
-      // console.log(data.users.length>0)
-      if (data.users.length > 0) {
-        const datos = data.users.filter((e) => e.id == id)
-        setsuscritor({ ...datos[0] })
-        console.log(datos[0].cedula)
-        let registro = await listarRegistropanel({ "cedula": info.cedula })
-        setTimeout(async function () {
-          let tiket = await Listarticketporestado("" + info.cedula)
-          console.log(tiket)
-          if (registro.success) {
-            if (tiket.success)
-              console.log(registro)
-
-            setTikes(registro.data)
-            setBoletos(tiket.data)
-          }
-
-        }, 1000)
-
-
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
   function abrirModal(e) {
     usedispatch(setModal({ nombre: "confirmar", estado: e }))
   }
@@ -268,29 +235,7 @@ const SuscritoridView = () => {
       }
     });
   }
-  const eliminarss = (e) => {
-    $.confirm({
-      title: 'Desea eliminar Este boleto # ' + e.sillas + '',
-      content: 'De <span class="txt-capitalize"> ' + e.concierto + '</span> en la localidad:  ' + e.localidad + ' ',
-      type: 'red',
-      typeAnimated: true,
-      buttons: {
-        tryAgain: {
-          text: 'Eliminar',
-          btnClass: 'btn-red',
-          action: function () {
-
-          }
-        },
-        close: function () {
-        }
-      }
-    });
-
-  }
   const eliminarregistro = (parms) => {
-    //console.log(parms)
-
     $.confirm({
       title: 'Desea eliminar Este registro de compra ',
       content: '',

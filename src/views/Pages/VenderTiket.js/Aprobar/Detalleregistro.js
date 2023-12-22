@@ -17,6 +17,11 @@ import { ListarLocalidad } from "utils/LocalidadesQuery/index.js";
 import { ValidarToken } from "utils/Querycomnet";
 import { eliminartiket } from "utils/pagos/Queripagos";
 import { ticketsboletos } from "utils/columnasub";
+
+
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
+
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { generaTiketspdf } from "utils/Querycomnet";
@@ -45,6 +50,8 @@ import jsPDF from "jspdf"
 import { DateRangePicker } from "../../../../../node_modules/rsuite/esm/index";
 import Bingo_tablas from "./components/Tablaspdf";
 import ModalFirma from "views/Components/MODAL/Modalfirma";
+import { Button } from "bootstrap";
+import { Boleteria_voucher } from "utils/EventosQuery/index";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -212,6 +219,11 @@ export default function DetalleCompraView() {
     function Abrirwhastapp() {
         usedispatch(setModal({ nombre: "whastapp", estado: usuario }))
     }
+    function abrirfirma() {
+        usedispatch(setModal({ nombre: "firma", estado: { ...nombres } }))
+        usedispatch(setModal({ nombre: "", estado: "" }))
+        usedispatch(setModal({ nombre: "firma", estado: { ...nombres } }))
+    }
     const [alert, setAlert] = useState(null)
     function generaPDF(row) {
 
@@ -249,10 +261,10 @@ export default function DetalleCompraView() {
             title: 'Observación',
             type: 'green',
             content: '' +
-                '<form action="" class="formName">' +
-                '<div class="form-group">' +
+                '<form action="" className="formName">' +
+                '<div className="form-group">' +
                 '<label>Agrege una comentario</label>' +
-                '<textarea class="exampleFormControlTextarea1 form-control" id="exampleFormControlTextarea1" rows="3"></textarea>' +
+                '<textarea className="exampleFormControlTextarea1 form-control" id="exampleFormControlTextarea1" rows="3"></textarea>' +
                 '</div>' +
                 '</form>',
             typeAnimated: true,
@@ -303,10 +315,10 @@ export default function DetalleCompraView() {
             title: 'Aptualizar Observación',
             type: 'green',
             content: '' +
-                '<form action="" class="formName">' +
-                '<div class="form-group">' +
+                '<form action="" className="formName">' +
+                '<div className="form-group">' +
                 '<label>Editar comentario</label>' +
-                '<textarea class="editarcoment form-control" id="exampleFormControlTextarea1" rows="3"></textarea>' +
+                '<textarea className="editarcoment form-control" id="exampleFormControlTextarea1" rows="3"></textarea>' +
                 '</div>' +
                 '</form>',
             typeAnimated: true,
@@ -491,6 +503,21 @@ export default function DetalleCompraView() {
                         infoTarjeta({
                             "token": nombres.token_pago
                         }).then(ouput => {
+                            if (nombres.id_espacio_localida == "1") {
+                                let comprobanteSpan = document.getElementById('comprobante');
+                                comprobanteSpan.classList.add('label-success');
+                                comprobanteSpan.textContent = 'Firma verificada';
+                            }
+                            if (nombres.id_espacio_localida == "0") {
+                                let comprobanteSpan = document.getElementById('comprobante');
+                                comprobanteSpan.classList.add('label-danger');
+                                comprobanteSpan.textContent = 'Firma por verificar';
+                            }
+                            if (nombres.id_espacio_localida == null) {
+                                let comprobanteSpan = document.getElementById('comprobante');
+                                comprobanteSpan.classList.add('label-secondary');
+                                comprobanteSpan.textContent = 'no firmado';
+                            }
                             console.log(ouput)
                             if (ouput.success) {
                                 setDataTarjeta({ ...ouput.data })
@@ -950,6 +977,18 @@ export default function DetalleCompraView() {
             },
         });
     }
+  async  function voucherinvalido(e){
+        let boleto = await Boleteria_voucher({
+            "estado": e,
+            "id": "" + nombres.id,
+            "link": nombres.status_pg
+        })
+      if (boleto.estado) {
+          let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
+          sessionStorage.setItem("Detalleuid", boletos)
+          window.location.reload()
+      }
+    }
     function boletoscanje() {
         if (nombres.ticket_usuarios.length > 0) {
             return nombres.ticket_usuarios.every(e => e.canje == "CANJEADO")
@@ -1015,6 +1054,7 @@ export default function DetalleCompraView() {
     }
     let [url, setUrl] = useState("")
     function abririnframe(e, f) {
+
         if (nombres.estado_pago == "Pagado") {
             if (nombres.link_pago != null) {
                 setUrl(e.replace("k/", "k/voucher/"))
@@ -1032,10 +1072,10 @@ export default function DetalleCompraView() {
         $.confirm({
             title: 'Comprobante o lote!',
             content: '' +
-                '<form action="" class="formName">' +
-                '<div class="form-group">' +
+                '<form action="" className="formName">' +
+                '<div className="form-group">' +
                 '<label>Ingrese el numero del comprobante</label>' +
-                '<input type="text" placeholder="numero" class="name form-control" required />' +
+                '<input type="text" placeholder="numero" className="name form-control" required />' +
                 '</div>' +
                 '</form>',
             buttons: {
@@ -1185,6 +1225,16 @@ export default function DetalleCompraView() {
                                                     >
                                                         <i className="bi bi-check"></i> Actualizar conciliación </a>
                                                     : ""}
+                                                {nombres.id_espacio_localida !=null ? <div className="dropdown">
+                                                    <button className="btn btn-default btn-sm border dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Validar firma
+                                                    </button>
+                                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a className="dropdown-item" onClick={() => voucherinvalido(1)}>Aprobar</a>
+                                                        <a className="dropdown-item" onClick={()=>voucherinvalido("")}>Anular firma</a>
+                                                    </div>
+                                                </div> : ""}
+
                                                 {nombres.forma_pago == "Deposito" ?
                                                     <a className=" btn btn-default btn-sm d-none"
                                                         onClick={ComprobarBoleto}
@@ -1204,6 +1254,8 @@ export default function DetalleCompraView() {
                                                         <i className="fa fa-info-circle">  </i>Recargar Boleto
                                                     </a>}
                                                 {nombres.forma_pago != "Deposito" ? "" : <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>}
+
+
 
                                                 {/*boletoscanje() ? "" : <a className=" btn btn-default btn-sm" onClick={Verificaexistencia} > <i className="fa fa-database"></i> Verificar boletos reservado </a>*/}
 
@@ -1247,6 +1299,7 @@ export default function DetalleCompraView() {
                                         >
                                             <i className=" fa fa-arrow-left">  </i>
                                         </a>
+
                                     </div>}
                                 <div className="row d-flex justify-content-center ">
                                     <div className="col-12 ">
@@ -1394,6 +1447,14 @@ export default function DetalleCompraView() {
                                                                     <i className="fa fa-credit-card"></i> Link de pago
                                                                 </a>
                                                                 : <a className=" btn btn-default btn-sm"><i className="fa fa-credit-card"></i> Sin Link</a>}
+                                                            {(nombres.id_espacio_localida != null) ?
+                                                                < a className=" btn btn-default btn-sm"
+
+                                                                    onClick={() =>// Abre una nueva ventana con la URL especificada
+                                                                        window.open(nombres.status_pg, '_blank')}
+                                                                    target="_blank">
+                                                                    <i className="fa fa-credit-card"></i> voucher firmado
+                                                                </a> : ""}
                                                             {
                                                                 nombres.forma_pago == "Deposito" || nombres.forma_pago == "Tarjeta" ?
                                                                     nombres.clave_acceso != null ? "" : <a className=" btn btn-default btn-sm" onClick={ComprobarBoleto}>
@@ -1613,6 +1674,11 @@ export default function DetalleCompraView() {
                                             >
                                                 <i className="bi bi-whatsapp"></i>
                                             </a>}
+                                        {nombres.forma_pago == "Tarjeta" ? <a className=" rounded-circle btn-success mx-2 p-2 text-white"
+                                            onClick={abrirfirma}
+                                        >
+                                            <i className="bi bi-pencil"></i>
+                                        </a> : ""}
                                         <a className="rounded-circle btn-success mx-2 p-2 text-white"
                                             onClick={generaComprobante}
                                         >

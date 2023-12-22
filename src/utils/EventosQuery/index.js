@@ -1,4 +1,5 @@
 import axios from "axios";
+import { clienteInfo, getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { ListarLocalidad } from "utils/LocalidadesQuery";
 import { boleteriaAxios } from "utils/index";
 
@@ -147,8 +148,28 @@ export const Boleteria_Nombre = async (nombre) => {
     }
 }
 export const Boleteria_voucher = async (params) => {
+    let ids = clienteInfo() != null ? clienteInfo().id : 0
+
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
+    let parmspro = {
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(ids),
+        ...params
+    }
+    console.log(params)
     try {
-        let { data } = await boleteriaAxios.post("Boleteria/voucher", params)
+        let { data } = await boleteriaAxios.post("/Boleteria/voucher", parmspro)
+        return data
+    } catch (error) {
+        return error
+    }
+}
+export const Boleteria_password = async (params) => {
+    let parmspro = {
+        "cedula": params
+    }
+    try {
+        let { data } = await boleteriaAxios.post("/Boleteria/resetpass", parmspro)
         return data
     } catch (error) {
         return error

@@ -8,9 +8,11 @@ import { Button, Space, Upload } from 'antd';
 import { Dropzone, FileMosaic } from "@files-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
+import { Boleteria_voucher } from "utils/EventosQuery/index";
 export default function ModalFirma() {
     let usedispatch = useDispatch()
     const [files, setFiles] = useState([]);
+    let detallid = JSON.parse(sessionStorage.getItem("Detalleuid"))
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     const [loading, setLoading] = useState("d-none");
     //const [linea,setLinea]=useState(0)
@@ -38,10 +40,11 @@ export default function ModalFirma() {
     let [imageDataUrlcedula, setImagenurl] = useState("")
     let [type, setType] = useState("")
     let imagecedula;
+
     $(document).ready(function () {
 
         const canvas = document.querySelector("#canvas");
-        const btnlimpiar = document.querySelector("#limpiar")
+        const btnlimpiar = document.querySelector("#limpiar");
         const descargar = document.querySelector("#descarga");
         let xAnterior = 0, yAnterior = 0, xActual = 0, yActual = 0;
         const contexto = canvas.getContext("2d");
@@ -49,52 +52,73 @@ export default function ModalFirma() {
         const COLOR_FONDO = "white";
         const GROSOR = 2;
         let haComenzadoDibujo = false;
-        const obtenerXReal = (clientX) => clientX - canvas.getBoundingClientRect().left;
-        const obtenerYReal = (clientY) => clientY - canvas.getBoundingClientRect().top;
-        canvas.addEventListener("mousedown", evento => {
-            // En este evento solo se ha iniciado el clic, así que dibujamos un punto
+
+        const obtenerXReal = (evento) => {
+            if (evento.touches && evento.touches.length > 0) {
+                return evento.touches[0].clientX - canvas.getBoundingClientRect().left;
+            } else {
+                return evento.clientX - canvas.getBoundingClientRect().left;
+            }
+        };
+
+        const obtenerYReal = (evento) => {
+            if (evento.touches && evento.touches.length > 0) {
+                return evento.touches[0].clientY - canvas.getBoundingClientRect().top;
+            } else {
+                return evento.clientY - canvas.getBoundingClientRect().top;
+            }
+        };
+
+        const inicioDibujo = (evento) => {
             xAnterior = xActual;
             yAnterior = yActual;
-            xActual = obtenerXReal(evento.clientX);
-            yActual = obtenerYReal(evento.clientY);
+            xActual = obtenerXReal(evento);
+            yActual = obtenerYReal(evento);
             contexto.beginPath();
             contexto.fillStyle = COLOR_PINCEL;
             contexto.fillRect(xActual, yActual, GROSOR, GROSOR);
             contexto.closePath();
-            // Y establecemos la bandera
             haComenzadoDibujo = true;
-        });
+        };
 
-        canvas.addEventListener("mousemove", (evento) => {
+        const movimientoDibujo = (evento) => {
             if (!haComenzadoDibujo) {
                 return;
             }
-            // El mouse se está moviendo y el usuario está presionando el botón, así que dibujamos todo
 
             xAnterior = xActual;
             yAnterior = yActual;
-            xActual = obtenerXReal(evento.clientX);
-            yActual = obtenerYReal(evento.clientY);
+            xActual = obtenerXReal(evento);
+            yActual = obtenerYReal(evento);
             contexto.beginPath();
-
             contexto.moveTo(xAnterior, yAnterior);
             contexto.lineTo(xActual, yActual);
             contexto.strokeStyle = COLOR_PINCEL;
             contexto.lineWidth = GROSOR;
             contexto.stroke();
             contexto.closePath();
-            //console.log(evento.isTrusted)
-        });
-        ["mouseup", "mouseout"].forEach(nombreDeEvento => {
-            canvas.addEventListener(nombreDeEvento, () => {
-                haComenzadoDibujo = false;
-            });
-        });
+            evento.preventDefault();
+        };
+
+        const finDibujo = () => {
+            haComenzadoDibujo = false;
+        };
+
+        canvas.addEventListener("mousedown", inicioDibujo);
+        canvas.addEventListener("mousemove", movimientoDibujo);
+        canvas.addEventListener("mouseup", finDibujo);
+        canvas.addEventListener("mouseout", finDibujo);
+
+        canvas.addEventListener("touchstart", inicioDibujo);
+        canvas.addEventListener("touchmove", movimientoDibujo);
+        canvas.addEventListener("touchend", finDibujo);
+
         const limpiar = () => {
             contexto.fillStyle = COLOR_FONDO;
-            contexto.fillRect(0, 0, canvas.width, canvas.height)
-        }
-        limpiar()
+            contexto.fillRect(0, 0, canvas.width, canvas.height);
+        };
+
+        limpiar();
         btnlimpiar.onclick = () => limpiar()
         descargar.onclick = () => {
             //  if (files.length == 0) return
@@ -108,27 +132,14 @@ export default function ModalFirma() {
               // Hacer click en él
               enlace.click();*/
         }
-        const fileInput = document.getElementById("file-input");
-        /* fileInput.addEventListener("change", (event) => {
-             const file = event.target.files[0];
-             if (file.type.startsWith("image/")) {
-                 const reader = new FileReader();
-                 reader.onload = async () => {
-                     console.log(file)
-                     setImagenurl(reader.result)
-                     if (file.type == "image/png") setType("png")
-                     if (file.type == "image/jpeg") setType("jpeg")
-                     if (file.type == "image/jpg") setType("jpg")
-                 };
-                 reader.readAsDataURL(file);
-             } else {
-                 alert("Por favor, selecciona un archivo de imagen.");
-             }
-         });*/
-    })
+    });
+
+
+
     const functionModificaPDF = async () => {
-        const url = modal.estado.link;
         //setLoading("")
+        const url = modal.estado.link_pago.replace("k/", "k/voucher/");
+        console.log(url)
         const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -167,7 +178,8 @@ export default function ModalFirma() {
         const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
         console.log(pdfBytes, pdfBlob)
         const fordata = new FormData();
-        fordata.append('image', pdfBlob, 'dmOZNM1930001431997.pdf');
+        let nombre = url.split("voucher/")[1]
+        fordata.append('image', pdfBlob, nombre + '.pdf');
         try {
             const { data } = await axios.post("https://api.ticketsecuador.ec/store/api/img/", fordata,
                 {
@@ -176,9 +188,30 @@ export default function ModalFirma() {
                         'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                     }
                 })
-            if (!data.success) return null
             console.log(data)
-            setLoading("d-none")
+            if (!data.success) {
+                console.log(data)
+                setLoading("d-none")
+                return null
+            }
+            console.log(data)
+            setLoading("")
+            let boleto = await Boleteria_voucher({
+                "estado": modal.estado.id_espacio_localida == null ? 0 : modal.estado.id_espacio_localida,
+                "id": "" + modal.estado.id,
+                "link": data.link
+            })
+            if (boleto.estado) {
+                let boletos = JSON.stringify({ ...detallid, ...boleto.datos })
+                sessionStorage.setItem("Detalleuid", boletos)
+                window.location.reload()
+            }
+            console.log(boleto, {
+                "estado": "1",
+                "id": modal.estado.id,
+                "link": data.link
+            })
+            setLoading("")
             return data.link
 
         } catch (error) {
@@ -203,11 +236,11 @@ export default function ModalFirma() {
                 </Modal.Header>
                 <Modal.Body className=" m-auto text-center ">
                     <div className="d-flex justify-content-center ">
-                        <div className="row text-center col-10">
-                            <div className="col-12">
+                        <div className="row text-center col-10 ">
+                            <div className="col-12 ">
 
                                 <p >Agrega la foto de la cédula del propietario de la tarjeta:</p>
-                                <Dropzone onChange={updateFiles} value={files}
+                                <Dropzone className="dropzone" onChange={updateFiles} value={files}
                                     type="file" accept="image/png, image/jpeg">
                                     {files.map((file) => (
                                         <FileMosaic {...file} preview />
@@ -217,10 +250,8 @@ export default function ModalFirma() {
 
                             <p className={files.length == 0 ? "d-none" : ""}>Firmar a continuación:</p>
                             <canvas id="canvas" className={files.length == 0 ? "d-none" : ""}></canvas>
-
-
-
                         </div>
+
                     </div>
                     <br></br>
                     <div className=" d-flex justify-content-around">

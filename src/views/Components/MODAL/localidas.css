@@ -15,13 +15,61 @@
     border-radius: 0.25rem;
 
 }
-.spiner_loaging{
+
+#canvasmovil {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1.5px solid rgba(0, 0, 0, .125);
+    border-radius: 0.25rem;
+}
+
+.dropzone {
+    background: white;
+    border-radius: 5px;
+    border: 2px dashed rgb(0, 135, 247);
+    border-image: none;
+    max-width: 500px;
+    min-width: 210px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.files-ui-dropzone-children-container label::before {
+    content: 'sube tu cédula aquí' !important;
+    /* Texto en español que reemplazará al original */
+    display: block !important;
+    font-size: 15px !important;
+    /* Asegúrate de que el contenido se muestre como un bloque */
+    /* Añade cualquier otro estilo que desees aplicar a las letras en español */
+}
+
+.files-ui-dropzone-children-container label {
+    font-size: 15px !important;
+    /* Asegúrate de que el contenido se muestre como un bloque */
+    /* Añade cualquier otro estilo que desees aplicar a las letras en español */
+}
+
+.files-ui-footer {
+    display: none !important;
+}
+
+.spiner_loaging {
     width: 64px;
-        height: 64px;
-        position: relative;
-        background: #FFF;
-        border-radius: 4px;
-        overflow: hidden;
+    height: 64px;
+    position: relative;
+    background: #FFF;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .spiner_loaging:before {
@@ -83,6 +131,7 @@
         transform: rotate(25deg)
     }
 }
+
 a.disponible {
     background-color: #198754;
     cursor: pointer;

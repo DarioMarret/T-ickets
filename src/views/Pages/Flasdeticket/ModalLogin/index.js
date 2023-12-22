@@ -11,6 +11,7 @@ import { addususcritor } from "StoreRedux/Slice/SuscritorSlice";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
+import { Boleteria_password } from "utils/EventosQuery/index";
 
 const ModalLogin = (props) => {
   const { showLogin, setShowLogin, abrir } = props
@@ -62,7 +63,7 @@ const ModalLogin = (props) => {
              color: 'bg-success',
              estado: "Inicio Exitoso",
            })*/
-           Modalstatus.estado != "" ? abrir(Modalstatus.estado) : ''
+          Modalstatus.estado != "" ? abrir(Modalstatus.estado) : ''
           usedispatch(setModal({ nombre: '', estado: '' }))
         }
         else {
@@ -90,34 +91,52 @@ const ModalLogin = (props) => {
     }
   };
   function RecuperarContraseña() {
-  /*
-      $.confirm({
-        title: 'Recuperar Contraseña!',
-        content: '' +
-          '<form action="" className="formName">' +
-          '<div className="form-group">' +
-          '<label>Ingrese su correo electrónico</label>' +
-          '<input type="text" placeholder="Correo" class="form-control codigo " required />' +
-          '</div>' +
-          '</form>',
-        buttons: {
-          formSubmit: {
-            text: 'Enviar',
-            btnClass: 'btn-blue',
-            action: function () {
-              var name = this.$content.find('.codigo').val();
-              if (!name) {
-                $.alert('Ingrese un correo validso');
-                return false;
-              }
-              //abrir(e)
-            }
-          },
-          cancel: function () {
+    usedispatch(setModal({ nombre: '', estado: '' }))
 
+    $.confirm({
+      title: 'Recuperar Contraseña!',
+      content: '' +
+        '<form action="" className="formName">' +
+        '<div className="form-group">' +
+        '<label>Ingrese su número de cédula</label>' +
+        '<input type="text" placeholder="cédula" class="form-control codigo " required />' +
+        '</div>' +
+        '</form>',
+      buttons: {
+        formSubmit: {
+          text: 'Enviar',
+          btnClass: 'btn-blue',
+          action: function () {
+            var name = this.$content.find('.codigo').val();
+            if (!name) {
+              $.alert('Ingrese un correo validso');
+              return false;
+            }
+            Boleteria_password(name).then(e => {
+              if (e.estado) {
+
+                usedispatch(setToastes({
+                  show: true,
+                  message: "Tienes 30 minutos para restablecer tu contraseña ",
+                  color: 'bg-success',
+                  estado: "Solicitud enviada",
+                }))
+              } else {
+                usedispatch(setToastes({
+                  show: true,
+                  message: "su perfil no existe o no resgistro numero de telefono",
+                  color: 'bg-danger',
+                  estado: "Solicitud no enviada",
+                }))
+              }
+            })
           }
+        },
+        cancel: function () {
+
         }
-      }) */
+      }
+    })
   }
   function regsitronew() {
     setShowLogin(false)
@@ -200,7 +219,7 @@ const ModalLogin = (props) => {
                   </div>
                   <div className="col-12 ">
                     {/**onClick={RecuperarContraseña} */}
-                    <a className=" nav-link btn btn-link" href="https://n9.cl/nsj8f" target="_blank"  > Olvide mi contraseña </a>
+                    <a className=" nav-link btn btn-link" onClick={RecuperarContraseña} > Olvide mi contraseña </a>
 
                   </div>
                 </div>

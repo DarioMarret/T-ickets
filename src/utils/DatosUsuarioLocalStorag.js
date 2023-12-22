@@ -11,7 +11,7 @@ export const getDatosUsuariosLocalStorag = () => {
     if (data !== null) {
         return data
     } else {
-        return null
+        return {id:0}
     }
 }
 export function getCliente() {
