@@ -1231,7 +1231,7 @@ export default function DetalleCompraView() {
                                                     </button>
                                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a className="dropdown-item" onClick={() => voucherinvalido(1)}>Aprobar</a>
-                                                        <a className="dropdown-item" onClick={()=>voucherinvalido("")}>Anular firma</a>
+                                                        <a className="dropdown-item" onClick={()=>voucherinvalido(2)}>Anular firma</a>
                                                     </div>
                                                 </div> : ""}
 

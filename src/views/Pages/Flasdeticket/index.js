@@ -322,15 +322,6 @@ const IndexFlas = () => {
         let comprapendiente = registro.data.find(f => f.estado_pago == "Pendiente")
         // Modal verifica 
         succesAlert(e, comprapendiente.id)
-        /*setspinervi("d-none")
-        SetSeleccion("Tickets")
-
-        usedispatch(setToastes({
-          show: true,
-          message: "Antes de realizar una compra nueva debes de completar el proceso de pago del anterior",
-          color: 'bg-warning',
-          estado: "Tienes una compra pendiente "
-        }))*/
         return
       }
       else {
@@ -620,6 +611,7 @@ const IndexFlas = () => {
         if (evtobj.keyCode == 17) { return false; }
       }
     });
+    
     ListaPrecios();
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
@@ -723,9 +715,7 @@ const IndexFlas = () => {
       label: info.codigoEvento
     })
     return {
-
       ...info,
-
     }
   }
   const [visible, setVisible] = React.useState(false)
@@ -739,6 +729,7 @@ const IndexFlas = () => {
   return (
 
     <>
+      
       <NavbarView
         icon={icon}
         setVisible={setVisible}
@@ -1436,7 +1427,7 @@ const IndexFlas = () => {
                       [...pasados].map((element, index) => {
                         return (
                           <div className="col-12 col-sm-6 col-md-4 px-1" key={index} >
-                            <div
+                            <img
                               className="  rounded-7   "
                               style={{
                                 height: '150px', width: '100%',
@@ -1445,7 +1436,7 @@ const IndexFlas = () => {
                                 backgroundRepeat: "no-repeat",
                               }}
                             >
-                            </div>
+                            </img>
                           </div>
                         )
                       })

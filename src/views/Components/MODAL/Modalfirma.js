@@ -9,6 +9,7 @@ import { Dropzone, FileMosaic } from "@files-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { Boleteria_voucher } from "utils/EventosQuery/index";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 export default function ModalFirma() {
     let usedispatch = useDispatch()
     const [files, setFiles] = useState([]);
@@ -197,7 +198,7 @@ export default function ModalFirma() {
             console.log(data)
             setLoading("")
             let boleto = await Boleteria_voucher({
-                "estado": modal.estado.id_espacio_localida == null ? 0 : modal.estado.id_espacio_localida,
+                "estado": clienteInfo() == null ? 0 : modal.estado.id_espacio_localida,
                 "id": "" + modal.estado.id,
                 "link": data.link
             })
@@ -229,6 +230,8 @@ export default function ModalFirma() {
         <>
             <Modal
                 show={(modal.nombre == "firma")}
+                size="lg"
+                fullscreen={'md-down'}
             >
                 <Modal.Header >
                     <button className="close mb-2" onClick={cerrar} >X</button>
