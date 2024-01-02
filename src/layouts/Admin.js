@@ -47,7 +47,12 @@ function Admin() {
     });
   };
   useEffect(()=>{
-    
+    //document.addEventListener('DOMContentLoaded', function () {
+      const superpuesto = document.getElementById('superpuesto');
+
+          superpuesto.classList.add("d-none")
+       
+  
   },[])
   return (
     <>

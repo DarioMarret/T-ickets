@@ -1153,26 +1153,104 @@ const IndexFlas = () => {
                       </div>
 
                     </div> :
-                      <div className="col-12  col-lg-6 mx-auto my-5" >
-                        <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                          aria-controls="collapseExample">
-                          <div className="container  px-0">
-                            <img src={valla} className="img-fluid  " alt="" />
+                      <div className="col-12  mx-auto my-3 " id={"evento" + 1} >
+                        <a id={"headingThree" + 1} className="collapsed eventos eventoss"
+
+                          data-toggle="collapse"
+                          data-target={"#collapseid" + 1}
+                          aria-controls={"#collapseid" +1} aria-expanded="false"
+                        >
+                          <div className="container rounded-7  d-flex justify-content-center px-0" >
+                            <i className="  text-info btn-hover" style={{
+                              position: "absolute",
+                              margin: "auto",
+                              bottom: -2,
+                              width: 40,
+                            }}>
+                              <svg className="seudtres " xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" version="1.1"
+                                style={{
+                                  filter: "drop-shadow(1px 1px 3px #888)"
+                                }}
+                                viewBox="0 0 21000 15700">
+                                <g id="Capa_x0020_1">
+                                  <polygon className="line1" fill="#A9ABAE" points="15706,1584 10507,6889 5309,1584 6932,-1 10507,3648 14083,-1 " />
+                                  <polygon className="line3" fill="#E6E7E8" points="21008,4985 10507,15701 8,4985 1725,3307 10513,12281 19287,3305 " />
+                                  <g id="_2060064090544">
+                                  </g>
+                                  <g id="_2060064092496">
+                                  </g>
+                                  <g id="_2060064090096">
+                                  </g>
+                                  <g id="_2060064090192">
+                                  </g>
+                                  <g id="_2060064090032">
+                                  </g>
+                                  <g id="_2060064089840">
+                                  </g>
+                                  <g id="_2060064089648">
+                                  </g>
+                                  <g id="_2060064088752">
+                                  </g>
+                                  <g id="_2060064087472">
+                                  </g>
+                                  <g id="_2060064087504">
+                                  </g>
+                                  <g id="_2060064086576">
+                                  </g>
+                                  <g id="_2060064086544">
+                                  </g>
+                                  <g id="_2060064087216">
+                                  </g>
+                                  <g id="_2060064087760">
+                                  </g>
+                                  <g id="_2060064084368">
+                                  </g>
+                                  <polygon className="line2" fill="#D2D3D5" points="4440,1615 10517,7827 16671,1547 18381,3233 10517,11278 2718,3313 " />
+                                </g>
+                              </svg>
+                            </i>
+                          
+                            <img src={valla} className="img-fluid rounded-7 shadow-md  btn-hover img-evento " alt=""
+
+                            />
                           </div>
-                        </div>
-                        <div className="collapse container mt-4 px-0" id="collapseExample4">
-                          <div className="card card-body rounded-7 py-5">
-                            <div className="container ">
-                              <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">Proximo evento</span> </h1>
-                              <h4 style={{ fontSize: '1.4em' }}></h4>
-                              <div className="col-12 border border-bottom my-3"></div>
-                              <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento">Proximamente</span></p>
-                              <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento"> Proximamente</span></p>
-                              <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span id="horaEvento"> Proximamente</span></p>
-                              <p href="#" className="evento d-none btn btn-primary fw-bold px-3 py-2 rounded-6" id="comprar">
-                                Proximamente</p>
+                        </a>
+                        <div className="collapse float-end container mt-4 px-0" aria-labelledby={"headingThree" +1} id={"collapseid" + 1} data-parent="#accordion">
+                          <div className="card row d-flex flex-row card-body rounded-7 py-5">
+                            <div className="container col-12 col-md-6">
+                              <div className="d-flex row  btn-group-vertical ">
+                                <div className="col-12" >
+                                  <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"></span> </h1>
+                                  <h4 style={{ fontSize: '1.4em', }}><span id="tour"></span></h4>
+                                  <div className="col-12 border border-bottom my-3"></div>
+                                  <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                    <p style={{ fontSize: '1.0em' }}>  <i className="bi bi-calendar-week-fill"></i>   <b>  Fecha:<span id="fechaEvento">0000-00-00</span></b></p>
+                                    <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                      <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><i className="bi bi-alarm-fill"></i> <b> Hora:<span id="horaEvento"> 00:00</span></b></p>
+                                    </div>
+                                    <p className="" style={{ fontSize: '1.0em', }}><i className="bi bi-geo-alt-fill"></i> <b>Lugar:<span id="lugarEvento">Guayaquil</span></b></p>
+                                    <div className="col-12 border border-bottom mb-3"></div>
+                                    <div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className=" col-12   pt-3"
+                                  style={{
+                                    bottom: 10,
+                                  }}
+                                >
+                                
+                                  
+                                </div>
+                              </div>
                             </div>
+                            <div className="container col-12 col-md-6 rounded-7  px-0">
+                              <img src="img/romantic.png" className="img-fluid rounded-7 shadow-md " alt="" />
+                            </div>
+                           
+
                           </div>
+
                         </div>
                       </div>}
                   {/* Aqui terminara el map siguente evento queda para poster Proximamente */}
@@ -1387,7 +1465,7 @@ const IndexFlas = () => {
                   <div className="col-12 d-none col-lg-6 mx-auto my-5" >
                     <div className="" aria-label="coll" data-bs-toggle="collapse" role="button" aria-expanded="false"
                       aria-controls="collapseExample">
-                      <div className="container  px-0">
+                      <div className="container eventos eventoss  px-0">
                         <img src={valla} className="img-fluid  " alt="" />
                       </div>
                     </div>
