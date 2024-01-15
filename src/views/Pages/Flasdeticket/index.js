@@ -1210,7 +1210,7 @@ const IndexFlas = () => {
                               </svg>
                             </i>
                           
-                            <img src={valla} className="img-fluid rounded-7 shadow-md  btn-hover img-evento " alt=""
+                            <img src={"https://api.ticketsecuador.ec/store/img/valla-proximo-evento.871486e33ab61e490b6e.jpeg"} className="img-fluid rounded-7 shadow-md  btn-hover img-evento " alt=""
 
                             />
                           </div>
@@ -1245,7 +1245,7 @@ const IndexFlas = () => {
                               </div>
                             </div>
                             <div className="container col-12 col-md-6 rounded-7  px-0">
-                              <img src="img/romantic.png" className="img-fluid rounded-7 shadow-md " alt="" />
+                              <img src="https://api.ticketsecuador.ec/store/img/whatsapp_image_2023-12-11 at 16.29.55.jpeg.jpeg" className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
                            
 
