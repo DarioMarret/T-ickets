@@ -94,6 +94,11 @@ export default function ListaderegistroView(props) {
             }
         });
     }
+    function abrirfirma(row) {
+        usedispatch(setModal({ nombre: "firma", estado: { ...row } }))
+        usedispatch(setModal({ nombre: "", estado: "" }))
+        usedispatch(setModal({ nombre: "firma", estado: { ...row } }))
+    }
     function abrirvoucher(row) {
         usedispatch(setToastes({
             show: true,
@@ -140,6 +145,15 @@ export default function ListaderegistroView(props) {
                                     </Tooltip> :
                                     ""
                                 }
+                                {/*((row.original.id_espacio_localida==null)||(row.original.id_espacio_localida==0))?
+                                <Tooltip 
+                                title=""
+                                >
+
+                                </Tooltip>
+                                :""
+
+                                */}
                                 {row.original.estado_pago != "Expirado" && row.original.estado_pago != "Pagado" && row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone" ?
                                     row.original.link_pago != null ?
                                         <a className=" btn btn-default btn-sm"
@@ -157,15 +171,17 @@ export default function ListaderegistroView(props) {
                                                     <Delete /> <span>Eliminar</span>
                                                 </Button>
                                             </Tooltip> : "" :
-                                    row.original.estado_pago != "Pagado" || row.original.forma_pago != "Tarjeta" ? "" :
-                                        row.original.id_espacio_localida == null || row.original.id_espacio_localida == "" ? <a className=" btn btn-default btn-sm "
-                                            style={{
-                                                fontWeight: "bold"
-                                            }}
-                                            onClick={() => abrirvoucher(row.original)}
-                                        >
-                                            <i className="fa fa-print" > </i>Firmar voucher
-                                        </a> : ""
+                                    (row.original.estado_pago != "Pagado" || row.original.forma_pago != "Tarjeta") ?
+                                        "" :
+                                        (row.original.id_espacio_localida == null || row.original.id_espacio_localida == 0) ?
+                                            <a className=" btn btn-default btn-sm "
+                                                style={{
+                                                    fontWeight: "bold"
+                                                }}
+                                                onClick={() => abrirvoucher(row.original)}
+                                            >
+                                                <i className="fa fa-print" > </i>Firmar voucher
+                                            </a> : ""
 
                                 }
                                 {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ?

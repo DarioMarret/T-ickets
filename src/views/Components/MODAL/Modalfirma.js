@@ -230,7 +230,7 @@ export default function ModalFirma() {
         <>
             <Modal
                 show={(modal.nombre == "firma")}
-                size="lg"
+                
                 fullscreen={'md-down'}
             >
                 <Modal.Header >

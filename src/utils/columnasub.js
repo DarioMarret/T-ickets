@@ -361,7 +361,9 @@ export const listaRegistrototal = [
         accessorKey: "estado_pago",
         header: "Estado",
         Cell: ({ cell }) => (
-            <Badge bg={color[cell.row.original.estado_pago]}>
+            (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ? 
+                <Badge bg={"warning"}>
+                Sin firmar</Badge> :<Badge bg={color[cell.row.original.estado_pago]}>
                 {cell.row.original.estado_pago}</Badge>
         ),
         size: 50
