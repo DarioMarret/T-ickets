@@ -220,9 +220,67 @@ export default function DetalleCompraView() {
         usedispatch(setModal({ nombre: "whastapp", estado: usuario }))
     }
     function abrirfirma() {
-        usedispatch(setModal({ nombre: "firma", estado: { ...nombres } }))
-        usedispatch(setModal({ nombre: "", estado: "" }))
-        usedispatch(setModal({ nombre: "firma", estado: { ...nombres } }))
+        if (nombres.id_espacio_localida != null && nombres.id_espacio_localida != "") {
+            
+                $.confirm({
+                    theme: 'supervan',
+                    closeIcon: true,
+                    title: 'Firma',
+                    content: 'Verificar que el voucher tenga la cédula correcta y firma',
+                    type: 'red',
+                    buttons: {
+                        tryAgain: {
+                            text: 'Ver ',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                window.open(nombres.status_pg, "_blank")
+
+                            }
+                        },
+                        aproba:{
+                            text:"Aprobar ",
+                            btnClass:'btn-success',
+                            action:function(){
+                             Boleteria_voucher({
+                                    "estado": 1,
+                                    "id": "" + nombres.id,
+                                 "link": nombres.status_pg
+                                }).then(boleto=>{
+                                if (boleto.estado) {
+                                    let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
+                                    sessionStorage.setItem("Detalleuid", boletos)
+                                    window.location.reload()
+                                }
+                            
+                            })
+                        }
+                        },
+                        rechaza:{
+                            text: "Rechazar",
+                            btnClass: 'btn-success',
+                            action: function () {
+                                Boleteria_voucher({
+                                    "estado": "",
+                                    "id": "" + nombres.id,
+                                    "link": nombres.status_pg
+                                }).then(boleto => {
+                                    if (boleto.estado) {
+                                        let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
+                                        sessionStorage.setItem("Detalleuid", boletos)
+                                        window.location.reload()
+                                    }
+
+                                })
+                            }
+                        }
+                    }
+                });
+            
+        } else {
+            usedispatch(setModal({ nombre: "firma", estado: { ...nombres } }))
+            usedispatch(setModal({ nombre: "", estado: "" }))
+            usedispatch(setModal({ nombre: "firma", estado: { ...nombres } }))
+        }
     }
     const [alert, setAlert] = useState(null)
     function generaPDF(row) {
@@ -515,7 +573,7 @@ export default function DetalleCompraView() {
                             }
                             if (nombres.id_espacio_localida == null) {
                                 let comprobanteSpan = document.getElementById('comprobante');
-                                comprobanteSpan.classList.add('label-secondary');
+                                comprobanteSpan.classList.add('label-warning');
                                 comprobanteSpan.textContent = 'no firmado';
                             }
                             console.log(ouput)
@@ -977,17 +1035,17 @@ export default function DetalleCompraView() {
             },
         });
     }
-  async  function voucherinvalido(e){
+    async function voucherinvalido(e) {
         let boleto = await Boleteria_voucher({
             "estado": e,
             "id": "" + nombres.id,
             "link": nombres.status_pg
         })
-      if (boleto.estado) {
-          let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
-          sessionStorage.setItem("Detalleuid", boletos)
-          window.location.reload()
-      }
+        if (boleto.estado) {
+            let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
+            sessionStorage.setItem("Detalleuid", boletos)
+            window.location.reload()
+        }
     }
     function boletoscanje() {
         if (nombres.ticket_usuarios.length > 0) {
@@ -1225,13 +1283,13 @@ export default function DetalleCompraView() {
                                                     >
                                                         <i className="bi bi-check"></i> Actualizar conciliación </a>
                                                     : ""}
-                                                {nombres.id_espacio_localida !=null ? <div className="dropdown">
+                                                {nombres.id_espacio_localida != null ? <div className="dropdown">
                                                     <button className="btn btn-default btn-sm border dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         Validar firma
                                                     </button>
                                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a className="dropdown-item" onClick={() => voucherinvalido(1)}>Aprobar</a>
-                                                        <a className="dropdown-item" onClick={()=>voucherinvalido(2)}>Anular firma</a>
+                                                        <a className="dropdown-item" onClick={() => voucherinvalido(2)}>Anular firma</a>
                                                     </div>
                                                 </div> : ""}
 

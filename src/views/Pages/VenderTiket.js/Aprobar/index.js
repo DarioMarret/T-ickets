@@ -51,6 +51,7 @@ export default function AprobarView() {
     let datas = useSelector(state => state.SuscritorSlice.data)
     let tiketslist = useSelector(state => state.SuscritorSlice.compras)
     const [alert, setAlert] = useState("")
+    const [metodos,setMetodo]=useState("")
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
         return (
@@ -303,6 +304,8 @@ export default function AprobarView() {
             console.log(items)
             setFechaRange(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'))
             $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            setAlert("")
+            setMetodo("")
         });
 
         $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
@@ -318,23 +321,8 @@ export default function AprobarView() {
     const [datas1, setDatas] = useState([])
     const [dtos, setDts] = useState([])
     const sorter = (a, b) => new Date(a.fechaCreacion) < new Date(b.fechaCreacion) ? 1 : -1;
-    function rango(item) {
-        if (item.selection.endDate == item.selection.startDate) {
-            console.log(item)
-            // usedispatch(setCompras({ compras: compras }))
-            //  usedispatch(setLabels({ labels: [...labelne] }))
-            //  usedispatch(setFecha({ fecha: [item.selection] }))
-            // console.log(moment(item.selection.startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format())
-            return
-        }
-        else {
-            // usedispatch(setlisticket({ ticket: true }))
-            // usedispatch(setFecha({ fecha: [item.selection] }))
-        }
-        console.log(item)
-    }
+    
     const Deliminarregistro = (parms) => {
-        // console.log(parms.id)
         $.confirm({
             title: 'Deseas eliminar Este registro de compra ',
             content: '',
@@ -472,16 +460,34 @@ export default function AprobarView() {
         pieHole: 0.4,
         is3D: false,
     };
-    function filtrarArray(array, fechaInicio, fechaFin, nombre) {
-        return array.filter((element) => {
+    function filtrarArray(array, fechaInicio, fechaFin, nombre, forma_pago) {
+       /* return array.filter((element) => {
             const fechaElemento = new Date(element.fechaCreacion);
             const cumpleRangoFecha = (!fechaInicio || fechaElemento >= new Date(fechaInicio)) &&
                 (!fechaFin || fechaElemento <= new Date(fechaFin));
             const cumpleNombre = !nombre || element.concierto === nombre;
             return cumpleRangoFecha && cumpleNombre;
+        });*/
+        return array.filter((element) => {
+            const fechaElemento = new Date(element.fechaCreacion);
+            const cumpleRangoFecha = (!fechaInicio || fechaElemento >= new Date(fechaInicio)) &&
+                (!fechaFin || fechaElemento <= new Date(fechaFin));
+            const cumpleNombre = !nombre || element.concierto === nombre;
+            const cumpleFormaPago = !forma_pago || element.forma_pago === forma_pago;
+            return cumpleRangoFecha && cumpleNombre && cumpleFormaPago;
         });
+    
     }
+    /**
+     * ...array.filter(subarray => {
+            const cumpleNombre = !nombre || subarray[1] === nombre;
+            const cumpleFormaPago = !forma_pago || subarray[<índice_de_forma_pago>] === forma_pago; // Reemplaza <índice_de_forma_pago> con el índice real
+
+            return cumpleNombre && cumpleFormaPago;
+        })
+     */
     function filtrarPorNombre(array, nombre) {
+        console.log(array)
         if (!nombre) {
             return array;
         }
@@ -504,7 +510,6 @@ export default function AprobarView() {
         e.label = labels[i]
         return { ...e }
     })
-    console.log(tiketslist)
     return (
         <>
 
@@ -540,13 +545,15 @@ export default function AprobarView() {
                                 <label className=" form-label">Lista de eventos</label>
                                 <select
                                     onChange={(e) => setAlert(e.target.value)}
-                                    className=" form form-control">
+                                    className=" form form-control"
+                                    value={alert}
+                                    >
                                     <option className=" form-label" value={""}>
                                         Todos
                                     </option>
                                     {
-                                        Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => info_concierto[0].nombreConcierto)).length > 0 ?
-                                            Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => info_concierto[0].nombreConcierto)).map((e, i) => {
+                                        Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => info_concierto[0].nombreConcierto), metodos).length > 0 ?
+                                            Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => info_concierto[0].nombreConcierto), metodos).map((e, i) => {
                                                 if (e) {
                                                     return (
 
@@ -559,6 +566,27 @@ export default function AprobarView() {
                                     }
                                 </select>
 
+                            </div>
+                            <div className=" col-12 mb-2">
+                                <label className=" form-label">Metodos de Pagos</label>
+                                <select
+                                    onChange={(e) => setMetodo(e.target.value)}
+                                    className=" form form-control"
+                                    value={metodos}
+                                    >
+                                    <option className=" form-label" value={""}>
+                                        Todos
+                                    </option>
+                                    <option className=" form-label" value={"Tarjeta"}>
+                                        Tarjeta
+                                    </option>
+                                    <option className=" form-label" value={"Efectivo-Local"}>
+                                        Efectivo-Local	
+                                    </option>
+                                    <option className=" form-label" value={"Deposito"}>
+                                        Deposito
+                                    </option>
+                                </select>
                             </div>
                             <div className="col-12">
 
@@ -623,7 +651,7 @@ export default function AprobarView() {
             <div className=" container row"  >
             </div>
             {tiketslist.length > 0 ? <div className="container d-flex flex-wrap">
-                {tiketslist.filter(e => e.estado_pago == "Pagado").length > 0 ? <ExportToExcel apiData={filtrarArray(datos.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert).map(f => {
+                {tiketslist.filter(e => e.estado_pago == "Pagado").length > 0 ? <ExportToExcel apiData={filtrarArray(datos.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).map(f => {
                     return {
                         ID_Registro: f.id,
                         ID_USUARIO: f.id_usuario,
@@ -657,7 +685,7 @@ export default function AprobarView() {
                 }
                 {
                     tiketslist.filter(e => e.estado_pago == "Pendiente").length > 0 ?
-                        <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Pendiente", moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert)).map(f => {
+                        <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Pendiente", moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos)).map(f => {
                             return {
                                 ID_Registro: f.id,
                                 ID_USUARIO: f.id_usuario,
@@ -680,7 +708,7 @@ export default function AprobarView() {
                 }
                 {
                     tiketslist.filter(e => e.estado_pago == "Expirado").length > 0 ?
-                        <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Expirado", moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert)).map(f => {
+                        <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Expirado", moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos)).map(f => {
                             return {
                                 ID_Registro: f.id,
                                 ID_USUARIO: f.id_usuario,
@@ -702,7 +730,7 @@ export default function AprobarView() {
                         })} fileName={"Todos Expirados"} label={"Expirados"} /> :
                         ""}
                 {tiketslist.filter(e => e.estado_pago == "Comprobar").length > 0 ?
-                    <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar", moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert)).map(f => {
+                    <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar", moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos)).map(f => {
                         return {
                             ID_Registro: f.id,
                             ID_USUARIO: f.id_usuario,
@@ -737,16 +765,16 @@ export default function AprobarView() {
                         scrollButtons="auto"
                         aria-label="scrollable auto tabs example"
                     >
-                        <Tab label={"Pagados: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert).length + " Cons " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert).filter(f => f.consolidado == "Consolidado").length} {...a11yProps(0)} />
-                        <Tab label={"Pendientes: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pendiente"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert).length}{...a11yProps(1)} />
-                        <Tab label={"Expirado: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Expirado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert).length} {...a11yProps(2)} />
-                        <Tab label={"Comprobar: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert).length} {...a11yProps(3)} />
+                        <Tab label={"Pagados: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length + " Cons " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).filter(f => f.consolidado == "Consolidado").length} {...a11yProps(0)} />
+                        <Tab label={"Pendientes: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pendiente"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length}{...a11yProps(1)} />
+                        <Tab label={"Expirado: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Expirado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length} {...a11yProps(2)} />
+                        <Tab label={"Comprobar: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length} {...a11yProps(3)} />
                     </Tabs>
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">
                             <MaterialReactTable
                                 columns={listaRegistrototal}
-                                data={filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert)}
+                                data={filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos)}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'
@@ -816,7 +844,7 @@ export default function AprobarView() {
                         <TabPanel value={value} index={1} className="text-center">
                             <MaterialReactTable
                                 columns={listaRegistrototal}
-                                data={filtrarArray(tiketslist.filter(e => e.estado_pago == "Pendiente"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert)}
+                                data={filtrarArray(tiketslist.filter(e => e.estado_pago == "Pendiente"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos)}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'
@@ -878,7 +906,7 @@ export default function AprobarView() {
                         <TabPanel value={value} index={2} className="text-center" >
                             <MaterialReactTable
                                 columns={listaRegistrototal}
-                                data={filtrarArray(tiketslist.filter(e => e.estado_pago == "Expirado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert)}
+                                data={filtrarArray(tiketslist.filter(e => e.estado_pago == "Expirado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos)}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'
@@ -926,7 +954,7 @@ export default function AprobarView() {
                         <TabPanel value={value} index={3} className="text-center" >
                             <MaterialReactTable
                                 columns={listaRegistrototal}
-                                data={filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert)}
+                                data={filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos)}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'

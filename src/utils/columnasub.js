@@ -243,8 +243,11 @@ export const listaRegistro = [
         accessorKey: "estado_pago",
         header: "Estado",
         Cell: ({ cell }) => (
-            <Badge bg={color[cell.row.original.estado_pago]}>
-                {cell.row.original.estado_pago}</Badge>
+            (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
+                (cell.row.original.id_espacio_localida == 0) ? <Badge bg={"warning"}>
+                    Por revisar</Badge> : <Badge bg={"warning"}>
+                    Sin firmar</Badge> : <Badge bg={color[cell.row.original.estado_pago]}>
+                    {cell.row.original.estado_pago}</Badge>
         ),
         size: 50
     },
@@ -306,8 +309,14 @@ export const listaRegistrosuscri = [
         accessorKey: "estado_pago",
         header: "Estado",
         Cell: ({ cell }) => (
-            <Badge bg={color[cell.row.original.estado_pago]}>
-                {cell.row.original.estado_pago}</Badge>
+            (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
+                (cell.row.original.id_espacio_localida == 0) ? 
+                <Badge bg={"warning"}>
+                    Por revisar</Badge> 
+                    : <Badge bg={"warning"}>
+                    Sin firmar</Badge> 
+                    : <Badge bg={color[cell.row.original.estado_pago]}>
+                    {cell.row.original.estado_pago}</Badge>
         ),
         size: 50
     },
@@ -354,17 +363,18 @@ export const listaRegistrototal = [
         accessorKey: "forma_pago",
         header: "Metodo",
         Cell: ({ cell }) => {
-            cell.row.original.forma_pago != "Tarjeta" ? cell.row.original.forma_pago : cell.row.original.link_pago == null ? "Sin link" : cell.row.original.forma_pago
+            cell.row.original.forma_pago != "Tarjeta" ? cell.row.original.forma_pago : (cell.row.original.link_pago == null) ? "Sin link" : cell.row.original.forma_pago
         },
         size: 50
     }, {
         accessorKey: "estado_pago",
         header: "Estado",
         Cell: ({ cell }) => (
-            (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ? 
-                <Badge bg={"warning"}>
-                Sin firmar</Badge> :<Badge bg={color[cell.row.original.estado_pago]}>
-                {cell.row.original.estado_pago}</Badge>
+            (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
+                (cell.row.original.id_espacio_localida == 0) ? <Badge bg={"warning"}>
+                    Por revisar</Badge> : <Badge bg={"warning"}>
+                    Sin firmar</Badge> : <Badge bg={color[cell.row.original.estado_pago]}>
+                    {cell.row.original.estado_pago}</Badge>
         ),
         size: 50
     },

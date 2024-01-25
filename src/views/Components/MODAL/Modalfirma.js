@@ -198,12 +198,13 @@ export default function ModalFirma() {
             console.log(data)
             setLoading("")
             let boleto = await Boleteria_voucher({
-                "estado": clienteInfo() == null ? 0 : modal.estado.id_espacio_localida,
+                "estado": clienteInfo() == null ? 0 : 1,
                 "id": "" + modal.estado.id,
                 "link": data.link
             })
             if (boleto.estado) {
                 let boletos = JSON.stringify({ ...detallid, ...boleto.datos })
+                console.log(boletos)
                 sessionStorage.setItem("Detalleuid", boletos)
                 window.location.reload()
             }

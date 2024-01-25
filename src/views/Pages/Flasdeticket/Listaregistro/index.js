@@ -100,12 +100,12 @@ export default function ListaderegistroView(props) {
         usedispatch(setModal({ nombre: "firma", estado: { ...row } }))
     }
     function abrirvoucher(row) {
-        usedispatch(setToastes({
+        /*usedispatch(setToastes({
             show: true,
             message: "Muy pronto te anunciaremos el canje de los boletos a través de redes",
             color: 'bg-success',
             estado: "Tu boleto ya están pagados"
-        }))
+        }))*/
         if (row.link_pago != null) {
             (row.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante })) : usedispatch(setModal({ nombre: 'firma', estado: { link: row.link_pago.replace("k/", "k/voucher/"), id: row.id } }))
         } if (row.link_comprobante) {
