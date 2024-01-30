@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route,Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 // react-bootstrap components
 import {
   Badge,
@@ -28,11 +28,11 @@ import routes from "routesub.js"
 // dinamically create dashboard routes
 //import routes from "routes.js";
 //import routes from "routesinicial
-import imagen5 from "assets/imagen/logo-tickets.png"
-import image1 from "assets/img/full-screen-image-1.jpg";
-import image2 from "assets/img/full-screen-image-2.jpg";
-import image3 from "assets/img/full-screen-image-3.jpg";
-import image4 from "assets/img/full-screen-image-4.jpg";
+//import imagen5 from "assets/imagen/logo-tickets.png"
+//import image1 from "assets/img/full-screen-image-1.jpg";
+//import image2 from "assets/img/full-screen-image-2.jpg";
+import image3 from "assets/img/logo-final.png";
+//import image4 from "assets/img/full-screen-image-4.jpg";
 
 function Subcrito() {
   const [sidebarImage, setSidebarImage] = React.useState(image3);
@@ -40,7 +40,7 @@ function Subcrito() {
   //aqui valido las rutas que deben admitirse segun el permiso
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if(prop.permiso!=null && prop.permiso.every(e=>e!="admin") ){
+      if (prop.permiso != null && prop.permiso.every(e => e != "admin")) {
         return null
 
       }
@@ -67,13 +67,13 @@ function Subcrito() {
           routes={routes}
           image={sidebarImage}
           background={sidebarBackground}
-          
+
         />
         <div className="main-panel">
           <SubcritorNavbar />
           <div className="content">
             <Switch>{getRoutes(routes)}
-            <Redirect from="/panel" to="/panel/inicio"  />
+              <Redirect from="/panel" to="/panel/inicio" />
             </Switch>
           </div>
           {/*<AdminFooter />*/}
@@ -85,7 +85,7 @@ function Subcrito() {
           />
         </div>
       </div>
-      
+
     </>
   );
 }

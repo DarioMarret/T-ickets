@@ -47,13 +47,13 @@ function ModalPago(props) {
             })
         }
         setCargar(!cargar)
-        $(document).ready(function () {
+        /*$(document).ready(function () {
             $(".modal-content").draggable({
                 handle: ".modal-header"
                 ,
                 containment: "#root",
             })
-        })
+        })*/
     }, [modalPago])
 
     const closedeposito = () => {

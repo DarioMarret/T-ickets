@@ -227,13 +227,13 @@ export default function WhastappWiev() {
 
 
     useEffect(() => {
-        $(document).ready(function () {
+        /*$(document).ready(function () {
             $(".modal-content").draggable({
                 handle: ".modal-header",
                 scroll: false,
                 containment: "#root",
             })
-        })
+        })*/
     }, [(datos.nombre == "whastapp" || datos.nombre == "masivos")])
     return (
         <>

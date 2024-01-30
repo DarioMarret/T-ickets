@@ -197,22 +197,22 @@ const EsquemaViews = () => {
         $.each(positions, function (id, pos) {
             $("#" + id).css(pos)
         })
-        $("div.mover").draggable({
+       /* $("div.mover").draggable({
             containment: "#seccionuno",
             scroll: false,
             stop: function (event, ui) {
                 positions[event.target.id] = ui.position
                 sessionStorage.positions = JSON.stringify(positions)
             }
-        });
-        $(".moverdos").draggable({
+        });*/
+      /*  $(".moverdos").draggable({
             containment: "#secciondos",
             scroll: false,
             stop: function (event, ui) {
                 positions[event.target.id] = ui.position
                 sessionStorage.positions = JSON.stringify(positions)
             }
-        })
+        })*/
     });
 
     useEffect(() => {

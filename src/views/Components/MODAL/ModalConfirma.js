@@ -124,13 +124,13 @@ export default function Pagarlink() {
             total_pago: modal.estado.total_pago
         })
         console.log(modal)
-        $(document).ready(function () {
+       /* $(document).ready(function () {
             $(".modal-content").draggable({
                 handle: ".modal-header",
                 containment: "#root",
                 scroll: false,
             })
-        })
+        })*/
     }, [modal.nombre == "canjear" ? true : false])
     return (
         <>

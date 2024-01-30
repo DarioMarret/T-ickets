@@ -221,61 +221,61 @@ export default function DetalleCompraView() {
     }
     function abrirfirma() {
         if (nombres.id_espacio_localida != null && nombres.id_espacio_localida != "") {
-            
-                $.confirm({
-                    theme: 'supervan',
-                    closeIcon: true,
-                    title: 'Firma',
-                    content: 'Verificar que el voucher tenga la cédula correcta y firma',
-                    type: 'red',
-                    buttons: {
-                        tryAgain: {
-                            text: 'Ver ',
-                            btnClass: 'btn-red',
-                            action: function () {
-                                window.open(nombres.status_pg, "_blank")
 
-                            }
-                        },
-                        aproba:{
-                            text:"Aprobar ",
-                            btnClass:'btn-success',
-                            action:function(){
-                             Boleteria_voucher({
-                                    "estado": 1,
-                                    "id": "" + nombres.id,
-                                 "link": nombres.status_pg
-                                }).then(boleto=>{
+            $.confirm({
+                theme: 'supervan',
+                closeIcon: true,
+                title: 'Firma',
+                content: 'Verificar que el voucher tenga la cédula correcta y firma',
+                type: 'red',
+                buttons: {
+                    tryAgain: {
+                        text: 'Ver ',
+                        btnClass: 'btn-red',
+                        action: function () {
+                            window.open(nombres.status_pg, "_blank")
+
+                        }
+                    },
+                    aproba: {
+                        text: "Aprobar ",
+                        btnClass: 'btn-success',
+                        action: function () {
+                            Boleteria_voucher({
+                                "estado": 1,
+                                "id": "" + nombres.id,
+                                "link": nombres.status_pg
+                            }).then(boleto => {
                                 if (boleto.estado) {
                                     let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
                                     sessionStorage.setItem("Detalleuid", boletos)
                                     window.location.reload()
                                 }
-                            
+
                             })
                         }
-                        },
-                        rechaza:{
-                            text: "Rechazar",
-                            btnClass: 'btn-success',
-                            action: function () {
-                                Boleteria_voucher({
-                                    "estado": "",
-                                    "id": "" + nombres.id,
-                                    "link": nombres.status_pg
-                                }).then(boleto => {
-                                    if (boleto.estado) {
-                                        let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
-                                        sessionStorage.setItem("Detalleuid", boletos)
-                                        window.location.reload()
-                                    }
+                    },
+                    rechaza: {
+                        text: "Rechazar",
+                        btnClass: 'btn-success',
+                        action: function () {
+                            Boleteria_voucher({
+                                "estado": "",
+                                "id": "" + nombres.id,
+                                "link": nombres.status_pg
+                            }).then(boleto => {
+                                if (boleto.estado) {
+                                    let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
+                                    sessionStorage.setItem("Detalleuid", boletos)
+                                    window.location.reload()
+                                }
 
-                                })
-                            }
+                            })
                         }
                     }
-                });
-            
+                }
+            });
+
         } else {
             usedispatch(setModal({ nombre: "firma", estado: { ...nombres } }))
             usedispatch(setModal({ nombre: "", estado: "" }))
@@ -934,31 +934,68 @@ export default function DetalleCompraView() {
             "id": nombres.id,
             "numeroTransaccion": nombres.numerTransacion,
             "cedula": nombres.cedula,
-            "estado": "Pagado"
+            "estado": "Pagado",
+            "bancos": nombres.banco
         }
-        $.confirm({
-            title: 'Desea Aprobar el pago',
-            type: 'blue',
-            content: '',
-            buttons: {
-                formSubmit: {
-                    text: 'Aceptar',
-                    btnClass: 'btn-blue',
-                    action: function () {
-                        registraPagos(reporte).then(ouput => {
-                            if (ouput.success) {
-                                history.goBack()
-                                return
-                            }
-                            $.alert("No se registro")
-                        }).catch(err => {
-                        })
-                    }
+        if (nombres.forma_pago == "Deposito") {
+            $.confirm({
+                title: 'Desea Aprobar el pago',
+                type: 'blue',
+                content: '' +
+                    '<form action="" class="formName">' +
+                    '<div class="form-group">' +
+                    '<label class="form-label">Seleccione el Banco </label>' +
+                    '<select id="banco" class="name form-select">' +
+                    '<option value="Pichincha">Pichincha</option>' +
+                    '<option value="Guayaquil">Guayaquil</option>' +
+                    '</select></form>',
+                buttons: {
+                    formSubmit: {
+                        text: 'Aceptar',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            var name = this.$content.find('.name').val();
+                           // console.log(name)
+                           // return
+                            registraPagos({ ...reporte, "bancos": name}).then(ouput => {
+                                if (ouput.success) {
+                                    history.goBack()
+                                    return
+                                }
+                                $.alert("No se registro")
+                            }).catch(err => {
+                            })
+                        }
+                    },
+                    cancel: function () {
+                    },
                 },
-                cancel: function () {
+            });
+        } else {
+            $.confirm({
+                title: 'Desea Aprobar el pago',
+                type: 'blue',
+                content: '',
+                buttons: {
+                    formSubmit: {
+                        text: 'Aceptar',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            registraPagos(reporte).then(ouput => {
+                                if (ouput.success) {
+                                    history.goBack()
+                                    return
+                                }
+                                $.alert("No se registro")
+                            }).catch(err => {
+                            })
+                        }
+                    },
+                    cancel: function () {
+                    },
                 },
-            },
-        });
+            });
+        }
 
     }
     function ComprobarBoleto() {
@@ -1042,6 +1079,10 @@ export default function DetalleCompraView() {
             "link": nombres.status_pg
         })
         if (boleto.estado) {
+            let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
+            sessionStorage.setItem("Detalleuid", boletos)
+            window.location.reload()
+        } else {
             let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
             sessionStorage.setItem("Detalleuid", boletos)
             window.location.reload()
@@ -1289,7 +1330,7 @@ export default function DetalleCompraView() {
                                                     </button>
                                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a className="dropdown-item" onClick={() => voucherinvalido(1)}>Aprobar</a>
-                                                        <a className="dropdown-item" onClick={() => voucherinvalido(2)}>Anular firma</a>
+                                                        <a className="dropdown-item" onClick={() => voucherinvalido("")}>Anular firma</a>
                                                     </div>
                                                 </div> : ""}
 

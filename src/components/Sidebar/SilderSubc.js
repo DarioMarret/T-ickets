@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import imagen5 from "assets/imagen/logo-tickets.png"
+//import imagen5 from "assets/imagen/logo-tickets.png"
  //import {clienteInfo} from "../../utils" ;
 // react-bootstrap components
 import {
@@ -151,7 +151,7 @@ const usuario ="admin";
               
             >
               <img
-                  src={imagen5}
+                  src={"imagen5"}
                   alt="react-logo"
                   style={{height:'60px',width:'auto'}}
                 />

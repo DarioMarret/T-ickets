@@ -107,7 +107,7 @@ export default function ListaderegistroView(props) {
             estado: "Tu boleto ya están pagados"
         }))*/
         if (row.link_pago != null) {
-            (row.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante })) : usedispatch(setModal({ nombre: 'firma', estado: { link: row.link_pago.replace("k/", "k/voucher/"), id: row.id } }))
+            (row.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante })) : usedispatch(setModal({ nombre: 'firma', estado: {  ...row } }))
         } if (row.link_comprobante) {
             usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante }))
         }

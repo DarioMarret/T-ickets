@@ -159,6 +159,7 @@ export const Boleteria_voucher = async (params) => {
     console.log(params)
     try {
         let { data } = await boleteriaAxios.post("/Boleteria/voucher", parmspro)
+        console.log(data)
         return data
     } catch (error) {
         return error

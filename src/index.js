@@ -24,6 +24,7 @@ import Loadable from "views/Components/Loadable/index";
 import BingoViewtiparams from "views/Pages/Suscriptores/Bingoparams";
 import BingoViewtiparamsasb from "views/Pages/Suscriptores/Bingoparamsabs";
 import ResestPassword from "views/Pages/Susbcritorpage/Passwor";
+import LocalidadMApView from "views/Localidamapa";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 /*<Route path="/panel" render={(props)=> <Subcr {...props}/> }/>*/
 
@@ -36,7 +37,11 @@ root.render(
         <Route path="/admin" render={(props) => clienteInfo() ? <AdminLayout {...props} /> : <Redirect from="/" to="/auth/login" />} />
         <Route path="/bingo/:id" render={()=><BingoViewtiparamsasb/> } />
         <Route path="/password/:id" render={()=><ResestPassword/>}/>
+
+        {/*<Route path="/localidad/:id/:parms" render={() => <LocalidadMApView />} />*/}
         <Route path="/" render={() => <Indexflas /> } />
+
+        <Route path="*" to="/" />
         <Route path="*" to="/" />
       </Switch>
     </BrowserRouter>

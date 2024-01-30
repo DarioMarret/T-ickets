@@ -2,11 +2,12 @@ import axios from "axios";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { Host } from "utils/constantes";
+import { boleteriaAxios } from "utils/index";
 
 
 export const registraPagos = async (parms) => {
     let id = clienteInfo() != null ? clienteInfo().id : 0
-    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id    
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
     let parmspro = {
         ...parms,
         "id_usuario": parseInt(id),
@@ -19,6 +20,14 @@ export const registraPagos = async (parms) => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
+        if (parms.forma_pago = "Deposito") {
+            boleteriaAxios.post("Boleteria/bancos", {
+                "bancos": parms.bancos,
+                "id": parms.id
+            }).then(function (response) {
+                console.log(response)
+            });
+        }
         return data
     } catch (error) {
         console.log(error)
@@ -42,7 +51,7 @@ export const listarRegistropanel = async (parms) => {
 export const ListarRegistropaneFecha = async (ini, fin) => {
     console.log(fin, ini)
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/listarRegistros?fecha_init="+ini+"&fecha_fin="+fin+"",
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/listarRegistros?fecha_init=" + ini + "&fecha_fin=" + fin + "",
             {
                 "cedula": ""
             }
@@ -85,7 +94,7 @@ export const listarRegistroEvento = async (ini, fin, parms) => {
 }
 export const generarBoleto = async () => {
     let id = clienteInfo() != null ? clienteInfo().id : 0
-    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id    
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
     let parmspro = {
         ...parms,
         "id_usuario": parseInt(idop),
@@ -113,7 +122,7 @@ export const eliminarRegistro = async (parms) => {
     }
     try {
         let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/eliminarRegistro",
-            {...parms,...parmspro}, {
+            { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -135,7 +144,7 @@ export const eliminartiket = async (parms) => {
     try {
         let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/eliminarTicketrepetido",
             {
-               ...parmspro
+                ...parmspro
             }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -150,7 +159,7 @@ export const eliminartiket = async (parms) => {
 }
 export const cambiarMetodo = async (parms) => {
     let id = clienteInfo() != null ? clienteInfo().id : 0
-    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id    
+    let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
     let parmspro = {
         ...parms,
         "id_usuario": parseInt(idop),
@@ -205,7 +214,7 @@ export const Consiliarcompra = async (parms) => {
         "id_operador": parseInt(id),
     }
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/Conciliacion", {...parms,...parmspro}, {
+        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/Conciliacion", { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -225,7 +234,7 @@ export const ActualizaConciliacion = async (parms, id) => {
     }
     console.log(id)
     try {
-        let { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/Conciliacion/" + id, {...parms,...parmspro}, {
+        let { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/Conciliacion/" + id, { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -260,7 +269,7 @@ export const updateRegistro = async (parms, id) => {
         "id_operador": parseInt(ids),
     }
     try {
-        let { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/Comentario_registro/" + id, {...parms,...parmspro}, {
+        let { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/Comentario_registro/" + id, { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

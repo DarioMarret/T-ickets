@@ -13,10 +13,10 @@ import routes from "routesub.js"
 // dinamically create dashboard routes
 //import routes from "routes.js";
 //import routes from "routesinicial
-import image1 from "assets/img/full-screen-image-1.jpg";
-import image2 from "assets/img/full-screen-image-2.jpg";
-import image3 from "assets/img/full-screen-image-3.jpg";
-import image4 from "assets/img/full-screen-image-4.jpg";
+//import image1 from "assets/img/full-screen-image-1.jpg";
+//import image2 from "assets/img/full-screen-image-2.jpg";
+import image3 from "assets/img/logo-final.png";
+//import image4 from "assets/img/full-screen-image-4.jpg";
 import ToastViews from "views/Components/TOAST/toast";
 import { useEffect } from "react";
 

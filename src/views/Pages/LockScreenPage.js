@@ -18,7 +18,7 @@ function LockScreenPage() {
       <div
         className="full-page lock-page"
         data-color="purple"
-        data-image={require("assets/img/bg4.jpg")}
+        
       >
         <div className="content d-flex align-items-center p-0">
           <Container>
@@ -26,11 +26,7 @@ function LockScreenPage() {
               <Card className="card-lock text-center card-plain">
                 <Card.Header>
                   <div className="author">
-                    <img
-                      alt="..."
-                      className="avatar"
-                      src={require("assets/img/default-avatar.png")}
-                    ></img>
+                    
                   </div>
                 </Card.Header>
                 <Card.Body>
@@ -57,12 +53,7 @@ function LockScreenPage() {
           </Container>
         </div>
 
-        <div
-          className="full-page-background"
-          style={{
-            backgroundImage: "url(" + require("assets/img/bg4.jpg") + ")"
-          }}
-        ></div>
+        
       </div>
     </>
   );

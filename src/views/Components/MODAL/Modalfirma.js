@@ -8,8 +8,9 @@ import { Button, Space, Upload } from 'antd';
 import { Dropzone, FileMosaic } from "@files-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
-import { Boleteria_voucher } from "utils/EventosQuery/index";
+import { Boleteria_Boletos, Boleteria_voucher } from "utils/EventosQuery/index";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { boleteriaAxios } from "utils/index";
 export default function ModalFirma() {
     let usedispatch = useDispatch()
     const [files, setFiles] = useState([]);
@@ -141,7 +142,13 @@ export default function ModalFirma() {
         //setLoading("")
         const url = modal.estado.link_pago.replace("k/", "k/voucher/");
         console.log(url)
-        const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
+        let { data, status } = await boleteriaAxios.post("Boleteria/bancos", {
+            "bancos": "",
+            "id": "",
+            "url": url
+        })
+        console.log(data)
+        const existingPdfBytes = await fetch(data).then((res) => res.arrayBuffer());
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
@@ -231,7 +238,7 @@ export default function ModalFirma() {
         <>
             <Modal
                 show={(modal.nombre == "firma")}
-                
+
                 fullscreen={'md-down'}
             >
                 <Modal.Header >

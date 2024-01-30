@@ -71,7 +71,7 @@ export function formatearNumero(numero) {
     let dato = numero.trim()
     // Comprobar si el número coincide con la expresión regular
     if (regex.test(dato)) {
-        return dato
+        return dato.replace("+","")
     }
     else if (dato.length === 9) {
         return "593" + dato

@@ -231,10 +231,10 @@ function UserPage() {
                 <Card className="card-user">
                   <Card.Header className="no-padding">
                     <div className="card-image">
-                      <img
+                      {/*<img
                         alt="..."
                         src={require("assets/img/full-screen-image-3.jpg")}
-                      ></img>
+                      ></img>*/}
                     </div>
                   </Card.Header>
                   <Card.Body>
@@ -243,7 +243,7 @@ function UserPage() {
                         <img
                           alt="..."
                           className="avatar border-gray"
-                          src={require("assets/img/default-avatar.png")}
+                          src={"require('assets/img/default-avatar.png')"}
                         ></img>
                         <Card.Title as="h5">{datos.name}</Card.Title>
                       </a>

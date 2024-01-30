@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { styleswiper, styleswipers } from "./styleswiper.js";
 import { pasados, carrusel } from "./imagenstatctic.js";
-let { icon, iconhead,  valla,  logofla,  header } = carrusel
+let { icon, iconhead, valla, logofla, header } = carrusel
 import { useSelector, useDispatch } from "react-redux";
 import { todossiler } from "./Modalterminos/silder.js";
 let { cargalocalidad, cargarsilla, clearMapa, Cargarsillas, addususcritor, deletesuscrito, filtrarlocali, setModal, borrarseleccion } = todossiler
@@ -25,7 +25,7 @@ import ModalCarritov from "views/Components/MODAL/ModalCarritov";
 import SweetAlert from "react-bootstrap-sweetalert";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {  Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper";
 import ResgistroView from "./ModalLogin/registro.js";
 import { Button, Spinner } from "react-bootstrap";
@@ -128,7 +128,7 @@ const IndexFlas = () => {
         setDatoToas({ show: true, message: 'Su tiempo de compra a finalizado', color: 'bg-danger', estado: 'Mensaje importante', })
         handleClosesop(false)
         setMapashow(false)
-       // setDetalle(false)
+        // setDetalle(false)
         setModalPago(false)
         setrepShow(false)
         Limpiarseleccion()
@@ -172,7 +172,7 @@ const IndexFlas = () => {
     clearInterval(datatime.current)
     clearInterval(localidadtimer.current)
     setMapashow(false)
-   // setDetalle(false)
+    // setDetalle(false)
     setModalPago(false)
     setrepShow(false)
     usedispatch(clearMapa({}))
@@ -307,7 +307,7 @@ const IndexFlas = () => {
   }
   const abrir = async (e) => {
 
-   
+
     sessionStorage.setItem("estadoevento", e.estado)
     sessionStorage.setItem("infoevento", JSON.stringify(e))
     sessionStorage.removeItem("sillascorre")
@@ -573,12 +573,11 @@ const IndexFlas = () => {
       setfunc(true)
       isLoading ? "" : setEventos(filtro.sort(sorter))
       info ? "" : setpublicidad(publicin.data)
-     // isLoading ? "" : setShear(filtro.sort(sorter))
+      // isLoading ? "" : setShear(filtro.sort(sorter))
     } catch (error) {
       console.log(error)
     }
   }
-
   const filterNames = (nombre) => {
     return nombre.nombreConcierto.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
   };
@@ -590,7 +589,6 @@ const IndexFlas = () => {
       setMostrar(true)
       setSearchValue(e)
     }
-
   }
   const ListaPrecios = async () => {
     try {
@@ -600,23 +598,22 @@ const IndexFlas = () => {
     } catch (error) {
       return error
     }
-
   }
   const [estafun, setfunc] = useState(false)
   const [final, setFinal] = useState([])
   useEffect(() => {
+    evento()
     $(document).keyup(function (evtobj) {
       if (!(evtobj.altKey || evtobj.ctrlKey || evtobj.shiftKey)) {
         if (evtobj.keyCode == 16) { return false; }
         if (evtobj.keyCode == 17) { return false; }
       }
     });
-    
-    ListaPrecios();
+    //ListaPrecios();
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
-    Limpiarseleccion()    
-    evento()
+    Limpiarseleccion()
+   
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
@@ -651,14 +648,14 @@ const IndexFlas = () => {
       usedispatch(addususcritor({ ...clineteLogeado }))
     }
 
-    ListarEventosFinalizados().then(oup => {
+    /*ListarEventosFinalizados().then(oup => {
       if (oup.length > 0) {
         setFinal(oup)
         console.log()
       }
     }).catch(err => {
       console.log(err)
-    })
+    })*/
     ReactGA.pageview(window.location.pathname + window.location.search);
     ReactGA.set({
       username: localStorage.getItem('DatoCliente'),
@@ -668,26 +665,26 @@ const IndexFlas = () => {
   }, [isLoading, info])
   seleccion == "" && final.length > 0 ?
     setTimeout(function () {
-       $('.logos-slider').slick({
-         slidesToShow: 3,
-         slidesToScroll: 1,
-         autoplay: true,
-         autoplaySpeed: 1800,
-         arrows: false,
-         dots: false,
-         pauseOnHover: false,
-         responsive: [{
-           breakpoint: 750,
-           settings: {
-             slidesToShow: 2
-           }
-         }, {
-           breakpoint: 520,
-           settings: {
-             slidesToShow: 1
-           }
-         }]
-       });
+      $('.logos-slider').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 1800,
+        arrows: false,
+        dots: false,
+        pauseOnHover: false,
+        responsive: [{
+          breakpoint: 750,
+          settings: {
+            slidesToShow: 2
+          }
+        }, {
+          breakpoint: 520,
+          settings: {
+            slidesToShow: 1
+          }
+        }]
+      });
     }, 1000) : ""
   function regsitronew() {
     usedispatch(setModal({ nombre: 'registro', estado: "" }))
@@ -729,7 +726,7 @@ const IndexFlas = () => {
   return (
 
     <>
-      
+
       <NavbarView
         icon={icon}
         setVisible={setVisible}
@@ -899,7 +896,7 @@ const IndexFlas = () => {
                 }) : ''
             }
           </Swiper>
-          
+
         </div> :
         <div className="container-fluid  p-0">
           <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '300px', backgroundImage: `url(${header})` }}>
@@ -976,10 +973,10 @@ const IndexFlas = () => {
                       return (
                         <div className="col-12  mx-auto my-3 " id={"evento" + e.id} key={i}>
                           <a id={"headingThree" + e.id} className="collapsed eventos eventoss"
-                         
-                           data-toggle="collapse" 
-                           data-target={"#collapseid" + e.id} 
-                           aria-controls={"#collapseid" + e.id} aria-expanded="false"
+
+                            data-toggle="collapse"
+                            data-target={"#collapseid" + e.id}
+                            aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7  d-flex justify-content-center px-0" >
                               <i className="  text-info btn-hover" style={{
@@ -1158,7 +1155,7 @@ const IndexFlas = () => {
 
                           data-toggle="collapse"
                           data-target={"#collapseid" + 1}
-                          aria-controls={"#collapseid" +1} aria-expanded="false"
+                          aria-controls={"#collapseid" + 1} aria-expanded="false"
                         >
                           <div className="container rounded-7  d-flex justify-content-center px-0" >
                             <i className="  text-info btn-hover" style={{
@@ -1209,13 +1206,12 @@ const IndexFlas = () => {
                                 </g>
                               </svg>
                             </i>
-                          
-                            <img src={"https://api.ticketsecuador.ec/store/img/valla-proximo-evento.871486e33ab61e490b6e.jpeg"} className="img-fluid rounded-7 shadow-md  btn-hover img-evento " alt=""
-
-                            />
+                            <img src={"https://api.ticketsecuador.ec/store/img/valla-proximo-evento.871486e33ab61e490b6e.jpeg"}
+                              className="img-fluid rounded-7 shadow-md  btn-hover img-evento "
+                              alt="" />
                           </div>
                         </a>
-                        <div className="collapse float-end container mt-4 px-0" aria-labelledby={"headingThree" +1} id={"collapseid" + 1} data-parent="#accordion">
+                        <div className="collapse float-end container mt-4 px-0" aria-labelledby={"headingThree" + 1} id={"collapseid" + 1} data-parent="#accordion">
                           <div className="card row d-flex flex-row card-body rounded-7 py-5">
                             <div className="container col-12 col-md-6">
                               <div className="d-flex row  btn-group-vertical ">
@@ -1224,11 +1220,11 @@ const IndexFlas = () => {
                                   <h4 style={{ fontSize: '1.4em', }}><span id="tour"></span></h4>
                                   <div className="col-12 border border-bottom my-3"></div>
                                   <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                    <p style={{ fontSize: '1.0em' }}>  <i className="bi bi-calendar-week-fill"></i>   <b>  Fecha:<span id="fechaEvento">0000-00-00</span></b></p>
+                                    <p style={{ fontSize: '1.0em' }}>  <i className="bi bi-calendar-week-fill"></i>   <b>  Fecha:<span id="fechaEvento">2024-05-18</span></b></p>
                                     <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
-                                      <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><i className="bi bi-alarm-fill"></i> <b> Hora:<span id="horaEvento"> 00:00</span></b></p>
+                                      <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><i className="bi bi-alarm-fill"></i> <b> Hora:<span id="horaEvento"> 16:00</span></b></p>
                                     </div>
-                                    <p className="" style={{ fontSize: '1.0em', }}><i className="bi bi-geo-alt-fill"></i> <b>Lugar:<span id="lugarEvento">Guayaquil</span></b></p>
+                                    <p className="" style={{ fontSize: '1.0em', }}><i className="bi bi-geo-alt-fill"></i> <b>Lugar:<span id="lugarEvento">Guayaquil Coliseo Voltaire Paladines Polo</span></b></p>
                                     <div className="col-12 border border-bottom mb-3"></div>
                                     <div>
                                     </div>
@@ -1239,15 +1235,17 @@ const IndexFlas = () => {
                                     bottom: 10,
                                   }}
                                 >
-                                
-                                  
+                                  <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
+                                    className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={()=>usedispatch(setModal({ nombre: 'registro', estado: "" }))} >
+                                    Registrate</p>
+
                                 </div>
                               </div>
                             </div>
                             <div className="container col-12 col-md-6 rounded-7  px-0">
-                              <img src="https://api.ticketsecuador.ec/store/img/whatsapp_image_2023-12-11 at 16.29.55.jpeg.jpeg" className="img-fluid rounded-7 shadow-md " alt="" />
+                              <img src="https://api.ticketsecuador.ec/store/img/whatsapp_precios.jpeg" className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
-                           
+
 
                           </div>
 
@@ -1276,7 +1274,7 @@ const IndexFlas = () => {
                     </h4>
                   </div>
                   <section className="logos-slider slider d-flex flex-wrap">
-                    {final.length > 0 ?
+                    {/*final.length > 0 ?
                       [...final].filter(e => new Date(e.fechaConcierto + " 23:59:59") < new Date()).map((element, index) => {
                         return (
                           <div className="slide col-12 col-sm-6 col-md-4 px-0 pb-1" key={index} >
@@ -1293,7 +1291,7 @@ const IndexFlas = () => {
                           </div>
                         )
                       })
-                      : ""}
+                      : ""*/}
                   </section>
                 </div>
               </div>
@@ -1440,7 +1438,7 @@ const IndexFlas = () => {
                                 </div>
                               </div>
                               <div className="container col-12 col-md-6 rounded-7  px-0">
-                                <img src={ e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
+                                <img src={e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
                               </div>
 
                             </div>
@@ -1581,7 +1579,7 @@ const IndexFlas = () => {
       />
 
       <Noticiamodal />
-    
+
 
 
       <Inframene />
@@ -1634,7 +1632,7 @@ const IndexFlas = () => {
         abrir={abrir}
       />
       <ModalFacilitoView />
-      <ModalFirma/>
+      <ModalFirma />
       <Iframe
         setEstadoFrame={modal.nombre == "pago" ? true : false}
         url={modal.estado}

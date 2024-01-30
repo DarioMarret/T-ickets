@@ -10,14 +10,14 @@ import diners from "../assets/bancos/diner-y mas.jpg"
 import visas from "../assets/bancos/visa-maste.jpg"
 import paypal from "../assets/bancos/paypal.jpg"
 import vecino from "../assets/bancos/mi-vecino.png"
-import logo from "../assets/imagen/logo-t-ickets.png"
+//import logo from "../assets/imagen/logo-t-ickets.png"
 import cedericon from "../assets/imagen/iconoceder.png"
 import atencion from "../assets/imagen/atencion.png"
 export const bancos = {
     GUAYAQUIL, numero,
     pacifico, pichincha,
     produbanco,
-    logo, cedericon, atencion,
+     cedericon, atencion,
     diners, visas, paypal
 }
 export const bancosdetall = {

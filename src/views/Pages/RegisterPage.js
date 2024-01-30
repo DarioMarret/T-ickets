@@ -275,12 +275,12 @@ function RegisterPage() {
 
 
         </div>
-        <div
+        {/*<div
           className="full-page-background"
           style={{
             backgroundImage: "url(" + require("assets/img/full-screen-image-2.jpg") + ")"
           }}
-        ></div>
+        ></div>*/}
       </div>
       <Toast
         onClose={() => setShow(false)} show={show} delay={1500} autohide

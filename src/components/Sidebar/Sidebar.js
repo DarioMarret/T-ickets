@@ -5,7 +5,6 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 
 import icon from "assets/imagen/logo-inicio.png";
 
-import imagen5 from "assets/imagen/logo-tickets.png"
 
 // react-bootstrap components
 import {
@@ -166,7 +165,7 @@ function Sidebar({ routes, image, background }) {
              </div>*/}
           <div className="user">
             <div className="photo">
-              <img alt="..." src={require("assets/img/default-avatar.png")} />
+              {/*<img alt="..." src={require("assets/img/default-avatar.png")} />*/}
             </div>
             <div className="info">
               <a

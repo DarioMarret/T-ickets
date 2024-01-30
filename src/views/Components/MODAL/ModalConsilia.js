@@ -320,13 +320,13 @@ export default function ConsiliarView() {
               })
               
           }
-        $(document).ready(function () {
+       /* $(document).ready(function () {
             $(".modal-content").draggable({
                 handle: ".modal-header",
                 scroll: false,
                 containment: "#root",
             })
-        })
+        })*/
     }, [props.nombre == "consiliacion" ? true : false || props.nombre == "actconsiliacion" ? true : false])
     $(document).ready(function () {
         $(".numero").keypress(function (e) {

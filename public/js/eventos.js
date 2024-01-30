@@ -58,6 +58,6 @@ document.addEventListener('DOMContentLoaded', function () {
     superpuesto.style.opacity = 0;
     setTimeout(() => {
       superpuesto.classList.add("d-none")
-    }, 400);
-  }, 800);
+    }, 100);
+  },100);
 });

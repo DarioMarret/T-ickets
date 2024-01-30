@@ -174,12 +174,12 @@ export default function StoreTickesViews() {
     }
     const evento = async () => {
         try {
-            const data = await cargarEventoActivo("ACTIVO")
-            const dataS = await cargarEventoActivo("PROCESO")
-            //console.log(clienteInfo())
+            const data = await cargarEventoActivo("ACTIVO/")
+            const dataS = await cargarEventoActivo("PROCESO/")
+            console.log(data, dataS)
             const filtro = data != null ? clienteInfo().id == "58" ? data.filter(e => e.codigoEvento == "YZPQQ3").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : clienteInfo().id == "59" ? data.filter(e => e.codigoEvento == "SAZKD1").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
             const filtroS = dataS != null ? clienteInfo().id == "58" ? dataS.filter(e => e.codigoEvento == "YZPQQ3").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : clienteInfo().id == "59" ? dataS.filter(e => e.codigoEvento == "SAZKD1").filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : dataS.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
-
+            console.log(filtro, filtroS)
             setEvento([...filtro, ...filtroS].sort(sorter))
             const susct = await GetSuscritores()
             //console.log(data, susct)
@@ -194,7 +194,8 @@ export default function StoreTickesViews() {
                       Venta: 0, suscritor: susct.users.length
                   })*/
             }
-            else if (data == null) setEvento([])
+            else if (data == null&&dataS==null) setEvento([])
+            //else if (  dataS != null) setEvento([...filtroS].sort(sorter))
         } catch (error) {
             console.log(error)
         }
@@ -227,18 +228,18 @@ export default function StoreTickesViews() {
                 history.push("/admin/Aprobar/" + getDatosUsuariosLocalStorag().cedula)
                 return
             }
-           /* if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")) {
-                setspinervi("d-none")
-                //SetSeleccion("Tickets")
-
-                usedispatch(setToastes({
-                    show: true,
-                    message: "Espera a que un agente verifique tu transeferenciao deposito",
-                    color: 'bg-info',
-                    estado: "El cliente Tienes un reporte por combrobar"
-                }))
-                return
-            }*/
+            /* if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")) {
+                 setspinervi("d-none")
+                 //SetSeleccion("Tickets")
+ 
+                 usedispatch(setToastes({
+                     show: true,
+                     message: "Espera a que un agente verifique tu transeferenciao deposito",
+                     color: 'bg-info',
+                     estado: "El cliente Tienes un reporte por combrobar"
+                 }))
+                 return
+             }*/
 
             else {
                 //seleccionuser.data.length > 0  datos= await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
@@ -348,7 +349,7 @@ export default function StoreTickesViews() {
     }
     function registraParticipante(codigo, nombre) {
         let user = getDatosUsuariosLocalStorag().cedula
-        Listarticketporestado("1314780774").then(oup => {
+        Listarticketporestado(user).then(oup => {
             if (!oup.success) {
                 return
             }
@@ -479,7 +480,7 @@ export default function StoreTickesViews() {
                 <ModalEfectivo
                     comprar={para}
                 /> : ""}
-                <ModalConfima/>
+            <ModalConfima />
             <ReporteView
                 setrepShow={""}
                 comprar={para}

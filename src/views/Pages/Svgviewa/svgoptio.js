@@ -1,4 +1,5 @@
 const SVGView = ({ text }) => {
+    
     const plantilla = {
         "estandar": <svg version="1.0" className="opciones" xmlns="http://www.w3.org/2000/svg"
             width="90%" height="90%" viewBox="0 0 1024.000000 768.000000"
@@ -48201,6 +48202,7 @@ c-0.09-1.36-1.2-2.68-3.33-3.95l-6-3.6l-10.77,8.27l5.9,3.63C694.08,651.15,696.12,
 
 
     }
+    console.log("aqui",text)
     return (
         plantilla[text.split("-")[0] ? text.split("-")[0] : text]
     )
