@@ -8,6 +8,8 @@ import { Bodyhtml, Headerhtml } from "./Emails/cuerpo";
 /** reportar Pago */
 export const PagoRapido = async (transaccion) => {
     let codigoEvento = sessionStorage.getItem('eventoid')
+    let Eventoinfo = JSON.parse(sessionStorage.getItem('infoevento'))
+
     let asientos = sessionStorage.getItem("asientosList") != null ? JSON.parse(sessionStorage.getItem("asientosList")).map(e => { return e.ids }) : []
     let array = sessionStorage.getItem("sillascorre") != null ? JSON.parse(sessionStorage.getItem("sillascorre")) : []
     let tiktefisic = sessionStorage.getItem("ticktesfisio") != null ? JSON.parse(sessionStorage.getItem("ticktesfisio")) : []
@@ -28,11 +30,13 @@ export const PagoRapido = async (transaccion) => {
             "idespaciolocalida": e.localidaEspacio["ideprecio"],
             "cantidad": e.cantidad,
             "localidad_nombre": e.localidad,
-            "localidad_precio":  parseFloat(e.valor),
+            "localidad_precio": parseFloat(e.valor),
             "comision_por_boleto": parseInt(e.cantidad) * parseFloat(e.localidaEspacio["comision_boleto"]),
-            "id_sillas": cantidadTotal == sillas.length ? [...sillas] : []
+            "id_sillas": cantidadTotal == sillas.length ? [...sillas] : [],
+            "iva": Eventoinfo.iva
         }
     })
+    console.log(concierto)
     let datos = {
         "cedula": datosPersonal,
         "id_usuario": parseInt(idop),
@@ -52,7 +56,7 @@ export const PagoRapido = async (transaccion) => {
         "transaccion": transaccion
     }
 
-    // console.log(datos, concierto)
+     console.log(datos, concierto)
     try {
 
         console.log(datos)
@@ -66,7 +70,7 @@ export const PagoRapido = async (transaccion) => {
         )
 
         console.log(data)
-        return { ...data, id: data.idRegistro,...datos };
+        return { ...data, id: data.idRegistro, ...datos };
         // await EnviarDetalleCompra(email, parm)
 
     } catch (error) {
@@ -232,9 +236,9 @@ export const generaTiketspdf = async (parms) => {
         return error
     }
 }
-export const generaTiketsBingo = async (parms,id) => {
+export const generaTiketsBingo = async (parms, id) => {
     try {
-        let { data } = await axios.put("https://api.t-ickets.com/mikroti/Boleteria/bingo/"+id, parms, {
+        let { data } = await axios.put("https://api.t-ickets.com/mikroti/Boleteria/bingo/" + id, parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

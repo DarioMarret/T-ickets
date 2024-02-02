@@ -52,6 +52,7 @@ import ConsolidacionView from "views/Pages/Consolidados/index.js";
 import FacturaView from "views/Pages/Autorizacion/Facturacion";
 import OCRApiViews from "views/Pages/Autorizacion/OCRapi";
 import ListarLogs from "views/Pages/Infolog";
+import WhatsAppViewmal from "views/Pages/Whastapp/index";
 
 var routes = [
   {
@@ -340,11 +341,11 @@ var routes = [
       },
 
       {
-        path: "/Facturacion",
+        path: "/Whastapp",
         layout: "/admin",
-        name: "Facturación",
+        name: "Whastapp",
         mini: "*",
-        component: FacturaView,
+        component: WhatsAppViewmal,
         permiso: ["admin", ""]
       },
       {

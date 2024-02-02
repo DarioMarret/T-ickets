@@ -1,0 +1,13 @@
+.contenedor{
+    display: flex;
+    flex-direction: wrap;
+}
+.mostrarEnHover {
+    display: none;
+    transition: opacity 0.3s, height 0.3s;
+}
+
+.contenedor:hover .mostrarEnHover {
+    display: flex;
+    height: auto;
+}

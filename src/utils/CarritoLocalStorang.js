@@ -319,6 +319,7 @@ export function GetValores() {
             subtotal += valores
             descrption = tienda.nombreConcierto
             sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
+            
            /* if (valores >= 101) {
                 comision += tienda.cantidad * 2
             } else if (valores >= 201) {
@@ -350,9 +351,10 @@ export function GetValores() {
             iva: (iva).toFixed(2),
             total: (totav).toFixed(2),
             desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15).toFixed(2),
-            desc: Math.round((subtotal + comision) / 1.15),
+            desc: Math.round((subtotal + comision) / 1.15)
+            
         }
-        console.log(precios)
+        //console.log(precios)
         
 
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))

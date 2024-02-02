@@ -201,6 +201,10 @@ export default function StoreTickesViews() {
         }
     }
     const abrir = async (e) => {
+        Limpiarseleccion()
+        LimpiarLocalStore()
+        usedispatch(clearMapa({}))
+        usedispatch(borrarseleccion({ estado: "seleccionado" }))
         sessionStorage.setItem("estadoevento", e.estado)
         sessionStorage.setItem("infoevento", JSON.stringify(e))
         sessionStorage.removeItem("sillascorre")

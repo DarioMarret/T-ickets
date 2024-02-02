@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 export default function TablasViwe({...props}){
+    let {nombre  } = props
     const [spiner,setSpiner]=useState("d-none")
     const [spinerdos, setSpinerdos] = useState("d-none")
     useEffect(()=>{
         setSpinerdos("")
         setSpiner("d-none")
         setTimeout(function(){           
-            if (!$.fn.DataTable.isDataTable("#doc")) {
+            if (!$.fn.DataTable.isDataTable("#"+nombre)) {
                 $(document).ready(function () {
-                    $("#doc").dataTable({
+                    $("#"+nombre).dataTable({
                         stateSave: true,
                         responsive: true,
                         "pageLength": 15,
@@ -34,7 +35,7 @@ export default function TablasViwe({...props}){
 
                                  "responsivePriority": 1,
                                  className: "",
-                                 targets: 5,
+                                 targets: props.number,
                                  visible: true,
                                  "responsive": false
                              },
@@ -71,7 +72,7 @@ export default function TablasViwe({...props}){
             <div className={spiner +" table-responsive"}>
                 
                    
-                            <table id={"doc"} className="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
+                            <table id={""+nombre} className="table  table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
                                 style={{
                                     width: "100%",
                                 }}>

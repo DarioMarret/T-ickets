@@ -214,6 +214,8 @@ a.list-group-item:hover {
 
 /*termina inpiut line */
 
+
+/*Empiez loader*/
 .loader {
   --color: #a5a5b0;
   --size: 60px;
@@ -270,3 +272,4 @@ a.list-group-item:hover {
   z-index: 100;
   transition: opacity 1s ease-in-out;
 }
+/*termina loader*/
