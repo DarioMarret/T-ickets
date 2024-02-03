@@ -833,7 +833,7 @@ const ModalCarritoView = (prop) => {
                                         <option value={"Efectivo-Local"}>
                                             Efectivo-Local
                                         </option>
-                                        <option className="" value={"Efectivo"}>
+                                        <option className="d-none"  value={"Efectivo"}>
                                             Recaidacion Terceros
                                         </option>
                                         <option className="d-none" value={"Tarjeta-Local"}>
@@ -878,7 +878,7 @@ const ModalCarritoView = (prop) => {
                                         </div> : ""}
 
 
-                                    {clienteInfo() == null ? <div className="form-check d-none">
+                                    {clienteInfo() == null ? <div className="form-check ">
                                         <input className="v-check form-check-input" type="radio"
                                             name="Efectivo" id="Efectivo"
                                             checked={checked.Efectivo == "Efectivo" ? true : false}

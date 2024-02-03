@@ -81,7 +81,7 @@ export const ActualizarMasivo = async qr => {
 export const ListarMasivos = async (qr) => {
     try {
         console.log(qr)
-        if ( qr == 0) {
+        if (qr == 0) {
             let { data } = await interAxiosWhaspp.get("allmasivos")
             console.log(data)
             return data
@@ -121,8 +121,8 @@ export const ActualizarContacto = async (parmas) => {
 }
 export const ObtenerContactos = async (id) => {
     try {
-            let { data } = await interAxiosWhaspp.get("allcontactos")
-            return data
+        let { data } = await interAxiosWhaspp.get("allcontactos")
+        return data
     } catch (error) {
         return error
     }
@@ -135,11 +135,11 @@ export const EliminarContacto = async (id) => {
         return error
     }
 }
-export const Imporcontactos = async (ID,parms) => {
+export const Imporcontactos = async (ID,cuenta, parms) => {
     try {
         let nuevos = new FormData()
         nuevos.append("file", parms)
-        let { data } = await interAxiosWhaspp.post("imporcontactos?cuentaId="+ID, nuevos)
+        let { data } = await interAxiosWhaspp.post("importarcontactos?cuentaId=" + cuenta + "&id_masivo=" + ID, nuevos)
         return data
     } catch (error) {
         return error

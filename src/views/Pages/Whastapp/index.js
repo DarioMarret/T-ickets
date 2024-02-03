@@ -1,6 +1,6 @@
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { useEffect, useState } from 'react';
-import { DeleteQrCuenta, Imporcontactos, ListarMasivos, NuevaConexiopnQR, ObtenerContactos, ProgramarQR, getQrLista, postQRGenerado } from './utils/index';
+import { DeleteQrCuenta, EliminarMasivo, Imporcontactos, ListarMasivos, NuevaConexiopnQR, ObtenerContactos, ProgramarQR, getQrLista, postQRGenerado } from './utils/index';
 import TablasViwe from 'layouts/Tablasdoc';
 import { Modal } from 'react-bootstrap';
 import { Obtenerlinkimagen } from 'utils/Querypanel';
@@ -48,6 +48,7 @@ const WhatsAppViewmal = () => {
                 console.log("con imagen ", parms)
                 ProgramarQR(parms).then(ouput => {
                     console.log(ouput)
+                    setMensaje(false)
                     $.alert(JSON.stringify(ouput))
                 }).catch(err => {
                     $.alert(err.message)
@@ -66,8 +67,37 @@ const WhatsAppViewmal = () => {
             });
         }
     }
+    async function BorrarMasivos(e){
+        $.confirm({
+            title: 'Eliminar Masivo id'+e,
+            content: '',
+            buttons: {
+                formSubmit: {
+                    text: 'Aceptar',
+                    btnClass: 'btn-blue',
+                    action: async function () {
+                        EliminarMasivo(e).then(ouput => {
+                            if (ouput.status==200){
+                                ObtenerMasivos(0)
+                                $.alert("Masivo Eliminados")
+                            }
+                            return true
+                        }).catch(err => {
+                            
+                            return true
+                        })
+                        return false;
+                    }
+                },
+                cancel: function () {
+                    // Acción a realizar si se cancela
+                },
+            },
+        });
+       
+    }
     function eliminarcuenta(e) {
-        return
+        //return
         DeleteQrCuenta(e).then(ouput => {
             console.log(ouput)
             let nuevo = listaQr.filter(elemen => elemen.id != e)
@@ -105,7 +135,7 @@ const WhatsAppViewmal = () => {
                 })
                 let data = await ListarMasivos(e.id)
                 if (data.status == 200) {
-                    
+
                     setMasivos(data.data)
                 }
                 return data
@@ -239,7 +269,7 @@ const WhatsAppViewmal = () => {
                                 <button class=" btn-sm btn btn-default contenedor" onClick={() => ShowModal(item)}> <span className='mostrarEnHover'>Crear Masivos</span>  <i className='fa fa-send'></i> </button>
                                 <a class=" btn-sm btn btn-default contenedor" href={item.url_qr} target="_blank"><span className='mostrarEnHover'>Scanear</span> <i className='fa fa-link'></i> </a>
                                 <button class=" btn-sm btn btn-default contenedor" onClick={() => eliminarcuenta(item.id)}><span className='mostrarEnHover'>Borrar</span>  <i className='fa fa-trash'></i> </button>
-                                <button class=" btn-sm btn btn-default contenedor" onClick={() => ImportarContactos(item.id)}> <span className='mostrarEnHover'>Importar</span> <i className='fa fa-paperclip'></i> </button>
+                                <button class=" btn-sm btn btn-default contenedor" onClick={() => console.log(item.id)}> <span className='mostrarEnHover'>Importar</span> <i className='fa fa-paperclip'></i> </button>
                                 <button class=" btn-sm btn btn-default contenedor" onClick={() => ObtenerlistaContactos(item)}><span className='mostrarEnHover'>ver contactos</span>  <i className='fa fa-user'></i> </button>
                                 <button className=' btn-sm btn btn-default contenedor' onClick={() => ObtenerMasivos(item)}
 
@@ -256,10 +286,12 @@ const WhatsAppViewmal = () => {
             <thead className="">
                 <tr className="border ">
                     <th  >#</th>
+                    <th className="text-xs text-center">IdMasivo</th>
                     <th className="text-xs text-center">IdCuenta</th>
-                    <th className="text-xs text-center">Número</th>
-                    <th className="text-xs text-center">Nombre</th>
-                    <th className="text-xs text-center">Estado</th>
+                    <th className="text-xs text-center">Mensaje</th>
+                    <th className=" text-xs text-center">fecha_creacion</th>
+                    <th className=' text-xs text-center'>fecha_ultimo_envio</th>
+                    <th className=' text-xs text-center'>estado</th>
                     <th className="text-xs text-center">Link</th>
                 </tr>
             </thead>
@@ -274,14 +306,16 @@ const WhatsAppViewmal = () => {
                     <tr key={index}>
                         <th  >#</th>
                         <td className="text-xs text-center">{item.id}</td>
-                        <td className="text-xs text-center">{item.numero}</td>
-                        <td className="text-xs text-center">{item.nombre}</td>
+                        <td className="text-xs text-center">{item.cuentaId}</td>
+                        <td className="text-xs text-center">{item.mensaje}</td>
+                        <td className='text-xs text-center'>{item.fecha_creacion}</td>
+                        <td className='text-xs text-center'>{item.fecha_ultimo_envio} </td>
                         <td className="text-xs text-center ">{item.estado}</td>
                         <td className="text-xs text-center ">
                             <div class="btn-group" role="group" >
-                                <button class=" btn-sm btn btn-default" onClick={() => console.log(item)}> Masivos <i className='fa fa-send'></i> </button>
-                                <button class=" btn-sm btn btn-default" onClick={() => console.log(item.url_qr)}> <i className='fa fa-link'></i> </button>
-                                <button class=" btn-sm btn btn-default" onClick={() => console.log(item.url_qr)}> <i className='fa fa-trash'></i> </button>
+                                {item.estado == "finalizado" ? "" : <button class=" btn-sm btn btn-default contenedor" onClick={() => ImportarContactos(item)}><span className='mostrarEnHover'> Importar contactos  Masivos</span>  <i className='fa fa-send'></i> </button>}
+                                <button class=" btn-sm btn btn-default contenedor d-none" onClick={() => console.log(item.url_qr)}> <i className='fa fa-link'></i> </button>
+                                <button class=" btn-sm btn btn-default contenedor" onClick={() => BorrarMasivos(item.id)}> <i className='fa fa-trash'></i> </button>
                             </div>
                         </td>
                     </tr>
@@ -360,8 +394,12 @@ const WhatsAppViewmal = () => {
                         var fileInput = this.$content.find('#fileToUpload')[0];
                         var selectedFile = fileInput.files[0];
                         console.log('File Selected:', selectedFile);
-                        Imporcontactos(item, selectedFile).then(ouput => {
-                            $.alert(JSON.stringify(ouput))
+                        Imporcontactos(item.id, item.cuentaId, selectedFile).then(ouput => {
+                           // { "status": 200, "message": "Contactos importados correctamente" }
+                            if (ouput.status == 200) {
+                                $.alert(ouput.message)
+                            }
+                            return true
                         }).catch(err => {
                             $.alert("Error al importar los contactos" + err)
                         })
@@ -487,7 +525,7 @@ const WhatsAppViewmal = () => {
                                 <p>Cuenta: {cuentaId.nombre}</p>
                             </div>
                             {masivos.length > 0 ? <TablasViwe
-                                number={5}
+                                number={7}
                                 thead={theadMasivos}
                                 showDatos={ShowFoderMasivos}
                                 Titel={""}

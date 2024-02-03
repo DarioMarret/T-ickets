@@ -184,7 +184,7 @@ export default function ModalFacilitoView() {
                                                             fontWeight: "bold"
                                                         }}
                                                     >
-                                                        {Modalshow.nombre == "ordendepago" ? "$" + Math.round( parseFloat(Modalshow.estado.total).toFixed(2) / 1.07) : '$0.00'}
+                                                        {Modalshow.nombre == "ordendepago" ? "$" +  parseFloat(parseFloat(Modalshow.estado.total)+parseFloat( 0.50)).toFixed(2) : '$0.00'}
                                                     </h5>
                                                 </div>
                                             </div>
@@ -227,7 +227,7 @@ export default function ModalFacilitoView() {
 
                                                 fontWeight: "bold"
                                             }}
-                                        >1.</span>  Indica que vas realizar un pago a la empresa: COMNET - SPEED - T-ICKETS</p>
+                                        >1.</span>  Indica que vas realizar un pago a la empresa: COMNET - SPEED</p>
                                         <p style={{ fontSize: '0.9em' }}>  <span
                                             style={{
 

@@ -69,6 +69,7 @@ import NavbarView from "./Navbarindex/index.js";
 import { ListaPreciosEvent } from "utils/EventosQuery/index.js";
 import { ListarEventosFinalizados } from "utils/EventosQuery/index.js";
 import ModalFirma from "views/Components/MODAL/Modalfirma.js";
+import ModalEfectivofACILITO from "views/Components/MODAL/Modalefectivo";
 const TRACKING_ID = "G-LJN507B5NX";
 const IndexFlas = () => {
   ReactGA.initialize(TRACKING_ID);
@@ -321,6 +322,11 @@ const IndexFlas = () => {
       if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
         let comprapendiente = registro.data.find(f => f.estado_pago == "Pendiente")
         // Modal verifica 
+        if (comprapendiente.forma_pago == "Efectivo") {
+          setspinervi("d-none")
+          $.alert("Tienes una compre pendiente por paga\nPueda Pagar desde la banca Guayaquil empresa comnnet-speed solo con tu cédula ")
+          return
+        }
         succesAlert(e, comprapendiente.id)
         return
       }
@@ -613,7 +619,7 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     Limpiarseleccion()
-   
+
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
@@ -727,6 +733,14 @@ const IndexFlas = () => {
 
     <>
 
+
+      <ModalEfectivofACILITO
+        detene={detenervelocidad}
+        intervalo={intervalo}
+        setDatoToas={setDatoToas}
+        detener={detenervelocidad}
+        comprar={sololimpiarlocal}
+      />
       <NavbarView
         icon={icon}
         setVisible={setVisible}
@@ -1236,7 +1250,7 @@ const IndexFlas = () => {
                                   }}
                                 >
                                   <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                    className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={()=>usedispatch(setModal({ nombre: 'registro', estado: "" }))} >
+                                    className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => usedispatch(setModal({ nombre: 'registro', estado: "" }))} >
                                     Registrate</p>
 
                                 </div>

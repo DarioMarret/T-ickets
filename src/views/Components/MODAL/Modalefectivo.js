@@ -15,8 +15,11 @@ import { PagoRapido } from 'utils/Querycomnet';
 import { bancos } from 'utils/Imgenesutils';
 import ReactGA from 'react-ga';
 let { atencion } = bancos
-const ModalEfectivo = (props) => {
+const ModalEfectivofACILITO = (props) => {
   const { intervalo, detener, detenervelocidad } = props;
+  const {
+    setDatoToas, setrepShow,  comprar, 
+  } = props
   let usedispatch = useDispatch()
   let Modalshow = useSelector((state) => state.SuscritorSlice.modal)
   //console.log(Modalshow)
@@ -129,7 +132,7 @@ const ModalEfectivo = (props) => {
             </button>
           </div>
           <div>
-            <button className=' btn btn-warning rounded-5' onClick={() => hideAlert()} >
+            <button className=' btn btn-warning rounded-5' onClick={() => comnetusernew()} >
               <span style={{
                 fontWeight: "bold"
               }}> Completar Compra</span>
@@ -193,12 +196,12 @@ const ModalEfectivo = (props) => {
   }
   useEffect(() => {
     seTSpiners("d-none")
-  }, [Modalshow.nombre == "modalpago" ? true : false])
+  }, [Modalshow.nombre == "modalpagoFacilito" ? true : false])
   return (
     <>
       {alert}
       <Modal
-        show={Modalshow.nombre == "modalpago" ? true : false}
+        show={Modalshow.nombre == "modalpagoFacilito" ? true : false}
         fullscreen={'md-down'}
       >
         <Modal.Header className='py-3  bg-dark ' >
@@ -278,4 +281,4 @@ const ModalEfectivo = (props) => {
 
 }
 
-export default ModalEfectivo;
+export default ModalEfectivofACILITO;

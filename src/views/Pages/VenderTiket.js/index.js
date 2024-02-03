@@ -57,6 +57,7 @@ import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import EventosView from "../Flasdeticket/Eventosindex";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { verAsientos } from "utils/CarritoLocalStorang";
+import ModalEfectivofACILITO from "views/Components/MODAL/Modalefectivo";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -194,7 +195,7 @@ export default function StoreTickesViews() {
                       Venta: 0, suscritor: susct.users.length
                   })*/
             }
-            else if (data == null&&dataS==null) setEvento([])
+            else if (data == null && dataS == null) setEvento([])
             //else if (  dataS != null) setEvento([...filtroS].sort(sorter))
         } catch (error) {
             console.log(error)
@@ -454,6 +455,14 @@ export default function StoreTickesViews() {
     }, [])
     return (
         <>
+            {/*modalshow.modal.nombre == "modalpagoFacilito" ?
+
+                <ModalEfectivofACILITO
+                    detene={detenervelocidad}
+                    intervalo={intervalo}
+                    detener={detenervelocidad}
+                /> : ""
+            */}
             {modalshow.modal.nombre == "Modallocalida" ?
                 <LocalidadmapViews
                     intervalo={intervalo}

@@ -43,7 +43,12 @@ function ModalDetalle(props) {
         envio: "Portal web",
         direccion: '',
     })
-    const detposito = () => usedispatch(setModal({ nombre: "modalpago", estado: "" }))
+    const detposito = () =>{
+        datosPerson.metodoPago == "Efectivo"?
+            usedispatch(setModal({ nombre: "modalpagoFacilito", estado: "" })):
+            usedispatch(setModal({ nombre: "modalpago", estado: "" }))
+    
+    }
     const handelReporShow = () => usedispatch(setModal({ nombre: 'ModalReporte', estado: '' }))
     const handleDetalleColse = () => usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
 
