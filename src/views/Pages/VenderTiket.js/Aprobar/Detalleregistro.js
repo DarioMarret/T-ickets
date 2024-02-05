@@ -322,7 +322,7 @@ export default function DetalleCompraView() {
                 '<form action="" className="formName">' +
                 '<div className="form-group">' +
                 '<label>Agrege una comentario</label>' +
-                '<textarea className="exampleFormControlTextarea1 form-control" id="exampleFormControlTextarea1" rows="3"></textarea>' +
+                '<textarea className="exampleFormControTextarea1 form-control" id="emControlTextarea1" rows="3"></textarea>' +
                 '</div>' +
                 '</form>',
             typeAnimated: true,
@@ -331,7 +331,8 @@ export default function DetalleCompraView() {
                     text: 'Comentar',
                     btnClass: 'btn-blue',
                     action: function () {
-                        var name = this.$content.find('.exampleFormControlTextarea1').val();
+                        var name = document.getElementById('emControlTextarea1').value()
+                        console.log(name);
                         if (!name) {
                             $.alert('Ingrese un Comentario');
                             return false;
