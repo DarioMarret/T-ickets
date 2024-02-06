@@ -314,15 +314,16 @@ export default function DetalleCompraView() {
     }
     function agregarComentario() {
         let id = nombres.id
+        let number = nombres.cedula
         let id_operador = clienteInfo()
         $.confirm({
             title: 'Observación',
             type: 'green',
             content: '' +
-                '<form action="" className="formName">' +
-                '<div className="form-group">' +
+                '<form action="" class="formName">' +
+                '<div class="form-group">' +
                 '<label>Agrege una comentario</label>' +
-                '<textarea className="exampleFormControTextarea1 form-control" id="emControlTextarea1" rows="3"></textarea>' +
+                '<textarea class="exampleFormControTextarea1 form-control" id="emControlTextarea1" rows="3"></textarea>' +
                 '</div>' +
                 '</form>',
             typeAnimated: true,
@@ -331,20 +332,47 @@ export default function DetalleCompraView() {
                     text: 'Comentar',
                     btnClass: 'btn-blue',
                     action: function () {
-                        var name = document.getElementById('emControlTextarea1').value()
-                        console.log(name);
-                        if (!name) {
+                        var name = document.getElementById('emControlTextarea1')
+                        console.log(name.value);
+                        if (!name.value) {
                             $.alert('Ingrese un Comentario');
                             return false;
                         }
                         ComentarioRegistro({
                             "id_registro": id,
                             "id_operador": id_operador.id,
-                            "comentario": name
+                            "comentario": name.value
                         }).then(mensage => {
                             if (mensage.success) {
                                 console.log(mensage)
-                                history.goBack()
+                                buscarcliente({
+                                    "cedula": !isNaN(number) ? number.trim() : '',
+                                    "email":  ''
+                                }).then(oupt => {
+                                    //console.log(informacion, oupt)
+                                    $("#search").removeClass("d-none")
+                                    if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
+                                        $('#cedulac').val("")
+                                        sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
+                                        history.push("/admin/suscritor/" + oupt.data.id + "")
+                                        /*setDausuario({
+                                          nombreCompleto: oupt.data.nombreCompleto,
+                                          ciudad: oupt.data.direccion,
+                                          email: oupt.data.email,
+                                          id: oupt.data.cedula
+                                        })*/
+                                    }
+                                    else {
+
+                                        usedispatch(setToastes({
+                                            show: true,
+                                            message: 'Para ceder un ticket el usuario debe estar registrado',
+                                            color: 'bg-danger', estado: 'Usuaario no encontraron'
+                                        }))
+                                    }
+                                
+                                })
+                                //history.goBack()
                             }
                             console.log(mensage)
                         }).catch(err => {

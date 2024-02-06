@@ -469,7 +469,7 @@ export default function AprobarView() {
             return cumpleRangoFecha && cumpleNombre;
         });*/
         return array.filter((element) => {
-            const fechaElemento = new Date(element.fechaCreacion);
+            const fechaElemento = new Date(element.fechaCreacion.split(" ")[0]);
             const cumpleRangoFecha = (!fechaInicio || fechaElemento >= new Date(fechaInicio)) &&
                 (!fechaFin || fechaElemento <= new Date(fechaFin));
             const cumpleNombre = !nombre || element.concierto === nombre;
