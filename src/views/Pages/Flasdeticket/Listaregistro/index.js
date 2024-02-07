@@ -182,6 +182,8 @@ export default function ListaderegistroView(props) {
                                             >
                                                 <i className="fa fa-print" > </i>Firmar voucher
                                             </a> : ""
+                                    
+                                        
 
                                 }
                                 {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ?

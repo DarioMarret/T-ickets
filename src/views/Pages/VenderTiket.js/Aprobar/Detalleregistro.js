@@ -402,10 +402,10 @@ export default function DetalleCompraView() {
             title: 'Aptualizar Observación',
             type: 'green',
             content: '' +
-                '<form action="" className="formName">' +
-                '<div className="form-group">' +
+                '<form action="" class="formName">' +
+                '<div class="form-group">' +
                 '<label>Editar comentario</label>' +
-                '<textarea className="editarcoment form-control" id="exampleFormControlTextarea1" rows="3"></textarea>' +
+                '<textarea class="editarcoment form-control" id="exampleFormControlTextarea1" rows="3"></textarea>' +
                 '</div>' +
                 '</form>',
             typeAnimated: true,
@@ -1200,10 +1200,10 @@ export default function DetalleCompraView() {
         $.confirm({
             title: 'Comprobante o lote!',
             content: '' +
-                '<form action="" className="formName">' +
-                '<div className="form-group">' +
+                '<form action="" class="formName">' +
+                '<div class="form-group">' +
                 '<label>Ingrese el numero del comprobante</label>' +
-                '<input type="text" placeholder="numero" className="name form-control" required />' +
+                '<input type="text" placeholder="numero" class="name form-control" required />' +
                 '</div>' +
                 '</form>',
             buttons: {
@@ -1359,7 +1359,7 @@ export default function DetalleCompraView() {
                                                     </button>
                                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a className="dropdown-item" onClick={() => voucherinvalido(1)}>Aprobar</a>
-                                                        <a className="dropdown-item" onClick={() => voucherinvalido("")}>Anular firma</a>
+                                                        <a className="dropdown-item" onClick={() => voucherinvalido(null)}>Anular firma</a>
                                                     </div>
                                                 </div> : ""}
 

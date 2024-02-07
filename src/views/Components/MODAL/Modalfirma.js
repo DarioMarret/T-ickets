@@ -161,7 +161,7 @@ export default function ModalFirma() {
         const jpgDims = image.scale(0.5)
         console.log(image, imageBytes)
         firstPage.drawImage(image, {
-            x: 110,
+            x: 114,
             y: 5,
             width: width / 3,
             height: height / 10,

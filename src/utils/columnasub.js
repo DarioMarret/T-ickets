@@ -243,11 +243,20 @@ export const listaRegistro = [
         accessorKey: "estado_pago",
         header: "Estado",
         Cell: ({ cell }) => (
-            (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
-                (cell.row.original.id_espacio_localida == 0) ? <Badge bg={"warning"}>
-                    Por revisar</Badge> : <Badge bg={"warning"}>
-                    Sin firmar</Badge> : <Badge bg={color[cell.row.original.estado_pago]}>
-                    {cell.row.original.estado_pago}</Badge>
+            //console.log(cell.row.original.estado_pago)
+            (cell.row.original.forma_pago == "Tarjeta") && (cell.row.original.estado_pago == "Expirado" || cell.row.original.estado_pago == "Pendiente") ?
+                <Badge bg={color[cell.row.original.estado_pago]}>
+                    {cell.row.original.estado_pago}</Badge> :
+                (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
+                    (cell.row.original.id_espacio_localida == 0) ?
+                        (cell.row.original.estado_pago == "Expirado") ?
+                            <Badge bg={color[cell.row.original.estado_pago]}>
+                                {cell.row.original.estado_pago}</Badge>
+                            :
+                            <Badge bg={"secondary"}>
+                                Por revisar</Badge> : <Badge bg={"warning"}>
+                            Sin Firmar</Badge> : <Badge bg={color[cell.row.original.estado_pago]}>
+                        {cell.row.original.estado_pago}</Badge>
         ),
         size: 50
     },
@@ -308,17 +317,20 @@ export const listaRegistrosuscri = [
     {
         accessorKey: "estado_pago",
         header: "Estado",
-        Cell: ({ cell }) => (
+        Cell: ({ cell }) => ((cell.row.original.forma_pago == "Tarjeta") && (cell.row.original.estado_pago == "Expirado" || cell.row.original.estado_pago == "Pendiente") ?
+            <Badge bg={color[cell.row.original.estado_pago]}>
+                {cell.row.original.estado_pago}</Badge> :
             (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
-                (cell.row.original.id_espacio_localida == 0) ? 
-                <Badge bg={"warning"}>
-                    Por revisar</Badge> 
-                    : <Badge bg={"warning"}>
-                    Sin firmar</Badge> 
-                    : <Badge bg={color[cell.row.original.estado_pago]}>
+                (cell.row.original.id_espacio_localida == 0) ?
+                    (cell.row.original.estado_pago == "Expirado") ?
+                        <Badge bg={color[cell.row.original.estado_pago]}>
+                            {cell.row.original.estado_pago}</Badge>
+                        :
+                        <Badge bg={"secondary"}>
+                            Por revisar</Badge> : <Badge bg={"warning"}>
+                        Sin Firmar</Badge> : <Badge bg={color[cell.row.original.estado_pago]}>
                     {cell.row.original.estado_pago}</Badge>
-        ),
-        size: 50
+        ), size: 50
     },
 
 
@@ -369,11 +381,18 @@ export const listaRegistrototal = [
     }, {
         accessorKey: "estado_pago",
         header: "Estado",
-        Cell: ({ cell }) => (
+        Cell: ({ cell }) => ((cell.row.original.forma_pago == "Tarjeta") && (cell.row.original.estado_pago == "Expirado" || cell.row.original.estado_pago == "Pendiente") ?
+            <Badge bg={color[cell.row.original.estado_pago]}>
+                {cell.row.original.estado_pago}</Badge> :
             (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
-                (cell.row.original.id_espacio_localida == 0) ? <Badge bg={"warning"}>
-                    Por revisar</Badge> : <Badge bg={"warning"}>
-                    Sin firmar</Badge> : <Badge bg={color[cell.row.original.estado_pago]}>
+                (cell.row.original.id_espacio_localida == 0) ?
+                    (cell.row.original.estado_pago == "Expirado") ?
+                        <Badge bg={color[cell.row.original.estado_pago]}>
+                            {cell.row.original.estado_pago}</Badge>
+                        :
+                        <Badge bg={"secondary"}>
+                            Por revisar</Badge> : <Badge bg={"warning"}>
+                        Sin Firmar</Badge> : <Badge bg={color[cell.row.original.estado_pago]}>
                     {cell.row.original.estado_pago}</Badge>
         ),
         size: 50
