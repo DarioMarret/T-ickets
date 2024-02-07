@@ -651,8 +651,11 @@ export default function AprobarView() {
             <div className=" container row"  >
             </div>
             {tiketslist.length > 0 ? <div className="container d-flex flex-wrap">
-                {tiketslist.filter(e => e.estado_pago == "Pagado").length > 0 ? <ExportToExcel apiData={filtrarArray(datos.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).map(f => {
-                    return {
+                {tiketslist.filter(e => e.estado_pago == "Pagado").length > 0 ? <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).map(f => {
+                    const texto = f.comentarios.reduce((acumulador, elemento) => {
+                        return acumulador + ' ' + elemento.comentario;
+                    }, '');
+                   return {
                         ID_Registro: f.id,
                         ID_USUARIO: f.id_usuario,
                         EVENTO: f.info_concierto[0].nombreConcierto,
@@ -678,7 +681,7 @@ export default function AprobarView() {
                         Concili_Forma: f.conciliacion.length > 0 ? f.conciliacion[0].forma_pago : "",
                         cuenta: f.conciliacion.length > 0 ? f.conciliacion[0].cuenta : "",
                         comentario: (f.comentarios.length > 0),
-                        asuntos: JSON.stringify(f.comentarios)
+                       asuntos: f.comentarios.length > 0 ? texto:""
                     }
                 })} fileName={"Todos Pagados"} label={"Pagados"} />
                     : ""
