@@ -752,19 +752,19 @@ const ModalCarritoView = (prop) => {
                                         height: "auto"
                                     }}>
                                         {modalshow.nombre == "ModalCarritov" ?
-                                            (sessionStorage.getItem("eventoid") == "5UY4DT")?
-                                                
-                                                    precios.precios.sort((a, b) => (a.precio_normal > b.precio_normal ? 1 : -1) && (a.id > b.id ? 1 : -1)).map((elm, i) => {
-                                                        return (
-                                                            <div className="" onClick={() => Abririlocalfirt(elm)} key={i}  >
-                                                                <SvgselectView
-                                                                    text={precios.mapa} />
-                                                            </div>
-                                                        )
-                                                    })
-                                            :
-                                            <SvgselectView
-                                                text={precios.mapa} />
+                                            (sessionStorage.getItem("eventoid") == "5UY4DT") ?
+
+                                                precios.precios.sort((a, b) => (a.precio_normal > b.precio_normal ? 1 : -1) && (a.id > b.id ? 1 : -1)).map((elm, i) => {
+                                                    return (
+                                                        <div className="" onClick={() => Abririlocalfirt(elm)} key={i}  >
+                                                            <SvgselectView
+                                                                text={precios.mapa} />
+                                                        </div>
+                                                    )
+                                                })
+                                                :
+                                                <SvgselectView
+                                                    text={precios.mapa} />
                                             : ''}
                                     </div>
                                 </div>
@@ -830,10 +830,10 @@ const ModalCarritoView = (prop) => {
                                         <option value={"Transferencia"}>
                                             Transferencia
                                         </option>
-                                        <option value={"Efectivo-Local"}>
+                                        {clienteInfo().perfil =="vendedores"?"":<option value={"Efectivo-Local"}>
                                             Efectivo-Local
-                                        </option>
-                                        <option className="d-none"  value={"Efectivo"}>
+                                        </option>}
+                                        <option className="d-none" value={"Efectivo"}>
                                             Recaidacion Terceros
                                         </option>
                                         <option className="d-none" value={"Tarjeta-Local"}>

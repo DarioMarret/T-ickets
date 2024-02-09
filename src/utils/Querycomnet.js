@@ -56,7 +56,7 @@ export const PagoRapido = async (transaccion) => {
         "transaccion": transaccion
     }
 
-     console.log(datos, concierto)
+    console.log(datos, concierto)
     try {
 
         console.log(datos)
@@ -149,9 +149,11 @@ export const ConsolidaBoleto = async () => {
         return error
     }
 }
-export const Pagofisico = async () => {
+export const Contactos_Boletos = async (parmas) => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/pagosefectivi", {
+        let { data } = await axios.post("https://api.t-ickets.com/mikroti/Boleteria/Contactos", {
+            "evento": parmas
+        }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

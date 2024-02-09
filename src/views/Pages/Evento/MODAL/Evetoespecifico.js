@@ -32,6 +32,7 @@ import { Listarlocalidadid } from "utils/Querypanel";
 import { ListarLocalidad } from "utils/LocalidadesQuery";
 import { EventosActivos } from "utils/Querypanel";
 import { Boleteria_Boletos, Boleteria_Nombre, Boleteria_canje } from "utils/EventosQuery/index";
+import { Contactos_Boletos } from "utils/Querycomnet";
 require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
@@ -310,6 +311,40 @@ const EventoEspecifico = () => {
             </SweetAlert>
         );
     };
+    function ObtenerContactosquecompraron() {
+
+        Contactos_Boletos(evento.nombreConcierto).then(salida => {
+            console.log(salida)
+            if (salida.estado && salida.data.length) {
+                let nuevos = salida.data.filter(e => e.movil).map(Element => {
+
+                    let nuevos = formatearNumero("" + Element["movil"])
+                    return { "contactos": nuevos }
+                }).filter(e => e.contactos)
+                var myFile = evento.codigoEvento+"Contactos.xlsx";
+                var myWorkSheet = XLSX.utils.json_to_sheet(nuevos);
+                var myWorkBook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "myWorkSheet");
+                XLSX.writeFile(myWorkBook, myFile);
+                //console.log(nuevos)
+
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+        
+    }
+    function formatearNumero(numero) {
+        const regex = /^\+?593\d{9}$/;
+        let dato = numero.trim()
+        // Comprobar si el número coincide con la expresión regular
+        if (regex.test(dato)) {
+            return dato.replace("+", "")
+        }
+        else if (dato.length === 9) {
+            return "593" + dato
+        } else return undefined;
+    }
     let color = {
         "ACTIVO": "success",
         "PROCESO": "secondary",
@@ -332,11 +367,19 @@ const EventoEspecifico = () => {
             />
             {alert}
             <div className="d-flex mb-1 justify-content-end align-items-end" >
-                <button className="btn btn-primary"
-                    onClick={() => usehistory.push("/admin/Evento")} >
-                    <i className="fa fa-arrow-left" ></i>
-                    Regresar
-                </button>
+                <div>
+                    <button className="btn btn-primary" onClick={ObtenerContactosquecompraron}>
+                        <i className="fa fa-user" ></i>
+                        Importar Contactos
+                    </button>
+                </div>
+                <div className="px-2">
+                    <button className="btn btn-primary"
+                        onClick={() => usehistory.push("/admin/Evento")} >
+                        <i className="fa fa-arrow-left" ></i>
+                        Regresar
+                    </button>
+                </div>
 
             </div>
             <div className="d-flex  justify-content-between  ">
@@ -367,7 +410,7 @@ const EventoEspecifico = () => {
                                         <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
                                         <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
                                         <div className="" >
-                                        <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => setShow(true)} >Editar</button>
+                                            <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => setShow(true)} >Editar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -654,7 +697,7 @@ const EventoEspecifico = () => {
                                 <thead>
                                     <tr>
 
-                                        
+
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">Localidad</th>
                                         <th scope="col">Estado</th>
@@ -734,7 +777,7 @@ const EventoEspecifico = () => {
                                             )
                                         })
                                         : ""}
-                                
+
                                 </tbody>
                             </table>
                         </div>

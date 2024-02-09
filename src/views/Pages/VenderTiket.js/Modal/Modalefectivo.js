@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from "react-bootstrap";
-import { Salircliente } from 'utils/constantes';
-import { getVerTienda, GetValores, GetMetodo } from 'utils/CarritoLocalStorang';
-import { ReportarEfectivoCompra, EnviarmensajeWhastapp } from 'utils/Query';
+import {  GetValores, GetMetodo } from 'utils/CarritoLocalStorang';
 import { LimpiarLocalStore, Limpiarseleccion } from 'utils/CarritoLocalStorang';
 import { clearMapa } from 'StoreRedux/Slice/mapaLocalSlice';
 import { borrarseleccion } from 'StoreRedux/Slice/sillasSlice';
@@ -10,18 +8,9 @@ import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import jsPDF from 'jspdf';
-import moment from 'moment';
-import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
-import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
-import { Pagofisico } from 'utils/Querycomnet';
-import { useHistory } from 'react-router';
 import { PagoRapido } from 'utils/Querycomnet';
 
 const ModalEfectivo = () => {
-
-    let user = clienteInfo()
-    let history = useHistory()
     let usedispatch = useDispatch()
     const [suelto, SetSuelto] = useState(0)
     const [spiner,setSpiner]= useState(false)
@@ -29,12 +18,9 @@ const ModalEfectivo = () => {
     const [alert, setAlert] = useState(null)
     const [inputValue, setInputValue] = useState('');
     const [ticktes,setTickets]=useState([])
-
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
-       // console.log('Contenido cambiado:', event.target.value);
     };
-
     const handleKeyPress = (event) => {
         let arrgelo = ticktes
         if (event.key === 'Enter') {
@@ -47,8 +33,6 @@ const ModalEfectivo = () => {
                     setTickets(arrgelo)
                 }
             }
-           //console.log('Presionaste la tecla Enter');
-           // Aquí puedes agregar la lógica que deseas realizar cuando se presiona Enter
         }
     };
     function borrar() {
@@ -57,9 +41,6 @@ const ModalEfectivo = () => {
         usedispatch(setModal({ nombre: "", estado: "" }))
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
-        // sessionStorage.removeItem("Eventolocalidad")
-        // sessionStorage.removeItem("DatoCliente")
-        // sessionStorage.removeItem("DatosUsuarioLocalStorang")
         hideAlert()
     }
     const succesAlert = () => {
@@ -76,7 +57,6 @@ const ModalEfectivo = () => {
                 confirmBtnText="Si, Borrar"
                 cancelBtnText="Cancelar"
                 showCancel
-
                 closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
             >
                 Desea borrar los datos y continuar
@@ -86,7 +66,6 @@ const ModalEfectivo = () => {
     const hideAlert = () => {
         setAlert(null)
     }
-
     function onchange(e) {
         let total = parseFloat(GetValores().total) 
         let valor = parseFloat(total) - parseFloat(e.value)
@@ -101,16 +80,11 @@ const ModalEfectivo = () => {
             if (ouput.success) {
                 usedispatch(setModal({ nombre: "", estado: "" }))
                 usedispatch(setToastes({ show: true, message: 'Registro generado exitosamente verifica los Boletos como canjeados', color: 'bg-success', estado: "compra guardada" }))
-                //history.push("/admin/Aprobar/" + user.cedula)
                 setSpiner(false)
-                //history.push("/admin/suscritor/" + user.id + "")
-                //usedispatch(setModal())
-                // usedispatch(setModal({nombre:"",estado:""}))
             }
             else {
                 usedispatch(setToastes({ show: true, message: 'Orden de pago no generado', color: 'bg-danger', estado: "error" }))
                 setSpiner(false)
-                // usedispatch(setModal({ nombre: "", estado: "" }))
             }
         }).catch(err => {
             setSpiner(false)

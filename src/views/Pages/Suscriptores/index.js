@@ -18,6 +18,7 @@ import ModalTickte from "./ModalSuscritor/agregarTickte";
 import { formatearNumero } from "utils/Emails";
 import WhastappWiev from "views/Components/MODAL/ModalWhast";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { Contactos_Boletos } from "utils/Querycomnet";
 
 const SuscritorViews = () => {
   let usehistory = useHistory()
@@ -134,9 +135,61 @@ const SuscritorViews = () => {
     //data = { suscritores } 
 
   }, [])
-  function enviarMensaje() {
-    let telefonos = suscritores.map(suscritores => { return formatearNumero(suscritores.movil) })
+
+  function ExportatContactos() {
+    $.confirm({
+      theme: 'supervan',
+      closeIcon: true,
+      title: 'Exportar',
+      content: 'Desea Descargar  los contactos?',
+      type: 'red',
+      buttons: {
+        aproba: {
+          text: "Aceptar",
+          btnClass: 'btn-success',
+          action: function () {
+            Contactos_Boletos("suscriptor").then(salida => {
+              console.log(salida)
+              if (salida.estado && salida.data.length) {
+                let nuevos = salida.data.filter(e => e.movil).map(Element => {
+                  let nuevos = formatearNumero("" + Element["movil"])
+                  return { "contactos": nuevos }
+                }).filter(e => e.contactos)
+                console.log(nuevos)
+                var myFile = "Contactos.xlsx";
+                var myWorkSheet = XLSX.utils.json_to_sheet(nuevos);
+                var myWorkBook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "myWorkSheet");
+                XLSX.writeFile(myWorkBook, myFile);
+                console.log(nuevos)
+
+              }
+            }).catch(err => {
+
+            })
+          }
+        },
+        rechaza: {
+          text: "Rechazar",
+          btnClass: 'btn-success',
+          action: function () { }
+        }
+      }
+    });
+
   }
+  function formatearNumero(numero) {
+    const regex = /^\+?593\d{9}$/;
+    let dato = numero.trim()
+    // Comprobar si el número coincide con la expresión regular
+    if (regex.test(dato)) {
+      return dato.replace("+", "")
+    }
+    else if (dato.length === 9) {
+      return "593" + dato
+    } else return undefined;
+  }
+
   const handleChange = (event, value) => {
 
     //  console.log(value,event)
@@ -273,7 +326,9 @@ const SuscritorViews = () => {
         <div className="col-md-12 ">
           <button className="btn btn-success" onClick={regsitronew}><i className="mr-2 fa fa-plus"></i> Nuevo Suscritores</button>
           {clienteInfo().perfil == "admin" ? <button className="btn btn-success mx-1" onClick={masivosNew} >Enviar masivo desde {paginasu.init} hasta {paginasu.size + paginasu.init} </button> : ""}
-          <br /><br />
+         
+          <button className=" btn btn-success" onClick={ExportatContactos}><i className=" fa fa-user"></i> Exportar  </button>
+          <br></br>
           <div className=" container-fluid m-auto">
             <Pagination
               count={Math.round(paginasu.total / 500)}

@@ -576,6 +576,7 @@ export default function DetalleCompraView() {
         return info
     }
     useEffect(() => {
+       ///console.log( clienteInfo())
         ListaPrecios()
         let concer = nombres.info_concierto
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))

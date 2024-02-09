@@ -29,6 +29,7 @@ import moment from "moment";
 import { setTicket } from "StoreRedux/Slice/SuscritorSlice";
 import { setlisticket } from "StoreRedux/Slice/SuscritorSlice";
 import { ExampleSlideout, Slideout } from "views/Components/slider";
+import { Contactos_Boletos } from "utils/Querycomnet";
 moment.defaultFormat = "MM-DD-YYYY ";
 
 export const PreciosStore = () => {
@@ -51,7 +52,7 @@ export default function AprobarView() {
     let datas = useSelector(state => state.SuscritorSlice.data)
     let tiketslist = useSelector(state => state.SuscritorSlice.compras)
     const [alert, setAlert] = useState("")
-    const [metodos,setMetodo]=useState("")
+    const [metodos, setMetodo] = useState("")
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
         return (
@@ -321,7 +322,7 @@ export default function AprobarView() {
     const [datas1, setDatas] = useState([])
     const [dtos, setDts] = useState([])
     const sorter = (a, b) => new Date(a.fechaCreacion) < new Date(b.fechaCreacion) ? 1 : -1;
-    
+
     const Deliminarregistro = (parms) => {
         $.confirm({
             title: 'Deseas eliminar Este registro de compra ',
@@ -461,13 +462,6 @@ export default function AprobarView() {
         is3D: false,
     };
     function filtrarArray(array, fechaInicio, fechaFin, nombre, forma_pago) {
-       /* return array.filter((element) => {
-            const fechaElemento = new Date(element.fechaCreacion);
-            const cumpleRangoFecha = (!fechaInicio || fechaElemento >= new Date(fechaInicio)) &&
-                (!fechaFin || fechaElemento <= new Date(fechaFin));
-            const cumpleNombre = !nombre || element.concierto === nombre;
-            return cumpleRangoFecha && cumpleNombre;
-        });*/
         return array.filter((element) => {
             const fechaElemento = new Date(element.fechaCreacion.split(" ")[0]);
             const cumpleRangoFecha = (!fechaInicio || fechaElemento >= new Date(fechaInicio)) &&
@@ -476,22 +470,67 @@ export default function AprobarView() {
             const cumpleFormaPago = !forma_pago || element.forma_pago === forma_pago;
             return cumpleRangoFecha && cumpleNombre && cumpleFormaPago;
         });
-    
-    }
-    /**
-     * ...array.filter(subarray => {
-            const cumpleNombre = !nombre || subarray[1] === nombre;
-            const cumpleFormaPago = !forma_pago || subarray[<índice_de_forma_pago>] === forma_pago; // Reemplaza <índice_de_forma_pago> con el índice real
 
-            return cumpleNombre && cumpleFormaPago;
-        })
-     */
+    }
     function filtrarPorNombre(array, nombre) {
         console.log(array)
         if (!nombre) {
             return array;
         }
         return [["Localida", "evento", "ganancias"], ...array.filter(subarray => subarray[1] === nombre)];
+    }
+    function ExportatContactos() {
+        $.confirm({
+            theme: 'supervan',
+            closeIcon: true,
+            title: 'Exportar',
+            content: 'Desea Descargar  los contactos?',
+            type: 'red',
+            buttons: {
+                aproba: {
+                    text: "Aceptar",
+                    btnClass: 'btn-success',
+                    action: function () {
+                        Contactos_Boletos(alert).then(salida => {
+                            console.log(salida)
+                            if (salida.estado && salida.data.length) {
+                                let nuevos = salida.data.filter(e => e.movil).map(Element => {
+                                    let nuevos = formatearNumero("" + Element["movil"])
+                                    return { "contactos": nuevos }
+                                }).filter(e => e.contactos)
+                                console.log(nuevos)
+                                var myFile = alert + "Contactos.xlsx";
+                                var myWorkSheet = XLSX.utils.json_to_sheet(nuevos);
+                                var myWorkBook = XLSX.utils.book_new();
+                                XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "myWorkSheet");
+                                XLSX.writeFile(myWorkBook, myFile);
+                                console.log(nuevos)
+
+                            }
+                        }).catch(err => {
+
+                        })
+                    }
+                },
+                rechaza: {
+                    text: "Rechazar",
+                    btnClass: 'btn-success',
+                    action: function () { }
+                }
+            }
+        });
+
+    }
+    function formatearNumero(numero) {
+        const regex = /^\+?593\d{9}$/;
+        let dato = numero.trim()
+        // Comprobar si el número coincide con la expresión regular
+        if (regex.test(dato)) {
+            return dato.replace("+", "")
+        }
+        else if (dato.length === 9) {
+            return "593" + dato
+        } else return undefined;
     }
     const locale = 'es'
     const label = {
@@ -547,7 +586,7 @@ export default function AprobarView() {
                                     onChange={(e) => setAlert(e.target.value)}
                                     className=" form form-control"
                                     value={alert}
-                                    >
+                                >
                                     <option className=" form-label" value={""}>
                                         Todos
                                     </option>
@@ -567,13 +606,20 @@ export default function AprobarView() {
                                 </select>
 
                             </div>
+                            {alert == "" ? "" :
+                                <div className="col-12 mb-2">
+                                    <label className=" form-label">Importar todos los contactos de {alert}</label>
+                                    <button className="  btn btn-sm btn-success" onClick={ExportatContactos}  >
+                                        <i className=" fa fa-file-excel"></i> Exportar Contactos
+                                    </button>
+                                </div>}
                             <div className=" col-12 mb-2">
                                 <label className=" form-label">Metodos de Pagos</label>
                                 <select
                                     onChange={(e) => setMetodo(e.target.value)}
                                     className=" form form-control"
                                     value={metodos}
-                                    >
+                                >
                                     <option className=" form-label" value={""}>
                                         Todos
                                     </option>
@@ -581,7 +627,7 @@ export default function AprobarView() {
                                         Tarjeta
                                     </option>
                                     <option className=" form-label" value={"Efectivo-Local"}>
-                                        Efectivo-Local	
+                                        Efectivo-Local
                                     </option>
                                     <option className=" form-label" value={"Deposito"}>
                                         Deposito
@@ -655,9 +701,10 @@ export default function AprobarView() {
                     const texto = f.comentarios.reduce((acumulador, elemento) => {
                         return acumulador + ' ' + elemento.comentario;
                     }, '');
-                   return {
+                    return {
                         ID_Registro: f.id,
                         ID_USUARIO: f.id_usuario,
+                        ID_Operador: f.id_operador,
                         EVENTO: f.info_concierto[0].nombreConcierto,
                         CEDULA: f.cedula,
                         METODO: f.forma_pago,
@@ -681,7 +728,7 @@ export default function AprobarView() {
                         Concili_Forma: f.conciliacion.length > 0 ? f.conciliacion[0].forma_pago : "",
                         cuenta: f.conciliacion.length > 0 ? f.conciliacion[0].cuenta : "",
                         comentario: (f.comentarios.length > 0),
-                       asuntos: f.comentarios.length > 0 ? texto:""
+                        asuntos: f.comentarios.length > 0 ? texto : ""
                     }
                 })} fileName={"Todos Pagados"} label={"Pagados"} />
                     : ""

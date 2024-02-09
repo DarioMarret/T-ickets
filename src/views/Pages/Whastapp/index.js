@@ -1,6 +1,6 @@
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { useEffect, useState } from 'react';
-import { DeleteQrCuenta, EliminarMasivo, Imporcontactos, ListarMasivos, NuevaConexiopnQR, ObtenerContactos, ProgramarQR, getQrLista, postQRGenerado } from './utils/index';
+import { DeleteQrCuenta, EliminarContacto, EliminarMasivo, Imporcontactos, ListarMasivos, NuevaConexiopnQR, ObtenerContactos, ProgramarQR, getQrLista, postQRGenerado } from './utils/index';
 import TablasViwe from 'layouts/Tablasdoc';
 import { Modal } from 'react-bootstrap';
 import { Obtenerlinkimagen } from 'utils/Querypanel';
@@ -16,7 +16,6 @@ const WhatsAppViewmal = () => {
         "cuentaId": "",
         "nombre": ""
     })
-
     let [envios, setEmvios] = useState({
         "cuentaId": "",
         "nombre": "",
@@ -26,26 +25,28 @@ const WhatsAppViewmal = () => {
         "fecha_envio": "",
         "hora_envio": ""
     })
-
     async function Enviosmasivo() {
-        // console.log(envios)
         let { cuentaId, mensaje, fecha_envio, hora_envio } = envios
         if (!Object.values([cuentaId, mensaje, fecha_envio, hora_envio]).every(e => e)) {
             console.log(envios)
             $.alert("Complete los campos requeridos")
             return
         }
-        console.log(file)
+
         if (file) {
             const mapa = await Obtenerlinkimagen(file)
             if (mapa == null) {
 
             } else {
-                let parms = {
+                let parms = file.type.includes('image') ? {
                     ...envios,
                     "imagen": mapa
+                } : {
+                    ...envios,
+                    "video": mapa
                 }
                 console.log("con imagen ", parms)
+                // return
                 ProgramarQR(parms).then(ouput => {
                     console.log(ouput)
                     setMensaje(false)
@@ -67,9 +68,9 @@ const WhatsAppViewmal = () => {
             });
         }
     }
-    async function BorrarMasivos(e){
+    async function BorrarMasivos(e) {
         $.confirm({
-            title: 'Eliminar Masivo id'+e,
+            title: 'Eliminar Masivo id' + e,
             content: '',
             buttons: {
                 formSubmit: {
@@ -77,13 +78,13 @@ const WhatsAppViewmal = () => {
                     btnClass: 'btn-blue',
                     action: async function () {
                         EliminarMasivo(e).then(ouput => {
-                            if (ouput.status==200){
+                            if (ouput.status == 200) {
                                 ObtenerMasivos(0)
                                 $.alert("Masivo Eliminados")
                             }
                             return true
                         }).catch(err => {
-                            
+
                             return true
                         })
                         return false;
@@ -94,18 +95,54 @@ const WhatsAppViewmal = () => {
                 },
             },
         });
-       
+
     }
     function eliminarcuenta(e) {
-        //return
-        DeleteQrCuenta(e).then(ouput => {
-            console.log(ouput)
-            let nuevo = listaQr.filter(elemen => elemen.id != e)
-            setQrList(nuevo)
-        }).catch(err => {
-            $.alert('Error al Eliminar Cuenta: ' + err);
-        })
+        $.confirm({
+            theme: 'supervan',
+            closeIcon: true,
+            title: 'Borrar',
+            content: 'Desea Borarar Esta cuenta ?',
+            type: 'red',
+            buttons: {
+                aproba: {
+                    text: "Aceptar",
+                    btnClass: 'btn-success',
+                    action: function () {
+                        DeleteQrCuenta(e).then(ouput => {
+                            console.log(ouput)
+                            let nuevo = listaQr.filter(elemen => elemen.id != e)
+                            setQrList(nuevo)
+                            ObtenerContactos(e.id).then(data => {
+                                setContactos([])
+                                if (data.status == 200) {
+                                    console.log(e.id)
+                                    if (data.data.length == 0) return true
+                                    let contactosnumero = data.data.filter(f => f.cuentaId == e)
+                                    contactosnumero.map(async function (elem) {
+                                        try {
+                                            let { data } = await EliminarContacto(elem.id)
+                                            console.log(data)
+                                        } catch (error) {
+                                            console.log(error);
+                                        }
+                                    })
+                                    return
+                                }
+                            })
 
+                        }).catch(err => {
+                            $.alert('Error al Eliminar Cuenta: ' + err);
+                        })
+                    }
+                },
+                rechaza: {
+                    text: "Cancelar",
+                    btnClass: 'btn-success',
+                    action: function () { }
+                }
+            }
+        });
     }
     useEffect(() => {
         getQrLista().then(ouput => {
@@ -118,7 +155,6 @@ const WhatsAppViewmal = () => {
         })
         //ObtenerMasivos(0)
     }, [])
-
     function handleChange(e) {
         setEmvios({
             ...envios,
@@ -160,6 +196,7 @@ const WhatsAppViewmal = () => {
         try {
             if (e.id == 0) {
                 let data = await ObtenerContactos(e.id)
+                setContactos([])
                 if (data.status == 200) {
                     console.log(data)
                     setContactos(data.data)
@@ -171,13 +208,18 @@ const WhatsAppViewmal = () => {
                 return data
             } else {
                 let data = await ObtenerContactos(e.id)
+                setContactos([])
                 if (data.status == 200) {
-                    console.log(data)
-                    setContactos(data.data)
+                    console.log(e.id)
+                    let contactosnumero = data.data.filter(f => f.cuentaId == e.id)
+                    console.log(contactos)
                     setCuenta({
                         "cuentaId": e.cuentaId,
                         "nombre": e.nombre
                     })
+                    if (contactosnumero.length == 0) return setContactos([])
+                    setContactos(contactosnumero)
+                    return
                 }
                 return data
             }
@@ -187,7 +229,6 @@ const WhatsAppViewmal = () => {
         }
     }
     function imegenes(e) {
-        console.log(e.files[0])
         setFiles(e.files[0])
     }
     function QRCode() {
@@ -360,7 +401,6 @@ const WhatsAppViewmal = () => {
             });
         } catch (error) { }
     }
-
     const ShowModal = (item) => {
         console.log(item)
         setEmvios({
@@ -395,7 +435,7 @@ const WhatsAppViewmal = () => {
                         var selectedFile = fileInput.files[0];
                         console.log('File Selected:', selectedFile);
                         Imporcontactos(item.id, item.cuentaId, selectedFile).then(ouput => {
-                           // { "status": 200, "message": "Contactos importados correctamente" }
+                            // { "status": 200, "message": "Contactos importados correctamente" }
                             if (ouput.status == 200) {
                                 $.alert(ouput.message)
                             }
@@ -418,7 +458,6 @@ const WhatsAppViewmal = () => {
     }
     return (
         <div className=' container-fluid'>
-
             <Modal show={show} >
                 <Modal.Body>
                     <div className='row'>
@@ -460,8 +499,8 @@ const WhatsAppViewmal = () => {
                                 className=' form-control' rows={4} cols={30}></textarea>
                         </div>
                         <div className=' form-group'>
-                            <label className=' form-label' >Imagen </label>
-                            <input className=' form-control' accept="image/*" type="file"
+                            <label className=' form-label' >Imagen o video </label>
+                            <input className=' form-control' accept="image/*,video/*" type="file"
                                 id='imagen' name='imagen'
                                 onChange={(e) => imegenes(e.target)}
                             ></input>
@@ -480,7 +519,11 @@ const WhatsAppViewmal = () => {
                 <div className="p-3">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Números</button>
+                            <button class="nav-link active" id="home-tab"
+                                data-bs-toggle="tab" data-bs-target="#home"
+                                onClick={() => setContactos([])}
+                                type="button" role="tab" aria-controls="home"
+                                aria-selected="true">Números</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false"

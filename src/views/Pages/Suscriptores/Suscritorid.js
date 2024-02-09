@@ -39,6 +39,7 @@ import { listartecero } from "utils/columnasub";
 import { EliminarTickteTercero } from "utils/TicktesT";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import PdfViewticketApp from "./Pdfwie";
+import CederView from "../Susbcritorpage/Modal/CederView";
 
 export const PreciosStore = () => {
   let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
@@ -307,7 +308,7 @@ const SuscritoridView = () => {
   }
   const [li, setlik] = useState("")
   function generaPDF(row) {
-     console.log(row)
+    console.log(row)
     //window.open("https://tickets.com.ec/", "_blank");
     generaTiketspdf({
       "cedula": row.cedula,
@@ -383,7 +384,7 @@ const SuscritoridView = () => {
       console.log(ouputs)
       if (ouputs.estado) {
         linkcopy(ouputs.link)
-       // window.open(ouputs.link, "_blank");
+        // window.open(ouputs.link, "_blank");
         //usedispatch(setModal({ nombre: 'pdfsshowBingo', Bingo: ouputs.data["Bingo"], estado: ouput.link.replace("flash", "api"), }))
         // setSpiner("d-none")
       }
@@ -431,96 +432,6 @@ const SuscritoridView = () => {
 
 
   }
-  let precio = {
-    1: 21,
-    2: 31,
-    3: 41.5,
-    4: 51.5,
-    5: 82,
-    9: 122,
-    10: 67,
-    11: 36,
-    12: 122,
-    13: 67,
-    14: 36,
-  }
-  let localidades = {
-    1: "General",
-    2: "Preferencia",
-    3: "Butacas",
-    4: "Butacas VIP",
-    5: "Ranchenato BOX",
-    9: "SEN2 KBRN-G",
-    10: "SAUCES BOYZ-G",
-    11: "TODO O NADA-G",
-    12: "SEN2 KBRN-Q",
-    13: "SAUCES BOYZ-Q",
-    14: "TODO-O-NADA-Q",
-  }
-  function LocalidadPrecio(evento, localidad) {
-    if (localidad == 9) {
-      return "SEN2 KBRN Guayaquil"
-    }
-    if (localidad == 10) {
-      return "SAUCES BOYZ Guayaquil"
-    }
-    if (localidad == 11) {
-      return "TODO O NADA Guayaquil"
-    }
-    if (localidad == 12) {
-      return "SEN2 KBRN Quito"
-    }
-    if (localidad == 13) {
-      return "SAUCES BOYZ Quito"
-    }
-    if (localidad == 14) {
-      return "TODO-O-NADA Quito"
-    }
-    return PreciosStore().filter(f => f.id == evento)[0].localidad
-  }
-  function ListarPrecio(evento, localidad) {
-    if (localidad == 9) {
-      return precio[9]
-    }
-    if (localidad == 10) {
-      return precio[10]
-    }
-    if (localidad == 11) {
-      return precio[11]
-    }
-    if (localidad == 12) {
-      return precio[12]
-    }
-    if (localidad == 13) {
-      return precio[13]
-    }
-    if (localidad == 14) {
-      return precio[14]
-    }
-    return PreciosStore().filter(f => f.id == evento)[0].precio_normal
-  }
-  function ListarComision(evento, localidad) {
-    if (localidad == 9) {
-      return 2
-    }
-    if (localidad == 10) {
-      return 2
-    }
-    if (localidad == 11) {
-      return 1
-    }
-    if (localidad == 12) {
-      return 2
-    }
-    if (localidad == 13) {
-      return 2
-    }
-    if (localidad == 14) {
-      return 1
-    }
-    return parseFloat(PreciosStore().filter(f => f.id == evento)[0].comision_boleto)
-  }
-  const [global, setGlobal] = useState([])
   const Listarfaci = async (parms) => {
     try {
       let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/get_link_external_tickets", parms, {
@@ -573,13 +484,42 @@ const SuscritoridView = () => {
   }, []);
 
 
+  const abrirceder = (e) => {
+    usedispatch(setModal({ nombre: 'ceder', estado: e }))
+    hideAlert()
+  }
 
+  const successAlertCeder = (e) => {
+    setAlert(
+      <SweetAlert
+        info
+        style={{ display: "block", marginTop: "-100px" }}
+        title={"Estas Seguro?"}
+        onConfirm={() => abrirceder(e)}
+        onCancel={() => hideAlert()}
+        confirmBtnBsStyle="success"
+        cancelBtnBsStyle="danger"
+        confirmBtnText="Si, Ceder"
+        cancelBtnText="Cancelar"
+
+        closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+        showCancel
+      >
+        <div className="d-flex flex-row justify-content-center text-center">
+          <div className="d-flex">
+            <h4 style={{ fontSize: '0.9em' }} >
+              Desea ceder este boleto a otro usuario</h4>
+          </div>
+        </div>
+      </SweetAlert>
+    );
+  };
   return (
     <>
       {alert}
       {li == "" ? "" : ms}
       <div className="container-fluid ">
-
+        <CederView />
         <div className="d-flex justify-content-end align-row.originals-end pb-2" >
           <div>
 
@@ -978,22 +918,22 @@ const SuscritoridView = () => {
 
                         </a>
 
-                        {/*row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? 
-                        <Tooltip title="Ceder ticket" placement="top-start">
-                          <a className=" btn btn-default btn-sm btn-disable"
+                        {row.original.estado == "Pagado" && row.original.cedido == "NO" ?
+                          <Tooltip title="Ceder ticket" placement="top-start">
+                            <a className=" btn btn-default btn-sm btn-disable"
 
 
-                            onClick={() => console.log(row.original)}
-                          >
-                            <img src={cedericon}
-                              style={
-                                {
-                                  height: 20
+                              onClick={() => successAlertCeder(row.original)}
+                            >
+                              <img src={cedericon}
+                                style={
+                                  {
+                                    height: 20
+                                  }
                                 }
-                              }
-                            />
-                          </a>
-                        </Tooltip> :
+                              />
+                            </a>
+                          </Tooltip> :
                           <a
                             className="border  btn-default btn-sm btn-disable"
                             disabled
@@ -1010,7 +950,7 @@ const SuscritoridView = () => {
 
                           </a>
 
-                        */}
+                        }
 
 
                         {false ? <Tooltip

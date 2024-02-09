@@ -51,10 +51,7 @@ function Example() {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    const abrirceder = (e) => {
-        usedispatch(setModal({ nombre: 'ceder', estado: e }))
-        hideAlert()
-    }
+    
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
 
@@ -171,6 +168,14 @@ function Example() {
             }))
             //console.log(eror)
         })
+    }
+
+    const abrirceder = (e) => {
+        usedispatch(setModal({ nombre: 'ceder', estado: e }))
+        hideAlert()
+    }
+    const hideAlert = () => {
+        setAlert(null)
     }
     const successAlert = (e) => {
         setAlert(
@@ -298,9 +303,6 @@ function Example() {
                 )
             });
         } catch (error) { }
-    }
-    const hideAlert = () => {
-        setAlert(null)
     }
     const theads = () => {
         return (
