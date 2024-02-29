@@ -370,7 +370,7 @@ const EventoEspecifico = () => {
                 <div>
                     <button className="btn btn-primary" onClick={ObtenerContactosquecompraron}>
                         <i className="fa fa-user" ></i>
-                        Importar Contactos
+                        Exportar Contactos
                     </button>
                 </div>
                 <div className="px-2">

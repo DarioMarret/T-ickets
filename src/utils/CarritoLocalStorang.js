@@ -1,3 +1,4 @@
+import { IVA } from "utilsstile.js/instanciaaxios"
 import {
     CarritoTicket, Metodos,
     DatosUsuarioLocalStorang,
@@ -245,6 +246,8 @@ export function ListaElimnaLCompleta() {
     return ListaEliminaLocalida()
 }
 export function listaEliminasillas(parms) {
+    let nuevo = ListaEliminaLocalida().filter(e => e.id == parms)
+    sessionStorage.setItem("Listaele",JSON.stringify(nuevo) )
     return ListaEliminaLocalida().filter(e => e.id == parms)
 }
 export function VerSillaslist() {
@@ -319,24 +322,13 @@ export function GetValores() {
             subtotal += valores
             descrption = tienda.nombreConcierto
             sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
-            
-           /* if (valores >= 101) {
-                comision += tienda.cantidad * 2
-            } else if (valores >= 201) {
-                comision += tienda.cantidad * 3
-            } else if (valores >= 301) {
-                comision += tienda.cantidad * 4
-            } else if (valores >= 401) {
-                comision += tienda.cantidad * 5
-            } else {
-                comision += tienda.cantidad
-            }*/
+
         })
         let ivados = (eventoiva).replace("1.", "0.")
-        valor = ivados == 0 ? (subtotal) / 1.12 : (subtotal ) ;
+        valor = ivados == 0 ? (subtotal) / 1.+parseInt(IVA) : (subtotal ) ;
        // let ivados = (eventoiva).replace("1.","0.")
         console.log(subtotal, valor, ivados)
-        iva = parseInt(ivados) == 0 ? (valor * 0.12) : (subtotal) * parseFloat( ivados)
+        iva = parseInt(ivados) == 0 ? (valor * 0. + parseInt(IVA)) : (subtotal) * parseFloat( ivados)
         total = (valor + iva)
         console.log(iva, total)
         let totav = sessionStorage.getItem("Metodo-pago") == "Tarjeta" ? ((parseFloat(valor) + comision) + iva )*1.08:(parseFloat(valor) + comision) + iva 

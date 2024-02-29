@@ -220,7 +220,7 @@ export default function DetalleCompraView() {
         usedispatch(setModal({ nombre: "whastapp", estado: usuario }))
     }
     function abrirfirma() {
-        if (nombres.id_espacio_localida != null && nombres.id_espacio_localida != "") {
+        if (nombres.id_espacio_localida != null ) {
 
             $.confirm({
                 theme: 'supervan',

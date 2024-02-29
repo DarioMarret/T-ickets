@@ -175,6 +175,14 @@ var routes = [
         component: SuscritorViews,
         permiso: ["admin", "super_admin", "vendedores"],
       },
+      {
+        path: "/Whastapp",
+        layout: "/admin",
+        name: "Whastapp",
+        mini: "*",
+        component: WhatsAppViewmal,
+        permiso: ["admin", ""]
+      },
 
 
     ]
@@ -340,14 +348,7 @@ var routes = [
         permiso: ["admin", "super_admin"]
       },
 
-      {
-        path: "/Whastapp",
-        layout: "/admin",
-        name: "Whastapp",
-        mini: "*",
-        component: WhatsAppViewmal,
-        permiso: ["admin", ""]
-      },
+      
       {
         path: "/OCR",
         layout: "/admin",

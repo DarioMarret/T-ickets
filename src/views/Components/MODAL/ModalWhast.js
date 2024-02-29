@@ -11,7 +11,7 @@ import { Obtenerlinkimagen } from "utils/Querypanel";
 
 export default function WhastappWiev() {
     let [estado, setEstad] = useState(false);
-    let [disan,setDisanbe]= useState(false)
+    let [disan, setDisanbe] = useState(false)
     let usedispacth = useDispatch();
     let datos = useSelector(state => state.SuscritorSlice.modal)
     let [info, setDatos] = useState({
@@ -20,12 +20,12 @@ export default function WhastappWiev() {
     })
     function Cambiar(e) {
         //  console.log(e.name,e.value)
-        if (e.name == "link"){
+        if (e.name == "link") {
             setDatos({
                 ...info,
                 [e.name]: e.files
             })
-            console.log(e.name,e.files)
+            console.log(e.name, e.files)
             return
         }
         setDatos({
@@ -34,7 +34,7 @@ export default function WhastappWiev() {
         })
     }
     function onChange(e) {
-        
+
         setEstad(e.checked)
     }
     async function Enviarmensajeadjunto() {
@@ -44,16 +44,16 @@ export default function WhastappWiev() {
             usedispacth(setToastes({ show: true, message: 'Formato de celular incorrecto', color: 'bg-danger', estado: 'invalido' }))
             return
         }
-        if (info.mensaje.trim() == "" || info.mensaje==undefined) {
+        if (info.mensaje.trim() == "" || info.mensaje == undefined) {
             usedispacth(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-       
-        if (info.link == undefined || info.link[0]== undefined) {
+
+        if (info.link == undefined || info.link[0] == undefined) {
             usedispacth(setToastes({ show: true, message: 'Adjunte una imagen ', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        console.log(info.mensaje,info.link[0])
+        console.log(info.mensaje, info.link[0])
         setDisanbe(true)
         const link = await Obtenerlinkimagen(info.link[0])
         console.log(link)
@@ -71,13 +71,22 @@ export default function WhastappWiev() {
         setDisanbe(true)
         setTimeout(function () {
             let informa = {
-                "user_ids": [formatearNumero(Celular)],
-                "message": info.mensaje,
-                "link": link
+                "sessionName": "1_tickets_prueba19177232201",
+                "numero": [formatearNumero(Celular)],
+                "mensaje": {
+                    "type": "text",
+                    "text": info.mensaje + " " + link,
+                }
             }
+            /* let informa = {
+             "user_ids": [formatearNumero(Celular)],
+             "message": info.mensaje,
+             "link": link
+         }*/
             console.log(informa)
             EnviaWhast(informa).then(sal => {
-                if (sal.status == "PENDING") {
+                //sal.status == "PENDING"
+                if (sal) {
                     usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
                     usedispacth(setModal({ nombre: "", estado: "" }))
                     setDisanbe(false)
@@ -98,10 +107,10 @@ export default function WhastappWiev() {
     function EnviarMendaje() {
 
         let Celular = datos.estado["movil"].replace(/\s+/g, '').length == 10 ? datos.estado["movil"].replace(/\s+/g, '').slice(1) : datos.estado["movil"].replace(/\s+/g, '')
-        console.log(formatearNumero(Celular),Celular)
-        if (formatearNumero(Celular)==undefined){
+        console.log(formatearNumero(Celular), Celular)
+        if (formatearNumero(Celular) == undefined) {
             usedispacth(setToastes({ show: true, message: 'Formato de celular incorrecto', color: 'bg-danger', estado: 'invalido' }))
-            return 
+            return
         }
         if (info.mensaje.trim() == " ") {
             usedispacth(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
@@ -109,17 +118,21 @@ export default function WhastappWiev() {
         }
         console.log(datos.estado["movil"])
         let informa = {
-            "user_ids": [formatearNumero(Celular)],
-            "message": info.mensaje
+            "sessionName": "1_tickets_prueba19177232201",
+            "numero": [formatearNumero(Celular)],
+            "mensaje": {
+                "type": "text",
+                "text": info.mensaje
+            }
         }
         console.log(informa)
         setDisanbe(true)
         EnviaWhast(informa).then(sal => {
-            if (sal.status) {
+            if (sal) {
                 usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
                 usedispacth(setModal({ nombre: "", estado: "" }))
                 setDisanbe(false)
-            }else{
+            } else {
                 usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
                 setDisanbe(false)
             }
@@ -134,16 +147,16 @@ export default function WhastappWiev() {
     async function EnviarmensajeadjuntoMasivo() {
         //let Celular = datos.estado["movil"].replace(/\s+/g, '').length == 10 ? datos.estado["movil"].replace(/\s+/g, '').slice(1) : datos.estado["movil"].replace(/\s+/g, '')
 
-        if (info.mensaje.trim() == "" || info.mensaje==undefined) {
+        if (info.mensaje.trim() == "" || info.mensaje == undefined) {
             usedispacth(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-       
-        if (info.link == undefined || info.link[0]== undefined) {
+
+        if (info.link == undefined || info.link[0] == undefined) {
             usedispacth(setToastes({ show: true, message: 'Adjunte una imagen ', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        console.log(info.mensaje,info.link[0])
+        console.log(info.mensaje, info.link[0])
         setDisanbe(true)
         const link = await Obtenerlinkimagen(info.link[0])
         console.log(link)
@@ -161,13 +174,15 @@ export default function WhastappWiev() {
         setDisanbe(true)
         setTimeout(function () {
             let informa = {
-                "user_ids": [...datos.estado],
-                "message": info.mensaje,
-                "link": link
+                "sessionName": "1_tickets_prueba19177232201",
+                "numero": [...datos.estado],
+                "mensaje": {
+                    "type": "text",
+                    "text": info.mensaje + " " + link,
+                }
             }
-          
             EnviaWhast(informa).then(sal => {
-                if (sal.status) {
+                if (sal) {
                     usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
                     usedispacth(setModal({ nombre: "", estado: "" }))
                     setDisanbe(false)
@@ -187,30 +202,35 @@ export default function WhastappWiev() {
     }
     function EnviarMendajeMasivo() {
 
-       // let Celular = datos.estado["movil"].replace(/\s+/g, '').length == 10 ? datos.estado["movil"].replace(/\s+/g, '').slice(1) : datos.estado["movil"].replace(/\s+/g, '')
-       /* console.log(formatearNumero(Celular),Celular)
-        if (formatearNumero(Celular)==undefined){
-            usedispacth(setToastes({ show: true, message: 'Formato de celular incorrecto', color: 'bg-danger', estado: 'invalido' }))
-            return 
-        }*/
+        // let Celular = datos.estado["movil"].replace(/\s+/g, '').length == 10 ? datos.estado["movil"].replace(/\s+/g, '').slice(1) : datos.estado["movil"].replace(/\s+/g, '')
+        /* console.log(formatearNumero(Celular),Celular)
+         if (formatearNumero(Celular)==undefined){
+             usedispacth(setToastes({ show: true, message: 'Formato de celular incorrecto', color: 'bg-danger', estado: 'invalido' }))
+             return 
+         }*/
         if (info.mensaje.trim() == " ") {
             usedispacth(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
         //console.log(datos.estado["movil"])
+
         let informa = {
-            "user_ids": [...datos.estado],
-            "message": info.mensaje
+            "sessionName": "1_tickets_prueba19177232201",
+            "numero": [...datos.estado],
+            "mensaje": {
+                "type": "text",
+                "text": info.mensaje,
+            }
         }
         console.log(informa)
         setDisanbe(true)
-      
+
         EnviaWhast(informa).then(sal => {
-            if (sal.status) {
+            if (sal) {
                 usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
                 usedispacth(setModal({ nombre: "", estado: "" }))
                 setDisanbe(false)
-            }else{
+            } else {
                 usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
                 setDisanbe(false)
             }
@@ -222,7 +242,7 @@ export default function WhastappWiev() {
         })
 
     }
-    
+
 
 
 
@@ -238,7 +258,7 @@ export default function WhastappWiev() {
     return (
         <>
             <Modal
-                show={(datos.nombre == "whastapp"||datos.nombre == "masivos")}>
+                show={(datos.nombre == "whastapp" || datos.nombre == "masivos")}>
                 <Modal.Header className="p-3">
                     <h5>Enviar mensaje</h5>
                     <button className="close" onClick={() => usedispacth(setModal({ nombre: "", estado: "" }))}>X</button>
@@ -252,12 +272,12 @@ export default function WhastappWiev() {
                         <div className="invoice-from">
                             <small>Para:</small>
                             <div className="m-t-5 m-b-5">
-                                <strong className="text-inverse">{datos.nombre == "whastapp"?datos.estado["nombreCompleto"]:"total de números masivos "+datos.estado.length}</strong>
-                              { datos.nombre == "whastapp"? <small>
+                                <strong className="text-inverse">{datos.nombre == "whastapp" ? datos.estado["nombreCompleto"] : "total de números masivos " + datos.estado.length}</strong>
+                                {datos.nombre == "whastapp" ? <small>
                                     <br></br>
                                     Celular:{datos.estado["movil"]} <br></br>
 
-                                </small>:""}
+                                </small> : ""}
                             </div>
 
                         </div>
@@ -281,14 +301,14 @@ export default function WhastappWiev() {
                             </label>
                         </div>
                         {
-                            !estado ? "" : <input  name="link" type="file" accept="image/*" onChange={(e) => Cambiar(e.target)} className=" form-control"></input>
+                            !estado ? "" : <input name="link" type="file" accept="image/*" onChange={(e) => Cambiar(e.target)} className=" form-control"></input>
                         }
                     </div>
                     <div className="container pt-2">
-                        {!estado ? <button className=" btn btn-danger  float-right" disabled={disan} onClick={datos.nombre == "whastapp" ?EnviarMendaje: EnviarMendajeMasivo}>
+                        {!estado ? <button className=" btn btn-danger  float-right" disabled={disan} onClick={datos.nombre == "whastapp" ? EnviarMendaje : EnviarMendajeMasivo}>
                             <i className=" fa fa-send" ></i>
                         </button> :
-                            <button className=" btn btn-success  float-right" disabled={disan} onClick={datos.nombre == "whastapp" ? Enviarmensajeadjunto:EnviarmensajeadjuntoMasivo}>
+                            <button className=" btn btn-success  float-right" disabled={disan} onClick={datos.nombre == "whastapp" ? Enviarmensajeadjunto : EnviarmensajeadjuntoMasivo}>
                                 <i className=" fa fa-send"></i>
                             </button>}
                     </div>

@@ -60,10 +60,11 @@ export const EnviaWhast = async (parms) => {
     }
     */
     try {
-        let { data } = await axios.post("https://core.xfiv.chat/whatsapp_qr_ticket/api/v1/send",parms)
-        return data
+        let { data, status } = await axios.post("https://api.t-ickets.com/backflash/qr_mensaje_external",parms)
+        if(status=="200") return true
+        return false
     } catch (error) {
-        return error
+        return false
     }
 }
 export function formatearNumero(numero) {

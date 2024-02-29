@@ -1,4 +1,4 @@
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+
 import { useEffect, useState } from 'react';
 import { DeleteQrCuenta, EliminarContacto, EliminarMasivo, Imporcontactos, ListarMasivos, NuevaConexiopnQR, ObtenerContactos, ProgramarQR, getQrLista, postQRGenerado } from './utils/index';
 import TablasViwe from 'layouts/Tablasdoc';
@@ -262,6 +262,14 @@ const WhatsAppViewmal = () => {
                         if (name != "" && telefono != "") {
                             postQRGenerado({ "nombre": name, "numero": telefono }).then((data) => {
                                 console.log(data)
+                                getQrLista().then(ouput => {
+                                    console.log(ouput)
+                                    if (ouput.length) {
+                                        setQrList(ouput);
+                                    }
+                                }).catch(error => {
+                                    console.log(error)
+                                })
                             }).catch(err => {
                                 console.log(err)
                             })
@@ -348,7 +356,9 @@ const WhatsAppViewmal = () => {
                         <th  >#</th>
                         <td className="text-xs text-center">{item.id}</td>
                         <td className="text-xs text-center">{item.cuentaId}</td>
-                        <td className="text-xs text-center">{item.mensaje}</td>
+                        <td className="text-xs text-center" style={{
+                            columns:"100px 2;"
+                        }}>{item.mensaje}</td>
                         <td className='text-xs text-center'>{item.fecha_creacion}</td>
                         <td className='text-xs text-center'>{item.fecha_ultimo_envio} </td>
                         <td className="text-xs text-center ">{item.estado}</td>
@@ -538,13 +548,15 @@ const WhatsAppViewmal = () => {
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            <TablasViwe
+                            {listaQr.length>0?   <TablasViwe
                                 number={5}
                                 thead={theads}
                                 showDatos={ShowFoder}
                                 Titel={""}
                                 nombre={"numeros"}
-                            />
+                            /> : <div className=' container-fluid text-center'>
+                                <p>No hay Datos a mostrar</p>
+                            </div>}
                         </div>
                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 

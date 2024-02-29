@@ -129,7 +129,7 @@ export default function ListaderegistroView(props) {
                         return (
 
                             <Box sx={{ display: 'flex' }}>
-                                {row.original.forma_pago == "Deposito" && row.original.estado_pago != "Pagado" && row.original.estado_pago != "Comprobar" ?
+                                {row.original.forma_pago == "Deposito" && row.original.estado_pago != "Pagado" && row.original.estado_pago != "Comprobar"&& row.original.estado_pago!="Expirado" ?
                                     <Tooltip
                                         title="Reportar pago" placement="top"
                                     >

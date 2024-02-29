@@ -63,7 +63,7 @@ export default function NoticiasView() {
             encabezado: eventos.find(el => el.id == e.value).nombreConcierto,
             descipcion: eventos.find(el => el.id == e.value).descripcionConcierto,
             link_img: "",
-            mas: { ...eventos.find(el => el.id == e.value) }
+            mas: JSON.stringify({ ...eventos.filter(el => el.id == e.value)[0]})
         })
     }
     const onSubmit = async (e) => {

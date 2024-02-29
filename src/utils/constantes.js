@@ -20,8 +20,6 @@ export const token = "RXQ0eGpqSnpodGRNRnNvdktBYUNCQT09"
 export const Valores = "Costos"
 export const Metodos = "Metodo-pago"
 export function Salircliente() {
-    // sessionStorage.removeItem(DatosUsuariocliente)
-    //   sessionStorage.removeItem(DatosUsuarioLocalStorang)
     sessionStorage.removeItem(Valorcarrito)
     sessionStorage.removeItem(CarritoTicket)
     sessionStorage.removeItem(Whatsappnumero)
