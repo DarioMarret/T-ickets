@@ -325,10 +325,10 @@ export function GetValores() {
 
         })
         let ivados = (eventoiva).replace("1.", "0.")
-        valor = ivados == 0 ? (subtotal) / 1.+parseInt(IVA) : (subtotal ) ;
+        valor = ivados == 0 ? (subtotal) / parseFloat(1. + IVA) : (subtotal ) ;
        // let ivados = (eventoiva).replace("1.","0.")
         console.log(subtotal, valor, ivados)
-        iva = parseInt(ivados) == 0 ? (valor * 0. + parseInt(IVA)) : (subtotal) * parseFloat( ivados)
+        iva = parseInt(ivados) == 0 ? (valor * parseFloat(0.+IVA)) : (subtotal) * parseFloat( ivados)
         total = (valor + iva)
         console.log(iva, total)
         let totav = sessionStorage.getItem("Metodo-pago") == "Tarjeta" ? ((parseFloat(valor) + comision) + iva )*1.08:(parseFloat(valor) + comision) + iva 
