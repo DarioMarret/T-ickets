@@ -87,7 +87,8 @@ function Example() {
             "id_ticket_usuarios": row.id
         }).then(ouput => {
             if (ouput.success) {
-                usedispatch(setModal({ nombre: 'pdfsshow', estado: ouput.link.replace("flash", "api") }))
+                window.open(ouput.link.replace("flash", "api"), "_blank");
+               // usedispatch(setModal({ nombre: 'pdfsshow', estado: ouput.link.replace("flash", "api") }))
                 // console.log(ouput.link)
                 // window.open(ouput.link, "_blank");
                 setSpiner("d-none")

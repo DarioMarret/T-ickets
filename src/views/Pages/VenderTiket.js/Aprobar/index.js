@@ -656,40 +656,7 @@ export default function AprobarView() {
             </div>
             <div className="row py-5 d-none">
                 <div className="col-12 col-md-8 d-flex justify-content-center ">
-                    {/** <div className="card">
-
-                        {/** <div className="card-body d-none d-sm-none d-md-block"> *}
-                        <div className="card-body d-none">
-
-                            <DateRangePicker
-                                editableDateInputs={false}
-                                onChange={item => rango(item)}
-                                moveRangeOnFirstSelection={false}
-                                retainEndDateOnFirstSelection={false}
-                                ranges={states}
-                                months={1}
-                                locale={locales[locale]}
-                                staticRanges={[
-                                    ...defaultStaticRanges.map((e, i) => {
-                                        e.label = label[i]
-                                        return { ...e }
-                                    }),
-                                ]}
-                            />
-                        </div>
-                        {/** card-body d-block d-sm-block d-md-none *}
-                        <div className="card-body  d-none">
-                            <DateRange
-                                editableDateInputs={false}
-                                onChange={item => rango(item)}
-                                moveRangeOnFirstSelection={false}
-                                ranges={states}
-                                locale={locales[locale]}
-                            />
-
-                        </div>
-
-                </div> */}
+                    
 
                 </div>
 
@@ -711,24 +678,23 @@ export default function AprobarView() {
                         iva: f.iva,
                         TOTAL_COMISION: f.comision_boleto,
                         TOTAL: f.subtotal == "" ? 0 : (parseFloat(f.subtotal) + parseFloat(f.iva)),
-                        Subtotal: f.subtotal,
+                        Subtotal: parseFloat(String(f.subtotal).replace('.', ',')),
                         cantida: f.info_concierto.reduce((total, concierto) => {
                             return total + parseInt(concierto.cantidad, 10);
                         }, 0),
                         MEDIO: f.canal,
                         CREACION: f.fechaCreacion,
                         ESTADO: f.estado_pago,
-                        Cosiliacion: f.consolidado,
-                        PAGOMEDIO_LINK: f.link_pago,
-                        COMPROBANTE_LINK: f.link_comprobante,
+                        Cosiliacion: f.consolidado,                        
                         NumerTransacion: f.numerTransacion,
                         Banco: f.conciliacion.length > 0 ? f.conciliacion[0].banco : "",
-                        Total_Conciliacion: f.conciliacion.length > 0 ? f.conciliacion[0].total_pagado : "",
-                        Total_Conciliacion: f.conciliacion.length > 0 ? f.conciliacion[0].total_pagado : "",
+                        Total_Conciliaciones: f.conciliacion.length > 0 ? f.conciliacion[0].total_pagado : "",
                         Concili_Forma: f.conciliacion.length > 0 ? f.conciliacion[0].forma_pago : "",
                         cuenta: f.conciliacion.length > 0 ? f.conciliacion[0].cuenta : "",
                         comentario: (f.comentarios.length > 0),
-                        asuntos: f.comentarios.length > 0 ? texto : ""
+                        asuntos: f.comentarios.length > 0 ? texto : "",
+                        PAGOMEDIO_LINK: f.link_pago,
+                        COMPROBANTE_LINK: f.link_comprobante,
                     }
                 })} fileName={"Todos Pagados"} label={"Pagados"} />
                     : ""

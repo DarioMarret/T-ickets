@@ -52,6 +52,7 @@ import Bingo_tablas from "./components/Tablaspdf";
 import ModalFirma from "views/Components/MODAL/Modalfirma";
 import { Button } from "bootstrap";
 import { Boleteria_voucher } from "utils/EventosQuery/index";
+import { boleteriaAxios } from "utils/index";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -220,7 +221,7 @@ export default function DetalleCompraView() {
         usedispatch(setModal({ nombre: "whastapp", estado: usuario }))
     }
     function abrirfirma() {
-        if (nombres.id_espacio_localida != null ) {
+        if (nombres.id_espacio_localida != null) {
 
             $.confirm({
                 theme: 'supervan',
@@ -347,7 +348,7 @@ export default function DetalleCompraView() {
                                 console.log(mensage)
                                 buscarcliente({
                                     "cedula": !isNaN(number) ? number.trim() : '',
-                                    "email":  ''
+                                    "email": ''
                                 }).then(oupt => {
                                     //console.log(informacion, oupt)
                                     $("#search").removeClass("d-none")
@@ -370,7 +371,7 @@ export default function DetalleCompraView() {
                                             color: 'bg-danger', estado: 'Usuaario no encontraron'
                                         }))
                                     }
-                                
+
                                 })
                                 //history.goBack()
                             }
@@ -575,11 +576,50 @@ export default function DetalleCompraView() {
         const info = await ListaPreciosEvent();
         return info
     }
+    const listarConciliacion = async (id) => {
+        try {
+            let { data } = await boleteriaAxios.get("Boleteria/infoconcilia/" + id)
+            console.log(data);
+            return data
+        } catch (error) {
+            return error
+        }
+    }
+    let [datoconcilia, setDatosConciloa] = useState(
+        {
+            "id": "",
+            "id_operador": "",
+            "id_registro": "",
+            "banco": "",
+            "cuenta": "",
+            "total_pagado": "",
+            "forma_pago": "",
+            "tarjeta": "",
+            "lote": "",
+            "autorizacion": "",
+            "total": "",
+            "base": " ",
+            "valor_pagado": "",
+            "retencion": "",
+            "comision": "",
+            "comision_sin_iva": "",
+            "emision_boleto": "",
+            "evento": "",
+            "total_sin_emision": ""
+        }
+    )
     useEffect(() => {
-       ///console.log( clienteInfo())
         ListaPrecios()
         let concer = nombres.info_concierto
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
+        listarConciliacion(datos.id).then(res => {
+            if (res.success) {
+                setDatosConciloa(res.data[0])
+            }
+            console.log(res);
+        }).catch(err => {
+            console.log(err)
+        })
         buscarcliente({
             "cedula": datos.cedula,
             "email": ""
@@ -985,9 +1025,9 @@ export default function DetalleCompraView() {
                         btnClass: 'btn-blue',
                         action: function () {
                             var name = this.$content.find('.name').val();
-                           // console.log(name)
-                           // return
-                            registraPagos({ ...reporte, "bancos": name}).then(ouput => {
+                            // console.log(name)
+                            // return
+                            registraPagos({ ...reporte, "bancos": name }).then(ouput => {
                                 if (ouput.success) {
                                     history.goBack()
                                     return
@@ -1759,6 +1799,21 @@ export default function DetalleCompraView() {
                                                     <td className='text-end' >Comisión por Boleto:</td>
                                                     <td width="15%" className='text-center'>$ {nombres.info_concierto.length > 0 ? nuevoPrecio() : ""}</td>
                                                 </tr>
+                                                <tr>
+                                                    <th scope="row"></th>
+                                                    <td className='text-end' >Subtotal:</td>
+                                                    <td width="15%" className='text-center'>$ {nombres.subtotal}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row"></th>
+                                                    <td className='text-end' >Iva:</td>
+                                                    <td width="15%" className='text-center'>$ {nombres.iva}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row"></th>
+                                                    <td className='text-end' >Total neto :</td>
+                                                    <td width="15%" className='text-center'>$ {(parseFloat(nombres.subtotal) + parseFloat(nombres.iva)).toFixed(2)}</td>
+                                                </tr>
                                                 <tr >
                                                     <th scope="row"></th>
                                                     {nombres.forma_pago != "Tarjeta" ? <td className={" text-end"} >Total</td> : <td className='text-end' >Total tarjeta:</td>}
@@ -1767,6 +1822,79 @@ export default function DetalleCompraView() {
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    {nombres.conciliacion.length == 0 ? "" : nombres.forma_pago == "Tarjeta" ?
+                                        <div className=" table-responsive">
+                                            <table className="table  table-borderless ">
+                                                <thead className="text-center">
+                                                    <tr>
+                                                        <th>Autorización</th>
+                                                        <th>Banco</th>
+                                                        <th>lote </th>
+                                                        <th>total sin emision</th>
+                                                        <th>valor pagado</th>
+                                                        <th>Total pagado</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr className="text-center">
+                                                        <td>{datoconcilia.autorizacion || "No hay datos"}</td>
+                                                        <td className="">
+                                                            {datoconcilia.banco || "No hay datos"}
+                                                        </td>
+                                                        <td className="">
+                                                            {datoconcilia.lote || "No hay datos"}
+                                                        </td>
+                                                        <td className="">
+                                                            {datoconcilia.total_sin_emision || "No hay datos"}
+                                                        </td>
+                                                        <td className="">
+                                                            {datoconcilia.valor_pagado || "No hay datos"}
+                                                        </td>
+                                                        <td className="">
+                                                            {datoconcilia.total_pagado || "No hay datos"}
+                                                        </td>
+                                                    </tr>
+
+
+
+                                                </tbody>
+                                            </table>
+
+                                        </div> : <div className=" table-responsive">
+                                            <table className="table">
+                                                <thead className="text-center">
+                                                    <tr>
+                                                        <th>Cuenta</th>
+                                                        <th>Banco</th>
+                                                        <th>lote </th>
+                                                        <th>total sin emision</th>
+                                                        <th>valor pagado</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr className="text-center">
+                                                        <td>{datoconcilia.cuenta || "No hay datos"}</td>
+                                                        <td className="">
+                                                            {datoconcilia.banco || "No hay datos"}
+                                                        </td>
+                                                        <td className="">
+                                                            {datoconcilia.lote || "No hay datos"}
+                                                        </td>
+                                                        <td className="">
+                                                            {datoconcilia.total_sin_emision || "No hay datos"}
+                                                        </td>
+                                                        <td className="">
+                                                            {datoconcilia.total_pagado || "No hay datos"}
+                                                        </td>
+                                                    </tr>
+
+
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>}
                                     <div className="mt-2 pt-2  border-top text-center ">
                                         <span > CONTACTANOS </span>
                                         <div className="d-flex justify-content-center align-items-center pb-2">
