@@ -290,6 +290,7 @@ export function GetEstadousu() {
 }
 export function GetValores() {
     let tag = JSON.parse(sessionStorage.getItem(CarritoTicket));
+    let codicontry = sessionStorage.getItem("codicontry")?sessionStorage.getItem("codicontry"):false
     let evento = JSON.parse(sessionStorage.getItem("infoevento"))
 
     let eventoiva = evento != null && evento.hasOwnProperty(iva) ? "1.00" : evento.iva
@@ -318,11 +319,17 @@ export function GetValores() {
 
         tag.map(tienda => {
             let comisioreal =  tienda.localidaEspacio["comision_boleto"]
+            if(codicontry){
+            let valores = parseFloat(tienda.localidaEspacio["precio_descuento"])
+            subtotal += valores
+            descrption = tienda.nombreConcierto
+            sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
+            }else{
             let valores =  tienda.valor
             subtotal += valores
             descrption = tienda.nombreConcierto
             sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
-
+}
         })
         let ivados = (eventoiva).replace("1.", "0.")
         valor = ivados == 0 ? (subtotal) / parseFloat(1. + IVA) : (subtotal ) ;
@@ -365,6 +372,7 @@ export function LimpiarLocalStore() {
     valorDuplicadas = []
     sessionStorage.removeItem(CarritoTicket)
     sessionStorage.removeItem(Metodos)
+    sessionStorage.removeItem("codicontry")
 }
 export function Limpiarseleccion() {
     sessionStorage.removeItem(sillaspalco)

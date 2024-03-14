@@ -178,6 +178,7 @@ function ModalDetalle(props) {
             }
         }
     }
+    let CODIGO = sessionStorage.getItem("eventoid")
     function hanbleDatos(e) {
         setPerson({
             ...datosPerson,
@@ -264,6 +265,54 @@ function ModalDetalle(props) {
         const mostrar = mostrarcomision != "Tarjeta" ? "d-none" : ""
         sethideComision(mostrar)
     }, [modalshow.nombre == "ModalDetalle" ? true : false, actualState])
+    function CodigoValido(){
+        let codigos = document.getElementById("basic-codigo");
+        //console.log(codigos.value)
+        if(codigos.value=="") return
+        $.confirm({
+                theme: 'supervan',
+                closeIcon: true,
+                title: 'Validar código',
+                content: 'Una vez validado el codigo no podra volver a ser usado',
+                type: 'red',
+                buttons: {
+                    tryAgain: {
+                        text: 'Aceptar ',
+                        btnClass: 'btn-red',
+                        action: function () {
+                            sessionStorage.setItem("codicontry","true")
+                            let datosPersonal = getDatosUsuariosLocalStorag()
+                            let clineteLogeado = getCliente()
+                            let metodoPago = GetMetodo()
+                            ListaPrecioset(GetValores())
+       
+            
+            console.log(datosPersonal)
+                           // window.open(nombres.status_pg, "_blank")
+
+                        }
+                    },
+                    aproba: {
+                        text: "Cancelar ",
+                        btnClass: 'btn-success',
+                        action: function () {
+                           /* Boleteria_voucher({
+                                "estado": 1,
+                                "id": "" + nombres.id,
+                                "link": nombres.status_pg
+                            }).then(boleto => {
+                                if (boleto.estado) {
+                                    let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
+                                    sessionStorage.setItem("Detalleuid", boletos)
+                                    window.location.reload()
+                                }
+
+                            })*/
+                        }
+                    }
+                }
+            });
+    }
     return (
         <Modal
             show={modalshow.nombre == "ModalDetalle" ? true : false}
@@ -508,6 +557,18 @@ function ModalDetalle(props) {
                     <div className="row pb-3">
 
                         <div className="col-11  text-center text-lg-end align-items-end ">
+                            <div className="d-flex  justify-content-end pb-2">
+                                <div>
+                                      {CODIGO=="CDKH71"?
+                        <div className="input-group" >
+                               
+                                <input className="form-control"  id="basic-codigo" placeholder="Validar código club"  />
+                                  <button class="input-group-text btn-success" onClick={CodigoValido}>validar</button>
+                                </div>
+                        :""}
+                                
+                                </div>
+                                </div>
                             {
                                 !clienteauth && datosPerson.metodoPago == "Tarjeta" ?
                                     <button id="pagarcuenta" className="btn btn-primary"

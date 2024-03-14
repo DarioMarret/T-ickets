@@ -813,8 +813,13 @@ const ModalCarritoView = (prop) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="d-flex  p-3 border-top  justify-content-between align-items-center">
-                    <div className="d-flex  col-12 justify-content-center my-1" role="rowgroup">
-                        {/*sleccionlocalidad.proceso > 0 ? "Tienes " + sleccionlocalidad.proceso + " boletos por pagar" : ''*/}
+                    <div className="d-flex  col-12 justify-content-end my-1" role="rowgroup">
+                        {/*CODIGO=="CDKH71"?
+                        <div>
+                         <label className="form-label">Código cub country </label>
+                        <input className="form-control" />
+                        </div>
+                        :""*/}
                     </div>
                     <div className="d-flex flex-column">
                         {
