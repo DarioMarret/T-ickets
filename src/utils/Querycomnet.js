@@ -9,7 +9,7 @@ import { Bodyhtml, Headerhtml } from "./Emails/cuerpo";
 export const PagoRapido = async (transaccion) => {
     let codigoEvento = sessionStorage.getItem('eventoid')
     let Eventoinfo = JSON.parse(sessionStorage.getItem('infoevento'))
-
+    let codicontry = sessionStorage.getItem("codicontry") ? sessionStorage.getItem("codicontry") : false
     let asientos = sessionStorage.getItem("asientosList") != null ? JSON.parse(sessionStorage.getItem("asientosList")).map(e => { return e.ids }) : []
     let array = sessionStorage.getItem("sillascorre") != null ? JSON.parse(sessionStorage.getItem("sillascorre")) : []
     let tiktefisic = sessionStorage.getItem("ticktesfisio") != null ? JSON.parse(sessionStorage.getItem("ticktesfisio")) : []
@@ -30,10 +30,11 @@ export const PagoRapido = async (transaccion) => {
             "idespaciolocalida": e.localidaEspacio["ideprecio"],
             "cantidad": e.cantidad,
             "localidad_nombre": e.localidad,
-            "localidad_precio": parseFloat(e.valor),
+            "localidad_precio": codicontry ? parseFloat(e.localidaEspacio["precio_descuento"]) : parseFloat(e.valor),
             "comision_por_boleto": parseInt(e.cantidad) * parseFloat(e.localidaEspacio["comision_boleto"]),
             "id_sillas": cantidadTotal == sillas.length ? [...sillas] : [],
-            "iva": Eventoinfo.iva
+            "iva": Eventoinfo.iva,
+            "post": Eventoinfo.post?Eventoinfo.post:""
         }
     })
     console.log(concierto)

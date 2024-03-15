@@ -678,8 +678,6 @@ const ModalCarritoView = (prop) => {
                                                                 <i className="fa fa-eye fa-2xs"></i>
                                                             </button> : ''}
                                                         </div>
-
-
                                                         <div className="d-block d-sm-none col-6  col-6 d-flex flex-row ">
                                                             <div className="d-flex flex-column ">
                                                                 <h5 className="card-title">{e.localidad}</h5>

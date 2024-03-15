@@ -13,6 +13,7 @@ import { getVerTienda, GetEstadousu } from 'utils/CarritoLocalStorang';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
 import { index } from 'utilsstile.js/style';
+import { Consultar_codigos } from 'utils/index';
 
 function ModalDetalle(props) {
     const {
@@ -43,11 +44,11 @@ function ModalDetalle(props) {
         envio: "Portal web",
         direccion: '',
     })
-    const detposito = () =>{
-        datosPerson.metodoPago == "Efectivo"?
-            usedispatch(setModal({ nombre: "modalpagoFacilito", estado: "" })):
+    const detposito = () => {
+        datosPerson.metodoPago == "Efectivo" ?
+            usedispatch(setModal({ nombre: "modalpagoFacilito", estado: "" })) :
             usedispatch(setModal({ nombre: "modalpago", estado: "" }))
-    
+
     }
     const handelReporShow = () => usedispatch(setModal({ nombre: 'ModalReporte', estado: '' }))
     const handleDetalleColse = () => usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
@@ -130,7 +131,7 @@ function ModalDetalle(props) {
         comision: 0,
         comision_bancaria: 0,
         desc: 0,
-        iva:0,
+        iva: 0,
         desctc: 0
     })
     async function handelchange(e) {
@@ -265,53 +266,178 @@ function ModalDetalle(props) {
         const mostrar = mostrarcomision != "Tarjeta" ? "d-none" : ""
         sethideComision(mostrar)
     }, [modalshow.nombre == "ModalDetalle" ? true : false, actualState])
-    function CodigoValido(){
+    function CodigoValido() {
         let codigos = document.getElementById("basic-codigo");
         //console.log(codigos.value)
-        if(codigos.value=="") return
+        if (codigos.value == "") return
         $.confirm({
-                theme: 'supervan',
-                closeIcon: true,
-                title: 'Validar código',
-                content: 'Una vez validado el codigo no podra volver a ser usado',
-                type: 'red',
-                buttons: {
-                    tryAgain: {
-                        text: 'Aceptar ',
-                        btnClass: 'btn-red',
-                        action: function () {
-                            sessionStorage.setItem("codicontry","true")
-                            let datosPersonal = getDatosUsuariosLocalStorag()
+            theme: 'supervan',
+            closeIcon: true,
+            title: 'Validar código',
+            content: 'Una vez validado el codigo no podra volver a ser usado',
+            type: 'red',
+            buttons: {
+                tryAgain: {
+                    text: 'Aceptar ',
+                    btnClass: 'btn-red',
+                    action: function () {
+                        let datosPersonal = getDatosUsuariosLocalStorag()
+                        Consultar_codigos({ cedula: datosPersonal.cedula, codigo: codigos.value }).then(ou => {
+                            if (ou.estado) {
+                                let co = document.getElementById("codigocontry")
+                                let eventoinfo = JSON.parse(sessionStorage.getItem("infoevento"))
+                                sessionStorage.setItem("codicontry", "true")
+                                console.log(ou)
+                                let clineteLogeado = getCliente()
+                                let metodoPago = GetMetodo()
+                                ListaPrecioset(GetValores())
+                                console.log({ ...eventoinfo, post: ou.codigos.codigo })
+                                sessionStorage.setItem("infoevento", JSON.stringify({ ...eventoinfo, post: ou.codigos.codigo }))
+                                co.classList.add("d-none")
+                                /*setDatoToas({
+                                    show: true,
+                                    message: ou.mensaje,
+                                    color: 'bg-success',
+                                    estado: 'Verificación validad',
+                                })*/
+                                $.confirm({
+                                    title: 'Verificación validad',
+                                    content: ou.mensaje,
+                                    type: 'green',
+                                    typeAnimated: true,
+                                    buttons: {
+                                        tryAgain: {
+                                            text: 'cerrar',
+                                            btnClass: 'btn-green',
+                                            action: function () {
+                                            }
+                                        }
+                                    }
+                                });
+                            } else {
+                                /*setDatoToas({
+                                    show: true,
+                                    message: ou.mensaje,
+                                    color: 'bg-danger',
+                                    estado: 'Verificación invalidad',
+                                })*/
+                                $.confirm({
+                                    title: 'Verificación invalidad',
+                                    content: ou.mensaje,
+                                    type: 'red',
+                                    typeAnimated: true,
+                                    buttons: {
+                                        tryAgain: {
+                                            text: 'cerrar',
+                                            btnClass: 'btn-red',
+                                            action: function () {
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }).catch(erro => {
+                            setDatoToas({
+                                show: true,
+                                message: "Por favor intente más tarde",
+                                color: 'bg-danger',
+                                estado: 'Hubo un error',
+                            })
+                        })
+                    }
+                },
+                aproba: {
+                    text: "Cancelar ",
+                    btnClass: 'btn-success',
+                    action: function () {
+                    }
+                }
+            }
+        });
+    }
+    function sonPrimerosCuatroDigitosAmericanExpress(numeroTarjeta) {
+        const primerosCuatroDigitos = numeroTarjeta
+        return /^(34|37)/.test(primerosCuatroDigitos);
+    }
+    function tarjetaValido(){
+        let codigos = document.getElementById("basic-codigo");
+        //console.log(codigos.value)
+        if (codigos.value == "") return
+        $.confirm({
+            theme: 'supervan',
+            closeIcon: true,
+            title: 'Validar código',
+            content: 'Una vez validado el codigo no podra volver a ser usado',
+            type: 'red',
+            buttons: {
+                tryAgain: {
+                    text: 'Aceptar ',
+                    btnClass: 'btn-red',
+                    action: function () {
+                        let datosPersonal = getDatosUsuariosLocalStorag()
+                        if (sonPrimerosCuatroDigitosAmericanExpress(codigos.value)) {
+                            let co = document.getElementById("codigocontry")
+                            let eventoinfo = JSON.parse(sessionStorage.getItem("infoevento"))
+                            sessionStorage.setItem("codicontry", "true")
+                            //console.log(ou)
                             let clineteLogeado = getCliente()
                             let metodoPago = GetMetodo()
                             ListaPrecioset(GetValores())
-       
-            
-            console.log(datosPersonal)
-                           // window.open(nombres.status_pg, "_blank")
-
-                        }
-                    },
-                    aproba: {
-                        text: "Cancelar ",
-                        btnClass: 'btn-success',
-                        action: function () {
-                           /* Boleteria_voucher({
-                                "estado": 1,
-                                "id": "" + nombres.id,
-                                "link": nombres.status_pg
-                            }).then(boleto => {
-                                if (boleto.estado) {
-                                    let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
-                                    sessionStorage.setItem("Detalleuid", boletos)
-                                    window.location.reload()
-                                }
-
+                            //console.log({ ...eventoinfo, post: ou.codigos.codigo })
+                            //sessionStorage.setItem("infoevento", JSON.stringify({ ...eventoinfo, post: ou.codigos.codigo }))
+                            co.classList.add("d-none")
+                            /*setDatoToas({
+                                show: true,
+                                message: ou.mensaje,
+                                color: 'bg-success',
+                                estado: 'Verificación validad',
                             })*/
+                            $.confirm({
+                                title: 'Verificación validad',
+                                content:'',
+                                type: 'green',
+                                typeAnimated: true,
+                                buttons: {
+                                    tryAgain: {
+                                        text: 'cerrar',
+                                        btnClass: 'btn-green',
+                                        action: function () {
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            /*setDatoToas({
+                                show: true,
+                                message: ou.mensaje,
+                                color: 'bg-danger',
+                                estado: 'Verificación invalidad',
+                            })*/
+                            $.confirm({
+                                title: 'Verificación invalidad',
+                                content: '',
+                                type: 'red',
+                                typeAnimated: true,
+                                buttons: {
+                                    tryAgain: {
+                                        text: 'cerrar',
+                                        btnClass: 'btn-red',
+                                        action: function () {
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
+                },
+                aproba: {
+                    text: "Cancelar ",
+                    btnClass: 'btn-success',
+                    action: function () {
+                    }
                 }
-            });
+            }
+        });
     }
     return (
         <Modal
@@ -493,20 +619,20 @@ function ModalDetalle(props) {
                                     <td className='text-center'>${parseFloat(listaPrecio.iva).toFixed(2)}</td>
                                 </tr>
                                 <tr>
-                                    
+
                                     <th scope="row"></th>
                                     <td className='text-end' >
-                                        {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ? 
-                                        
-                                            "Total con Descuento" :"Total"}</td>
-                                    <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (((parseFloat(listaPrecio.subtotal)  + parseFloat(listaPrecio.iva) ).toFixed(2))  )}</td>
+                                        {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ?
+
+                                            "Total con Descuento" : "Total"}</td>
+                                    <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (((parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.iva)).toFixed(2)))}</td>
                                 </tr >
-                                {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ? 
-                                <tr className="d-none">
-                                    <th scope="row d-none"></th>
-                                    <td className='text-end' >Total Desc:</td>
-                                    <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.desctc).toFixed(2) : parseFloat(listaPrecio.desc).toFixed(2)}</td>
-                                </tr>:""}
+                                {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ?
+                                    <tr className="d-none">
+                                        <th scope="row d-none"></th>
+                                        <td className='text-end' >Total Desc:</td>
+                                        <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.desctc).toFixed(2) : parseFloat(listaPrecio.desc).toFixed(2)}</td>
+                                    </tr> : ""}
                             </tbody>
                         </table>
                     </div>
@@ -559,16 +685,26 @@ function ModalDetalle(props) {
                         <div className="col-11  text-center text-lg-end align-items-end ">
                             <div className="d-flex  justify-content-end pb-2">
                                 <div>
-                                      {CODIGO=="CDKH71"?
-                        <div className="input-group" >
-                               
-                                <input className="form-control"  id="basic-codigo" placeholder="Validar código club"  />
-                                  <button class="input-group-text btn-success" onClick={CodigoValido}>validar</button>
+                                    {CODIGO == "CDKH71" && GetMetodo() != "Tarjeta" ?
+                                        <div className="input-group" id='codigocontry' >
+                                            <label className='form-label px-2'>Ingrese código de descuento</label>
+                                            <input className="form-control" id="basic-codigo" placeholder="Codigo Country Club" />
+                                            <button class="input-group-text btn-success" onClick={CodigoValido}>validar</button>
+                                        </div>
+                                        : ""}
+                                    {
+                                        CODIGO == "CDKH71" && GetMetodo() === "Tarjeta" ?
+                                            <div className="input-group" id='codigocontry' >
+                                                <label className='form-label px-2'>Digita los 6 primeros números de tu tarjeta</label>
+                                                <input className="form-control" id="basic-codigo" placeholder="Descuento American express" />
+                                                <button class="input-group-text btn-success" onClick={tarjetaValido}>validar</button>
+                                            </div>
+                                            : ""
+
+                                    }
+
                                 </div>
-                        :""}
-                                
-                                </div>
-                                </div>
+                            </div>
                             {
                                 !clienteauth && datosPerson.metodoPago == "Tarjeta" ?
                                     <button id="pagarcuenta" className="btn btn-primary"

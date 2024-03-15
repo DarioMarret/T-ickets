@@ -16,3 +16,13 @@ export const boleteriaAxios = axios.create({
     },
     maxBodyLength: Infinity,
 })
+
+
+export const Consultar_codigos = async (param) => {
+    try {
+        let { data } = await boleteriaAxios.post("Boleteria/codigos", param)
+        return data;
+    } catch (error) {
+        return error
+    }
+}
