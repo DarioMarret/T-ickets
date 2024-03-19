@@ -247,7 +247,7 @@ export function ListaElimnaLCompleta() {
 }
 export function listaEliminasillas(parms) {
     let nuevo = ListaEliminaLocalida().filter(e => e.id == parms)
-    sessionStorage.setItem("Listaele",JSON.stringify(nuevo) )
+    sessionStorage.setItem("Listaele", JSON.stringify(nuevo))
     return ListaEliminaLocalida().filter(e => e.id == parms)
 }
 export function VerSillaslist() {
@@ -290,7 +290,7 @@ export function GetEstadousu() {
 }
 export function GetValores() {
     let tag = JSON.parse(sessionStorage.getItem(CarritoTicket));
-    let codicontry = sessionStorage.getItem("codicontry")?sessionStorage.getItem("codicontry"):false
+    let codicontry = sessionStorage.getItem("codicontry") ? sessionStorage.getItem("codicontry") : false
     let evento = JSON.parse(sessionStorage.getItem("infoevento"))
 
     let eventoiva = evento != null && evento.hasOwnProperty(iva) ? "1.00" : evento.iva
@@ -301,7 +301,7 @@ export function GetValores() {
     var comision = 0;
     var sumcomision = 0;
     var descrption = ""
-    let total=0
+    let total = 0
 
     var iva = 0
     if (tag !== null) {
@@ -311,39 +311,44 @@ export function GetValores() {
                 let descuento = "1." + tienda2.localidaEspacio.descuento
                 tienda2.valor = (parseFloat(tienda2.valor) * parseInt(tienda2.cantidad)) / parseFloat(descuento)
             } else {
-                tienda2.valor = (parseFloat(tienda2.valor) * parseInt(tienda2.cantidad))
+                if (codicontry) {
+                    tienda2.valor = (parseFloat(tienda2.localidaEspacio["precio_descuento"]) * parseInt(tienda2.cantidad))
+
+                } else {
+                    tienda2.valor = (parseFloat(tienda2.valor) * parseInt(tienda2.cantidad))
+                }
             }
             return tienda2
 
         })
 
         tag.map(tienda => {
-            let comisioreal =  tienda.localidaEspacio["comision_boleto"]
-            if(codicontry){
-            let valores = parseFloat(tienda.localidaEspacio["precio_descuento"])
-            subtotal += valores
-            descrption = tienda.nombreConcierto
-            sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
-            }else{
-            let valores =  tienda.valor
-            subtotal += valores
-            descrption = tienda.nombreConcierto
-            sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
-}
+            let comisioreal = tienda.localidaEspacio["comision_boleto"]
+            if (codicontry) {
+                let valores = tienda.valor
+                subtotal += valores
+                descrption = tienda.nombreConcierto
+                sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
+            } else {
+                let valores = tienda.valor
+                subtotal += valores
+                descrption = tienda.nombreConcierto
+                sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
+            }
         })
         let ivados = (eventoiva).replace("1.", "0.")
-        valor = ivados == 0 ? (subtotal) / parseFloat(1. + IVA) : (subtotal ) ;
-       // let ivados = (eventoiva).replace("1.","0.")
+        valor = ivados == 0 ? (subtotal) / parseFloat(1. + IVA) : (subtotal);
+        // let ivados = (eventoiva).replace("1.","0.")
         console.log(subtotal, valor, ivados)
-        iva = parseInt(ivados) == 0 ? (valor * parseFloat(0.+IVA)) : (subtotal) * parseFloat( ivados)
+        iva = parseInt(ivados) == 0 ? (valor * parseFloat(0. + IVA)) : (subtotal) * parseFloat(ivados)
         total = (valor + iva)
         console.log(iva, total)
-        let totav = sessionStorage.getItem("Metodo-pago") == "Tarjeta" ? ((parseFloat(valor) + comision) + iva )*1.08:(parseFloat(valor) + comision) + iva 
+        let totav = sessionStorage.getItem("Metodo-pago") == "Tarjeta" ? ((parseFloat(valor) + comision) + iva) * 1.08 : (parseFloat(valor) + comision) + iva
 
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
-            comision_bancaria: (total.toFixed(2) *0.08).toFixed(2),
-            subtotal: (parseFloat(valor) ).toFixed(2),
+            comision_bancaria: (total.toFixed(2) * 0.08).toFixed(2),
+            subtotal: (parseFloat(valor)).toFixed(2),
             description: descrption,
             comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
@@ -351,10 +356,10 @@ export function GetValores() {
             total: (totav).toFixed(2),
             desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15).toFixed(2),
             desc: Math.round((subtotal + comision) / 1.15)
-            
+
         }
         //console.log(precios)
-        
+
 
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))
         return precios

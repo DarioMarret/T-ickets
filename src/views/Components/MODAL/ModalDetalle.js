@@ -285,6 +285,7 @@ function ModalDetalle(props) {
                         Consultar_codigos({ cedula: datosPersonal.cedula, codigo: codigos.value }).then(ou => {
                             if (ou.estado) {
                                 let co = document.getElementById("codigocontry")
+                                let co1 = document.getElementById("codigocontry")
                                 let eventoinfo = JSON.parse(sessionStorage.getItem("infoevento"))
                                 sessionStorage.setItem("codicontry", "true")
                                 console.log(ou)
@@ -294,6 +295,7 @@ function ModalDetalle(props) {
                                 console.log({ ...eventoinfo, post: ou.codigos.codigo })
                                 sessionStorage.setItem("infoevento", JSON.stringify({ ...eventoinfo, post: ou.codigos.codigo }))
                                 co.classList.add("d-none")
+                                co1.classList.add("d-none")
                                 /*setDatoToas({
                                     show: true,
                                     message: ou.mensaje,
@@ -360,7 +362,7 @@ function ModalDetalle(props) {
         return /^(34|37)/.test(primerosCuatroDigitos);
     }
     function tarjetaValido(){
-        let codigos = document.getElementById("basic-codigo");
+        let codigos = document.getElementById("basic-codigo1");
         //console.log(codigos.value)
         if (codigos.value == "") return
         $.confirm({
@@ -376,7 +378,8 @@ function ModalDetalle(props) {
                     action: function () {
                         let datosPersonal = getDatosUsuariosLocalStorag()
                         if (sonPrimerosCuatroDigitosAmericanExpress(codigos.value)) {
-                            let co = document.getElementById("codigocontry")
+                            let co = document.getElementById("codigocontry1")
+                            let co1 = document.getElementById("codigocontry")
                             let eventoinfo = JSON.parse(sessionStorage.getItem("infoevento"))
                             sessionStorage.setItem("codicontry", "true")
                             //console.log(ou)
@@ -386,6 +389,7 @@ function ModalDetalle(props) {
                             //console.log({ ...eventoinfo, post: ou.codigos.codigo })
                             //sessionStorage.setItem("infoevento", JSON.stringify({ ...eventoinfo, post: ou.codigos.codigo }))
                             co.classList.add("d-none")
+                            co1.classList.add("d-none")
                             /*setDatoToas({
                                 show: true,
                                 message: ou.mensaje,
@@ -685,20 +689,20 @@ function ModalDetalle(props) {
                         <div className="col-11  text-center text-lg-end align-items-end ">
                             <div className="d-flex  justify-content-end pb-2">
                                 <div>
-                                    {CODIGO == "CDKH71" && GetMetodo() != "Tarjeta" ?
-                                        <div className="input-group" id='codigocontry' >
-                                            <label className='form-label px-2'>Ingrese código de descuento</label>
+                                    {CODIGO == "CDKH71"  ?
+                                        (JSON.parse(sessionStorage.getItem("codicontry"))!=true) ?<div className="input-group" id='codigocontry' >
+                                            <label className='form-label px-2'>Ingrese el código de descuento</label>
                                             <input className="form-control" id="basic-codigo" placeholder="Codigo Country Club" />
                                             <button class="input-group-text btn-success" onClick={CodigoValido}>validar</button>
-                                        </div>
+                                        </div>:""
                                         : ""}
                                     {
-                                        CODIGO == "CDKH71" && GetMetodo() === "Tarjeta" ?
-                                            <div className="input-group" id='codigocontry' >
+                                        CODIGO == "CDKH71" && GetMetodo()=="Tarjeta" ?
+                                            (JSON.parse(sessionStorage.getItem("codicontry")) != true) ?  <div className="input-group pt-1 " id='codigocontry1' >
                                                 <label className='form-label px-2'>Digita los 6 primeros números de tu tarjeta</label>
-                                                <input className="form-control" id="basic-codigo" placeholder="Descuento American express" />
+                                                <input className="form-control" id="basic-codigo1" placeholder="Descuento American express" />
                                                 <button class="input-group-text btn-success" onClick={tarjetaValido}>validar</button>
-                                            </div>
+                                            </div>:""
                                             : ""
 
                                     }
