@@ -619,7 +619,7 @@ function ModalDetalle(props) {
                                 </tr>
                                 <tr className=''>
                                     <th scope="row"></th>
-                                    <td className='text-end' >Iva 12%:</td>
+                                    <td className='text-end' >Iva %:</td>
                                     <td className='text-center'>${parseFloat(listaPrecio.iva).toFixed(2)}</td>
                                 </tr>
                                 <tr>
