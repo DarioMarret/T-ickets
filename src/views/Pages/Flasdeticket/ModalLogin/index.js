@@ -12,6 +12,7 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
 import { Boleteria_password } from "utils/EventosQuery/index";
+import { Authsucrito } from "utils/Query";
 
 const ModalLogin = (props) => {
   const { showLogin, setShowLogin, abrir } = props
@@ -30,13 +31,17 @@ const ModalLogin = (props) => {
     if (credenciales.username !== '' && credenciales.pass !== '') {
 
       try {
+        let randon = sessionStorage.getItem("random")
         const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/auth_suscriptor", { email: credenciales.username.trim(), password: credenciales.pass.trim() }, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
           }
         })
-        if (data.success) {
+        /*
+        const { data } = await Authsucrito({ email: credenciales.username.trim(), password: credenciales.pass.trim() },)
+        */
+       if (data.success) {
           const cedula = await getCedula(data.data.cedula)
           let client = {
             cedula: data.data.cedula, direccion: data.data.ciudad, whatsapp: data.data.movil,
@@ -63,8 +68,23 @@ const ModalLogin = (props) => {
              color: 'bg-success',
              estado: "Inicio Exitoso",
            })*/
-          Modalstatus.estado != "" ? abrir(Modalstatus.estado) : ''
-          usedispatch(setModal({ nombre: '', estado: '' }))
+        /*  Modalstatus.estado != "" ? abrir(Modalstatus.estado) : ''
+          usedispatch(setModal({ nombre: '', estado: '' }))*/
+          console.log(Modalstatus.estado)
+            Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado==null?"": 'ModalDetalle', estado: '' })) : ''
+            if(randon){
+              axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actulizar_identificacion_asiento",
+                {
+                  "random": randon,
+                  "cedula": data.data.cedula
+                }
+              ).then(e => {
+                console.log(e)
+              }).catch(err => {
+                console.log(err)
+              })
+            }
+         // usedispatch(setModal({ nombre: '', estado: '' }))
         }
         else {
           usedispatch(setToastes({

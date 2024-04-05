@@ -11,15 +11,35 @@ import { Host, Whatsappnumero, DatosUsuariocliente, Valores } from "./constantes
  * 
  */
 export const Authsucrito = async (parms) => {
-    //console.log(parms)
-    const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/auth_suscriptor", parms, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+    let randon = sessionStorage.getItem("random")
+    try {
+        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/auth_suscriptor", parms, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            }
+        })
+        console.log(data)
+        if (randon) {
+         axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actulizar_identificacion_asiento",
+                {
+                    "random": randon,
+                    "cedula": data.data.cedula
+                }
+         ).then(e=>{
+            console.log(e)
+         }).catch(err=>{
+            console.log(err)
+         })
+            return data
         }
-    })
-    console.log(data)
-    return data
+        return data
+
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+
 }
 export const GenerarLinkPagoMedios = async () => {
     let datosPersonal = getDatosUsuariosLocalStorag()
@@ -137,7 +157,7 @@ export const ReportarDepositoCompra = async (transaccion) => {
         datosPersonal,
         valores,
         metodo,
-        concierto,...parmspro,
+        concierto, ...parmspro,
         "transaccion": transaccion
     }, {
         headers: {
@@ -172,7 +192,7 @@ export const ReportarEfectivoCompra = async () => {
         datosPersonal,
         valores,
         concierto,
-        metodo,...parmspro
+        metodo, ...parmspro
     }, {
         headers: {
             'Content-Type': 'application/json',

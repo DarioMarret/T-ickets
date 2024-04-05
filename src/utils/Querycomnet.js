@@ -8,6 +8,7 @@ import { Bodyhtml, Headerhtml } from "./Emails/cuerpo";
 /** reportar Pago */
 export const PagoRapido = async (transaccion) => {
     let codigoEvento = sessionStorage.getItem('eventoid')
+    let randon = sessionStorage.getItem("random");
     let Eventoinfo = JSON.parse(sessionStorage.getItem('infoevento'))
     let codicontry = sessionStorage.getItem("codicontry") ? sessionStorage.getItem("codicontry") : false
     let asientos = sessionStorage.getItem("asientosList") != null ? JSON.parse(sessionStorage.getItem("asientosList")).map(e => { return e.ids }) : []
@@ -52,6 +53,7 @@ export const PagoRapido = async (transaccion) => {
             "description": GetValores().description,
             "iva": GetValores().iva
         },
+        "random":randon,
         "codigo_boletos": [...tiktefisic],
         "idfactura": "",
         "transaccion": transaccion

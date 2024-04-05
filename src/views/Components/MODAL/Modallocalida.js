@@ -703,7 +703,7 @@ const LocalidadmapViews = (props) => {
                             <i className="fa fa-arrow-left">  </i>
                         </button>
                         <button className=" btn  btn-outline-light mx-1" onClick={() => cerrar()} >
-                            Regresar <i className="fa fa-shopping-cart">  </i>
+                            Continuar <i className="fa fa-shopping-cart">  </i>
                         </button>
                     </div>
 
@@ -927,6 +927,9 @@ const LocalidadmapViews = (props) => {
                         </div>}
                 </Modal.Body>
                 <Modal.Footer className="px-0 bg" >
+                    <div className=" d-flex  align-items-end">
+                        
+                    </div>
                     <div className=" container-fluid  text-dark  border-top justify-content-between p-3" style={{ minHeight: '50px', maxHeight: '188px', width: '100%' }} >
                         {mapath.precio.typo != "correlativo" ?
                             <div className="col-12 ">

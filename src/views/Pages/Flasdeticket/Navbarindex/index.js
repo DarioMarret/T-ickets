@@ -4,6 +4,12 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice"
 export default function NavbarView({ ...props }) {
     let userauthi = useSelector((state) => state.SuscritorSlice)
     let usedispatch = useDispatch()
+    const modal = (e) => {
+        console.log(e, props.visible)
+        let visible = props.visible
+        e.preventDefault();
+        props.setVisible(!visible)
+    }
     return (
         <>
             <nav className="navbar border-bottom border-dark shadow navbar-expand-lg  navbar-dark    py-1"
@@ -17,19 +23,19 @@ export default function NavbarView({ ...props }) {
                             height: 70
                         }} />
                     </a>
-                    <div className=" d-flex flex-column justify-content-end align-items-end text-edn">
+                    <div className=" d-flex flex-column justify-content-end align-items-end text-end">
                         <button className="navbar-toggler text-center " data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                            onClick={() => props.setVisible(!props.visible)}
+                            onClick={modal}
                             aria-label="Toggle navigation" type="button">
                             <span className="navbar-toggler-icon"></span>
                             
                         </button>
                         <p className=" text-white d-block d-sm-block d-md-none">Menú</p>
-                        <div className="d-none  d-flex flex-column justify-content-end align-items-end text-edn"
+                        <div className="d-none  d-flex flex-column justify-content-end align-items-end text-end"
                             data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                            onClick={() => props.setVisible(!props.visible)}
+                            onClick={modal}
                             aria-label="Toggle navigation"
                         >
 

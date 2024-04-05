@@ -214,26 +214,28 @@ const ModalEfectivofACILITO = (props) => {
             X
           </button>
         </Modal.Header>
-        <Modal.Body>
-          <div className="container pt-5">
-            <div className="d-flex flex-column " >
-              <h3 className='text-center'> Puede terminar la compra en: </h3>
-              <div className="container d-flex flex-column p-3">
-                <div className="row  pagos d-flex justify-content-center   m-1 p-2">
-                  <img src={facilito} className=" img-fluid"
+        <Modal.Body  className=' d-flex justify-content-center align-items-center'>
+        
+          <div className="row d-flex px-2 pagos  border rounded-3 h-70 " >
+              <h3 className='text-center'> Puede terminar la compra en : </h3>
+              <div className="container-fluid d-flex flex-column p-3 px-0 col-12">
+                <div className="   d-flex justify-content-center    px-0 mx-0">
+                  <img src={"https://speed.com.ec/imgepagos/puntos.png"} style={{
+                   
+                  }} className=" img-fluid"
                     onClick={succesAlert}
                   />
 
                 </div>
                 <div className="row pagos d-none d-flex justify-content-center   m-1 p-2">
-                  <img src={redacti} className=" img-fluid   " />
+                  <img src={"https://speed.com.ec/imgepagos/puntos.png"} className=" img-fluid   " />
                 </div>
                 <div className="col-12  d-flex  justify-content-center  p-1 mt-2">
                 </div>
               </div>
             </div>
 
-          </div>
+          
           <div>
             <div className={spinerst}
               style={{

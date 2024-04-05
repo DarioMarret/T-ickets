@@ -292,8 +292,11 @@ const ResgistroView = (prop) => {
                             theme: 'darkblue',
                             native: true // when using native, your OS will handle theming.
                         })*/
-                        modal.estado != null ? abrir(modal.estado) :
-                            usedispatch(setModal({ nombre: "", estado: "" }))
+                        /*modal.estado != null ? abrir(modal.estado) :
+                            usedispatch(setModal({ nombre: "", estado: "" }))*/
+                        //Modalstatus.estado != "" ? usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' })) : ''
+                        Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado == null ? "" : 'ModalDetalle', estado: '' })) : ''
+
                         usedispatch(addususcritor({ users }))
                         ReactGA.event({
                             category: "Registrado",

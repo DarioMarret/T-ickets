@@ -11,7 +11,7 @@ export const getDatosUsuariosLocalStorag = () => {
     if (data !== null) {
         return data
     } else {
-        return {id:0}
+        return {id:0,cedula:""}
     }
 }
 export function getCliente() {
@@ -33,6 +33,7 @@ export async function getCedula(cedula) {
             return false
         }
     } catch (error) {
+        console.log(error)
         return false;
     }
 }

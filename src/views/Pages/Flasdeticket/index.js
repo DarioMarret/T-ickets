@@ -70,6 +70,7 @@ import { ListaPreciosEvent } from "utils/EventosQuery/index.js";
 import { ListarEventosFinalizados } from "utils/EventosQuery/index.js";
 import ModalFirma from "views/Components/MODAL/Modalfirma.js";
 import ModalEfectivofACILITO from "views/Components/MODAL/Modalefectivo";
+import FormasPagoMopadal from "views/Components/MODAL/ModalFormasPago.js";
 const TRACKING_ID = "G-LJN507B5NX";
 const IndexFlas = () => {
   ReactGA.initialize(TRACKING_ID);
@@ -312,9 +313,14 @@ const IndexFlas = () => {
     sessionStorage.setItem("estadoevento", e.estado)
     sessionStorage.setItem("infoevento", JSON.stringify(e))
     sessionStorage.removeItem("sillascorre")
-    setspinervi("")
+    sessionStorage.setItem("random", Math.random().toString(36).slice(-10))
+    if (!userauthi.login) {
+      Abrirelevento(e)
+      return
+    }
+    //setspinervi("")
     try {
-      sessionStorage.setItem("random", Math.random().toString(36).slice(-10))
+
       let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
       let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
       // console.log(seleccionuser)
@@ -707,11 +713,14 @@ const IndexFlas = () => {
     userauthi.login ? abrir({
       ...info,
     }) :
-      usedispatch(setModal({
+      abrir({
+        ...info,
+      })
+      /*usedispatch(setModal({
         nombre: 'loginpage', estado: {
           ...info,
         }
-      }))
+      }))*/
     ReactGA.event({
       category: "Comprar",
       action: "carrusel",
@@ -741,6 +750,7 @@ const IndexFlas = () => {
         detener={detenervelocidad}
         comprar={sololimpiarlocal}
       />
+      
       <NavbarView
         icon={icon}
         setVisible={setVisible}
@@ -748,6 +758,7 @@ const IndexFlas = () => {
         SetSeleccion={SetSeleccion}
         salir={salir}
       />
+      <FormasPagoMopadal/>
       {/* header */}
       {publicidad != undefined && publicidad.length > 0 ?
         <div className="container-fluid   px-0" style={{
@@ -1134,9 +1145,12 @@ const IndexFlas = () => {
                                       : ""}
                                     <div className=" text-center">
 
-                                      <p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
+                                      {/*<p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
                                         className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
-                                        Comprar Entrada</p>
+                                        Comprar Entrada</p>*/}
+                                      {<p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
+                                        className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() =>  abrir(e)} >
+                                        Comprar Entrada</p>}
                                     </div>
                                   </div>
                                 </div>

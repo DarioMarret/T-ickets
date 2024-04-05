@@ -1806,7 +1806,7 @@ export default function DetalleCompraView() {
                                                 </tr>
                                                 <tr>
                                                     <th scope="row"></th>
-                                                    <td className='text-end' >Iva:</td>
+                                                    <td className='text-end' >Iva: {nombres.info_concierto[0]["iva"]||""}</td>
                                                     <td width="15%" className='text-center'>$ {nombres.iva}</td>
                                                 </tr>
                                                 <tr>

@@ -18,12 +18,12 @@ import { Consultar_codigos } from 'utils/index';
 function ModalDetalle(props) {
     const {
         listarCarritoDetalle, setListarCarritoDetalle,
-
         setDatoToas, intervalo
     } = props
     const usedispatch = useDispatch()
     let admin = clienteInfo()
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
+    const userauthi = useSelector((state) => state.SuscritorSlice)
     const [actualState, changeCheckState] = useState({
         check1: false,
         check2: false,
@@ -41,7 +41,7 @@ function ModalDetalle(props) {
         email: '',
         whatsapp: '',
         metodoPago: '',
-        envio: "Portal web",
+        envio: "Portal web", 
         direccion: '',
     })
     const detposito = () => {
@@ -52,7 +52,6 @@ function ModalDetalle(props) {
     }
     const handelReporShow = () => usedispatch(setModal({ nombre: 'ModalReporte', estado: '' }))
     const handleDetalleColse = () => usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-
     const handleCheckboxChange = (event) => {
         const { name, checked } = event
         if (checked) {
@@ -67,9 +66,7 @@ function ModalDetalle(props) {
                 [name]: false
             })
         }
-
     }
-
     async function handlePago() {
         let user = { email: datosPerson.email, password: datosPerson.cedula }
         let datos = getDatosUsuariosLocalStorag()
@@ -121,9 +118,7 @@ function ModalDetalle(props) {
     }
     function abrirPago() {
         sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
-        //setDetalle(!showDetalle)
         usedispatch(setModal({ nombre: 'ModalPago', estado: '' }))
-        //setModalPago(true)
     }
     const [listaPrecio, ListaPrecioset] = useState({
         total: 0,
@@ -193,6 +188,7 @@ function ModalDetalle(props) {
     }
     function validarEmail(valor) {
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+       if(userauthi.login!=true) return true
         if (emailRegex.test(valor)) {
             return true
         } else {
@@ -475,7 +471,7 @@ function ModalDetalle(props) {
                                 data-backdrop="static" data-keyboard="false">  <i className="bi bi-caret-left-fill"></i>  REGRESAR</button>
                         </div>
                     </div>
-                    <div className={"container-fluid row " + validationfrom} >
+                    {userauthi.login? <div className={"container-fluid row " + validationfrom} >
 
 
                         <div className="col-12 col-sm-6 d-flex flex-column">
@@ -569,7 +565,7 @@ function ModalDetalle(props) {
                                 placeholder="Ingrese su direccion"
                             />
                         </div>
-                    </div>
+                    </div>:""}
                     <div className="container-fluid table-responsive px-0">
                         <table className="resumen-table table ">
                             <thead>
@@ -600,7 +596,9 @@ function ModalDetalle(props) {
                         </table>
                     </div>
                     <div>
-                        <table className="table table-borderless ">
+                        <table className="table table-borderless " style={{
+                            lineHeight: 1
+                        }}>
                             <tbody>
                                 <tr>
                                     <th scope="row"></th>
@@ -712,86 +710,85 @@ function ModalDetalle(props) {
                             {
                                 !clienteauth && datosPerson.metodoPago == "Tarjeta" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
-                                        onClick={handlePago}
+                                        onClick={() => (userauthi.login) ? handlePago() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) }
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
                             }
                             {
                                 !clienteauth && datosPerson.metodoPago == "Efectivo" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { detposito() } }}
+                                       onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
+                                /** disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))} */
                                 !clienteauth && datosPerson.metodoPago == "Deposito" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login)? handelReporShow(): usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
-                            {
+                            {/* disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))} */
                                 !clienteauth && datosPerson.metodoPago == "Transferencia" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))}
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
+                                       
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? handelReporShow() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
                                 !clienteauth && !datosPerson.metodoPago ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={true}
+                                        onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: "e" }))}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
                                 clienteauth && datosPerson.metodoPago == "Tarjeta" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(datosPerson.envio != '')}
-                                        onClick={abrirPago}
+                                       
+                                        onClick={() => (userauthi.login) ? abrirPago() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) }
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR  </button> : ""
                             }
                             {
                                 clienteauth && datosPerson.metodoPago == "Efectivo" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(datosPerson.envio != '')}
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { detposito() } }}
+                                       
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado:" e" })) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
                                 clienteauth && datosPerson.metodoPago == "Deposito" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(datosPerson.envio != '')}
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
+                                       
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? handelReporShow() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
                                         <i className="fa fa-credit-card me-2"> </i>PAGAR </button> : ""
                             }
                             {
+                              /*  disabled = {!(datosPerson.envio != '')}
+                                 */
                                 clienteauth && datosPerson.metodoPago == "Transferencia" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(datosPerson.envio != '')}
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { handelReporShow() } }}
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? handelReporShow():usedispatch(setModal({ nombre: 'loginpage', estado: "e"})) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
                                 datosPerson.metodoPago === null ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={true}
+                                        onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: "e" }))}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
                                 datosPerson.metodoPago === "Efectivo-Local" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        disabled={!(datosPerson.envio != '')}
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { detposito() } }}
+                                       
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }

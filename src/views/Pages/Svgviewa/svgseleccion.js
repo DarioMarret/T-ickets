@@ -1,6 +1,6 @@
 const svgselectView = ({ text }) => {
 	const plantilla = {
-		"estandar": <svg version="1.0" id="estandar" xmlns="http://www.w3.org/2000/svg" style={{ width: '90%', height: '90%' }}
+		"estandar": <svg version="1.0" id="estandar" xmlns="http://www.w3.org/2000/svg" style={{ width: '90%', height: '60%' }}
 			width="1024.000000pt" viewBox="0 0 1024.000000 768.000000"
 			preserveAspectRatio="xMidYMid meet"
 		>
@@ -15611,7 +15611,7 @@ const svgselectView = ({ text }) => {
 				</g>
 			</g>
 		</svg>,
-		"defecto": <svg xmlns="http://www.w3.org/2000/svg" style={{ width: '90%', height: '90%' }} version="1.1" viewBox="0 0 21000 21000">
+		"defecto": <svg xmlns="http://www.w3.org/2000/svg" style={{ width: '90%', height: '60%' }} version="1.1" viewBox="0 0 21000 21000">
 			<g id="Capa_x0020_1">
 
 				<polygon id="1" className="none" fill="#DC2A27" points="5135,7413 8529,7413 8529,9988 5135,9988 " />
@@ -15651,7 +15651,7 @@ const svgselectView = ({ text }) => {
 				<path className="fil4" fill="#fff" d="M13667 2688c-57,-59 -127,-88 -209,-88 -83,0 -153,29 -210,88 -57,59 -85,130 -85,214 0,84 28,156 85,215 57,59 127,88 210,88 82,0 152,-29 209,-88 57,-59 86,-131 86,-215 0,-84 -29,-155 -86,-214zm103 522c-84,83 -188,124 -312,124 -125,0 -229,-41 -313,-124 -85,-82 -127,-185 -127,-308 0,-123 42,-225 127,-308 84,-82 188,-123 313,-123 124,0 228,41 312,123 85,83 127,185 127,308 0,123 -42,226 -127,308z" />
 			</g>
 		</svg>,
-		"esplanada": <svg xmlns="http://www.w3.org/2000/svg" style={{ width: '90% ', height: '90%' }} version="1.1" viewBox="0 0 21000 21000">
+		"esplanada": <svg xmlns="http://www.w3.org/2000/svg" style={{ width: '90% ', height: '60%' }} version="1.1" viewBox="0 0 21000 21000">
 			<g id="Capa_x0020_1">
 
 				<polygon id="1" className="none" fill="#DC2A27" points="5135,7413 8529,7413 8529,9988 5135,9988 " />

@@ -57,7 +57,17 @@ const ModalCarritoView = (prop) => {
         comision: 0,
         comision_bancaria: 0
     })
-    const handleContinuar = () => usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
+    const handleContinuar = () =>{
+         if( clienteInfo() != null ){
+        usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
+        return
+    }
+        else{
+
+             usedispatch(setModal({ nombre: 'formasPago', estado: '' }))
+            return
+            }
+    }
     const [check, setCheck] = useState(true)
     function handelMetodopago(target, value) {
         if (target.name == "selctmet") {
@@ -67,8 +77,6 @@ const ModalCarritoView = (prop) => {
                 [names]: target.value,
             })
             sessionStorage.setItem(Metodos, target.value)
-            //setCheck(false)
-
         } else {
             setChecked({
                 [target.name]: value,
@@ -761,8 +769,12 @@ const ModalCarritoView = (prop) => {
                                                     )
                                                 })
                                                 :
-                                                <SvgselectView
-                                                    text={precios.mapa} />
+                                                <div style={{
+                                                   
+                                                }}>
+                                                    <SvgselectView
+                                                        text={precios.mapa} />
+                                                </div>
                                             : ''}
                                     </div>
                                 </div>
@@ -833,7 +845,7 @@ const ModalCarritoView = (prop) => {
                                         <option value={"Transferencia"}>
                                             Transferencia
                                         </option>
-                                        {clienteInfo().perfil =="vendedores"?"":<option value={"Efectivo-Local"}>
+                                        {clienteInfo().perfil == "vendedores" ? "" : <option value={"Efectivo-Local"}>
                                             Efectivo-Local
                                         </option>}
                                         <option className="d-none" value={"Efectivo"}>
@@ -845,64 +857,65 @@ const ModalCarritoView = (prop) => {
                                     </select>
                                 </div>
                                 :
-                                <div className=""
-                                >
-                                    <strong> Método de pago</strong>
+                                <div>
+                                    <div className=" d-none"
+                                    >
+                                        <strong> Método de pago</strong>
 
-                                    <div className="form-check">
-                                        <input className="v-check form-check-input" type="radio"
-                                            checked={checked.Tarjeta == "Tarjeta" ? true : false}
-                                            onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
-                                            name="Tarjeta" id="Tarjeta" />
-                                        <label className="form-check-label" htmlFor="Tarjeta">
-                                            Tarjeta-credito
-                                        </label>
-                                    </div>
-                                    {clienteInfo() == null && fechava ?
                                         <div className="form-check">
-                                            <input className="form-check-input" type="radio"
-                                                checked={checked.Transferencia == "Transferencia" ? true : false}
-                                                onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
-                                                name="Transferencia" id="Transferencia" />
-                                            <label className="form-check-label" htmlFor="Transferencia">
-                                                Transferencia
+                                            <input className="v-check form-check-input" type="radio"
+                                                checked={checked.Tarjeta == "Tarjeta" ? true : false}
+                                                onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
+                                                name="Tarjeta" id="Tarjeta" />
+                                            <label className="form-check-label" htmlFor="Tarjeta">
+                                                Tarjeta-credito
+                                            </label>
+                                        </div>
+                                        {clienteInfo() == null && fechava ?
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="radio"
+                                                    checked={checked.Transferencia == "Transferencia" ? true : false}
+                                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
+                                                    name="Transferencia" id="Transferencia" />
+                                                <label className="form-check-label" htmlFor="Transferencia">
+                                                    Transferencia
+                                                </label>
+                                            </div> : ""}
+
+                                        {
+                                            clienteInfo() == null && fechava ? <div className="form-check ">
+                                                <input className="form-check-input" type="radio"
+                                                    checked={checked.Deposito == "Deposito" ? true : false}
+                                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
+                                                    name="Deposito" id="Deposito" />
+                                                <label className="form-check-label" htmlFor="Deposito">
+                                                    Deposito
+                                                </label>
+                                            </div> : ""}
+
+
+                                        {clienteInfo() == null ? <div className="form-check ">
+                                            <input className="v-check form-check-input" type="radio"
+                                                name="Efectivo" id="Efectivo"
+                                                checked={checked.Efectivo == "Efectivo" ? true : false}
+                                                onChange={(e) => handelMetodopago(e.target, "Efectivo")}
+                                            />
+                                            <label className="form-check-label" htmlFor="Efectivo">
+                                                Efectivo
                                             </label>
                                         </div> : ""}
 
-                                    {
-                                        clienteInfo() == null && fechava ? <div className="form-check ">
-                                            <input className="form-check-input" type="radio"
-                                                checked={checked.Deposito == "Deposito" ? true : false}
-                                                onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
-                                                name="Deposito" id="Deposito" />
-                                            <label className="form-check-label" htmlFor="Deposito">
-                                                Deposito
+                                        {clienteInfo() != null ? <div className="form-check">
+                                            <input className="v-check form-check-input" type="radio"
+                                                name="Fisico" id="Fisico"
+                                                checked={checked.Fisico == "Efectivo-Local" ? true : false}
+                                                onChange={(e) => handelMetodopago(e.target, "Efectivo-Local")}
+                                            />
+                                            <label className="form-check-label" htmlFor="Fisico">
+                                                Efectivo punto de pagos
                                             </label>
                                         </div> : ""}
-
-
-                                    {clienteInfo() == null ? <div className="form-check ">
-                                        <input className="v-check form-check-input" type="radio"
-                                            name="Efectivo" id="Efectivo"
-                                            checked={checked.Efectivo == "Efectivo" ? true : false}
-                                            onChange={(e) => handelMetodopago(e.target, "Efectivo")}
-                                        />
-                                        <label className="form-check-label" htmlFor="Efectivo">
-                                            Efectivo
-                                        </label>
-                                    </div> : ""}
-
-                                    {clienteInfo() != null ? <div className="form-check">
-                                        <input className="v-check form-check-input" type="radio"
-                                            name="Fisico" id="Fisico"
-                                            checked={checked.Fisico == "Efectivo-Local" ? true : false}
-                                            onChange={(e) => handelMetodopago(e.target, "Efectivo-Local")}
-                                        />
-                                        <label className="form-check-label" htmlFor="Fisico">
-                                            Efectivo punto de pagos
-                                        </label>
-                                    </div> : ""}
-                                    {/*
+                                        {/*
                                 estdo != "ACTIVO" ? <div className="form-check ">
                                     <input className="form-check-input" type="radio"
                                         checked={checked.Deposito == "Deposito" ? true : false}
@@ -913,20 +926,39 @@ const ModalCarritoView = (prop) => {
                                     </label>
                                 </div> : ""
                             */}
-                                    {clienteInfo() != null ?
-                                        <div className="form-check">
-                                            <input className="form-check-input" type="radio"
-                                                checked={checked.Transferencia == "Transferencia" ? true : false}
-                                                onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
-                                                name="Transferencia" id="Transferencia" />
-                                            <label className="form-check-label" htmlFor="Transferencia">
-                                                Transferencia
-                                            </label>
-                                        </div>
-                                        : ""}
+                                        {clienteInfo() != null ?
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="radio"
+                                                    checked={checked.Transferencia == "Transferencia" ? true : false}
+                                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
+                                                    name="Transferencia" id="Transferencia" />
+                                                <label className="form-check-label" htmlFor="Transferencia">
+                                                    Transferencia
+                                                </label>
+                                            </div>
+                                            : ""}
 
 
-                                </div>}
+                                    </div>
+                                    <div>
+                                        <div className="d-flex flex-row  align-items-center " >
+                        <h4
+                            style={{
+                                fontSize: '1.5rem',
+
+                            }}
+                        >SUBTOTAL:</h4>
+                        <h4
+                            style={{
+                                fontSize: '1.5rem',
+                                fontWeight: 'bold',
+                            }}
+                            className="px-1 text-danger total-detalle"> {listaPrecio.subtotal ? "$" + listaPrecio.subtotal : null}</h4>
+
+                    </div>
+                                    </div>
+                                </div>
+                        }
                     </div>
                     <div className="d-flex flex-row  align-items-center d-none" >
                         <h4
