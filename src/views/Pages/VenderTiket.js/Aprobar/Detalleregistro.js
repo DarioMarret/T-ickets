@@ -1550,7 +1550,7 @@ export default function DetalleCompraView() {
                                                             </span> :
                                                             ""}
                                                         <br></br>
-                                                        <span>{nombres.clave_acceso == null ? "NO EMITIDO" : nombres.estado_autorizacion_sri}</span>
+                                                        <span>{nombres.estado_autorizacion_sri||""}</span>
                                                         <br></br>
                                                         <span>{nombres.clave_acceso == null ? "" : nombres.clave_acceso}</span>
                                                     </div>
