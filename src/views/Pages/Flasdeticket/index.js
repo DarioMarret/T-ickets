@@ -758,7 +758,7 @@ const IndexFlas = () => {
         SetSeleccion={SetSeleccion}
         salir={salir}
       />
-      <FormasPagoMopadal/>
+     {modal.nombre == "formasPago"? <FormasPagoMopadal/>:""}
       {/* header */}
       {publicidad != undefined && publicidad.length > 0 ?
         <div className="container-fluid   px-0" style={{
