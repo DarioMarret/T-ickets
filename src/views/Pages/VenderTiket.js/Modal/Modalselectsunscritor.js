@@ -3,7 +3,7 @@ import { GetSuscritores } from "utils/SuscritorQuery"
 import { Modal } from "react-bootstrap"
 import { DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { useDispatch, useSelector } from "react-redux"
-import { setModal } from "StoreRedux/Slice/SuscritorSlice"
+import { addususcritor, setModal } from "StoreRedux/Slice/SuscritorSlice"
 import { Form } from "react-bootstrap"
 import SweetAlert from "react-bootstrap-sweetalert"
 import { getCedula } from "utils/DatosUsuarioLocalStorag"
@@ -49,10 +49,23 @@ export default function ListaSuscritor(prop) {
     const VenderTickest = async () => {
         let cedula = getDatosUsuariosLocalStorag()
         try {
+            var hoy = new Date();
             const cedulas = await getCedula(cedula.cedula)
             DatosUsuariosLocalStorag({ ...cedulas, ...datos, whatsapp: datos.movil, password: '' })
             sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...cedulas, whatsapp: datos.movil, ...datos, password: '' }))
             abrir(modalshow.modal.estado)
+            let client = {
+                cedula: datos.cedula,
+                direccion: datos.ciudad,
+                whatsapp: datos.movil,
+                telefono:datos.movil, name:
+                    datos.nombreCompleto,
+                email: datos.email, hora: String(hoy),
+                enable: datos.enable, id: datos.id,
+                discapacidad: cedulas.discapacidad || "",
+                envio: ''
+            }
+            usedispatch(addususcritor({ ...client }))
             hideAlert()
 
         } catch (error) {

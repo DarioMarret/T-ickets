@@ -58,7 +58,7 @@ const ResgistroView = (prop) => {
                     const busacar = await buscarcliente({ "cedula": e.target.value, "email": "" })
                     console.log(busacar)
                     if (busacar.success == true) {
-                       usedispatch(setToastes({
+                        usedispatch(setToastes({
                             show: true,
                             message: "Por favor inicie sesión con el correo: " + busacar.data["email"],
                             color: 'bg-success',
@@ -71,9 +71,9 @@ const ResgistroView = (prop) => {
                         console.log("Retorna aqeui")
                         const datos = await getCedula(e.target.value)
                         console.log(datos)
-                        const { name, direccion,cedula } = datos
+                        const { name, direccion, cedula } = datos
                         console.log(datos)
-                        if (false) {
+                        if (cedula) {
 
                             seTspine("d-none")
                             setPerson({
@@ -82,17 +82,19 @@ const ResgistroView = (prop) => {
                                 direccion: direccion,
                                 email: ''
                             })
-                            if(name){
-                           usedispatch(setToastes({
-                                show: true,
-                                message: "Encontrado: " + name,
-                                color: 'bg-success',
-                                estado: "Hubo una coincidencia, Complete los datos restantes ",
-                            }))
-                            DatosUsuariosLocalStorag({
-                                ...usuario,
-                                ...datos
-                            })}else{
+                            if (name) {
+                                usedispatch(setToastes({
+                                    show: true,
+                                    message: "Encontrado: " + name,
+                                    color: 'bg-success',
+                                    estado: "Hubo una coincidencia, Complete los datos restantes ",
+                                }))
+                                DatosUsuariosLocalStorag({
+                                    ...usuario,
+                                    ...datos
+                                })
+                                return
+                            } else {
                                 usedispatch(setToastes({
                                     show: true,
                                     message: "Encontrado: " + cedula,
@@ -119,9 +121,9 @@ const ResgistroView = (prop) => {
                                 direccion: '',
                                 password: '',
                             })
-                           usedispatch(setToastes({
+                            usedispatch(setToastes({
                                 show: true,
-                               message: "Por favor complete los datos cambie de método de identificación",
+                                message: "Por favor complete los datos cambie de método de identificación",
                                 color: 'bg-danger',
                                 estado: "No hubo coincidencia de cédula",
                             }))
@@ -169,7 +171,7 @@ const ResgistroView = (prop) => {
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
 
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
-           usedispatch(setToastes({
+            usedispatch(setToastes({
                 show: true,
                 message: "Falta datos por completar",
                 color: 'bg-danger',
@@ -178,7 +180,7 @@ const ResgistroView = (prop) => {
             return
         }
         if (parseInt(movil.substring(0, 1)) == 0) {
-           usedispatch(setToastes({
+            usedispatch(setToastes({
                 show: true,
                 message: "Ejemplo 999 999 999 ",
                 color: 'bg-danger',
@@ -187,7 +189,7 @@ const ResgistroView = (prop) => {
             return
         }
         if (password.length < 8) {
-           usedispatch(setToastes({
+            usedispatch(setToastes({
                 show: true,
                 message: "La contraseña debe tener almenos 8 caracteres",
                 color: 'bg-danger',
@@ -197,7 +199,7 @@ const ResgistroView = (prop) => {
         }
 
         if (!emailRegex.test(email)) {
-           usedispatch(setToastes({
+            usedispatch(setToastes({
                 show: true,
                 message: "Fromato de correo Erroneo",
                 color: 'bg-danger',
@@ -285,17 +287,17 @@ const ResgistroView = (prop) => {
                                color: 'bg-success',
                                estado: "Inicio Exitoso",
                            })*/
-                      /*  addNotification({
-                            title: 'Bienvenido',
-                            subtitle: 'registro exitosos ',
-                            message: 'Atento tendremos Noticias sobre Eladio Carrión Guayaquil',
-                            theme: 'darkblue',
-                            native: true // when using native, your OS will handle theming.
-                        })*/
+                        /*  addNotification({
+                              title: 'Bienvenido',
+                              subtitle: 'registro exitosos ',
+                              message: 'Atento tendremos Noticias sobre Eladio Carrión Guayaquil',
+                              theme: 'darkblue',
+                              native: true // when using native, your OS will handle theming.
+                          })*/
                         /*modal.estado != null ? abrir(modal.estado) :
                             usedispatch(setModal({ nombre: "", estado: "" }))*/
                         //Modalstatus.estado != "" ? usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' })) : ''
-                        Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado == null ? "" : 'ModalDetalle', estado: '' })) : ''
+                        Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado == "e" ? "ModalDetalle" : '', estado: '' })) : ''
 
                         usedispatch(addususcritor({ users }))
                         ReactGA.event({
@@ -303,9 +305,9 @@ const ResgistroView = (prop) => {
                             action: "registro",
                             label: "Button",
                         })
-                        Emailcontec({ correo: data.email, nombre: data.nombreCompleto }).then(sal=>{
+                        Emailcontec({ correo: data.email, nombre: data.nombreCompleto }).then(sal => {
                             console.log(sal)
-                        }).catch(err=>{
+                        }).catch(err => {
                             console.log(err)
 
                         })
@@ -409,6 +411,17 @@ const ResgistroView = (prop) => {
 
         });
     }, [modal.nombre == "registro" ? true : false])
+
+    function regresar() {
+        if (modal.estado == "e") {
+            usedispatch(setModal({ nombre: 'formasPago', estado: modal.estado }))
+
+        } else {
+            usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))
+
+        }
+    }
+
     return (
         <>
             <Modal
@@ -417,11 +430,11 @@ const ResgistroView = (prop) => {
                 centered
                 size='lg'
                 fullscreen={"md-down"}
-                onHide={() => usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))}
+                onHide={() => regresar()}
             >
                 <Modal.Header className="py-4  bg-dark ">
                     <button type="button" className="close"
-                        onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))}>
+                        onClick={() => modal.estado == "e" ? usedispatch(setModal({ nombre: 'formasPago', estado: modal.estado })) : usedispatch(setModal({ nombre: 'loginpage', estado: modal.estado }))}>
                         ×
                     </button>
                 </Modal.Header>
@@ -514,7 +527,7 @@ const ResgistroView = (prop) => {
                                                         id="movil"
                                                         name="movil" type="tel"
                                                         className="m-0 inptFielsd  "
-                                                        onChange={(e)=>console.log(e.target.value)}
+                                                        onChange={(e) => console.log(e.target.value)}
                                                         placeholder="999 999 99" />
                                                 </div>
                                             </div>
@@ -698,7 +711,6 @@ const ResgistroView = (prop) => {
 
                     </div>
                     <div >
-                        <ToastViews />
 
                     </div>
                     <div className={spinervi}

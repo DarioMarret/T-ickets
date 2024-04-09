@@ -187,7 +187,7 @@ const ModalLogin = (props) => {
             </div>
 
             <button type="button" className="close "
-              onClick={() => usedispatch(setModal({ nombre: '', estado: '' }))}>
+              onClick={() => Modalstatus.estado == "e" ? usedispatch(setModal({ nombre: 'formasPago', estado: Modalstatus.estado})) : usedispatch(setModal({ nombre: '', estado: '' }))}>
               ×
             </button>
           </div>

@@ -21,15 +21,16 @@ const MesadiesView = ({ text, list }) => {
   const modalshow = useSelector((state) => state.SuscritorSlice.modal)
   var mapath = useSelector((state) => state.mapaLocalSlice.pathmap)
   function Estado(e) {
+    let randon = sessionStorage.getItem("random") || ""
     let estado = list.find(f => f.silla == e)
+    //console.log(estado, randon)
     if (estado.cedula != null && estado.cedula != "") {
       if (estado.estado.toLowerCase() == "ocupado") return estado.estado.toLowerCase()
-      if (user != null && estado.cedula == user.cedula) return "seleccionado"
+      if (user != null && estado.cedula == user.cedula || (estado.cedula == randon && randon != "")) return "seleccionado"
 
       else return estado.estado.toLowerCase()
       return
     }
-    //if ((estado.cedula == null && estado.estado.toLowerCase() == "reservado")) return "disponible"
     else return estado.estado.toLowerCase()
   }
   function MesaEstado(e) {
@@ -74,7 +75,7 @@ const MesadiesView = ({ text, list }) => {
     return estado
   }
   function sillasid(e) {
-    let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
+    let info = getDatosUsuariosLocalStorag()
     let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).idsilla : ""
     let silla = list.find(f => f.silla == e)
     if (info == undefined) {
@@ -165,7 +166,7 @@ const MesadiesView = ({ text, list }) => {
       hideAlert()
       usedispatch(setSpinersli({ spiner: false }))
       correlativosadd(datos).then(ou => {
-        console.log(datos,ou)
+        console.log(datos, ou)
         if (ou.success) {
           //console.log(ou)
           ou.insert.map((e => {
@@ -338,13 +339,14 @@ const MesadiesView = ({ text, list }) => {
   const succesSilla = (e) => {
     /**/
     console.log(text)
-    let mesas = ["A","B","C","D"]
-    let sillabloquea = ["C2","D2", "B10","D9"]
-    let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
+    let mesas = ["A", "B", "C", "D"]
+    let sillabloquea = ["C2", "D2", "B10", "D9"]
+    const randon = sessionStorage.getItem("random")||""
+    let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")
     console.log((envotid == "0W2S1V"), (mesas.includes(text.split("")[0]) && !sillabloquea.includes(text)), text)
-    if (((envotid == "0W2S1V") && (mesas.includes(text.split("")[0])) && !sillabloquea.includes(text))){
-        return
+    if (((envotid == "0W2S1V") && (mesas.includes(text.split("")[0])) && !sillabloquea.includes(text))) {
+      return
     }
     let silla = list.find(f => f.silla == e)
     console.log(silla)
@@ -354,7 +356,7 @@ const MesadiesView = ({ text, list }) => {
     if (silla.estado.toLowerCase().includes("ocupado")) {
       return
     }
-    // console.log(silla)
+    console.log((silla.estado.toLowerCase().includes("reservado") && (silla.cedula == null||(silla.cedula == randon && randon != ""))))
     if (silla.estado.toLowerCase().includes("reservado") && (silla.cedula == null)) {
       if (TotalSelecion() < 10) {
         setAlert(
@@ -378,7 +380,7 @@ const MesadiesView = ({ text, list }) => {
     if (silla.estado.toLowerCase().includes("reservado") && (info.cedula != silla.cedula)) {
       return
     }
-    if (silla.estado.toLowerCase().includes("reservado") && (info.cedula == silla.cedula)) {
+    if (silla.estado.toLowerCase().includes("reservado") && (info.cedula == silla.cedula || (silla.cedula == randon && randon != ""))) {
 
       setAlert(
         <SweetAlert
@@ -436,7 +438,7 @@ const MesadiesView = ({ text, list }) => {
   }
   function timeposlimites() {
     let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
-    let nuevo = list.filter(es => es.estado.toLowerCase() == "disponible" ).map(({ idsilla, ...e }) => {
+    let nuevo = list.filter(es => es.estado.toLowerCase() == "disponible").map(({ idsilla, ...e }) => {
       let id = idsilla
       return {
         id_silla: id,

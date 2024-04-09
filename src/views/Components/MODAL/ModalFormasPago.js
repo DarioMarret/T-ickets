@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import { Modal } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
-import { setModal } from "StoreRedux/Slice/SuscritorSlice"
+import { addususcritor, setModal } from "StoreRedux/Slice/SuscritorSlice"
+import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import { GetMetodo, GetValores, getVerTienda } from "utils/CarritoLocalStorang"
-import { Metodos } from "utils/constantes"
-import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
+import { DatosUsuariocliente, DatosUsuarioLocalStorang, Metodos } from "utils/constantes"
+import { clienteInfo, getCedula } from "utils/DatosUsuarioLocalStorag"
+import { buscarcliente } from "utils/Querypanelsigui"
 
 export default function FormasPagoMopadal() {
     let modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -48,6 +50,112 @@ export default function FormasPagoMopadal() {
         iva: 0,
         desctc: 0
     })
+    function ConsultarUsuaioconsultarcorreo(){
+        //usedispatch(setModal({ nombre: 'loginpage', estado: "e" }))
+        //return
+        $.confirm({
+            theme: 'supervan',
+            closeIcon: true,
+            title: 'Firma',
+            content: 'Verificar que el voucher tenga la cédula correcta y firma',
+            type: 'red',
+            buttons: {
+                tryAgain: {
+                    text: 'Ver ',
+                    btnClass: 'btn-red',
+                    action: function () {
+                        window.open(nombres.status_pg, "_blank")
+
+                    }
+                },
+                aproba: {
+                    text: "Aprobar ",
+                    btnClass: 'btn-success',
+                    action: function () {
+                        
+                    }
+                },
+                rechaza: {
+                    text: "Rechazar",
+                    btnClass: 'btn-success',
+                    action: function () {
+                       
+                    }
+                }
+            }
+        });
+    }
+    function consultarcorreo () {
+        usedispatch(setModal({ nombre: '', estado: '' }))
+
+        $.confirm({
+            title: 'Digite correo electrónico',
+            theme:"material",
+            content: '' +
+                '<form action="" className="formName">' +
+                '<div className="form-group">' +
+                '<label>Ingrese su correo</label>' +
+                '<input type="text" placeholder="correo" class="form-control correocodigo " required />' +
+                '</div>' +
+                '</form>',
+            buttons: {
+                formSubmit: {
+                    text: 'Consultar',
+                    btnClass: 'btn-blue',
+                    action: function () {
+                        var name = this.$content.find('.correocodigo').val();
+                        if (!name) {
+                            $.alert('Ingrese un correo valido');
+                            return false;
+                        }
+                        buscarcliente({
+                            "cedula":  '',
+                            "email":  name
+                        }).then( async e => {
+                            console.log(e)
+                            if (e.success) {
+                                const cedula = await getCedula(e.data.cedula)
+                                var hoy = new Date();
+                                let client = {
+                                    cedula: e.data.cedula, 
+                                    direccion: e.data.ciudad, 
+                                    whatsapp: e.data.movil,
+                                    telefono: e.data.movil, name: 
+                                    e.data.nombreCompleto,
+                                    email: e.data.email, hora: String(hoy),
+                                    enable: e.data.enable, id: e.data.id,
+                                    discapacidad: cedula.discapacidad||"",
+                                    envio: ''
+                                }
+                                sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
+                                sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
+                                usedispatch(addususcritor({ ...client }))
+                                usedispatch(setModal({ nombre: 'ModalDetalle', estado: "e" }))
+                               /* usedispatch(setModal({
+                                    show: true,
+                                    message: "Tienes 30 minutos para restablecer tu contraseña ",
+                                    color: 'bg-success',
+                                    estado: "Solicitud enviada",
+                                }))*/
+                            } else {
+                                usedispatch(setToastes({
+                                    show: true,
+                                    message: "no se encontro datos con este correo ",
+                                    color: 'bg-danger',
+                                    estado: "Usuario no encontrado",
+                                }))
+                                usedispatch(setModal({ nombre: 'registro', estado: "e" }))
+                                return false;
+                            }
+                        })
+                    }
+                },
+                cancel: function () {
+                    usedispatch(setModal({ nombre: 'formasPago', estado: "e" }))
+                }
+            }
+        })
+    }
     useEffect(() => {
         let metodoPago = GetMetodo()
         metodoPago != null ? setChecked({
@@ -71,11 +179,11 @@ export default function FormasPagoMopadal() {
                 centered
             >
                 <Modal.Header className="py-3">
-                    <h3>Formas de Pago</h3>
+                    <h5>Seleccione la Formas de Pago</h5>
                     <button className="close " onClick={() => usedispatch(setModal({ nombre: "ModalCarritov", estado: "" }))}>X</button>
                 </Modal.Header>
                 <Modal.Body className="row  " >
-                    <div className=" d-flex  justify-content-center">
+                    <div className=" d-flex  ">
                     <div className=""
                     >
                         <strong> Método de pago</strong>
@@ -271,7 +379,7 @@ export default function FormasPagoMopadal() {
                 </Modal.Body>
                 <Modal.Footer className=" justify-content-center">
 
-                    <button onClick={() => (userauthi.login) ? usedispatch(setModal({ nombre: "ModalDetalle", estado: "" })) : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } className=" btn btn-success"> Continuar </button>
+                    <button onClick={() => (userauthi.login) ? usedispatch(setModal({ nombre: "ModalDetalle", estado: "" })) : consultarcorreo() } className=" btn btn-success"> Continuar </button>
                 </Modal.Footer>
             </Modal>
         </>

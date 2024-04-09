@@ -8,10 +8,11 @@ export const DatosUsuariosLocalStorag = (data) => {
 
 export const getDatosUsuariosLocalStorag = () => {
     let data = JSON.parse(sessionStorage.getItem(DatosUsuarioLocalStorang))
+    const randon = sessionStorage.getItem("random") || ""
     if (data !== null) {
         return data
     } else {
-        return {id:0,cedula:""}
+        return { id: 0, cedula:""+ randon }
     }
 }
 export function getCliente() {

@@ -57,16 +57,17 @@ const ModalCarritoView = (prop) => {
         comision: 0,
         comision_bancaria: 0
     })
-    const handleContinuar = () =>{
-         if( clienteInfo() != null ){
-        usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
-        return
-    }
-        else{
-
-             usedispatch(setModal({ nombre: 'formasPago', estado: '' }))
+    const handleContinuar = () => {
+        let user = getDatosUsuariosLocalStorag()
+        console.log(user)
+        if (clienteInfo() != null) {
+            usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
             return
-            }
+        }
+        else {
+            usedispatch(setModal({ nombre: 'formasPago', estado: '' }))
+            return
+        }
     }
     const [check, setCheck] = useState(true)
     function handelMetodopago(target, value) {
@@ -770,7 +771,7 @@ const ModalCarritoView = (prop) => {
                                                 })
                                                 :
                                                 <div style={{
-                                                   
+
                                                 }}>
                                                     <SvgselectView
                                                         text={precios.mapa} />
@@ -942,20 +943,20 @@ const ModalCarritoView = (prop) => {
                                     </div>
                                     <div>
                                         <div className="d-flex flex-row  align-items-center " >
-                        <h4
-                            style={{
-                                fontSize: '1.5rem',
+                                            <h4
+                                                style={{
+                                                    fontSize: '1.5rem',
 
-                            }}
-                        >SUBTOTAL:</h4>
-                        <h4
-                            style={{
-                                fontSize: '1.5rem',
-                                fontWeight: 'bold',
-                            }}
-                            className="px-1 text-danger total-detalle"> {listaPrecio.subtotal ? "$" + listaPrecio.subtotal : null}</h4>
+                                                }}
+                                            >SUBTOTAL:</h4>
+                                            <h4
+                                                style={{
+                                                    fontSize: '1.5rem',
+                                                    fontWeight: 'bold',
+                                                }}
+                                                className="px-1 text-danger total-detalle"> {listaPrecio.subtotal ? "$" + listaPrecio.subtotal : null}</h4>
 
-                    </div>
+                                        </div>
                                     </div>
                                 </div>
                         }
