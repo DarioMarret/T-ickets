@@ -130,6 +130,12 @@ export default function FormasPagoMopadal() {
                                 sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
                                 sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
                                 usedispatch(addususcritor({ ...client }))
+                                usedispatch(setToastes({
+                                    show: true,
+                                    message: "Bienvenido " + e.data.nombreCompleto,
+                                    color: 'bg-success',
+                                    estado: "Inicio Exitoso",
+                                }))
                                 usedispatch(setModal({ nombre: 'ModalDetalle', estado: "e" }))
                                /* usedispatch(setModal({
                                     show: true,
