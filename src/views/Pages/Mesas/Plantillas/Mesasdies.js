@@ -443,7 +443,7 @@ const MesadiesView = ({ text, list }) => {
       return {
         id_silla: id,
         id: mapath[0].id,
-        cedula: info.cedula,
+        cedula: info.cedula||"",
         random: sessionStorage.getItem("random"),
         estado: "",
         ...e

@@ -7,6 +7,7 @@ import { GetMetodo, GetValores, getVerTienda } from "utils/CarritoLocalStorang"
 import { DatosUsuariocliente, DatosUsuarioLocalStorang, Metodos } from "utils/constantes"
 import { clienteInfo, getCedula } from "utils/DatosUsuarioLocalStorag"
 import { buscarcliente } from "utils/Querypanelsigui"
+import axios from "../../../../node_modules/axios/index"
 
 export default function FormasPagoMopadal() {
     let modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -50,7 +51,7 @@ export default function FormasPagoMopadal() {
         iva: 0,
         desctc: 0
     })
-    function ConsultarUsuaioconsultarcorreo(){
+    function ConsultarUsuaioconsultarcorreo() {
         //usedispatch(setModal({ nombre: 'loginpage', estado: "e" }))
         //return
         $.confirm({
@@ -72,25 +73,25 @@ export default function FormasPagoMopadal() {
                     text: "Aprobar ",
                     btnClass: 'btn-success',
                     action: function () {
-                        
+
                     }
                 },
                 rechaza: {
                     text: "Rechazar",
                     btnClass: 'btn-success',
                     action: function () {
-                       
+
                     }
                 }
             }
         });
     }
-    function consultarcorreo () {
+    function consultarcorreo() {
         usedispatch(setModal({ nombre: '', estado: '' }))
 
         $.confirm({
-            title: 'Digite correo electrónico',
-            theme:"material",
+            title: 'Por favor ingresé correo electrónico para continuar con su compra',
+            theme: "material",
             content: '' +
                 '<form action="" className="formName">' +
                 '<div className="form-group">' +
@@ -100,7 +101,7 @@ export default function FormasPagoMopadal() {
                 '</form>',
             buttons: {
                 formSubmit: {
-                    text: 'Consultar',
+                    text: 'Aceptar',
                     btnClass: 'btn-blue',
                     action: function () {
                         var name = this.$content.find('.correocodigo').val();
@@ -109,49 +110,50 @@ export default function FormasPagoMopadal() {
                             return false;
                         }
                         buscarcliente({
-                            "cedula":  '',
-                            "email":  name
-                        }).then( async e => {
+                            "cedula": '',
+                            "email": name
+                        }).then(async e => {
                             console.log(e)
                             if (e.success) {
                                 const cedula = await getCedula(e.data.cedula)
                                 var hoy = new Date();
                                 let client = {
-                                    cedula: e.data.cedula, 
-                                    direccion: e.data.ciudad, 
+                                    cedula: e.data.cedula,
+                                    direccion: e.data.ciudad,
                                     whatsapp: e.data.movil,
-                                    telefono: e.data.movil, name: 
-                                    e.data.nombreCompleto,
+                                    telefono: e.data.movil, name:
+                                        e.data.nombreCompleto,
                                     email: e.data.email, hora: String(hoy),
                                     enable: e.data.enable, id: e.data.id,
-                                    discapacidad: cedula.discapacidad||"",
+                                    discapacidad: cedula.discapacidad || "",
                                     envio: ''
                                 }
-                                sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
-                                sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
-                                usedispatch(addususcritor({ ...client }))
+
                                 usedispatch(setToastes({
                                     show: true,
                                     message: "Bienvenido " + e.data.nombreCompleto,
-                                    color: 'bg-success',
-                                    estado: "Inicio Exitoso",
+                                    color: 'bg-info',
+                                    estado: "Encontrado",
                                 }))
-                                usedispatch(setModal({ nombre: 'ModalDetalle', estado: "e" }))
-                               /* usedispatch(setModal({
-                                    show: true,
-                                    message: "Tienes 30 minutos para restablecer tu contraseña ",
-                                    color: 'bg-success',
-                                    estado: "Solicitud enviada",
-                                }))*/
+                                LogeodeCedula(name)
+                                //usedispatch(setModal({ nombre: 'ModalDetalle', estado: "e" }))
+                                /* usedispatch(setModal({
+                                     show: true,
+                                     message: "Tienes 30 minutos para restablecer tu contraseña ",
+                                     color: 'bg-success',
+                                     estado: "Solicitud enviada",
+                                 }))*/
                             } else {
+
+                                // usedispatch(setModal({ nombre: 'registro', estado: "e" }))
+                                //  return false;
+                                usedispatch(setModal({ nombre: 'registro', estado: "e" }))
                                 usedispatch(setToastes({
                                     show: true,
-                                    message: "no se encontro datos con este correo ",
+                                    message: "Registre el usuario",
                                     color: 'bg-danger',
-                                    estado: "Usuario no encontrado",
+                                    estado: "Usuario no encontrado ",
                                 }))
-                                usedispatch(setModal({ nombre: 'registro', estado: "e" }))
-                                return false;
                             }
                         })
                     }
@@ -162,6 +164,109 @@ export default function FormasPagoMopadal() {
             }
         })
     }
+    function LogeodeCedula(cor) {
+        $.confirm({
+            title: 'Por favor ingresé la contraseña para continuar con la compra',
+            theme: "material",
+            content: '' +
+                '<form action="" className="formName">' +
+                '<div className="form-group">' +
+                '<label>Ingrese su contraseña</label>' +
+                '<input type="text" placeholder="contraseña" class="form-control passwor " required />' +
+                '</div>' +
+                '</form>',
+            buttons: {
+                formSubmit: {
+                    text: 'Continuar',
+                    btnClass: 'btn-blue',
+                    action: async function () {
+                        var name = this.$content.find('.passwor').val();
+                        var hoy = new Date();
+                        if (!name) {
+                            $.alert('Ingrese un correo valido');
+                            return false;
+                        } else {
+
+                            let randon = sessionStorage.getItem("random")
+                            axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/auth_suscriptor", { email: String(cor).trim(), password: String(name).trim() }, {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                                }
+                            }).then(function (data) {
+                                console.log(data);
+
+                                if (data.data.success) {
+                                    getCedula(data.data.data.cedula).then(cedula => {
+                                        let client = {
+                                            cedula: data.data.data.cedula,
+                                            direccion: data.data.data.ciudad,
+                                            whatsapp: data.data.data.movil,
+                                            telefono: data.data.data.movil,
+                                            name: data.data.data.nombreCompleto,
+                                            email: data.data.data.email, hora: String(hoy),
+                                            enable: data.data.data.enable, id: data.data.data.id,
+                                            discapacidad: cedula.discapacidad,
+                                            envio: ''
+                                        }
+                                        sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
+                                        sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
+                                        usedispatch(addususcritor({ ...client }))
+                                        usedispatch(setToastes({
+                                            show: true,
+                                            message: "Bienvenido " + data.data.data.nombreCompleto,
+                                            color: 'bg-success',
+                                            estado: "Inicio de sesión correcta",
+                                        }))
+                                        usedispatch(setModal({ nombre: 'ModalDetalle', estado: "e" }))
+
+                                        if (randon) {
+                                            axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actulizar_identificacion_asiento",
+                                                {
+                                                    "random": randon,
+                                                    "cedula": data.data.data.cedula
+                                                }
+                                            ).then(e => {
+                                                console.log(e)
+                                            }).catch(err => {
+                                                console.log(err)
+                                            })
+                                        }
+
+                                    }).catch(err => {
+                                        console.log(err)
+                                        usedispatch(setModal({ nombre: 'formasPago', estado: "e" }))
+                                        //return false
+                                    })
+
+                                } else {
+
+                                    $.alert("Hubo un error Verifique su contraseña e intente de nuevo")
+                                    usedispatch(setModal({ nombre: 'formasPago', estado: "e" }))
+                                }
+
+                            }).catch(err => {
+                                console.log(err)
+                                $.alert("Hubo un error Verifique su contraseña e intente de nuevo")
+                                usedispatch(setModal({ nombre: 'formasPago', estado: "e" }))
+                            })
+                            /*
+                            const { data } = await Authsucrito({ email: credenciales.username.trim(), password: credenciales.pass.trim() },)
+                            */
+                            //console.info(data)
+
+
+                        }
+
+                    }
+                },
+                cancel: function () {
+                    usedispatch(setModal({ nombre: 'formasPago', estado: "e" }))
+                }
+            }
+        })
+    }
+
     useEffect(() => {
         let metodoPago = GetMetodo()
         metodoPago != null ? setChecked({
@@ -181,7 +286,7 @@ export default function FormasPagoMopadal() {
         <>
             <Modal
                 show={modal.nombre == "formasPago" ? true : false}
-
+                fullscreen={'md-down'}
                 centered
             >
                 <Modal.Header className="py-3">
@@ -190,64 +295,64 @@ export default function FormasPagoMopadal() {
                 </Modal.Header>
                 <Modal.Body className="row  " >
                     <div className=" d-flex  ">
-                    <div className=""
-                    >
-                        <strong> Método de pago</strong>
+                        <div className=""
+                        >
+                            <strong> Método de pago</strong>
 
-                        <div className="form-check">
-                            <input className="v-check form-check-input" type="radio"
-                                checked={checked.Tarjeta == "Tarjeta" ? true : false}
-                                onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
-                                name="Tarjeta" id="Tarjeta" />
-                            <label className="form-check-label" htmlFor="Tarjeta">
-                                Tarjeta-credito
-                            </label>
-                        </div>
-                        {clienteInfo() == null && fechava ?
                             <div className="form-check">
-                                <input className="form-check-input" type="radio"
-                                    checked={checked.Transferencia == "Transferencia" ? true : false}
-                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
-                                    name="Transferencia" id="Transferencia" />
-                                <label className="form-check-label" htmlFor="Transferencia">
-                                    Transferencia/Deposito
+                                <input className="v-check form-check-input" type="radio"
+                                    checked={checked.Tarjeta == "Tarjeta" ? true : false}
+                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
+                                    name="Tarjeta" id="Tarjeta" />
+                                <label className="form-check-label" htmlFor="Tarjeta">
+                                    Tarjeta-credito
+                                </label>
+                            </div>
+                            {clienteInfo() == null && fechava ?
+                                <div className="form-check d-none">
+                                    <input className="form-check-input d-none" type="radio"
+                                        checked={checked.Transferencia == "Transferencia" ? true : false}
+                                        onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
+                                        name="Transferencia" id="Transferencia" />
+                                    <label className="form-check-label" htmlFor="Transferencia">
+                                        Transferencia/Deposito
+                                    </label>
+                                </div> : ""}
+
+                            {
+                                clienteInfo() == null && fechava ? <div className="form-check ">
+                                    <input className="form-check-input" type="radio"
+                                        checked={checked.Deposito == "Deposito" ? true : false}
+                                        onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
+                                        name="Deposito" id="Deposito" />
+                                    <label className="form-check-label" htmlFor="Deposito">
+                                        Transferencia/Deposito
+                                    </label>
+                                </div> : ""}
+
+
+                            {clienteInfo() == null ? <div className="form-check ">
+                                <input className="v-check form-check-input" type="radio"
+                                    name="Efectivo" id="Efectivo"
+                                    checked={checked.Efectivo == "Efectivo" ? true : false}
+                                    onChange={(e) => handelMetodopago(e.target, "Efectivo")}
+                                />
+                                <label className="form-check-label" htmlFor="Efectivo">
+                                    Efectivo
                                 </label>
                             </div> : ""}
 
-                        {
-                            clienteInfo() == null && fechava ? <div className="form-check d-none">
-                                <input className="form-check-input" type="radio"
-                                    checked={checked.Deposito == "Deposito" ? true : false}
-                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}
-                                    name="Deposito" id="Deposito" />
-                                <label className="form-check-label" htmlFor="Deposito">
-                                    Deposito
+                            {clienteInfo() != null ? <div className="form-check">
+                                <input className="v-check form-check-input" type="radio"
+                                    name="Fisico" id="Fisico"
+                                    checked={checked.Fisico == "Efectivo-Local" ? true : false}
+                                    onChange={(e) => handelMetodopago(e.target, "Efectivo-Local")}
+                                />
+                                <label className="form-check-label" htmlFor="Fisico">
+                                    Efectivo punto de pagos
                                 </label>
                             </div> : ""}
-
-
-                        {clienteInfo() == null ? <div className="form-check ">
-                            <input className="v-check form-check-input" type="radio"
-                                name="Efectivo" id="Efectivo"
-                                checked={checked.Efectivo == "Efectivo" ? true : false}
-                                onChange={(e) => handelMetodopago(e.target, "Efectivo")}
-                            />
-                            <label className="form-check-label" htmlFor="Efectivo">
-                                Efectivo
-                            </label>
-                        </div> : ""}
-
-                        {clienteInfo() != null ? <div className="form-check">
-                            <input className="v-check form-check-input" type="radio"
-                                name="Fisico" id="Fisico"
-                                checked={checked.Fisico == "Efectivo-Local" ? true : false}
-                                onChange={(e) => handelMetodopago(e.target, "Efectivo-Local")}
-                            />
-                            <label className="form-check-label" htmlFor="Fisico">
-                                Efectivo punto de pagos
-                            </label>
-                        </div> : ""}
-                        {/*
+                            {/*
                                 estdo != "ACTIVO" ? <div className="form-check ">
                                     <input className="form-check-input" type="radio"
                                         checked={checked.Deposito == "Deposito" ? true : false}
@@ -258,24 +363,24 @@ export default function FormasPagoMopadal() {
                                     </label>
                                 </div> : ""
                             */}
-                        {clienteInfo() != null ?
-                            <div className="form-check">
-                                <input className="form-check-input" type="radio"
-                                    checked={checked.Transferencia == "Transferencia" ? true : false}
-                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
-                                    name="Transferencia" id="Transferencia" />
-                                <label className="form-check-label" htmlFor="Transferencia">
-                                    Transferencia
-                                </label>
-                            </div>
-                            : ""}
+                            {clienteInfo() != null ?
+                                <div className="form-check">
+                                    <input className="form-check-input" type="radio"
+                                        checked={checked.Transferencia == "Transferencia" ? true : false}
+                                        onChange={(e) => handelMetodopago({ name: e.target.name }, "Transferencia")}
+                                        name="Transferencia" id="Transferencia" />
+                                    <label className="form-check-label" htmlFor="Transferencia">
+                                        Transferencia
+                                    </label>
+                                </div>
+                                : ""}
 
 
-                    </div>
+                        </div>
                     </div>
                     <div className=" col-12">
                         <div className="container-fluid table-responsive px-0">
-                            { <table className="resumen-table table ">
+                            {<table className="resumen-table table ">
                                 <thead>
                                     <tr className="text-black">
                                         <th scope="col" className="text-black">CONCIERTO</th>
@@ -294,7 +399,7 @@ export default function FormasPagoMopadal() {
                                                         <td className="align-self-center">{item.nombreConcierto}</td>
                                                         <td className="align-self-center">{item.localidad}</td>
                                                         <td className="align-self-center">{item.cantidad}</td>
-                                                        <td className="align-self-center">${ item.discapacidad * item.cantidad}</td>
+                                                        <td className="align-self-center">${item.discapacidad * item.cantidad}</td>
                                                     </tr>
                                                 )
                                             })
@@ -306,17 +411,17 @@ export default function FormasPagoMopadal() {
                         <div>
                             <table className="table table-borderless ">
                                 <tbody style={{
-                                    lineHeight:1
+                                    lineHeight: 1
                                 }}>
                                     <tr>
                                         <th scope="row"></th>
                                         <td className='text-end' >Subtotal:</td>
                                         <td className='text-center'>${parseFloat(listaPrecio.subtotal).toFixed(2)}</td>
                                     </tr>
-                                    <tr className={select=="Tarjeta"?'': 'd-none'}>
+                                    <tr className={select == "Tarjeta" ? '' : 'd-none'}>
                                         <th scope="row"></th>
-                                        {select =="Tarjeta"?<td className={ " text-end"} >Comisión Bancaria:</td>:""}
-                                        {select =="Tarjeta"? <td className={" text-center"}>${parseFloat(listaPrecio.comision_bancaria).toFixed(2)}</td>:""}
+                                        {select == "Tarjeta" ? <td className={" text-end"} >Comisión Bancaria:</td> : ""}
+                                        {select == "Tarjeta" ? <td className={" text-center"}>${parseFloat(listaPrecio.comision_bancaria).toFixed(2)}</td> : ""}
                                     </tr>
                                     <tr>
                                         <th scope="row"></th>
@@ -385,7 +490,7 @@ export default function FormasPagoMopadal() {
                 </Modal.Body>
                 <Modal.Footer className=" justify-content-center">
 
-                    <button onClick={() => (userauthi.login) ? usedispatch(setModal({ nombre: "ModalDetalle", estado: "" })) : consultarcorreo() } className=" btn btn-success"> Continuar </button>
+                    <button onClick={() => (userauthi.login) ? usedispatch(setModal({ nombre: "ModalDetalle", estado: "" })) : consultarcorreo()} className=" btn btn-success"> Continuar </button>
                 </Modal.Footer>
             </Modal>
         </>

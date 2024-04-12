@@ -309,7 +309,9 @@ const IndexFlas = () => {
   }
   const abrir = async (e) => {
 
-
+    LimpiarLocalStore()
+    usedispatch(borrarseleccion({ vacio: [] }))
+    sessionStorage.setItem(listaasiento, JSON.stringify([]))
     sessionStorage.setItem("estadoevento", e.estado)
     sessionStorage.setItem("infoevento", JSON.stringify(e))
     sessionStorage.removeItem("sillascorre")
