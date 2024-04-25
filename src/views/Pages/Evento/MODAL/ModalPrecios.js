@@ -28,7 +28,7 @@ const PreciosViews = (prop) => {
         })
     }
     function Guardarboletos() {
-        //  console.log( Object.values(precios))
+          console.log( Object.values(precios))
         if (Object.values(precios).some(e => e == "")) {
             usedispatch(setToastes({
                 show: true,

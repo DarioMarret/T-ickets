@@ -712,17 +712,18 @@ const IndexFlas = () => {
     let datos = e
     console.log(e)
     let info = JSON.parse(datos)
+    console.log(info)
     userauthi.login ? abrir({
       ...info,
     }) :
       abrir({
         ...info,
       })
-      /*usedispatch(setModal({
-        nombre: 'loginpage', estado: {
-          ...info,
-        }
-      }))*/
+    /*usedispatch(setModal({
+      nombre: 'loginpage', estado: {
+        ...info,
+      }
+    }))*/
     ReactGA.event({
       category: "Comprar",
       action: "carrusel",
@@ -752,7 +753,7 @@ const IndexFlas = () => {
         detener={detenervelocidad}
         comprar={sololimpiarlocal}
       />
-      
+
       <NavbarView
         icon={icon}
         setVisible={setVisible}
@@ -760,7 +761,7 @@ const IndexFlas = () => {
         SetSeleccion={SetSeleccion}
         salir={salir}
       />
-     {modal.nombre == "formasPago"? <FormasPagoMopadal/>:""}
+      {modal.nombre == "formasPago" ? <FormasPagoMopadal /> : ""}
       {/* header */}
       {publicidad != undefined && publicidad.length > 0 ?
         <div className="container-fluid   px-0" style={{
@@ -1151,7 +1152,7 @@ const IndexFlas = () => {
                                         className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => userauthi.login ? abrir(e) : usedispatch(setModal({ nombre: 'loginpage', estado: e }))} >
                                         Comprar Entrada</p>*/}
                                       {<p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"
-                                        className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() =>  abrir(e)} >
+                                        className="evento btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => abrir(e)} >
                                         Comprar Entrada</p>}
                                     </div>
                                   </div>

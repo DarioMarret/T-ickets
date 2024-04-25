@@ -41,7 +41,7 @@ function ModalDetalle(props) {
         email: '',
         whatsapp: '',
         metodoPago: '',
-        envio: "Portal web", 
+        envio: "Portal web",
         direccion: '',
     })
     const detposito = () => {
@@ -188,7 +188,7 @@ function ModalDetalle(props) {
     }
     function validarEmail(valor) {
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-       if(userauthi.login!=true) return true
+        if (userauthi.login != true) return true
         if (emailRegex.test(valor)) {
             return true
         } else {
@@ -264,7 +264,98 @@ function ModalDetalle(props) {
     }, [modalshow.nombre == "ModalDetalle" ? true : false, actualState])
     function CodigoValido() {
         let codigos = document.getElementById("basic-codigo");
-        //console.log(codigos.value)
+        if (CODIGO =="WDXMMF"){
+            if (codigos.value == "") return
+            $.confirm({
+                theme: 'supervan',
+                closeIcon: true,
+                title: 'Validar código',
+                content: 'Una vez validado el codigo no podra volver a ser usado',
+                type: 'red',
+                buttons: {
+                    tryAgain: {
+                        text: 'Aceptar ',
+                        btnClass: 'btn-red',
+                        action: function () {
+                            let datosPersonal = getDatosUsuariosLocalStorag()
+                           
+                            Consultar_codigos({ cedula: datosPersonal.cedula, codigo: codigos.value,radio:true }).then(ou => {
+                                if (ou.estado) {
+                                    let co = document.getElementById("codigocontry")
+                                    let co1 = document.getElementById("codigocontry")
+                                    let eventoinfo = JSON.parse(sessionStorage.getItem("infoevento"))
+                                    sessionStorage.setItem("codicontry", "true")
+                                    console.log(ou)
+                                    let clineteLogeado = getCliente()
+                                    let metodoPago = GetMetodo()
+                                    ListaPrecioset(GetValores())
+                                    console.log({ ...eventoinfo, post: ou.codigo })
+                                    sessionStorage.setItem("infoevento", JSON.stringify({ ...eventoinfo, post: ou.codigo }))
+                                    co.classList.add("d-none")
+                                    co1.classList.add("d-none")
+                                    /*setDatoToas({
+                                        show: true,
+                                        message: ou.mensaje,
+                                        color: 'bg-success',
+                                        estado: 'Verificación validad',
+                                    })*/
+                                    $.confirm({
+                                        title: 'Verificación validad',
+                                        content: ou.mensaje,
+                                        type: 'green',
+                                        typeAnimated: true,
+                                        buttons: {
+                                            tryAgain: {
+                                                text: 'cerrar',
+                                                btnClass: 'btn-green',
+                                                action: function () {
+                                                }
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    /*setDatoToas({
+                                        show: true,
+                                        message: ou.mensaje,
+                                        color: 'bg-danger',
+                                        estado: 'Verificación invalidad',
+                                    })*/
+                                    console.log(ou)
+                                    $.confirm({
+                                        title: 'Verificación invalidad',
+                                        content: ou.mensaje,
+                                        type: 'red',
+                                        typeAnimated: true,
+                                        buttons: {
+                                            tryAgain: {
+                                                text: 'cerrar',
+                                                btnClass: 'btn-red',
+                                                action: function () {
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }).catch(erro => {
+                                setDatoToas({
+                                    show: true,
+                                    message: "Por favor intente más tarde",
+                                    color: 'bg-danger',
+                                    estado: 'Hubo un error',
+                                })
+                            })
+                        }
+                    },
+                    aproba: {
+                        text: "Cancelar ",
+                        btnClass: 'btn-success',
+                        action: function () {
+                        }
+                    }
+                }
+            });
+            return
+        }
         if (codigos.value == "") return
         $.confirm({
             theme: 'supervan',
@@ -357,7 +448,7 @@ function ModalDetalle(props) {
         const primerosCuatroDigitos = numeroTarjeta
         return /^(34|37)/.test(primerosCuatroDigitos);
     }
-    function tarjetaValido(){
+    function tarjetaValido() {
         let codigos = document.getElementById("basic-codigo1");
         //console.log(codigos.value)
         if (codigos.value == "") return
@@ -394,7 +485,7 @@ function ModalDetalle(props) {
                             })*/
                             $.confirm({
                                 title: 'Verificación validad',
-                                content:'',
+                                content: '',
                                 type: 'green',
                                 typeAnimated: true,
                                 buttons: {
@@ -471,7 +562,7 @@ function ModalDetalle(props) {
                                 data-backdrop="static" data-keyboard="false">  <i className="bi bi-caret-left-fill"></i>  REGRESAR</button>
                         </div>
                     </div>
-                    {userauthi.login? <div className={"container-fluid row " + validationfrom} >
+                    {userauthi.login ? <div className={"container-fluid row " + validationfrom} >
 
 
                         <div className="col-12 col-sm-6 d-flex flex-column">
@@ -565,7 +656,7 @@ function ModalDetalle(props) {
                                 placeholder="Ingrese su direccion"
                             />
                         </div>
-                    </div>:""}
+                    </div> : ""}
                     <div className="container-fluid table-responsive px-0">
                         <table className="resumen-table table ">
                             <thead>
@@ -687,20 +778,33 @@ function ModalDetalle(props) {
                         <div className="col-11  text-center text-lg-end align-items-end ">
                             <div className="d-flex  justify-content-end pb-2">
                                 <div>
-                                    {CODIGO == "CDKH71"  ?
-                                        (JSON.parse(sessionStorage.getItem("codicontry"))!=true) ?<div className="input-group" id='codigocontry' >
+                                    {CODIGO == "CDKH71" ?
+                                        (JSON.parse(sessionStorage.getItem("codicontry")) != true) ? <div className="input-group" id='codigocontry' >
                                             <label className='form-label px-2'>Ingrese el código de descuento</label>
                                             <input className="form-control" id="basic-codigo" placeholder="Codigo Country Club" />
                                             <button class="input-group-text btn-success" onClick={CodigoValido}>validar</button>
-                                        </div>:""
+                                        </div> : ""
                                         : ""}
+                                    {CODIGO =="WDXMMF"?
+                                        <div className="input-group" id='codigocontry' >
+                                            <div class="d-block d-sm-block d-md-none col-12">Ingrese el código de Radio</div>
+                                            <label className='form-label px-2 d-none d-sm-none d-md-block'>Ingrese el código de Radio</label>
+                                            <input className="form-control" id="basic-codigo" placeholder="Codigo" />
+                                            <button class="input-group-text btn-success" onClick={CodigoValido}>validar</button>
+                                        </div>:""
+
+                                    }
                                     {
-                                        CODIGO == "CDKH71" && GetMetodo()=="Tarjeta" ?
-                                            (JSON.parse(sessionStorage.getItem("codicontry")) != true) ?  <div className="input-group pt-1 " id='codigocontry1' >
-                                                <label className='form-label px-2'>Digita los 6 primeros números de tu tarjeta</label>
+                                        CODIGO == "CDKH71" && GetMetodo() == "Tarjeta" ?
+                                            (JSON.parse(sessionStorage.getItem("codicontry")) != true) ? <div className="input-group pt-1 
+                                             
+                                            " id='codigocontry1' >
+                                                <div className='col-12'> <p>Diquite el codigo</p> </div>
+                                                <label className='form-label px-2 '>Digita los 6 primeros números de tu tarjeta</label>
+                                              
                                                 <input className="form-control" id="basic-codigo1" placeholder="Descuento American express" />
                                                 <button class="input-group-text btn-success" onClick={tarjetaValido}>validar</button>
-                                            </div>:""
+                                            </div> : ""
                                             : ""
 
                                     }
@@ -710,14 +814,14 @@ function ModalDetalle(props) {
                             {
                                 !clienteauth && datosPerson.metodoPago == "Tarjeta" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        onClick={() => (userauthi.login) ? handlePago() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) }
+                                        onClick={() => (userauthi.login) ? handlePago() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" }))}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
                             }
                             {
                                 !clienteauth && datosPerson.metodoPago == "Efectivo" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                       onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
@@ -725,14 +829,14 @@ function ModalDetalle(props) {
                                 /** disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))} */
                                 !clienteauth && datosPerson.metodoPago == "Deposito" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login)? handelReporShow(): usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? handelReporShow() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {/* disabled={!(Object.values(datosPerson).every((d) => d) && Object.values(actualState).every((d) => d))} */
                                 !clienteauth && datosPerson.metodoPago == "Transferencia" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                       
+
                                         onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? handelReporShow() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
@@ -747,33 +851,33 @@ function ModalDetalle(props) {
                             {
                                 clienteauth && datosPerson.metodoPago == "Tarjeta" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                       
-                                        onClick={() => (userauthi.login) ? abrirPago() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) }
+
+                                        onClick={() => (userauthi.login) ? abrirPago() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" }))}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR  </button> : ""
                             }
                             {
                                 clienteauth && datosPerson.metodoPago == "Efectivo" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                       
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado:" e" })) } }}
+
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado: " e" })) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
                                 clienteauth && datosPerson.metodoPago == "Deposito" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                       
+
                                         onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? handelReporShow() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
                                         <i className="fa fa-credit-card me-2"> </i>PAGAR </button> : ""
                             }
                             {
-                              /*  disabled = {!(datosPerson.envio != '')}
-                                 */
+                                /*  disabled = {!(datosPerson.envio != '')}
+                                   */
                                 clienteauth && datosPerson.metodoPago == "Transferencia" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? handelReporShow():usedispatch(setModal({ nombre: 'loginpage', estado: "e"})) } }}
+                                        onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? handelReporShow() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
@@ -787,7 +891,7 @@ function ModalDetalle(props) {
                             {
                                 datosPerson.metodoPago === "Efectivo-Local" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
-                                       
+
                                         onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""

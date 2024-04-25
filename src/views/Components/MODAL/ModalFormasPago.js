@@ -418,11 +418,7 @@ export default function FormasPagoMopadal() {
                                         <td className='text-end' >Subtotal:</td>
                                         <td className='text-center'>${parseFloat(listaPrecio.subtotal).toFixed(2)}</td>
                                     </tr>
-                                    <tr className={select == "Tarjeta" ? '' : 'd-none'}>
-                                        <th scope="row"></th>
-                                        {select == "Tarjeta" ? <td className={" text-end"} >Comisión Bancaria:</td> : ""}
-                                        {select == "Tarjeta" ? <td className={" text-center"}>${parseFloat(listaPrecio.comision_bancaria).toFixed(2)}</td> : ""}
-                                    </tr>
+                                    
                                     <tr>
                                         <th scope="row"></th>
                                         <td className='text-end' >Servicio Em. por Boleto:</td>
@@ -432,6 +428,11 @@ export default function FormasPagoMopadal() {
                                         <th scope="row"></th>
                                         <td className='text-end' >Iva %:</td>
                                         <td className='text-center'>${parseFloat(listaPrecio.iva).toFixed(2)}</td>
+                                    </tr>
+                                    <tr className={select == "Tarjeta" ? '' : 'd-none'}>
+                                        <th scope="row"></th>
+                                        {<td className={" text-end"} >Comisión Bancaria:</td>}
+                                        {<td className={" text-center"}>${parseFloat(listaPrecio.comision_bancaria).toFixed(2)}</td>}
                                     </tr>
                                     <tr>
 

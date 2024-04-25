@@ -307,6 +307,73 @@ export default function AprobarView() {
             $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
             setAlert("")
             setMetodo("")
+            ListarRegistropaneFecha(moment(picker.startDate.format('MM-DD-YYYY')).format().replace(" ", ""),  picker.endDate.format('MM/DD/YYYY')).then(e => {
+                //console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
+                //console.log(e)
+                if (!e.success) {
+                    usedispatch(setToastes({
+                        show: true,
+                        message: e.message,
+                        color: 'bg-warning',
+                        estado: "Todos ocupados"
+                    }))
+                    return
+                }
+                if (e.data) {
+                    const nombresUnicos = new Set();
+                    stDatos(e.data)
+                    e.data.filter(fe => moment(fe.fechaCreacion.split(" ")[0]).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).forEach(item => {
+                        nombresUnicos.add(item.info_concierto[0].nombreConcierto);
+                    });
+                    //console.log(e.data)
+                    const nombresArray = Array.from(nombresUnicos);
+                    setDatas(nombresArray)
+                    //console.log(nombresArray);
+                    let newdatos = e.data.filter(fe => moment(fe.fechaCreacion).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format()).map(row => {
+                        let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
+                        let valor = row.info_concierto.map(e => {
+                            return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
+                        }).reduce((a, b) => a + b, 0)
+                        let cantida = row.info_concierto.map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                        row.Valortotal = parseFloat(valor)
+                        row.cantidad = cantida
+                        row.concierto = nombre[0]
+                        return { ...row }
+                    })
+                    let order = newdatos.sort(sorter)
+                    usedispatch(setCompras({ compras: order }))
+                    usedispatch(setTicket({ tiketslist: order }))
+                    //console.log(newdatos)
+                    let arrprueb = []
+                    newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                        elm.ticket_usuarios.map(item => {
+                            if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
+                                let index = arrprueb.findIndex(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
+                                let cantidad = arrprueb[index].cantidad + 1
+                                arrprueb[index].cantidad = cantidad
+                            } else {
+                                arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
+                            }
+                        })
+                    })
+                    let datos = arrprueb.map(f => {
+                        return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                    })
+
+                    let nuevo = arrprueb.map(f => {
+                        return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                    })
+                    setDts([
+                        ["Localidad", "evento", "cantidad"],
+                        ...nuevo
+                    ])
+                    usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
+                    usedispatch(setlisticket({ ticket: false }))
+                    return
+                }
+            }).catch(err => {
+                console.log(err)
+            })
         });
 
         $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
@@ -468,7 +535,8 @@ export default function AprobarView() {
                 (!fechaFin || fechaElemento <= new Date(fechaFin));
             const cumpleNombre = !nombre || element.concierto === nombre;
             const cumpleFormaPago = !forma_pago || element.forma_pago === forma_pago;
-            return cumpleRangoFecha && cumpleNombre && cumpleFormaPago;
+            //return cumpleRangoFecha && cumpleNombre && cumpleFormaPago;
+            return cumpleNombre && cumpleFormaPago;
         });
 
     }
