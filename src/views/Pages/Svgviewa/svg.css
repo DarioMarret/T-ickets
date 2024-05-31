@@ -1,0 +1,1656 @@
+.stgol0 {
+    fill: #FFFFFF;
+}
+
+.stgol1 {
+    fill: #DDDCDB;
+}
+
+.stgol2 {
+    fill: #9DA6D4;
+    stroke: #1D1D1B;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+}
+
+.stgol3 {
+    fill: none;
+    stroke: #1D1D1B;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+}
+
+.stgol4 {
+    fill: #1E1E1D;
+}
+
+.stgol5 {
+    fill: #9DA6D4;
+    stroke: #1D1D1B;
+    stroke-miterlimit: 10;
+}
+
+.stgol6 {
+    fill: #FFFFFF;
+    stroke: #1D1D1B;
+    stroke-miterlimit: 10;
+}
+
+.stgol7 {
+    fill: none;
+    stroke: #1D1D1B;
+    stroke-miterlimit: 10;
+}
+
+.stgol8 {
+    fill: #1D1D1B;
+}
+
+.stgol9 {
+    fill: #959696;
+}
+
+.stgol10 {
+    fill: #555455;
+}
+
+.stgol11 {
+    fill: #CAAE53;
+}
+
+.stgol12 {
+    fill: #C7C7E0;
+}
+
+.stgol13 {
+    fill: #544940;
+}
+
+.stgol14 {
+    fill: #949ECF;
+}
+
+.stgol15 {
+    fill: #DADADA;
+}
+
+.stgol16 {
+    fill: #39A935;
+}
+
+.stgol17 {
+    fill: #FF7F00;
+}
+
+.stgol18 {
+    fill: none;
+    stroke: #FFFFFF;
+    stroke-miterlimit: 10;
+}
+
+.stgol19 {
+    font-family: 'Impact';
+}
+
+.stgol20 {
+    font-size: 17.7977px;
+}
+
+.stgol21 {
+    font-size: 34.1572px;
+}
+
+.stgol22 {
+    fill: #757575;
+}
+
+.stgol23 {
+    fill: #626261;
+}
+
+.stgol24 {
+    fill: #FDF39F;
+}
+
+.stgol25 {
+    fill: #788F9B;
+}
+
+.stgol26 {
+    fill: #AFBEC5;
+}
+
+.stgol27 {
+    fill: #202020;
+}
+
+.stgol28 {
+    fill: #424242;
+}
+
+.stgol29 {
+    fill: #90A4AE;
+}
+
+.stgol30 {
+    fill: #9E9E9E;
+}
+
+.stgol31 {
+    opacity: 0.1;
+    enable-background: new;
+}
+
+.stgol32 {
+    fill: #BDBCBC;
+}
+
+.stgol33 {
+    fill: #617D8B;
+}
+
+.stgol34 {
+    fill: #455A64;
+}
+
+.stgol35 {
+    fill: #795649;
+}
+
+.stgol36 {
+    fill: #8E6F64;
+}
+
+.stgol37 {
+    fill: #A1877F;
+}
+
+.stgol38 {
+    fill: #FFE082;
+}
+
+.stgol39 {
+    fill: #F1CEB4;
+}
+
+.stgol40 {
+    fill: #37474F;
+}
+
+.stgol41 {
+    fill: #EA592D;
+}
+
+.stgol42 {
+    opacity: 0.3;
+    fill: #B49A88;
+    enable-background: new;
+}
+
+.stgol43 {
+    fill: #FAB650;
+}
+
+.stgol44 {
+    fill: #FEC92A;
+}
+
+.stgol45 {
+    fill: #EEEEEE;
+}
+
+.stgol46 {
+    opacity: 0;
+}
+
+.stgol47 {
+    opacity: 3.000000e-02;
+}
+
+.stgol48 {
+    fill: #BDBEBB;
+}
+
+.stgol49 {
+    opacity: 6.000000e-02;
+}
+
+.stgol50 {
+    fill: #C0BFBA;
+}
+
+.stgol51 {
+    opacity: 8.000000e-02;
+}
+
+.stgol52 {
+    fill: #C2C1B9;
+}
+
+.stgol53 {
+    opacity: 0.11;
+}
+
+.stgol54 {
+    fill: #C4C3B8;
+}
+
+.stgol55 {
+    opacity: 0.14;
+}
+
+.stgol56 {
+    fill: #C5C4B8;
+}
+
+.stgol57 {
+    opacity: 0.17;
+}
+
+.stgol58 {
+    fill: #C7C5B7;
+}
+
+.stgol59 {
+    opacity: 0.19;
+}
+
+.stgol60 {
+    fill: #CAC7B6;
+}
+
+.stgol61 {
+    opacity: 0.22;
+}
+
+.stgol62 {
+    fill: #CBC8B4;
+}
+
+.stgol63 {
+    opacity: 0.25;
+}
+
+.stgol64 {
+    fill: #CDCAB4;
+}
+
+.stgol65 {
+    opacity: 0.28;
+}
+
+.stgol66 {
+    fill: #CECBB3;
+}
+
+.stgol67 {
+    opacity: 0.31;
+}
+
+.stgol68 {
+    fill: #D0CDB2;
+}
+
+.stgol69 {
+    opacity: 0.33;
+}
+
+.stgol70 {
+    fill: #D1CEB1;
+}
+
+.stgol71 {
+    opacity: 0.36;
+}
+
+.stgol72 {
+    fill: #D4D0B0;
+}
+
+.stgol73 {
+    opacity: 0.39;
+}
+
+.stgol74 {
+    fill: #D5D1AF;
+}
+
+.stgol75 {
+    opacity: 0.42;
+}
+
+.stgol76 {
+    fill: #D8D3AF;
+}
+
+.stgol77 {
+    opacity: 0.44;
+}
+
+.stgol78 {
+    fill: #DAD6AF;
+}
+
+.stgol79 {
+    opacity: 0.47;
+}
+
+.stgol80 {
+    fill: #DBD7AD;
+}
+
+.stgol81 {
+    opacity: 0.5;
+}
+
+.stgol82 {
+    fill: #DDD8AC;
+}
+
+.stgol83 {
+    opacity: 0.53;
+}
+
+.stgol84 {
+    fill: #DFDAAC;
+}
+
+.stgol85 {
+    opacity: 0.56;
+}
+
+.stgol86 {
+    fill: #E2DCAB;
+}
+
+.stgol87 {
+    opacity: 0.58;
+}
+
+.stgol88 {
+    fill: #E3DDAA;
+}
+
+.stgol89 {
+    opacity: 0.61;
+}
+
+.stgol90 {
+    fill: #E4DEA8;
+}
+
+.stgol91 {
+    opacity: 0.64;
+}
+
+.stgol92 {
+    fill: #E6E0A8;
+}
+
+.stgol93 {
+    opacity: 0.67;
+}
+
+.stgol94 {
+    fill: #E8E1A7;
+}
+
+.stgol95 {
+    opacity: 0.69;
+}
+
+.stgol96 {
+    fill: #EAE3A5;
+}
+
+.stgol97 {
+    opacity: 0.72;
+}
+
+.stgol98 {
+    fill: #EBE3A5;
+}
+
+.stgol99 {
+    opacity: 0.75;
+}
+
+.stgol100 {
+    fill: #EEE6A4;
+}
+
+.stgol101 {
+    opacity: 0.78;
+}
+
+.stgol102 {
+    fill: #EFE8A3;
+}
+
+.stgol103 {
+    opacity: 0.81;
+}
+
+.stgol104 {
+    fill: #F2EAA2;
+}
+
+.stgol105 {
+    opacity: 0.83;
+}
+
+.stgol106 {
+    fill: #F4ECA1;
+}
+
+.stgol107 {
+    opacity: 0.86;
+}
+
+.stgol108 {
+    fill: #F5ECA0;
+}
+
+.stgol109 {
+    opacity: 0.89;
+}
+
+.stgol110 {
+    fill: #F7EE9F;
+}
+
+.stgol111 {
+    opacity: 0.92;
+}
+
+.stgol112 {
+    fill: #F9EF9F;
+}
+
+.stgol113 {
+    opacity: 0.94;
+}
+
+.stgol114 {
+    fill: #FAF19F;
+}
+
+.stgol115 {
+    opacity: 0.97;
+}
+
+.stgol116 {
+    fill: #FBF29E;
+}
+
+.stgol117 {
+    opacity: 0.2;
+}
+
+.stgol118 {
+    fill: #686868;
+}
+
+.stgol119 {
+    fill: #4D4D4D;
+}
+
+.stgol120 {
+    fill: #CFD8DC;
+}
+
+.stgol121 {
+    fill: #ED6C0C;
+}
+
+.stgol122 {
+    fill: #FEE0B1;
+}
+
+.stgol123 {
+    fill: #E95226;
+}
+
+.stgol124 {
+    fill: #EE6F49;
+}
+
+.stgol125 {
+    fill: #EF7C0F;
+}
+
+.stgol126 {
+    fill: #F49719;
+}
+
+.stgol127 {
+    opacity: 1.000000e-02;
+}
+
+.stgol128 {
+    opacity: 2.000000e-02;
+}
+
+.stgol129 {
+    fill: #FFFFFD;
+}
+
+.stgol130 {
+    fill: #FFFFFC;
+}
+
+.stgol131 {
+    opacity: 5.000000e-02;
+}
+
+.stgol132 {
+    fill: #FFFFFB;
+}
+
+.stgol133 {
+    fill: #FFFDF9;
+}
+
+.stgol134 {
+    opacity: 7.000000e-02;
+}
+
+.stgol135 {
+    fill: #FFFDF8;
+}
+
+.stgol136 {
+    fill: #FFFDF7;
+}
+
+.stgol137 {
+    opacity: 9.000000e-02;
+}
+
+.stgol138 {
+    fill: #FFFDF6;
+}
+
+.stgol139 {
+    opacity: 0.1;
+}
+
+.stgol140 {
+    fill: #FFFDF5;
+}
+
+.stgol141 {
+    fill: #FFFDF4;
+}
+
+.stgol142 {
+    opacity: 0.12;
+}
+
+.stgol143 {
+    fill: #FFFDF3;
+}
+
+.stgol144 {
+    fill: #FFFCF2;
+}
+
+.stgol145 {
+    opacity: 0.15;
+}
+
+.stgol146 {
+    fill: #FFFCF1;
+}
+
+.stgol147 {
+    opacity: 0.16;
+}
+
+.stgol148 {
+    fill: #FFFCEF;
+}
+
+.stgol149 {
+    opacity: 0.18;
+}
+
+.stgol150 {
+    fill: #FFFCEE;
+}
+
+.stgol151 {
+    fill: #FFFCEC;
+}
+
+.stgol152 {
+    fill: #FFFCEB;
+}
+
+.stgol153 {
+    opacity: 0.23;
+}
+
+.stgol154 {
+    fill: #FFFBEA;
+}
+
+.stgol155 {
+    opacity: 0.24;
+}
+
+.stgol156 {
+    fill: #FFFBE9;
+}
+
+.stgol157 {
+    fill: #FFFBE8;
+}
+
+.stgol158 {
+    opacity: 0.26;
+}
+
+.stgol159 {
+    fill: #FFFBE6;
+}
+
+.stgol160 {
+    opacity: 0.27;
+}
+
+.stgol161 {
+    fill: #FFFBE5;
+}
+
+.stgol162 {
+    opacity: 0.3;
+}
+
+.stgol163 {
+    fill: #FDFAE3;
+}
+
+.stgol164 {
+    fill: #FDFAE2;
+}
+
+.stgol165 {
+    opacity: 0.32;
+}
+
+.stgol166 {
+    fill: #FFFAE1;
+}
+
+.stgol167 {
+    fill: #FFFAE0;
+}
+
+.stgol168 {
+    opacity: 0.34;
+}
+
+.stgol169 {
+    fill: #FFFADF;
+}
+
+.stgol170 {
+    opacity: 0.35;
+}
+
+.stgol171 {
+    fill: #FFFADD;
+}
+
+.stgol172 {
+    fill: #FFFADC;
+}
+
+.stgol173 {
+    opacity: 0.38;
+}
+
+.stgol174 {
+    fill: #FFF9DB;
+}
+
+.stgol175 {
+    fill: #FFF9DA;
+}
+
+.stgol176 {
+    opacity: 0.4;
+}
+
+.stgol177 {
+    fill: #FFF9D8;
+}
+
+.stgol178 {
+    opacity: 0.41;
+}
+
+.stgol179 {
+    fill: #FDF9D7;
+}
+
+.stgol180 {
+    opacity: 0.43;
+}
+
+.stgol181 {
+    fill: #FDF9D6;
+}
+
+.stgol182 {
+    fill: #FDF9D5;
+}
+
+.stgol183 {
+    opacity: 0.45;
+}
+
+.stgol184 {
+    fill: #FFF8D3;
+}
+
+.stgol185 {
+    fill: #FFF8D1;
+}
+
+.stgol186 {
+    opacity: 0.48;
+}
+
+.stgol187 {
+    fill: #FFF8D0;
+}
+
+.stgol188 {
+    opacity: 0.49;
+}
+
+.stgol189 {
+    fill: #FFF8CF;
+}
+
+.stgol190 {
+    opacity: 0.51;
+}
+
+.stgol191 {
+    fill: #FFF8CD;
+}
+
+.stgol192 {
+    opacity: 0.52;
+}
+
+.stgol193 {
+    fill: #FFF8CC;
+}
+
+.stgol194 {
+    fill: #FDF7CC;
+}
+
+.stgol195 {
+    opacity: 0.55;
+}
+
+.stgol196 {
+    fill: #FDF7CB;
+}
+
+.stgol197 {
+    fill: #FFF7C8;
+}
+
+.stgol198 {
+    opacity: 0.57;
+}
+
+.stgol199 {
+    fill: #FFF7C7;
+}
+
+.stgol200 {
+    fill: #FFF7C6;
+}
+
+.stgol201 {
+    opacity: 0.59;
+}
+
+.stgol202 {
+    fill: #FDF7C5;
+}
+
+.stgol203 {
+    opacity: 0.6;
+}
+
+.stgol204 {
+    fill: #FDF7C4;
+}
+
+.stgol205 {
+    fill: #FDF7C3;
+}
+
+.stgol206 {
+    opacity: 0.62;
+}
+
+.stgol207 {
+    fill: #FDF6C2;
+}
+
+.stgol208 {
+    fill: #FDF6C1;
+}
+
+.stgol209 {
+    opacity: 0.65;
+}
+
+.stgol210 {
+    opacity: 0.66;
+}
+
+.stgol211 {
+    fill: #FDF6BF;
+}
+
+.stgol212 {
+    fill: #FDF6BD;
+}
+
+.stgol213 {
+    opacity: 0.68;
+}
+
+.stgol214 {
+    fill: #FDF6BC;
+}
+
+.stgol215 {
+    fill: #FDF6BA;
+}
+
+.stgol216 {
+    opacity: 0.7;
+}
+
+.stgol217 {
+    fill: #FFF6BA;
+}
+
+.stgol218 {
+    opacity: 0.73;
+}
+
+.stgol219 {
+    fill: #FFF6B9;
+}
+
+.stgol220 {
+    opacity: 0.74;
+}
+
+.stgol221 {
+    fill: #FFF5B8;
+}
+
+.stgol222 {
+    fill: #FDF5B7;
+}
+
+.stgol223 {
+    opacity: 0.76;
+}
+
+.stgol224 {
+    fill: #FDF5B4;
+}
+
+.stgol225 {
+    opacity: 0.77;
+}
+
+.stgol226 {
+    fill: #FDF5B3;
+}
+
+.stgol227 {
+    opacity: 0.8;
+}
+
+.stgol228 {
+    fill: #FDF5B1;
+}
+
+.stgol229 {
+    fill: #FDF4B0;
+}
+
+.stgol230 {
+    opacity: 0.82;
+}
+
+.stgol231 {
+    fill: #FDF4AF;
+}
+
+.stgol232 {
+    fill: #FDF4AE;
+}
+
+.stgol233 {
+    opacity: 0.84;
+}
+
+.stgol234 {
+    opacity: 0.85;
+}
+
+.stgol235 {
+    fill: #FDF4AB;
+}
+
+.stgol236 {
+    fill: #FDF4AA;
+}
+
+.stgol237 {
+    opacity: 0.88;
+}
+
+.stgol238 {
+    fill: #FDF4A9;
+}
+
+.stgol239 {
+    fill: #FDF3A8;
+}
+
+.stgol240 {
+    opacity: 0.9;
+}
+
+.stgol241 {
+    fill: #FDF3A7;
+}
+
+.stgol242 {
+    opacity: 0.91;
+}
+
+.stgol243 {
+    fill: #FDF3A6;
+}
+
+.stgol244 {
+    opacity: 0.93;
+}
+
+.stgol245 {
+    fill: #FDF3A5;
+}
+
+.stgol246 {
+    fill: #FCF3A4;
+}
+
+.stgol247 {
+    opacity: 0.95;
+}
+
+.stgol248 {
+    fill: #FDF3A1;
+}
+
+.stgol249 {
+    opacity: 0.98;
+}
+
+.stgol250 {
+    fill: #FDF3A0;
+}
+
+.stgol251 {
+    opacity: 0.99;
+}
+
+.stgol252 {
+    fill: #FCF29F;
+}
+
+.stgol253 {
+    fill: #646462;
+}
+
+.stgol254 {
+    fill: #656563;
+}
+
+.stgol255 {
+    fill: #666663;
+}
+
+.stgol256 {
+    fill: #686965;
+}
+
+.stgol257 {
+    fill: #6B6A65;
+}
+
+.stgol258 {
+    fill: #6D6C66;
+}
+
+.stgol259 {
+    fill: #6F6E67;
+}
+
+.stgol260 {
+    fill: #706F67;
+}
+
+.stgol261 {
+    fill: #727167;
+}
+
+.stgol262 {
+    fill: #747268;
+}
+
+.stgol263 {
+    fill: #76756A;
+}
+
+.stgol264 {
+    fill: #787669;
+}
+
+.stgol265 {
+    fill: #79776A;
+}
+
+.stgol266 {
+    fill: #7B7A6B;
+}
+
+.stgol267 {
+    fill: #7C7A6B;
+}
+
+.stgol268 {
+    fill: #7F7C6C;
+}
+
+.stgol269 {
+    fill: #807E6D;
+}
+
+.stgol270 {
+    fill: #807F6D;
+}
+
+.stgol271 {
+    fill: #82806E;
+}
+
+.stgol272 {
+    fill: #84826F;
+}
+
+.stgol273 {
+    fill: #86836F;
+}
+
+.stgol274 {
+    fill: #888570;
+}
+
+.stgol275 {
+    fill: #898771;
+}
+
+.stgol276 {
+    fill: #8B8871;
+}
+
+.stgol277 {
+    fill: #8C8A72;
+}
+
+.stgol278 {
+    fill: #8F8C73;
+}
+
+.stgol279 {
+    fill: #8F8D73;
+}
+
+.stgol280 {
+    fill: #928F74;
+}
+
+.stgol281 {
+    fill: #939075;
+}
+
+.stgol282 {
+    fill: #959175;
+}
+
+.stgol283 {
+    fill: #989476;
+}
+
+.stgol284 {
+    fill: #999677;
+}
+
+.stgol285 {
+    fill: #9B9878;
+}
+
+.stgol286 {
+    fill: #9D9978;
+}
+
+.stgol287 {
+    fill: #9F9B7A;
+}
+
+.stgol288 {
+    fill: #A19D7B;
+}
+
+.stgol289 {
+    fill: #A29E7A;
+}
+
+.stgol290 {
+    fill: #A4A07B;
+}
+
+.stgol291 {
+    fill: #A6A27C;
+}
+
+.stgol292 {
+    fill: #A8A37C;
+}
+
+.stgol293 {
+    fill: #A9A57D;
+}
+
+.stgol294 {
+    fill: #AAA77E;
+}
+
+.stgol295 {
+    fill: #ACA77E;
+}
+
+.stgol296 {
+    fill: #AEAA7E;
+}
+
+.stgol297 {
+    fill: #B1AC80;
+}
+
+.stgol298 {
+    fill: #B3AD80;
+}
+
+.stgol299 {
+    fill: #B4B081;
+}
+
+.stgol300 {
+    fill: #B6B181;
+}
+
+.stgol301 {
+    fill: #B8B281;
+}
+
+.stgol302 {
+    fill: #BAB482;
+}
+
+.stgol303 {
+    fill: #BCB782;
+}
+
+.stgol304 {
+    fill: #BDB782;
+}
+
+.stgol305 {
+    fill: #BFB983;
+}
+
+.stgol306 {
+    fill: #C1BB85;
+}
+
+.stgol307 {
+    fill: #C2BD86;
+}
+
+.stgol308 {
+    fill: #C4BD85;
+}
+
+.stgol309 {
+    fill: #C5BF86;
+}
+
+.stgol310 {
+    fill: #C9C388;
+}
+
+.stgol311 {
+    fill: #CAC387;
+}
+
+.stgol312 {
+    fill: #CCC589;
+}
+
+.stgol313 {
+    fill: #CEC78A;
+}
+
+.stgol314 {
+    fill: #CFC88A;
+}
+
+.stgol315 {
+    fill: #D1CA8B;
+}
+
+.stgol316 {
+    fill: #D3CC8C;
+}
+
+.stgol317 {
+    fill: #D4CD8C;
+}
+
+.stgol318 {
+    fill: #D7CF8D;
+}
+
+.stgol319 {
+    fill: #D7D08E;
+}
+
+.stgol320 {
+    fill: #DAD28E;
+}
+
+.stgol321 {
+    fill: #DCD48F;
+}
+
+.stgol322 {
+    fill: #DFD790;
+}
+
+.stgol323 {
+    fill: #E0D890;
+}
+
+.stgol324 {
+    fill: #E2DA91;
+}
+
+.stgol325 {
+    fill: #E4DC91;
+}
+
+.stgol326 {
+    fill: #E5DC91;
+}
+
+.stgol327 {
+    fill: #E7DE92;
+}
+
+.stgol328 {
+    fill: #E8E093;
+}
+
+.stgol329 {
+    fill: #EAE294;
+}
+
+.stgol330 {
+    fill: #EBE294;
+}
+
+.stgol331 {
+    fill: #EDE496;
+}
+
+.stgol332 {
+    fill: #F1E897;
+}
+
+.stgol333 {
+    fill: #F1E997;
+}
+
+.stgol334 {
+    fill: #F3EB98;
+}
+
+.stgol335 {
+    fill: #F5ED99;
+}
+
+.stgol336 {
+    fill: #F7ED99;
+}
+
+.stgol337 {
+    fill: #F8EF9A;
+}
+
+.stgol338 {
+    fill: #F9F19C;
+}
+
+.stgol339 {
+    fill: #FBF19D;
+}
+
+.stgol340 {
+    fill: #E0E0E0;
+}
+
+.stgol341 {
+    fill: #FDD835;
+}
+
+.stgol342 {
+    fill: #FFEC3D;
+}
+
+.stgol343 {
+    fill: #5D4037;
+}
+
+.stgol344 {
+    fill: #0597A7;
+}
+
+.stgol345 {
+    fill: #01838F;
+}
+
+.stgol346 {
+    fill: #BDBCBB;
+}
+
+.stgol347 {
+    fill: #BDBDBB;
+}
+
+.stgol348 {
+    opacity: 4.000000e-02;
+}
+
+.stgol349 {
+    fill: #BFBDBB;
+}
+
+.stgol350 {
+    fill: #BFBFBA;
+}
+
+.stgol351 {
+    fill: #C1C0BA;
+}
+
+.stgol352 {
+    fill: #C1C0B9;
+}
+
+.stgol353 {
+    fill: #C4C3BA;
+}
+
+.stgol354 {
+    fill: #C5C3B8;
+}
+
+.stgol355 {
+    opacity: 0.13;
+}
+
+.stgol356 {
+    fill: #C6C4B7;
+}
+
+.stgol357 {
+    fill: #C9C6B6;
+}
+
+.stgol358 {
+    fill: #C9C7B6;
+}
+
+.stgol359 {
+    opacity: 0.21;
+}
+
+.stgol360 {
+    fill: #CBC9B5;
+}
+
+.stgol361 {
+    fill: #CCC9B4;
+}
+
+.stgol362 {
+    fill: #CCCAB4;
+}
+
+.stgol363 {
+    fill: #CECAB3;
+}
+
+.stgol364 {
+    opacity: 0.29;
+}
+
+.stgol365 {
+    fill: #CFCBB3;
+}
+
+.stgol366 {
+    fill: #D2CDB2;
+}
+
+.stgol367 {
+    fill: #D3CEB0;
+}
+
+.stgol368 {
+    opacity: 0.37;
+}
+
+.stgol369 {
+    fill: #D4D1B0;
+}
+
+.stgol370 {
+    fill: #D5D2AF;
+}
+
+.stgol371 {
+    fill: #D5D1AE;
+}
+
+.stgol372 {
+    fill: #D7D3AF;
+}
+
+.stgol373 {
+    fill: #D9D5AF;
+}
+
+.stgol374 {
+    opacity: 0.46;
+}
+
+.stgol375 {
+    fill: #DAD6AD;
+}
+
+.stgol376 {
+    fill: #DCD7AC;
+}
+
+.stgol377 {
+    fill: #DFDAAD;
+}
+
+.stgol378 {
+    fill: #E0D9AC;
+}
+
+.stgol379 {
+    opacity: 0.54;
+}
+
+.stgol380 {
+    fill: #E0DAAC;
+}
+
+.stgol381 {
+    fill: #E1DCAA;
+}
+
+.stgol382 {
+    fill: #E4DEA9;
+}
+
+.stgol383 {
+    fill: #E5DEA8;
+}
+
+.stgol384 {
+    fill: #E5DFA8;
+}
+
+.stgol385 {
+    opacity: 0.63;
+}
+
+.stgol386 {
+    fill: #E6DFA8;
+}
+
+.stgol387 {
+    fill: #E6E0A7;
+}
+
+.stgol388 {
+    fill: #E7E1A7;
+}
+
+.stgol389 {
+    fill: #E7E1A5;
+}
+
+.stgol390 {
+    fill: #E9E2A5;
+}
+
+.stgol391 {
+    opacity: 0.71;
+}
+
+.stgol392 {
+    fill: #EBE4A5;
+}
+
+.stgol393 {
+    fill: #EBE5A5;
+}
+
+.stgol394 {
+    fill: #EDE6A5;
+}
+
+.stgol395 {
+    fill: #EEE8A5;
+}
+
+.stgol396 {
+    fill: #EFE8A4;
+}
+
+.stgol397 {
+    fill: #F1E9A3;
+}
+
+.stgol398 {
+    opacity: 0.79;
+}
+
+.stgol399 {
+    fill: #F3EBA2;
+}
+
+.stgol400 {
+    fill: #F4EBA0;
+}
+
+.stgol401 {
+    opacity: 0.87;
+}
+
+.stgol402 {
+    fill: #F6EDA0;
+}
+
+.stgol403 {
+    fill: #F8EF9F;
+}
+
+.stgol404 {
+    fill: #F9F0A0;
+}
+
+.stgol405 {
+    fill: #F8F09E;
+}
+
+.stgol406 {
+    opacity: 0.96;
+}
+
+.stgol407 {
+    fill: #FAF19E;
+}
+
+.stgol408 {
+    fill: #FBF29D;
+}
+
+.stgol409 {
+    fill: #E5007E;
+}

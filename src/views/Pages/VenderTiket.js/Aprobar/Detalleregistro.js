@@ -12,7 +12,7 @@ import { Tooltip } from "@mui/material";
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box } from '@mui/material';
-import { Listarticketporestado } from "utils/userQuery";
+import { Generar_Boleto_nuevos, Listarticketporestado } from "utils/userQuery";
 import { ListarLocalidad } from "utils/LocalidadesQuery/index.js";
 import { ValidarToken } from "utils/Querycomnet";
 import { eliminartiket } from "utils/pagos/Queripagos";
@@ -981,10 +981,10 @@ export default function DetalleCompraView() {
                     text: 'Aceptar',
                     btnClass: 'btn-blue',
                     action: function () {
-                        GEnerarBoletos({
+                        Generar_Boleto_nuevos({
                             "id_registraCompra": nombres.id,
                             "cedula": nombres.cedula
-                        }).then(ouput => {
+                        }, nombres.id).then(ouput => {
                             ouput.success ? history.goBack() : ""
                         }).catch(errr => {
                             console.log(errr)

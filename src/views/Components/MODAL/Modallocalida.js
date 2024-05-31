@@ -425,6 +425,7 @@ const LocalidadmapViews = (props) => {
     }
     function Agregarsilla(e) {
         console.log(e)
+        if(String(e.estado.toLowerCase()) =="ocupado") return
         let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
         let user = getDatosUsuariosLocalStorag()
         let variant = document.getElementById(e.idsilla)
@@ -544,8 +545,10 @@ const LocalidadmapViews = (props) => {
         const user = getDatosUsuariosLocalStorag()
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
         //  console.log(d.estado)
+        //console.log(d)
         if (d.cedula != undefined) {
-            if (user.cedula == d.cedula) return "seleccionado  " + nombres.idcolor + "silla"
+            if (d.estado.toLowerCase() == "ocupado") return d.estado.toLowerCase()
+            if (user.cedula == d.cedula) return "seleccionado  " + nombres.idcolor + "silla"            
             else
                 return d.estado.toLowerCase() == "seleccionado" ? "reservado" : d.estado.toLowerCase()
         }
@@ -773,42 +776,47 @@ const LocalidadmapViews = (props) => {
                             <div className="col-12 pt-1">
                                 {modalshow.nombre == "Modallocalida" && mapath.precio.typo == "fila" ?
                                     <div className="section" style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
+                                        <div className="row">
                                         {modalshow.nombre == "Modallocalida" && mapath.localidadespecica.length > 0 ?
                                             mapath.localidadespecica.map((e, i) => {
                                                 {
                                                     return (
-                                                        <div className='d-flex  px-3 p-1 justify-content-ce ' key={"lista" + i}>
-                                                            <span className="d-inline-block " disabled >
-                                                                <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
+                                                        
+                                                        <div className='d-flex flex-row justify-content-around  px-3 p-1 ' key={"lista" + i} >
+                                                            <span className=" " disabled >
+                                                                <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '25px', width: '25px' }} >
                                                                     <div className="d-flex justify-content-center">
-                                                                        <span style={{ fontSize: '0.7em' }}>    {e.fila} </span>
+                                                                        <span style={{ fontSize: '0.5em' }}>    {e.fila} </span>
                                                                     </div>
                                                                 </div>
                                                             </span>
-                                                            <div className=' d-flex px-1  align-items-stretch ' style={{ width: '100%' }}>
+                                                            <div className=' d-flex ml-3 flex-row px-1 justify-content-center  align-items-stretch ' style={{ width: '100%' }}>
                                                                 {e.asientos.map((silla, index) => {
-                                                                    let numero = index + 1
+                                                                    let numero = String(silla.silla).split("-")[2]
                                                                     return (
                                                                         <div key={"silla" + index} id={silla.idsilla}
                                                                             className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 sillasfila text-center  justify-content-center align-items-center '}
-                                                                            style={{ height: '30px', width: '30px', marginLeft: '1px', }}
+                                                                            style={{ height: '20px', width: '20px', marginLeft: '1px', }}
                                                                             onClick={() => Agregarsilla(silla)}
                                                                         >
-                                                                            <div className={'px-3 d-flex   text-white justify-content-center  '} >
+                                                                            <div className={' px-3 d-flex   text-white justify-content-center  '} >
                                                                                 <div className="d-flex justify-content-center">
-                                                                                    <span style={{ fontSize: '0.7em' }}> {numero} </span>
+                                                                                    <span style={{ fontSize: '0.5em' }}> {numero} </span>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     )
                                                                 })}
                                                             </div>
+                                                        
                                                         </div>
                                                     )
                                                 }
                                             })
                                             : ""}
-                                    </div> : ''}
+                                    </div> 
+                                    </div>
+                                    : ''}
                                 {modalshow.nombre == "Modallocalida" && mapath.precio.typo === "mesa" ?
                                     <div className="col-sm-12 text-center " style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
                                         <div className='d-flex  px-3 align-items-center' >

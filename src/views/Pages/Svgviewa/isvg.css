@@ -65,7 +65,11 @@
    transition: all .2s ease-in-out;
 
  }
-
+#tooltip {
+  border: 0.5px solid;
+  border-radius: 5px;
+  padding: 0px;
+}
  polygon.disponible:hover {
    /* transform: scale(1.01);
    cursor: pointer;*/

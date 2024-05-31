@@ -55,6 +55,8 @@ export default function ListaderegistroView(props) {
     }
     const eliminarregistro = (row) => {
         //console.log(row)
+
+        if(row.forma_pago=="Tarjeta") return
         $.confirm({
             title: 'Desea eliminar el registro de compra ',
             content: '',

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Modal } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
-import { addususcritor, setModal } from "StoreRedux/Slice/SuscritorSlice"
+import { addususcritor, setModal, setSpinersli } from "StoreRedux/Slice/SuscritorSlice"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import { GetMetodo, GetValores, getVerTienda } from "utils/CarritoLocalStorang"
 import { DatosUsuariocliente, DatosUsuarioLocalStorang, Metodos } from "utils/constantes"
@@ -86,7 +86,9 @@ export default function FormasPagoMopadal() {
             }
         });
     }
+    let spinercarga = document.getElementById("spinercarga")
     function consultarcorreo() {
+
         usedispatch(setModal({ nombre: '', estado: '' }))
 
         $.confirm({
@@ -109,6 +111,8 @@ export default function FormasPagoMopadal() {
                             $.alert('Ingrese un correo valido');
                             return false;
                         }
+                        spinercarga.classList.remove("d-none");
+
                         buscarcliente({
                             "cedula": '',
                             "email": name
@@ -131,10 +135,12 @@ export default function FormasPagoMopadal() {
 
                                 usedispatch(setToastes({
                                     show: true,
-                                    message: "Bienvenido " + e.data.nombreCompleto,
+                                    message: "Usuario encontrado " + e.data.nombreCompleto,
                                     color: 'bg-info',
                                     estado: "Encontrado",
                                 }))
+
+                                spinercarga.classList.add("d-none");
                                 LogeodeCedula(name)
                                 //usedispatch(setModal({ nombre: 'ModalDetalle', estado: "e" }))
                                 /* usedispatch(setModal({
@@ -144,9 +150,10 @@ export default function FormasPagoMopadal() {
                                      estado: "Solicitud enviada",
                                  }))*/
                             } else {
-
+                                spinercarga.classList.add("d-none")
                                 // usedispatch(setModal({ nombre: 'registro', estado: "e" }))
                                 //  return false;
+                               
                                 usedispatch(setModal({ nombre: 'registro', estado: "e" }))
                                 usedispatch(setToastes({
                                     show: true,
@@ -159,6 +166,7 @@ export default function FormasPagoMopadal() {
                     }
                 },
                 cancel: function () {
+                    //spinercarga.classList.remove("d-none");
                     usedispatch(setModal({ nombre: 'formasPago', estado: "e" }))
                 }
             }
@@ -186,7 +194,7 @@ export default function FormasPagoMopadal() {
                             $.alert('Ingrese un correo valido');
                             return false;
                         } else {
-
+                            spinercarga.classList.remove("d-none");
                             let randon = sessionStorage.getItem("random")
                             axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/auth_suscriptor", { email: String(cor).trim(), password: String(name).trim() }, {
                                 headers: {
@@ -228,25 +236,33 @@ export default function FormasPagoMopadal() {
                                                 }
                                             ).then(e => {
                                                 console.log(e)
+                                                spinercarga.classList.add("d-none");
+                                                //useDispatch(setSpinersli({ spiner: false }))
                                             }).catch(err => {
+                                                spinercarga.classList.add("d-none");
                                                 console.log(err)
                                             })
+
+                                        } else {
+                                            spinercarga.classList.add("d-none");
                                         }
 
                                     }).catch(err => {
                                         console.log(err)
+                                        spinercarga.classList.add("d-none");
                                         usedispatch(setModal({ nombre: 'formasPago', estado: "e" }))
                                         //return false
                                     })
 
                                 } else {
-
+                                    spinercarga.classList.add("d-none");
                                     $.alert("Hubo un error Verifique su contraseña e intente de nuevo")
                                     usedispatch(setModal({ nombre: 'formasPago', estado: "e" }))
                                 }
 
                             }).catch(err => {
                                 console.log(err)
+                                spinercarga.classList.add("d-none");
                                 $.alert("Hubo un error Verifique su contraseña e intente de nuevo")
                                 usedispatch(setModal({ nombre: 'formasPago', estado: "e" }))
                             })
@@ -418,7 +434,7 @@ export default function FormasPagoMopadal() {
                                         <td className='text-end' >Subtotal:</td>
                                         <td className='text-center'>${parseFloat(listaPrecio.subtotal).toFixed(2)}</td>
                                     </tr>
-                                    
+
                                     <tr>
                                         <th scope="row"></th>
                                         <td className='text-end' >Servicio Em. por Boleto:</td>

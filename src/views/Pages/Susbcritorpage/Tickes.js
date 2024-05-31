@@ -520,7 +520,7 @@ function Example() {
                     <TabPanel value={value} index={2} >
 
                         <TablasViwe
-                            number={3}
+                            number={5}
                             thead={thead}
                             showDatos={showDatos}
                             Titel={"nuevo"}
@@ -528,7 +528,7 @@ function Example() {
                     </TabPanel>
                     <TabPanel value={value} index={3}>
                         <TablasViwe
-                            number={3}
+                            number={4}
                             thead={theads}
                             showDatos={ShowFoder}
                             Titel={"OTROS TICKTES"}

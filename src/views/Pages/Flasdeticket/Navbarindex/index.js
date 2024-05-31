@@ -12,6 +12,7 @@ export default function NavbarView({ ...props }) {
     }
     return (
         <>
+            
             <nav className="navbar border-bottom border-dark shadow navbar-expand-lg  navbar-dark    py-1"
                 style={{
                     backgroundColor: "#311C7C"
@@ -24,15 +25,18 @@ export default function NavbarView({ ...props }) {
                         }} />
                     </a>
                     <div className=" d-flex flex-column justify-content-end align-items-end text-end">
-                        <button className="navbar-toggler text-center " data-bs-toggle="collapse"
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        {/*  <button className="navbar-toggler text-center " data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                             onClick={modal}
                             aria-label="Toggle navigation" type="button">
                             <span className="navbar-toggler-icon"></span>
                             
-                        </button>
+                        </button>*/}
                         <p className=" text-white d-block d-sm-block d-md-none">Menú</p>
-                        <div className="d-none  d-flex flex-column justify-content-end align-items-end text-end"
+                        {/*<div className="d-none  d-flex flex-column justify-content-end align-items-end text-end"
                             data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                             onClick={modal}
@@ -42,7 +46,7 @@ export default function NavbarView({ ...props }) {
                             
                             <p className=" text-white d-block d-sm-block d-md-none">Menú</p>
 
-                        </div>
+                    </div>*/}
                     </div>
 
 

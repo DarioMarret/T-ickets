@@ -38,7 +38,9 @@ const TabunoView = (props) => {
     const AgregasSillasFila = () => {
         ListadeFilas = ListaFilas
         // console.log(filass.fila,filass.sillas)
+        let numeroinicial = filass.inicio
         let interar = parseInt(filass.sillas);
+        console.log(numeroinicial)
         if (filass.fila != "" && filass.sillas != "") {
 
             if (filass.fila === "Todas") {
@@ -48,7 +50,7 @@ const TabunoView = (props) => {
                     ListadeFilas[i]["asientos"] = []
                     const numfila = ListadeFilas[i]["fila"]
                     for (var f = 0; f < interar; f++) {
-                        numero = 1 + f
+                        numero = (f) + parseInt(numeroinicial)
                         ListadeFilas[i]["asientos"][f] = { silla: numfila + "-s-" + numero, estado: "disponible", };
                     }
                 }
@@ -56,6 +58,7 @@ const TabunoView = (props) => {
                 setFilasSillas(ListadeFilas)
                 setFilas(ListadeFilas)
                 setFilasSillas([])
+                console.log(ListaFilas)
 
             } else {
                 let sillas = []
@@ -65,7 +68,7 @@ const TabunoView = (props) => {
                 var letra = ListadeFilas[index].fila
                 ListadeFilas[index].sillas = interarr
                 for (var g = 0; g < interarr; g++) {
-                    numero = 1 + g
+                    numero =  g + parseInt(numeroinicial)
                     sillas[g] = { silla: letra + "-s-" + numero, estado: "disponible", }
                 }
 
@@ -321,7 +324,7 @@ const TabunoView = (props) => {
                         </div>
                     </div>
                     <div className="col-6">
-                        <label className="form-label"><b>Número inicial</b></label>
+                        <label className="form-label"><b>Número inicia</b></label>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text"><i className="fa fa-bookmark"></i></span>
@@ -355,7 +358,7 @@ const TabunoView = (props) => {
 
                                 {
                                     return (
-                                        <div className={"d-flex  flex-row "} key={"lista" + i}>
+                                        <div className={"d-flex  flex-row justify-content-center "} key={"lista" + i}>
                                             <OverlayTrigger placement='right' overlay={<Tooltip id={"tooltip-disabled"}>Asientos {e.asientos.length > 0 ? e.asientos.length : ""}</Tooltip>}>
                                                 <span className="d-inline-block " disabled >
                                                     <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '30px', width: '30px' }} >
@@ -366,7 +369,7 @@ const TabunoView = (props) => {
                                                     </div>
                                                 </span>
                                             </OverlayTrigger>
-                                            <div className='d-flex  px-3 p-1 justify-content-ce  ' style={{ width: '' }}>
+                                            <div className='d-flex  px-3 p-1 justify-content-center  ' style={{ width: '' }}>
 
                                                 {/*
                         <div key={"silla"+index}  className='d-flex  bg-success   rounded-5 text-center  justify-content-center align-items-center '
@@ -381,9 +384,10 @@ const TabunoView = (props) => {
                     */}
 
                                                 {e.asientos.length > 0 ?
-                                                    <div className=' d-flex px-1  align-items-stretch  ' style={{ width: '' }}>
+                                                    <div className=' d-flex px-1  align-items-center  ji  ' style={{ width: '' }}>
                                                         {e.asientos.map((silla, index, arr) => {
-                                                            let numero = index + 1
+                                                           // console.log(silla)
+                                                            let numero = String(silla.silla).split("-")[2]
                                                             return (
                                                                 <div key={"silla" + index} className='d-flex  bg-success   rounded-5 text-center  justify-content-center align-items-center '
                                                                     style={{ height: '30px', width: '30px', marginLeft: '1px' }} >

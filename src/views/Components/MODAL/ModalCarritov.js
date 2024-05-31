@@ -333,6 +333,33 @@ const ModalCarritoView = (prop) => {
     }
     const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
     modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
+        E.addEventListener("mouseover", function () {
+            let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
+            let tooltip = document.getElementById("tooltip");
+            let localidadnombre = document.getElementById("nomLocalidad")
+            let precioLocalidad = document.getElementById("prelocalidad")
+            let header = document.getElementById("precioscomp")
+            let idheadr = document.getElementById("header")
+            console.log(consulta)
+            localidadnombre.innerHTML = `${consulta.localidad}`;
+            precioLocalidad.innerHTML = `$${consulta.precio_normal} `;
+            //localidadnombre.style.backgroundColor = `${consulta.color}`
+            tooltip.style.backgroundColor= `${consulta.color}`
+            tooltip.style.borderColor= 'white';
+            //tooltip.innerHTML = "text";
+            tooltip.style.display = "block";
+            tooltip.style.left = evt.pageX + 5 + 'px';
+            header.style.backgroundColor = consulta.color;
+           
+            tooltip.style.top = evt.pageY + 5 + 'px';
+            // this.setAttribute("fill", "green");
+        });
+
+        E.addEventListener("mouseout", function () {
+            var tooltip = document.getElementById("tooltip");
+            tooltip.style.display = "none";
+            //this.setAttribute("fill", this.getAttribute("original-fill"));
+        });
         E.addEventListener("click", function () {
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
             console.log(this.classList[0], consulta)
@@ -758,6 +785,25 @@ const ModalCarritoView = (prop) => {
                                     <div className="col-12 col-md-9 py-0 col-lg-10 mx-auto text-center " style={{
                                         height: "auto"
                                     }}>
+                                        <div id="tooltip"
+                                        style={{
+                                            position:'absolute',
+                                            display:'none',
+                                            width:'135px'
+                                        }}
+                                        >
+                                            <div className="py-2   border-bottom text-center px-0" id="header" styled={{
+                                                Width: "100px",
+
+                                            }}>                                                
+                                                    <strong className="mr-auto" id="nomLocalidad"></strong>                                                   
+                                            </div>
+                                            <div className=" px-1 d-flex justify-content-center align-items-center">
+                                                <div id="precioscomp" className="mx-1 d-none p-2 rounded-4"></div>   <p className=" mt-1" id="prelocalidad"></p>
+                                              
+                                            </div>
+                                        </div>
+
                                         {modalshow.nombre == "ModalCarritov" ?
                                             (sessionStorage.getItem("eventoid") == "5UY4DT") ?
 

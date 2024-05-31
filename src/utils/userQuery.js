@@ -102,16 +102,20 @@ export const GEnerarBoletos = async (parms) => {
     }
 }
 export const Generar_Boleto_nuevos = async(parms,id)=>{
+    let ids = clienteInfo() != null ? clienteInfo().id : 0
+    const idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
     let datos = {
-        parsm: parms
+        ...parms,
+        "id_usuario": parseInt(idop),
+        "id_operador": parseInt(ids),
     }
     try {
-        let { data } = await axios.put("https://api.t-ickets.com/mikroti/Boleteria/tickets"+id,{
-            datos
+        let { data } = await axios.put("https://api.ticketsecuador.ec/mikroti/Boleteria/ticktes/"+id,{
+            "parsm":{ ...datos}
         })
         return data
     } catch (error) {
-        return data
+        return error
     }
 }
 //post_api_v1_selecion_usuario
