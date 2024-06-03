@@ -753,7 +753,7 @@ export default function AprobarView() {
                         MEDIO: f.canal,
                         CREACION: f.fechaCreacion,
                         ESTADO: f.estado_pago,
-                        Cosiliacion: f.consolidado,                        
+                        Cosiliacion: (f.estado_autorizacion_sri!=null) ? f.estado_autorizacion_sri :f.consolidado,                        
                         NumerTransacion: f.numerTransacion,
                         Banco: f.conciliacion.length > 0 ? f.conciliacion[0].banco : "",
                         Total_Conciliaciones: f.conciliacion.length > 0 ? f.conciliacion[0].total_pagado : "",
@@ -763,6 +763,8 @@ export default function AprobarView() {
                         asuntos: f.comentarios.length > 0 ? texto : "",
                         PAGOMEDIO_LINK: f.link_pago,
                         COMPROBANTE_LINK: f.link_comprobante,
+                        FIRMADO: (f.id_espacio_localida!=null)?'SI':'NO',
+
                     }
                 })} fileName={"Todos Pagados"} label={"Pagados"} />
                     : ""

@@ -445,8 +445,10 @@ console.log(neweventos)
                                             <option value={"1.00"} >0%</option>
                                             <option value={"1.08"} >8%</option>
                                             <option value={"1.12"} >12%</option>
+                                            <option value={"1.13"} >13%</option>
                                             <option value={"1.14"} >14%</option>
-
+                                            <option value={"1.15"} >15%</option>
+                                            <option value={"1.16"} >16%</option>
                                         </select>
 
 
