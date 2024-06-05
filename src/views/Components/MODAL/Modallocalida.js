@@ -790,7 +790,7 @@ const LocalidadmapViews = (props) => {
                                                                     </div>
                                                                 </div>
                                                             </span>
-                                                            <div className=' d-flex ml-3 flex-row px-1 justify-content-center  align-items-stretch ' style={{ width: '100%' }}>
+                                                            <div className=' d-flex ml-3 flex-row px-1 justify-content-lg-center  align-items-stretch ' style={{ width: '100%' }}>
                                                                 {e.asientos.map((silla, index) => {
                                                                     let numero = String(silla.silla).split("-")[2]
                                                                     return (

@@ -20,6 +20,7 @@ export const boleteriaAxios = axios.create({
 
 export const Consultar_codigos = async (param) => {
     try {
+        console.log(param)
         let { data } = await boleteriaAxios.post("Boleteria/codigos", param)
         return data;
     } catch (error) {

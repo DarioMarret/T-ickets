@@ -369,7 +369,7 @@ function ModalDetalle(props) {
                     btnClass: 'btn-red',
                     action: function () {
                         let datosPersonal = getDatosUsuariosLocalStorag()
-                        Consultar_codigos({ cedula: datosPersonal.cedula, codigo: codigos.value }).then(ou => {
+                        Consultar_codigos({ cedula: datosPersonal.cedula, codigo: codigos.value, radio: true }).then(ou => {
                             if (ou.estado) {
                                 let co = document.getElementById("codigocontry")
                                 let co1 = document.getElementById("codigocontry")
@@ -379,8 +379,8 @@ function ModalDetalle(props) {
                                 let clineteLogeado = getCliente()
                                 let metodoPago = GetMetodo()
                                 ListaPrecioset(GetValores())
-                                console.log({ ...eventoinfo, post: ou.codigos.codigo })
-                                sessionStorage.setItem("infoevento", JSON.stringify({ ...eventoinfo, post: ou.codigos.codigo }))
+                                console.log(ou)
+                                sessionStorage.setItem("infoevento", JSON.stringify({ ...eventoinfo, post: ou.codigo }))
                                 co.classList.add("d-none")
                                 co1.classList.add("d-none")
                                 /*setDatoToas({
@@ -426,12 +426,7 @@ function ModalDetalle(props) {
                                 });
                             }
                         }).catch(erro => {
-                            setDatoToas({
-                                show: true,
-                                message: "Por favor intente más tarde",
-                                color: 'bg-danger',
-                                estado: 'Hubo un error',
-                            })
+                           console.log(erro)
                         })
                     }
                 },
@@ -785,7 +780,7 @@ function ModalDetalle(props) {
                                             <button class="input-group-text btn-success" onClick={CodigoValido}>validar</button>
                                         </div> : ""
                                         : ""}
-                                    {CODIGO =="WDXMMF"?
+                                    {CODIGO == "WDXMMF" || CODIGO =="4433LG"?
                                         <div className="input-group" id='codigocontry' >
                                             <div class="d-block d-sm-block d-md-none col-12">Ingrese el código de Radio</div>
                                             <label className='form-label px-2 d-none d-sm-none d-md-block'>Ingrese el código de Radio</label>
