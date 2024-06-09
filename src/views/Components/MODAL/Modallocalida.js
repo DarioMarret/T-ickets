@@ -426,7 +426,7 @@ const LocalidadmapViews = (props) => {
     function Agregarsilla(e) {
         console.log(e)
         if(String(e.estado.toLowerCase()) =="ocupado") return
-        let info = JSON.parse(sessionStorage.getItem("DatoCliente"))
+        let info = JSON.parse(sessionStorage.getItem("DatoCliente")) || sessionStorage.getItem("random")
         let user = getDatosUsuariosLocalStorag()
         let variant = document.getElementById(e.idsilla)
         variant.classList.remove('disponible')

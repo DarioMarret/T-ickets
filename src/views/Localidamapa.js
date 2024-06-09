@@ -160,7 +160,7 @@ export default function LocalidadMApView() {
                                                     </div>
                                                 </div>
                                             </span>
-                                            <div className=' d-flex px-1  align-items-stretch ' style={{ width: '100%' }}>
+                                            <div className=' d-flex px-1 justify-content-lg-center  align-items-stretch ' style={{ width: '100%' }}>
                                                 {e.asientos.map((silla, index) => {
                                                     let numero = index + 1
                                                     return (
