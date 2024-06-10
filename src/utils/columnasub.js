@@ -360,11 +360,16 @@ export const listaRegistrototal = [
         header: "Consolidado",
         size: 25
     },
+    {
+        accessorKey:"canal",
+        header:"Canal",
+        size:20
+    },
 
     {
         accessorKey: "concierto",
         header: "Evento",
-        size: 70
+        size: 50
     },
     {
         accessorKey: "cedula",

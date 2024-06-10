@@ -1527,7 +1527,8 @@ export default function DetalleCompraView() {
                                                         <small>
                                                             {"Email: " + usuario.email}<br></br>
                                                             {"Cédula: " + usuario.cedula}<br></br>
-                                                            {"Teléfono " + usuario.movil}<br></br>
+                                                            {"Teléfono: " + usuario.movil}<br></br>
+                                                            {"Medio: " + nombres.canal}<br></br>
                                                         </small>
                                                     </div>
                                                 </div>
@@ -1550,7 +1551,7 @@ export default function DetalleCompraView() {
                                                             </span> :
                                                             ""}
                                                         <br></br>
-                                                        <span>{nombres.estado_autorizacion_sri||""}</span>
+                                                        <span>{nombres.estado_autorizacion_sri || ""}</span>
                                                         <br></br>
                                                         <span>{nombres.clave_acceso == null ? "" : nombres.clave_acceso}</span>
                                                     </div>
@@ -1806,7 +1807,7 @@ export default function DetalleCompraView() {
                                                 </tr>
                                                 <tr>
                                                     <th scope="row"></th>
-                                                    <td className='text-end' >Iva: {nombres.info_concierto[0]["iva"]||""}</td>
+                                                    <td className='text-end' >Iva: {nombres.info_concierto[0]["iva"] || ""}</td>
                                                     <td width="15%" className='text-center'>$ {nombres.iva}</td>
                                                 </tr>
                                                 <tr>
