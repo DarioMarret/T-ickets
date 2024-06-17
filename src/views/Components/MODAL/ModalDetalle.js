@@ -263,8 +263,11 @@ function ModalDetalle(props) {
         sethideComision(mostrar)
     }, [modalshow.nombre == "ModalDetalle" ? true : false, actualState])
     function CodigoValido() {
+        this.preventDefault()
         let codigos = document.getElementById("basic-codigo");
+        
         if (CODIGO =="WDXMMF"){
+            if (codigos.value ==="URBAN2024") return
             if (codigos.value == "") return
             $.confirm({
                 theme: 'supervan',
@@ -357,6 +360,7 @@ function ModalDetalle(props) {
             return
         }
         if (codigos.value == "") return
+        if (codigos.value === "PLAZACORONEL") return
         $.confirm({
             theme: 'supervan',
             closeIcon: true,

@@ -87,25 +87,26 @@ export default function FormasPagoMopadal() {
         });
     }
     let spinercarga = document.getElementById("spinercarga")
-    function consultarcorreo() {
-
+    function consultarcorreo(e) {
+        
         usedispatch(setModal({ nombre: '', estado: '' }))
 
         $.confirm({
             title: 'Por favor ingresé correo electrónico para continuar con su compra',
             theme: "material",
             content: '' +
-                '<form action="" className="formName">' +
+                '<div  className="formName">' +
                 '<div className="form-group">' +
                 '<label>Ingrese su correo</label>' +
                 '<input type="text" placeholder="correo" class="form-control correocodigo " required />' +
                 '</div>' +
-                '</form>',
+                '</div>',
             buttons: {
                 formSubmit: {
                     text: 'Aceptar',
                     btnClass: 'btn-blue',
-                    action: function () {
+                    action: function (ev) {
+                     //   ev.preventDefault()
                         var name = this.$content.find('.correocodigo').val();
                         if (!name) {
                             $.alert('Ingrese un correo valido');

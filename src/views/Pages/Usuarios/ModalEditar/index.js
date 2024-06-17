@@ -133,7 +133,7 @@ const EditaruserView = (props) => {
     <>
       <Modal className="nuevos"
         show={editShow}
-        size="lg"
+       
         onHide={() => SetModalEdit(false)}
         style={{
           width: "100% !important"
@@ -151,7 +151,7 @@ const EditaruserView = (props) => {
         <Modal.Body
         >
           <div className="row ">
-            <div className="container col-12 col-md-5">
+            <div className="container col-12 ">
               <form className={validate} >
                 <div className="row">
                   <div className="col-md-12">
@@ -277,7 +277,7 @@ const EditaruserView = (props) => {
                 }
               </div>
             </div>
-            <div className="col-12 col-md-6 border px-0 pl-2">
+            <div className="col-12 col-md-6 border px-0 pl-2 d-none">
               <div className="col-12  modal-header txt-white py-2  ">
                 <h4 className="px-3">    Permisos</h4>
 

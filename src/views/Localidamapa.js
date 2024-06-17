@@ -145,6 +145,11 @@ export default function LocalidadMApView() {
                 {datos == "" ? "" : <div className="h-25 d-none"> 
                 <SVGView text={datos} fu={colro.id} colo={colro.color} />
                 </div>}
+                <div className='container-fluid'>
+                    <div className='p-5 bg-secondary text-center'>
+                        <h5 className='text-white'>ECENARIO</h5>
+                    </div>
+                </div>
 
                 {mapath.typo == "fila" ?
                     <div className="section m-auto" >
