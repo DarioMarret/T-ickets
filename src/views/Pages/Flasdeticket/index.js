@@ -71,6 +71,7 @@ import { ListarEventosFinalizados } from "utils/EventosQuery/index.js";
 import ModalFirma from "views/Components/MODAL/Modalfirma.js";
 import ModalEfectivofACILITO from "views/Components/MODAL/Modalefectivo";
 import FormasPagoMopadal from "views/Components/MODAL/ModalFormasPago.js";
+import { isAfter, parse } from "date-fns";
 const TRACKING_ID = "G-LJN507B5NX";
 const IndexFlas = () => {
   ReactGA.initialize(TRACKING_ID);
@@ -590,7 +591,16 @@ const IndexFlas = () => {
       if (!eventos == null) { return }
       let datos = isLoading ? eventos : eventos.data
       let publicin = publici
-      const filtro = datos != null ? datos.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
+      const filtro = datos != null ? datos.filter((e) => {
+        //const fechaConcierto = new Date(e.fechaConcierto + "T23:59:59");
+        //const fechaActual = new Date();
+       // return fechaConcierto > fechaActual;
+        const fechaConcierto = parse(e.fechaConcierto + " 23:59:59", 'yyyy-MM-dd HH:mm:ss', new Date());
+        // Obtener la fecha actual
+        const fechaActual = new Date();
+        // Comparar las fechas
+        return isAfter(fechaConcierto, fechaActual);
+      }) : []
       const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
       setfunc(true)
       isLoading ? "" : setEventos(filtro.sort(sorter))

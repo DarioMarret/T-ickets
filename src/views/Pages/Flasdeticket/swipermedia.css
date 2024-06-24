@@ -33,6 +33,15 @@
     align-items: center;
 }
 
+.offcanvas,
+.offcanvas-lg,
+.offcanvas-md,
+.offcanvas-sm,
+.offcanvas-xl,
+.offcanvas-xxl {
+    --bs-offcanvas-height: 40vh !important;
+}
+
 .input {
     position: absolute;
     top: 0;
@@ -57,11 +66,11 @@
     top: 0 !important;
     right: 0 !important;
     margin-left: 5px !important;
-    
+
     border-top-right-radius: 5px !important;
     border-bottom-right-radius: 5px !important;
     border-color: rgb(141, 140, 140) !important;
-    color:rgb(244, 242, 242) !important;
+    color: rgb(244, 242, 242) !important;
     text-align: center !important;
     font-size: 1.2em !important;
     transition: all 1s !important;

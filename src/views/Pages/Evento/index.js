@@ -19,6 +19,7 @@ import 'moment/locale/es';
 import { ListaPreciosEvent } from "utils/EventosQuery";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { EventosActivos } from "utils/Querypanel";
+import { isAfter, parse } from "date-fns";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
@@ -262,8 +263,9 @@ const EventosViews = () => {
                       width: '100%',
                     }}
                   >
+                  
                     <Typography>Estado : {
-                      (moment(row.original.fechaConcierto + " " + row.original.horaConcierto).format('DD MMMM YYYY HH:mm') > moment().format('DD MMMM YYYY HH:mm')) ?
+                      (isAfter(row.original.fechaConcierto + " " + row.original.horaConcierto, 'yyyy-MM-dd HH:mm:ss', new Date()), new Date()) ?
                         row.original.estado : "FINALIZO"} </Typography>
                     <Typography>Ciudad : {row.original.cuidadConcert} </Typography>
                     <Typography>Descripción : {row.original.descripcionConcierto} </Typography>
