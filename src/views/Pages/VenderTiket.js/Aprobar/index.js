@@ -724,8 +724,6 @@ export default function AprobarView() {
             </div>
             <div className="row py-5 d-none">
                 <div className="col-12 col-md-8 d-flex justify-content-center ">
-
-
                 </div>
 
             </div>
