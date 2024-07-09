@@ -361,9 +361,9 @@ export const listaRegistrototal = [
         size: 25
     },
     {
-        accessorKey:"canal",
-        header:"Canal",
-        size:20
+        accessorKey: "canal",
+        header: "Canal",
+        size: 20
     },
 
     {
@@ -379,9 +379,9 @@ export const listaRegistrototal = [
     {
         accessorKey: "forma_pago",
         header: "Metodo",
-        Cell: ({ cell }) => {
-            cell.row.original.forma_pago != "Tarjeta" ? cell.row.original.forma_pago : (cell.row.original.link_pago == null) ? "Sin link" : cell.row.original.forma_pago
-        },
+        Cell: ({ cell }) => (
+            cell.row.original.forma_pago != "Tarjeta" ? cell.row.original.forma_pago : (cell.row.original.link_pago == null) ? "Tarjeta-Local" : cell.row.original.forma_pago
+        ),
         size: 50
     }, {
         accessorKey: "estado_pago",
@@ -389,16 +389,18 @@ export const listaRegistrototal = [
         Cell: ({ cell }) => ((cell.row.original.forma_pago == "Tarjeta") && (cell.row.original.estado_pago == "Expirado" || cell.row.original.estado_pago == "Pendiente") ?
             <Badge bg={color[cell.row.original.estado_pago]}>
                 {cell.row.original.estado_pago}</Badge> :
-            (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
-                (cell.row.original.id_espacio_localida == 0) ?
-                    (cell.row.original.estado_pago == "Expirado") ?
-                        <Badge bg={color[cell.row.original.estado_pago]}>
-                            {cell.row.original.estado_pago}</Badge>
-                        :
-                        <Badge bg={"secondary"}>
-                            Por revisar</Badge> : <Badge bg={"warning"}>
-                        Sin Firmar</Badge> : <Badge bg={color[cell.row.original.estado_pago]}>
-                    {cell.row.original.estado_pago}</Badge>
+            (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.link_pago == null) ? <Badge bg={color[cell.row.original.estado_pago]}>
+                {cell.row.original.estado_pago}</Badge> :
+                (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
+                    (cell.row.original.id_espacio_localida == 0) ?
+                        (cell.row.original.estado_pago == "Expirado") ?
+                            <Badge bg={color[cell.row.original.estado_pago]}>
+                                {cell.row.original.estado_pago}</Badge>
+                            :
+                            <Badge bg={"secondary"}>
+                                Por revisar</Badge> : <Badge bg={"warning"}>
+                            Sin Firmar</Badge> : <Badge bg={color[cell.row.original.estado_pago]}>
+                        {cell.row.original.estado_pago}</Badge>
         ),
         size: 50
     },
