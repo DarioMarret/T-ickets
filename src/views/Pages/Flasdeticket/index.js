@@ -338,7 +338,7 @@ const IndexFlas = () => {
           $.alert("Tienes una compre pendiente por paga\nPueda Pagar desde la banca Guayaquil empresa comnnet-speed solo con tu cédula ")
           return
         }
-        if (comprapendiente.forma_pago == "Tarjeta") {
+        if (String(comprapendiente.forma_pago) == "Tarjeta") {
           setspinervi("d-none")
           SetSeleccion("Tickets")
           $.alert("Tienes una compre pendiente por paga ")
@@ -390,8 +390,6 @@ const IndexFlas = () => {
         }).filter(e => e != undefined)
 
         let colornuevo = mapalocal.map((L) => {
-          // console.log(newprecios.filter(e => e != undefined))
-
           if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
             {
               L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
@@ -754,7 +752,7 @@ const IndexFlas = () => {
   const [visible, setVisible] = React.useState(false)
   function abrirNuevoTab() {
     // Abrir nuevo tab
-    var win = window.open('https://wa.me/09800080000/?text=%27Quiero%20informaci%C3%B3n%27', '_blank');
+    var win = window.open('https://api.whatsapp.com/send?phone=593980008000&text=Quiero%20informaci%C3%B3n%20', '_blank');
     // Cambiar el foco al nuevo tab (punto opcional)
     win.focus();
   }
@@ -1255,7 +1253,7 @@ const IndexFlas = () => {
                                 </g>
                               </svg>
                             </i>
-                            <img src={"https://api.ticketsecuador.ec/store/img/valla-proximo-evento.871486e33ab61e490b6e.jpeg"}
+                            <img src={"https://api.ticketsecuador.ec/store/img/mallapromo.png"}
                               className="img-fluid rounded-7 shadow-md  btn-hover img-evento "
                               alt="" />
                           </div>
@@ -1263,12 +1261,12 @@ const IndexFlas = () => {
                         <div className="collapse float-end container mt-4 px-0" aria-labelledby={"headingThree" + 1} id={"collapseid" + 1} data-parent="#accordion">
                           <div className="card row d-flex flex-row card-body rounded-7 py-5">
                             <div className="container col-12 col-md-6">
-                              <div className="d-flex row  btn-group-vertical ">
+                              <div className="d-flex row d-none  btn-group-vertical ">
                                 <div className="col-12" >
                                   <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"></span> </h1>
                                   <h4 style={{ fontSize: '1.4em', }}><span id="tour"></span></h4>
                                   <div className="col-12 border border-bottom my-3"></div>
-                                  <div style={{ alignItems: 'stretch', lineHeight: '0', }} >
+                                  <div classNAme='d-none' style={{ alignItems: 'stretch', lineHeight: '0', }} >
                                     <p style={{ fontSize: '1.0em' }}>  <i className="bi bi-calendar-week-fill"></i>   <b>  Fecha:<span id="fechaEvento">2024-05-18</span></b></p>
                                     <div className="row" style={{ alignItems: 'stretch', lineHeight: '0', }} >
                                       <p className="col-12 pt-0" style={{ fontSize: '1.0em' }}><i className="bi bi-alarm-fill"></i> <b> Hora:<span id="horaEvento"> 16:00</span></b></p>
@@ -1292,7 +1290,7 @@ const IndexFlas = () => {
                               </div>
                             </div>
                             <div className="container col-12 col-md-6 rounded-7  px-0">
-                              <img src="https://api.ticketsecuador.ec/store/img/whatsapp_precios.jpeg" className="img-fluid rounded-7 shadow-md " alt="" />
+                              <img src="https://api.ticketsecuador.ec/store/img/promoprecio.jpeg" className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
 
 

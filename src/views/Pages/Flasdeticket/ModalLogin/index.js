@@ -62,16 +62,11 @@ const ModalLogin = (props) => {
             color: 'bg-success',
             estado: "Inicio Exitoso",
           }))
-          /* setDatoToas({
-             show: true,
-             message: "Bienvenido " + data.nombreCompleto,
-             color: 'bg-success',
-             estado: "Inicio Exitoso",
-           })*/
+         
         /*  Modalstatus.estado != "" ? abrir(Modalstatus.estado) : ''
           usedispatch(setModal({ nombre: '', estado: '' }))*/
           console.log(Modalstatus.estado)
-            Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado==null?"": 'ModalDetalle', estado: '' })) : ''
+            Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado==null?"": 'ModalDetalle', estado: '' })) : usedispatch(setModal({ nombre: "", estado: '' }))
             if(randon){
               axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actulizar_identificacion_asiento",
                 {

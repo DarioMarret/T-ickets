@@ -36,10 +36,10 @@ const LocalidadmapViews = (props) => {
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localidad))
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const spinervi = useSelector((state) => state.SuscritorSlice.spiner)
-    console.log(seleccion, mapath.precio.localidad)
+    //console.log(seleccion, mapath.precio.localidad)
     const [alert, setAlert] = useState(null);
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
-    console.log(sleccionlocalidad)
+    // console.log(sleccionlocalidad)
 
     const eliminarmesas = (M, C) => {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
@@ -234,7 +234,7 @@ const LocalidadmapViews = (props) => {
         );
 
     };
-   
+
     const succesLimit = () => {
         setAlert(
             <SweetAlert
@@ -425,7 +425,7 @@ const LocalidadmapViews = (props) => {
     }
     function Agregarsilla(e) {
         console.log(e)
-        if(String(e.estado.toLowerCase()) =="ocupado") return
+        if (String(e.estado.toLowerCase()) == "ocupado") return
         let info = JSON.parse(sessionStorage.getItem("DatoCliente")) || sessionStorage.getItem("random")
         let user = getDatosUsuariosLocalStorag()
         let variant = document.getElementById(e.idsilla)
@@ -544,11 +544,9 @@ const LocalidadmapViews = (props) => {
     const sillasetado = (d) => {
         const user = getDatosUsuariosLocalStorag()
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-        //  console.log(d.estado)
-        //console.log(d)
         if (d.cedula != undefined) {
             if (d.estado.toLowerCase() == "ocupado") return d.estado.toLowerCase()
-            if (user.cedula == d.cedula) return "seleccionado  " + nombres.idcolor + "silla"            
+            if (user.cedula == d.cedula) return "seleccionado  " + nombres.idcolor + "silla"
             else
                 return d.estado.toLowerCase() == "seleccionado" ? "reservado" : d.estado.toLowerCase()
         }
@@ -777,44 +775,44 @@ const LocalidadmapViews = (props) => {
                                 {modalshow.nombre == "Modallocalida" && mapath.precio.typo == "fila" ?
                                     <div className="section" style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
                                         <div className="row">
-                                        {modalshow.nombre == "Modallocalida" && mapath.localidadespecica.length > 0 ?
-                                            mapath.localidadespecica.map((e, i) => {
-                                                {
-                                                    return (
-                                                        
-                                                        <div className='d-flex flex-row justify-content-around  px-3 p-1 ' key={"lista" + i} >
-                                                            <span className=" " disabled >
-                                                                <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '25px', width: '25px' }} >
-                                                                    <div className="d-flex justify-content-center">
-                                                                        <span style={{ fontSize: '0.5em' }}>    {e.fila} </span>
+                                            {modalshow.nombre == "Modallocalida" && mapath.localidadespecica.length > 0 ?
+                                                mapath.localidadespecica.map((e, i) => {
+                                                    {
+                                                        return (
+
+                                                            <div className='d-flex flex-row justify-content-around  px-3 p-1 ' key={"lista" + i} >
+                                                                <span className=" " disabled >
+                                                                    <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '25px', width: '25px' }} >
+                                                                        <div className="d-flex justify-content-center">
+                                                                            <span style={{ fontSize: '0.5em' }}>    {e.fila} </span>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </span>
-                                                            <div className=' d-flex ml-3 flex-row px-1 justify-content-lg-center  align-items-stretch ' style={{ width: '100%' }}>
-                                                                {e.asientos.map((silla, index) => {
-                                                                    let numero = String(silla.silla).split("-")[2]
-                                                                    return (
-                                                                        <div key={"silla" + index} id={silla.idsilla}
-                                                                            className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 sillasfila text-center  justify-content-center align-items-center '}
-                                                                            style={{ height: '20px', width: '20px', marginLeft: '1px', }}
-                                                                            onClick={() => Agregarsilla(silla)}
-                                                                        >
-                                                                            <div className={' px-3 d-flex   text-white justify-content-center  '} >
-                                                                                <div className="d-flex justify-content-center">
-                                                                                    <span style={{ fontSize: '0.5em' }}> {numero} </span>
+                                                                </span>
+                                                                <div className=' d-flex ml-3 flex-row px-1 justify-content-lg-center  align-items-stretch ' style={{ width: '100%' }}>
+                                                                    {e.asientos.map((silla, index) => {
+                                                                        let numero = String(silla.silla).split("-")[2]
+                                                                        return (
+                                                                            <div key={"silla" + index} id={silla.idsilla}
+                                                                                className={silla.silla + '  d-flex  ' + sillasetado(silla) + '  rounded-5 sillasfila text-center  justify-content-center align-items-center '}
+                                                                                style={{ height: '20px', width: '20px', marginLeft: '1px', }}
+                                                                                onClick={() => Agregarsilla(silla)}
+                                                                            >
+                                                                                <div className={' px-3 d-flex   text-white justify-content-center  '} >
+                                                                                    <div className="d-flex justify-content-center">
+                                                                                        <span style={{ fontSize: '0.5em' }}> {numero} </span>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    )
-                                                                })}
+                                                                        )
+                                                                    })}
+                                                                </div>
+
                                                             </div>
-                                                        
-                                                        </div>
-                                                    )
-                                                }
-                                            })
-                                            : ""}
-                                    </div> 
+                                                        )
+                                                    }
+                                                })
+                                                : ""}
+                                        </div>
                                     </div>
                                     : ''}
                                 {modalshow.nombre == "Modallocalida" && mapath.precio.typo === "mesa" ?
@@ -936,7 +934,7 @@ const LocalidadmapViews = (props) => {
                 </Modal.Body>
                 <Modal.Footer className="px-0 bg" >
                     <div className=" d-flex  align-items-end">
-                        
+
                     </div>
                     <div className=" container-fluid  text-dark  border-top justify-content-between p-3" style={{ minHeight: '50px', maxHeight: '188px', width: '100%' }} >
                         {mapath.precio.typo != "correlativo" ?

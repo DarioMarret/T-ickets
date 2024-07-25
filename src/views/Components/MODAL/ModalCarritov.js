@@ -146,7 +146,7 @@ const ModalCarritoView = (prop) => {
         console.log(precios.pathmapa)
         asientos != null ? usedispatch(cargarsilla(asientos)) : ''
         precios.pathmapa.length > 0 ? precios.pathmapa.map((e, i) => {
-            $("#" + e.path).attr("class", e.id + "  disponible " + e.tipo)
+            $("#" + e.path).attr("class", e.id + "  disponible ")// + e.tipo)
             $("#" + e.path).attr("fill", e.fill)
         }) : ''
         Listarticketporestado(user.cedula).then(oupt => {
@@ -202,37 +202,6 @@ const ModalCarritoView = (prop) => {
                 color: 'bg-primary',
                 estado: "Todos ocupados"
             }))
-            return
-        }
-        //clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/02/2023 08:30") < new Date())
-        if (false) {
-            usedispatch(setToastes({
-                show: true,
-                message: "Estaremos informando la fecha de canje de boletos",
-                color: 'bg-success',
-                estado: "!Páramos la venta, los 600 boletos se agotaron!"
-            }))
-            return
-        }
-
-        /* if (clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 19:00 ") > new Date())) {
-             usedispatch(setToastes({
-                 show: true,
-                 message: "Gauayaquil Disponible el 1 de febrero del 2023 19:00",
-                 color: 'bg-danger',
-                 estado: "Pronto Disponible"
-             }))
-             setSpiner("d-none")
-             return
-         }*/
-        if (false) {
-            usedispatch(setToastes({
-                show: true,
-                message: "Gauayaquil Disponible el 1 de febrero del 2023 19:00",
-                color: 'bg-danger',
-                estado: "Pronto Disponible"
-            }))
-            setSpiner("d-none")
             return
         }
         if (sleccionlocalidad.pagados >= 10) {
@@ -331,7 +300,7 @@ const ModalCarritoView = (prop) => {
                 console.log(err))
         }
     }
-    const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible')
+    const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible,polyline.disponible')
     modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
         E.addEventListener("mouseover", function () {
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
@@ -344,14 +313,15 @@ const ModalCarritoView = (prop) => {
             localidadnombre.innerHTML = `${consulta.localidad}`;
             precioLocalidad.innerHTML = `$${consulta.precio_normal} `;
             //localidadnombre.style.backgroundColor = `${consulta.color}`
-            tooltip.style.backgroundColor= `${consulta.color}`
-            tooltip.style.borderColor= 'white';
+            tooltip.style.backgroundColor = `${consulta.color}`
+            tooltip.style.borderColor = 'white';
+            tooltip.style.color = 'white';
             //tooltip.innerHTML = "text";
             tooltip.style.display = "block";
-            tooltip.style.left = evt.pageX + 5 + 'px';
+            // tooltip.style.left = evt.pageX + 5 + 'px';
             header.style.backgroundColor = consulta.color;
-           
-            tooltip.style.top = evt.pageY + 5 + 'px';
+
+            // tooltip.style.top = evt.pageY + 5 + 'px';
             // this.setAttribute("fill", "green");
         });
 
@@ -786,21 +756,21 @@ const ModalCarritoView = (prop) => {
                                         height: "auto"
                                     }}>
                                         <div id="tooltip"
-                                        style={{
-                                            position:'absolute',
-                                            display:'none',
-                                            width:'135px'
-                                        }}
+                                            style={{
+                                                position: 'absolute',
+                                                display: 'none',
+                                                width: '135px'
+                                            }}
                                         >
                                             <div className="py-2   border-bottom text-center px-0" id="header" styled={{
                                                 Width: "100px",
 
-                                            }}>                                                
-                                                    <strong className="mr-auto" id="nomLocalidad"></strong>                                                   
+                                            }}>
+                                                <strong className="mr-auto" id="nomLocalidad"></strong>
                                             </div>
                                             <div className=" px-1 d-flex justify-content-center align-items-center">
                                                 <div id="precioscomp" className="mx-1 d-none p-2 rounded-4"></div>   <p className=" mt-1" id="prelocalidad"></p>
-                                              
+
                                             </div>
                                         </div>
 
@@ -895,12 +865,13 @@ const ModalCarritoView = (prop) => {
                                         {clienteInfo().perfil == "vendedores" ? "" : <option value={"Efectivo-Local"}>
                                             Efectivo-Local
                                         </option>}
-                                        <option className="d-none" value={"Efectivo"}>
+                                        {clienteInfo().perfil == "vendedores" ? "" : <option value={"Tarjeta-Local"}>
+                                            Tarjeta-Local
+                                        </option>}
+                                        <option className=" d-none" value={"Recaidacion Terceros"}>
                                             Recaidacion Terceros
                                         </option>
-                                        <option className="d-none" value={"Tarjeta-Local"}>
-                                            Tarjeta-Local
-                                        </option>
+                                        <option className="" value={"Efectivo"}>Efectivo Speed</option>
                                     </select>
                                 </div>
                                 :

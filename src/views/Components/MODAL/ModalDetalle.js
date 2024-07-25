@@ -818,7 +818,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
                             }
                             {
-                                !clienteauth && datosPerson.metodoPago == "Efectivo" ?
+                                !clienteauth && datosPerson.metodoPago == "Efectivo"  ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
@@ -888,7 +888,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                datosPerson.metodoPago === "Efectivo-Local" ?
+                                (datosPerson.metodoPago === "Efectivo-Local" || datosPerson.metodoPago ==="Recaidacion Terceros") ?
                                     <button id="pagarcuenta" className="btn btn-primary"
 
                                         onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}

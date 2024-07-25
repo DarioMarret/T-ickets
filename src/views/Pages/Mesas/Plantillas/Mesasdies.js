@@ -59,10 +59,12 @@ const MesadiesView = ({ text, list }) => {
     const isOcupado = (currentValue) => currentValue == "Ocupado" || currentValue == "OCUPADO";
     const isReserva = (currentValue) => currentValue == "RESERVADO" || currentValue == "reservado";
     const isDispon = (currentValue) => currentValue == "disponible" || currentValue == "DISPONIBLE";
+    const isDisnone = (currentValue) => currentValue == "none" || currentValue == "d-none";
     if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
     if (Object.values(asiento).every(isOcupado)) { return "mesaocupado" }
     if (Object.values(asiento).every(isReserva)) { return "mesareserva" }
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
+    if (Object.values(asiento).every(isDisnone)) { return "none" }
     return "mesadisponible"
   }
   /*  obtener sillas  */
@@ -288,6 +290,9 @@ const MesadiesView = ({ text, list }) => {
   function enviarsillas(text) {
     console.log(list)
     let datos = document.getElementById(text).classList.value
+    if (datos.includes("none")) {
+      return
+    }
     if (datos.includes("mesareserva")) {
       return
     }
@@ -337,11 +342,12 @@ const MesadiesView = ({ text, list }) => {
 
   }
   const succesSilla = (e) => {
+    return
     /**/
     console.log(text)
     let mesas = ["A", "B", "C", "D"]
     let sillabloquea = ["C2", "D2", "B10", "D9"]
-    const randon = sessionStorage.getItem("random")||""
+    const randon = sessionStorage.getItem("random") || ""
     let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")
     console.log((envotid == "0W2S1V"), (mesas.includes(text.split("")[0]) && !sillabloquea.includes(text)), text)
@@ -356,7 +362,7 @@ const MesadiesView = ({ text, list }) => {
     if (silla.estado.toLowerCase().includes("ocupado")) {
       return
     }
-    console.log((silla.estado.toLowerCase().includes("reservado") && (silla.cedula == null||(silla.cedula == randon && randon != ""))))
+    console.log((silla.estado.toLowerCase().includes("reservado") && (silla.cedula == null || (silla.cedula == randon && randon != ""))))
     if (silla.estado.toLowerCase().includes("reservado") && (silla.cedula == null)) {
       if (TotalSelecion() < 10) {
         setAlert(
@@ -420,6 +426,7 @@ const MesadiesView = ({ text, list }) => {
     }
   }
   const succesDesmar = (e) => {
+ 
     setAlert(
       <SweetAlert
         warning
@@ -443,7 +450,7 @@ const MesadiesView = ({ text, list }) => {
       return {
         id_silla: id,
         id: mapath[0].id,
-        cedula: info.cedula||"",
+        cedula: info.cedula || "",
         random: sessionStorage.getItem("random"),
         estado: "",
         ...e
