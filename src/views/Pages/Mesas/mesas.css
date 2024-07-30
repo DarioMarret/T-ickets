@@ -23,3 +23,204 @@ div.seleccionado{
 div.cargados{
     cursor:pointer;
 }
+
+
+.electro-1 {
+    fill: #292935;
+}
+
+.electro-2,
+.electro-3 {
+    fill: #fff;
+}
+
+.electro-4 {
+    fill: #b7c8ce;
+}
+
+.electro-5 {
+    fill: #b89dd7;
+}
+
+.electro-6 {
+    fill: #35355f;
+}
+
+.electro-7 {
+    isolation: isolate;
+}
+
+.electro-8 {
+    letter-spacing: 0em;
+}
+
+.electro-9 {
+    fill: #8b19f7;
+}
+
+.electro-10 {
+    fill: #ff77be;
+}
+
+.electro-11 {
+    fill: #5f919a;
+}
+
+.electro-12 {
+    fill: #ffe77a;
+}
+
+.electro-13,
+.electro-14,
+.electro-15,
+.electro-16 {
+    fill: none;
+}
+
+.electro-13,
+.electro-17,
+.electro-18 {
+    stroke: #1d1d1b;
+}
+
+.electro-13,
+.electro-17,
+.electro-18,
+.electro-15,
+.electro-16 {
+    stroke-miterlimit: 10;
+}
+
+.electro-19 {
+    fill: #1d0202;
+}
+
+.electro-20 {
+    fill: #2c4f5b;
+}
+
+.electro-21 {
+    fill: #ff8f00;
+}
+
+.electro-22 {
+    fill: #7a0b93;
+}
+
+.electro-23 {
+    fill: #35333f;
+}
+
+.electro-24 {
+    fill: #305e79;
+}
+
+.electro-3 {
+    font-family: ConthraxSb-Regular, Conthrax;
+    font-size: 27.6px;
+}
+
+.electro-25 {
+    fill: #f59865;
+}
+
+.electro-26 {
+    fill: #e76435;
+}
+
+.electro-27 {
+    fill: #0e0b11;
+}
+
+.electro-28 {
+    fill: #ffbb85;
+}
+
+.electro-29,
+.electro-17 {
+    fill: #706f6f;
+}
+
+.electro-30 {
+    letter-spacing: 0em;
+}
+
+.electro-31 {
+    fill: #f261e2;
+}
+
+.electro-32 {
+    fill: #0c017e;
+}
+
+.electro-33 {
+    fill: #18404b;
+}
+
+.electro-34 {
+    fill: #1c3e48;
+}
+
+.electro-35 {
+    fill: #858584;
+}
+
+.electro-36 {
+    fill: #ff6e21;
+}
+
+.electro-37 {
+    fill: #47717d;
+}
+
+.electro-38 {
+    fill: #355a67;
+}
+
+.electro-18 {
+    fill: #1d1d1b;
+}
+
+.electro-39 {
+    fill: #7cfa5a;
+}
+
+.electro-15 {
+    stroke: #305e79;
+    stroke-width: 2px;
+}
+
+.electro-40 {
+    letter-spacing: -.04em;
+}
+
+.electro-41 {
+    fill: #00c3f5;
+}
+
+.electro-16 {
+    stroke: #ffbb85;
+    stroke-linecap: round;
+    stroke-width: 4px;
+}
+
+.electro-42 {
+    fill: #222028;
+}
+
+.electro-43 {
+    fill: #8998a1;
+}
+
+.electro-44 {
+    fill: #ffc900;
+}
+
+.electro-45 {
+    mix-blend-mode: multiply;
+    opacity: .17;
+}
+
+.electro-46 {
+    fill: #7979d4;
+}
