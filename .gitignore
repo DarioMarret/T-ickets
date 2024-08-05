@@ -1,5 +1,8 @@
 node_modules
+/build
+/public
 
-build
 # Local Netlify folder
 .netlify
+.build
+.public

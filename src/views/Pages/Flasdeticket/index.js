@@ -72,6 +72,7 @@ import ModalFirma from "views/Components/MODAL/Modalfirma.js";
 import ModalEfectivofACILITO from "views/Components/MODAL/Modalefectivo";
 import FormasPagoMopadal from "views/Components/MODAL/ModalFormasPago.js";
 import { isAfter, parse } from "date-fns";
+import { setSpinersli } from "StoreRedux/Slice/SuscritorSlice.js";
 const TRACKING_ID = "G-LJN507B5NX";
 const IndexFlas = () => {
   ReactGA.initialize(TRACKING_ID);
@@ -311,7 +312,7 @@ const IndexFlas = () => {
     abrir(e)
   }
   const abrir = async (e) => {
-
+    setspinervi("")
     LimpiarLocalStore()
     usedispatch(borrarseleccion({ vacio: [] }))
     sessionStorage.setItem(listaasiento, JSON.stringify([]))
@@ -323,7 +324,7 @@ const IndexFlas = () => {
       Abrirelevento(e)
       return
     }
-    //setspinervi("")
+    setspinervi("")
     try {
 
       let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
@@ -363,6 +364,8 @@ const IndexFlas = () => {
   }
   async function Abrirelevento(e) {
     try {
+      setspinervi("")
+      //usedispatch(setSpinersli({ spiner: false }))
       let obten = await listarpreciolocalidad(e.codigoEvento)
       const listalocal = await ListarLocalidad("")
       let localidades = await cargarMapa()
@@ -430,6 +433,7 @@ const IndexFlas = () => {
             action: "Eventos",
             label: "" + e.codigoEvento,
           })
+          //usedispatch(setSpinersli({ spiner: true }))
           if (true) {
             Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
               console.log(outp)
@@ -444,6 +448,7 @@ const IndexFlas = () => {
       }
     } catch (err) {
       console.log(err)
+      //usedispatch(setSpinersli({ spiner: false }))
       setspinervi("d-none")
     }
   }

@@ -342,7 +342,7 @@ const MesadiesView = ({ text, list }) => {
 
   }
   const succesSilla = (e) => {
-    return
+   // return
     /**/
     console.log(text)
     let mesas = ["A", "B", "C", "D"]
@@ -351,7 +351,8 @@ const MesadiesView = ({ text, list }) => {
     let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")
     console.log((envotid == "0W2S1V"), (mesas.includes(text.split("")[0]) && !sillabloquea.includes(text)), text)
-    if (((envotid == "0W2S1V") && (mesas.includes(text.split("")[0])) && !sillabloquea.includes(text))) {
+ //   if (((envotid == "0W2S1V") && (mesas.includes(text.split("")[0])) && !sillabloquea.includes(text))) {
+    if ((envotid == "F70C0E")) {
       return
     }
     let silla = list.find(f => f.silla == e)
@@ -359,7 +360,7 @@ const MesadiesView = ({ text, list }) => {
     if (info == undefined) {
       return
     }
-    if (silla.estado.toLowerCase().includes("ocupado")) {
+    if (silla.estado.toLowerCase().includes("ocupado")||silla.estado.toLowerCase().includes("none")) {
       return
     }
     console.log((silla.estado.toLowerCase().includes("reservado") && (silla.cedula == null || (silla.cedula == randon && randon != ""))))
