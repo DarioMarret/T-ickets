@@ -332,7 +332,7 @@ const ModalCarritoView = (prop) => {
         });
         E.addEventListener("click", function () {
             let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
-            console.log(this.classList[0], consulta)
+            //console.log(this.classList[0], consulta)
             if (consulta.idcolor == 4) {
                 usedispatch(setToastes({
                     show: true,
@@ -374,7 +374,10 @@ const ModalCarritoView = (prop) => {
                 return
             }
             else {
+                
                 setSpiner("")
+                
+                //return
                 localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
                     console.log(consulta.espacio, consulta.idcolor)
                     console.log(ouput)

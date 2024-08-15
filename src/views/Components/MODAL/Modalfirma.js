@@ -44,95 +44,98 @@ export default function ModalFirma() {
     let imagecedula;
 
     $(document).ready(function () {
+        try {
+            const canvas = document.querySelector("#canvas");
+            const btnlimpiar = document.querySelector("#limpiar");
+            const descargar = document.querySelector("#descarga");
+            let xAnterior = 0, yAnterior = 0, xActual = 0, yActual = 0;
+            const contexto = canvas.getContext("2d");
+            const COLOR_PINCEL = "black";
+            const COLOR_FONDO = "white";
+            const GROSOR = 2;
+            let haComenzadoDibujo = false;
 
-        const canvas = document.querySelector("#canvas");
-        const btnlimpiar = document.querySelector("#limpiar");
-        const descargar = document.querySelector("#descarga");
-        let xAnterior = 0, yAnterior = 0, xActual = 0, yActual = 0;
-        const contexto = canvas.getContext("2d");
-        const COLOR_PINCEL = "black";
-        const COLOR_FONDO = "white";
-        const GROSOR = 2;
-        let haComenzadoDibujo = false;
+            const obtenerXReal = (evento) => {
+                if (evento.touches && evento.touches.length > 0) {
+                    return evento.touches[0].clientX - canvas.getBoundingClientRect().left;
+                } else {
+                    return evento.clientX - canvas.getBoundingClientRect().left;
+                }
+            };
 
-        const obtenerXReal = (evento) => {
-            if (evento.touches && evento.touches.length > 0) {
-                return evento.touches[0].clientX - canvas.getBoundingClientRect().left;
-            } else {
-                return evento.clientX - canvas.getBoundingClientRect().left;
+            const obtenerYReal = (evento) => {
+                if (evento.touches && evento.touches.length > 0) {
+                    return evento.touches[0].clientY - canvas.getBoundingClientRect().top;
+                } else {
+                    return evento.clientY - canvas.getBoundingClientRect().top;
+                }
+            };
+
+            const inicioDibujo = (evento) => {
+                xAnterior = xActual;
+                yAnterior = yActual;
+                xActual = obtenerXReal(evento);
+                yActual = obtenerYReal(evento);
+                contexto.beginPath();
+                contexto.fillStyle = COLOR_PINCEL;
+                contexto.fillRect(xActual, yActual, GROSOR, GROSOR);
+                contexto.closePath();
+                haComenzadoDibujo = true;
+            };
+
+            const movimientoDibujo = (evento) => {
+                if (!haComenzadoDibujo) {
+                    return;
+                }
+
+                xAnterior = xActual;
+                yAnterior = yActual;
+                xActual = obtenerXReal(evento);
+                yActual = obtenerYReal(evento);
+                contexto.beginPath();
+                contexto.moveTo(xAnterior, yAnterior);
+                contexto.lineTo(xActual, yActual);
+                contexto.strokeStyle = COLOR_PINCEL;
+                contexto.lineWidth = GROSOR;
+                contexto.stroke();
+                contexto.closePath();
+                evento.preventDefault();
+            };
+
+            const finDibujo = () => {
+                haComenzadoDibujo = false;
+            };
+
+            canvas.addEventListener("mousedown", inicioDibujo);
+            canvas.addEventListener("mousemove", movimientoDibujo);
+            canvas.addEventListener("mouseup", finDibujo);
+            canvas.addEventListener("mouseout", finDibujo);
+
+            canvas.addEventListener("touchstart", inicioDibujo);
+            canvas.addEventListener("touchmove", movimientoDibujo);
+            canvas.addEventListener("touchend", finDibujo);
+
+            const limpiar = () => {
+                contexto.fillStyle = COLOR_FONDO;
+                contexto.fillRect(0, 0, canvas.width, canvas.height);
+            };
+
+            limpiar();
+            btnlimpiar.onclick = () => limpiar()
+            descargar.onclick = () => {
+                //  if (files.length == 0) return
+
+                functionModificaPDF()
+                const enlace = document.createElement('a');
+                // El título
+                /*  enlace.download = "Firma.png";
+                  // Convertir la imagen a Base64 y ponerlo en el enlace
+                  enlace.href = $canvas.toDataURL();
+                  // Hacer click en él
+                  enlace.click();*/
             }
-        };
+        } catch (err) {
 
-        const obtenerYReal = (evento) => {
-            if (evento.touches && evento.touches.length > 0) {
-                return evento.touches[0].clientY - canvas.getBoundingClientRect().top;
-            } else {
-                return evento.clientY - canvas.getBoundingClientRect().top;
-            }
-        };
-
-        const inicioDibujo = (evento) => {
-            xAnterior = xActual;
-            yAnterior = yActual;
-            xActual = obtenerXReal(evento);
-            yActual = obtenerYReal(evento);
-            contexto.beginPath();
-            contexto.fillStyle = COLOR_PINCEL;
-            contexto.fillRect(xActual, yActual, GROSOR, GROSOR);
-            contexto.closePath();
-            haComenzadoDibujo = true;
-        };
-
-        const movimientoDibujo = (evento) => {
-            if (!haComenzadoDibujo) {
-                return;
-            }
-
-            xAnterior = xActual;
-            yAnterior = yActual;
-            xActual = obtenerXReal(evento);
-            yActual = obtenerYReal(evento);
-            contexto.beginPath();
-            contexto.moveTo(xAnterior, yAnterior);
-            contexto.lineTo(xActual, yActual);
-            contexto.strokeStyle = COLOR_PINCEL;
-            contexto.lineWidth = GROSOR;
-            contexto.stroke();
-            contexto.closePath();
-            evento.preventDefault();
-        };
-
-        const finDibujo = () => {
-            haComenzadoDibujo = false;
-        };
-
-        canvas.addEventListener("mousedown", inicioDibujo);
-        canvas.addEventListener("mousemove", movimientoDibujo);
-        canvas.addEventListener("mouseup", finDibujo);
-        canvas.addEventListener("mouseout", finDibujo);
-
-        canvas.addEventListener("touchstart", inicioDibujo);
-        canvas.addEventListener("touchmove", movimientoDibujo);
-        canvas.addEventListener("touchend", finDibujo);
-
-        const limpiar = () => {
-            contexto.fillStyle = COLOR_FONDO;
-            contexto.fillRect(0, 0, canvas.width, canvas.height);
-        };
-
-        limpiar();
-        btnlimpiar.onclick = () => limpiar()
-        descargar.onclick = () => {
-            //  if (files.length == 0) return
-
-            functionModificaPDF()
-            const enlace = document.createElement('a');
-            // El título
-            /*  enlace.download = "Firma.png";
-              // Convertir la imagen a Base64 y ponerlo en el enlace
-              enlace.href = $canvas.toDataURL();
-              // Hacer click en él
-              enlace.click();*/
         }
     });
 

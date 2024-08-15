@@ -172,6 +172,101 @@ const LocalidadmapViews = (props) => {
                     setTimeout(function () {
                         setDisable(false)
                         usedispatch(setSpinersli({ spiner: true }))
+
+                        /*
+                         localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
+                    console.log(consulta.espacio, consulta.idcolor)
+                    console.log(ouput)
+                    let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
+                    let nuevoObjeto = []
+                    if (ouput.data.find(e => e.typo == "fila")) {
+                        ouput.data.forEach(x => {
+                            if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                                nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+                            }
+                            else {
+                                let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                                nuevoObjeto[indixe].asientos.push({
+                                    silla: x.silla, estado: x.estado, idsilla: x.id
+                                })
+                            }
+                        })
+                        //console.log(nuevoObjeto)
+                        usedispatch(cargarmapa(color))
+                        usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                        usedispatch(filtrarlocali(nuevoObjeto))
+                        sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                        setSpiner("d-none")
+                        usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+                        return
+                    } else if (ouput.data.find(e => e.typo == "mesa")) {
+                        ouput.data.forEach(x => {
+                            if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                                nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                            }
+                        })
+                        nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                            let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                            if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                                nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                            }
+                        }) : ''
+                        nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                            let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                            let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                            nuevoObjeto[index].Mesas[sillas].asientos.push({
+                                silla: x.silla, estado: x.estado, idsilla: x.id
+                            })
+                        }) : ''
+                        usedispatch(cargarmapa(color))
+                        usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                        usedispatch(filtrarlocali(nuevoObjeto))
+                        sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                        setSpiner("d-none")
+                        usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+                        return
+                    }
+                    else if (ouput.data.find(e => e.typo == "correlativo")) {
+                        usedispatch(cargarmapa(color))
+                        usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                        //  usedispatch(filtrarlocali(nuevoObjeto))
+                        filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
+                        // console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
+                        ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length == 0 ? usedispatch(setToastes({
+                            show: true,
+                            message: "Estan en proceso o vendidos",
+                            color: 'bg-primary',
+                            estado: "Esta loclidad no tiene disponibles  "
+                        })) : ''
+                        // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
+                        console.log(
+                            {
+                                disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
+                                proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
+                                pagados: sleccionlocalidad.pagados,
+                                inpagos: sleccionlocalidad.inpagos
+                            }
+                        )
+                        usedispatch(updateboletos({
+                            disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
+                            proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
+                            pagados: sleccionlocalidad.pagados,
+                            inpagos: sleccionlocalidad.inpagos
+                        }))
+                        sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                        setSpiner("d-none")
+                        usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+                        return
+
+                    }
+                }
+                ).catch(err =>
+                    console.log(err))
+                        
+                        
+                         */
+
+
                     }, 1500)
 
                     return
@@ -637,6 +732,7 @@ const LocalidadmapViews = (props) => {
             })
 
         }, 4000)
+        mapath.precio.typo == "correlativo" ? clearInterval(intervalolista.current) : ""
     }
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()

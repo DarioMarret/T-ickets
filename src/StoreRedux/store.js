@@ -18,6 +18,6 @@ export const store = configureStore({
             immutableCheck: false,
             serializableCheck: false,
         }).concat(sawerg.middleware),
-   devTools:false
+   devTools:true
 })
 //setupListeners(store.dispatch)

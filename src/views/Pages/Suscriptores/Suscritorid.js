@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Triangle } from "react-loader-spinner";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
+import ModalRepostar from "views/Components/MODAL/Modalconfirmacio";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { eliminartiket } from "utils/pagos/Queripagos";
 import { generaTiketsBingo, generaTiketspdf } from "utils/Querycomnet";
@@ -189,6 +190,10 @@ const SuscritoridView = () => {
   }
   function abrirModal(e) {
     usedispatch(setModal({ nombre: "confirmar", estado: e }))
+  }
+  function abrirModaldos(e) {
+    console.log(e)
+    usedispatch(setModal({ nombre: "confirmarpago", estado: e }))
   }
   function detalle(e) {
     console.log(e)
@@ -662,6 +667,7 @@ const SuscritoridView = () => {
         </Row>
 
         <ModalConfima />
+        <ModalRepostar />
         <div className="">
           <div className='container-fluid row p-0'>
             <div className="col-10">
@@ -693,6 +699,17 @@ const SuscritoridView = () => {
                   renderRowActions={({ row }) => (
 
                     <Box sx={{ display: 'flex' }}>
+                      {(clienteInfo() != null && row.original.estado_pago != "Pagado") ?
+                        <Tooltip title="Reportar" placement="top">
+                          <IconButton
+                            color="error"
+                            aria-label="Bloquear"
+                            onClick={() => abrirModaldos(row.original)}
+                          >
+                            <Summarize />
+                          </IconButton>
+                        </Tooltip> : ""
+                      }
                       {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
                         <Tooltip title="Reportar" placement="top">
                           <IconButton
