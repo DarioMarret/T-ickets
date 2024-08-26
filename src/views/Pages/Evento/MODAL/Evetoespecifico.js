@@ -33,6 +33,7 @@ import { ListarLocalidad } from "utils/LocalidadesQuery";
 import { EventosActivos } from "utils/Querypanel";
 import { Boleteria_Boletos, Boleteria_Nombre, Boleteria_canje } from "utils/EventosQuery/index";
 import { Contactos_Boletos } from "utils/Querycomnet";
+import { Axiosmikroserdos } from "utils/index";
 require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
@@ -176,6 +177,25 @@ const EventoEspecifico = () => {
             console.log(error)
             dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
         }
+    }
+
+    function descarga() {
+
+        Axiosmikroserdos.get('api/descargarcodigo/' + id, {
+            responseType: 'blob'  // Important for handling binary data
+        })
+            .then(response => {
+                console.log(response)
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'codigos.xlsx');
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+            })
+            .catch(error => console.error('There was a problem with the Axios request:', error));
+
     }
     const csvOptions = {
         fieldSeparator: ',',
@@ -321,7 +341,7 @@ const EventoEspecifico = () => {
                     let nuevos = formatearNumero("" + Element["movil"])
                     return { "contactos": nuevos }
                 }).filter(e => e.contactos)
-                var myFile = evento.codigoEvento+"Contactos.xlsx";
+                var myFile = evento.codigoEvento + "Contactos.xlsx";
                 var myWorkSheet = XLSX.utils.json_to_sheet(nuevos);
                 var myWorkBook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "myWorkSheet");
@@ -332,7 +352,7 @@ const EventoEspecifico = () => {
         }).catch(err => {
             console.log(err)
         })
-        
+
     }
     function formatearNumero(numero) {
         const regex = /^\+?593\d{9}$/;
@@ -657,18 +677,18 @@ const EventoEspecifico = () => {
                                         })}
                                             fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY')} label={"Boletos"}
                                         /> : ""}
+                                        <div className="m-2">
+                                            <button className="btn  btn-success  btn-sm"
 
-                                        <Button className="d-none"
-                                            disabled={table.getPrePaginationRowModel().rows.length === 0}
-                                            onClick={() =>
-                                                handleExportRows(table.getPrePaginationRowModel().rows)
-                                            }
+                                                onClick={() =>
+                                                    descarga()
+                                                }
 
-                                            startIcon={<FileDownloadIcon />}
 
-                                        >
-                                            Export Todas las filas
-                                        </Button>
+                                            >
+                                                <i className="bi bi-file-earmark-arrow-down-fill"></i>    Exportar Códigos
+                                            </button>
+                                        </div>
                                         <Button className="d-none"
                                             disabled={table.getRowModel().rows.length === 0}
                                             onClick={() => handleExportRows(table.getRowModel().rows)}

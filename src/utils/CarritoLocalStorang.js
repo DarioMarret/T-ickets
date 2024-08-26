@@ -337,10 +337,10 @@ export function GetValores() {
             }
         })
         let ivados = (eventoiva).replace("1.", "0.")
-        console.log(ivados, parseInt((ivados).replace("0.", " ")), (ivados).replace("0.", " "))
+     //   console.log(ivados, parseInt((ivados).replace("0.", " ")), (ivados).replace("0.", " "))
         valor = parseInt((ivados).replace("0.", " ")) == 0 ? (subtotal) / parseFloat(1. + IVA) : (subtotal);
         // let ivados = (eventoiva).replace("1.","0.")
-        console.log(subtotal, valor, ivados)
+       // console.log(subtotal, valor, ivados)
         iva = parseInt(ivados) == 0 ? (valor * parseFloat(0. + IVA)) : (subtotal) * parseFloat(ivados)
         total = (valor + iva)
         console.log(iva, total)

@@ -8,6 +8,9 @@ export const mikroAxios = axios.create({
     },
     maxBodyLength: Infinity,
 })
+export const Axiosmikroserdos = axios.create({
+    baseURL: "https://api.t-ickets.com/mikrotiv2/"
+})
 export const boleteriaAxios = axios.create({
     baseURL: "https://api.t-ickets.com/mikroti/",
     headers: {
