@@ -442,7 +442,7 @@ console.log(neweventos)
                                         </div>
                                         <select className="form-control" name="iva" value={neweventos.iva} onChange={(e) => handelchangeComposeventos(e.target)}>
                                             <option disabled value={""}>Seleccione el porsentaje del iva </option>
-                                            <option value={"1.00"} >0%</option>
+                                            <option value={"0.00"} >0%</option>
                                             <option value={"1.08"} >8%</option>
                                             <option value={"1.12"} >12%</option>
                                             <option value={"1.13"} >13%</option>

@@ -114,7 +114,7 @@ const EventoEspecifico = () => {
             if (cargar.success) {
                 let datos = [...cargar.data.filter((e) => e.codigoEvento == id), ...cargasd.data.filter((e) => e.codigoEvento == id), ...cancelados.data.filter((e) => e.codigoEvento == id)]
                 let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
-                console.log(infoes)
+                //console.log(infoes)
                 let shortDate = new Date(datos[0].fechaConcierto);
                 SetEvento({
                     ...datos[0], LocalodadPrecios: precio.data,
@@ -122,38 +122,30 @@ const EventoEspecifico = () => {
 
                 SetPrecios(precio.data)
                 const disponibles = await listarLocalidadaEspeci(infoes[0].id)
-                let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id)
-                //console.log(disponibles.data.find(e => e.id_espacio == infoes[0].id))
+                let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id && e.espacio==infoes[0].nombre)
                 let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
-                // console.log("precio",filtros)
-                // console.log("ListarLocalidad",listo,"")
                 const estadosPermitidos = new Set(["Pendiente", "Ocupado", "pendiente", "ocupado"]);
-                //console.log()
                 const acumuladorPorNombre = filtros.reduce((acc, elemento) => {
-                    //  console.log(elemento.id_localidades)
-                    //console.log(listo.filter(e => e.id == elemento.id_localidades))
-                    const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre //elemento.id_localidades;
-                    //console.log(nombre)
+                    if(!listo.filter(e => e.id == elemento.id_localidades).length==0){
+                    const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre 
                     if (!estadosPermitidos.has(elemento.estado)) {
                         acc[nombre] = (acc[nombre] || 0) + 1;
                     }
-                    return acc;
+                    return acc;}
                 }, {});
                 const acumuladorPorNombres = filtros.reduce((acc, elemento) => {
+                    if(!listo.filter(e => e.id == elemento.id_localidades).length==0){
                     const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre //elemento.id_localidades;
                     acc[nombre] = (acc[nombre] || 0) + 1;
 
-                    return acc;
+                    return acc;}
                 }, {});
 
-
+                console.log(acumuladorPorNombres)
+                if(!acumuladorPorNombres) return
                 const resultado = Object.entries(acumuladorPorNombres).map(([nombreMesa, cantidad]) => {
                     return { nombreMesa, cantidad };
                 });
-
-
-                //console.log(acumuladorPorNombres);
-
                 const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
                     return { nombreMesa, cantidad };
                 });
@@ -373,6 +365,25 @@ const EventoEspecifico = () => {
     const hideAlert = () => {
         setAlert(null);
     };
+    const groupedData = report.canje.reduce((acc, curr) => {
+        const localidad = curr.localidad;
+
+        if (!acc[localidad]) {
+            acc[localidad] = {
+                localidad,
+                canjeado: 0,
+                noCanjeado: 0
+            };
+        }
+
+        if (curr.canje === "CANJEADO") {
+            acc[localidad].canjeado += curr.total;
+        } else if (curr.canje === "NO CANJEADO") {
+            acc[localidad].noCanjeado += curr.total;
+        }
+
+        return acc;
+    }, {});
     return (
         <>
             <PreciosViews
@@ -403,7 +414,12 @@ const EventoEspecifico = () => {
 
             </div>
             <div className="d-flex  justify-content-between  ">
-                <h5 style={{ fontSize: '1.5em' }}>Evento {evento.nombreConcierto} <Badge bg={color[evento.estado ? evento.estado : "danger"]}>{evento.estado}</Badge>  </h5>
+
+                <h5 style={{ fontSize: '1.5em' }}>
+                    <div className="d-flex flex-column  ">
+
+                    </div>
+                    Evento {evento.nombreConcierto} <Badge bg={color[evento.estado ? evento.estado : "danger"]}>{evento.estado}</Badge>  <button className="mx-2 btn btn-success">CODIGOS</button> </h5>
                 <div className="d-flex flex-row">
                     <button className="btn btn-warning txt-white" onClick={() => successAlert("ACTIVO")} >ACTIVAR </button>
                     <button className="btn btn-secondary txt-white mx-1" onClick={() => successAlert("PROCESO")} >PROCESO</button>
@@ -506,7 +522,9 @@ const EventoEspecifico = () => {
                                             <thead>
                                                 <tr>
                                                     <th >Localidad</th>
-                                                    <th >Cantidad</th>
+                                                    <th >Disponible</th>
+                                                    <th>Ocupado</th>
+                                                    <th>Total</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -516,39 +534,8 @@ const EventoEspecifico = () => {
 
                                                             <td>{e.nombreMesa}</td>
                                                             <td>{e.cantidad}</td>
-                                                        </tr>
-                                                    )
-                                                }) : <tr>
-
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>}
-
-
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                </Accordion.Body>
-                            </Accordion.Item>
-                            <Accordion.Item eventKey={2} >
-                                <Accordion.Header>Total </Accordion.Header>
-                                <Accordion.Body>
-                                    <div className="row">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th >Localidad</th>
-                                                    <th >Cantidad</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {global.length > 0 ? global.map(e => {
-                                                    return (
-                                                        <tr>
-
-                                                            <td>{e.nombreMesa}</td>
-                                                            <td>{e.cantidad}</td>
+                                                            <td>{parseInt(global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad) - parseInt(e.cantidad)}</td>
+                                                            <td>{global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad}</td>
                                                         </tr>
                                                     )
                                                 }) : <tr>
@@ -713,24 +700,28 @@ const EventoEspecifico = () => {
                             />
                         </div>
                         <div className="tab-pane  container " id="mesas">
-                            <table class="table text-center">
+                            <table class="table text-end">
                                 <thead>
                                     <tr>
 
 
-                                        <th scope="col">Cantidad</th>
-                                        <th scope="col">Localidad</th>
-                                        <th scope="col">Estado</th>
+                                        
+                                        <th scope="col" >Localidad</th>
+                                        <th scope="col">Canjeado </th>
+                                        <th scope="col">No Canjeado</th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {report.canje.length > 0 ?
-                                        report.canje.map((elem, ind) => {
+                                    
+                                        Object.values(groupedData).map((elem, ind) => {
                                             return (
                                                 <tr key={ind}>
-                                                    <th >{elem.total}</th>
+                                                   
                                                     <td>{elem.localidad}</td>
-                                                    <td>{elem.canje}</td>
+                                                    <th >{elem.canjeado}</th>
+                                                    <td>{elem.noCanjeado}</td>
                                                 </tr>
                                             )
                                         })

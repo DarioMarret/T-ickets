@@ -311,7 +311,9 @@ export function GetValores() {
                 let descuento = "1." + tienda2.localidaEspacio.descuento
                 tienda2.valor = (parseFloat(tienda2.valor) * parseInt(tienda2.cantidad)) / parseFloat(descuento)
             } else {
-                if (codicontry) {
+                let valor = parseInt(tienda2.cantidad) % 2
+                if(false){ 
+                //if ((evento.codigoEvento=="X5U5VR")&& (valor==1)) {
                     tienda2.valor = (parseFloat(tienda2.localidaEspacio["precio_descuento"]) * parseInt(tienda2.cantidad))
 
                 } else {

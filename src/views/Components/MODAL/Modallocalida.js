@@ -170,6 +170,7 @@ const LocalidadmapViews = (props) => {
                     getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
                     setTimeout(function () {
+                        
                         setDisable(false)
                         usedispatch(setSpinersli({ spiner: true }))
 
@@ -302,33 +303,6 @@ const LocalidadmapViews = (props) => {
         EliminarByStora(e.localidad)
         setDetalle([])
     }
-    const successAlert = (e, f, c) => {
-        let silla = e.replace("-", " ").split(" ")[1]
-        return setAlert(
-            <SweetAlert
-                success
-                style={{ display: "block", marginTop: "-100px" }}
-                title="Se agrego"
-                onConfirm={() => hideAlert()}
-                onCancel={() => cerrar()}
-                confirmBtnBsStyle="success"
-                closeOnClickOutside={false}
-                cancelBtnBsStyle="danger"
-                confirmBtnText="Seguir Agregando"
-                cancelBtnText="Ir al carrito"
-                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel
-            >
-                <div className="d-flex flex-row justify-content-center text-center">
-                    <div className="d-flex">
-                        <h4 style={{ fontSize: '0.9em' }} >
-                            De la Localidad {f} En la {c}:  {e.replace("-", " ").split(" ")[0]} la Silla #{silla.split("-")[1]}  </h4>
-                    </div>
-                </div>
-            </SweetAlert>
-        );
-
-    };
 
     const succesLimit = () => {
         setAlert(
@@ -360,65 +334,6 @@ const LocalidadmapViews = (props) => {
                         </div>
                         <div>
                             <button className=' btn btn-warning rounded-5' onClick={() => hideAlert()} >
-                                <span style={{
-                                    fontWeight: "bold"
-                                }}> Si, Continuar</span>
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
-            </SweetAlert>
-        )
-    }
-    const Alertmesas = (e, f) => {
-        setAlert(
-            <SweetAlert
-                warning
-                style={{ display: "block", marginTop: "-100px" }}
-                title="Desea selecionar los asientos dispobles de esta mesa"
-                onConfirm={() => ConsolidacionView.log(e, f)}
-                onCancel={() => cerrar()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                confirmBtnText="Si, Continuar"
-                cancelBtnText="Ir al carrito"
-                closeOnClickOutside={false}
-                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-                showCancel>
-                Deseas Continuar editando la selección
-            </SweetAlert>
-        )
-    }
-    const Elimnamesa = (e, f) => {
-        setAlert(
-            <SweetAlert
-                warning
-                style={{ display: "block", marginTop: "-100px" }}
-                closeOnClickOutside={false}
-                showCancel={false}
-                showConfirm={false}
-                closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-            >
-                <div>
-                    <div className='col-12 pb-3'>
-                        <img src={atencion} className="img-fluid"
-                            style={{
-                                height: 100
-                            }}>
-                        </img>
-                    </div>
-                    <h5 >Desea quitar los asientos seleccionados de esta mesa </h5>
-                    <div className='d-flex  justify-content-around py-4'>
-                        <div>
-                            <button className='btn btn-outline-danger  rounded-6' onClick={() => cerrar()}>
-                                <span style={{
-                                    fontWeight: "bold"
-                                }}>Cancelar</span>
-                            </button>
-                        </div>
-                        <div>
-                            <button className=' btn btn-warning rounded-5' onClick={() => eliminarmesas(e, f)} >
                                 <span style={{
                                     fontWeight: "bold"
                                 }}> Si, Continuar</span>
@@ -769,13 +684,15 @@ const LocalidadmapViews = (props) => {
     }, [modalshow.nombre == "Modallocalida" ? true : false])
 
     function cerrar() {
-
-        clearInterval(intervalolista.current);
+        clearInterval(intervalolista.current)
+        usedispatch(setModal({ nombre: '', estado: '' }))
+        usedispatch(filtrarlocali([]))
+       // clearInterval(intervalolista.current);
         sessionStorage.removeItem(seleccionmapa)
         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-        usedispatch(filtrarlocali([]))
+       
         hideAlert()
-
+        return
 
 
 

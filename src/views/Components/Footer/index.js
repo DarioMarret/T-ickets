@@ -118,7 +118,7 @@ export default function Footer(props) {
                                         >Habla con Nosotros</h6>
                                         <a href='https://t-ickets.net/3FynwiC' target="_blank" className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <i className="bi bi-whatsapp"></i>
-                                            <span className=" text-white" style={{ fontFamily: '', }} > 593 96 920 0247  </span>
+                                            <span className=" text-white" style={{ fontFamily: '', }} > 593980008000  </span>
                                         </a>
                                         <a
                                             href="tel:043585652" target="_blank"

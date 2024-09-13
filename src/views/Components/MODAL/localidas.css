@@ -154,6 +154,11 @@ div.mesaselecion {
     cursor: pointer;
 }
 
+div.mesaapartada {
+    background-color: #ff8f07;
+    cursor: pointer;
+}
+
 div.mesaocupado {
     background-color: #dc3545;
     cursor: not-allowed;
@@ -177,6 +182,11 @@ div.mesareserva {
 a.reservado {
     background-color: #ffc107;
     cursor: not-allowed;
+}
+
+a.seleccionado {
+    background-color: #1791fc;
+    cursor: pointer;
 }
 
 a.seleccionado {

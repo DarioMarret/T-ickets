@@ -6,6 +6,9 @@ a.disponible {
     background-color: #198754;
     cursor: pointer;
 }
+a.apartado{
+    background-color: #ff8f07;
+}
 a.ocupado{
     background-color: #dc3545;
 }

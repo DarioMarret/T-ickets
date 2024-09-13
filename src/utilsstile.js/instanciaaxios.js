@@ -19,4 +19,4 @@ export const InstanciaGETAxios = axios.create({
     },
     timeout: 1000
 })
-export const IVA = 0.15
+export const IVA = 0.0

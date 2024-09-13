@@ -124,6 +124,7 @@ const ModalCarritoView = (prop) => {
     function abrirlocalidad() {
         setSpiner("d-none")
         usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+        return
     }
 
 
@@ -187,6 +188,152 @@ const ModalCarritoView = (prop) => {
             })
         }
         ).catch(err => console.log(err))*/
+        const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible,polyline.disponible')
+        modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
+            E.addEventListener("mouseover", function () {
+                let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
+                let tooltip = document.getElementById("tooltip");
+                let localidadnombre = document.getElementById("nomLocalidad")
+                let precioLocalidad = document.getElementById("prelocalidad")
+                let header = document.getElementById("precioscomp")
+                let idheadr = document.getElementById("header")
+                console.log(consulta)
+                localidadnombre.innerHTML = `${consulta.localidad}`;
+                precioLocalidad.innerHTML = `$${consulta.precio_normal} `;
+                //localidadnombre.style.backgroundColor = `${consulta.color}`
+                tooltip.style.backgroundColor = `${consulta.color}`
+                tooltip.style.borderColor = 'white';
+                tooltip.style.color = 'white';
+                //tooltip.innerHTML = "text";
+                tooltip.style.display = "block";
+                // tooltip.style.left = evt.pageX + 5 + 'px';
+                header.style.backgroundColor = consulta.color;
+
+                // tooltip.style.top = evt.pageY + 5 + 'px';
+                // this.setAttribute("fill", "green");
+            });
+
+            E.addEventListener("mouseout", function () {
+                var tooltip = document.getElementById("tooltip");
+                tooltip.style.display = "none";
+                //this.setAttribute("fill", this.getAttribute("original-fill"));
+            });
+            E.addEventListener("click", function () {
+                if (!hasExecuted) {
+                    // Coloca aquí el código que deseas ejecutar una sola vez
+                    console.log("Función ejecutada");
+                    let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
+
+
+                    if (sleccionlocalidad.pagados >= 10) {
+                        usedispatch(setToastes({
+                            show: true,
+                            message: "Están en proceso, o completaste la cantidad de compra",
+                            color: 'bg-primary',
+                            estado: "Has alcanzado el límite de boletos por evento"
+                        }))
+                        return
+                    }
+                    else {
+                        hasExecuted = true
+                        setSpiner("")
+                        localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
+                            console.log(consulta.espacio, consulta.idcolor)
+                            console.log(ouput)
+                            let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
+                            let nuevoObjeto = []
+                            if (ouput.data.find(e => e.typo == "fila")) {
+                                ouput.data.forEach(x => {
+                                    if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                                        nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+                                    }
+                                    else {
+                                        let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                                        nuevoObjeto[indixe].asientos.push({
+                                            silla: x.silla, estado: x.estado, idsilla: x.id
+                                        })
+                                    }
+                                })
+                                //console.log(nuevoObjeto)
+                                usedispatch(cargarmapa(color))
+                                usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                                usedispatch(filtrarlocali(nuevoObjeto))
+                                sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                                setSpiner("d-none")
+                                abrirlocalidad()
+                                //break
+                                return
+                            } else if (ouput.data.find(e => e.typo == "mesa")) {
+                                ouput.data.forEach(x => {
+                                    if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                                        nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                                    }
+                                })
+                                nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                                    let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                                    if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                                        nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                                    }
+                                }) : ''
+                                nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                                    let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                                    let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                                    nuevoObjeto[index].Mesas[sillas].asientos.push({
+                                        silla: x.silla, estado: x.estado, idsilla: x.id
+                                    })
+                                }) : ''
+                                usedispatch(cargarmapa(color))
+                                usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                                usedispatch(filtrarlocali(nuevoObjeto))
+                                sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                                setSpiner("d-none")
+                                abrirlocalidad()
+                                return
+                            }
+                            else if (ouput.data.find(e => e.typo == "correlativo")) {
+                                usedispatch(cargarmapa(color))
+                                usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
+                                //  usedispatch(filtrarlocali(nuevoObjeto))
+                                filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
+                                // console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
+                                ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length == 0 ? usedispatch(setToastes({
+                                    show: true,
+                                    message: "Estan en proceso o vendidos",
+                                    color: 'bg-primary',
+                                    estado: "Esta loclidad no tiene disponibles  "
+                                })) : ''
+                                // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
+                                console.log(
+                                    {
+                                        disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
+                                        proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
+                                        pagados: sleccionlocalidad.pagados,
+                                        inpagos: sleccionlocalidad.inpagos
+                                    }
+                                )
+                                usedispatch(updateboletos({
+                                    disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
+                                    proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
+                                    pagados: sleccionlocalidad.pagados,
+                                    inpagos: sleccionlocalidad.inpagos
+                                }))
+                                sessionStorage.seleccionmapa = JSON.stringify(consulta)
+                                setSpiner("d-none")
+                                abrirlocalidad()
+                                return
+
+                            }
+                            return
+                        }
+                        ).catch(err =>
+                            console.log(err))
+
+                        return
+                    }
+                }
+            })
+
+        }) : ''
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
     function Abririlocalfirt(e) {
         console.log(e)
@@ -300,176 +447,8 @@ const ModalCarritoView = (prop) => {
                 console.log(err))
         }
     }
-    const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible,polyline.disponible')
-    modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
-        E.addEventListener("mouseover", function () {
-            let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
-            let tooltip = document.getElementById("tooltip");
-            let localidadnombre = document.getElementById("nomLocalidad")
-            let precioLocalidad = document.getElementById("prelocalidad")
-            let header = document.getElementById("precioscomp")
-            let idheadr = document.getElementById("header")
-            console.log(consulta)
-            localidadnombre.innerHTML = `${consulta.localidad}`;
-            precioLocalidad.innerHTML = `$${consulta.precio_normal} `;
-            //localidadnombre.style.backgroundColor = `${consulta.color}`
-            tooltip.style.backgroundColor = `${consulta.color}`
-            tooltip.style.borderColor = 'white';
-            tooltip.style.color = 'white';
-            //tooltip.innerHTML = "text";
-            tooltip.style.display = "block";
-            // tooltip.style.left = evt.pageX + 5 + 'px';
-            header.style.backgroundColor = consulta.color;
-
-            // tooltip.style.top = evt.pageY + 5 + 'px';
-            // this.setAttribute("fill", "green");
-        });
-
-        E.addEventListener("mouseout", function () {
-            var tooltip = document.getElementById("tooltip");
-            tooltip.style.display = "none";
-            //this.setAttribute("fill", this.getAttribute("original-fill"));
-        });
-        E.addEventListener("click", function () {
-            let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
-            //console.log(this.classList[0], consulta)
-            if (consulta.idcolor == 4) {
-                usedispatch(setToastes({
-                    show: true,
-                    message: "Esta localidad ya no tiene Disponibilidad",
-                    color: 'bg-primary',
-                    estado: "Todos ocupados"
-                }))
-                return
-            }
-            // clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/02/2023 08:30") < new Date())
-            if (false) {
-                usedispatch(setToastes({
-                    show: true,
-                    message: "Estaremos informando la fecha de canje de boletos",
-                    color: 'bg-success',
-                    estado: "!Páramos la venta, los 600 boletos se agotaron!"
-                }))
-                return
-            }
-            // if (clienteInfo() == null && CODIGO == "9EGM42") 
-            // clienteInfo() == null && CODIGO == "9EGM42" && (new Date("02/01/2023 19:00 ") > new Date())
-            if (false) {
-                usedispatch(setToastes({
-                    show: true,
-                    message: "Gauayaquil Disponible el 1 de febrero del 2023 19:00",
-                    color: 'bg-danger',
-                    estado: "Pronto Disponible"
-                }))
-                setSpiner("d-none")
-                return
-            }
-            if (sleccionlocalidad.pagados >= 10) {
-                usedispatch(setToastes({
-                    show: true,
-                    message: "Están en proceso, o completaste la cantidad de compra",
-                    color: 'bg-primary',
-                    estado: "Has alcanzado el límite de boletos por evento"
-                }))
-                return
-            }
-            else {
-                
-                setSpiner("")
-                
-                //return
-                localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
-                    console.log(consulta.espacio, consulta.idcolor)
-                    console.log(ouput)
-                    let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
-                    let nuevoObjeto = []
-                    if (ouput.data.find(e => e.typo == "fila")) {
-                        ouput.data.forEach(x => {
-                            if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                                nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
-                            }
-                            else {
-                                let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
-                                nuevoObjeto[indixe].asientos.push({
-                                    silla: x.silla, estado: x.estado, idsilla: x.id
-                                })
-                            }
-                        })
-                        //console.log(nuevoObjeto)
-                        usedispatch(cargarmapa(color))
-                        usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
-                        usedispatch(filtrarlocali(nuevoObjeto))
-                        sessionStorage.seleccionmapa = JSON.stringify(consulta)
-                        setSpiner("d-none")
-                        usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
-                        return
-                    } else if (ouput.data.find(e => e.typo == "mesa")) {
-                        ouput.data.forEach(x => {
-                            if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                                nuevoObjeto.push({ fila: x.fila, Mesas: [] })
-                            }
-                        })
-                        nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
-                            let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                            if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
-                                nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
-                            }
-                        }) : ''
-                        nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
-                            let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                            let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
-                            nuevoObjeto[index].Mesas[sillas].asientos.push({
-                                silla: x.silla, estado: x.estado, idsilla: x.id
-                            })
-                        }) : ''
-                        usedispatch(cargarmapa(color))
-                        usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
-                        usedispatch(filtrarlocali(nuevoObjeto))
-                        sessionStorage.seleccionmapa = JSON.stringify(consulta)
-                        setSpiner("d-none")
-                        usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
-                        return
-                    }
-                    else if (ouput.data.find(e => e.typo == "correlativo")) {
-                        usedispatch(cargarmapa(color))
-                        usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
-                        //  usedispatch(filtrarlocali(nuevoObjeto))
-                        filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
-                        // console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
-                        ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length == 0 ? usedispatch(setToastes({
-                            show: true,
-                            message: "Estan en proceso o vendidos",
-                            color: 'bg-primary',
-                            estado: "Esta loclidad no tiene disponibles  "
-                        })) : ''
-                        // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
-                        console.log(
-                            {
-                                disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
-                                proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
-                                pagados: sleccionlocalidad.pagados,
-                                inpagos: sleccionlocalidad.inpagos
-                            }
-                        )
-                        usedispatch(updateboletos({
-                            disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
-                            proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
-                            pagados: sleccionlocalidad.pagados,
-                            inpagos: sleccionlocalidad.inpagos
-                        }))
-                        sessionStorage.seleccionmapa = JSON.stringify(consulta)
-                        setSpiner("d-none")
-                        usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
-                        return
-
-                    }
-                }
-                ).catch(err =>
-                    console.log(err))
-                return
-            }
-        })
-    }) : ''
+    let hasExecuted = false;
+    
     function cerrar() {
         handleClosesop()
         hideAlert()

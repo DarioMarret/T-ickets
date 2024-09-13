@@ -165,8 +165,6 @@ var routes = [
     icon: "nc-icon nc-single-02",
     permiso: ["admin", "super_admin", "vendedores"],
     views: [
-
-
       {
         path: "/suscritor",
         layout: "/admin",
@@ -181,7 +179,7 @@ var routes = [
         name: "Whastapp",
         mini: "*",
         component: WhatsAppViewmal,
-        permiso: ["admin", ""]
+        permiso: ["", ""]
       },
 
 
@@ -318,7 +316,7 @@ var routes = [
         name: "Notificaciones Whatsapp",
         mini: "*",
         component: UsersView,
-        permiso: ["admin", "super_admin"]
+        permiso: ["", ""]
       },
       {
         path: "/Push",
@@ -395,7 +393,7 @@ var routes = [
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["admin", "", ""]
+    permiso: ["", "", ""]
   }
 
 
