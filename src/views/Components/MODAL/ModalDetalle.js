@@ -46,8 +46,7 @@ function ModalDetalle(props) {
     })
     const detposito = () => {
         datosPerson.metodoPago == "Efectivo" ?
-            usedispatch(setModal({ nombre: "modalpagoFacilito", estado: "" })) :
-            usedispatch(setModal({ nombre: "modalpago", estado: "" }))
+            usedispatch(setModal({ nombre: "modalpagoFacilito", estado: "" })) :usedispatch(setModal({ nombre: "modalpago", estado: "" }))
 
     }
     const handelReporShow = () => usedispatch(setModal({ nombre: 'ModalReporte', estado: '' }))
@@ -717,7 +716,7 @@ function ModalDetalle(props) {
                                         {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ?
 
                                             "Total con Descuento" : "Total"}</td>
-                                    <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (((parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.iva)).toFixed(2)))}</td>
+                                    <td className='text-center'>${parseFloat(listaPrecio.total).toFixed(2) }</td>
                                 </tr >
                                 {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ?
                                     <tr className="d-none">

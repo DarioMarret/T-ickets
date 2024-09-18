@@ -184,10 +184,7 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
-    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
-      console.log(ouput)
-    }
-    ).catch(err => console.log(err)) : ''
+    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => { console.log(ouput) }).catch(err => console.log(err)) : ''
     getVerTienda().filter(e => e.tipo == e.tipo).length > 0 ?
       getVerTienda().map((elem, index) => {
         setTimeout(function () {
@@ -597,7 +594,7 @@ const IndexFlas = () => {
       const filtro = datos != null ? datos.filter((e) => {
         //const fechaConcierto = new Date(e.fechaConcierto + "T23:59:59");
         //const fechaActual = new Date();
-       // return fechaConcierto > fechaActual;
+        // return fechaConcierto > fechaActual;
         const fechaConcierto = parse(e.fechaConcierto + " 23:59:59", 'yyyy-MM-dd HH:mm:ss', new Date());
         // Obtener la fecha actual
         const fechaActual = new Date();
@@ -1588,7 +1585,7 @@ const IndexFlas = () => {
         pararcontador={detenervelocidad}
       />
       <div
-      id="spinercarga"
+        id="spinercarga"
         className={"d-none"}
         style={{
           display: 'none',
@@ -1796,7 +1793,7 @@ const IndexFlas = () => {
         detener={detenervelocidad}
       />
 
-     
+
 
 
     </>

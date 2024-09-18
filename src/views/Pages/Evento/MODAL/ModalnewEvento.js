@@ -464,10 +464,11 @@ console.log(neweventos)
                                         </div>
                                         <select className="form-control" name="comisionBoleto" value={neweventos.comisionBoleto} onChange={(e) => handelchangeComposeventos(e.target)}>
                                             <option disabled value={""}>Seleccione el porsentaje del tarjeta </option>
-                                            <option value={"1.00"} >0%</option>
+                                            <option value={"0.00"} >0%</option>
                                             <option value={"1.08"} >8%</option>
                                             <option value={"1.12"} >12%</option>
                                             <option value={"1.14"} >14%</option>
+                                            <option value={"1.15"} >15%</option>
 
                                         </select>
 

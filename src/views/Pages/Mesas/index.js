@@ -39,7 +39,7 @@ function MesasView({ text, status, list }) {
       else return estado.estado.toLowerCase()
       return
     }
-    if ((estado.cedula == "" || estado.cedula == undefined || estado.cedula == null ) && estado.estado.toLowerCase() == "ocupado") return "apartado"
+    if ((estado.cedula == "" || estado.cedula == undefined || estado.cedula == null) && estado.estado.toLowerCase() == "ocupado") return "apartado"
     else return estado.estado.toLowerCase()
   }
   function MesaEstado(e) {
@@ -58,7 +58,7 @@ function MesasView({ text, status, list }) {
             // console.log(k.cedula, user.cedula)
             return ["seleccionado"];
           }
-         // if ((k.cedula == "" || k.cedula == undefined || k.cedula == null) && k.estado.toLowerCase() == "ocupado") return "apartado"
+          // if ((k.cedula == "" || k.cedula == undefined || k.cedula == null) && k.estado.toLowerCase() == "ocupado") return "apartado"
           else { return k.estado }
         }
         else return [k.estado]
@@ -71,12 +71,18 @@ function MesasView({ text, status, list }) {
     const isReserva = (currentValue) => currentValue == "RESERVADO" || currentValue == "reservado";
     const isDispon = (currentValue) => currentValue == "disponible" || currentValue == "DISPONIBLE";
     const isDisnone = (currentValue) => currentValue == "none" || currentValue == "d-none";
-    if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
+    let mesas = ["A", "B", "C","D"]
+    let sillabloquea = ["D42", "D41", "D40", "D38", "D39", "D37", "D36"]
+    //console.log(e.substring(0, 1))
+    let envotid = sessionStorage.getItem("eventoid")
+    //if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
     if (Object.values(asiento).every(isOcupado)) { return "mesaocupado" }
     if (Object.values(asiento).every(isReserva)) { return "mesareserva" }
-    if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }  
-    if(Object.values(asiento).every(isApartado)){return "mesaapartada"}
+    if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
+    if (Object.values(asiento).every(isApartado)) { return "mesaapartada" }
     if (Object.values(asiento).every(isDisnone)) { return "none" }
+   // if (!mesas.includes(e.substring(0, 1))) { return "bg-secondary" }
+    if ((envotid == "X5U5VR")&&!mesas.includes(e.substring(0, 1)) || (e.substring(0, 1) == 'D' && !sillabloquea.includes(e))) {return "bg-dark" }
     return "mesadisponible"
   }
   /*  obtener sillas  */

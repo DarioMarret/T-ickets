@@ -34,6 +34,8 @@ import { EventosActivos } from "utils/Querypanel";
 import { Boleteria_Boletos, Boleteria_Nombre, Boleteria_canje } from "utils/EventosQuery/index";
 import { Contactos_Boletos } from "utils/Querycomnet";
 import { Axiosmikroserdos } from "utils/index";
+import MesasView from "views/Pages/Mesas/index";
+import MesasViews from "views/Pages/Mesas/Plantillas/indice";
 require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
@@ -47,6 +49,7 @@ const EventoEspecifico = () => {
     const [open, setOpen] = useState(true);
     const [dispoible, setDisponible] = useState([])
     const [global, setGobal] = useState([])
+    const [activeTab, setActiveTab] = useState("");
     const [valores, setvalores] = useState({
         localidad: '',
         precio_normal: '',
@@ -58,6 +61,7 @@ const EventoEspecifico = () => {
         localidad: '',
         habilitar_cortesia: ''
     })
+    const [espacio, setEspacio] = useState([])
     const [evento, SetEvento] = useState({
         id: '',
         nombreConcierto: '',
@@ -121,28 +125,38 @@ const EventoEspecifico = () => {
                 })
 
                 SetPrecios(precio.data)
+                console.log(infoes)
                 const disponibles = await listarLocalidadaEspeci(infoes[0].id)
-                let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id && e.espacio==infoes[0].nombre)
                 let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
+                let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id && e.espacio == infoes[0].nombre).map(el => {
+                    const nombre = listo.filter(e => e.id == el.id_localidades)[0].nombre || ''
+                    return { ...el, nombreLocalidad: nombre }
+                })
+
+                console.log(filtros)
+
+                //let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
                 const estadosPermitidos = new Set(["Pendiente", "Ocupado", "pendiente", "ocupado"]);
                 const acumuladorPorNombre = filtros.reduce((acc, elemento) => {
-                    if(!listo.filter(e => e.id == elemento.id_localidades).length==0){
-                    const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre 
-                    if (!estadosPermitidos.has(elemento.estado)) {
-                        acc[nombre] = (acc[nombre] || 0) + 1;
+                    if (!listo.filter(e => e.id == elemento.id_localidades).length == 0) {
+                        const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre
+                        if (!estadosPermitidos.has(elemento.estado)) {
+                            acc[nombre] = (acc[nombre] || 0) + 1;
+                        }
+                        return acc;
                     }
-                    return acc;}
                 }, {});
                 const acumuladorPorNombres = filtros.reduce((acc, elemento) => {
-                    if(!listo.filter(e => e.id == elemento.id_localidades).length==0){
-                    const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre //elemento.id_localidades;
-                    acc[nombre] = (acc[nombre] || 0) + 1;
+                    if (!listo.filter(e => e.id == elemento.id_localidades).length == 0) {
+                        const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre //elemento.id_localidades;
+                        acc[nombre] = (acc[nombre] || 0) + 1;
 
-                    return acc;}
+                        return acc;
+                    }
                 }, {});
 
                 console.log(acumuladorPorNombres)
-                if(!acumuladorPorNombres) return
+                if (!acumuladorPorNombres) return
                 const resultado = Object.entries(acumuladorPorNombres).map(([nombreMesa, cantidad]) => {
                     return { nombreMesa, cantidad };
                 });
@@ -150,6 +164,7 @@ const EventoEspecifico = () => {
                     return { nombreMesa, cantidad };
                 });
                 console.log(resultado, arrayMesas)
+                setActiveTab(resultado[0].nombreMesa)
                 setGobal(resultado)
                 setDisponible(arrayMesas)
                 let boletos_camjeados = await Boleteria_canje(id)
@@ -162,6 +177,41 @@ const EventoEspecifico = () => {
                         valores: boletos_eventos.data
                     })
                 }
+                let localidas = []
+
+                resultado.map(elm => {
+                    let nuevoObjeto = []
+                    //console.log(filtros.find(e => e.nombreLocalidad == elm.nombreMesa))
+                    if (filtros.find(e => e.nombreLocalidad == elm.nombreMesa)) {
+                        if (filtros.find(e => e.nombreLocalidad == elm.nombreMesa && e.typo == "mesa")) {
+                            filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).forEach(x => {
+                                if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                                    nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                                }
+                            })
+                            filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).forEach(x => {
+                                let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                                if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                                    nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                                }
+                            })
+                            filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).forEach(x => {
+                                let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                                let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                                nuevoObjeto[index].Mesas[sillas].asientos.push({
+                                    silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula
+                                })
+                            })
+                        } else {
+                            nuevoObjeto = []
+                        }
+                    }
+                    console.log(nuevoObjeto)
+                    localidas.push({ nombre: elm.nombreMesa, localidad: nuevoObjeto })
+                })
+                console.log(localidas)
+
+                setEspacio(localidas)
                 console.log(datos[0].nombreConcierto, boletos_camjeados, boletos_boleto, boletos_eventos)
 
             }
@@ -365,6 +415,7 @@ const EventoEspecifico = () => {
     const hideAlert = () => {
         setAlert(null);
     };
+
     const groupedData = report.canje.reduce((acc, curr) => {
         const localidad = curr.localidad;
 
@@ -586,6 +637,9 @@ const EventoEspecifico = () => {
                                 <a className="nav-link " data-toggle="tab" href="#listas"
                                 >Forma de pago</a>
                             </li>
+                            <li className="nav-item">
+                                <a className="nav-link" data-toggle="tab" href="#localidad">Localidades</a>
+                            </li>
                         </ul>
                     </div>
                     <div className="tab-content col-sm-12">
@@ -705,20 +759,20 @@ const EventoEspecifico = () => {
                                     <tr>
 
 
-                                        
+
                                         <th scope="col" >Localidad</th>
                                         <th scope="col">Canjeado </th>
                                         <th scope="col">No Canjeado</th>
-                                       
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {report.canje.length > 0 ?
-                                    
+
                                         Object.values(groupedData).map((elem, ind) => {
                                             return (
                                                 <tr key={ind}>
-                                                   
+
                                                     <td>{elem.localidad}</td>
                                                     <th >{elem.canjeado}</th>
                                                     <td>{elem.noCanjeado}</td>
@@ -792,6 +846,61 @@ const EventoEspecifico = () => {
                                 </tbody>
                             </table>
                         </div>
+                        <div className="tab-pane container" id="localidad">
+                            {/* Nav Tabs */}
+                            <ul className="nav nav-tabs">
+                                {global.map((el, ind) => (
+                                    <li className="nav-item" key={ind}>
+                                        <a
+                                            className={`nav-link ${activeTab === el.nombreMesa ? "active" : ""}`}
+                                            onClick={() => setActiveTab(el.nombreMesa)}
+                                            href={"#" + el.nombreMesa} // No es necesario en React pero puedes usarlo si lo necesitas
+                                        >
+                                            {el.nombreMesa}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            {/* Tab Content */}
+                            <div className="tab-content col-sm-12">
+                                {espacio.map((el, ind) => (
+                                    <div
+                                        key={ind}
+                                        className={`tab-pane ${activeTab === el.nombre ? "active" : ""}`}
+                                        id={el.nombre}
+                                    >
+                                        {el.localidad.map((e, index) => {
+                                            return (
+                                                <div className='d-flex  PX-1 align-items-center' key={index}>
+                                                    <div className='d-flex pb-2'>
+                                                        <MesasViews
+                                                            text={e.fila}
+                                                        />
+                                                    </div>
+                                                    <div className='d-flex  pb-2' >
+                                                        {e.Mesas.length > 0 ?
+                                                            e.Mesas.map((e, i) => {
+                                                                return (
+                                                                    <div key={i}>
+                                                                        <MesasViews
+                                                                            status={e.asientos.length}
+                                                                            text={e.mesa}
+                                                                            list={e.asientos}
+                                                                        />
+                                                                    </div>
+                                                                )
+                                                            }) : ''}
+                                                    </div>
+                                                </div>
+
+                                            )
+                                        })}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>

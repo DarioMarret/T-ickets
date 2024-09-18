@@ -455,7 +455,7 @@ export default function FormasPagoMopadal() {
 
                                         <th scope="row"></th>
                                         <td className='text-end' >Total</td>
-                                        <td className='text-center'>${GetMetodo() === "Tarjeta" ? parseFloat(listaPrecio.total).toFixed(2) : (((parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.iva)).toFixed(2)))}</td>
+                                        <td className='text-center'>${ parseFloat(listaPrecio.total).toFixed(2)}</td>
                                     </tr >
                                 </tbody>
                             </table>

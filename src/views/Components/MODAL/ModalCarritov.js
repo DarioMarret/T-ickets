@@ -199,7 +199,7 @@ const ModalCarritoView = (prop) => {
                 let idheadr = document.getElementById("header")
                 console.log(consulta)
                 localidadnombre.innerHTML = `${consulta.localidad}`;
-                precioLocalidad.innerHTML = `$${consulta.precio_normal} `;
+                precioLocalidad.innerHTML = `$${consulta.precio_tarjeta} `;
                 //localidadnombre.style.backgroundColor = `${consulta.color}`
                 tooltip.style.backgroundColor = `${consulta.color}`
                 tooltip.style.borderColor = 'white';
@@ -649,7 +649,7 @@ const ModalCarritoView = (prop) => {
                                                             style={{
                                                                 fontSize: "0.9em",
                                                             }} >{e.localidad}</div>
-                                                        <div className="d-none d-sm-block  flex-row text-center col-2">${GetEstadousu().discapacidad === "No" ? (e.valor * e.cantidad).toFixed(2) : (e.discapacidad * e.cantidad).toFixed(2)}</div>
+                                                        <div className="d-none d-sm-block  flex-row text-center col-2">${GetEstadousu().discapacidad === "No" ? ((parseFloat(e.valor) - (parseFloat(e["localidaEspacio"]["comision_boleto"]) * e.cantidad)) * e.cantidad).toFixed(2) : (e.discapacidad * e.cantidad).toFixed(2)}</div>
                                                         <div className="d-none d-sm-block flex-row  text-center  col-2 mx-auto justify-content-center">{e.cantidad}</div>
                                                         <div className="d-none d-sm-block d-flex d-sm-flex flex-row   mx-auto  justify-content-center col-sm">
                                                             <button className=" d-none d-sm-block  btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
@@ -759,7 +759,7 @@ const ModalCarritoView = (prop) => {
                                         {modalshow.nombre == "ModalCarritov" ?
                                             (sessionStorage.getItem("eventoid") == "5UY4DT") ?
 
-                                                precios.precios.sort((a, b) => (a.precio_normal > b.precio_normal ? 1 : -1) && (a.id > b.id ? 1 : -1)).map((elm, i) => {
+                                                precios.precios.sort((a, b) => (a.precio_tarjeta > b.precio_tarjeta ? 1 : -1) && (a.id > b.id ? 1 : -1)).map((elm, i) => {
                                                     return (
                                                         <div className="" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                             <SvgselectView
@@ -786,7 +786,7 @@ const ModalCarritoView = (prop) => {
                                                         <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: elm.color }}></div>
                                                         <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '170px' }} >
                                                             <span className="" style={{ fontFamily: '', fontSize: '1.11em' }} >{elm.localidad} </span>
-                                                            <span className="pl-1" style={{ fontFamily: '', fontSize: '1.11em' }} >${elm.precio_normal} </span>
+                                                            <span className="pl-1" style={{ fontFamily: '', fontSize: '1.11em' }} >${elm.precio_tarjeta} </span>
                                                         </div>
                                                     </div>
                                                 )
@@ -953,7 +953,7 @@ const ModalCarritoView = (prop) => {
                                                     fontSize: '1.5rem',
                                                     fontWeight: 'bold',
                                                 }}
-                                                className="px-1 text-danger total-detalle"> {listaPrecio.subtotal ? "$" + listaPrecio.subtotal : null}</h4>
+                                                className="px-1 text-danger total-detalle"> {listaPrecio.subtotal ? "$" + parseFloat(listaPrecio.subtotal).toFixed(2) : null}</h4>
 
                                         </div>
                                     </div>
@@ -972,7 +972,7 @@ const ModalCarritoView = (prop) => {
                                 fontSize: '1.5rem',
                                 fontWeight: 'bold',
                             }}
-                            className="px-1 text-danger total-detalle"> {listaPrecio.subtotal ? "$" + listaPrecio.subtotal : null}</h4>
+                            className="px-1 text-danger total-detalle"> {listaPrecio.subtotal ? "$" + parseFloat(listaPrecio.subtotal).toFixed(2) : null}</h4>
 
                     </div>
                     <div className="d-flex   bg-danger  ">
