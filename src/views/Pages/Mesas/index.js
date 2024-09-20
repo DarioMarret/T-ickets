@@ -368,7 +368,7 @@ function MesasView({ text, status, list }) {
     let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")
     //
-    console.log((sillabloquea.includes(text)))
+   //console.log((sillabloquea.includes(text)))
 
     if (((envotid == "X5U5VR") && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text)))) return
     if ((envotid == "FHZMFP" && clienteInfo() == null)) {
@@ -505,7 +505,7 @@ function MesasView({ text, status, list }) {
             seleccionmapa: nombre.localidad + "-" + asiento[0].silla, "fila": asiento[0].silla.split("-")[0],
             "silla": asiento[0].silla, "estado": "seleccionado"
           }))
-          console.log(e)
+         // console.log(e)
           let sillaids = document.getElementById("silla-" + e)
           sillaids.classList.remove('disponible')
           sillaids.classList.add('seleccionado')
@@ -603,7 +603,7 @@ function MesasView({ text, status, list }) {
       usedispatch(setSpinersli({ spiner: true }))
     }).catch(err => {
       usedispatch(setSpinersli({ spiner: true }))
-      console.log(err)
+     // console.log(err)
     })
     // console.log(datos)
 

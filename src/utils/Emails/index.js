@@ -4,22 +4,23 @@ import { Bodyhtml, Headerhtml } from "./cuerpo"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 
 export const Emailcontec = async (parms) => {
-    const { email, nombre, movil, direccion, producto, precio, cantidad, id } =parms
+    const { email, nombre, movil, direccion, producto, precio, cantidad, id } = parms
     try {
-        let { data } = axios.post("", {
+        let { data } = axios.post("https://api.flashchat.chat/backflash/qr_mensaje_external", {
             "sessionName": "1_tickets_prueba19177232201",
             "numero": [
-                formatearNumero(movil) 
+                formatearNumero(movil)
             ],
             "mensaje": {
                 "type": "text",
-                "text": `Bienvenido ${nombre} a`,
+                "text": `Bienvenido ${nombre} a Tickest Ecuador S.A.\nTienes alguna consulta?`,
                 "url": ""
 
             }
         })
+        return data
     } catch (error) {
-        
+        return error
     }
     /*try {
         let { data } = await axios.post("https://api.ticketsecuador.ec/email/api/v1/sendEmail_html", {
@@ -77,8 +78,8 @@ export const EnviaWhast = async (parms) => {
     }
     */
     try {
-        let { data, status } = await axios.post("https://api.t-ickets.com/backflash/qr_mensaje_external",parms)
-        if(status=="200") return true
+        let { data, status } = await axios.post("https://api.t-ickets.com/backflash/qr_mensaje_external", parms)
+        if (status == "200") return true
         return false
     } catch (error) {
         return false
@@ -89,7 +90,7 @@ export function formatearNumero(numero) {
     let dato = numero.trim()
     // Comprobar si el número coincide con la expresión regular
     if (regex.test(dato)) {
-        return dato.replace("+","")
+        return dato.replace("+", "")
     }
     else if (dato.length === 9) {
         return "593" + dato

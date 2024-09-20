@@ -297,7 +297,7 @@ const ResgistroView = (prop) => {
                         /*modal.estado != null ? abrir(modal.estado) :
                             usedispatch(setModal({ nombre: "", estado: "" }))*/
                         //Modalstatus.estado != "" ? usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' })) : ''
-                        Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado == "e" ? "ModalDetalle" : '', estado: '' })) : ''
+                        modal.estado != "" ? usedispatch(setModal({ nombre: modal.estado == e ? "ModalDetalle" : '', estado: '' })) : ''
 
                         usedispatch(addususcritor({ users }))
                         ReactGA.event({
@@ -320,7 +320,7 @@ const ResgistroView = (prop) => {
                         }))
                     }
                 } catch (error) {
-                    //console.log(error)
+                    console.log(error)
                     usedispatch(setToastes({
                         show: true,
                         message: "El Email ya " + email + " se encuentra registrado intente con otro",

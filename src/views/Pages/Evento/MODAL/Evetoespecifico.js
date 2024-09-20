@@ -91,7 +91,7 @@ const EventoEspecifico = () => {
         return Dias[da]
     }
 
-    async function Evento() {
+    async function Evento(event) {
         SetEvento({
             id: '',
             nombreConcierto: '',
@@ -125,7 +125,7 @@ const EventoEspecifico = () => {
                 })
 
                 SetPrecios(precio.data)
-                console.log(infoes)
+                //console.log(infoes)
                 const disponibles = await listarLocalidadaEspeci(infoes[0].id)
                 let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
                 let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id && e.espacio == infoes[0].nombre).map(el => {
@@ -133,7 +133,7 @@ const EventoEspecifico = () => {
                     return { ...el, nombreLocalidad: nombre }
                 })
 
-                console.log(filtros)
+                // console.log(filtros)
 
                 //let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
                 const estadosPermitidos = new Set(["Pendiente", "Ocupado", "pendiente", "ocupado"]);
@@ -155,7 +155,7 @@ const EventoEspecifico = () => {
                     }
                 }, {});
 
-                console.log(acumuladorPorNombres)
+                // console.log(acumuladorPorNombres)
                 if (!acumuladorPorNombres) return
                 const resultado = Object.entries(acumuladorPorNombres).map(([nombreMesa, cantidad]) => {
                     return { nombreMesa, cantidad };
@@ -164,7 +164,7 @@ const EventoEspecifico = () => {
                     return { nombreMesa, cantidad };
                 });
                 console.log(resultado, arrayMesas)
-                setActiveTab(resultado[0].nombreMesa)
+                setActiveTab(event ? event : resultado[0].nombreMesa)
                 setGobal(resultado)
                 setDisponible(arrayMesas)
                 let boletos_camjeados = await Boleteria_canje(id)
@@ -202,21 +202,33 @@ const EventoEspecifico = () => {
                                     silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula
                                 })
                             })
+                        } else if (filtros.find(e => e.nombreLocalidad == elm.nombreMesa && e.typo == "correlativo")) {
+                            nuevoObjeto = [{ total: filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).length }]
                         } else {
-                            nuevoObjeto = []
+                            filtros.filter(f => f.nombreLocalidad == elm.nombreMesa).forEach(x => {
+                                if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                                    nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula }] })
+                                }
+                                else {
+                                    let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                                    nuevoObjeto[indixe].asientos.push({
+                                        silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula
+                                    })
+                                }
+                            })
                         }
                     }
-                    console.log(nuevoObjeto)
-                    localidas.push({ nombre: elm.nombreMesa, localidad: nuevoObjeto })
+                    //  console.log(nuevoObjeto)
+                    localidas.push({ nombre: elm.nombreMesa, localidad: nuevoObjeto, typo: filtros.filter(e => e.nombreLocalidad == elm.nombreMesa)[0].typo })
                 })
                 console.log(localidas)
 
                 setEspacio(localidas)
-                console.log(datos[0].nombreConcierto, boletos_camjeados, boletos_boleto, boletos_eventos)
+                //  console.log(datos[0].nombreConcierto, boletos_camjeados, boletos_boleto, boletos_eventos)
 
             }
         } catch (error) {
-            console.log(error)
+            //console.log(error)
             dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
         }
     }
@@ -270,7 +282,7 @@ const EventoEspecifico = () => {
                 await Evento()
             }
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             dispatch(setToastes({ show: true, message: 'Hubo un error intente mas tarde', color: 'bg-danger', estado: 'Error' }))
         }
     }
@@ -757,13 +769,9 @@ const EventoEspecifico = () => {
                             <table class="table text-end">
                                 <thead>
                                     <tr>
-
-
-
                                         <th scope="col" >Localidad</th>
                                         <th scope="col">Canjeado </th>
                                         <th scope="col">No Canjeado</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -847,6 +855,9 @@ const EventoEspecifico = () => {
                             </table>
                         </div>
                         <div className="tab-pane container" id="localidad">
+                            <div>
+                                <button onClick={() => Evento(activeTab)} className="btn btn-success">Actualizar </button>
+                            </div>
                             {/* Nav Tabs */}
                             <ul className="nav nav-tabs">
                                 {global.map((el, ind) => (
@@ -870,7 +881,8 @@ const EventoEspecifico = () => {
                                         className={`tab-pane ${activeTab === el.nombre ? "active" : ""}`}
                                         id={el.nombre}
                                     >
-                                        {el.localidad.map((e, index) => {
+
+                                        {el.typo == 'mesa' ? el.localidad.map((e, index) => {
                                             return (
                                                 <div className='d-flex  PX-1 align-items-center' key={index}>
                                                     <div className='d-flex pb-2'>
@@ -895,7 +907,49 @@ const EventoEspecifico = () => {
                                                 </div>
 
                                             )
-                                        })}
+
+                                        }) : ''}
+                                        {
+                                            el.typo == 'fila' ? el.localidad.map((e, i) => {
+                                                {
+                                                    return (
+
+                                                        <div className='d-flex flex-row justify-content-around  px-3 p-1 ' key={"lista" + i} >
+                                                            <span className=" " disabled >
+                                                                <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '25px', width: '25px' }} >
+                                                                    <div className="d-flex justify-content-center">
+                                                                        <span style={{ fontSize: '0.5em' }}>    {e.fila} </span>
+                                                                    </div>
+                                                                </div>
+                                                            </span>
+                                                            <div className=' d-flex ml-3 flex-row px-1 justify-content-lg-center  align-items-stretch ' style={{ width: '100%' }}>
+                                                                {e.asientos.map((silla, index) => {
+                                                                    let numero = String(silla.silla).split("-")[2]
+                                                                    return (
+                                                                        <div key={"silla" + index} id={silla.idsilla}
+                                                                            className={silla.silla + '  d-flex   rounded-5 sillasfila text-center  justify-content-center align-items-center '}
+                                                                            style={{ height: '20px', width: '20px', marginLeft: '1px', }}
+
+                                                                        >
+                                                                            <div className={' px-3 d-flex   text-white justify-content-center  '} >
+                                                                                <div className="d-flex justify-content-center">
+                                                                                    <span style={{ fontSize: '0.5em' }}> {numero} </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    )
+                                                                })}
+                                                            </div>
+
+                                                        </div>
+                                                    )
+                                                }
+                                            }) : ''
+
+                                        }
+                                        {
+                                            el.typo == 'correlativo' ? <div>Aforo {el.localidad[0].total}</div> : ''
+                                        }
                                     </div>
                                 ))}
                             </div>
