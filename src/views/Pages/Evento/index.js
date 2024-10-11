@@ -24,6 +24,7 @@ require('moment/locale/es.js')
 
 const EventosViews = () => {
   let history = useHistory()
+  let useradmin = clienteInfo()
   let dispatch = useDispatch()
   const [show, setShow] = useState(false)
   const [eventoslist, setEventos] = useState([])
@@ -31,6 +32,7 @@ const EventosViews = () => {
   const sorter = (a, b) => a.id > b.id || new Date(a.fechaConcierto) < new Date(b.fechaConcierto) ? 1 : -1;
 
   function nuevoevento() {
+    if (useradmin.perfil == 'suscriptores') return
     setShow(true)
   }
   async function GetEventos() {

@@ -124,7 +124,7 @@ export default function ModalReporteViews() {
                             <div className=" p-1 ">
                                 {modal.nombre == "confirmar" ? <span>
                                     Una vez confirmado el deposito su ticket sera enviado  {
-                                        GetValores().envio == "correo " ? "al: correo " + getDatosUsuariosLocalStorag().email : "al: Whatsapp " + getDatosUsuariosLocalStorag().whatsapp
+                                        GetValores().envio == "correo " ? "al: Whatsapp  " + getDatosUsuariosLocalStorag().movil || getDatosUsuariosLocalStorag().whatsapp : "al: Whatsapp " + getDatosUsuariosLocalStorag().whatsapp
                                     }
                                 </span> : ''}
 

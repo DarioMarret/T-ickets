@@ -31,6 +31,7 @@ function MesasView({ text, status, list }) {
     let estado = list.find(f => f.silla == e)
     //console.log(estado, randon)
     if (estado.cedula != null && estado.cedula != "") {
+      if (estado.estado ==undefined||estado.estado==null)return 'disponible'
       if ((estado.cedula == "" || estado.cedula == undefined || estado.cedula == null) && estado.estado.toLowerCase() == "ocupado") return "apartado"
       //if ((estado.cedula != null && estado.cedula != "") && estado.estado.toLowerCase() == "ocupado") return "apartado"
       if (estado.estado.toLowerCase() == "ocupado") return estado.estado.toLowerCase()
@@ -39,6 +40,7 @@ function MesasView({ text, status, list }) {
       else return estado.estado.toLowerCase()
       return
     }
+    if (estado.estado == undefined || estado.estado == null) return 'disponible'
     if ((estado.cedula == "" || estado.cedula == undefined || estado.cedula == null) && estado.estado.toLowerCase() == "ocupado") return "apartado"
     else return estado.estado.toLowerCase()
   }
@@ -363,15 +365,17 @@ function MesasView({ text, status, list }) {
     /**/
     console.log(text)
     let mesas = ["A", "B", "C"]
-    let sillabloquea = ["D42", "D41", "D40", "D38", "D39", "D37", "D36"]
+    let mesa=["A"]
+    let sillabloquea = ["D42", "D41", "D40", "E48", "D49", "D52", "D38", "D39", "D37", "D36", "B2", "B3", "B5"]
     const randon = sessionStorage.getItem("random") || ""
     let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")
     //
    //console.log((sillabloquea.includes(text)))
-
+    if (envotid == '0SXH0L' && clienteInfo() == null) return
+    if ((envotid == 'B8KF5U') && (sillabloquea.includes(text)) ||clienteInfo() == null)return 
     if (((envotid == "X5U5VR") && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text)))) return
-    if ((envotid == "FHZMFP" && clienteInfo() == null)) {
+    if (((envotid == "X5U5VR") && (mesa.includes(text.split("")[0])) && clienteInfo() == null)) {
       return
     }
     let silla = list.find(f => f.silla == e)

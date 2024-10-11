@@ -36,11 +36,13 @@ import { Contactos_Boletos } from "utils/Querycomnet";
 import { Axiosmikroserdos } from "utils/index";
 import MesasView from "views/Pages/Mesas/index";
 import MesasViews from "views/Pages/Mesas/Plantillas/indice";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
 
 const EventoEspecifico = () => {
     let { id } = useParams()
     let usehistory = useHistory()
+    let useradmin = clienteInfo()
     let dispatch = useDispatch()
     const [show, setShow] = useState(false)
     const [alert, setAlert] = useState(null)
@@ -132,9 +134,27 @@ const EventoEspecifico = () => {
                     const nombre = listo.filter(e => e.id == el.id_localidades)[0].nombre || ''
                     return { ...el, nombreLocalidad: nombre }
                 })
+                const agrupadoPorLocalidadess = filtros.reduce((acc, item) => {
+                    // Si no existe el id_localidades en el acumulador, lo inicializamos
+                    if (!acc[item.id_localidades]) {
+                        acc[item.id_localidades] = {
+                            codigoEvento:id,
+                            id_localidades: item.id_localidades,
+                            localidad: item.nombreLocalidad,
+                            id_espacio: item.id_espacio,
+                            cantidad: 0 // Iniciar con 0 y sumaremos la cantidad
+                        };
+                    }
 
-                // console.log(filtros)
+                    // Sumar la cantidad si está presente, de lo contrario sumamos 1 por objeto
+                    acc[item.id_localidades].cantidad +=  1;
 
+                    return acc;
+                }, {});
+                console.log(filtros)
+                let valores= Object.values(agrupadoPorLocalidadess)
+                 
+                console.log(valores)
                 //let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
                 const estadosPermitidos = new Set(["Pendiente", "Ocupado", "pendiente", "ocupado"]);
                 const acumuladorPorNombre = filtros.reduce((acc, elemento) => {
@@ -146,6 +166,7 @@ const EventoEspecifico = () => {
                         return acc;
                     }
                 }, {});
+
                 const acumuladorPorNombres = filtros.reduce((acc, elemento) => {
                     if (!listo.filter(e => e.id == elemento.id_localidades).length == 0) {
                         const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre //elemento.id_localidades;
@@ -154,7 +175,10 @@ const EventoEspecifico = () => {
                         return acc;
                     }
                 }, {});
-
+                /**
+                 * id de la localidad, id del espacio,id,nombre de la localidad, cantidad 
+                elem.id_localidad, elem.id_espacio, id, elem.localidad, elem.cantidad 
+                 */
                 // console.log(acumuladorPorNombres)
                 if (!acumuladorPorNombres) return
                 const resultado = Object.entries(acumuladorPorNombres).map(([nombreMesa, cantidad]) => {
@@ -163,7 +187,7 @@ const EventoEspecifico = () => {
                 const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
                     return { nombreMesa, cantidad };
                 });
-                console.log(resultado, arrayMesas)
+                //console.log(resultado, arrayMesas)
                 setActiveTab(event ? event : resultado[0].nombreMesa)
                 setGobal(resultado)
                 setDisponible(arrayMesas)
@@ -221,7 +245,7 @@ const EventoEspecifico = () => {
                     //  console.log(nuevoObjeto)
                     localidas.push({ nombre: elm.nombreMesa, localidad: nuevoObjeto, typo: filtros.filter(e => e.nombreLocalidad == elm.nombreMesa)[0].typo })
                 })
-                console.log(localidas)
+                //console.log(localidas)
 
                 setEspacio(localidas)
                 //  console.log(datos[0].nombreConcierto, boletos_camjeados, boletos_boleto, boletos_eventos)
@@ -234,7 +258,7 @@ const EventoEspecifico = () => {
     }
 
     function descarga() {
-
+        if (useradmin.perfil == 'suscriptores') return
         Axiosmikroserdos.get('api/descargarcodigo/' + id, {
             responseType: 'blob'  // Important for handling binary data
         })
@@ -270,6 +294,7 @@ const EventoEspecifico = () => {
 
     const [datas, setDatas] = useState([])
     async function Cambiar(i) {
+        if (useradmin.perfil == 'suscriptores') return
         let info = {
             estado: i
         }
@@ -335,6 +360,7 @@ const EventoEspecifico = () => {
     }, [boletosloading])
 
     const successAlert = (i) => {
+        if (useradmin.perfil == 'suscriptores') return
         setAlert(
             <SweetAlert
                 warning
@@ -372,6 +398,7 @@ const EventoEspecifico = () => {
     }
 
     const cancelDetele = () => {
+        if (useradmin.perfil == 'suscriptores') return
         setAlert(
             <SweetAlert
                 danger
@@ -386,7 +413,7 @@ const EventoEspecifico = () => {
         );
     };
     function ObtenerContactosquecompraron() {
-
+        if (useradmin.perfil == 'suscriptores') return
         Contactos_Boletos(evento.nombreConcierto).then(salida => {
             console.log(salida)
             if (salida.estado && salida.data.length) {
@@ -509,7 +536,7 @@ const EventoEspecifico = () => {
                                         <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
                                         <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
                                         <div className="" >
-                                            <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => setShow(true)} >Editar</button>
+                                            <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil == 'suscriptores') ? "" : setShow(true)} >Editar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -558,9 +585,9 @@ const EventoEspecifico = () => {
                                                                     </div>
                                                                 </div>
                                                                 <div className="d-flex flex-column ">
-                                                                    <button className="btn btn-primary"
+                                                                    {(useradmin.perfil == 'suscriptores') ? "" : <button className="btn btn-primary"
                                                                         onClick={() => Eliminar(e)}
-                                                                    >Editar </button>
+                                                                    >Editar </button>}
                                                                 </div>
                                                             </div>
 
@@ -724,14 +751,14 @@ const EventoEspecifico = () => {
                                     <Box
                                         sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
                                     >
-                                        {tickes.length > 0 ? <ExportToExcel apiData={tickes.map(e => {
+                                        {((tickes.length > 0 && (useradmin.perfil != 'suscriptores'))) ? <ExportToExcel apiData={tickes.map(e => {
                                             e.valor.replace(".", ",")
                                             return { ...e }
                                         })}
                                             fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY')} label={"Boletos"}
                                         /> : ""}
                                         <div className="m-2">
-                                            <button className="btn  btn-success  btn-sm"
+                                            {(useradmin.perfil == 'suscriptores') ? "" : <button className="btn  btn-success  btn-sm"
 
                                                 onClick={() =>
                                                     descarga()
@@ -740,7 +767,7 @@ const EventoEspecifico = () => {
 
                                             >
                                                 <i className="bi bi-file-earmark-arrow-down-fill"></i>    Exportar Códigos
-                                            </button>
+                                            </button>}
                                         </div>
                                         <Button className="d-none"
                                             disabled={table.getRowModel().rows.length === 0}
@@ -865,6 +892,7 @@ const EventoEspecifico = () => {
                                         <a
                                             className={`nav-link ${activeTab === el.nombreMesa ? "active" : ""}`}
                                             onClick={() => setActiveTab(el.nombreMesa)}
+
                                             href={"#" + el.nombreMesa} // No es necesario en React pero puedes usarlo si lo necesitas
                                         >
                                             {el.nombreMesa}
@@ -896,6 +924,7 @@ const EventoEspecifico = () => {
                                                                 return (
                                                                     <div key={i}>
                                                                         <MesasViews
+                                                                            setMapa={() => Evento(activeTab)}
                                                                             status={e.asientos.length}
                                                                             text={e.mesa}
                                                                             list={e.asientos}

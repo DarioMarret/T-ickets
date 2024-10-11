@@ -12,11 +12,13 @@ import { bancos } from 'utils/Imgenesutils';
 import { PagoRapido } from 'utils/Querycomnet';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { clienteInfo, getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
-import ReactGA from "react-ga"
+import ReactGA from 'react-ga4';
 let { GUAYAQUIL, numero,
   pacifico, pichincha,
   produbanco, atencion } = bancos
 const Reporte = (props) => {
+  const TRACKING_ID = "G-LJN507B5NX";
+  ReactGA.initialize(TRACKING_ID);
   const {
     setDatoToas, setrepShow, detener, comprar, intervalo,
   } = props
@@ -159,9 +161,9 @@ const Reporte = (props) => {
   function Confirmar(e) {
     let valores = GetValores()
     ReactGA.event({
-      category: "Deposito",
-      action: "pagos",
-      label: e,
+      category: e,
+      action: "Deposito",
+      label: "Pago",
     })
     if (e == "pichincha") {
       // console.log(evento)
@@ -188,6 +190,11 @@ const Reporte = (props) => {
             color: 'bg-wharning',
             estado: 'Orden de pago no generada '
           }))
+          ReactGA.event({
+            category:  e,
+            action: "DepositoError",
+            label: "Pago",
+          })
         }
         //setrepShow(false)
         console.log(oupt)
@@ -212,7 +219,7 @@ const Reporte = (props) => {
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
           }))
-
+          
 
           return
         }
@@ -223,6 +230,11 @@ const Reporte = (props) => {
             color: 'bg-wharning',
             estado: 'Orden de pago no generada '
           }))
+          ReactGA.event({
+            category: e,
+            action: "DepositoError",
+            label: "Pago",
+          })
         }
         //setrepShow(false)
         console.log(oupt)
@@ -236,6 +248,11 @@ const Reporte = (props) => {
           color: 'bg-wharning',
           estado: 'Orden de pago no generada '
         }))
+        ReactGA.event({
+          category: e,
+          action: "DepositoError",
+          label: "Pago",
+        })
       })
       return
     }
@@ -257,9 +274,16 @@ const Reporte = (props) => {
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
           }))
+          
+         
           return
         }
         else {
+          ReactGA.event({
+            category: e,
+            action: "DepositoError",
+            label: "Pago",
+          })
           usedispatch(setToastes({
             show: true,
             message: 'Hubo un error al generar la orden intenta de nueavo',
@@ -267,6 +291,7 @@ const Reporte = (props) => {
             estado: 'Orden de pago no generada '
           }))
         }
+        
         //setrepShow(false)
         console.log(oupt)
       }).catch(error => {
@@ -288,22 +313,6 @@ const Reporte = (props) => {
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
           }))
-          /*evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setModal({
-            nombre: e, estado: valores
-          })) : usedispatch(setModal({
-            nombre: "", estado: ""
-          }))
-          evento != "9EGM42" && evento != "ANNKV7" ? usedispatch(setToastes({
-            show: true,
-            message: 'Recuerda imprimir los datos de la cuenta y reportar el comprobante al WhatsApp o email indicado, tienes un tiempo 1 hora para reportarlo',
-            color: 'bg-success',
-            estado: 'Orden de Pago Generada '
-          })) : usedispatch(setToastes({
-            show: true,
-            message: 'Recuerda estar pendiente de tu reserva, te informaremos de las cuentas al inicio de las ventas',
-            color: 'bg-success',
-            estado: 'Reserva Generada '
-          }))*/
           return
         }
         else {
@@ -312,12 +321,22 @@ const Reporte = (props) => {
             message: 'Hubo un error al generar la orden intenta de nueavo',
             color: 'bg-wharning',
             estado: 'Orden de pago no generada '
-          }))
+          }))   
+          ReactGA.event({
+            category: e,
+            action: "DepositoError",
+            label: "Pago",
+          })
         }
         console.log(oupt)
       }).catch(error => {
         seTSpiners("d-none")
         console.log(error)
+        ReactGA.event({
+          category: e,
+          action: "DepositoError",
+          label: "Pago",
+        })
       })
       return
     }
@@ -343,12 +362,22 @@ const Reporte = (props) => {
             color: 'bg-wharning',
             estado: 'Orden de pago no generada '
           }))
+          ReactGA.event({
+            category: e,
+            action: "DepositoError",
+            label: "Pago",
+          })
         }
         //setrepShow(false)
         console.log(oupt)
       }).catch(error => {
         seTSpiners("d-none")
         console.log(error)
+        ReactGA.event({
+          category: "Error" + e,
+          action: "Deposito",
+          label: "Pago",
+        })
       })
       return
     }

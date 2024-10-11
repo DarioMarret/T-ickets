@@ -70,7 +70,7 @@ export function removeDatosUsuario() {
 export function clienteInfo() {
 
     let user = getUsuario();
-    //console.log(jwtDecode(user))
+   // console.log(jwtDecode(user))
     if (user) {
         return jwtDecode(user)
     } else {

@@ -12,13 +12,15 @@ import { useDispatch, useSelector } from "react-redux"
 import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { PagoRapido } from 'utils/Querycomnet';
-import ReactGA from "react-ga"
+import ReactGA from 'react-ga4';
 import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
 import { bancos } from 'utils/Imgenesutils';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { Metodos } from 'utils/constantes';
 let { atencion, diners, visas, paypal } = bancos
 function ModalPago(props) {
+    const TRACKING_ID = "G-LJN507B5NX"; 
+    ReactGA.initialize(TRACKING_ID);
     const { setModalPago, modalPago, detenervelocidad, intervalo } = props
     let usedispatch = useDispatch();
     const [spinerst, setSpiner] = useState("d-none")
@@ -153,19 +155,25 @@ function ModalPago(props) {
             if (user == null) {
                 if (ouput.success) {
                     console.log(ouput)
-                    usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
-
-                    setSpiner("d-none")
-                    LimpiarLocalStore()
-                    Limpiarseleccion()
                     ReactGA.event({
                         category: "Pago",
                         action: "pagomedia",
                         label: "Pendiente-TC",
                     })
+                    usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
+
+                    setSpiner("d-none")
+                    LimpiarLocalStore()
+                    Limpiarseleccion()
+                    
                     //detenervelocidad()
                 }
                 else {
+                    ReactGA.event({
+                        category: "error",
+                        action: "Pagomedia-error",
+                        label: "Pendiente-TC",
+                    })
                     usedispatch(setToastes({
                         show: true,
                         message: "Lo sentimos la plataforma de Pagomedio no género el link intente más tarde",
@@ -178,11 +186,7 @@ function ModalPago(props) {
                     Limpiarseleccion()
                     usedispatch(clearMapa())
 
-                    ReactGA.event({
-                        category: "error",
-                        action: "pagomedia",
-                        label: "Pendiente-TC",
-                    })
+                   
                     detenervelocidad()
                 }
             }
@@ -193,6 +197,11 @@ function ModalPago(props) {
             }
             // setModalPago(false)
         }).catch(errro => {
+            ReactGA.event({
+                category: "error",
+                action: "Pagomedia-error",
+                label: "Pendiente-TC",
+            })
             usedispatch(setModal({ nombre: '', estado: "" }))
             usedispatch(setToastes({
                 show: true,
@@ -222,16 +231,17 @@ function ModalPago(props) {
                 console.log(ouput)
                 if (user == null) {
                     if (ouput.success) {
-                        usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
-                        console.log(ouput)
-                        setSpiner("d-none")
-                        LimpiarLocalStore()
-                        Limpiarseleccion()
                         ReactGA.event({
                             category: "Pago",
                             action: "Pyhome-exito",
                             label: "Pendiente-TC",
                         })
+                        usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
+                        console.log(ouput)
+                        setSpiner("d-none")
+                        LimpiarLocalStore()
+                        Limpiarseleccion()
+                       
                     }
                     else {
                         usedispatch(setToastes({
@@ -240,16 +250,17 @@ function ModalPago(props) {
                             color: 'bg-primary',
                             estado: "Hubo un error departe de Pagomedio"
                         }))
+
+                        ReactGA.event({
+                            category: "error",
+                            action: "Pyhome-error",
+                            label: "Pendiente-TC",
+                        })
                         usedispatch(setModal({ nombre: '', estado: "" }))
                         LimpiarLocalStore()
                         Limpiarseleccion()
                         usedispatch(clearMapa())
                        
-                        ReactGA.event({
-                            category: "error",
-                            action: "Pyhomeerr",
-                            label: "Pendiente-TC",
-                        })
                     }
                 }
                 else {
@@ -260,6 +271,11 @@ function ModalPago(props) {
                 }
                 // setModalPago(false)
             }).catch(errro => {
+                ReactGA.event({
+                    category: "error",
+                    action: "Pyhome-erro",
+                    label: "Pendiente-TC",
+                })
                 usedispatch(setModal({ nombre: '', estado: "" }))
                 usedispatch(setToastes({
                     show: true,
@@ -267,12 +283,7 @@ function ModalPago(props) {
                     color: 'bg-primary',
                     estado: "Hubo un error de Pagomedio"
                 }))
-                console.log(errro)
-                ReactGA.event({
-                    category: "error",
-                    action: "Pyhomeerr",
-                    label: "Pendiente-TC",
-                })
+               
                 //  console.log(errro)
                 setSpiner("d-none")
             })

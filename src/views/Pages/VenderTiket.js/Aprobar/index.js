@@ -835,7 +835,7 @@ export default function AprobarView() {
                         })} fileName={"Todos Expirados"} label={"Expirados"} /> :
                         ""}
                 {tiketslist.filter(e => e.estado_pago == "Comprobar").length > 0 ?
-                    <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar", moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos)).map(f => {
+                    <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar",'')).map(f => {
                         return {
                             ID_Registro: f.id,
                             ID_USUARIO: f.id_usuario,
@@ -873,7 +873,7 @@ export default function AprobarView() {
                         <Tab label={"Pagados: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length + " Cons " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).filter(f => f.consolidado == "Consolidado").length} {...a11yProps(0)} />
                         <Tab label={"Pendientes: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pendiente"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length}{...a11yProps(1)} />
                         <Tab label={"Expirado: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Expirado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length} {...a11yProps(2)} />
-                        <Tab label={"Comprobar: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length} {...a11yProps(3)} />
+                        <Tab label={"Comprobar: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar"), alert, metodos).length} {...a11yProps(3)} />
                     </Tabs>
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">

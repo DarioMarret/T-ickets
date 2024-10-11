@@ -89,7 +89,7 @@ export default function FormasPagoMopadal() {
     let spinercarga = document.getElementById("spinercarga")
     function consultarcorreo(e) {
         
-        usedispatch(setModal({ nombre: '', estado: '' }))
+        usedispatch(setModal({ nombre: '', estado: 'e' }))
 
         $.confirm({
             title: 'Por favor ingresé correo electrónico para continuar con su compra',

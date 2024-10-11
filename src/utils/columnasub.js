@@ -380,7 +380,7 @@ export const listaRegistrototal = [
         accessorKey: "forma_pago",
         header: "Metodo",
         Cell: ({ cell }) => (
-            cell.row.original.forma_pago != "Tarjeta" ? cell.row.original.forma_pago : (cell.row.original.link_pago == null) ? "Tarjeta-Local" : cell.row.original.forma_pago
+            cell.row.original.forma_pago != "Tarjeta" ? cell.row.original.forma_pago : (cell.row.original.link_pago == null) ? "Tarjeta-link" : cell.row.original.forma_pago
         ),
         size: 50
     }, {

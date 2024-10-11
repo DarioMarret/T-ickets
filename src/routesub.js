@@ -75,7 +75,7 @@ var routes = [
     path: "/Evento/:id",
     layout: "/admin",
     component: EventoEspecifico,
-    permiso: ["admin", "super_admin"],
+    permiso: ["admin", "super_admin", "suscriptores"],
   },
   {
     collapse: true,
@@ -83,7 +83,7 @@ var routes = [
     name: "Gestion de Eventos",
     state: "openGestion",
     icon: "nc-icon nc-notes",
-    permiso: ["admin", "super_admin"],
+    permiso: ["admin", "super_admin","suscriptores"],
     views: [
       {
         path: "/Espacio",
@@ -105,7 +105,7 @@ var routes = [
         name: "Evento",
         mini: "*",
         component: Eventos,
-        permiso: ["admin", "super_admin"]
+        permiso: ["admin", "super_admin", "suscriptores"]
       },
       /* {
          path: "/Informacion-tributaria",
@@ -393,7 +393,7 @@ var routes = [
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["", "", ""]
+    permiso: ["admin", "", ""]
   }
 
 

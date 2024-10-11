@@ -322,11 +322,39 @@ const SuscritoridView = () => {
     }).then(ouput => {
       console.log(ouput)
       //window.open('Prosjektplan.pdf')
+
       window.open(ouput.link.replace("flash", "api"), "_blank");
       console.log(ouput)
     }).catch(eror => {
       console.log(eror)
     })
+  }
+  
+  function Copiarlink(row) {
+    let dato = document.getElementById(row.id)
+    dato.classList.remove("d-none")
+    generaTiketspdf({
+      "cedula": row.cedula,
+      "codigoEvento": row.codigoEvento,
+      "id_ticket_usuarios": row.id
+    }).then(async ouput => {
+      console.log(ouput)
+
+      //window.open('Prosjektplan.pdf')
+      let { data } = await axios.post("https://api.t-ickets.com/mikroti/Boleteria/acortador", {
+        "longURL": ouput.link.replace("flash", "api")
+
+      })
+      console.log(data)
+      navigator.clipboard.writeText(data.link).then(() => { })
+      $.alert("Link Copiado")
+      dato.classList.add("d-none")
+      console.log(ouput)
+    }).catch(eror => {
+      console.log(eror)
+    })
+
+
   }
   const Eliminara = (parm) => {
     console.log(parm)
@@ -913,6 +941,28 @@ const SuscritoridView = () => {
 
                           >
                             <i className="fa fa-download "></i>
+
+
+                          </a>
+                        }
+                        {row.original.estado != "reservado" ?
+                          <Tooltip className="" title="Ver Ticket" placement="top">
+                            <a
+                              className=" border  btn-default btn-sm"
+
+                              onClick={() => Copiarlink(row.original)}
+                            >
+                              <i className="fa fa-copy text-primary">  </i>
+                              <span id={row.original.id} className=" spiner_loaging spinner-sm d-none"></span>
+
+                            </a>
+                          </Tooltip> :
+                          <a
+                            className="border  btn-default btn-sm btn-disable"
+                            disabled
+
+                          >
+                            <i className="fa fa-copy "></i>
 
 
                           </a>

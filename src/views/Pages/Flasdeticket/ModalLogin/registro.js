@@ -15,13 +15,15 @@ import { Whatsappnumero } from "utils/constantes"
 import { Triangle } from "react-loader-spinner"
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice"
 import { buscarcliente } from "utils/Querypanelsigui"
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import addNotification from "react-push-notification/dist"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 import ToastViews from "views/Components/TOAST/toast"
 import { Emailcontec } from "utils/Emails"
+const TRACKING_ID = "G-LJN507B5NX";
 const ResgistroView = (prop) => {
+    ReactGA.initialize(TRACKING_ID);
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -281,31 +283,20 @@ const ResgistroView = (prop) => {
                             color: 'bg-success',
                             estado: "Inicio Exitoso",
                         }))
-                        /*  usedispatch(setToastes({
-                               show: true,
-                               message: "Bienvenido " + data.nombreCompleto,
-                               color: 'bg-success',
-                               estado: "Inicio Exitoso",
-                           })*/
-                        /*  addNotification({
-                              title: 'Bienvenido',
-                              subtitle: 'registro exitosos ',
-                              message: 'Atento tendremos Noticias sobre Eladio Carrión Guayaquil',
-                              theme: 'darkblue',
-                              native: true // when using native, your OS will handle theming.
-                          })*/
-                        /*modal.estado != null ? abrir(modal.estado) :
-                            usedispatch(setModal({ nombre: "", estado: "" }))*/
-                        //Modalstatus.estado != "" ? usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' })) : ''
-                        modal.estado != "" ? usedispatch(setModal({ nombre: modal.estado == e ? "ModalDetalle" : '', estado: '' })) : ''
+                        ReactGA.event({
+                            category: cedula.trim(),
+                            action: "Resgitrarse",
+                            label: "Registrado",
+                        })
+                        ReactGA.set({
+                            user_id: cedula.trim(),
+                        })
+                        console.log(modal.estado)
+                        modal.estado != "" ? usedispatch(setModal({ nombre:"ModalDetalle", estado: '' })) : ''
 
                         usedispatch(addususcritor({ users }))
-                        ReactGA.event({
-                            category: "Registrado",
-                            action: "registro",
-                            label: "Button",
-                        })
-                        Emailcontec({ correo: data.email, nombre: data.nombreCompleto }).then(sal => {
+                        
+                        Emailcontec({ movil: data.movil, nombre: data.nombreCompleto }).then(sal => {
                             console.log(sal)
                         }).catch(err => {
                             console.log(err)

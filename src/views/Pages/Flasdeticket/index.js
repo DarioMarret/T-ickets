@@ -56,7 +56,7 @@ import { listarRegistropanel } from "utils/pagos/Queripagos.js";
 import { setToastes } from "StoreRedux/Slice/ToastSlice.js";
 import SubscrtitoViews from "./ModalLogin/Modalsubscrito.js";
 import { Seleccionaruserlista } from "utils/userQuery.js";
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 import { eliminarRegistro } from "utils/pagos/Queripagos.js";
 import { bancos } from "utils/Imgenesutils";
 let { atencion } = bancos
@@ -316,6 +316,11 @@ const IndexFlas = () => {
     sessionStorage.setItem("estadoevento", e.estado)
     sessionStorage.setItem("infoevento", JSON.stringify(e))
     sessionStorage.removeItem("sillascorre")
+    ReactGA.event({
+      category: "Comprar-Entradas",
+      action: "Eventos",
+      label: "" + e.nombreConcierto,
+    })
     sessionStorage.setItem("random", Math.random().toString(36).slice(-10))
     if (!userauthi.login) {
       Abrirelevento(e)
@@ -425,14 +430,15 @@ const IndexFlas = () => {
           velocidad()
           usedispatch(cargarsilla(outp))
           usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-          ReactGA.event({
-            category: "Comprar",
-            action: "Eventos",
-            label: "" + e.codigoEvento,
-          })
+          
           //usedispatch(setSpinersli({ spiner: true }))
           if (true) {
             Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
+              ReactGA.event({
+                category: "Comprar",
+                action: ""+String(e.nombreConcierto),
+                label: "" + getDatosUsuariosLocalStorag().cedula ||''
+              })
               console.log(outp)
             }).catch(error => {
               console.log(error)
@@ -663,6 +669,9 @@ const IndexFlas = () => {
           direccion: datosPersonal.direccion,
           edad: datosPersonal.edad
         })
+        ReactGA.set({
+          user_id: datosPersonal.email
+        })
       }
     } else {
       setPerson({
@@ -688,10 +697,8 @@ const IndexFlas = () => {
     }).catch(err => {
       console.log(err)
     })*/
-    ReactGA.pageview(window.location.pathname + window.location.search);
-    ReactGA.set({
-      username: localStorage.getItem('DatoCliente'),
-    })
+    // ReactGA.pageview(window.location.pathname + window.location.search);
+
 
 
   }, [isLoading, info])
@@ -721,9 +728,9 @@ const IndexFlas = () => {
   function regsitronew() {
     usedispatch(setModal({ nombre: 'registro', estado: "" }))
     ReactGA.event({
-      category: "Ver-Registrado",
-      action: "abrir",
-      label: "Button",
+      category: "Ver-Registrar",
+      action: "Registrar",
+      label: "Registrar",
     })
   }
   function eventocarrusel(e) {
@@ -743,8 +750,8 @@ const IndexFlas = () => {
       }
     }))*/
     ReactGA.event({
-      category: "Comprar",
-      action: "carrusel",
+      category: "Comprar " + info.nombreConcierto,
+      action: "Carrusel",
       label: info.codigoEvento
     })
     return {

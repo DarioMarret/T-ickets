@@ -19,7 +19,10 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 import MesaochoView from "./Mesasocho";
-function MesasViews({ text, status, list }) {
+import { mikroAxios } from "utils/index";
+import { data } from "jquery";
+function MesasViews({ text, status, list, setMapa }) {
+  let useradmin = clienteInfo()
   let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
   let usedispatch = useDispatch();
   const [alert, setAlert] = useState(null)
@@ -30,6 +33,7 @@ function MesasViews({ text, status, list }) {
     let randon = sessionStorage.getItem("random") || ""
     let estado = list.find(f => f.silla == e)
     //console.log(estado, randon)
+    if(estado.estado==null||estado.estado==undefined) return "disponible"
     if (estado.cedula != null && estado.cedula != "") {
       if ((estado.cedula == "" || estado.cedula == undefined || estado.cedula == null) && estado.estado.toLowerCase() == "ocupado") return "apartado"
       //if ((estado.cedula != null && estado.cedula != "") && estado.estado.toLowerCase() == "ocupado") return "apartado"
@@ -100,30 +104,103 @@ function MesasViews({ text, status, list }) {
   }
   function enviarsillas(text) {
     console.log(list)
+    let bloque = list.map(el => {
+      if (el.cedula == null || el.cedula == '') {
+        return el.idsilla
+      }
+    }).filter(e => e != undefined)
     let datos = document.getElementById(text).classList.value
-    succesLimit(text)
+    // console.log(datos.split(" ").includes("mesadisponible"))
+    if (bloque.length == 0) return
+    succesLimit(bloque, datos)
   }
-  const succesLimit = (me) => {
-    
-
-  }
-  const succesSilla = (e) => {
+  const succesLimit = (me, datos) => {
+    if (useradmin.perfil == 'suscriptores') return
     setAlert(
       <SweetAlert
         warning
         style={{ display: "block", marginTop: "-100px" }}
-        title={"Deseas selecionar "}
-        onConfirm={() => hideAlert()}
+        title={"Deseas Cambiar el estado de las sillas libres"}
+        onConfirm={() => enviarLocalidad('Disponible', me)}
         onCancel={() => hideAlert()}
         confirmBtnBsStyle="success"
         cancelBtnBsStyle="danger"
-        confirmBtnText="Si, Continuar"
-        cancelBtnText="Cancelar"
+        confirmBtnText="Disponible"
+        cancelBtnText="Ocupado"
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-        showCancel>
-        {"la sillas " + e}
-      </SweetAlert>)
-    
+        showCancel
+        customButtons={
+          <React.Fragment>
+            <button
+              className="btn btn-primary"
+              onClick={() => hideAlert()}
+            >
+              Cancelar
+            </button>
+            <button
+              className="btn btn-success"
+              onClick={() => enviarLocalidad('Disponible', me)}
+            >
+              Disponible
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={() => enviarLocalidad('Ocupado', me)}
+            >
+              Ocupado
+            </button>
+          </React.Fragment>
+        }
+      >
+        {"de la Mesa " + datos.split(" ")[0]}
+      </SweetAlert>
+    )
+
+  }
+  async function enviarLocalidad(estado, Localidades) {
+    try {
+      let { data } = await mikroAxios.put('/Boleteria/item_localidad', {
+
+
+        "id_localidades": Localidades,
+        "estado": estado
+
+      })
+      console.log(estado, Localidades)
+       console.log(data)
+      hideAlert()
+      setMapa()
+    } catch (error) {
+      console.log(data)
+    }
+
+
+  }
+  const succesSilla = (e) => {
+    if (useradmin.perfil == 'suscriptores') return
+    console.log(list.find(f => f.silla == e))
+    let datos = list.find(f => f.silla == e)
+    if (datos.cedula == null || datos.cedula == "" || datos.cedula == undefined) {
+      let estado = datos.estado == "Ocupado" ? 'Disponible' : 'Ocupado'
+      console.log([datos])
+      let me = [datos.idsilla]
+      setAlert(
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title={"Deseas Cambiar el estado "}
+          onConfirm={() => enviarLocalidad(""+estado, me)}
+          onCancel={() => hideAlert()}
+          confirmBtnBsStyle="success"
+          cancelBtnBsStyle="danger"
+          confirmBtnText="Si, Continuar"
+          cancelBtnText="Cancelar"
+          closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+          showCancel>
+          {"la sillas " + e + " por " + estado}
+        </SweetAlert>)
+    }
+
   }
   const succesDesmar = (e) => {
 

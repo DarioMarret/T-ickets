@@ -63,6 +63,7 @@ export const PreciosStore = () => {
 }
 export default function DetalleCompraView() {
     let { id } = useParams()
+   // let user = clienteInfo()
     let history = useHistory()
     let usedispatch = useDispatch()
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
@@ -81,6 +82,7 @@ export default function DetalleCompraView() {
         "direccion": ""
     })
     function generaComprobante() {
+        if (useradmin.perfil =='suscriptores') return
         const result2 = new Date().toLocaleString('en-GB', {
             hour12: false,
         });
@@ -173,6 +175,7 @@ export default function DetalleCompraView() {
         22: 0
     }
     const Eliminara = (parm) => {
+        if (useradmin.perfil == 'suscriptores') return
         console.log(parm)
         $.confirm({
             title: 'Desea eliminar este boleto ',
@@ -218,9 +221,11 @@ export default function DetalleCompraView() {
         card_brand: ""
     })
     function Abrirwhastapp() {
+        if (useradmin.perfil == 'suscriptores') return
         usedispatch(setModal({ nombre: "whastapp", estado: usuario }))
     }
     function abrirfirma() {
+        if (useradmin.perfil == 'suscriptores') return
         if (nombres.id_espacio_localida != null) {
 
             $.confirm({
@@ -285,7 +290,7 @@ export default function DetalleCompraView() {
     }
     const [alert, setAlert] = useState(null)
     function generaPDF(row) {
-
+        if (useradmin.perfil == 'suscriptores') return
         generaTiketspdf({
             "cedula": row.cedula,
             "codigoEvento": row.codigoEvento,
@@ -314,6 +319,7 @@ export default function DetalleCompraView() {
         })
     }
     function agregarComentario() {
+        if (useradmin.perfil == 'suscriptores') return
         let id = nombres.id
         let number = nombres.cedula
         let id_operador = clienteInfo()
@@ -397,6 +403,7 @@ export default function DetalleCompraView() {
         });
     }
     function editarComentario(e) {
+        if (useradmin.perfil == 'suscriptores') return
         let id = nombres.id
         let id_operador = clienteInfo()
         $.confirm({
@@ -522,6 +529,7 @@ export default function DetalleCompraView() {
         return 0
     }
     function Verificarnomnbre(e, f) {
+      //  if (useradmin.perfil == 'suscriptores') return
         let nuew = []
         let listtarje = e.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
         let listnombre = f.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
@@ -940,6 +948,7 @@ export default function DetalleCompraView() {
         setAlert(null);
     };
     function validar() {
+        if (useradmin.perfil == 'suscriptores') return
         $.confirm({
             title: 'Desea Aprobar este Registro',
             content: '',
@@ -972,6 +981,7 @@ export default function DetalleCompraView() {
         }
     }
     function Generarnew() {
+        if (useradmin.perfil == 'suscriptores') return
         $.confirm({
             title: 'Generar de nuevo los Boletos',
             type: 'blue',
@@ -997,6 +1007,7 @@ export default function DetalleCompraView() {
         });
     }
     function ConsolidaBoleto() {
+        if (useradmin.perfil == 'suscriptores') return
         const reporte = {
             "id_usuario": clienteInfo().id,
             "forma_pago": nombres.forma_pago,
@@ -1069,6 +1080,7 @@ export default function DetalleCompraView() {
 
     }
     function ComprobarBoleto() {
+        if (useradmin.perfil == 'suscriptores') return
         const reporte = {
             "id_usuario": clienteInfo().id,
             "forma_pago": nombres.forma_pago,
@@ -1118,6 +1130,7 @@ export default function DetalleCompraView() {
             });
     }
     const Licerarrasientos = (parms) => {
+        if (useradmin.perfil == 'suscriptores') return
         $.confirm({
             title: 'Liberar asiento',
             type: 'blue',
@@ -1143,6 +1156,7 @@ export default function DetalleCompraView() {
         });
     }
     async function voucherinvalido(e) {
+        if (useradmin.perfil == 'suscriptores') return
         let boleto = await Boleteria_voucher({
             "estado": e,
             "id": "" + nombres.id,
@@ -1159,12 +1173,14 @@ export default function DetalleCompraView() {
         }
     }
     function boletoscanje() {
+
         if (nombres.ticket_usuarios.length > 0) {
             return nombres.ticket_usuarios.every(e => e.canje == "CANJEADO")
         }
         return false
     }
     function CanjeBole() {
+        if (useradmin.perfil == 'suscriptores') return
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
         let cor = nombres.info_concierto
         // console.log(id)
@@ -1223,7 +1239,7 @@ export default function DetalleCompraView() {
     }
     let [url, setUrl] = useState("")
     function abririnframe(e, f) {
-
+        if (useradmin.perfil == 'suscriptores') return
         if (nombres.estado_pago == "Pagado") {
             if (nombres.link_pago != null) {
                 setUrl(e.replace("k/", "k/voucher/"))
@@ -1238,6 +1254,7 @@ export default function DetalleCompraView() {
         }
     }
     function CambiarComprobante() {
+        if (useradmin.perfil == 'suscriptores') return
         $.confirm({
             title: 'Comprobante o lote!',
             content: '' +

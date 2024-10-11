@@ -29,8 +29,11 @@ import { Eventoid } from "utils/constantes"
 import { Triangle } from "react-loader-spinner"
 import { bancos } from "utils/Imgenesutils"
 import moment from "moment"
+import ReactGA from 'react-ga4';
 let { atencion } = bancos
 const ModalCarritoView = (prop) => {
+    const TRACKING_ID = "G-LJN507B5NX";
+    ReactGA.initialize(TRACKING_ID);
     let usuario = getDatosUsuariosLocalStorag()
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
     const sorter = (a, b) => a.precio_normal > b.precio_normal ? 1 : -1 && a.id < b.id ? 1 : -1;
@@ -384,6 +387,11 @@ const ModalCarritoView = (prop) => {
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                     usedispatch(filtrarlocali(nuevoObjeto))
                     sessionStorage.seleccionmapa = JSON.stringify(e)
+                    ReactGA.event({
+                        category: "Abrir",
+                        action: precios.mapa,
+                        label: "Seleccion evento",
+                    })
                     abrirlocalidad()
 
                 }

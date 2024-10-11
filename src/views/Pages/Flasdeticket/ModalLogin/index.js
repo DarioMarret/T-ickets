@@ -12,9 +12,11 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { DatosUsuarioLocalStorang } from "utils/constantes";
 import { Boleteria_password } from "utils/EventosQuery/index";
-import { Authsucrito } from "utils/Query";
 
+import ReactGA from 'react-ga4';
+const TRACKING_ID = "G-LJN507B5NX";
 const ModalLogin = (props) => {
+  ReactGA.initialize(TRACKING_ID);
   const { showLogin, setShowLogin, abrir } = props
   let histoty = useHistory()
   let Modalstatus = useSelector((state) => state.SuscritorSlice.modal)
@@ -41,7 +43,7 @@ const ModalLogin = (props) => {
         /*
         const { data } = await Authsucrito({ email: credenciales.username.trim(), password: credenciales.pass.trim() },)
         */
-       if (data.success) {
+        if (data.success) {
           const cedula = await getCedula(data.data.cedula)
           let client = {
             cedula: data.data.cedula, direccion: data.data.ciudad, whatsapp: data.data.movil,
@@ -56,30 +58,35 @@ const ModalLogin = (props) => {
           usedispatch(addususcritor({ ...client }))
           // setShowToass(true)
           // setmessage("Bienvenido " + data.data.nombreCompleto)
+          ReactGA.event({
+            category: ""+data.data.cedula,
+            action: "Login",
+            label: "click",
+          })
           usedispatch(setToastes({
             show: true,
             message: "Bienvenido " + data.data.nombreCompleto,
             color: 'bg-success',
             estado: "Inicio Exitoso",
           }))
-         
-        /*  Modalstatus.estado != "" ? abrir(Modalstatus.estado) : ''
-          usedispatch(setModal({ nombre: '', estado: '' }))*/
+
+          /*  Modalstatus.estado != "" ? abrir(Modalstatus.estado) : ''
+            usedispatch(setModal({ nombre: '', estado: '' }))*/
           console.log(Modalstatus.estado)
-            Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado==null?"": 'ModalDetalle', estado: '' })) : usedispatch(setModal({ nombre: "", estado: '' }))
-            if(randon){
-              axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actulizar_identificacion_asiento",
-                {
-                  "random": randon,
-                  "cedula": data.data.cedula
-                }
-              ).then(e => {
-                console.log(e)
-              }).catch(err => {
-                console.log(err)
-              })
-            }
-         // usedispatch(setModal({ nombre: '', estado: '' }))
+          Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado == null ? "" : 'ModalDetalle', estado: '' })) : usedispatch(setModal({ nombre: "", estado: '' }))
+          if (randon) {
+            axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actulizar_identificacion_asiento",
+              {
+                "random": randon,
+                "cedula": data.data.cedula
+              }
+            ).then(e => {
+              console.log(e)
+            }).catch(err => {
+              console.log(err)
+            })
+          }
+          // usedispatch(setModal({ nombre: '', estado: '' }))
         }
         else {
           usedispatch(setToastes({
@@ -182,7 +189,7 @@ const ModalLogin = (props) => {
             </div>
 
             <button type="button" className="close "
-              onClick={() => Modalstatus.estado == "e" ? usedispatch(setModal({ nombre: 'formasPago', estado: Modalstatus.estado})) : usedispatch(setModal({ nombre: '', estado: '' }))}>
+              onClick={() => Modalstatus.estado == "e" ? usedispatch(setModal({ nombre: 'formasPago', estado: Modalstatus.estado })) : usedispatch(setModal({ nombre: '', estado: '' }))}>
               ×
             </button>
           </div>
