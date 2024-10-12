@@ -73,8 +73,8 @@ function MesasView({ text, status, list }) {
     const isReserva = (currentValue) => currentValue == "RESERVADO" || currentValue == "reservado";
     const isDispon = (currentValue) => currentValue == "disponible" || currentValue == "DISPONIBLE";
     const isDisnone = (currentValue) => currentValue == "none" || currentValue == "d-none";
-    let mesas = ["A", "B", "C","D"]
-    let sillabloquea = ["D42", "D41", "D40", "D38", "D39", "D37", "D36"]
+    let mesas = ["A", "B", "C","D","E"]
+    let sillabloquea = ["D42", "D41", "D40", "D38", "D39", "D37", "D36","E48","E49","E50","E51","E52"]
     //console.log(e.substring(0, 1))
     let envotid = sessionStorage.getItem("eventoid")
     //if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
@@ -84,7 +84,7 @@ function MesasView({ text, status, list }) {
     if (Object.values(asiento).every(isApartado)) { return "mesaapartada" }
     if (Object.values(asiento).every(isDisnone)) { return "none" }
    // if (!mesas.includes(e.substring(0, 1))) { return "bg-secondary" }
-    if ((envotid == "X5U5VR")&&!mesas.includes(e.substring(0, 1)) || (e.substring(0, 1) == 'D' && !sillabloquea.includes(e))) {return "bg-dark" }
+    if ((envotid == "X5U5VR")&&!mesas.includes(e.substring(0, 1)) || ((e.substring(0, 1) == 'D'||e.substring(0, 1) == 'E') && !sillabloquea.includes(e))) {return "bg-dark" }
     return "mesadisponible"
   }
   /*  obtener sillas  */
@@ -366,16 +366,16 @@ function MesasView({ text, status, list }) {
     console.log(text)
     let mesas = ["A", "B", "C"]
     let mesa=["A"]
-    let sillabloquea = ["D42", "D41", "D40", "E48", "D49", "D52", "D38", "D39", "D37", "D36", "B2", "B3", "B5"]
+    let sillabloquea = ["D42", "D41", "D40", "E48", "E49","E50","E51", "E52", "D38", "D39", "D37", "D36", "B2", "B3", "B5"]
     const randon = sessionStorage.getItem("random") || ""
     let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")
     //
    //console.log((sillabloquea.includes(text)))
-    if (envotid == '0SXH0L' && clienteInfo() == null) return
-    if ((envotid == 'B8KF5U') && (sillabloquea.includes(text)) ||clienteInfo() == null)return 
-    if (((envotid == "X5U5VR") && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text)))) return
-    if (((envotid == "X5U5VR") && (mesa.includes(text.split("")[0])) && clienteInfo() == null)) {
+    //if (envotid == '0SXH0L' && clienteInfo() == null) return
+    if ((envotid == 'B8KF5U') && (sillabloquea.includes(text)) && clienteInfo() == null)return 
+    if (((envotid == "X5U5VR")&& ( clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text)))) return
+    if (((envotid == "X5U5VR") && (mesas.includes(text.split("")[0])) && clienteInfo() == null)) {
       return
     }
     let silla = list.find(f => f.silla == e)
