@@ -374,7 +374,7 @@ function MesasView({ text, status, list }) {
    //console.log((sillabloquea.includes(text)))
     //if (envotid == '0SXH0L' && clienteInfo() == null) return
     if ((envotid == 'B8KF5U') && (sillabloquea.includes(text)) && clienteInfo() == null)return 
-    if (((envotid == "X5U5VR")&& ( clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text)))) return
+    if (((envotid == "X5U5VR")&& ( clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text))) && clienteInfo() == null) return
     if (((envotid == "X5U5VR") && (mesas.includes(text.split("")[0])) && clienteInfo() == null)) {
       return
     }
