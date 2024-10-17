@@ -5,11 +5,15 @@ import { addususcritor, setModal, setSpinersli } from "StoreRedux/Slice/Suscrito
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import { GetMetodo, GetValores, getVerTienda } from "utils/CarritoLocalStorang"
 import { DatosUsuariocliente, DatosUsuarioLocalStorang, Metodos } from "utils/constantes"
-import { clienteInfo, getCedula } from "utils/DatosUsuarioLocalStorag"
+import { clienteInfo, getCedula, getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { buscarcliente } from "utils/Querypanelsigui"
 import axios from "../../../../node_modules/axios/index"
 
+import ReactGA from 'react-ga4';
+const TRACKING_ID = "G-LJN507B5NX";
 export default function FormasPagoMopadal() {
+
+    ReactGA.initialize(TRACKING_ID);
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     const [listarCarritoDetalle, setListarCarritoDetalle] = useState([])
     let usedispatch = useDispatch()
@@ -88,9 +92,13 @@ export default function FormasPagoMopadal() {
     }
     let spinercarga = document.getElementById("spinercarga")
     function consultarcorreo(e) {
-        
+        let user = getDatosUsuariosLocalStorag()
         usedispatch(setModal({ nombre: '', estado: 'e' }))
-
+        ReactGA.event({
+            category: user.cedula,
+            action: "Correo",
+            label: "buscar",
+        })
         $.confirm({
             title: 'Por favor ingresé correo electrónico para continuar con su compra',
             theme: "material",
@@ -133,7 +141,7 @@ export default function FormasPagoMopadal() {
                                     discapacidad: cedula.discapacidad || "",
                                     envio: ''
                                 }
-
+                                
                                 usedispatch(setToastes({
                                     show: true,
                                     message: "Usuario encontrado " + e.data.nombreCompleto,
@@ -174,6 +182,7 @@ export default function FormasPagoMopadal() {
         })
     }
     function LogeodeCedula(cor) {
+        
         $.confirm({
             title: 'Por favor ingresé la contraseña para continuar con la compra',
             theme: "material",
@@ -218,6 +227,13 @@ export default function FormasPagoMopadal() {
                                             discapacidad: cedula.discapacidad,
                                             envio: ''
                                         }
+                                        ReactGA.event({
+                                            category: data.data.data.cedula,
+                                            action: "login",
+                                            label: "buscar",
+                                            method: "email",
+                                            'userId': data.data.data.cedula
+                                        })
                                         sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
                                         sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
                                         usedispatch(addususcritor({ ...client }))
@@ -227,6 +243,7 @@ export default function FormasPagoMopadal() {
                                             color: 'bg-success',
                                             estado: "Inicio de sesión correcta",
                                         }))
+                                        
                                         usedispatch(setModal({ nombre: 'ModalDetalle', estado: "e" }))
 
                                         if (randon) {

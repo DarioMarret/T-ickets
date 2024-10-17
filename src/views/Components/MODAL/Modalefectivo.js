@@ -13,12 +13,15 @@ import { Triangle } from 'react-loader-spinner';
 import { GetValores } from 'utils/CarritoLocalStorang';
 import { PagoRapido } from 'utils/Querycomnet';
 import { bancos } from 'utils/Imgenesutils';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 let { atencion } = bancos
 const ModalEfectivofACILITO = (props) => {
+
+  const TRACKING_ID = "G-LJN507B5NX";
+  ReactGA.initialize(TRACKING_ID);
   const { intervalo, detener, detenervelocidad } = props;
   const {
-    setDatoToas, setrepShow,  comprar, 
+    setDatoToas, setrepShow, comprar,
   } = props
   let usedispatch = useDispatch()
   let Modalshow = useSelector((state) => state.SuscritorSlice.modal)
@@ -60,6 +63,22 @@ const ModalEfectivofACILITO = (props) => {
         return
       }
       else {
+        window.gtag('event', 'purchase', {
+          transaction_id: ouput.idRegistro,  // ID único de la transacción
+          value: ouput.valores.subtotal, // Valor total
+          tax: ouput.valores.iva,
+          affiliation: "Tienda Online", // Nombre de la tienda o sitio
+          currency: 'USD', // Moneda
+
+          items: ouput.concierto.map(item => ({
+            item_name: item.localidad_nombre,
+            item_id: item.id_localidad,
+            price: item.localidad_precio,
+            item_list_name: item.nombreConcierto,
+            quantity: item.cantidad,
+            item_category: "COMNET"
+          }))
+        });
         detener()
         sessionStorage.setItem(FacturaComnet, JSON.stringify(ouput.idfactura))
         usedispatch(setModal({ nombre: 'ordendepago', estado: valores }))
@@ -68,11 +87,7 @@ const ModalEfectivofACILITO = (props) => {
         console.log(ouput)
         seTSpiners("d-none")
         hideAlert()
-        ReactGA.event({
-          category: "Pago",
-          action: "Facilito",
-          label: "plataforma",
-        })
+        
       }
     }).catch(error => {
       seTSpiners("d-none")
@@ -207,35 +222,35 @@ const ModalEfectivofACILITO = (props) => {
         <Modal.Header className='py-3  bg-dark ' >
           <div className='d-flex justify-content-between w-100' >
             <h5 className="modal-title text-center justify-content-center align-items-center" style={{ fontWeight: "bold", fontSize: '1.2em' }}>Tiempo restante de compra <span className="text-danger" >{intervalo} </span></h5>
-            
+
           </div>
           <button type="button" className=" close"
             onClick={() => succesExit()} >
             X
           </button>
         </Modal.Header>
-        <Modal.Body  className=' d-flex justify-content-center align-items-center'>
-        
-          <div className="row d-flex px-2 pagos  border rounded-3 h-70 " >
-              <h3 className='text-center'> Puede terminar la compra en : </h3>
-              <div className="container-fluid d-flex flex-column p-3 px-0 col-12">
-                <div className="   d-flex justify-content-center    px-0 mx-0">
-                <img src={"https://api.ticketsecuador.ec/store/img/puntos.png"} style={{
-                   
-                  }} className=" img-fluid"
-                    onClick={succesAlert}
-                  />
+        <Modal.Body className=' d-flex justify-content-center align-items-center'>
 
-                </div>
-                <div className="row pagos d-none d-flex justify-content-center   m-1 p-2">
+          <div className="row d-flex px-2 pagos  border rounded-3 h-70 " >
+            <h3 className='text-center'> Puede terminar la compra en : </h3>
+            <div className="container-fluid d-flex flex-column p-3 px-0 col-12">
+              <div className="   d-flex justify-content-center    px-0 mx-0">
+                <img src={"https://api.ticketsecuador.ec/store/img/puntos.png"} style={{
+
+                }} className=" img-fluid"
+                  onClick={succesAlert}
+                />
+
+              </div>
+              <div className="row pagos d-none d-flex justify-content-center   m-1 p-2">
                 <img src={"https://api.ticketsecuador.ec/store/img/puntos.png"} className=" img-fluid   " />
-                </div>
-                <div className="col-12  d-flex  justify-content-center  p-1 mt-2">
-                </div>
+              </div>
+              <div className="col-12  d-flex  justify-content-center  p-1 mt-2">
               </div>
             </div>
+          </div>
 
-          
+
           <div>
             <div className={spinerst}
               style={{

@@ -393,7 +393,7 @@ var routes = [
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["admin", "", ""]
+    permiso: ["", "", ""]
   }
 
 

@@ -239,12 +239,18 @@ const ModalCarritoView = (prop) => {
                     }
                     else {
                         hasExecuted = true
+                        let user = getDatosUsuariosLocalStorag()
                         setSpiner("")
                         localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
                             console.log(consulta.espacio, consulta.idcolor)
                             console.log(ouput)
                             let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
                             let nuevoObjeto = []
+                           /* ReactGA.event({
+                                category: user.cedula,
+                                action: "" + consulta.localidad,
+                                label: "mapa"+CODIGO,
+                            })*/
                             if (ouput.data.find(e => e.typo == "fila")) {
                                 ouput.data.forEach(x => {
                                     if (!nuevoObjeto.some(e => e.fila == x.fila)) {
@@ -365,10 +371,18 @@ const ModalCarritoView = (prop) => {
             return
         }
         else {
+            let user = getDatosUsuariosLocalStorag()
             setSpiner("")
             // console.log(e)
+            let consulta = precios.precios.find((F) => F.idcolor == e.idcolor)
             let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
-            console.log(e.espacio, e.idcolor)
+
+            console.log(e.espacio, e.idcolor,color)
+            /*ReactGA.event({
+                category: user.cedula,
+                action: "" + consulta.localidad,
+                label: "nombre"+CODIGO,
+            })*/
             localidaandespacio(e.espacio, e.idcolor).then(ouput => {
                 let nuevoObjeto = []
                 if (ouput.data.find(e => e.typo == "fila")) {
@@ -387,11 +401,7 @@ const ModalCarritoView = (prop) => {
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                     usedispatch(filtrarlocali(nuevoObjeto))
                     sessionStorage.seleccionmapa = JSON.stringify(e)
-                    ReactGA.event({
-                        category: "Abrir",
-                        action: precios.mapa,
-                        label: "Seleccion evento",
-                    })
+                    
                     abrirlocalidad()
 
                 }
@@ -458,6 +468,13 @@ const ModalCarritoView = (prop) => {
     let hasExecuted = false;
     
     function cerrar() {
+        let user = getDatosUsuariosLocalStorag()
+      
+        ReactGA.event({
+            category: user.cedula,
+            action: "Regresaa carrito" ,
+            label: "Modal localidad",
+        })
         handleClosesop()
         hideAlert()
     }

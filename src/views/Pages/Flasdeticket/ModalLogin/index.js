@@ -16,7 +16,7 @@ import { Boleteria_password } from "utils/EventosQuery/index";
 import ReactGA from 'react-ga4';
 const TRACKING_ID = "G-LJN507B5NX";
 const ModalLogin = (props) => {
-  ReactGA.initialize(TRACKING_ID);
+  ReactGA.initialize(TRACKING_ID, { standardImplementation: true });
   const { showLogin, setShowLogin, abrir } = props
   let histoty = useHistory()
   let Modalstatus = useSelector((state) => state.SuscritorSlice.modal)
@@ -59,9 +59,11 @@ const ModalLogin = (props) => {
           // setShowToass(true)
           // setmessage("Bienvenido " + data.data.nombreCompleto)
           ReactGA.event({
-            category: ""+data.data.cedula,
-            action: "Login",
+            category: "" + data.data.cedula,
+            action: "login",
             label: "click",
+            method: "email",
+            'userId': data.data.cedula,
           })
           usedispatch(setToastes({
             show: true,
@@ -99,7 +101,7 @@ const ModalLogin = (props) => {
           // usedispatch(setToastes({ show: true, message: data.message, color: 'bg-success', estado: 'Se guardo el numero de control'}))
         }
       } catch (error) {
-        //console.log(error)
+        console.log(error)
         //setShowToas(true)
         //setmessage("Hubo un error Verifique correo y contraseña e intente de nuevo")
         usedispatch(setToastes({

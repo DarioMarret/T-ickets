@@ -6,6 +6,7 @@ import {
     sillaspalco, seleccionmapa, Eventoid, concierto,
     DatosUsuariocliente
 } from "./constantes"
+import ReactGA from 'react-ga4';
 import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
 let PViten = []
 let PVsilla = []
@@ -128,8 +129,6 @@ export function EliminarsilladeMesa(silla) {
     Filterduplicados()
     //getVerTienda()
 }
-
-
 export function Verificalocalidad(valor, id) {
     let user = getDatosUsuariosLocalStorag()
     VerTienda()
@@ -288,7 +287,10 @@ export function GetEstadousu() {
     if (user == null) return { discapacidad: "No" }
     else if (user) return { discapacidad: user.discapacidad }
 }
+
+
 export function GetValores() {
+  
     let tag = JSON.parse(sessionStorage.getItem(CarritoTicket));
     let codicontry = sessionStorage.getItem("codicontry") ? sessionStorage.getItem("codicontry") : false
     let evento = JSON.parse(sessionStorage.getItem("infoevento"))
@@ -362,7 +364,6 @@ export function GetValores() {
 
         }
         //console.log(precios)
-
 
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))
         return precios

@@ -74,7 +74,7 @@ function MesasView({ text, status, list }) {
     const isDispon = (currentValue) => currentValue == "disponible" || currentValue == "DISPONIBLE";
     const isDisnone = (currentValue) => currentValue == "none" || currentValue == "d-none";
     let mesas = ["A", "B", "C","D","E"]
-    let sillabloquea = ["D42", "D41", "D40", "D38", "D39", "D37", "D36","E48","E49","E50","E51","E52"]
+    let sillabloquea = ["D42", "D41", "D40", "D38", "D39", "D37", "D36","E48","E49","E50","E52"]
     //console.log(e.substring(0, 1))
     let envotid = sessionStorage.getItem("eventoid")
     //if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
@@ -366,7 +366,7 @@ function MesasView({ text, status, list }) {
     console.log(text)
     let mesas = ["A", "B", "C"]
     let mesa=["A"]
-    let sillabloquea = ["D42", "D41", "D40", "E48", "E49","E50","E51", "E52", "D38", "D39", "D37", "D36", "B2", "B3", "B5"]
+    let sillabloquea = ["D42", "D41", "D40", "E48", "E49","E50", "E52", "D38", "D39", "D37", "D36", "B2", "B3", "B5"]
     const randon = sessionStorage.getItem("random") || ""
     let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")

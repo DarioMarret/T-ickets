@@ -285,8 +285,9 @@ const ResgistroView = (prop) => {
                         }))
                         ReactGA.event({
                             category: cedula.trim(),
-                            action: "Resgitrarse",
+                            action: "sign_up",
                             label: "Registrado",
+                            method: "email"
                         })
                         ReactGA.set({
                             user_id: cedula.trim(),

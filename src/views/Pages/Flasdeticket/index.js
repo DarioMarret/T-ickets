@@ -75,7 +75,7 @@ import { isAfter, parse } from "date-fns";
 import { setSpinersli } from "StoreRedux/Slice/SuscritorSlice.js";
 const TRACKING_ID = "G-LJN507B5NX";
 const IndexFlas = () => {
-  ReactGA.initialize(TRACKING_ID);
+  ReactGA.initialize(TRACKING_ID,);
   let usedispatch = useDispatch();
   const userauthi = useSelector((state) => state.SuscritorSlice)
   let modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -309,6 +309,7 @@ const IndexFlas = () => {
     abrir(e)
   }
   const abrir = async (e) => {
+    sessionStorage.setItem("random", Math.random().toString(36).slice(-10))
     setspinervi("")
     LimpiarLocalStore()
     usedispatch(borrarseleccion({ vacio: [] }))
@@ -316,12 +317,13 @@ const IndexFlas = () => {
     sessionStorage.setItem("estadoevento", e.estado)
     sessionStorage.setItem("infoevento", JSON.stringify(e))
     sessionStorage.removeItem("sillascorre")
+    let user = getDatosUsuariosLocalStorag()
     ReactGA.event({
-      category: "Comprar-Entradas",
+      category: user.cedula,
       action: "Eventos",
       label: "" + e.nombreConcierto,
     })
-    sessionStorage.setItem("random", Math.random().toString(36).slice(-10))
+
     if (!userauthi.login) {
       Abrirelevento(e)
       return
@@ -430,14 +432,14 @@ const IndexFlas = () => {
           velocidad()
           usedispatch(cargarsilla(outp))
           usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-          
+
           //usedispatch(setSpinersli({ spiner: true }))
           if (true) {
             Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
               ReactGA.event({
-                category: "Comprar",
-                action: ""+String(e.nombreConcierto),
-                label: "" + getDatosUsuariosLocalStorag().cedula ||''
+                action: "" + String(e.nombreConcierto),
+                category: "" + getDatosUsuariosLocalStorag().cedula || '',
+                label: "Concierto " + String(e.nombreConcierto),
               })
               console.log(outp)
             }).catch(error => {
@@ -669,11 +671,16 @@ const IndexFlas = () => {
           direccion: datosPersonal.direccion,
           edad: datosPersonal.edad
         })
-        ReactGA.set({
-          user_id: datosPersonal.email
-        })
+        // console.log(clineteLogeado)
+        if (datosPersonal.cedula != "") {
+          // console.log(datosPersonal)
+          ReactGA.set({
+            user_id: datosPersonal.cedula
+          })
+        }
       }
     } else {
+      console.log(datosPerson)
       setPerson({
         ...datosPerson,
         email: clineteLogeado.email,
@@ -686,6 +693,13 @@ const IndexFlas = () => {
         fecha: clineteLogeado.fecha_nacimiento,
         edad: clineteLogeado.edad
       })
+      ReactGA.set({
+        user_id: clineteLogeado.cedula
+      })
+      
+
+
+
       usedispatch(addususcritor({ ...clineteLogeado }))
     }
 
@@ -727,8 +741,9 @@ const IndexFlas = () => {
     }, 1000) : ""
   function regsitronew() {
     usedispatch(setModal({ nombre: 'registro', estado: "" }))
+
     ReactGA.event({
-      category: "Ver-Registrar",
+      category: Math.random().toString(36).slice(-10),
       action: "Registrar",
       label: "Registrar",
     })
@@ -750,9 +765,9 @@ const IndexFlas = () => {
       }
     }))*/
     ReactGA.event({
-      category: "Comprar " + info.nombreConcierto,
+      category: "" + info.nombreConcierto,
       action: "Carrusel",
-      label: info.codigoEvento
+      label: Math.random().toString(36).slice(-10)
     })
     return {
       ...info,

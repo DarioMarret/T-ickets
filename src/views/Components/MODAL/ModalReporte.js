@@ -16,8 +16,9 @@ import ReactGA from 'react-ga4';
 let { GUAYAQUIL, numero,
   pacifico, pichincha,
   produbanco, atencion } = bancos
+const TRACKING_ID = "G-LJN507B5NX";
 const Reporte = (props) => {
-  const TRACKING_ID = "G-LJN507B5NX";
+
   ReactGA.initialize(TRACKING_ID);
   const {
     setDatoToas, setrepShow, detener, comprar, intervalo,
@@ -159,19 +160,39 @@ const Reporte = (props) => {
     setAlert(null)
   }
   function Confirmar(e) {
+    let user = getDatosUsuariosLocalStorag()
     let valores = GetValores()
     ReactGA.event({
-      category: e,
-      action: "Deposito",
-      label: "Pago",
+      category: user.cedula,
+      action: ""+e,
+      label: "Deposito",
     })
     if (e == "pichincha") {
       // console.log(evento)
 
       PagoRapido("").then(oupt => {
         if (oupt.success) {
+        
+          window.gtag('event', 'purchase', {
+            transaction_id: oupt.idRegistro,  // ID único de la transacción
+            value: oupt.valores.subtotal, // Valor total
+            tax: oupt.valores.iva, 
+            affiliation: "Tienda Online", // Nombre de la tienda o sitio
+            currency: 'USD', // Moneda
+            
+            items: oupt.concierto.map(item => ({
+              item_name: item.localidad_nombre,
+              item_id: item.id_localidad,
+              price: item.localidad_precio,
+              item_list_name: item.nombreConcierto,
+              quantity: item.cantidad,
+              item_category:e
+            }))
+          });
+          console.log(oupt)
+          
           comprar()
-         
+
           usedispatch(setModal({
             nombre: e, estado: { ...valores, id: oupt.idRegistro }
           }))
@@ -191,16 +212,16 @@ const Reporte = (props) => {
             estado: 'Orden de pago no generada '
           }))
           ReactGA.event({
-            category:  e,
+            category: e,
             action: "DepositoError",
-            label: "Pago",
+            label: Math.random().toString(36).slice(-10),
           })
         }
         //setrepShow(false)
         console.log(oupt)
 
       }).catch(error => {
-        seTSpiners("d-none")
+        //seTSpiners("d-none")
         console.log(error)
       })
 
@@ -210,6 +231,22 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
+          window.gtag('event', 'purchase', {
+            transaction_id: oupt.idRegistro,  // ID único de la transacción
+            value: oupt.valores.subtotal, // Valor total
+            tax: oupt.valores.iva,
+            affiliation: "Tienda Online", // Nombre de la tienda o sitio
+            currency: 'USD', // Moneda
+
+            items: oupt.concierto.map(item => ({
+              item_name: item.localidad_nombre,
+              item_id: item.id_localidad,
+              price: item.localidad_precio,
+              item_list_name: item.nombreConcierto,
+              quantity: item.cantidad,
+              item_category: e
+            }))
+          });
           usedispatch(setModal({
             nombre: e, estado: valores
           }))
@@ -219,7 +256,7 @@ const Reporte = (props) => {
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
           }))
-          
+
 
           return
         }
@@ -233,7 +270,7 @@ const Reporte = (props) => {
           ReactGA.event({
             category: e,
             action: "DepositoError",
-            label: "Pago",
+            label: Math.random().toString(36).slice(-10),
           })
         }
         //setrepShow(false)
@@ -251,7 +288,7 @@ const Reporte = (props) => {
         ReactGA.event({
           category: e,
           action: "DepositoError",
-          label: "Pago",
+          label: Math.random().toString(36).slice(-10),
         })
       })
       return
@@ -274,15 +311,15 @@ const Reporte = (props) => {
             color: 'bg-success',
             estado: 'Orden de Pago Generada '
           }))
-          
-         
+
+
           return
         }
         else {
           ReactGA.event({
             category: e,
             action: "DepositoError",
-            label: "Pago",
+            label: Math.random().toString(36).slice(-10),
           })
           usedispatch(setToastes({
             show: true,
@@ -291,7 +328,7 @@ const Reporte = (props) => {
             estado: 'Orden de pago no generada '
           }))
         }
-        
+
         //setrepShow(false)
         console.log(oupt)
       }).catch(error => {
@@ -321,11 +358,11 @@ const Reporte = (props) => {
             message: 'Hubo un error al generar la orden intenta de nueavo',
             color: 'bg-wharning',
             estado: 'Orden de pago no generada '
-          }))   
+          }))
           ReactGA.event({
             category: e,
             action: "DepositoError",
-            label: "Pago",
+            label: Math.random().toString(36).slice(-10),
           })
         }
         console.log(oupt)
@@ -335,7 +372,7 @@ const Reporte = (props) => {
         ReactGA.event({
           category: e,
           action: "DepositoError",
-          label: "Pago",
+          label: Math.random().toString(36).slice(-10),
         })
       })
       return
@@ -344,9 +381,25 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
+          window.gtag('event', 'purchase', {
+            transaction_id: oupt.idRegistro,  // ID único de la transacción
+            value: oupt.valores.subtotal, // Valor total
+            tax: oupt.valores.iva,
+            affiliation: "Tienda Online", // Nombre de la tienda o sitio
+            currency: 'USD', // Moneda
+
+            items: oupt.concierto.map(item => ({
+              item_name: item.localidad_nombre,
+              item_id: item.id_localidad,
+              price: item.localidad_precio,
+              item_list_name: item.nombreConcierto,
+              quantity: item.cantidad,
+              item_category: e
+            }))
+          });
           console.log(oupt, valores)
           let datosPersonal = getDatosUsuariosLocalStorag().cedula
-          usedispatch(setModal({ nombre: "confirmar", estado: { id: oupt.idRegistro, total_pago:valores.total, ...valores, cedula: datosPersonal } }))
+          usedispatch(setModal({ nombre: "confirmar", estado: { id: oupt.idRegistro, total_pago: valores.total, ...valores, cedula: datosPersonal } }))
           usedispatch(setToastes({
             show: true,
             message: 'Recuerda reportar el comprobante al WhatsApp o desde la opción tickets, tienes un tiempo de 2 hora para reportarlo',
@@ -365,7 +418,7 @@ const Reporte = (props) => {
           ReactGA.event({
             category: e,
             action: "DepositoError",
-            label: "Pago",
+            label: Math.random().toString(36).slice(-10),
           })
         }
         //setrepShow(false)
@@ -376,7 +429,7 @@ const Reporte = (props) => {
         ReactGA.event({
           category: "Error" + e,
           action: "Deposito",
-          label: "Pago",
+          label: Math.random().toString(36).slice(-10),
         })
       })
       return

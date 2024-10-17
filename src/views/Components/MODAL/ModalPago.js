@@ -18,8 +18,9 @@ import { bancos } from 'utils/Imgenesutils';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { Metodos } from 'utils/constantes';
 let { atencion, diners, visas, paypal } = bancos
+
+const TRACKING_ID = "G-LJN507B5NX";
 function ModalPago(props) {
-    const TRACKING_ID = "G-LJN507B5NX"; 
     ReactGA.initialize(TRACKING_ID);
     const { setModalPago, modalPago, detenervelocidad, intervalo } = props
     let usedispatch = useDispatch();
@@ -156,10 +157,25 @@ function ModalPago(props) {
                 if (ouput.success) {
                     console.log(ouput)
                     ReactGA.event({
-                        category: "Pago",
-                        action: "pagomedia",
-                        label: "Pendiente-TC",
+                        category: user.cedula,
+                        action: "Pagomedia",
+                        label: "Generar",
                     })
+                    window.gtag('event', 'purchase', {
+                        transaction_id: ouput.idRegistro,  // ID único de la transacción
+                        value: ouput.valores.subtotal, // Valor total
+                        tax: ouput.valores.iva,
+                        affiliation: "Tienda Online", // Nombre de la tienda o sitio
+                        currency: 'USD', // Moneda                       
+                        items: ouput.concierto.map(item => ({
+                            item_name: item.localidad_nombre,
+                            item_id: item.id_localidad,
+                            price: item.localidad_precio,
+                            item_list_name: item.nombreConcierto,
+                            quantity: item.cantidad,
+                            item_category:"Pagomedia"
+                        }))
+                    });
                     usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
 
                     setSpiner("d-none")
@@ -172,7 +188,7 @@ function ModalPago(props) {
                     ReactGA.event({
                         category: "error",
                         action: "Pagomedia-error",
-                        label: "Pendiente-TC",
+                        label: Math.random().toString(36).slice(-10),
                     })
                     usedispatch(setToastes({
                         show: true,
