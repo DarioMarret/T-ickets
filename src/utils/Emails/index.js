@@ -13,7 +13,7 @@ export const Emailcontec = async (parms) => {
             ],
             "mensaje": {
                 "type": "text",
-                "text": `Gracias por suscribirte a Tickest Ecuador S.A. ${nombre} a Tickest Ecuador S.A.\nAgrega este número para fulturas consultas`,
+                "text": `Gracias por suscribirte ${nombre} a Tickest Ecuador S.A.\nAgrega este número para fulturas consultas`,
                 "url": ""
 
             }

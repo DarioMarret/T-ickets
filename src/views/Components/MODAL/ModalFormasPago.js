@@ -114,7 +114,7 @@ export default function FormasPagoMopadal() {
                     text: 'Aceptar',
                     btnClass: 'btn-blue',
                     action: function (ev) {
-                     //   ev.preventDefault()
+                        //   ev.preventDefault()
                         var name = this.$content.find('.correocodigo').val();
                         if (!name) {
                             $.alert('Ingrese un correo valido');
@@ -141,7 +141,7 @@ export default function FormasPagoMopadal() {
                                     discapacidad: cedula.discapacidad || "",
                                     envio: ''
                                 }
-                                
+
                                 usedispatch(setToastes({
                                     show: true,
                                     message: "Usuario encontrado " + e.data.nombreCompleto,
@@ -162,7 +162,7 @@ export default function FormasPagoMopadal() {
                                 spinercarga.classList.add("d-none")
                                 // usedispatch(setModal({ nombre: 'registro', estado: "e" }))
                                 //  return false;
-                               
+
                                 usedispatch(setModal({ nombre: 'registro', estado: "e" }))
                                 usedispatch(setToastes({
                                     show: true,
@@ -182,17 +182,17 @@ export default function FormasPagoMopadal() {
         })
     }
     function LogeodeCedula(cor) {
-        
+
         $.confirm({
             title: 'Por favor ingresé la contraseña para continuar con la compra',
             theme: "material",
             content: '' +
-                '<form action="" className="formName">' +
+                '<div  className="formName">' +
                 '<div className="form-group">' +
                 '<label>Ingrese su contraseña</label>' +
                 '<input type="text" placeholder="contraseña" class="form-control passwor " required />' +
                 '</div>' +
-                '</form>',
+                '</div>',
             buttons: {
                 formSubmit: {
                     text: 'Continuar',
@@ -227,6 +227,9 @@ export default function FormasPagoMopadal() {
                                             discapacidad: cedula.discapacidad,
                                             envio: ''
                                         }
+                                        window.gtag('event', 'login', {
+                                            method: "email"
+                                        });
                                         ReactGA.event({
                                             category: data.data.data.cedula,
                                             action: "login",
@@ -234,6 +237,7 @@ export default function FormasPagoMopadal() {
                                             method: "email",
                                             'userId': data.data.data.cedula
                                         })
+                                        
                                         sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
                                         sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
                                         usedispatch(addususcritor({ ...client }))
@@ -243,7 +247,7 @@ export default function FormasPagoMopadal() {
                                             color: 'bg-success',
                                             estado: "Inicio de sesión correcta",
                                         }))
-                                        
+
                                         usedispatch(setModal({ nombre: 'ModalDetalle', estado: "e" }))
 
                                         if (randon) {
@@ -472,7 +476,7 @@ export default function FormasPagoMopadal() {
 
                                         <th scope="row"></th>
                                         <td className='text-end' >Total</td>
-                                        <td className='text-center'>${ parseFloat(listaPrecio.total).toFixed(2)}</td>
+                                        <td className='text-center'>${parseFloat(listaPrecio.total).toFixed(2)}</td>
                                     </tr >
                                 </tbody>
                             </table>

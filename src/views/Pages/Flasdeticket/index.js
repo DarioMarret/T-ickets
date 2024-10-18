@@ -320,8 +320,8 @@ const IndexFlas = () => {
     let user = getDatosUsuariosLocalStorag()
     ReactGA.event({
       category: user.cedula,
-      action: "Eventos",
-      label: "" + e.nombreConcierto,
+      action: ""+e.nombreConcierto,
+      label: "Eventos",
     })
 
     if (!userauthi.login) {
@@ -437,9 +437,9 @@ const IndexFlas = () => {
           if (true) {
             Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
               ReactGA.event({
-                action: "" + String(e.nombreConcierto),
+                action: "Liverar",
                 category: "" + getDatosUsuariosLocalStorag().cedula || '',
-                label: "Concierto " + String(e.nombreConcierto),
+                label: ""+ String(e.nombreConcierto),
               })
               console.log(outp)
             }).catch(error => {

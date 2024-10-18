@@ -117,6 +117,19 @@ const ModalCarritoView = (prop) => {
             }).catch(err => {
                 console.log(err)
             })
+        window.gtag('event', 'remove_from_cart', {
+            currency: "USD",
+            value: (e.valor*e.cantidad),
+            items: [
+                {
+                    item_id: e.localidad,
+                    item_name: e.id,
+                    affiliation: "Moald Carrito",             
+                    price: e.valor,
+                    quantity: e.cantidad
+                }
+            ]
+        });
         e.localidaEspacio["typo"] == "correlativo" ? usedispatch(clearSillas(e)) : ''
         EliminarByStora(e.localidad)
         e.localidaEspacio["typo"] == "correlativo" ? EliminarSillaLocal(e.localidad) : ''
@@ -472,7 +485,7 @@ const ModalCarritoView = (prop) => {
       
         ReactGA.event({
             category: user.cedula,
-            action: "Regresaa carrito" ,
+            action: "cerrar carrito" ,
             label: "Modal localidad",
         })
         handleClosesop()

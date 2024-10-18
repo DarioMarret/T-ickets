@@ -46,10 +46,17 @@ function ModalDetalle(props) {
     })
     const detposito = () => {
         datosPerson.metodoPago == "Efectivo" ?
-            usedispatch(setModal({ nombre: "modalpagoFacilito", estado: "" })) :usedispatch(setModal({ nombre: "modalpago", estado: "" }))
+            usedispatch(setModal({ nombre: "modalpagoFacilito", estado: "" })) : usedispatch(setModal({ nombre: "modalpago", estado: "" }))
 
     }
-    const handelReporShow = () => usedispatch(setModal({ nombre: 'ModalReporte', estado: '' }))
+    const handelReporShow = () => {
+        window.gtag("event", "ModalPago", {
+            "event_category": listarCarritoDetalle[0].nombreConcierto,
+            "event_label": "Modal",
+
+        })
+        usedispatch(setModal({ nombre: 'ModalReporte', estado: '' }))
+    }
     const handleDetalleColse = () => usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
     const handleCheckboxChange = (event) => {
         const { name, checked } = event
@@ -116,6 +123,7 @@ function ModalDetalle(props) {
         }
     }
     function abrirPago() {
+
         sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(datosPerson))
         usedispatch(setModal({ nombre: 'ModalPago', estado: '' }))
     }
@@ -264,9 +272,9 @@ function ModalDetalle(props) {
     function CodigoValido() {
         this.preventDefault()
         let codigos = document.getElementById("basic-codigo");
-        
-        if (CODIGO =="WDXMMF"){
-            if (codigos.value ==="URBAN2024") return
+
+        if (CODIGO == "WDXMMF") {
+            if (codigos.value === "URBAN2024") return
             if (codigos.value == "") return
             $.confirm({
                 theme: 'supervan',
@@ -280,8 +288,8 @@ function ModalDetalle(props) {
                         btnClass: 'btn-red',
                         action: function () {
                             let datosPersonal = getDatosUsuariosLocalStorag()
-                           
-                            Consultar_codigos({ cedula: datosPersonal.cedula, codigo: codigos.value,radio:true }).then(ou => {
+
+                            Consultar_codigos({ cedula: datosPersonal.cedula, codigo: codigos.value, radio: true }).then(ou => {
                                 if (ou.estado) {
                                     let co = document.getElementById("codigocontry")
                                     let co1 = document.getElementById("codigocontry")
@@ -429,7 +437,7 @@ function ModalDetalle(props) {
                                 });
                             }
                         }).catch(erro => {
-                           console.log(erro)
+                            console.log(erro)
                         })
                     }
                 },
@@ -716,7 +724,7 @@ function ModalDetalle(props) {
                                         {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ?
 
                                             "Total con Descuento" : "Total"}</td>
-                                    <td className='text-center'>${parseFloat(listaPrecio.total).toFixed(2) }</td>
+                                    <td className='text-center'>${parseFloat(listaPrecio.total).toFixed(2)}</td>
                                 </tr >
                                 {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ?
                                     <tr className="d-none">
@@ -783,13 +791,13 @@ function ModalDetalle(props) {
                                             <button class="input-group-text btn-success" onClick={CodigoValido}>validar</button>
                                         </div> : ""
                                         : ""}
-                                    {CODIGO == "WDXMMF" || CODIGO =="4433LG"?
+                                    {CODIGO == "WDXMMF" || CODIGO == "4433LG" ?
                                         <div className="input-group" id='codigocontry' >
                                             <div class="d-block d-sm-block d-md-none col-12">Ingrese el código de Radio</div>
                                             <label className='form-label px-2 d-none d-sm-none d-md-block'>Ingrese el código de Radio</label>
                                             <input className="form-control" id="basic-codigo" placeholder="Codigo" />
                                             <button class="input-group-text btn-success" onClick={CodigoValido}>validar</button>
-                                        </div>:""
+                                        </div> : ""
 
                                     }
                                     {
@@ -799,7 +807,7 @@ function ModalDetalle(props) {
                                             " id='codigocontry1' >
                                                 <div className='col-12'> <p>Diquite el codigo</p> </div>
                                                 <label className='form-label px-2 '>Digita los 6 primeros números de tu tarjeta</label>
-                                              
+
                                                 <input className="form-control" id="basic-codigo1" placeholder="Descuento American express" />
                                                 <button class="input-group-text btn-success" onClick={tarjetaValido}>validar</button>
                                             </div> : ""
@@ -817,7 +825,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR </button> : ""
                             }
                             {
-                                !clienteauth && datosPerson.metodoPago == "Efectivo"  ?
+                                !clienteauth && datosPerson.metodoPago == "Efectivo" ?
                                     <button id="pagarcuenta" className="btn btn-primary"
                                         onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}
                                     >
@@ -887,7 +895,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                (datosPerson.metodoPago === "Efectivo-Local" || datosPerson.metodoPago ==="Recaidacion Terceros") ?
+                                (datosPerson.metodoPago === "Efectivo-Local" || datosPerson.metodoPago === "Recaidacion Terceros") ?
                                     <button id="pagarcuenta" className="btn btn-primary"
 
                                         onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}

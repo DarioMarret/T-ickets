@@ -172,21 +172,38 @@ const Reporte = (props) => {
 
       PagoRapido("").then(oupt => {
         if (oupt.success) {
-        
-          window.gtag('event', 'purchase', {
-            transaction_id: oupt.idRegistro,  // ID único de la transacción
+          window.gtag('event', 'begin_checkout', {
+            transaction_id: "T_" + oupt.idRegistro,  // ID único de la transacción
             value: oupt.valores.subtotal, // Valor total
-            tax: oupt.valores.iva, 
-            affiliation: "Tienda Online", // Nombre de la tienda o sitio
+            tax: oupt.valores.iva,
+            affiliation: e, // Nombre de la tienda o sitio
             currency: 'USD', // Moneda
-            
+            "event_category": "begin_checkout",
+            "event_label": "Modal",
             items: oupt.concierto.map(item => ({
               item_name: item.localidad_nombre,
               item_id: item.id_localidad,
               price: item.localidad_precio,
               item_list_name: item.nombreConcierto,
               quantity: item.cantidad,
-              item_category:e
+              item_category: item.nombreConcierto,
+            }))
+          });
+          window.gtag('event', 'purchase', {
+            transaction_id: "T_"+oupt.idRegistro,  // ID único de la transacción
+            value: oupt.valores.subtotal, // Valor total
+            tax: oupt.valores.iva, 
+            affiliation: e, // Nombre de la tienda o sitio
+            currency: 'USD', // Moneda
+            "event_category": "begin_checkout",
+            "event_label": "Modal",
+            items: oupt.concierto.map(item => ({
+              item_name: item.localidad_nombre,
+              item_id: item.id_localidad,
+              price: item.localidad_precio,
+              item_list_name: item.nombreConcierto,
+              quantity: item.cantidad,
+              item_category: item.nombreConcierto,
             }))
           });
           console.log(oupt)
@@ -231,8 +248,25 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
+          window.gtag('event', 'begin_checkout', {
+            transaction_id: "T_" + oupt.idRegistro,  // ID único de la transacción
+            value: oupt.valores.subtotal, // Valor total
+            tax: oupt.valores.iva,
+            affiliation: e, // Nombre de la tienda o sitio
+            currency: 'USD', // Moneda
+            "event_category": "begin_checkout",
+            "event_label": "Modal",
+            items: oupt.concierto.map(item => ({
+              item_name: item.localidad_nombre,
+              item_id: item.id_localidad,
+              price: item.localidad_precio,
+              item_list_name: item.nombreConcierto,
+              quantity: item.cantidad,
+              item_category: item.nombreConcierto,
+            }))
+          });
           window.gtag('event', 'purchase', {
-            transaction_id: oupt.idRegistro,  // ID único de la transacción
+            transaction_id: "T_" + oupt.idRegistro,  // ID único de la transacción
             value: oupt.valores.subtotal, // Valor total
             tax: oupt.valores.iva,
             affiliation: "Tienda Online", // Nombre de la tienda o sitio
@@ -381,8 +415,24 @@ const Reporte = (props) => {
       PagoRapido("").then(oupt => {
         if (oupt.success) {
           comprar()
+          window.gtag('event', 'begin_checkout', {
+            transaction_id: "T_" + oupt.idRegistro,  // ID único de la transacción
+            value: oupt.valores.subtotal, // Valor total
+            tax: oupt.valores.iva,
+            affiliation: "Tienda Online", // Nombre de la tienda o sitio
+            currency: 'USD', // Moneda
+
+            items: oupt.concierto.map(item => ({
+              item_name: item.localidad_nombre,
+              item_id: item.id_localidad,
+              price: item.localidad_precio,
+              item_list_name: item.nombreConcierto,
+              quantity: item.cantidad,
+              item_category: e
+            }))
+          });
           window.gtag('event', 'purchase', {
-            transaction_id: oupt.idRegistro,  // ID único de la transacción
+            transaction_id: "T_"+oupt.idRegistro,  // ID único de la transacción
             value: oupt.valores.subtotal, // Valor total
             tax: oupt.valores.iva,
             affiliation: "Tienda Online", // Nombre de la tienda o sitio

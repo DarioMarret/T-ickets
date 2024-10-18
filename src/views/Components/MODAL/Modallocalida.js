@@ -164,13 +164,42 @@ const LocalidadmapViews = (props) => {
                 "cantidad": 1
             }).then(oupt => {
                 if (oupt.success) {
+                    window.gtag("event", "view_item", {
+                        currency: "USD",
+                        value: mapath.precio.precio_normal,
+                        items: [
+                            {
+                                item_id: mapath.precio.id,
+                                item_name: mapath.precio.localidad,
+                                affiliation: "Mas",
+                                index: 0,
+                                item_brand: "Google",
+                                price: mapath.precio.precio_normal,
+                                "cantidad": 1
+                            }
+                        ]
+                    });
                     console.log(oupt)
                     let array = oupt.idLocalidadesSillas
                     sessionStorage.setItem("sillascorre", JSON.stringify([...array]))
                     getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
                     setTimeout(function () {
-                        
+                        window.gtag("event", "add_to_cart", {
+                            currency: "USD",
+                            value: mapath.precio.precio_normal,
+                            items: [
+                                {
+                                    item_id: mapath.precio.id,
+                                    item_name: mapath.precio.localidad,
+                                    affiliation: "Mas",
+                                    index: 0,
+                                    item_brand: "Google",
+                                    price: mapath.precio.precio_normal,
+                                    "cantidad": 1
+                                }
+                            ]
+                        });
                         setDisable(false)
                         usedispatch(setSpinersli({ spiner: true }))
 
@@ -594,16 +623,22 @@ const LocalidadmapViews = (props) => {
         mapath.localidadespecica.info != undefined ? mapath.localidadespecica.info.length > 0 ? cantidad.length > 0 ? setDetalle(Verificalocalidad(producto, cantidad).filter((e) => e.id == mapath.precio["idcolor"])) : '' : '' : ''
         getVerTienda().filter((e) => e.id == mapath.precio.idcolor).length > 0 ? setDetalle(getVerTienda().filter((e) => e.id == mapath.precio.idcolor)) : setDetalle([])
         Cargarlisat()
+        window.gtag('event', mapath.precio.localidad + "" + mapath.precio.codigoEvento, {
+            'event_category': 'Modal Localidad',
+            'event_label': mapath.precio.codigoEvento,
+            'value': mapath.precio.precio_normal
+
+        });
     }, [modalshow.nombre == "Modallocalida" ? true : false])
 
     function cerrar() {
         clearInterval(intervalolista.current)
         usedispatch(setModal({ nombre: '', estado: '' }))
         usedispatch(filtrarlocali([]))
-       // clearInterval(intervalolista.current);
+        // clearInterval(intervalolista.current);
         sessionStorage.removeItem(seleccionmapa)
         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-       
+
         hideAlert()
         return
 
@@ -649,7 +684,7 @@ const LocalidadmapViews = (props) => {
                                         fontWeight: "bold",
                                         fontSize: "0.8em"
                                     }}
-                                >$ {mapath.precio.precio_normal} </h6>
+                                >$ {mapath.precio.precio_tarjeta} </h6>
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center" style={{ maxHeight: "200px" }}>
                                 {modalshow.nombre == "Modallocalida" ? <SVGView text={mapath.nombre} /> : ''}

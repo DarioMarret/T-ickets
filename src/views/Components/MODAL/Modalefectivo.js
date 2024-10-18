@@ -63,8 +63,8 @@ const ModalEfectivofACILITO = (props) => {
         return
       }
       else {
-        window.gtag('event', 'purchase', {
-          transaction_id: ouput.idRegistro,  // ID único de la transacción
+        window.gtag('event', 'begin_checkout', {
+          transaction_id: "T_" + ouput.idRegistro,  // ID único de la transacción
           value: ouput.valores.subtotal, // Valor total
           tax: ouput.valores.iva,
           affiliation: "Tienda Online", // Nombre de la tienda o sitio
@@ -79,6 +79,7 @@ const ModalEfectivofACILITO = (props) => {
             item_category: "COMNET"
           }))
         });
+        
         detener()
         sessionStorage.setItem(FacturaComnet, JSON.stringify(ouput.idfactura))
         usedispatch(setModal({ nombre: 'ordendepago', estado: valores }))
@@ -87,6 +88,22 @@ const ModalEfectivofACILITO = (props) => {
         console.log(ouput)
         seTSpiners("d-none")
         hideAlert()
+        window.gtag('event', 'purchase', {
+          transaction_id: "T_" + ouput.idRegistro,  // ID único de la transacción
+          value: ouput.valores.subtotal, // Valor total
+          tax: ouput.valores.iva,
+          affiliation: "Tienda Online", // Nombre de la tienda o sitio
+          currency: 'USD', // Moneda
+
+          items: ouput.concierto.map(item => ({
+            item_name: item.localidad_nombre,
+            item_id: item.id_localidad,
+            price: item.localidad_precio,
+            item_list_name: item.nombreConcierto,
+            quantity: item.cantidad,
+            item_category: "COMNET"
+          }))
+        });
         
       }
     }).catch(error => {
