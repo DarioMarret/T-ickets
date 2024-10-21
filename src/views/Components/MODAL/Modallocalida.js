@@ -164,21 +164,7 @@ const LocalidadmapViews = (props) => {
                 "cantidad": 1
             }).then(oupt => {
                 if (oupt.success) {
-                    window.gtag("event", "view_item", {
-                        currency: "USD",
-                        value: mapath.precio.precio_normal,
-                        items: [
-                            {
-                                item_id: mapath.precio.id,
-                                item_name: mapath.precio.localidad,
-                                affiliation: "Mas",
-                                index: 0,
-                                item_brand: "Google",
-                                price: mapath.precio.precio_normal,
-                                "cantidad": 1
-                            }
-                        ]
-                    });
+                    
                     console.log(oupt)
                     let array = oupt.idLocalidadesSillas
                     sessionStorage.setItem("sillascorre", JSON.stringify([...array]))

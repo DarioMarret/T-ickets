@@ -390,12 +390,28 @@ const ModalCarritoView = (prop) => {
             let consulta = precios.precios.find((F) => F.idcolor == e.idcolor)
             let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
 
-            console.log(e.espacio, e.idcolor,color)
+            console.log(e.espacio, e.idcolor, color, precios)
             /*ReactGA.event({
                 category: user.cedula,
                 action: "" + consulta.localidad,
                 label: "nombre"+CODIGO,
             })*/
+            window.gtag("event", "view_item", {
+                event_category: 'E-Commerce',
+                currency: "USD",
+                value: consulta.precio_normal,
+                items: [
+                    {
+                        item_id: consulta.id,
+                        item_name: consulta.localidad,
+                        affiliation: "Mas",
+                        index: precios.precios.findIndex((F) => F.idcolor == e.idcolor),
+                        item_brand: "Google",
+                        price: consulta.precio_normal,
+                        "cantidad": 1
+                    }
+                ]
+            });
             localidaandespacio(e.espacio, e.idcolor).then(ouput => {
                 let nuevoObjeto = []
                 if (ouput.data.find(e => e.typo == "fila")) {
