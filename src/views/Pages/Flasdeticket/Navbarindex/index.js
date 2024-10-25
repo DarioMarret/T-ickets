@@ -86,7 +86,7 @@ export default function NavbarView({ ...props }) {
                 </div>
             </nav>
 
-            <div className="offcanvas offcanvas-top" data-bs-backdrop="static" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" style={{
+            <div className="offcanvas offcanvas-top" data-bs-backdrop="static" tabIndex="1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" style={{
                 backgroundColor: "#311C7C"
             }}>
                 <div className="offcanvas-header">

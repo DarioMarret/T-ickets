@@ -51,9 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener('DOMContentLoaded', function () {
   const superpuesto = document.getElementById('superpuesto');
-
-  // Espera 3 segundos y luego desvanece el div
-  console.log(superpuesto)
   setTimeout(() => {
     superpuesto.style.opacity = 0;
     setTimeout(() => {

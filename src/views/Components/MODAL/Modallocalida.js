@@ -155,6 +155,21 @@ const LocalidadmapViews = (props) => {
                 random: sessionStorage.getItem("random"),
                 "cantidad": 1
             })
+            window.gtag("event", "add_to_cart", {
+                currency: "USD",
+                value: mapath.precio.precio_normal,
+                items: [
+                    {
+                        item_id: mapath.precio.id,
+                        item_name: mapath.precio.localidad,
+                        affiliation: "Mas",
+                        index: 0,
+                        item_brand: "Google",
+                        price: mapath.precio.precio_normal,
+                        "cantidad": 1
+                    }
+                ]
+            });
             correlativosadd({
                 "id": mapath.precio.idcolor,
                 "estado": "reservado",
@@ -167,25 +182,12 @@ const LocalidadmapViews = (props) => {
                     
                     console.log(oupt)
                     let array = oupt.idLocalidadesSillas
+                   
                     sessionStorage.setItem("sillascorre", JSON.stringify([...array]))
                     getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
                     setTimeout(function () {
-                        window.gtag("event", "add_to_cart", {
-                            currency: "USD",
-                            value: mapath.precio.precio_normal,
-                            items: [
-                                {
-                                    item_id: mapath.precio.id,
-                                    item_name: mapath.precio.localidad,
-                                    affiliation: "Mas",
-                                    index: 0,
-                                    item_brand: "Google",
-                                    price: mapath.precio.precio_normal,
-                                    "cantidad": 1
-                                }
-                            ]
-                        });
+                        
                         setDisable(false)
                         usedispatch(setSpinersli({ spiner: true }))
 
@@ -870,7 +872,7 @@ const LocalidadmapViews = (props) => {
                                     color="#4fa94d"
                                     ariaLabel="triangle-loading"
                                     wrapperStyle={{}}
-                                    wrapperClassName=""
+                                    wrapperclassName=""
                                     visible={true}
                                 />
                                 <h4 className='text-light'>Seleccionando ...</h4>

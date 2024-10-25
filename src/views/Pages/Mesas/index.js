@@ -31,7 +31,7 @@ function MesasView({ text, status, list }) {
     let estado = list.find(f => f.silla == e)
     //console.log(estado, randon)
     if (estado.cedula != null && estado.cedula != "") {
-      if (estado.estado ==undefined||estado.estado==null)return 'disponible'
+      if (estado.estado == undefined || estado.estado == null) return 'disponible'
       if ((estado.cedula == "" || estado.cedula == undefined || estado.cedula == null) && estado.estado.toLowerCase() == "ocupado") return "apartado"
       //if ((estado.cedula != null && estado.cedula != "") && estado.estado.toLowerCase() == "ocupado") return "apartado"
       if (estado.estado.toLowerCase() == "ocupado") return estado.estado.toLowerCase()
@@ -73,8 +73,8 @@ function MesasView({ text, status, list }) {
     const isReserva = (currentValue) => currentValue == "RESERVADO" || currentValue == "reservado";
     const isDispon = (currentValue) => currentValue == "disponible" || currentValue == "DISPONIBLE";
     const isDisnone = (currentValue) => currentValue == "none" || currentValue == "d-none";
-    let mesas = ["A", "B", "C","D","E"]
-    let sillabloquea = ["D42", "D41", "D40", "D38", "D39", "D37", "D36","E48","E49","E50","E52"]
+    let mesas = ["A", "B", "C", "D", "E"]
+    let sillabloquea = ["D42", "D41", "D40", "D39", "D37", "D36", "E48", "E49", "E50"]
     //console.log(e.substring(0, 1))
     let envotid = sessionStorage.getItem("eventoid")
     //if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
@@ -83,8 +83,8 @@ function MesasView({ text, status, list }) {
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
     if (Object.values(asiento).every(isApartado)) { return "mesaapartada" }
     if (Object.values(asiento).every(isDisnone)) { return "none" }
-   // if (!mesas.includes(e.substring(0, 1))) { return "bg-secondary" }
-    if ((envotid == "X5U5VR")&&!mesas.includes(e.substring(0, 1)) || ((e.substring(0, 1) == 'D'||e.substring(0, 1) == 'E') && !sillabloquea.includes(e))) {return "bg-dark" }
+    // if (!mesas.includes(e.substring(0, 1))) { return "bg-secondary" }
+    if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || ((e.substring(0, 1) == 'D' || e.substring(0, 1) == 'E') && !sillabloquea.includes(e))) { return "bg-dark" }
     return "mesadisponible"
   }
   /*  obtener sillas  */
@@ -365,16 +365,16 @@ function MesasView({ text, status, list }) {
     /**/
     console.log(text)
     let mesas = ["A", "B", "C"]
-    let mesa=["A"]
-    let sillabloquea = ["D42", "D41", "D40", "E48", "E49","E50", "E52", "D38", "D39", "D37", "D36", "B2", "B3", "B5"]
+    let mesa = ["A"]
+    let sillabloquea = ["D42", "D41", "D40", "E48", "E49", "E50", "D39", "D37", "D36", "B2", "B3", "B5"]
     const randon = sessionStorage.getItem("random") || ""
     let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")
     //
-   //console.log((sillabloquea.includes(text)))
+    //console.log((sillabloquea.includes(text)))
     //if (envotid == '0SXH0L' && clienteInfo() == null) return
-    if ((envotid == 'B8KF5U') && (sillabloquea.includes(text)) && clienteInfo() == null)return 
-    if (((envotid == "X5U5VR")&& ( clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text))) && clienteInfo() == null) return
+    if ((envotid == 'B8KF5U') && (sillabloquea.includes(text)) && clienteInfo() == null) return
+    if (((envotid == "X5U5VR") && (clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text))) && clienteInfo() == null) return
     if (((envotid == "X5U5VR") && (mesas.includes(text.split("")[0])) && clienteInfo() == null)) {
       return
     }
@@ -509,7 +509,7 @@ function MesasView({ text, status, list }) {
             seleccionmapa: nombre.localidad + "-" + asiento[0].silla, "fila": asiento[0].silla.split("-")[0],
             "silla": asiento[0].silla, "estado": "seleccionado"
           }))
-         // console.log(e)
+          // console.log(e)
           let sillaids = document.getElementById("silla-" + e)
           sillaids.classList.remove('disponible')
           sillaids.classList.add('seleccionado')
@@ -607,7 +607,7 @@ function MesasView({ text, status, list }) {
       usedispatch(setSpinersli({ spiner: true }))
     }).catch(err => {
       usedispatch(setSpinersli({ spiner: true }))
-     // console.log(err)
+      // console.log(err)
     })
     // console.log(datos)
 

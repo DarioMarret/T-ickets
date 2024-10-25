@@ -33,7 +33,7 @@ function MesasViews({ text, status, list, setMapa }) {
     let randon = sessionStorage.getItem("random") || ""
     let estado = list.find(f => f.silla == e)
     //console.log(estado, randon)
-    if(estado.estado==null||estado.estado==undefined) return "disponible"
+    if (estado.estado == null || estado.estado == undefined) return "disponible"
     if (estado.cedula != null && estado.cedula != "") {
       if ((estado.cedula == "" || estado.cedula == undefined || estado.cedula == null) && estado.estado.toLowerCase() == "ocupado") return "apartado"
       //if ((estado.cedula != null && estado.cedula != "") && estado.estado.toLowerCase() == "ocupado") return "apartado"
@@ -167,7 +167,7 @@ function MesasViews({ text, status, list, setMapa }) {
 
       })
       console.log(estado, Localidades)
-       console.log(data)
+      console.log(data)
       hideAlert()
       setMapa()
     } catch (error) {
@@ -189,7 +189,7 @@ function MesasViews({ text, status, list, setMapa }) {
           warning
           style={{ display: "block", marginTop: "-100px" }}
           title={"Deseas Cambiar el estado "}
-          onConfirm={() => enviarLocalidad(""+estado, me)}
+          onConfirm={() => enviarLocalidad("" + estado, me)}
           onCancel={() => hideAlert()}
           confirmBtnBsStyle="success"
           cancelBtnBsStyle="danger"

@@ -23,36 +23,33 @@ import ValidationForms from "views/Forms/ValidationForms.js";
 import Wizard from "views/Forms/Wizard/Wizard.js";
 import PerfilPage from "views/Pages/Perfil";
 */
-import Dashboard from "views/Dashboard.js";
-import Ticket from "views/Pages/Tickets.js";
-import Ventas from "views/Pages/VenderTiket.js"
-import Espacios from "views/Pages/Espacios";
-import Eventos from "views/Pages/Evento";
-import EventoEspecifico from "views/Pages/Evento/MODAL/Evetoespecifico";
-import DiseñoViwpdf from "views/Pages/Diseñador/Diseñopdf.js";
-import AutorizacionView from "views/Pages/Autorizacion";
-import Reactabla from "views/Pages/Susbcritorpage/Tickes.js";
-import ReactTables from "views/Tables/ReactTables.js";
-import SuscritorViews from "views/Pages/Suscriptores";
-import UsersView from "views/Pages/Usuarios";
-import SuscritoridView from "views/Pages/Suscriptores/Suscritorid";
-import UseridView from "views/Pages/Usuarios/Usuarioid";
-import Viesvg from "views/Pages/Svgviewa"
-import AjustesView from "views/Pages/Ajustes";
-import { DiseñoViewtickes } from "views/Pages/Diseñador/Diseñodeticke";
-import EsquemaViews from "views/Pages/Esquemas";
-import NoticiasJs from "views/Pages/Noticias.js";
-import AprobarView from "views/Pages/VenderTiket.js/Aprobar";
-import AprobarViewid from "views/Pages/VenderTiket.js/Aprobar/Aprobobarid";
-import EmitirboView from "views/Pages/VenderTiket.js/Emitir";
-import TagsInput from "components/TagsInput/TagsInput";
-import DetalleCompraView from "views/Pages/VenderTiket.js/Aprobar/Detalleregistro";
-import InformeView from "views/Pages/VenderTiket.js/Aprobar/Informeventa";
-import ConsolidacionView from "views/Pages/Consolidados/index.js";
-import FacturaView from "views/Pages/Autorizacion/Facturacion";
-import OCRApiViews from "views/Pages/Autorizacion/OCRapi";
-import ListarLogs from "views/Pages/Infolog";
-import WhatsAppViewmal from "views/Pages/Whastapp/index";
+import { lazy } from "react";
+import Loadable from "views/Components/Loadable/index";
+
+const Dashboard = Loadable(lazy(() => import("views/Dashboard.js")));
+const Ticket = Loadable(lazy(() => import("views/Pages/Tickets.js")));
+const Ventas = Loadable(lazy(() => import("views/Pages/VenderTiket.js")));
+const Espacios = Loadable(lazy(() => import("views/Pages/Espacios")));
+const Eventos = Loadable(lazy(() => import("views/Pages/Evento")));
+const EventoEspecifico = Loadable(lazy(() => import("views/Pages/Evento/MODAL/Evetoespecifico")));
+const Reactabla = Loadable(lazy(() => import("views/Pages/Susbcritorpage/Tickes.js")));
+const SuscritorViews = Loadable(lazy(() => import("views/Pages/Suscriptores")));
+const UsersView = Loadable(lazy(() => import("views/Pages/Usuarios")));
+const SuscritoridView = Loadable(lazy(() => import("views/Pages/Suscriptores/Suscritorid")));
+const UseridView = Loadable(lazy(() => import("views/Pages/Usuarios/Usuarioid")));
+const Viesvg = Loadable(lazy(() => import("views/Pages/Svgviewa")));
+const EsquemaViews = Loadable(lazy(() => import("views/Pages/Esquemas")));
+const NoticiasJs = Loadable(lazy(() => import("views/Pages/Noticias.js")));
+const AprobarView = Loadable(lazy(() => import("views/Pages/VenderTiket.js/Aprobar")));
+const AprobarViewid = Loadable(lazy(() => import("views/Pages/VenderTiket.js/Aprobar/Aprobobarid")));
+const EmitirboView = Loadable(lazy(() => import("views/Pages/VenderTiket.js/Emitir")));
+const DetalleCompraView = Loadable(lazy(() => import("views/Pages/VenderTiket.js/Aprobar/Detalleregistro")));
+const InformeView = Loadable(lazy(() => import("views/Pages/VenderTiket.js/Aprobar/Informeventa")));
+const ConsolidacionView = Loadable(lazy(() => import("views/Pages/Consolidados/index.js")));
+const OCRApiViews = Loadable(lazy(() => import("views/Pages/Autorizacion/OCRapi")));
+const ListarLogs = Loadable(lazy(() => import("views/Pages/Infolog")));
+//const WhatsAppViewmal = Loadable(lazy(() => import("pages/Usuarios/Covertura")));
+
 
 var routes = [
   {
@@ -173,14 +170,14 @@ var routes = [
         component: SuscritorViews,
         permiso: ["admin", "super_admin", "vendedores"],
       },
-      {
+     /* {
         path: "/Whastapp",
         layout: "/admin",
         name: "Whastapp",
         mini: "*",
         component: WhatsAppViewmal,
         permiso: ["", ""]
-      },
+      },*/
 
 
     ]
