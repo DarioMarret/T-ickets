@@ -2,38 +2,28 @@ import React, { useEffect, useState, useRef } from "react"
 import { Modal } from "react-bootstrap"
 import { Metodos } from 'utils/constantes'
 import SvgselectView from "views/Pages/Svgviewa/svgseleccion.js"
-import { listarpreciolocalidad } from "utils/Querypanel"
 import { GetMetodo, GetValores, getVerTienda, EliminarByStora, EliminarSillaLocal } from "utils/CarritoLocalStorang"
 import { useDispatch, useSelector } from "react-redux"
 import { cargarmapa, settypo, filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice"
 import { clearSillas, cargarsilla } from "StoreRedux/Slice/sillasSlice"
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { GetEstadousu } from "utils/CarritoLocalStorang"
-import { CarritoTicket } from "utils/constantes"
 import { listaEliminasillas } from "utils/CarritoLocalStorang"
 import { quitarsilla } from "utils/Querypanelsigui"
-import { correlativodelete } from "utils/Querypanelsigui"
 import { setModal } from "StoreRedux/Slice/SuscritorSlice"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 import { localidaandespacio } from "utils/Querypanel"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { correlativosadd } from "utils/Querypanelsigui"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
-import { listarLocalidadaEspeci } from "utils/Querypanelsigui"
-import { espacio } from "utils/constantes"
-import { Eventolocalidad } from "utils/constantes"
-import { TiendaIten } from "utils/CarritoLocalStorang"
 import { updateboletos } from "StoreRedux/Slice/SuscritorSlice"
 import { Listarticketporestado } from "utils/userQuery"
 import { Eventoid } from "utils/constantes"
 import { Triangle } from "react-loader-spinner"
 import { bancos } from "utils/Imgenesutils"
 import moment from "moment"
-import ReactGA from 'react-ga4';
 let { atencion } = bancos
 const ModalCarritoView = (prop) => {
-    const TRACKING_ID = "G-LJN507B5NX";
-    ReactGA.initialize(TRACKING_ID);
     let usuario = getDatosUsuariosLocalStorag()
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
     const sorter = (a, b) => a.precio_normal > b.precio_normal ? 1 : -1 && a.id < b.id ? 1 : -1;

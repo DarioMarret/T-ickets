@@ -47,7 +47,6 @@ import WhastappWiev from "views/Components/MODAL/ModalWhast";
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import jsPDF from "jspdf"
-import { DateRangePicker } from "../../../../../node_modules/rsuite/esm/index";
 import Bingo_tablas from "./components/Tablaspdf";
 import ModalFirma from "views/Components/MODAL/Modalfirma";
 import { Button } from "bootstrap";

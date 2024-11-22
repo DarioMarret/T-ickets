@@ -33,7 +33,6 @@ import SuscritorViews from "views/Pages/Suscriptores";
 import UsersView from "views/Pages/Usuarios";
 import SuscritoridView from "views/Pages/Suscriptores/Suscritorid";
 import UseridView from "views/Pages/Usuarios/Usuarioid";
-import TablasEjemplos from "views/Tables/Tablaejemplo";
 
 var routes = [
   {

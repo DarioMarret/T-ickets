@@ -86,7 +86,7 @@ function MesasViews({ text, status, list, setMapa }) {
     if (Object.values(asiento).every(isApartado)) { return "mesaapartada" }
     if (Object.values(asiento).every(isDisnone)) { return "none" }
     // if (!mesas.includes(e.substring(0, 1))) { return "bg-secondary" }
-    if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || (e.substring(0, 1) == 'D' && !sillabloquea.includes(e))) { return "bg-dark" }
+  //  if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || (e.substring(0, 1) == 'D' && !sillabloquea.includes(e))) { return "bg-dark" }
     return "mesadisponible"
   }
   /*  obtener sillas  */
@@ -104,7 +104,7 @@ function MesasViews({ text, status, list, setMapa }) {
   }
   function enviarsillas(text) {
     console.log(list)
-    let bloque = list.map(el => {
+    let bloque = list.filter(elm=>elm.estado!='none').map(el => {
       if (el.cedula == null || el.cedula == '') {
         return el.idsilla
       }

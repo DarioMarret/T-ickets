@@ -630,15 +630,7 @@ const IndexFlas = () => {
       setSearchValue(e)
     }
   }
-  const ListaPrecios = async () => {
-    try {
-      const info = await ListaPreciosEvent();
-      return info
-
-    } catch (error) {
-      return error
-    }
-  }
+ 
   const [estafun, setfunc] = useState(false)
   const [final, setFinal] = useState([])
   useEffect(() => {
@@ -775,9 +767,7 @@ const IndexFlas = () => {
   }
   const [visible, setVisible] = React.useState(false)
   function abrirNuevoTab() {
-    // Abrir nuevo tab
     var win = window.open('https://api.whatsapp.com/send?phone=593980008000&text=Quiero%20informaci%C3%B3n%20', '_blank');
-    // Cambiar el foco al nuevo tab (punto opcional)
     win.focus();
   }
 

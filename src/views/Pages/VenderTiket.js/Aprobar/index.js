@@ -529,7 +529,7 @@ export default function AprobarView() {
         is3D: false,
     };
     function filtrarArray(array, fechaInicio, fechaFin, nombre, forma_pago) {
-        return array.filter((element) => {
+        return array.filter((elem=>elem.forma_pago!="CORTESIA")).filter((element) => {
             const fechaElemento = new Date(element.fechaCreacion.split(" ")[0]);
             const cumpleRangoFecha = (!fechaInicio || fechaElemento >= new Date(fechaInicio)) &&
                 (!fechaFin || fechaElemento <= new Date(fechaFin));

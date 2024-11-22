@@ -27,7 +27,6 @@ export default function ModalFacilitoView() {
         usedispatch(setModal({ nombre: '', estado: '' }))
 
     }
-    //   let arrr = document.
     function imprime() {
 
         html2canvas(document.querySelector("#comprobantepago")).then(canvas => {
@@ -47,7 +46,6 @@ export default function ModalFacilitoView() {
         html2canvas(document.querySelector("#comprobantepago")).then(canvas => {
             var imgWidth = 130;
             var imgHeight = canvas.height * imgWidth / canvas.width;
-            //   alert(imgHeight)
             const contentDataURL = canvas.toDataURL('image/png')
             let pdf = new jsPDF('p', 'mm', 'a5'); // A4 size page of PDF
             var position = 10;

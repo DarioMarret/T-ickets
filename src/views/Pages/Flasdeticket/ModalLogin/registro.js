@@ -1,29 +1,22 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { Modal, Spinner, Form } from "react-bootstrap"
+import { Modal,  Form } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { DatosUsuariocliente } from "utils/constantes"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { DatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { getCedula } from "utils/DatosUsuarioLocalStorag"
 import { Authsucrito } from "utils/Query"
-import { ValidarWhatsapp } from "utils/Query"
 import { setModal } from "StoreRedux/Slice/SuscritorSlice"
-import intlTelInput from 'intl-tel-input';
 import logo from "../../../../assets/imagen/logo-inicio.png";
 import { Whatsappnumero } from "utils/constantes"
 import { Triangle } from "react-loader-spinner"
 import { addususcritor } from "StoreRedux/Slice/SuscritorSlice"
 import { buscarcliente } from "utils/Querypanelsigui"
-import ReactGA from 'react-ga4';
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
-import addNotification from "react-push-notification/dist"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
-import ToastViews from "views/Components/TOAST/toast"
 import { Emailcontec } from "utils/Emails"
-const TRACKING_ID = "G-LJN507B5NX";
 const ResgistroView = (prop) => {
-    ReactGA.initialize(TRACKING_ID);
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -283,15 +276,6 @@ const ResgistroView = (prop) => {
                             color: 'bg-success',
                             estado: "Inicio Exitoso",
                         }))
-                        ReactGA.event({
-                            category: cedula.trim(),
-                            action: "sign_up",
-                            label: "Registrado",
-                            method: "email"
-                        })
-                        ReactGA.set({
-                            user_id: cedula.trim(),
-                        })
                         console.log(modal.estado)
                         modal.estado != "" ? usedispatch(setModal({ nombre:"ModalDetalle", estado: '' })) : ''
 

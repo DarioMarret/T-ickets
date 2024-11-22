@@ -1,11 +1,10 @@
 /*eslint-disable*/
 import React from "react";
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import { Table, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import {
   useTable,
   useFilters,
-  useAsyncDebounce,
   useSortBy,
   usePagination,
 } from "react-table";
@@ -273,11 +272,6 @@ function filterGreaterThan(rows, id, filterValue) {
     return rowValue >= filterValue;
   });
 }
-
-// This is an autoRemove method on the filter function that
-// when given the new filter value and returns true, the filter
-// will be automatically removed. Normally this is just an undefined
-// check, but here, we want to remove the filter if it's not a number
 filterGreaterThan.autoRemove = (val) => typeof val !== "number";
 
 export default Tables;

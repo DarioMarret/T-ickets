@@ -3,10 +3,8 @@ import {
     CarritoTicket, Metodos,
     DatosUsuarioLocalStorang,
     Valorcarrito, listaasiento,
-    sillaspalco, seleccionmapa, Eventoid, concierto,
-    DatosUsuariocliente
+    sillaspalco, seleccionmapa, Eventoid, concierto
 } from "./constantes"
-import ReactGA from 'react-ga4';
 import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
 let PViten = []
 let PVsilla = []

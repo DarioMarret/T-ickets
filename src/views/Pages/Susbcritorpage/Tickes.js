@@ -27,10 +27,8 @@ import Tabs from "@mui/material/Tabs";
 
 
 import ListaderegistroView from "../Flasdeticket/Listaregistro/index.js";
-import DataTableBos from "components/ReactTable/Datatable.js/index.js";
 import { ticketsboletos } from "utils/columnasub.js";
 import TablasViwe from "layouts/Tablasdoc.js";
-import { generaPDF } from "utils/boletos/Queryboleto.js";
 import { generaTiketsBingo, generaTiketspdf } from "utils/Querycomnet.js";
 import { Triangle } from "react-loader-spinner";
 import Inframene from "views/Components/IFrame/index.js";

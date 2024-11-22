@@ -29,7 +29,11 @@ const AdminLayout = Loadable(lazy(() => import("layouts/Admin.js")))
 const Indexflas = Loadable(lazy(() => import("../src/views/Pages/Flasdeticket")))
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-
+function ExternalRedirect(e) {
+  console.log(e)
+  window.location.href = `https://api.whatsapp.com/send?phone=593980008000&text=${e.e}`;
+  return null; // No renderiza nada
+}
 root.render(
   <Provider store={store}>
     <BrowserRouter>
@@ -38,6 +42,8 @@ root.render(
         <Route path="/admin" render={(props) => clienteInfo() ? <AdminLayout {...props} /> : <Redirect from="/" to="/auth/login" />} />
         <Route path="/bingo/:id" render={()=><BingoViewtiparamsasb/> } />
         <Route path="/password/:id" render={()=><ResestPassword/>}/>
+        <Route path="/Jessi" render={() => <ExternalRedirect e={"Quiero participar en el concurso de Jessi Uribe"}/>} />
+        <Route path="/Mofle" render={() => <ExternalRedirect e={"Quiero comprar boletos para el show de La Mofle"} />} />
 
         {/*<Route path="/localidad/:id/:parms" render={() => <LocalidadMApView />} />*/}
         <Route path="/" render={() => <Indexflas /> } />

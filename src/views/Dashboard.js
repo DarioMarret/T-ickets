@@ -1,22 +1,14 @@
 import React, { useEffect } from "react";
 // react component used to create charts
 import ChartistGraph from "react-chartist";
-import { DatoTokenusuario } from "utils/constantes";
 // react components used to create a SVG / Vector map
-import { getCliente } from "utils/DatosUsuarioLocalStorag";
-import { useAnalyticsApi } from "react-use-analytics-api";
-import { AuthorizeButton, SignOutButton, AnalyticsDashboard, ActiveUsersChart } from "react-analytics-charts";
 import { VectorMap } from "react-jvectormap";
 
 // react-bootstrap components
 import {
-  Badge,
   Button,
   Card,
   Form,
-  InputGroup,
-  Navbar,
-  Nav,
   OverlayTrigger,
   Table,
   Tooltip,
@@ -24,19 +16,11 @@ import {
   Row,
   Col
 } from "react-bootstrap";
-import { renderButton, checkSignedIn } from "utils/Analyti";
 import { useState } from "react";
 import { ListaPreciosEvent } from "utils/EventosQuery";
 
 function Dashboard() {
-  const [isSignedIn, setIsSignedIn] = React.useState(false);
-  //const {data:todos=[],isLoading}= useGetEventosQuery(9)
-  const updateSignin = (signedIn) => { //(3)
-    setIsSignedIn(signedIn);
-    if (!signedIn) {
-      renderButton();
-    }
-  };
+ 
 
 
 

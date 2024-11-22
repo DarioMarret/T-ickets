@@ -4,11 +4,8 @@ import { GetMetodo, GetValores, getVerTienda } from "./CarritoLocalStorang";
 import { Host, token } from "./constantes";
 import { clienteInfo, getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag";
 import { Bodyhtml, Headerhtml } from "./Emails/cuerpo";
-import ReactGA from 'react-ga4';
 /** reportar Pago */
 export const PagoRapido = async (transaccion) => {
-    const TRACKING_ID = "G-LJN507B5NX";
-    ReactGA.initialize(TRACKING_ID);
     let codigoEvento = sessionStorage.getItem('eventoid')
     let randon = sessionStorage.getItem("random");
     let Eventoinfo = JSON.parse(sessionStorage.getItem('infoevento'))
