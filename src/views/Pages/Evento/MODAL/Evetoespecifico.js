@@ -4,12 +4,9 @@ import { Accordion, Badge } from "react-bootstrap"
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Button, Typography } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { Edit, Delete, Share } from '@mui/icons-material';
 import { ExportToCsv } from 'export-to-csv';
-import { columnsTicket } from "utils/ColumnTabla";
-import { EliminareventoLocalidad, listarpreciolocalidad, ListarEventos } from "utils/Querypanel"
+import { listarpreciolocalidad } from "utils/Querypanel"
 import Modalupdate from "./ModalupdateEvento"
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
@@ -28,13 +25,11 @@ import PiecharViews from "views/Components/Piechar";
 import ExportToExcel from "utils/Exportelemin";
 import { ListarEspacios } from "utils/EspaciosQuery";
 import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
-import { Listarlocalidadid } from "utils/Querypanel";
 import { ListarLocalidad } from "utils/LocalidadesQuery";
 import { EventosActivos } from "utils/Querypanel";
 import { Boleteria_Boletos, Boleteria_Nombre, Boleteria_canje } from "utils/EventosQuery/index";
 import { Contactos_Boletos } from "utils/Querycomnet";
 import { Axiosmikroserdos } from "utils/index";
-import MesasView from "views/Pages/Mesas/index";
 import MesasViews from "views/Pages/Mesas/Plantillas/indice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
@@ -81,12 +76,6 @@ const EventoEspecifico = () => {
     })
     async function Eliminar(e) {
         dispatch(setModal({ nombre: "precios", estado: { ...e } }))
-        /* const elimnar = await EliminareventoLocalidad(e, f)
-         if (elimnar.success) {
-           hideAlert()
-           console.log(elimnar, e, f)
-           await Evento()
-         }*/
     }
     function GetDay(e) {
         var da = new Date(e).getDay()
@@ -116,18 +105,15 @@ const EventoEspecifico = () => {
             const espacios = await ListarEspacios()
             const precio = await listarpreciolocalidad(id)
             const dat = await ListarLocalidad("")
-            // ListarLocalidad
             if (cargar.success) {
                 let datos = [...cargar.data.filter((e) => e.codigoEvento == id), ...cargasd.data.filter((e) => e.codigoEvento == id), ...cancelados.data.filter((e) => e.codigoEvento == id)]
                 let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
-                //console.log(infoes)
                 let shortDate = new Date(datos[0].fechaConcierto);
                 SetEvento({
                     ...datos[0], LocalodadPrecios: precio.data,
                 })
 
                 SetPrecios(precio.data)
-                //console.log(infoes)
                 const disponibles = await listarLocalidadaEspeci(infoes[0].id)
                 let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
                 let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id && e.espacio == infoes[0].nombre).map(el => {
@@ -135,27 +121,20 @@ const EventoEspecifico = () => {
                     return { ...el, nombreLocalidad: nombre }
                 })
                 const agrupadoPorLocalidadess = filtros.reduce((acc, item) => {
-                    // Si no existe el id_localidades en el acumulador, lo inicializamos
                     if (!acc[item.id_localidades]) {
                         acc[item.id_localidades] = {
-                            codigoEvento:id,
+                            codigoEvento: id,
                             id_localidades: item.id_localidades,
                             localidad: item.nombreLocalidad,
                             id_espacio: item.id_espacio,
-                            cantidad: 0 // Iniciar con 0 y sumaremos la cantidad
-                        };
+                            cantidad: 0
+                        }
                     }
-
-                    // Sumar la cantidad si está presente, de lo contrario sumamos 1 por objeto
-                    acc[item.id_localidades].cantidad +=  1;
-
+                    acc[item.id_localidades].cantidad += 1;
                     return acc;
+
                 }, {});
-                console.log(filtros)
-                let valores= Object.values(agrupadoPorLocalidadess)
-                 
-                console.log(valores)
-                //let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
+                console.log(agrupadoPorLocalidadess)
                 const estadosPermitidos = new Set(["Pendiente", "Ocupado", "pendiente", "ocupado"]);
                 const acumuladorPorNombre = filtros.reduce((acc, elemento) => {
                     if (!listo.filter(e => e.id == elemento.id_localidades).length == 0) {
@@ -166,28 +145,22 @@ const EventoEspecifico = () => {
                         return acc;
                     }
                 }, {});
-
                 const acumuladorPorNombres = filtros.reduce((acc, elemento) => {
                     if (!listo.filter(e => e.id == elemento.id_localidades).length == 0) {
                         const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre //elemento.id_localidades;
                         acc[nombre] = (acc[nombre] || 0) + 1;
-
                         return acc;
                     }
                 }, {});
-                /**
-                 * id de la localidad, id del espacio,id,nombre de la localidad, cantidad 
-                elem.id_localidad, elem.id_espacio, id, elem.localidad, elem.cantidad 
-                 */
-                // console.log(acumuladorPorNombres)
                 if (!acumuladorPorNombres) return
                 const resultado = Object.entries(acumuladorPorNombres).map(([nombreMesa, cantidad]) => {
-                    return { nombreMesa, cantidad };
+                    let id = Object.values(agrupadoPorLocalidadess).find(el => el.localidad == nombreMesa)
+                    return { nombreMesa, cantidad, localidad: id.id_localidades };
                 });
                 const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
                     return { nombreMesa, cantidad };
                 });
-                //console.log(resultado, arrayMesas)
+                console.log(acumuladorPorNombres, resultado)
                 setActiveTab(event ? event : resultado[0].nombreMesa)
                 setGobal(resultado)
                 setDisponible(arrayMesas)
@@ -202,10 +175,8 @@ const EventoEspecifico = () => {
                     })
                 }
                 let localidas = []
-
                 resultado.map(elm => {
                     let nuevoObjeto = []
-                    //console.log(filtros.find(e => e.nombreLocalidad == elm.nombreMesa))
                     if (filtros.find(e => e.nombreLocalidad == elm.nombreMesa)) {
                         if (filtros.find(e => e.nombreLocalidad == elm.nombreMesa && e.typo == "mesa")) {
                             filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).forEach(x => {
@@ -242,24 +213,19 @@ const EventoEspecifico = () => {
                             })
                         }
                     }
-                    //  console.log(nuevoObjeto)
                     localidas.push({ nombre: elm.nombreMesa, localidad: nuevoObjeto, typo: filtros.filter(e => e.nombreLocalidad == elm.nombreMesa)[0].typo })
                 })
-                //console.log(localidas)
-
                 setEspacio(localidas)
-                //  console.log(datos[0].nombreConcierto, boletos_camjeados, boletos_boleto, boletos_eventos)
 
             }
         } catch (error) {
-            //console.log(error)
             dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
         }
     }
 
-    function descarga() {
+    function descarga(ids,nombre) {
         if (useradmin.perfil == 'suscriptores') return
-        Axiosmikroserdos.get('api/descargarcodigo/' + id, {
+        Axiosmikroserdos.get('api/descargalocalidad/' + ids, {
             responseType: 'blob'  // Important for handling binary data
         })
             .then(response => {
@@ -267,7 +233,7 @@ const EventoEspecifico = () => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', 'codigos.xlsx');
+                link.setAttribute('download', nombre.replace(" ","_")+'codigos.xlsx');
                 document.body.appendChild(link);
                 link.click();
                 link.parentNode.removeChild(link);
@@ -758,16 +724,23 @@ const EventoEspecifico = () => {
                                             fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY')} label={"Boletos"}
                                         /> : ""}
                                         <div className="m-2">
-                                            {(useradmin.perfil == 'suscriptores') ? "" : <button className="btn  btn-success  btn-sm"
-
-                                                onClick={() =>
-                                                    descarga()
-                                                }
+                                            {(useradmin.perfil == 'suscriptores') ? "" :
+                                            <div className="d-flex">
 
 
-                                            >
-                                                <i className="bi bi-file-earmark-arrow-down-fill"></i>    Exportar Códigos
-                                            </button>}
+                                                {global.map(ele => {
+                                                    return (
+                                                        <button className="btn  btn-success  btn-sm mx-1"
+
+                                                            onClick={() =>
+                                                                descarga(ele.localidad, ele.nombreMesa)
+                                                            }>
+                                                            <i className="bi bi-file-earmark-arrow-down-fill"></i>    {ele.nombreMesa} Códigos
+                                                        </button>
+                                                    )
+                                                })}
+                                                </div>
+                                            }
                                         </div>
                                         <Button className="d-none"
                                             disabled={table.getRowModel().rows.length === 0}

@@ -1219,7 +1219,7 @@ const IndexFlas = () => {
                               </svg>
                             </i>
                             <img src={"https://api.ticketsecuador.ec/store/img/mallapromo.png"}
-                              className="img-fluid rounded-7 shadow-md  btn-hover img-evento "
+                              className="d-none img-fluid rounded-7 shadow-md  btn-hover img-evento "
                               alt="" />
                           </div>
                         </a>
