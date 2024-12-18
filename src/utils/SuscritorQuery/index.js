@@ -2,7 +2,7 @@ import axios from "axios"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 export const GetSuscritores = async (ini, fin) => {
-    const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/api/v1/listas_suscriptor?init=" + ini + "&size=" + fin, {
+    const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listas_suscriptor?init=" + ini + "&size=" + fin, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -21,7 +21,7 @@ export const EditarSuscrito = async (id, parms) => {
             "id_usuario": parseInt(idop),
             "id_operador": parseInt(ids),
         }
-        const { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/actualizar_suscriptor/" + id, { ...parms, ...parmspro }, {
+        const { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/actualizar_suscriptor/" + id, { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -43,7 +43,7 @@ export const EliminarSuscrito = async (id) => {
         "id_usuario": parseInt(idop),
         "id_operador": parseInt(ids),
     }
-    const { data } = await axios.delete("https://api.ticketsecuador.ec/ms_login/api/v1/eliminar_suscriptor/" + id, parmspro, {
+    const { data } = await axios.delete("https://api.t-ickets.com/ms_login/api/v1/eliminar_suscriptor/" + id, parmspro, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -60,7 +60,7 @@ export const CancelarSubscriptor = async (id) => {
         "id_operador": parseInt(ids),
     }
     //console.log("query",id)   
-    const { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/cancelation_suscriptor/" + id, parmspro, {
+    const { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/cancelation_suscriptor/" + id, parmspro, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

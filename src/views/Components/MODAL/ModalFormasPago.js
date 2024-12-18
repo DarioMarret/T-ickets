@@ -206,7 +206,7 @@ export default function FormasPagoMopadal() {
                         } else {
                             spinercarga.classList.remove("d-none");
                             let randon = sessionStorage.getItem("random")
-                            axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/auth_suscriptor", { email: String(cor).trim(), password: String(name).trim() }, {
+                            axios.post("https://api.t-ickets.com/ms_login/api/v1/auth_suscriptor", { email: String(cor).trim(), password: String(name).trim() }, {
                                 headers: {
                                     'Content-Type': 'application/json',
                                     'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -251,7 +251,7 @@ export default function FormasPagoMopadal() {
                                         usedispatch(setModal({ nombre: 'ModalDetalle', estado: "e" }))
 
                                         if (randon) {
-                                            axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actulizar_identificacion_asiento",
+                                            axios.post("https://api.t-ickets.com/ms_login/api/v1/actulizar_identificacion_asiento",
                                                 {
                                                     "random": randon,
                                                     "cedula": data.data.data.cedula

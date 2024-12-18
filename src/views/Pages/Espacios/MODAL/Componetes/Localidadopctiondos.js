@@ -246,10 +246,10 @@ const TabdosView = (props) => {
         }
         else {
             try {
-                setdisable(true)
+                //setdisable(true)
                 console.log(FilasLocalidad)
                 const guarda = await GuardarLocalidad({ "espacio": localidanames.nombre.trim(), "id_espacio": localidanames.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
-                // console.log(guarda)
+                 console.log(guarda)
                 if (guarda.success) {
                     SetDataloca({
                         typo: '',

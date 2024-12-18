@@ -3,7 +3,7 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 /**Crear nuevo usuario */
 export const CrearUser = async (parms) => {
-    const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/crear_user", parms, {
+    const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_user", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -13,7 +13,7 @@ export const CrearUser = async (parms) => {
 }
 /**Listar usuarios */
 export const GetUserList = async () => {
-    const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/api/v1/listas_user", {
+    const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listas_user", {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -32,7 +32,7 @@ export const EditUser = async (id, parms) => {
         "id_usuario": parseInt(idop),
         "id_operador": parseInt(ids),
     }
-    const { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/actualizar_user/" + id, {...parms,...parmspro}, {
+    const { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/actualizar_user/" + id, {...parms,...parmspro}, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -48,7 +48,7 @@ export const EliminaUser = async (id) => {
         "id_usuario": parseInt(idop),
         "id_operador": parseInt(ids),
     }
-    const { data } = await axios.delete("https://api.ticketsecuador.ec/ms_login/api/v1/eliminar/" + id,parmspro,{
+    const { data } = await axios.delete("https://api.t-ickets.com/ms_login/api/v1/eliminar/" + id,parmspro,{
         headers: {
             'Content-Type': 'aplication/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

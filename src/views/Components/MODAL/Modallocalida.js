@@ -497,8 +497,9 @@ const LocalidadmapViews = (props) => {
         let reservado = document.querySelectorAll("div.reservado, a.reservado")
         let seleccion = document.querySelectorAll("div.seleccionado, a.seleccionado")
         let ocupado = document.querySelectorAll("div.ocupado, a.ocupado")
+        let apartado = document.querySelectorAll("div.apartado, a.apartado")
         $("#disponible").text(disponible.length)
-        $("#ocupado").text(ocupado.length)
+        $("#ocupado").text(Number(ocupado.length) + Number(apartado.length))
         $("#reservado").text(reservado.length)
         $("#seleccionado").text(seleccion.length)
     })
@@ -546,36 +547,21 @@ const LocalidadmapViews = (props) => {
                         })
                     })
                         : ''
-                    //  console.log("aqui")
                     mapath.precio.typo == "mesa" ? usedispatch(filtrarlocali(nuevoObjeto)) : ''
-                    //console.log(nuevoObjeto)
                 }
                 else if (ouput.data.some(e => e.typo == "correlativo")) {
                     console.log("aqui es ", ouput.data)
-                    mapath.precio.typo == "correlativo" ?
-
-                        usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == null))) : ''
-                    //    console.log(ouput.data.filter(e =>e.estado.toLowerCase() == "disponible" || e.estado.toLowerCase()==null).length)
-                    let dispo = ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length
-                    // console.log(ouput.data.filter(e=>e.cedula!=""))
-                    // console.log(ouput.data.filter(e=>e.cedula!=null).length)
-                    //console.log(ouput.data)
+                    mapath.precio.typo == "correlativo" ?usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == null))) : ''
                     usedispatch(updateboletos({
                         disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
                         proceso: ouput.data.filter(e => e.estado.toLowerCase() == "reservado" && e.cedula == user.cedula).length,
                         pagados: sleccionlocalidad.pagados,
                         inpagos: sleccionlocalidad.inpagos
                     }))
-                    /* console.log({
-                         disponibles: ouput.data.filter(e => e.cedula != " " && e.cedula != null).length,
-                         proceso: ouput.data.filter(e => e.estado.toLowerCase() == "reservado" && e.cedula == user.cedula).length,
-                         pagados: sleccionlocalidad.pagados,  inpagos: sleccionlocalidad.inpagos
-                     })*/
                 }
             }).catch(err => {
                 console.log(err)
             })
-
         }, 4000)
         mapath.precio.typo == "correlativo" ? clearInterval(intervalolista.current) : ""
     }
@@ -618,20 +604,14 @@ const LocalidadmapViews = (props) => {
 
         });
     }, [modalshow.nombre == "Modallocalida" ? true : false])
-
     function cerrar() {
         clearInterval(intervalolista.current)
         usedispatch(setModal({ nombre: '', estado: '' }))
         usedispatch(filtrarlocali([]))
-        // clearInterval(intervalolista.current);
         sessionStorage.removeItem(seleccionmapa)
         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-
         hideAlert()
         return
-
-
-
     }
     modalshow.nombre != "Modallocalida" ? clearInterval(intervalolista.current) : ''
     return (

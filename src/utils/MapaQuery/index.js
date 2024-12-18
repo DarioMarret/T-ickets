@@ -3,7 +3,7 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 export const cargarMapa = async () => {
     try {
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listarMapas", {
+        const { data } = await axios.get("https://api.t-ickets.com/ms_login/listarMapas", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -23,7 +23,7 @@ export const guardarMapar = async (parm) => {
         "id_operador": parseInt(id),
     }
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/guardarMapa", {...parm,...parmspro}, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/guardarMapa", {...parm,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -42,7 +42,7 @@ export const editarMapa = async (parm) => {
         "id_operador": parseInt(ids),
     }
     try {
-        const { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/actualizarMapa", {...parm,...parmspro}, {
+        const { data } = await axios.put("https://api.t-ickets.com/ms_login/actualizarMapa", {...parm,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -62,7 +62,7 @@ export const eliminaMapa = async (parm) => {
         "id_operador": parseInt(ids),
     }
     try {
-        const { data } = await axios.delete("https://api.ticketsecuador.ec/ms_login/eliminarMapa/" + parm,parmspro, {
+        const { data } = await axios.delete("https://api.t-ickets.com/ms_login/eliminarMapa/" + parm,parmspro, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

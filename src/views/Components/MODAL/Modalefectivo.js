@@ -252,7 +252,7 @@ const ModalEfectivofACILITO = (props) => {
             <h3 className='text-center'> Puede terminar la compra en : </h3>
             <div className="container-fluid d-flex flex-column p-3 px-0 col-12">
               <div className="   d-flex justify-content-center    px-0 mx-0">
-                <img src={"https://api.ticketsecuador.ec/store/img/puntos.png"} style={{
+                <img src={"https://api.t-ickets.com/store/img/puntos.png"} style={{
 
                 }} className=" img-fluid"
                   onClick={succesAlert}
@@ -260,7 +260,7 @@ const ModalEfectivofACILITO = (props) => {
 
               </div>
               <div className="row pagos d-none d-flex justify-content-center   m-1 p-2">
-                <img src={"https://api.ticketsecuador.ec/store/img/puntos.png"} className=" img-fluid   " />
+                <img src={"https://api.t-ickets.com/store/img/puntos.png"} className=" img-fluid   " />
               </div>
               <div className="col-12  d-flex  justify-content-center  p-1 mt-2">
               </div>

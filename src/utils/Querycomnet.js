@@ -4,6 +4,7 @@ import { GetMetodo, GetValores, getVerTienda } from "./CarritoLocalStorang";
 import { Host, token } from "./constantes";
 import { clienteInfo, getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag";
 import { Bodyhtml, Headerhtml } from "./Emails/cuerpo";
+import { BuscarTransacion } from "./pagos/Queripagos";
 /** reportar Pago */
 export const PagoRapido = async (transaccion) => {
     let codigoEvento = sessionStorage.getItem('eventoid')
@@ -34,7 +35,7 @@ export const PagoRapido = async (transaccion) => {
             "comision_por_boleto": parseInt(e.cantidad) * parseFloat(e.localidaEspacio["comision_boleto"]),
             "id_sillas": cantidadTotal == sillas.length ? [...sillas] : [],
             "iva": Eventoinfo.iva,
-            "post": Eventoinfo.post?Eventoinfo.post:""
+            "post": Eventoinfo.post ? Eventoinfo.post : ""
         }
     })
     console.log(concierto)
@@ -52,7 +53,7 @@ export const PagoRapido = async (transaccion) => {
             "description": GetValores().description,
             "iva": GetValores().iva
         },
-        "random":randon,
+        "random": randon,
         "codigo_boletos": [...tiktefisic],
         "idfactura": "",
         "transaccion": transaccion
@@ -63,7 +64,7 @@ export const PagoRapido = async (transaccion) => {
 
         console.log(datos)
 
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/registraCompra ", datos, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/registraCompra ", datos, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -72,7 +73,7 @@ export const PagoRapido = async (transaccion) => {
         )
 
         console.log(data)
-        
+
         return { ...data, id: data.idRegistro, ...datos };
         // await EnviarDetalleCompra(email, parm)
 
@@ -98,7 +99,7 @@ const EnviarDetalleCompra = async (email, parms) => {
     tabla = tabla + "</tbody></table></td></tr>"
     let final = Headerhtml + cuerpouno + tabla + Bodyhtml
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/email/api/v1/sendEmail_html", {
+        let { data } = await axios.post("https://api.t-ickets.com/email/api/v1/sendEmail_html", {
             "to": email,
             "html": final
         },
@@ -117,7 +118,15 @@ const EnviarDetalleCompra = async (email, parms) => {
 /** OCRAPI */
 export const OCRApi = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ocr/api/v1/ocr_space", parms)
+        //https://api.t-ickets.com/ocr/api/v1/ocr_space
+        let { data } = await axios.post("https://api.flashchat.chat/backflash/comprobantes_scaner/1", parms)
+        let datos = await BuscarTransacion({
+            "numeroTransaccion": data.data["numero_documento"]
+        })
+        console.log(data)
+        if (datos.success) {
+            return { ...data, success: false, data: { "beneficiario": data.data["destinatario"], ...data.data.data,"numero_documento":"Comprobante ya registrado"} }
+        }
         return data
     } catch (error) {
         return error
@@ -127,7 +136,7 @@ export const OCRApi = async (parms) => {
 /** Listar todos los reportes de tickes */
 export const AprobarTiket = async () => {
     try {
-        let { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/ticket_admin", {
+        let { data } = await axios.get("https://api.t-ickets.com/ms_login/ticket_admin", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -141,7 +150,7 @@ export const AprobarTiket = async () => {
 /**  */
 export const ConsolidaBoleto = async () => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/boletos", {
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/boletos", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -176,7 +185,7 @@ export const cederboleto = async (ceder) => {
         "id_operador": parseInt(id),
     }
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/ceder_boleto", parmspro, {
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/ceder_boleto", parmspro, {
 
         }, {
             header: {
@@ -193,7 +202,7 @@ export const cederboleto = async (ceder) => {
 
 export const GeneraToken = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/generar_token", parms, {
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/generar_token", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -213,7 +222,7 @@ export const ValidarToken = async (parms) => {
         "id_operador": parseInt(id),
     }
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/confirmarpago", {
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/confirmarpago", {
             ...parmspro
         }
             , {
@@ -229,7 +238,7 @@ export const ValidarToken = async (parms) => {
 }
 export const generaTiketspdf = async (parms) => {
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ticket/api/v1/ticket_pdf_link", parms, {
+        let { data } = await axios.post("https://api.t-ickets.com/ticket/api/v1/ticket_pdf_link", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -270,5 +279,5 @@ export const CambiarPagoTC = async (parms) => {
     }
 }
 
-//https://api.ticketsecuador.ec/ms_login/doc/static/index.html#/Compra/post_api_v1_liverar_asiento
-//https://api.ticketsecuador.ec/ms_login/doc/static/index.html#/Compra/post_api_v1_generarBoleto     
+//https://api.t-ickets.com/ms_login/doc/static/index.html#/Compra/post_api_v1_liverar_asiento
+//https://api.t-ickets.com/ms_login/doc/static/index.html#/Compra/post_api_v1_generarBoleto     

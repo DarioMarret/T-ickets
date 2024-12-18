@@ -34,7 +34,7 @@ const ModalLogin = (props) => {
 
       try {
         let randon = sessionStorage.getItem("random")
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/auth_suscriptor", { email: credenciales.username.trim(), password: credenciales.pass.trim() }, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/auth_suscriptor", { email: credenciales.username.trim(), password: credenciales.pass.trim() }, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -77,7 +77,7 @@ const ModalLogin = (props) => {
           console.log(Modalstatus.estado)
           Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado == null ? "" : 'ModalDetalle', estado: '' })) : usedispatch(setModal({ nombre: "", estado: '' }))
           if (randon) {
-            axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/actulizar_identificacion_asiento",
+            axios.post("https://api.t-ickets.com/ms_login/api/v1/actulizar_identificacion_asiento",
               {
                 "random": randon,
                 "cedula": data.data.cedula

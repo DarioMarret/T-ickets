@@ -5,7 +5,7 @@ import { boleteriaAxios } from "utils/index";
 
 export const Actualisardescripcionevento = async () => {
     try {
-        let { data } = axios.get("https://api.ticketsecuador.ec/ms_login/api/v1/actualisar_descripcion_evento", {
+        let { data } = axios.get("https://api.t-ickets.com/ms_login/api/v1/actualisar_descripcion_evento", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -19,7 +19,7 @@ export const Actualisardescripcionevento = async () => {
 }
 export const ListarEventosFinalizados = async () => {
     try {
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/CANCELADO/", {
+        const { data } = await axios.get("https://api.t-ickets.com/ms_login/listareventos/CANCELADO/", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -35,21 +35,21 @@ export const ListarEventosFinalizados = async () => {
 }
 const ListarEventosLis = async () => {
     try {
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/ACTIVO/", {
+        const { data } = await axios.get("https://api.t-ickets.com/ms_login/listareventos/ACTIVO/", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
             }
         })
-        const datas = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/PROCESO/", {
+        const datas = await axios.get("https://api.t-ickets.com/ms_login/listareventos/PROCESO/", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
             }
         })
-        const event = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/CANCELADO/", {
+        const event = await axios.get("https://api.t-ickets.com/ms_login/listareventos/CANCELADO/", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -81,7 +81,7 @@ const traerprecios = async (path) => {
 }
 const TraerLocalidad = async () => {
     try {
-        let { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/api/v1/listar_localidades/", {
+        let { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_localidades/", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -109,7 +109,7 @@ export const ListaPreciosEvent = async () => {
     let newarr = []
     const data = await Promise.all(
         resultado.map(async (e) => {
-            const info = await traerprecios("https://api.ticketsecuador.ec/ms_login/ListaPreciosLocalidades/" + e.codigoEvento)
+            const info = await traerprecios("https://api.t-ickets.com/ms_login/ListaPreciosLocalidades/" + e.codigoEvento)
             e.Precios = info
             return e
         }))

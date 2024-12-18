@@ -512,7 +512,7 @@ export default function NoticiasView() {
                 "evento": "CU1E1Q-Medio Estadio Atahualpa -ELADIO CARRION",
                     "encabezado": "ELADIO CARRION",
                         "descripcion": "Evento Bahia",
-                            "link_img": "https://api.ticketsecuador.ec/store/img/cabecera.png",
+                            "link_img": "https://api.t-ickets.com/store/img/cabecera.png",
                                 "fecha_presentacion": "2022-12-31",
                                     "redirect": ""
         }
@@ -521,7 +521,7 @@ export default function NoticiasView() {
             "evento": null,
             "encabezado": "ELADIO CARRION",
             "descripcion": "Evento Bahia",
-            "link_img": "https://api.ticketsecuador.ec/store/img/cabecera.png",
+            "link_img": "https://api.t-ickets.com/store/img/cabecera.png",
             "fecha_presentacion": "2022-12-22",
             "redirect": ""
         }

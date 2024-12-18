@@ -489,11 +489,11 @@ const ModalCarritoView = (prop) => {
     function cerrar() {
         let user = getDatosUsuariosLocalStorag()
       
-        ReactGA.event({
-            category: user.cedula,
-            action: "cerrar carrito" ,
-            label: "Modal localidad",
-        })
+        window.gtag('event', 'cerrar carrito', {
+            event_category: 'something_something',
+            event_label: 'test',
+            value: user.cedula
+        });
         handleClosesop()
         hideAlert()
     }

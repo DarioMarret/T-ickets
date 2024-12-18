@@ -8,7 +8,7 @@ export const ActualizaEstadoLocalidad = async (id, parms) => {
         "id_usuario": parseInt(idop),
         "id_operador": parseInt(ids),
     }
-    const { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/actualizarevento_estado/" + id, { ...parms, ...parmspro }, {
+    const { data } = await axios.put("https://api.t-ickets.com/ms_login/actualizarevento_estado/" + id, { ...parms, ...parmspro }, {
         header: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -18,7 +18,7 @@ export const ActualizaEstadoLocalidad = async (id, parms) => {
 }
 export const cargarEventoActivo = async (parms) => {
     try {
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listareventos/" + parms+"/", {
+        const { data } = await axios.get("https://api.t-ickets.com/ms_login/listareventos/" + parms+"/", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -35,7 +35,7 @@ export const cargarEventoActivo = async (parms) => {
 /*
 export const cargarMapa = async () => {
     try {
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/listarMapas", {
+        const { data } = await axios.get("https://api.t-ickets.com/ms_login/listarMapas", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -48,7 +48,7 @@ export const cargarMapa = async () => {
 }
 export const guardarMapar = async (parm) => {
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/guardarMapa", parm, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/guardarMapa", parm, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -61,7 +61,7 @@ export const guardarMapar = async (parm) => {
 }
 export const editarMapa = async (parm) => {
     try {
-        const { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/actualizarMapa", parm, {
+        const { data } = await axios.put("https://api.t-ickets.com/ms_login/actualizarMapa", parm, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -75,7 +75,7 @@ export const editarMapa = async (parm) => {
 }
 export const eliminaMapa = async (parm) => {
     try {
-        const { data } = await axios.delete("https://api.ticketsecuador.ec/ms_login/eliminarMapa/" + parm, {
+        const { data } = await axios.delete("https://api.t-ickets.com/ms_login/eliminarMapa/" + parm, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -105,7 +105,7 @@ export const enviasilla = async (info) => {
     }
     console.log("sillas--", datos)
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/selecionar_localidad", { ...datos, ...parmspro }, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/selecionar_localidad", { ...datos, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -128,7 +128,7 @@ export const correlativosadd = async (parms) => {
         "id_operador": parseInt(id),
     }
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/selecionar_localidad_correlativa",
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/selecionar_localidad_correlativa",
             { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -150,7 +150,7 @@ export const correlativodelete = async (parms) => {
         "id_operador": parseInt(id),
     }
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/selecionar_localidad_correlativa_eliminar",
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/selecionar_localidad_correlativa_eliminar",
             { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ export const correlativodelete = async (parms) => {
 }
 export const listarLocalidadaEspeci = async (parms) => {
     try {
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/api/v1/listar_localidades_id_espacio_descripcion/" + parms, {
+        const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_localidades_id_espacio_descripcion/" + parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -180,7 +180,7 @@ export const listarLocalidadaEspeci = async (parms) => {
 }
 export const guardarCarrusel = async (parms) => {
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/", parms, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -200,7 +200,7 @@ export const quitarsilla = async (parms) => {
         "id_operador": parseInt(ids),
     }
     try {
-        const { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/quitarselecion_localidad",
+        const { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/quitarselecion_localidad",
             {
                 ...parms,
                 ...parmspro
@@ -218,7 +218,7 @@ export const quitarsilla = async (parms) => {
 }
 export const buscarcliente = async (datos) => {
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/consultar_cedula", datos, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/consultar_cedula", datos, {
             header: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -232,7 +232,7 @@ export const buscarcliente = async (datos) => {
 }
 export const sumarcorrelativo = async (datos) => {
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/selecionar_localidad_correlativa",
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/selecionar_localidad_correlativa",
             datos, {
             header: {
                 'Content-Type': 'application/json',
@@ -248,7 +248,7 @@ export const sumarcorrelativo = async (datos) => {
 
 export const noticiasEvento = async (datos) => {
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/crear_evento_publicidad", datos, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_evento_publicidad", datos, {
             header: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -263,7 +263,7 @@ export const noticiasEvento = async (datos) => {
 /*
 export const agregarNoticia = async (datos) => {
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/crear_publicidad", datos, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_publicidad", datos, {
             header: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -277,7 +277,7 @@ export const agregarNoticia = async (datos) => {
 }
 export const ListarNoticias = async () => {
     try {
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/api/v1/listar_publicidad", {
+        const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_publicidad", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -291,7 +291,7 @@ export const ListarNoticias = async () => {
 }
 export const Actualizarpublicdad = async (id, parms) => {
     try {
-        const { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/actualizar_publicidad/" + id, parms, {
+        const { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/actualizar_publicidad/" + id, parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -304,7 +304,7 @@ export const Actualizarpublicdad = async (id, parms) => {
 }
 export const Eliminarpublici = async (parms) => {
     try {
-        const { data } = await axios.delete("https://api.ticketsecuador.ec/ms_login/api/v1/eliminar_publicidad/" + parms, {
+        const { data } = await axios.delete("https://api.t-ickets.com/ms_login/api/v1/eliminar_publicidad/" + parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

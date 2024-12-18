@@ -987,10 +987,25 @@ export default function DetalleCompraView() {
             content: '',
             buttons: {
                 formSubmit: {
-                    text: 'Aceptar',
+                    text: 'Correlativo',
                     btnClass: 'btn-blue',
                     action: function () {
                         Generar_Boleto_nuevos({
+                            "id_registraCompra": nombres.id,
+                            "cedula": nombres.cedula
+                        }, nombres.id).then(ouput => {
+                            ouput.success ? history.goBack() : ""
+                        }).catch(errr => {
+                            console.log(errr)
+                        })
+                    },                   
+                   
+                },
+                tryAgain: {
+                    text: 'Mesas',
+                    btnClass: 'btn-red',
+                    action: function () {
+                        GEnerarBoletos({
                             "id_registraCompra": nombres.id,
                             "cedula": nombres.cedula
                         }, nombres.id).then(ouput => {

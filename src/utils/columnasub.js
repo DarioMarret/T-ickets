@@ -26,13 +26,7 @@ export const ticketproceso = [
         header: "Fecha",
     },
 ]
-let estado = {
-    "reservado": "Pendiente",
-    "NO": "No Generado",
-    "SI": "Generado",
-    "null": "Sin generar",
-    "Expirado": "Expirado"
-}
+
 let color = {
     "reservado": "warning",
     "ACTIVO": "success",
@@ -47,12 +41,6 @@ let color = {
     "Expirado": "danger",
     "Consolidado": "success",
     "Sin Consolidar": "warning"
-}
-let estados = {
-    null: "Sin Consolidar",
-    "": "Sin Consolidar",
-    "Consolidado": "Consolidado",
-    "Sin Consolidar": "Sin Consolidar"
 }
 export const ticketprocesoapro = [
     {
@@ -447,39 +435,6 @@ let precio = {
     14: 35,
     22: 0,
     23: 0
-}
-let precioespacio = {
-    9: 169,
-    10: 171,
-    11: 170,
-    12: 174,
-    13: 172,
-    14: 173,
-    15: 0,
-    13: 0,
-    22: 0,
-    23: 0
-}
-//precioespacio[e.id_localidad]
-
-function quitacomision(row) {
-    // let tt = JSON.parse(row.info_concierto).map(e => { return parseFloat(precio[e.id_localidad] * parseFloat(e.cantidad) ) })
-    // console.log(tt)
-    let valores = JSON.parse(row.info_concierto).map(e => { return ListarPrecio(e.idespaciolocalida, e.id_localidad) * parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-    if ((new Date("2023-01-21 14:00:00 ") > new Date(row.fechaCreacion))) {
-        let valor = parseFloat(valores) * 1.05
-        return Math.round(valores)
-    }
-    else {
-        // console.log(row.total_pago)
-        let valor = parseFloat(valores) * 1.07
-        return Math.round(valores)
-    }
-
-}
-function cantidad(row) {
-    let tt = JSON.parse(row.info_concierto).map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-    return tt
 }
 
 

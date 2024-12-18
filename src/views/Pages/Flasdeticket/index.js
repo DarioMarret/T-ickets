@@ -1140,7 +1140,7 @@ const IndexFlas = () => {
                                 </div>
                               </div>
                               <div className="container col-12 col-md-6 rounded-7  px-0">
-                                <img loading="lazy" src={e.codigoEvento == "9EGM42" ? "https://api.ticketsecuador.ec/store/img/whatsapp%20image%202023-01-30%20at%2019.51.02.jpeg" : e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
+                                <img loading="lazy" src={e.codigoEvento == "9EGM42" ? "https://api.t-ickets.com/store/img/whatsapp%20image%202023-01-30%20at%2019.51.02.jpeg" : e.mapaConcierto} className="img-fluid rounded-7 shadow-md " alt="" />
                               </div>
 
                             </div>
@@ -1218,7 +1218,7 @@ const IndexFlas = () => {
                                 </g>
                               </svg>
                             </i>
-                            <img src={"https://api.ticketsecuador.ec/store/img/mallapromo.png"}
+                            <img src={"https://api.t-ickets.com/store/img/mallapromo.png"}
                               className="d-none img-fluid rounded-7 shadow-md  btn-hover img-evento "
                               alt="" />
                           </div>
@@ -1255,7 +1255,7 @@ const IndexFlas = () => {
                               </div>
                             </div>
                             <div className="container col-12 col-md-6 rounded-7  px-0">
-                              <img src="https://api.ticketsecuador.ec/store/img/promoprecio.jpeg" className="img-fluid rounded-7 shadow-md " alt="" />
+                              <img src="https://api.t-ickets.com/store/img/promoprecio.jpeg" className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
 
 

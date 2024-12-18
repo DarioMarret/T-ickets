@@ -86,7 +86,7 @@ function MesasViews({ text, status, list, setMapa }) {
     if (Object.values(asiento).every(isApartado)) { return "mesaapartada" }
     if (Object.values(asiento).every(isDisnone)) { return "none" }
     // if (!mesas.includes(e.substring(0, 1))) { return "bg-secondary" }
-  //  if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || (e.substring(0, 1) == 'D' && !sillabloquea.includes(e))) { return "bg-dark" }
+    //  if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || (e.substring(0, 1) == 'D' && !sillabloquea.includes(e))) { return "bg-dark" }
     return "mesadisponible"
   }
   /*  obtener sillas  */
@@ -104,7 +104,7 @@ function MesasViews({ text, status, list, setMapa }) {
   }
   function enviarsillas(text) {
     console.log(list)
-    let bloque = list.filter(elm=>elm.estado!='none').map(el => {
+    let bloque = list.filter(elm => elm.estado != 'none').map(el => {
       if (el.cedula == null || el.cedula == '') {
         return el.idsilla
       }
@@ -177,9 +177,11 @@ function MesasViews({ text, status, list, setMapa }) {
 
   }
   const succesSilla = (e) => {
+    console.log(e)
     if (useradmin.perfil == 'suscriptores') return
     console.log(list.find(f => f.silla == e))
     let datos = list.find(f => f.silla == e)
+    if (datos.estado == 'none') return
     if (datos.cedula == null || datos.cedula == "" || datos.cedula == undefined) {
       let estado = datos.estado == "Ocupado" ? 'Disponible' : 'Ocupado'
       console.log([datos])

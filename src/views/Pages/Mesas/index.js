@@ -65,7 +65,7 @@ function MesasView({ text, status, list }) {
         }
         else return [k.estado]
       }
-    }).filter(elm=>elm !='none');
+    }).filter(elm => elm != 'none');
     //console.log(asiento)
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
     const isApartado = (currentValue) => currentValue == "apartado";
@@ -78,13 +78,14 @@ function MesasView({ text, status, list }) {
     //console.log(e.substring(0, 1))
     let envotid = sessionStorage.getItem("eventoid")
     //if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
+    if (Object.values(asiento).every(isDisnone)) { return "none" }
     if (Object.values(asiento).every(isOcupado)) { return "mesaocupado" }
     if (Object.values(asiento).every(isReserva)) { return "mesareserva" }
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
     if (Object.values(asiento).every(isApartado)) { return "mesaapartada" }
-    if (Object.values(asiento).every(isDisnone)) { return "none" }
+    
     // if (!mesas.includes(e.substring(0, 1))) { return "bg-secondary" }
-   // if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || ((e.substring(0, 1) == 'D' || e.substring(0, 1) == 'E') && !sillabloquea.includes(e))) { return "bg-dark" }
+    // if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || ((e.substring(0, 1) == 'D' || e.substring(0, 1) == 'E') && !sillabloquea.includes(e))) { return "bg-dark" }
     return "mesadisponible"
   }
   /*  obtener sillas  */
@@ -373,11 +374,11 @@ function MesasView({ text, status, list }) {
     //
     //console.log((sillabloquea.includes(text)))
     //if (envotid == '0SXH0L' && clienteInfo() == null) return
-  /*  if ((envotid == 'B8KF5U') && (sillabloquea.includes(text)) && clienteInfo() == null) return
-    if (((envotid == "X5U5VR") && (clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text))) && clienteInfo() == null) return
-    if (((envotid == "X5U5VR") && (mesas.includes(text.split("")[0])) && clienteInfo() == null)) {
-      return
-    }*/
+    /*  if ((envotid == 'B8KF5U') && (sillabloquea.includes(text)) && clienteInfo() == null) return
+      if (((envotid == "X5U5VR") && (clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text))) && clienteInfo() == null) return
+      if (((envotid == "X5U5VR") && (mesas.includes(text.split("")[0])) && clienteInfo() == null)) {
+        return
+      }*/
     let silla = list.find(f => f.silla == e)
     if (silla.idsilla == undefined) return
     if (info == undefined) {

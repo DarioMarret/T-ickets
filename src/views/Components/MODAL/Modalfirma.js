@@ -192,7 +192,7 @@ export default function ModalFirma() {
         let nombre = url.split("voucher/")[1]
         fordata.append('image', pdfBlob, nombre + '.pdf');
         try {
-            const { data } = await axios.post("https://api.ticketsecuador.ec/store/api/img/", fordata,
+            const { data } = await axios.post("https://api.t-ickets.com/store/api/img/", fordata,
                 {
                     header: {
                         'Content-Type': 'application/json',

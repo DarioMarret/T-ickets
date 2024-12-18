@@ -10,7 +10,7 @@ export const agregarNoticia = async (datos) => {
         "id_operador": parseInt(ids),
     }
     try {
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/crear_publicidad", parmspro, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_publicidad", parmspro, {
             header: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -24,7 +24,7 @@ export const agregarNoticia = async (datos) => {
 }
 export const ListarNoticias = async () => {
     try {
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/api/v1/listar_publicidad", {
+        const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_publicidad", {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -44,7 +44,7 @@ export const Actualizarpublicdad = async (id, parms) => {
         "id_operador": parseInt(ids),
     }
     try {
-        const { data } = await axios.put("https://api.ticketsecuador.ec/ms_login/api/v1/actualizar_publicidad/" + id, {...parms,parmspro}, {
+        const { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/actualizar_publicidad/" + id, {...parms,parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -63,7 +63,7 @@ export const Eliminarpublici = async (parms) => {
         "id_operador": parseInt(ids),
     }
     try {
-        const { data } = await axios.delete("https://api.ticketsecuador.ec/ms_login/api/v1/eliminar_publicidad/" + parms,parmspro, {
+        const { data } = await axios.delete("https://api.t-ickets.com/ms_login/api/v1/eliminar_publicidad/" + parms,parmspro, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

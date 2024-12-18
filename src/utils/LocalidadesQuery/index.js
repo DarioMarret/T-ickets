@@ -11,7 +11,7 @@ export const GuardarLocalidad = async (parms) => {
         "id_operador": parseInt(id),
     }
     try{
-        const { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/api/v1/guardar_localidad", {...parms,...parmspro}, {
+        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/guardar_localidad", {...parms,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -27,7 +27,7 @@ export const GuardarLocalidad = async (parms) => {
 }
 export const ListarLocalidad = async (parms) => {
     try{
-        const { data } = await axios.get("https://api.ticketsecuador.ec/ms_login/api/v1/listar_localidades/" + parms, {
+        const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_localidades/" + parms, {
             header: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

@@ -9,7 +9,7 @@ export const EliminarTickteTercero = async(parms)=>{
         "id_operador": parseInt(ids),
     }
     try {
-        let { data } = await axios.post("https://api.ticketsecuador.ec/ms_login/delt_link_external_tickets",{...parms,...parmspro},{
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/delt_link_external_tickets",{...parms,...parmspro},{
             headers:{
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
