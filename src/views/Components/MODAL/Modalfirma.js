@@ -150,8 +150,8 @@ export default function ModalFirma() {
             "id": "",
             "url": url
         })
-        console.log(data)
-        const existingPdfBytes = await fetch(data.replace("api.ticketsecuador.ec","api.t-ickets.com")).then((res) => res.arrayBuffer());
+        console.log(String(data).replace("api.ticketsecuador.ec", "api.t-ickets.com"))
+        const existingPdfBytes = await fetch(String(data).replace("api.ticketsecuador.ec","api.t-ickets.com")).then((res) => res.arrayBuffer());
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
