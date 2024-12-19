@@ -151,7 +151,7 @@ export default function ModalFirma() {
             "url": url
         })
         console.log(data)
-        const existingPdfBytes = await fetch(data).then((res) => res.arrayBuffer());
+        const existingPdfBytes = await fetch(data.replace("api.ticketsecuador.ec","api.t-ickets.com")).then((res) => res.arrayBuffer());
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
@@ -210,7 +210,7 @@ export default function ModalFirma() {
             let boleto = await Boleteria_voucher({
                 "estado": clienteInfo() == null ? 0 : 1,
                 "id": "" + modal.estado.id,
-                "link": data.link
+                "link": data.link.replace("api.ticketsecuador.ec","api.t-ickets.com")
             })
             if (boleto.estado) {
                 let boletos = JSON.stringify({ ...detallid, ...boleto.datos })
