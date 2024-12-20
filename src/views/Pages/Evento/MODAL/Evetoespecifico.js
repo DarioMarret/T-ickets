@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { useParams, useHistory } from "react-router"
 import { Accordion, Badge } from "react-bootstrap"
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
@@ -72,6 +72,7 @@ const EventoEspecifico = () => {
         estado: '',
         codigoEvento: '',
         fechaCreacion: '',
+        "botNumber": '',
         LocalodadPrecios: []
     })
     async function Eliminar(e) {
@@ -105,6 +106,10 @@ const EventoEspecifico = () => {
             const espacios = await ListarEspacios()
             const precio = await listarpreciolocalidad(id)
             const dat = await ListarLocalidad("")
+            let boletos_camjeados = await Boleteria_canje(id)
+            let boletos_boleto = await Boleteria_Boletos(id)
+
+            //}
             if (cargar.success) {
                 let datos = [...cargar.data.filter((e) => e.codigoEvento == id), ...cargasd.data.filter((e) => e.codigoEvento == id), ...cancelados.data.filter((e) => e.codigoEvento == id)]
                 let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
@@ -112,7 +117,15 @@ const EventoEspecifico = () => {
                 SetEvento({
                     ...datos[0], LocalodadPrecios: precio.data,
                 })
-
+                /* console.log({
+                     ...datos[0], LocalodadPrecios: precio.data,
+                 })*/
+                let boletos_eventos = await Boleteria_Nombre(datos[0].nombreConcierto)
+                setReport({
+                    canje: boletos_camjeados.data,
+                    boleto: boletos_boleto.data,
+                    valores: boletos_eventos.data
+                })
                 SetPrecios(precio.data)
                 const disponibles = await listarLocalidadaEspeci(infoes[0].id)
                 let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
@@ -134,7 +147,7 @@ const EventoEspecifico = () => {
                     return acc;
 
                 }, {});
-                console.log(agrupadoPorLocalidadess)
+                //   console.log(agrupadoPorLocalidadess)
                 const estadosPermitidos = new Set(["Pendiente", "Ocupado", "pendiente", "ocupado"]);
                 const acumuladorPorNombre = filtros.reduce((acc, elemento) => {
                     if (!listo.filter(e => e.id == elemento.id_localidades).length == 0) {
@@ -164,16 +177,7 @@ const EventoEspecifico = () => {
                 setActiveTab(event ? event : resultado[0].nombreMesa)
                 setGobal(resultado)
                 setDisponible(arrayMesas)
-                let boletos_camjeados = await Boleteria_canje(id)
-                let boletos_boleto = await Boleteria_Boletos(id)
-                let boletos_eventos = await Boleteria_Nombre(datos[0].nombreConcierto)
-                if (boletos_camjeados.estsdo && boletos_boleto.estsdo && boletos_eventos.estsdo) {
-                    setReport({
-                        canje: boletos_camjeados.data,
-                        boleto: boletos_boleto.data,
-                        valores: boletos_eventos.data
-                    })
-                }
+
                 let localidas = []
                 resultado.map(elm => {
                     let nuevoObjeto = []
@@ -219,11 +223,11 @@ const EventoEspecifico = () => {
 
             }
         } catch (error) {
-            dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
+            //dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
         }
     }
 
-    function descarga(ids,nombre) {
+    function descarga(ids, nombre) {
         if (useradmin.perfil == 'suscriptores') return
         Axiosmikroserdos.get('api/descargalocalidad/' + ids, {
             responseType: 'blob'  // Important for handling binary data
@@ -233,7 +237,7 @@ const EventoEspecifico = () => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', nombre.replace(" ","_")+'codigos.xlsx');
+                link.setAttribute('download', nombre.replace(" ", "_") + 'codigos.xlsx');
                 document.body.appendChild(link);
                 link.click();
                 link.parentNode.removeChild(link);
@@ -291,37 +295,39 @@ const EventoEspecifico = () => {
 
     };
     useEffect(() => {
+
         (async () => {
+            boletosloading ? "" : setTikes(nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado"))
+            //  if(boletosloading){
+            // let mapa = nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado")
+            let arrayIndividual = []
+            //console.log(nuevos.data.filter(e => e.codigoEvento == id))
+            // console.log(arayReallocalidad)
+            boletosloading ? "" : nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado").forEach(elm => {
+                if (arrayIndividual.some(e => e.id == elm.localidad)) {
+                    let dat = arrayIndividual.findIndex(e => e.id == elm.localidad)
+                    let tota = parseInt(arrayIndividual[dat].cantidad) + 1
+                    arrayIndividual[dat].cantidad = parseInt(tota)
+                } else {
+                    arrayIndividual.push({ id: elm.localidad, localidad: elm.localidad, cantidad: 1 })
+
+                }
+            })
+
+            boletosloading ? "" : console.log(arrayIndividual)
+            //  }
+            let newdatos = boletosloading ? [] : arrayIndividual.map(f => {
+                return [f.localidad, parseInt(f.cantidad)]
+            })
+            boletosloading ? [] : setDatas([
+                ["Localida", "ganancias"],
+                ...newdatos
+            ])
             await Evento()
 
         })()
-        boletosloading ? "" : setTikes(nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado"))
-        //  if(boletosloading){
-        // let mapa = nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado")
-        let arrayIndividual = []
-        //console.log(nuevos.data.filter(e => e.codigoEvento == id))
-        // console.log(arayReallocalidad)
-        boletosloading ? "" : nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado").forEach(elm => {
-            if (arrayIndividual.some(e => e.id == elm.localidad)) {
-                let dat = arrayIndividual.findIndex(e => e.id == elm.localidad)
-                let tota = parseInt(arrayIndividual[dat].cantidad) + 1
-                arrayIndividual[dat].cantidad = parseInt(tota)
-            } else {
-                arrayIndividual.push({ id: elm.localidad, localidad: elm.localidad, cantidad: 1 })
-                // arrayIndividual.push({  })
 
-            }
-        })
 
-        boletosloading ? "" : console.log(arrayIndividual)
-        //  }
-        let newdatos = boletosloading ? [] : arrayIndividual.map(f => {
-            return [f.localidad, parseInt(f.cantidad)]
-        })
-        boletosloading ? [] : setDatas([
-            ["Localida", "ganancias"],
-            ...newdatos
-        ])
         console.log(datas)
     }, [boletosloading])
 
@@ -393,8 +399,6 @@ const EventoEspecifico = () => {
                 var myWorkBook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "myWorkSheet");
                 XLSX.writeFile(myWorkBook, myFile);
-                //console.log(nuevos)
-
             }
         }).catch(err => {
             console.log(err)
@@ -440,6 +444,20 @@ const EventoEspecifico = () => {
 
         return acc;
     }, {});
+    const Actualizar = async (eventos) => {
+        console.log(evento)
+        let param = {
+            "botNumber": eventos,
+            "codigoEvento": id
+        }
+        console.log(evento)
+        SetEvento({
+            ...evento,
+            "botNumber": eventos != "0980008000" ? "0980008000" : "",
+        })
+        await Axiosmikroserdos.post("api/botevent",param)
+
+    }
     return (
         <>
             <PreciosViews
@@ -470,16 +488,26 @@ const EventoEspecifico = () => {
 
             </div>
             <div className="d-flex  justify-content-between  ">
+                <div className=" col-12 col-md-6 col-lg-6 col-sm-6">
 
-                <h5 style={{ fontSize: '1.5em' }}>
-                    <div className="d-flex flex-column  ">
 
+                    <h5 style={{ fontSize: '1.5em' }}>
+                        <div className="d-flex flex-column  ">
+
+                        </div>
+                        Evento {evento.nombreConcierto} <Badge bg={color[evento.estado ? evento.estado : "danger"]}>{evento.estado}</Badge>
+
+                        {evento.botNumber != "0980008000" ? <button className="mx-2 btn btn-success" onClick={() => Actualizar(evento.botNumber)}>HABILITAR VENTA DE BOT</button> : <button onClick={() => Actualizar(evento.botNumber)} className="mx-2 btn btn-danger">DESABILITAR VENTA EN BOT </button>}
+                    </h5>
+                </div>
+                <div className=" col-12 col-md-6 col-lg-6 col-sm-6">
+
+
+                    <div className="d-flex justify-content-end  flex-row">
+                        <button className="btn btn-warning txt-white" onClick={() => successAlert("ACTIVO")} >ACTIVAR </button>
+                        <button className="btn btn-secondary txt-white mx-1" onClick={() => successAlert("PROCESO")} >PROCESO</button>
+                        {evento.codigoEvento != "CANCELAR" ? <button className="btn btn-danger txt-white mx-1" onClick={() => successAlert("CANCELADO")} >CANCELAR</button> : ""}
                     </div>
-                    Evento {evento.nombreConcierto} <Badge bg={color[evento.estado ? evento.estado : "danger"]}>{evento.estado}</Badge>  <button className="mx-2 btn btn-success">CODIGOS</button> </h5>
-                <div className="d-flex flex-row">
-                    <button className="btn btn-warning txt-white" onClick={() => successAlert("ACTIVO")} >ACTIVAR </button>
-                    <button className="btn btn-secondary txt-white mx-1" onClick={() => successAlert("PROCESO")} >PROCESO</button>
-                    {evento.codigoEvento != "CANCELAR" ? <button className="btn btn-danger txt-white mx-1" onClick={() => successAlert("CANCELADO")} >CANCELAR</button> : ""}
                 </div>
 
             </div>
@@ -491,7 +519,7 @@ const EventoEspecifico = () => {
                                 <img src={evento.imagenConcierto ? evento.imagenConcierto : ''} className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
                         </a>
-                        <Collapse in={!open} >
+                        <Collapse in={open} >
                             <div className=" container mt-4 px-0" id="collapseExample2">
                                 <div className="card card-body rounded-7 py-5">
                                     <div className="container">
@@ -510,114 +538,117 @@ const EventoEspecifico = () => {
                         </Collapse>
 
                     </div>
-                    <div className="col-12 col-lg-8 mx-auto my-5" id="evento4">
-                        <Accordion>
-                            <Accordion.Item eventKey={0} >
-                                <Accordion.Header>Precios </Accordion.Header>
-                                <Accordion.Body>
-                                    <Accordion defaultActiveKey="0" flush>
-                                        {precios.length > 0 ?
-                                            precios.map((e, i) => {
-                                                return (
-                                                    <Accordion.Item eventKey={i} key={i}>
-                                                        <Accordion.Header>Localidad: {e.localidad}</Accordion.Header>
-                                                        <Accordion.Body>
-                                                            <div className="d-flex flex-row  justify-content-between">
-                                                                <div className="d-flex flex-column">
-                                                                    <div>
-                                                                        <h5 >
-                                                                            Precio normal : {e.precio_normal}
-                                                                        </h5>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>
-                                                                            Precio discapacida : {e.precio_discapacidad}
-                                                                        </h5>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>
-                                                                            Precio TC/TD : {e.precio_tarjeta}
-                                                                        </h5>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>
-                                                                            Precio Descuento : {e.precio_descuento}
-                                                                        </h5>
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5>
-                                                                            Habilitar Cortesia : {e.habilitar_cortesia}
-                                                                        </h5>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="d-flex flex-column ">
-                                                                    {(useradmin.perfil == 'suscriptores') ? "" : <button className="btn btn-primary"
-                                                                        onClick={() => Eliminar(e)}
-                                                                    >Editar </button>}
-                                                                </div>
-                                                            </div>
-
-
-                                                        </Accordion.Body>
-                                                    </Accordion.Item>
-
-                                                )
-                                            })
-                                            : ''
-
-                                        }
-
-                                    </Accordion>
-                                </Accordion.Body>
-                            </Accordion.Item>
-                            <Accordion.Item eventKey={1} >
-                                <Accordion.Header>Disponibles </Accordion.Header>
-                                <Accordion.Body>
-                                    <div className="row">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th >Localidad</th>
-                                                    <th >Disponible</th>
-                                                    <th>Ocupado</th>
-                                                    <th>Total</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {dispoible.length > 0 ? dispoible.map(e => {
+                    <div className="col-12 col-lg-8 mx-auto " id="evento4">
+                        <div className=" d-flex flex-column">
+                            <PiecharViews
+                                options={options}
+                                datas={datas}
+                            />
+                            <Accordion className="pb-1">
+                                <Accordion.Item eventKey={0} >
+                                    <Accordion.Header>Precios </Accordion.Header>
+                                    <Accordion.Body>
+                                        <Accordion defaultActiveKey="0" flush>
+                                            {precios.length > 0 ?
+                                                precios.map((e, i) => {
                                                     return (
-                                                        <tr>
+                                                        <Accordion.Item eventKey={i} key={i}>
+                                                            <Accordion.Header>Localidad: {e.localidad}</Accordion.Header>
+                                                            <Accordion.Body>
+                                                                <div className="d-flex flex-row  justify-content-between">
+                                                                    <div className="d-flex flex-column">
+                                                                        <div>
+                                                                            <h5 >
+                                                                                Precio normal : {e.precio_normal}
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>
+                                                                                Precio discapacida : {e.precio_discapacidad}
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>
+                                                                                Precio TC/TD : {e.precio_tarjeta}
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>
+                                                                                Precio Descuento : {e.precio_descuento}
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>
+                                                                                Habilitar Cortesia : {e.habilitar_cortesia}
+                                                                            </h5>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="d-flex flex-column ">
+                                                                        {(useradmin.perfil == 'suscriptores') ? "" : <button className="btn btn-primary"
+                                                                            onClick={() => Eliminar(e)}
+                                                                        >Editar </button>}
+                                                                    </div>
+                                                                </div>
 
-                                                            <td>{e.nombreMesa}</td>
-                                                            <td>{e.cantidad}</td>
-                                                            <td>{parseInt(global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad) - parseInt(e.cantidad)}</td>
-                                                            <td>{global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad}</td>
-                                                        </tr>
+
+                                                            </Accordion.Body>
+                                                        </Accordion.Item>
+
                                                     )
-                                                }) : <tr>
+                                                })
+                                                : ''
 
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>}
+                                            }
+
+                                        </Accordion>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey={1} >
+                                    <Accordion.Header>Disponibles </Accordion.Header>
+                                    <Accordion.Body>
+                                        <div className="row">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th >Localidad</th>
+                                                        <th >Disponible</th>
+                                                        <th>Ocupado</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {dispoible.length > 0 ? dispoible.map(e => {
+                                                        return (
+                                                            <tr>
+
+                                                                <td>{e.nombreMesa}</td>
+                                                                <td>{e.cantidad}</td>
+                                                                <td>{parseInt(global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad) - parseInt(e.cantidad)}</td>
+                                                                <td>{global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad}</td>
+                                                            </tr>
+                                                        )
+                                                    }) : <tr>
+
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>}
 
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
 
-                                    </div>
-                                </Accordion.Body>
-                            </Accordion.Item>
+                                        </div>
+                                    </Accordion.Body>
+                                </Accordion.Item>
 
-                        </Accordion>
+                            </Accordion>
 
+                        </div>
                     </div>
                 </div>
                 <div className="row" >
                     <div className="col-6">
-                        <PiecharViews
-                            options={options}
-                            datas={datas}
-                        />
+
 
                     </div>
                 </div>
@@ -725,20 +756,20 @@ const EventoEspecifico = () => {
                                         /> : ""}
                                         <div className="m-2">
                                             {(useradmin.perfil == 'suscriptores') ? "" :
-                                            <div className="d-flex">
+                                                <div className="d-flex">
 
 
-                                                {global.map(ele => {
-                                                    return (
-                                                        <button className="btn  btn-success  btn-sm mx-1"
+                                                    {global.map(ele => {
+                                                        return (
+                                                            <button className="btn  btn-success  btn-sm mx-1"
 
-                                                            onClick={() =>
-                                                                descarga(ele.localidad, ele.nombreMesa)
-                                                            }>
-                                                            <i className="bi bi-file-earmark-arrow-down-fill"></i>    {ele.nombreMesa} Códigos
-                                                        </button>
-                                                    )
-                                                })}
+                                                                onClick={() =>
+                                                                    descarga(ele.localidad, ele.nombreMesa)
+                                                                }>
+                                                                <i className="bi bi-file-earmark-arrow-down-fill"></i>    {ele.nombreMesa} Códigos
+                                                            </button>
+                                                        )
+                                                    })}
                                                 </div>
                                             }
                                         </div>
