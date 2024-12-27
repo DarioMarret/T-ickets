@@ -83,8 +83,9 @@ function MesasView({ text, status, list }) {
     if (Object.values(asiento).every(isReserva)) { return "mesareserva" }
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
     if (Object.values(asiento).every(isApartado)) { return "mesaapartada" }
-    
+
     // if (!mesas.includes(e.substring(0, 1))) { return "bg-secondary" }
+    //(envotid == '7EZFQ6') && (!sillabloquea.includes(text))
     // if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || ((e.substring(0, 1) == 'D' || e.substring(0, 1) == 'E') && !sillabloquea.includes(e))) { return "bg-dark" }
     return "mesadisponible"
   }
@@ -367,14 +368,37 @@ function MesasView({ text, status, list }) {
     console.log(text)
     let mesas = ["A", "B", "C"]
     let mesa = ["A"]
-    let sillabloquea = ["D42", "D41", "D40", "E48", "E49", "E50", "D39", "D37", "D36", "B2", "B3", "B5"]
+    let sillabloquea = [ "D38", "D39", "D40", "D52", "D53", "D54",]
+    let sillesSAmor = ["I49", "I50", "I53", "I51", "I52", "I66", "I67", "I68", "I69", "J70", "J71", "J72", "J73", "J87", "J88", "J89", "J90"]
+    let sillasAmor = ["K5", "L22", "L23", "L24", "L25", "L39", "L40", "L41", "L42", "M43", "M44", "M45", "M46", "M60", "M61", "M62", "M63"]
     const randon = sessionStorage.getItem("random") || ""
     let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")
     //
     //console.log((sillabloquea.includes(text)))
-    //if (envotid == '0SXH0L' && clienteInfo() == null) return
-    /*  if ((envotid == 'B8KF5U') && (sillabloquea.includes(text)) && clienteInfo() == null) return
+    //if (envotid == '0SXH0L' && clienteInfo() == null) return// && clienteInfo() == null
+    /**Bloquea silla individual */
+    if ((envotid == '7EZFQ6') && (![...sillabloquea, ...sillasAmor, ...sillesSAmor].includes(text) && clienteInfo() == null)) {
+      $.confirm({
+        title: 'Mesas Habilitadas',
+        content: 'En esta localidad solo están habilitadas las siguientes mesas en las localidades:<br><strong>Señorazo</strong><br><strong> D38, D39, D40, D52, D53, D54</strong><br>'+
+          '<br><strong>Amor</strong><br><strong>I49, I50, I53, I51, I52, I66, I67, I68, I69, J70, J71, J72, J73, J87, J88, J89, J90</strong><br>'+
+        '<br><strong>Despecho</strong><br><strong>K5, L22, L23, L24, L25, L39, L40, L41, L42, M43, M44, M45, M46, M60, M61, M62, M63</strong>',
+        type: 'blue',
+        typeAnimated: true,
+        buttons: {
+          aceptar: {
+            text: 'Aceptar',
+            btnClass: 'btn-blue',
+            action: function () {
+            }
+          }
+        }
+      });
+      return
+    }
+    if ((envotid == '7EZFQ6') && (![...sillabloquea, ...sillasAmor, ...sillesSAmor].includes(text) && clienteInfo() == null)) return
+    /*
       if (((envotid == "X5U5VR") && (clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text))) && clienteInfo() == null) return
       if (((envotid == "X5U5VR") && (mesas.includes(text.split("")[0])) && clienteInfo() == null)) {
         return
@@ -387,7 +411,6 @@ function MesasView({ text, status, list }) {
     if (silla.estado.toLowerCase().includes("ocupado") || silla.estado.toLowerCase().includes("none")) {
       return
     }
-    // console.log((silla.estado.toLowerCase().includes("reservado") && (silla.cedula == null || (silla.cedula == randon && randon != ""))))
     if (silla.estado.toLowerCase().includes("reservado") && (silla.cedula == null)) {
       if (TotalSelecion() < 10) {
         setAlert(
@@ -431,7 +454,6 @@ function MesasView({ text, status, list }) {
 
       return
     }
-    //console.log((TotalSelecion() < 10))
     if (TotalSelecion() < 10) {
       setAlert(
         <SweetAlert
