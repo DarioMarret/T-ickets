@@ -153,7 +153,6 @@ const SuscritoridView = () => {
   };
   const handleChange = (event, newValue) => {
     usedispatch(setTabs({ number: newValue }))
-    //  setValue(newValue);
   };
   let value = useSelector((state) => state.SuscritorSlice.tabps)
   function TabPanel(props) {
@@ -460,10 +459,8 @@ const SuscritoridView = () => {
       console.log(err)
     })
     listarRegistropanel({ "cedula": info.cedula }).then(ouput => {
-     // console.log(ouput)
       if (ouput.success) {
         let datos = ouput.data
-        //console.log(datos)
         ouput.success ? setTikes(datos) : ""
       }
     })
