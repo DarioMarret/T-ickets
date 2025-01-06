@@ -118,7 +118,16 @@ export const ticketsboletos = [
         size: 30
     },
 
-
+    {
+        accessorKey: "id_registraCompra",
+        header: "Registro",
+        sixe: 30
+    },
+    {
+        accessorKey: "link",
+        header: "Enviado",
+        sixe: 30
+    },
     {
         accessorKey: "estado",
         header: "Estado",
@@ -128,7 +137,7 @@ export const ticketsboletos = [
                     {cell.row.original.estado}</Badge>
             </div>
         ),
-        size: 50
+        size: 25
     },
     {
         accessorKey: "canje",
@@ -140,11 +149,7 @@ export const ticketsboletos = [
         header: "Valor",
         sixe: 15
     },
-    {
-        accessorKey: "fecha",
-        header: "Fecha",
-        sixe: 50
-    },
+   
 ]
 export const Consiliaregistro = [
     {

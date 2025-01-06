@@ -1453,7 +1453,12 @@ export default function DetalleCompraView() {
                                                     >
                                                         <i className="fa fa-info-circle">  </i>Recargar Boleto
                                                     </a>}
-                                                {nombres.forma_pago != "Deposito" ? "" : <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} ><i className="fa fa-check"></i> Cambiar Tarjeta </a>}
+                                                {nombres.forma_pago != "Deposito" ? "" : 
+                                                <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} >
+                                                    <i className="fa fa-check"></i> Cambiar Tarjeta </a>}
+                                                {nombres.estado_pago != "Pagado" ? "" :
+                                                    <a className=" btn btn-default btn-sm"  >
+                                                        <i className="fa fa-send"></i>Habilitar nuevo envio de boletos </a>}
 
 
 
@@ -1486,7 +1491,7 @@ export default function DetalleCompraView() {
                                             <i className=" fa fa-file">  </i>
                                         </a>
 
-                                        {nombres.forma_pago == "Tarjeta" ?
+                                        {nombres.forma_pago == "Tarjeta" && (nombres.estado_pago == "Expirado" || nombres.estado_pago == "Pendiente" || nombres.estado_pago == "Comprobar") ?
                                             boletoscanje() ? "" : <a className="  rounded-circle btn-primary mx-2 p-2 text-white"
                                                 data-toggle="tooltip" data-placement="top" title="Aprobar Tarjeta"
                                                 onClick={() => validar()}
@@ -1505,15 +1510,15 @@ export default function DetalleCompraView() {
                                     <div className="col-12 ">
                                         <div className=" px-0 py-2 w-100  bg-white ">
                                             <div className=" d-flex flex-wrap flex-wrap-reverse">
-                                                <div className="  col-12 col-md-6 ">
+                                                <div className="  col-12  ">
                                                     <div className="px-3 d-flex align-items-center ">
                                                         <h4 className="px-2  "
                                                             style={{
                                                                 fontWeight: "bold"
                                                             }}
                                                         >{usuario.nombreCompleto}</h4>
-                                                        <div className="d-flex  flex-wrap ">
-                                                            <div>
+                                                        <div className="d-flex  flex-wrap  ">
+                                                            <div className="px-1">
                                                                 <span className={estado[nombres.estado_pago]}>
                                                                     {nombres.estado_pago}
                                                                 </span>
@@ -1524,7 +1529,15 @@ export default function DetalleCompraView() {
                                                                 {estadotc}
                                                             </div> : ""}
 
-                                                        </div>
+                                                            {nombres.estado_envio ? <div className="px-1" >
+                                                                <span className={" label label-success"}>
+                                                                Boletos enviados
+                                                                </span>
+                                                            </div> : <div className="px-1" >
+                                                                    <span className={" label label-danger"}>
+                                                                Boletos no enviados
+                                                                        </span>
+                                                            </div>}                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -1627,11 +1640,6 @@ export default function DetalleCompraView() {
 
                                                             <br></br>
 
-                                                            <PhotoView src={nombres.link_comprobante == null ? "data:image/png;base64,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" : nombres.link_comprobante}>
-                                                                <a className=" btn btn-default btn-sm">
-                                                                    <i className="fa fa-credit-card"></i> Ver
-                                                                </a>
-                                                            </PhotoView>
                                                         </small>
 
                                                     </div> :
@@ -1695,7 +1703,7 @@ export default function DetalleCompraView() {
                                                     </div>}
                                             </div>
                                         </div>
-                                        {useradmin.perfil == "suscriptores" ? "" : nombres.forma_pago != "Tarjeta" ?
+                                        {useradmin.perfil == "suscriptores" ? "" : nombres.forma_pago == "Deposito" ?
                                             <div className="col-12  col-md-6 text-md-end p-3 text-center ">
                                                 <div className="invoice-from text-center ">
                                                     <small>Comprobante</small>
@@ -1781,17 +1789,6 @@ export default function DetalleCompraView() {
                                             <div className="invoice-from text-center">
                                             </div> : ""
                                         }
-                                    </div>
-                                    <div className="d-flex">
-                                        {boletos.length > 0 ?
-                                            <ExportToExcel apiData={boletos.map(e => {
-                                                e.Comprador = usuario.nombreCompleto
-                                                e.Metodos = nombres.forma_pago
-                                                return {
-                                                    ...e,
-                                                }
-                                            })} fileName={"Boletos: " + usuario.nombreCompleto} label={"Boletos"} />
-                                            : ""}
                                     </div>
                                     <div className=" table-responsive">
                                         <table className="table table-invoice">

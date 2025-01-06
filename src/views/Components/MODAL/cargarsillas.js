@@ -5,7 +5,7 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 
 export const Cargarsillas = (colornuevo) => {
     const user = getDatosUsuariosLocalStorag()
-    console.log(colornuevo)
+    //console.log(colornuevo)
     return ListarLocalidad().then(ouput => {
         // console.log(colornuevo, user)
        
@@ -72,7 +72,7 @@ export const Cargarsillas = (colornuevo) => {
 
     }
     ).catch(exit => {
-        console.log(exit)
+        //console.log(exit)
         return []
     })
 }

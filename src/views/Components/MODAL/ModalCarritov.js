@@ -203,7 +203,7 @@ const ModalCarritoView = (prop) => {
                 let precioLocalidad = document.getElementById("prelocalidad")
                 let header = document.getElementById("precioscomp")
                 let idheadr = document.getElementById("header")
-                console.log(consulta)
+                //console.log(consulta)
                 localidadnombre.innerHTML = `${consulta.localidad}`;
                 precioLocalidad.innerHTML = `$${consulta.precio_tarjeta} `;
                 //localidadnombre.style.backgroundColor = `${consulta.color}`
@@ -227,7 +227,7 @@ const ModalCarritoView = (prop) => {
             E.addEventListener("click", function () {
                 if (!hasExecuted) {
                     // Coloca aquí el código que deseas ejecutar una sola vez
-                    console.log("Función ejecutada");
+                  //  console.log("Función ejecutada");
                     let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
 
 
@@ -245,8 +245,8 @@ const ModalCarritoView = (prop) => {
                         let user = getDatosUsuariosLocalStorag()
                         setSpiner("")
                         localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
-                            console.log(consulta.espacio, consulta.idcolor)
-                            console.log(ouput)
+                           // console.log(consulta.espacio, consulta.idcolor)
+                           // console.log(ouput)
                             let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
                             let nuevoObjeto = []
                            /* ReactGA.event({
@@ -315,14 +315,14 @@ const ModalCarritoView = (prop) => {
                                     estado: "Esta loclidad no tiene disponibles  "
                                 })) : ''
                                 // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
-                                console.log(
+                           /*     console.log(
                                     {
                                         disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
                                         proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
                                         pagados: sleccionlocalidad.pagados,
                                         inpagos: sleccionlocalidad.inpagos
                                     }
-                                )
+                                )*/
                                 usedispatch(updateboletos({
                                     disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
                                     proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
@@ -338,7 +338,10 @@ const ModalCarritoView = (prop) => {
                             return
                         }
                         ).catch(err =>
-                            console.log(err))
+                         
+                            console.log(err)
+                        
+                        )
 
                         return
                     }
@@ -348,7 +351,7 @@ const ModalCarritoView = (prop) => {
         }) : ''
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
     function Abririlocalfirt(e) {
-        console.log(e)
+       // console.log(e)
         // console.log(sleccionlocalidad.pagados )
         // console.log((sleccionlocalidad.pagados > 10))
         //console.log(sleccionlocalidad)
@@ -364,7 +367,7 @@ const ModalCarritoView = (prop) => {
             return
         }
         if (sleccionlocalidad.pagados >= 10) {
-            console.log("aqui se quedo")
+           // console.log("aqui se quedo")
             usedispatch(setToastes({
                 show: true,
                 message: "Están en proceso, o llegaste al limite de compra",
@@ -380,7 +383,7 @@ const ModalCarritoView = (prop) => {
             let consulta = precios.precios.find((F) => F.idcolor == e.idcolor)
             let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
 
-            console.log(e.espacio, e.idcolor, color, precios)
+           // console.log(e.espacio, e.idcolor, color, precios)
             /*ReactGA.event({
                 category: user.cedula,
                 action: "" + consulta.localidad,
@@ -468,12 +471,12 @@ const ModalCarritoView = (prop) => {
                         })) : ''
                     usedispatch(cargarmapa(color))
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
-                    console.log({
+                  /*  console.log({
                         disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
                         proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado").length,
                         inpagos: sleccionlocalidad.inpagos
                     })
-
+*/
 
                     sessionStorage.seleccionmapa = JSON.stringify(e)
                     abrirlocalidad()
@@ -481,7 +484,9 @@ const ModalCarritoView = (prop) => {
                 }
             }
             ).catch(err =>
-                console.log(err))
+                console.log(err)
+            
+            )
         }
     }
     let hasExecuted = false;

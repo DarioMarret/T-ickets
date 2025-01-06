@@ -54,7 +54,6 @@ const SuscritoridView = () => {
   let { id } = useParams()
   let history = useHistory()
   let usedispatch = useDispatch()
-  // sessionStorage.setItem("Suscritorid", JSON.stringify(row.original))
   let info = JSON.parse(sessionStorage.getItem("Suscritorid"))
   const [spinervi, setSpiner] = useState("d-none")
   const [show, setshow] = useState(false)
@@ -86,7 +85,6 @@ const SuscritoridView = () => {
     }
 
   }
-  //console.log(clienteInfo())
   async function EliminarS() {
     try {
       const deleter = await EliminarSuscrito(id)
@@ -95,10 +93,8 @@ const SuscritoridView = () => {
       if (success) {
         history.push("/admin/suscritor")
       }
-
     } catch (error) {
       console.log(error)
-
     }
   }
   const successAlert = () => {
@@ -160,11 +156,8 @@ const SuscritoridView = () => {
     //  setValue(newValue);
   };
   let value = useSelector((state) => state.SuscritorSlice.tabps)
-
-  // const [value, setValue] = React.useState(0);
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
-
     return (
       <div
         role="tabpanel"
@@ -230,13 +223,11 @@ const SuscritoridView = () => {
         },
       },
       onContentReady: function () {
-        // bind to events
         var jc = this;
         this.$content.find('form').on('submit', function (e) {
-          // if the user submits the form by pressing enter in the fiel
           console.log(e)
           e.preventDefault();
-          jc.$$formSubmit.trigger('click'); // reference the button and click it
+          jc.$$formSubmit.trigger('click'); 
         });
       }
     });
@@ -252,7 +243,6 @@ const SuscritoridView = () => {
           text: 'Eliminar',
           btnClass: 'btn-red',
           action: function () {
-
             eliminarRegistro({ "id": parms.id }).then(ouput => {
               console.log(ouput)
               console.log(parms.id)
@@ -273,7 +263,6 @@ const SuscritoridView = () => {
 
   }
   const eliminarTiket = (parm) => {
-    //  console.log(parm)
     $.confirm({
       title: 'Desea eliminar este registro ',
       content: '',
@@ -293,8 +282,6 @@ const SuscritoridView = () => {
               setTimeout(function () {
                 window.location.reload()
               }, 1000)
-
-
             }).catch(error => {
               $.alert("hubo un error no se pudo eliminar este registro")
             })
@@ -304,7 +291,6 @@ const SuscritoridView = () => {
         }
       }
     });
-
   }
   const ms = () => {
     return (<PdfViewticketApp
@@ -313,23 +299,18 @@ const SuscritoridView = () => {
   }
   const [li, setlik] = useState("")
   function generaPDF(row) {
-    console.log(row)
-    //window.open("https://tickets.com.ec/", "_blank");
     generaTiketspdf({
       "cedula": row.cedula,
       "codigoEvento": row.codigoEvento,
       "id_ticket_usuarios": row.id
     }).then(ouput => {
       console.log(ouput)
-      //window.open('Prosjektplan.pdf')
-
       window.open(ouput.link.replace("flash", "api"), "_blank");
       console.log(ouput)
     }).catch(eror => {
       console.log(eror)
     })
-  }
-  
+  }  
   function Copiarlink(row) {
     let dato = document.getElementById(row.id)
     dato.classList.remove("d-none")
@@ -393,12 +374,10 @@ const SuscritoridView = () => {
 
   }
   function linkcopy(row) {
-    //  var text = document.getElementById("content").value;
     if (row == null) {
       $.alert('No se registra imegen de comprobante')
       return
     }
-
     navigator.clipboard.writeText(row)
       .then(() => {
         $.alert('Link Copiado');
@@ -448,22 +427,15 @@ const SuscritoridView = () => {
                 return
               }
               $.alert("No se registro")
-
-
             }).catch(err => {
-
-            })
-
-
+              
+             })
           }
         },
         cancel: function () {
-          //close
         },
       },
     });
-
-
   }
   const Listarfaci = async (parms) => {
     try {
@@ -482,37 +454,26 @@ const SuscritoridView = () => {
   useEffect(() => {
     setsuscritor({ ...info })
     Listarticketporestado("" + info.cedula).then(ouput => {
-      console.log(ouput)
       ouput.success ? setBoletos(ouput.data)
         : ""
     }).catch(err => {
       console.log(err)
     })
     listarRegistropanel({ "cedula": info.cedula }).then(ouput => {
-      console.log(ouput)
+     // console.log(ouput)
       if (ouput.success) {
         let datos = ouput.data
-        console.log(datos)
+        //console.log(datos)
         ouput.success ? setTikes(datos) : ""
       }
     })
     Listarfaci({ "cedula": info.cedula }).then(ouput => {
       if (ouput.success) {
-        //  console.log(ouput)
         setTicket([...ouput.data])
       }
-      //console.log(ouput)
     }).catch(err => {
-      console.log(err)
+     // console.log(err)
     })
-
-    /*BoletosTiketsGlobal(""+info.cedula).then(ouput=>{
-      if(!ouput.success) return
-      setGlobal(ouput.data.filter(e.cedula =="1726979659"))
-      console.log(ouput)
-    }).catch(err=>{
-      console.log(err)
-    })*/
 
   }, []);
 
@@ -534,7 +495,6 @@ const SuscritoridView = () => {
         cancelBtnBsStyle="danger"
         confirmBtnText="Si, Ceder"
         cancelBtnText="Cancelar"
-
         closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
         showCancel
       >
@@ -555,8 +515,6 @@ const SuscritoridView = () => {
         <CederView />
         <div className="d-flex justify-content-end align-row.originals-end pb-2" >
           <div>
-
-
             <Button className="btn btn-wd btn-outline mr-1"
               type="button"
               onClick={() => setshow(true)}
@@ -566,12 +524,6 @@ const SuscritoridView = () => {
               </span>
               Editar
             </Button>
-
-            {/* <Button className="btn btn-wd btn-outline mr-1"
-              type="button"
-              variant="outline-warning"
-              onClick={() => setshowdos(true)}
-            >Ticktefacil</Button>*/}
             {clienteInfo().perfil == "vendedores" ? "" : <Button className="btn-wd btn-outline mr-1"
               onClick={deleteAlert}
               type="button"
@@ -645,7 +597,6 @@ const SuscritoridView = () => {
               </Card.Footer>
             </Card>
           </Col>
-
           <Col lg="6" sm="12">
             <Card className="card-stats">
               <Card.Body>
@@ -663,21 +614,6 @@ const SuscritoridView = () => {
                     <div className="icon-big text-center ">
                       <i className="nc-icon nc-headphones-2 text-warning"></i>
                     </div>
-                    {/* <Button                                         
-                    variant="danger"                   
-                    className="text-danger  like">
-                    <i className="fa fa-trash" />
-                     Eliminar suscriptor
-                    </Button>
-                  </Col>
-                  <Col  xl="3" xs="6">
-                  <Button
-                   variant="danger"
-                   onClick={successAlert}
-                   className="text-danger  like">
-                    <i className="fa fa-trash" />
-                     Cancelar suscriptor
-                    </Button> */}
                   </Col>
                 </Row>
               </Card.Body>
@@ -688,12 +624,9 @@ const SuscritoridView = () => {
                   Fecha de registro {moment(suscritoid.fechaCreacion).format('DD MMMM YYYY hh:mm:ss')}
                 </div>
               </Card.Footer>
-
             </Card>
           </Col>
-
         </Row>
-
         <ModalConfima />
         <ModalRepostar />
         <div className="">
@@ -931,18 +864,13 @@ const SuscritoridView = () => {
                               onClick={() => generaPDF(row.original)}
                             >
                               <i className="fa fa-download text-primary"></i>
-
-
                             </a>
                           </Tooltip> :
                           <a
                             className="border  btn-default btn-sm btn-disable"
                             disabled
-
                           >
                             <i className="fa fa-download "></i>
-
-
                           </a>
                         }
                         {row.original.estado != "reservado" ?
@@ -960,34 +888,22 @@ const SuscritoridView = () => {
                           <a
                             className="border  btn-default btn-sm btn-disable"
                             disabled
-
-                          >
+                            >
                             <i className="fa fa-copy "></i>
-
-
-                          </a>
+                            </a>
                         }
-                        {<a className="border btn-default btn-sm" onClick={() => generaBingo(row.original)}> <i className="fa fa-table "></i> </a>}
-                        <a
-                          onClick={() => Eliminara(row.original.id)}
-                          className="border  btn-default btn-sm cursor "
-
-
-                        >
+                        
+                        <a onClick={() => Eliminara(row.original.id)}
+                          className="border  btn-default btn-sm cursor ">
                           Eliminar
                         </a>
-                        <a
-                          onClick={() => Licerarrasientos(row.original.id)}
-                          className="border  btn-default btn-sm cursor "
-                        >
+                        <a onClick={() => Licerarrasientos(row.original.id)}
+                          className="border  btn-default btn-sm cursor ">
                           Liberar
-
-
                         </a>
-
                         {row.original.estado == "Pagado" && row.original.cedido == "NO" ?
                           <Tooltip title="Ceder ticket" placement="top-start">
-                            <a className=" btn btn-default btn-sm btn-disable"
+                            <a className=" d-none btn btn-default btn-sm btn-disable"
 
 
                               onClick={() => successAlertCeder(row.original)}
