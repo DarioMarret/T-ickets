@@ -196,7 +196,7 @@ var routes = [
         name: "Vender Tickets",
         mini: "*",
         component: Ventas,
-        permiso: ["admin", "super_admin", "vendedores"]
+        permiso: ["admin", "super_admin", "vendedores","suscriptores"]
       },
 
       {
