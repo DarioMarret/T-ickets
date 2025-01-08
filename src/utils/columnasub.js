@@ -349,8 +349,11 @@ export const listaRegistrototal = [
     },
 
     {
-        accessorKey: "consolidado",
-        header: "Consolidado",
+        accessorKey: "estado_envio",
+        header: "Enviado",
+        Cell: ({ cell }) => (
+            cell.row.original.estado_envio ? cell.row.original.estado_envio : 'NO ENVIADO'
+        ),
         size: 25
     },
     {
