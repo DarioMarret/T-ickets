@@ -24,6 +24,7 @@ import 'react-date-range/dist/theme/default.css';
 import Loadable from "views/Components/Loadable/index";
 import BingoViewtiparamsasb from "views/Pages/Suscriptores/Bingoparamsabs";
 import ResestPassword from "views/Pages/Susbcritorpage/Passwor";
+import LoginPage from "views/Pages/LoginPage";
 const AuthLayout = Loadable(lazy(() => import("layouts/Auth.js")))
 const AdminLayout = Loadable(lazy(() => import("layouts/Admin.js")))
 const Indexflas = Loadable(lazy(() => import("../src/views/Pages/Flasdeticket")))
@@ -39,7 +40,7 @@ root.render(
     <BrowserRouter>
       <Switch>
         <Route path="/auth" render={(props) => !clienteInfo() ? <AuthLayout {...props} /> : <Redirect from="/" to="/admin/inicio" />} />
-        <Route path="/admin" render={(props) => clienteInfo() ? <AdminLayout {...props} /> : <Redirect from="/" to="/auth/login" />} />
+        <Route path="/admin" render={(props) => clienteInfo() ? <AdminLayout {...props} /> : <LoginPage {...props} />} />
         <Route path="/bingo/:id" render={()=><BingoViewtiparamsasb/> } />
         <Route path="/password/:id" render={()=><ResestPassword/>}/>
         <Route path="/Jessi" render={() => <ExternalRedirect e={"Quiero participar en el concurso de Jessi Uribe"}/>} />
