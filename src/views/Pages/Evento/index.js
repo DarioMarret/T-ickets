@@ -250,6 +250,16 @@ const EventosViews = () => {
               <MaterialReactTable
                 columns={Columnevento}
                 data={eventoslist.sort(sorter)}
+                state={{ isLoading: (eventoslist.length==0) }}
+                muiCircularProgressProps={{
+                  color: 'secondary',
+                  thickness: 5,
+                  size: 55,
+                }}
+                muiSkeletonProps={{
+                  animation: 'pulse',
+                  height: 28,
+                }}
                 muiTableProps={{
                   sx: {
                     tableLayout: 'flex'

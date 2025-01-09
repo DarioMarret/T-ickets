@@ -16,7 +16,7 @@ export default function ModalFirma() {
     const [files, setFiles] = useState([]);
     let detallid = JSON.parse(sessionStorage.getItem("Detalleuid"))
     let modal = useSelector((state) => state.SuscritorSlice.modal)
-    const [loading, setLoading] = useState("d-none");
+    const [loading, setLoading] = useState(false);
     //const [linea,setLinea]=useState(0)
     const updateFiles = (incommingFiles) => {
         console.log(incommingFiles)
@@ -124,7 +124,8 @@ export default function ModalFirma() {
             btnlimpiar.onclick = () => limpiar()
             descargar.onclick = () => {
                 //  if (files.length == 0) return
-
+                descargar.textContent = "Procesando...";
+                descargar.setAttribute('disabled', 'true');
                 functionModificaPDF()
                 const enlace = document.createElement('a');
                 // El título
@@ -142,7 +143,7 @@ export default function ModalFirma() {
 
 
     const functionModificaPDF = async () => {
-        //setLoading("")
+        //setLoading(true)
         const url = modal.estado.link_pago.replace("k/", "k/voucher/");
         console.log(url)
         let { data, status } = await boleteriaAxios.post("Boleteria/bancos", {
@@ -151,7 +152,7 @@ export default function ModalFirma() {
             "url": url
         })
         console.log(String(data).replace("api.ticketsecuador.ec", "api.t-ickets.com"))
-        const existingPdfBytes = await fetch(String(data).replace("api.ticketsecuador.ec","api.t-ickets.com")).then((res) => res.arrayBuffer());
+        const existingPdfBytes = await fetch(String(data).replace("api.ticketsecuador.ec", "api.t-ickets.com")).then((res) => res.arrayBuffer());
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
@@ -197,20 +198,20 @@ export default function ModalFirma() {
                     header: {
                         'Content-Type': 'application/json',
                         'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                    } 
+                    }
                 })
             console.log(data)
             if (!data.success) {
                 console.log(data)
-                setLoading("d-none")
+
                 return null
             }
             console.log(data)
-            setLoading("")
+
             let boleto = await Boleteria_voucher({
                 "estado": clienteInfo() == null ? 0 : 1,
                 "id": "" + modal.estado.id,
-                "link": data.link.replace("api.ticketsecuador.ec","api.t-ickets.com")
+                "link": data.link.replace("api.ticketsecuador.ec", "api.t-ickets.com")
             })
             if (boleto.estado) {
                 let boletos = JSON.stringify({ ...detallid, ...boleto.datos })
@@ -223,10 +224,12 @@ export default function ModalFirma() {
                 "id": modal.estado.id,
                 "link": data.link
             })
-            setLoading("")
+
             return data.link
 
         } catch (error) {
+           // setLoading(false)
+            $.alert("Hubo un error. Verifique el formato de la imagen proporcionada.")
             console.log(error)
             return null
 
@@ -273,7 +276,7 @@ export default function ModalFirma() {
                             <button className="btn btn-danger" id="limpiar">Limpiar</button>
                         </div>
                         <div>
-                            <button disabled={files.length == 0} className="btn btn-success" id="descarga">Firmar</button>
+                            <button disabled={(files.length == 0||loading)} className="btn btn-success" id="descarga">Firmar</button>
                         </div>
                     </div>
 

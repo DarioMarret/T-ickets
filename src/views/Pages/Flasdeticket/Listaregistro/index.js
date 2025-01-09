@@ -163,7 +163,7 @@ export default function ListaderegistroView(props) {
                                         >
                                             <i className="fa fa-credit-card" ></i> Pagar
                                         </a>
-                                        : row.original.estado_pago != "Pagado" ?
+                                        : (row.original.estado_pago != 'Anulado') ?
                                             <Tooltip
                                                 title="Eliminar" placement="top">
                                                 <Button

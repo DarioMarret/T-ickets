@@ -15,6 +15,7 @@ export const PagoRapido = async (transaccion) => {
     let array = sessionStorage.getItem("sillascorre") != null ? JSON.parse(sessionStorage.getItem("sillascorre")) : []
     let tiktefisic = sessionStorage.getItem("ticktesfisio") != null ? JSON.parse(sessionStorage.getItem("ticktesfisio")) : []
     let datosPersonal = getDatosUsuariosLocalStorag().cedula
+    let discapacidad = getDatosUsuariosLocalStorag().discapacidad
     let id = clienteInfo() != null ? clienteInfo().id : 0
     let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
     let metodo = GetMetodo() == "Transferencia" ? "Deposito" : GetMetodo()
@@ -31,7 +32,7 @@ export const PagoRapido = async (transaccion) => {
             "idespaciolocalida": e.localidaEspacio["ideprecio"],
             "cantidad": e.cantidad,
             "localidad_nombre": e.localidad,
-            "localidad_precio": codicontry ? parseFloat(e.localidaEspacio["precio_descuento"]) : parseFloat(e.valor),
+            "localidad_precio": (discapacidad == 'Si') ? parseFloat(e.localidaEspacio["precio_discapacidad"]) : parseFloat(e.valor),
             "comision_por_boleto": parseInt(e.cantidad) * parseFloat(e.localidaEspacio["comision_boleto"]),
             "id_sillas": cantidadTotal == sillas.length ? [...sillas] : [],
             "iva": Eventoinfo.iva,

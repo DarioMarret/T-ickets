@@ -4,7 +4,7 @@ import { Bodyhtml, Headerhtml } from "./cuerpo"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 
 export const Emailcontec = async (parms) => {
-    const { email, nombre, movil, direccion, producto, precio, cantidad, id } = parms
+    const { email, nombre, movil, direccion, producto, precio, cantidad, id,password } = parms
     try {
         let { data } = axios.post("https://api.flashchat.chat/backflash/qr_mensaje_external", {
             "sessionName": "1_tickets_prueba19177232201",
@@ -13,7 +13,7 @@ export const Emailcontec = async (parms) => {
             ],
             "mensaje": {
                 "type": "text",
-                "text": `Gracias por suscribirte ${nombre} a Tickest Ecuador S.A.\nAgrega este número para fulturas consultas`,
+                "text": `* ${nombre}*\n gracias por registrarse en Tickets.com.ec. Los datos de ingreso son:\n *Usuario*:${email}\n *Clave*: ${password}.\n Por favor, para validar tu cuenta digita la palabra *Si*`,
                 "url": ""
 
             }

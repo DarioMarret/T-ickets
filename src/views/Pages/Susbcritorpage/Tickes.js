@@ -456,7 +456,7 @@ function Example() {
                                             <Delete />
                                         </IconButton>
                                     </Tooltip>
-                                    {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
+                                    {(row.original.estado == "Pagado"||row.estado_pago=="Anulado") && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
                                         <IconButton
                                             color='success'
 

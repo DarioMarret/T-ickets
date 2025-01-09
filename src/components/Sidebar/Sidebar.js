@@ -140,7 +140,7 @@ function Sidebar({ routes, image, background }) {
               className="simple-text logo-normal nav-link"
               href="/admin/inicio"
             >
-              <img src={"https://s3.us-east-2.amazonaws.com/bucketpaulfinal/asdasdasdasdasd.png"} className="img-fluid" style={{ height: '50px' }} alt="" />
+              <img src={"https://tickets.com.ec/img/ticket.png"} className="img-fluid" style={{ height: '50px' }} alt="" />
             </a>
           </div>
           {/*<div className="logo">

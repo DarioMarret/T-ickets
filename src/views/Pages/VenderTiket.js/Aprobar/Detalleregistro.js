@@ -51,7 +51,7 @@ import Bingo_tablas from "./components/Tablaspdf";
 import ModalFirma from "views/Components/MODAL/Modalfirma";
 import { Button } from "bootstrap";
 import { Boleteria_voucher } from "utils/EventosQuery/index";
-import { boleteriaAxios } from "utils/index";
+import { Axiosmikroserdos, boleteriaAxios } from "utils/index";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -62,7 +62,7 @@ export const PreciosStore = () => {
 }
 export default function DetalleCompraView() {
     let { id } = useParams()
-   // let user = clienteInfo()
+    // let user = clienteInfo()
     let history = useHistory()
     let usedispatch = useDispatch()
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
@@ -81,7 +81,7 @@ export default function DetalleCompraView() {
         "direccion": ""
     })
     function generaComprobante() {
-        if (useradmin.perfil =='suscriptores') return
+        if (useradmin.perfil == 'suscriptores') return
         const result2 = new Date().toLocaleString('en-GB', {
             hour12: false,
         });
@@ -156,7 +156,8 @@ export default function DetalleCompraView() {
         "Pendiente": "label label-warning",
         "Pagado": "label label-success",
         "Expirado": "label label-danger",
-        "Comprobar": "label label-warning"
+        "Comprobar": "label label-warning",
+        "Anulado": "label label-dark"
     }
     let precio = {
         1: 20,
@@ -219,6 +220,8 @@ export default function DetalleCompraView() {
         transmitter: "",
         card_brand: ""
     })
+
+    const [alert, setAlert] = useState(null)
     function Abrirwhastapp() {
         if (useradmin.perfil == 'suscriptores') return
         usedispatch(setModal({ nombre: "whastapp", estado: usuario }))
@@ -287,7 +290,6 @@ export default function DetalleCompraView() {
             usedispatch(setModal({ nombre: "firma", estado: { ...nombres } }))
         }
     }
-    const [alert, setAlert] = useState(null)
     function generaPDF(row) {
         if (useradmin.perfil == 'suscriptores') return
         generaTiketspdf({
@@ -528,7 +530,7 @@ export default function DetalleCompraView() {
         return 0
     }
     function Verificarnomnbre(e, f) {
-      //  if (useradmin.perfil == 'suscriptores') return
+        //  if (useradmin.perfil == 'suscriptores') return
         let nuew = []
         let listtarje = e.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
         let listnombre = f.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ")
@@ -592,6 +594,33 @@ export default function DetalleCompraView() {
             return error
         }
     }
+    const AnularCompra = async (id) => {
+        try {
+            let { data } = await Axiosmikroserdos.put("api/anularRegistro/" + ids)
+            if (data.estado) {
+                history.goBack()
+                return
+            }
+            $.alert("Hubo un error en el proceso")
+
+        } catch (error) {
+            $.alert("Hubo un error de servicio")
+        }
+    }
+    const Habilitar_Envio = async (ids) => {
+        try {
+            let { data } = await Axiosmikroserdos.get("api/reenvio/"+ids)
+            if(data.estado){
+              history.goBack()
+              return
+            } 
+            $.alert("Hubo un error en el proceso")
+
+        } catch (error) {
+            $.alert("Hubo un error de servicio")
+        }
+    }
+
     let [datoconcilia, setDatosConciloa] = useState(
         {
             "id": "",
@@ -998,8 +1027,8 @@ export default function DetalleCompraView() {
                         }).catch(errr => {
                             console.log(errr)
                         })
-                    },                   
-                   
+                    },
+
                 },
                 tryAgain: {
                     text: 'Mesas',
@@ -1098,7 +1127,7 @@ export default function DetalleCompraView() {
         const reporte = {
             "id_usuario": clienteInfo().id,
             "forma_pago": nombres.forma_pago,
-            "link_comprobante": nombres.link_comprobante,
+            "link_comprobante": nombres.link_comprobante | nombres.link_pago,
             "id": nombres.id,
             "numeroTransaccion": nombres.numerTransacion,
             "cedula": nombres.cedula,
@@ -1453,11 +1482,11 @@ export default function DetalleCompraView() {
                                                     >
                                                         <i className="fa fa-info-circle">  </i>Recargar Boleto
                                                     </a>}
-                                                {nombres.forma_pago != "Deposito" ? "" : 
-                                                <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} >
-                                                    <i className="fa fa-check"></i> Cambiar Tarjeta </a>}
+                                                {nombres.forma_pago != "Deposito" ? "" :
+                                                    <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} >
+                                                        <i className="fa fa-check"></i> Cambiar Tarjeta </a>}
                                                 {nombres.estado_pago != "Pagado" ? "" :
-                                                    <a className=" btn btn-default btn-sm"  >
+                                                    <a className=" btn btn-default btn-sm" onClick={() => Habilitar_Envio(id)}  >
                                                         <i className="fa fa-send"></i>Habilitar nuevo envio de boletos </a>}
 
 
@@ -1531,12 +1560,12 @@ export default function DetalleCompraView() {
 
                                                             {nombres.estado_envio ? <div className="px-1" >
                                                                 <span className={" label label-success"}>
-                                                                Boletos enviados
+                                                                    Boletos enviados
                                                                 </span>
                                                             </div> : <div className="px-1" >
-                                                                    <span className={" label label-danger"}>
-                                                                Boletos no enviados
-                                                                        </span>
+                                                                <span className={" label label-danger"}>
+                                                                    Boletos no enviados
+                                                                </span>
                                                             </div>}                                                        </div>
                                                     </div>
                                                 </div>
@@ -1588,7 +1617,7 @@ export default function DetalleCompraView() {
                                                         {nombres.fechaCreacion} <br></br>
                                                         #{id} <br></br>
                                                         {nombres.forma_pago}<br></br>
-                                                        {nombres.forma_pago == "Tarjeta" && nombres.link_pago == null ? "Cambio de Deposito a Tarjeta" : ""}
+                                                        {nombres.forma_pago == "Tarjeta" && nombres.token_pago == null ? "Cambio de Deposito a Tarjeta" : ""}
                                                         {true ?
                                                             <span className={nombres.conciliacion.length > 0 ? "p-1 label label-success" : "label label-danger"}>
                                                                 {nombres.conciliacion.length > 0 ? "Consolidado" : "Sin Consolidar"}
@@ -1647,8 +1676,8 @@ export default function DetalleCompraView() {
 
                                                     useradmin.perfil == "suscriptores" ? "" : <div className="m-t-5 m-b-5">
                                                         <strong className="text-inverse">Pago con Tarjeta</strong><br></br>
-                                                        <small>
-                                                            {nombres.link_pago != null || nombres.link_comprobante != null ?
+                                                        <div className="btn-group-vertical ">
+                                                            {nombres.token_pago != null || nombres.link_comprobante != null ?
 
 
                                                                 <a className=" btn btn-default btn-sm"
@@ -1681,7 +1710,6 @@ export default function DetalleCompraView() {
                                                                     </a>
                                                                     : ""
                                                             }
-                                                            <br></br>
 
                                                             <a className=" btn btn-default btn-sm"
                                                                 onClick={() => linkcopy(nombres.link_pago != null ? nombres.link_pago : nombres.link_comprobante)}>
@@ -1690,6 +1718,9 @@ export default function DetalleCompraView() {
                                                             {nombres.forma_pago == "Deposito" ? <a className=" btn btn-default btn-sm" onClick={() => linkcopy(nombres.link_comprobante)}>
                                                                 <i className="fa fa-credit-card"></i> Copiar link de imagen
                                                             </a> : ""}
+                                                            <button className=" btn btn-danger btn-sm " onClick={()=>AnularCompra(id)} >
+                                                                <i className="fa fa-ban"></i>ANULAR COMPRA
+                                                            </button>
 
                                                             <br></br>
 
@@ -1699,7 +1730,7 @@ export default function DetalleCompraView() {
                                                                 </a>
                                                             </PhotoView> : ""}
                                                             <br></br>
-                                                        </small>
+                                                        </div>
                                                     </div>}
                                             </div>
                                         </div>

@@ -102,6 +102,10 @@ table.dataTable .label {
     background-color: var(--warning) !important;
     text-transform: uppercase;
 }
+.label.label-dark {
+    background-color: var(--secondary) !important;
+    text-transform: uppercase;
+}
 .label.label-success {
     background-color: var(--success) !important;
     text-transform: uppercase;

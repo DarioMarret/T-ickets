@@ -317,7 +317,8 @@ export function GetValores() {
                     tienda2.valor = (parseFloat(tienda2.localidaEspacio["precio_descuento"]) * parseInt(tienda2.cantidad))
 
                 } else {
-                    tienda2.valor = (parseFloat(tienda2.valor) * parseInt(tienda2.cantidad))
+                    let valores = (user.discapacidad == 'Si') ? tienda2.localidaEspacio["precio_discapacidad"] : tienda2.valor
+                    tienda2.valor = (parseFloat(valores) * parseInt(tienda2.cantidad))
                 }
             }
             return tienda2
@@ -327,12 +328,13 @@ export function GetValores() {
         tag.map(tienda => {
             let comisioreal = tienda.localidaEspacio["comision_boleto"]
             if (codicontry) {
+
                 let valores = tienda.valor
                 subtotal += valores
                 descrption = tienda.nombreConcierto
                 sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
             } else {
-                let valores = tienda.valor
+                let valores =  tienda.valor
                 subtotal += valores
                 descrption = tienda.nombreConcierto
                 sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)

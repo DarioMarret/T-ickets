@@ -139,7 +139,7 @@ function LoginPage() {
             <div className="card px-0  shadow-md text-white py-5 d-none d-lg-block "
               style={{
                 width: '100%', backgroundImage:
-                  "url('https://s3.us-east-2.amazonaws.com/bucketpaulfinal/asdasdasdasdasd.png')", backgroundSize: '100%',
+                  "url('https://tickets.com.ec/img/ticket.png')", backgroundSize: '80%',
                   backgroundPosition:'center',
                   backgroundRepeat:'no-repeat'
               }}>

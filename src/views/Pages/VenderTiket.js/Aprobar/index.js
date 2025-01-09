@@ -77,7 +77,9 @@ export default function AprobarView() {
             'aria-controls': `simple-tabpanel-${index}`,
         };
     }
+    let [datos,stDatos] = useState(false)
     function refrescar() {
+        //stDatos(true)
         ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
             console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
             console.log(e)
@@ -128,20 +130,6 @@ export default function AprobarView() {
                     })
                 })
 
-                let arrayIndividual = []
-                // console.log(consulat)
-                console.log(arayReallocalidad, arrprueb)
-                /* arayReallocalidad.forEach(elm => {
-                     if (arrayIndividual.some(e => e.id == elm.id)) {
-                         let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                         let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
-                         arrayIndividual[dat].cantidad = tota
-                     }
-                     else {
-                         arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
-                     }
-                 })*/
-                //console.log(arrayIndividual)
                 let datos = arrprueb.map(f => {
                     return [f.localidad, f.concierto, parseInt(f.cantidad)]
                 })
@@ -162,79 +150,13 @@ export default function AprobarView() {
             console.log(err)
         })
     }
-    let [datos, stDatos] = useState([])
+  
     useEffect(() => {
         // ListaPrecios()
         //console.log(ticket.ticket)
         setFechaRange(moment(states[0].startDate.toLocaleDateString("en-US")).format("MM/DD/YYYY") + " - " + moment(states[0].endDate.toLocaleDateString("en-US")).format("MM/DD/YYYY"))
-        !ticket.ticket ? "" :
-            ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
-                //console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
-                //console.log(e)
-                if (!e.success) {
-                    usedispatch(setToastes({
-                        show: true,
-                        message: e.message,
-                        color: 'bg-warning',
-                        estado: "Todos ocupados"
-                    }))
-                    return
-                }
-                if (e.data) {
-                    const nombresUnicos = new Set();
-                    stDatos(e.data)
-                    e.data.filter(fe => moment(fe.fechaCreacion.split(" ")[0]).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).forEach(item => {
-                        nombresUnicos.add(item.info_concierto[0].nombreConcierto);
-                    });
-                    //console.log(e.data)
-                    const nombresArray = Array.from(nombresUnicos);
-                    setDatas(nombresArray)
-                    //console.log(nombresArray);
-                    let newdatos = e.data.filter(fe => moment(fe.fechaCreacion).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format()).map(row => {
-                        let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
-                        let valor = row.info_concierto.map(e => {
-                            return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
-                        }).reduce((a, b) => a + b, 0)
-                        let cantida = row.info_concierto.map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
-                        row.Valortotal = parseFloat(valor)
-                        row.cantidad = cantida
-                        row.concierto = nombre[0]
-                        return { ...row }
-                    })
-                    let order = newdatos.sort(sorter)
-                    usedispatch(setCompras({ compras: order }))
-                    usedispatch(setTicket({ tiketslist: order }))
-                    //console.log(newdatos)
-                    let arrprueb = []
-                    newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                        elm.ticket_usuarios.map(item => {
-                            if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
-                                let index = arrprueb.findIndex(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
-                                let cantidad = arrprueb[index].cantidad + 1
-                                arrprueb[index].cantidad = cantidad
-                            } else {
-                                arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
-                            }
-                        })
-                    })
-                    let datos = arrprueb.map(f => {
-                        return [f.localidad, f.concierto, parseInt(f.cantidad)]
-                    })
-
-                    let nuevo = arrprueb.map(f => {
-                        return [f.localidad, f.concierto, parseInt(f.cantidad)]
-                    })
-                    setDts([
-                        ["Localidad", "evento", "cantidad"],
-                        ...nuevo
-                    ])
-                    usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
-                    usedispatch(setlisticket({ ticket: false }))
-                    return
-                }
-            }).catch(err => {
-                console.log(err)
-            })
+        !ticket.ticket ? "" :cargar()
+           
     }, [ticket.ticket])
     let precio = {
         1: 20,
@@ -250,6 +172,81 @@ export default function AprobarView() {
         14: 35,
         23: 0,
         22: 0
+    }
+    function cargar (){
+        
+        stDatos(true)
+        ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+            //console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
+            console.log(e)
+            if (!e.success) {
+                usedispatch(setToastes({
+                    show: true,
+                    message: e.message,
+                    color: 'bg-warning',
+                    estado: "Todos ocupados"
+                }))
+                stDatos(false)
+                return
+            }
+            if (e.data) {
+                const nombresUnicos = new Set();
+                stDatos(false)
+                console.log(e.data)
+                e.data.filter(fe => moment(fe.fechaCreacion.split(" ")[0]).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).forEach(item => {
+                    nombresUnicos.add(item.info_concierto[0].nombreConcierto);
+                });
+                //console.log(e.data)
+                const nombresArray = Array.from(nombresUnicos);
+                setDatas(nombresArray)
+                //console.log(nombresArray);
+                let newdatos = e.data.filter(fe => moment(fe.fechaCreacion).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format()).map(row => {
+                    let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
+                    let valor = row.info_concierto.map(e => {
+                        return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
+                    }).reduce((a, b) => a + b, 0)
+                    let cantida = row.info_concierto.map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
+                    row.Valortotal = parseFloat(valor)
+                    row.cantidad = cantida
+                    row.concierto = nombre[0]
+                    return { ...row }
+                })
+                let order = newdatos.sort(sorter)
+                usedispatch(setCompras({ compras: order }))
+                usedispatch(setTicket({ tiketslist: order }))
+                //console.log(newdatos)
+                let arrprueb = []
+                newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
+                    elm.ticket_usuarios.map(item => {
+                        if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
+                            let index = arrprueb.findIndex(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
+                            let cantidad = arrprueb[index].cantidad + 1
+                            arrprueb[index].cantidad = cantidad
+                        } else {
+                            arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
+                        }
+                    })
+                })
+                let datos = arrprueb.map(f => {
+                    return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                })
+
+                let nuevo = arrprueb.map(f => {
+                    return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                })
+                setDts([
+                    ["Localidad", "evento", "cantidad"],
+                    ...nuevo
+                ])
+                usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
+                usedispatch(setlisticket({ ticket: false }))
+                return
+            }
+            stDatos(false)
+        }).catch(err => {
+            stDatos(false)
+            console.log(err)
+        })
     }
     const [fecha, setFechaRange] = useState()
     $(function () {
@@ -284,7 +281,7 @@ export default function AprobarView() {
             }
         });
         $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
-            console.log(picker)
+          
             let startDate = moment(picker.startDate.format('MM-DD-YYYY'))
             let endDate = moment(picker.endDate.format('MM-DD-YYYY'))
             let fechastart = new Date(startDate._i)
@@ -307,10 +304,12 @@ export default function AprobarView() {
             $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
             setAlert("")
             setMetodo("")
+           stDatos(true)
             ListarRegistropaneFecha(moment(picker.startDate.format('MM-DD-YYYY')).format().replace(" ", ""), picker.endDate.format('MM/DD/YYYY')).then(e => {
                 //console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
                 //console.log(e)
                 if (!e.success) {
+                    stDatos(false)
                     usedispatch(setToastes({
                         show: true,
                         message: e.message,
@@ -321,7 +320,8 @@ export default function AprobarView() {
                 }
                 if (e.data) {
                     const nombresUnicos = new Set();
-                    stDatos(e.data)
+                    stDatos(false)
+                    console.log(e.data)
                     e.data.filter(fe => moment(fe.fechaCreacion.split(" ")[0]).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).forEach(item => {
                         nombresUnicos.add(item.info_concierto[0].nombreConcierto);
                     });
@@ -372,6 +372,7 @@ export default function AprobarView() {
                     return
                 }
             }).catch(err => {
+                stDatos(false)
                 console.log(err)
             })
         });
@@ -380,6 +381,7 @@ export default function AprobarView() {
             setFechaRange(moment(item.selection.startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() - moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format())
             usedispatch(setlisticket({ ticket: true }))
             usedispatch(setFecha({ fecha: [item.selection] }))
+            stDatos(false)
             $(this).val('');
         });
 
@@ -387,7 +389,7 @@ export default function AprobarView() {
 
 
     const [datas1, setDatas] = useState([])
-    const [dtos, setDts] = useState([])
+    const [dtos, setDts] = useState(true)
     const sorter = (a, b) => new Date(a.fechaCreacion) < new Date(b.fechaCreacion) ? 1 : -1;
 
     const Deliminarregistro = (parms) => {
@@ -529,6 +531,7 @@ export default function AprobarView() {
         is3D: false,
     };
     function filtrarArray(array, fechaInicio, fechaFin, nombre, forma_pago) {
+       // stDatos(false)
         return array.filter((elem=>elem.forma_pago!="CORTESIA")).filter((element) => {
             const fechaElemento = new Date(element.fechaCreacion.split(" ")[0]);
             const cumpleRangoFecha = (!fechaInicio || fechaElemento >= new Date(fechaInicio)) &&
@@ -536,6 +539,7 @@ export default function AprobarView() {
             const cumpleNombre = !nombre || element.concierto === nombre;
             const cumpleFormaPago = !forma_pago || element.forma_pago === forma_pago;
             //return cumpleRangoFecha && cumpleNombre && cumpleFormaPago;
+            
             return cumpleNombre && cumpleFormaPago;
         });
 
@@ -600,15 +604,7 @@ export default function AprobarView() {
             return "593" + dato
         } else return undefined;
     }
-    const locale = 'es'
-    const label = {
-        0: "Hoy",
-        1: "Ayer",
-        2: "Esta semana",
-        3: "Ultima semana",
-        4: "Este mes",
-        5: "Ultimo mes"
-    }
+  
     let labels = {
         0: "Días hasta hoy",
         1: "Días a partir de hoy"
@@ -874,6 +870,7 @@ export default function AprobarView() {
                         <Tab label={"Pendientes: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pendiente"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length}{...a11yProps(1)} />
                         <Tab label={"Expirado: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Expirado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length} {...a11yProps(2)} />
                         <Tab label={"Comprobar: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar"), alert, metodos).length} {...a11yProps(3)} />
+                        <Tab label={"Anulado: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Anulado"), alert, metodos).length} {...a11yProps(4)} />
                     </Tabs>
                     <div className=" text-center  py-2  ">
                         <TabPanel value={value} index={0} className="text-center">
@@ -888,6 +885,16 @@ export default function AprobarView() {
                                 enableRowActions
                                 initialState={{ showColumnFilters: false }} //show filters by default
                                 positionActionsColumn="first"
+                                state={{ isLoading: datos  }}
+                                muiCircularProgressProps={{
+                                    color: 'secondary',
+                                    thickness: 5,
+                                    size: 55,
+                                }}
+                                muiSkeletonProps={{
+                                    animation: 'pulse',
+                                    height: 28,
+                                }}
                                 renderRowActions={({ row }) => (
                                     <Box sx={{ display: 'flex' }}>
                                         {row.original.estado_pago != "Pagado" && row.original.forma_pago == "Deposito" && row.original.estado_pago != "Expirado" ?
@@ -1060,6 +1067,45 @@ export default function AprobarView() {
                             <MaterialReactTable
                                 columns={listaRegistrototal}
                                 data={tiketslist.filter(e => e.estado_pago == "Comprobar")}
+                                muiTableProps={{
+                                    sx: {
+                                        tableLayout: 'flex'
+                                    }
+                                }}
+                                enableRowActions
+                                positionActionsColumn="first"
+                                renderRowActions={({ row }) => (
+                                    <Box sx={{ display: 'flex' }}>
+                                        <Tooltip
+                                            title="Comprobar" placement="top"
+                                        >
+                                            <IconButton
+                                                color="success"
+                                                onClick={() => detalle(row.original)}
+                                            >
+                                                <Visibility />
+                                            </IconButton>
+                                        </Tooltip>
+                                        {/*<Tooltip
+                                            title="Borrar"
+                                            placement="top"
+
+                                        >
+                                            <IconButton
+                                                onClick={() => Deliminarregistro(row.original)}
+                                                color="error">
+                                                <Delete />
+                                            </IconButton>
+                                        </Tooltip>*/}
+                                    </Box>
+                                )}
+                                localization={MRT_Localization_ES}
+                            />
+                        </TabPanel>
+                        <TabPanel value={value} index={4} className="text-center" >
+                            <MaterialReactTable
+                                columns={listaRegistrototal}
+                                data={tiketslist.filter(e => e.estado_pago == "Anulado")}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'

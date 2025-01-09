@@ -33,6 +33,7 @@ let color = {
     "PROCESO": "secondary",
     "Pendiente": "warning",
     "Pagado": "success",
+    "Anulado": "dark",
     null: "danger",
     "": "danger",
     "null": "danger",
@@ -310,12 +311,12 @@ export const listaRegistrosuscri = [
     {
         accessorKey: "estado_pago",
         header: "Estado",
-        Cell: ({ cell }) => ((cell.row.original.forma_pago == "Tarjeta") && (cell.row.original.estado_pago == "Expirado" || cell.row.original.estado_pago == "Pendiente") ?
+        Cell: ({ cell }) => ((cell.row.original.forma_pago == "Tarjeta") && (cell.row.original.estado_pago == "Expirado" || cell.row.original.estado_pago == "Pendiente" || cell.row.original.estado_pago == "Anulado") ?
             <Badge bg={color[cell.row.original.estado_pago]}>
                 {cell.row.original.estado_pago}</Badge> :
             (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
                 (cell.row.original.id_espacio_localida == 0) ?
-                    (cell.row.original.estado_pago == "Expirado") ?
+                    (cell.row.original.estado_pago == "Expirado" || cell.row.estado_pago =="Anulado") ?
                         <Badge bg={color[cell.row.original.estado_pago]}>
                             {cell.row.original.estado_pago}</Badge>
                         :

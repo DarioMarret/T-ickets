@@ -281,7 +281,7 @@ const ResgistroView = (prop) => {
 
                         usedispatch(addususcritor({ users }))
                         
-                        Emailcontec({ movil: data.movil, nombre: data.nombreCompleto }).then(sal => {
+                        Emailcontec({ movil: data.movil, nombre: data.nombreCompleto, password: password.trim() ,email:data.email}).then(sal => {
                             console.log(sal)
                         }).catch(err => {
                             console.log(err)
