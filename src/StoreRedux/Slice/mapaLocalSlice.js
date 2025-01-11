@@ -8,6 +8,7 @@ const initialState = {
     nombre: '',
     typo: '',
     precio: {},
+    eventos: []
 }
 const sorter = (a, b) => a.fila > b.fila ? 1 : -1;
 const mapaLocalSlice = createSlice({
@@ -33,7 +34,6 @@ const mapaLocalSlice = createSlice({
         },
         filteridlocalidad: (state, action) => {
             let consulta = state.localidades[state.localidades.findIndex(e => e.id == action.payload.id)].mesas_array = action.payload.mesas
-            //console.log(consulta)
             state.localidades = [...state.localidades, consulta]
         },
         clearMapa: (state, action) => {
@@ -42,9 +42,12 @@ const mapaLocalSlice = createSlice({
             state.localidadespecica = []
             state.nombre = ''
             state.precio = {}
+        },
+        ObtenerEveNtis: (state, action) => {
+            state.eventos = [...action.payload.eventos]
         }
     }
 
 })
-export const { cargarmapa, settypo, filteridlocalidad, clearmapa, cargalocalidad, filtrarlocali, clearMapa } = mapaLocalSlice.actions;
+export const { cargarmapa, settypo, filteridlocalidad, clearmapa, cargalocalidad, filtrarlocali, clearMapa,ObtenerEveNtis } = mapaLocalSlice.actions;
 export default mapaLocalSlice.reducer  

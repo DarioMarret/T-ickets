@@ -594,26 +594,67 @@ export default function DetalleCompraView() {
             return error
         }
     }
-    const AnularCompra = async (id) => {
+    const AnularCompra = async (ids) => {
+        $.confirm({
+            title: 'Confirmación',
+            content: '¿Estás seguro de que deseas Anular ?',
+            buttons: {
+                aceptar: {
+                    text: 'Aceptar',
+                    action: function () {
+                        // Mostrar el cuadro de carga
+                        $.dialog({
+                            title: 'Cargando',
+                            content: async function () {
+                                //return
+                                var self = this;
+                                try {
+                                    let { data } = await Axiosmikroserdos.put("api/anularRegistro/" + ids)
+                                    if (data.estado) {
+                                        self.close();
+                                        history.goBack()
+                                        return
+                                    }
+                                    $.alert("Hubo un error en el proceso")
+
+                                } catch (error) {
+                                    self.close();
+                                    console.log(error)
+                                    $.alert("Hubo un error de servicio")
+                                }
+                            },
+                            onOpenBefore: function () {
+                                this.setContent(`
+  <div>
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    cargando...
+  </div>
+`);
+                            },
+                            closeIcon: false, // Oculta el botón de cerrar
+                        });
+                    },
+                },
+                cancelar: {
+                    text: 'Cancelar',
+                    action: function () {
+                        // No se realiza ninguna acción
+                    },
+                },
+            },
+        });
+        return
+
+    }
+    const Habilitar_Envio = async (ids) => {
         try {
-            let { data } = await Axiosmikroserdos.put("api/anularRegistro/" + ids)
+            let { data } = await Axiosmikroserdos.get("api/reenvio/" + ids)
             if (data.estado) {
                 history.goBack()
                 return
             }
-            $.alert("Hubo un error en el proceso")
-
-        } catch (error) {
-            $.alert("Hubo un error de servicio")
-        }
-    }
-    const Habilitar_Envio = async (ids) => {
-        try {
-            let { data } = await Axiosmikroserdos.get("api/reenvio/"+ids)
-            if(data.estado){
-              history.goBack()
-              return
-            } 
             $.alert("Hubo un error en el proceso")
 
         } catch (error) {
@@ -1718,9 +1759,7 @@ export default function DetalleCompraView() {
                                                             {nombres.forma_pago == "Deposito" ? <a className=" btn btn-default btn-sm" onClick={() => linkcopy(nombres.link_comprobante)}>
                                                                 <i className="fa fa-credit-card"></i> Copiar link de imagen
                                                             </a> : ""}
-                                                            <button className=" btn btn-danger btn-sm " onClick={()=>AnularCompra(id)} >
-                                                                <i className="fa fa-ban"></i>ANULAR COMPRA
-                                                            </button>
+
 
                                                             <br></br>
 
@@ -1732,6 +1771,9 @@ export default function DetalleCompraView() {
                                                             <br></br>
                                                         </div>
                                                     </div>}
+                                                <button className=" btn btn-danger btn-sm " onClick={() => AnularCompra(id)} >
+                                                    <i className="fa fa-ban"></i>ANULAR COMPRA
+                                                </button>
                                             </div>
                                         </div>
                                         {useradmin.perfil == "suscriptores" ? "" : nombres.forma_pago == "Deposito" ?
@@ -2067,38 +2109,6 @@ export default function DetalleCompraView() {
                                         />
                                     </div>
                                 </div>}
-                        </div>
-                        <div className="tab-pane  container " id="correlativos">
-                            {nombres.codigo_boletos != null && JSON.parse(nombres.codigo_boletos).lengt > 0 ?
-                                <Table>
-                                    <Thead>
-                                        <Tr>
-                                            <Th>Event</Th>
-                                            <Th>Date</Th>
-                                            <Th>Location</Th>
-                                        </Tr>
-                                    </Thead>
-                                    <Tbody>
-                                        <Tr>
-                                            <Td>Tablescon</Td>
-                                            <Td>9 April 2019</Td>
-                                            <Td>East Annex</Td>
-                                        </Tr>
-                                        <Tr>
-                                            <Td>Capstone Data</Td>
-                                            <Td>19 May 2019</Td>
-                                            <Td>205 Gorgas</Td>
-                                        </Tr>
-                                        <Tr>
-                                            <Td>Tuscaloosa D3</Td>
-                                            <Td>29 June 2019</Td>
-                                            <Td>Github</Td>
-                                        </Tr>
-                                    </Tbody>
-                                </Table>
-
-                                : ""}
-
                         </div>
                         <div className=" tab-pane container" id="boletos">
                             {usuario.movil != "" ? "" : nombres.info_concierto[0].nombreConcierto == "AUTO BINGO " ? <Bingo_tablas

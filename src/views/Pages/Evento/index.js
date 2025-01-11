@@ -1,33 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Row, Modal } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import ModalNewEvento from "./MODAL/ModalnewEvento";
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import MaterialReactTable from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { Edit, Delete, Visibility } from '@mui/icons-material';
-import { ListarLocalidad, ListarEspacios, ListarEventos } from "utils/Querypanel.js";
+import { Delete, Visibility } from '@mui/icons-material';
+import { ListarEventos } from "utils/Querypanel.js";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { Columnevento } from "utils/ColumnTabla";
 import { EliminarEvento } from "utils/Querypanel";
 import { useHistory } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
-import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
 import { ListaPreciosEvent } from "utils/EventosQuery";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { EventosActivos } from "utils/Querypanel";
 import { isAfter, parse } from "date-fns";
+import { ObtenerEveNtis } from "StoreRedux/Slice/mapaLocalSlice";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
   let history = useHistory()
   let useradmin = clienteInfo()
   let dispatch = useDispatch()
+  let eventoslista = useSelector(state => state.mapaLocalSlice.eventos)
   const [show, setShow] = useState(false)
-  const [eventoslist, setEventos] = useState([])
+ //const [eventoslist, setEventos] = useState([])
   const [alert, setAlert] = React.useState(null)
   const sorter = (a, b) => a.id > b.id || new Date(a.fechaConcierto) < new Date(b.fechaConcierto) ? 1 : -1;
 
@@ -37,12 +38,12 @@ const EventosViews = () => {
   }
   async function GetEventos() {
     try {
-  
       const lista = await ListarEventos("PROCESO")
       const lsyt = await EventosActivos("PROCESO")
       const cancelados = await EventosActivos("CANCELADO")
       if (lista.success) {
-        setEventos([...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data])
+       // setEventos([...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data])
+        dispatch(ObtenerEveNtis({ eventos: [...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data].sort(sorter) }))
       }
     } catch (error) {
       console.log(error)
@@ -61,7 +62,8 @@ const EventosViews = () => {
         const elimina = await EliminarEvento(codigo)
         const lista = await ListarEventos("PROCESO")
         if (elimina.success) {
-          setEventos([...lista.data])
+          dispatch(ObtenerEveNtis({ eventos: [...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data].sort(sorter) }))
+          //setEventos([...lista.data])
           successDelete()
           dispatch(setToastes({ show: true, message: 'Evento Eliminado con éxito', color: 'bg-success', estado: 'Correcto' }))
         }
@@ -123,8 +125,9 @@ const EventosViews = () => {
     return info
   }
   useEffect(() => {
-    
+
     (async () => {
+      console.log(eventoslista)
       await ListaPrecios()
       await GetEventos()
     })()
@@ -243,14 +246,15 @@ const EventosViews = () => {
           <button className="btn btn-success" onClick={nuevoevento}><i className="mr-2 fa fa-plus"></i> Nuevo evento</button>
           <br /><br />
           <div className="card card-primary card-outline text-left">
-            <div className="card-header">
-              Eventos
-            </div>
             <div className="">
               <MaterialReactTable
                 columns={Columnevento}
-                data={eventoslist.sort(sorter)}
-                state={{ isLoading: (eventoslist.length==0) }}
+                enableDensityToggle // Activa el botón de toggle para densidad
+                initialState={{
+                  density: 'compact', // Configuración inicial de densidad
+                }}
+                data={eventoslista}
+                state={{ isLoading: (eventoslista.length == 0) }}
                 muiCircularProgressProps={{
                   color: 'secondary',
                   thickness: 5,
@@ -275,7 +279,7 @@ const EventosViews = () => {
                       width: '100%',
                     }}
                   >
-                  
+
                     <Typography>Estado : {
                       (isAfter(row.original.fechaConcierto + " " + row.original.horaConcierto, 'yyyy-MM-dd HH:mm:ss', new Date()), new Date()) ?
                         row.original.estado : "FINALIZO"} </Typography>
@@ -285,7 +289,7 @@ const EventosViews = () => {
                 )}
                 renderRowActions={({ row }) => (
                   <Box sx={{ display: 'flex' }}>
-                    {clienteInfo().perfil?"":<IconButton
+                    {clienteInfo().perfil ? "" : <IconButton
                       color="error"
                       aria-label="Bloquear"
                       onClick={() => successAlert({ codigo: row.original.codigoEvento, fecha: row.original.fechaConcierto })}

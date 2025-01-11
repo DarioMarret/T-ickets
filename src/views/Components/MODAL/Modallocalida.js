@@ -285,7 +285,7 @@ const LocalidadmapViews = (props) => {
                          */
 
 
-                    }, 1500)
+                    }, 500)
 
                     return
                 }

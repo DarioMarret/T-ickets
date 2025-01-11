@@ -368,7 +368,7 @@ function MesasView({ text, status, list }) {
     console.log(text)
     let mesas = ["A", "B", "C"]
     let mesa = ["A"]
-    let sillabloquea = ["A1", "D38", "D39", "D40","E64", "D52", "D53", "D54","E57"]
+    let sillabloquea = ["C19","C36", "D54"]
     let sillesSAmor = ["I49", "I50", "I53", "I51", "I52", "I66", "I67", "I68", "I69", "J70", "J71", "J72", "J73", "J87", "J88", "J89", "J90"]
     let sillasAmor = ["K5", "L22", "L23", "L24", "L25", "L39", "L40", "L41", "L42", "M43", "M44", "M45", "M46", "M60", "M61", "M62", "M63"]
     const randon = sessionStorage.getItem("random") || ""
@@ -383,7 +383,7 @@ function MesasView({ text, status, list }) {
     if ((envotid == '7EZFQ6') && (![...sillabloquea, ...sillasAmor, ...sillesSAmor].includes(text) && clienteInfo() == null)) {
       $.confirm({
         title: 'Mesas Habilitadas',
-        content: 'En esta localidad solo están habilitadas las siguientes sillas inidividuales en las localidades:<br><strong>Señorazo</strong><br><strong> A1, D38, D39, D40, D52, D53, D54, E57</strong><br>'+
+        content: 'En esta localidad solo están habilitadas las siguientes sillas inidividuales en las localidades:<br><strong>Señorazo</strong><br><strong> C19,C36, D54</strong><br>'+
           '<br><strong>Amor</strong><br><strong>I49, I50, I53, I51, I52, I66, I67, I68, I69, J70, J71, J72, J73, J87, J88, J89, J90</strong><br>'+
         '<br><strong>Despecho</strong><br><strong>K5, L22, L23, L24, L25, L39, L40, L41, L42, M43, M44, M45, M46, M60, M61, M62, M63</strong>',
         type: 'blue',

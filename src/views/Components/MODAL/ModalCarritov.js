@@ -109,12 +109,12 @@ const ModalCarritoView = (prop) => {
             })
         window.gtag('event', 'remove_from_cart', {
             currency: "USD",
-            value: (e.valor*e.cantidad),
+            value: (e.valor * e.cantidad),
             items: [
                 {
                     item_id: e.localidad,
                     item_name: e.id,
-                    affiliation: "Moald Carrito",             
+                    affiliation: "Moald Carrito",
                     price: e.valor,
                     quantity: e.cantidad
                 }
@@ -227,7 +227,7 @@ const ModalCarritoView = (prop) => {
             E.addEventListener("click", function () {
                 if (!hasExecuted) {
                     // Coloca aquí el código que deseas ejecutar una sola vez
-                  //  console.log("Función ejecutada");
+                    //  console.log("Función ejecutada");
                     let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
 
 
@@ -245,15 +245,15 @@ const ModalCarritoView = (prop) => {
                         let user = getDatosUsuariosLocalStorag()
                         setSpiner("")
                         localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
-                           // console.log(consulta.espacio, consulta.idcolor)
-                           // console.log(ouput)
+                            // console.log(consulta.espacio, consulta.idcolor)
+                            // console.log(ouput)
                             let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
                             let nuevoObjeto = []
-                           /* ReactGA.event({
-                                category: user.cedula,
-                                action: "" + consulta.localidad,
-                                label: "mapa"+CODIGO,
-                            })*/
+                            /* ReactGA.event({
+                                 category: user.cedula,
+                                 action: "" + consulta.localidad,
+                                 label: "mapa"+CODIGO,
+                             })*/
                             if (ouput.data.find(e => e.typo == "fila")) {
                                 ouput.data.forEach(x => {
                                     if (!nuevoObjeto.some(e => e.fila == x.fila)) {
@@ -315,14 +315,14 @@ const ModalCarritoView = (prop) => {
                                     estado: "Esta loclidad no tiene disponibles  "
                                 })) : ''
                                 // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
-                           /*     console.log(
-                                    {
-                                        disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
-                                        proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
-                                        pagados: sleccionlocalidad.pagados,
-                                        inpagos: sleccionlocalidad.inpagos
-                                    }
-                                )*/
+                                /*     console.log(
+                                         {
+                                             disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
+                                             proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
+                                             pagados: sleccionlocalidad.pagados,
+                                             inpagos: sleccionlocalidad.inpagos
+                                         }
+                                     )*/
                                 usedispatch(updateboletos({
                                     disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
                                     proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
@@ -338,9 +338,9 @@ const ModalCarritoView = (prop) => {
                             return
                         }
                         ).catch(err =>
-                         
+
                             console.log(err)
-                        
+
                         )
 
                         return
@@ -351,7 +351,7 @@ const ModalCarritoView = (prop) => {
         }) : ''
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
     function Abririlocalfirt(e) {
-       // console.log(e)
+        // console.log(e)
         // console.log(sleccionlocalidad.pagados )
         // console.log((sleccionlocalidad.pagados > 10))
         //console.log(sleccionlocalidad)
@@ -367,7 +367,7 @@ const ModalCarritoView = (prop) => {
             return
         }
         if (sleccionlocalidad.pagados >= 10) {
-           // console.log("aqui se quedo")
+            // console.log("aqui se quedo")
             usedispatch(setToastes({
                 show: true,
                 message: "Están en proceso, o llegaste al limite de compra",
@@ -383,7 +383,7 @@ const ModalCarritoView = (prop) => {
             let consulta = precios.precios.find((F) => F.idcolor == e.idcolor)
             let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
 
-           // console.log(e.espacio, e.idcolor, color, precios)
+            // console.log(e.espacio, e.idcolor, color, precios)
             /*ReactGA.event({
                 category: user.cedula,
                 action: "" + consulta.localidad,
@@ -423,7 +423,7 @@ const ModalCarritoView = (prop) => {
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                     usedispatch(filtrarlocali(nuevoObjeto))
                     sessionStorage.seleccionmapa = JSON.stringify(e)
-                    
+
                     abrirlocalidad()
 
                 }
@@ -471,12 +471,12 @@ const ModalCarritoView = (prop) => {
                         })) : ''
                     usedispatch(cargarmapa(color))
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
-                  /*  console.log({
-                        disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
-                        proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado").length,
-                        inpagos: sleccionlocalidad.inpagos
-                    })
-*/
+                    /*  console.log({
+                          disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
+                          proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado").length,
+                          inpagos: sleccionlocalidad.inpagos
+                      })
+  */
 
                     sessionStorage.seleccionmapa = JSON.stringify(e)
                     abrirlocalidad()
@@ -485,15 +485,15 @@ const ModalCarritoView = (prop) => {
             }
             ).catch(err =>
                 console.log(err)
-            
+
             )
         }
     }
     let hasExecuted = false;
-    
+
     function cerrar() {
         let user = getDatosUsuariosLocalStorag()
-      
+
         window.gtag('event', 'cerrar carrito', {
             event_category: 'something_something',
             event_label: 'test',
@@ -808,7 +808,7 @@ const ModalCarritoView = (prop) => {
                                         {modalshow.nombre == "ModalCarritov" ?
                                             (sessionStorage.getItem("eventoid") == "5UY4DT") ?
 
-                                                precios.precios.sort((a, b) => (a.precio_tarjeta > b.precio_tarjeta ? 1 : -1) && (a.id > b.id ? 1 : -1)).map((elm, i) => {
+                                                precios.precios.sort((a, b) => (a.precio_normal < b.precio_normal ? 1 : -1) && (a.id > b.id ? 1 : -1)).map((elm, i) => {
                                                     return (
                                                         <div className="" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                             <SvgselectView
@@ -829,7 +829,7 @@ const ModalCarritoView = (prop) => {
                                 <div className="col-12 d-flex justify-content-center">
                                     <div className=" container-fluid d-flex  justify-content-between py-2  px-0 flex-wrap pb-2   align-items-center  p-0">
                                         {sessionStorage.getItem("eventoid") != "YZPQQ3" && precios.precios.length > 0 ?
-                                            precios.precios.sort((a, b) => (a.precio_normal > b.precio_normal ? 1 : -1) && (a.id > b.id ? 1 : -1)).map((elm, i) => {
+                                            precios.precios.sort((a, b) => (a.precio_normal - b.precio_normal )).map((elm, i) => {
                                                 return (
                                                     <div className="d-flex flex-row mx-1 mb-1 py-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                         <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: elm.color }}></div>

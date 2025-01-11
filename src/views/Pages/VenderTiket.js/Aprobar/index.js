@@ -77,7 +77,7 @@ export default function AprobarView() {
             'aria-controls': `simple-tabpanel-${index}`,
         };
     }
-    let [datos,stDatos] = useState(false)
+    let [datos, stDatos] = useState(false)
     function refrescar() {
         //stDatos(true)
         ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
@@ -150,13 +150,13 @@ export default function AprobarView() {
             console.log(err)
         })
     }
-  
+
     useEffect(() => {
         // ListaPrecios()
-        //console.log(ticket.ticket)
+        console.log(ticket.ticket)
         setFechaRange(moment(states[0].startDate.toLocaleDateString("en-US")).format("MM/DD/YYYY") + " - " + moment(states[0].endDate.toLocaleDateString("en-US")).format("MM/DD/YYYY"))
-        !ticket.ticket ? "" :cargar()
-           
+        cargar()
+
     }, [ticket.ticket])
     let precio = {
         1: 20,
@@ -173,9 +173,10 @@ export default function AprobarView() {
         23: 0,
         22: 0
     }
-    function cargar (){
-        
-        stDatos(true)
+    function cargar() {
+        console.log(ticket.ticket)
+        stDatos(ticket.ticket)
+
         ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
             //console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
             console.log(e)
@@ -281,7 +282,7 @@ export default function AprobarView() {
             }
         });
         $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
-          
+
             let startDate = moment(picker.startDate.format('MM-DD-YYYY'))
             let endDate = moment(picker.endDate.format('MM-DD-YYYY'))
             let fechastart = new Date(startDate._i)
@@ -293,18 +294,13 @@ export default function AprobarView() {
                     "key": "selection"
                 }
             }
-            // usedispatch(setCompras({ compras: compras }))
-            //usedispatch(setLabels({ labels: [...labelne] }))
             usedispatch(setlisticket({ ticket: true }))
             usedispatch(setFecha({ fecha: [items.selection] }))
-            //console.log(moment(item.selection.startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format())
-            //return
-            console.log(items)
             setFechaRange(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'))
             $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
             setAlert("")
             setMetodo("")
-           stDatos(true)
+            stDatos(true)
             ListarRegistropaneFecha(moment(picker.startDate.format('MM-DD-YYYY')).format().replace(" ", ""), picker.endDate.format('MM/DD/YYYY')).then(e => {
                 //console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
                 //console.log(e)
@@ -531,15 +527,15 @@ export default function AprobarView() {
         is3D: false,
     };
     function filtrarArray(array, fechaInicio, fechaFin, nombre, forma_pago) {
-       // stDatos(false)
-        return array.filter((elem=>elem.forma_pago!="CORTESIA")).filter((element) => {
+        // stDatos(false)
+        return array.filter((elem => elem.forma_pago != "CORTESIA")).filter((element) => {
             const fechaElemento = new Date(element.fechaCreacion.split(" ")[0]);
             const cumpleRangoFecha = (!fechaInicio || fechaElemento >= new Date(fechaInicio)) &&
                 (!fechaFin || fechaElemento <= new Date(fechaFin));
             const cumpleNombre = !nombre || element.concierto === nombre;
             const cumpleFormaPago = !forma_pago || element.forma_pago === forma_pago;
             //return cumpleRangoFecha && cumpleNombre && cumpleFormaPago;
-            
+
             return cumpleNombre && cumpleFormaPago;
         });
 
@@ -604,7 +600,7 @@ export default function AprobarView() {
             return "593" + dato
         } else return undefined;
     }
-  
+
     let labels = {
         0: "Días hasta hoy",
         1: "Días a partir de hoy"
@@ -831,7 +827,7 @@ export default function AprobarView() {
                         })} fileName={"Todos Expirados"} label={"Expirados"} /> :
                         ""}
                 {tiketslist.filter(e => e.estado_pago == "Comprobar").length > 0 ?
-                    <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar",'')).map(f => {
+                    <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar", '')).map(f => {
                         return {
                             ID_Registro: f.id,
                             ID_USUARIO: f.id_usuario,
@@ -882,10 +878,11 @@ export default function AprobarView() {
                                         tableLayout: 'flex'
                                     }
                                 }}
+                                
                                 enableRowActions
-                                initialState={{ showColumnFilters: false }} //show filters by default
+                                initialState={{ showColumnFilters: false, density: 'compact', }} //show filters by default
                                 positionActionsColumn="first"
-                                state={{ isLoading: datos  }}
+                                state={{ isLoading: datos }}
                                 muiCircularProgressProps={{
                                     color: 'secondary',
                                     thickness: 5,
@@ -1024,6 +1021,10 @@ export default function AprobarView() {
                                         tableLayout: 'flex'
                                     }
                                 }}
+                                enableDensityToggle // Activa el botón de toggle para densidad
+                                initialState={{
+                                    density: 'compact', // Configuración inicial de densidad
+                                }}
                                 enableRowActions
                                 positionActionsColumn="first"
                                 renderRowActions={({ row }) => (
@@ -1072,6 +1073,10 @@ export default function AprobarView() {
                                         tableLayout: 'flex'
                                     }
                                 }}
+                                enableDensityToggle // Activa el botón de toggle para densidad
+                                initialState={{
+                                    density: 'compact', // Configuración inicial de densidad
+                                }}
                                 enableRowActions
                                 positionActionsColumn="first"
                                 renderRowActions={({ row }) => (
@@ -1110,6 +1115,10 @@ export default function AprobarView() {
                                     sx: {
                                         tableLayout: 'flex'
                                     }
+                                }}
+                                enableDensityToggle // Activa el botón de toggle para densidad
+                                initialState={{
+                                    density: 'compact', // Configuración inicial de densidad
                                 }}
                                 enableRowActions
                                 positionActionsColumn="first"

@@ -30,6 +30,7 @@ export const PagoRapido = async (transaccion) => {
             "nombreConcierto": e.nombreConcierto,
             "id_localidad": e.localidaEspacio["idcolor"],
             "idespaciolocalida": e.localidaEspacio["ideprecio"],
+            "CODIGEVENTO": codigoEvento,
             "cantidad": e.cantidad,
             "localidad_nombre": e.localidad,
             "localidad_precio": (discapacidad == 'Si') ? parseFloat(e.localidaEspacio["precio_discapacidad"]) : parseFloat(e.valor),

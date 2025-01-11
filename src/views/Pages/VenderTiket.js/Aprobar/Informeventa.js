@@ -781,6 +781,10 @@ export default function AprobarView() {
                                         tableLayout: 'flex'
                                     }
                                 }}
+                                enableDensityToggle // Activa el botón de toggle para densidad
+                                initialState={{
+                                    density: 'compact', // Configuración inicial de densidad
+                                }}
                                 enableRowActions
                                 positionActionsColumn="first"
                                 renderRowActions={({ row }) => (
@@ -831,6 +835,10 @@ export default function AprobarView() {
                                     sx: {
                                         tableLayout: 'flex'
                                     }
+                                }}
+                                enableDensityToggle // Activa el botón de toggle para densidad
+                                initialState={{
+                                    density: 'compact', // Configuración inicial de densidad
                                 }}
                                 enableRowActions
                                 positionActionsColumn="first"

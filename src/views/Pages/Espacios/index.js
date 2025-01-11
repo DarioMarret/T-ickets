@@ -250,18 +250,14 @@ const EventosViews = () => {
           <br /><br />
 
           <div className="card card-primary card-outline text-left">
-            <div className="card-header pb-3">
-              Eventos
-            </div>
             <div className="">
-
-
               <MaterialReactTable
                 columns={columns}
                 data={listaEsp}
                 initialState={
                   {
-                    columnVisibility: { id: false }
+                    columnVisibility: { id: false },
+                      density: 'compact',
                   }
                 }
                 muiTableBodyProps={{

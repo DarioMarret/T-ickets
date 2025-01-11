@@ -351,25 +351,26 @@ const SuscritorViews = () => {
                     tableLayout: 'fixed'
                   }
                 }}
+                enableDensityToggle
+                initialState={{
+                  density: 'compact', 
+                }}
                 enableRowActions
                 renderRowActions={({ row }) => (
                   <Box sx={{ display: 'flex' }}>
                     <IconButton
                       color="error"
-                      onClick={() => abbrir(row)}
-                    >
+                      onClick={() => abbrir(row)}>
                       <Visibility />
                     </IconButton>
                   </Box>
                 )}
                 positionToolbarAlertBanner="bottom"
-                localization={MRT_Localization_ES}
-              />
+                localization={MRT_Localization_ES}/>
             </div>
           </div>
         </div>
       </div>
-
       <ModalSuscritoView
         show={show}
         setshow={setshow}
