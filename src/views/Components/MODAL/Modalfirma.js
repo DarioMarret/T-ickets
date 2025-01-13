@@ -11,6 +11,7 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { Boleteria_Boletos, Boleteria_voucher } from "utils/EventosQuery/index";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { boleteriaAxios } from "utils/index";
+import { Emailcontec } from "utils/Emails/index";
 export default function ModalFirma() {
     let usedispatch = useDispatch()
     const [files, setFiles] = useState([]);
@@ -217,6 +218,17 @@ export default function ModalFirma() {
                 let boletos = JSON.stringify({ ...detallid, ...boleto.datos })
                 console.log(boletos)
                 sessionStorage.setItem("Detalleuid", boletos)
+                if (!clienteInfo()) {
+                    let texto = "Nuevo registro de firma de " + getDatosUsuariosLocalStorag().cedula;
+                    Emailcontec({ movil: formatearNumero(data.movil), text: texto }).then(sal => {
+                        console.log(sal)
+
+                        window.location.reload()
+                    }).catch(err => {
+                        console.log(err)
+
+                    })
+                }
                 window.location.reload()
             }
             console.log(boleto, {
@@ -228,7 +240,7 @@ export default function ModalFirma() {
             return data.link
 
         } catch (error) {
-           // setLoading(false)
+            // setLoading(false)
             $.alert("Hubo un error. Verifique el formato de la imagen proporcionada.")
             console.log(error)
             return null
@@ -276,7 +288,7 @@ export default function ModalFirma() {
                             <button className="btn btn-danger" id="limpiar">Limpiar</button>
                         </div>
                         <div>
-                            <button disabled={(files.length == 0||loading)} className="btn btn-success" id="descarga">Firmar</button>
+                            <button disabled={(files.length == 0 || loading)} className="btn btn-success" id="descarga">Firmar</button>
                         </div>
                     </div>
 

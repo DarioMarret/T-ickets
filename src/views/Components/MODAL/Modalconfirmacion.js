@@ -14,6 +14,7 @@ import { registraPagos } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { cambiarMetodo } from "utils/pagos/Queripagos";
 import { OCRApi } from "utils/Querycomnet";
+import { Emailcontec } from "utils/Emails/index";
 const ModalConfima = (prop) => {
     const { pararcontador } = prop
     let usedispatch = useDispatch()
@@ -131,8 +132,8 @@ const ModalConfima = (prop) => {
             try {
                 setEstado(true)
                 const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
-               console.log(link)
-                if(link==null){
+                console.log(link)
+                if (link == null) {
                     usedispatch(
                         setToastes({
                             show: true,
@@ -140,7 +141,7 @@ const ModalConfima = (prop) => {
                             color: 'bg-warning',
                             estado: 'Hubo un error'
                         }))
-                        setEstado(false)
+                    setEstado(false)
                     return;
                 }
                 setTimeout(async function () {
@@ -149,12 +150,12 @@ const ModalConfima = (prop) => {
                         "url": link,
                         "cedula": clienteInfo() ? modal.estado.cedula : getDatosUsuariosLocalStorag().id,
                         "valor_pagar": (parseFloat(modal.estado.total_pago)).toFixed(2)
-                })
+                    })
                     OCRApi({
                         "cedulaBeneficiario": "0923980742",
                         "url": link,
                         "cedula": clienteInfo() ? modal.estado.cedula : getDatosUsuariosLocalStorag().id,
-                        "valor_pagar": (parseFloat(modal.estado.total_pago) ).toFixed(2)
+                        "valor_pagar": (parseFloat(modal.estado.total_pago)).toFixed(2)
                     }).then(ocroupt => {
                         console.log(ocroupt)
                         if (ocroupt.success) {
@@ -185,6 +186,15 @@ const ModalConfima = (prop) => {
                                 }
                             }).catch(erro => {
                                 console.log(erro)
+                                if (!clienteInfo()) {
+                                    let texto = "Nuevo registro de pago de " + getDatosUsuariosLocalStorag().cedula;
+                                    Emailcontec({ movil: ["593980441911", "593991916096"], text: texto }).then(sal => {
+                                        console.log(sal)
+                                    }).catch(err => {
+                                        console.log(err)
+
+                                    })
+                                }
                                 setEstado(true)
                                 usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
                             })
@@ -192,9 +202,9 @@ const ModalConfima = (prop) => {
                             usedispatch(setToastes({
                                 show: true, message: ocroupt.message + "\n \n"
 
-                                    + "Beneficiario: " + ocroupt.data.beneficiario + "\n" + "Banco: " + ocroupt.data.banco + "\n" +"comprobante: "+ ocroupt.data.numero_documento + "\n"
+                                    + "Beneficiario: " + ocroupt.data.beneficiario + "\n" + "Banco: " + ocroupt.data.banco + "\n" + "comprobante: " + ocroupt.data.numero_documento + "\n"
                                     + "fecha: " + ocroupt.data.fecha, color: 'bg-danger', estado: 'Comuníquese con un acceso al número  +593980008000/+593969305316'
-                        }))
+                            }))
                             setEstado(false)
                         }
                     }).catch(salid => {
@@ -254,6 +264,10 @@ const ModalConfima = (prop) => {
                             usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
                             usedispatch(setModal({ nombre: '', estado: '' }))
                             setTimeout(function () {
+                                if (!clienteInfo()) {
+                                    let texto = "Nuevo registro de pago de " + getDatosUsuariosLocalStorag().cedula;
+                                    Emailcontec({ movil: ["593980441911", "593991916096"], text: texto }).then(opu => console.log(opu))
+                                }
                                 //  window.location.reload()
                             }, 1000)
 

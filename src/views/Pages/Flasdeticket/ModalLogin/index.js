@@ -29,7 +29,6 @@ const ModalLogin = (props) => {
   const handleSubmit = async (event) => {
     var hoy = new Date();
     event.preventDefault();
-    //console.log(credenciales)
     if (credenciales.username !== '' && credenciales.pass !== '') {
 
       try {
@@ -40,9 +39,6 @@ const ModalLogin = (props) => {
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
           }
         })
-        /*
-        const { data } = await Authsucrito({ email: credenciales.username.trim(), password: credenciales.pass.trim() },)
-        */
         if (data.success) {
           const cedula = await getCedula(data.data.cedula)
           let client = {
@@ -56,8 +52,6 @@ const ModalLogin = (props) => {
           sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
           sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
           usedispatch(addususcritor({ ...client }))
-          // setShowToass(true)
-          // setmessage("Bienvenido " + data.data.nombreCompleto)
           ReactGA.event({
             category: "" + data.data.cedula,
             action: "login",
@@ -71,9 +65,6 @@ const ModalLogin = (props) => {
             color: 'bg-success',
             estado: "Inicio Exitoso",
           }))
-
-          /*  Modalstatus.estado != "" ? abrir(Modalstatus.estado) : ''
-            usedispatch(setModal({ nombre: '', estado: '' }))*/
           console.log(Modalstatus.estado)
           Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado == null ? "" : 'ModalDetalle', estado: '' })) : usedispatch(setModal({ nombre: "", estado: '' }))
           if (randon) {
@@ -88,7 +79,6 @@ const ModalLogin = (props) => {
               console.log(err)
             })
           }
-          // usedispatch(setModal({ nombre: '', estado: '' }))
         }
         else {
           usedispatch(setToastes({
@@ -97,13 +87,9 @@ const ModalLogin = (props) => {
             color: 'bg-danger',
             estado: "Hubo un error",
           }))
-
-          // usedispatch(setToastes({ show: true, message: data.message, color: 'bg-success', estado: 'Se guardo el numero de control'}))
         }
       } catch (error) {
         console.log(error)
-        //setShowToas(true)
-        //setmessage("Hubo un error Verifique correo y contraseña e intente de nuevo")
         usedispatch(setToastes({
           show: true,
           message: "Hubo un error Verifique correo y contraseña e intente de nuevo",

@@ -10,14 +10,11 @@ import { cargarMapa } from "utils/MapaQuery";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { cargalocalidad, clearMapa } from "StoreRedux/Slice/mapaLocalSlice";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
-import { Eventoid, listaasiento } from "utils/constantes";
-//import ModalCarritoView from "./Modal/ModalCarritoadmin";
+import { Eventoid } from "utils/constantes";
 import { Cargarsillas } from "views/Components/MODAL/cargarsillas";
 import ModalPago from "views/Components/MODAL/ModalPago";
-//import ModalLocalidamapViews from "./Modal/ModalloaclidadAdmin"
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
 import ModalCarritov from "views/Components/MODAL/ModalCarritov";
-//import ModalDetalle from "./Modal/ModalDetalle";
 import ModalDetalle from "views/Components/MODAL/ModalDetalle";
 import ModalEfectivo from "./Modal/Modalefectivo";
 import ModalSuscritoView from "../Suscriptores/ModalSuscritor";
@@ -26,20 +23,17 @@ import "swiper/css/effect-flip";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/effect-cards";
-import { EffectFlip, Pagination, Navigation, EffectCards } from "swiper";
+import { EffectFlip, Pagination, Navigation } from "swiper";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import 'moment-timezone'
 import 'moment/locale/es';
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { cargarsilla } from "StoreRedux/Slice/sillasSlice";
-import { seleccionmapa } from "utils/constantes";
 import { Eventolocalidad } from "utils/constantes";
-import { filtrarlocali } from "StoreRedux/Slice/mapaLocalSlice";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { ListaElimnaLCompleta } from "utils/CarritoLocalStorang";
 import { quitarsilla } from "utils/Querypanelsigui";
-import { correlativodelete } from "utils/Querypanelsigui";
 import { GetSuscritores } from "utils/SuscritorQuery";
 import { espacio } from "utils/constantes";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
@@ -52,7 +46,6 @@ import ReporteView from "views/Components/MODAL/ModalReporte";
 import { Seleccionaruserlista } from "utils/userQuery";
 import { agregaReserva } from "utilsstile.js/guardarEventos";
 import { Listarticketporestado } from "utils/userQuery";
-import { useGetSuscritorQuery } from "StoreRedux/Slicequery/querySlice";
 import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import EventosView from "../Flasdeticket/Eventosindex";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
@@ -68,7 +61,6 @@ export default function StoreTickesViews() {
     const [Eventos, setEvento] = useState([])
     const [spinervi, setspinervi] = useState("d-none")
     const [showMapa, setMapashow] = useState(false);
-    const [showshop, handleClosesop] = useState(false);
     const [showDetalle, setDetalle] = useState(false)
     const [modalPago, setModalPago] = useState(false);
     const [precios, setPrecios] = useState({ precios: [], pathmapa: [], mapa: '' })
@@ -80,33 +72,10 @@ export default function StoreTickesViews() {
     const intervalRef = useRef(null);
 
     const intervalolista = useRef(null)
-    function filterlocal(id, consulta) {
-        let nuevo = []
-        id.forEach((elm, i) => {
-            let espacifica = JSON.parse(sessionStorage.getItem(seleccionmapa)) ? JSON.parse(sessionStorage.getItem(seleccionmapa)) : { id: null }
-            if (consulta.findIndex(f => f.id === elm) != -1) {
-                nuevo[i] = consulta[consulta.findIndex(f => f.id === elm)]
-                if (espacifica.id != null) {
-                    espacifica.idcolor === consulta[consulta.findIndex(f => f.id === elm)].id ?
-                        usedispatch(filtrarlocali(JSON.parse(consulta[consulta.findIndex(f => f.id === elm)].mesas_array).datos)) : ''
-                }
-            }
-        })
-        usedispatch(cargalocalidad(nuevo))
-    }
-    const consultarlocalidad = () => {
-        /* let id = JSON.parse(sessionStorage.getItem(Eventolocalidad))
-         intervalRef.current = setInterval(function () {
-             ListarLocalidad().then(ouput => {
-                // filterlocal(id, ouput.data)
-             }
-             ).catch(exit => console.log(exit))
-         }, 2000);*/
-    }
     function detenervelocidad() {
         let sillasatos = verAsientos()
         let user = getDatosUsuariosLocalStorag()
-        console.log("qitoa")
+       // console.log("qitoa")
         clearInterval(intervalRef.current)
         clearInterval(intervalRef.current)
         setMapashow(false)
@@ -137,15 +106,7 @@ export default function StoreTickesViews() {
             })
             : sillasatos.map((elem, index) => {
                 setTimeout(function () {
-                    console.log({
-                        "estado": "disponible",
-                        "cedula": user.cedula,
-                        "cantidad": 0,
-                        "mesa": [
-                            { ...elem }
-                            // , ...data
-                        ]
-                    })
+                   
                     correlativosadd({
                         "estado": "disponible",
                         "cedula": user.cedula,
@@ -177,7 +138,7 @@ export default function StoreTickesViews() {
         try {
             const data = await cargarEventoActivo("ACTIVO/")
             const dataS = await cargarEventoActivo("PROCESO/")
-            console.log(data, dataS)
+            //console.log(data, dataS)
             
             const filtro = data != null ?  data.filter((e) => {
                 const fechaConcierto = parse(e.fechaConcierto + " 23:59:59", 'yyyy-MM-dd HH:mm:ss', new Date());
@@ -193,7 +154,7 @@ export default function StoreTickesViews() {
                 // Comparar las fechas
                 return isAfter(fechaConcierto, fechaActual);
             }) : []
-            console.log(filtro, filtroS)
+            //console.log(filtro, filtroS)
             setEvento([...filtro, ...filtroS].sort(sorter))
             const susct = await GetSuscritores()
             //console.log(data, susct)
@@ -230,7 +191,7 @@ export default function StoreTickesViews() {
         try {
             let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
             let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
-            console.log(seleccionuser)
+           // console.log(seleccionuser)
             //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
             if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
                 setspinervi("d-none")
@@ -259,6 +220,7 @@ export default function StoreTickesViews() {
              }*/
 
             else {
+               
                 //seleccionuser.data.length > 0  datos= await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
                 let obten = await listarpreciolocalidad(e.codigoEvento)
                 const listalocal = await ListarLocalidad("")
@@ -266,15 +228,16 @@ export default function StoreTickesViews() {
                 sessionStorage.consierto = e.nombreConcierto
                 if (obten.data.length > 0) {
                     let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
+                    console.log("listad",listalocal)
                     let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
                     console.log(mapalocal, mapa, localidades)
                     let localidad = JSON.parse(mapa[0].localidad)
                     let path = JSON.parse(mapa[0].pathmap)
-                    console.log(obten.data.filter(e => e != undefined))
+                   // console.log(obten.data.filter(e => e != undefined))
                     let newprecios = obten.data.filter(e => e != undefined).map((g, i) => {
-                        console.log(obten.data)
+                       // console.log(obten.data)
                         let color = localidad.filter((f, i) => f.nombre.trim() == g.localidad.trim()).filter(e => e != undefined)
-                        console.log(localidad)
+                       // console.log(localidad)
                         if (color.length > 0) {
                             g.color = color[0].color
                             g.idcolor = color[0].id
@@ -311,7 +274,7 @@ export default function StoreTickesViews() {
                     sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
                         return e
                     }))]))
-                    console.log(colornuevo)
+                    //console.log(colornuevo)
                     usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
                     let nuevosdatos = {
                         precios: newprecios,
@@ -322,7 +285,7 @@ export default function StoreTickesViews() {
                     sessionStorage.eventoid = e.codigoEvento
                     setPrecios(nuevosdatos)
                     setDatoscon(e)
-                    consultarlocalidad()
+                  
                     console.log(colornuevo.filter((e) => e != undefined))
                     Cargarsillas([...colornuevo.filter((e) => e != undefined)]).then(outp => {
                         setspinervi("d-none")
@@ -526,7 +489,7 @@ export default function StoreTickesViews() {
             />
             {alert}
 
-            {clienteInfo().perfil != "vendedores" ? <Row className=" ">
+            {clienteInfo().perfil != "vendedores" ? <Row className=" d-none ">
                 <Col lg="3" sm="6">
                     <Card className="card-stats">
                         <Card.Body>

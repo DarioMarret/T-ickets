@@ -288,7 +288,7 @@ export function GetEstadousu() {
 
 
 export function GetValores() {
-  
+
     let tag = JSON.parse(sessionStorage.getItem(CarritoTicket));
     let codicontry = sessionStorage.getItem("codicontry") ? sessionStorage.getItem("codicontry") : false
     let evento = JSON.parse(sessionStorage.getItem("infoevento"))
@@ -305,6 +305,9 @@ export function GetValores() {
 
     var iva = 0
     if (tag !== null) {
+        let cantidadTotal = tag.reduce((total, concierto) => {
+            return total + concierto.cantidad;
+        }, 0);
         tag.map(tienda2 => {
             //tienda2.localidaEspacio.descuento>0
             if (false) {
@@ -317,7 +320,7 @@ export function GetValores() {
                     tienda2.valor = (parseFloat(tienda2.localidaEspacio["precio_descuento"]) * parseInt(tienda2.cantidad))
 
                 } else {
-                    let valores = (user.discapacidad == 'Si') ? tienda2.localidaEspacio["precio_discapacidad"] : tienda2.valor
+                    let valores = (user.discapacidad == 'Si' && cantidadTotal == 1) ? tienda2.localidaEspacio["precio_discapacidad"] : tienda2.valor
                     tienda2.valor = (parseFloat(valores) * parseInt(tienda2.cantidad))
                 }
             }
@@ -334,7 +337,7 @@ export function GetValores() {
                 descrption = tienda.nombreConcierto
                 sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
             } else {
-                let valores =  tienda.valor
+                let valores = tienda.valor
                 subtotal += valores
                 descrption = tienda.nombreConcierto
                 sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
@@ -352,7 +355,7 @@ export function GetValores() {
 
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
-            comision_bancaria: evento.codigoEvento != "VI1U84" ? (total.toFixed(2) * 0.08).toFixed(2):0,
+            comision_bancaria: evento.codigoEvento != "VI1U84" ? (total.toFixed(2) * 0.08).toFixed(2) : 0,
             subtotal: parseFloat(valor).toFixed(2) - parseFloat(sumcomision.toFixed(2)),
             description: descrption,
             comision: parseFloat(sumcomision).toFixed(2),

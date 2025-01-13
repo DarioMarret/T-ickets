@@ -14,6 +14,7 @@ import { registraPagos } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { cambiarMetodo } from "utils/pagos/Queripagos";
 import { OCRApi } from "utils/Querycomnet";
+import { Emailcontec } from "utils/Emails/index";
 const ModalReportar_pago = (prop) => {
     const { pararcontador } = prop
     let usedispatch = useDispatch()
@@ -167,6 +168,15 @@ const ModalReportar_pago = (prop) => {
                             usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
                             usedispatch(setModal({ nombre: '', estado: '' }))
                             setTimeout(function () {
+                                if (!clienteInfo()) {
+                                    let texto = "Nuevo registro de pago de " + getDatosUsuariosLocalStorag().cedula;
+                                    Emailcontec({ movil: ["593980441911","593991916096"], text: texto }).then(sal => {
+                                        console.log(sal)
+                                    }).catch(err => {
+                                        console.log(err)
+
+                                    })
+                                }
                                 window.location.reload()
                             }, 1000)
                         }

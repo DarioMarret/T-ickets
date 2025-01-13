@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { Modal,  Form } from "react-bootstrap"
+import { Modal, Form } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { DatosUsuariocliente } from "utils/constantes"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
@@ -16,6 +16,7 @@ import { buscarcliente } from "utils/Querypanelsigui"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 import { Emailcontec } from "utils/Emails"
+import { formatearNumero } from "utils/Emails/index"
 const ResgistroView = (prop) => {
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
@@ -138,9 +139,6 @@ const ResgistroView = (prop) => {
             })
         }
 
-    }
-    function Suscritosfirs() {
-        usedispatch(setModal({ nombre: '', estado: '' }))
     }
 
     async function Registeruser(e) {
@@ -277,11 +275,11 @@ const ResgistroView = (prop) => {
                             estado: "Inicio Exitoso",
                         }))
                         console.log(modal.estado)
-                        modal.estado != "" ? usedispatch(setModal({ nombre:"ModalDetalle", estado: '' })) : ''
+                        modal.estado == "e" ? usedispatch(setModal({ nombre: "ModalDetalle", estado: '' })) : usedispatch(setModal({ nombre: "", estado: '' }))
 
                         usedispatch(addususcritor({ users }))
-                        
-                        Emailcontec({ movil: data.movil, nombre: data.nombreCompleto, password: password.trim() ,email:data.email}).then(sal => {
+                        let texto = "*" + data.nombreCompleto + "*\nGracias por registrarse en Tickets.com.ec.\nLos datos de ingreso son:\n *Usuario*:" + data.email + "\n *Clave*:" + password.trim() + "\n\nPor favor, para validar tu cuenta digita la palabra *Si*";
+                        Emailcontec({ movil: [formatearNumero(data.movil)], nombre: data.nombreCompleto, password: password.trim(), email: data.email, text: texto }).then(sal => {
                             console.log(sal)
                         }).catch(err => {
                             console.log(err)
@@ -386,6 +384,12 @@ const ResgistroView = (prop) => {
             })
 
         });
+        if (modal.estado == "e") {
+            setPerson({
+                ...datosPerson,
+                email: modal.estado
+            })
+        }
     }, [modal.nombre == "registro" ? true : false])
 
     function regresar() {

@@ -672,7 +672,7 @@ const IndexFlas = () => {
         }
       }
     } else {
-      console.log(datosPerson)
+     /// console.log(datosPerson)
       setPerson({
         ...datosPerson,
         email: clineteLogeado.email,

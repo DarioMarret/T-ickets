@@ -4,16 +4,16 @@ import { Bodyhtml, Headerhtml } from "./cuerpo"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 
 export const Emailcontec = async (parms) => {
-    const { email, nombre, movil, direccion, producto, precio, cantidad, id,password } = parms
+    const { email, nombre, movil, direccion, producto, precio, cantidad, id,password,text } = parms
     try {
         let { data } = axios.post("https://api.flashchat.chat/backflash/qr_mensaje_external", {
             "sessionName": "1_tickets_prueba19177232201",
             "numero": [
-                formatearNumero(movil)
+                ...movil
             ],
             "mensaje": {
                 "type": "text",
-                "text": `* ${nombre}*\n gracias por registrarse en Tickets.com.ec. Los datos de ingreso son:\n *Usuario*:${email}\n *Clave*: ${password}.\n Por favor, para validar tu cuenta digita la palabra *Si*`,
+                "text":text,
                 "url": ""
 
             }
