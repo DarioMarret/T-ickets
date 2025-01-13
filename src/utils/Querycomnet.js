@@ -33,7 +33,7 @@ export const PagoRapido = async (transaccion) => {
             "CODIGEVENTO": codigoEvento,
             "cantidad": e.cantidad,
             "localidad_nombre": e.localidad,
-            "localidad_precio": (discapacidad == 'Si') ? parseFloat(e.localidaEspacio["precio_discapacidad"]) : parseFloat(e.valor),
+            "localidad_precio": (discapacidad == 'Si' && parseInt(cantidadTotal)==1) ? parseFloat(e.localidaEspacio["precio_discapacidad"]) : parseFloat(e.valor),
             "comision_por_boleto": parseInt(e.cantidad) * parseFloat(e.localidaEspacio["comision_boleto"]),
             "id_sillas": cantidadTotal == sillas.length ? [...sillas] : [],
             "iva": Eventoinfo.iva,
@@ -127,7 +127,7 @@ export const OCRApi = async (parms) => {
         })
         console.log(data)
         if (datos.success) {
-            return { ...data, success: false, data: { "beneficiario": data.data["destinatario"], ...data.data.data,"numero_documento":"Comprobante ya registrado"} }
+            return { ...data, success: false, data: { "beneficiario": data.data["destinatario"], ...data.data.data, "numero_documento": "Comprobante ya registrado" } }
         }
         return data
     } catch (error) {
