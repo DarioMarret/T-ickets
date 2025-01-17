@@ -683,7 +683,7 @@ function ModalDetalle(props) {
                                                     <td className="align-self-center">{item.nombreConcierto}</td>
                                                     <td className="align-self-center">{item.localidad}</td>
                                                     <td className="align-self-center">{item.cantidad}</td>
-                                                    <td className="align-self-center">${GetEstadousu().discapacidad == "No" ? (item.valor * item.cantidad) - (parseFloat(item.localidaEspacio.comision_boleto * item.cantidad)) : item.discapacidad * item.cantidad}</td>
+                                                    <td className="align-self-center">${(GetEstadousu().discapacidad == "Si" && item.cantidad == 1) ? item.discapacidad * item.cantidad : (item.valor * item.cantidad) - (parseFloat(item.localidaEspacio.comision_boleto * item.cantidad))}</td>
                                                 </tr>
                                             )
                                         })

@@ -3,17 +3,18 @@ import { degrees, PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { useState } from "react";
 import { Buffer } from "buffer";
 import axios from "../../../../node_modules/axios/index";
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, Space, Upload } from 'antd';
 import { Dropzone, FileMosaic } from "@files-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { Boleteria_Boletos, Boleteria_voucher } from "utils/EventosQuery/index";
-import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { clienteInfo, getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { boleteriaAxios } from "utils/index";
-import { Emailcontec } from "utils/Emails/index";
+import { useHistory } from "react-router";
+import { Emailcontec, formatearNumero } from "utils/Emails/index";
+import { buscarcliente } from "utils/Querypanelsigui";
 export default function ModalFirma() {
     let usedispatch = useDispatch()
+    let history = useHistory()
     const [files, setFiles] = useState([]);
     let detallid = JSON.parse(sessionStorage.getItem("Detalleuid"))
     let modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -228,8 +229,24 @@ export default function ModalFirma() {
                         console.log(err)
 
                     })
+                    return
                 }
-                window.location.reload()
+               
+                buscarcliente({
+                    "cedula": modal.estado.cedula ,
+                    "email": ''
+                }).then(oupt => {
+                    sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
+                    cerrar()
+                    history.push("/admin/suscritor/" + oupt.data.id + "")
+
+
+                }
+
+                ).catch(err => {
+                })
+                cerrar()
+                // window.location.reload()
             }
             console.log(boleto, {
                 "estado": "1",

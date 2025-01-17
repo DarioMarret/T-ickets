@@ -108,7 +108,12 @@ const EventoEspecifico = () => {
             const dat = await ListarLocalidad("")
             let boletos_camjeados = await Boleteria_canje(id)
             let boletos_boleto = await Boleteria_Boletos(id)
-
+            let boletos_eventos = await Boleteria_Nombre(id)
+            setReport({
+                canje: boletos_camjeados.data,
+                boleto: boletos_boleto.data,
+                valores: boletos_eventos.data
+            })
             //}
             if (cargar.success) {
                 let datos = [...cargar.data.filter((e) => e.codigoEvento == id), ...cargasd.data.filter((e) => e.codigoEvento == id), ...cancelados.data.filter((e) => e.codigoEvento == id)]
@@ -120,12 +125,7 @@ const EventoEspecifico = () => {
                 /* console.log({
                      ...datos[0], LocalodadPrecios: precio.data,
                  })*/
-                let boletos_eventos = await Boleteria_Nombre(datos[0].nombreConcierto)
-                setReport({
-                    canje: boletos_camjeados.data,
-                    boleto: boletos_boleto.data,
-                    valores: boletos_eventos.data
-                })
+                
                 SetPrecios(precio.data)
                 const disponibles = await listarLocalidadaEspeci(infoes[0].id)
                 let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
@@ -258,9 +258,6 @@ const EventoEspecifico = () => {
     const handleExportRows = (rows) => {
         csvExporter.generateCsv(rows.map((row) => row.original));
     };
-    const handleExportData = () => {
-        //csvExporter.generateCsv(data);
-    };
 
     const [datas, setDatas] = useState([])
     async function Cambiar(i) {
@@ -350,24 +347,6 @@ const EventoEspecifico = () => {
             </SweetAlert>
         );
     };
-    const successAlertElimna = (e, i) => {
-        setAlert(
-            <SweetAlert
-                warning
-                style={{ display: "block", marginTop: "-100px" }}
-                title="Estas Seguro?"
-                onConfirm={() => Eliminar(e, i)}
-                onCancel={() => cancelDetele()}
-                confirmBtnBsStyle="success"
-                cancelBtnBsStyle="danger"
-                confirmBtnText="Confirmar"
-                cancelBtnText="Cancelar"
-                showCancel
-            >
-                Esta de acuerdo en Eliminar esta Localidad
-            </SweetAlert>
-        );
-    }
 
     const cancelDetele = () => {
         if (useradmin.perfil == 'suscriptores') return
@@ -445,7 +424,7 @@ const EventoEspecifico = () => {
         return acc;
     }, {});
     const Actualizar = async (eventos) => {
-        console.log(evento)
+        if (useradmin.perfil == 'suscriptores') return
         let param = {
             "botNumber": eventos,
             "codigoEvento": id
@@ -720,24 +699,6 @@ const EventoEspecifico = () => {
                                     </Box>
                                 )}
 
-                                /*enableRowActions
-                               /*{ renderRowActions={({ row }) => (
-                                  <Box sx={{ display: 'flex' }}>
-                                    <IconButton
-                                      color="success"
-                                      arial-label="Enviar"
-                                    >
-                                      <Share />
-                                    </IconButton>
-                                    <IconButton
-                                      color="error"
-                                      aria-label="Bloquear"
-                                    >
-                                      <Delete />
-                                    </IconButton>
-                      
-                                  </Box>
-                                )}}*/
                                 positionToolbarAlertBanner="bottom"
                                 displayColumnDefOptions={{
                                     'mrt-row-numbers': {

@@ -4,7 +4,7 @@ import { Bodyhtml, Headerhtml } from "./cuerpo"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 
 export const Emailcontec = async (parms) => {
-    const { email, nombre, movil, direccion, producto, precio, cantidad, id,password,text } = parms
+    const { email, nombre, movil, direccion, producto, precio, cantidad, id, password, text } = parms
     try {
         let { data } = axios.post("https://api.flashchat.chat/backflash/qr_mensaje_external", {
             "sessionName": "1_tickets_prueba19177232201",
@@ -13,7 +13,7 @@ export const Emailcontec = async (parms) => {
             ],
             "mensaje": {
                 "type": "text",
-                "text":text,
+                "text": text,
                 "url": ""
 
             }
@@ -87,7 +87,7 @@ export const EnviaWhast = async (parms) => {
 }
 export function formatearNumero(numero) {
     const regex = /^\+?593\d{9}$/;
-    let dato = numero.trim()
+    let dato = String(numero).trim()
     // Comprobar si el número coincide con la expresión regular
     if (regex.test(dato)) {
         return dato.replace("+", "")

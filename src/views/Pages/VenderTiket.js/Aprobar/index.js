@@ -4,7 +4,7 @@ import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Tabs, Tooltip, Tab } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Delete, Visibility, Summarize, Preview, } from '@mui/icons-material';
-
+import LinearProgress from '@mui/material/LinearProgress';
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice.js";
 import ModalAprobarViews from "./Modalventas";
@@ -17,18 +17,16 @@ import { eliminarRegistro } from "utils/pagos/Queripagos";
 import ExportToExcel from "utils/Exportelemin";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
 import { setLabels } from "StoreRedux/Slice/SuscritorSlice";
-import { DateRangePicker, defaultStaticRanges, defaultInputRanges, DateRange } from "react-date-range";
-import * as locales from 'react-date-range/dist/locale'
+import { defaultInputRanges } from "react-date-range";
 import { setCompras } from "StoreRedux/Slice/SuscritorSlice";
 import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
-import { ListaPreciosEvent } from "utils/EventosQuery";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { setFecha } from "StoreRedux/Slice/SuscritorSlice";
 import { ListarRegistropaneFecha } from "utils/pagos/Queripagos";
 import moment from "moment";
 import { setTicket } from "StoreRedux/Slice/SuscritorSlice";
 import { setlisticket } from "StoreRedux/Slice/SuscritorSlice";
-import { ExampleSlideout, Slideout } from "views/Components/slider";
+import { Slideout } from "views/Components/slider";
 import { Contactos_Boletos } from "utils/Querycomnet";
 moment.defaultFormat = "MM-DD-YYYY ";
 
@@ -45,14 +43,13 @@ export default function AprobarView() {
     let history = useHistory()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     let value = useSelector((state) => state.SuscritorSlice.tabps)
-    let compras = useSelector((state) => state.SuscritorSlice.compras)
-    let labelne = useSelector((state) => state.SuscritorSlice.labels)
     let states = useSelector((state) => state.SuscritorSlice.fecha)
     let ticket = useSelector((state) => state.SuscritorSlice)
     let datas = useSelector(state => state.SuscritorSlice.data)
     let tiketslist = useSelector(state => state.SuscritorSlice.compras)
     const [alert, setAlert] = useState("")
     const [metodos, setMetodo] = useState("")
+    const [spiner, setSpiner] = useState(false)
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
         return (
@@ -80,6 +77,7 @@ export default function AprobarView() {
     let [datos, stDatos] = useState(false)
     function refrescar() {
         //stDatos(true)
+        setSpiner(true)
         ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
             console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
             console.log(e)
@@ -112,15 +110,8 @@ export default function AprobarView() {
                 let arrprueb = []
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     elm.ticket_usuarios.map(item => {
-                        // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                        /*if (arrprueb.length == 0) {
-                            arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
-                        }*/
-                        //  console.log(item, arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
                         arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
                         if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
-                            //        console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
-                            // let cantidad = arrprueb.filter(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)[0].cantidad + 1
                             let index = arrprueb.findIndex(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
                             let cantidad = arrprueb[index].cantidad + 1
                             arrprueb[index].cantidad = cantidad
@@ -144,16 +135,16 @@ export default function AprobarView() {
                 ])
                 usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
                 usedispatch(setlisticket({ ticket: false }))
+                setSpiner(false)
                 return
             }
         }).catch(err => {
+            setSpiner(false)
             console.log(err)
         })
     }
 
     useEffect(() => {
-        // ListaPrecios()
-        console.log(ticket.ticket)
         setFechaRange(moment(states[0].startDate.toLocaleDateString("en-US")).format("MM/DD/YYYY") + " - " + moment(states[0].endDate.toLocaleDateString("en-US")).format("MM/DD/YYYY"))
         cargar()
 
@@ -176,7 +167,7 @@ export default function AprobarView() {
     function cargar() {
         console.log(ticket.ticket)
         stDatos(ticket.ticket)
-
+        setSpiner(true)
         ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
             //console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
             console.log(e)
@@ -193,6 +184,7 @@ export default function AprobarView() {
             if (e.data) {
                 const nombresUnicos = new Set();
                 stDatos(false)
+                setSpiner(false)
                 console.log(e.data)
                 e.data.filter(fe => moment(fe.fechaCreacion.split(" ")[0]).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).forEach(item => {
                     nombresUnicos.add(item.info_concierto[0].nombreConcierto);
@@ -215,7 +207,6 @@ export default function AprobarView() {
                 let order = newdatos.sort(sorter)
                 usedispatch(setCompras({ compras: order }))
                 usedispatch(setTicket({ tiketslist: order }))
-                //console.log(newdatos)
                 let arrprueb = []
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     elm.ticket_usuarios.map(item => {
@@ -241,10 +232,12 @@ export default function AprobarView() {
                 ])
                 usedispatch(setLabels({ labels: [["Localida", "evento", "ganancias"], ...datos] }))
                 usedispatch(setlisticket({ ticket: false }))
+                setSpiner(false)
                 return
             }
             stDatos(false)
         }).catch(err => {
+            setSpiner(false)
             stDatos(false)
             console.log(err)
         })
@@ -428,33 +421,21 @@ export default function AprobarView() {
                                         row.concierto = nombre[0]
                                         return { ...row }
                                     })//.filter(e => e.forma_pago =="Deposito")
-                                    //sessionStorage.setItem("datoscompras", JSON.stringify(newdatos))
                                     console.log(newdatos)
                                     let order = newdatos.sort(sorter)
                                     usedispatch(setTicket({ tiketslist: order }))
-                                    // setTikes(order)
                                     usedispatch(setCompras({ compras: order }))
                                     let nuevosValores = []
                                     let consulat = newdatos.filter(e => e.estado_pago == "Pagado").map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                                     let consultados = newdatos.filter(e => e.estado_pago == "Pagado").filter(f => f.concierto == "Eladio Carrión Quito").map(g => { return parseFloat(g.Valortotal) }).reduce((a, b) => a + b, 0)
                                     let arayReallocalidad = []
                                     let arrprueb = []
-                                    /* newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
-                                         elm.info_concierto.map(loc => {
-                                             // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
-                                             arayReallocalidad.push({ id: loc.id_localidad, localidad: localidades[loc.id_localidad], cantidad: loc.cantidad, precio: precio[loc.id_localidad], concierto: loc.nombreConcierto, codigo: elm.codigoEvento })
-                                         })
-                                     })*/
                                     newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                                         elm.ticket_usuarios.map(item => {
-                                            // cantidad: loc.cantidad, precio: precio[loc.id_localidad],
                                             if (arrprueb.length == 0) {
                                                 arrprueb.push({ localidad: item.localidad, cantidad: 1, precio: item.valor, concierto: item.concierto, codigoEvento: item.codigoEvento })
                                             }
-                                            //  console.log(item, arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
                                             if (arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)) {
-                                                //        console.log(arrprueb.some(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento))
-                                                // let cantidad = arrprueb.filter(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)[0].cantidad + 1
                                                 let index = arrprueb.findIndex(e => e.localidad == item.localidad && e.codigoEvento == item.codigoEvento)
                                                 let cantidad = arrprueb[index].cantidad + 1
                                                 arrprueb[index].cantidad = cantidad
@@ -464,20 +445,7 @@ export default function AprobarView() {
                                         })
                                     })
 
-                                    let arrayIndividual = []
-                                    // console.log(consulat)
                                     console.log(arayReallocalidad, arrprueb)
-                                    /* arayReallocalidad.forEach(elm => {
-                                         if (arrayIndividual.some(e => e.id == elm.id)) {
-                                             let dat = arrayIndividual.findIndex(e => e.id == elm.id)
-                                             let tota = parseFloat(arrayIndividual[dat].cantidad) + parseFloat(elm.cantidad)
-                                             arrayIndividual[dat].cantidad = tota
-                                         }
-                                         else {
-                                             arrayIndividual.push({ id: elm.id, localidad: elm.localidad, evento: elm.concierto, cantidad: elm.cantidad, precio: elm.precio })
-                                         }
-                                     })*/
-                                    //console.log(arrayIndividual)
                                     let datos = arrprueb.map(f => {
                                         return [f.localidad, f.concierto, parseInt(f.cantidad)]
                                     })
@@ -878,7 +846,13 @@ export default function AprobarView() {
                                         tableLayout: 'flex'
                                     }
                                 }}
-                                
+                                renderTopToolbarCustomActions={({ table }) => (
+                                    <Box
+                                        sx={{ width: '100%' }}
+                                    >
+                                        {spiner ? <LinearProgress color="primary" /> : ''}
+                                    </Box>
+                                )}
                                 enableRowActions
                                 initialState={{ showColumnFilters: false, density: 'compact', }} //show filters by default
                                 positionActionsColumn="first"
@@ -1014,6 +988,7 @@ export default function AprobarView() {
                         </TabPanel>
                         <TabPanel value={value} index={2} className="text-center" >
                             <MaterialReactTable
+
                                 columns={listaRegistrototal}
                                 data={filtrarArray(tiketslist.filter(e => e.estado_pago == "Expirado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos)}
                                 muiTableProps={{
@@ -1079,6 +1054,13 @@ export default function AprobarView() {
                                 }}
                                 enableRowActions
                                 positionActionsColumn="first"
+                                renderTopToolbarCustomActions={({ table }) => (
+                                    <Box
+                                        sx={{ width: '100%' }}
+                                    >
+                                        {spiner ? <LinearProgress color="primary" /> : ''}
+                                    </Box>
+                                )}
                                 renderRowActions={({ row }) => (
                                     <Box sx={{ display: 'flex' }}>
                                         <Tooltip

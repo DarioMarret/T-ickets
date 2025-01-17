@@ -363,12 +363,6 @@ export default function DetalleCompraView() {
                                         $('#cedulac').val("")
                                         sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
                                         history.push("/admin/suscritor/" + oupt.data.id + "")
-                                        /*setDausuario({
-                                          nombreCompleto: oupt.data.nombreCompleto,
-                                          ciudad: oupt.data.direccion,
-                                          email: oupt.data.email,
-                                          id: oupt.data.cedula
-                                        })*/
                                     }
                                     else {
 
@@ -595,6 +589,7 @@ export default function DetalleCompraView() {
         }
     }
     const AnularCompra = async (ids) => {
+        if (useradmin.perfil == 'suscriptores') return
         $.confirm({
             title: 'Confirmación',
             content: '¿Estás seguro de que deseas Anular ?',
@@ -698,7 +693,7 @@ export default function DetalleCompraView() {
             console.log(err)
         })
         buscarcliente({
-            "cedula": datos.cedula,
+            "cedula": nombres.cedula,
             "email": ""
         }).then(ouputs => {
             if (ouputs.success) {
@@ -1030,7 +1025,19 @@ export default function DetalleCompraView() {
                     action: function () {
                         ValidarToken(nombres.id).then(ouput => {
                             if (ouput.success) {
-                                history.goBack()
+                                buscarcliente({
+                                    "cedula": nombres.cedula,
+                                    "email": ''
+                                }).then(oupt => {
+                                    sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
+                                    //cerrar()
+                                    history.push("/admin/suscritor/" + oupt.data.id + "")
+
+
+                                }
+
+                                ).catch(err => {
+                                })
                             }
                         }).catch(err => {
                         })
@@ -1124,10 +1131,20 @@ export default function DetalleCompraView() {
                             // return
                             registraPagos({ ...reporte, "bancos": name }).then(ouput => {
                                 if (ouput.success) {
-                                    history.goBack()
-                                    return
+                                    buscarcliente({
+                                        "cedula": nombres.cedula,
+                                        "email": ''
+                                    }).then(oupt => {
+                                        sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
+                                        //cerrar()
+                                        history.push("/admin/suscritor/" + oupt.data.id + "")
+
+
+                                    })
+                                    //history.goBack()
+                                    // return
                                 }
-                                $.alert("No se registro")
+                               //$.alert("No se registro")
                             }).catch(err => {
                             })
                         }
@@ -1151,7 +1168,7 @@ export default function DetalleCompraView() {
                                     history.goBack()
                                     return
                                 }
-                                $.alert("No se registro")
+                              //  $.alert("No se registro")
                             }).catch(err => {
                             })
                         }
@@ -1185,10 +1202,23 @@ export default function DetalleCompraView() {
                     action: function () {
                         registraPagos(reporte).then(ouput => {
                             if (ouput.success) {
-                                history.goBack()
+                                buscarcliente({
+                                    "cedula": datos.cedula,
+                                    "email": ''
+                                }).then(oupt => {
+                                    sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
+                                    //cerrar()
+                                    history.push("/admin/suscritor/" + oupt.data.id + "")
+
+
+                                }
+
+                                ).catch(err => {
+                                })
+                                //  history.goBack()
                                 return
                             }
-                            $.alert("No se registro")
+                          //  $.alert("No se registro")
                         }).catch(err => {
                         })
                     }
