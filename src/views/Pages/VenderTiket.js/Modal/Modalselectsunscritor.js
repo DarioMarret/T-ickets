@@ -49,6 +49,8 @@ export default function ListaSuscritor(prop) {
     const VenderTickest = async () => {
         let cedula = getDatosUsuariosLocalStorag()
         try {
+       usedispatch(setModal({ nombre: '', estado: '' }))
+
             var hoy = new Date();
             const cedulas = await getCedula(cedula.cedula)
             DatosUsuariosLocalStorag({ ...cedulas, ...datos, whatsapp: datos.movil, password: '' })
@@ -410,7 +412,7 @@ export default function ListaSuscritor(prop) {
     const verificar = () => {
 
     }
-    $(document).ready(function () {
+ /*   $(document).ready(function () {
         const phoneInputField = document.querySelector("#movil");
         modalshow.modal.nombre == "suscritor" ? intlTelInput(phoneInputField, {
             initialCountry: "ec",
@@ -421,7 +423,7 @@ export default function ListaSuscritor(prop) {
 
         }) : ''
 
-    })
+    })*/
 
     const handelChange = e => {
         setDausuario({
@@ -528,7 +530,7 @@ export default function ListaSuscritor(prop) {
                                                 <div className="input-group mb-3  px-0 d-flex justify-content-center ">
                                                     <input
                                                         name="movil" type="tel"
-                                                        className="m-0 inptFielsd form-control " id="movil"
+                                                        className="m-0 form-control form-control-sm" id="movil"
                                                         size={100}
 
                                                         required

@@ -219,10 +219,10 @@ export default function ModalFirma() {
                 let boletos = JSON.stringify({ ...detallid, ...boleto.datos })
                 console.log(boletos)
                 sessionStorage.setItem("Detalleuid", boletos)
-                if (!clienteInfo()) {
+                if (clienteInfo() == null) {
                     let texto = "Nuevo registro de firma de " + getDatosUsuariosLocalStorag().cedula;
-                    Emailcontec({ movil: formatearNumero(data.movil), text: texto }).then(sal => {
-                        console.log(sal)
+                    Emailcontec({ movil: [formatearNumero("980441911"), formatearNumero("991916096")], text: texto }).then(sal => {
+                       // console.log(sal)
 
                         window.location.reload()
                     }).catch(err => {
@@ -231,28 +231,25 @@ export default function ModalFirma() {
                     })
                     return
                 }
-               
+
                 buscarcliente({
-                    "cedula": modal.estado.cedula ,
+                    "cedula": modal.estado.cedula,
                     "email": ''
                 }).then(oupt => {
                     sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
                     cerrar()
                     history.push("/admin/suscritor/" + oupt.data.id + "")
-
-
                 }
-
                 ).catch(err => {
                 })
                 cerrar()
                 // window.location.reload()
             }
-            console.log(boleto, {
-                "estado": "1",
-                "id": modal.estado.id,
-                "link": data.link
-            })
+            /* console.log(boleto, {
+                 "estado": "1",
+                 "id": modal.estado.id,
+                 "link": data.link
+             })*/
 
             return data.link
 

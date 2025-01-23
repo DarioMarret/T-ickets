@@ -71,11 +71,12 @@ const Reporte = (props) => {
 
     }
   }
-  const handlereportColse = () => usedispatch(setModal({ nombre: "ModalDetalle", estado: '' }))
+  const handlereportColse = () => usedispatch(setModal({ nombre: "", estado: '' }))
   const cerrar = () => {
     setrepShow(false)
     detener()
     hideAlert()
+    handlereportColse()
   }
 
   const succesAlert = () => {

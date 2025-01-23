@@ -17,11 +17,6 @@ import { ListarLocalidad } from "utils/LocalidadesQuery/index.js";
 import { ValidarToken } from "utils/Querycomnet";
 import { eliminartiket } from "utils/pagos/Queripagos";
 import { ticketsboletos } from "utils/columnasub";
-
-
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
-
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { generaTiketspdf } from "utils/Querycomnet";
@@ -33,7 +28,6 @@ import { Liverarasiento } from "utils/userQuery";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { CanjearBoletoRegistro } from "utils/boletos/Queryboleto";
 import ConsiliarView from "views/Components/MODAL/ModalConsilia";
-import ExportToExcel from "utils/Exportelemin";
 import { BuscarTransacion } from "utils/pagos/Queripagos";
 import { ActualizarnumeroTransacion } from "utils/pagos/Queripagos";
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -42,14 +36,12 @@ import Iframe from "views/Components/IFrame/Iframe";
 import { infoabimedia } from "utils/pagos/Queripagos";
 import { ComentarioRegistro } from "utils/pagos/Queripagos";
 import { updateRegistro } from "utils/pagos/Queripagos";
-import { ListaPreciosEvent } from "utils/EventosQuery";
+import { Triangle } from "react-loader-spinner";
 import WhastappWiev from "views/Components/MODAL/ModalWhast";
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import jsPDF from "jspdf"
 import Bingo_tablas from "./components/Tablaspdf";
 import ModalFirma from "views/Components/MODAL/Modalfirma";
-import { Button } from "bootstrap";
 import { Boleteria_voucher } from "utils/EventosQuery/index";
 import { Axiosmikroserdos, boleteriaAxios } from "utils/index";
 export const PreciosStore = () => {
@@ -257,7 +249,12 @@ export default function DetalleCompraView() {
                                 if (boleto.estado) {
                                     let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
                                     sessionStorage.setItem("Detalleuid", boletos)
-                                    window.location.reload()
+                                   
+                                    sessionStorage.setItem("Suscritorid", JSON.stringify({ ...usuario }))
+                                    //cerrar()
+                                    history.push("/admin/suscritor/" + usuario.id + "")
+
+                                   // window.location.reload()
                                 }
 
                             })
@@ -275,7 +272,10 @@ export default function DetalleCompraView() {
                                 if (boleto.estado) {
                                     let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
                                     sessionStorage.setItem("Detalleuid", boletos)
-                                    window.location.reload()
+                                    
+                                    sessionStorage.setItem("Suscritorid", JSON.stringify({ ...usuario }))
+                                    //cerrar()
+                                    history.push("/admin/suscritor/" + usuario.id + "")
                                 }
 
                             })
@@ -576,8 +576,8 @@ export default function DetalleCompraView() {
         return datos.reduce((a, b) => a + b, 0).toFixed(2)
     }
     const ListaPrecios = async () => {
-        const info = await ListaPreciosEvent();
-        return info
+        //const info = await ListaPreciosEvent();
+        return //
     }
     const listarConciliacion = async (id) => {
         try {
@@ -882,12 +882,12 @@ export default function DetalleCompraView() {
         }).catch(erro => {
             console.log(erro)
         })
-        Listarticketporestado(datos.cedula).then(ouput => {
+     /*   Listarticketporestado(datos.cedula).then(ouput => {
             if (ouput.success) {
                 let boletos = ouput.data.map((e) => {
                     if (concer.find(f => f.nombreConcierto == e.concierto) != undefined) { return { ...e } }
                 })
-                setlocalida(boletos.filter(e => e != undefined).map(e => {
+           /*     setlocalida(boletos.filter(e => e != undefined).map(e => {
                     return {
                         Comprador: usuario.nombreCompleto,
                         Cedula: e.cedula,
@@ -898,11 +898,11 @@ export default function DetalleCompraView() {
                         Canje: e.canje,
                         Numero: e.sillas
                     }
-                }))
+                }))*
             }
         }).catch(err => {
             console.log(err)
-        })
+        })*/
         nombres.forma_pago == "Deposito" ?
             nombres.numerTransacion != null && nombres.numerTransacion != "null" ?
                 BuscarTransacion({
@@ -1098,6 +1098,7 @@ export default function DetalleCompraView() {
         });
     }
     function ConsolidaBoleto() {
+        let spinernuevo = document.getElementById("spinerdetalle")
         if (useradmin.perfil == 'suscriptores') return
         const reporte = {
             "id_usuario": clienteInfo().id,
@@ -1110,6 +1111,7 @@ export default function DetalleCompraView() {
             "bancos": nombres.banco
         }
         if (nombres.forma_pago == "Deposito") {
+           
             $.confirm({
                 title: 'Desea Aprobar el pago',
                 type: 'blue',
@@ -1126,21 +1128,25 @@ export default function DetalleCompraView() {
                         text: 'Aceptar',
                         btnClass: 'btn-blue',
                         action: function () {
+                            spinernuevo.classList.toggle("d-none")
                             var name = this.$content.find('.name').val();
                             // console.log(name)
                             // return
                             registraPagos({ ...reporte, "bancos": name }).then(ouput => {
                                 if (ouput.success) {
-                                    buscarcliente({
+                                    console.log({ ...usuario })
+                                    spinernuevo.classList.toggle("d-none")
+                                    sessionStorage.setItem("Suscritorid", JSON.stringify({ ...usuario }))
+                                    //cerrar()
+                                    history.push("/admin/suscritor/" + usuario.id + "")
+                                   /* buscarcliente({
                                         "cedula": nombres.cedula,
                                         "email": ''
                                     }).then(oupt => {
-                                        sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
-                                        //cerrar()
-                                        history.push("/admin/suscritor/" + oupt.data.id + "")
+                                       
 
 
-                                    })
+                                    })*/
                                     //history.goBack()
                                     // return
                                 }
@@ -1909,7 +1915,7 @@ export default function DetalleCompraView() {
                                                         <tr key={i}>
                                                             <td>{item.nombreConcierto}</td>
                                                             <td className="text-center">
-                                                                {LocalidadPrecio(item.idespaciolocalida, item.id_localidad)}
+                                                                {item.localidad_nombre||''}
                                                             </td>
                                                             <td className="text-center">{item.cantidad}</td>
                                                             <td className="text-center">
@@ -2153,6 +2159,44 @@ export default function DetalleCompraView() {
                 </div>
 
 
+            </div>
+            <div className="d-none" id="spinerdetalle"
+                style={{
+                    display: 'none',
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: '#eaebec',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: '1000'
+                }}
+            >
+
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: '10px',
+                    padding: '10px',
+                }}>
+                    <Triangle
+                        height="80"
+                        width="80"
+                        color="#4fa94d"
+                        ariaLabel="triangle-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                    <h4 className='text-light'>Cargando  evento  ...</h4>
+
+
+                </div>
             </div>
         </PhotoProvider>
     )

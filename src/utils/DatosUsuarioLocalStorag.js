@@ -12,7 +12,22 @@ export const getDatosUsuariosLocalStorag = () => {
     if (data !== null) {
         return data
     } else {
-        return { id: 0, cedula:""+ randon }
+        return { id: 0, cedula: "" + randon, discapacidad: "No" }
+    }
+}
+export const UpdateDatosUsuariosLocalStorag = (paramas) => {
+    let data = JSON.parse(sessionStorage.getItem(DatosUsuarioLocalStorang))
+    let datos = {
+        ...data,
+        ...paramas
+    }
+    console.log(datos,paramas)
+    sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(datos))
+    const randon = sessionStorage.getItem("random") || ""
+    if (data !== null) {
+        return JSON.parse(sessionStorage.getItem(DatosUsuarioLocalStorang))
+    } else {
+        return { id: 0, cedula: "" + randon, discapacidad: "No" }
     }
 }
 export function getCliente() {
@@ -26,7 +41,7 @@ export function getCliente() {
 export async function getCedula(cedula) {
     try {
         const { data } = await axios.get("https://api.t-ickets.com/ms_login/cedula/" + cedula)
-       console.log(data)
+        console.log(data)
         const { success } = data
         if (success) {
             return data.data;
@@ -70,7 +85,7 @@ export function removeDatosUsuario() {
 export function clienteInfo() {
 
     let user = getUsuario();
-   // console.log(jwtDecode(user))
+    // console.log(jwtDecode(user))
     if (user) {
         return jwtDecode(user)
     } else {

@@ -59,6 +59,7 @@ export default function StoreTickesViews() {
     let history = useHistory()
     let modalshow = useSelector((state) => state.SuscritorSlice)
     const [Eventos, setEvento] = useState([])
+    const [repShop, setrepShow] = useState(false);
     const [spinervi, setspinervi] = useState("d-none")
     const [showMapa, setMapashow] = useState(false);
     const [showDetalle, setDetalle] = useState(false)
@@ -75,7 +76,7 @@ export default function StoreTickesViews() {
     function detenervelocidad() {
         let sillasatos = verAsientos()
         let user = getDatosUsuariosLocalStorag()
-       // console.log("qitoa")
+        // console.log("qitoa")
         clearInterval(intervalRef.current)
         clearInterval(intervalRef.current)
         setMapashow(false)
@@ -106,7 +107,7 @@ export default function StoreTickesViews() {
             })
             : sillasatos.map((elem, index) => {
                 setTimeout(function () {
-                   
+
                     correlativosadd({
                         "estado": "disponible",
                         "cedula": user.cedula,
@@ -139,8 +140,8 @@ export default function StoreTickesViews() {
             const data = await cargarEventoActivo("ACTIVO/")
             const dataS = await cargarEventoActivo("PROCESO/")
             //console.log(data, dataS)
-            
-            const filtro = data != null ?  data.filter((e) => {
+
+            const filtro = data != null ? data.filter((e) => {
                 const fechaConcierto = parse(e.fechaConcierto + " 23:59:59", 'yyyy-MM-dd HH:mm:ss', new Date());
                 // Obtener la fecha actual
                 const fechaActual = new Date();
@@ -191,7 +192,7 @@ export default function StoreTickesViews() {
         try {
             let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
             let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
-           // console.log(seleccionuser)
+            // console.log(seleccionuser)
             //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
             if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
                 setspinervi("d-none")
@@ -220,7 +221,7 @@ export default function StoreTickesViews() {
              }*/
 
             else {
-               
+
                 //seleccionuser.data.length > 0  datos= await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
                 let obten = await listarpreciolocalidad(e.codigoEvento)
                 const listalocal = await ListarLocalidad("")
@@ -228,16 +229,16 @@ export default function StoreTickesViews() {
                 sessionStorage.consierto = e.nombreConcierto
                 if (obten.data.length > 0) {
                     let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-                    console.log("listad",listalocal)
+                    console.log("listad", listalocal)
                     let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
                     console.log(mapalocal, mapa, localidades)
                     let localidad = JSON.parse(mapa[0].localidad)
                     let path = JSON.parse(mapa[0].pathmap)
-                   // console.log(obten.data.filter(e => e != undefined))
+                    // console.log(obten.data.filter(e => e != undefined))
                     let newprecios = obten.data.filter(e => e != undefined).map((g, i) => {
-                       // console.log(obten.data)
+                        // console.log(obten.data)
                         let color = localidad.filter((f, i) => f.nombre.trim() == g.localidad.trim()).filter(e => e != undefined)
-                       // console.log(localidad)
+                        // console.log(localidad)
                         if (color.length > 0) {
                             g.color = color[0].color
                             g.idcolor = color[0].id
@@ -285,7 +286,7 @@ export default function StoreTickesViews() {
                     sessionStorage.eventoid = e.codigoEvento
                     setPrecios(nuevosdatos)
                     setDatoscon(e)
-                  
+
                     console.log(colornuevo.filter((e) => e != undefined))
                     Cargarsillas([...colornuevo.filter((e) => e != undefined)]).then(outp => {
                         setspinervi("d-none")
@@ -470,7 +471,9 @@ export default function StoreTickesViews() {
                 /> : ""}
             <ModalConfima />
             <ReporteView
-                setrepShow={""}
+                repShop={repShop}
+                detener={()=>console.log()}
+                setrepShow={setrepShow}
                 comprar={para}
             />
             <ModalSuscritoView

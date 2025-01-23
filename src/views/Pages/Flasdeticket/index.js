@@ -320,7 +320,7 @@ const IndexFlas = () => {
     let user = getDatosUsuariosLocalStorag()
     ReactGA.event({
       category: user.cedula,
-      action: ""+e.nombreConcierto,
+      action: "" + e.nombreConcierto,
       label: "Eventos",
     })
 
@@ -439,7 +439,7 @@ const IndexFlas = () => {
               ReactGA.event({
                 action: "Liverar",
                 category: "" + getDatosUsuariosLocalStorag().cedula || '',
-                label: ""+ String(e.nombreConcierto),
+                label: "" + String(e.nombreConcierto),
               })
               console.log(outp)
             }).catch(error => {
@@ -630,7 +630,7 @@ const IndexFlas = () => {
       setSearchValue(e)
     }
   }
- 
+
   const [estafun, setfunc] = useState(false)
   const [final, setFinal] = useState([])
   useEffect(() => {
@@ -641,11 +641,9 @@ const IndexFlas = () => {
         if (evtobj.keyCode == 17) { return false; }
       }
     });
-    //ListaPrecios();
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     Limpiarseleccion()
-
     let datosPersonal = getDatosUsuariosLocalStorag()
     let clineteLogeado = getCliente()
     let metodoPago = GetMetodo()
@@ -663,16 +661,13 @@ const IndexFlas = () => {
           direccion: datosPersonal.direccion,
           edad: datosPersonal.edad
         })
-        // console.log(clineteLogeado)
         if (datosPersonal.cedula != "") {
-          // console.log(datosPersonal)
           ReactGA.set({
             user_id: datosPersonal.cedula
           })
         }
       }
     } else {
-     /// console.log(datosPerson)
       setPerson({
         ...datosPerson,
         email: clineteLogeado.email,
@@ -688,10 +683,6 @@ const IndexFlas = () => {
       ReactGA.set({
         user_id: clineteLogeado.cedula
       })
-      
-
-
-
       usedispatch(addususcritor({ ...clineteLogeado }))
     }
 
@@ -816,11 +807,11 @@ const IndexFlas = () => {
                     <SwiperSlide key={index}>
                       {/*className="d-none d-sm-none d-md-block"*/}
                       <div className="d-none d-sm-none d-md-block" style={{ width: "100%", height: "453px" }}>
-                        <div style={{
+                        <div loading="lazy" style={{
                           backgroundImage: "url('" + element.link_img + "')",
                           ...styleswipers.slideimgcenter
                         }}></div>
-                        <div style={{
+                        <div loading="lazy" style={{
                           backgroundImage: "url('" + element.link_img + "')",
                           ...styleswipers.slideimg
                         }} >
@@ -1036,7 +1027,9 @@ const IndexFlas = () => {
                             data-target={"#collapseid" + e.id}
                             aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
-                            <div className="container rounded-7  d-flex justify-content-center px-0" >
+                            <div className="container rounded-7 border  d-flex justify-content-center px-0" style={{
+                              minHeight: '265px'
+                            }}>
                               <i className="  text-info btn-hover" style={{
                                 position: "absolute",
                                 margin: "auto",
@@ -1097,7 +1090,12 @@ const IndexFlas = () => {
                                 <i className="bi bi-cart-fill"></i>
                                 COMPRAR
                               </Button>
-                              <img loading="lazy" src={e.imagenConcierto} className="img-fluid rounded-7 shadow-md  btn-hover img-evento " alt=""
+                              <img loading="lazy" src={e.imagenConcierto || 'https://bancoproveedores.serviciocivil.gov.co/loading.gif'}
+
+                                style={{
+                                  minHeight: "135px"
+                                }}
+                                className="img-fluid rounded-7 shadow-md  btn-hover img-evento " alt=""
 
                               />
                             </div>
@@ -1126,7 +1124,7 @@ const IndexFlas = () => {
                                       bottom: 10,
                                     }}
                                   >
-                                    
+
                                     <div className=" text-center">
 
                                       {/*<p data-toggle="modal" data-target="#carritocoompra" data-backdrop="static" data-keyboard="false"

@@ -11,7 +11,7 @@ import { GetEstadousu } from "utils/CarritoLocalStorang"
 import { listaEliminasillas } from "utils/CarritoLocalStorang"
 import { quitarsilla } from "utils/Querypanelsigui"
 import { setModal } from "StoreRedux/Slice/SuscritorSlice"
-import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
+import { clienteInfo, UpdateDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { localidaandespacio } from "utils/Querypanel"
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { correlativosadd } from "utils/Querypanelsigui"
@@ -24,7 +24,7 @@ import { bancos } from "utils/Imgenesutils"
 import moment from "moment"
 let { atencion } = bancos
 const ModalCarritoView = (prop) => {
-    let usuario = getDatosUsuariosLocalStorag()
+    var usuario = getDatosUsuariosLocalStorag()
     const { handleClosesop, precios, setListarCarritoDetalle, intervalo, } = prop
     const sorter = (a, b) => a.precio_normal > b.precio_normal ? 1 : -1 && a.id < b.id ? 1 : -1;
     let estdo = sessionStorage.getItem("estadoevento")
@@ -81,6 +81,19 @@ const ModalCarritoView = (prop) => {
         }
 
     }
+    const checkds = useRef(null)
+    function CambiarCheck(e) {
+        //   e.preventDefault(); // Prevenir comportamiento predeterminado
+
+        let users = getDatosUsuariosLocalStorag()
+        checkds.current.check = (users.discapacidad == 'No')
+        //  console.log()
+        let datos = UpdateDatosUsuariosLocalStorag({ discapacidad: users.discapacidad == 'No' ? 'Si' : 'No' })
+        //  console.log(getDatosUsuariosLocalStorag().discapacidad)
+        usuario.discapacidad = 'Si'
+        //   console.log(checkds.current.checked)
+        // console.log("El checkbox se ha desmarcado", datos);
+    }
     function Eliminar(e) {
         let user = getDatosUsuariosLocalStorag()
         console.log(e)
@@ -132,13 +145,15 @@ const ModalCarritoView = (prop) => {
         usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
         return
     }
-
-
     useEffect(() => {
         //console.log("aqui")
         let user = getDatosUsuariosLocalStorag()
         setDetalle(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
+        //
+        if (clienteInfo() != null) {
+            checkds.current.checked = (user.discapacidad == 'Si')
+        }
         let metodoPago = GetMetodo()
         metodoPago != null ? setChecked({
             Fisico: metodoPago == "Efectivo-Local" ? "Efectivo-Local" : "",
@@ -157,43 +172,16 @@ const ModalCarritoView = (prop) => {
             $("#" + e.path).attr("fill", e.fill)
         }) : ''
         Listarticketporestado(user.cedula).then(oupt => {
-            //console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado.toLowerCase() == "Pagado").length)
-            //console.log(oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2 && e.estado.toLowerCase() == "reservados").length)
             usedispatch(updateboletos({
                 disponibles: sleccionlocalidad.disponibles,
                 proceso: 0,
                 pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado.toLowerCase() == "Pagado" || e.estado != null && e.estado.toLowerCase() == "reservado").length,
                 inpagos: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && e.estado != null && e.estado.toLowerCase() == "reservado").length
             }))
-            /*console.log({
-                disponibles: 0,
-                proceso: 0,
-                pagados: oupt.data.filter(e => e.codigoEvento == sessionStorage.getItem(Eventoid) && moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(moment(e.fechaCreacion, "YYYY-MM-DD HH:mm:ss"), 'h') < 2).length
-            })*/
 
         }).catch(err => {
             console.log(err)
         })
-        /*listarLocalidadaEspeci(sessionStorage.getItem(espacio)).then(oupt => {
-            console.log(oupt.data.filter(E => E.estado == "reservado" && E.pasado == "SIN PASAR" && E.cedula == user.cedula).length)
-            let procesar = oupt.data.filter(E => E.estado == "reservado" && E.pasado == "SIN PASAR" && E.cedula == user.cedula).length;
-            let disponible = oupt.data.filter(E => E.estado == "dispoible").length;
-
-            /*  usedispatch(updateboletos({
-                  disponibles: disponible,
-                  proceso: procesar,
-                  pagados: ""
-              }))*
-
-            let precioslocal = JSON.parse(sessionStorage.getItem(Eventolocalidad))
-            let cantidad = oupt.data.filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado" && e.typo == "correlativo").length
-            precioslocal.map((elm, im) => {
-                if (oupt.data.filter(el => el.id_localidades == elm.id).filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado" && e.typo == "correlativo").length > 0) {
-                    console.log(oupt.data.filter(el => el.id_localidades == elm.id).filter(e => e.estado!=null && e.estado.toLowerCase() == "reservado" && e.typo == "correlativo"))
-                }
-            })
-        }
-        ).catch(err => console.log(err))*/
         const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible,polyline.disponible')
         modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
             E.addEventListener("mouseover", function () {
@@ -245,15 +233,8 @@ const ModalCarritoView = (prop) => {
                         let user = getDatosUsuariosLocalStorag()
                         setSpiner("")
                         localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
-                            // console.log(consulta.espacio, consulta.idcolor)
-                            // console.log(ouput)
                             let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
                             let nuevoObjeto = []
-                            /* ReactGA.event({
-                                 category: user.cedula,
-                                 action: "" + consulta.localidad,
-                                 label: "mapa"+CODIGO,
-                             })*/
                             if (ouput.data.find(e => e.typo == "fila")) {
                                 ouput.data.forEach(x => {
                                     if (!nuevoObjeto.some(e => e.fila == x.fila)) {
@@ -266,7 +247,6 @@ const ModalCarritoView = (prop) => {
                                         })
                                     }
                                 })
-                                //console.log(nuevoObjeto)
                                 usedispatch(cargarmapa(color))
                                 usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
                                 usedispatch(filtrarlocali(nuevoObjeto))
@@ -305,24 +285,13 @@ const ModalCarritoView = (prop) => {
                             else if (ouput.data.find(e => e.typo == "correlativo")) {
                                 usedispatch(cargarmapa(color))
                                 usedispatch(settypo({ nombre: precios.mapa, typo: consulta.tipo, precio: { ...consulta } }))
-                                //  usedispatch(filtrarlocali(nuevoObjeto))
                                 filtrarlocali(ouput.data.filter(e => e.cedula != "" && e.cedula != null))
-                                // console.log(ouput.data.filter(e => e.cedula != " " && e.cedula != null).length)
                                 ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length == 0 ? usedispatch(setToastes({
                                     show: true,
                                     message: "Estan en proceso o vendidos",
                                     color: 'bg-primary',
                                     estado: "Esta loclidad no tiene disponibles  "
                                 })) : ''
-                                // ouput.data.filter(e => e.cedula != " " && e.cedula != null).length
-                                /*     console.log(
-                                         {
-                                             disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
-                                             proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
-                                             pagados: sleccionlocalidad.pagados,
-                                             inpagos: sleccionlocalidad.inpagos
-                                         }
-                                     )*/
                                 usedispatch(updateboletos({
                                     disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
                                     proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado" && usuario.cedula).length,
@@ -351,12 +320,6 @@ const ModalCarritoView = (prop) => {
         }) : ''
     }, [modalshow.nombre == "ModalCarritov" ? true : false])
     function Abririlocalfirt(e) {
-        // console.log(e)
-        // console.log(sleccionlocalidad.pagados )
-        // console.log((sleccionlocalidad.pagados > 10))
-        //console.log(sleccionlocalidad)
-        //if (clienteInfo() == null && CODIGO == "9EGM42") {
-        //clienteInfo() == null && CODIGO == "ANNKV7" && (new Date("02/02/2023 08:30") < new Date())
         if (e.idcolor == 4) {
             usedispatch(setToastes({
                 show: true,
@@ -367,7 +330,6 @@ const ModalCarritoView = (prop) => {
             return
         }
         if (sleccionlocalidad.pagados >= 10) {
-            // console.log("aqui se quedo")
             usedispatch(setToastes({
                 show: true,
                 message: "Están en proceso, o llegaste al limite de compra",
@@ -379,16 +341,8 @@ const ModalCarritoView = (prop) => {
         else {
             let user = getDatosUsuariosLocalStorag()
             setSpiner("")
-            // console.log(e)
             let consulta = precios.precios.find((F) => F.idcolor == e.idcolor)
             let color = precios.pathmapa.filter((E) => E.id == e.idcolor)
-
-            // console.log(e.espacio, e.idcolor, color, precios)
-            /*ReactGA.event({
-                category: user.cedula,
-                action: "" + consulta.localidad,
-                label: "nombre"+CODIGO,
-            })*/
             window.gtag("event", "view_item", {
                 event_category: 'E-Commerce',
                 currency: "USD",
@@ -423,7 +377,6 @@ const ModalCarritoView = (prop) => {
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                     usedispatch(filtrarlocali(nuevoObjeto))
                     sessionStorage.seleccionmapa = JSON.stringify(e)
-
                     abrirlocalidad()
 
                 }
@@ -451,7 +404,6 @@ const ModalCarritoView = (prop) => {
                     usedispatch(filtrarlocali(nuevoObjeto))
                     sessionStorage.seleccionmapa = JSON.stringify(e)
                     abrirlocalidad()
-
                 }
                 else if (ouput.data.find(e => e.typo == "correlativo")) {
                     usedispatch(updateboletos({
@@ -461,7 +413,6 @@ const ModalCarritoView = (prop) => {
                         inpagos: sleccionlocalidad.inpagos
                     }))
                     usedispatch(filtrarlocali(ouput.data.filter(e => e.cedula != " " && e.cedula != null)))
-
                     ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length == 0 ?
                         usedispatch(setToastes({
                             show: true,
@@ -471,13 +422,6 @@ const ModalCarritoView = (prop) => {
                         })) : ''
                     usedispatch(cargarmapa(color))
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
-                    /*  console.log({
-                          disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
-                          proceso: ouput.data.filter(e => e.estado != null && e.estado.toLowerCase() == "reservado").length,
-                          inpagos: sleccionlocalidad.inpagos
-                      })
-  */
-
                     sessionStorage.seleccionmapa = JSON.stringify(e)
                     abrirlocalidad()
                     return
@@ -485,7 +429,6 @@ const ModalCarritoView = (prop) => {
             }
             ).catch(err =>
                 console.log(err)
-
             )
         }
     }
@@ -829,7 +772,7 @@ const ModalCarritoView = (prop) => {
                                 <div className="col-12 d-flex justify-content-center">
                                     <div className=" container-fluid d-flex  justify-content-between py-2  px-0 flex-wrap pb-2   align-items-center  p-0">
                                         {sessionStorage.getItem("eventoid") != "YZPQQ3" && precios.precios.length > 0 ?
-                                            precios.precios.sort((a, b) => (a.precio_normal - b.precio_normal )).map((elm, i) => {
+                                            precios.precios.sort((a, b) => (a.precio_normal - b.precio_normal)).map((elm, i) => {
                                                 return (
                                                     <div className="d-flex flex-row mx-1 mb-1 py-1 precios align-items-center" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                         <div id={"precios" + elm.id} className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: elm.color }}></div>
@@ -880,6 +823,19 @@ const ModalCarritoView = (prop) => {
                         :""*/}
                     </div>
                     <div className="d-flex flex-column">
+                        {clienteInfo() != null ?
+                            <div className="container">
+                                <input class="form-check-input" type="checkbox"
+                                    ref={checkds}
+                                    onChange={CambiarCheck}
+
+                                    name="descuento" id="descuento" />
+                                <label className="form-check-label" htmlFor="descuento">
+                                    DESCUENTO DIS./TER. EDAD.- 50%
+                                </label>
+                            </div>
+
+                            : ""}
                         {
                             clienteInfo() != null ?
                                 <div>
