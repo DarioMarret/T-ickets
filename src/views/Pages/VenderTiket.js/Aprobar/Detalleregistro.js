@@ -1285,7 +1285,7 @@ export default function DetalleCompraView() {
         if (boleto.estado) {
             let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
             sessionStorage.setItem("Detalleuid", boletos)
-            window.location.reload()
+            history.goBack()
         } else {
             let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
             sessionStorage.setItem("Detalleuid", boletos)
@@ -2168,7 +2168,7 @@ export default function DetalleCompraView() {
                     left: '0',
                     width: '100%',
                     height: '100%',
-                    backgroundColor: '#eaebec',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',

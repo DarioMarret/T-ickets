@@ -24,8 +24,9 @@ const initialState = {
     tabps: 0,
     labels: [],
     compras: [],
+    comprobar: [],
     fecha: [{
-        startDate: new Date(JSON.stringify(fin).replace('"', '').replace('"', '')),
+        startDate: new Date(),
         endDate: new Date(),
         key: 'selection'
     }]
@@ -72,6 +73,9 @@ const SubscritorSlice = createSlice({
         setCompras: (state, action) => {
             state.compras = action.payload.compras
         },
+        setComprobar: (state, action) => {
+            state.comprobar = action.payload.comprobar
+        },
         setPagination: (state, action) => {
             state.inicio = action.payload.inicio,
                 state.final = action.payload.final,
@@ -96,6 +100,6 @@ export const {
     addususcritor, setTicket, setlisticket,
     setLabels, setFecha, setSpinersli, setPagination,
     setCompras, deletesuscrito, setModal, updateboletos,
-    setItervalo, addLocalidad, setTabs, deleteloclidad, setdetalle
+    setItervalo, addLocalidad, setTabs, deleteloclidad, setdetalle, setComprobar
 } = SubscritorSlice.actions;
 export default SubscritorSlice.reducer

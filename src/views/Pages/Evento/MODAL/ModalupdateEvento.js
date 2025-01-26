@@ -104,12 +104,13 @@ const Modalupdate = (props) => {
             img.onload = () => {
                 setImagen({ ...newimagen, imagenConcierto: e.files[0] })
                 // console.log(img.width)
-                if (img.width < 1100 || img.height < 400) {
+              /*  if (img.width < 1100 || img.height < 400) {
                     e.value = ""
                     setImagen({ ...newimagen, imagenConcierto: e.files[0] })
                     usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
-                }
-                else setImagen({ ...newimagen, imagenConcierto: e.files })
+                }*/
+                //else 
+                setImagen({ ...newimagen, imagenConcierto: e.files })
             }
             img.onerror = () => {
                 setImagen({ ...newimagen, imagenConcierto: '' })
@@ -579,10 +580,12 @@ const Modalupdate = (props) => {
                                         </div>
                                         <select className="form-control" name="iva" value={neweventos.iva} onChange={(e) => handelchangeComposeventos(e.target)}>
                                             <option disabled value={""}>Seleccione el porsentaje del iva </option>
-                                            <option value={".00"} >0%</option>
-                                            <option value={".08"} >8%</option>
-                                            <option value={".12"} >12%</option>
-                                            <option value={".14"} >14%</option>
+                                            <option value={"0.00"} >0%</option>
+                                            <option value={"0.08"} >8%</option>
+                                            <option value={"0.12"} >12%</option>
+                                            <option value={"0.14"} >14%</option>
+                                            <option value={"0.15"} >15%</option>
+                                            <option value={"0.16"} >15%</option>
 
                                         </select>
                                         

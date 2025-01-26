@@ -21,7 +21,7 @@ export const UpdateDatosUsuariosLocalStorag = (paramas) => {
         ...data,
         ...paramas
     }
-    console.log(datos,paramas)
+    //console.log(datos,paramas)
     sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(datos))
     const randon = sessionStorage.getItem("random") || ""
     if (data !== null) {
@@ -41,7 +41,7 @@ export function getCliente() {
 export async function getCedula(cedula) {
     try {
         const { data } = await axios.get("https://api.t-ickets.com/ms_login/cedula/" + cedula)
-        console.log(data)
+        //console.log(data)
         const { success } = data
         if (success) {
             return data.data;
@@ -49,7 +49,7 @@ export async function getCedula(cedula) {
             return false
         }
     } catch (error) {
-        console.log(error)
+        //console.log(error)
         return false;
     }
 }
@@ -60,18 +60,18 @@ export function setDatosUser(data) {
         sessionStorage.setItem(DatoTokenusuario, data)
         return true
     } catch (error) {
-        console.log(error)
+        //console.log(error)
         // return {'estado':false,'error':error}        
     }
 }
 export function getUsuario() {
     try {
         const data = sessionStorage.getItem(DatoTokenusuario)
-        //   console.log(data)
+        //   //console.log(data)
         return data;
 
     } catch (error) {
-        console.log(error)
+        //console.log(error)
         return error
     }
 }
@@ -85,7 +85,7 @@ export function removeDatosUsuario() {
 export function clienteInfo() {
 
     let user = getUsuario();
-    // console.log(jwtDecode(user))
+    // //console.log(jwtDecode(user))
     if (user) {
         return jwtDecode(user)
     } else {

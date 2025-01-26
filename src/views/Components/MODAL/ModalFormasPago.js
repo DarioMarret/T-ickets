@@ -28,7 +28,7 @@ export default function FormasPagoMopadal() {
     const [check, setCheck] = useState(true)
     const [select, setSelecte] = useState("")
     function handelMetodopago(target, value) {
-        console.log(target, value)
+       // console.log(target, value)
         if (target.name == "selctmet") {
             setSelecte(target.value)
             let names = target.value.replace("Efectivo-Local", "Fisico")
@@ -126,7 +126,7 @@ export default function FormasPagoMopadal() {
                             "cedula": '',
                             "email": name
                         }).then(async e => {
-                            console.log(e)
+                           // console.log(e)
                             if (e.success) {
                                 const cedula = await getCedula(e.data.cedula)
                                 var hoy = new Date();
@@ -212,7 +212,7 @@ export default function FormasPagoMopadal() {
                                     'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                                 }
                             }).then(function (data) {
-                                console.log(data);
+                              //  console.log(data);
 
                                 if (data.data.success) {
                                     getCedula(data.data.data.cedula).then(cedula => {
@@ -257,7 +257,7 @@ export default function FormasPagoMopadal() {
                                                     "cedula": data.data.data.cedula
                                                 }
                                             ).then(e => {
-                                                console.log(e)
+                                               // console.log(e)
                                                 spinercarga.classList.add("d-none");
                                                 //useDispatch(setSpinersli({ spiner: false }))
                                             }).catch(err => {
@@ -314,7 +314,7 @@ export default function FormasPagoMopadal() {
             Deposito: metodoPago == "Deposito" ? "Deposito" : "",
             Transferencia: metodoPago == "Transferencia" ? "Transferencia" : ""
         }) : handelMetodopago({ name: 'Tarjeta' }, "Tarjeta"), setCheck(false)
-        console.log(GetValores())
+        //console.log(GetValores())
         ListaPrecioset(GetValores())
         setListarCarritoDetalle(getVerTienda())
     }, [(modal.nombre == "formasPago"), select])

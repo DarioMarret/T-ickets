@@ -670,7 +670,7 @@ function ModalDetalle(props) {
                                     <th scope="col" className="text-black">CONCIERTO</th>
                                     <th className="text-black">LOCALIDAD</th>
 
-                                    <th className="text-black" scope="col">ASIENTO</th>
+                                    <th className="text-black" scope="col">CANTIDAD</th>
                                     <th className="text-black" scope="col">TOTAL</th>
                                 </tr>
                             </thead>

@@ -52,7 +52,7 @@ const ModalCarritoView = (prop) => {
     })
     const handleContinuar = () => {
         let user = getDatosUsuariosLocalStorag()
-        console.log(user)
+       // console.log(user)
         if (clienteInfo() != null) {
             usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
             return
@@ -96,15 +96,15 @@ const ModalCarritoView = (prop) => {
     }
     function Eliminar(e) {
         let user = getDatosUsuariosLocalStorag()
-        console.log(e)
+        //console.log(e)
         let array = e.localidaEspacio["typo"] != "correlativo" ? listaEliminasillas(e.id) : ''
-        console.log(array)
+        //console.log(array)
         e.localidaEspacio["typo"] != "correlativo" ? quitarsilla({ "array": [...array] }).then(ouput => {
             usedispatch(clearSillas(e))
             EliminarSillaLocal(e.localidad)
-            console.log(e.localidaEspacio["idcolor"])
+           // console.log(e.localidaEspacio["idcolor"])
             $("div." + e.localidaEspacio["idcolor"] + "silla").removeClass("seleccionado").addClass("disponible");
-            console.log(ouput)
+            //console.log(ouput)
         }
         ).catch(err => console.log(err)) :
             correlativosadd(
@@ -116,7 +116,7 @@ const ModalCarritoView = (prop) => {
                     "cantidad": e.cantidad
                 }
             ).then(oupt => {
-                console.log(oupt)
+               // console.log(oupt)
             }).catch(err => {
                 console.log(err)
             })
@@ -165,7 +165,7 @@ const ModalCarritoView = (prop) => {
 
         ListaPrecioset(GetValores())
         let asientos = JSON.parse(sessionStorage.getItem("asientosList"))
-        console.log(precios.pathmapa)
+      //  console.log(precios.pathmapa)
         asientos != null ? usedispatch(cargarsilla(asientos)) : ''
         precios.pathmapa.length > 0 ? precios.pathmapa.map((e, i) => {
             $("#" + e.path).attr("class", e.id + "  disponible ")// + e.tipo)
@@ -641,7 +641,7 @@ const ModalCarritoView = (prop) => {
                                                             style={{
                                                                 fontSize: "0.9em",
                                                             }} >{e.localidad}</div>
-                                                        <div className="d-none d-sm-block  flex-row text-center col-2">${GetEstadousu().discapacidad === "No" ? ((parseFloat(e.valor) - (parseFloat(e["localidaEspacio"]["comision_boleto"]) * e.cantidad)) * e.cantidad).toFixed(2) : (e.discapacidad * e.cantidad).toFixed(2)}</div>
+                                                        <div className="d-none d-sm-block  flex-row text-center col-2">${GetEstadousu().discapacidad === "No" ? (parseFloat(e.valor) * e.cantidad).toFixed(2) : (e.discapacidad * e.cantidad).toFixed(2)}</div>
                                                         <div className="d-none d-sm-block flex-row  text-center  col-2 mx-auto justify-content-center">{e.cantidad}</div>
                                                         <div className="d-none d-sm-block d-flex d-sm-flex flex-row   mx-auto  justify-content-center col-sm">
                                                             <button className=" d-none d-sm-block  btn btn-danger  btn-sm" onClick={() => EliminaLocalidad(e)} >
@@ -784,27 +784,7 @@ const ModalCarritoView = (prop) => {
                                                 )
                                             }) :
                                             <div className="container-fluid d-flex  py-2  col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
-                                                <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => clickt()}   >
-                                                    <div id="" className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: "#c69b30" }}></div>
-                                                    <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '160px' }} >
-                                                        <span className="" style={{ fontFamily: '', fontSize: '1.11em' }} >Golden x 10 </span>
-                                                        <span className="pl-1" style={{ fontFamily: '', fontSize: '1.11em' }} >$750 </span>
-                                                    </div>
-                                                </div>
-                                                <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => clickt()} >
-                                                    <div id="" className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: "#b2b2b2" }}></div>
-                                                    <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '160px' }} >
-                                                        <span className="" style={{ fontFamily: '', fontSize: '1.11em' }} >Platinum </span>
-                                                        <span className="pl-1" style={{ fontFamily: '', fontSize: '1.11em' }} >$40 </span>
-                                                    </div>
-                                                </div>
-                                                <div className="d-flex flex-row mx-3 mb-1 precios align-items-center" onClick={() => clickt()} >
-                                                    <div id="" className="mx-1  p-2 rounded-4" style={{ height: 20, width: 20, backgroundColor: "#609ffe" }}></div>
-                                                    <div className="d-flex flex-row" style={{ alignItems: 'stretch', lineHeight: '1', minWidth: '130px', maxWidth: '160px' }} >
-                                                        <span className="" style={{ fontFamily: '', fontSize: '1.11em' }} >Vip </span>
-                                                        <span className="pl-1" style={{ fontFamily: '', fontSize: '1.11em' }} >$25 </span>
-                                                    </div>
-                                                </div>
+                                               
                                             </div>
                                         }
                                     </div>
@@ -825,7 +805,7 @@ const ModalCarritoView = (prop) => {
                     <div className="d-flex flex-column">
                         {clienteInfo() != null ?
                             <div className="container">
-                                <input class="form-check-input" type="checkbox"
+                                <input className="form-check-input" type="checkbox"
                                     ref={checkds}
                                     onChange={CambiarCheck}
 

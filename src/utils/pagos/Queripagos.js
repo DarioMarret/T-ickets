@@ -68,7 +68,7 @@ export const ListarRegistropaneFecha = async (ini, fin) => {
 }
 export const listarRegistropanelComprobar = async (parms, estado) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros?estado=Expirado?estado=" + estado, parms, {
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros?estado=" + estado, parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

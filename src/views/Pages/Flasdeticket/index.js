@@ -111,7 +111,7 @@ const IndexFlas = () => {
       if (timer === 0) {
         let array = ListaElimnaLCompleta()
         array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
-          console.log(ouput)
+        //  console.log(ouput)
         }).catch(err => console.log(err)) : ''
         getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
           getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
@@ -123,7 +123,7 @@ const IndexFlas = () => {
                 "cedula": user.cedula,
                 "cantidad": elem.cantidad
               }).then(ouput => {
-                console.log(ouput)
+               // console.log(ouput)
               }).catch(err => {
                 console.log(err)
               })
@@ -184,17 +184,17 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
-    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => { console.log(ouput) }).catch(err => console.log(err)) : ''
+    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => { /*//console.log(ouput) */}).catch(err => console.log(err)) : ''
     getVerTienda().filter(e => e.tipo == e.tipo).length > 0 ?
       getVerTienda().map((elem, index) => {
         setTimeout(function () {
-          console.log(elem, {
+       /*   console.log(elem, {
             "id": elem.id,
             "estado": "disponible",
             "mas": "menos",
             "cedula": user.cedula,
             "cantidad": elem.cantidad
-          })
+          })*/
           correlativosadd({
             "id": elem.id,
             "estado": "disponible",
@@ -202,7 +202,7 @@ const IndexFlas = () => {
             "cedula": user.cedula,
             "cantidad": elem.cantidad
           }).then(ouput => {
-            console.log(ouput)
+           // console.log(ouput)
           }).catch(err => {
             console.log(err)
           })
@@ -229,7 +229,7 @@ const IndexFlas = () => {
        console.log(err)
      })*/
     array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
-      console.log(ouput)
+     // console.log(ouput)
     }
     ).catch(err => console.log(err)) : ''
     getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
@@ -237,7 +237,7 @@ const IndexFlas = () => {
       getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
         setTimeout(function () {
           correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
-            console.log(ouput)
+           // console.log(ouput)
           }).catch(err => {
             console.log(err)
           })
@@ -441,7 +441,7 @@ const IndexFlas = () => {
                 category: "" + getDatosUsuariosLocalStorag().cedula || '',
                 label: "" + String(e.nombreConcierto),
               })
-              console.log(outp)
+              //console.log(outp)
             }).catch(error => {
               console.log(error)
             })
@@ -733,9 +733,9 @@ const IndexFlas = () => {
   }
   function eventocarrusel(e) {
     let datos = e
-    console.log(e)
+  //  console.log(e)
     let info = JSON.parse(datos)
-    console.log(info)
+   // console.log(info)
     userauthi.login ? abrir({
       ...info,
     }) :
@@ -1027,8 +1027,8 @@ const IndexFlas = () => {
                             data-target={"#collapseid" + e.id}
                             aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
-                            <div className="container rounded-7 border  d-flex justify-content-center px-0" style={{
-                              minHeight: '265px'
+                            <div className="container rounded-7   d-flex justify-content-center px-0" style={{
+                            
                             }}>
                               <i className="  text-info btn-hover" style={{
                                 position: "absolute",
@@ -1697,11 +1697,7 @@ const IndexFlas = () => {
 
 
       <Inframene />
-      {modal.nombre == "Modallocalida" ?
-        <LocalidadmapViews
-          intervalo={intervalo}
-          intervalolista={intervalolista}
-        /> : ''}
+      
       {modal.nombre == "ModalCarritov" ?
         <ModalCarritov
           handleClosesop={detenervelocidad}
@@ -1740,6 +1736,7 @@ const IndexFlas = () => {
         setrepShow={setrepShow}
         comprar={sololimpiarlocal} />
       {alert}
+     
       <ModalLogin
         showLogin={showLogin}
         setShowLogin={setShowLogin}
@@ -1754,8 +1751,11 @@ const IndexFlas = () => {
         detener={detenervelocidad}
       />
 
-
-
+      {modal.nombre == "Modallocalida" ?
+        <LocalidadmapViews
+          intervalo={intervalo}
+          intervalolista={intervalolista}
+        /> : ''}
 
     </>
 

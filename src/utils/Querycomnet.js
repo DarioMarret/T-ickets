@@ -122,7 +122,7 @@ const EnviarDetalleCompra = async (email, parms) => {
 export const OCRApi = async (parms) => {
     try {
         //https://api.t-ickets.com/ocr/api/v1/ocr_space
-        let { data } = await axios.post("https://api.flashchat.chat/backflash/comprobantes_scaner/1", parms)
+        let { data } = await axios.post("https://api.flashchat.chat/backflash/comprobantes_scaner/48", parms)
         let datos = await BuscarTransacion({
             "numeroTransaccion": data.data["numero_documento"]
         })

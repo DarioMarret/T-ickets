@@ -22,9 +22,9 @@ import { setCompras } from "StoreRedux/Slice/SuscritorSlice";
 import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { setFecha } from "StoreRedux/Slice/SuscritorSlice";
-import { ListarRegistropaneFecha } from "utils/pagos/Queripagos";
+import { ListarRegistropaneFecha, listarRegistropanelComprobar } from "utils/pagos/Queripagos";
 import moment from "moment";
-import { setTicket } from "StoreRedux/Slice/SuscritorSlice";
+import { setTicket, setComprobar } from "StoreRedux/Slice/SuscritorSlice";
 import { setlisticket } from "StoreRedux/Slice/SuscritorSlice";
 import { Slideout } from "views/Components/slider";
 import { Contactos_Boletos } from "utils/Querycomnet";
@@ -47,6 +47,7 @@ export default function AprobarView() {
     let ticket = useSelector((state) => state.SuscritorSlice)
     let datas = useSelector(state => state.SuscritorSlice.data)
     let tiketslist = useSelector(state => state.SuscritorSlice.compras)
+    let tiketslistComprobar = useSelector(state => state.SuscritorSlice.comprobar)
     const [alert, setAlert] = useState("")
     const [metodos, setMetodo] = useState("")
     const [spiner, setSpiner] = useState(false)
@@ -99,7 +100,7 @@ export default function AprobarView() {
                     let cantida = row.info_concierto.map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                     row.Valortotal = parseFloat(valor)
                     row.cantidad = cantida
-                    row.concierto = nombre[0]
+                    row.concierto = String(nombre[0]).trim()
                     return { ...row }
                 })
                 let order = newdatos.sort(sorter)
@@ -122,12 +123,12 @@ export default function AprobarView() {
                 })
 
                 let datos = arrprueb.map(f => {
-                    return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                    return [String(f.localidad).trim(), String(f.concierto).trim(), parseInt(f.cantidad)]
                 })
 
 
                 let nuevo = arrprueb.map(f => {
-                    return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                    return [String(f.localidad).trim(), String(f.concierto).trim(), parseInt(f.cantidad)]
                 })
                 setDts([
                     ["Localidad", "evento", "cantidad"],
@@ -168,6 +169,15 @@ export default function AprobarView() {
         console.log(ticket.ticket)
         stDatos(ticket.ticket)
         setSpiner(true)
+        listarRegistropanelComprobar({
+            "cedula": ""
+        }, "Comprobar").then(oputs => {
+            if (!oputs.success) return
+            usedispatch(setComprobar({ comprobar: oputs.data }))
+            console.log(oputs)
+        }).catch(err => {
+            console.log(err)
+        })
         ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
             //console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
             console.log(e)
@@ -201,7 +211,7 @@ export default function AprobarView() {
                     let cantida = row.info_concierto.map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                     row.Valortotal = parseFloat(valor)
                     row.cantidad = cantida
-                    row.concierto = nombre[0]
+                    row.concierto = String(nombre[0]).trim()
                     return { ...row }
                 })
                 let order = newdatos.sort(sorter)
@@ -220,11 +230,11 @@ export default function AprobarView() {
                     })
                 })
                 let datos = arrprueb.map(f => {
-                    return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                    return [String(f.localidad.trim()), String(f.concierto).trim(), parseInt(f.cantidad)]
                 })
 
                 let nuevo = arrprueb.map(f => {
-                    return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                    return [String(f.localidad).trim(), String(f.concierto).trim(), parseInt(f.cantidad)]
                 })
                 setDts([
                     ["Localidad", "evento", "cantidad"],
@@ -326,7 +336,7 @@ export default function AprobarView() {
                         let cantida = row.info_concierto.map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                         row.Valortotal = parseFloat(valor)
                         row.cantidad = cantida
-                        row.concierto = nombre[0]
+                        row.concierto = String(nombre[0]).trim()
                         return { ...row }
                     })
                     let order = newdatos.sort(sorter)
@@ -346,11 +356,11 @@ export default function AprobarView() {
                         })
                     })
                     let datos = arrprueb.map(f => {
-                        return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                        return [String(f.localidad).trim(), String(f.concierto).trim(), parseInt(f.cantidad)]
                     })
 
                     let nuevo = arrprueb.map(f => {
-                        return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                        return [String(f.localidad).trim(), String(f.concierto).trim(), parseInt(f.cantidad)]
                     })
                     setDts([
                         ["Localidad", "evento", "cantidad"],
@@ -418,7 +428,7 @@ export default function AprobarView() {
                                         let cantida = row.info_concierto.map(e => { return parseFloat(e.cantidad) }).reduce((a, b) => a + b, 0)
                                         row.Valortotal = parseFloat(valor)
                                         row.cantidad = cantida
-                                        row.concierto = nombre[0]
+                                        row.concierto = String(nombre[0]).trim()
                                         return { ...row }
                                     })//.filter(e => e.forma_pago =="Deposito")
                                     console.log(newdatos)
@@ -447,12 +457,12 @@ export default function AprobarView() {
 
                                     console.log(arayReallocalidad, arrprueb)
                                     let datos = arrprueb.map(f => {
-                                        return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                                        return [String(f.localidad).trim(), String(f.concierto).trim(), parseInt(f.cantidad)]
                                     })
 
 
                                     let nuevo = arrprueb.map(f => {
-                                        return [f.localidad, f.concierto, parseInt(f.cantidad)]
+                                        return [String(f.localidad).trim(), String(f.concierto).trim(), parseInt(f.cantidad)]
                                     })
                                     setDts([
                                         ["Localidad", "evento", "cantidad"],
@@ -493,6 +503,7 @@ export default function AprobarView() {
         title: "Ventas Globales Aprobadas",
         pieHole: 0.4,
         is3D: false,
+        pieSliceText: ["value","valor"],
     };
     function filtrarArray(array, fechaInicio, fechaFin, nombre, forma_pago) {
         // stDatos(false)
@@ -500,7 +511,7 @@ export default function AprobarView() {
             const fechaElemento = new Date(element.fechaCreacion.split(" ")[0]);
             const cumpleRangoFecha = (!fechaInicio || fechaElemento >= new Date(fechaInicio)) &&
                 (!fechaFin || fechaElemento <= new Date(fechaFin));
-            const cumpleNombre = !nombre || element.concierto === nombre;
+            const cumpleNombre = !String(nombre).trim() || String(element.concierto).trim() === String(nombre).trim();
             const cumpleFormaPago = !forma_pago || element.forma_pago === forma_pago;
             //return cumpleRangoFecha && cumpleNombre && cumpleFormaPago;
 
@@ -619,9 +630,10 @@ export default function AprobarView() {
                                         Todos
                                     </option>
                                     {
-                                        Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => info_concierto[0].nombreConcierto), metodos).length > 0 ?
-                                            Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => info_concierto[0].nombreConcierto), metodos).map((e, i) => {
+                                        Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => String(info_concierto[0].nombreConcierto).trim()), metodos).length > 0 ?
+                                            Object.keys(Object.groupBy(filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), ''), ({ info_concierto }) => String(info_concierto[0].nombreConcierto).trim()), metodos).map((e, i) => {
                                                 if (e) {
+                                                    //console.log(e)
                                                     return (
 
                                                         <option key={i} className=" form-label" value={e}>
@@ -666,7 +678,7 @@ export default function AprobarView() {
 
                                 <div className="card">
                                     <div className=" card-body">
-                                        {datas.length > 0 ?
+                                        {(datas.length > 0) && alert!='' ?
                                             <PiecharViewsSlect
                                                 datas={
                                                     filtrarPorNombre(datas, alert)
@@ -833,7 +845,7 @@ export default function AprobarView() {
                         <Tab label={"Pagados: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length + " Cons " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).filter(f => f.consolidado == "Consolidado").length} {...a11yProps(0)} />
                         <Tab label={"Pendientes: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Pendiente"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length}{...a11yProps(1)} />
                         <Tab label={"Expirado: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Expirado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).length} {...a11yProps(2)} />
-                        <Tab label={"Comprobar: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar"), alert, metodos).length} {...a11yProps(3)} />
+                        <Tab label={"Comprobar: " + tiketslistComprobar.length} {...a11yProps(3)} />
                         <Tab label={"Anulado: " + filtrarArray(tiketslist.filter(e => e.estado_pago == "Anulado"), alert, metodos).length} {...a11yProps(4)} />
                     </Tabs>
                     <div className=" text-center  py-2  ">
@@ -1042,7 +1054,7 @@ export default function AprobarView() {
                         <TabPanel value={value} index={3} className="text-center" >
                             <MaterialReactTable
                                 columns={listaRegistrototal}
-                                data={tiketslist.filter(e => e.estado_pago == "Comprobar")}
+                                data={tiketslistComprobar}
                                 muiTableProps={{
                                     sx: {
                                         tableLayout: 'flex'

@@ -54,7 +54,7 @@ function VerTienda() {
             PViten = iten.filter(iten => iten.cantidad > 0);
         }
     } catch (error) {
-        console.log(error)
+        //console.log(error)
     }
 }
 
@@ -70,7 +70,7 @@ export function getVerTienda() {
             return PViten
         }
     } catch (error) {
-        console.log(error);
+        //console.log(error);
     }
 }
 export function verAsientos() {
@@ -107,8 +107,8 @@ export function EliminarSillas(silla) {
         let iten = JSON.parse(sessionStorage.getItem(CarritoTicket));
         let Cost = []
         Cost = iten.filter(tienda => tienda.localidad != silla.localidad)
-        // console.log("Aqui", Cost)
-        //   console.log(nuevo)
+        // //console.log("Aqui", Cost)
+        //   //console.log(nuevo)
         sessionStorage.setItem(CarritoTicket, JSON.stringify(Cost));
         sessionStorage.setItem(listaasiento, JSON.stringify(nuevo));
         Filterduplicados()
@@ -122,7 +122,7 @@ export function EliminarSillas(silla) {
 export function EliminarsilladeMesa(silla) {
     VerSillas()
     let ListadeSillas = PVsilla.filter((iten) => iten.seleccionmapa != silla.localidad)
-    // console.log(ListadeSillas)
+    // //console.log(ListadeSillas)
     sessionStorage.setItem(listaasiento, JSON.stringify(ListadeSillas));
     Filterduplicados()
     //getVerTienda()
@@ -219,7 +219,7 @@ function VerSillas() {
             PViten = []
         }
     } catch (error) {
-        console.log(error)
+       // //console.log(error)
     }
 
 }
@@ -260,7 +260,7 @@ export function VerSillaslist() {
             return []
         }
     } catch (error) {
-        console.log(error)
+      // //console.log(error)
     }
 
 }
@@ -277,7 +277,7 @@ export function TotalSelecion() {
             return 0
         }
     } catch (err) {
-        console.log(err)
+        ////console.log(err)
     }
 }
 export function GetEstadousu() {
@@ -344,13 +344,13 @@ export function GetValores() {
             }
         })
         let ivados = (evento.iva).replace("1.", "0.")
-        console.log(ivados)
+        //console.log(ivados)
         valor = parseInt((ivados).replace("0.", " ")) == 0 ? (subtotal) : (subtotal);
         // let ivados = (eventoiva).replace("1.","0.")
-        // console.log(subtotal, valor, ivados)
+        // //console.log(subtotal, valor, ivados)
         iva = parseInt(ivados) == 0 ? ((subtotal) * parseFloat(ivados)) : (subtotal) * parseFloat(evento.iva)
         total = (valor + iva)
-        console.log(iva, total)
+        //console.log(iva, total)
         let totav = sessionStorage.getItem("Metodo-pago") == "Tarjeta" ? ((parseFloat(valor) + comision) + iva) * 1.08 : (parseFloat(valor) + comision) + iva
 
         let precios = {
@@ -366,7 +366,7 @@ export function GetValores() {
             desc: Math.round((subtotal + comision) / 1.15)
 
         }
-        //console.log(precios)
+        ////console.log(precios)
 
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))
         return precios

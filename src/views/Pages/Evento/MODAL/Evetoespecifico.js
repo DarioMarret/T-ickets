@@ -29,7 +29,7 @@ import { ListarLocalidad } from "utils/LocalidadesQuery";
 import { EventosActivos } from "utils/Querypanel";
 import { Boleteria_Boletos, Boleteria_Nombre, Boleteria_canje } from "utils/EventosQuery/index";
 import { Contactos_Boletos } from "utils/Querycomnet";
-import { Axiosmikroserdos } from "utils/index";
+import { Axiosmikroserdos, boleteriaAxios } from "utils/index";
 import MesasViews from "views/Pages/Mesas/Plantillas/indice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
@@ -46,7 +46,7 @@ const EventoEspecifico = () => {
     const [open, setOpen] = useState(true);
     const [dispoible, setDisponible] = useState([])
     const [global, setGobal] = useState([])
-    const [activeTab, setActiveTab] = useState("");
+    const [activeTab, setActiveTab] = useState("PRECIOS");
     const [valores, setvalores] = useState({
         localidad: '',
         precio_normal: '',
@@ -78,10 +78,7 @@ const EventoEspecifico = () => {
     async function Eliminar(e) {
         dispatch(setModal({ nombre: "precios", estado: { ...e } }))
     }
-    function GetDay(e) {
-        var da = new Date(e).getDay()
-        return Dias[da]
-    }
+   
 
     async function Evento(event) {
         SetEvento({
@@ -100,12 +97,14 @@ const EventoEspecifico = () => {
             LocalodadPrecios: []
         })
         try {
-            const cargar = await EventosActivos("PROCESO")
-            const cargasd = await EventosActivos("ACTIVO")
-            const cancelados = await EventosActivos("CANCELADO")
-            const espacios = await ListarEspacios()
+            let { data } = await boleteriaAxios.get("Boleteria/ListaPreciosLocalidades/"+id)
+            console.log(data)
+            const cargar = data.data// await EventosActivos("PROCESO")
+         //   const cargasd = await EventosActivos("ACTIVO")
+          //  const cancelados = await EventosActivos("CANCELADO")
+          
             const precio = await listarpreciolocalidad(id)
-            const dat = await ListarLocalidad("")
+          
             let boletos_camjeados = await Boleteria_canje(id)
             let boletos_boleto = await Boleteria_Boletos(id)
             let boletos_eventos = await Boleteria_Nombre(id)
@@ -115,19 +114,31 @@ const EventoEspecifico = () => {
                 valores: boletos_eventos.data
             })
             //}
-            if (cargar.success) {
-                let datos = [...cargar.data.filter((e) => e.codigoEvento == id), ...cargasd.data.filter((e) => e.codigoEvento == id), ...cancelados.data.filter((e) => e.codigoEvento == id)]
-                let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
-                let shortDate = new Date(datos[0].fechaConcierto);
+            if (cargar) {
+                let datos = [...cargar]
+                
+               // let shortDate = new Date(datos[0].fechaConcierto);
                 SetEvento({
                     ...datos[0], LocalodadPrecios: precio.data,
                 })
-                /* console.log({
+                 console.log({
                      ...datos[0], LocalodadPrecios: precio.data,
-                 })*/
-                
+                 })
+
+                await cargarlocalidad(datos, precio)
+
+            }
+        } catch (error) {
+            //dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
+        }
+    }
+    async function cargarlocalidad(datos, precio){
+            try {
+                const espacios = await ListarEspacios()
+                let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
                 SetPrecios(precio.data)
                 const disponibles = await listarLocalidadaEspeci(infoes[0].id)
+                const dat = await ListarLocalidad("")
                 let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
                 let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id && e.espacio == infoes[0].nombre).map(el => {
                     const nombre = listo.filter(e => e.id == el.id_localidades)[0].nombre || ''
@@ -174,7 +185,7 @@ const EventoEspecifico = () => {
                     return { nombreMesa, cantidad };
                 });
                 console.log(acumuladorPorNombres, resultado)
-                setActiveTab(event ? event : resultado[0].nombreMesa)
+                // setActiveTab(event ? event : resultado[0].nombreMesa)
                 setGobal(resultado)
                 setDisponible(arrayMesas)
 
@@ -220,13 +231,10 @@ const EventoEspecifico = () => {
                     localidas.push({ nombre: elm.nombreMesa, localidad: nuevoObjeto, typo: filtros.filter(e => e.nombreLocalidad == elm.nombreMesa)[0].typo })
                 })
                 setEspacio(localidas)
-
+            } catch (error) {
+                
             }
-        } catch (error) {
-            //dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
         }
-    }
-
     function descarga(ids, nombre) {
         if (useradmin.perfil == 'suscriptores') return
         Axiosmikroserdos.get('api/descargalocalidad/' + ids, {
@@ -289,17 +297,14 @@ const EventoEspecifico = () => {
         title: "Ventas Boletos",
         pieHole: 0.4,
         is3D: false,
+        pieSliceText: "value",
 
     };
     useEffect(() => {
 
         (async () => {
             boletosloading ? "" : setTikes(nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado"))
-            //  if(boletosloading){
-            // let mapa = nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado")
             let arrayIndividual = []
-            //console.log(nuevos.data.filter(e => e.codigoEvento == id))
-            // console.log(arayReallocalidad)
             boletosloading ? "" : nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado").forEach(elm => {
                 if (arrayIndividual.some(e => e.id == elm.localidad)) {
                     let dat = arrayIndividual.findIndex(e => e.id == elm.localidad)
@@ -320,6 +325,10 @@ const EventoEspecifico = () => {
                 ["Localida", "ganancias"],
                 ...newdatos
             ])
+            /*console.log([
+                ["Localida", "ganancias"],
+                ...newdatos
+            ])*/
             await Evento()
 
         })()
@@ -450,7 +459,7 @@ const EventoEspecifico = () => {
                 evento={evento}
             />
             {alert}
-            <div className="d-flex mb-1 justify-content-end align-items-end" >
+            <div className="col-12 d-flex mb-1 justify-content-end align-items-end" >
                 <div>
                     <button className="btn btn-primary" onClick={ObtenerContactosquecompraron}>
                         <i className="fa fa-user" ></i>
@@ -466,7 +475,7 @@ const EventoEspecifico = () => {
                 </div>
 
             </div>
-            <div className="d-flex  justify-content-between  ">
+            <div className="row  ">
                 <div className=" col-12 col-md-6 col-lg-6 col-sm-6">
 
 
@@ -498,14 +507,14 @@ const EventoEspecifico = () => {
                                 <img src={evento.imagenConcierto ? evento.imagenConcierto : ''} className="img-fluid rounded-7 shadow-md " alt="" />
                             </div>
                         </a>
-                        <Collapse in={open} >
+                        <Collapse in={false} >
                             <div className=" container mt-4 px-0" id="collapseExample2">
                                 <div className="card card-body rounded-7 py-5">
                                     <div className="container">
                                         <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"> {evento.nombreConcierto}</span> </h1>
                                         <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto} </span></h4>
                                         <div className="col-12 border border-bottom my-3"></div>
-                                        <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> {GetDay(evento.fechaConcierto) + ' ' + evento.fechaConcierto}</span></p>
+                                        <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> {evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
                                         <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
                                         <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
                                         <div className="" >
@@ -518,111 +527,10 @@ const EventoEspecifico = () => {
 
                     </div>
                     <div className="col-12 col-lg-8 mx-auto " id="evento4">
-                        <div className=" d-flex flex-column">
-                            <PiecharViews
-                                options={options}
-                                datas={datas}
-                            />
-                            <Accordion className="pb-1">
-                                <Accordion.Item eventKey={0} >
-                                    <Accordion.Header>Precios </Accordion.Header>
-                                    <Accordion.Body>
-                                        <Accordion defaultActiveKey="0" flush>
-                                            {precios.length > 0 ?
-                                                precios.map((e, i) => {
-                                                    return (
-                                                        <Accordion.Item eventKey={i} key={i}>
-                                                            <Accordion.Header>Localidad: {e.localidad}</Accordion.Header>
-                                                            <Accordion.Body>
-                                                                <div className="d-flex flex-row  justify-content-between">
-                                                                    <div className="d-flex flex-column">
-                                                                        <div>
-                                                                            <h5 >
-                                                                                Precio normal : {e.precio_normal}
-                                                                            </h5>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h5>
-                                                                                Precio discapacida : {e.precio_discapacidad}
-                                                                            </h5>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h5>
-                                                                                Precio TC/TD : {e.precio_tarjeta}
-                                                                            </h5>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h5>
-                                                                                Precio Descuento : {e.precio_descuento}
-                                                                            </h5>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h5>
-                                                                                Habilitar Cortesia : {e.habilitar_cortesia}
-                                                                            </h5>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="d-flex flex-column ">
-                                                                        {(useradmin.perfil == 'suscriptores') ? "" : <button className="btn btn-primary"
-                                                                            onClick={() => Eliminar(e)}
-                                                                        >Editar </button>}
-                                                                    </div>
-                                                                </div>
-
-
-                                                            </Accordion.Body>
-                                                        </Accordion.Item>
-
-                                                    )
-                                                })
-                                                : ''
-
-                                            }
-
-                                        </Accordion>
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                                <Accordion.Item eventKey={1} >
-                                    <Accordion.Header>Disponibles </Accordion.Header>
-                                    <Accordion.Body>
-                                        <div className="row">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th >Localidad</th>
-                                                        <th >Disponible</th>
-                                                        <th>Ocupado</th>
-                                                        <th>Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {dispoible.length > 0 ? dispoible.map(e => {
-                                                        return (
-                                                            <tr>
-
-                                                                <td>{e.nombreMesa}</td>
-                                                                <td>{e.cantidad}</td>
-                                                                <td>{parseInt(global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad) - parseInt(e.cantidad)}</td>
-                                                                <td>{global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad}</td>
-                                                            </tr>
-                                                        )
-                                                    }) : <tr>
-
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>}
-
-
-                                                </tbody>
-                                            </table>
-
-                                        </div>
-                                    </Accordion.Body>
-                                </Accordion.Item>
-
-                            </Accordion>
-
-                        </div>
+                        <PiecharViews
+                            options={options}
+                            datas={datas}
+                        />
                     </div>
                 </div>
                 <div className="row" >
@@ -645,7 +553,7 @@ const EventoEspecifico = () => {
                                 <a className="nav-link " data-toggle="tab" href="#mesas"
                                 >Canjeados</a>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item d-none">
                                 <a className="nav-link" data-toggle="tab" href="#correlativos">Valores variables </a>
                             </li>
                             <li className="nav-item">
@@ -655,10 +563,13 @@ const EventoEspecifico = () => {
                             <li className="nav-item">
                                 <a className="nav-link" data-toggle="tab" href="#localidad">Localidades</a>
                             </li>
+                            <li className="nav-item">
+                                <a className="nav-link" data-toggle="tab" href="#info">Info</a>
+                            </li>
                         </ul>
                     </div>
                     <div className="tab-content col-sm-12">
-                        <div className="tab-pane active container " id="filas">
+                        <div className="tab-pane active container-fluid " id="filas">
                             <div className="card-header pb-2">
                                 <h5>Tickets</h5>
                             </div>
@@ -757,7 +668,7 @@ const EventoEspecifico = () => {
                                 localization={MRT_Localization_ES}
                             />
                         </div>
-                        <div className="tab-pane  container " id="mesas">
+                        <div className="tab-pane  container-fluid " id="mesas">
                             <table class="table text-end">
                                 <thead>
                                     <tr>
@@ -785,7 +696,7 @@ const EventoEspecifico = () => {
                             </table>
 
                         </div>
-                        <div className="tab-pane  container " id="correlativos">
+                        <div className="tab-pane  container-fluid " id="correlativos">
                             <table class="table text-center">
                                 <thead>
                                     <tr>
@@ -816,7 +727,7 @@ const EventoEspecifico = () => {
                         </div>
 
 
-                        <div className="tab-pane  container " id="listas">
+                        <div className="tab-pane  container-fluid " id="listas">
                             <table class="table text-center">
                                 <thead>
                                     <tr>
@@ -846,12 +757,18 @@ const EventoEspecifico = () => {
                                 </tbody>
                             </table>
                         </div>
-                        <div className="tab-pane container" id="localidad">
+                        <div className="tab-pane container-fluid" id="localidad">
                             <div>
                                 <button onClick={() => Evento(activeTab)} className="btn btn-success">Actualizar </button>
                             </div>
                             {/* Nav Tabs */}
                             <ul className="nav nav-tabs">
+                                <liv className='nav-item'>
+
+                                    <a className={`nav-link ${activeTab === "PRECIOS" ? "active" : ""}`} onClick={() => setActiveTab("PRECIOS")} href="#PRECIOS">
+                                        PRECIOS
+                                    </a>
+                                </liv>
                                 {global.map((el, ind) => (
                                     <li className="nav-item" key={ind}>
                                         <a
@@ -864,10 +781,81 @@ const EventoEspecifico = () => {
                                         </a>
                                     </li>
                                 ))}
+                                <liv className='nav-item'>
+
+                                    <a className="nav-link disponible" onClick={() => setActiveTab("disponible")} href="#disponible">
+                                        DISPONIBILIDAD
+                                    </a>
+                                </liv>
                             </ul>
 
                             {/* Tab Content */}
                             <div className="tab-content col-sm-12">
+
+                                <div
+
+                                    className={`tab-pane ${activeTab === "PRECIOS" ? "active" : ""}`}
+                                    id="PRECIOS"
+
+                                >
+                                    <div className=" d-flex flex-column">
+                                       
+                                        <Accordion >
+                                            {precios.length > 0 ?
+                                                precios.map((e, i) => {
+                                                    return (
+                                                        <Accordion.Item eventKey={i} key={i}>
+                                                            <Accordion.Header>Localidad: {e.localidad}</Accordion.Header>
+                                                            <Accordion.Body>
+                                                                <div className="d-flex flex-row  justify-content-between">
+                                                                    <div className="d-flex flex-column">
+                                                                        <div>
+                                                                            <h5 >
+                                                                                Precio normal : {e.precio_normal}
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>
+                                                                                Precio discapacida : {e.precio_discapacidad}
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>
+                                                                                Precio TC/TD : {e.precio_tarjeta}
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>
+                                                                                Precio Descuento : {e.precio_descuento}
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h5>
+                                                                                Habilitar Cortesia : {e.habilitar_cortesia}
+                                                                            </h5>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="d-flex flex-column ">
+                                                                        {(useradmin.perfil == 'suscriptores') ? "" : <button className="btn btn-primary"
+                                                                            onClick={() => Eliminar(e)}
+                                                                        >Editar </button>}
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </Accordion.Body>
+                                                        </Accordion.Item>
+
+                                                    )
+                                                })
+                                                : ''
+
+                                            }
+
+                                        </Accordion>
+
+                                    </div>
+                                </div>
                                 {espacio.map((el, ind) => (
                                     <div
                                         key={ind}
@@ -946,6 +934,68 @@ const EventoEspecifico = () => {
                                         }
                                     </div>
                                 ))}
+
+                                <div
+                                  
+                                    className={`tab-pane ${activeTab ==="disponible" ? "active" : ""}`}
+                                    id="disponible"
+                                    
+                                >
+                                    <div className="row">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th >Localidad</th>
+                                                    <th >Disponible</th>
+                                                    <th>Ocupado</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {dispoible.length > 0 ? dispoible.map(e => {
+                                                    return (
+                                                        <tr>
+
+                                                            <td>{e.nombreMesa}</td>
+                                                            <td>{e.cantidad}</td>
+                                                            <td>{parseInt(global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad) - parseInt(e.cantidad)}</td>
+                                                            <td>{global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad}</td>
+                                                        </tr>
+                                                    )
+                                                }) : <tr>
+
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>}
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className=" tab-pane " id="info">
+                            <div className=" container mt-4 px-0" id="collapseExample2">
+                                <div className="card card-body card row d-flex flex-row card-body rounded-7 py-5">
+                                    <div className="container col-12 col-md-6">
+                                        <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"> {evento.nombreConcierto}</span> </h1>
+                                        <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto} </span></h4>
+                                        <div className="col-12 border border-bottom my-3"></div>
+                                        <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> {evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
+                                        <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
+                                        <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
+                                        <div className="" >
+                                            <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil == 'suscriptores') ? "" : setShow(true)} >Editar</button>
+                                        </div>
+                                    </div>
+                                    <div className="container col-12 col-md-6 rounded-7  px-0">
+                                        <img loading="lazy" src={evento.mapaConcierto} className="img-fluid rounded-7 shadow-md " style={{
+                                            height:"350px"
+                                        }} alt="" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

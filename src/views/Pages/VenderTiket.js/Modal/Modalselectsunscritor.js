@@ -16,6 +16,7 @@ import { ValidarWhatsapp } from "utils/Query"
 import { Host } from "utils/constantes"
 import { MagnifyingGlass } from "react-loader-spinner"
 import { buscarcliente } from "utils/Querypanelsigui"
+import { Emailcontec, formatearNumero } from "utils/Emails/index"
 //import{R}
 
 export default function ListaSuscritor(prop) {
@@ -49,7 +50,7 @@ export default function ListaSuscritor(prop) {
     const VenderTickest = async () => {
         let cedula = getDatosUsuariosLocalStorag()
         try {
-       usedispatch(setModal({ nombre: '', estado: '' }))
+            usedispatch(setModal({ nombre: '', estado: '' }))
 
             var hoy = new Date();
             const cedulas = await getCedula(cedula.cedula)
@@ -60,7 +61,7 @@ export default function ListaSuscritor(prop) {
                 cedula: datos.cedula,
                 direccion: datos.ciudad,
                 whatsapp: datos.movil,
-                telefono:datos.movil, name:
+                telefono: datos.movil, name:
                     datos.nombreCompleto,
                 email: datos.email, hora: String(hoy),
                 enable: datos.enable, id: datos.id,
@@ -131,6 +132,12 @@ export default function ListaSuscritor(prop) {
                         color: 'bg-success',
                         estado: "Inicio Exitoso",
                     }))
+                    let texto = "*" + datosend.nombreCompleto + "*\nGracias por registrarse en Tickets.com.ec.\nLos datos de ingreso son:\n *Usuario*:" + datosend.email + "\n *Clave*:" + datosend.password + "\n\nPor favor, para validar tu cuenta digita la palabra *Si*";
+                    Emailcontec({ movil: [formatearNumero($("#movil").val())], nombre: datosend.nombreCompleto, password: String(datosend.password).trim(), email: datosend.email, text: texto }).then(sal => {
+                        console.log(sal)
+                    }).catch(err => {
+                        console.log(err)
+                    })
                     let nombre = $('#cedula').val()
                     if (nombre.trim().length < 9) {
                         console.log("error", nombre)
@@ -172,6 +179,13 @@ export default function ListaSuscritor(prop) {
                                     })
                                     DatosUsuariosLocalStorag({ ...salida })
                                     sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...salida }))
+                                    /*nombreCompleto: datos.nombreCompleto,
+                                        ciudad: datos.ciudad,
+                                            email: datos.email,
+                                                movil: $("#movil").val(),
+                                                    password: datos.password,
+                                                        cedula: $("#cedula").val()*/
+                                    
                                     //$('#movil').val("")
                                     $("#search").addClass("d-none")
                                 }
@@ -412,18 +426,18 @@ export default function ListaSuscritor(prop) {
     const verificar = () => {
 
     }
- /*   $(document).ready(function () {
-        const phoneInputField = document.querySelector("#movil");
-        modalshow.modal.nombre == "suscritor" ? intlTelInput(phoneInputField, {
-            initialCountry: "ec",
-            separateDialCode: true,
-            nationalMode: true,
-            utilsScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-
-        }) : ''
-
-    })*/
+    /*   $(document).ready(function () {
+           const phoneInputField = document.querySelector("#movil");
+           modalshow.modal.nombre == "suscritor" ? intlTelInput(phoneInputField, {
+               initialCountry: "ec",
+               separateDialCode: true,
+               nationalMode: true,
+               utilsScript:
+                   "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+   
+           }) : ''
+   
+       })*/
 
     const handelChange = e => {
         setDausuario({

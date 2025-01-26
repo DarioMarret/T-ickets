@@ -8,7 +8,15 @@ export default function NavbarView({ ...props }) {
         console.log(e, props.visible)
         let visible = props.visible
         e.preventDefault();
-        props.setVisible(!visible)
+        setTimeout(function(){
+            props.setVisible(!visible)
+        },1000)
+        
+    }
+  function  abririlogin(){
+        setTimeout(function () {
+            usedispatch(setModal({ nombre: 'loginpage', estado: null }))
+        }, 1000)
     }
     return (
         <>
@@ -120,7 +128,7 @@ export default function NavbarView({ ...props }) {
                             }
 
                             {!userauthi.login ? <li className="  nav-item" data-bs-dismiss="offcanvas">
-                                <a className=" btn btn-outline-nuevo  rounded-7 " href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i>
+                                <a className=" btn btn-outline-nuevo  rounded-7 " href="#" onClick={abririlogin}> Mi Cuenta <i>
                                     <img src={props.avatar} className=" img-fluid"
                                         style={{
                                             height: 25

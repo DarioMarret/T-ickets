@@ -65,6 +65,10 @@ const ModalLogin = (props) => {
             color: 'bg-success',
             estado: "Inicio Exitoso",
           }))
+          setTimeout(() => {
+            Modalstatus.estado == "" ? window.location.reload() : ""
+          }, 2000);
+         
           console.log(Modalstatus.estado)
           Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado == null ? "" : 'ModalDetalle', estado: '' })) : usedispatch(setModal({ nombre: "", estado: '' }))
           if (randon) {
@@ -163,8 +167,9 @@ const ModalLogin = (props) => {
   }, [Modalstatus.nombre == "loginpage" ? true : false])
 
   return (
-    <>
+    <div>
       <Modal
+        aria-labelledby="contained-modal-title-vcenter"
         show={Modalstatus.nombre == "loginpage" ? true : false}
         onHide={() => setShowLogin(false)}
         fullscreen={"md-down"}
@@ -282,7 +287,7 @@ const ModalLogin = (props) => {
         </Toast.Header>
         <Toast.Body className="bg-success text-white" >   {message} </Toast.Body>
       </Toast>
-    </>
+    </div>
   )
 
 }
