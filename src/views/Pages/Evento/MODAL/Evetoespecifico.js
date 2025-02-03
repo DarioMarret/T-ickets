@@ -78,7 +78,7 @@ const EventoEspecifico = () => {
     async function Eliminar(e) {
         dispatch(setModal({ nombre: "precios", estado: { ...e } }))
     }
-   
+
 
     async function Evento(event) {
         SetEvento({
@@ -97,14 +97,14 @@ const EventoEspecifico = () => {
             LocalodadPrecios: []
         })
         try {
-            let { data } = await boleteriaAxios.get("Boleteria/ListaPreciosLocalidades/"+id)
+            let { data } = await boleteriaAxios.get("Boleteria/ListaPreciosLocalidades/" + id)
             console.log(data)
             const cargar = data.data// await EventosActivos("PROCESO")
-         //   const cargasd = await EventosActivos("ACTIVO")
-          //  const cancelados = await EventosActivos("CANCELADO")
-          
+            //   const cargasd = await EventosActivos("ACTIVO")
+            //  const cancelados = await EventosActivos("CANCELADO")
+
             const precio = await listarpreciolocalidad(id)
-          
+
             let boletos_camjeados = await Boleteria_canje(id)
             let boletos_boleto = await Boleteria_Boletos(id)
             let boletos_eventos = await Boleteria_Nombre(id)
@@ -116,14 +116,14 @@ const EventoEspecifico = () => {
             //}
             if (cargar) {
                 let datos = [...cargar]
-                
-               // let shortDate = new Date(datos[0].fechaConcierto);
+
+                // let shortDate = new Date(datos[0].fechaConcierto);
                 SetEvento({
                     ...datos[0], LocalodadPrecios: precio.data,
                 })
-                 console.log({
-                     ...datos[0], LocalodadPrecios: precio.data,
-                 })
+                console.log({
+                    ...datos[0], LocalodadPrecios: precio.data,
+                })
 
                 await cargarlocalidad(datos, precio)
 
@@ -132,109 +132,109 @@ const EventoEspecifico = () => {
             //dispatch(setToastes({ show: true, message: 'Hubo un error en el procceso', color: 'bg-danger', estado: 'Error' }))
         }
     }
-    async function cargarlocalidad(datos, precio){
-            try {
-                const espacios = await ListarEspacios()
-                let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
-                SetPrecios(precio.data)
-                const disponibles = await listarLocalidadaEspeci(infoes[0].id)
-                const dat = await ListarLocalidad("")
-                let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
-                let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id && e.espacio == infoes[0].nombre).map(el => {
-                    const nombre = listo.filter(e => e.id == el.id_localidades)[0].nombre || ''
-                    return { ...el, nombreLocalidad: nombre }
-                })
-                const agrupadoPorLocalidadess = filtros.reduce((acc, item) => {
-                    if (!acc[item.id_localidades]) {
-                        acc[item.id_localidades] = {
-                            codigoEvento: id,
-                            id_localidades: item.id_localidades,
-                            localidad: item.nombreLocalidad,
-                            id_espacio: item.id_espacio,
-                            cantidad: 0
-                        }
+    async function cargarlocalidad(datos, precio) {
+        try {
+            const espacios = await ListarEspacios()
+            let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
+            SetPrecios(precio.data)
+            const disponibles = await listarLocalidadaEspeci(infoes[0].id)
+            const dat = await ListarLocalidad("")
+            let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
+            let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id && e.espacio == infoes[0].nombre).map(el => {
+                const nombre = listo.filter(e => e.id == el.id_localidades)[0].nombre || ''
+                return { ...el, nombreLocalidad: nombre }
+            })
+            const agrupadoPorLocalidadess = filtros.reduce((acc, item) => {
+                if (!acc[item.id_localidades]) {
+                    acc[item.id_localidades] = {
+                        codigoEvento: id,
+                        id_localidades: item.id_localidades,
+                        localidad: item.nombreLocalidad,
+                        id_espacio: item.id_espacio,
+                        cantidad: 0
                     }
-                    acc[item.id_localidades].cantidad += 1;
-                    return acc;
+                }
+                acc[item.id_localidades].cantidad += 1;
+                return acc;
 
-                }, {});
-                //   console.log(agrupadoPorLocalidadess)
-                const estadosPermitidos = new Set(["Pendiente", "Ocupado", "pendiente", "ocupado"]);
-                const acumuladorPorNombre = filtros.reduce((acc, elemento) => {
-                    if (!listo.filter(e => e.id == elemento.id_localidades).length == 0) {
-                        const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre
-                        if (!estadosPermitidos.has(elemento.estado)) {
-                            acc[nombre] = (acc[nombre] || 0) + 1;
-                        }
-                        return acc;
-                    }
-                }, {});
-                const acumuladorPorNombres = filtros.reduce((acc, elemento) => {
-                    if (!listo.filter(e => e.id == elemento.id_localidades).length == 0) {
-                        const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre //elemento.id_localidades;
+            }, {});
+            //   console.log(agrupadoPorLocalidadess)
+            const estadosPermitidos = new Set(["Pendiente", "Ocupado", "pendiente", "ocupado"]);
+            const acumuladorPorNombre = filtros.reduce((acc, elemento) => {
+                if (!listo.filter(e => e.id == elemento.id_localidades).length == 0) {
+                    const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre
+                    if (!estadosPermitidos.has(elemento.estado)) {
                         acc[nombre] = (acc[nombre] || 0) + 1;
-                        return acc;
                     }
-                }, {});
-                if (!acumuladorPorNombres) return
-                const resultado = Object.entries(acumuladorPorNombres).map(([nombreMesa, cantidad]) => {
-                    let id = Object.values(agrupadoPorLocalidadess).find(el => el.localidad == nombreMesa)
-                    return { nombreMesa, cantidad, localidad: id.id_localidades };
-                });
-                const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
-                    return { nombreMesa, cantidad };
-                });
-                console.log(acumuladorPorNombres, resultado)
-                // setActiveTab(event ? event : resultado[0].nombreMesa)
-                setGobal(resultado)
-                setDisponible(arrayMesas)
+                    return acc;
+                }
+            }, {});
+            const acumuladorPorNombres = filtros.reduce((acc, elemento) => {
+                if (!listo.filter(e => e.id == elemento.id_localidades).length == 0) {
+                    const nombre = listo.filter(e => e.id == elemento.id_localidades)[0].nombre //elemento.id_localidades;
+                    acc[nombre] = (acc[nombre] || 0) + 1;
+                    return acc;
+                }
+            }, {});
+            if (!acumuladorPorNombres) return
+            const resultado = Object.entries(acumuladorPorNombres).map(([nombreMesa, cantidad]) => {
+                let id = Object.values(agrupadoPorLocalidadess).find(el => el.localidad == nombreMesa)
+                return { nombreMesa, cantidad, localidad: id.id_localidades };
+            });
+            const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
+                return { nombreMesa, cantidad };
+            });
+            console.log(acumuladorPorNombres, resultado)
+            // setActiveTab(event ? event : resultado[0].nombreMesa)
+            setGobal(resultado)
+            setDisponible(arrayMesas)
 
-                let localidas = []
-                resultado.map(elm => {
-                    let nuevoObjeto = []
-                    if (filtros.find(e => e.nombreLocalidad == elm.nombreMesa)) {
-                        if (filtros.find(e => e.nombreLocalidad == elm.nombreMesa && e.typo == "mesa")) {
-                            filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).forEach(x => {
-                                if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                                    nuevoObjeto.push({ fila: x.fila, Mesas: [] })
-                                }
+            let localidas = []
+            resultado.map(elm => {
+                let nuevoObjeto = []
+                if (filtros.find(e => e.nombreLocalidad == elm.nombreMesa)) {
+                    if (filtros.find(e => e.nombreLocalidad == elm.nombreMesa && e.typo == "mesa")) {
+                        filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).forEach(x => {
+                            if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                                nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                            }
+                        })
+                        filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).forEach(x => {
+                            let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                            if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                                nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                            }
+                        })
+                        filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).forEach(x => {
+                            let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                            let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                            nuevoObjeto[index].Mesas[sillas].asientos.push({
+                                silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula
                             })
-                            filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).forEach(x => {
-                                let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                                if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
-                                    nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
-                                }
-                            })
-                            filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).forEach(x => {
-                                let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
-                                let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
-                                nuevoObjeto[index].Mesas[sillas].asientos.push({
+                        })
+                    } else if (filtros.find(e => e.nombreLocalidad == elm.nombreMesa && e.typo == "correlativo")) {
+                        nuevoObjeto = [{ total: filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).length }]
+                    } else {
+                        filtros.filter(f => f.nombreLocalidad == elm.nombreMesa).forEach(x => {
+                            if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                                nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula }] })
+                            }
+                            else {
+                                let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                                nuevoObjeto[indixe].asientos.push({
                                     silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula
                                 })
-                            })
-                        } else if (filtros.find(e => e.nombreLocalidad == elm.nombreMesa && e.typo == "correlativo")) {
-                            nuevoObjeto = [{ total: filtros.filter(e => e.nombreLocalidad == elm.nombreMesa).length }]
-                        } else {
-                            filtros.filter(f => f.nombreLocalidad == elm.nombreMesa).forEach(x => {
-                                if (!nuevoObjeto.some(e => e.fila == x.fila)) {
-                                    nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula }] })
-                                }
-                                else {
-                                    let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
-                                    nuevoObjeto[indixe].asientos.push({
-                                        silla: x.silla, estado: x.estado, idsilla: x.id, cedula: x.cedula
-                                    })
-                                }
-                            })
-                        }
+                            }
+                        })
                     }
-                    localidas.push({ nombre: elm.nombreMesa, localidad: nuevoObjeto, typo: filtros.filter(e => e.nombreLocalidad == elm.nombreMesa)[0].typo })
-                })
-                setEspacio(localidas)
-            } catch (error) {
-                
-            }
+                }
+                localidas.push({ nombre: elm.nombreMesa, localidad: nuevoObjeto, typo: filtros.filter(e => e.nombreLocalidad == elm.nombreMesa)[0].typo })
+            })
+            setEspacio(localidas)
+        } catch (error) {
+
         }
+    }
     function descarga(ids, nombre) {
         if (useradmin.perfil == 'suscriptores') return
         Axiosmikroserdos.get('api/descargalocalidad/' + ids, {
@@ -297,7 +297,7 @@ const EventoEspecifico = () => {
         title: "Ventas Boletos",
         pieHole: 0.4,
         is3D: false,
-        pieSliceText: "value",
+        pieSliceText: "labels",
 
     };
     useEffect(() => {
@@ -443,7 +443,7 @@ const EventoEspecifico = () => {
             ...evento,
             "botNumber": eventos != "0980008000" ? "0980008000" : "",
         })
-        await Axiosmikroserdos.post("api/botevent",param)
+        await Axiosmikroserdos.post("api/botevent", param)
 
     }
     return (
@@ -691,7 +691,9 @@ const EventoEspecifico = () => {
                                             )
                                         })
                                         : ""}
-
+                                    <th>Total:</th>
+                                    <th> {report.canje.length > 0 ?Object.values(groupedData).reduce((acc, elem) => acc + parseFloat(elem.canjeado), 0):0}</th>
+                                    <th> {report.canje.length > 0 ?Object.values(groupedData).reduce((acc, elem) => acc + parseFloat(elem.noCanjeado), 0):0}</th>
                                 </tbody>
                             </table>
 
@@ -721,6 +723,7 @@ const EventoEspecifico = () => {
                                         })
                                         : ""}
 
+
                                 </tbody>
                             </table>
 
@@ -744,16 +747,24 @@ const EventoEspecifico = () => {
                                         report.valores.map((elem, ind) => {
                                             return (
                                                 <tr key={ind}>
-                                                    <th >${elem.tota}</th>
+                                                    <td>{elem.forma_pago}</td>
+                                                    <td >${elem.tota}</td>
                                                     <td>{elem.subtotal}</td>
                                                     <td>{elem.iba}</td>
                                                     <td>{elem.boleto}</td>
-                                                    <td>{elem.forma_pago}</td>
+
                                                 </tr>
                                             )
                                         })
                                         : ""}
+                                    <tr className="border">
+                                        <th>Total </th>
+                                        <th> ${report.valores.reduce((acc, elem) => acc + parseFloat(elem.tota), 0)}</th>
+                                        <th> ${report.valores.reduce((acc, elem) => acc + parseFloat(elem.subtotal), 0)}</th>
+                                        <th>  ${report.valores.reduce((acc, elem) => acc + parseFloat(elem.iba), 0)}</th>
+                                        <th>{report.valores.reduce((acc, elem) => acc + parseFloat(elem.boleto), 0)}</th>
 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -799,7 +810,7 @@ const EventoEspecifico = () => {
 
                                 >
                                     <div className=" d-flex flex-column">
-                                       
+
                                         <Accordion >
                                             {precios.length > 0 ?
                                                 precios.map((e, i) => {
@@ -936,10 +947,10 @@ const EventoEspecifico = () => {
                                 ))}
 
                                 <div
-                                  
-                                    className={`tab-pane ${activeTab ==="disponible" ? "active" : ""}`}
+
+                                    className={`tab-pane ${activeTab === "disponible" ? "active" : ""}`}
                                     id="disponible"
-                                    
+
                                 >
                                     <div className="row">
                                         <table class="table table-striped">
@@ -992,7 +1003,7 @@ const EventoEspecifico = () => {
                                     </div>
                                     <div className="container col-12 col-md-6 rounded-7  px-0">
                                         <img loading="lazy" src={evento.mapaConcierto} className="img-fluid rounded-7 shadow-md " style={{
-                                            height:"350px"
+                                            height: "350px"
                                         }} alt="" />
                                     </div>
                                 </div>

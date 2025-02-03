@@ -60,6 +60,7 @@ export default function DetalleCompraView() {
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
     console.log(nombres)
     let useradmin = clienteInfo()
+    console.log(useradmin)
     const [usuario, setUser] = useState({
         "id": "",
         "cedula": "",
@@ -249,12 +250,12 @@ export default function DetalleCompraView() {
                                 if (boleto.estado) {
                                     let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
                                     sessionStorage.setItem("Detalleuid", boletos)
-                                   
+
                                     sessionStorage.setItem("Suscritorid", JSON.stringify({ ...usuario }))
                                     //cerrar()
                                     history.push("/admin/suscritor/" + usuario.id + "")
 
-                                   // window.location.reload()
+                                    // window.location.reload()
                                 }
 
                             })
@@ -272,7 +273,7 @@ export default function DetalleCompraView() {
                                 if (boleto.estado) {
                                     let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
                                     sessionStorage.setItem("Detalleuid", boletos)
-                                    
+
                                     sessionStorage.setItem("Suscritorid", JSON.stringify({ ...usuario }))
                                     //cerrar()
                                     history.push("/admin/suscritor/" + usuario.id + "")
@@ -644,6 +645,7 @@ export default function DetalleCompraView() {
 
     }
     const Habilitar_Envio = async (ids) => {
+        if (useradmin.perfil == 'suscriptores') return
         try {
             let { data } = await Axiosmikroserdos.get("api/reenvio/" + ids)
             if (data.estado) {
@@ -882,27 +884,6 @@ export default function DetalleCompraView() {
         }).catch(erro => {
             console.log(erro)
         })
-     /*   Listarticketporestado(datos.cedula).then(ouput => {
-            if (ouput.success) {
-                let boletos = ouput.data.map((e) => {
-                    if (concer.find(f => f.nombreConcierto == e.concierto) != undefined) { return { ...e } }
-                })
-           /*     setlocalida(boletos.filter(e => e != undefined).map(e => {
-                    return {
-                        Comprador: usuario.nombreCompleto,
-                        Cedula: e.cedula,
-                        Evento: e.concierto,
-                        Localidad: e.localidad,
-                        Valor: e.valor,
-                        Estado: e.estado,
-                        Canje: e.canje,
-                        Numero: e.sillas
-                    }
-                }))*
-            }
-        }).catch(err => {
-            console.log(err)
-        })*/
         nombres.forma_pago == "Deposito" ?
             nombres.numerTransacion != null && nombres.numerTransacion != "null" ?
                 BuscarTransacion({
@@ -1111,7 +1092,7 @@ export default function DetalleCompraView() {
             "bancos": nombres.banco
         }
         if (nombres.forma_pago == "Deposito") {
-           
+
             $.confirm({
                 title: 'Desea Aprobar el pago',
                 type: 'blue',
@@ -1139,18 +1120,18 @@ export default function DetalleCompraView() {
                                     sessionStorage.setItem("Suscritorid", JSON.stringify({ ...usuario }))
                                     //cerrar()
                                     history.push("/admin/suscritor/" + usuario.id + "")
-                                   /* buscarcliente({
-                                        "cedula": nombres.cedula,
-                                        "email": ''
-                                    }).then(oupt => {
-                                       
-
-
-                                    })*/
+                                    /* buscarcliente({
+                                         "cedula": nombres.cedula,
+                                         "email": ''
+                                     }).then(oupt => {
+                                        
+ 
+ 
+                                     })*/
                                     //history.goBack()
                                     // return
                                 }
-                               //$.alert("No se registro")
+                                //$.alert("No se registro")
                             }).catch(err => {
                             })
                         }
@@ -1174,7 +1155,7 @@ export default function DetalleCompraView() {
                                     history.goBack()
                                     return
                                 }
-                              //  $.alert("No se registro")
+                                //  $.alert("No se registro")
                             }).catch(err => {
                             })
                         }
@@ -1224,7 +1205,7 @@ export default function DetalleCompraView() {
                                 //  history.goBack()
                                 return
                             }
-                          //  $.alert("No se registro")
+                            //  $.alert("No se registro")
                         }).catch(err => {
                         })
                     }
@@ -1300,7 +1281,7 @@ export default function DetalleCompraView() {
         return false
     }
     function CanjeBole() {
-        if (useradmin.perfil == 'suscriptores') return
+        //if (useradmin.perfil == 'suscriptores') return
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
         let cor = nombres.info_concierto
         // console.log(id)
@@ -1426,6 +1407,7 @@ export default function DetalleCompraView() {
         });
     }
     function conciliacion() {
+        if (useradmin.perfil == 'suscriptores') return
         if (nombres.conciliacion == undefined) return
         if (Object.keys(nombres.conciliacion).length > 0) return
         usedispatch(setModal({ nombre: "consiliacion", estado: { concierto: nombres.info_concierto[0].nombreConcierto, ...nombres, id_registro: nombres.id, ...tarjetadata } }))
@@ -1501,7 +1483,7 @@ export default function DetalleCompraView() {
                                 </div>
 
                                 <h1></h1>
-                                {useradmin.perfil == "suscriptores" ? "" :
+                                {(useradmin.perfil == "suscriptores" && useradmin.id != '87') ? "" :
                                     <div className="col-12   d-flex  text-center justify-content-md-end  align-items-center">
                                         <div className="px-2">
                                             <div className="" >
@@ -1560,11 +1542,10 @@ export default function DetalleCompraView() {
                                                         <i className="fa fa-info-circle">  </i>Recargar Boleto
                                                     </a>}
                                                 {nombres.forma_pago != "Deposito" ? "" :
-                                                    <a className=" btn btn-default btn-sm" onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} >
+                                                    <a className={" btn btn-default btn-sm " + (useradmin.perfil == 'suscriptores') ? "d-none" : ""} onClick={() => usedispatch(setModal({ nombre: "canjear", estado: { ...nombres } }))} >
                                                         <i className="fa fa-check"></i> Cambiar Tarjeta </a>}
-                                                {nombres.estado_pago != "Pagado" ? "" :
-                                                    <a className=" btn btn-default btn-sm" onClick={() => Habilitar_Envio(id)}  >
-                                                        <i className="fa fa-send"></i>Habilitar nuevo envio de boletos </a>}
+                                                {<a className=" btn btn-default btn-sm" onClick={() => Habilitar_Envio(id)}  >
+                                                    <i className="fa fa-send"></i>Habilitar nuevo envio de boletos </a>}
 
 
 
@@ -1915,7 +1896,7 @@ export default function DetalleCompraView() {
                                                         <tr key={i}>
                                                             <td>{item.nombreConcierto}</td>
                                                             <td className="text-center">
-                                                                {item.localidad_nombre||''}
+                                                                {item.localidad_nombre || ''}
                                                             </td>
                                                             <td className="text-center">{item.cantidad}</td>
                                                             <td className="text-center">

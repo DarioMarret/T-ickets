@@ -52,6 +52,7 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { verAsientos } from "utils/CarritoLocalStorang";
 import { isAfter, parse } from "date-fns";
 import ModalEfectivofACILITO from "views/Components/MODAL/Modalefectivo";
+import { Axiosmikroserdos } from "utils/index";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -288,6 +289,26 @@ export default function StoreTickesViews() {
                     setDatoscon(e)
 
                     console.log(colornuevo.filter((e) => e != undefined))
+                    let { data } = await Axiosmikroserdos.get("api/Valida_Descuento/" + getDatosUsuariosLocalStorag().cedula)
+                    console.log(data)
+                    if (data.estado ) {
+                        usedispatch(setToastes({
+                            show: true,
+                            message: data.mensaje,
+                            color: 'bg-warning',
+                            estado: "Verificar de que Evento"
+                        }))
+                    }
+                    let datas = await Axiosmikroserdos.get("api/Valida_DescuentoStar/" + getDatosUsuariosLocalStorag().cedula)
+                    console.log(datas.data)
+                    if (datas.data.estado) {
+                        usedispatch(setToastes({
+                            show: true,
+                            message: datas.data.message +" En star365",
+                            color: 'bg-warning',
+                            estado: "Verificar de que Evento"
+                        }))
+                    }
                     Cargarsillas([...colornuevo.filter((e) => e != undefined)]).then(outp => {
                         setspinervi("d-none")
                         console.log(outp)
@@ -472,7 +493,7 @@ export default function StoreTickesViews() {
             <ModalConfima />
             <ReporteView
                 repShop={repShop}
-                detener={()=>console.log()}
+                detener={() => console.log()}
                 setrepShow={setrepShow}
                 comprar={para}
             />

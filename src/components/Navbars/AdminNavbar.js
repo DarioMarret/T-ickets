@@ -106,12 +106,6 @@ function AdminNavbar() {
           $('#cedulac').val("")
           sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
           history.push("/admin/suscritor/" + oupt.data.id + "")
-          /*setDausuario({
-            nombreCompleto: oupt.data.nombreCompleto,
-            ciudad: oupt.data.direccion,
-            email: oupt.data.email,
-            id: oupt.data.cedula
-          })*/
         }
         else {
         

@@ -57,11 +57,43 @@ export async function getCedula(cedula) {
 //estas funciones las Agrege en caso de uso dee usuario loggeado
 export function setDatosUser(data) {
     try {
+        const datas = {
+            timestamp: Date.now() // Guarda el tiempo actual en milisegundos
+        };
         sessionStorage.setItem(DatoTokenusuario, data)
+        //sessionStorage.setItem("Time", JSON.stringify(datas))
         return true
     } catch (error) {
         //console.log(error)
         // return {'estado':false,'error':error}        
+    }
+}
+export function checkLocalStorageExpiration() {
+    const data = localStorage.getItem("Time");
+    console.log(data)
+    if (data) {
+        console.log("Entro")
+        const parsedData = JSON.parse(data);
+        const now = Date.now();
+        const twelveHours = 12 * 60 * 60 * 1000; // 12 horas en milisegundos
+        console.log(data)
+        if (!parsedData.timestamp) {
+            //window.location.reload()
+            sessionStorage.removeItem(DatoTokenusuario);
+            sessionStorage.removeItem("Time");
+            console.log(`no encotreo tiempo`);
+            return true
+        }
+        if (now - parsedData.timestamp > twelveHours) {
+            // window.location.reload()
+            sessionStorage.removeItem(DatoTokenusuario); // Borra el dato si ha pasado el tiempo
+            sessionStorage.removeItem("Time");
+            console.log(`El dato con clave "${now}" ha sido eliminado por expiración.`);
+            return true
+        }
+        sessionStorage.removeItem(DatoTokenusuario); // Borra el dato si ha pasado el tiempo
+        sessionStorage.removeItem("Time");
+        return false
     }
 }
 export function getUsuario() {
@@ -78,6 +110,7 @@ export function getUsuario() {
 export function removeDatosUsuario() {
     try {
         sessionStorage.removeItem(DatoTokenusuario)
+        sessionStorage.removeItem("Time");
     } catch (error) {
 
     }

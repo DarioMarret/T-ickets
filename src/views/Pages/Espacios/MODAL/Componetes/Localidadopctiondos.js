@@ -246,7 +246,7 @@ const TabdosView = (props) => {
         }
         else {
             try {
-                //setdisable(true)
+                setdisable(true)
                 console.log(FilasLocalidad)
                 const guarda = await GuardarLocalidad({ "espacio": localidanames.nombre.trim(), "id_espacio": localidanames.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
                  console.log(guarda)
@@ -368,7 +368,7 @@ const TabdosView = (props) => {
 
                                 <div className="d-flex text-end row">
                                     {localidaname.id !== "" ? <button className="btn btn-primary col-12" onClick={actualizalocalidad}>Actualizar</button> : ''}
-                                    {inputdisable ? '' : <button className="btn btn-success" onClick={agregaLocaliad}>Guardar</button>}
+                                    {inputdisable ? '' : <button className="btn btn-success" disabled={inputdisable} onClick={agregaLocaliad}>Guardar</button>}
                                 </div>
                             </div>
                         </div>

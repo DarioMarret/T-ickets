@@ -55,6 +55,7 @@ const SuscritoridView = () => {
   let history = useHistory()
   let usedispatch = useDispatch()
   let info = JSON.parse(sessionStorage.getItem("Suscritorid"))
+  let useradmin = clienteInfo()
   const [spinervi, setSpiner] = useState("d-none")
   const [show, setshow] = useState(false)
   const [alert, setAlert] = React.useState(null)
@@ -232,6 +233,7 @@ const SuscritoridView = () => {
     });
   }
   const eliminarregistro = (parms) => {
+    if (useradmin.perfil == 'suscriptores') return
     $.confirm({
       title: 'Desea eliminar Este registro de compra ',
       content: '',
@@ -262,6 +264,7 @@ const SuscritoridView = () => {
 
   }
   const eliminarTiket = (parm) => {
+    if (useradmin.perfil == 'suscriptores') return
     $.confirm({
       title: 'Desea eliminar este registro ',
       content: '',
@@ -298,6 +301,7 @@ const SuscritoridView = () => {
   }
   const [li, setlik] = useState("")
   function generaPDF(row) {
+    if (useradmin.perfil == 'suscriptores') return
     generaTiketspdf({
       "cedula": row.cedula,
       "codigoEvento": row.codigoEvento,
@@ -311,6 +315,7 @@ const SuscritoridView = () => {
     })
   }  
   function Copiarlink(row) {
+    if (useradmin.perfil == 'suscriptores') return
     let dato = document.getElementById(row.id)
     dato.classList.remove("d-none")
     generaTiketspdf({
@@ -337,6 +342,7 @@ const SuscritoridView = () => {
 
   }
   const Eliminara = (parm) => {
+    if (useradmin.perfil == 'suscriptores') return
     console.log(parm)
     $.confirm({
       title: 'Desea eliminar este boleto ',
@@ -373,6 +379,7 @@ const SuscritoridView = () => {
 
   }
   function linkcopy(row) {
+    if (useradmin.perfil == 'suscriptores') return
     if (row == null) {
       $.alert('No se registra imegen de comprobante')
       return
@@ -411,6 +418,7 @@ const SuscritoridView = () => {
     })
   }
   const Licerarrasientos = (parms) => {
+    if (useradmin.perfil == 'suscriptores') return
     $.confirm({
       title: 'Liberar asiento',
       type: 'blue',

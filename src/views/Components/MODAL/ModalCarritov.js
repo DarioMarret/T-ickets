@@ -662,7 +662,7 @@ const ModalCarritoView = (prop) => {
                                                             <div className="d-flex flex-column ">
                                                                 <h5 className="card-title">{e.localidad}</h5>
 
-                                                                <p className="card-subtitle">Valor ${e.valor * e.cantidad}</p>
+                                                                <p className="card-subtitle">Valor ${e.valor }</p>
                                                                 <p className="card-subtitle">Cantidad {e.cantidad}</p>
                                                             </div>
                                                         </div>

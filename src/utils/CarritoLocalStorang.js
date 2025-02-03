@@ -219,7 +219,7 @@ function VerSillas() {
             PViten = []
         }
     } catch (error) {
-       // //console.log(error)
+        // //console.log(error)
     }
 
 }
@@ -260,7 +260,7 @@ export function VerSillaslist() {
             return []
         }
     } catch (error) {
-      // //console.log(error)
+        // //console.log(error)
     }
 
 }
@@ -352,7 +352,7 @@ export function GetValores() {
         total = (valor + iva)
         //console.log(iva, total)
         let totav = sessionStorage.getItem("Metodo-pago") == "Tarjeta" ? ((parseFloat(valor) + comision) + iva) * 1.08 : (parseFloat(valor) + comision) + iva
-
+        console.log((totav).toFixed(2) + parseFloat(sumcomision.toFixed(2)), (parseFloat(valor) + comision) + iva)
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
             comision_bancaria: evento.codigoEvento != "VI1U84" ? (total.toFixed(2) * 0.08).toFixed(2) : 0,
@@ -361,12 +361,13 @@ export function GetValores() {
             comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
             iva: (iva).toFixed(2),
-            total: evento.codigoEvento != "VI1U84" ? (totav).toFixed(2) + parseFloat(sumcomision.toFixed(2)) : (parseFloat(valor) + comision) + iva,
-            desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / 1.15).toFixed(2),
-            desc: Math.round((subtotal + comision) / 1.15)
-
+            total: evento.codigoEvento != "VI1U84" ? parseFloat((totav).toFixed(2))  : (parseFloat(valor) + comision) + iva,
+            desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / parseFloat(evento.iva)).toFixed(2),
+            desc: Math.round((subtotal + comision) / parseFloat(evento.iva)),
+            tallv: parseFloat((totav).toFixed(2)),
+            tallva: parseFloat(sumcomision.toFixed(2))
         }
-        ////console.log(precios)
+        console.log(precios)
 
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))
         return precios

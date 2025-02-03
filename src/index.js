@@ -1,7 +1,7 @@
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import {  clienteInfo } from "utils/DatosUsuarioLocalStorag";
+import { checkLocalStorageExpiration, clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "swiper/css/bundle";
@@ -35,19 +35,23 @@ function ExternalRedirect(e) {
   window.location.href = `https://api.whatsapp.com/send?phone=593980008000&text=${e.e}`;
   return null; // No renderiza nada
 }
+document.addEventListener("DOMContentLoaded", () => {
+ // checkLocalStorageExpiration()// Reemplaza "miClave" con la clave que usaste para guardar datos
+});
+
 root.render(
   <Provider store={store}>
     <BrowserRouter>
       <Switch>
         <Route path="/auth" render={(props) => !clienteInfo() ? <AuthLayout {...props} /> : <Redirect from="/" to="/admin/inicio" />} />
         <Route path="/admin" render={(props) => clienteInfo() ? <AdminLayout {...props} /> : <LoginPage {...props} />} />
-        <Route path="/bingo/:id" render={()=><BingoViewtiparamsasb/> } />
-        <Route path="/password/:id" render={()=><ResestPassword/>}/>
-        <Route path="/Jessi" render={() => <ExternalRedirect e={"Quiero participar en el concurso de Jessi Uribe"}/>} />
+        <Route path="/bingo/:id" render={() => <BingoViewtiparamsasb />} />
+        <Route path="/password/:id" render={() => <ResestPassword />} />
+        <Route path="/Jessi" render={() => <ExternalRedirect e={"Quiero participar en el concurso de Jessi Uribe"} />} />
         <Route path="/Mofle" render={() => <ExternalRedirect e={"Quiero comprar boletos para el show de La Mofle"} />} />
 
         {/*<Route path="/localidad/:id/:parms" render={() => <LocalidadMApView />} />*/}
-        <Route path="/" render={() => <Indexflas /> } />
+        <Route path="/" render={() => <Indexflas />} />
 
         <Route path="*" to="/" />
         <Route path="*" to="/" />
