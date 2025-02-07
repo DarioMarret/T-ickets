@@ -46,7 +46,7 @@ const ModalLogin = (props) => {
             telefono: data.data.movil, name: data.data.nombreCompleto,
             email: data.data.email, hora: String(hoy),
             enable: data.data.enable, id: data.data.id,
-            discapacidad: cedula.discapacidad,
+            discapacidad: 'No',
             envio: ''
           }
           sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))

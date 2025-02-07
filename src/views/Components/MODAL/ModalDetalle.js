@@ -266,7 +266,8 @@ function ModalDetalle(props) {
             })
         }
         let mostrarcomision = GetMetodo()
-        const mostrar = mostrarcomision != "Tarjeta" ? "d-none" : ""
+        console.log(mostrarcomision)
+        const mostrar = ((mostrarcomision != "Tarjeta") && mostrarcomision != "Tarjeta-Local") ? "d-none" : ""
         sethideComision(mostrar)
     }, [modalshow.nombre == "ModalDetalle" ? true : false, actualState])
     function CodigoValido() {
@@ -855,7 +856,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                clienteauth && datosPerson.metodoPago == "Tarjeta" ?
+                                clienteauth && (datosPerson.metodoPago == "Tarjeta") ?
                                     <button id="pagarcuenta" className="btn btn-primary"
 
                                         onClick={() => (userauthi.login) ? abrirPago() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" }))}
@@ -863,7 +864,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR  </button> : ""
                             }
                             {
-                                clienteauth && datosPerson.metodoPago == "Efectivo" ?
+                                clienteauth && (datosPerson.metodoPago == "Efectivo" || datosPerson.metodoPago == "Tarjeta-Local") ?
                                     <button id="pagarcuenta" className="btn btn-primary"
 
                                         onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? detposito() : usedispatch(setModal({ nombre: 'loginpage', estado: " e" })) } }}
@@ -871,7 +872,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                clienteauth && datosPerson.metodoPago == "Deposito" ?
+                                clienteauth && (datosPerson.metodoPago == "Deposito") ?
                                     <button id="pagarcuenta" className="btn btn-primary"
 
                                         onClick={() => { if (validarEmail(datosPerson.email)) { (userauthi.login) ? handelReporShow() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" })) } }}

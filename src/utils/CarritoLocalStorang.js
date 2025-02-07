@@ -5,7 +5,7 @@ import {
     Valorcarrito, listaasiento,
     sillaspalco, seleccionmapa, Eventoid, concierto
 } from "./constantes"
-import { getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
+import { clienteInfo, getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
 let PViten = []
 let PVsilla = []
 export function TiendaIten(producto) {
@@ -320,7 +320,7 @@ export function GetValores() {
                     tienda2.valor = (parseFloat(tienda2.localidaEspacio["precio_descuento"]) * parseInt(tienda2.cantidad))
 
                 } else {
-                    let valores = (user.discapacidad == 'Si' && cantidadTotal == 1) ? tienda2.localidaEspacio["precio_discapacidad"] : tienda2.valor
+                    let valores = (user.discapacidad == 'Si' && cantidadTotal == 1 && clienteInfo() != null) ? tienda2.localidaEspacio["precio_discapacidad"] : tienda2.valor
                     tienda2.valor = (parseFloat(valores) * parseInt(tienda2.cantidad))
                 }
             }
@@ -351,23 +351,23 @@ export function GetValores() {
         iva = parseInt(ivados) == 0 ? ((subtotal) * parseFloat(ivados)) : (subtotal) * parseFloat(evento.iva)
         total = (valor + iva)
         //console.log(iva, total)
-        let totav = sessionStorage.getItem("Metodo-pago") == "Tarjeta" ? ((parseFloat(valor) + comision) + iva) * 1.08 : (parseFloat(valor) + comision) + iva
-        console.log((totav).toFixed(2) + parseFloat(sumcomision.toFixed(2)), (parseFloat(valor) + comision) + iva)
+        let totav = (sessionStorage.getItem("Metodo-pago") == "Tarjeta" || sessionStorage.getItem("Metodo-pago") == "Tarjeta-Local") ? ((parseFloat(valor) + comision) + iva) * 1.08 : (parseFloat(valor) + comision) + iva
+       // console.log((totav).toFixed(2) + parseFloat(sumcomision.toFixed(2)), (parseFloat(valor) + comision) + iva)
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
-            comision_bancaria: evento.codigoEvento != "VI1U84" ? (total.toFixed(2) * 0.08).toFixed(2) : 0,
+            comision_bancaria: (total.toFixed(2) * 0.08).toFixed(2),//evento.codigoEvento != "VI1U84" ? (total.toFixed(2) * 0.08).toFixed(2) : 0,
             subtotal: parseFloat(valor).toFixed(2) - parseFloat(sumcomision.toFixed(2)),
             description: descrption,
             comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
             iva: (iva).toFixed(2),
-            total: evento.codigoEvento != "VI1U84" ? parseFloat((totav).toFixed(2))  : (parseFloat(valor) + comision) + iva,
-            desctc: Math.round((valor.toFixed(2) * 8 / 100 + valor) / parseFloat(evento.iva)).toFixed(2),
-            desc: Math.round((subtotal + comision) / parseFloat(evento.iva)),
+            total: parseFloat((totav).toFixed(2)), //evento.codigoEvento != "VI1U84" ? parseFloat((totav).toFixed(2))  : (parseFloat(valor) + comision) + iva,
+            desctc: (parseFloat(valor) * 8 / 100 + parseFloat(valor)) / parseFloat(iva).toFixed(2),
+            desc: (parseFloat(subtotal) + parseFloat(comision)) / parseFloat(evento.iva),
             tallv: parseFloat((totav).toFixed(2)),
             tallva: parseFloat(sumcomision.toFixed(2))
         }
-        console.log(precios)
+     //   console.log(precios)
 
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))
         return precios

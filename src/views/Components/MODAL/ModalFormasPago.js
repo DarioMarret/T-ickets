@@ -224,7 +224,7 @@ export default function FormasPagoMopadal() {
                                             name: data.data.data.nombreCompleto,
                                             email: data.data.data.email, hora: String(hoy),
                                             enable: data.data.data.enable, id: data.data.data.id,
-                                            discapacidad: cedula.discapacidad,
+                                            discapacidad: 'No',
                                             envio: ''
                                         }
                                         window.gtag('event', 'login', {
