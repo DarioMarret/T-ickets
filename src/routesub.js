@@ -1,28 +1,3 @@
-/*!
-
-=========================================================
-* Light Bootstrap Dashboard PRO React - v2.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-pro-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-import UserPage from "views/Pages/UserPage.js";
-import LoginPage from "views/Pages/LoginPage.js";
-import RegisterPage from "views/Pages/RegisterPage.js";
-import LockScreenPage from "views/Pages/LockScreenPage.js";
-import RegularForms from "views/Forms/RegularForms.js";
-import ExtendedForms from "views/Forms/ExtendedForms.js";
-import ValidationForms from "views/Forms/ValidationForms.js";
-import Wizard from "views/Forms/Wizard/Wizard.js";
-import PerfilPage from "views/Pages/Perfil";
-*/
 import { lazy } from "react";
 import Loadable from "views/Components/Loadable/index";
 
@@ -48,6 +23,7 @@ const InformeView = Loadable(lazy(() => import("views/Pages/VenderTiket.js/Aprob
 const ConsolidacionView = Loadable(lazy(() => import("views/Pages/Consolidados/index.js")));
 const OCRApiViews = Loadable(lazy(() => import("views/Pages/Autorizacion/OCRapi")));
 const ListarLogs = Loadable(lazy(() => import("views/Pages/Infolog")));
+const Ventasnuevas = Loadable(lazy(() => import("views/Pages/VenderTiket.js/Ventas/index")))
 //const WhatsAppViewmal = Loadable(lazy(() => import("pages/Usuarios/Covertura")));
 
 
@@ -221,6 +197,13 @@ var routes = [
         name: "Informe de ventas",
         mini: "*",
         component: InformeView,
+        permiso: ["suscriptores", "admin", "super_admin", "vendedores"]
+      },
+      {
+        path:"/vender/:id",
+        layout:"/admin",
+        mini:"*",
+        component:Ventasnuevas,
         permiso: ["suscriptores", "admin", "super_admin", "vendedores"]
       },
       {

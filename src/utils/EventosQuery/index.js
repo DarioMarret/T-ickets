@@ -147,6 +147,14 @@ export const Boleteria_Nombre = async (nombre) => {
         return error
     }
 }
+export const Boleteria_medios = async (nombre) => {
+    try {
+        let { data } = await boleteriaAxios.post("Boleteria/evento_forma", { "nombre": nombre })
+        return data
+    } catch (error) {
+        return error
+    }
+}
 export const Boleteria_voucher = async (params) => {
     let ids = clienteInfo() != null ? clienteInfo().id : 0
 

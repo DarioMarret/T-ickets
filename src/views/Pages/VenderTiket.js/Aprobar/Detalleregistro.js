@@ -700,7 +700,7 @@ export default function DetalleCompraView() {
         }).then(ouputs => {
             if (ouputs.success) {
                 setUser({ ...ouputs.data })
-                nombres.forma_pago == "Tarjeta" && nombres.link_pago != null ?
+                nombres.forma_pago == "Tarjeta" && (nombres.link_pago != null||nombres.forma_pago=='Anulado') ?
                     !nombres.link_pago.includes("cloud.abitmedia.com") ?
                         infoTarjeta({
                             "token": nombres.token_pago
@@ -2174,7 +2174,7 @@ export default function DetalleCompraView() {
                         wrapperClassName=""
                         visible={true}
                     />
-                    <h4 className='text-light'>Cargando  evento  ...</h4>
+                    <h4 className='text-light'>Actualizando...</h4>
 
 
                 </div>

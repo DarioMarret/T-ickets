@@ -27,7 +27,7 @@ import { ListarEspacios } from "utils/EspaciosQuery";
 import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
 import { ListarLocalidad } from "utils/LocalidadesQuery";
 import { EventosActivos } from "utils/Querypanel";
-import { Boleteria_Boletos, Boleteria_Nombre, Boleteria_canje } from "utils/EventosQuery/index";
+import { Boleteria_Boletos, Boleteria_Nombre, Boleteria_canje, Boleteria_medios } from "utils/EventosQuery/index";
 import { Contactos_Boletos } from "utils/Querycomnet";
 import { Axiosmikroserdos, boleteriaAxios } from "utils/index";
 import MesasViews from "views/Pages/Mesas/Plantillas/indice";
@@ -73,6 +73,7 @@ const EventoEspecifico = () => {
         codigoEvento: '',
         fechaCreacion: '',
         "botNumber": '',
+        iva: "",
         LocalodadPrecios: []
     })
     async function Eliminar(e) {
@@ -81,21 +82,6 @@ const EventoEspecifico = () => {
 
 
     async function Evento(event) {
-        SetEvento({
-            id: '',
-            nombreConcierto: '',
-            fechaConcierto: '',
-            horaConcierto: '',
-            lugarConcierto: '',
-            cuidadConcert: '',
-            descripcionConcierto: '',
-            imagenConcierto: '',
-            idUsuario: '',
-            estado: '',
-            codigoEvento: '',
-            fechaCreacion: '',
-            LocalodadPrecios: []
-        })
         try {
             let { data } = await boleteriaAxios.get("Boleteria/ListaPreciosLocalidades/" + id)
             console.log(data)
@@ -108,10 +94,13 @@ const EventoEspecifico = () => {
             let boletos_camjeados = await Boleteria_canje(id)
             let boletos_boleto = await Boleteria_Boletos(id)
             let boletos_eventos = await Boleteria_Nombre(id)
+            let boletos = await Boleteria_medios(id)
+            console.log("nuevos", boletos)
             setReport({
                 canje: boletos_camjeados.data,
                 boleto: boletos_boleto.data,
-                valores: boletos_eventos.data
+                valores: boletos_eventos.data,
+                localidades: boletos.data
             })
             //}
             if (cargar) {
@@ -290,7 +279,8 @@ const EventoEspecifico = () => {
     let [report, setReport] = useState({
         canje: [],
         boleto: [],
-        valores: []
+        valores: [],
+        localidades: []
     })
     let { data: nuevos, isLoading: boletosloading } = useGetBoletosQuery()
     const options = {
@@ -459,563 +449,705 @@ const EventoEspecifico = () => {
                 evento={evento}
             />
             {alert}
-            <div className="col-12 d-flex mb-1 justify-content-end align-items-end" >
-                <div>
-                    <button className="btn btn-primary" onClick={ObtenerContactosquecompraron}>
-                        <i className="fa fa-user" ></i>
-                        Exportar Contactos
-                    </button>
-                </div>
-                <div className="px-2">
-                    <button className="btn btn-primary"
-                        onClick={() => usehistory.push("/admin/Evento")} >
-                        <i className="fa fa-arrow-left" ></i>
-                        Regresar
-                    </button>
-                </div>
-
+            <div className='col-12'>
+                <ul className="nav nav-tabs">
+                    <li className="nav-item">
+                        <a className="nav-link active" data-toggle="tab" href="#evento"
+                        >Evento</a>
+                    </li>
+                    <li className="nav-item d-none">
+                        <a className="nav-link " data-toggle="tab" href="#reportes"
+                        >Reportes</a>
+                    </li>
+                </ul>
             </div>
-            <div className="row  ">
-                <div className=" col-12 col-md-6 col-lg-6 col-sm-6">
+            <div className="tab-content col-sm-12">
+                <div className="tab-pane active" id="evento" >
+                    <div>
 
 
-                    <h5 style={{ fontSize: '1.5em' }}>
-                        <div className="d-flex flex-column  ">
-
-                        </div>
-                        Evento {evento.nombreConcierto} <Badge bg={color[evento.estado ? evento.estado : "danger"]}>{evento.estado}</Badge>
-
-                        {evento.botNumber != "0980008000" ? <button className="mx-2 btn btn-success" onClick={() => Actualizar(evento.botNumber)}>HABILITAR VENTA DE BOT</button> : <button onClick={() => Actualizar(evento.botNumber)} className="mx-2 btn btn-danger">DESABILITAR VENTA EN BOT </button>}
-                    </h5>
-                </div>
-                <div className=" col-12 col-md-6 col-lg-6 col-sm-6">
-
-
-                    <div className="d-flex justify-content-end  flex-row">
-                        <button className="btn btn-warning txt-white" onClick={() => successAlert("ACTIVO")} >ACTIVAR </button>
-                        <button className="btn btn-secondary txt-white mx-1" onClick={() => successAlert("PROCESO")} >PROCESO</button>
-                        {evento.codigoEvento != "CANCELAR" ? <button className="btn btn-danger txt-white mx-1" onClick={() => successAlert("CANCELADO")} >CANCELAR</button> : ""}
-                    </div>
-                </div>
-
-            </div>
-            <div className="conatiner row">
-                <div className="row mx-auto p-0">
-                    <div className="col-12 col-md-6 col-lg-4 col-xl-4 mx-auto my-5" id="evento2">
-                        <a href="#" onClick={() => setOpen(!open)}>
-                            <div className="container rounded-7 shadow-md px-0">
-                                <img src={evento.imagenConcierto ? evento.imagenConcierto : ''} className="img-fluid rounded-7 shadow-md " alt="" />
-                            </div>
-                        </a>
-                        <Collapse in={false} >
-                            <div className=" container mt-4 px-0" id="collapseExample2">
-                                <div className="card card-body rounded-7 py-5">
-                                    <div className="container">
-                                        <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"> {evento.nombreConcierto}</span> </h1>
-                                        <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto} </span></h4>
-                                        <div className="col-12 border border-bottom my-3"></div>
-                                        <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> {evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
-                                        <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
-                                        <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
-                                        <div className="" >
-                                            <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil == 'suscriptores') ? "" : setShow(true)} >Editar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Collapse>
-
-                    </div>
-                    <div className="col-12 col-lg-8 mx-auto " id="evento4">
-                        <PiecharViews
-                            options={options}
-                            datas={datas}
-                        />
-                    </div>
-                </div>
-                <div className="row" >
-                    <div className="col-6">
-
-
-                    </div>
-                </div>
-            </div>
-            <div className="card">
-                <div className='container-fluid row p-0'>
-                    <div className='col-12'>
-                        <ul className="nav nav-tabs">
-                            <li className="nav-item">
-                                <a className="nav-link active" data-toggle="tab" href="#filas"
-                                >Boletos</a>
-                            </li>
-
-                            <li className="nav-item">
-                                <a className="nav-link " data-toggle="tab" href="#mesas"
-                                >Canjeados</a>
-                            </li>
-                            <li className="nav-item d-none">
-                                <a className="nav-link" data-toggle="tab" href="#correlativos">Valores variables </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link " data-toggle="tab" href="#listas"
-                                >Forma de pago</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" data-toggle="tab" href="#localidad">Localidades</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" data-toggle="tab" href="#info">Info</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="tab-content col-sm-12">
-                        <div className="tab-pane active container-fluid " id="filas">
-                            <div className="card-header pb-2">
-                                <h5>Tickets</h5>
-                            </div>
-                            <MaterialReactTable
-                                columns={ticketsboletos}
-                                data={tickes}
-
-                                muiTableProps={{
-                                    sx: {
-                                        tableLayout: 'flex'
-                                    }
-                                }}
-                                initialState={
-                                    {
-                                        columnVisibility: { ciudad: false, concierto: false, protocol: false, link: false, qr: false }
-                                    }
-                                }
-                                muiTableBodyProps={{
-                                    sx: { columnVisibility: { nombre: false } }
-                                }}
-                                renderDetailPanel={({ row }) => (
-                                    <Box
-                                        sx={{
-                                            display: 'flex flex-column',
-                                            margin: 'auto',
-                                            gridTemplateColumns: '1fr 1fr',
-                                            width: '100%',
-                                        }}
-                                    >
-
-                                        <Typography>ciudad : {row.original.ciudad} </Typography>
-                                        <Typography>Concierto : {row.original.concierto} </Typography>
-                                        <Typography>Protocolo : {row.original.protocolo} </Typography>
-                                        <Typography>link : {row.original.link} </Typography>
-                                        <Typography>QR : {row.original.qr} </Typography>
-
-
-                                    </Box>
-                                )}
-
-                                positionToolbarAlertBanner="bottom"
-                                displayColumnDefOptions={{
-                                    'mrt-row-numbers': {
-                                        enableHiding: true, //now row numbers are hidable too
-                                    },
-                                }}
-                                renderTopToolbarCustomActions={({ table }) => (
-                                    <Box
-                                        sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
-                                    >
-                                        {((tickes.length > 0 && (useradmin.perfil != 'suscriptores'))) ? <ExportToExcel apiData={tickes.map(e => {
-                                            e.valor.replace(".", ",")
-                                            return { ...e }
-                                        })}
-                                            fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY')} label={"Boletos"}
-                                        /> : ""}
-                                        <div className="m-2">
-                                            {(useradmin.perfil == 'suscriptores') ? "" :
-                                                <div className="d-flex">
-
-
-                                                    {global.map(ele => {
-                                                        return (
-                                                            <button className="btn  btn-success  btn-sm mx-1"
-
-                                                                onClick={() =>
-                                                                    descarga(ele.localidad, ele.nombreMesa)
-                                                                }>
-                                                                <i className="bi bi-file-earmark-arrow-down-fill"></i>    {ele.nombreMesa} Códigos
-                                                            </button>
-                                                        )
-                                                    })}
-                                                </div>
-                                            }
-                                        </div>
-                                        <Button className="d-none"
-                                            disabled={table.getRowModel().rows.length === 0}
-                                            onClick={() => handleExportRows(table.getRowModel().rows)}
-                                            startIcon={<FileDownloadIcon />}
-
-                                        >
-                                            Export Filas de página
-                                        </Button>
-                                        <Button className="d-none"
-                                            disabled={
-                                                !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-                                            }
-                                            onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-                                            startIcon={<FileDownloadIcon />}
-
-                                        >
-                                            Export Fila Seleccionada
-                                        </Button>
-                                    </Box>
-                                )}
-                                localization={MRT_Localization_ES}
-                            />
-                        </div>
-                        <div className="tab-pane  container-fluid " id="mesas">
-                            <table class="table text-end">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" >Localidad</th>
-                                        <th scope="col">Canjeado </th>
-                                        <th scope="col">No Canjeado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {report.canje.length > 0 ?
-
-                                        Object.values(groupedData).map((elem, ind) => {
-                                            return (
-                                                <tr key={ind}>
-
-                                                    <td>{elem.localidad}</td>
-                                                    <th >{elem.canjeado}</th>
-                                                    <td>{elem.noCanjeado}</td>
-                                                </tr>
-                                            )
-                                        })
-                                        : ""}
-                                    <th>Total:</th>
-                                    <th> {report.canje.length > 0 ?Object.values(groupedData).reduce((acc, elem) => acc + parseFloat(elem.canjeado), 0):0}</th>
-                                    <th> {report.canje.length > 0 ?Object.values(groupedData).reduce((acc, elem) => acc + parseFloat(elem.noCanjeado), 0):0}</th>
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <div className="tab-pane  container-fluid " id="correlativos">
-                            <table class="table text-center">
-                                <thead>
-                                    <tr>
-
-                                        <th scope="col">Total </th>
-                                        <th scope="col">Cantidad</th>
-                                        <th scope="col">Localidad</th>
-                                        <th scope="col">Precio</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {report.boleto.length > 0 ?
-                                        report.boleto.map((elem, ind) => {
-                                            return (
-                                                <tr key={ind}>
-                                                    <th >${elem.total}</th>
-                                                    <td>{elem.boleto}</td>
-                                                    <td>{elem.localidad}</td>
-                                                    <td>{elem.valor}</td>
-                                                </tr>
-                                            )
-                                        })
-                                        : ""}
-
-
-                                </tbody>
-                            </table>
-
-                        </div>
-
-
-                        <div className="tab-pane  container-fluid " id="listas">
-                            <table class="table text-center">
-                                <thead>
-                                    <tr>
-
-                                        <th scope="col">Total </th>
-                                        <th scope="col">Subtotal</th>
-                                        <th scope="col">iva</th>
-                                        <th scope="col">Cantidad</th>
-                                        <th scope="col">Forma de PAgo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {report.valores.length > 0 ?
-                                        report.valores.map((elem, ind) => {
-                                            return (
-                                                <tr key={ind}>
-                                                    <td>{elem.forma_pago}</td>
-                                                    <td >${elem.tota}</td>
-                                                    <td>{elem.subtotal}</td>
-                                                    <td>{elem.iba}</td>
-                                                    <td>{elem.boleto}</td>
-
-                                                </tr>
-                                            )
-                                        })
-                                        : ""}
-                                    <tr className="border">
-                                        <th>Total </th>
-                                        <th> ${report.valores.reduce((acc, elem) => acc + parseFloat(elem.tota), 0)}</th>
-                                        <th> ${report.valores.reduce((acc, elem) => acc + parseFloat(elem.subtotal), 0)}</th>
-                                        <th>  ${report.valores.reduce((acc, elem) => acc + parseFloat(elem.iba), 0)}</th>
-                                        <th>{report.valores.reduce((acc, elem) => acc + parseFloat(elem.boleto), 0)}</th>
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className="tab-pane container-fluid" id="localidad">
+                        <div className="col-12 d-flex mb-1 justify-content-end align-items-end" >
                             <div>
-                                <button onClick={() => Evento(activeTab)} className="btn btn-success">Actualizar </button>
+                                <button className="btn btn-primary" onClick={ObtenerContactosquecompraron}>
+                                    <i className="fa fa-user" ></i>
+                                    Exportar Contactos
+                                </button>
                             </div>
-                            {/* Nav Tabs */}
-                            <ul className="nav nav-tabs">
-                                <liv className='nav-item'>
+                            <div className="px-2">
+                                <button className="btn btn-primary"
+                                    onClick={() => usehistory.push("/admin/Evento")} >
+                                    <i className="fa fa-arrow-left" ></i>
+                                    Regresar
+                                </button>
+                            </div>
 
-                                    <a className={`nav-link ${activeTab === "PRECIOS" ? "active" : ""}`} onClick={() => setActiveTab("PRECIOS")} href="#PRECIOS">
-                                        PRECIOS
-                                    </a>
-                                </liv>
-                                {global.map((el, ind) => (
-                                    <li className="nav-item" key={ind}>
-                                        <a
-                                            className={`nav-link ${activeTab === el.nombreMesa ? "active" : ""}`}
-                                            onClick={() => setActiveTab(el.nombreMesa)}
-
-                                            href={"#" + el.nombreMesa} // No es necesario en React pero puedes usarlo si lo necesitas
-                                        >
-                                            {el.nombreMesa}
-                                        </a>
-                                    </li>
-                                ))}
-                                <liv className='nav-item'>
-
-                                    <a className="nav-link disponible" onClick={() => setActiveTab("disponible")} href="#disponible">
-                                        DISPONIBILIDAD
-                                    </a>
-                                </liv>
-                            </ul>
-
-                            {/* Tab Content */}
-                            <div className="tab-content col-sm-12">
-
-                                <div
-
-                                    className={`tab-pane ${activeTab === "PRECIOS" ? "active" : ""}`}
-                                    id="PRECIOS"
-
-                                >
-                                    <div className=" d-flex flex-column">
-
-                                        <Accordion >
-                                            {precios.length > 0 ?
-                                                precios.map((e, i) => {
-                                                    return (
-                                                        <Accordion.Item eventKey={i} key={i}>
-                                                            <Accordion.Header>Localidad: {e.localidad}</Accordion.Header>
-                                                            <Accordion.Body>
-                                                                <div className="d-flex flex-row  justify-content-between">
-                                                                    <div className="d-flex flex-column">
-                                                                        <div>
-                                                                            <h5 >
-                                                                                Precio normal : {e.precio_normal}
-                                                                            </h5>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h5>
-                                                                                Precio discapacida : {e.precio_discapacidad}
-                                                                            </h5>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h5>
-                                                                                Precio TC/TD : {e.precio_tarjeta}
-                                                                            </h5>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h5>
-                                                                                Precio Descuento : {e.precio_descuento}
-                                                                            </h5>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h5>
-                                                                                Habilitar Cortesia : {e.habilitar_cortesia}
-                                                                            </h5>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="d-flex flex-column ">
-                                                                        {(useradmin.perfil == 'suscriptores') ? "" : <button className="btn btn-primary"
-                                                                            onClick={() => Eliminar(e)}
-                                                                        >Editar </button>}
-                                                                    </div>
-                                                                </div>
+                        </div>
+                        <div className="row  ">
+                            <div className=" col-12 col-md-6 col-lg-6 col-sm-6">
 
 
-                                                            </Accordion.Body>
-                                                        </Accordion.Item>
-
-                                                    )
-                                                })
-                                                : ''
-
-                                            }
-
-                                        </Accordion>
+                                <h5 style={{ fontSize: '1.5em' }}>
+                                    <div className="d-flex flex-column  ">
 
                                     </div>
-                                </div>
-                                {espacio.map((el, ind) => (
-                                    <div
-                                        key={ind}
-                                        className={`tab-pane ${activeTab === el.nombre ? "active" : ""}`}
-                                        id={el.nombre}
-                                    >
+                                    Evento {evento.nombreConcierto} <Badge bg={color[evento.estado ? evento.estado : "danger"]}>{evento.estado}</Badge>
 
-                                        {el.typo == 'mesa' ? el.localidad.map((e, index) => {
-                                            return (
-                                                <div className='d-flex  PX-1 align-items-center' key={index}>
-                                                    <div className='d-flex pb-2'>
-                                                        <MesasViews
-                                                            text={e.fila}
-                                                        />
-                                                    </div>
-                                                    <div className='d-flex  pb-2' >
-                                                        {e.Mesas.length > 0 ?
-                                                            e.Mesas.map((e, i) => {
-                                                                return (
-                                                                    <div key={i}>
-                                                                        <MesasViews
-                                                                            setMapa={() => Evento(activeTab)}
-                                                                            status={e.asientos.length}
-                                                                            text={e.mesa}
-                                                                            list={e.asientos}
-                                                                        />
-                                                                    </div>
-                                                                )
-                                                            }) : ''}
+                                    {evento.botNumber != "0980008000" ? <button className="mx-2 btn btn-success" onClick={() => Actualizar(evento.botNumber)}>HABILITAR VENTA DE BOT</button> : <button onClick={() => Actualizar(evento.botNumber)} className="mx-2 btn btn-danger">DESABILITAR VENTA EN BOT </button>}
+                                </h5>
+                            </div>
+                            <div className=" col-12 col-md-6 col-lg-6 col-sm-6">
+
+
+                                <div className="d-flex justify-content-end  flex-row">
+                                    <button className="btn btn-warning txt-white" onClick={() => successAlert("ACTIVO")} >ACTIVAR </button>
+                                    <button className="btn btn-secondary txt-white mx-1" onClick={() => successAlert("PROCESO")} >PROCESO</button>
+                                    {evento.codigoEvento != "CANCELAR" ? <button className="btn btn-danger txt-white mx-1" onClick={() => successAlert("CANCELADO")} >CANCELAR</button> : ""}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="conatiner row">
+                            <div className="row mx-auto p-0">
+                                <div className="col-12 col-md-6 col-lg-4 col-xl-4 mx-auto my-5" id="evento2">
+                                    <a href="#" onClick={() => setOpen(!open)}>
+                                        <div className="container rounded-7 shadow-md px-0">
+                                            <img src={evento.imagenConcierto ? evento.imagenConcierto : ''} className="img-fluid rounded-7 shadow-md " alt="" />
+                                        </div>
+                                    </a>
+                                    <Collapse in={false} >
+                                        <div className=" container mt-4 px-0" id="collapseExample2">
+                                            <div className="card card-body rounded-7 py-5">
+                                                <div className="container">
+                                                    <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"> {evento.nombreConcierto}</span> </h1>
+                                                    <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto} </span></h4>
+                                                    <div className="col-12 border border-bottom my-3"></div>
+                                                    <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> {evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
+                                                    <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
+                                                    <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
+                                                    <div className="" >
+                                                        <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil == 'suscriptores') ? "" : setShow(true)} >Editar</button>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </Collapse>
 
-                                            )
+                                </div>
+                                <div className="col-12 col-lg-8 mx-auto " id="evento4">
+                                    <PiecharViews
+                                        options={options}
+                                        datas={datas}
+                                    />
+                                </div>
+                            </div>
+                            <div className="row" >
+                                <div className="col-6">
 
-                                        }) : ''}
-                                        {
-                                            el.typo == 'fila' ? el.localidad.map((e, i) => {
+
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card">
+                            <div className='container-fluid row p-0'>
+                                <div className='col-12'>
+                                    <ul className="nav nav-tabs">
+                                        <li className="nav-item">
+                                            <a className="nav-link active" data-toggle="tab" href="#filas"
+                                            >Boletos</a>
+                                        </li>
+
+                                        <li className="nav-item">
+                                            <a className="nav-link " data-toggle="tab" href="#mesas"
+                                            >Canjeados</a>
+                                        </li>
+                                        <li className="nav-item d-none">
+                                            <a className="nav-link" data-toggle="tab" href="#correlativos">Valores variables </a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link " data-toggle="tab" href="#listas"
+                                            >Forma de pago</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#localidad">Localidades</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-toggle="tab" href="#info">Info</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div className="tab-content col-sm-12">
+                                    <div className="tab-pane active container-fluid " id="filas">
+                                        <div className="card-header pb-2">
+                                            <h5>Tickets</h5>
+                                        </div>
+                                        <MaterialReactTable
+                                            columns={ticketsboletos}
+                                            data={tickes}
+
+                                            muiTableProps={{
+                                                sx: {
+                                                    tableLayout: 'flex'
+                                                }
+                                            }}
+                                            initialState={
                                                 {
-                                                    return (
+                                                    columnVisibility: { ciudad: false, concierto: false, protocol: false, link: false, qr: false }
+                                                }
+                                            }
+                                            muiTableBodyProps={{
+                                                sx: { columnVisibility: { nombre: false } }
+                                            }}
+                                            renderDetailPanel={({ row }) => (
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex flex-column',
+                                                        margin: 'auto',
+                                                        gridTemplateColumns: '1fr 1fr',
+                                                        width: '100%',
+                                                    }}
+                                                >
 
-                                                        <div className='d-flex flex-row justify-content-around  px-3 p-1 ' key={"lista" + i} >
-                                                            <span className=" " disabled >
-                                                                <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '25px', width: '25px' }} >
-                                                                    <div className="d-flex justify-content-center">
-                                                                        <span style={{ fontSize: '0.5em' }}>    {e.fila} </span>
-                                                                    </div>
-                                                                </div>
-                                                            </span>
-                                                            <div className=' d-flex ml-3 flex-row px-1 justify-content-lg-center  align-items-stretch ' style={{ width: '100%' }}>
-                                                                {e.asientos.map((silla, index) => {
-                                                                    let numero = String(silla.silla).split("-")[2]
+                                                    <Typography>ciudad : {row.original.ciudad} </Typography>
+                                                    <Typography>Concierto : {row.original.concierto} </Typography>
+                                                    <Typography>Protocolo : {row.original.protocolo} </Typography>
+                                                    <Typography>link : {row.original.link} </Typography>
+                                                    <Typography>QR : {row.original.qr} </Typography>
+
+
+                                                </Box>
+                                            )}
+
+                                            positionToolbarAlertBanner="bottom"
+                                            displayColumnDefOptions={{
+                                                'mrt-row-numbers': {
+                                                    enableHiding: true, //now row numbers are hidable too
+                                                },
+                                            }}
+                                            renderTopToolbarCustomActions={({ table }) => (
+                                                <Box
+                                                    sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
+                                                >
+                                                    {((tickes.length > 0 && (useradmin.perfil != 'suscriptores'))) ? <ExportToExcel apiData={tickes.map(e => {
+                                                        e.valor.replace(".", ",")
+                                                        return { ...e }
+                                                    })}
+                                                        fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY')} label={"Boletos"}
+                                                    /> : ""}
+                                                    <div className="m-2">
+                                                        {(useradmin.perfil == 'suscriptores') ? "" :
+                                                            <div className="d-flex">
+
+
+                                                                {global.map(ele => {
                                                                     return (
-                                                                        <div key={"silla" + index} id={silla.idsilla}
-                                                                            className={silla.silla + '  d-flex   rounded-5 sillasfila text-center  justify-content-center align-items-center '}
-                                                                            style={{ height: '20px', width: '20px', marginLeft: '1px', }}
+                                                                        <button className="btn  btn-success  btn-sm mx-1"
 
-                                                                        >
-                                                                            <div className={' px-3 d-flex   text-white justify-content-center  '} >
-                                                                                <div className="d-flex justify-content-center">
-                                                                                    <span style={{ fontSize: '0.5em' }}> {numero} </span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                                            onClick={() =>
+                                                                                descarga(ele.localidad, ele.nombreMesa)
+                                                                            }>
+                                                                            <i className="bi bi-file-earmark-arrow-down-fill"></i>    {ele.nombreMesa} Códigos
+                                                                        </button>
                                                                     )
                                                                 })}
                                                             </div>
+                                                        }
+                                                    </div>
+                                                    <Button className="d-none"
+                                                        disabled={table.getRowModel().rows.length === 0}
+                                                        onClick={() => handleExportRows(table.getRowModel().rows)}
+                                                        startIcon={<FileDownloadIcon />}
 
-                                                        </div>
-                                                    )
-                                                }
-                                            }) : ''
+                                                    >
+                                                        Export Filas de página
+                                                    </Button>
+                                                    <Button className="d-none"
+                                                        disabled={
+                                                            !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
+                                                        }
+                                                        onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
+                                                        startIcon={<FileDownloadIcon />}
 
-                                        }
-                                        {
-                                            el.typo == 'correlativo' ? <div>Aforo {el.localidad[0].total}</div> : ''
-                                        }
+                                                    >
+                                                        Export Fila Seleccionada
+                                                    </Button>
+                                                </Box>
+                                            )}
+                                            localization={MRT_Localization_ES}
+                                        />
                                     </div>
-                                ))}
-
-                                <div
-
-                                    className={`tab-pane ${activeTab === "disponible" ? "active" : ""}`}
-                                    id="disponible"
-
-                                >
-                                    <div className="row">
-                                        <table class="table table-striped">
+                                    <div className="tab-pane  container-fluid " id="mesas">
+                                        <table class="table text-end">
                                             <thead>
                                                 <tr>
-                                                    <th >Localidad</th>
-                                                    <th >Disponible</th>
-                                                    <th>Ocupado</th>
-                                                    <th>Total</th>
+                                                    <th scope="col" >Localidad</th>
+                                                    <th scope="col">Canjeado </th>
+                                                    <th scope="col">No Canjeado</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {dispoible.length > 0 ? dispoible.map(e => {
-                                                    return (
-                                                        <tr>
+                                                {report.canje.length > 0 ?
 
-                                                            <td>{e.nombreMesa}</td>
-                                                            <td>{e.cantidad}</td>
-                                                            <td>{parseInt(global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad) - parseInt(e.cantidad)}</td>
-                                                            <td>{global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad}</td>
-                                                        </tr>
-                                                    )
-                                                }) : <tr>
+                                                    Object.values(groupedData).map((elem, ind) => {
+                                                        return (
+                                                            <tr key={ind}>
 
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>}
+                                                                <td>{elem.localidad}</td>
+                                                                <th >{elem.canjeado}</th>
+                                                                <td>{elem.noCanjeado}</td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                    : ""}
+                                                <th>Total:</th>
+                                                <th> {report.canje.length > 0 ? Object.values(groupedData).reduce((acc, elem) => acc + parseFloat(elem.canjeado), 0) : 0}</th>
+                                                <th> {report.canje.length > 0 ? Object.values(groupedData).reduce((acc, elem) => acc + parseFloat(elem.noCanjeado), 0) : 0}</th>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div className="tab-pane  container-fluid " id="correlativos">
+                                        <table class="table text-center">
+                                            <thead>
+                                                <tr>
+
+                                                    <th scope="col">Total </th>
+                                                    <th scope="col">Cantidad</th>
+                                                    <th scope="col">Localidad</th>
+                                                    <th scope="col">Precio</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {report.boleto.length > 0 ?
+                                                    report.boleto.map((elem, ind) => {
+                                                        return (
+                                                            <tr key={ind}>
+                                                                <th >${elem.total}</th>
+                                                                <td>{elem.boleto}</td>
+                                                                <td>{elem.localidad}</td>
+                                                                <td>{elem.valor}</td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                    : ""}
 
 
                                             </tbody>
                                         </table>
 
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className=" tab-pane " id="info">
-                            <div className=" container mt-4 px-0" id="collapseExample2">
-                                <div className="card card-body card row d-flex flex-row card-body rounded-7 py-5">
-                                    <div className="container col-12 col-md-6">
-                                        <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"> {evento.nombreConcierto}</span> </h1>
-                                        <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto} </span></h4>
-                                        <div className="col-12 border border-bottom my-3"></div>
-                                        <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> {evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
-                                        <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
-                                        <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
-                                        <div className="" >
-                                            <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil == 'suscriptores') ? "" : setShow(true)} >Editar</button>
+
+
+                                    <div className="tab-pane  container-fluid " id="listas">
+                                        <table class="table text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Forma de Pago</th>
+                                                    <th scope="col">Total reportes</th>
+                                                    <th scope="col">Total </th>
+                                                    <th scope="col">Comision Bancaria </th>
+                                                    <th scope="col">Comision Boleto </th>
+                                                    <th scope="col">iva</th>
+                                                    <th scope="col">Subtotal</th>
+
+
+                                                    <th scope="col">Boletos</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {report.valores.length > 0 ?
+                                                    report.valores.map((elem, ind) => {
+                                                        return (
+                                                            <tr key={ind}>
+                                                                <td>{elem.forma_pago}</td>
+                                                                <td>{elem.cantidad}</td>
+                                                                <td >${elem.tota}</td>
+                                                                <td >${elem.comision_bancaria}</td>
+                                                                <td>{elem.comision_boleto}</td>
+                                                                <td>{parseInt(evento.iba) ? elem.iba : 0}</td>
+                                                                <td>{elem.subtotal}</td>
+                                                                <td>{elem.boleto}</td>
+
+                                                            </tr>
+                                                        )
+                                                    })
+                                                    : ""}
+                                                <tr className="border">
+
+                                                    <th>Total </th>
+
+                                                    <th>{(report.valores.reduce((acc, elem) => acc + parseFloat(elem.cantidad), 0)).toFixed(0)}</th>
+                                                    <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.tota), 0)).toFixed(2)}</th>
+                                                    <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.comision_bancaria), 0)).toFixed(2)}</th>
+                                                    <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.comision_boleto), 0)).toFixed(2)}</th>
+
+                                                    <th>  ${parseInt(evento.iba) ? (report.valores.reduce((acc, elem) => acc + parseFloat(elem.iba), 0)).toFixed(2) : 0}</th>
+                                                    <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.subtotal), 0)).toFixed(2)}</th>
+                                                    <th>{(report.valores.reduce((acc, elem) => acc + parseFloat(elem.boleto), 0)).toFixed(0)}</th>
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="tab-pane container-fluid" id="localidad">
+                                        <div>
+                                            <button onClick={() => Evento(activeTab)} className="btn btn-success">Actualizar </button>
+                                        </div>
+                                        {/* Nav Tabs */}
+                                        <ul className="nav nav-tabs">
+                                            <liv className='nav-item'>
+
+                                                <a className={`nav-link ${activeTab === "PRECIOS" ? "active" : ""}`} onClick={() => setActiveTab("PRECIOS")} href="#PRECIOS">
+                                                    PRECIOS
+                                                </a>
+                                            </liv>
+                                            {global.map((el, ind) => (
+                                                <li className="nav-item" key={ind}>
+                                                    <a
+                                                        className={`nav-link ${activeTab === el.nombreMesa ? "active" : ""}`}
+                                                        onClick={() => setActiveTab(el.nombreMesa)}
+
+                                                        href={"#" + el.nombreMesa} // No es necesario en React pero puedes usarlo si lo necesitas
+                                                    >
+                                                        {el.nombreMesa}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                            <liv className='nav-item'>
+
+                                                <a className="nav-link disponible" onClick={() => setActiveTab("disponible")} href="#disponible">
+                                                    DISPONIBILIDAD
+                                                </a>
+                                            </liv>
+                                        </ul>
+
+                                        {/* Tab Content */}
+                                        <div className="tab-content col-sm-12">
+
+                                            <div
+
+                                                className={`tab-pane ${activeTab === "PRECIOS" ? "active" : ""}`}
+                                                id="PRECIOS"
+
+                                            >
+                                                <div className=" d-flex flex-column">
+
+                                                    <Accordion >
+                                                        {precios.length > 0 ?
+                                                            precios.map((e, i) => {
+                                                                return (
+                                                                    <Accordion.Item eventKey={i} key={i}>
+                                                                        <Accordion.Header>Localidad: {e.localidad}</Accordion.Header>
+                                                                        <Accordion.Body>
+                                                                            <div className="d-flex flex-row  justify-content-between">
+                                                                                <div className="d-flex flex-column">
+                                                                                    <div>
+                                                                                        <h5 >
+                                                                                            Precio normal : {e.precio_normal}
+                                                                                        </h5>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h5>
+                                                                                            Precio discapacida : {e.precio_discapacidad}
+                                                                                        </h5>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h5>
+                                                                                            Precio TC/TD : {e.precio_tarjeta}
+                                                                                        </h5>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h5>
+                                                                                            Precio Descuento : {e.precio_descuento}
+                                                                                        </h5>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h5>
+                                                                                            Habilitar Cortesia : {e.habilitar_cortesia}
+                                                                                        </h5>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="d-flex flex-column ">
+                                                                                    {(useradmin.perfil == 'suscriptores') ? "" : <button className="btn btn-primary"
+                                                                                        onClick={() => Eliminar(e)}
+                                                                                    >Editar </button>}
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                        </Accordion.Body>
+                                                                    </Accordion.Item>
+
+                                                                )
+                                                            })
+                                                            : ''
+
+                                                        }
+
+                                                    </Accordion>
+
+                                                </div>
+                                            </div>
+                                            {espacio.map((el, ind) => (
+                                                <div
+                                                    key={ind}
+                                                    className={`tab-pane ${activeTab === el.nombre ? "active" : ""}`}
+                                                    id={el.nombre}
+                                                >
+
+                                                    {el.typo == 'mesa' ? el.localidad.map((e, index) => {
+                                                        return (
+                                                            <div className='d-flex  PX-1 align-items-center' key={index}>
+                                                                <div className='d-flex pb-2'>
+                                                                    <MesasViews
+                                                                        text={e.fila}
+                                                                    />
+                                                                </div>
+                                                                <div className='d-flex  pb-2' >
+                                                                    {e.Mesas.length > 0 ?
+                                                                        e.Mesas.map((e, i) => {
+                                                                            return (
+                                                                                <div key={i}>
+                                                                                    <MesasViews
+                                                                                        setMapa={() => Evento(activeTab)}
+                                                                                        status={e.asientos.length}
+                                                                                        text={e.mesa}
+                                                                                        list={e.asientos}
+                                                                                    />
+                                                                                </div>
+                                                                            )
+                                                                        }) : ''}
+                                                                </div>
+                                                            </div>
+
+                                                        )
+
+                                                    }) : ''}
+                                                    {
+                                                        el.typo == 'fila' ? el.localidad.map((e, i) => {
+                                                            {
+                                                                return (
+
+                                                                    <div className='d-flex flex-row justify-content-around  px-3 p-1 ' key={"lista" + i} >
+                                                                        <span className=" " disabled >
+                                                                            <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '25px', width: '25px' }} >
+                                                                                <div className="d-flex justify-content-center">
+                                                                                    <span style={{ fontSize: '0.5em' }}>    {e.fila} </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </span>
+                                                                        <div className=' d-flex ml-3 flex-row px-1 justify-content-lg-center  align-items-stretch ' style={{ width: '100%' }}>
+                                                                            {e.asientos.map((silla, index) => {
+                                                                                let numero = String(silla.silla).split("-")[2]
+                                                                                return (
+                                                                                    <div key={"silla" + index} id={silla.idsilla}
+                                                                                        className={silla.silla + '  d-flex   rounded-5 sillasfila text-center  justify-content-center align-items-center '}
+                                                                                        style={{ height: '20px', width: '20px', marginLeft: '1px', }}
+
+                                                                                    >
+                                                                                        <div className={' px-3 d-flex   text-white justify-content-center  '} >
+                                                                                            <div className="d-flex justify-content-center">
+                                                                                                <span style={{ fontSize: '0.5em' }}> {numero} </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                )
+                                                                            })}
+                                                                        </div>
+
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        }) : ''
+
+                                                    }
+                                                    {
+                                                        el.typo == 'correlativo' ? <div>Aforo {el.localidad[0].total}</div> : ''
+                                                    }
+                                                </div>
+                                            ))}
+
+                                            <div
+
+                                                className={`tab-pane ${activeTab === "disponible" ? "active" : ""}`}
+                                                id="disponible"
+
+                                            >
+                                                <div className="row">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th >Localidad</th>
+                                                                <th >Disponible</th>
+                                                                <th>Ocupado</th>
+                                                                <th>Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {dispoible.length > 0 ? dispoible.map(e => {
+                                                                return (
+                                                                    <tr>
+
+                                                                        <td>{e.nombreMesa}</td>
+                                                                        <td>{e.cantidad}</td>
+                                                                        <td>{parseInt(global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad) - parseInt(e.cantidad)}</td>
+                                                                        <td>{global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad}</td>
+                                                                    </tr>
+                                                                )
+                                                            }) : <tr>
+
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>}
+
+
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="container col-12 col-md-6 rounded-7  px-0">
-                                        <img loading="lazy" src={evento.mapaConcierto} className="img-fluid rounded-7 shadow-md " style={{
-                                            height: "350px"
-                                        }} alt="" />
+                                    <div className=" tab-pane " id="info">
+                                        <div className=" container mt-4 px-0" id="collapseExample2">
+                                            <div className="card card-body card row d-flex flex-row card-body rounded-7 py-5">
+                                                <div className="container col-12 col-md-6">
+                                                    <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"> {evento.nombreConcierto}</span> </h1>
+                                                    <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto} </span></h4>
+                                                    <div className="col-12 border border-bottom my-3"></div>
+                                                    <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> {evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
+                                                    <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
+                                                    <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
+                                                    <div className="" >
+                                                        <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil == 'suscriptores') ? "" : setShow(true)} >Editar</button>
+                                                    </div>
+                                                </div>
+                                                <div className="container col-12 col-md-6 rounded-7  px-0">
+                                                    <img loading="lazy" src={evento.mapaConcierto} className="img-fluid rounded-7 shadow-md " style={{
+                                                        height: "350px"
+                                                    }} alt="" />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
+
                                 </div>
                             </div>
+
                         </div>
-
-
                     </div>
                 </div>
+                <div className="tab-pane " id="reportes">
 
+                    <div className="row">
+                        <div className="  d-flex flex-column  ">
+
+
+                            <div className="">
+                                <div className=" col-6 " >
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Forma de Pago</th>
+                                                <th scope="col">Total reportes</th>
+                                                <th scope="col">Total </th>
+                                                <th scope="col">Comision Bancaria </th>
+                                                <th scope="col">Comision Boleto </th>
+                                                <th scope="col">iva</th>
+                                                <th scope="col">Subtotal</th>
+
+
+                                                <th scope="col">Boletos</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {report.valores.length > 0 ?
+                                                report.valores.map((elem, ind) => {
+                                                    return (
+                                                        <tr key={ind}>
+                                                            <td>{elem.forma_pago}</td>
+                                                            <td>{elem.cantidad}</td>
+                                                            <td >${elem.tota}</td>
+                                                            <td >${elem.comision_bancaria}</td>
+                                                            <td>{elem.comision_boleto}</td>
+                                                            <td>{parseInt(evento.iba) ? elem.iba : 0}</td>
+                                                            <td>{elem.subtotal}</td>
+                                                            <td>{elem.boleto}</td>
+
+                                                        </tr>
+                                                    )
+                                                })
+                                                : ""}
+                                            <tr className="border">
+
+                                                <th>Total </th>
+
+                                                <th>{(report.valores.reduce((acc, elem) => acc + parseFloat(elem.cantidad), 0)).toFixed(0)}</th>
+                                                <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.tota), 0)).toFixed(2)}</th>
+                                                <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.comision_bancaria), 0)).toFixed(2)}</th>
+                                                <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.comision_boleto), 0)).toFixed(2)}</th>
+
+                                                <th>  ${parseInt(evento.iba) ? (report.valores.reduce((acc, elem) => acc + parseFloat(elem.iba), 0)).toFixed(2) : 0}</th>
+                                                <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.subtotal), 0)).toFixed(2)}</th>
+                                                <th>{(report.valores.reduce((acc, elem) => acc + parseFloat(elem.boleto), 0)).toFixed(0)}</th>
+
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <div className="col-6">
+                                <table class="table text-center">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Localidad</th>
+                                            <th scope="col">Forma de Pago</th>                                            
+                                            <th scope="col">Cantidad </th>   
+                                           
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {report.localidades.length > 0 ?
+                                            report.localidades.map((elem, ind) => {
+                                                return (
+                                                    <tr key={ind}>
+                                                        <td>{elem.localidad}</td>
+                                                        <td>{elem.forma_pago}</td>
+                                                        
+                                                        <td >{elem.total}</td>                                                      
+                                                     
+                                                       
+
+                                                    </tr>
+                                                )
+                                            })
+                                            : ""}
+                                        <tr className="border  d-none">
+                                            <th></th>
+                                            <th></th>
+                                            <th> </th>
+                                            <th> {(report.localidades.reduce((acc, elem) => acc + parseFloat(elem.total), 0)).toFixed(2)}</th>
+                                            <th> {(report.localidades.reduce((acc, elem) => acc + parseFloat(elem.valor)*parseFloat(elem.total), 0)).toFixed(2)}</th>
+                                          
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div className="col-6">
+
+                        </div>
+                    </div>
+                </div>
             </div>
-
 
 
         </>
