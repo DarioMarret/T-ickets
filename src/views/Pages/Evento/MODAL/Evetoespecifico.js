@@ -33,6 +33,8 @@ import { Axiosmikroserdos, boleteriaAxios } from "utils/index";
 import MesasViews from "views/Pages/Mesas/Plantillas/indice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
+import { HotTable } from '@handsontable/react-wrapper';
+import ExtendedForms from "views/Forms/ExcelTable";
 
 const EventoEspecifico = () => {
     let { id } = useParams()
@@ -91,17 +93,7 @@ const EventoEspecifico = () => {
 
             const precio = await listarpreciolocalidad(id)
 
-            let boletos_camjeados = await Boleteria_canje(id)
-            let boletos_boleto = await Boleteria_Boletos(id)
-            let boletos_eventos = await Boleteria_Nombre(id)
-            let boletos = await Boleteria_medios(id)
-            console.log("nuevos", boletos)
-            setReport({
-                canje: boletos_camjeados.data,
-                boleto: boletos_boleto.data,
-                valores: boletos_eventos.data,
-                localidades: boletos.data
-            })
+          
             //}
             if (cargar) {
                 let datos = [...cargar]
@@ -113,7 +105,35 @@ const EventoEspecifico = () => {
                 console.log({
                     ...datos[0], LocalodadPrecios: precio.data,
                 })
+                let boletos_camjeados = await Boleteria_canje(id)
+                let boletos_boleto = await Boleteria_Boletos(id)
+                let boletos_eventos = await Boleteria_Nombre(id)
+                let boletos = await Boleteria_medios(id)
+                console.log("nuevos", boletos)
+                setReport({
+                    canje: boletos_camjeados.data,
+                    boleto: boletos_boleto.data,
+                    valores: boletos_eventos.data.map(elem=>{
+                       return {
+                           forma_pago: elem.forma_pago,
+                           cantidad: elem.cantidad,
+                           boleto: elem.boleto,
+                           comision_boleto: elem.comision_boleto,
+                           iva: datos[0].iba? elem.iba:0,
+                           subtotal: elem.subtotal,
+                           comision_bancaria: elem.comision_bancaria,
+                           total:elem.tota
 
+                       }
+                    }),
+                    localidades: boletos.data.map(elem => {
+                        return {
+                            localidad: elem.localidad,
+                            forma_pago: elem.forma_pago,
+                            total: elem.total,
+                        }
+                    })
+                })
                 await cargarlocalidad(datos, precio)
 
             }
@@ -455,7 +475,7 @@ const EventoEspecifico = () => {
                         <a className="nav-link active" data-toggle="tab" href="#evento"
                         >Evento</a>
                     </li>
-                    <li className="nav-item d-none">
+                    <li className="nav-item ">
                         <a className="nav-link " data-toggle="tab" href="#reportes"
                         >Reportes</a>
                     </li>
@@ -761,7 +781,7 @@ const EventoEspecifico = () => {
                                                             <tr key={ind}>
                                                                 <td>{elem.forma_pago}</td>
                                                                 <td>{elem.cantidad}</td>
-                                                                <td >${elem.tota}</td>
+                                                                <td >${elem.total}</td>
                                                                 <td >${elem.comision_bancaria}</td>
                                                                 <td>{elem.comision_boleto}</td>
                                                                 <td>{parseInt(evento.iba) ? elem.iba : 0}</td>
@@ -777,7 +797,7 @@ const EventoEspecifico = () => {
                                                     <th>Total </th>
 
                                                     <th>{(report.valores.reduce((acc, elem) => acc + parseFloat(elem.cantidad), 0)).toFixed(0)}</th>
-                                                    <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.tota), 0)).toFixed(2)}</th>
+                                                    <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.total), 0)).toFixed(2)}</th>
                                                     <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.comision_bancaria), 0)).toFixed(2)}</th>
                                                     <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.comision_boleto), 0)).toFixed(2)}</th>
 
@@ -1040,108 +1060,25 @@ const EventoEspecifico = () => {
                     </div>
                 </div>
                 <div className="tab-pane " id="reportes">
+                    <div class="ht-theme-main-dark-auto">
+                        
+                    </div>
 
                     <div className="row">
-                        <div className="  d-flex flex-column  ">
+                     
 
-
-                            <div className="">
-                                <div className=" col-6 " >
-                                    <table class="table text-center">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Forma de Pago</th>
-                                                <th scope="col">Total reportes</th>
-                                                <th scope="col">Total </th>
-                                                <th scope="col">Comision Bancaria </th>
-                                                <th scope="col">Comision Boleto </th>
-                                                <th scope="col">iva</th>
-                                                <th scope="col">Subtotal</th>
-
-
-                                                <th scope="col">Boletos</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {report.valores.length > 0 ?
-                                                report.valores.map((elem, ind) => {
-                                                    return (
-                                                        <tr key={ind}>
-                                                            <td>{elem.forma_pago}</td>
-                                                            <td>{elem.cantidad}</td>
-                                                            <td >${elem.tota}</td>
-                                                            <td >${elem.comision_bancaria}</td>
-                                                            <td>{elem.comision_boleto}</td>
-                                                            <td>{parseInt(evento.iba) ? elem.iba : 0}</td>
-                                                            <td>{elem.subtotal}</td>
-                                                            <td>{elem.boleto}</td>
-
-                                                        </tr>
-                                                    )
-                                                })
-                                                : ""}
-                                            <tr className="border">
-
-                                                <th>Total </th>
-
-                                                <th>{(report.valores.reduce((acc, elem) => acc + parseFloat(elem.cantidad), 0)).toFixed(0)}</th>
-                                                <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.tota), 0)).toFixed(2)}</th>
-                                                <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.comision_bancaria), 0)).toFixed(2)}</th>
-                                                <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.comision_boleto), 0)).toFixed(2)}</th>
-
-                                                <th>  ${parseInt(evento.iba) ? (report.valores.reduce((acc, elem) => acc + parseFloat(elem.iba), 0)).toFixed(2) : 0}</th>
-                                                <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.subtotal), 0)).toFixed(2)}</th>
-                                                <th>{(report.valores.reduce((acc, elem) => acc + parseFloat(elem.boleto), 0)).toFixed(0)}</th>
-
-
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div className=" col-12 col-m-6 col-sm-6 ">
+                                <ExtendedForms
+                                    data={report.valores}
+                                />
 
                             </div>
-                            <div className="col-6">
-                                <table class="table text-center">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Localidad</th>
-                                            <th scope="col">Forma de Pago</th>                                            
-                                            <th scope="col">Cantidad </th>   
-                                           
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {report.localidades.length > 0 ?
-                                            report.localidades.map((elem, ind) => {
-                                                return (
-                                                    <tr key={ind}>
-                                                        <td>{elem.localidad}</td>
-                                                        <td>{elem.forma_pago}</td>
-                                                        
-                                                        <td >{elem.total}</td>                                                      
-                                                     
-                                                       
-
-                                                    </tr>
-                                                )
-                                            })
-                                            : ""}
-                                        <tr className="border  d-none">
-                                            <th></th>
-                                            <th></th>
-                                            <th> </th>
-                                            <th> {(report.localidades.reduce((acc, elem) => acc + parseFloat(elem.total), 0)).toFixed(2)}</th>
-                                            <th> {(report.localidades.reduce((acc, elem) => acc + parseFloat(elem.valor)*parseFloat(elem.total), 0)).toFixed(2)}</th>
-                                          
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div className="col-12 col-m-6 col-sm-6">
+                                <ExtendedForms
+                                    data={report.localidades}
+                                />
                             </div>
-                        </div>
+                        
                         <div className="col-6">
 
                         </div>

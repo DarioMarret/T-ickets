@@ -29,6 +29,12 @@ const AuthLayout = Loadable(lazy(() => import("layouts/Auth.js")))
 const AdminLayout = Loadable(lazy(() => import("layouts/Admin.js")))
 const Indexflas = Loadable(lazy(() => import("../src/views/Pages/Flasdeticket")))
 const root = ReactDOM.createRoot(document.getElementById("root"));
+import 'handsontable/styles/handsontable.min.css';
+import 'handsontable/styles/ht-theme-main.min.css';
+import Handsontable from 'handsontable/base';
+import { registerAllModules } from 'handsontable/registry';
+
+registerAllModules();
 
 function ExternalRedirect(e) {
   console.log(e)
