@@ -1,7 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useHistory, useParams } from "react-router";
+import { GetMetodo } from "utils/CarritoLocalStorang";
+import { mikroAxios } from "utils/index";
 
 function ventasView() {
-    let [datos, setDausuario]= useState({
+    let [datos, setDausuario] = useState({
         nombreCompleto: '',
         ciudad: '',
         email: '',
@@ -9,12 +12,39 @@ function ventasView() {
         resgistro: '',
         password: ''
     })
+    let [evento, setEvento] = useState([])
+    let { id } = useParams()
+    const [listaPrecio, ListaPrecioset] = useState({
+        total: 0,
+        subtotal: 0,
+        comision: 0,
+        comision_bancaria: 0,
+        desc: 0,
+        iva: 0,
+        desctc: 0
+    })
+    const [hidecomision, sethideComision] = useState("d-none")
     function handelChange(e) {
         console.log(e)
     }
-    function buscarsuscritor(){
+
+    const ObtenerEventos = async () => {
+        try {
+            let { data } = await mikroAxios.get("Boleteria/Eventos/" + id)
+            console.log(data)
+            setEvento(data.data[0])
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    function buscarsuscritor() {
 
     }
+
+    useEffect(() => {
+        console.log(id)
+        ObtenerEventos()
+    }, [])
     return (
         <>
             <div className=" container-fluid">
@@ -32,33 +62,32 @@ function ventasView() {
                                         <button className="btn btn-primary"  > <i className=" fa fa-check-circle"></i> </button>}
                                 </div>
                             </div>
-                            <div className="col-12 col-md-6">
-                                <div className=" input-group mb-3" >
+
+                            <div className="co-6 ">
+                                <div className="input-group mb-3">
                                     <div className="input-group-prepend">
-                                        <span className="input-group-text">
-                                            <i className="fa fa-address-card"></i>
-                                        </span>
+                                        <span className="input-group-text"><i className="fa fa-user"></i></span>
                                     </div>
+                                    <input id="cedula" type="text"
+                                        className="form-control numero"
+                                        name="cedula"
+                                        minLength={10}
+                                        onChange={() => setDausuario({
+                                            nombreCompleto: '',
+                                            ciudad: '',
+                                            email: '',
+                                            movil: '',
+                                            resgistro: ''
+                                        })}
+                                        placeholder={ "Ingrese su número de identificación"} required />
                                 </div>
                             </div>
-                            <div className="col-12 col-md-6 py-sm-2">
-                                <input id="cedula" type="text"
-                                    className="form-control numero"
-                                    name="cedula"
-                                    minLength={10}
-                                    onChange={() => setDausuario({
-                                        nombreCompleto: '',
-                                        ciudad: '',
-                                        email: '',
-                                        movil: '',
-                                        resgistro: '',
-                                        password: ''
-                                    })}
-                                    placeholder={("code" == "cedula") ? "Ingrese cédula" : "Ingrese su número de identificación"} required />
-                            </div>
 
 
-                            <div className="col-lg-12">
+                          
+                        </div>
+                        <div className="row">
+                            <div className="col-12 col-lg-6 ">
                                 <div className="input-group mb-3">
                                     <div className="input-group-prepend">
                                         <span className="input-group-text"><i className="fa fa-user"></i></span>
@@ -77,20 +106,22 @@ function ventasView() {
 
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
                             <div className="col-12 col-lg-6  ">
                                 <div className="input-group mb-3  px-0 d-flex justify-content-center ">
-                                    <input
-                                        name="movil" type="tel"
-                                        className="m-0 form-control form-control-sm" id="movil"
-                                        size={100}
+                                    <div className="input-group mb-3" >
+                                        <div className=" input-group-prepend">
+                                            <span className=" input-group-text"> <i className="fa fa-phone
+                                            "></i> </span>
+                                        </div>
+                                        <input
+                                            name="movil" type="tel"
+                                            className="m-0 form-control form-control-sm" id="movil"
+                                            size={100}
 
-                                        required
+                                            required
 
-                                        placeholder="999 999 999" />
-                                    <div className="invalid-feedback">
-                                        Ingrese un numero de Whatsapp
+                                            placeholder="999 999 999" />
+
                                     </div>
                                 </div>
                             </div>
@@ -108,7 +139,7 @@ function ventasView() {
                                         required
                                         value={datos.ciudad}
                                         onChange={(e) => handelChange(e.target)}
-                                        placeholder="Ingrese su dirección"
+                                        placeholder="Ingrese ciudad"
                                     />
                                     <div className="invalid-feedback">
                                         Ingrese una direccion
@@ -117,10 +148,7 @@ function ventasView() {
                                 </div>
 
                             </div>
-
-                        </div>
-                        <div className="row">
-                            <div className="col-lg-6">
+                            <div className="col-12 col-lg-6">
                                 <div className="input-group mb-3">
                                     <div className="input-group-prepend">
                                         <span className="input-group-text"><i className="fa fa-envelope"></i></span>
@@ -137,29 +165,6 @@ function ventasView() {
 
                                 </div>
                             </div>
-                            <div className="col-lg-6" >
-                                <div className="input-group mb-3">
-                                    <div className="input-group-prepend">
-                                        <span className="input-group-text"><i className="fas fa-key"></i></span>
-                                    </div>
-
-                                    <input type="password"
-
-                                        id="password"
-                                        name='password'
-
-                                        minLength={7}
-                                        placeholder="contraseña"
-                                        className="form-control"
-                                        value={datos.password}
-                                        onChange={(e) => handelChange(e.target)}
-                                    />
-                                    <div className="invalid-feedback">
-                                        La contraseña debe ser mayor de 7 caracteres
-                                    </div>
-
-                                </div>
-                            </div>
 
                         </div>
 
@@ -167,6 +172,96 @@ function ventasView() {
 
 
                     </form>
+                </div>
+                <table className="resumen-table table  table-responsive">
+                    <thead>
+                        <tr className="text-black">
+                            <th scope="col" className="text-black">CONCIERTO</th>
+                            <th className="text-black">LOCALIDAD</th>
+
+                            <th className="text-black" scope="col">Disponible</th>
+
+                            <th className="text-black text-end " scope="col">cantidad</th>
+                            <th className="text-black text-end " scope="col">TOTAL</th>
+                            <th className="text-black text-end" scope="col">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            evento.length > 0 ?
+                                evento.map((item, index) => {
+                                    let tipo = String(item.mesas_array).replace('""',"")
+                                    return (
+                                        <tr key={index}>
+                                            <td className="align-self-center">{item.nombreConcierto}</td>
+                                            <td className="align-self-center">{item.localidad}</td>
+                                            
+                                            <td className="align-self-center">{item.total}</td>
+                                            <td className=" text-end"><input id="" type="number" disabled="true" size={2} /></td>
+                                            <td className=" text-end">{parseFloat(item.valor)*parseInt(item.cantidad)}</td>
+                                            <td className="align-self-center text-end">
+                                                {
+                                                    (tipo =='correlativo')?
+                                                    <div>
+                                                            <div className="btn-group btn-group-sm" role="group">
+                                                             
+                                                                <button className="suma   btn-success "
+
+                                                                >
+                                                                    <i className="fa fa-plus"></i>
+                                                                </button>
+                                                                <button className="suma   btn-danger "
+
+                                                                >
+                                                                    <i className="fa fa-plus"></i>
+                                                                </button>
+                                                        </div>
+                                                        </div> :
+                                                    <button className=" btn-sm btn-success">Seleccionar</button>
+                                                }
+
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                                : <tr></tr>
+                        }
+                    </tbody>
+                </table>
+                <div>
+                    <table className="table table-borderless " style={{
+                        lineHeight: 1
+                    }}>
+                        <tbody>
+                            <tr>
+                                <th scope="row"></th>
+                                <td className='text-end' >Subtotal:</td>
+                                <td className='text-center'>${parseFloat(listaPrecio.subtotal).toFixed(2)}</td>
+                            </tr>
+                            <tr className={hidecomision}>
+                                <th scope="row"></th>
+                                <td className={hidecomision + " text-end"} >Comisión Bancaria:</td>
+                                <td className={hidecomision + " text-center"}>${parseFloat(listaPrecio.comision_bancaria).toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td className='text-end' >Servicio Em. por Boleto:</td>
+                                <td className='text-center'>${parseFloat(listaPrecio.comision).toFixed(2)}</td>
+                            </tr>
+                            <tr className=''>
+                                <th scope="row"></th>
+                                <td className='text-end' >Iva %:</td>
+                                <td className='text-center'>${parseFloat(listaPrecio.iva).toFixed(2)}</td>
+                            </tr>
+                            <tr>
+
+                                <th scope="row"></th>
+                                <td className='text-end' >Total</td>
+                                <td className='text-center'>${parseFloat(listaPrecio.total).toFixed(2)}</td>
+                            </tr >
+                            
+                        </tbody>
+                    </table>
                 </div>
 
             </div>

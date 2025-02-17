@@ -98,7 +98,7 @@ const LocalidadmapViews = (props) => {
                     setTimeout(function () {
 
                         usedispatch(setSpinersli({ spiner: true }))
-                    }, 100)
+                    }, 0)
                     return
                 }
                 usedispatch(setSpinersli({ spiner: true }))
@@ -186,7 +186,7 @@ const LocalidadmapViews = (props) => {
 
 
 
-                    }, 100)
+                    }, 0)
 
                     return
                 }
@@ -356,7 +356,7 @@ const LocalidadmapViews = (props) => {
                 setTimeout(function () {
 
                     usedispatch(setSpinersli({ spiner: true }))
-                }, 100)
+                }, 0)
                 return
             }
             usedispatch(setSpinersli({ spiner: true }))

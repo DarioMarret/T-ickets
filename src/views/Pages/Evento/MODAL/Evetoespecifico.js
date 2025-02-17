@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import PreciosViews from "./ModalPrecios";
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { Dias } from "utils/constantes";
 import { ActualizaEstadoLocalidad } from "utils/Querypanelsigui";
 import Collapse from 'react-bootstrap/Collapse';
 import moment from "moment";
@@ -26,15 +25,14 @@ import ExportToExcel from "utils/Exportelemin";
 import { ListarEspacios } from "utils/EspaciosQuery";
 import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
 import { ListarLocalidad } from "utils/LocalidadesQuery";
-import { EventosActivos } from "utils/Querypanel";
 import { Boleteria_Boletos, Boleteria_Nombre, Boleteria_canje, Boleteria_medios } from "utils/EventosQuery/index";
 import { Contactos_Boletos } from "utils/Querycomnet";
 import { Axiosmikroserdos, boleteriaAxios } from "utils/index";
 import MesasViews from "views/Pages/Mesas/Plantillas/indice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
-import { HotTable } from '@handsontable/react-wrapper';
 import ExtendedForms from "views/Forms/ExcelTable";
+import MesasCanvas  from "../CanvasMesas/index"
 
 const EventoEspecifico = () => {
     let { id } = useParams()
@@ -916,16 +914,17 @@ const EventoEspecifico = () => {
                                                     id={el.nombre}
                                                 >
 
-                                                    {el.typo == 'mesa' ? el.localidad.map((e, index) => {
+                                                    {el.typo == 'mesa' ?
+                                                        /*<MesasCanvas filas={el.localidad} />*/
+                                                    el.localidad.map((e, index) => {
                                                         return (
+                                                           
                                                             <div className='d-flex  PX-1 align-items-center' key={index}>
-                                                                <div className='d-flex pb-2'>
-                                                                    <MesasViews
-                                                                        text={e.fila}
-                                                                    />
-                                                                </div>
+                                                                
                                                                 <div className='d-flex  pb-2' >
+                                                                    
                                                                     {e.Mesas.length > 0 ?
+                                                                     
                                                                         e.Mesas.map((e, i) => {
                                                                             return (
                                                                                 <div key={i}>

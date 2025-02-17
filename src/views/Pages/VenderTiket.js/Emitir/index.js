@@ -232,18 +232,7 @@ export default function EmitirboView() {
        
         is3D: false,
     };
-    function suma() {
-        let tikets = data.map((f) => { return parseFloat(f.valor) })
-        try {
-            let valo = tikets.reduce((a, b) => a + b, 0).toFixed(2)
-            return valo
 
-        } catch (error) {
-            console.log(error)
-
-        }
-
-    }
     return (
         <>
             {alert}

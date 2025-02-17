@@ -135,7 +135,8 @@ export default function StoreTickesViews() {
     };
     const venderevento = (e) => {
        // history.push("/admin/vender/" + e.codigoEvento)
-        //history.push("admin/vender/" + e.codigoEvento)
+        history.push("/admin/vender/" + e.codigoEvento)
+        return
         usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
     }
     const evento = async () => {
@@ -315,7 +316,8 @@ export default function StoreTickesViews() {
                         setspinervi("d-none")
                         console.log(outp)
                         usedispatch(cargarsilla(outp))
-                       // history.push("vender/"+e.codigoEvento)
+                        history.push("vender/"+e.codigoEvento)
+                    return
                        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
                         if (seleccionuser.data.length > 0) {
                             Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
