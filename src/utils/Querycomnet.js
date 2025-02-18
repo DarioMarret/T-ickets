@@ -41,7 +41,7 @@ export const PagoRapido = async (transaccion) => {
             "post": Eventoinfo.post ? Eventoinfo.post : ""
         }
     })
-    console.log(concierto)
+   // console.log(concierto)
     let datos = {
         "cedula": datosPersonal,
         "id_usuario": parseInt(idop),
@@ -62,7 +62,7 @@ export const PagoRapido = async (transaccion) => {
         "transaccion": transaccion
     }
 
-    console.log(datos, concierto)
+  // console.log(datos, concierto)
     try {
 
         console.log(datos)

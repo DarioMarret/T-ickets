@@ -134,10 +134,11 @@ export default function StoreTickesViews() {
         setAlert(null);
     };
     const venderevento = (e) => {
-       // history.push("/admin/vender/" + e.codigoEvento)
-        history.push("/admin/vender/" + e.codigoEvento)
-        return
-        usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
+        // history.push("/admin/vender/" + e.codigoEvento)
+        //  history.push("/admin/vender/" + e.codigoEvento)
+        // return
+      //  abrir(e)
+         usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
     }
     const evento = async () => {
         try {
@@ -253,10 +254,8 @@ export default function StoreTickesViews() {
                             return g
                         }
                     }).filter(e => e != undefined)
-
+                    console.log("newprecios",newprecios)
                     let colornuevo = mapalocal.map((L) => {
-                        // console.log(newprecios.filter(e => e != undefined))
-
                         if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
                             {
                                 L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
@@ -270,12 +269,14 @@ export default function StoreTickesViews() {
                             }
                         }
                     })
-                    //console.log(newprecios)
+                    console.log("precios",colornuevo)
                     let pathnuevo = path.map((L) => {
                         if (newprecios.filter(e => e != undefined).findIndex(e => e.idcolor == L.id) != -1) {
                             return L
                         }
                     })
+                    sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo]))
+                    console.log("pathnuevo",pathnuevo)
                     sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
                         return e
                     }))]))
@@ -294,7 +295,7 @@ export default function StoreTickesViews() {
                     console.log(colornuevo.filter((e) => e != undefined))
                     let { data } = await Axiosmikroserdos.get("api/Valida_Descuento/" + getDatosUsuariosLocalStorag().cedula)
                     console.log(data)
-                    if (data.estado ) {
+                    if (data.estado) {
                         usedispatch(setToastes({
                             show: true,
                             message: data.mensaje,
@@ -302,23 +303,23 @@ export default function StoreTickesViews() {
                             estado: "Verificar de que Evento"
                         }))
                     }
-                   /* let datas = await Axiosmikroserdos.get("api/Valida_DescuentoStar/" + getDatosUsuariosLocalStorag().cedula)
-                    console.log(datas.data)
-                    if (datas.data.estado) {
-                        usedispatch(setToastes({
-                            show: true,
-                            message: datas.data.message +" En star365",
-                            color: 'bg-warning',
-                            estado: "Verificar de que Evento"
-                        }))
-                    }*/
+                    /* let datas = await Axiosmikroserdos.get("api/Valida_DescuentoStar/" + getDatosUsuariosLocalStorag().cedula)
+                     console.log(datas.data)
+                     if (datas.data.estado) {
+                         usedispatch(setToastes({
+                             show: true,
+                             message: datas.data.message +" En star365",
+                             color: 'bg-warning',
+                             estado: "Verificar de que Evento"
+                         }))
+                     }*/
                     Cargarsillas([...colornuevo.filter((e) => e != undefined)]).then(outp => {
                         setspinervi("d-none")
                         console.log(outp)
                         usedispatch(cargarsilla(outp))
-                        history.push("vender/"+e.codigoEvento)
-                    return
-                       usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+                       // history.push("vender/" + e.codigoEvento)
+                      //  return
+                        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
                         if (seleccionuser.data.length > 0) {
                             Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
                                 console.log(outp)
