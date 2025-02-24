@@ -356,7 +356,7 @@ export function GetValores() {
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
             comision_bancaria: (total.toFixed(2) * 0.08).toFixed(2),//evento.codigoEvento != "VI1U84" ? (total.toFixed(2) * 0.08).toFixed(2) : 0,
-            subtotal: parseFloat(valor).toFixed(2) - parseFloat(sumcomision.toFixed(2)),
+            subtotal: parseFloat(subtotal).toFixed(2) - parseFloat(sumcomision.toFixed(2)),
             description: descrption,
             comision: parseFloat(sumcomision).toFixed(2),
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',

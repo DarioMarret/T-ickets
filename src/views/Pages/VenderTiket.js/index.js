@@ -134,11 +134,11 @@ export default function StoreTickesViews() {
         setAlert(null);
     };
     const venderevento = (e) => {
-        // history.push("/admin/vender/" + e.codigoEvento)
+     //history.push("/admin/vender/" + e.codigoEvento)
         //  history.push("/admin/vender/" + e.codigoEvento)
         // return
-      //  abrir(e)
-         usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
+      abrir(e)
+      //   usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
     }
     const evento = async () => {
         try {
@@ -263,6 +263,7 @@ export default function StoreTickesViews() {
                                 L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
                                 L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
                                 L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
+                                L.comision_boleto = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].comision_boleto
                                 L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
                                 L.espacioid = L.id_espacio
                                 return L
@@ -275,11 +276,12 @@ export default function StoreTickesViews() {
                             return L
                         }
                     })
-                    sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo]))
                     console.log("pathnuevo",pathnuevo)
                     sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
                         return e
                     }))]))
+
+                    sessionStorage.setItem(Eventolocalidad, JSON.stringify([...newprecios]))
                     //console.log(colornuevo)
                     usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
                     let nuevosdatos = {
@@ -317,8 +319,8 @@ export default function StoreTickesViews() {
                         setspinervi("d-none")
                         console.log(outp)
                         usedispatch(cargarsilla(outp))
-                       // history.push("vender/" + e.codigoEvento)
-                      //  return
+                       history.push("vender/" + e.codigoEvento)
+                        return
                         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
                         if (seleccionuser.data.length > 0) {
                             Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
