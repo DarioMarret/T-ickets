@@ -234,7 +234,6 @@ function ventasView() {
 
     }
     useEffect(() => {
-        console.log(id)
         ObtenerEventos()
         let metodoPago = GetMetodo()
         metodoPago != null ?
@@ -472,11 +471,7 @@ function ventasView() {
                                 <td className='text-end' >Subtotal:</td>
                                 <td className='text-end'>${parseFloat(listaPrecio.subtotal).toFixed(2)}</td>
                             </tr>
-                            <tr className={"hidecomision"}>
-                                <th scope="row"></th>
-                                <td className={"hidecomision" + " text-end"} >Comisión Bancaria:</td>
-                                <td className={"hidecomision" + " text-end"}>${parseFloat(listaPrecio.comision_bancaria).toFixed(2)}</td>
-                            </tr>
+                            
                             <tr>
                                 <th scope="row"></th>
                                 <td className='text-end' >Servicio Em. por Boleto:</td>
@@ -503,7 +498,7 @@ function ventasView() {
                     </table>
                     <div className=" container-fluid px-0 text-end">
 
-                        <button className="btn btn-success">Pagar</button>
+                        <button disabled={!datos.cedula} className="btn btn-success">Pagar</button>
                     </div>
                 </div>
 
