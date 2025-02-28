@@ -397,6 +397,14 @@ export function Limpiarseleccion() {
     sessionStorage.removeItem(concierto)
     sessionStorage.removeItem("sillascorre")
 }
+export function Limpiarselecciondos() {
+    sessionStorage.removeItem(sillaspalco)
+    sessionStorage.removeItem(listaasiento)
+    sessionStorage.removeItem(CarritoTicket)
+    sessionStorage.removeItem(listaasiento)
+    sessionStorage.removeItem(seleccionmapa)
+    sessionStorage.removeItem("sillascorre")
+}
 export function GetMetodo() {
     let tag = sessionStorage.getItem(Metodos);
     if (tag !== null) {

@@ -463,7 +463,7 @@ export default function StoreTickesViews() {
             {modalshow.modal.nombre == "modalpagoFacilito" ?
 
                 <ModalEfectivofACILITO
-                    detene={detenervelocidad}
+                    detenervelocidad={detenervelocidad}
                     intervalo={intervalo}
                     detener={detenervelocidad}
                 /> : ""

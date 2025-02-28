@@ -32,7 +32,7 @@ import MesasViews from "views/Pages/Mesas/Plantillas/indice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
 import ExtendedForms from "views/Forms/ExcelTable";
-import MesasCanvas  from "../CanvasMesas/index"
+import MesasCanvas from "../CanvasMesas/index"
 
 const EventoEspecifico = () => {
     let { id } = useParams()
@@ -91,7 +91,7 @@ const EventoEspecifico = () => {
 
             const precio = await listarpreciolocalidad(id)
 
-          
+
             //}
             if (cargar) {
                 let datos = [...cargar]
@@ -100,38 +100,10 @@ const EventoEspecifico = () => {
                 SetEvento({
                     ...datos[0], LocalodadPrecios: precio.data,
                 })
-                console.log({
-                    ...datos[0], LocalodadPrecios: precio.data,
-                })
-                let boletos_camjeados = await Boleteria_canje(id)
-                let boletos_boleto = await Boleteria_Boletos(id)
-                let boletos_eventos = await Boleteria_Nombre(id)
-                let boletos = await Boleteria_medios(id)
-                console.log("nuevos", boletos)
-                setReport({
-                    canje: boletos_camjeados.data,
-                    boleto: boletos_boleto.data,
-                    valores: boletos_eventos.data.map(elem=>{
-                       return {
-                           forma_pago: elem.forma_pago,
-                           cantidad: elem.cantidad,
-                           boleto: elem.boleto,
-                           comision_boleto: elem.comision_boleto,
-                           iva: datos[0].iba? elem.iba:0,
-                           subtotal: elem.subtotal,
-                           comision_bancaria: elem.comision_bancaria,
-                           total:elem.tota
-
-                       }
-                    }),
-                    localidades: boletos.data.map(elem => {
-                        return {
-                            localidad: elem.localidad,
-                            forma_pago: elem.forma_pago,
-                            total: elem.total,
-                        }
-                    })
-                })
+                /*  console.log({
+                      ...datos[0], LocalodadPrecios: precio.data,
+                  })
+                  */
                 await cargarlocalidad(datos, precio)
 
             }
@@ -186,7 +158,7 @@ const EventoEspecifico = () => {
             if (!acumuladorPorNombres) return
             const resultado = Object.entries(acumuladorPorNombres).map(([nombreMesa, cantidad]) => {
                 let id = Object.values(agrupadoPorLocalidadess).find(el => el.localidad == nombreMesa)
-                return { nombreMesa, cantidad, localidad: id.id_localidades };
+                return { nombreMesa, cantidad, localidad: id.id_localidades, espacio: id.id_espacio };
             });
             const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
                 return { nombreMesa, cantidad };
@@ -242,9 +214,42 @@ const EventoEspecifico = () => {
 
         }
     }
+    async function Obtener_valores() {
+        let boletos_camjeados = await Boleteria_canje(id)
+        let boletos_boleto = await Boleteria_Boletos(id)
+        let boletos_eventos = await Boleteria_Nombre(id)
+        let boletos = await Boleteria_medios(id)
+        console.log("nuevos", boletos)
+        setReport({
+            canje: boletos_camjeados.data,
+            boleto: boletos_boleto.data,
+            valores: boletos_eventos.data.map(elem => {
+                return {
+                    estado: elem.estado_pago,
+                    forma_pago: elem.forma_pago,
+                    cantidad: elem.cantidad,
+                    boleto: elem.boleto,
+                    comision_boleto: elem.comision_boleto,
+                    iva: elem.iba,
+                    subtotal: elem.subtotal_neto,
+                    comision_bancaria: elem.comision_bancaria,
+
+                    total: elem.total
+
+                }
+            }),
+            localidades: boletos.data.map(elem => {
+                return {
+                    localidad: elem.localidad,
+                    forma_pago: elem.forma_pago,
+                    total: elem.total,
+                }
+            })
+        })
+    }
     function descarga(ids, nombre) {
         if (useradmin.perfil == 'suscriptores') return
-        Axiosmikroserdos.get('api/descargalocalidad/' + ids, {
+        Axiosmikroserdos.get('api/codigoslocalidad/' + ids, {
             responseType: 'blob'  // Important for handling binary data
         })
             .then(response => {
@@ -311,6 +316,7 @@ const EventoEspecifico = () => {
     useEffect(() => {
 
         (async () => {
+            Obtener_valores()
             boletosloading ? "" : setTikes(nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado"))
             let arrayIndividual = []
             boletosloading ? "" : nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado").forEach(elm => {
@@ -656,17 +662,18 @@ const EventoEspecifico = () => {
                                                             <div className="d-flex">
 
 
-                                                                {global.map(ele => {
-                                                                    return (
-                                                                        <button className="btn  btn-success  btn-sm mx-1"
+                                                                {
+                                                                    global.length > 0 ? [global[0]].map(ele => {
+                                                                        return (
+                                                                            <button className="btn  btn-success  btn-sm mx-1"
 
-                                                                            onClick={() =>
-                                                                                descarga(ele.localidad, ele.nombreMesa)
-                                                                            }>
-                                                                            <i className="bi bi-file-earmark-arrow-down-fill"></i>    {ele.nombreMesa} Códigos
-                                                                        </button>
-                                                                    )
-                                                                })}
+                                                                                onClick={() =>
+                                                                                    descarga(ele.espacio, evento.nombreConcierto)
+                                                                                }>
+                                                                                <i className="bi bi-file-earmark-arrow-down-fill"></i>    {evento.nombreConcierto} Códigos
+                                                                            </button>
+                                                                        )
+                                                                    }) : ""}
                                                             </div>
                                                         }
                                                     </div>
@@ -756,57 +763,9 @@ const EventoEspecifico = () => {
 
 
                                     <div className="tab-pane  container-fluid " id="listas">
-                                        <table class="table text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Forma de Pago</th>
-                                                    <th scope="col">Total reportes</th>
-                                                    <th scope="col">Total </th>
-                                                    <th scope="col">Comision Bancaria </th>
-                                                    <th scope="col">Comision Boleto </th>
-                                                    <th scope="col">iva</th>
-                                                    <th scope="col">Subtotal</th>
-
-
-                                                    <th scope="col">Boletos</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {report.valores.length > 0 ?
-                                                    report.valores.map((elem, ind) => {
-                                                        return (
-                                                            <tr key={ind}>
-                                                                <td>{elem.forma_pago}</td>
-                                                                <td>{elem.cantidad}</td>
-                                                                <td >${elem.total}</td>
-                                                                <td >${elem.comision_bancaria}</td>
-                                                                <td>{elem.comision_boleto}</td>
-                                                                <td>{parseInt(evento.iba) ? elem.iba : 0}</td>
-                                                                <td>{elem.subtotal}</td>
-                                                                <td>{elem.boleto}</td>
-
-                                                            </tr>
-                                                        )
-                                                    })
-                                                    : ""}
-                                                <tr className="border">
-
-                                                    <th>Total </th>
-
-                                                    <th>{(report.valores.reduce((acc, elem) => acc + parseFloat(elem.cantidad), 0)).toFixed(0)}</th>
-                                                    <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.total), 0)).toFixed(2)}</th>
-                                                    <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.comision_bancaria), 0)).toFixed(2)}</th>
-                                                    <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.comision_boleto), 0)).toFixed(2)}</th>
-
-                                                    <th>  ${parseInt(evento.iba) ? (report.valores.reduce((acc, elem) => acc + parseFloat(elem.iba), 0)).toFixed(2) : 0}</th>
-                                                    <th> ${(report.valores.reduce((acc, elem) => acc + parseFloat(elem.subtotal), 0)).toFixed(2)}</th>
-                                                    <th>{(report.valores.reduce((acc, elem) => acc + parseFloat(elem.boleto), 0)).toFixed(0)}</th>
-
-
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <ExtendedForms
+                                            data={report.valores}
+                                        />
                                     </div>
                                     <div className="tab-pane container-fluid" id="localidad">
                                         <div>
@@ -916,33 +875,33 @@ const EventoEspecifico = () => {
 
                                                     {el.typo == 'mesa' ?
                                                         /*<MesasCanvas filas={el.localidad} />*/
-                                                    el.localidad.map((e, index) => {
-                                                        return (
-                                                           
-                                                            <div className='d-flex  PX-1 align-items-center' key={index}>
-                                                                
-                                                                <div className='d-flex  pb-2' >
-                                                                    
-                                                                    {e.Mesas.length > 0 ?
-                                                                     
-                                                                        e.Mesas.map((e, i) => {
-                                                                            return (
-                                                                                <div key={i}>
-                                                                                    <MesasViews
-                                                                                        setMapa={() => Evento(activeTab)}
-                                                                                        status={e.asientos.length}
-                                                                                        text={e.mesa}
-                                                                                        list={e.asientos}
-                                                                                    />
-                                                                                </div>
-                                                                            )
-                                                                        }) : ''}
+                                                        el.localidad.map((e, index) => {
+                                                            return (
+
+                                                                <div className='d-flex  PX-1 align-items-center' key={index}>
+
+                                                                    <div className='d-flex  pb-2' >
+
+                                                                        {e.Mesas.length > 0 ?
+
+                                                                            e.Mesas.map((e, i) => {
+                                                                                return (
+                                                                                    <div key={i}>
+                                                                                        <MesasViews
+                                                                                            setMapa={() => Evento(activeTab)}
+                                                                                            status={e.asientos.length}
+                                                                                            text={e.mesa}
+                                                                                            list={e.asientos}
+                                                                                        />
+                                                                                    </div>
+                                                                                )
+                                                                            }) : ''}
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
-                                                        )
+                                                            )
 
-                                                    }) : ''}
+                                                        }) : ''}
                                                     {
                                                         el.typo == 'fila' ? el.localidad.map((e, i) => {
                                                             {
@@ -1060,24 +1019,24 @@ const EventoEspecifico = () => {
                 </div>
                 <div className="tab-pane " id="reportes">
                     <div class="ht-theme-main-dark-auto">
-                        
+
                     </div>
 
                     <div className="row">
-                     
 
-                            <div className=" col-12 col-m-6 col-sm-6 ">
-                                <ExtendedForms
-                                    data={report.valores}
-                                />
 
-                            </div>
-                        <div className="col-12 col-m-6 col-sm-6">
-                                <ExtendedForms
-                                    data={report.localidades}
-                                />
-                            </div>
-                        
+                        <div className=" col-12">
+                            <ExtendedForms
+                                data={report.valores}
+                            />
+
+                        </div>
+                        <div className="col-12 col-m-6 col-sm-6 text-center d-none">
+                            <ExtendedForms
+                                data={report.localidades}
+                            />
+                        </div>
+
                         <div className="col-6">
 
                         </div>

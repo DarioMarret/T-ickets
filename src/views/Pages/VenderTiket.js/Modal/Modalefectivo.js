@@ -81,6 +81,7 @@ const ModalEfectivo = () => {
                 usedispatch(setModal({ nombre: "", estado: "" }))
                 usedispatch(setToastes({ show: true, message: 'Registro generado exitosamente verifica los Boletos como canjeados', color: 'bg-success', estado: "compra guardada" }))
                 setSpiner(false)
+                borrar()
             }
             else {
                 usedispatch(setToastes({ show: true, message: 'Orden de pago no generado', color: 'bg-danger', estado: "error" }))

@@ -17,14 +17,14 @@ const ExcelTable = ({ data }) => {
             // Calcular sumas por columna
             const columnSums = {};
             keys.forEach(key => {
-                columnSums[key] = data.reduce((acc, row) => {
+             columnSums[key] = data.reduce((acc, row) => {
                     const value = parseFloat(row[key]);
                     return acc + (isNaN(value) ? 0 : value);
                 }, 0).toFixed(2);
             });
 
             // Crear fila de totales
-            const totalRow = { ...columnSums, forma_pago: "Total", estado_pago: "" };
+            const totalRow = { ...columnSums, forma_pago: "Total", estado: "" };
 
             // Agregar fila de total al final de los datos
             const updatedData = [...data, totalRow];
@@ -42,6 +42,8 @@ const ExcelTable = ({ data }) => {
             rowHeaders={true}
             width="100%"
             height="auto"
+            stretchH="all" // Expande columnas al ancho disponible
+            className="text-end"
             licenseKey="non-commercial-and-evaluation"
         />
     );

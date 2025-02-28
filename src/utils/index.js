@@ -8,6 +8,14 @@ export const mikroAxios = axios.create({
     },
     maxBodyLength: Infinity,
 })
+export const AxioBoleteria = axios.create({
+    baseURL: "https://api.t-ickets.com/ms_login/",
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+    },
+    maxBodyLength: Infinity,
+})
 export const Axiosmikroserdos = axios.create({
     baseURL: "https://api.t-ickets.com/mikrotiv2/"
 })

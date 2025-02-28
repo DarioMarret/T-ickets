@@ -63,6 +63,7 @@ const ModalEfectivofACILITO = (props) => {
         return
       }
       else {
+        detenervelocidad()
         window.gtag('event', 'begin_checkout', {
           transaction_id: "T_" + ouput.idRegistro,  // ID único de la transacción
           value: ouput.valores.subtotal, // Valor total
