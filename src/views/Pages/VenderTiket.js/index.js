@@ -10,7 +10,7 @@ import { cargarMapa } from "utils/MapaQuery";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { cargalocalidad, clearMapa } from "StoreRedux/Slice/mapaLocalSlice";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
-import { Eventoid } from "utils/constantes";
+import { DatosUsuarioLocalStorang, Eventoid } from "utils/constantes";
 import { Cargarsillas } from "views/Components/MODAL/cargarsillas";
 import ModalPago from "views/Components/MODAL/ModalPago";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
@@ -137,6 +137,7 @@ export default function StoreTickesViews() {
      //history.push("/admin/vender/" + e.codigoEvento)
         //  history.push("/admin/vender/" + e.codigoEvento)
         // return
+      sessionStorage.removeItem(DatosUsuarioLocalStorang)
       abrir(e)
       //   usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
     }
@@ -199,7 +200,8 @@ export default function StoreTickesViews() {
             let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
             // console.log(seleccionuser)
             //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
-            if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
+            //if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
+            if (false) {
                 setspinervi("d-none")
                 usedispatch(setToastes({
                     show: true,
