@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useHistory, useParams } from "react-router";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { GetMetodo, GetValores, getVerTienda, LimpiarLocalStore, Limpiarseleccion, Limpiarselecciondos, TiendaIten, TotalSelecion } from "utils/CarritoLocalStorang";
 import { AxioBoleteria, Axiosmikroserdos, mikroAxios } from "utils/index";
 import { buscarcliente, correlativosadd } from "utils/Querypanelsigui";
 import { useDispatch, useSelector } from "react-redux"
-import { clienteInfo, DatosUsuariosLocalStorag, getCedula, getDatosUsuariosLocalStorag, setDatosUser } from "utils/DatosUsuarioLocalStorag";
+import { clienteInfo, DatosUsuariosLocalStorag, getCedula, getDatosUsuariosLocalStorag, setDatosUser, UpdateDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { DatosUsuariocliente, Eventolocalidad, Metodos } from "utils/constantes";
 import ModalPago from "views/Components/MODAL/ModalPago";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
@@ -37,7 +37,56 @@ function ventasView() {
         Deposito: "",
         Transferencia: ""
     })
+    const checkds = useRef(null)
+    const checkdss = useRef(null)
+    const checkdsss = useRef(null)
+    const [check, setCheck] = useState(true)
+    function CambiarCheck() {
+        //   e.preventDefault(); // Prevenir comportamiento predeterminado
+        let descuento = document.getElementById("descuento")
+        let users = getDatosUsuariosLocalStorag()
+      //  console.log(users.discapacidad)
+        checkds.current.check = users.discapacidad ? false : (users.discapacidad == 'Si')
+        //  console.log()
+        UpdateDatosUsuariosLocalStorag({ discapacidad: (users.discapacidad == 'No' || users.discapacidad == undefined) ? 'Si' : 'No' })
+        ListaPrecioset(GetValores())
+        //console.log(GetValores(), datos)
+        //descuento.checked = users.discapacidad ? false : (users.discapacidad == 'Si')
+        //  console.log(getDatosUsuariosLocalStorag().discapacidad)
+        // usuario.discapacidad = 'Si'
+        //   console.log(checkds.current.checked)
+        // console.log("El checkbox se ha desmarcado", datos);
+    }
+    function CambiarChecks() {
+        //   e.preventDefault(); // Prevenir comportamiento predeterminado
+        // 
+        let users = getDatosUsuariosLocalStorag()
+       // console.log(users.menor)
+        checkdss.current.check = (users.menor == 'Si')
+        //  console.log()
+        let datos = UpdateDatosUsuariosLocalStorag({ menor: users.menor == 'No' ? 'Si' : 'No' })
+        //ListaPrecioset(GetValores())
+    //    console.log(GetValores(), datos)
 
+        //  console.log(getDatosUsuariosLocalStorag().discapacidad)
+        // usuario.discapacidad = 'Si'
+        //   console.log(checkds.current.checked)
+        // console.log("El checkbox se ha desmarcado", datos);
+    }
+    function CambiarCheckss() {
+        //   e.preventDefault(); // Prevenir comportamiento predeterminado
+
+        let users = getDatosUsuariosLocalStorag()
+        checkdsss.current.check = (users.naipes == 'Si')
+        //  console.log()
+        let datos = UpdateDatosUsuariosLocalStorag({ naipes: users.naipes == 'No' ? 'Si' : 'No' })
+        //ListaPrecioset(GetValores())
+     //   console.log(GetValores(), datos)
+        //  console.log(getDatosUsuariosLocalStorag().discapacidad)
+        // usuario.discapacidad = 'Si'
+        //   console.log(checkds.current.checked)
+        // console.log("El checkbox se ha desmarcado", datos);
+    }
     const [select, setSelecte] = useState("")
     let [evento, setEvento] = useState([])
     let { id } = useParams()
@@ -61,30 +110,61 @@ function ventasView() {
         })
         DatosUsuariosLocalStorag({
             ...datos,
-            [e.name]: e.value })
+            [e.name]: e.value
+        })
     }
 
     const ObtenerEventos = async () => {
         try {
             let { data } = await mikroAxios.get("Boleteria/Eventos/" + id)
-           // console.log(data)
+            // console.log(data)
             setEvento(data.data[0])
         } catch (error) {
-          //  console.log(error)
+            //  console.log(error)
         }
     }
-    function buscarsuscritor() {
+    async function buscarsuscritor() {
+        let naipe = document.getElementById("descuentos")
+        let descuento = document.getElementById("descuento")
+
+        document.getElementById("descuentoss").checked = false
+        naipe.checked = false
+        checkds.current.check = false
+        descuento.checked = false
         let nombre = $('#cedula').val()
         let informacion = {
             "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
             "email": isNaN(nombre.trim()) ? nombre.trim().replace(/"/g, '@') : ''
         }
+        checkds.current.check = false
+        //  console.log()
+        // let datos = UpdateDatosUsuariosLocalStorag({ menor: users.menor == 'No' ? 'Si' : 'No' })
+        //ListaPrecioset(GetValores())
+      //  console.log(GetValores(), datos)
         /*  setDatosUser({
               ...datos,
               cedula: nombre.trim()
           })*/
+        let { data } = await Axiosmikroserdos.get("api/Valida_Descuento/" + nombre.trim() + "/" + id)
+      //  console.log(data)
+        if (data.estado) {
+            let datos = data.data
+            let texto = "Nombre: " + datos.name + "\n edad: " + data.data.edad + "\n fecha: " + data.data.fecha_nacimiento + "\n" + data.mensaje
+            usedispatch(setToastes({
+                show: true,
+                message: texto,
+                color: 'bg-info',
+                estado: "Verificar "
+            }))
+        }
         buscarcliente({ ...informacion }).then(ouput => {
             //  console.log(ouput)
+            Limpiarselecciondos()
+            // LimpiarLocalStore()
+            ListaPrecioset(GetValores())
+            setSelecte("Transferencia")
+            //sessionStorage.setItem(Metodos, "Transferencia")
+
 
             if (!ouput.success) {
                 getCedula(nombre).then(salida => {
@@ -134,11 +214,17 @@ function ventasView() {
                             movil: salida.telefono ? salida.telefono : "0999999999",
                             password: salida.cedula
                         }))
+                        // checkdss.current.check = false
+                        //  checkdsss.current.check = false
+                        UpdateDatosUsuariosLocalStorag({ menor: 'No', naipes: "No" })
                         //$('#movil').val("")
                         $("#search").addClass("d-none")
                     }
+
+
+                    ListaPrecioset(GetValores())
                 }).catch(erro => {
-                   // console.log(erro)
+                    // console.log(erro)
                 })
 
 
@@ -150,18 +236,21 @@ function ventasView() {
                     registro: 1
                 })
                 DatosUsuariosLocalStorag({ ...ouput.data })
+                //  checkdss.current.check = false
+                //checkdsss.current.check = false
+                UpdateDatosUsuariosLocalStorag({ menor: 'No', naipes: "No" })
             }
 
         }).catch(erro => {
-          //  console.log(erro)
+            //  console.log(erro)
         })
     }
     const valores = JSON.parse(sessionStorage.getItem(Eventolocalidad))
 
     function restaprecio(e) {
-       // console.log("valores", valores)
+
         let mapath = { precio: valores.find(el => el.ideprecio == e.ideprecio) }
-       // console.log(mapath, e.ideprecio)
+        // console.log(mapath, e.ideprecio)
 
         let user = getDatosUsuariosLocalStorag()
         let producto = {
@@ -179,15 +268,35 @@ function ventasView() {
         console.log(getVerTienda())
         console.log(GetValores())
         ListaPrecioset(GetValores())
+        correlativosadd({
+            "id": mapath.precio.idcolor,
+            "estado": "reservado",
+            "cedula": user.cedula,
+            "mas": "menos",
+            random: sessionStorage.getItem("random"),
+            "cantidad": 1
+        }).then(oupt => {
+            // console.log(oupt)
+            if (oupt.success) {
+         
+            }
+           
+        }).catch(err => {
+            console.log(err)
+        })
+        if (e.ideprecio == 433) {
+            UpdateDatosUsuariosLocalStorag({ menor: 'No' })
+        }
 
     }
     function agregar(e) {
         let user = getDatosUsuariosLocalStorag()
-       
-       // console.log("valores", valores)
+        console.log(e, "valores", valores)
+        // console.log("valores", valores)
         let mapath = { precio: valores.find(el => el.ideprecio == e.ideprecio) }
-       // console.log(mapath, e.ideprecio)
+        // console.log(mapath, e.ideprecio)
         let protoco = moment().format("YYYYMMDDHHMMSS")
+        console.log(mapath.precio)
         let producto = {
             cantidad: 1,
             localidad: mapath.precio.localidad,
@@ -206,6 +315,30 @@ function ventasView() {
             //  console.log(getVerTienda())
             // console.log(GetValores())
             ListaPrecioset(GetValores())
+      //      console.log(e)
+            correlativosadd({
+                "id": mapath.precio.idcolor,
+                "estado": "reservado",
+                "cedula": user.cedula,
+                "mas": "mas",
+                random: sessionStorage.getItem("random"),
+                "cantidad": 1
+            }).then(oupt => {
+                if (oupt.success) {
+
+
+                }
+                //  usedispatch(setSpinersli({ spiner: true }))
+
+            }
+
+            ).catch(erro => {
+                //setDisable(false)
+                // console.log(erro)
+            })
+            if (e.ideprecio == 433) {
+                UpdateDatosUsuariosLocalStorag({ menor: 'Si' })
+            }
 
         }
         else {
@@ -239,17 +372,15 @@ function ventasView() {
     }
     useEffect(() => {
         ObtenerEventos()
-        let metodoPago = GetMetodo()
-        metodoPago != null ?
-            setChecked({
-                Fisico: metodoPago == "Efectivo-Local" ? "Efectivo-Local" : "",
-                Efectivo: metodoPago == "Efectivo" ? "Efectivo" : "",
-                Tarjeta: metodoPago == "Tarjeta" ? "Tarjeta" : "",
-                Deposito: metodoPago == "Deposito" ? "Deposito" : "",
-                Transferencia: metodoPago == "Transferencia" ? "Transferencia" : ""
-            }) : handelMetodopago({ name: 'Transferencia' }, "Transferencia")
-        metodoPago != null ?
-            setSelecte(metodoPago) : ""
+        sessionStorage.setItem(Metodos, "Transferencia")
+        setChecked({
+            Fisico: "",
+            Efectivo: "",
+            Tarjeta: "",
+            Deposito: "",
+            Transferencia: "Transferencia"
+        })
+        setSelecte("Transferencia")
         ListaPrecioset(GetValores())
 
     }, [])
@@ -269,23 +400,56 @@ function ventasView() {
             password: '',
             registro: 0
         })
-
+        setChecked({
+            Fisico: "",
+            Efectivo: "",
+            Tarjeta: "",
+            Deposito: "",
+            Transferencia: "Transferencia"
+        })
+        sessionStorage.setItem(Metodos, "Transferencia")
+        setSelecte("Transferencia")
+        ListaPrecioset(GetValores())
 
     }
     function para() {
-
+        usedispatch(clearMapa({}))
+        usedispatch(borrarseleccion({ estado: "seleccionado" }))
+        usedispatch(setModal({ nombre: "", estado: '' }))
+        Limpiarselecciondos()
+        LimpiarLocalStore()
+        ListaPrecioset(GetValores())
+        setDausuario({
+            nombreCompleto: '',
+            ciudad: '',
+            email: '',
+            movil: '',
+            resgistro: '',
+            password: '',
+            registro: 0
+        })
+        setChecked({
+            Fisico: "",
+            Efectivo: "",
+            Tarjeta: "",
+            Deposito: "",
+            Transferencia: "Transferencia"
+        })
+        sessionStorage.setItem(Metodos, "Transferencia")
+        setSelecte("Transferencia")
+        ListaPrecioset(GetValores())
 
     }
 
     async function Registrar() {
         try {
-           // console.log(GetMetodo())
+            // console.log(GetMetodo())
             let informacion = {
                 "cedula": '',
                 "email": String(datos.email).trim()
             }
             let data = datos.registro == 0 ? await buscarcliente({ ...informacion }) : false
-        //    console.log(data)
+            //    console.log(data)
             if (!data.success) {
                 //return
                 if (GetMetodo() == "Tarjeta") {
@@ -323,7 +487,7 @@ function ventasView() {
             }
         } catch (error) {
             //console.log(error)
-           $.alert(error)
+            $.alert(error)
         }
 
 
@@ -352,12 +516,12 @@ function ventasView() {
                 registro: 1
             })
         }).catch(err => {
-         //   console.log(err)
+            //   console.log(err)
 
         })
         let texto = "*" + data.nombreCompleto + "*\nGracias por registrarse en Tickets.com.ec.\nLos datos de ingreso son:\n *Usuario*:" + data.email + "\n *Clave*:" + data.password.trim() + "\n\nPor favor, para validar tu cuenta digita la palabra *Si*";
         Emailcontec({ movil: [formatearNumero(data.movil)], nombre: data.nombreCompleto, password: data.password.trim(), email: data.email, text: texto }).then(sal => {
-         //  console.log(sal)
+            //  console.log(sal)
         }).catch(err => {
             //console.log(err)
             setDausuario({
@@ -495,24 +659,70 @@ function ventasView() {
                     </form>
                 </div>
                 <div className="p-1 ">
+                    {clienteInfo() != null ?
+                        <div className="container">
+                            <input className="form-check-input" type="checkbox"
+
+                                ref={checkds}
+                                onChange={CambiarCheck}
+
+                                name="descuento" id="descuento" />
+                            <label className="form-check-label" htmlFor="descuento">
+                                DESCUENTO DIS./TER. EDAD.- 50%
+                            </label>
+                        </div>
+
+                        : ""}
+
+                    {clienteInfo() != null ?
+                        <div className="container d-none ">
+                            <input className="form-check-input" type="checkbox"
+                                ref={checkdss}
+                                onChange={CambiarChecks}
+
+                                name="descuentos" id="descuentos" />
+                            <label className="form-check-label" htmlFor="descuentos">
+                                Niños
+                            </label>
+                        </div>
+
+                        : ""}
+
+                    {clienteInfo() != null ?
+                        <div className="container">
+                            <input className="form-check-input" type="checkbox"
+                                ref={checkdsss}
+                                onChange={CambiarCheckss}
+
+                                name="descuentoss" id="descuentoss" />
+                            <label className="form-check-label" htmlFor="descuentoss">
+                                Naipes
+                            </label>
+                        </div>
+
+                        : ""}
+
                     <div>
                         <strong> Método de pago</strong>
                         <select className=" form-select form-select-lg" name="selctmet" value={select}
                             onChange={(e) => handelMetodopago(e.target)}
                         >
+                            <option value={""}>
+
+                            </option>
                             <option value={"Tarjeta"}>
                                 Tarjeta credito
                             </option>
                             <option value={"Transferencia"}>
                                 Transferencia
                             </option>
-                            {clienteInfo().perfil == "vendedores" ? "" : <option value={"Efectivo-Local"}>
+                            {<option value={"Efectivo-Local"}>
                                 Efectivo-Local
                             </option>}
-                            {clienteInfo().perfil == "vendedores" ? "" : <option value={"Tarjeta-Local"}>
+                            {<option value={"Tarjeta-Local"}>
                                 Tarjeta-Local
                             </option>}
-                            {clienteInfo().perfil == "vendedores" ? "" : <option value={"Efectivo-QR"}>
+                            {<option value={"Efectivo-QR"}>
                                 Efectivo-QR
                             </option>}
                             <option className=" d-none" value={"Recaidacion Terceros"}>
@@ -542,8 +752,41 @@ function ventasView() {
                         <tbody>
                             {
                                 evento.length > 0 ?
-                                    evento.map((item, index) => {
+                                    [...evento,
+                                    {
+                                        "ideprecio": 433,
+                                        "codigoEvento": "NT3K0L",
+                                        "nombre": "MENORES",
+                                        "precio_normal": "1.00",
+                                        "precio_discapacidad": "1.00",
+                                        "precio_descuento": "1.00",
+                                        "precio_tarjeta": "1.00",
+                                        "comision_boleto": "0.00",
+                                        "id_localidad": 308,
+                                        "espacio": "ESTADIO REALES TAMARINDOS",
+                                        "id_espacio": 70,
+                                        "espacioid": 70,
+                                        "descripcion": "MENORES",
+                                        "mesas_array": "correlativo",
+                                        "id": 91,
+                                        "nombreConcierto": "NOCHE AMARILLA PORTOVIEJO",
+                                        "fechaConcierto": "2025-03-22",
+                                        "horaConcierto": "15:00",
+                                        "lugarConcierto": "ESTADIO REALES TAMARINDOS",
+                                        "cuidadConcert": "PORTOVIEJO",
+                                        "descripcionConcierto": "NOCHE AMARILLA ESTADIO REALES TAMARINDOS",
+                                        "imagenConcierto": "https://api.t-ickets.com/store/img/noche_amarilla_portoviejo_1600_x_682_(2)_(1).png",
+                                        "idUsuario": 29,
+                                        "estado": "ACTIVO",
+                                        "mapaConcierto": "https://api.t-ickets.com/store/img/barcelona_mapa_(1).png",
+                                        "fechaCreacion": "2025-02-20 18:34:12",
+                                        "iva": "0.00",
+                                        "botNumber": "0980008000",
+                                        "total": ""
+                                    }
+                                    ].map((item, index) => {
                                         let tipo = String(item.mesas_array).replace('""', "")
+                                      
                                         const tiendaItem = getVerTienda().find(ele => ele.id === item.id_localidad) || {};
                                         const cantidad = tiendaItem.cantidad || 0;
                                         return (
@@ -566,6 +809,7 @@ function ventasView() {
                                                                     >
                                                                         <i className="fa fa-minus"></i>
                                                                     </button>
+
                                                                     <button className="suma   btn-success " onClickCapture={() => agregar(item)}
 
                                                                     >
@@ -601,16 +845,16 @@ function ventasView() {
                                             <strong>{item.nombreConcierto}</strong>
                                             <div className=" d-flex justify-content-between "><span>{item.nombre}</span> <span>Disponible: {item.total}</span></div>
                                             <span>Valor: ${precioBase}+${parseInt(item.comision_boleto)}</span>
-                                           
+
                                             <div className=" d-flex justify-content-between "><span>Cantidad: {cantidad}</span>
                                                 <span>Total Precio: {totalPrecio}</span></div>
-                                            
-                                            
-                                            
+
+
+
                                             <div className="mt-2   ">
                                                 {tipo === 'correlativo' ? (
                                                     <div className="d-flex justify-content-between  " role="group">
-                                                        <button disabled={(cantidad==0)} className="btn btn-danger " onClick={() => restaprecio(item)}>
+                                                        <button disabled={(cantidad == 0)} className="btn btn-danger " onClick={() => restaprecio(item)}>
                                                             <i className="fa fa-minus"></i>
                                                         </button>
                                                         <button className="btn btn-success " onClick={() => agregar(item)}>

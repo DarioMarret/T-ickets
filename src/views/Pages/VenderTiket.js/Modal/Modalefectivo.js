@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from "react-bootstrap";
-import {  GetValores, GetMetodo } from 'utils/CarritoLocalStorang';
+import { GetValores, GetMetodo } from 'utils/CarritoLocalStorang';
 import { LimpiarLocalStore, Limpiarseleccion } from 'utils/CarritoLocalStorang';
 import { clearMapa } from 'StoreRedux/Slice/mapaLocalSlice';
 import { borrarseleccion } from 'StoreRedux/Slice/sillasSlice';
@@ -10,24 +10,25 @@ import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { PagoRapido } from 'utils/Querycomnet';
 
-const ModalEfectivo = () => {
+const ModalEfectivo = (param) => {
+    let { comprar } = param
     let usedispatch = useDispatch()
     const [suelto, SetSuelto] = useState(0)
-    const [spiner,setSpiner]= useState(false)
+    const [spiner, setSpiner] = useState(false)
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [alert, setAlert] = useState(null)
     const [inputValue, setInputValue] = useState('');
-    const [ticktes,setTickets]=useState([])
+    const [ticktes, setTickets] = useState([])
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
     };
     const handleKeyPress = (event) => {
         let arrgelo = ticktes
         if (event.key === 'Enter') {
-            if(inputValue!=""){
-                if(arrgelo.includes(inputValue)){
+            if (inputValue != "") {
+                if (arrgelo.includes(inputValue)) {
 
-                }else{
+                } else {
                     arrgelo.push(inputValue)
                     setInputValue("")
                     setTickets(arrgelo)
@@ -67,20 +68,21 @@ const ModalEfectivo = () => {
         setAlert(null)
     }
     function onchange(e) {
-        let total = parseFloat(GetValores().total) 
+        let total = parseFloat(GetValores().total)
         let valor = parseFloat(total) - parseFloat(e.value)
         SetSuelto(valor)
     }
     function creaComprobante() {
         console.log("vender")
         setSpiner(true)
-        sessionStorage.setItem("ticktesfisio",JSON.stringify(ticktes))
+        sessionStorage.setItem("ticktesfisio", JSON.stringify(ticktes))
         PagoRapido("").then(ouput => {
             console.log(ouput)
             if (ouput.success) {
                 usedispatch(setModal({ nombre: "", estado: "" }))
                 usedispatch(setToastes({ show: true, message: 'Registro generado exitosamente verifica los Boletos como canjeados', color: 'bg-success', estado: "compra guardada" }))
                 setSpiner(false)
+                comprar()
                 borrar()
             }
             else {
@@ -99,9 +101,9 @@ const ModalEfectivo = () => {
             (t = 8 == n || n >= 35 && n <= 40 || 46 == n || t) || (e.returnValue = !1, e.preventDefault && e.preventDefault())
         })
     });
-    function Qitar(e){
-        if(e!=""){
-            let arr = ticktes.filter(f=>f!=e)
+    function Qitar(e) {
+        if (e != "") {
+            let arr = ticktes.filter(f => f != e)
             setTickets(arr)
 
         }
@@ -155,7 +157,7 @@ const ModalEfectivo = () => {
                                     <tr>
                                         <th scope="row"></th>
                                         <td className='text-end' >Total:</td>
-                                        <td className='text-center'>${GetMetodo() === "Tarjeta" ? GetValores().total : (parseFloat(GetValores().total) ).toFixed(2)}</td>
+                                        <td className='text-center'>${GetMetodo() === "Tarjeta" ? GetValores().total : (parseFloat(GetValores().total)).toFixed(2)}</td>
                                     </tr>
                                     <tr>
                                         <th scope="row"></th>
@@ -187,7 +189,7 @@ const ModalEfectivo = () => {
                                         <h6 >Total <span className=' text-white'>......</span>:  </h6>
                                     </div>
                                     <div className='col-6 d-flex align-content-end' >
-                                        <h6 >  <strong> ${GetMetodo()!= "Tarjeta" ? GetValores().total : ""}  </strong></h6>
+                                        <h6 >  <strong> ${GetMetodo() != "Tarjeta" ? GetValores().total : ""}  </strong></h6>
                                     </div>
                                 </div>
                                 <div className='row '>
@@ -204,11 +206,11 @@ const ModalEfectivo = () => {
                                         </input>
                                     </div>
                                     <div className='d-flex flex-row-reverse col-12'
-                                    style={{
-                                        maxHeight:"100px"
-                                    }}
+                                        style={{
+                                            maxHeight: "100px"
+                                        }}
                                     >
-                                        
+
 
                                     </div>
                                 </div>
@@ -226,19 +228,19 @@ const ModalEfectivo = () => {
                 <Modal.Footer>
                     <div className="d-flex flex-wrap" style={{ minHeight: '10px', maxHeight: '150px', overflowY: 'auto', overflowX: 'hide', }}>
                         {ticktes.length > 0 ?
-                            ticktes.map(e=> {
+                            ticktes.map(e => {
                                 return (<div>
-                                    <li  className= '  d-flex agregados rounded-5  bg-success justify-content-center align-items-center '
-                                        onClick={() =>  Qitar(e)}
+                                    <li className='  d-flex agregados rounded-5  bg-success justify-content-center align-items-center '
+                                        onClick={() => Qitar(e)}
                                         style={{ height: '30px', width: '120px', margin: '1px' }} >
                                         <div className={'d-flex   text-white justify-content-center  '} >
                                             <div className="d-flex  justify-content-center text-center p-2">
                                                 <span className="mx-1" style={{ fontSize: '0.8em' }}>{e}</span>
-                                                
+
                                             </div>
                                         </div>
                                     </li>
-                                   
+
 
                                 </div>)
                             }) : ""

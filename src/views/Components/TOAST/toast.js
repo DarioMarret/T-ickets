@@ -14,7 +14,7 @@ const ToastViews = () => {
     return (<>
 
         <Toast
-            onClose={cerrar} show={selector.show} delay={16500} autohide
+            show={selector.show} delay={16500} autohide
 
             className="top-center"
             style={{

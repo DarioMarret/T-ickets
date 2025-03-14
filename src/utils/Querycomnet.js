@@ -33,15 +33,17 @@ export const PagoRapido = async (transaccion) => {
             "CODIGEVENTO": codigoEvento,
             "cantidad": e.cantidad,
             "localidad_nombre": e.localidad,
-            "localidad_precio": (discapacidad == 'Si' && (parseInt(cantidadTotal)==1) && (clienteInfo()!=null)) ? parseFloat(e.localidaEspacio["precio_discapacidad"]) : parseFloat(e.valor),
+            "localidad_precio": (discapacidad == 'Si' && (parseInt(cantidadTotal) == 1) && (clienteInfo() != null)) ? parseFloat(e.localidaEspacio["precio_discapacidad"]) : parseFloat(e.valor),
             "discapacida": (discapacidad == 'Si' && parseInt(cantidadTotal) == 1 && (clienteInfo() != null)),
+            menor: (parseInt(e.localidaEspacio["idcolor"]) == 308),
+            naipes: getDatosUsuariosLocalStorag().naipes ? (getDatosUsuariosLocalStorag().naipes == 'Si') : null,
             "comision_por_boleto": parseInt(e.cantidad) * parseFloat(e.localidaEspacio["comision_boleto"]),
             "id_sillas": cantidadTotal == sillas.length ? [...sillas] : [],
             "iva": Eventoinfo.iva,
             "post": Eventoinfo.post ? Eventoinfo.post : ""
         }
     })
-   // console.log(concierto)
+    // console.log(concierto)
     let datos = {
         "cedula": datosPersonal,
         "id_usuario": parseInt(idop),
@@ -62,7 +64,7 @@ export const PagoRapido = async (transaccion) => {
         "transaccion": transaccion
     }
 
-  // console.log(datos, concierto)
+    // console.log(datos, concierto)
     try {
 
         console.log(datos)

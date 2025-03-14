@@ -71,7 +71,7 @@ export default function WhastappWiev() {
         setDisanbe(true)
         setTimeout(function () {
             let informa = {
-                "sessionName": "1_tickets_prueba19177232201",
+                "sessionName": "48_tickets_v209800080001",
                 "numero": [formatearNumero(Celular)],
                 "mensaje": {
                     "type": "text",
@@ -118,7 +118,7 @@ export default function WhastappWiev() {
         }
         console.log(datos.estado["movil"])
         let informa = {
-            "sessionName": "1_tickets_prueba19177232201",
+            "sessionName": "48_tickets_v209800080001",
             "numero": [formatearNumero(Celular)],
             "mensaje": {
                 "type": "text",
@@ -174,7 +174,7 @@ export default function WhastappWiev() {
         setDisanbe(true)
         setTimeout(function () {
             let informa = {
-                "sessionName": "1_tickets_prueba19177232201",
+                "sessionName": "48_tickets_v209800080001",
                 "numero": [...datos.estado],
                 "mensaje": {
                     "type": "text",
@@ -215,7 +215,7 @@ export default function WhastappWiev() {
         //console.log(datos.estado["movil"])
 
         let informa = {
-            "sessionName": "1_tickets_prueba19177232201",
+            "sessionName": "48_tickets_v209800080001",
             "numero": [...datos.estado],
             "mensaje": {
                 "type": "text",

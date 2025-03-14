@@ -56,7 +56,7 @@ var routes = [
     name: "Gestion de Eventos",
     state: "openGestion",
     icon: "nc-icon nc-notes",
-    permiso: ["admin", "super_admin","suscriptores"],
+    permiso: ["admin", "super_admin", "suscriptores"],
     views: [
       {
         path: "/Espacio",
@@ -146,14 +146,14 @@ var routes = [
         component: SuscritorViews,
         permiso: ["admin", "super_admin", "vendedores"],
       },
-     /* {
-        path: "/Whastapp",
-        layout: "/admin",
-        name: "Whastapp",
-        mini: "*",
-        component: WhatsAppViewmal,
-        permiso: ["", ""]
-      },*/
+      /* {
+         path: "/Whastapp",
+         layout: "/admin",
+         name: "Whastapp",
+         mini: "*",
+         component: WhatsAppViewmal,
+         permiso: ["", ""]
+       },*/
 
 
     ]
@@ -172,7 +172,7 @@ var routes = [
         name: "Vender Tickets",
         mini: "*",
         component: Ventas,
-        permiso: ["admin", "super_admin", "vendedores","suscriptores"]
+        permiso: ["admin", "super_admin", "vendedores", "suscriptores"]
       },
 
       {
@@ -200,10 +200,10 @@ var routes = [
         permiso: ["suscriptores", "admin", "super_admin", "vendedores"]
       },
       {
-        path:"/vender/:id",
-        layout:"/admin",
-        mini:"*",
-        component:Ventasnuevas,
+        path: "/vender/:id",
+        layout: "/admin",
+        mini: "*",
+        component: Ventasnuevas,
         permiso: ["suscriptores", "admin", "super_admin", "vendedores"]
       },
       {
@@ -326,7 +326,7 @@ var routes = [
         permiso: ["admin", "super_admin"]
       },
 
-      
+
       {
         path: "/OCR",
         layout: "/admin",

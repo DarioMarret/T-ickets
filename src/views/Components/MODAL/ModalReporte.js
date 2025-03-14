@@ -157,15 +157,35 @@ const Reporte = (props) => {
       </SweetAlert>
     )
   }
+  const [inputValue, setInputValue] = useState('');
+  const [ticktes, setTickets] = useState([])
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+  const handleKeyPress = (event) => {
+    let arrgelo = ticktes
+    if (event.key === 'Enter') {
+      if (inputValue != "") {
+        if (arrgelo.includes(inputValue)) {
+
+        } else {
+          arrgelo.push(inputValue)
+          setInputValue("")
+          setTickets(arrgelo)
+        }
+      }
+    }
+  };
   const hideAlert = () => {
     setAlert(null)
   }
   function Confirmar(e) {
     let user = getDatosUsuariosLocalStorag()
+    sessionStorage.setItem("ticktesfisio", JSON.stringify(ticktes))
     let valores = GetValores()
     ReactGA.event({
       category: user.cedula,
-      action: ""+e,
+      action: "" + e,
       label: "Deposito",
     })
     if (e == "pichincha") {
@@ -191,9 +211,9 @@ const Reporte = (props) => {
             }))
           });
           window.gtag('event', 'purchase', {
-            transaction_id: "T_"+oupt.idRegistro,  // ID único de la transacción
+            transaction_id: "T_" + oupt.idRegistro,  // ID único de la transacción
             value: oupt.valores.subtotal, // Valor total
-            tax: oupt.valores.iva, 
+            tax: oupt.valores.iva,
             affiliation: e, // Nombre de la tienda o sitio
             currency: 'USD', // Moneda
             "event_category": "begin_checkout",
@@ -208,7 +228,7 @@ const Reporte = (props) => {
             }))
           });
           console.log(oupt)
-          
+
           comprar()
 
           usedispatch(setModal({
@@ -433,7 +453,7 @@ const Reporte = (props) => {
             }))
           });
           window.gtag('event', 'purchase', {
-            transaction_id: "T_"+oupt.idRegistro,  // ID único de la transacción
+            transaction_id: "T_" + oupt.idRegistro,  // ID único de la transacción
             value: oupt.valores.subtotal, // Valor total
             tax: oupt.valores.iva,
             affiliation: "Tienda Online", // Nombre de la tienda o sitio
@@ -619,6 +639,35 @@ const Reporte = (props) => {
                   </div>
 
                 </div>
+                {clienteInfo() != null ? <div className='row '>
+
+                  <strong>Agregar Boletos</strong>
+                  <div className='container'>
+                    <input className='numero form-control'
+                      type="text"
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      onKeyPress={handleKeyPress}
+                      placeholder='ticktes'
+                    >
+                    </input>
+                  </div>
+                  <div className='d-flex flex-row-reverse col-12'
+                    style={{
+                      maxHeight: "100px"
+                    }}
+                  >
+                    {ticktes?.map((elem, ind) => {
+                      return (
+                        <div key={ind}>
+                          <span className=' btn btn-secondary rounded-pill px-3'>{elem} </span>
+                        </div>
+                      )
+                    })}
+
+
+                  </div>
+                </div> : ""}
                 <div className=' container d-flex   px-0 mx-0 justify-content-between ' style={{ width: '90%' }}>
                   <div className=''>
                     <button className='btn btn-success m-2 ' style={{ fontSize: '0.7em' }} onClick={() => Confirmar("transferencia")} > CONFIMAR TRANSFERENCIA </button>

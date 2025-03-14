@@ -134,12 +134,12 @@ export default function StoreTickesViews() {
         setAlert(null);
     };
     const venderevento = (e) => {
-     //history.push("/admin/vender/" + e.codigoEvento)
+        //history.push("/admin/vender/" + e.codigoEvento)
         //  history.push("/admin/vender/" + e.codigoEvento)
         // return
-      sessionStorage.removeItem(DatosUsuarioLocalStorang)
-      abrir(e)
-      //   usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
+        sessionStorage.removeItem(DatosUsuarioLocalStorang)
+        abrir(e)
+        //   usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
     }
     const evento = async () => {
         try {
@@ -256,7 +256,7 @@ export default function StoreTickesViews() {
                             return g
                         }
                     }).filter(e => e != undefined)
-                    console.log("newprecios",newprecios)
+                    console.log("newprecios", newprecios)
                     let colornuevo = mapalocal.map((L) => {
                         if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
                             {
@@ -272,18 +272,54 @@ export default function StoreTickesViews() {
                             }
                         }
                     })
-                    console.log("precios",colornuevo)
+                    console.log("precios", colornuevo)
                     let pathnuevo = path.map((L) => {
                         if (newprecios.filter(e => e != undefined).findIndex(e => e.idcolor == L.id) != -1) {
                             return L
                         }
                     })
-                    console.log("pathnuevo",pathnuevo)
+                    console.log("pathnuevo", pathnuevo)
                     sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
                         return e
-                    }))]))
+                    })), 
+                       {
+                           "id": 433,
+                            "codigoEvento": "NT3K0L",
+                           "localidad": "MENORES",
+                           "precio_normal": "1.00",
+                           "precio_discapacidad": "1.00",
+                           "precio_tarjeta": "1.00",
+                            "precio_descuento": "1.00",
+                            "habilitar_cortesia": 1,
+                            "comision_boleto": "0.00",
+                            "descuento": 0,
+                            "habilitar": "NO",
+                            "color": "#009fe3",
+                            "idcolor": 308,
+                            "typo": "correlativo",
+                            "ideprecio": 433,
+                            "espacio": 70
+                        }
+                    ]))
 
-                    sessionStorage.setItem(Eventolocalidad, JSON.stringify([...newprecios]))
+                    sessionStorage.setItem(Eventolocalidad, JSON.stringify([...newprecios, {
+                        "id": 433,
+                        "codigoEvento": "NT3K0L",
+                        "localidad": "MENORES",
+                        "precio_normal": "1.00",
+                        "precio_discapacidad": "1.00",
+                        "precio_tarjeta": "1.00",
+                        "precio_descuento": "1.00",
+                        "habilitar_cortesia": 1,
+                        "comision_boleto": "0.00",
+                        "descuento": 0,
+                        "habilitar": "NO",
+                        "color": "#009fe3",
+                        "idcolor": 308,
+                        "typo": "correlativo",
+                        "ideprecio": 433,
+                        "espacio": 70
+                    }]))
                     //console.log(colornuevo)
                     usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
                     let nuevosdatos = {
@@ -321,7 +357,7 @@ export default function StoreTickesViews() {
                         setspinervi("d-none")
                         console.log(outp)
                         usedispatch(cargarsilla(outp))
-                       history.push("vender/" + e.codigoEvento)
+                        history.push("vender/" + e.codigoEvento)
                         return
                         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
                         if (seleccionuser.data.length > 0) {

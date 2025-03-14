@@ -320,7 +320,7 @@ export function GetValores() {
                     tienda2.valor = (parseFloat(tienda2.localidaEspacio["precio_descuento"]) * parseInt(tienda2.cantidad))
 
                 } else {
-                    let valores = (user.discapacidad == 'Si' && cantidadTotal == 1 && clienteInfo() != null) ? tienda2.localidaEspacio["precio_discapacidad"] : tienda2.valor
+                    let valores = (user.discapacidad == 'Si'  && clienteInfo() != null) ? tienda2.localidaEspacio["precio_discapacidad"] : tienda2.valor
                     tienda2.valor = (parseFloat(valores) * parseInt(tienda2.cantidad))
                 }
             }
