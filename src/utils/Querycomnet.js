@@ -27,7 +27,7 @@ export const PagoRapido = async (transaccion) => {
     //  si discrimino lo tengo que guardar  let total = GetMetodo() == "Tarjeta" ? parseFloat(GetValores().total) : parseFloat(GetValores().comision) + parseFloat(GetValores().subtotal)
     let concierto = getVerTienda().map((e) => {
         return {
-            "nombreConcierto": e.nombreConcierto,
+            "nombreConcierto": Eventoinfo.nombreConcierto,
             "id_localidad": e.localidaEspacio["idcolor"],
             "idespaciolocalida": e.localidaEspacio["ideprecio"],
             "CODIGEVENTO": codigoEvento,
