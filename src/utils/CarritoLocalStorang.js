@@ -393,7 +393,7 @@ export function Limpiarseleccion() {
     sessionStorage.removeItem(CarritoTicket)
     sessionStorage.removeItem(listaasiento)
     sessionStorage.removeItem(seleccionmapa)
-    sessionStorage.removeItem(Eventoid)
+   // sessionStorage.removeItem(Eventoid)
     sessionStorage.removeItem(concierto)
     sessionStorage.removeItem("sillascorre")
 }

@@ -242,7 +242,10 @@ const EventoEspecifico = () => {
                 return {
                     localidad: elem.localidad,
                     forma_pago: elem.forma_pago,
-                    total: elem.total,
+                    precios:elem.valor ,
+                    total: elem.Total,
+                    cantidad: elem.Cantidad
+
                 }
             })
         })
@@ -532,32 +535,8 @@ const EventoEspecifico = () => {
                         </div>
                         <div className="conatiner row">
                             <div className="row mx-auto p-0">
-                                <div className="col-12 col-md-6 col-lg-4 col-xl-4 mx-auto my-5" id="evento2">
-                                    <a href="#" onClick={() => setOpen(!open)}>
-                                        <div className="container rounded-7 shadow-md px-0">
-                                            <img src={evento.imagenConcierto ? evento.imagenConcierto : ''} className="img-fluid rounded-7 shadow-md " alt="" />
-                                        </div>
-                                    </a>
-                                    <Collapse in={false} >
-                                        <div className=" container mt-4 px-0" id="collapseExample2">
-                                            <div className="card card-body rounded-7 py-5">
-                                                <div className="container">
-                                                    <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"> {evento.nombreConcierto}</span> </h1>
-                                                    <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto} </span></h4>
-                                                    <div className="col-12 border border-bottom my-3"></div>
-                                                    <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> {evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
-                                                    <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
-                                                    <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
-                                                    <div className="" >
-                                                        <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil == 'suscriptores') ? "" : setShow(true)} >Editar</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Collapse>
-
-                                </div>
-                                <div className="col-12 col-lg-8 mx-auto " id="evento4">
+                               
+                                <div className="col-12 mx-auto " id="evento4">
                                     <PiecharViews
                                         options={options}
                                         datas={datas}
@@ -701,7 +680,10 @@ const EventoEspecifico = () => {
                                         />
                                     </div>
                                     <div className="tab-pane  container-fluid " id="mesas">
-                                        <table class="table text-end">
+                                        <ExtendedForms
+                                            data={Object.values(groupedData)}
+                                        />
+                                        <table class="table text-end d-none">
                                             <thead>
                                                 <tr>
                                                     <th scope="col" >Localidad</th>
@@ -988,6 +970,31 @@ const EventoEspecifico = () => {
                                         </div>
                                     </div>
                                     <div className=" tab-pane " id="info">
+                                        <div className="col-12 col-md-6 col-lg-4 col-xl-4 mx-auto my-5" id="evento2">
+                                            <a href="#" onClick={() => setOpen(!open)}>
+                                                <div className="container rounded-7 shadow-md px-0">
+                                                    <img src={evento.imagenConcierto ? evento.imagenConcierto : ''} className="img-fluid rounded-7 shadow-md " alt="" />
+                                                </div>
+                                            </a>
+                                            <Collapse in={false} >
+                                                <div className=" container mt-4 px-0" id="collapseExample2">
+                                                    <div className="card card-body rounded-7 py-5">
+                                                        <div className="container">
+                                                            <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"> {evento.nombreConcierto}</span> </h1>
+                                                            <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto} </span></h4>
+                                                            <div className="col-12 border border-bottom my-3"></div>
+                                                            <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> {evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
+                                                            <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
+                                                            <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
+                                                            <div className="" >
+                                                                <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil == 'suscriptores') ? "" : setShow(true)} >Editar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Collapse>
+
+                                        </div>
                                         <div className=" container mt-4 px-0" id="collapseExample2">
                                             <div className="card card-body card row d-flex flex-row card-body rounded-7 py-5">
                                                 <div className="container col-12 col-md-6">
@@ -1031,7 +1038,7 @@ const EventoEspecifico = () => {
                             />
 
                         </div>
-                        <div className="col-12 col-m-6 col-sm-6 text-center d-none">
+                        <div className="col-12  text-center">
                             <ExtendedForms
                                 data={report.localidades}
                             />

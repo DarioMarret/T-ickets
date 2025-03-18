@@ -124,11 +124,11 @@ function ventasView() {
         }
     }
     async function buscarsuscritor() {
-        let naipe = document.getElementById("descuentos")
+       // let naipe = document.getElementById("descuentos")
         let descuento = document.getElementById("descuento")
 
         document.getElementById("descuentoss").checked = false
-        naipe.checked = false
+        //naipe.checked = false
         checkds.current.check = false
         descuento.checked = false
         let nombre = $('#cedula').val()
@@ -227,7 +227,7 @@ function ventasView() {
     const valores = JSON.parse(sessionStorage.getItem(Eventolocalidad))
 
     function restaprecio(e) {
-
+        let check = document.getElementById("ventas")
         let mapath = { precio: valores.find(el => el.ideprecio == e.ideprecio) }
         // console.log(mapath, e.ideprecio)
 
@@ -242,33 +242,44 @@ function ventasView() {
             nombreConcierto: sessionStorage.getItem("consierto"),
         }
         console.log(producto)
+        if (check.checked) {
+            getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": "protoco", tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
+
+            console.log(getVerTienda())
+            console.log(GetValores())
+            ListaPrecioset(GetValores())
+            //      console.log(e)
+            return
+        }
         getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": "protoco", tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
 
         console.log(getVerTienda())
         console.log(GetValores())
         ListaPrecioset(GetValores())
-         correlativosadd({
-             "id": mapath.precio.idcolor,
-             "estado": "reservado",
-             "cedula": user.cedula,
-             "mas": "menos",
-             random: sessionStorage.getItem("random"),
-             "cantidad": 1
-         }).then(oupt => {
-             // console.log(oupt)
-             if (oupt.success) {
-          
-             }
-            
-         }).catch(err => {
-             console.log(err)
-         })
+        correlativosadd({
+            "id": mapath.precio.idcolor,
+            "estado": "reservado",
+            "cedula": user.cedula,
+            "mas": "menos",
+            random: sessionStorage.getItem("random"),
+            "cantidad": 1
+        }).then(oupt => {
+            // console.log(oupt)
+            if (oupt.success) {
+
+            }
+
+        }).catch(err => {
+            console.log(err)
+        })
         if (e.ideprecio == 433) {
             UpdateDatosUsuariosLocalStorag({ menor: 'No' })
         }
 
     }
     function agregar(e) {
+        let check = document.getElementById("ventas")
+        console.log(check.checked)
         let user = getDatosUsuariosLocalStorag()
         console.log(e, "valores", valores)
         // console.log("valores", valores)
@@ -287,35 +298,45 @@ function ventasView() {
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
+
         //console.log(producto)
-        if (TotalSelecion() < 10) {
-        //if (true) {
+        if (check.checked) {
             getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
 
             //  console.log(getVerTienda())
             // console.log(GetValores())
             ListaPrecioset(GetValores())
             //      console.log(e)
-              correlativosadd({
-                  "id": mapath.precio.idcolor,
-                  "estado": "reservado",
-                  "cedula": user.cedula,
-                  "mas": "mas",
-                  random: sessionStorage.getItem("random"),
-                  "cantidad": 1
-              }).then(oupt => {
-                  if (oupt.success) {
-  
-  
-                  }
-                  //  usedispatch(setSpinersli({ spiner: true }))
-  
-              }
-  
-              ).catch(erro => {
-                  //setDisable(false)
-                  // console.log(erro)
-              })
+            return
+        }
+        if (TotalSelecion() < 10) {
+            //if (true) {
+            getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
+
+            //  console.log(getVerTienda())
+            // console.log(GetValores())
+            ListaPrecioset(GetValores())
+            //      console.log(e)
+            correlativosadd({
+                "id": mapath.precio.idcolor,
+                "estado": "reservado",
+                "cedula": user.cedula,
+                "mas": "mas",
+                random: sessionStorage.getItem("random"),
+                "cantidad": 1
+            }).then(oupt => {
+                if (oupt.success) {
+
+
+                }
+                //  usedispatch(setSpinersli({ spiner: true }))
+
+            }
+
+            ).catch(erro => {
+                //setDisable(false)
+                // console.log(erro)
+            })
             if (e.ideprecio == 433) {
                 UpdateDatosUsuariosLocalStorag({ menor: 'Si' })
             }
@@ -654,19 +675,7 @@ function ventasView() {
 
                         : ""}
 
-                    {clienteInfo() != null ?
-                        <div className="container d-none ">
-                            <input className="form-check-input" type="checkbox"
-                                ref={checkdss}
-                                onChange={CambiarChecks}
 
-                                name="descuentos" id="descuentos" />
-                            <label className="form-check-label" htmlFor="descuentos">
-                                Niños
-                            </label>
-                        </div>
-
-                        : ""}
 
                     {clienteInfo() != null ?
                         <div className="container">
@@ -677,6 +686,19 @@ function ventasView() {
                                 name="descuentoss" id="descuentoss" />
                             <label className="form-check-label" htmlFor="descuentoss">
                                 Naipes
+                            </label>
+                        </div>
+
+                        : ""}
+                    {clienteInfo() != null ?
+                        <div className="container  ">
+                            <input className="form-check-input" type="checkbox"
+
+
+
+                                name="ventas" id="ventas" />
+                            <label className="form-check-label" htmlFor="ventas">
+                                Registro masivo
                             </label>
                         </div>
 
@@ -815,37 +837,37 @@ function ventasView() {
                         {
                             evento.length > 0 ?
                                 [...evento,
-                                    {
-                                        "ideprecio": 433,
-                                        "codigoEvento": "NT3K0L",
-                                        "nombre": "MENORES",
-                                        "precio_normal": "1.00",
-                                        "precio_discapacidad": "1.00",
-                                        "precio_descuento": "1.00",
-                                        "precio_tarjeta": "1.00",
-                                        "comision_boleto": "0.00",
-                                        "id_localidad": 308,
-                                        "espacio": "ESTADIO REALES TAMARINDOS",
-                                        "id_espacio": 70,
-                                        "espacioid": 70,
-                                        "descripcion": "MENORES",
-                                        "mesas_array": "correlativo",
-                                        "id": 91,
-                                        "nombreConcierto": "NOCHE AMARILLA PORTOVIEJO",
-                                        "fechaConcierto": "2025-03-22",
-                                        "horaConcierto": "15:00",
-                                        "lugarConcierto": "ESTADIO REALES TAMARINDOS",
-                                        "cuidadConcert": "PORTOVIEJO",
-                                        "descripcionConcierto": "NOCHE AMARILLA ESTADIO REALES TAMARINDOS",
-                                        "imagenConcierto": "https://api.t-ickets.com/store/img/noche_amarilla_portoviejo_1600_x_682_(2)_(1).png",
-                                        "idUsuario": 29,
-                                        "estado": "ACTIVO",
-                                        "mapaConcierto": "https://api.t-ickets.com/store/img/barcelona_mapa_(1).png",
-                                        "fechaCreacion": "2025-02-20 18:34:12",
-                                        "iva": "0.00",
-                                        "botNumber": "0980008000",
-                                        "total": ""
-                                    }
+                                {
+                                    "ideprecio": 433,
+                                    "codigoEvento": "NT3K0L",
+                                    "nombre": "MENORES",
+                                    "precio_normal": "1.00",
+                                    "precio_discapacidad": "1.00",
+                                    "precio_descuento": "1.00",
+                                    "precio_tarjeta": "1.00",
+                                    "comision_boleto": "0.00",
+                                    "id_localidad": 308,
+                                    "espacio": "ESTADIO REALES TAMARINDOS",
+                                    "id_espacio": 70,
+                                    "espacioid": 70,
+                                    "descripcion": "MENORES",
+                                    "mesas_array": "correlativo",
+                                    "id": 91,
+                                    "nombreConcierto": "NOCHE AMARILLA PORTOVIEJO",
+                                    "fechaConcierto": "2025-03-22",
+                                    "horaConcierto": "15:00",
+                                    "lugarConcierto": "ESTADIO REALES TAMARINDOS",
+                                    "cuidadConcert": "PORTOVIEJO",
+                                    "descripcionConcierto": "NOCHE AMARILLA ESTADIO REALES TAMARINDOS",
+                                    "imagenConcierto": "https://api.t-ickets.com/store/img/noche_amarilla_portoviejo_1600_x_682_(2)_(1).png",
+                                    "idUsuario": 29,
+                                    "estado": "ACTIVO",
+                                    "mapaConcierto": "https://api.t-ickets.com/store/img/barcelona_mapa_(1).png",
+                                    "fechaCreacion": "2025-02-20 18:34:12",
+                                    "iva": "0.00",
+                                    "botNumber": "0980008000",
+                                    "total": ""
+                                }
                                 ].map((item, index) => {
                                     const tiendaItem = getVerTienda().find(ele => ele.id === item.id_localidad) || {};
                                     const cantidad = tiendaItem.cantidad || 0;
