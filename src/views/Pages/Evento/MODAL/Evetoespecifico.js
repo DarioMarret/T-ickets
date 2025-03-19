@@ -165,6 +165,7 @@ const EventoEspecifico = () => {
             });
             console.log(acumuladorPorNombres, resultado)
             // setActiveTab(event ? event : resultado[0].nombreMesa)
+            console.log("resultado",resultado)
             setGobal(resultado)
             setDisponible(arrayMesas)
 
@@ -253,6 +254,24 @@ const EventoEspecifico = () => {
     function descarga(ids, nombre) {
         if (useradmin.perfil == 'suscriptores') return
         Axiosmikroserdos.get('api/codigoslocalidad/' + ids, {
+            responseType: 'blob'  // Important for handling binary data
+        })
+            .then(response => {
+                console.log(response)
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', nombre.replace(" ", "_") + 'codigos.xlsx');
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+            })
+            .catch(error => console.error('There was a problem with the Axios request:', error));
+
+    }
+    function descargas(ids, nombre) {
+        if (useradmin.perfil == 'suscriptores') return
+        Axiosmikroserdos.get('api/descargalocalidad/' + ids, {
             responseType: 'blob'  // Important for handling binary data
         })
             .then(response => {
@@ -650,6 +669,18 @@ const EventoEspecifico = () => {
                                                                                     descarga(ele.espacio, evento.nombreConcierto)
                                                                                 }>
                                                                                 <i className="bi bi-file-earmark-arrow-down-fill"></i>    {evento.nombreConcierto} Códigos
+                                                                            </button>
+                                                                        )
+                                                                    }) : ""}
+                                                                {
+                                                                    global.length > 0 ? global.map(ele => {
+                                                                        return (
+                                                                            <button className="btn  btn-success  btn-sm mx-1"
+
+                                                                                onClick={() =>
+                                                                                    descargas(ele.localidad, ele.nombreMesa)
+                                                                                }>
+                                                                                <i className="bi bi-file-earmark-arrow-down-fill"></i>    {ele.nombreMesa +"-"+ele.localidad} Códigos
                                                                             </button>
                                                                         )
                                                                     }) : ""}
