@@ -126,11 +126,11 @@ export default function Footer(props) {
                                             <i className="bi bi-telephone-fill"></i>
                                             <span className=" text-white" style={{ fontFamily: '', }} > 043585652  </span>
                                         </a>
-                                        <a href="mailto:info@t-ickets.com?Subject=Comunicate%20con%20nosotros%20-%20t-ickets"
+                                        <a href="mailto:ventas@t-ickets.com?Subject=Comunicate%20con%20nosotros%20-%20t-ickets"
                                             target="_blank"
                                             className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <i className="bi bi-envelope"> </i>
-                                            <span className=" text-white" style={{ fontFamily: '', }} > info@t-ickets.com  </span>
+                                            <span className=" text-white" style={{ fontFamily: '', }} > ventas@t-ickets.com  </span>
                                         </a>
                                         <a href='https://goo.gl/maps/NvfDLJ9D6r1QNeFu5' target="_blank" className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <i className="bi bi-geo-alt-fill"> </i>

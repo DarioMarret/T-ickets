@@ -32,6 +32,7 @@ import MesasViews from "views/Pages/Mesas/Plantillas/indice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
 import ExtendedForms from "views/Forms/ExcelTable";
+import HotTableView from "views/Forms/HotTableView"
 import MesasCanvas from "../CanvasMesas/index"
 
 const EventoEspecifico = () => {
@@ -219,6 +220,8 @@ const EventoEspecifico = () => {
         let boletos_camjeados = await Boleteria_canje(id)
         let boletos_boleto = await Boleteria_Boletos(id)
         let boletos_eventos = await Boleteria_Nombre(id)
+        let {data:datos} = await Axiosmikroserdos.get("api/registros_porEvento/"+id)
+        console.log(datos)
         let boletos = await Boleteria_medios(id)
         console.log("nuevos", boletos)
         setReport({
@@ -239,6 +242,8 @@ const EventoEspecifico = () => {
 
                 }
             }),
+            FormaPago: datos.data,
+            pagos:datos.pagos,
             localidades: boletos.data.map(elem => {
                 return {
                     localidad: elem.localidad,
@@ -325,7 +330,9 @@ const EventoEspecifico = () => {
         canje: [],
         boleto: [],
         valores: [],
-        localidades: []
+        localidades: [],
+        FormaPago:[],
+        pagos:[],
     })
     let { data: nuevos, isLoading: boletosloading } = useGetBoletosQuery()
     const options = {
@@ -1063,15 +1070,48 @@ const EventoEspecifico = () => {
                     <div className="row">
 
 
-                        <div className=" col-12">
+                        <div className=" col-12 p-2 ">
                             <ExtendedForms
                                 data={report.valores}
                             />
 
                         </div>
-                        <div className="col-12  text-center">
+                        <div className="col-12 p-2 text-center">
+                           {report.FormaPago.length==0?"": <HotTableView
+                                data={report.FormaPago}
+                                preventOverflow="horizontal"
+                                rowHeaders={true}
+                                colHeaders={['forma', 'localidad', 'cantidad', 'comision_total']} 
+                                nestedRows={true}
+                                contextMenu={true}
+                                bindRowsWithHeaders={true}
+                                autoWrapRow={true}
+                                autoWrapCol={true}
+                                height="auto"
+                                licenseKey="non-commercial-and-evaluation"
+
+                            />}
+                        </div>
+                        <div >
+                            {report.pagos.length == 0 ? "" : <HotTableView
+                                data={report.pagos}
+                                preventOverflow="horizontal"
+                                rowHeaders={true}
+                                colHeaders={['localidades','localidad' ,'precio','cantidad', 'comision_total' ,'precio_total']}
+                                nestedRows={true}
+                                contextMenu={true}
+                                bindRowsWithHeaders={true}
+                                autoWrapRow={true}
+                                autoWrapCol={true}
+                                height="auto"
+                                licenseKey="non-commercial-and-evaluation"
+
+                            />}
+                        </div>
+                        <div className="col-12 p-2 d-none  text-center">
                             <ExtendedForms
                                 data={report.localidades}
+                              
                             />
                         </div>
 

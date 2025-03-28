@@ -384,7 +384,7 @@ export function LimpiarLocalStore() {
     PViten = []
     valorDuplicadas = []
     sessionStorage.removeItem(CarritoTicket)
-    sessionStorage.removeItem(Metodos)
+   // sessionStorage.removeItem(Metodos)
     sessionStorage.removeItem("codicontry")
 }
 export function Limpiarseleccion() {
@@ -394,7 +394,7 @@ export function Limpiarseleccion() {
     sessionStorage.removeItem(listaasiento)
     sessionStorage.removeItem(seleccionmapa)
    // sessionStorage.removeItem(Eventoid)
-    sessionStorage.removeItem(concierto)
+   // sessionStorage.removeItem(concierto)
     sessionStorage.removeItem("sillascorre")
 }
 export function Limpiarselecciondos() {

@@ -35,7 +35,7 @@ const ExcelTable = ({ data }) => {
     }, [data]);
 
     return (
-        <HotTable
+        <HotTable className="hot ht-theme-main " 
             data={tableData}
             colHeaders={columns.map(col => col.title)}
             columns={columns}
@@ -43,7 +43,7 @@ const ExcelTable = ({ data }) => {
             width="100%"
             height="auto"
             stretchH="all" // Expande columnas al ancho disponible
-            className="text-end"
+           
             licenseKey="non-commercial-and-evaluation"
         />
     );

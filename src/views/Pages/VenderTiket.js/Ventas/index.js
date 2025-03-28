@@ -124,7 +124,7 @@ function ventasView() {
         }
     }
     async function buscarsuscritor() {
-       // let naipe = document.getElementById("descuentos")
+        // let naipe = document.getElementById("descuentos")
         let descuento = document.getElementById("descuento")
 
         document.getElementById("descuentoss").checked = false
@@ -149,7 +149,7 @@ function ventasView() {
             }))
         }
         buscarcliente({ ...informacion }).then(ouput => {
-            Limpiarselecciondos()
+            //  Limpiarselecciondos()
             ListaPrecioset(GetValores())
             setSelecte("Transferencia")
             if (!ouput.success) {
@@ -168,7 +168,8 @@ function ventasView() {
                             movil: '',
                             resgistro: '',
                             password: '',
-                            registro: 0
+                            registro: 0,
+                            cedula: nombre.trim(),
                         })
                         return
                     }
@@ -178,7 +179,7 @@ function ventasView() {
                             nombreCompleto: salida.name,
                             email: String(salida.name).replaceAll(" ", "") + "@gmail.com",
                             ciudad: id,
-                            cedula: salida.cedula,
+                            cedula: nombre.trim(),
                             movil: salida.telefono ? salida.telefono : "0999999999",
                             registro: 0
                         })
@@ -188,7 +189,8 @@ function ventasView() {
                             email: String(salida.name).replaceAll(" ", "") + "@gmail.com",
                             ciudad: id,
                             movil: salida.telefono ? salida.telefono : "0999999999",
-                            password: salida.cedula
+                            password: salida.cedula,
+                            cedula: nombre.trim()
                         })
 
                         sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({
@@ -197,7 +199,8 @@ function ventasView() {
                             email: salida.email ? salida.email : String(salida.name).replaceAll(" ", "") + "@gmail.com",
                             ciudad: id,
                             movil: salida.telefono ? salida.telefono : "0999999999",
-                            password: salida.cedula
+                            password: salida.cedula,
+                            cedula: nombre.trim()
                         }))
                         UpdateDatosUsuariosLocalStorag({ menor: 'No', naipes: "No" })
                         $("#search").addClass("d-none")
@@ -206,6 +209,7 @@ function ventasView() {
 
                     ListaPrecioset(GetValores())
                 }).catch(erro => {
+                    UpdateDatosUsuariosLocalStorag({ ...datos, menor: 'No', naipes: "No", cedula: nombre.trim() })
                 })
 
 
@@ -214,14 +218,21 @@ function ventasView() {
             else {
                 setDausuario({
                     ...ouput.data,
-                    registro: 1
+                    registro: 1,
+                    cedula: nombre.trim()
                 })
-                DatosUsuariosLocalStorag({ ...ouput.data })
-                UpdateDatosUsuariosLocalStorag({ menor: 'No', naipes: "No" })
+                DatosUsuariosLocalStorag({ ...ouput.data, cedula: nombre.trim() })
+                UpdateDatosUsuariosLocalStorag({ menor: 'No', naipes: "No", cedula: nombre.trim() })
             }
 
         }).catch(erro => {
-            //  console.log(erro)
+            setDausuario({
+                ...datos,
+                registro: 1,
+                cedula: nombre.trim()
+            })
+            DatosUsuariosLocalStorag({ ...datos, cedula: nombre.trim() })
+            UpdateDatosUsuariosLocalStorag({ menor: 'No', naipes: "No", cedula: nombre.trim() })
         })
     }
     const valores = JSON.parse(sessionStorage.getItem(Eventolocalidad))
@@ -410,6 +421,7 @@ function ventasView() {
         })
         sessionStorage.setItem(Metodos, "Transferencia")
         setSelecte("Transferencia")
+        sessionStorage.setItem(Metodos, "Transferencia")
         ListaPrecioset(GetValores())
 
     }
@@ -436,6 +448,7 @@ function ventasView() {
             Deposito: "",
             Transferencia: "Transferencia"
         })
+        sessionStorage.setItem(Metodos, "Transferencia")
         sessionStorage.setItem(Metodos, "Transferencia")
         setSelecte("Transferencia")
         ListaPrecioset(GetValores())
