@@ -292,6 +292,25 @@ const EventoEspecifico = () => {
             .catch(error => console.error('There was a problem with the Axios request:', error));
 
     }
+    function DecargarRegistors() {
+        if (useradmin.perfil == 'suscriptores') return
+        //https://api.t-ickets.com/mikrotiv2/api/reporte_evento/NT3K0L
+        Axiosmikroserdos.get('api/reporte_evento/' + id, {
+            responseType: 'blob'  // Important for handling binary data
+        })
+            .then(response => {
+                console.log(response)
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', evento.nombreConcierto.replace(" ", "_") + '.xlsx');
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+            })
+            .catch(error => console.error('There was a problem with the Axios request:', error));
+
+    }
     const csvOptions = {
         fieldSeparator: ',',
         quoteStrings: '"',
@@ -523,7 +542,7 @@ const EventoEspecifico = () => {
                             <div>
                                 <button className="btn btn-primary" onClick={ObtenerContactosquecompraron}>
                                     <i className="fa fa-user" ></i>
-                                    Exportar Contactos
+                                     Contactos
                                 </button>
                             </div>
                             <div className="px-2">
@@ -531,6 +550,13 @@ const EventoEspecifico = () => {
                                     onClick={() => usehistory.push("/admin/Evento")} >
                                     <i className="fa fa-arrow-left" ></i>
                                     Regresar
+                                </button>
+                            </div>
+                            <div className="px-2">
+                                <button className="btn btn-primary"
+                                    onClick={DecargarRegistors} >
+                                    <i className="fa fa-download" ></i>
+                                    Reporte
                                 </button>
                             </div>
 
