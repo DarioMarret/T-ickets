@@ -166,7 +166,7 @@ const EventoEspecifico = () => {
             });
             console.log(acumuladorPorNombres, resultado)
             // setActiveTab(event ? event : resultado[0].nombreMesa)
-            console.log("resultado",resultado)
+            console.log("resultado", resultado)
             setGobal(resultado)
             setDisponible(arrayMesas)
 
@@ -220,7 +220,7 @@ const EventoEspecifico = () => {
         let boletos_camjeados = await Boleteria_canje(id)
         let boletos_boleto = await Boleteria_Boletos(id)
         let boletos_eventos = await Boleteria_Nombre(id)
-        let {data:datos} = await Axiosmikroserdos.get("api/registros_porEvento/"+id)
+        let { data: datos } = await Axiosmikroserdos.get("api/registros_porEvento/" + id)
         console.log(datos)
         let boletos = await Boleteria_medios(id)
         console.log("nuevos", boletos)
@@ -243,12 +243,12 @@ const EventoEspecifico = () => {
                 }
             }),
             FormaPago: datos.data,
-            pagos:datos.pagos,
+            pagos: datos.pagos,
             localidades: boletos.data.map(elem => {
                 return {
                     localidad: elem.localidad,
                     forma_pago: elem.forma_pago,
-                    precios:elem.valor ,
+                    precios: elem.valor,
                     total: elem.Total,
                     cantidad: elem.Cantidad
 
@@ -331,8 +331,8 @@ const EventoEspecifico = () => {
         boleto: [],
         valores: [],
         localidades: [],
-        FormaPago:[],
-        pagos:[],
+        FormaPago: [],
+        pagos: [],
     })
     let { data: nuevos, isLoading: boletosloading } = useGetBoletosQuery()
     const options = {
@@ -561,7 +561,7 @@ const EventoEspecifico = () => {
                         </div>
                         <div className="conatiner row">
                             <div className="row mx-auto p-0">
-                               
+
                                 <div className="col-12 mx-auto " id="evento4">
                                     <PiecharViews
                                         options={options}
@@ -687,7 +687,7 @@ const EventoEspecifico = () => {
                                                                                 onClick={() =>
                                                                                     descargas(ele.localidad, ele.nombreMesa)
                                                                                 }>
-                                                                                <i className="bi bi-file-earmark-arrow-down-fill"></i>    {ele.nombreMesa +"-"+ele.localidad} Códigos
+                                                                                <i className="bi bi-file-earmark-arrow-down-fill"></i>    {ele.nombreMesa + "-" + ele.localidad} Códigos
                                                                             </button>
                                                                         )
                                                                     }) : ""}
@@ -1077,11 +1077,11 @@ const EventoEspecifico = () => {
 
                         </div>
                         <div className="col-12 p-2 text-center">
-                           {report.FormaPago.length==0?"": <HotTableView
+                            {report.FormaPago.length == 0 ? "" : <HotTableView
                                 data={report.FormaPago}
                                 preventOverflow="horizontal"
                                 rowHeaders={true}
-                                colHeaders={['forma', 'localidad', 'cantidad', 'comision_total']} 
+                                colHeaders={['forma', 'localidad', 'cantidad', 'comision_total']}
                                 nestedRows={true}
                                 contextMenu={true}
                                 bindRowsWithHeaders={true}
@@ -1092,12 +1092,12 @@ const EventoEspecifico = () => {
 
                             />}
                         </div>
-                        <div >
+                        <div className=" text-center">
                             {report.pagos.length == 0 ? "" : <HotTableView
                                 data={report.pagos}
                                 preventOverflow="horizontal"
                                 rowHeaders={true}
-                                colHeaders={['localidades','localidad' ,'precio','cantidad', 'comision_total' ,'precio_total']}
+                                colHeaders={['LOCALIDADES', 'LOCALIDAD', 'VALOR U.', 'CANTIDAD', 'COMISION TOTAL', 'TOTAL']}
                                 nestedRows={true}
                                 contextMenu={true}
                                 bindRowsWithHeaders={true}
@@ -1111,7 +1111,7 @@ const EventoEspecifico = () => {
                         <div className="col-12 p-2 d-none  text-center">
                             <ExtendedForms
                                 data={report.localidades}
-                              
+
                             />
                         </div>
 
