@@ -235,10 +235,10 @@ const EventoEspecifico = () => {
                     boleto: elem.boleto,
                     comision_boleto: elem.comision_boleto,
                     iva: elem.iba,
-                    subtotal: elem.subtotal_neto,
+                    subtotal: elem.subtotal,
                     comision_bancaria: elem.comision_bancaria,
 
-                    total: elem.total
+                    total: elem.tota
 
                 }
             }),
@@ -553,7 +553,7 @@ const EventoEspecifico = () => {
                                 </button>
                             </div>
                             <div className="px-2">
-                                <button className="btn btn-primary"
+                                <button className="btn btn-success"
                                     onClick={DecargarRegistors} >
                                     <i className="fa fa-download" ></i>
                                     Reporte
