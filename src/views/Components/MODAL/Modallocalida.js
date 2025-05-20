@@ -91,7 +91,7 @@ const LocalidadmapViews = (props) => {
                 if (oupt.success) {
                     let array = oupt.idLocalidadesSillas
                     sessionStorage.setItem("sillascorre", JSON.stringify([...array]))
-                   // console.log(oupt)
+                   
                     getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
                     setDisable(false)
@@ -497,7 +497,7 @@ const LocalidadmapViews = (props) => {
         usedispatch(setModal({ nombre: '', estado: '' }))
         usedispatch(filtrarlocali([]))
         sessionStorage.removeItem(seleccionmapa)
-        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
+        usedispatch(setModal({ nombre:  'ModalCarritov', estado: '' }))
         hideAlert()
         return
     }
@@ -543,7 +543,7 @@ const LocalidadmapViews = (props) => {
                                 >$ {mapath.precio.precio_tarjeta} </h6>
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center" style={{ maxHeight: "200px" }}>
-                                {modalshow.nombre == "Modallocalida" ? <SVGView text={mapath.nombre} /> : ''}
+                                {modalshow.nombre == "Modallocalida" ? mapath.nombre ?<SVGView text={mapath.nombre} />:"" : ''}
                             </div>
 
                             {modalshow.nombre == "Modallocalida" && mapath.precio.typo != "correlativo" ?
@@ -632,7 +632,10 @@ const LocalidadmapViews = (props) => {
                                         </div>
                                     </div>
                                     : ''}
-                                {modalshow.nombre == "Modallocalida" && mapath.precio.typo === "mesa" ?
+                              
+                                {
+                              
+                                modalshow.nombre == "Modallocalida" && mapath.precio.typo === "mesa" ?
                                     <div className="col-sm-12 text-center " style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
                                         <div className='d-flex  px-3 align-items-center' >
                                             <div className='d-flex align-itmes-center pb-2' style={{ width: '80px' }}>

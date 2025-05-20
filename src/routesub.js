@@ -219,7 +219,7 @@ var routes = [
         mini: "*",
         name: "Boletos",
         component: EmitirboView,
-        permiso: ["admin", "super_admin",]
+        permiso: ["", "",]
       },
       {
         path: "/Vender-Articulo",
@@ -273,6 +273,14 @@ var routes = [
         permiso: ["admin", "super_admin", "vendedores"],
       }
     ]
+  },
+  ,
+  {
+    path: "/Pruebasvg",
+    layout: "/admin",
+    name: "PruSvgeba",
+    component: Viesvg,
+    permiso: ["", "", ""]
   },
   {
     collapse: true,
@@ -367,13 +375,6 @@ var routes = [
     name: "Prueba",
     component: EsquemaViews,
     permiso: ["", ""]
-  },
-  {
-    path: "/Pruebasvg",
-    layout: "/admin",
-    name: "PruSvgeba",
-    component: Viesvg,
-    permiso: ["", "", ""]
   }
 
 

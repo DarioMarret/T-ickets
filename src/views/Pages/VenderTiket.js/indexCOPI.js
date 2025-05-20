@@ -10,7 +10,7 @@ import { cargarMapa } from "utils/MapaQuery";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { cargalocalidad, clearMapa } from "StoreRedux/Slice/mapaLocalSlice";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
-import { Eventoid } from "utils/constantes";
+import { DatosUsuarioLocalStorang, Eventoid } from "utils/constantes";
 import { Cargarsillas } from "views/Components/MODAL/cargarsillas";
 import ModalPago from "views/Components/MODAL/ModalPago";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
@@ -134,8 +134,12 @@ export default function StoreTickesViews() {
         setAlert(null);
     };
     const venderevento = (e) => {
+        //history.push("/admin/vender/" + e.codigoEvento)
+        //  history.push("/admin/vender/" + e.codigoEvento)
+        // return
+        sessionStorage.removeItem(DatosUsuarioLocalStorang)
         abrir(e)
-        // usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
+        //   usedispatch(setModal({ nombre: "suscritor", estado: { ...e } }))
     }
     const evento = async () => {
         try {
@@ -185,7 +189,6 @@ export default function StoreTickesViews() {
         sessionStorage.setItem("estadoevento", e.estado)
         sessionStorage.setItem("infoevento", JSON.stringify(e))
         sessionStorage.removeItem("sillascorre")
-        sessionStorage.removeItem("DatosUsuarioLocalStorang")
         let id = sessionStorage.getItem(Eventoid)
         sessionStorage.setItem("random", Math.random().toString(36).slice(-10))
         setspinervi("")
@@ -197,7 +200,8 @@ export default function StoreTickesViews() {
             let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
             // console.log(seleccionuser)
             //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
-            if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
+            //if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
+            if (false) {
                 setspinervi("d-none")
                 usedispatch(setToastes({
                     show: true,
@@ -264,7 +268,6 @@ export default function StoreTickesViews() {
                                 L.comision_boleto = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].comision_boleto
                                 L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
                                 L.espacioid = L.id_espacio
-
                                 return L
                             }
                         }
@@ -354,7 +357,6 @@ export default function StoreTickesViews() {
                         setspinervi("d-none")
                         console.log(outp)
                         usedispatch(cargarsilla(outp))
-                        
                         history.push("vender/" + e.codigoEvento)
                         return
                         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
@@ -427,6 +429,7 @@ export default function StoreTickesViews() {
                 if (!oup.data.some(e => e.codigoEvento == "6E1FO4")) {
                     console.log(oup.data.some(e => e.codigoEvento == "6E1FO4"))
                     agregaReserva(codigo, nombre).then(Ouput => {
+                        //console.log("resrva", Ouput)
                     }).catch(err => {
                         console.log(err)
                     })
@@ -438,6 +441,15 @@ export default function StoreTickesViews() {
                 return
             }
 
+
+
+
+            //  console.log("boletos", oup)
+            /* agregaReserva("").then(Ouput => {
+                 console.log("resrva",Ouput)
+             }).catch(err => {
+                 console.log(err)
+             })*/
         }).catch(err => {
             console.log(err)
 
@@ -489,7 +501,7 @@ export default function StoreTickesViews() {
             {modalshow.modal.nombre == "modalpagoFacilito" ?
 
                 <ModalEfectivofACILITO
-                    detene={detenervelocidad}
+                    detenervelocidad={detenervelocidad}
                     intervalo={intervalo}
                     detener={detenervelocidad}
                 /> : ""

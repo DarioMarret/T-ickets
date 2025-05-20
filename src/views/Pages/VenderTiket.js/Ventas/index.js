@@ -10,7 +10,7 @@ import { DatosUsuariocliente, Eventolocalidad, Metodos } from "utils/constantes"
 import ModalPago from "views/Components/MODAL/ModalPago";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { borrarseleccion } from "StoreRedux/Slice/sillasSlice";
-import { clearMapa } from "StoreRedux/Slice/mapaLocalSlice";
+import { cargarmapa, clearMapa, filtrarlocali, settypo } from "StoreRedux/Slice/mapaLocalSlice";
 import ModalEfectivofACILITO from "views/Components/MODAL/Modalefectivo";
 import ModalEfectivo from "../Modal/Modalefectivo";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
@@ -18,9 +18,13 @@ import ReporteView from "views/Components/MODAL/ModalReporte";
 import { Emailcontec, formatearNumero } from "utils/Emails/index";
 import SweetAlert from "react-bootstrap-sweetalert";
 import axios, { Axios } from "../../../../../node_modules/axios/index";
+import { localidaandespacio } from "utils/Querypanel";
+import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
 function ventasView() {
     let usedispatch = useDispatch()
     let modalshow = useSelector((state) => state.SuscritorSlice)
+    let sillas = useSelector((state) => state.sillasSlice.sillasSelecionadas)
+
     let [datos, setDausuario] = useState({
         nombreCompleto: '',
         ciudad: '',
@@ -80,13 +84,8 @@ function ventasView() {
         checkdsss.current.check = (users.naipes == 'Si')
         //  console.log()
         let datos = UpdateDatosUsuariosLocalStorag({ naipes: users.naipes == 'No' ? 'Si' : 'No' })
-        //ListaPrecioset(GetValores())
-        //   console.log(GetValores(), datos)
-        //  console.log(getDatosUsuariosLocalStorag().discapacidad)
-        // usuario.discapacidad = 'Si'
-        //   console.log(checkds.current.checked)
-        // console.log("El checkbox se ha desmarcado", datos);
     }
+    const intervalolista = useRef(null)
     const [select, setSelecte] = useState("")
     let [evento, setEvento] = useState([])
     let { id } = useParams()
@@ -117,7 +116,7 @@ function ventasView() {
     const ObtenerEventos = async () => {
         try {
             let { data } = await mikroAxios.get("Boleteria/Eventos/" + id)
-            // console.log(data)
+            console.log(data)
             setEvento(data.data[0])
         } catch (error) {
             //  console.log(error)
@@ -235,16 +234,17 @@ function ventasView() {
             UpdateDatosUsuariosLocalStorag({ menor: 'No', naipes: "No", cedula: nombre.trim() })
         })
     }
-    const valores = JSON.parse(sessionStorage.getItem(Eventolocalidad))
+
 
     function restaprecio(e) {
+        const valores = JSON.parse(sessionStorage.getItem(Eventolocalidad))
         let check = document.getElementById("ventas")
-        let mapath = { precio: valores.find(el => el.ideprecio == e.ideprecio) }
-        // console.log(mapath, e.ideprecio)
 
+        let mapath = { precio: valores.find(el => el.ideprecio == e.id_precio) }
         let user = getDatosUsuariosLocalStorag()
         let producto = {
             cantidad: -1,
+
             localidad: mapath.precio.localidad,
             localidaEspacio: mapath.precio,
             id: mapath.precio.idcolor,
@@ -289,13 +289,14 @@ function ventasView() {
 
     }
     function agregar(e) {
+        const valores = JSON.parse(sessionStorage.getItem(Eventolocalidad))
         let check = document.getElementById("ventas")
         console.log(check.checked)
         let user = getDatosUsuariosLocalStorag()
         console.log(e, "valores", valores)
         // console.log("valores", valores)
-        let mapath = { precio: valores.find(el => el.ideprecio == e.ideprecio) }
-        // console.log(mapath, e.ideprecio)
+        let mapath = { precio: valores.find(el => el.ideprecio == e.id_precio) }
+        console.log(mapath, valores)
         let protoco = moment().format("YYYYMMDDHHMMSS")
         console.log(mapath.precio)
         let producto = {
@@ -383,8 +384,11 @@ function ventasView() {
 
     }
     useEffect(() => {
-        ObtenerEventos()
-        sessionStorage.setItem(Metodos, "Transferencia")
+        console.log("sillas", sillas)
+        //setEvento([])
+        console.log(getVerTienda())
+        let metodo = sessionStorage.getItem(Metodos)
+        // sessionStorage.setItem(Metodos, "Transferencia")
         setChecked({
             Fisico: "",
             Efectivo: "",
@@ -392,10 +396,12 @@ function ventasView() {
             Deposito: "",
             Transferencia: "Transferencia"
         })
-        setSelecte("Transferencia")
         ListaPrecioset(GetValores())
+        setSelecte(metodo)
+        ListaPrecioset(GetValores())
+        ObtenerEventos()
 
-    }, [])
+    }, [sillas.length])
     function detenervelocidad() {
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
@@ -505,6 +511,86 @@ function ventasView() {
         }
 
 
+    }
+    function Abririlocalfirt(e) {
+        let user = getDatosUsuariosLocalStorag()
+        console.log(user)
+        if (user.id == 0) return
+        if (false) {
+            usedispatch(setToastes({
+                show: true,
+                message: "Están en proceso, o llegaste al limite de compra",
+                color: 'bg-primary',
+                estado: "Has alcanzado el límite de boletos por evento"
+            }))
+            return
+        }
+        else {
+            let user = getDatosUsuariosLocalStorag()
+            console.log(user)
+            localidaandespacio(e.id_espacio, e.id_localidad).then(ouput => {
+                console.log(ouput)
+                let nuevoObjeto = []
+                if (ouput.data.find(e => e.typo == "fila")) {
+                    ouput.data.forEach(x => {
+                        if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                            nuevoObjeto.push({ fila: x.fila, asientos: [{ silla: x.silla, estado: x.estado, idsilla: x.id }] })
+                        }
+                        else {
+                            let indixe = nuevoObjeto.findIndex(e => e.fila == x.fila)
+                            nuevoObjeto[indixe].asientos.push({
+                                silla: x.silla, estado: x.estado, idsilla: x.id
+                            })
+                        }
+                    })
+                    usedispatch(settypo({
+                        nombre: e.localidad, typo: e.mesas_array, precio: {
+                            ...e,
+
+                            espacio: e.id_espacio, idcolor: e.id_localidad
+                        }
+                    }))
+                    usedispatch(filtrarlocali(nuevoObjeto))
+                    sessionStorage.seleccionmapa = JSON.stringify(e)
+                    usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+
+                }
+                else if (ouput.data.find(e => e.typo == "mesa")) {
+                    ouput.data.forEach(x => {
+                        if (!nuevoObjeto.some(e => e.fila == x.fila)) {
+                            nuevoObjeto.push({ fila: x.fila, Mesas: [] })
+                        }
+                    })
+                    nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                        let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                        if (nuevoObjeto[index].Mesas.findIndex(z => z.mesa == x.mesa) == -1) {
+                            nuevoObjeto[index].Mesas.push({ mesa: x.mesa, asientos: [] })
+                        }
+                    }) : ''
+                    nuevoObjeto.length > 0 ? ouput.data.forEach(x => {
+                        let index = nuevoObjeto.findIndex(z => z.fila == x.fila)
+                        let sillas = nuevoObjeto[index].Mesas.findIndex(y => y.mesa == x.mesa)
+                        nuevoObjeto[index].Mesas[sillas].asientos.push({
+                            silla: x.silla, estado: x.estado, idsilla: x.id
+                        })
+                    }) : ''
+                    usedispatch(cargarmapa([{
+                        "path": "0",
+                        "id": e.id_localidad,
+                        "fill": "#a12121",
+                        "espacio": e.id_espacio
+                    }]))
+                    usedispatch(settypo({ nombre: e.localidad, typo: "mesa", precio: { ...e, typo: "mesa", espacio: e.id_espacio, idcolor: e.id_localidad } }))
+                    usedispatch(filtrarlocali(nuevoObjeto))
+                    sessionStorage.seleccionmapa = JSON.stringify(e)
+                    usedispatch(setModal({ nombre: "Modallocalida", estado: '' }))
+                }
+
+            }
+            ).catch(err =>
+                console.log(err)
+            )
+        }
     }
     function nuevoUser() {
         let ciudad = JSON.parse(sessionStorage.getItem("infoevento")).cuidadConcert
@@ -768,71 +854,37 @@ function ventasView() {
                             {
                                 evento.length > 0 ?
                                     [...evento,
-                                    {
-                                        "ideprecio": 433,
-                                        "codigoEvento": "NT3K0L",
-                                        "nombre": "MENORES",
-                                        "precio_normal": "1.00",
-                                        "precio_discapacidad": "1.00",
-                                        "precio_descuento": "1.00",
-                                        "precio_tarjeta": "1.00",
-                                        "comision_boleto": "0.00",
-                                        "id_localidad": 308,
-                                        "espacio": "ESTADIO REALES TAMARINDOS",
-                                        "id_espacio": 70,
-                                        "espacioid": 70,
-                                        "descripcion": "MENORES",
-                                        "mesas_array": "correlativo",
-                                        "id": 91,
-                                        "nombreConcierto": "NOCHE AMARILLA PORTOVIEJO",
-                                        "fechaConcierto": "2025-03-22",
-                                        "horaConcierto": "15:00",
-                                        "lugarConcierto": "ESTADIO REALES TAMARINDOS",
-                                        "cuidadConcert": "PORTOVIEJO",
-                                        "descripcionConcierto": "NOCHE AMARILLA ESTADIO REALES TAMARINDOS",
-                                        "imagenConcierto": "https://api.t-ickets.com/store/img/noche_amarilla_portoviejo_1600_x_682_(2)_(1).png",
-                                        "idUsuario": 29,
-                                        "estado": "ACTIVO",
-                                        "mapaConcierto": "https://api.t-ickets.com/store/img/barcelona_mapa_(1).png",
-                                        "fechaCreacion": "2025-02-20 18:34:12",
-                                        "iva": "0.00",
-                                        "botNumber": "0980008000",
-                                        "total": ""
-                                    }
                                     ].map((item, index) => {
                                         let tipo = String(item.mesas_array).replace('""', "")
 
-                                        const tiendaItem = getVerTienda().find(ele => ele.id === item.id_localidad) || {};
+                                        const tiendaItem = getVerTienda().find(ele => ele.localidaEspacio.idcolor === item.id_localidad) || {};
                                         const cantidad = tiendaItem.cantidad || 0;
+                                        const cantis = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad : 0
+                                        const valor = "" + (parseFloat(item.precio_normal) - parseInt(item.comision_boleto)) + "+$" + parseInt(item.comision_boleto)
+                                        const totales = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? parseFloat(parseInt(getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad) * (parseFloat(item.precio_normal) - parseInt(item.comision_boleto))) : 0
                                         return (
                                             <tr key={index}>
                                                 <td className="align-self-center">{item.nombreConcierto}</td>
-                                                <td className="align-self-center">{item.nombre}</td>
-
+                                                <td className="align-self-center">{item.nombre ? item.nombre : "" + " " + item.localidad ? item.localidad : ""}</td>
                                                 <td className="align-self-center">{item.total}</td>
-                                                <td className=" text-end">{getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.id == item.id_localidad) ? getVerTienda().find(ele => ele.id == item.id_localidad).cantidad : 0}</td>
-                                                <td className=" text-end">${parseFloat(item.precio_normal) - parseInt(item.comision_boleto)}+${parseInt(item.comision_boleto)}</td>
-                                                <td className=" text-end">{getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.id == item.id_localidad) ? parseFloat(parseInt(getVerTienda().find(ele => ele.id == item.id_localidad).cantidad) * (parseFloat(item.precio_normal) - parseInt(item.comision_boleto))) : 0}</td>
+                                                <td className=" text-end">{cantis}</td>
+                                                <td className=" text-end">${valor}</td>
+                                                <td className=" text-end">{totales}</td>
                                                 <td className="align-self-center text-end">
                                                     {
                                                         (tipo == 'correlativo') ?
                                                             <div>
                                                                 <div className="btn-group btn-group-sm" role="group">
 
-                                                                    <button className="suma   btn-danger " disabled={(cantidad == 0)} onClickCapture={() => restaprecio(item)}
-
-                                                                    >
+                                                                    <button className="suma   btn-danger " disabled={(cantidad == 0)} onClickCapture={() => restaprecio(item)}>
                                                                         <i className="fa fa-minus"></i>
                                                                     </button>
-
-                                                                    <button className="suma   btn-success " onClickCapture={() => agregar(item)}
-
-                                                                    >
+                                                                    <button className="suma   btn-success " onClickCapture={() => agregar(item)}>
                                                                         <i className="fa fa-plus"></i>
                                                                     </button>
                                                                 </div>
                                                             </div> :
-                                                            <button className=" btn-sm btn-success">Seleccionar</button>
+                                                            <button className=" btn-sm btn-success" onClick={() => Abririlocalfirt(item)}>Seleccionar</button>
                                                     }
 
                                                 </td>
@@ -850,51 +902,24 @@ function ventasView() {
                         {
                             evento.length > 0 ?
                                 [...evento,
-                                {
-                                    "ideprecio": 433,
-                                    "codigoEvento": "NT3K0L",
-                                    "nombre": "MENORES",
-                                    "precio_normal": "1.00",
-                                    "precio_discapacidad": "1.00",
-                                    "precio_descuento": "1.00",
-                                    "precio_tarjeta": "1.00",
-                                    "comision_boleto": "0.00",
-                                    "id_localidad": 308,
-                                    "espacio": "ESTADIO REALES TAMARINDOS",
-                                    "id_espacio": 70,
-                                    "espacioid": 70,
-                                    "descripcion": "MENORES",
-                                    "mesas_array": "correlativo",
-                                    "id": 91,
-                                    "nombreConcierto": "NOCHE AMARILLA PORTOVIEJO",
-                                    "fechaConcierto": "2025-03-22",
-                                    "horaConcierto": "15:00",
-                                    "lugarConcierto": "ESTADIO REALES TAMARINDOS",
-                                    "cuidadConcert": "PORTOVIEJO",
-                                    "descripcionConcierto": "NOCHE AMARILLA ESTADIO REALES TAMARINDOS",
-                                    "imagenConcierto": "https://api.t-ickets.com/store/img/noche_amarilla_portoviejo_1600_x_682_(2)_(1).png",
-                                    "idUsuario": 29,
-                                    "estado": "ACTIVO",
-                                    "mapaConcierto": "https://api.t-ickets.com/store/img/barcelona_mapa_(1).png",
-                                    "fechaCreacion": "2025-02-20 18:34:12",
-                                    "iva": "0.00",
-                                    "botNumber": "0980008000",
-                                    "total": ""
-                                }
                                 ].map((item, index) => {
                                     const tiendaItem = getVerTienda().find(ele => ele.id === item.id_localidad) || {};
                                     const cantidad = tiendaItem.cantidad || 0;
                                     const precioBase = parseFloat(item.precio_normal) - parseInt(item.comision_boleto);
                                     const totalPrecio = parseFloat(cantidad * precioBase);
                                     let tipo = String(item.mesas_array).replace('""', "")
+                                     const cantis = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad : 0
+                                    const valor = "" + (parseFloat(item.precio_normal) - parseInt(item.comision_boleto)) + "+$" + parseInt(item.comision_boleto)
+                                    const totales = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? parseFloat(parseInt(getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad) * (parseFloat(item.precio_normal) - parseInt(item.comision_boleto))) : 0
+
                                     return (
                                         <li key={index} className="list-group-item d-flex flex-column">
                                             <strong>{item.nombreConcierto}</strong>
                                             <div className=" d-flex justify-content-between "><span>{item.nombre}</span> <span>Disponible: {item.total}</span></div>
-                                            <span>Valor: ${precioBase}+${parseInt(item.comision_boleto)}</span>
+                                            <span>Valor: ${valor}</span>
 
-                                            <div className=" d-flex justify-content-between "><span>Cantidad: {cantidad}</span>
-                                                <span>Total Precio: {totalPrecio}</span></div>
+                                            <div className=" d-flex justify-content-between "><span>Cantidad: {cantis}</span>
+                                                <span>Total Precio: {totales}</span></div>
 
 
 
@@ -909,7 +934,7 @@ function ventasView() {
                                                         </button>
                                                     </div>
                                                 ) : (
-                                                    <button className="btn btn-sm btn-success">Seleccionar</button>
+                                                    <button className="btn btn-sm btn-success" onClick={() => Abririlocalfirt(item)}>Seleccionar</button>
                                                 )}
                                             </div>
                                         </li>
@@ -983,6 +1008,11 @@ function ventasView() {
                 setrepShow={() => { }}
                 comprar={para}
             />
+            {modalshow.modal.nombre == "Modallocalida" ?
+                <LocalidadmapViews
+                    intervalo={""}
+                    intervalolista={intervalolista}
+                /> : ''}
         </>
     )
 }
