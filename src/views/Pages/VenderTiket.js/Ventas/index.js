@@ -240,7 +240,7 @@ function ventasView() {
         const valores = JSON.parse(sessionStorage.getItem(Eventolocalidad))
         let check = document.getElementById("ventas")
 
-        let mapath = { precio: valores.find(el => el.ideprecio == e.id_precio) }
+        let mapath = { precio: valores.find(el => el.id == e.ideprecio) }
         let user = getDatosUsuariosLocalStorag()
         let producto = {
             cantidad: -1,
@@ -295,7 +295,7 @@ function ventasView() {
         let user = getDatosUsuariosLocalStorag()
         console.log(e, "valores", valores)
         // console.log("valores", valores)
-        let mapath = { precio: valores.find(el => el.ideprecio == e.id_precio) }
+        let mapath = { precio: valores.find(el => el.id == e.ideprecio) }
         console.log(mapath, valores)
         let protoco = moment().format("YYYYMMDDHHMMSS")
         console.log(mapath.precio)
@@ -311,7 +311,7 @@ function ventasView() {
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
 
-        //console.log(producto)
+        console.log(producto)
         if (check.checked) {
             getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
 
@@ -384,11 +384,11 @@ function ventasView() {
 
     }
     useEffect(() => {
-        console.log("sillas", sillas)
+       
         //setEvento([])
         console.log(getVerTienda())
         let metodo = sessionStorage.getItem(Metodos)
-        // sessionStorage.setItem(Metodos, "Transferencia")
+       sessionStorage.setItem(Metodos, "Transferencia")
         setChecked({
             Fisico: "",
             Efectivo: "",
@@ -401,7 +401,10 @@ function ventasView() {
         ListaPrecioset(GetValores())
         ObtenerEventos()
 
-    }, [sillas.length])
+    }, [])
+    useEffect(()=>{
+        ListaPrecioset(GetValores())
+    },[sillas])
     function detenervelocidad() {
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
@@ -515,7 +518,13 @@ function ventasView() {
     function Abririlocalfirt(e) {
         let user = getDatosUsuariosLocalStorag()
         console.log(user)
-        if (user.id == 0) return
+        if (user.id == 0) {
+            $.alert({
+                title: '',
+                content: 'Complete los datos del cliente',
+            });
+            return
+        }
         if (false) {
             usedispatch(setToastes({
                 show: true,
@@ -908,7 +917,7 @@ function ventasView() {
                                     const precioBase = parseFloat(item.precio_normal) - parseInt(item.comision_boleto);
                                     const totalPrecio = parseFloat(cantidad * precioBase);
                                     let tipo = String(item.mesas_array).replace('""', "")
-                                     const cantis = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad : 0
+                                    const cantis = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad : 0
                                     const valor = "" + (parseFloat(item.precio_normal) - parseInt(item.comision_boleto)) + "+$" + parseInt(item.comision_boleto)
                                     const totales = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? parseFloat(parseInt(getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad) * (parseFloat(item.precio_normal) - parseInt(item.comision_boleto))) : 0
 

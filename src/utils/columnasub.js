@@ -150,7 +150,7 @@ export const ticketsboletos = [
         header: "Valor",
         sixe: 15
     },
-   
+
 ]
 export const Consiliaregistro = [
     {
@@ -246,7 +246,7 @@ export const listaRegistro = [
         header: "Estado",
         Cell: ({ cell }) => (
             //console.log(cell.row.original.estado_pago)
-            (cell.row.original.forma_pago == "Tarjeta") && (cell.row.original.estado_pago == "Anulado" ||cell.row.original.estado_pago == "Expirado" || cell.row.original.estado_pago == "Pendiente") ?
+            (cell.row.original.forma_pago == "Tarjeta") && (cell.row.original.estado_pago == "Anulado" || cell.row.original.estado_pago == "Expirado" || cell.row.original.estado_pago == "Pendiente") ?
                 <Badge bg={color[cell.row.original.estado_pago]}>
                     {cell.row.original.estado_pago}</Badge> :
                 (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
@@ -324,7 +324,7 @@ export const listaRegistrosuscri = [
                 {cell.row.original.estado_pago}</Badge> :
             (cell.row.original.forma_pago == "Tarjeta" && cell.row.original.id_espacio_localida != 1) ?
                 (cell.row.original.id_espacio_localida == 0) ?
-                    (cell.row.original.estado_pago == "Expirado" || cell.row.estado_pago =="Anulado") ?
+                    (cell.row.original.estado_pago == "Expirado" || cell.row.estado_pago == "Anulado") ?
                         <Badge bg={color[cell.row.original.estado_pago]}>
                             {cell.row.original.estado_pago}</Badge>
                         :
@@ -374,6 +374,9 @@ export const listaRegistrototal = [
     {
         accessorKey: "concierto",
         header: "Evento",
+        Cell: ({ cell }) => (
+            cell.row.original.info_concierto[0].nombreConcierto || ''
+        ),
         size: 50
     },
     {

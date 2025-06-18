@@ -111,7 +111,7 @@ const IndexFlas = () => {
       if (timer === 0) {
         let array = ListaElimnaLCompleta()
         array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
-        //  console.log(ouput)
+          //  console.log(ouput)
         }).catch(err => console.log(err)) : ''
         getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
           getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
@@ -123,7 +123,7 @@ const IndexFlas = () => {
                 "cedula": user.cedula,
                 "cantidad": elem.cantidad
               }).then(ouput => {
-               // console.log(ouput)
+                // console.log(ouput)
               }).catch(err => {
                 console.log(err)
               })
@@ -184,17 +184,17 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
-    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => { /*//console.log(ouput) */}).catch(err => console.log(err)) : ''
+    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => { /*//console.log(ouput) */ }).catch(err => console.log(err)) : ''
     getVerTienda().filter(e => e.tipo == e.tipo).length > 0 ?
       getVerTienda().map((elem, index) => {
         setTimeout(function () {
-       /*   console.log(elem, {
-            "id": elem.id,
-            "estado": "disponible",
-            "mas": "menos",
-            "cedula": user.cedula,
-            "cantidad": elem.cantidad
-          })*/
+          /*   console.log(elem, {
+               "id": elem.id,
+               "estado": "disponible",
+               "mas": "menos",
+               "cedula": user.cedula,
+               "cantidad": elem.cantidad
+             })*/
           correlativosadd({
             "id": elem.id,
             "estado": "disponible",
@@ -202,7 +202,7 @@ const IndexFlas = () => {
             "cedula": user.cedula,
             "cantidad": elem.cantidad
           }).then(ouput => {
-           // console.log(ouput)
+            // console.log(ouput)
           }).catch(err => {
             console.log(err)
           })
@@ -229,7 +229,7 @@ const IndexFlas = () => {
        console.log(err)
      })*/
     array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
-     // console.log(ouput)
+      // console.log(ouput)
     }
     ).catch(err => console.log(err)) : ''
     getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
@@ -237,7 +237,7 @@ const IndexFlas = () => {
       getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
         setTimeout(function () {
           correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
-           // console.log(ouput)
+            // console.log(ouput)
           }).catch(err => {
             console.log(err)
           })
@@ -404,6 +404,7 @@ const IndexFlas = () => {
               L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
               L.precio_normal = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_normal
               L.precio_tarjeta = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_tarjeta
+              L.comision_boleto = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].comision_boleto
               L.ideprecio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].ideprecio
               L.espacioid = L.id_espacio
               return L
@@ -733,9 +734,9 @@ const IndexFlas = () => {
   }
   function eventocarrusel(e) {
     let datos = e
-  //  console.log(e)
+    //  console.log(e)
     let info = JSON.parse(datos)
-   // console.log(info)
+    // console.log(info)
     userauthi.login ? abrir({
       ...info,
     }) :
@@ -756,6 +757,36 @@ const IndexFlas = () => {
       ...info,
     }
   }
+
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+
+    if (hash) {
+      const checkInterval = setInterval(() => {
+        const triggerEl = document.getElementById(hash);
+        const collapseId = triggerEl?.getAttribute("data-target")?.replace("#", "");
+        const collapseEl = document.getElementById(collapseId);
+
+        if (triggerEl && collapseEl) {
+          // Scroll al evento
+          triggerEl.scrollIntoView({ behavior: "smooth", block: "center" });
+
+          // Abrir el collapse si está cerrado
+          setTimeout(() => {
+            if (!collapseEl.classList.contains("show")) {
+              triggerEl.click(); // Simula clic para abrirlo
+            }
+          }, 300);
+
+          clearInterval(checkInterval); // Limpiar intervalo cuando ya lo encontramos
+        }
+      }, 300); // Verificar cada 300ms
+
+      // Limpiar si el efecto se desmonta antes
+      return () => clearInterval(checkInterval);
+    }
+  }, []);
+
   const [visible, setVisible] = React.useState(false)
   function abrirNuevoTab() {
     var win = window.open('https://api.whatsapp.com/send?phone=593980008000&text=Quiero%20informaci%C3%B3n%20', '_blank');
@@ -1020,15 +1051,15 @@ const IndexFlas = () => {
                   {eventoslist.length > 0 ?
                     eventoslist.slice(userauthi.inicio, userauthi.final).map((e, i) => {
                       return (
-                        <div className="col-12  mx-auto my-3 " id={"evento" + e.id} key={i}>
-                          <a id={"headingThree" + e.id} className="collapsed eventos eventoss"
+                        <a className="col-12  mx-auto my-3 " id={"evento" + e.id} key={i}>
+                          <a id={ e.codigoEvento} href={e.codigoEvento} className="collapsed eventos eventoss"
 
                             data-toggle="collapse"
                             data-target={"#collapseid" + e.id}
                             aria-controls={"#collapseid" + e.id} aria-expanded="false"
                           >
                             <div className="container rounded-7   d-flex justify-content-center px-0" style={{
-                            
+
                             }}>
                               <i className="  text-info btn-hover" style={{
                                 position: "absolute",
@@ -1144,7 +1175,7 @@ const IndexFlas = () => {
                             </div>
 
                           </div>
-                        </div>
+                        </a>
                       )
                     })
                     : !estafun ? <div className="col-12  mx-auto my-5" >
@@ -1697,7 +1728,7 @@ const IndexFlas = () => {
 
 
       <Inframene />
-      
+
       {modal.nombre == "ModalCarritov" ?
         <ModalCarritov
           handleClosesop={detenervelocidad}
@@ -1736,7 +1767,7 @@ const IndexFlas = () => {
         setrepShow={setrepShow}
         comprar={sololimpiarlocal} />
       {alert}
-     
+
       <ModalLogin
         showLogin={showLogin}
         setShowLogin={setShowLogin}

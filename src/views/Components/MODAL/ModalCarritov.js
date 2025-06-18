@@ -191,7 +191,6 @@ const ModalCarritoView = (prop) => {
                 let precioLocalidad = document.getElementById("prelocalidad")
                 let header = document.getElementById("precioscomp")
                 let idheadr = document.getElementById("header")
-                //console.log(consulta)
                 localidadnombre.innerHTML = `${consulta.localidad}`;
                 precioLocalidad.innerHTML = `$${consulta.precio_tarjeta} `;
                 //localidadnombre.style.backgroundColor = `${consulta.color}`
@@ -218,7 +217,7 @@ const ModalCarritoView = (prop) => {
                     //  console.log("Función ejecutada");
                     let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
 
-
+                    console.log(consulta)
                     if (sleccionlocalidad.pagados >= 10) {
                         usedispatch(setToastes({
                             show: true,
@@ -374,6 +373,7 @@ const ModalCarritoView = (prop) => {
                         }
                     })
                     usedispatch(cargarmapa(color))
+                   
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                     usedispatch(filtrarlocali(nuevoObjeto))
                     sessionStorage.seleccionmapa = JSON.stringify(e)
@@ -399,7 +399,8 @@ const ModalCarritoView = (prop) => {
                             silla: x.silla, estado: x.estado, idsilla: x.id
                         })
                     }) : ''
-                    usedispatch(cargarmapa(color))
+                    console.log(precios, e)
+                    usedispatch(cargarmapa([e]))
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                     usedispatch(filtrarlocali(nuevoObjeto))
                     sessionStorage.seleccionmapa = JSON.stringify(e)

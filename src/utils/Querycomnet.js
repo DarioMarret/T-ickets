@@ -29,10 +29,10 @@ export const PagoRapido = async (transaccion) => {
         return {
             "nombreConcierto": Eventoinfo.nombreConcierto,
             "id_localidad": e.localidaEspacio["idcolor"],
-            "idespaciolocalida": e.localidaEspacio["ideprecio"],
+            "idespaciolocalida": e.localidaEspacio["ideprecio"] || e.localidaEspacio["ideprecio"],
             "CODIGEVENTO": codigoEvento,
             "cantidad": e.cantidad,
-            "localidad_nombre": e.localidad,
+            "localidad_nombre": e.localidad || e.localidaEspacio["nombre"],
             "localidad_precio": (discapacidad == 'Si'  && (clienteInfo() != null)) ? parseFloat(e.localidaEspacio["precio_discapacidad"]) : parseFloat(e.valor),
             "discapacida": (discapacidad == 'Si'  && (clienteInfo() != null)),
             menor: (parseInt(e.localidaEspacio["idcolor"]) == 308),

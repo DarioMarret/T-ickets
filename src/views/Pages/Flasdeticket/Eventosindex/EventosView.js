@@ -2,7 +2,7 @@ import React from 'react';
 
 const EventoView = React.memo(({ e, abrir, Dias }) => {
     return (
-        <div className="col-12 mx-auto my-3" id={"evento" + e.id} key={e.id}>
+        <a className="col-12 mx-auto my-3" id={"evento" + e.id} key={e.id}  >
             <a id={"headingThree" + e.id} className="collapsed eventos eventoss"
                 data-toggle="collapse"
                 data-target={"#collapseid" + e.id}
@@ -55,7 +55,7 @@ const EventoView = React.memo(({ e, abrir, Dias }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     );
 });
 

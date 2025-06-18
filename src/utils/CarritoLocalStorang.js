@@ -185,7 +185,7 @@ function Filterduplicados() {
     let ListadeSillas = PVsilla.filter((iten) => iten.estado == "reservado" || iten.estado == "seleccionado")
     ListadeSillas.length > 0 ? ListadeSillas.forEach((p, i) => {
         if (valorDuplicadas.findIndex(pd => pd.localidad === p.localidad) === -1) {
-            valorDuplicadas.push({ localidad: p.localidad, fila: '', tipo: p.localidaEspacio["typo"] ? p.localidaEspacio["typo"]:"mesa", id: p.localidaEspacio["idcolor"] | p.localidaEspacio["id_localidad"], localidaEspacio: p.localidaEspacio, id: p.localidaEspacio["idcolor"] | p.localidaEspacio["id_localidad"], nombreConcierto: p.nombreConcierto, valor: p.valor, cantidad: 1, discapacidad: p.localidaEspacio.precio_discapacidad });
+            valorDuplicadas.push({ localidad: p.localidad, fila: '', tipo: p.localidaEspacio["typo"] ? p.localidaEspacio["typo"] : "mesa", id: p.localidaEspacio["idcolor"] | p.localidaEspacio["id_localidad"], localidaEspacio: p.localidaEspacio, id: p.localidaEspacio["idcolor"] | p.localidaEspacio["id_localidad"], nombreConcierto: p.nombreConcierto, valor: p.valor, cantidad: 1, discapacidad: p.localidaEspacio.precio_discapacidad, ...p });
         }
         else {
             valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].fila = parseInt(valorDuplicadas[valorDuplicadas.findIndex(pd => pd.localidad === p.localidad)].fila) + 1;

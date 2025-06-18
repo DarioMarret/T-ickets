@@ -104,6 +104,7 @@ function MesasViews({ text, status, list, setMapa }) {
   }
   function enviarsillas(text) {
     console.log(list)
+    let dato = list.filter(elm => elm.estado == 'Ocupado' && (elm.cedula == null || elm.cedula == ''))
     let bloque = list.filter(elm => elm.estado != 'none').map(el => {
       if (el.cedula == null || el.cedula == '') {
         return el.idsilla
@@ -112,10 +113,19 @@ function MesasViews({ text, status, list, setMapa }) {
     let datos = document.getElementById(text).classList.value
     // console.log(datos.split(" ").includes("mesadisponible"))
     if (bloque.length == 0) return
-    succesLimit(bloque, datos)
+    succesLimit(bloque, datos, dato)
   }
-  const succesLimit = (me, datos) => {
+  const succesLimit = (me, datos, lista) => {
     if (useradmin.perfil == 'suscriptores') return
+    console.log("Sillas", me, lista)
+
+    const Botoon = () => lista.length > 0 ? <button
+
+      className="btn btn-danger "
+      onClick={() => enviarComentario(me, me)}
+    >
+      Add / modi Comentario
+    </button> : ""
     setAlert(
       <SweetAlert
         warning
@@ -149,12 +159,132 @@ function MesasViews({ text, status, list, setMapa }) {
             >
               Ocupado
             </button>
+            <Botoon />
+
           </React.Fragment>
         }
       >
         {"de la Mesa " + datos.split(" ")[0]}
       </SweetAlert>
     )
+  }
+  async function enviarComentario(params, Localidades,) {
+    console.log(params)
+    if (params.length > 1) {
+      $.confirm({
+        title: 'Enviar Comentario',
+        content: `
+    <input type="text" id="comentarioInput" class="form-control" placeholder="Comentario..."><br>
+    <button id="actualizarBtn" class="btn btn-primary btn-sm">Actualizar</button>
+  `,
+        onContentReady: function () {
+          const self = this;
+
+          self.$content.find('#actualizarBtn').on('click', function () {
+            const comentario = self.$content.find('#comentarioInput').val();
+            // Aquí puedes hacer lo que necesites con el comentario, como enviarlo vía AJAX
+
+            $.ajax({
+              url: 'https://api.t-ickets.com/mikroti/Boleteria/item_localidad',
+              "url": "https://api.t-ickets.com/mikroti/Boleteria/item_localidad",
+              "method": "PUT",
+              "timeout": 0,
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "data": JSON.stringify({
+                "id_localidades": params,
+                "estado": comentario,
+                "comentario": true
+              }),
+              success: function (res) {
+                $.alert('Comentario enviado correctamente.');
+                window.location.reload();
+              },
+              error: function () {
+                $.alert('Error al enviar el comentario.');
+              }
+            });
+          });
+        }
+      });
+      return
+    }
+    let data = JSON.stringify({
+      "id_localidades": Localidades[0],
+      "espacio": ""
+    });
+    
+    var settings = {
+      url: "https://api.t-ickets.com/mikroti/Boleteria/itemlocalidad",
+      method: "POST",
+      timeout: 0,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data: data,
+    };
+    $.confirm({
+      title: 'Detalle de mesas',
+      content: function () {
+        var self = this;
+
+        return $.ajax(settings).done(function (response) {
+          if (response.estado) {
+            let html = `
+              <input type="text" id="comentarioInput" class="form-control" placeholder="Comentario..."><br>
+              <button id="actualizarBtn" class="btn btn-primary btn-sm">Actualizar</button>
+              <hr>
+              <ul>
+            `;
+
+            response.localidades.forEach(loc => {
+              html += `<li><strong>Silla:</strong> ${loc.silla} &nbsp; <strong>Comentario:</strong> ${loc.id_registraCompra || ''}</li>`;
+            });
+
+            html += '</ul>';
+
+            self.setContent(html);
+          } else {
+            self.setContent('No hay localidades disponibles.');
+          }
+        }).fail(function () {
+          self.setContent('Algo salió mal al obtener los datos.');
+        });
+      },
+      onContentReady: function () {
+        const self = this;
+
+        // Aquí el DOM ya está completamente insertado
+        self.$content.on('click', '#actualizarBtn', function () {
+          const comentario = self.$content.find('#comentarioInput').val();
+          console.log('Comentario:', comentario);
+
+          $.ajax({
+            url: 'https://api.t-ickets.com/mikroti/Boleteria/item_localidad',
+            method: 'PUT',
+            timeout: 0,
+            headers: {
+              "Content-Type": "application/json"
+            },
+            data: JSON.stringify({
+              id_localidades: Localidades[0],
+              estado: comentario,
+              comentario: true
+            }),
+            success: function (res) {
+              $.alert('Comentario enviado correctamente.');
+              window.location.reload();
+            },
+            error: function () {
+              $.alert('Error al enviar el comentario.');
+            }
+          });
+        });
+      }
+    });
+    
+    
 
   }
   async function enviarLocalidad(estado, Localidades) {
@@ -178,6 +308,7 @@ function MesasViews({ text, status, list, setMapa }) {
   }
   const succesSilla = (e) => {
     console.log(e)
+    let dato = e.length == 1 ? e[0].idsilla : e
     if (useradmin.perfil == 'suscriptores') return
     console.log(list.find(f => f.silla == e))
     let datos = list.find(f => f.silla == e)
@@ -186,6 +317,13 @@ function MesasViews({ text, status, list, setMapa }) {
       let estado = datos.estado == "Ocupado" ? 'Disponible' : 'Ocupado'
       console.log([datos])
       let me = [datos.idsilla]
+      const Botoon = () => datos.estado == "Ocupado" ? <button
+
+        className="btn btn-danger "
+        onClick={() => enviarComentario(datos, me)}
+      >
+        Ver Comentario
+      </button> : ""
       setAlert(
         <SweetAlert
           warning
@@ -198,45 +336,33 @@ function MesasViews({ text, status, list, setMapa }) {
           confirmBtnText="Si, Continuar"
           cancelBtnText="Cancelar"
           closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
+          customButtons={
+            <React.Fragment>
+              <button
+                className="btn btn-primary"
+                onClick={() => hideAlert()}
+              >
+                Cancelar
+              </button>
+              <button
+                className="btn btn-success"
+                onClick={() => enviarLocalidad("" + estado, me)}
+              >
+                Si, Continuar
+              </button>
+              <Botoon />
+            </React.Fragment>
+          }
           showCancel>
           {"la sillas " + e + " por " + estado}
         </SweetAlert>)
     }
-
-  }
-  const succesDesmar = (e) => {
-
-    setAlert(
-      <SweetAlert
-        warning
-        style={{ display: "block", marginTop: "-100px" }}
-        title={"Deseas desmarcar toda la seleccion de esta mesa "}
-        onConfirm={() => hideAlert()}
-        onCancel={() => hideAlert()}
-        confirmBtnBsStyle="success"
-        cancelBtnBsStyle="danger"
-        confirmBtnText="Si, Continuar"
-        cancelBtnText="Cancelar"
-        closeAnim={{ name: 'hideSweetAlert', duration: 500 }}
-        showCancel>
-        {"la sillas " + e}
-      </SweetAlert>)
-  }
-  function timeposlimites() {
-
-
-  }
-  function reservas(e) {
-
-    hideAlert()
   }
   const hideAlert = () => setAlert(null)
-
   return (
     <div>
       {(() => {
         switch (status) {
-
           case 2:
             return <MesadosView text={text} list={list}
               obtenerid={obtenerid}

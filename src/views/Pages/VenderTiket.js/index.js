@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import { ListarTikets } from "utils/Querypanel";
 import { Row, Card, Col, } from "react-bootstrap";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { listarpreciolocalidad } from "utils/Querypanel";

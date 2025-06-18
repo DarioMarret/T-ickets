@@ -69,9 +69,8 @@ export default function NavbarView({ ...props }) {
                                     <a className="nav-link " href="#">Tickets</a>
                                 </li> : ""
                             }
-                            <li className="nav-item active  py-0 mx-lg-1" aria-current="page" onClick={() => props.SetSeleccion("")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                <a className=" nav-link" href="#nuevoseventos"
-                                    style={{ height: 70 }}>Eventos</a>
+                            <li className="nav-item">
+                                <a className="nav-link active" aria-current="page" href="#nuevoseventos" onClick={() => props.SetSeleccion("")}>Eventos</a>
                             </li>
                             {userauthi.login ?
                                 <li className="nav-item active " aria-current="page" onClick={() => props.SetSeleccion("Datos")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

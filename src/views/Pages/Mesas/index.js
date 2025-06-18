@@ -118,6 +118,7 @@ function MesasView({ text, status, list }) {
           }
         ]
       }
+      console.log(datos)
       hideAlert()
       usedispatch(setSpinersli({ spiner: false }))
       correlativosadd(datos).then(ou => {
@@ -128,7 +129,7 @@ function MesasView({ text, status, list }) {
           ou.insert.map((e => {
             let asiento = silla
             AgregarAsiento({
-              "localidad": nombre.localidad, "localidaEspacio": { ...nombre, "idcolor": nombre.id_localidad, "ideprecio": nombre.id_precio, "espacio": nombre.id_espacio }, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+              "localidad": nombre.localidad, "localidaEspacio": { "idcolor": nombre.id_localidad || nombre.idcolor, "ideprecio": nombre.ideprecio, "espacio": nombre.id_espacio, ...nombre }, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
               seleccionmapa: nombre.localidad + "-" + asiento.silla,
               "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado", "ids": asiento.idsilla, "cedula": info.cedula
             })
@@ -193,7 +194,7 @@ function MesasView({ text, status, list }) {
           ou.insert.map((e => {
             let asiento = silla
             AgregarAsiento({
-              "localidad": nombre.localidad, "localidaEspacio": { ...nombre, "idcolor": nombre.id_localidad, "ideprecio": nombre.id_precio, "espacio": nombre.id_espacio }, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+              "localidad": nombre.localidad, "localidaEspacio": { "idcolor": nombre.id_localidad || nombre.idcolor, "ideprecio": nombre.ideprecio, "espacio": nombre.id_espacio, ...nombre }, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
               seleccionmapa: nombre.localidad + "-" + asiento.silla,
               "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado", "ids": asiento.idsilla, "cedula": info.cedula
             })
@@ -261,7 +262,12 @@ function MesasView({ text, status, list }) {
           ou.insert.map((e => {
             let asiento = silla
             AgregarAsiento({
-              "localidad": nombre.localidad, "localidaEspacio": { ...nombre, "idcolor": nombre.id_localidad, "ideprecio": nombre.id_precio, "espacio": nombre.id_espacio }, "id": nombre.id_localidad, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+              "localidad": nombre.localidad, "localidaEspacio": {
+                ...nombre,
+                "idcolor": nombre.id_localidad || nombre.idcolor, "ideprecio": nombre.ideprecio,
+                "espacio": nombre.id_espacio
+              }, "id": nombre.id_localidad,
+              "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
               seleccionmapa: nombre.localidad + "-" + asiento.silla,
               "fila": asiento.silla.split("-")[0], "silla": asiento.silla, "estado": "seleccionado", "ids": asiento.idsilla, "cedula": info.cedula
             })
@@ -364,18 +370,18 @@ function MesasView({ text, status, list }) {
     /**/
     let mesas = ["A", "B", "C"]
     let mesa = ["A"]
-    let sillabloquea = ["C19", "C36", "D54"]
-    let sillesSAmor = ["E7", "H36", "H37", "I49", "I50", "I53", "I51", "I52", "I66", "I67", "I68", "I69", "J70", "J71", "J72", "J73", "J87", "J88", "J89", "J90"]
-    let sillasAmor = ["K5", "K7", "K9", "K17", "L22", "L23", "L24", "L25", "L39", "L40", "L41", "L42", "M43", "M44", "M45", "M46", "M60", "M61", "M62", "M63"]
+    let sillabloquea = ["G2", "G1", "G8","G6","H2"]
+    let sillesSAmor = ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8",]
+    let sillasAmor = []
     const randon = sessionStorage.getItem("random") || ""
     let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")
-    if ((envotid == '7EZFQ6') && (![...sillabloquea, ...sillasAmor, ...sillesSAmor].includes(text) && clienteInfo() == null)) {
+    if ((envotid == 'FMNPLU') && (![...sillabloquea,].includes(text) && clienteInfo() == null)) {
       $.confirm({
         title: 'Mesas Habilitadas',
-        content: 'En esta localidad solo están habilitadas las siguientes sillas inidividuales en las localidades:<br><strong>Señorazo</strong><br><strong> C19,C36, D54</strong><br>' +
-          '<br><strong>Amor</strong><br><strong>E7,H36,H37, I49, I50, I53, I51, I52, I66, I67, I68, I69, J70, J71, J72, J73, J87, J88, J89, J90</strong><br>' +
-          '<br><strong>Despecho</strong><br><strong>K5,K7,K9,K17, L22, L23, L24, L25, L39, L40, L41, L42, M43, M44, M45, M46, M60, M61, M62, M63</strong>',
+        content: 'En esta localidad solo están habilitadas las siguientes sillas inidividuales en las localidades:<br><strong>GOLDEN BOX</strong><br><strong>G6, G8, H2</strong><br>' +
+          '' +
+          '',
         type: 'blue',
         typeAnimated: true,
         buttons: {
@@ -389,10 +395,11 @@ function MesasView({ text, status, list }) {
       });
       return
     }
-    if (envotid == 'YC9Z90') {
+    if ((envotid == 'TR18LF') && (![...sillesSAmor,"A5"].includes(text) && clienteInfo() == null)) {
+      //console.log(text)
       $.confirm({
         title: 'Mesas Habilitadas',
-        content: 'En esta localidad solo están habilitadas para venta completa, Seleccione la mesa',
+        content: 'En esta localidad solo están habilitadas para venta individual de la mesa A5 y la fila C',
         type: 'blue',
         typeAnimated: true,
         buttons: {
@@ -531,7 +538,7 @@ function MesasView({ text, status, list }) {
           let asiento = list.filter(ef => ef.idsilla == e)
           // console.log(asiento, e)
           AgregarAsiento({
-            "localidad": nombre.localidad, "localidaEspacio": { ...nombre, "idcolor": nombre.id_localidad, "ideprecio": nombre.id_precio, "espacio": nombre.id_espacio }, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+            "localidad": nombre.localidad, "localidaEspacio": { "idcolor": nombre.id_localidad || nombre.idcolor, "ideprecio": nombre.ideprecio, "espacio": nombre.id_espacio, ...nombre }, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
             seleccionmapa: nombre.localidad + "-" + asiento[0].silla,
             "fila": asiento[0].silla.split("-")[0], "silla": asiento[0].silla, "estado": "seleccionado", "ids": asiento.idsilla, "cedula": info.cedula
           })
@@ -607,7 +614,7 @@ function MesasView({ text, status, list }) {
           let asiento = list.filter(ef => ef.idsilla == e)
           //console.log(asiento, e)
           AgregarAsiento({
-            "localidad": nombre.localidad, "localidaEspacio": { ...nombre, "idcolor": nombre.id_localidad, "ideprecio": nombre.id_precio, "espacio": nombre.id_espacio }, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
+            "localidad": nombre.localidad, "localidaEspacio": { "idcolor": nombre.id_localidad || nombre.idcolor, "ideprecio": nombre.ideprecio, "espacio": nombre.id_espacio, ...nombre }, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
             seleccionmapa: nombre.localidad + "-" + asiento[0].silla,
             "fila": asiento[0].silla.split("-")[0], "silla": asiento[0].silla, "estado": "seleccionado", "ids": asiento.idsilla, "cedula": info.cedula
           })

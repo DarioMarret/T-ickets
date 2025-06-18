@@ -27,14 +27,12 @@ import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
 import { ListarLocalidad } from "utils/LocalidadesQuery";
 import { Boleteria_Boletos, Boleteria_Nombre, Boleteria_canje, Boleteria_medios } from "utils/EventosQuery/index";
 import { Contactos_Boletos } from "utils/Querycomnet";
-import { Axiosmikroserdos, boleteriaAxios } from "utils/index";
+import { Axiosmikroserdos, boleteriaAxios, mikroAxios } from "utils/index";
 import MesasViews from "views/Pages/Mesas/Plantillas/indice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
 import ExtendedForms from "views/Forms/ExcelTable";
 import HotTableView from "views/Forms/HotTableView"
-import MesasCanvas from "../CanvasMesas/index"
-
 const EventoEspecifico = () => {
     let { id } = useParams()
     let usehistory = useHistory()
@@ -47,6 +45,7 @@ const EventoEspecifico = () => {
     const [open, setOpen] = useState(true);
     const [dispoible, setDisponible] = useState([])
     const [global, setGobal] = useState([])
+    const [comentarios, SetCometarios] = useState([])
     const [activeTab, setActiveTab] = useState("PRECIOS");
     const [valores, setvalores] = useState({
         localidad: '',
@@ -80,31 +79,17 @@ const EventoEspecifico = () => {
     async function Eliminar(e) {
         dispatch(setModal({ nombre: "precios", estado: { ...e } }))
     }
-
-
     async function Evento(event) {
         try {
             let { data } = await boleteriaAxios.get("Boleteria/ListaPreciosLocalidades/" + id)
             console.log(data)
-            const cargar = data.data// await EventosActivos("PROCESO")
-            //   const cargasd = await EventosActivos("ACTIVO")
-            //  const cancelados = await EventosActivos("CANCELADO")
-
+            const cargar = data.data
             const precio = await listarpreciolocalidad(id)
-
-
-            //}
             if (cargar) {
                 let datos = [...cargar]
-
-                // let shortDate = new Date(datos[0].fechaConcierto);
                 SetEvento({
                     ...datos[0], LocalodadPrecios: precio.data,
                 })
-                /*  console.log({
-                      ...datos[0], LocalodadPrecios: precio.data,
-                  })
-                  */
                 await cargarlocalidad(datos, precio)
 
             }
@@ -138,7 +123,11 @@ const EventoEspecifico = () => {
                 return acc;
 
             }, {});
-            //   console.log(agrupadoPorLocalidadess)
+            const mesasComentadas = await mikroAxios.post("Boleteria/itemlocalidad", {
+                "id_localidades": "",
+                "espacio": filtros[0].id_espacio
+            })
+            SetCometarios(mesasComentadas.data.localidades || [])
             const estadosPermitidos = new Set(["Pendiente", "Ocupado", "pendiente", "ocupado"]);
             const acumuladorPorNombre = filtros.reduce((acc, elemento) => {
                 if (!listo.filter(e => e.id == elemento.id_localidades).length == 0) {
@@ -164,9 +153,6 @@ const EventoEspecifico = () => {
             const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
                 return { nombreMesa, cantidad };
             });
-            console.log(acumuladorPorNombres, resultado)
-            // setActiveTab(event ? event : resultado[0].nombreMesa)
-            console.log("resultado", resultado)
             setGobal(resultado)
             setDisponible(arrayMesas)
 
@@ -237,9 +223,7 @@ const EventoEspecifico = () => {
                     iva: elem.iba,
                     subtotal: elem.subtotal,
                     comision_bancaria: elem.comision_bancaria,
-
-                    total: elem.tota
-
+                    total: elem.total
                 }
             }),
             FormaPago: datos.data,
@@ -251,7 +235,6 @@ const EventoEspecifico = () => {
                     precios: elem.valor,
                     total: elem.Total,
                     cantidad: elem.Cantidad
-
                 }
             })
         })
@@ -294,20 +277,17 @@ const EventoEspecifico = () => {
     }
     function DecargarRegistors() {
         if (useradmin.perfil == 'suscriptores') return
-        //https://api.t-ickets.com/mikrotiv2/api/reporte_evento/NT3K0L
         Axiosmikroserdos.get('api/reporte_evento/' + id, {
-            responseType: 'blob'  // Important for handling binary data
+            responseType: 'blob'
+        }).then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', evento.nombreConcierto.replace(" ", "_") + '.xlsx');
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
         })
-            .then(response => {
-                console.log(response)
-                const url = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', evento.nombreConcierto.replace(" ", "_") + '.xlsx');
-                document.body.appendChild(link);
-                link.click();
-                link.parentNode.removeChild(link);
-            })
             .catch(error => console.error('There was a problem with the Axios request:', error));
 
     }
@@ -362,7 +342,6 @@ const EventoEspecifico = () => {
 
     };
     useEffect(() => {
-
         (async () => {
             Obtener_valores()
             boletosloading ? "" : setTikes(nuevos.data.filter(e => e.codigoEvento == id && e.estado == "Pagado"))
@@ -374,7 +353,6 @@ const EventoEspecifico = () => {
                     arrayIndividual[dat].cantidad = parseInt(tota)
                 } else {
                     arrayIndividual.push({ id: elm.localidad, localidad: elm.localidad, cantidad: 1 })
-
                 }
             })
 
@@ -387,18 +365,9 @@ const EventoEspecifico = () => {
                 ["Localida", "ganancias"],
                 ...newdatos
             ])
-            /*console.log([
-                ["Localida", "ganancias"],
-                ...newdatos
-            ])*/
             await Evento()
-
         })()
-
-
-        console.log(datas)
     }, [boletosloading])
-
     const successAlert = (i) => {
         if (useradmin.perfil == 'suscriptores') return
         setAlert(
@@ -524,12 +493,14 @@ const EventoEspecifico = () => {
             <div className='col-12'>
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
-                        <a className="nav-link active" data-toggle="tab" href="#evento"
-                        >Evento</a>
+                        <a className="nav-link active" data-toggle="tab" href="#evento">
+                            Evento
+                        </a>
                     </li>
                     <li className="nav-item ">
-                        <a className="nav-link " data-toggle="tab" href="#reportes"
-                        >Reportes</a>
+                        <a className="nav-link " data-toggle="tab" href="#reportes">
+                            Reportes
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -542,7 +513,7 @@ const EventoEspecifico = () => {
                             <div>
                                 <button className="btn btn-primary" onClick={ObtenerContactosquecompraron}>
                                     <i className="fa fa-user" ></i>
-                                     Contactos
+                                    Contactos
                                 </button>
                             </div>
                             <div className="px-2">
@@ -586,31 +557,39 @@ const EventoEspecifico = () => {
 
                         </div>
                         <div className="conatiner row">
-                            <div className="row mx-auto p-0">
 
-                                <div className="col-12 mx-auto " id="evento4">
-                                    <PiecharViews
-                                        options={options}
-                                        datas={datas}
-                                    />
-                                </div>
-                            </div>
                             <div className="row" >
-                                <div className="col-6">
+                                    <div className="row mx-auto p-0">
+
+                                        <div className="col-12 mx-auto " id="evento4">
+                                            <PiecharViews
+                                                options={options}
+                                                datas={datas}
+                                            />
+                                        </div>
+                                    </div>
 
 
-                                </div>
+                                
                             </div>
                         </div>
                         <div className="card">
                             <div className='container-fluid row p-0'>
                                 <div className='col-12'>
                                     <ul className="nav nav-tabs">
+                                        <li className="nav-item" data-toggle="tab" href="#filas">
+                                            <a className="nav-link active" >
+
+                                            </a>
+                                        </li>
                                         <li className="nav-item">
                                             <a className="nav-link active" data-toggle="tab" href="#filas"
                                             >Boletos</a>
                                         </li>
-
+                                        <li className="nav-item">
+                                            <a className="nav-link " data-toggle="tab" href="#refrencia"
+                                            >Ref: Mesas </a>
+                                        </li>
                                         <li className="nav-item">
                                             <a className="nav-link " data-toggle="tab" href="#mesas"
                                             >Canjeados</a>
@@ -743,6 +722,24 @@ const EventoEspecifico = () => {
                                             localization={MRT_Localization_ES}
                                         />
                                     </div>
+                                    <div className="tab-pane  container-fluid " id="refrencia">
+                                        <MaterialReactTable
+                                            columns={[
+                                                { accessorKey: 'id_registraCompra', header: 'Sugerencia' },
+                                                { accessorKey: 'Localidad', header: 'Localidad' },
+                                                { accessorKey: 'fila', header: 'Fila' },
+                                                { accessorKey: 'silla', header: 'Silla' },
+                                                { accessorKey: 'estado', header: 'Estado' },
+                                                { accessorKey: 'cedula', header: 'Cédula' },
+                                                { accessorKey: 'mesa', header: 'Mesa' },
+                                            ]}
+                                            initialState={{
+                                                density: 'compact', // Configuración inicial de densidad
+                                            }}
+                                            data={comentarios}
+                                        />
+                                    </div>
+
                                     <div className="tab-pane  container-fluid " id="mesas">
                                         <ExtendedForms
                                             data={Object.values(groupedData)}
