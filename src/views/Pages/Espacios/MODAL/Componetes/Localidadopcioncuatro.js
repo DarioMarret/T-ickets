@@ -116,27 +116,6 @@ const LocalidadesagreViews = (props) => {
     }
     ).catch(err =>
       console.log(err))
-    let tipo = JSON.parse(parms.mesas_array)
-    //console.log(tipo.Typo)
-    /* if (tipo.Typo == "fila") {
-       SetDataloca({ typo: 'fila', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: tipo.datos })
-       $("#listas").removeClass("active")
-       $("#filas").addClass("active")
-       $('[href*="filas"]').addClass('active');
-       $('[href*="listas"]').removeClass('active');
-     } else if (tipo.Typo == "mesa") {
-       SetDataloca({ typo: 'mesa', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: tipo.datos })
-       $("#listas").removeClass("active")
-       $("#mesas").addClass("active")
-       $('[href*="mesas"]').addClass('active');
-       $('[href*="listas"]').removeClass('active');
-     } else if (tipo.Typo == "correlativo") {
-       SetDataloca({ typo: 'correlativo', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: tipo.datos })
-       $("#listas").removeClass("active")
-       $("#correlativos").addClass("active")
-       $('[href*="correlativos"]').addClass('active');
-       $('[href*="listas"]').removeClass('active');
-     }*/
   }
 
   useEffect(() => {

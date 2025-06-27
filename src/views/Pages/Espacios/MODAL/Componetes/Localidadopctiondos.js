@@ -246,7 +246,14 @@ const TabdosView = (props) => {
         }
         else {
             try {
+                
+                const nombre = await boleteriaAxios.post("Boleteria/localidades", { nombre: localidanames.nombre.trim(), id_espacio: localidaname.id })
+                if (nombre.data.estado) {
+                    usedispatch(setToastes({ show: true, message: 'El nombre de la localidad ya existe', color: 'bg-danger', estado: 'Nombre existente' }))
+                    return
+                }
                 setdisable(true)
+                
                 console.log(FilasLocalidad)
                 const guarda = await GuardarLocalidad({ "espacio": localidanames.nombre.trim(), "id_espacio": localidanames.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
                  console.log(guarda)

@@ -4,6 +4,7 @@ import { GuardarLocalidad } from "utils/LocalidadesQuery/index.js"
 import { Modal, ProgressBar, OverlayTrigger, Tooltip, Button } from "react-bootstrap"
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
+import { boleteriaAxios } from "utils/index"
 const TabtresView = (props) => {
     let usedispatch = useDispatch()
     const { datalocalidad, espacioname, SetDataloca } = props
@@ -59,6 +60,11 @@ const TabtresView = (props) => {
     async function Guardar() {
         console.log({ "espacio":  espacioname.nombre.trim(), "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: [] } }) })
         if (localidaname.nombre != "" && localidaname.description != "" && localidaname.cantidad != "" && localidaname.inicio != "") {
+            const nombre = await boleteriaAxios.post("Boleteria/localidades", { nombre: localidaname.nombre.trim(), id_espacio: localidaname.id })
+            if (nombre.data.estado) {
+                usedispatch(setToastes({ show: true, message: 'El nombre de la localidad ya existe', color: 'bg-danger', estado: 'Nombre existente' }))
+                return
+            }
             try {
                 setdisable(true)
                 const guardar = await GuardarLocalidad({ "espacio":  espacioname.nombre.trim(), "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: [] } }) })

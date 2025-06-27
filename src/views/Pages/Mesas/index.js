@@ -30,8 +30,8 @@ function MesasView({ text, status, list }) {
     let randon = sessionStorage.getItem("random") || ""
     let estado = list.find(f => f.silla == e)
     //console.log(estado, randon)
+    if (estado.estado == null || estado.estado == undefined) return "disponible"
     if (estado.cedula != null && estado.cedula != "") {
-      if (estado.estado == undefined || estado.estado == null) return 'disponible'
       if ((estado.cedula == "" || estado.cedula == undefined || estado.cedula == null) && estado.estado.toLowerCase() == "ocupado") return "apartado"
       //if ((estado.cedula != null && estado.cedula != "") && estado.estado.toLowerCase() == "ocupado") return "apartado"
       if (estado.estado.toLowerCase() == "ocupado") return estado.estado.toLowerCase()
@@ -40,7 +40,6 @@ function MesasView({ text, status, list }) {
       else return estado.estado.toLowerCase()
       return
     }
-    if (estado.estado == undefined || estado.estado == null) return 'disponible'
     if ((estado.cedula == "" || estado.cedula == undefined || estado.cedula == null) && estado.estado.toLowerCase() == "ocupado") return "apartado"
     else return estado.estado.toLowerCase()
   }
@@ -65,7 +64,7 @@ function MesasView({ text, status, list }) {
         }
         else return [k.estado]
       }
-    }).filter(elm => elm != 'none');
+    });
     //console.log(asiento)
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
     const isApartado = (currentValue) => currentValue == "apartado";
@@ -73,20 +72,18 @@ function MesasView({ text, status, list }) {
     const isReserva = (currentValue) => currentValue == "RESERVADO" || currentValue == "reservado";
     const isDispon = (currentValue) => currentValue == "disponible" || currentValue == "DISPONIBLE";
     const isDisnone = (currentValue) => currentValue == "none" || currentValue == "d-none";
-    let mesas = ["A", "B", "C", "D", "E"]
-    let sillabloquea = ["D42", "D41", "D40", "D39", "D37", "D36", "E48", "E49", "E50"]
+    let mesas = ["A", "B", "C", "D"]
+    let sillabloquea = ["D42", "D41", "D40", "D38", "D39", "D37", "D36"]
     //console.log(e.substring(0, 1))
     let envotid = sessionStorage.getItem("eventoid")
     //if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
-    if (Object.values(asiento).every(isDisnone)) { return "none" }
     if (Object.values(asiento).every(isOcupado)) { return "mesaocupado" }
     if (Object.values(asiento).every(isReserva)) { return "mesareserva" }
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
     if (Object.values(asiento).every(isApartado)) { return "mesaapartada" }
-
+    if (Object.values(asiento).every(isDisnone)) { return "none" }
     // if (!mesas.includes(e.substring(0, 1))) { return "bg-secondary" }
-    //(envotid == '7EZFQ6') && (!sillabloquea.includes(text))
-    // if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || ((e.substring(0, 1) == 'D' || e.substring(0, 1) == 'E') && !sillabloquea.includes(e))) { return "bg-dark" }
+    //  if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || (e.substring(0, 1) == 'D' && !sillabloquea.includes(e))) { return "bg-dark" }
     return "mesadisponible"
   }
   /*  obtener sillas  */
@@ -370,8 +367,8 @@ function MesasView({ text, status, list }) {
     /**/
     let mesas = ["A", "B", "C"]
     let mesa = ["A"]
-    let sillabloquea = ["G2", "G1", "G8","G6","H2"]
-    let sillesSAmor = ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8",]
+    let sillabloquea = ["J4", "J5","J3"]
+    let sillesSAmor = ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "B4", "B3"]
     let sillasAmor = []
     const randon = sessionStorage.getItem("random") || ""
     let info = getDatosUsuariosLocalStorag()
@@ -379,7 +376,7 @@ function MesasView({ text, status, list }) {
     if ((envotid == 'FMNPLU') && (![...sillabloquea,].includes(text) && clienteInfo() == null)) {
       $.confirm({
         title: 'Mesas Habilitadas',
-        content: 'En esta localidad solo están habilitadas las siguientes sillas inidividuales en las localidades:<br><strong>GOLDEN BOX</strong><br><strong>G6, G8, H2</strong><br>' +
+        content: 'En esta localidad solo están habilitadas las siguientes sillas inidividuales en las localidades:<br><strong>GOLDEN BOX</strong><br><strong>J3, J4, J5,</strong><br>' +
           '' +
           '',
         type: 'blue',
@@ -395,7 +392,7 @@ function MesasView({ text, status, list }) {
       });
       return
     }
-    if ((envotid == 'TR18LF') && (![...sillesSAmor,"A5"].includes(text) && clienteInfo() == null)) {
+   /* if ((envotid == 'TR18LF') && (![...sillesSAmor, "A5"].includes(text) && clienteInfo() == null)) {
       //console.log(text)
       $.confirm({
         title: 'Mesas Habilitadas',
@@ -412,7 +409,7 @@ function MesasView({ text, status, list }) {
         }
       });
       return
-    }
+    }*/
     if ((envotid == '7EZFQ6') && (![...sillabloquea, ...sillasAmor, ...sillesSAmor].includes(text) && clienteInfo() == null)) return
     /*
       if (((envotid == "X5U5VR") && (clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text))) && clienteInfo() == null) return
@@ -704,6 +701,28 @@ function MesasView({ text, status, list }) {
               MesaEstado={MesaEstado}
               alert={alert}
               enviarsillas={() => enviarsillas(text)} />;
+          case 11:
+            return <MesadiesView text={text} list={list}
+              obtenerid={obtenerid}
+              succesSilla={succesSilla}
+              succesLimit={succesLimit}
+              Estado={Estado}
+              MesaEstado={MesaEstado}
+              alert={alert}
+              enviarsillas={() => enviarsillas(text)}
+
+                />;
+          case 12:
+            return <MesadiesView text={text} list={list}
+              obtenerid={obtenerid}
+              succesSilla={succesSilla}
+              succesLimit={succesLimit}
+              Estado={Estado}
+              MesaEstado={MesaEstado}
+              alert={alert}
+              enviarsillas={() => enviarsillas(text)}
+
+                  />;
           default:
             return <MesacerView text={text} list={list}
               obtenerid={obtenerid}

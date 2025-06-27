@@ -91,8 +91,10 @@ function MesasViews({ text, status, list, setMapa }) {
   }
   /*  obtener sillas  */
   function obtenerid(e) {
-    let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).idsilla : ""
-    return estado
+    const sillaObj = list.find(f => f.silla == e);
+    if (!sillaObj) return "";
+    let estado = sillaObj.idsilla !== undefined ? "silla-" + sillaObj.idsilla : "";
+    return estado;
   }
   function obtenersila(e) {
     let estado = list.find(f => f.silla == e).idsilla != undefined ? "silla-" + list.find(f => f.silla == e).silla + "\n" + list.find(f => f.silla == e).cedula + "\n #" + list.find(f => f.silla == e).idsilla : ""
@@ -409,8 +411,8 @@ function MesasViews({ text, status, list, setMapa }) {
               MesaEstado={MesaEstado}
               alert={alert}
               enviarsillas={() => enviarsillas(text)} />;
-          default:
-            return <MesacerView text={text} list={list}
+          case 11:
+            return <MesadiesView text={text} list={list}
               obtenerid={obtenerid}
               succesSilla={succesSilla}
               succesLimit={succesLimit}
@@ -420,6 +422,26 @@ function MesasViews({ text, status, list, setMapa }) {
               enviarsillas={() => enviarsillas(text)}
 
             />;
+          case 12:
+            return <MesadiesView text={text} list={list}
+              obtenerid={obtenerid}
+              succesSilla={succesSilla}
+              succesLimit={succesLimit}
+              Estado={Estado}
+              MesaEstado={MesaEstado}
+              alert={alert}
+              enviarsillas={() => enviarsillas(text)}
+
+            />;
+          default:
+            return <MesadiesView text={text} list={list}
+              obtenerid={obtenerid}
+              succesSilla={succesSilla}
+              succesLimit={succesLimit}
+              Estado={Estado}
+              MesaEstado={MesaEstado}
+              alert={alert}
+              enviarsillas={() => enviarsillas(text)} />;
         }
       })()}
     </div>

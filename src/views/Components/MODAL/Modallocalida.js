@@ -651,7 +651,7 @@ const LocalidadmapViews = (props) => {
                                                     return (
                                                         <div className='d-flex  PX-1 align-items-center' key={index}>
                                                             <div className='d-flex pb-2'>
-                                                                <MesaiView
+                                                                <MesasView
                                                                     text={e.fila}
                                                                 />
                                                             </div>

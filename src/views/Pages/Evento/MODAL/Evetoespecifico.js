@@ -559,18 +559,18 @@ const EventoEspecifico = () => {
                         <div className="conatiner row">
 
                             <div className="row" >
-                                    <div className="row mx-auto p-0">
+                                <div className="row mx-auto p-0">
 
-                                        <div className="col-12 mx-auto " id="evento4">
-                                            <PiecharViews
-                                                options={options}
-                                                datas={datas}
-                                            />
-                                        </div>
+                                    <div className="col-12 mx-auto " id="evento4">
+                                        <PiecharViews
+                                            options={options}
+                                            datas={datas}
+                                        />
                                     </div>
+                                </div>
 
 
-                                
+
                             </div>
                         </div>
                         <div className="card">
@@ -602,7 +602,7 @@ const EventoEspecifico = () => {
                                             >Forma de pago</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#localidad">Localidades</a>
+                                            <a className="nav-link" data-toggle="tab" href="#localidades">Localidades</a>
                                         </li>
                                         <li className="nav-item">
                                             <a className="nav-link" data-toggle="tab" href="#info">Info</a>
@@ -810,7 +810,7 @@ const EventoEspecifico = () => {
                                             data={report.valores}
                                         />
                                     </div>
-                                    <div className="tab-pane container-fluid" id="localidad">
+                                    <div className="tab-pane container-fluid" id="localidades">
                                         <div>
                                             <button onClick={() => Evento(activeTab)} className="btn btn-success">Actualizar </button>
                                         </div>

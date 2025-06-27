@@ -4,6 +4,7 @@ import { AptualizarLocalida } from "utils/Querypanel"
 import { GuardarLocalidad } from "utils/LocalidadesQuery/index.js"
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
+import { boleteriaAxios } from "utils/index"
 const TabunoView = (props) => {
     const { localidaname, datalocalidad, SetDataloca } = props
     let usedispatch = useDispatch()
@@ -18,7 +19,7 @@ const TabunoView = (props) => {
         inicial: '',
         fila: '',
         sillas: '',
-        inicio:''
+        inicio: ''
 
     })
     const [ListaFilas, setFilas] = useState([])
@@ -27,7 +28,6 @@ const TabunoView = (props) => {
         if (filass.inicial != " " && filass.cantidad != " ") {
             const letrafilas = filass.inicial.replace(/[0-9]+/g, "") ? filass.inicial.replace(/[0-9]+/g, "") : 'F'
             const numeroinicofilas = filass.inicial.replace(/[^0-9]+/g, "") ? filass.inicial.replace(/[^0-9]+/g, "") : 1;
-            console.log(letrafilas, numeroinicofilas)
             const repeticiones = parseInt(numeroinicofilas) + parseInt(filass.cantidad)
             for (var i = numeroinicofilas; i < repeticiones; i++) {
                 ListadeFilas.push({ fila: letrafilas + "" + i, sillas: 0, asientos: [] });
@@ -37,7 +37,6 @@ const TabunoView = (props) => {
     }
     const AgregasSillasFila = () => {
         ListadeFilas = ListaFilas
-        // console.log(filass.fila,filass.sillas)
         let numeroinicial = filass.inicio
         let interar = parseInt(filass.sillas);
         console.log(numeroinicial)
@@ -68,7 +67,7 @@ const TabunoView = (props) => {
                 var letra = ListadeFilas[index].fila
                 ListadeFilas[index].sillas = interarr
                 for (var g = 0; g < interarr; g++) {
-                    numero =  g + parseInt(numeroinicial)
+                    numero = g + parseInt(numeroinicial)
                     sillas[g] = { silla: letra + "-s-" + numero, estado: "disponible", }
                 }
 
@@ -118,12 +117,17 @@ const TabunoView = (props) => {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guaradar', color: 'bg-danger', estado: 'Datos incompletos' }))
             return
         }
-       /* if (!ValidarSillas()) {
-            usedispatch(setToastes({ show: true, message: 'Verifica que todas las filas tengan más de 6 sillas ', color: 'bg-danger', estado: 'Hay filas sin Asientos ' }))
-            return
-        }*/
+        /* if (!ValidarSillas()) {
+             usedispatch(setToastes({ show: true, message: 'Verifica que todas las filas tengan más de 6 sillas ', color: 'bg-danger', estado: 'Hay filas sin Asientos ' }))
+             return
+         }*/
         else {
             try {
+                const nombre = await boleteriaAxios.post("Boleteria/localidades", { nombre: nmobretabuno.nombre.trim(), id_espacio: localidaname.id })
+                if (nombre.data.estado) {
+                    usedispatch(setToastes({ show: true, message: 'El nombre de la localidad ya existe en ' + nombre.data[0].espacio|'', color: 'bg-danger', estado: 'Nombre existente' }))
+                    return
+                }
                 console.log(ListaFilas)
                 console.log({ Typo: 'fila', datos: ListaFilas })
                 const guardad = await GuardarLocalidad({ "espacio": localidaname.nombre.trim(), "descripcion": nmobretabuno.description.trim(), "id_espacio": localidaname.id, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
@@ -386,7 +390,7 @@ const TabunoView = (props) => {
                                                 {e.asientos.length > 0 ?
                                                     <div className=' d-flex px-1  align-items-center  ji  ' style={{ width: '' }}>
                                                         {e.asientos.map((silla, index, arr) => {
-                                                           // console.log(silla)
+                                                            // console.log(silla)
                                                             let numero = String(silla.silla).split("-")[2]
                                                             return (
                                                                 <div key={"silla" + index} className='d-flex  bg-success   rounded-5 text-center  justify-content-center align-items-center '
