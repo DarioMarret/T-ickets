@@ -37,7 +37,7 @@ import { GetSuscritores } from "utils/SuscritorQuery";
 import { espacio } from "utils/constantes";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { Triangle } from "react-loader-spinner";
 import { correlativosadd } from "utils/Querypanelsigui";
 
@@ -56,7 +56,7 @@ require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
     let usedispatch = useDispatch()
-    let history = useHistory()
+    let history = useNavigate()
     let modalshow = useSelector((state) => state.SuscritorSlice)
     const [Eventos, setEvento] = useState([])
     const [repShop, setrepShow] = useState(false);
@@ -205,8 +205,8 @@ export default function StoreTickesViews() {
                     estado: "Compra pendiente de pago "
                 }))
                 usedispatch(setModal({ nombre: '', estado: '' }))
-                // history.push("/admin/suscritor/" + getDatosUsuariosLocalStorag().id + "")
-                history.push("/admin/Aprobar/" + getDatosUsuariosLocalStorag().cedula)
+                // history("/admin/suscritor/" + getDatosUsuariosLocalStorag().id + "")
+                history("/admin/Aprobar/" + getDatosUsuariosLocalStorag().cedula)
                 return
             }
             /* if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")) {
@@ -354,7 +354,7 @@ export default function StoreTickesViews() {
                         console.log(outp)
                         usedispatch(cargarsilla(outp))
                         
-                        history.push("vender/" + e.codigoEvento)
+                        history("vender/" + e.codigoEvento)
                         return
                         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
                         if (seleccionuser.data.length > 0) {

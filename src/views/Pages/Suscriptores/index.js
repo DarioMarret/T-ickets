@@ -8,7 +8,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import { GetSuscritores, EliminarSuscrito } from "utils/SuscritorQuery";
 import ModalSuscritoView from "./ModalSuscritor";
 import { Button } from "reactstrap";
-import { useHistory } from "react-router";
+import {useNavigate } from "react-router-dom";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { Columnasubcrito } from "utils/ColumnTabla";
 import ResgistroView from "../Flasdeticket/ModalLogin/registro";
@@ -21,7 +21,7 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { Contactos_Boletos } from "utils/Querycomnet";
 
 const SuscritorViews = () => {
-  let usehistory = useHistory()
+  let usehistory = useNavigate()
   let usedispatch = useDispatch()
   const [show, setshow] = useState(false)
   const [suscritores, setsuscritor] = useState([])
@@ -113,7 +113,7 @@ const SuscritorViews = () => {
   };
   const abbrir = (row) => {
     sessionStorage.setItem("Suscritorid", JSON.stringify(row.original))
-    usehistory.push("/admin/suscritor/" + row.original.id + "")
+    usehistory("/admin/suscritor/" + row.original.id + "")
   }
   const hideAlert = () => {
     setAlert(null);

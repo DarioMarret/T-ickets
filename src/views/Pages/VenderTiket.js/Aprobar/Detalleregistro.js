@@ -5,7 +5,7 @@ import { useState } from "react"
 import { useEffect } from "react"
 import { PhotoProvider, PhotoView } from "react-photo-view"
 import "react-photo-view/dist/react-photo-view.css"
-import { useHistory, useParams } from "react-router"
+import { useNavigate, useParams } from "react-router-dom"
 import { buscarcliente } from "utils/Querypanelsigui"
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "@mui/material";
@@ -55,7 +55,7 @@ export const PreciosStore = () => {
 export default function DetalleCompraView() {
     let { id } = useParams()
     // let user = clienteInfo()
-    let history = useHistory()
+    let history = useNavigate()
     let usedispatch = useDispatch()
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
     console.log(nombres)
@@ -183,7 +183,7 @@ export default function DetalleCompraView() {
                         eliminartiket([parm]).then(ouput => {
                             if (ouput.success) {
                                 console.log(ouput)
-                                history.goBack()
+                                history(-1)
                             }
                             if (!ouput.success) {
                                 return $.alert("" + ouput.message)
@@ -253,7 +253,7 @@ export default function DetalleCompraView() {
 
                                     sessionStorage.setItem("Suscritorid", JSON.stringify({ ...usuario }))
                                     //cerrar()
-                                    history.push("/admin/suscritor/" + usuario.id + "")
+                                    history("/admin/suscritor/" + usuario.id + "")
 
                                     // window.location.reload()
                                 }
@@ -276,7 +276,7 @@ export default function DetalleCompraView() {
 
                                     sessionStorage.setItem("Suscritorid", JSON.stringify({ ...usuario }))
                                     //cerrar()
-                                    history.push("/admin/suscritor/" + usuario.id + "")
+                                    history("/admin/suscritor/" + usuario.id + "")
                                 }
 
                             })
@@ -363,7 +363,7 @@ export default function DetalleCompraView() {
                                     if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
                                         $('#cedulac').val("")
                                         sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
-                                        history.push("/admin/suscritor/" + oupt.data.id + "")
+                                        history("/admin/suscritor/" + oupt.data.id + "")
                                     }
                                     else {
 
@@ -375,7 +375,7 @@ export default function DetalleCompraView() {
                                     }
 
                                 })
-                                //history.goBack()
+                                //history(-1)
                             }
                             console.log(mensage)
                         }).catch(err => {
@@ -431,7 +431,7 @@ export default function DetalleCompraView() {
                             console.log(mensage)
                             if (mensage.success) {
                                 console.log(mensage)
-                                history.goBack()
+                                history(-1)
                             }
                             console.log(mensage)
                         }).catch(err => {
@@ -608,7 +608,7 @@ export default function DetalleCompraView() {
                                     let { data } = await Axiosmikroserdos.put("api/anularRegistro/" + ids)
                                     if (data.estado) {
                                         self.close();
-                                        history.goBack()
+                                        history(-1)
                                         return
                                     }
                                     $.alert("Hubo un error en el proceso")
@@ -649,10 +649,11 @@ export default function DetalleCompraView() {
         try {
             let { data } = await Axiosmikroserdos.get("api/reenvio/" + ids)
             if (data.estado) {
-                history.goBack()
+               
                 return
             }
-            $.alert("Hubo un error en el proceso")
+            history(-1)
+            //$.alert("Hubo un error en el proceso")
 
         } catch (error) {
             $.alert("Hubo un error de servicio")
@@ -913,7 +914,7 @@ export default function DetalleCompraView() {
         if (selecion.trim() === "") return
         let datos = repetidos.filter(e => e.id == selecion)[0]
         sessionStorage.setItem("Detalleuid", JSON.stringify({ ...datos }))
-        history.push("/admin/Reporte/" + datos.id)
+        history("/admin/Reporte/" + datos.id)
         window.location.reload()
 
     }
@@ -1012,7 +1013,7 @@ export default function DetalleCompraView() {
                                 }).then(oupt => {
                                     sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
                                     //cerrar()
-                                    history.push("/admin/suscritor/" + oupt.data.id + "")
+                                    history("/admin/suscritor/" + oupt.data.id + "")
 
 
                                 }
@@ -1052,7 +1053,7 @@ export default function DetalleCompraView() {
                             "id_registraCompra": nombres.id,
                             "cedula": nombres.cedula
                         }, nombres.id).then(ouput => {
-                            ouput.success ? history.goBack() : ""
+                            ouput.success ? history(-1) : ""
                         }).catch(errr => {
                             console.log(errr)
                         })
@@ -1067,7 +1068,7 @@ export default function DetalleCompraView() {
                             "id_registraCompra": nombres.id,
                             "cedula": nombres.cedula
                         }, nombres.id).then(ouput => {
-                            ouput.success ? history.goBack() : ""
+                            ouput.success ? history(-1) : ""
                         }).catch(errr => {
                             console.log(errr)
                         })
@@ -1119,7 +1120,7 @@ export default function DetalleCompraView() {
                                     spinernuevo.classList.toggle("d-none")
                                     sessionStorage.setItem("Suscritorid", JSON.stringify({ ...usuario }))
                                     //cerrar()
-                                    history.push("/admin/suscritor/" + usuario.id + "")
+                                    history("/admin/suscritor/" + usuario.id + "")
                                     /* buscarcliente({
                                          "cedula": nombres.cedula,
                                          "email": ''
@@ -1128,7 +1129,7 @@ export default function DetalleCompraView() {
  
  
                                      })*/
-                                    //history.goBack()
+                                    //history(-1)
                                     // return
                                 }
                                 //$.alert("No se registro")
@@ -1152,7 +1153,7 @@ export default function DetalleCompraView() {
                         action: function () {
                             registraPagos(reporte).then(ouput => {
                                 if (ouput.success) {
-                                    history.goBack()
+                                    history(-1)
                                     return
                                 }
                                 //  $.alert("No se registro")
@@ -1195,14 +1196,14 @@ export default function DetalleCompraView() {
                                 }).then(oupt => {
                                     sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
                                     //cerrar()
-                                    history.push("/admin/suscritor/" + oupt.data.id + "")
+                                    history("/admin/suscritor/" + oupt.data.id + "")
 
 
                                 }
 
                                 ).catch(err => {
                                 })
-                                //  history.goBack()
+                                //  history(-1)
                                 return
                             }
                             //  $.alert("No se registro")
@@ -1243,7 +1244,7 @@ export default function DetalleCompraView() {
                     action: function () {
                         Liverarasiento(parms).then(ouput => {
                             if (ouput.success) {
-                                history.goBack()
+                                history(-1)
                                 return
                             }
                             $.alert("No se registro")
@@ -1266,7 +1267,7 @@ export default function DetalleCompraView() {
         if (boleto.estado) {
             let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
             sessionStorage.setItem("Detalleuid", boletos)
-            history.goBack()
+            history(-1)
         } else {
             let boletos = JSON.stringify({ ...nombres, ...boleto.datos })
             sessionStorage.setItem("Detalleuid", boletos)
@@ -1304,7 +1305,7 @@ export default function DetalleCompraView() {
                                 }))
                                 Listarticketporestado(datos.cedula).then(ouput => {
                                     if (ouput.success) {
-                                        history.goBack()
+                                        history(-1)
                                         let boletos = ouput.data.map((e) => {
 
                                             if (cor.find(f => f.nombreConcierto == e.concierto) != undefined) {
@@ -1383,7 +1384,7 @@ export default function DetalleCompraView() {
                         ).then(ouput => {
                             console.log(ouput)
                             if (ouput.success) {
-                                history.goBack()
+                                history(-1)
                             }
 
                         }).catch(err => {
@@ -1587,7 +1588,7 @@ export default function DetalleCompraView() {
                                             </a> : ""}
                                         <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
                                             data-toggle=" " data-placement="top" title="atras"
-                                            onClick={() => history.goBack()}
+                                            onClick={() => history(-1)}
                                         >
                                             <i className=" fa fa-arrow-left">  </i>
                                         </a>
@@ -2034,7 +2035,7 @@ export default function DetalleCompraView() {
                                     <div className="d-flex  justify-content-end">
                                         <a className=" rounded-circle btn-primary mx-2 p-2 text-white"
                                             data-toggle="atras " data-placement="top" title="atras"
-                                            onClick={() => history.goBack()}
+                                            onClick={() => history(-1)}
                                         >
                                             <i className=" fa fa-arrow-left">  </i>
                                         </a>

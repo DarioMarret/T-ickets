@@ -200,7 +200,7 @@ var routes = [
         permiso: ["suscriptores", "admin", "super_admin", "vendedores"]
       },
       {
-        path: "/vender/:id",
+        path: "/Vender-Tickets/vender/:id",
         layout: "/admin",
         mini: "*",
         component: Ventasnuevas,

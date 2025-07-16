@@ -98,6 +98,7 @@ const IndexFlas = () => {
   const datatime = useRef(null);
   const intervalolista = useRef(null)
   const localidadtimer = useRef(null);
+ 
   function velocidad() {
     let timer = 0
     var tiempo = 60 * 10

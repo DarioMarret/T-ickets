@@ -12,7 +12,7 @@ import ModalBoletoApro from "./Modalboleto";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { listaRegistrototal } from "utils/columnasub";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import ExportToExcel from "utils/Exportelemin";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
@@ -40,7 +40,7 @@ export const PreciosStore = () => {
 }
 export default function AprobarView() {
     let usedispatch = useDispatch()
-    let history = useHistory()
+    let history = useNavigate()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     let value = useSelector((state) => state.SuscritorSlice.tabps)
     let states = useSelector((state) => state.SuscritorSlice.fecha)
@@ -497,7 +497,7 @@ export default function AprobarView() {
     }
     function detalle(e) {
         sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
-        history.push("/admin/Reporte/" + e.id)
+        history("/admin/Reporte/" + e.id)
     }
     const options = {
         title: "Ventas Globales Aprobadas",

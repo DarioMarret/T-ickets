@@ -18,7 +18,7 @@ import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import { listaRegistro } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-import { useHistory, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { setdetalle } from "StoreRedux/Slice/SuscritorSlice";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 
@@ -27,7 +27,7 @@ export default function AprobarViewid() {
     let { id } = useParams()
     console.log(id)
     let usedispatch = useDispatch()
-    let history = useHistory()
+    let history = useNavigate()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
 
     const [data, setData] = React.useState([]);
@@ -244,7 +244,7 @@ export default function AprobarViewid() {
     function detalle(e) {
         //  console.log(e)
         usedispatch(setdetalle({ ...e }))
-        history.push("/admin/Reporte/" + e.id)
+        history("/admin/Reporte/" + e.id)
     }
 
     return (
@@ -463,7 +463,7 @@ export default function AprobarViewid() {
                 </div>
                 <div className="   d-flex justify-content-end align-items-end p-3">
                     <a className=" rounded-circle btn-primary p-2 text-white"
-                        onClick={() => history.goBack()}
+                        onClick={() => history(-1)}
                     >
                         <i className=" fa fa-arrow-left"></i>
                     </a>

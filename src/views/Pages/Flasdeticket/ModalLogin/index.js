@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Container, Toast } from "react-bootstrap";
 import { getCedula } from "utils/DatosUsuarioLocalStorag";
-import { useHistory } from "react-router";
 import { Host } from "utils/constantes";
 import axios from "axios";
 import { DatosUsuariocliente } from "utils/constantes";
@@ -18,7 +17,6 @@ const TRACKING_ID = "G-LJN507B5NX";
 const ModalLogin = (props) => {
   ReactGA.initialize(TRACKING_ID, { standardImplementation: true });
   const { showLogin, setShowLogin, abrir } = props
-  let histoty = useHistory()
   let Modalstatus = useSelector((state) => state.SuscritorSlice.modal)
   const usedispatch = useDispatch()
   const [message, setmessage] = useState("");

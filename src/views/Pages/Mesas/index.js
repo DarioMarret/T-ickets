@@ -363,8 +363,6 @@ function MesasView({ text, status, list }) {
 
   }
   const succesSilla = (e) => {
-    // return
-    /**/
     let mesas = ["A", "B", "C"]
     let mesa = ["A"]
     let sillabloquea = ["J4", "J5","J3"]
@@ -373,49 +371,32 @@ function MesasView({ text, status, list }) {
     const randon = sessionStorage.getItem("random") || ""
     let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")
-    if ((envotid == 'FMNPLU') && (![...sillabloquea,].includes(text) && clienteInfo() == null)) {
-      $.confirm({
-        title: 'Mesas Habilitadas',
-        content: 'En esta localidad solo están habilitadas las siguientes sillas inidividuales en las localidades:<br><strong>GOLDEN BOX</strong><br><strong>J3, J4, J5,</strong><br>' +
-          '' +
-          '',
-        type: 'blue',
-        typeAnimated: true,
-        buttons: {
-          aceptar: {
-            text: 'Aceptar',
-            btnClass: 'btn-blue',
-            action: function () {
-            }
-          }
-        }
-      });
-      return
-    }
-   /* if ((envotid == 'TR18LF') && (![...sillesSAmor, "A5"].includes(text) && clienteInfo() == null)) {
-      //console.log(text)
-      $.confirm({
-        title: 'Mesas Habilitadas',
-        content: 'En esta localidad solo están habilitadas para venta individual de la mesa A5 y la fila C',
-        type: 'blue',
-        typeAnimated: true,
-        buttons: {
-          aceptar: {
-            text: 'Aceptar',
-            btnClass: 'btn-blue',
-            action: function () {
-            }
-          }
-        }
-      });
-      return
-    }*/
+    // if ((envotid == 'FMNPLU') && (![...sillabloquea,].includes(text) && clienteInfo() == null)) {
+    //   $.confirm({
+    //     title: 'Mesas Habilitadas',
+    //     content: 'En esta localidad solo están habilitadas las siguientes sillas inidividuales en las localidades:<br><strong>GOLDEN BOX</strong><br><strong>J3, J4, J5,</strong><br>' +
+    //       '' +
+    //       '',
+    //     type: 'blue',
+    //     typeAnimated: true,
+    //     buttons: {
+    //       aceptar: {
+    //         text: 'Aceptar',
+    //         btnClass: 'btn-blue',
+    //         action: function () {
+    //         }
+    //       }
+    //     }
+    //   });
+    //   return
+    // }
+    
     if ((envotid == '7EZFQ6') && (![...sillabloquea, ...sillasAmor, ...sillesSAmor].includes(text) && clienteInfo() == null)) return
     /*
-      if (((envotid == "X5U5VR") && (clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text))) && clienteInfo() == null) return
-      if (((envotid == "X5U5VR") && (mesas.includes(text.split("")[0])) && clienteInfo() == null)) {
-        return
-      }*/
+   if (((envotid == "X5U5VR") && (clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text))) && clienteInfo() == null) return
+   if (((envotid == "X5U5VR") && (mesas.includes(text.split("")[0])) && clienteInfo() == null)) {
+     return
+   }*/
     let silla = list.find(f => f.silla == e)
     if (silla.idsilla == undefined) return
     if (info == undefined) {
@@ -448,7 +429,6 @@ function MesasView({ text, status, list }) {
       return
     }
     if (silla.estado.toLowerCase().includes("reservado") && (info.cedula == silla.cedula || (silla.cedula == randon && randon != ""))) {
-
       setAlert(
         <SweetAlert
           warning
@@ -464,7 +444,6 @@ function MesasView({ text, status, list }) {
           showCancel>
           {"la sillas " + e}
         </SweetAlert>)
-
       return
     }
     if (TotalSelecion() < 10) {
@@ -486,7 +465,6 @@ function MesasView({ text, status, list }) {
     }
   }
   const succesDesmar = (e) => {
-
     setAlert(
       <SweetAlert
         warning
@@ -516,24 +494,20 @@ function MesasView({ text, status, list }) {
         ...e
       }
     })
-
     let datos = {
       "cedula": info.cedula,
       "estado": "disponible",
       random: sessionStorage.getItem("random"),
       "mesa": [
         ...nuevo,
-        // , ...data
       ]
     }
     hideAlert()
     usedispatch(setSpinersli({ spiner: false }))
     correlativosadd(datos).then(ou => {
       if (ou.success) {
-        //console.log(ou)
         ou.insert.map((e => {
           let asiento = list.filter(ef => ef.idsilla == e)
-          // console.log(asiento, e)
           AgregarAsiento({
             "localidad": nombre.localidad, "localidaEspacio": { "idcolor": nombre.id_localidad || nombre.idcolor, "ideprecio": nombre.ideprecio, "espacio": nombre.id_espacio, ...nombre }, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
             seleccionmapa: nombre.localidad + "-" + asiento[0].silla,
@@ -545,37 +519,29 @@ function MesasView({ text, status, list }) {
             seleccionmapa: nombre.localidad + "-" + asiento[0].silla, "fila": asiento[0].silla.split("-")[0],
             "silla": asiento[0].silla, "estado": "seleccionado"
           }))
-          // console.log(e)
           let sillaids = document.getElementById("silla-" + e)
           sillaids.classList.remove('disponible')
           sillaids.classList.add('seleccionado')
         }))
         ou.update.map((e) => {
           let asiento = list.filter(ef => ef.idsilla == e)
-          //console.log(asiento)
           usedispatch(deleteSillas({
             "localidad": nombre.localidad,
             "fila": asiento[0].silla.split("-")[0],
             "silla": asiento[0].silla,
             "estado": "seleccionado"
           }))
-
           EliminarsilladeMesa({ localidad: nombre.localidad + "-" + asiento[0].silla })
         })
         setTimeout(() => {
           usedispatch(setSpinersli({ spiner: true }))
-
         }, 1000);
-
       } else {
         usedispatch(setSpinersli({ spiner: true }))
       }
-      //usedispatch(setSpinersli({ spiner: true }))
     }).catch(err => {
       usedispatch(setSpinersli({ spiner: true }))
-      console.log(err)
     })
-    //console.log(datos)
 
   }
   function reservas() {
@@ -598,18 +564,14 @@ function MesasView({ text, status, list }) {
       random: sessionStorage.getItem("random"),
       "mesa": [
         ...nuevo
-        // , ...data
       ]
     }
     hideAlert()
     usedispatch(setSpinersli({ spiner: false }))
     correlativosadd(datos).then(ou => {
-
       if (ou.success) {
-        // console.log(ou)
         ou.insert.map((e => {
           let asiento = list.filter(ef => ef.idsilla == e)
-          //console.log(asiento, e)
           AgregarAsiento({
             "localidad": nombre.localidad, "localidaEspacio": { "idcolor": nombre.id_localidad || nombre.idcolor, "ideprecio": nombre.ideprecio, "espacio": nombre.id_espacio, ...nombre }, "nombreConcierto": sessionStorage.getItem("consierto"), "valor": nombre.precio_normal,
             seleccionmapa: nombre.localidad + "-" + asiento[0].silla,
@@ -624,7 +586,6 @@ function MesasView({ text, status, list }) {
         }))
         ou.update.map((e) => {
           let asiento = list.filter(ef => ef.idsilla == e)
-          //console.log(asiento)
           usedispatch(deleteSillas({
             "localidad": nombre.localidad,
             "fila": asiento[0].silla.split("-")[0],
@@ -643,13 +604,9 @@ function MesasView({ text, status, list }) {
       usedispatch(setSpinersli({ spiner: true }))
     }).catch(err => {
       usedispatch(setSpinersli({ spiner: true }))
-      // console.log(err)
     })
-    // console.log(datos)
-
   }
   const hideAlert = () => setAlert(null)
-
   return (
     <div>
       {(() => {

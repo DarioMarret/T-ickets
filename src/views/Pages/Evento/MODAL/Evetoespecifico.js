@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { useParams, useHistory } from "react-router"
+import { useParams, useNavigate } from "react-router-dom"
 import { Accordion, Badge } from "react-bootstrap"
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
@@ -35,7 +35,7 @@ import ExtendedForms from "views/Forms/ExcelTable";
 import HotTableView from "views/Forms/HotTableView"
 const EventoEspecifico = () => {
     let { id } = useParams()
-    let usehistory = useHistory()
+    let usehistory = useNavigate()
     let useradmin = clienteInfo()
     let dispatch = useDispatch()
     const [show, setShow] = useState(false)
@@ -106,16 +106,20 @@ const EventoEspecifico = () => {
             const dat = await ListarLocalidad("")
             let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
             let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id && e.espacio == infoes[0].nombre).map(el => {
+                //console.log("filto", el.typo)
                 const nombre = listo.filter(e => e.id == el.id_localidades)[0].nombre || ''
                 return { ...el, nombreLocalidad: nombre }
             })
             const agrupadoPorLocalidadess = filtros.reduce((acc, item) => {
+
                 if (!acc[item.id_localidades]) {
                     acc[item.id_localidades] = {
+                        typo: item.typo,
                         codigoEvento: id,
                         id_localidades: item.id_localidades,
                         localidad: item.nombreLocalidad,
                         id_espacio: item.id_espacio,
+
                         cantidad: 0
                     }
                 }
@@ -148,11 +152,13 @@ const EventoEspecifico = () => {
             if (!acumuladorPorNombres) return
             const resultado = Object.entries(acumuladorPorNombres).map(([nombreMesa, cantidad]) => {
                 let id = Object.values(agrupadoPorLocalidadess).find(el => el.localidad == nombreMesa)
-                return { nombreMesa, cantidad, localidad: id.id_localidades, espacio: id.id_espacio };
+
+                return { nombreMesa, cantidad, localidad: id.id_localidades, espacio: id.id_espacio, typo: id.typo };
             });
             const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
                 return { nombreMesa, cantidad };
             });
+            //console.log("arrayMesas", resultado)
             setGobal(resultado)
             setDisponible(arrayMesas)
 
@@ -207,9 +213,9 @@ const EventoEspecifico = () => {
         let boletos_boleto = await Boleteria_Boletos(id)
         let boletos_eventos = await Boleteria_Nombre(id)
         let { data: datos } = await Axiosmikroserdos.get("api/registros_porEvento/" + id)
-        console.log(datos)
+        //console.log(datos)
         let boletos = await Boleteria_medios(id)
-        console.log("nuevos", boletos)
+        //  console.log("nuevos", boletos)
         setReport({
             canje: boletos_camjeados.data,
             boleto: boletos_boleto.data,
@@ -469,7 +475,7 @@ const EventoEspecifico = () => {
             "botNumber": eventos,
             "codigoEvento": id
         }
-        console.log(evento)
+        // console.log(evento)
         SetEvento({
             ...evento,
             "botNumber": eventos != "0980008000" ? "0980008000" : "",
@@ -490,664 +496,503 @@ const EventoEspecifico = () => {
                 evento={evento}
             />
             {alert}
-            <div className='col-12'>
-                <ul className="nav nav-tabs">
-                    <li className="nav-item">
-                        <a className="nav-link active" data-toggle="tab" href="#evento">
-                            Evento
-                        </a>
-                    </li>
-                    <li className="nav-item ">
-                        <a className="nav-link " data-toggle="tab" href="#reportes">
-                            Reportes
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div className="tab-content col-sm-12">
-                <div className="tab-pane active" id="evento" >
-                    <div>
-
-
-                        <div className="col-12 d-flex mb-1 justify-content-end align-items-end" >
-                            <div>
+            <div className="container-fluid py-3">
+                {/* Main Tabs */}
+                <div className='col-12'>
+                    <ul className="nav nav-tabs">
+                        <li className="nav-item">
+                            <a className="nav-link active" data-toggle="tab" href="#evento">
+                                Evento
+                            </a>
+                        </li>
+                        <li className="nav-item ">
+                            <a className="nav-link " data-toggle="tab" href="#reportes">
+                                Reportes
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div className="tab-content col-sm-12">
+                    {/* Evento Tab */}
+                    <div className="tab-pane active" id="evento">
+                        {/* Top Actions */}
+                        <div className="row mb-3">
+                            <div className="col-12 d-flex justify-content-end gap-2">
                                 <button className="btn btn-primary" onClick={ObtenerContactosquecompraron}>
-                                    <i className="fa fa-user" ></i>
-                                    Contactos
+                                    <i className="fa fa-user"></i> Contactos
+                                </button>
+                                <button className="btn btn-primary" onClick={() => usehistory("/admin/Evento")}>
+                                    <i className="fa fa-arrow-left"></i> Regresar
+                                </button>
+                                <button className="btn btn-success" onClick={DecargarRegistors}>
+                                    <i className="fa fa-download"></i> Reporte
                                 </button>
                             </div>
-                            <div className="px-2">
-                                <button className="btn btn-primary"
-                                    onClick={() => usehistory.push("/admin/Evento")} >
-                                    <i className="fa fa-arrow-left" ></i>
-                                    Regresar
-                                </button>
-                            </div>
-                            <div className="px-2">
-                                <button className="btn btn-success"
-                                    onClick={DecargarRegistors} >
-                                    <i className="fa fa-download" ></i>
-                                    Reporte
-                                </button>
-                            </div>
-
                         </div>
-                        <div className="row  ">
-                            <div className=" col-12 col-md-6 col-lg-6 col-sm-6">
-
-
-                                <h5 style={{ fontSize: '1.5em' }}>
-                                    <div className="d-flex flex-column  ">
-
-                                    </div>
-                                    Evento {evento.nombreConcierto} <Badge bg={color[evento.estado ? evento.estado : "danger"]}>{evento.estado}</Badge>
-
-                                    {evento.botNumber != "0980008000" ? <button className="mx-2 btn btn-success" onClick={() => Actualizar(evento.botNumber)}>HABILITAR VENTA DE BOT</button> : <button onClick={() => Actualizar(evento.botNumber)} className="mx-2 btn btn-danger">DESABILITAR VENTA EN BOT </button>}
+                        {/* Evento Info */}
+                        <div className="row mb-3">
+                            <div className="col-md-6 mb-2">
+                                <h5>
+                                    Evento {evento.nombreConcierto}{" "}
+                                    <Badge bg={color[evento.estado ? evento.estado : "danger"]}>{evento.estado}</Badge>
+                                    {evento.botNumber !== "0980008000" ? (
+                                        <button className="mx-2 btn btn-success" onClick={() => Actualizar(evento.botNumber)}>
+                                            HABILITAR VENTA DE BOT
+                                        </button>
+                                    ) : (
+                                        <button className="mx-2 btn btn-danger" onClick={() => Actualizar(evento.botNumber)}>
+                                            DESABILITAR VENTA EN BOT
+                                        </button>
+                                    )}
                                 </h5>
                             </div>
-                            <div className=" col-12 col-md-6 col-lg-6 col-sm-6">
-
-
-                                <div className="d-flex justify-content-end  flex-row">
-                                    <button className="btn btn-warning txt-white" onClick={() => successAlert("ACTIVO")} >ACTIVAR </button>
-                                    <button className="btn btn-secondary txt-white mx-1" onClick={() => successAlert("PROCESO")} >PROCESO</button>
-                                    {evento.codigoEvento != "CANCELAR" ? <button className="btn btn-danger txt-white mx-1" onClick={() => successAlert("CANCELADO")} >CANCELAR</button> : ""}
-                                </div>
-                            </div>
-
-                        </div>
-                        <div className="conatiner row">
-
-                            <div className="row" >
-                                <div className="row mx-auto p-0">
-
-                                    <div className="col-12 mx-auto " id="evento4">
-                                        <PiecharViews
-                                            options={options}
-                                            datas={datas}
-                                        />
-                                    </div>
-                                </div>
-
-
-
+                            <div className="col-md-6 d-flex justify-content-end align-items-center gap-2">
+                                <button className="btn btn-warning txt-white" onClick={() => successAlert("ACTIVO")}>ACTIVAR</button>
+                                <button className="btn btn-secondary txt-white" onClick={() => successAlert("PROCESO")}>PROCESO</button>
+                                {evento.codigoEvento !== "CANCELAR" && (
+                                    <button className="btn btn-danger txt-white" onClick={() => successAlert("CANCELADO")}>CANCELAR</button>
+                                )}
                             </div>
                         </div>
+                        {/* Pie Chart */}
+                        <div className="row mb-3">
+                            <div className="col-12">
+                                <PiecharViews options={options} datas={datas} />
+                            </div>
+                        </div>
+                        {/* Sub Tabs */}
                         <div className="card">
-                            <div className='container-fluid row p-0'>
-                                <div className='col-12'>
-                                    <ul className="nav nav-tabs">
-                                        <li className="nav-item" data-toggle="tab" href="#filas">
-                                            <a className="nav-link active" >
-
-                                            </a>
-                                        </li>
+                            <div className="card-body p-0">
+                                <ul className="nav nav-tabs mb-3">
+                                    <li className="nav-item">
+                                        <a className="nav-link active" data-toggle="tab" href="#filas">Boletos</a>
+                                    </li>
+                                    {comentarios.length > 0 && (
                                         <li className="nav-item">
-                                            <a className="nav-link active" data-toggle="tab" href="#filas"
-                                            >Boletos</a>
+                                            <a className="nav-link" data-toggle="tab" href="#refrencia">Ref: Mesas</a>
                                         </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link " data-toggle="tab" href="#refrencia"
-                                            >Ref: Mesas </a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link " data-toggle="tab" href="#mesas"
-                                            >Canjeados</a>
-                                        </li>
-                                        <li className="nav-item d-none">
-                                            <a className="nav-link" data-toggle="tab" href="#correlativos">Valores variables </a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link " data-toggle="tab" href="#listas"
-                                            >Forma de pago</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#localidades">Localidades</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#info">Info</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="tab-content col-sm-12">
-                                    <div className="tab-pane active container-fluid " id="filas">
+                                    )}
+                                    <li className="nav-item">
+                                        <a className="nav-link" data-toggle="tab" href="#mesas">Canjeados</a>
+                                    </li>
+                                    <li className="nav-item d-none">
+                                        <a className="nav-link" data-toggle="tab" href="#correlativos">Valores variables</a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link" data-toggle="tab" href="#listas">Forma de pago</a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link" data-toggle="tab" href="#localidades">Localidades</a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link" data-toggle="tab" href="#info">Info</a>
+                                    </li>
+                                </ul>
+                                <div className="tab-content">
+                                    {/* Boletos */}
+                                    <div className="tab-pane fade show active" id="filas">
                                         <div className="card-header pb-2">
                                             <h5>Tickets</h5>
                                         </div>
-                                        <MaterialReactTable
-                                            columns={ticketsboletos}
-                                            data={tickes}
-
-                                            muiTableProps={{
-                                                sx: {
-                                                    tableLayout: 'flex'
-                                                }
-                                            }}
-                                            initialState={
-                                                {
+                                        {tickes && (
+                                            <MaterialReactTable
+                                                columns={ticketsboletos}
+                                                data={tickes}
+                                                muiTableProps={{ sx: { tableLayout: 'flex' } }}
+                                                initialState={{
                                                     columnVisibility: { ciudad: false, concierto: false, protocol: false, link: false, qr: false }
-                                                }
-                                            }
-                                            muiTableBodyProps={{
-                                                sx: { columnVisibility: { nombre: false } }
-                                            }}
-                                            renderDetailPanel={({ row }) => (
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex flex-column',
-                                                        margin: 'auto',
-                                                        gridTemplateColumns: '1fr 1fr',
-                                                        width: '100%',
-                                                    }}
-                                                >
-
-                                                    <Typography>ciudad : {row.original.ciudad} </Typography>
-                                                    <Typography>Concierto : {row.original.concierto} </Typography>
-                                                    <Typography>Protocolo : {row.original.protocolo} </Typography>
-                                                    <Typography>link : {row.original.link} </Typography>
-                                                    <Typography>QR : {row.original.qr} </Typography>
-
-
-                                                </Box>
-                                            )}
-
-                                            positionToolbarAlertBanner="bottom"
-                                            displayColumnDefOptions={{
-                                                'mrt-row-numbers': {
-                                                    enableHiding: true, //now row numbers are hidable too
-                                                },
-                                            }}
-                                            renderTopToolbarCustomActions={({ table }) => (
-                                                <Box
-                                                    sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
-                                                >
-                                                    {((tickes.length > 0 && (useradmin.perfil != 'suscriptores'))) ? <ExportToExcel apiData={tickes.map(e => {
-                                                        e.valor.replace(".", ",")
-                                                        return { ...e }
-                                                    })}
-                                                        fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY')} label={"Boletos"}
-                                                    /> : ""}
-                                                    <div className="m-2">
-                                                        {(useradmin.perfil == 'suscriptores') ? "" :
-                                                            <div className="d-flex">
-
-
-                                                                {
-                                                                    global.length > 0 ? [global[0]].map(ele => {
-                                                                        return (
-                                                                            <button className="btn  btn-success  btn-sm mx-1"
-
-                                                                                onClick={() =>
-                                                                                    descarga(ele.espacio, evento.nombreConcierto)
-                                                                                }>
-                                                                                <i className="bi bi-file-earmark-arrow-down-fill"></i>    {evento.nombreConcierto} Códigos
-                                                                            </button>
-                                                                        )
-                                                                    }) : ""}
-                                                                {
-                                                                    global.length > 0 ? global.map(ele => {
-                                                                        return (
-                                                                            <button className="btn  btn-success  btn-sm mx-1"
-
-                                                                                onClick={() =>
-                                                                                    descargas(ele.localidad, ele.nombreMesa)
-                                                                                }>
-                                                                                <i className="bi bi-file-earmark-arrow-down-fill"></i>    {ele.nombreMesa + "-" + ele.localidad} Códigos
-                                                                            </button>
-                                                                        )
-                                                                    }) : ""}
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                    <Button className="d-none"
-                                                        disabled={table.getRowModel().rows.length === 0}
-                                                        onClick={() => handleExportRows(table.getRowModel().rows)}
-                                                        startIcon={<FileDownloadIcon />}
-
-                                                    >
-                                                        Export Filas de página
-                                                    </Button>
-                                                    <Button className="d-none"
-                                                        disabled={
-                                                            !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-                                                        }
-                                                        onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-                                                        startIcon={<FileDownloadIcon />}
-
-                                                    >
-                                                        Export Fila Seleccionada
-                                                    </Button>
-                                                </Box>
-                                            )}
-                                            localization={MRT_Localization_ES}
-                                        />
+                                                }}
+                                                muiTableBodyProps={{
+                                                    sx: { columnVisibility: { nombre: false } }
+                                                }}
+                                                renderDetailPanel={({ row }) => (
+                                                    <Box sx={{ display: 'flex flex-column', margin: 'auto', gridTemplateColumns: '1fr 1fr', width: '100%' }}>
+                                                        <Typography>ciudad : {row.original.ciudad} </Typography>
+                                                        <Typography>Concierto : {row.original.concierto} </Typography>
+                                                        <Typography>Protocolo : {row.original.protocolo} </Typography>
+                                                        <Typography>link : {row.original.link} </Typography>
+                                                        <Typography>QR : {row.original.qr} </Typography>
+                                                    </Box>
+                                                )}
+                                                positionToolbarAlertBanner="bottom"
+                                                displayColumnDefOptions={{
+                                                    'mrt-row-numbers': { enableHiding: true }
+                                                }}
+                                                renderTopToolbarCustomActions={({ table }) => (
+                                                    <Box sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}>
+                                                        {(tickes.length > 0 && (useradmin.perfil !== 'suscriptores')) && (
+                                                            <ExportToExcel
+                                                                apiData={tickes.map(e => {
+                                                                    e.valor.replace(".", ",");
+                                                                    return { ...e };
+                                                                })}
+                                                                fileName={"Boletos: " + evento.nombreConcierto + " " + moment().format('MM/DD/YYYY')}
+                                                                label={"Boletos"}
+                                                            />
+                                                        )}
+                                                        <div className="m-2">
+                                                            {(useradmin.perfil === 'suscriptores') ? "" : (
+                                                                <div className="d-flex">
+                                                                    {global.length > 0 && [global[0]].map(ele => (
+                                                                        <button className="btn btn-success btn-sm mx-1"
+                                                                            key={"codigos-" + ele.espacio}
+                                                                            onClick={() => descarga(ele.espacio, evento.nombreConcierto)}>
+                                                                            <i className="bi bi-file-earmark-arrow-down-fill"></i> {evento.nombreConcierto} Códigos
+                                                                        </button>
+                                                                    ))}
+                                                                    {global.length > 0 && global.map(ele => (
+                                                                        <button className="btn btn-success btn-sm mx-1"
+                                                                            key={"codigos-" + ele.localidad}
+                                                                            onClick={() => descargas(ele.localidad, ele.nombreMesa)}>
+                                                                            <i className="bi bi-file-earmark-arrow-down-fill"></i> {ele.nombreMesa + "-" + ele.localidad} Códigos
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                        <Button className="d-none"
+                                                            disabled={table.getRowModel().rows.length === 0}
+                                                            onClick={() => handleExportRows(table.getRowModel().rows)}
+                                                            startIcon={<FileDownloadIcon />}
+                                                        >
+                                                            Export Filas de página
+                                                        </Button>
+                                                        <Button className="d-none"
+                                                            disabled={
+                                                                !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
+                                                            }
+                                                            onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
+                                                            startIcon={<FileDownloadIcon />}
+                                                        >
+                                                            Export Fila Seleccionada
+                                                        </Button>
+                                                    </Box>
+                                                )}
+                                                localization={MRT_Localization_ES}
+                                            />
+                                        )}
                                     </div>
-                                    <div className="tab-pane  container-fluid " id="refrencia">
-                                        <MaterialReactTable
-                                            columns={[
-                                                { accessorKey: 'id_registraCompra', header: 'Sugerencia' },
-                                                { accessorKey: 'Localidad', header: 'Localidad' },
-                                                { accessorKey: 'fila', header: 'Fila' },
-                                                { accessorKey: 'silla', header: 'Silla' },
-                                                { accessorKey: 'estado', header: 'Estado' },
-                                                { accessorKey: 'cedula', header: 'Cédula' },
-                                                { accessorKey: 'mesa', header: 'Mesa' },
-                                            ]}
-                                            initialState={{
-                                                density: 'compact', // Configuración inicial de densidad
-                                            }}
-                                            data={comentarios}
-                                        />
+                                    {/* Ref: Mesas */}
+                                    <div className="tab-pane fade" id="refrencia">
+                                        {comentarios.length > 0 && (
+                                            <MaterialReactTable
+                                                columns={[
+                                                    { accessorKey: 'id_registraCompra', header: 'Sugerencia' },
+                                                    { accessorKey: 'Localidad', header: 'Localidad' },
+                                                    { accessorKey: 'fila', header: 'Fila' },
+                                                    { accessorKey: 'silla', header: 'Silla' },
+                                                    { accessorKey: 'estado', header: 'Estado' },
+                                                    { accessorKey: 'cedula', header: 'Cédula' },
+                                                    { accessorKey: 'mesa', header: 'Mesa' },
+                                                ]}
+                                                initialState={{ density: 'compact' }}
+                                                data={comentarios}
+                                            />
+                                        )}
                                     </div>
-
-                                    <div className="tab-pane  container-fluid " id="mesas">
-                                        <ExtendedForms
-                                            data={Object.values(groupedData)}
-                                        />
-                                        <table class="table text-end d-none">
+                                    {/* Canjeados */}
+                                    <div className="tab-pane fade" id="mesas">
+                                        <ExtendedForms data={Object.values(groupedData)} />
+                                        <table className="table text-end d-none">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" >Localidad</th>
-                                                    <th scope="col">Canjeado </th>
+                                                    <th scope="col">Localidad</th>
+                                                    <th scope="col">Canjeado</th>
                                                     <th scope="col">No Canjeado</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {report.canje.length > 0 ?
-
-                                                    Object.values(groupedData).map((elem, ind) => {
-                                                        return (
-                                                            <tr key={ind}>
-
-                                                                <td>{elem.localidad}</td>
-                                                                <th >{elem.canjeado}</th>
-                                                                <td>{elem.noCanjeado}</td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                    : ""}
+                                                {report.canje.length > 0 &&
+                                                    Object.values(groupedData).map((elem, ind) => (
+                                                        <tr key={ind}>
+                                                            <td>{elem.localidad}</td>
+                                                            <th>{elem.canjeado}</th>
+                                                            <td>{elem.noCanjeado}</td>
+                                                        </tr>
+                                                    ))}
                                                 <th>Total:</th>
-                                                <th> {report.canje.length > 0 ? Object.values(groupedData).reduce((acc, elem) => acc + parseFloat(elem.canjeado), 0) : 0}</th>
-                                                <th> {report.canje.length > 0 ? Object.values(groupedData).reduce((acc, elem) => acc + parseFloat(elem.noCanjeado), 0) : 0}</th>
+                                                <th>{report.canje.length > 0 ? Object.values(groupedData).reduce((acc, elem) => acc + parseFloat(elem.canjeado), 0) : 0}</th>
+                                                <th>{report.canje.length > 0 ? Object.values(groupedData).reduce((acc, elem) => acc + parseFloat(elem.noCanjeado), 0) : 0}</th>
                                             </tbody>
                                         </table>
-
                                     </div>
-                                    <div className="tab-pane  container-fluid " id="correlativos">
-                                        <table class="table text-center">
+                                    {/* Correlativos */}
+                                    <div className="tab-pane fade" id="correlativos">
+                                        <table className="table text-center">
                                             <thead>
                                                 <tr>
-
-                                                    <th scope="col">Total </th>
+                                                    <th scope="col">Total</th>
                                                     <th scope="col">Cantidad</th>
                                                     <th scope="col">Localidad</th>
                                                     <th scope="col">Precio</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {report.boleto.length > 0 ?
-                                                    report.boleto.map((elem, ind) => {
-                                                        return (
-                                                            <tr key={ind}>
-                                                                <th >${elem.total}</th>
-                                                                <td>{elem.boleto}</td>
-                                                                <td>{elem.localidad}</td>
-                                                                <td>{elem.valor}</td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                    : ""}
-
-
+                                                {report.boleto.length > 0 &&
+                                                    report.boleto.map((elem, ind) => (
+                                                        <tr key={ind}>
+                                                            <th>${elem.total}</th>
+                                                            <td>{elem.boleto}</td>
+                                                            <td>{elem.localidad}</td>
+                                                            <td>{elem.valor}</td>
+                                                        </tr>
+                                                    ))}
                                             </tbody>
                                         </table>
-
                                     </div>
-
-
-                                    <div className="tab-pane  container-fluid " id="listas">
-                                        <ExtendedForms
-                                            data={report.valores}
-                                        />
+                                    {/* Forma de pago */}
+                                    <div className="tab-pane fade" id="listas">
+                                        <ExtendedForms data={report.valores} />
                                     </div>
-                                    <div className="tab-pane container-fluid" id="localidades">
-                                        <div>
-                                            <button onClick={() => Evento(activeTab)} className="btn btn-success">Actualizar </button>
+                                    {/* Localidades */}
+                                    <div className="tab-pane fade" id="localidades">
+                                        <div className="mb-2">
+                                            <button onClick={() => Evento(activeTab)} className="btn btn-success">Actualizar</button>
                                         </div>
-                                        {/* Nav Tabs */}
-                                        <ul className="nav nav-tabs">
-                                            <liv className='nav-item'>
-
-                                                <a className={`nav-link ${activeTab === "PRECIOS" ? "active" : ""}`} onClick={() => setActiveTab("PRECIOS")} href="#PRECIOS">
+                                        {/* Localidades Nav Tabs */}
+                                        <ul className="nav nav-tabs mb-3">
+                                            <li className="nav-item">
+                                                <a className={`nav-link ${activeTab === "PRECIOS" ? "active" : ""}`} onClick={() => setActiveTab("PRECIOS")}>
                                                     PRECIOS
                                                 </a>
-                                            </liv>
-                                            {global.map((el, ind) => (
-                                                <li className="nav-item" key={ind}>
-                                                    <a
-                                                        className={`nav-link ${activeTab === el.nombreMesa ? "active" : ""}`}
-                                                        onClick={() => setActiveTab(el.nombreMesa)}
-
-                                                        href={"#" + el.nombreMesa} // No es necesario en React pero puedes usarlo si lo necesitas
-                                                    >
-                                                        {el.nombreMesa}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                            <liv className='nav-item'>
-
-                                                <a className="nav-link disponible" onClick={() => setActiveTab("disponible")} href="#disponible">
+                                            </li>
+                                            {global.map((el, ind) =>
+                                                el.typo !== "correlativo" && (
+                                                    <li className="nav-item" key={ind}>
+                                                        <a
+                                                            className={`nav-link ${activeTab === el.nombreMesa ? "active" : ""}`}
+                                                            onClick={() => setActiveTab(el.nombreMesa)}
+                                                        >
+                                                            {el.nombreMesa}
+                                                        </a>
+                                                    </li>
+                                                )
+                                            )}
+                                            <li className="nav-item">
+                                                <a className={`nav-link ${activeTab === "disponible" ? "active" : ""}`} onClick={() => setActiveTab("disponible")}>
                                                     DISPONIBILIDAD
                                                 </a>
-                                            </liv>
+                                            </li>
                                         </ul>
-
-                                        {/* Tab Content */}
-                                        <div className="tab-content col-sm-12">
-
-                                            <div
-
-                                                className={`tab-pane ${activeTab === "PRECIOS" ? "active" : ""}`}
-                                                id="PRECIOS"
-
-                                            >
-                                                <div className=" d-flex flex-column">
-
-                                                    <Accordion >
-                                                        {precios.length > 0 ?
-                                                            precios.map((e, i) => {
-                                                                return (
-                                                                    <Accordion.Item eventKey={i} key={i}>
-                                                                        <Accordion.Header>Localidad: {e.localidad}</Accordion.Header>
-                                                                        <Accordion.Body>
-                                                                            <div className="d-flex flex-row  justify-content-between">
-                                                                                <div className="d-flex flex-column">
-                                                                                    <div>
-                                                                                        <h5 >
-                                                                                            Precio normal : {e.precio_normal}
-                                                                                        </h5>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <h5>
-                                                                                            Precio discapacida : {e.precio_discapacidad}
-                                                                                        </h5>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <h5>
-                                                                                            Precio TC/TD : {e.precio_tarjeta}
-                                                                                        </h5>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <h5>
-                                                                                            Precio Descuento : {e.precio_descuento}
-                                                                                        </h5>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <h5>
-                                                                                            Habilitar Cortesia : {e.habilitar_cortesia}
-                                                                                        </h5>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="d-flex flex-column ">
-                                                                                    {(useradmin.perfil == 'suscriptores') ? "" : <button className="btn btn-primary"
-                                                                                        onClick={() => Eliminar(e)}
-                                                                                    >Editar </button>}
-                                                                                </div>
+                                        {/* Localidades Tab Content */}
+                                        <div className="tab-content">
+                                            {/* PRECIOS */}
+                                            <div className={`tab-pane fade ${activeTab === "PRECIOS" ? "show active" : ""}`} id="PRECIOS">
+                                                <div className="d-flex flex-column">
+                                                    <Accordion>
+                                                        {precios.length > 0 &&
+                                                            precios.map((e, i) => (
+                                                                <Accordion.Item eventKey={i} key={i}>
+                                                                    <Accordion.Header>Localidad: {e.localidad}</Accordion.Header>
+                                                                    <Accordion.Body>
+                                                                        <div className="d-flex flex-row justify-content-between">
+                                                                            <div className="d-flex flex-column">
+                                                                                <h5>Precio normal : {e.precio_normal}</h5>
+                                                                                <h5>Precio discapacida : {e.precio_discapacidad}</h5>
+                                                                                <h5>Precio TC/TD : {e.precio_tarjeta}</h5>
+                                                                                <h5>Precio Descuento : {e.precio_descuento}</h5>
+                                                                                <h5>Habilitar Cortesia : {e.habilitar_cortesia}</h5>
                                                                             </div>
-
-
-                                                                        </Accordion.Body>
-                                                                    </Accordion.Item>
-
-                                                                )
-                                                            })
-                                                            : ''
-
-                                                        }
-
+                                                                            <div className="d-flex flex-column">
+                                                                                {useradmin.perfil !== 'suscriptores' && (
+                                                                                    <button className="btn btn-primary" onClick={() => Eliminar(e)}>
+                                                                                        Editar
+                                                                                    </button>
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    </Accordion.Body>
+                                                                </Accordion.Item>
+                                                            ))}
                                                     </Accordion>
-
                                                 </div>
                                             </div>
+                                            {/* Localidad Mesas/Fila/Correlativo */}
                                             {espacio.map((el, ind) => (
                                                 <div
                                                     key={ind}
-                                                    className={`tab-pane ${activeTab === el.nombre ? "active" : ""}`}
+                                                    className={`tab-pane fade ${activeTab === el.nombre ? "show active" : ""}`}
                                                     id={el.nombre}
                                                 >
-
-                                                    {el.typo == 'mesa' ?
-                                                        /*<MesasCanvas filas={el.localidad} />*/
-                                                        el.localidad.map((e, index) => {
-                                                            return (
-
-                                                                <div className='d-flex  PX-1 align-items-center' key={index}>
-
-                                                                    <div className='d-flex  pb-2' >
-
-                                                                        {e.Mesas.length > 0 ?
-
-                                                                            e.Mesas.map((e, i) => {
-                                                                                return (
-                                                                                    <div key={i}>
-                                                                                        <MesasViews
-                                                                                            setMapa={() => Evento(activeTab)}
-                                                                                            status={e.asientos.length}
-                                                                                            text={e.mesa}
-                                                                                            list={e.asientos}
-                                                                                        />
-                                                                                    </div>
-                                                                                )
-                                                                            }) : ''}
-                                                                    </div>
+                                                    {el.typo === 'mesa' &&
+                                                        el.localidad.map((e, index) => (
+                                                            <div className="d-flex align-items-center mb-2" key={index}>
+                                                                <div className="d-flex pb-2">
+                                                                    {e.Mesas.length > 0 &&
+                                                                        e.Mesas.map((mesa, i) => (
+                                                                            <div key={i}>
+                                                                                <MesasViews
+                                                                                    setMapa={() => Evento(activeTab)}
+                                                                                    status={mesa.asientos.length}
+                                                                                    text={mesa.mesa}
+                                                                                    list={mesa.asientos}
+                                                                                />
+                                                                            </div>
+                                                                        ))}
                                                                 </div>
-
-                                                            )
-
-                                                        }) : ''}
-                                                    {
-                                                        el.typo == 'fila' ? el.localidad.map((e, i) => {
-                                                            {
-                                                                return (
-
-                                                                    <div className='d-flex flex-row justify-content-around  px-3 p-1 ' key={"lista" + i} >
-                                                                        <span className=" " disabled >
-                                                                            <div className="d-flex   mx-1 bg-primary text-white justify-content-center align-items-center rounded-5  " style={{ height: '25px', width: '25px' }} >
-                                                                                <div className="d-flex justify-content-center">
-                                                                                    <span style={{ fontSize: '0.5em' }}>    {e.fila} </span>
+                                                            </div>
+                                                        ))}
+                                                    {el.typo === 'fila' &&
+                                                        el.localidad.map((e, i) => (
+                                                            <div className="d-flex flex-row justify-content-around px-3 p-1" key={"lista" + i}>
+                                                                <span>
+                                                                    <div className="d-flex mx-1 bg-primary text-white justify-content-center align-items-center rounded-5" style={{ height: '25px', width: '25px' }}>
+                                                                        <span style={{ fontSize: '0.5em' }}>{e.fila}</span>
+                                                                    </div>
+                                                                </span>
+                                                                <div className="d-flex ml-3 flex-row px-1 justify-content-lg-center align-items-stretch" style={{ width: '100%' }}>
+                                                                    {e.asientos.map((silla, index) => {
+                                                                        let numero = String(silla.silla).split("-")[2];
+                                                                        return (
+                                                                            <div key={"silla" + index} id={silla.idsilla}
+                                                                                className={silla.silla + ' d-flex rounded-5 sillasfila text-center justify-content-center align-items-center'}
+                                                                                style={{ height: '20px', width: '20px', marginLeft: '1px' }}>
+                                                                                <div className="px-3 d-flex text-white justify-content-center">
+                                                                                    <span style={{ fontSize: '0.5em' }}>{numero}</span>
                                                                                 </div>
                                                                             </div>
-                                                                        </span>
-                                                                        <div className=' d-flex ml-3 flex-row px-1 justify-content-lg-center  align-items-stretch ' style={{ width: '100%' }}>
-                                                                            {e.asientos.map((silla, index) => {
-                                                                                let numero = String(silla.silla).split("-")[2]
-                                                                                return (
-                                                                                    <div key={"silla" + index} id={silla.idsilla}
-                                                                                        className={silla.silla + '  d-flex   rounded-5 sillasfila text-center  justify-content-center align-items-center '}
-                                                                                        style={{ height: '20px', width: '20px', marginLeft: '1px', }}
-
-                                                                                    >
-                                                                                        <div className={' px-3 d-flex   text-white justify-content-center  '} >
-                                                                                            <div className="d-flex justify-content-center">
-                                                                                                <span style={{ fontSize: '0.5em' }}> {numero} </span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                )
-                                                                            })}
-                                                                        </div>
-
-                                                                    </div>
-                                                                )
-                                                            }
-                                                        }) : ''
-
-                                                    }
-                                                    {
-                                                        el.typo == 'correlativo' ? <div>Aforo {el.localidad[0].total}</div> : ''
-                                                    }
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    {el.typo === 'correlativo' && <div>Aforo {el.localidad[0].total}</div>}
                                                 </div>
                                             ))}
-
-                                            <div
-
-                                                className={`tab-pane ${activeTab === "disponible" ? "active" : ""}`}
-                                                id="disponible"
-
-                                            >
+                                            {/* DISPONIBILIDAD */}
+                                            <div className={`tab-pane fade ${activeTab === "disponible" ? "show active" : ""}`} id="disponible">
                                                 <div className="row">
-                                                    <table class="table table-striped">
+                                                    <table className="table table-striped">
                                                         <thead>
                                                             <tr>
-                                                                <th >Localidad</th>
-                                                                <th >Disponible</th>
+                                                                <th>Localidad</th>
+                                                                <th>Disponible</th>
                                                                 <th>Ocupado</th>
                                                                 <th>Total</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {dispoible.length > 0 ? dispoible.map(e => {
-                                                                return (
-                                                                    <tr>
-
-                                                                        <td>{e.nombreMesa}</td>
-                                                                        <td>{e.cantidad}</td>
-                                                                        <td>{parseInt(global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad) - parseInt(e.cantidad)}</td>
-                                                                        <td>{global.find(iten => iten.nombreMesa == e.nombreMesa).cantidad}</td>
-                                                                    </tr>
-                                                                )
-                                                            }) : <tr>
-
-                                                                <td></td>
-                                                                <td></td>
-                                                            </tr>}
-
-
+                                                            {dispoible.length > 0 ? dispoible.map(e => (
+                                                                <tr key={e.nombreMesa}>
+                                                                    <td>{e.nombreMesa}</td>
+                                                                    <td>{e.cantidad}</td>
+                                                                    <td>{parseInt(global.find(iten => iten.nombreMesa === e.nombreMesa).cantidad) - parseInt(e.cantidad)}</td>
+                                                                    <td>{global.find(iten => iten.nombreMesa === e.nombreMesa).cantidad}</td>
+                                                                </tr>
+                                                            )) : (
+                                                                <tr>
+                                                                    <td colSpan={4}></td>
+                                                                </tr>
+                                                            )}
                                                         </tbody>
                                                     </table>
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className=" tab-pane " id="info">
-                                        <div className="col-12 col-md-6 col-lg-4 col-xl-4 mx-auto my-5" id="evento2">
-                                            <a href="#" onClick={() => setOpen(!open)}>
-                                                <div className="container rounded-7 shadow-md px-0">
-                                                    <img src={evento.imagenConcierto ? evento.imagenConcierto : ''} className="img-fluid rounded-7 shadow-md " alt="" />
-                                                </div>
-                                            </a>
-                                            <Collapse in={false} >
-                                                <div className=" container mt-4 px-0" id="collapseExample2">
-                                                    <div className="card card-body rounded-7 py-5">
-                                                        <div className="container">
-                                                            <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"> {evento.nombreConcierto}</span> </h1>
-                                                            <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto} </span></h4>
-                                                            <div className="col-12 border border-bottom my-3"></div>
-                                                            <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> {evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
-                                                            <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
-                                                            <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
-                                                            <div className="" >
-                                                                <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil == 'suscriptores') ? "" : setShow(true)} >Editar</button>
+                                    {/* Info */}
+                                    <div className="tab-pane fade" id="info">
+                                        <div className="row justify-content-center my-5">
+                                            <div className="col-12 col-md-6 col-lg-4 col-xl-4">
+                                                <a href="#" onClick={() => setOpen(!open)}>
+                                                    <div className="container rounded-7 shadow-md px-0">
+                                                        <img src={evento.imagenConcierto ? evento.imagenConcierto : ''} className="img-fluid rounded-7 shadow-md" alt="" />
+                                                    </div>
+                                                </a>
+                                                <Collapse in={false}>
+                                                    <div className="container mt-4 px-0" id="collapseExample2">
+                                                        <div className="card card-body rounded-7 py-5">
+                                                            <div className="container">
+                                                                <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">{evento.nombreConcierto}</span></h1>
+                                                                <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto}</span></h4>
+                                                                <div className="col-12 border border-bottom my-3"></div>
+                                                                <p style={{ fontSize: '1.2em' }}><b>Fecha:</b> <span id="fechaEvento">{evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
+                                                                <p style={{ fontSize: '1.2em' }}><b>Lugar:</b> <span id="lugarEvento">{evento.lugarConcierto}</span></p>
+                                                                <p style={{ fontSize: '1.2em' }}><b>Hora:</b> <span>{evento.horaConcierto}</span></p>
+                                                                <div>
+                                                                    <button className="btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil === 'suscriptores') ? "" : setShow(true)}>Editar</button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </Collapse>
-
-                                        </div>
-                                        <div className=" container mt-4 px-0" id="collapseExample2">
-                                            <div className="card card-body card row d-flex flex-row card-body rounded-7 py-5">
-                                                <div className="container col-12 col-md-6">
-                                                    <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold"> {evento.nombreConcierto}</span> </h1>
-                                                    <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto} </span></h4>
-                                                    <div className="col-12 border border-bottom my-3"></div>
-                                                    <p style={{ fontSize: '1.2em' }}><b>Fecha:</b><span id="fechaEvento"> {evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
-                                                    <p style={{ fontSize: '1.2em' }}><b>Lugar:</b><span id="lugarEvento">{evento.lugarConcierto}</span></p>
-                                                    <p style={{ fontSize: '1.2em' }}><b>Hora:</b><span >{evento.horaConcierto}</span></p>
-                                                    <div className="" >
-                                                        <button className=" btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil == 'suscriptores') ? "" : setShow(true)} >Editar</button>
+                                                </Collapse>
+                                            </div>
+                                            <div className="col-12 col-md-6">
+                                                <div className="container mt-4 px-0">
+                                                    <div className="card card-body row d-flex flex-row rounded-7 py-5">
+                                                        <div className="container col-12 col-md-6">
+                                                            <h1 style={{ fontSize: '1.4em' }}><span id="artista" className="fw-bold">{evento.nombreConcierto}</span></h1>
+                                                            <h4 style={{ fontSize: '1.4em' }}><span id="tour">{evento.descripcionConcierto}</span></h4>
+                                                            <div className="col-12 border border-bottom my-3"></div>
+                                                            <p style={{ fontSize: '1.2em' }}><b>Fecha:</b> <span id="fechaEvento">{evento.fechaConcierto + ' ' + evento.fechaConcierto}</span></p>
+                                                            <p style={{ fontSize: '1.2em' }}><b>Lugar:</b> <span id="lugarEvento">{evento.lugarConcierto}</span></p>
+                                                            <p style={{ fontSize: '1.2em' }}><b>Hora:</b> <span>{evento.horaConcierto}</span></p>
+                                                            <div></div>
+                                                            <button className="btn btn-primary fw-bold px-3 py-2 rounded-6" onClick={() => (useradmin.perfil === 'suscriptores') ? "" : setShow(true)}>Editar</button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="container col-12 col-md-6 rounded-7  px-0">
-                                                    <img loading="lazy" src={evento.mapaConcierto} className="img-fluid rounded-7 shadow-md " style={{
-                                                        height: "350px"
-                                                    }} alt="" />
+                                                    <div className="container col-12 col-md-6 rounded-7 px-0">
+                                                        <img loading="lazy" src={evento.mapaConcierto} className="img-fluid rounded-7 shadow-md" style={{ height: "350px" }} alt="" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
-
                         </div>
                     </div>
-                </div>
-                <div className="tab-pane " id="reportes">
-                    <div class="ht-theme-main-dark-auto">
 
-                    </div>
-
-                    <div className="row">
-
-
-                        <div className=" col-12 p-2 ">
-                            <ExtendedForms
-                                data={report.valores}
-                            />
-
-                        </div>
-                        <div className="col-12 p-2 text-center">
-                            {report.FormaPago.length == 0 ? "" : <HotTableView
-                                data={report.FormaPago}
-                                preventOverflow="horizontal"
-                                rowHeaders={true}
-                                colHeaders={['forma', 'localidad', 'cantidad', 'comision_total']}
-                                nestedRows={true}
-                                contextMenu={true}
-                                bindRowsWithHeaders={true}
-                                autoWrapRow={true}
-                                autoWrapCol={true}
-                                height="auto"
-                                licenseKey="non-commercial-and-evaluation"
-
-                            />}
-                        </div>
-                        <div className=" text-center">
-                            {report.pagos.length == 0 ? "" : <HotTableView
-                                data={report.pagos}
-                                preventOverflow="horizontal"
-                                rowHeaders={true}
-                                colHeaders={['LOCALIDADES', 'LOCALIDAD', 'VALOR U.', 'CANTIDAD', 'COMISION TOTAL', 'TOTAL']}
-                                nestedRows={true}
-                                contextMenu={true}
-                                bindRowsWithHeaders={true}
-                                autoWrapRow={true}
-                                autoWrapCol={true}
-                                height="auto"
-                                licenseKey="non-commercial-and-evaluation"
-
-                            />}
-                        </div>
-                        <div className="col-12 p-2 d-none  text-center">
-                            <ExtendedForms
-                                data={report.localidades}
-
-                            />
-                        </div>
-
-                        <div className="col-6">
-
+                    {/* Reportes Tab */}
+                    <div className="tab-pane " id="reportes">
+                        <div className="ht-theme-main-dark-auto"></div>
+                        <div className="row">
+                            <div className="col-12 p-2">
+                                <ExtendedForms data={report.valores} />
+                            </div>
+                            <div className="col-12 p-2 text-center">
+                                {report.FormaPago.length > 0 && (
+                                    <HotTableView
+                                        data={report.FormaPago}
+                                        preventOverflow="horizontal"
+                                        rowHeaders={true}
+                                        colHeaders={['forma', 'localidad', 'cantidad', 'comision_total']}
+                                        nestedRows={true}
+                                        contextMenu={true}
+                                        bindRowsWithHeaders={true}
+                                        autoWrapRow={true}
+                                        autoWrapCol={true}
+                                        height="auto"
+                                        licenseKey="non-commercial-and-evaluation"
+                                    />
+                                )}
+                            </div>
+                            <div className="col-12 text-center">
+                                {report.pagos.length > 0 && (
+                                    <HotTableView
+                                        data={report.pagos}
+                                        preventOverflow="horizontal"
+                                        rowHeaders={true}
+                                        colHeaders={['LOCALIDADES', 'LOCALIDAD', 'VALOR U.', 'CANTIDAD', 'COMISION TOTAL', 'TOTAL']}
+                                        nestedRows={true}
+                                        contextMenu={true}
+                                        bindRowsWithHeaders={true}
+                                        autoWrapRow={true}
+                                        autoWrapCol={true}
+                                        height="auto"
+                                        licenseKey="non-commercial-and-evaluation"
+                                    />
+                                )}
+                            </div>
+                            <div className="col-12 p-2 d-none text-center">
+                                <ExtendedForms data={report.localidades} />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </>
-    )
+    );
 
 
 }

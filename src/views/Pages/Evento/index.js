@@ -10,7 +10,7 @@ import { ListarEventos } from "utils/Querypanel.js";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { Columnevento } from "utils/ColumnTabla";
 import { EliminarEvento } from "utils/Querypanel";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import 'moment-timezone'
@@ -23,14 +23,24 @@ import { ObtenerEveNtis } from "StoreRedux/Slice/mapaLocalSlice";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
-  let history = useHistory()
+  let history = useNavigate()
   let useradmin = clienteInfo()
   let dispatch = useDispatch()
   let eventoslista = useSelector(state => state.mapaLocalSlice.eventos)
   const [show, setShow] = useState(false)
  //const [eventoslist, setEventos] = useState([])
   const [alert, setAlert] = React.useState(null)
-  const sorter = (a, b) => a.id > b.id || new Date(a.fechaConcierto) < new Date(b.fechaConcierto) ? 1 : -1;
+  const sorter = (a, b) => {
+    // Prioriza eventos con estado 'ACTIVO' (sin importar mayúsculas/minúsculas)
+    const estadoA = (a.estado || '').toUpperCase();
+    const estadoB = (b.estado || '').toUpperCase();
+
+    if (estadoA === 'ACTIVO' && estadoB !== 'ACTIVO') return -1;
+    if (estadoA !== 'ACTIVO' && estadoB === 'ACTIVO') return 1;
+    const fechaA = new Date(a.fechaConcierto);
+    const fechaB = new Date(b.fechaConcierto);
+    return fechaB - fechaA;
+  };
 
   function nuevoevento() {
     if (useradmin.perfil == 'suscriptores') return
@@ -43,6 +53,7 @@ const EventosViews = () => {
       const cancelados = await EventosActivos("CANCELADO")
       if (lista.success) {
        // setEventos([...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data])
+        console.log([...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data].sort(sorter))
         dispatch(ObtenerEveNtis({ eventos: [...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data].sort(sorter) }))
       }
     } catch (error) {
@@ -299,7 +310,7 @@ const EventosViews = () => {
                     <IconButton
                       color="primary"
                       aria-label="Ver"
-                      onClick={() => history.push("/admin/Evento/" + row.original.codigoEvento)}
+                      onClick={() => history("/admin/Evento/" + row.original.codigoEvento)}
                     ><Visibility />
                     </IconButton>
                   </Box>

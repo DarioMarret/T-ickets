@@ -68,9 +68,7 @@ export default function FacturaView() {
                         </div>
                     </div>
                 </div>
-
             </div>
-
             <ModalFacturacionView
             show={show}
             setShow={setShow}

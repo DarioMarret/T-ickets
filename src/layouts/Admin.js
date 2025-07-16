@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 // react-bootstrap components
 import "../assets/css/animate.css";
 import "../assets/css/bootstrap.css";
@@ -22,41 +22,47 @@ import { useEffect } from "react";
 
 function Admin() {
   let user = clienteInfo()
+  const history = useNavigate()
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("black");
   const getRoutes = (routes) => {
-  
     return routes.map((prop, key) => {
-      if (prop.permiso != null && prop.permiso.every(e => e != user.perfil)) {
-        return null
+
+      if (prop.permiso != null && prop.permiso.every(e => e !== user.perfil)) {
+        return null;
       }
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
       if (prop.layout === "/admin") {
+        const Component = prop.component; // 🧠 Capitalizar para JSX
         return (
           <Route
-            path={prop.layout + prop.path}
+            path={prop.path}
             key={key}
-            component={prop.component}
+            element={<Component />}
           />
         );
-      } else {
-        return null;
       }
+      return null;
     });
   };
-  useEffect(()=>{
-    //document.addEventListener('DOMContentLoaded', function () {
-      const superpuesto = document.getElementById('superpuesto');
 
-          superpuesto.classList.add("d-none")
-       
-  
-  },[])
+  useEffect(() => {
+    //document.addEventListener('DOMContentLoaded', function () {
+    const superpuesto = document.getElementById('superpuesto');
+
+    superpuesto.classList.add("d-none")
+    console.log(user)
+    if(user==null){
+      console.log(user)
+      history("/auth/login", { replace: true })
+    }
+
+  }, [])
   return (
     <>
-      <div className="wrapper">
+      {user ? <div className="wrapper">
         <Sidebar
           routes={routes}
           image={sidebarImage}
@@ -66,9 +72,9 @@ function Admin() {
         <div className="main-panel">
           <AdminNavbar />
           <div className="content">
-            <Switch>
+            <Routes>
               {getRoutes(routes)}
-            </Switch>
+            </Routes>
           </div>
           {/*<AdminFooter />*/}
           <div
@@ -78,7 +84,7 @@ function Admin() {
             }
           />
         </div>
-      </div>
+      </div> : ""}
       {/*<FixedPlugin
         setSidebarImageParent={(value) => setSidebarImage(value)}
         sidebarDefaultImage={sidebarImage}

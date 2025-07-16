@@ -434,7 +434,7 @@ function MesasViews({ text, status, list, setMapa }) {
 
             />;
           default:
-            return <MesadiesView text={text} list={list}
+            return <MesacerView text={text} list={list}
               obtenerid={obtenerid}
               succesSilla={succesSilla}
               succesLimit={succesLimit}

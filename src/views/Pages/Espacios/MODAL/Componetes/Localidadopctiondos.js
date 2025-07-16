@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { object } from "prop-types";
 import { color } from "@mui/system";
+import { boleteriaAxios } from "utils/index";
 
 const TabdosView = (props) => {
     const { datalocalidad, SetDataloca, localidanames } = props

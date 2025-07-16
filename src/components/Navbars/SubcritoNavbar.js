@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router";
 // react-bootstrap components
 import {
   Badge,
@@ -19,7 +18,6 @@ import {
 } from "react-bootstrap";
 
 function SubcritorNavbar() {
-  const history = useHistory()
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   return (
     <>

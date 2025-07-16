@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { useHistory, useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { GetMetodo, GetValores, getVerTienda, LimpiarLocalStore, Limpiarseleccion, Limpiarselecciondos, TiendaIten, TotalSelecion } from "utils/CarritoLocalStorang";
 import { AxioBoleteria, Axiosmikroserdos, mikroAxios } from "utils/index";

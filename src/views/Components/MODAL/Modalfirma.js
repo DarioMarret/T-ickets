@@ -9,12 +9,13 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { Boleteria_Boletos, Boleteria_voucher } from "utils/EventosQuery/index";
 import { clienteInfo, getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { boleteriaAxios } from "utils/index";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
+
 import { Emailcontec, formatearNumero } from "utils/Emails/index";
 import { buscarcliente } from "utils/Querypanelsigui";
 export default function ModalFirma() {
     let usedispatch = useDispatch()
-    let history = useHistory()
+    let history = useNavigate()
     const [files, setFiles] = useState([]);
     let detallid = JSON.parse(sessionStorage.getItem("Detalleuid"))
     let modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -238,7 +239,7 @@ export default function ModalFirma() {
                 }).then(oupt => {
                     sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
                     cerrar()
-                    history.push("/admin/suscritor/" + oupt.data.id + "")
+                    history("/admin/suscritor/" + oupt.data.id + "")
                 }
                 ).catch(err => {
                 })

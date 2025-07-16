@@ -37,7 +37,7 @@ export const EliminarEspacios = async (parms) => {
         "id_usuario": parseInt(idop),
         "id_operador": parseInt(ids),
     }
-    const { data } = await axios.delete("https://api.t-ickets.com/ms_login/api/v1/eliminar_espacio/" + {...parms,parmspro}, {
+    const { data } = await axios.delete("https://api.t-ickets.com/ms_login/api/v1/eliminar_espacio/" +parms, {parmspro}, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation,useHistory } from "react-router";
 import { removeDatosUsuario } from "utils/DatosUsuarioLocalStorag";
 // react-bootstrap components
 import {
@@ -18,22 +17,19 @@ import {
   Col,
   Collapse,
 } from "react-bootstrap";
+
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { buscarcliente } from "utils/Querypanelsigui";
 import { useDispatch } from "react-redux";
-
+import {useLocation,useNavigate} from "react-router-dom"
 function AdminNavbar() {
-  let location = useLocation();
-  let history =useHistory();
+  let location = useLocation()
+  let history = useNavigate();
   let usedispatch= useDispatch()
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   function salir(){
-    //let usehistory = use
-    //162
-    //882
-    //404
     removeDatosUsuario()
-    history.push("/")
+    history("/")
   }
 
   const filterNames = async (e) => {
@@ -45,14 +41,14 @@ function AdminNavbar() {
         "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
         "email": isNaN(nombre.trim()) ? nombre.trim().replace(/"/g, '@') : ''
       }
-      history.push("/admin")
+      history("/admin")
       buscarcliente({ ...informacion }).then(oupt => {
         //console.log(informacion, oupt)
         $("#search").removeClass("d-none")
         if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
           $('#cedulac').val("")
           sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
-          history.push("/admin/suscritor/" + oupt.data.id + "")
+          history("/admin/suscritor/" + oupt.data.id + "")
           /*setDausuario({
             nombreCompleto: oupt.data.nombreCompleto,
             ciudad: oupt.data.direccion,
@@ -98,14 +94,14 @@ function AdminNavbar() {
         "cedula": !isNaN(nombre.trim()) ? nombre.trim() : '',
         "email": isNaN(nombre.trim()) ? nombre.trim().replace(/"/g, '@') : ''
       }
-      history.push("/admin")
+      history("/admin")
       buscarcliente({ ...informacion }).then(oupt => {
         //console.log(informacion, oupt)
         $("#search").removeClass("d-none")
         if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
           $('#cedulac').val("")
           sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
-          history.push("/admin/suscritor/" + oupt.data.id + "")
+          history("/admin/suscritor/" + oupt.data.id + "")
         }
         else {
         

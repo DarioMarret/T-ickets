@@ -5,7 +5,7 @@ import { Box, Typography, Tabs, Tooltip, Tab, } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility, Summarize } from '@mui/icons-material';
 import { Row, Col, Card, Container, Button } from "react-bootstrap";
-import { useParams, useHistory } from "react-router";
+import { useParams, useNavigate } from "react-router-dom";
 import { CancelarSubscriptor } from "utils/SuscritorQuery";
 import { GetSuscritores } from "utils/SuscritorQuery";
 import ModalSuscritoView from "./ModalSuscritor";
@@ -52,7 +52,7 @@ export const PreciosStore = () => {
 }
 const SuscritoridView = () => {
   let { id } = useParams()
-  let history = useHistory()
+  let history = useNavigate()
   let usedispatch = useDispatch()
   let info = JSON.parse(sessionStorage.getItem("Suscritorid"))
   let useradmin = clienteInfo()
@@ -77,7 +77,7 @@ const SuscritoridView = () => {
         const { success } = cancelar
         //console.log(cancelar)
         if (success) {
-          history.push("/admin/suscritor")
+          history("/admin/suscritor")
         }
       }
     } catch (error) {
@@ -92,7 +92,7 @@ const SuscritoridView = () => {
       const { success } = deleter
       console.log(success)
       if (success) {
-        history.push("/admin/suscritor")
+        history("/admin/suscritor")
       }
     } catch (error) {
       console.log(error)
@@ -191,7 +191,7 @@ const SuscritoridView = () => {
   function detalle(e) {
     console.log(e)
     sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
-    history.push("/admin/Reporte/" + e.id)
+    history("/admin/Reporte/" + e.id)
   }
   const canjear = (e) => {
     $.confirm({
@@ -980,7 +980,7 @@ const SuscritoridView = () => {
           }}
         >
           <a className=" rounded-circle btn-primary p-2 text-white"
-            onClick={() => history.goBack()}
+            onClick={() => history(-1)}
           >
             <i className=" fa fa-arrow-left"></i>
           </a>

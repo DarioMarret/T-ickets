@@ -7,7 +7,7 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice"
 import { PhotoView } from "react-photo-view"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import axios from "axios"
-import { useHistory } from "react-router"
+import { useNavigate } from "react-router-dom"
 import { Consiliarcompra } from "utils/pagos/Queripagos"
 import { ConsolidarReporte } from "utils/pagos/Queripagos"
 import { ActualizaConciliacion } from "utils/pagos/Queripagos"
@@ -22,7 +22,7 @@ export const DatosConsolidar = async (parms) => {
 }
 export default function ConsiliarView() {
     let usedispatch = useDispatch()
-    let history = useHistory()
+    let history = useNavigate()
     let [status, setEstatus] = useState(false)
     let props = useSelector(state => state.SuscritorSlice.modal)
     let user = clienteInfo()
@@ -132,7 +132,7 @@ export default function ConsiliarView() {
                     console.log(informacion)
                     if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {                        
                         sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
-                        history.push("/admin/suscritor/" + oupt.data.id + "")
+                        history("/admin/suscritor/" + oupt.data.id + "")
                     }
                     else {
 
@@ -141,7 +141,6 @@ export default function ConsiliarView() {
                             message: 'Hubo un error',
                             color: 'bg-danger', estado: 'Hubo un error'
                         }))
-                       // history.goBack()
                     }
 
                 }
@@ -253,7 +252,6 @@ export default function ConsiliarView() {
                 setEstatus(false)
                 console.log(salida)
                 if (salida) {
-                   // history.goBack()
                 }
             }).cath(err => {
                 setEstatus(false)

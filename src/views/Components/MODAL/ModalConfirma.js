@@ -13,9 +13,9 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { registraPagos } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { cambiarMetodo } from "utils/pagos/Queripagos";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 export default function Pagarlink() {
-    let history = useHistory()
+    let history = useNavigate()
     let usedispatch = useDispatch()
     const [estado, setEstado] = useState(false)
     const [alert, setAlert] = useState(null)
@@ -80,7 +80,7 @@ export default function Pagarlink() {
                                     usedispatch(setModal({ nombre: '', estado: '' }))
                                     usedispatch(setToastes({ show: true, message: 'Metodo de pago realizado con éxito ', color: 'bg-success', estado: 'Comprobante registrado' }))
                                     usedispatch(setModal({ nombre: '', estado: '' }))
-                                    history.goBack()
+                                    history(-1)
                                 }
                                 else {
                                     //console.log("aqui",ouput)

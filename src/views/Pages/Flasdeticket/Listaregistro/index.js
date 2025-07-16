@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -18,7 +18,7 @@ import moment from "moment";
 export default function ListaderegistroView(props) {
     let { cedula } = props
     let usedispatch = useDispatch()
-    let history = useHistory()
+    let history = useNavigate()
     const [datos, setDatos] = useState([])
     const [alert, setAlert] = useState(null);
     useEffect(() => {

@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 import { Columnusuarios, Columnasubcrito } from "utils/ColumnTabla";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import {  GetRoles,  } from "utils/Querypanel";
 import EditaruserView from "./ModalEditar";
@@ -16,7 +16,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { GetUserList, Eliminaruser } from "utils/QueryUser/index";
 const UsersView = () => {
   const [fecha, setFecha] = useState(new Date())
-  let history = useHistory()
+  let history = useNavigate()
   let user = clienteInfo()
   const [listUsuarios, setListauser] = useState([])
   const [editShow, SetModalEdit] = useState(false)
@@ -61,7 +61,7 @@ const UsersView = () => {
   function reloadpage() {
     // console.log("se creo")
     location.reload()
-    //history.push("/admin/usuario")
+    //history("/admin/usuario")
   }
 
   async function Eliminar(id) {
@@ -300,7 +300,7 @@ const UsersView = () => {
               <Box sx={{ display: 'flex' }}>
                 <IconButton
                   color="error"
-                  onClick={() => history.push("/admin/usuario/" + row.original.id)}
+                  onClick={() => history("/admin/usuario/" + row.original.id)}
                 >
                   <Visibility />
                 </IconButton>

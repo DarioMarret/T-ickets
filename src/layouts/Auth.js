@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 // react-bootstrap components
 import {
   Badge,
@@ -27,8 +27,8 @@ function Auth() {
       if (prop.layout === "/auth") {
         return (
           <Route
-            path={prop.layout + prop.path}
-            key={key}
+            path={ prop.path}
+            key={"aut"+key}
             component={prop.component}
           />
         );
@@ -45,7 +45,7 @@ function Auth() {
          */}
        
         {/* End Navbar */}
-        <Switch>{getRoutes(routes)}</Switch>
+        <Routes>{getRoutes(routes)}</Routes>
        {/* <AuthFooter />*/}
       </div>
 

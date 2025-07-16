@@ -1,11 +1,11 @@
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams, useHistory } from "react-router";
+import { useParams, useNavigate } from "react-router-dom";
 import { EditarSuscrito } from "utils/SuscritorQuery/index";
 export default function ResestPassword() {
     let { id } = useParams()
-    let history = useHistory()
+    let history = useNavigate()
     let usedispatch = useDispatch()
     let [datos, setDatos] = useState({
         id: "",
@@ -72,7 +72,7 @@ export default function ResestPassword() {
                 estado: "La sesión a expirado",
             }))
             setTimeout(function () {
-                history.push("/")
+                history("/")
                 location.reload()
             }, 3000)
             return
@@ -101,7 +101,7 @@ export default function ResestPassword() {
                     estado: "Actualización exitosa",
                 }))
                 setTimeout(function () {
-                    history.push("/")
+                    history("/")
                     location.reload()
                 }, 3000)
 

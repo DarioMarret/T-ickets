@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import Autocomplete from '@mui/material/Autocomplete';
 import { Modal, Toast, Form, FormCheck, Col } from "react-bootstrap";
 import { GetRoles } from "utils/Querypanel";
@@ -9,7 +9,7 @@ import Select from "react-select";
 import { EditUser, CrearUser } from "utils/QueryUser/index";
 const EditaruserView = (props) => {
   const options = ['Option 1', 'Option 2'];
-  let history = useHistory()
+  let history = useNavigate()
   let id = useParams()
   const { editShow, SetModalEdit, datosuser, estado, roles, reloadpage } = props
   const [validate, setValidate] = useState("")
@@ -78,7 +78,7 @@ const EditaruserView = (props) => {
         if (success) {
           reloadpage()
           SetModalEdit(false)
-          history.push("/admin/usuario")
+          history("/admin/usuario")
         }
       } catch (error) {
         setValidate("was-validated")

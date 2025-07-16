@@ -284,9 +284,7 @@ export const BuscarTransacion = async (parms) => {
     let ids = clienteInfo() != null ? clienteInfo().id : 0
     let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
     let parmspro = {
-        ...parms,
-        "id_usuario": parseInt(idop),
-        "id_operador": parseInt(ids),
+        ...parms
     }
     try {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/BuscarNumeroTransaccion", { ...parms, ...parmspro }, {

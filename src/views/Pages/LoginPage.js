@@ -1,14 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { bancos } from "utils/Imgenesutils";
 import { setDatosUser } from "utils/DatosUsuarioLocalStorag";
 import { Loginadmin } from "utils/Querypanel";
 let { logo, portada } = bancos
 import { Badge, Button, Card, Form, Navbar, Nav, Toast, Container, Col, Row } from "react-bootstrap";
 import jwtDecode from "jwt-decode";
-function LoginPage() {
-  const history = useHistory();
+function LoginPage({setUSers}) {
+  const history = useNavigate();
   const [cardClasses, setCardClasses] = React.useState("card-hidden");
   const [show, setShow] = useState(false);
   const [message, setmessage] = useState("");
@@ -38,12 +38,11 @@ function LoginPage() {
         const { success, tocken } = data
         if (success) {
           setDatosUser(tocken)
-          history.push('/admin')
+          history('/admin')
         }
       } else {
         setShow(true)
         setmessage("Hubo un Correo o contraseña erronea")
-        console.log("mensage de alvertencia")
       }
     } catch (error) {
       setmessage("Hubo un error verifique Correo o intente mas tarde")
@@ -55,34 +54,41 @@ function LoginPage() {
     event.preventDefault();
     if (credenciales.username.trim() !== '' && credenciales.password.trim() !== '') {
       try {
-        const data = await Loginadmin({ username: credenciales.username.trim() ,password:credenciales.password.trim()})
+        const data = await Loginadmin({ username: credenciales.username.trim(), password: credenciales.password.trim() })
         const { success, token } = data
         if (success) {
-        
-          let usuario = jwtDecode(token)
+
+          const usuario = jwtDecode(token)
           console.log("success-->", usuario)
-          if (usuario.status==0){
+          if (!usuario.status ==1) {
             setShow(true)
+            console.log("success-->", usuario.status)
             setmessage("Usuario o contraeña incorrecta")
+            setUSers(usuario)
             return
           }
           setDatosUser(token)
-          setShow(true)
-          setmessage("Inicio de session exitoso")
-          history.push('/admin/inicio')
+          //setShow(true)
+          //setmessage("Inicio de session exitoso")
+          history('/admin/inicio')
         }
         else {
           setShow(true)
           setmessage("Usuario o contraeña incorrecta")
-          console.log("mensage de alvertencia", data)
+          return
+          //console.log("mensage de alvertencia", data)
         }
       } catch (error) {
-        setmessage("Hubo un error intente de nuevo o verifique mas tarde")
-        console.log("error Logincredet-->", error)
+        console.log("", error)
+        setmessage("Hubo un error intente de nuevo ")
+      
+        return
       }
-      setShow(true)
+    //  setShow(true)
+     // setmessage("Hubo un error intente de nuevo o verifique mas tarde")
     }
-    setShow(true)
+    //setShow(true)
+    //setmessage("Hubo un error intente de nuevo o verifique mas tarde")
   };
   const handleChange = (target) => {
     const { name, value } = target
@@ -140,8 +146,8 @@ function LoginPage() {
               style={{
                 width: '100%', backgroundImage:
                   "url('https://tickets.com.ec/img/ticket.png')", backgroundSize: '80%',
-                  backgroundPosition:'center',
-                  backgroundRepeat:'no-repeat'
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
               }}>
               <div className="card-body text-center">
                 <div>

@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 import { Row, Col, Card, Button } from "react-bootstrap";
-import { useHistory, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import {  GetRoles } from "utils/Querypanel";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import EditaruserView from "./ModalEditar";
@@ -17,7 +17,7 @@ import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { GetUserList, EliminaUser } from "utils/QueryUser/index";
 const UseridView = () => {
   let user = clienteInfo()
-  let history = useHistory()
+  let history = useNavigate()
   const [fecha, setFecha] = useState(new Date())
   let { id } = useParams()
   const [alert, setAlert] = React.useState(null)
@@ -61,7 +61,7 @@ const UseridView = () => {
   async function Eliminaruser(id) {
     EliminaUser(id).then(oupt=>{
       console.log(oupt)
-      history.goBack()
+      history(-1)
     }).catch(err=>{
       console.log(err)
     })

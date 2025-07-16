@@ -50,11 +50,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 document.addEventListener('DOMContentLoaded', function () {
+  let datos = window.location
+  console.log(datos)
   const superpuesto = document.getElementById('superpuesto');
   setTimeout(() => {
     superpuesto.style.opacity = 0;
     setTimeout(() => {
       superpuesto.classList.add("d-none")
     }, 100);
-  },100);
+  }, 100);
 });

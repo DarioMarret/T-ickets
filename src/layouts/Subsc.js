@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Routes, Route, Redirect } from "react-router-dom";
 // react-bootstrap components
 import {
   Badge,
@@ -40,6 +40,7 @@ function Subcrito() {
   //aqui valido las rutas que deben admitirse segun el permiso
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
+      console.log( prop.layout , prop.path )
       if (prop.permiso != null && prop.permiso.every(e => e != "admin")) {
         return null
 
@@ -48,11 +49,12 @@ function Subcrito() {
         return getRoutes(prop.views);
       }
       if (prop.layout === "/panel") {
+      
         return (
           <Route
             path={prop.layout + prop.path}
             key={key}
-            component={prop.component}
+            elemen={prop.component}
           />
         );
       } else {
@@ -72,9 +74,9 @@ function Subcrito() {
         <div className="main-panel">
           <SubcritorNavbar />
           <div className="content">
-            <Switch>{getRoutes(routes)}
+            <Routes>{getRoutes(routes)}
               <Redirect from="/panel" to="/panel/inicio" />
-            </Switch>
+            </Routes>
           </div>
           {/*<AdminFooter />*/}
           <div

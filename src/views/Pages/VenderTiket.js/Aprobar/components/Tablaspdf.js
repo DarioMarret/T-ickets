@@ -6,7 +6,6 @@ import { decode } from 'js-base64';
 import jsPDF from "jspdf";
 import html2canvas from 'html2canvas';
 import "./Pdfwie.css"
-import { useParams, useHistory } from "react-router";
 import axios from '../../../../../../node_modules/axios/index';
 //import "Pdfwie.css"
 //import { Document, Page, Text, View, StyleSheet, PDFViewer } from '@react-pdf/renderer';
