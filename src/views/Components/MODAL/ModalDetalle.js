@@ -271,10 +271,9 @@ function ModalDetalle(props) {
         sethideComision(mostrar)
     }, [modalshow.nombre == "ModalDetalle" ? true : false, actualState])
     function CodigoValido() {
-        this.preventDefault()
         let codigos = document.getElementById("basic-codigo");
 
-        if (CODIGO == "WDXMMF") {
+        if (CODIGO == "VHFFR4") {
             if (codigos.value === "URBAN2024") return
             if (codigos.value == "") return
             $.confirm({
@@ -290,7 +289,7 @@ function ModalDetalle(props) {
                         action: function () {
                             let datosPersonal = getDatosUsuariosLocalStorag()
 
-                            Consultar_codigos({ cedula: datosPersonal.cedula, codigo: codigos.value, radio: true }).then(ou => {
+                            Consultar_codigos({ cedula: datosPersonal.cedula, codigo: codigos.value, radio: CODIGO }).then(ou => {
                                 if (ou.estado) {
                                     let co = document.getElementById("codigocontry")
                                     let co1 = document.getElementById("codigocontry")
@@ -300,7 +299,7 @@ function ModalDetalle(props) {
                                     let clineteLogeado = getCliente()
                                     let metodoPago = GetMetodo()
                                     ListaPrecioset(GetValores())
-                                    console.log({ ...eventoinfo, post: ou.codigo })
+                                   // console.log({ ...eventoinfo, post: ou.codigo })
                                     sessionStorage.setItem("infoevento", JSON.stringify({ ...eventoinfo, post: ou.codigo }))
                                     co.classList.add("d-none")
                                     co1.classList.add("d-none")
@@ -348,12 +347,13 @@ function ModalDetalle(props) {
                                     });
                                 }
                             }).catch(erro => {
-                                setDatoToas({
+                                console.log(erro)
+                                /*setDatoToas({
                                     show: true,
                                     message: "Por favor intente más tarde",
                                     color: 'bg-danger',
                                     estado: 'Hubo un error',
-                                })
+                                })*/
                             })
                         }
                     },
@@ -722,7 +722,7 @@ function ModalDetalle(props) {
 
                                     <th scope="row"></th>
                                     <td className='text-end' >
-                                        {codigoEvento == "9EGM42" || codigoEvento == "ANNKV7" ?
+                                        {codigoEvento == "VHFFR4" || codigoEvento == "ANNKV7" ?
 
                                             "Total con Descuento" : "Total"}</td>
                                     <td className='text-center'>${parseFloat(listaPrecio.total).toFixed(2)}</td>
@@ -785,10 +785,10 @@ function ModalDetalle(props) {
                         <div className="col-11  text-center text-lg-end align-items-end ">
                             <div className="d-flex  justify-content-end pb-2">
                                 <div>
-                                    {CODIGO == "CDKH71" ?
+                                    {CODIGO == "VHFFR4" && listarCarritoDetalle.reduce((total, concierto) => total + concierto.cantidad, 0)>3 ?
                                         (JSON.parse(sessionStorage.getItem("codicontry")) != true) ? <div className="input-group" id='codigocontry' >
                                             <label className='form-label px-2'>Ingrese el código de descuento</label>
-                                            <input className="form-control" id="basic-codigo" placeholder="Codigo Country Club" />
+                                            <input className="form-control" id="basic-codigo" placeholder="Código descuento" />
                                             <button class="input-group-text btn-success" onClick={CodigoValido}>validar</button>
                                         </div> : ""
                                         : ""}

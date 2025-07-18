@@ -117,7 +117,7 @@ const IndexFlas = () => {
         getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
           getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
             setTimeout(function () {
-              correlativodelete({
+              /*correlativodelete({
                 "id": elem.id,
                 "estado": "disponible",
                 "mas": "eliminar",
@@ -127,7 +127,7 @@ const IndexFlas = () => {
                 // console.log(ouput)
               }).catch(err => {
                 console.log(err)
-              })
+              })*/
             }, 20 * index)
           }) : ''
         clearInterval(datatime.current);

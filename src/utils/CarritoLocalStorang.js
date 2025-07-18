@@ -302,7 +302,6 @@ export function GetValores() {
     var sumcomision = 0;
     var descrption = ""
     let total = 0
-
     var iva = 0
     if (tag !== null) {
         let cantidadTotal = tag.reduce((total, concierto) => {
@@ -315,12 +314,12 @@ export function GetValores() {
                 tienda2.valor = (parseFloat(tienda2.valor) * parseInt(tienda2.cantidad)) / parseFloat(descuento)
             } else {
                 let valor = parseInt(tienda2.cantidad) % 2
-                if (false) {
+                if (codicontry && cantidadTotal>3) {
                     //if ((evento.codigoEvento=="X5U5VR")&& (valor==1)) {
                     tienda2.valor = (parseFloat(tienda2.localidaEspacio["precio_descuento"]) * parseInt(tienda2.cantidad))
 
                 } else {
-                    let valores = (user.discapacidad == 'Si'  && clienteInfo() != null) ? tienda2.localidaEspacio["precio_discapacidad"] : tienda2.valor
+                    let valores = (user.discapacidad == 'Si' && clienteInfo() != null) ? tienda2.localidaEspacio["precio_discapacidad"] : tienda2.valor
                     tienda2.valor = (parseFloat(valores) * parseInt(tienda2.cantidad))
                 }
             }
@@ -330,9 +329,9 @@ export function GetValores() {
 
         tag.map(tienda => {
             let comisioreal = tienda.localidaEspacio["comision_boleto"]
-            if (codicontry) {
+            if (false) {
 
-                let valores = tienda.valor
+                let valores = parseFloat(tienda.localidaEspacio["precio_descuento"])
                 subtotal += valores
                 descrption = tienda.nombreConcierto
                 sumcomision += parseInt(tienda.cantidad) * parseFloat(comisioreal)
@@ -350,9 +349,9 @@ export function GetValores() {
         // //console.log(subtotal, valor, ivados)
         iva = parseInt(ivados) == 0 ? ((subtotal) * parseFloat(ivados)) : (subtotal) * parseFloat(evento.iva)
         total = (valor + iva)
-        //console.log(iva, total)
+        console.log(iva, total)
         let totav = (sessionStorage.getItem("Metodo-pago") == "Tarjeta" || sessionStorage.getItem("Metodo-pago") == "Tarjeta-Local") ? ((parseFloat(valor) + comision) + iva) * 1.08 : (parseFloat(valor) + comision) + iva
-       // console.log((totav).toFixed(2) + parseFloat(sumcomision.toFixed(2)), (parseFloat(valor) + comision) + iva)
+        // console.log((totav).toFixed(2) + parseFloat(sumcomision.toFixed(2)), (parseFloat(valor) + comision) + iva)
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
             comision_bancaria: (total.toFixed(2) * 0.08).toFixed(2),//evento.codigoEvento != "VI1U84" ? (total.toFixed(2) * 0.08).toFixed(2) : 0,
@@ -367,7 +366,7 @@ export function GetValores() {
             tallv: parseFloat((totav).toFixed(2)),
             tallva: parseFloat(sumcomision.toFixed(2))
         }
-     //   console.log(precios)
+        //   console.log(precios)
 
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))
         return precios
@@ -384,7 +383,7 @@ export function LimpiarLocalStore() {
     PViten = []
     valorDuplicadas = []
     sessionStorage.removeItem(CarritoTicket)
-   // sessionStorage.removeItem(Metodos)
+    // sessionStorage.removeItem(Metodos)
     sessionStorage.removeItem("codicontry")
 }
 export function Limpiarseleccion() {
@@ -393,8 +392,8 @@ export function Limpiarseleccion() {
     sessionStorage.removeItem(CarritoTicket)
     sessionStorage.removeItem(listaasiento)
     sessionStorage.removeItem(seleccionmapa)
-   // sessionStorage.removeItem(Eventoid)
-   // sessionStorage.removeItem(concierto)
+    // sessionStorage.removeItem(Eventoid)
+    // sessionStorage.removeItem(concierto)
     sessionStorage.removeItem("sillascorre")
 }
 export function Limpiarselecciondos() {
