@@ -2,6 +2,7 @@ import axios from "axios"
 import { getDatosUsuariosLocalStorag, getCliente, clienteInfo } from "./DatosUsuarioLocalStorag"
 import { GetValores, GetMetodo, getVerTienda } from "./CarritoLocalStorang"
 import { Host, Whatsappnumero, DatosUsuariocliente, Valores } from "./constantes"
+import { AxioBoleteria } from "./index"
 /**
  * 
  * @returns {
@@ -13,24 +14,19 @@ import { Host, Whatsappnumero, DatosUsuariocliente, Valores } from "./constantes
 export const Authsucrito = async (parms) => {
     let randon = sessionStorage.getItem("random")
     try {
-        const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/auth_suscriptor", parms, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-            }
-        })
+        const { data } = await AxioBoleteria.post("api/v1/auth_suscriptor", parms)
         console.log(data)
         if (randon) {
-         axios.post("https://api.t-ickets.com/ms_login/api/v1/actulizar_identificacion_asiento",
+            AxioBoleteria.post("api/v1/actulizar_identificacion_asiento",
                 {
                     "random": randon,
                     "cedula": data.data.cedula
                 }
-         ).then(e=>{
-            console.log(e)
-         }).catch(err=>{
-            console.log(err)
-         })
+            ).then(e => {
+                console.log(e)
+            }).catch(err => {
+                console.log(err)
+            })
             return data
         }
         return data

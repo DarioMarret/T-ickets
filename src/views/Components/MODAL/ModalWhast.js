@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { formatearNumero } from "utils/Emails";
 import { EnviaWhast } from "utils/Emails";
 import { Obtenerlinkimagen } from "utils/Querypanel";
+import { Axiosmikroserdos } from "utils/index";
 
 
 export default function WhastappWiev() {
@@ -71,7 +72,7 @@ export default function WhastappWiev() {
         setDisanbe(true)
         setTimeout(function () {
             let informa = {
-                "sessionName": "48_tickets_v209800080001",
+                "sessionName": "48_tickets_v20980008000",
                 "numero": [formatearNumero(Celular)],
                 "mensaje": {
                     "type": "text",
@@ -84,7 +85,7 @@ export default function WhastappWiev() {
              "link": link
          }*/
             console.log(informa)
-            EnviaWhast(informa).then(sal => {
+            Axiosmikroserdos.post("api/canal_chat", informa).then(sal => {
                 //sal.status == "PENDING"
                 if (sal) {
                     usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
@@ -118,7 +119,7 @@ export default function WhastappWiev() {
         }
         console.log(datos.estado["movil"])
         let informa = {
-            "sessionName": "48_tickets_v209800080001",
+            "sessionName": "48_tickets_v20980008000",
             "numero": [formatearNumero(Celular)],
             "mensaje": {
                 "type": "text",
@@ -127,7 +128,7 @@ export default function WhastappWiev() {
         }
         console.log(informa)
         setDisanbe(true)
-        EnviaWhast(informa).then(sal => {
+        Axiosmikroserdos.post("api/canal_chat", informa).then(sal => {
             if (sal) {
                 usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
                 usedispacth(setModal({ nombre: "", estado: "" }))
@@ -174,14 +175,15 @@ export default function WhastappWiev() {
         setDisanbe(true)
         setTimeout(function () {
             let informa = {
-                "sessionName": "48_tickets_v209800080001",
+                "sessionName": "48_tickets_v20980008000",
                 "numero": [...datos.estado],
                 "mensaje": {
-                    "type": "text",
-                    "text": info.mensaje + " " + link,
+                    "type": !link? "text":"masivo",
+                    "text": info.mensaje ,
+                    "image": !link ? "" : link,
                 }
             }
-            EnviaWhast(informa).then(sal => {
+            Axiosmikroserdos.post("api/canal_chat", informa).then(sal => {
                 if (sal) {
                     usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
                     usedispacth(setModal({ nombre: "", estado: "" }))
@@ -190,11 +192,9 @@ export default function WhastappWiev() {
                     usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
                     setDisanbe(false)
                 }
-                console.log(sal)
             }).catch(err => {
                 usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
                 setDisanbe(false)
-                console.log(err)
             })
         },
             1000)
@@ -215,17 +215,16 @@ export default function WhastappWiev() {
         //console.log(datos.estado["movil"])
 
         let informa = {
-            "sessionName": "48_tickets_v209800080001",
+            "sessionName": "48_tickets_v20980008000",
             "numero": [...datos.estado],
             "mensaje": {
                 "type": "text",
                 "text": info.mensaje,
             }
         }
-        console.log(informa)
         setDisanbe(true)
 
-        EnviaWhast(informa).then(sal => {
+        Axiosmikroserdos.post("api/canal_chat", informa).then(sal => {
             if (sal) {
                 usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))
                 usedispacth(setModal({ nombre: "", estado: "" }))
@@ -234,11 +233,9 @@ export default function WhastappWiev() {
                 usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
                 setDisanbe(false)
             }
-            console.log(sal)
         }).catch(err => {
             usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
             setDisanbe(false)
-            console.log(err)
         })
 
     }

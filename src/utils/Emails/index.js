@@ -7,7 +7,7 @@ export const Emailcontec = async (parms) => {
     const { email, nombre, movil, direccion, producto, precio, cantidad, id, password, text } = parms
     try {
         let { data } = axios.post("https://api.flashchat.chat/backflash/qr_mensaje_external", {
-            "sessionName": "48_tickets_v209800080001",
+            "sessionName": "48_tickets_v20980008000",
             "numero": [
                 ...movil
             ],

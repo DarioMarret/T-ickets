@@ -44,7 +44,7 @@ function ventasView() {
     const checkds = useRef(null)
     const checkdss = useRef(null)
     const checkdsss = useRef(null)
-    const [check, setCheck] = useState(true)
+    const [check, setCheck] = useState(false)
     function CambiarCheck() {
         //   e.preventDefault(); // Prevenir comportamiento predeterminado
         let descuento = document.getElementById("descuento")
@@ -78,16 +78,14 @@ function ventasView() {
         // console.log("El checkbox se ha desmarcado", datos);
     }
     function CambiarCheckss() {
-        //   e.preventDefault(); // Prevenir comportamiento predeterminado
-
         let users = getDatosUsuariosLocalStorag()
         checkdsss.current.check = (users.naipes == 'Si')
-        //  console.log()
         let datos = UpdateDatosUsuariosLocalStorag({ naipes: users.naipes == 'No' ? 'Si' : 'No' })
     }
     const intervalolista = useRef(null)
     const [select, setSelecte] = useState("")
     let [evento, setEvento] = useState([])
+    let [eventocoret, setEventoCortesia] = useState([])
     let { id } = useParams()
     const [listaPrecio, ListaPrecioset] = useState({
         total: 0,
@@ -117,9 +115,21 @@ function ventasView() {
         try {
             let { data } = await mikroAxios.get("Boleteria/Eventos/" + id)
             console.log(data)
-            setEvento(data.data[0])
+            let array = data.data[0].map((el, inde) => {
+                return {
+                    ...el,
+                    "precio_normal": "0",
+                    "precio_discapacidad": "0.00",
+                    "precio_descuento": "0.00",
+                    "precio_tarjeta": "0.00",
+                    "comision_boleto": "0.00",
+                }
+            })
+            console.log(array)
+            setEvento([...data.data[0]])
+            setEventoCortesia([...array])
         } catch (error) {
-            //  console.log(error)
+            console.log(error)
         }
     }
     async function buscarsuscritor() {
@@ -290,8 +300,8 @@ function ventasView() {
     }
     function agregar(e) {
         const valores = JSON.parse(sessionStorage.getItem(Eventolocalidad))
-        let check = document.getElementById("ventas")
-        console.log(check.checked)
+        let checks = document.getElementById("ventas")
+        console.log(checks.checked)
         let user = getDatosUsuariosLocalStorag()
         console.log(e, "valores", valores)
         // console.log("valores", valores)
@@ -299,20 +309,26 @@ function ventasView() {
         console.log(mapath, valores)
         let protoco = moment().format("YYYYMMDDHHMMSS")
         console.log(mapath.precio)
+        // "precio_normal": "0",
+        //     "precio_discapacidad": "0.00",
+        //         "precio_descuento": "0.00",
+        //             "precio_tarjeta": "0.00",
+        //                 "comision_boleto": "0.00",
+        console.log
         let producto = {
             cantidad: 1,
             localidad: mapath.precio.localidad,
-            localidaEspacio: mapath.precio,
+            localidaEspacio: check ? e : mapath.precio,
             id: mapath.precio.idcolor,
             tipo: "correlativo",
             fila: 0,
             discapacidad: mapath.precio.precio_discapacidad,
-            valor: mapath.precio.precio_normal,
+            valor: check ? e.precio_normal : mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
 
         console.log(producto)
-        if (check.checked) {
+        if (checks.checked) {
             getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
 
             //  console.log(getVerTienda())
@@ -384,11 +400,11 @@ function ventasView() {
 
     }
     useEffect(() => {
-       
+
         //setEvento([])
         console.log(getVerTienda())
         let metodo = sessionStorage.getItem(Metodos)
-       sessionStorage.setItem(Metodos, "Transferencia")
+        sessionStorage.setItem(Metodos, "Transferencia")
         setChecked({
             Fisico: "",
             Efectivo: "",
@@ -402,9 +418,9 @@ function ventasView() {
         ObtenerEventos()
 
     }, [])
-    useEffect(()=>{
+    useEffect(() => {
         ListaPrecioset(GetValores())
-    },[sillas])
+    }, [sillas])
     function detenervelocidad() {
         usedispatch(clearMapa({}))
         usedispatch(borrarseleccion({ estado: "seleccionado" }))
@@ -783,7 +799,17 @@ function ventasView() {
 
                         : ""}
 
+                    <div className="container">
+                        <input className="form-check-input" type="checkbox"
 
+                            value={check}
+                            onChange={(e) => setCheck(e.target.checked)}
+
+                            name="cortesia" id="cortesia" />
+                        <label className="form-check-label" htmlFor="cortesia">
+                            Valor 0
+                        </label>
+                    </div>
 
                     {clienteInfo() != null ?
                         <div className="container">
@@ -861,46 +887,44 @@ function ventasView() {
                         </thead>
                         <tbody>
                             {
-                                evento.length > 0 ?
-                                    [...evento,
-                                    ].map((item, index) => {
-                                        let tipo = String(item.mesas_array).replace('""', "")
+                                ((check ? eventocoret : evento)).map((item, index) => {
 
-                                        const tiendaItem = getVerTienda().find(ele => ele.localidaEspacio.idcolor === item.id_localidad) || {};
-                                        const cantidad = tiendaItem.cantidad || 0;
-                                        const cantis = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad : 0
-                                        const valor = "" + (parseFloat(item.precio_normal) - parseInt(item.comision_boleto)) + "+$" + parseInt(item.comision_boleto)
-                                        const totales = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? parseFloat(parseInt(getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad) * (parseFloat(item.precio_normal) - parseInt(item.comision_boleto))) : 0
-                                        return (
-                                            <tr key={index}>
-                                                <td className="align-self-center">{item.nombreConcierto}</td>
-                                                <td className="align-self-center">{item.nombre ? item.nombre : "" + " " + item.localidad ? item.localidad : ""}</td>
-                                                <td className="align-self-center">{item.total}</td>
-                                                <td className=" text-end">{cantis}</td>
-                                                <td className=" text-end">${valor}</td>
-                                                <td className=" text-end">{totales}</td>
-                                                <td className="align-self-center text-end">
-                                                    {
-                                                        (tipo == 'correlativo') ?
-                                                            <div>
-                                                                <div className="btn-group btn-group-sm" role="group">
+                                    let tipo = String(item.mesas_array).replace('""', "");
+                                    const tiendaItem = getVerTienda().find(ele => ele.id === item.id_localidad) || {};
+                                    const cantidad = tiendaItem.cantidad || 0;
+                                    console.log(tiendaItem)
+                                    const cantis = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad : 0
+                                    const valor = "" + (parseFloat(item.precio_normal) - parseInt(item.comision_boleto)) + "+$" + parseInt(item.comision_boleto)
+                                    const totales = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? parseFloat(parseInt(getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad) * (parseFloat(item.precio_normal) - parseInt(item.comision_boleto))) : 0
+                                    return (
+                                        <tr key={index}>
+                                            <td className="align-self-center">{item.nombreConcierto}</td>
+                                            <td className="align-self-center">{item.nombre ? item.nombre : "" + " " + item.localidad ? item.localidad : ""}</td>
+                                            <td className="align-self-center">{item.total}</td>
+                                            <td className=" text-end">{cantidad}</td>
+                                            <td className=" text-end">${valor}</td>
+                                            <td className=" text-end">{totales}</td>
+                                            <td className="align-self-center text-end">
+                                                {
+                                                    (tipo == 'correlativo') ?
+                                                        <div>
+                                                            <div className="btn-group btn-group-sm" role="group">
 
-                                                                    <button className="suma   btn-danger " disabled={(cantidad == 0)} onClickCapture={() => restaprecio(item)}>
-                                                                        <i className="fa fa-minus"></i>
-                                                                    </button>
-                                                                    <button className="suma   btn-success " onClickCapture={() => agregar(item)}>
-                                                                        <i className="fa fa-plus"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div> :
-                                                            <button className=" btn-sm btn-success" onClick={() => Abririlocalfirt(item)}>Seleccionar</button>
-                                                    }
+                                                                <button className="suma   btn-danger " disabled={(cantidad == 0)} onClickCapture={() => restaprecio(item)}>
+                                                                    <i className="fa fa-minus"></i>
+                                                                </button>
+                                                                <button className="suma   btn-success " onClickCapture={() => agregar(item)}>
+                                                                    <i className="fa fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div> :
+                                                        <button className=" btn-sm btn-success" onClick={() => Abririlocalfirt(item)}>Seleccionar</button>
+                                                }
 
-                                                </td>
-                                            </tr>
-                                        )
-                                    })
-                                    : <tr></tr>
+                                            </td>
+                                        </tr>
+                                    )
+                                })
                             }
                         </tbody>
                     </table>
@@ -909,47 +933,45 @@ function ventasView() {
                 <div className="d-block d-sm-block d-md-none">
                     <ul className="list-group">
                         {
-                            evento.length > 0 ?
-                                [...evento,
-                                ].map((item, index) => {
-                                    const tiendaItem = getVerTienda().find(ele => ele.id === item.id_localidad) || {};
-                                    const cantidad = tiendaItem.cantidad || 0;
-                                    const precioBase = parseFloat(item.precio_normal) - parseInt(item.comision_boleto);
-                                    const totalPrecio = parseFloat(cantidad * precioBase);
-                                    let tipo = String(item.mesas_array).replace('""', "")
-                                    const cantis = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad : 0
-                                    const valor = "" + (parseFloat(item.precio_normal) - parseInt(item.comision_boleto)) + "+$" + parseInt(item.comision_boleto)
-                                    const totales = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? parseFloat(parseInt(getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad) * (parseFloat(item.precio_normal) - parseInt(item.comision_boleto))) : 0
+                            (evento.length > 0 ? (check ? eventocoret : evento) : []).map((item, index) => {
 
-                                    return (
-                                        <li key={index} className="list-group-item d-flex flex-column">
-                                            <strong>{item.nombreConcierto}</strong>
-                                            <div className=" d-flex justify-content-between "><span>{item.nombre}</span> <span>Disponible: {item.total}</span></div>
-                                            <span>Valor: ${valor}</span>
+                                const tiendaItem = getVerTienda().find(ele => ele.id === item.id_localidad) || {};
+                                const cantidad = tiendaItem.cantidad || 0;
+                                const precioBase = parseFloat(item.precio_normal) - parseInt(item.comision_boleto);
+                                const totalPrecio = parseFloat(cantidad * precioBase);
+                                let tipo = String(item.mesas_array).replace('""', "")
+                                const cantis = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad : 0
+                                const valor = "" + (parseFloat(item.precio_normal) - parseInt(item.comision_boleto)) + "+$" + parseInt(item.comision_boleto)
+                                const totales = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? parseFloat(parseInt(getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad) * (parseFloat(item.precio_normal) - parseInt(item.comision_boleto))) : 0
 
-                                            <div className=" d-flex justify-content-between "><span>Cantidad: {cantis}</span>
-                                                <span>Total Precio: {totales}</span></div>
+                                return (
+                                    <li key={index} className="list-group-item d-flex flex-column">
+                                        <strong>{item.nombreConcierto}</strong>
+                                        <div className=" d-flex justify-content-between "><span>{item.nombre}</span> <span>Disponible: {item.total}</span></div>
+                                        <span>Valor: ${valor}</span>
 
+                                        <div className=" d-flex justify-content-between "><span>Cantidad: {cantis}</span>
+                                            <span>Total Precio: {totales}</span></div>
 
 
-                                            <div className="mt-2   ">
-                                                {tipo === 'correlativo' ? (
-                                                    <div className="d-flex justify-content-between  " role="group">
-                                                        <button disabled={(cantidad == 0)} className="btn btn-danger " onClick={() => restaprecio(item)}>
-                                                            <i className="fa fa-minus"></i>
-                                                        </button>
-                                                        <button className="btn btn-success " onClick={() => agregar(item)}>
-                                                            <i className="fa fa-plus"></i>
-                                                        </button>
-                                                    </div>
-                                                ) : (
-                                                    <button className="btn btn-sm btn-success" onClick={() => Abririlocalfirt(item)}>Seleccionar</button>
-                                                )}
-                                            </div>
-                                        </li>
-                                    );
-                                })
-                                : ""
+
+                                        <div className="mt-2   ">
+                                            {tipo === 'correlativo' ? (
+                                                <div className="d-flex justify-content-between  " role="group">
+                                                    <button disabled={(cantidad == 0)} className="btn btn-danger " onClick={() => restaprecio(item)}>
+                                                        <i className="fa fa-minus"></i>
+                                                    </button>
+                                                    <button className="btn btn-success " onClick={() => agregar(item)}>
+                                                        <i className="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <button className="btn btn-sm btn-success" onClick={() => Abririlocalfirt(item)}>Seleccionar</button>
+                                            )}
+                                        </div>
+                                    </li>
+                                );
+                            })
                         }
                     </ul>
                 </div>

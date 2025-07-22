@@ -5,7 +5,7 @@ import { clienteInfo, getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalSto
 
 /**Listar Suscritorea */
 
-
+// QUITAR TODO ESTO 
 /**Listar Roles */
 export const GetRoles = async () => {
     const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_roles", {

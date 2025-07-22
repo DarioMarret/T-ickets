@@ -28,7 +28,7 @@ export const PagoRapido = async (transaccion) => {
     let concierto = getVerTienda().map((e) => {
         return {
             "nombreConcierto": Eventoinfo.nombreConcierto,
-            "id_localidad": e.localidaEspacio["idcolor"],
+            "id_localidad": e.localidaEspacio["idcolor"] || e.localidaEspacio["id_localidad"],
             "idespaciolocalida": e.localidaEspacio["ideprecio"] || e.localidaEspacio["ideprecio"],
             "CODIGEVENTO": codigoEvento,
             "cantidad": e.cantidad,

@@ -701,7 +701,7 @@ export default function AprobarView() {
             </div>
             <div className=" container row"  >
             </div>
-            {tiketslist.length > 0 ? <div className="container d-flex flex-wrap">
+            {<div className="container d-flex flex-wrap">
                 {tiketslist.filter(e => e.estado_pago == "Pagado").length > 0 ? <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Pagado"), moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), alert, metodos).map(f => {
                     const texto = f.comentarios.reduce((acumulador, elemento) => {
                         return acumulador + ' ' + elemento.comentario;
@@ -806,25 +806,50 @@ export default function AprobarView() {
                             }
                         })} fileName={"Todos Expirados"} label={"Expirados"} /> :
                         ""}
-                {tiketslist.filter(e => e.estado_pago == "Comprobar").length > 0 ?
-                    <ExportToExcel apiData={filtrarArray(tiketslist.filter(e => e.estado_pago == "Comprobar", '')).map(f => {
+                {tiketslistComprobar.length > 0 ?
+                    <ExportToExcel apiData={filtrarArray(tiketslistComprobar).map(f => {
+                        const texto = f.comentarios.reduce((acumulador, elemento) => {
+                            return acumulador + ' ' + elemento.comentario;
+                        }, '');
                         return {
                             ID_Registro: f.id,
                             ID_USUARIO: f.id_usuario,
-                            EVENTO: f.concierto,
+                            ID_Operador: f.id_operador,
+                            EVENTO: f.info_concierto[0].nombreConcierto,
                             CEDULA: f.cedula,
                             METODO: f.forma_pago,
-                            CANTIDAD: f.cantidad,
-                            TOTAL_COMISION: f.Valortotal,
-                            MEDIO: f.detalle,
-                            TOTAL: f.total_pago,
-                            CREO: f.info_registro.length > 0 ? f.info_registro[0].name : "",
-                            TIPO: f.info_registro.length > 0 ? f.info_registro[0].title : "",
+                            iva: f.iva,
+                            TOTAL_COMISION: f.comision_boleto,
+                            TOTAL: f.subtotal == "" ? 0 : (parseFloat(f.subtotal) + parseFloat(f.iva)),
+                            Subtotal: parseFloat(String(f.subtotal).replace('.', ',')),
+                            cantida: f.info_concierto.reduce((total, concierto) => {
+                                return total + parseInt(concierto.cantidad, 10);
+                            }, 0),
+                            MEDIO: f.canal,
                             CREACION: f.fechaCreacion,
-                            ESTADO: f.estado_pago,
+                            ESTADO: (f.forma_pago == "Tarjeta") && (f.estado_pago == "Expirado" || f.estado_pago == "Pendiente") ?
+                                f.estado_pago :
+                                (f.forma_pago == "Tarjeta" && f.id_espacio_localida != 1) ?
+                                    (f.id_espacio_localida == 0) ?
+                                        (f.estado_pago == "Expirado") ?
+
+                                            f.estado_pago
+                                            :
+                                            " Por revisar" :
+                                        "Sin Firmar" :
+                                    f.estado_pago,
+                            Cosiliacion: (f.estado_autorizacion_sri != null) ? f.estado_autorizacion_sri : f.consolidado,
+                            NumerTransacion: f.numerTransacion,
+                            Banco: f.conciliacion.length > 0 ? f.conciliacion[0].banco : "",
+                            Total_Conciliaciones: f.conciliacion.length > 0 ? f.conciliacion[0].total_pagado : "",
+                            Concili_Forma: f.conciliacion.length > 0 ? f.conciliacion[0].forma_pago : "",
+                            cuenta: f.conciliacion.length > 0 ? f.conciliacion[0].cuenta : "",
+                            comentario: (f.comentarios.length > 0),
+                            asuntos: f.comentarios.length > 0 ? texto : "",
                             PAGOMEDIO_LINK: f.link_pago,
                             COMPROBANTE_LINK: f.link_comprobante,
-                            NumerTransacion: f.numerTransacion
+                            FIRMADO: (f.id_espacio_localida != null) ? 'SI' : 'NO',
+
                         }
                     })} fileName={"Todos Comprobar"} label={"Comprobar"} /> :
                     ""}
@@ -833,7 +858,7 @@ export default function AprobarView() {
                     fileName={"Todos Eventos"}
                     label={"Cantidad"}
                 />
-            </div> : ""}
+            </div> }
             <div
                 style={{ minHeight: '250px' }} >
                 <div className='container-fluid  p-0'>
