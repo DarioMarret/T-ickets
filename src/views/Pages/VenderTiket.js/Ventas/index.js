@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { GetMetodo, GetValores, getVerTienda, LimpiarLocalStore, Limpiarseleccion, Limpiarselecciondos, TiendaIten, TotalSelecion } from "utils/CarritoLocalStorang";
-import { AxioBoleteria, Axiosmikroserdos, mikroAxios } from "utils/index";
+import {  AxioBoleteria, Axiosmikroserdos, mikroAxios } from "utils/index.js";
 import { buscarcliente, correlativosadd } from "utils/Querypanelsigui";
 import { useDispatch, useSelector } from "react-redux"
 import { clienteInfo, DatosUsuariosLocalStorag, getCedula, getDatosUsuariosLocalStorag, setDatosUser, UpdateDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
@@ -16,10 +16,9 @@ import ModalEfectivo from "../Modal/Modalefectivo";
 import ModalConfima from "views/Components/MODAL/Modalconfirmacion";
 import ReporteView from "views/Components/MODAL/ModalReporte";
 import { Emailcontec, formatearNumero } from "utils/Emails/index";
-import SweetAlert from "react-bootstrap-sweetalert";
-import axios, { Axios } from "../../../../../node_modules/axios/index";
 import { localidaandespacio } from "utils/Querypanel";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
+import axios from "axios";
 function ventasView() {
     let usedispatch = useDispatch()
     let modalshow = useSelector((state) => state.SuscritorSlice)
@@ -474,7 +473,6 @@ function ventasView() {
             Transferencia: "Transferencia"
         })
         sessionStorage.setItem(Metodos, "Transferencia")
-        sessionStorage.setItem(Metodos, "Transferencia")
         setSelecte("Transferencia")
         ListaPrecioset(GetValores())
 
@@ -629,31 +627,32 @@ function ventasView() {
             direccion: datos.direccion,
             cedula: datos.cedula,
         }
-        axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_suscriptor", data, {
+         AxioBoleteria.post("/api/v1/crear_suscriptor", data, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         }).then(sal => {
-            buscarcliente()
+            //buscarcliente()
             setDausuario({
                 ...datos,
                 registro: 1
+            })
+            let texto = "*" + data.nombreCompleto + "*\nGracias por registrarse en Tickets.com.ec.\nLos datos de ingreso son:\n *Usuario*:" + data.email + "\n *Clave*:" + data.password.trim() + "\n\nPor favor, para validar tu cuenta digita la palabra *Si*";
+            Emailcontec({ movil: [formatearNumero(data.movil)], nombre: data.nombreCompleto, password: data.password.trim(), email: data.email, text: texto }).then(sal => {
+                //  console.log(sal)
+            }).catch(err => {
+                //console.log(err)
+                setDausuario({
+                    ...datos,
+                    registro: 1
+                })
             })
         }).catch(err => {
             //   console.log(err)
 
         })
-        let texto = "*" + data.nombreCompleto + "*\nGracias por registrarse en Tickets.com.ec.\nLos datos de ingreso son:\n *Usuario*:" + data.email + "\n *Clave*:" + data.password.trim() + "\n\nPor favor, para validar tu cuenta digita la palabra *Si*";
-        Emailcontec({ movil: [formatearNumero(data.movil)], nombre: data.nombreCompleto, password: data.password.trim(), email: data.email, text: texto }).then(sal => {
-            //  console.log(sal)
-        }).catch(err => {
-            //console.log(err)
-            setDausuario({
-                ...datos,
-                registro: 1
-            })
-        })
+       
         setDausuario({
             ...datos,
             registro: 1

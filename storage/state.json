@@ -1,0 +1,65 @@
+{
+  "cookies": [
+    {
+      "name": "_ga",
+      "value": "GA1.1.1240370083.1753306726",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1787866726.646774,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_gcl_au",
+      "value": "1.1.1425885267.1753306726",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1761082726,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "test_cookie",
+      "value": "CheckForPermission",
+      "domain": ".doubleclick.net",
+      "path": "/",
+      "expires": 1753307626.374894,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_ga_Y9K50NRKZ2",
+      "value": "GS2.1.s1753306726$o1$g0$t1753306726$j60$l0$h0",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1787866726.6464,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_ga_LJN507B5NX",
+      "value": "GS2.1.s1753306726$o1$g0$t1753306726$j60$l0$h0",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1787866726.758103,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "_gcl_ls",
+          "value": "{\"schema\":\"gcl\",\"version\":1,\"gcl_ctr\":{\"value\":{\"value\":0,\"creationTimeMs\":1753306726136},\"expires\":1761082726136}}"
+        }
+      ]
+    }
+  ]
+}

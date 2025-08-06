@@ -231,27 +231,27 @@ export default function StoreTickesViews() {
                 sessionStorage.consierto = e.nombreConcierto
                 if (obten.data.length > 0) {
                     let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-                    console.log("listad", listalocal)
+                    //console.log("listad", listalocal)
                     let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-                    console.log(mapalocal, mapa, localidades)
+                   // console.log(mapalocal, mapa, localidades)
                     let localidad = JSON.parse(mapa[0].localidad)
                     let path = JSON.parse(mapa[0].pathmap)
                     // console.log(obten.data.filter(e => e != undefined))
                     let newprecios = obten.data.filter(e => e != undefined).map((g, i) => {
+//                
                         // console.log(obten.data)
-                        let color = localidad.filter((f, i) => f.nombre.trim() == g.localidad.trim()).filter(e => e != undefined)
+                        let color = mapalocal.filter((f, i) => f.nombre.trim() == g.localidad.trim()).filter(e => e != undefined)
                         // console.log(localidad)
                         if (color.length > 0) {
-                            g.color = color[0].color
+                            g.color = ""
                             g.idcolor = color[0].id
-                            g.typo = color[0].tipo
+                            g.typo = JSON.parse(color[0].mesas_array).Typo||'correlativo'
                             g.ideprecio = g.id
-                            g.espacio = color[0].espacio
+                            g.espacio = color[0].id_espacio
                             sessionStorage.setItem(espacio, color[0].espacio)
                             return g
                         }
                     }).filter(e => e != undefined)
-                    console.log("newprecios", newprecios)
                     let colornuevo = mapalocal.map((L) => {
                         if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
                             {
@@ -353,7 +353,7 @@ export default function StoreTickesViews() {
                         setspinervi("d-none")
                         console.log(outp)
                         usedispatch(cargarsilla(outp))
-                        
+
                         history("vender/" + e.codigoEvento)
                         return
                         usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))

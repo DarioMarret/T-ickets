@@ -642,19 +642,17 @@ export default function DetalleCompraView() {
             },
         });
         return
-
     }
     const Habilitar_Envio = async (ids) => {
         if (useradmin.perfil == 'suscriptores') return
         try {
             let { data } = await Axiosmikroserdos.get("api/reenvio/" + ids)
             if (data.estado) {
-               
+                history(-1)
                 return
             }
             history(-1)
             //$.alert("Hubo un error en el proceso")
-
         } catch (error) {
             $.alert("Hubo un error de servicio")
         }

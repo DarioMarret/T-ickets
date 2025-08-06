@@ -98,7 +98,7 @@ const IndexFlas = () => {
   const datatime = useRef(null);
   const intervalolista = useRef(null)
   const localidadtimer = useRef(null);
- 
+
   function velocidad() {
     let timer = 0
     var tiempo = 60 * 10
@@ -396,10 +396,10 @@ const IndexFlas = () => {
             return g
           }
         }).filter(e => e != undefined)
-
+        console.log(newprecios, mapalocal)
         let colornuevo = mapalocal.map((L) => {
-          if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
-            {
+          if (newprecios.filter(e => e != undefined ).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
+            if (L.habilitar_cortesia != 0) {
               L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
               L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
               L.precio_discapacidad = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_discapacidad
@@ -410,6 +410,7 @@ const IndexFlas = () => {
               L.espacioid = L.id_espacio
               return L
             }
+            else return undefined
           }
         })
         let pathnuevo = path.map((L) => {
@@ -417,10 +418,10 @@ const IndexFlas = () => {
             return L
           }
         })
-        sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
+        sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined ).map((e => {
           return e
         }))]))
-        usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
+        usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined )]))
         let nuevosdatos = {
           precios: newprecios,
           pathmapa: pathnuevo.filter((e) => e != undefined),
@@ -1053,7 +1054,7 @@ const IndexFlas = () => {
                     eventoslist.slice(userauthi.inicio, userauthi.final).map((e, i) => {
                       return (
                         <a className="col-12  mx-auto my-3 " id={"evento" + e.id} key={i}>
-                          <a id={ e.codigoEvento} href={e.codigoEvento} className="collapsed eventos eventoss"
+                          <a id={e.codigoEvento} href={e.codigoEvento} className="collapsed eventos eventoss"
 
                             data-toggle="collapse"
                             data-target={"#collapseid" + e.id}

@@ -5,8 +5,7 @@ import { setModal } from "StoreRedux/Slice/SuscritorSlice";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { actualizarPrecios } from "utils/userQuery";
 
-const PreciosViews = (prop) => {
-    let { showpr, setShowpr } = prop
+const PreciosViews = () => {
     let usedispatch = useDispatch()
     let [spiner,setspiner]=useState(false)
     let valores = useSelector(state => state.SuscritorSlice.modal)

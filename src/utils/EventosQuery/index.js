@@ -122,6 +122,7 @@ export const ListaPreciosEvent = async () => {
     //console.log(resultado, data)
     return sessionStorage.setItem("PreciosLocalidad", JSON.stringify(newarr))
 }
+/*
 export const Boleteria_canje = async (codigoEvento) => {
     try {
         let { data } = await boleteriaAxios.get("Boleteria/canje/" + codigoEvento)
@@ -129,8 +130,8 @@ export const Boleteria_canje = async (codigoEvento) => {
     } catch (error) {
         return error
     }
-}
-
+}*/
+/*
 export const Boleteria_Boletos = async (codigoEvento) => {
     try {
         let { data } = await boleteriaAxios.get("Boleteria/boletos/" + codigoEvento)
@@ -138,7 +139,7 @@ export const Boleteria_Boletos = async (codigoEvento) => {
     } catch (error) {
         return error
     }
-}
+}*//*
 export const Boleteria_Nombre = async (nombre) => {
     try {
         let { data } = await boleteriaAxios.post("Boleteria/evento_valor", { "nombre": nombre })
@@ -154,7 +155,7 @@ export const Boleteria_medios = async (nombre) => {
     } catch (error) {
         return error
     }
-}
+}*/
 export const Boleteria_voucher = async (params) => {
     let ids = clienteInfo() != null ? clienteInfo().id : 0
 

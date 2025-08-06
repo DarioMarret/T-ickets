@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Alert, OverlayTrigger, Tooltip, Form } from "react-bootstrap"
-import { Localidades } from "utils/constantes";
+import { Modal, Alert, Form } from "react-bootstrap"
 import {  GuardarEvento } from "utils/Querypanel.js";
 import { ListarLocalidad } from "utils/LocalidadesQuery/index.js";
 import { ListarEspacios } from "utils/EspaciosQuery/index.js";
@@ -8,7 +7,6 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
-import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
 import { ListarEventos } from "utils/Querypanel";
 import { ListaPreciosEvent } from "utils/EventosQuery";
 const ModalNewEvento = (props) => {

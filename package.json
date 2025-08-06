@@ -102,6 +102,7 @@
     "build:scss": "npm run compile:scss && npm run minify:scss"
   },
   "devDependencies": {
+    "@playwright/test": "^1.54.1",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.9",
     "javascript-obfuscator": "^4.1.1",

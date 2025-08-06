@@ -851,7 +851,7 @@ export default function AprobarView() {
                             FIRMADO: (f.id_espacio_localida != null) ? 'SI' : 'NO',
 
                         }
-                    })} fileName={"Todos Comprobar"} label={"Comprobar"} /> :
+                    }).sort((a, b) => a.CREACION - b.CREACION)} fileName={"Todos Comprobar"} label={"Comprobar"} /> :
                     ""}
                 <ExportToExcel
                     apiData={dtos}

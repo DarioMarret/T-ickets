@@ -10,7 +10,6 @@ import { columnespacio } from 'utils/ColumnTabla';
 import { EliminarLocalidad } from '../../../../../utils/Querypanel';
 import { useSelector, useDispatch } from 'react-redux';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { listarLocalidadaEspeci } from 'utils/Querypanelsigui';
 
 const LocalidadesagreViews = (props) => {
   let usedispatch = useDispatch()

@@ -16,7 +16,7 @@ import { Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import CederView from './Susbcritorpage/Modal/CederView';
-const EventosViews = () => {
+const TicketsViews = () => {
   let usedispatch = useDispatch()
   const [TiktesList, setTikes] = useState([])
   const [DatosGlobal, setDatosGloabl] = useState([])
@@ -95,12 +95,7 @@ const EventosViews = () => {
     csvExporter.generateCsv(TiktesList);
   };
   const abrirceder = (e) => { usedispatch(setModal({ nombre: 'ceder', estado: e })) }
-  useEffect(() => {
-    (async () => {
-      await ConsultarTikets()
-    })()
-    console.log(slidetitem)
-  }, [])
+
   return (
     <div className="container-fluid">
       <CederView />
@@ -277,4 +272,4 @@ const EventosViews = () => {
   )
 }
 
-export default EventosViews;
+export default TicketsViews;

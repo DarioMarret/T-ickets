@@ -165,6 +165,7 @@ export const correlativodelete = async (parms) => {
 
     }
 }
+/*
 export const listarLocalidadaEspeci = async (parms) => {
     try {
         const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_localidades_id_espacio_descripcion/" + parms, {
@@ -177,7 +178,7 @@ export const listarLocalidadaEspeci = async (parms) => {
     } catch (error) {
         return error
     }
-}
+}*/
 export const guardarCarrusel = async (parms) => {
     try {
         const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/", parms, {

@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import PreciosViews from "./ModalPrecios";
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { ActualizaEstadoLocalidad } from "utils/Querypanelsigui";
 import Collapse from 'react-bootstrap/Collapse';
 import moment from "moment";
 import 'moment-timezone'
@@ -23,11 +22,8 @@ import { ticketsboletos } from "utils/columnasub";
 import PiecharViews from "views/Components/Piechar";
 import ExportToExcel from "utils/Exportelemin";
 import { ListarEspacios } from "utils/EspaciosQuery";
-import { listarLocalidadaEspeci } from "utils/Querypanelsigui";
-import { ListarLocalidad } from "utils/LocalidadesQuery";
-import { Boleteria_Boletos, Boleteria_Nombre, Boleteria_canje, Boleteria_medios } from "utils/EventosQuery/index";
 import { Contactos_Boletos } from "utils/Querycomnet";
-import { Axiosmikroserdos, boleteriaAxios, mikroAxios } from "utils/index";
+import { AxioBoleteria, Axiosmikroserdos, boleteriaAxios, mikroAxios } from "utils/index";
 import MesasViews from "views/Pages/Mesas/Plantillas/indice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
@@ -40,23 +36,20 @@ const EventoEspecifico = () => {
     let dispatch = useDispatch()
     const [show, setShow] = useState(false)
     const [alert, setAlert] = useState(null)
-    const [showpr, setShowpr] = useState(false)
     const [precios, SetPrecios] = useState([])
     const [open, setOpen] = useState(true);
     const [dispoible, setDisponible] = useState([])
     const [global, setGobal] = useState([])
     const [comentarios, SetCometarios] = useState([])
     const [activeTab, setActiveTab] = useState("PRECIOS");
-    const [valores, setvalores] = useState({
-        localidad: '',
-        precio_normal: '',
-        precio_discapacidad: '',
-        precio_tarjeta: '',
-        precio_descuento: '',
-        codigoEvento: "",
-        id: '',
-        localidad: '',
-        habilitar_cortesia: ''
+    let [tickes, setTikes] = useState([])
+    let [report, setReport] = useState({
+        canje: [],
+        boleto: [],
+        valores: [],
+        localidades: [],
+        FormaPago: [],
+        pagos: [],
     })
     const [espacio, setEspacio] = useState([])
     const [evento, SetEvento] = useState({
@@ -77,14 +70,15 @@ const EventoEspecifico = () => {
         LocalodadPrecios: []
     })
     async function Eliminar(e) {
+        console.log(e)
         dispatch(setModal({ nombre: "precios", estado: { ...e } }))
     }
     async function Evento(event) {
         try {
             let { data } = await boleteriaAxios.get("Boleteria/ListaPreciosLocalidades/" + id)
-            console.log(data)
+            //console.log(data)
             const cargar = data.data
-            const precio = await listarpreciolocalidad(id)
+            const { data: precio } = await AxioBoleteria.get("ListaPreciosLocalidades/" + id)
             if (cargar) {
                 let datos = [...cargar]
                 SetEvento({
@@ -99,19 +93,22 @@ const EventoEspecifico = () => {
     }
     async function cargarlocalidad(datos, precio) {
         try {
-            const espacios = await ListarEspacios()
+            const { data: espacios } = await AxioBoleteria.get("/api/v1/listar_espacios") /// ListarEspacios()
+            // console.log(datos[0])
             let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
+            //  console.log(espacios, precio.data, infoes)
             SetPrecios(precio.data)
-            const disponibles = await listarLocalidadaEspeci(infoes[0].id)
-            const dat = await ListarLocalidad("")
-            let listo = dat.data.filter(e => e.id_espacio == infoes[0].id)
+            const { data: disponibles } = await AxioBoleteria.get("/api/v1/listar_localidades_id_espacio_descripcion/" + datos[0].id_espacio)
+            // console.log("disponible", disponibles)
+            const { data: dat } = await AxioBoleteria.get("api/v1/listar_localidades/") // ListarLocalidad("")
+            let listo = dat.data.filter(e => e.id_espacio == datos[0].id_espacio)
+            ///  console.log("listo",listo)
             let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id && e.espacio == infoes[0].nombre).map(el => {
-                //console.log("filto", el.typo)
+                // console.log("filto", el.typo)
                 const nombre = listo.filter(e => e.id == el.id_localidades)[0].nombre || ''
                 return { ...el, nombreLocalidad: nombre }
             })
             const agrupadoPorLocalidadess = filtros.reduce((acc, item) => {
-
                 if (!acc[item.id_localidades]) {
                     acc[item.id_localidades] = {
                         typo: item.typo,
@@ -119,13 +116,11 @@ const EventoEspecifico = () => {
                         id_localidades: item.id_localidades,
                         localidad: item.nombreLocalidad,
                         id_espacio: item.id_espacio,
-
                         cantidad: 0
                     }
                 }
                 acc[item.id_localidades].cantidad += 1;
                 return acc;
-
             }, {});
             const mesasComentadas = await mikroAxios.post("Boleteria/itemlocalidad", {
                 "id_localidades": "",
@@ -158,7 +153,7 @@ const EventoEspecifico = () => {
             const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
                 return { nombreMesa, cantidad };
             });
-            //console.log("arrayMesas", resultado)
+            ////console.log("arrayMesas", resultado)
             setGobal(resultado)
             setDisponible(arrayMesas)
 
@@ -209,13 +204,12 @@ const EventoEspecifico = () => {
         }
     }
     async function Obtener_valores() {
-        let boletos_camjeados = await Boleteria_canje(id)
-        let boletos_boleto = await Boleteria_Boletos(id)
-        let boletos_eventos = await Boleteria_Nombre(id)
+        let { data: boletos_camjeados } = await boleteriaAxios.get("Boleteria/canje/" + id)
+        let { data: boletos_boleto } = await boleteriaAxios.get("Boleteria/boletos/" + id)
+        let { data: boletos_eventos } = await boleteriaAxios.post("Boleteria/evento_valor", { "nombre": id })
         let { data: datos } = await Axiosmikroserdos.get("api/registros_porEvento/" + id)
-        //console.log(datos)
-        let boletos = await Boleteria_medios(id)
-        //  console.log("nuevos", boletos)
+        let { data: boletos } = await boleteriaAxios.post("Boleteria/evento_forma", { "nombre": id })
+
         setReport({
             canje: boletos_camjeados.data,
             boleto: boletos_boleto.data,
@@ -251,7 +245,7 @@ const EventoEspecifico = () => {
             responseType: 'blob'  // Important for handling binary data
         })
             .then(response => {
-                console.log(response)
+                //console.log(response)
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
@@ -269,7 +263,7 @@ const EventoEspecifico = () => {
             responseType: 'blob'  // Important for handling binary data
         })
             .then(response => {
-                console.log(response)
+                //console.log(response)
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
@@ -318,27 +312,25 @@ const EventoEspecifico = () => {
             estado: i
         }
         try {
-            const update = await ActualizaEstadoLocalidad(id, info)
+            let parmspro = {
+                "id_usuario": 0,
+                "id_operador": parseInt(clienteInfo().id),
+                ...info
+            }
+            console.log(parmspro)
+            const { data: update } = await AxioBoleteria.put("/actualizarevento_estado/" + id, { ...parmspro })// ActualizaEstadoLocalidad(id, info)
             if (update.success) {
-                //  console.log(update)
+                //  //console.log(update)
                 hideAlert()
                 dispatch(setToastes({ show: true, message: 'Evento actualizado correctamente', color: 'bg-success', estado: 'Exito' }))
                 await Evento()
             }
         } catch (error) {
-            // console.log(error)
+            // //console.log(error)
             dispatch(setToastes({ show: true, message: 'Hubo un error intente mas tarde', color: 'bg-danger', estado: 'Error' }))
         }
     }
-    let [tickes, setTikes] = useState([])
-    let [report, setReport] = useState({
-        canje: [],
-        boleto: [],
-        valores: [],
-        localidades: [],
-        FormaPago: [],
-        pagos: [],
-    })
+
     let { data: nuevos, isLoading: boletosloading } = useGetBoletosQuery()
     const options = {
         title: "Ventas Boletos",
@@ -411,8 +403,10 @@ const EventoEspecifico = () => {
     };
     function ObtenerContactosquecompraron() {
         if (useradmin.perfil == 'suscriptores') return
-        Contactos_Boletos(evento.nombreConcierto).then(salida => {
-            console.log(salida)
+        mikroAxios.post("Boleteria/Contactos", {
+            "evento": evento.nombreConcierto
+        }).then(({ data: salida }) => {
+            // console.log(salida)
             if (salida.estado && salida.data.length) {
                 let nuevos = salida.data.filter(e => e.movil).map(Element => {
 
@@ -426,7 +420,7 @@ const EventoEspecifico = () => {
                 XLSX.writeFile(myWorkBook, myFile);
             }
         }).catch(err => {
-            console.log(err)
+            //console.log(err)
         })
 
     }
@@ -475,7 +469,7 @@ const EventoEspecifico = () => {
             "botNumber": eventos,
             "codigoEvento": id
         }
-        // console.log(evento)
+        // //console.log(evento)
         SetEvento({
             ...evento,
             "botNumber": eventos != "0980008000" ? "0980008000" : "",
@@ -484,12 +478,10 @@ const EventoEspecifico = () => {
 
     }
     return (
-        <>
+        <>{
             <PreciosViews
-                showpr={showpr}
-                setShowpr={setShowpr}
-                valores={valores}
-            />
+              
+            />}
             <Modalupdate
                 show={show}
                 Setshow={setShow}
@@ -513,9 +505,7 @@ const EventoEspecifico = () => {
                     </ul>
                 </div>
                 <div className="tab-content col-sm-12">
-                    {/* Evento Tab */}
                     <div className="tab-pane active" id="evento">
-                        {/* Top Actions */}
                         <div className="row mb-3">
                             <div className="col-12 d-flex justify-content-end gap-2">
                                 <button className="btn btn-primary" onClick={ObtenerContactosquecompraron}>
