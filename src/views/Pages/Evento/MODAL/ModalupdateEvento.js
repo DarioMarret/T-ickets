@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Modal, Alert, OverlayTrigger, Tooltip, Form } from "react-bootstrap"
+import  { useEffect, useState } from "react";
+import { Modal, Alert,  Form } from "react-bootstrap"
 import { ListarLocalidad, } from "utils/LocalidadesQuery/index.js";
-import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import moment from "moment";
 import { Obtenerlinkimagen } from "utils/Querypanel";
+
+import { AxioBoleteria } from "utils/index";
 import { actualizarDescription } from "utils/userQuery";
-import { ListarEspacios } from "utils/EspaciosQuery/index.js";
 const Modalupdate = (props) => {
     const { show, Setshow, evento } = props;
     let usedispatch = useDispatch()
-    //console.log(evento)
-    let user = clienteInfo()
 
     const [alertnone, showAlernone] = useState("d-none")
     const [espacios, setListaEspa] = useState([])
@@ -49,17 +47,7 @@ const Modalupdate = (props) => {
         habilitar: ""
     })
     const [selectLocalidad, setLocalidad] = useState([])
-    async function Lista() {
-        const datos = await ListarLocalidad()
-        const cargarLista = await ListarEspacios()
-
-        const { success, data } = cargarLista
-        console.log(data)
-        if (success) {
-            setListaEspa(data)
-            // setLocalidades(datos.data)
-        }
-    }
+  
     function toggleValueInArray(value) {
         //copia de array de localidades
         let ArrayCopia = selectLocalidad;
@@ -103,13 +91,6 @@ const Modalupdate = (props) => {
             //   img.src = window.URL.createObjectURL(e.files[0])
             img.onload = () => {
                 setImagen({ ...newimagen, imagenConcierto: e.files[0] })
-                // console.log(img.width)
-              /*  if (img.width < 1100 || img.height < 400) {
-                    e.value = ""
-                    setImagen({ ...newimagen, imagenConcierto: e.files[0] })
-                    usedispatch(setToastes({ show: true, message: 'Las dimensión de la imagen no es validad, necesita un alto de 3662px y un ancho minimo de 13830px', color: 'bg-warning', estado: 'Advertencia' }))
-                }*/
-                //else 
                 setImagen({ ...newimagen, imagenConcierto: e.files })
             }
             img.onerror = () => {

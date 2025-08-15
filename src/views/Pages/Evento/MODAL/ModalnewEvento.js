@@ -2,20 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Modal, Alert, Form } from "react-bootstrap"
 import {  GuardarEvento } from "utils/Querypanel.js";
 import { ListarLocalidad } from "utils/LocalidadesQuery/index.js";
-import { ListarEspacios } from "utils/EspaciosQuery/index.js";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { ListarEventos } from "utils/Querypanel";
 import { ListaPreciosEvent } from "utils/EventosQuery";
+import { AxioBoleteria } from "utils/index";
 const ModalNewEvento = (props) => {
     const { show, Setshow } = props;
     let user = clienteInfo()
     let usedispatch = useDispatch()
     const [alertnone, showAlernone] = useState("d-none")
     const [espacios, setListaEspa] = useState([])
-    //Array donde se crearan las localidades con sus precios
     const [localidadPreci, setPreLocalidad] = useState([])
     const [localidad, setLocalidades] = useState([])
     const [inputdisable, setinput] = useState(false)
@@ -23,7 +22,7 @@ const ModalNewEvento = (props) => {
     const [selectLocalidad, setLocalidad] = useState([])
     async function Lista() {
         const datos = await ListarLocalidad()
-        const cargarLista = await ListarEspacios()
+        const {data:cargarLista} = await AxioBoleteria.get("api/v1/listar_espacios")
         const eventos = await ListarEventos()
 
         const { success, data } = cargarLista

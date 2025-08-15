@@ -5,7 +5,7 @@ import { Box, Button, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 import Modalregistroespacio from "./MODAL/Registrolocalidad.js";
-import { EliminarEspacios, ListarEspacios } from "utils/EspaciosQuery/index.js";
+import { EliminarEspacios } from "utils/EspaciosQuery/index.js";
 import { Row, Col, Card } from "react-bootstrap";
 import NewEspacioView from "./MODAL/NuevoEspacio.js";
 import SweetAlert from 'react-bootstrap-sweetalert';
@@ -14,6 +14,7 @@ import RegistroViwstab from "./MODAL/Registrodos.js";
 import { ListarLocalidad } from "utils/LocalidadesQuery/index.js";
 import { EliminarLocalidad } from "utils/Querypanel.js";
 import { columns } from "utils/ColumnTabla.js";
+import { AxioBoleteria } from "utils/index.js";
 
 const EventosViews = () => {
   const [localidaname, setLocalidad] = useState({ id: '', nombre: '', descripcion: '' })
@@ -29,7 +30,7 @@ const EventosViews = () => {
     setShowToast(true)
   }
   async function Lista() {
-    const cargarLista = await ListarEspacios()
+    const {data:cargarLista} = await AxioBoleteria.get("api/v1/listar_espacios")
     const { success, data } = cargarLista
     if (success) {
       console.log(data)

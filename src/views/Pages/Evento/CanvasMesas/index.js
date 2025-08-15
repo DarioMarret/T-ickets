@@ -37,7 +37,6 @@ const MesasCanvas = ({ filas }) => {
                         const angle = (i / mesa.asientos.length) * (2 * Math.PI);
                         const sillaX = x + 40 + Math.cos(angle) * 50;
                         const sillaY = y + 40 + Math.sin(angle) * 50;
-
                         ctx.fillStyle = silla.estado === "Ocupado" ? "red" : silla.estado === "Reservado" ? "orange" : "green";
                         ctx.beginPath();
                         ctx.arc(sillaX, sillaY, 10, 0, Math.PI * 2);

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { Accordion, Badge } from "react-bootstrap"
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
@@ -6,7 +6,6 @@ import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Box, Button, Typography } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { ExportToCsv } from 'export-to-csv';
-import { listarpreciolocalidad } from "utils/Querypanel"
 import Modalupdate from "./ModalupdateEvento"
 import { useDispatch } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
@@ -21,8 +20,6 @@ import { useGetBoletosQuery } from "StoreRedux/Slicequery/querySlice";
 import { ticketsboletos } from "utils/columnasub";
 import PiecharViews from "views/Components/Piechar";
 import ExportToExcel from "utils/Exportelemin";
-import { ListarEspacios } from "utils/EspaciosQuery";
-import { Contactos_Boletos } from "utils/Querycomnet";
 import { AxioBoleteria, Axiosmikroserdos, boleteriaAxios, mikroAxios } from "utils/index";
 import MesasViews from "views/Pages/Mesas/Plantillas/indice";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
@@ -93,7 +90,7 @@ const EventoEspecifico = () => {
     }
     async function cargarlocalidad(datos, precio) {
         try {
-            const { data: espacios } = await AxioBoleteria.get("/api/v1/listar_espacios") /// ListarEspacios()
+            const { data: espacios } = await AxioBoleteria.get("/api/v1/listar_espacios") 
             // console.log(datos[0])
             let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
             //  console.log(espacios, precio.data, infoes)

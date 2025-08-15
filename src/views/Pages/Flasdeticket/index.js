@@ -418,6 +418,7 @@ const IndexFlas = () => {
             return L
           }
         })
+      
         sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined ).map((e => {
           return e
         }))]))

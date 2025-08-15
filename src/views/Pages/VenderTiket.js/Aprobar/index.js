@@ -1085,9 +1085,10 @@ export default function AprobarView() {
                                         tableLayout: 'flex'
                                     }
                                 }}
-                                enableDensityToggle // Activa el botón de toggle para densidad
+                                enableDensityToggle 
                                 initialState={{
-                                    density: 'compact', // Configuración inicial de densidad
+                                    density: 'compact', 
+                                
                                 }}
                                 enableRowActions
                                 positionActionsColumn="first"
@@ -1110,17 +1111,6 @@ export default function AprobarView() {
                                                 <Visibility />
                                             </IconButton>
                                         </Tooltip>
-                                        {/*<Tooltip
-                                            title="Borrar"
-                                            placement="top"
-
-                                        >
-                                            <IconButton
-                                                onClick={() => Deliminarregistro(row.original)}
-                                                color="error">
-                                                <Delete />
-                                            </IconButton>
-                                        </Tooltip>*/}
                                     </Box>
                                 )}
                                 localization={MRT_Localization_ES}
