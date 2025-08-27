@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import {  GetRoles } from "utils/Querypanel";
+import { GetRoles } from "utils/Querypanel";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import EditaruserView from "./ModalEditar";
 import { ColumnaUsuarioid } from "utils/ColumnTabla";
@@ -15,6 +15,7 @@ import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { GetUserList, EliminaUser } from "utils/QueryUser/index";
+import { logWithCallback } from "utilsstile.js/style";
 const UseridView = () => {
   let user = clienteInfo()
   let history = useNavigate()
@@ -22,8 +23,6 @@ const UseridView = () => {
   let { id } = useParams()
   const [alert, setAlert] = React.useState(null)
   const [editShow, SetModalEdit] = useState(false)
-  // console.log(id)
-  //console.log("Estado dentro")
   const [roles, setRoles] = useState([])
   const [datauser, setDatauser] = useState({
     name: '',
@@ -54,16 +53,16 @@ const UseridView = () => {
         })
       }
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
 
     }
   }
   async function Eliminaruser(id) {
-    EliminaUser(id).then(oupt=>{
-      console.log(oupt)
+    EliminaUser(id).then(oupt => {
+
       history(-1)
-    }).catch(err=>{
-      console.log(err)
+    }).catch(err => {
+      logWithCallback(err)
     })
   }
   const successAlert = (e) => {
@@ -141,7 +140,7 @@ const UseridView = () => {
             {
               String(user.id) === String(id) ?
                 '' : <Button className="btn-wd btn-outline mr-1"
-                  onClick={()=>successAlert(id)}
+                  onClick={() => successAlert(id)}
                   type="button"
                   variant="danger">
                   <span className="btn-label">

@@ -16,7 +16,6 @@ export default function ModalFacilitoView() {
     const [alert, setAlert] = useState(null)
     let user = getDatosUsuariosLocalStorag()
 
-    //console.log(user)
     function codigoregistro() {
         const codigoregistro = JSON.parse(sessionStorage.getItem(FacturaComnet))
         if (codigoregistro != null) return codigoregistro
@@ -55,7 +54,6 @@ export default function ModalFacilitoView() {
             try {
                 navigator.share({ title: "reporte" + ".pdf", files: filesToShare });
             } catch (error) {
-                console.log(error)
             }
 
         });

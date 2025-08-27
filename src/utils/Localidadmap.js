@@ -1,3 +1,5 @@
+import { logWithCallback } from "utilsstile.js/style";
+
 export function insertLocalidad(mapa, datos) {
     let nuevo = mapa.map((e, i) => {
         if (datos.id == e.id) {
@@ -15,12 +17,12 @@ export function insertLocalidad(mapa, datos) {
 export function getMapacolor() {
     try {
         let iten = JSON.parse(sessionStorage.getItem("mapa"));
-        // console.log(iten)
+    
         if (iten != null) {
             return iten
         } else return []
     } catch (error) {
-        console.log(error)
+        logWithCallback(error)
     }
 }
 export function getLocalidadmapa() {
@@ -30,7 +32,7 @@ export function getLocalidadmapa() {
             return item
         } else return []
     } catch (error) {
-        console.log(error)
+        logWithCallback(error)
     }
 }
 

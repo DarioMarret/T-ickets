@@ -15,7 +15,6 @@ let { bancoguyaquil,
     produbancoguayaquil,
     vecino } = bancosdetall
 export default function ReporteView(prop) {
-    let { setrepShow, comprar } = prop
     let usedispatch = useDispatch()
     let modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const [alert, setAlert] = useState(null)
@@ -63,7 +62,6 @@ export default function ReporteView(prop) {
             try {
                 navigator.share({ title: "reporte" + ".pdf", files: filesToShare });
             } catch (error) {
-                console.log(error)
             }
         });
     }
@@ -122,8 +120,6 @@ export default function ReporteView(prop) {
 
 
     useEffect(() => {
-        //modalshow.nombre == "transferencia" || modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ? ListaPrecioset(GetValores()) : ''
-        //  modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ? console.log((parseFloat(listaPrecio.subtotal) + parseFloat(listaPrecio.comision)).toFixed(2)) : ''
 
     }, [modalshow.nombre == "pichincha" || modalshow.nombre == "pacifico" || modalshow.nombre == "produbanco" || modalshow.nombre == "guayaquil" ?
         true : false])

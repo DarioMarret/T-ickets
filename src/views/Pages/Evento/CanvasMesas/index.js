@@ -10,9 +10,7 @@ const MesasCanvas = ({ filas }) => {
         const ctx = canvas.getContext("2d");
         canvas.width = 1600;
         canvas.height = 800;
-
-        console.log(filas);
-
+        
         const draw = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.save();

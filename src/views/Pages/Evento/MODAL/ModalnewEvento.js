@@ -9,6 +9,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { ListarEventos } from "utils/Querypanel";
 import { ListaPreciosEvent } from "utils/EventosQuery";
 import { AxioBoleteria } from "utils/index";
+import { logWithCallback } from "utilsstile.js/style";
 const ModalNewEvento = (props) => {
     const { show, Setshow } = props;
     let user = clienteInfo()
@@ -26,31 +27,28 @@ const ModalNewEvento = (props) => {
         const eventos = await ListarEventos()
 
         const { success, data } = cargarLista
-        //console.log(data)
+        
         if (success) {
-
-            console.log(data)
+            
             setListaEspa(data)
             setLocalidades(datos.data)
         }
     }
     const ListaPrecios = async () => {
         const info = await ListaPreciosEvent();
-        console.log(info)
-        //ListaPrecio()
+        
         return info
     }
     function toggleValueInArray(array, value) {
         //copia de array de localidades
-        console.log(value)
+        
         let ArrayCopia = array;
-        console.log(ArrayCopia)
+        
         let arr = selectLocalidad
-        console.log(arr)
+        
         var index = ArrayCopia.findIndex(obj => obj.identificador == value.identificador);
         var i = arr.findIndex(obj => obj.id == value.identificador);
-        //console.log(value, array)
-        //console.log(arr[i])
+        
         if (index == -1) {
             ArrayCopia.push({ ...value, identificador: arr[i].id, tipo: arr[i].mesas_array });
         } else {
@@ -67,19 +65,19 @@ const ModalNewEvento = (props) => {
             habilitar_cortesia: '',
             comision_boleto: ''
         })
-        console.log(ArrayCopia)
+        
     }
 
     async function gaurdaPrueba() {
         setinput(true)
         try {
-            console.log(neweventos)
+            
            // if(true) return
             //const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)codigo: neweventos.autorizacion == "preventa" ? 'preventa' : neweventos.codigo,
             const conci = await Obtenerlinkimagen(neweventos.imagenConcierto)
 
             if (conci == null) {
-                console.log(conci, "mapa")
+                
                 usedispatch(setToastes({ show: true, message: 'Imagen no se creo', color: 'bg-success', estado: 'Guardado' }))
 
                 return
@@ -87,7 +85,7 @@ const ModalNewEvento = (props) => {
             setTimeout(async function () {
                 const mapa = await Obtenerlinkimagen(neweventos.mapaConcierto)
                 if (mapa == null) {
-                    console.log(conci, "mapa")
+                    
                     usedispatch(setToastes({ show: true, message: 'Imagen mapa no se creo', color: 'bg-success', estado: 'Guardado' }))
                     return
                 }
@@ -102,10 +100,9 @@ const ModalNewEvento = (props) => {
                     ]
                 }
                 const evento = await GuardarEvento(defauldata)
-                console.log(defauldata)
-                console.log(evento)
+                
                 if (evento.success) {
-                    console.log(evento)
+                    
                     ListaPrecios()
                     usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
                     setinput(false)
@@ -117,7 +114,7 @@ const ModalNewEvento = (props) => {
 
 
         } catch (error) {
-            console.log(error)
+            
             usedispatch(setToastes({ show: true, message: 'No se guardaron los datos del evento', color: 'bg-danger', estado: 'Hubo un error' }))
             setinput(false)
         }
@@ -213,7 +210,7 @@ const ModalNewEvento = (props) => {
         if (e.value != "") {
 
             ListarLocalidad("").then(oupt => {
-                //console.log(oupt.data.filter(f => f.id_espacio == e.value), e.value)
+                
                 setLocalidad(oupt.data.filter(f => f.id_espacio == e.value))
                 setPreLocalidad([])
                 setPrecios({
@@ -229,7 +226,7 @@ const ModalNewEvento = (props) => {
                 })
             }
             ).catch(err =>
-                console.log(err))
+                logWithCallback(err))
 
             var index = espacios.find(obj => obj.id == e.value);
             setNewEventos({
@@ -241,10 +238,9 @@ const ModalNewEvento = (props) => {
     }
     function soloSelectespacio(e) {
         var index = localidadPreci.filter(obj => obj.identificador == e.value)[0];
-        console.log(e.value)
-        console.log(selectLocalidad)
+        
         var dato = selectLocalidad.find(D => D.id == e.value)
-        console.log(dato.nombre, index, localidadPreci.filter(obj => obj.identificador == e.value))
+        
         if (dato != undefined) {
             setPrecios({
                 precio_normal: index!=undefined ? index.precio_normal : 0,
@@ -257,7 +253,7 @@ const ModalNewEvento = (props) => {
                 habilitar: index != undefined ? index.habilitar : "NO",
                 identificador: e.value,
             })
-            //console.log(precios)
+            
         }
         else{
             
@@ -284,8 +280,7 @@ const ModalNewEvento = (props) => {
         }, "1500")
 
     }
-console.log(Object.values(neweventos).every(e => e))
-console.log(neweventos)
+    
     useEffect(() => {
         (async () => {
             await Lista()

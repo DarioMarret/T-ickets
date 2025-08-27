@@ -26,97 +26,7 @@ const Viewssvg = () => {
 
   }
 
-  /*
-    function agergaraALarray(dato,id,color){
-       let array = lista       
-      // let nuevo = mapa
-     // console.log(array)
-        var index = array.findIndex(obj => obj.path==dato);
-        if (index == -1) { 
-        array.push({path:dato,id:id, fill:color});
-          
-        } else {
-        do {
-          array.splice(index, 1);
-         index = array.indexOf({path:dato,id:id, fill:color});
-        } while (index != -1);
-        }
-        setLsita(array)
-      //  console.log("mpap?",nuevo) 
-      insertLocalidad(array,{path:dato,id:id, fill:color})
-      cargarcolores()
-      listadecolores()
-        
-      }
-        
-      function cargarcolores (){
-        let colores = getMapacolor()
-        colores.length>0? setLsita(colores):''
-        colores.length>0? colores.map((e,i)=>{
-          $("#"+e.path).attr("class","seleccion")               
-          $("#"+e.path).attr("machfilal",e.fill,"class","seleccion")        
-        }):''
-      }
-           $(document).on("click",".none",function(){
-          let co = document.getElementById("color").value;
-          let id = document.getElementById("name").value;
-          if(this.classList.contains('none')){
-            if(id.trim()=== "") {
-            return  }
-            else
-          agergaraALarray(this.getAttribute('id'),id,co)   
-                this.removeAttribute("class","")       
-                this.setAttribute("class","seleccion")   
-              }
-           })
-          $(document).on("click",".seleccion",function(){
-           if(this.classList.contains('seleccion')){
-            this.removeAttribute("machfilal")   
-            agergaraALarray(this.getAttribute('id'),'','')
-            this.removeAttribute("class","seleccion")   
-            this.setAttribute("class","")                             
-              } 
-           })
-    
-     
-           async function GetLocalidad(){
-            let obtent = await ListarLocalidad()
-            setLocalidad(obtent.data)
-            let nuevo = obtent.data.map((e,i)=>{
-              return{ id:e.id, nombre:e.nombre,color:''}
-            })
-            setmapa(obtent.data.map((e,i)=>{
-              return{ id:e.id, nombre:e.nombre,color:''}
-            }))
-            //console.log("localidades",nuevo)
-            sessionStorage.localidad = JSON.straingify(obtent.data)
-            cargarcolores()   
-          }
-          async function listadecolores(){
-            let nuevo = getLocalidadmapa()
-            //  console.log("Function mapa",nuevo)
-            let colores = getMapacolor()
-            const valorDuplicadas = [];
-            nuevo.length>0 && colores.length>0 ? colores.forEach(p => {
-                if(valorDuplicadas.findIndex(pd => pd.id === p.id) === -1) {       
-                 let index =nuevo.findIndex((e)=>parseInt(e.id)=== parseInt(p.id))
-                  valorDuplicadas.push({id:p.id,nombre:nuevo[index]?nuevo[index].nombre:'',color:p.fill});
-                }
-                }):''     
-            nuevo.length>0 && colores.length>0 ? nuevo.map((L)=>{
-                if(valorDuplicadas.findIndex((e)=>parseInt(e.id)=== parseInt(L.id))!=-1){
-                  L.color=valorDuplicadas[valorDuplicadas.findIndex((e)=>parseInt(e.id)=== parseInt(L.id))].color;
-                  return L
-                }else{
-                  return L
-                }
-                }):''
-             //         console.log("mutado",nuevo)  
-    
-               // console.log("duplicado",valorDuplicadas)
-                nuevo.length>0 && colores.length>0?setmapa(nuevo) :''
-                nuevo.length>0 && colores.length>0? sessionStorage.localidad = JSON.straingify(nuevo):''
-          }*/
+
 
   useEffect(() => {
     const paths = document.querySelectorAll(" polygon.cuadro, rect.cuadro")
@@ -124,18 +34,11 @@ const Viewssvg = () => {
       e.addEventListener("click", function () {
         var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
         var b = this.getBBox();
-        console.log(b)
-        console.log((b.x + b.width / 2) + " " + (b.y + b.height / 2))
         t.setAttribute("transform", "translate(" + (b.x + b.height / 8) + " " + (b.y + b.height / 2) + ")");
         t.textContent = "NOMBRE DE LOCALIDAD";
         t.setAttribute("machfilal", "white");
         t.setAttribute("font-size", (b.height / 10));
         this.parentNode.insertBefore(t, b.nextSibling);
-        //  b.parentNode.insertBefore(t, b.nextSibling);
-
-        //this.classList.add("class")   
-        //this.setAttribute("machfilal","#DC2A27")
-        //console.log( this)
       })
     })
     const textPaths = document.querySelectorAll("polygon.texto")
@@ -144,8 +47,6 @@ const Viewssvg = () => {
       e.addEventListener("click", function () {
         var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
         var b = this.getBBox();
-        console.log(b)
-        //console.log((b.x + b.width/2) + " " + (b.y + b.height/2))
         t.setAttribute("transform", "translate(" + (b.x + b.height / 8) + " " + (b.y + b.height) + ")");
         t.textContent = "Sillas";
         t.setAttribute("machfilal", "white");
@@ -153,26 +54,6 @@ const Viewssvg = () => {
         this.parentNode.insertBefore(t, b.nextSibling);
       })
     })
-
-
-    //agregar id y class
-    /*
- var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  var b = p.getBBox();
-  t.setAttribute("transform", "translate(" + (b.x + b.width/2) + " " + (b.y + b.height/2) + ")");
-  t.textContent = "a";
-  t.setAttribute("machfilal", "red");
-  t.setAttribute("font-size", "14");
-  p.parentNode.insertBefore(t, p.nextSibling);*/
-
-    /*
-    const path = document.querySelectorAll("path")
-      $(path).each(function(index){ 
-        this.setAttribute("id", "mapas"+index)
-        this.setAttribute("class", "mapas")
-         // console.log(this)
-        //alert($(this).text())
-      });*/
 
 
   }, [])
@@ -4477,7 +4358,7 @@ const Viewssvg = () => {
               </g>
               <path
                 d="M462.9 659.1c2.1 0 4.2.1 6.3.1.1.1.2.2.3.2h-7.1c.2-.1.3-.2.5-.3z"
-               
+
               />
               <path className="none"
                 id="2" d="M627 421.5L325 605.5 456 674.4 758.4 490.1z" />

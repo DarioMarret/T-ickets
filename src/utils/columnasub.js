@@ -218,7 +218,6 @@ function ListarPrecio(evento, localidad) {
     if (localidad == 14) {
         return precio[14]
     }
-    console.log(evento)
     return PreciosStore().filter(f => f.id == evento)[0].precio_normal
 }
 
@@ -245,7 +244,6 @@ export const listaRegistro = [
         accessorKey: "estado_pago",
         header: "Estado",
         Cell: ({ cell }) => (
-            //console.log(cell.row.original.estado_pago)
             (cell.row.original.forma_pago == "Tarjeta") && (cell.row.original.estado_pago == "Anulado" || cell.row.original.estado_pago == "Expirado" || cell.row.original.estado_pago == "Pendiente") ?
                 <Badge bg={color[cell.row.original.estado_pago]}>
                     {cell.row.original.estado_pago}</Badge> :

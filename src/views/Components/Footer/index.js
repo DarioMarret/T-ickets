@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 export default function Footer(props) {
     const { logofla } = props;
     const datos = useSelector(state => state.SuscritorSlice)
-    // console.log(datos)
     return (
         <div className=" container-fluid h-55  footer-fluid px-0"
             style={{

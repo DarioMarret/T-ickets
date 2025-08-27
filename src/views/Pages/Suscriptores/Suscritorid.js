@@ -41,6 +41,7 @@ import { EliminarTickteTercero } from "utils/TicktesT";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import PdfViewticketApp from "./Pdfwie";
 import CederView from "../Susbcritorpage/Modal/CederView";
+import { logWithCallback } from "utilsstile.js/style";
 
 export const PreciosStore = () => {
   let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
@@ -75,14 +76,12 @@ const SuscritoridView = () => {
       if (suscritoid.email != '') {
         const cancelar = await CancelarSubscriptor(suscritoid.email)
         const { success } = cancelar
-        //console.log(cancelar)
         if (success) {
           history("/admin/suscritor")
         }
       }
     } catch (error) {
       hideAlert()
-      console.log(error)
     }
 
   }
@@ -90,12 +89,11 @@ const SuscritoridView = () => {
     try {
       const deleter = await EliminarSuscrito(id)
       const { success } = deleter
-      console.log(success)
       if (success) {
         history("/admin/suscritor")
       }
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
     }
   }
   const successAlert = () => {
@@ -185,11 +183,9 @@ const SuscritoridView = () => {
     usedispatch(setModal({ nombre: "confirmar", estado: e }))
   }
   function abrirModaldos(e) {
-    console.log(e)
     usedispatch(setModal({ nombre: "confirmarpago", estado: e }))
   }
   function detalle(e) {
-    console.log(e)
     sessionStorage.setItem("Detalleuid", JSON.stringify({ ...e }))
     history("/admin/Reporte/" + e.id)
   }
@@ -225,9 +221,8 @@ const SuscritoridView = () => {
       onContentReady: function () {
         var jc = this;
         this.$content.find('form').on('submit', function (e) {
-          console.log(e)
           e.preventDefault();
-          jc.$$formSubmit.trigger('click'); 
+          jc.$$formSubmit.trigger('click');
         });
       }
     });
@@ -245,8 +240,6 @@ const SuscritoridView = () => {
           btnClass: 'btn-red',
           action: function () {
             eliminarRegistro({ "id": parms.id }).then(ouput => {
-              console.log(ouput)
-              console.log(parms.id)
               if (!ouput.success) { return $.alert("" + ouput.message) }
               window.location.reload()
 
@@ -276,8 +269,6 @@ const SuscritoridView = () => {
           btnClass: 'btn-red',
           action: function () {
             EliminarTickteTercero({ "id": parm.id }).then(ouput => {
-              console.log(ouput)
-              console.log(parm.id)
               if (!ouput.success) { return $.alert("" + ouput.message) }
               //nuevoevento()
               $.alert("Registro eliminado correctamente")
@@ -307,13 +298,11 @@ const SuscritoridView = () => {
       "codigoEvento": row.codigoEvento,
       "id_ticket_usuarios": row.id
     }).then(ouput => {
-      console.log(ouput)
       window.open(ouput.link.replace("flash", "api"), "_blank");
-      console.log(ouput)
     }).catch(eror => {
-      console.log(eror)
+      logWithCallback(eror)
     })
-  }  
+  }
   function Copiarlink(row) {
     if (useradmin.perfil == 'suscriptores') return
     let dato = document.getElementById(row.id)
@@ -323,27 +312,24 @@ const SuscritoridView = () => {
       "codigoEvento": row.codigoEvento,
       "id_ticket_usuarios": row.id
     }).then(async ouput => {
-      console.log(ouput)
-
-      //window.open('Prosjektplan.pdf')
       let { data } = await axios.post("https://api.t-ickets.com/mikroti/Boleteria/acortador", {
         "longURL": ouput.link.replace("flash", "api")
 
       })
-      console.log(data)
+      logWithCallback(data)
       navigator.clipboard.writeText(data.link).then(() => { })
       $.alert("Link Copiado")
       dato.classList.add("d-none")
-      console.log(ouput)
+      logWithCallback(ouput)
     }).catch(eror => {
-      console.log(eror)
+      logWithCallback(eror)
     })
 
 
   }
   const Eliminara = (parm) => {
     if (useradmin.perfil == 'suscriptores') return
-    console.log(parm)
+    logWithCallback(parm)
     $.confirm({
       title: 'Desea eliminar este boleto ',
       content: '',
@@ -355,19 +341,17 @@ const SuscritoridView = () => {
           btnClass: 'btn-red',
           action: function () {
             eliminartiket([parm]).then(ouput => {
-              // console.log(ouput)
 
               if (ouput.success) {
-                console.log(ouput)
+                logWithCallback(ouput)
                 window.location.reload()
-                //setTikes(ouput.data)
               }
               if (!ouput.success) {
                 return $.alert("" + ouput.message)
               }
 
             }).catch(error => {
-              console.log(error)
+
               $.alert("hubo un error no se pudo eliminar este registro")
             })
           }
@@ -399,22 +383,12 @@ const SuscritoridView = () => {
       "id_ticket_usuarios": row.id,
       "Bingo": ""
     }, row.id).then(ouputs => {
-      console.log(ouputs)
       if (ouputs.estado) {
         linkcopy(ouputs.link)
-        // window.open(ouputs.link, "_blank");
-        //usedispatch(setModal({ nombre: 'pdfsshowBingo', Bingo: ouputs.data["Bingo"], estado: ouput.link.replace("flash", "api"), }))
-        // setSpiner("d-none")
       }
 
     }).catch(err => {
       setSpiner("d-none")
-      /* usedispatch(setToastes({
-         show: true,
-         message: "No te preocupes tu tabla ya está comprada los pdf se generará pronto, paciencia gracias",
-         color: 'bg-primary',
-         estado: "Hubo un error intenta mas tarder"
-       }))*/
     })
   }
   const Licerarrasientos = (parms) => {
@@ -435,8 +409,8 @@ const SuscritoridView = () => {
               }
               $.alert("No se registro")
             }).catch(err => {
-              
-             })
+
+            })
           }
         },
         cancel: function () {
@@ -464,7 +438,6 @@ const SuscritoridView = () => {
       ouput.success ? setBoletos(ouput.data)
         : ""
     }).catch(err => {
-      console.log(err)
     })
     listarRegistropanel({ "cedula": info.cedula }).then(ouput => {
       if (ouput.success) {
@@ -477,7 +450,7 @@ const SuscritoridView = () => {
         setTicket([...ouput.data])
       }
     }).catch(err => {
-     // console.log(err)
+      logWithCallback(err)
     })
 
   }, []);
@@ -893,11 +866,11 @@ const SuscritoridView = () => {
                           <a
                             className="border  btn-default btn-sm btn-disable"
                             disabled
-                            >
+                          >
                             <i className="fa fa-copy "></i>
-                            </a>
+                          </a>
                         }
-                        
+
                         <a onClick={() => Eliminara(row.original.id)}
                           className="border  btn-default btn-sm cursor ">
                           Eliminar

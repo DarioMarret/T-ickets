@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import { logs } from "utils/userQuery";
+import { logWithCallback } from "utilsstile.js/style";
 import ReactTables from "views/Tables/ReactTables";
 
 
@@ -44,9 +45,8 @@ export default function ListarLogs() {
     useEffect(()=>{
         logs().then(salida=>{
             setLogst(salida.data)
-            console.log(salida)
         }).catch(err=>{
-            console.log(err)
+            logWithCallback(err)
         })
 
     },[])

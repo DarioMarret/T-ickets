@@ -39,7 +39,7 @@ import { registerAllModules } from 'handsontable/registry';
 registerAllModules();
 
 function ExternalRedirect(e) {
-  console.log(e)
+
   window.location.href = `https://api.whatsapp.com/send?phone=593980008000&text=${e.e}`;
   return null; // No renderiza nada
 }

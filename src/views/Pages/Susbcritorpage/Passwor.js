@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { EditarSuscrito } from "utils/SuscritorQuery/index";
+import { logWithCallback } from "utilsstile.js/style";
 export default function ResestPassword() {
     let { id } = useParams()
     let history = useNavigate()
@@ -24,7 +25,7 @@ export default function ResestPassword() {
         const [header, payload, signature] = token.split('.');
         const decodedPayload = JSON.parse(atob(payload));
         const currentTimestamp = Math.floor(Date.now() / 1000);
-        console.log(decodedPayload)
+
         if (decodedPayload.exp && decodedPayload.exp < currentTimestamp) {
             // El token ha expirado
             return false;
@@ -41,7 +42,6 @@ export default function ResestPassword() {
     }
     useEffect(() => {
         if (verifyFormToken(id)) {
-            console.log('El token es válido y no ha expirado.');
             /* usedispatch(setToastes({
                  show: true,
                  message: "El token ya no es valido",
@@ -55,7 +55,7 @@ export default function ResestPassword() {
                 color: 'bg-danger',
                 estado: "La sesión a expirado",
             }))
-            console.log('El token ha expirado o no es válido.');
+
         }
     }, [])
     function handleChange(e) {
@@ -78,7 +78,7 @@ export default function ResestPassword() {
             return
         }
         if (datos.email.trim() != password.email.trim() && password.password.trim() != password.passwordConfirm.trim()) {
-            console.log("aqui")
+
         }
         try {
             let parms = {
@@ -88,9 +88,9 @@ export default function ResestPassword() {
                 "movil": datos.movil,
                 "ciudad": datos.ciudad
             }
-            console.log(parms, datos.id)
+
             const data = await EditarSuscrito(datos.id, parms)
-            console.log(data)
+
             const { success, message } = data
 
             if (success) {
@@ -107,7 +107,7 @@ export default function ResestPassword() {
 
             }
         } catch (error) {
-            console.log(error)
+            logWithCallback(error)
 
         }
 

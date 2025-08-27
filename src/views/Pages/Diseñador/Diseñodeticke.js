@@ -8,23 +8,15 @@ export function DiseñoViewtickes() {
     function imprime() {
 
         html2canvas(document.querySelector("#ticktes")).then(canvas => {
-            console.log(canvas)
             var imgWidth = 90;
             var imgHeight = canvas.height * imgWidth / canvas.width;
-            //   alert(imgHeight)
             const contentDataURL = canvas.toDataURL('image/png')
             let pdf = new jsPDF('p', 'mm', 'a5'); // A4 size page of PDF
             var position = 10;
             pdf.addImage(contentDataURL, 'PNG', 5, position, imgWidth, imgHeight);
-            //  window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
-
-            // doc.save('comprobante.pdf');
             pdf.autoPrint();
-            //doc.output('bloburl')
             document.getElementById('main-iframe').setAttribute('src', pdf.output('bloburl'));
         });
-        //hideAlert()
-        //usedispatch(setModal({ nombre: '', estado: '' }))
     }
 
     return (

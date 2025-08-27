@@ -20,6 +20,7 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { EventosActivos } from "utils/Querypanel";
 import { isAfter, parse } from "date-fns";
 import { ObtenerEveNtis } from "StoreRedux/Slice/mapaLocalSlice";
+import { logWithCallback } from "utilsstile.js/style";
 require('moment/locale/es.js')
 
 const EventosViews = () => {
@@ -52,12 +53,12 @@ const EventosViews = () => {
       const lsyt = await EventosActivos("PROCESO")
       const cancelados = await EventosActivos("CANCELADO")
       if (lista.success) {
-       // setEventos([...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data])
-        console.log([...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data].sort(sorter))
+        
+       
         dispatch(ObtenerEveNtis({ eventos: [...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data].sort(sorter) }))
       }
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
     }
   }
   async function Elimna(e) {
@@ -131,14 +132,14 @@ const EventosViews = () => {
   };
   const ListaPrecios = async () => {
     const info = await ListaPreciosEvent();
-    console.log(info)
+    
     //ListaPrecio()
     return info
   }
   useEffect(() => {
 
     (async () => {
-      console.log(eventoslista)
+      
       await ListaPrecios()
       await GetEventos()
     })()

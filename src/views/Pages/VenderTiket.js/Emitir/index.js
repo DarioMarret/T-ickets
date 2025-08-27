@@ -24,6 +24,7 @@ import ExportToExcel from "utils/Exportelemin";
 import { ExportToCsv } from 'export-to-csv';
 import PiecharViews from "views/Components/Piechar";
 import PiecharViewsSlect from "views/Components/Piechar/Piecharselect";
+import { logWithCallback } from "utilsstile.js/style";
 let { cedericon } = bancos
 export default function EmitirboView() {
     let usedispatch = useDispatch()
@@ -100,7 +101,7 @@ export default function EmitirboView() {
                 }))
             }
         }).catch(eror => {
-            console.log(eror)
+            logWithCallback(eror)
         })
     }
     const hideAlert = () => {
@@ -141,7 +142,7 @@ export default function EmitirboView() {
                 var jc = this;
                 this.$content.find('form').on('submit', function (e) {
                     // if the user submits the form by pressing enter in the fiel
-                    console.log(e)
+                    logWithCallback(e)
                     e.preventDefault();
                     jc.$$formSubmit.trigger('click'); // reference the button and click it
                 });
@@ -184,7 +185,7 @@ export default function EmitirboView() {
     let [datas, setDatas] = useState([])
     useEffect(() => {
         AprobarTiket().then(oupt => {
-            console.log(oupt)
+            logWithCallback(oupt)
             let datos = oupt.data
             let nuevo = datos.map((e) => {
                 e.uid = e.codigoEvento + "-" + e.cedula
@@ -192,7 +193,7 @@ export default function EmitirboView() {
             })
             let boletosfilter = []
             nuevo.length > 0 ? nuevo.forEach(element => {
-                if (element.codigoEvento == "9EGM42" && element.localidad == "SAUCES BOYZ" && boletosfilter.some(e => e.localidad == "SAUCES-BOYZ")){
+                if (element.codigoEvento == "9EGM42" && element.localidad == "SAUCES BOYZ" && boletosfilter.some(e => e.localidad == "SAUCES-BOYZ")) {
                     let num = boletosfilter.findIndex(e => e.localidad == "SAUCES-BOYZ")
                     boletosfilter[num].cantidad = parseInt(boletosfilter[num].cantidad) + 1
                     return
@@ -203,17 +204,17 @@ export default function EmitirboView() {
                     return
                 }
                 else {
-                    if (element.codigoEvento == "9EGM42" && element.localidad == "SAUCES BOYZ" ){
+                    if (element.codigoEvento == "9EGM42" && element.localidad == "SAUCES BOYZ") {
                         boletosfilter.push({ localidad: "SAUCES-BOYZ", concierto: element.concierto, cantidad: 1 })
                         return
                     }
-                    else{
+                    else {
                         boletosfilter.push({ localidad: element.localidad, concierto: element.concierto, cantidad: 1 })
                     }
-                  
+
                 }
             }) : ""
-            console.log(boletosfilter)
+
             let datoschar = boletosfilter.map(f => {
                 return [f.localidad, f.concierto, parseInt(f.cantidad)]
             })
@@ -223,13 +224,13 @@ export default function EmitirboView() {
             ])
             setTikes([...nuevo])
         }).catch(err => {
-            console.log(err)
+            logWithCallback(err)
         })
     },
         [])
     const options = {
         title: "Boletos Globales Aprobadas",
-       
+
         is3D: false,
     };
 
@@ -243,10 +244,10 @@ export default function EmitirboView() {
             <div className="card card-primary card-outline text-left " style={{ minHeight: '250px' }} >
 
                 <div className="">
-                  { datas.length>0? <PiecharViewsSlect
+                    {datas.length > 0 ? <PiecharViewsSlect
                         datas={datas}
                         options={options}
-                    />:""}
+                    /> : ""}
                 </div>
                 <div className="card-header pb-2">
                     Emitir
@@ -313,7 +314,7 @@ export default function EmitirboView() {
                                     }
                                     {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
                                         <a className=" btn btn-default btn-sm btn-disable"
-                                        //  onClick={() => console.log(row.original)}
+
                                         >
                                             <img src={cedericon}
                                                 style={
@@ -413,11 +414,7 @@ export default function EmitirboView() {
                                         </a>
                                     }
                                     {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
-                                        <a className=" btn btn-default btn-sm btn-disable"
-
-
-                                        //  onClick={() => console.log(row.original)}
-                                        >
+                                        <a className=" btn btn-default btn-sm btn-disable">
                                             <img src={cedericon}
                                                 style={
                                                     {
@@ -519,11 +516,7 @@ export default function EmitirboView() {
                                         </a>
                                     }
                                     {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
-                                        <a className=" btn btn-default btn-sm btn-disable"
-
-
-                                        //  onClick={() => console.log(row.original)}
-                                        >
+                                        <a className=" btn btn-default btn-sm btn-disable">
                                             <img src={cedericon}
                                                 style={
                                                     {
@@ -625,11 +618,7 @@ export default function EmitirboView() {
                                         </a>
                                     }
                                     {row.original.estado == "Pagado" && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
-                                        <a className=" btn btn-default btn-sm btn-disable"
-
-
-                                        //  onClick={() => console.log(row.original)}
-                                        >
+                                        <a className=" btn btn-default btn-sm btn-disable">
                                             <img src={cedericon}
                                                 style={
                                                     {

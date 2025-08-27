@@ -35,6 +35,7 @@ import Inframene from "views/Components/IFrame/index.js";
 import { setToastes } from "StoreRedux/Slice/ToastSlice.js";
 import axios from "axios";
 import { listarRegistropanel } from "utils/pagos/Queripagos.js";
+import { logWithCallback } from "utilsstile.js/style.js";
 let { cedericon } = bancos
 function Example() {
     let usedispatch = useDispatch()
@@ -86,9 +87,6 @@ function Example() {
         }).then(ouput => {
             if (ouput.success) {
                 window.open(ouput.link.replace("flash", "api"), "_blank");
-               // usedispatch(setModal({ nombre: 'pdfsshow', estado: ouput.link.replace("flash", "api") }))
-                // console.log(ouput.link)
-                // window.open(ouput.link, "_blank");
                 setSpiner("d-none")
 
             } else {
@@ -109,7 +107,6 @@ function Example() {
                 color: 'bg-primary',
                 estado: "Hubo un error intenta mas tarder"
             }))
-            //console.log(eror)
         })
     }
     function generaBingo(row) {
@@ -120,16 +117,12 @@ function Example() {
             "id_ticket_usuarios": row.id
         }).then(ouput => {
             if (ouput.success) {
-                //usedispatch(setModal({ nombre: 'pdfsshow', estado: ouput.link.replace("flash", "api") }))
-                // console.log(ouput.link)
-                // window.open(ouput.link, "_blank");
                 generaTiketsBingo({
                     "cedula": row.cedula,
                     "Codigoevento": row.codigoEvento,
                     "id_ticket_usuarios": row.id,
                     "Bingo": ""
                 }, row.id).then(ouputs => {
-                    console.log(ouput)
                     if (ouputs.estado) {
                         window.open(ouputs.link, "_blank");
                         //usedispatch(setModal({ nombre: 'pdfsshowBingo', Bingo: ouputs.data["Bingo"], estado: ouput.link.replace("flash", "api"), }))
@@ -165,7 +158,6 @@ function Example() {
                 color: 'bg-primary',
                 estado: "Hubo un error intenta mas tarder"
             }))
-            //console.log(eror)
         })
     }
 
@@ -350,7 +342,7 @@ function Example() {
     }
 
     function Pagar() {
-        let valor = Object.keys(rowSelection).length > 0 ? tiketslist.find(e => e.codigoEvento == Object.keys(rowSelection)[0]).detalle : ''        //s console.log(valor)
+        let valor = Object.keys(rowSelection).length > 0 ? tiketslist.find(e => e.codigoEvento == Object.keys(rowSelection)[0]).detalle : ''        
     }
     const Listarfaci = async (parms) => {
         try {
@@ -376,26 +368,22 @@ function Example() {
                     if (!ouput.success) {
                         return
                     }
-                    console.log(ouput.data)
                     let tikets = ouput.data.map(e => {
                         e.estado = salida.data.filter(f => f.id == e.id_registraCompra).length > 0 ? salida.data.filter(f => f.id == e.id_registraCompra)[0].estado_pago : "NO Registro"
                         return { ...e }
                     })
-                    console.log(tikets)
                     setTikes(tikets)
-                }).catch(err => console.log(err))
+                }).catch(err => logWithCallback(err))
             }
         ).catch(err =>
-            console.log(err)
+            logWithCallback(err)
         )
         Listarfaci({ "cedula": user.cedula }).then(ouput => {
             if (ouput.success) {
-                console.log(ouput)
                 setTicket([...ouput.data])
             }
-            console.log(ouput)
         }).catch(err => {
-            console.log(err)
+          logWithCallback(err)
         })
     }, [])
     function suma(item) {
@@ -404,7 +392,6 @@ function Example() {
             let valo = tikets.reduce((a, b) => a + b, 0).toFixed(2)
             return valo
         } catch (error) {
-            console.log(error)
         }
     }
     return (

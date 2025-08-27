@@ -22,23 +22,15 @@ import {
 } from "react-bootstrap";
 
 function SuscritSidebar({ routes, image, background }) {
-  // to check for active links and opened collapses
-  /*const [user, setuser] = React.useState(() => {
-    const user = clienteInfo()
-    const parse = JSON.parse(user);
-    return parse || "no user";
-})*/
+  
 const usuario ="admin";
   let location = useLocation();
-  // this is for the user collapse
   const [userCollapseState, setUserCollapseState] = React.useState(false);
-  // this is for the rest of the collapses
   const [state, setState] = React.useState({});
   React.useEffect(() => {
     setState(getCollapseStates(routes));
   }, []);
-  // this creates the intial state of this component based on the collapse routes
-  // that it gets through routes prop
+  
   const getCollapseStates = (routes) => {
     let initialState = {};
     routes.map((prop, key) => {
@@ -53,9 +45,7 @@ const usuario ="admin";
     });
     return initialState;
   };
-  // this verifies if any of the collapses should be default opened on a rerender of this component
-  // for example, on the refresh of the page,
-  // while on the src/views/forms/RegularForms.jsx - route /admin/regular-forms
+  
   const getCollapseInitialState = (routes) => {
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse && getCollapseInitialState(routes[i].views)) {
@@ -66,12 +56,9 @@ const usuario ="admin";
     }
     return false;
   };
-  // this function creates the links and collapses that appear in the sidebar (left menu)
-  //aqui puedo validar lo navitem que quiero que se rendericen 
+  
   const createLinks = (routes) => {
-    return routes.map((prop, key) => {
-     // console.log(prop.permiso.every(e=>e!="admin"))
-      
+    return routes.map((prop, key) => {          
       if (prop.redirect) {
         return null;
       }
@@ -129,7 +116,6 @@ const usuario ="admin";
       );
     });
   };
-  // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
     return location.pathname === routeName ? "active" : "";
   };
@@ -159,7 +145,6 @@ const usuario ="admin";
           </div>
           <div className="user">
             <div className="photo">
-              {/*<img alt="..." src={require("assets/img/default-avatar.png")} />*/}
             </div>
             <div className="info">
               <a
@@ -169,8 +154,7 @@ const usuario ="admin";
                 onClick={(e) => {
                   e.preventDefault();
                   setUserCollapseState(!userCollapseState);
-                }}
-               
+                }}               
               >
                 <span>
                 Nombre del usuario 

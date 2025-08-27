@@ -17,6 +17,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 import { Emailcontec } from "utils/Emails"
 import { formatearNumero } from "utils/Emails/index"
+import { logWithCallback } from "utilsstile.js/style"
 const ResgistroView = (prop) => {
     const { setDatoToas, abrir } = prop
     let usedispatch = useDispatch()
@@ -52,7 +53,7 @@ const ResgistroView = (prop) => {
                 try {
                     seTspine("")
                     const busacar = await buscarcliente({ "cedula": e.target.value, "email": "" })
-                    console.log(busacar)
+
                     if (busacar.success == true) {
                         usedispatch(setToastes({
                             show: true,
@@ -64,11 +65,11 @@ const ResgistroView = (prop) => {
                         seTspine("d-none")
 
                     } else {
-                        console.log("Retorna aqeui")
+
                         const datos = await getCedula(e.target.value)
-                        console.log(datos)
+
                         const { name, direccion, cedula } = datos
-                        console.log(datos)
+
                         if (cedula) {
 
                             seTspine("d-none")
@@ -148,7 +149,7 @@ const ResgistroView = (prop) => {
         const form = new FormData(e.target)
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         const { name, email, password, movil, direccion, cedula, passwordcomfirma, emailconfirma } = Object.fromEntries(form.entries())
-        // console.log(Object.fromEntries(form.entries()))
+
         sessionStorage.setItem(Whatsappnumero, movil)
         let datos = {
             nombreCompleto: name.trim(),
@@ -156,11 +157,11 @@ const ResgistroView = (prop) => {
             password: password.trim(),
             movil: movil.trim(),
             ciudad: "guayaquil",
-            //ciudad: modal.estado == "Subscription" ? "Eladio Carrion" :"guayaquil",
+
             direccion: direccion.trim(),
             cedula: cedula.trim(),
         }
-        console.log(datos)
+
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
 
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
@@ -201,12 +202,11 @@ const ResgistroView = (prop) => {
             return
         }
         if (password.length < 7 && movil.length != 9) {
-            console.log("aqui")
+
             return
         }
         if (password != passwordcomfirma) {
             document.getElementById("passwordcomfirma").classList.add("is-invalid");
-            //  console.log("asta qui no msa")
             if (email != emailconfirma) {
                 document.getElementById("emailconfirma").classList.add("is-invalid");
                 return
@@ -224,96 +224,71 @@ const ResgistroView = (prop) => {
         }
 
         else {
+
+
+
             try {
-                //let nuemro = await ValidarWhatsapp()
-                /*if (nuemro != null) {
-                   usedispatch(setToastes({
-                        show: true,
-                        message: "Ingrese un numero de Whatsapp",
-                        color: 'bg-danger',
-                        estado: "Numero " + movil + " Invalido",
-                    })
-                    console.log("AQUI")
-                    return
-                }*/
-
-                try {
-                    // console.log("condireccion-->", datos)
 
 
-                    const registro = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_suscriptor", datos, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                        }
-                    })
-                    console.log(datos, registro)
-
-                    if (registro.data.success) {
-                        if (clienteInfo() != null) {
-                            window.location.reload()
-                            return
-                        }
-                        let usuario = getDatosUsuariosLocalStorag()
-                        const { data } = await Authsucrito({ email: email, password: password },)
-                        var hoy = new Date();
-                        let users = {
-                            ...usuario,
-                            cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
-                            telefono: movil, name: data.nombreCompleto,
-                            email: data.email, hora: String(hoy),
-                            enable: data.enable, id: data.id,
-                            envio: ''
-                        }
-
-                        DatosUsuariosLocalStorag({ ...usuario, ...users })
-                        sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
-                        usedispatch(setToastes({
-                            show: true,
-                            message: "Bienvenido " + data.nombreCompleto,
-                            color: 'bg-success',
-                            estado: "Inicio Exitoso",
-                        }))
-                        console.log(modal.estado)
-                        modal.estado == "e" ? usedispatch(setModal({ nombre: "ModalDetalle", estado: '' })) : usedispatch(setModal({ nombre: "", estado: '' }))
-
-                        usedispatch(addususcritor({ users }))
-                        let texto = "*" + data.nombreCompleto + "*\nGracias por registrarse en Tickets.com.ec.\nLos datos de ingreso son:\n *Usuario*:" + data.email + "\n *Clave*:" + password.trim() + "\n\nPor favor, para validar tu cuenta digita la palabra *Si*";
-                        Emailcontec({ movil: [formatearNumero(data.movil)], nombre: data.nombreCompleto, password: password.trim(), email: data.email, text: texto }).then(sal => {
-                            console.log(sal)
-                        }).catch(err => {
-                            console.log(err)
-
-                        })
-                    } else {
-                        usedispatch(setToastes({
-                            show: true,
-                            message: "El Email ya " + email + " se encuentra registrado intente con otro",
-                            color: 'bg-danger',
-                            estado: "Error de registro",
-                        }))
+                const registro = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_suscriptor", datos, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                     }
-                } catch (error) {
-                    console.log(error)
+                })
+                if (registro.data.success) {
+                    if (clienteInfo() != null) {
+                        window.location.reload()
+                        return
+                    }
+                    let usuario = getDatosUsuariosLocalStorag()
+                    const { data } = await Authsucrito({ email: email, password: password },)
+                    var hoy = new Date();
+                    let users = {
+                        ...usuario,
+                        cedula: data.cedula, direccion: data.ciudad, whatsapp: data.movil,
+                        telefono: movil, name: data.nombreCompleto,
+                        email: data.email, hora: String(hoy),
+                        enable: data.enable, id: data.id,
+                        envio: ''
+                    }
+
+                    DatosUsuariosLocalStorag({ ...usuario, ...users })
+                    sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(users))
+                    usedispatch(setToastes({
+                        show: true,
+                        message: "Bienvenido " + data.nombreCompleto,
+                        color: 'bg-success',
+                        estado: "Inicio Exitoso",
+                    }))
+
+                    modal.estado == "e" ? usedispatch(setModal({ nombre: "ModalDetalle", estado: '' })) : usedispatch(setModal({ nombre: "", estado: '' }))
+
+                    usedispatch(addususcritor({ users }))
+                    let texto = "*" + data.nombreCompleto + "*\nGracias por registrarse en Tickets.com.ec.\nLos datos de ingreso son:\n *Usuario*:" + data.email + "\n *Clave*:" + password.trim() + "\n\nPor favor, para validar tu cuenta digita la palabra *Si*";
+                    Emailcontec({ movil: [formatearNumero(data.movil)], nombre: data.nombreCompleto, password: password.trim(), email: data.email, text: texto }).then(sal => {
+                        logWithCallback(sal)
+                    }).catch(err => {
+                        logWithCallback(err)
+
+                    })
+                } else {
                     usedispatch(setToastes({
                         show: true,
                         message: "El Email ya " + email + " se encuentra registrado intente con otro",
                         color: 'bg-danger',
-                        estado: "Email dubplicado",
+                        estado: "Error de registro",
                     }))
-
                 }
-
             } catch (error) {
-                document.getElementById("cedula").classList.add("is-invalid")
-                document.getElementById("email").classList.add("is-invalid")
+
                 usedispatch(setToastes({
                     show: true,
-                    message: "Hubo un error intente de nuevo",
+                    message: "El Email ya " + email + " se encuentra registrado intente con otro",
                     color: 'bg-danger',
-                    estado: "Error",
+                    estado: "Email dubplicado",
                 }))
-                console.log(error)
+
             }
 
         }
@@ -351,16 +326,7 @@ const ResgistroView = (prop) => {
     });
 
     useEffect(() => {
-        /* if("geolocation"in navigator){
-             navigator.geolocation.getCurrentPosition(function(position){
-                 let lat = position.coords.latitude;
-                 let log = position.coords.longitude;
-                 console.log(lat,log)
-             })
-         }
-         else{
-             console.log("no soport")
-         }*/
+
         $(document).ready(function () {
             $(".numero").keypress(function (e) {
                 var n = (e = e || window.event).keyCode || e.which,
@@ -507,7 +473,7 @@ const ResgistroView = (prop) => {
                                                         id="movil"
                                                         name="movil" type="tel"
                                                         className="m-0 inptFielsd  "
-                                                        onChange={(e) => console.log(e.target.value)}
+                                                        onChange={(e) => logWithCallback(e.target.value)}
                                                         placeholder="999 999 99" />
                                                 </div>
                                             </div>

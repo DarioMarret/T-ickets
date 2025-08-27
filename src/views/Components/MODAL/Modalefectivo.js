@@ -25,13 +25,11 @@ const ModalEfectivofACILITO = (props) => {
   } = props
   let usedispatch = useDispatch()
   let Modalshow = useSelector((state) => state.SuscritorSlice.modal)
-  //console.log(Modalshow)
   const [alert, setAlert] = useState(null)
   const [spinerst, seTSpiners] = useState("d-none")
   async function Guardarcompraefectivo() {
     try {
       const mensaje = await ReportarEfectivoCompra()
-      //const numero = await EnviarmensajeWhastapp(null)
       const { msg } = mensaje
       if (msg != null) {
         efectiOpShow(false)
@@ -44,7 +42,6 @@ const ModalEfectivofACILITO = (props) => {
         detener()
       }
     } catch (error) {
-      console.log(error)
     }
   }
   function comnetusernew() {
@@ -86,7 +83,7 @@ const ModalEfectivofACILITO = (props) => {
         usedispatch(setModal({ nombre: 'ordendepago', estado: valores }))
         usedispatch(setToastes({ show: true, message: 'Orden de pago generada', color: 'bg-success', estado: ouput.message }))
         // usedispatch(setToastes({nombre:""}))      
-        console.log(ouput)
+       
         seTSpiners("d-none")
         hideAlert()
         window.gtag('event', 'purchase', {
@@ -109,7 +106,6 @@ const ModalEfectivofACILITO = (props) => {
       }
     }).catch(error => {
       seTSpiners("d-none")
-      console.log(error)
     })
   }
   const cerrar = () => {

@@ -73,6 +73,7 @@ import ModalEfectivofACILITO from "views/Components/MODAL/Modalefectivo";
 import FormasPagoMopadal from "views/Components/MODAL/ModalFormasPago.js";
 import { isAfter, parse } from "date-fns";
 import { setSpinersli } from "StoreRedux/Slice/SuscritorSlice.js";
+import { logWithCallback } from "utilsstile.js/style.js";
 const TRACKING_ID = "G-LJN507B5NX";
 const IndexFlas = () => {
   ReactGA.initialize(TRACKING_ID,);
@@ -111,9 +112,8 @@ const IndexFlas = () => {
       segundos = segundos < 10 ? "0" + segundos : segundos;
       if (timer === 0) {
         let array = ListaElimnaLCompleta()
-        array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
-          //  console.log(ouput)
-        }).catch(err => console.log(err)) : ''
+        array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {          
+        }).catch(err => logWithCallback(err)) : ''
         getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
           getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
             setTimeout(function () {
@@ -124,9 +124,8 @@ const IndexFlas = () => {
                 "cedula": user.cedula,
                 "cantidad": elem.cantidad
               }).then(ouput => {
-                // console.log(ouput)
+                
               }).catch(err => {
-                console.log(err)
               })*/
             }, 20 * index)
           }) : ''
@@ -185,17 +184,11 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
-    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => { /*//console.log(ouput) */ }).catch(err => console.log(err)) : ''
+    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {  }).catch(err => logWithCallback(err)) : ''
     getVerTienda().filter(e => e.tipo == e.tipo).length > 0 ?
       getVerTienda().map((elem, index) => {
         setTimeout(function () {
-          /*   console.log(elem, {
-               "id": elem.id,
-               "estado": "disponible",
-               "mas": "menos",
-               "cedula": user.cedula,
-               "cantidad": elem.cantidad
-             })*/
+         
           correlativosadd({
             "id": elem.id,
             "estado": "disponible",
@@ -203,9 +196,9 @@ const IndexFlas = () => {
             "cedula": user.cedula,
             "cantidad": elem.cantidad
           }).then(ouput => {
-            // console.log(ouput)
+            
           }).catch(err => {
-            console.log(err)
+            logWithCallback(err)
           })
         }, 20 * index)
       })
@@ -226,21 +219,19 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
-    /* EnviarDetalleCompras().then(e => console.log(e)).catch(err=>{
-       console.log(err)
-     })*/
+    
     array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
-      // console.log(ouput)
+      
     }
-    ).catch(err => console.log(err)) : ''
+    ).catch(err => logWithCallback(err)) : ''
     getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
 
       getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
         setTimeout(function () {
           correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
-            // console.log(ouput)
+           
           }).catch(err => {
-            console.log(err)
+            logWithCallback(err)
           })
         }, 20 * index)
       })
@@ -334,8 +325,7 @@ const IndexFlas = () => {
 
       let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
       let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
-      // console.log(seleccionuser)
-      //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
+     
       if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
         let comprapendiente = registro.data.find(f => f.estado_pago == "Pendiente")
         // Modal verifica 
@@ -364,7 +354,7 @@ const IndexFlas = () => {
         }
       }
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
     }
   }
   async function Abrirelevento(e) {
@@ -375,17 +365,17 @@ const IndexFlas = () => {
       const listalocal = await ListarLocalidad("")
       let localidades = await cargarMapa()
       sessionStorage.consierto = e.nombreConcierto
-      // console.log(listalocal, localidades, obten)
+      
       if (obten.data.length > 0) {
         let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
         let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-        //   console.log(mapalocal, mapa)
+        
         let localidad = JSON.parse(mapa[0].localidad)
         let path = JSON.parse(mapa[0].pathmap)
-        //    console.log(obten.data)
+        
         let newprecios = obten.data.filter(e => e != undefined).map((g, i) => {
           let color = localidad.filter((f, i) => f.nombre == g.localidad).filter(e => e != undefined)
-          //console.log(color)
+          
           if (color.length > 0) {
             g.color = color[0].color
             g.idcolor = color[0].id
@@ -396,7 +386,7 @@ const IndexFlas = () => {
             return g
           }
         }).filter(e => e != undefined)
-        console.log(newprecios, mapalocal)
+        
         let colornuevo = mapalocal.map((L) => {
           if (newprecios.filter(e => e != undefined ).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
             if (L.habilitar_cortesia != 0) {
@@ -445,18 +435,18 @@ const IndexFlas = () => {
                 category: "" + getDatosUsuariosLocalStorag().cedula || '',
                 label: "" + String(e.nombreConcierto),
               })
-              //console.log(outp)
+              
             }).catch(error => {
-              console.log(error)
+              logWithCallback(error)
             })
           }
 
         }).catch(err => {
-          console.log(err)
+          logWithCallback(err)
         })
       }
     } catch (err) {
-      console.log(err)
+      logWithCallback(err)
       //usedispatch(setSpinersli({ spiner: false }))
       setspinervi("d-none")
     }
@@ -488,7 +478,7 @@ const IndexFlas = () => {
           e.typo = color[0].tipo
           return e
         })
-        // console.log(mapa)
+        
         let colornuevo = mapalocal.map((L) => {
           if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
             return L
@@ -515,7 +505,7 @@ const IndexFlas = () => {
       }
 
     } catch (err) {
-      console.log(err)
+      logWithCallback(err)
     }
 
   }
@@ -575,7 +565,7 @@ const IndexFlas = () => {
     var distance = end - now;
     if (distance < 0) {
       clearInterval(time.current);
-      console.log("terminio")
+      
       document.getElementById('regeresion').innerHTML = " 0 :  00   :   00";
       document.getElementById('regeresiondos').innerHTML = " 0 :  00   :   00";;
       return;
@@ -584,7 +574,7 @@ const IndexFlas = () => {
     var hours = Math.floor((distance % _day) / _hour);
     var minutes = Math.floor((distance % _hour) / _minute);
     var seconds = Math.floor((distance % _minute) / _second);
-    console.log(days, hours, minutes, seconds)
+    
     document.getElementById('regeresion').innerHTML = "  " + hours + " :  " + minutes + "  :  " + seconds + "";
     document.getElementById('regeresiondos').innerHTML = " " + hours + "  :  " + minutes + "  :  " + seconds;
 
@@ -619,7 +609,7 @@ const IndexFlas = () => {
       info ? "" : setpublicidad(publicin.data)
       // isLoading ? "" : setShear(filtro.sort(sorter))
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
     }
   }
   const filterNames = (nombre) => {
@@ -690,15 +680,6 @@ const IndexFlas = () => {
       usedispatch(addususcritor({ ...clineteLogeado }))
     }
 
-    /*ListarEventosFinalizados().then(oup => {
-      if (oup.length > 0) {
-        setFinal(oup)
-        console.log()
-      }
-    }).catch(err => {
-      console.log(err)
-    })*/
-    // ReactGA.pageview(window.location.pathname + window.location.search);
 
 
 
@@ -737,20 +718,16 @@ const IndexFlas = () => {
   }
   function eventocarrusel(e) {
     let datos = e
-    //  console.log(e)
+    
     let info = JSON.parse(datos)
-    // console.log(info)
+    
     userauthi.login ? abrir({
       ...info,
     }) :
       abrir({
         ...info,
       })
-    /*usedispatch(setModal({
-      nombre: 'loginpage', estado: {
-        ...info,
-      }
-    }))*/
+      
     ReactGA.event({
       category: "" + info.nombreConcierto,
       action: "Carrusel",
@@ -765,6 +742,7 @@ const IndexFlas = () => {
     const hash = window.location.hash.replace("#", "");
 
     if (hash) {
+     // let hasttwo = hash == "barcelona" ?"NS1U57":hash
       const checkInterval = setInterval(() => {
         const triggerEl = document.getElementById(hash);
         const collapseId = triggerEl?.getAttribute("data-target")?.replace("#", "");

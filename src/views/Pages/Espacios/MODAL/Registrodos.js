@@ -7,9 +7,9 @@ import TabdosViews from './Componetes/Localidadopctiondos'
 import LocalidadesagreViews from "./Componetes/Localidadopcioncuatro"
 import MapadelocalidadViews from "./Componetes/Localidadopctioncinco"
 import OpctionLocalidadView from "./Componetes/Localidadoptionseis"
+import { logWithCallback } from "utilsstile.js/style"
 const RegistroViwstab = (props) => {
     const { show, setShowToast, localidaname } = props
-    //console.log(localidaname)
     const [mapaset, setMapas] = useState(false)
     const [datalocalidad, SetDataloca] = useState({
         id: '',
@@ -22,30 +22,19 @@ const RegistroViwstab = (props) => {
         try {
             const datos = await ListarLocalidad("")
             const { success, data } = datos
-            console.log(datos)
             if (success) {
-                console.log(datos)
                 const filtrado = data.filter(e => e.espacio == localidaname.nombre)
                 const obten = filtrado.map((e, i) => {
                     let dato = JSON.parse(e.mesas_array)
                     return { id: e.id, nombre: e.nombre, tipo: dato.Typo, color: '' }
                 })
-                // console.log("localidada",obten)
-                //setLocalidad(filtrado)
-                //setmapa(obten)
-                //  sessionStorage.localidad = JSON.stringify(obten)
-                //sessionStorage.localidadrespaldo = JSON.stringify(obten)
-
             }
 
         } catch (error) {
-            console.log(error)
+            logWithCallback(error)
         }
     }
     useEffect(() => {
-        (async () => {
-            //await ObtenLocalidad()
-        })()
         SetDataloca({
             id: '',
             typo: '',

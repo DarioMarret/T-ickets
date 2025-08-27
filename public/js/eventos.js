@@ -26,7 +26,6 @@ function detectDevTools() {
       return 'Herramientas de desarrollador abiertas';
     }
   };
-  //console.log(devtools);
 
   console.log("%c%s", "color: red; background: yellow; font-size: 24px;", "ADVERTENCIA")
   console.log("%c%s", "font-size: 18px;", "Si usas esta consola, otras personas podr\u00edan suplantar tu identidad y robarte datos mediante un ataque Self-XSS.\nNo escribas ni pegues ning\u00fan c\u00f3digo que no entiendas.")
@@ -51,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener('DOMContentLoaded', function () {
   let datos = window.location
-  console.log(datos)
+  //console.log(datos)
   const superpuesto = document.getElementById('superpuesto');
   setTimeout(() => {
     superpuesto.style.opacity = 0;

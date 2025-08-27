@@ -21,6 +21,7 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
 import MesaochoView from "./Mesasocho";
 import { mikroAxios } from "utils/index";
 import { data } from "jquery";
+import { logWithCallback } from "utilsstile.js/style";
 function MesasViews({ text, status, list, setMapa }) {
   let useradmin = clienteInfo()
   let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
@@ -32,7 +33,6 @@ function MesasViews({ text, status, list, setMapa }) {
   function Estado(e) {
     let randon = sessionStorage.getItem("random") || ""
     let estado = list.find(f => f.silla == e)
-    //console.log(estado, randon)
     if (estado.estado == null || estado.estado == undefined) return "disponible"
     if (estado.cedula != null && estado.cedula != "") {
       if ((estado.cedula == "" || estado.cedula == undefined || estado.cedula == null) && estado.estado.toLowerCase() == "ocupado") return "apartado"
@@ -59,7 +59,6 @@ function MesasViews({ text, status, list, setMapa }) {
             return k.estado
           }
           if (k.cedula == user.cedula) {
-            // console.log(k.cedula, user.cedula)
             return ["seleccionado"];
           }
           // if ((k.cedula == "" || k.cedula == undefined || k.cedula == null) && k.estado.toLowerCase() == "ocupado") return "apartado"
@@ -68,7 +67,6 @@ function MesasViews({ text, status, list, setMapa }) {
         else return [k.estado]
       }
     });
-    //console.log(asiento)
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
     const isApartado = (currentValue) => currentValue == "apartado";
     const isOcupado = (currentValue) => currentValue == "Ocupado" || currentValue == "OCUPADO";
@@ -77,16 +75,12 @@ function MesasViews({ text, status, list, setMapa }) {
     const isDisnone = (currentValue) => currentValue == "none" || currentValue == "d-none";
     let mesas = ["A", "B", "C", "D"]
     let sillabloquea = ["D42", "D41", "D40", "D38", "D39", "D37", "D36"]
-    //console.log(e.substring(0, 1))
     let envotid = sessionStorage.getItem("eventoid")
-    //if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
     if (Object.values(asiento).every(isOcupado)) { return "mesaocupado" }
     if (Object.values(asiento).every(isReserva)) { return "mesareserva" }
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
     if (Object.values(asiento).every(isApartado)) { return "mesaapartada" }
     if (Object.values(asiento).every(isDisnone)) { return "none" }
-    // if (!mesas.includes(e.substring(0, 1))) { return "bg-secondary" }
-    //  if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || (e.substring(0, 1) == 'D' && !sillabloquea.includes(e))) { return "bg-dark" }
     return "mesadisponible"
   }
   /*  obtener sillas  */
@@ -105,7 +99,7 @@ function MesasViews({ text, status, list, setMapa }) {
     // console.log("%c%s", "color: red; background: yellow; font-size: 24px;", "ADVERTENCIA")
   }
   function enviarsillas(text) {
-    console.log(list)
+    logWithCallback(list)
     let dato = list.filter(elm => elm.estado == 'Ocupado' && (elm.cedula == null || elm.cedula == ''))
     let bloque = list.filter(elm => elm.estado != 'none').map(el => {
       if (el.cedula == null || el.cedula == '') {
@@ -113,13 +107,13 @@ function MesasViews({ text, status, list, setMapa }) {
       }
     }).filter(e => e != undefined)
     let datos = document.getElementById(text).classList.value
-    // console.log(datos.split(" ").includes("mesadisponible"))
+
     if (bloque.length == 0) return
     succesLimit(bloque, datos, dato)
   }
   const succesLimit = (me, datos, lista) => {
     if (useradmin.perfil == 'suscriptores') return
-    console.log("Sillas", me, lista)
+    logWithCallback({ me, lista })
 
     const Botoon = () => lista.length > 0 ? <button
 
@@ -171,7 +165,6 @@ function MesasViews({ text, status, list, setMapa }) {
     )
   }
   async function enviarComentario(params, Localidades,) {
-    console.log(params)
     if (params.length > 1) {
       $.confirm({
         title: 'Enviar Comentario',
@@ -216,7 +209,7 @@ function MesasViews({ text, status, list, setMapa }) {
       "id_localidades": Localidades[0],
       "espacio": ""
     });
-    
+
     var settings = {
       url: "https://api.t-ickets.com/mikroti/Boleteria/itemlocalidad",
       method: "POST",
@@ -260,8 +253,6 @@ function MesasViews({ text, status, list, setMapa }) {
         // Aquí el DOM ya está completamente insertado
         self.$content.on('click', '#actualizarBtn', function () {
           const comentario = self.$content.find('#comentarioInput').val();
-          console.log('Comentario:', comentario);
-
           $.ajax({
             url: 'https://api.t-ickets.com/mikroti/Boleteria/item_localidad',
             method: 'PUT',
@@ -285,8 +276,8 @@ function MesasViews({ text, status, list, setMapa }) {
         });
       }
     });
-    
-    
+
+
 
   }
   async function enviarLocalidad(estado, Localidades) {
@@ -298,26 +289,22 @@ function MesasViews({ text, status, list, setMapa }) {
         "estado": estado
 
       })
-      console.log(estado, Localidades)
-      console.log(data)
       hideAlert()
       setMapa()
     } catch (error) {
-      console.log(data)
+      logWithCallback(data)
     }
 
 
   }
   const succesSilla = (e) => {
-    console.log(e)
     let dato = e.length == 1 ? e[0].idsilla : e
     if (useradmin.perfil == 'suscriptores') return
-    console.log(list.find(f => f.silla == e))
     let datos = list.find(f => f.silla == e)
     if (datos.estado == 'none') return
     if (datos.cedula == null || datos.cedula == "" || datos.cedula == undefined) {
       let estado = datos.estado == "Ocupado" ? 'Disponible' : 'Ocupado'
-      console.log([datos])
+      logWithCallback([datos])
       let me = [datos.idsilla]
       const Botoon = () => datos.estado == "Ocupado" ? <button
 

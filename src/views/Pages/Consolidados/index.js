@@ -21,41 +21,13 @@ export const NuevosRegistro=()=>{
     let usedispatch = useDispatch()
     const [lista,setLista]=useState([])
     useEffect(()=>{
-        console.log("datos")
         $.ajax({
             type: "GET",
             url: "https://brisana.netbot.ec/js/listar.php?id=",
             success: function (success) {
                 if (success.status) {
-                    //  let info = success.
                     setLista([...success.result])
-                   
-                    console.log(success)
-                    // console.log(datos)  (async () => {
-                 let datos=  success.result.map(async (f) => {
-                  
-                    /* NuevosRegistro().map(async(g)=>{
-                         if (g.id == f.id_registro){
-                             
-                         await (await ConsolidarReporte({
-                             "id_registraCompra": f.id_registro,
-                             "estado": "Consolidado"
-                         }))
-                             console.log(f.id_registro, (g.id == f.id_registro))
-                        
-                        }
-                     })*/
-                       /* await (await ConsolidarReporte({
-                            "id_registraCompra": f.id_registro,
-                            "estado": "Sin Consolidar"
-                        }))*/
-                    }) 
-                    console.log(datos)
-                }
-              
-                else {
-                    console.log(success)
-                }
+                }    
             },
             error: function (error) {
                 usedispatch(setToastes({
@@ -64,8 +36,6 @@ export const NuevosRegistro=()=>{
                     color: 'bg-danger',
                     estado: "Habilitar la extensión de cors"
                 }))
-                console.log(error)
-
             }
         })
         
@@ -79,12 +49,7 @@ export const NuevosRegistro=()=>{
             url: "https://brisana.netbot.ec/js/listar.php?id=",
             success: function (success) {
                 if (success.status) {
-                    //  let info = success.result
                     setLista(success.result)
-                    console.log(success)
-                }
-                else {
-                    console.log(success)
                 }
             },
             error: function (error) {
@@ -94,7 +59,6 @@ export const NuevosRegistro=()=>{
                     color: 'bg-danger',
                     estado: "Habilitar la extensión de cors"
                 }))
-                console.log(error)
 
             }
         })

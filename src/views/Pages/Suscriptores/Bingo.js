@@ -43,114 +43,21 @@ function BingoViewticketApp({ ...props }) {
         //if (props.split('http://localhost:3001/ticket_pdf/')[1]) {
         try {
             if (link.split('https://api.t-ickets.com/ticket_pdf/')[1]) {
-                //           console.log('entro', link.split("https://api.t-ickets.com/ticket_pdf/")[1])
-                //          console.log('entro', JSON.parse(decode(link.split("https://api.t-ickets.com/ticket_pdf/")[1])))
-                //let dat = JSON.parse(decode(props.split("http://localhost:3001/ticket_pdf/")[1]))
                 let dat = JSON.parse(decode(link.split("https://api.t-ickets.com/ticket_pdf/")[1]))
-                // console.log(dat)
-
                 setData(dat)
                 dataQr(dat)
-
-                let html = '';
                 let cards = JSON.parse(Bingo);
                 SetArr(cards[0])
-                console.log(cards)
-                    /*cards[0].forEach(card => {
-                        html += `<table>
-          <thead>
-          <tr>
-            <th>B</th>
-            <th>I</th>
-            <th>N</th>
-            <th>G</th>
-            <th>O</th>
-          </tr>
-          </thead>
-          <tbody>`;
-                        for (let i = 0; i < 5; i++) {
-                            html += `
-          <tr>
-            <td>${card[0][i]}</td>
-            <td>${card[1][i]}</td>
-            <td>${card[2][i]}</td>
-            <td>${card[3][i]}</td>
-            <td>${card[4][i]}</td>
-          </tr>
-            `;
-                        }
-                        html += '</tbody></table>';
-                    });
-                    document.querySelector('#bingo-cards').innerHTML = html;*/
-                    //const imagenContainer = document.getElementById('imagenContainer');
-                    /* function toDataURL(src, callback) {
-                        var image = new Image();
-                        image.crossOrigin = 'Anonymous';
-
-                        image.onload = function () {
-                            var canvas = document.createElement('canvas');
-                            var context = canvas.getContext('2d');
-                            canvas.height = this.naturalHeight;
-                            canvas.width = this.naturalWidth;
-                            context.drawImage(this, 0, 0);
-                            var dataURL = canvas.toDataURL('image/jpeg');
-                            callback(dataURL);
-                        };
-                        image.src = src;
-                        let imagens = document.getElementById('imagenContainer');
-                        imagens.src = src
-                    }
-                toDataURL("/img/Bingonu.png", function (dataURL) {
-                    //console.log(dataURL);
-                    let imagen = document.getElementById('imagenContainer');
-                    imagen.src = dataURL
-                })*/
-
-                //imagenContainer.appendChild(imgElement);
-
-                /* setTimeout(function () {
-                     html2canvas(document.querySelector("#printe")).then(canvas => {
-                         var imgWidth = 130;
-                         var imgHeight = canvas.height * imgWidth / canvas.width;
-                         const contentDataURL = canvas.toDataURL('image/png')
-                         let pdf = new jsPDF('p', 'mm', 'a5'); // a5 size page of PDF
-                         var position = 10;
-                         pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
-                         let frame = document.querySelector("#frame")
-                         //frame.src = pdf.output("bloburl");
-                         // setTimeout(function () { document.querySelector("#printe").remove() }, 1000)
-                         //document.querySelector("#printe").remove()
-                         //return
-                         //pdf.save()
-                          window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
-                     });
-                 }, 1500)*/
-
-
             } else {
                 setLoader(false)
             }
         } catch (error) {
-            console.log("ERROR: ", error)
             setLoader(false)
         }
 
     }, [true])
 
     const dataQr = (dat) => {
-        let info = {
-            nombre: dat.nombreCompleto,
-            id: dat.id,
-            sillas: dat.sillas,
-            fecha: dat.fechaConcierto,
-            hora: dat.horaConcierto,
-            lugar: dat.lugarConcierto,
-            cuidad: dat.cuidadConcert,
-            localidad: dat.localidad,
-            valor: dat.valor,
-            fechaCompra: dat.fechaCompra,
-            imagen: dat.imagenConcierto
-        }
         setQr(dat.email)
     }
     if (!loader) return (<div></div>)
@@ -275,13 +182,13 @@ function BingoViewticketApp({ ...props }) {
                     </div>
                     <div className="col-12 px-lg-5    eventos ">
                         <img id='imagenContainer  eventos' src='/img/Bingonu.png' style={{
-                            background:"/img/Bingonu.png",
-                            
+                            background: "/img/Bingonu.png",
+
                             width: "100% !important;",
                             backgroundSize: "cover",
                             backgroundRepeat: "no-repeat"
                         }} className=" rounded-7 shadow-md  eventos " alt="" />
-                      
+
                     </div>
 
                     <div className='pt-5 '>

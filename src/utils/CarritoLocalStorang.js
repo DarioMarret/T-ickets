@@ -54,7 +54,7 @@ function VerTienda() {
             PViten = iten.filter(iten => iten.cantidad > 0);
         }
     } catch (error) {
-        //console.log(error)
+      
     }
 }
 
@@ -70,7 +70,6 @@ export function getVerTienda() {
             return PViten
         }
     } catch (error) {
-        //console.log(error);
     }
 }
 export function verAsientos() {
@@ -107,8 +106,6 @@ export function EliminarSillas(silla) {
         let iten = JSON.parse(sessionStorage.getItem(CarritoTicket));
         let Cost = []
         Cost = iten.filter(tienda => tienda.localidad != silla.localidad)
-        // //console.log("Aqui", Cost)
-        //   //console.log(nuevo)
         sessionStorage.setItem(CarritoTicket, JSON.stringify(Cost));
         sessionStorage.setItem(listaasiento, JSON.stringify(nuevo));
         Filterduplicados()
@@ -122,7 +119,6 @@ export function EliminarSillas(silla) {
 export function EliminarsilladeMesa(silla) {
     VerSillas()
     let ListadeSillas = PVsilla.filter((iten) => iten.seleccionmapa != silla.localidad)
-    // //console.log(ListadeSillas)
     sessionStorage.setItem(listaasiento, JSON.stringify(ListadeSillas));
     Filterduplicados()
     //getVerTienda()
@@ -219,7 +215,6 @@ function VerSillas() {
             PViten = []
         }
     } catch (error) {
-        // //console.log(error)
     }
 
 }
@@ -260,7 +255,6 @@ export function VerSillaslist() {
             return []
         }
     } catch (error) {
-        // //console.log(error)
     }
 
 }
@@ -277,7 +271,6 @@ export function TotalSelecion() {
             return 0
         }
     } catch (err) {
-        ////console.log(err)
     }
 }
 export function GetEstadousu() {
@@ -343,16 +336,12 @@ export function GetValores() {
             }
         })
         let ivados = (evento.iva).replace("1.", "0.")
-        //console.log(ivados)
         valor = parseInt((ivados).replace("0.", " ")) == 0 ? (subtotal) : (subtotal);
         // let ivados = (eventoiva).replace("1.","0.")
-        // //console.log(subtotal, valor, ivados)
         iva = parseInt(ivados) == 0 ? ((subtotal) * parseFloat(ivados)) : (subtotal) * parseFloat(evento.iva)
         total = (valor + iva)
-        console.log(iva, total)
         let totav = (sessionStorage.getItem("Metodo-pago") == "Tarjeta" || sessionStorage.getItem("Metodo-pago") == "Tarjeta-Local") ? ((parseFloat(valor) + comision) + iva) * 1.08 : (parseFloat(valor) + comision) + iva
-        // console.log((totav).toFixed(2) + parseFloat(sumcomision.toFixed(2)), (parseFloat(valor) + comision) + iva)
-        let precios = {
+       let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
             comision_bancaria: (total.toFixed(2) * 0.08).toFixed(2),//evento.codigoEvento != "VI1U84" ? (total.toFixed(2) * 0.08).toFixed(2) : 0,
             subtotal: parseFloat(subtotal).toFixed(2) - parseFloat(sumcomision.toFixed(2)),
@@ -366,8 +355,7 @@ export function GetValores() {
             tallv: parseFloat((totav).toFixed(2)),
             tallva: parseFloat(sumcomision.toFixed(2))
         }
-        //   console.log(precios)
-
+     
         sessionStorage.setItem(Valorcarrito, JSON.stringify(precios))
         return precios
     } else {

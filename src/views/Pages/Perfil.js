@@ -36,6 +36,7 @@ import { Button } from "@mui/material";
 import { cargarEventoActivo } from "utils/Querypanelsigui";
 import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
 import { buscarcliente } from "utils/Querypanelsigui";
+import { logWithCallback } from "utilsstile.js/style";
 
 function PerfilPage(props) {
   const { setDatoToas } = props
@@ -71,7 +72,6 @@ function PerfilPage(props) {
         const cancelar = await CancelarSubscriptor(datosPersons.email)
         const datos = await GetSuscritores()
         const { success } = cancelar
-        // console.log(cancelar)
         if (success) {
           const dato = datos.users.filter((e) => e.id == datosPersons.id)
           let users = { ...datosPersons, enable: dato[0].enable }
@@ -95,7 +95,6 @@ function PerfilPage(props) {
         color: 'bg-danger',
         estado: 'Error',
       })
-      console.log(error)
     }
   }
   async function Actualizar() {
@@ -113,7 +112,6 @@ function PerfilPage(props) {
     try {
       setValidate("")
       const editar = await EditarSuscrito(datosPersons.id, Datos)
-      console.log(Datos)
       const { success } = editar
       if (success) {
         usedispatch(addususcritor({ datosPersons }))
@@ -132,7 +130,6 @@ function PerfilPage(props) {
         color: 'bg-danger',
         estado: 'Error',
       })
-      //console.log("Error al Actualizar-->", error)
     }
   }
   const successAlert = () => {
@@ -191,50 +188,33 @@ function PerfilPage(props) {
       const filtro = data != null ? data.filter((e) => new Date(e.fechaConcierto + " 23:59:59") > new Date()) : []
       const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
       if (data != null) {
-        // console.log(filtro.sort(sorter))
         setEventos(filtro.sort(sorter))
       }
       else if (data == null) setEventos([])
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
     }
-  } 
-  function obtener(cedula){
+  }
+  function obtener(cedula) {
 
     let informacion = {
       "cedula": cedula,
       "email": ""
     }
-   // history.push("/admin")
-    buscarcliente({ ...informacion }).then(output=>{
-      console.log(output)
-      if(output.success){
-        setPerson({ ...output.data, whatsapp: output.data.movil, direccion: output.data.ciudad ? output.data.ciudad :"",name:output.data.nombreCompleto, new_password: ''})
+    // history.push("/admin")
+    buscarcliente({ ...informacion }).then(output => {
+      if (output.success) {
+        setPerson({ ...output.data, whatsapp: output.data.movil, direccion: output.data.ciudad ? output.data.ciudad : "", name: output.data.nombreCompleto, new_password: '' })
       }
-    }).catch(err=>{
-      console.log(err)
+    }).catch(err => {
+      logWithCallback(err)
     })
   }
   useEffect(() => {
-   // let da = getDatosUsuariosLocalStorag()
-  // console.log(da)
-    // obtener(da.cedula)
     (async () => {
 
       let info = getDatosUsuariosLocalStorag()
       obtener(info.cedula)
-     /* try {
-        const suscrito = await GetSuscritores()
-        console.log()
-        const dato = suscrito.users.filter((e) => e.cedula == info.cedula)
-        //  console.log(info, suscrito)
-        setPerson({ ...info, new_password: '', enable: dato[0].enable })
-        // console.log({...info,new_password:'',enable:dato[0].enable})
-        //console.log(dato)
-      } catch (error) {
-        console.log(error)
-
-      }*/
       await evento()
     })()
 
@@ -344,7 +324,7 @@ function PerfilPage(props) {
                   <LocalizationProvider dateAdapter={AdapterMoment} >
                     <StaticDatePicker
 
-                     
+
                       label={"Nuevos Eventos"}
                       openTo="day"
                       value={value}
@@ -356,11 +336,8 @@ function PerfilPage(props) {
                       }}
                       minDateTime={today}
                       renderDay={(day, value, DayComponentProps) => {
-                        // console.log(moment(DayComponentProps.key).format('MM/DD/YYYY'))
                         const isDate = Eventos.some(event => moment(event.fechaConcierto).format('MM/DD/YYYY') === moment(DayComponentProps.key).format('MM/DD/YYYY'));
                         const info = Eventos.find(event => moment(event.fechaConcierto).format('MM/DD/YYYY') === moment(DayComponentProps.key).format('MM/DD/YYYY'))
-                        //console.log(day.toString())
-
                         return (
 
                           <Tooltip key={day.toString()} title={isDate ? info.nombreConcierto : 'sin evento'} placement="top">
@@ -396,7 +373,7 @@ function PerfilPage(props) {
                   <LocalizationProvider dateAdapter={AdapterMoment} >
                     <StaticDatePicker
 
-                     
+
                       label={"Nuevos Eventos"}
                       openTo="day"
                       value={value}
@@ -408,10 +385,8 @@ function PerfilPage(props) {
                       }}
                       minDateTime={today}
                       renderDay={(day, value, DayComponentProps) => {
-                        // console.log(moment(DayComponentProps.key).format('MM/DD/YYYY'))
                         const isDate = Eventos.some(event => moment(event.fechaConcierto).format('MM/DD/YYYY') === moment(DayComponentProps.key).format('MM/DD/YYYY'));
                         const info = Eventos.find(event => moment(event.fechaConcierto).format('MM/DD/YYYY') === moment(DayComponentProps.key).format('MM/DD/YYYY'))
-                        //console.log(day.toString())
 
                         return (
 
@@ -516,7 +491,7 @@ function PerfilPage(props) {
                               name="whatsapp"
                               required
                               value={datosPersons.whatsapp}
-                        
+
                               placeholder=""
                               type="text"
                             ></Form.Control>

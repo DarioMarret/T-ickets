@@ -26,7 +26,6 @@ export const ListarEventosFinalizados = async () => {
 
             }
         })
-        //console.log(data)
         return data.data
     } catch (error) {
         return error;
@@ -56,7 +55,6 @@ const ListarEventosLis = async () => {
 
             }
         })
-        //console.log(datas.data.data)
         return [...data.data, ...datas.data.data, ...event.data.data]
     } catch (error) {
         return error;
@@ -72,7 +70,6 @@ const traerprecios = async (path) => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-        //console.log(data.data)
         return data.data
     } catch (error) {
         return error
@@ -88,7 +85,7 @@ const TraerLocalidad = async () => {
             }
         })
         // sessionStorage.setItem("nombrelocalidades", JSON.stringify(data.data))
-        //console.log(data.data)
+     
         let info = data.data.map(e => {
             return {
                 nombre: e.nombre,
@@ -119,7 +116,6 @@ export const ListaPreciosEvent = async () => {
         })
     })
 
-    //console.log(resultado, data)
     return sessionStorage.setItem("PreciosLocalidad", JSON.stringify(newarr))
 }
 /*
@@ -165,10 +161,9 @@ export const Boleteria_voucher = async (params) => {
         "id_operador": parseInt(ids),
         ...params
     }
-    console.log(params)
     try {
         let { data } = await boleteriaAxios.post("/Boleteria/voucher", parmspro)
-        console.log(data)
+    
         return data
     } catch (error) {
         return error

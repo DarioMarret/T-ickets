@@ -4,6 +4,7 @@ import { GuardarLocalidad } from 'utils/LocalidadesQuery';
 import MesasView from 'views/Pages/Mesas';
 import MesacerView from 'views/Pages/Mesas/Plantillas/Mesacer';
 import Accordion from 'react-bootstrap/Accordion';
+import { logWithCallback } from 'utilsstile.js/style';
 const Registroseccion = (props) => {
     const { show, setShowToast, datosEs } = props
     let ejemplo = [1, 2, 3, 4, 5]
@@ -54,12 +55,9 @@ const Registroseccion = (props) => {
     }
     const AgregasSillasFila = () => {
         ListadeFilas = ListaFilas
-        // console.log(filass.fila,filass.sillas)
         let interar = parseInt(filass.sillas);
         if (filass.fila != "" && filass.sillas != "") {
-
             if (filass.fila === "Todas") {
-
                 for (i = 0; i < ListadeFilas.length; i++) {
                     ListadeFilas[i]["sillas"] = interar;
                     ListadeFilas[i]["asientos"] = []
@@ -72,7 +70,6 @@ const Registroseccion = (props) => {
                 setFilasSillas(ListadeFilas)
                 setFilas(ListadeFilas)
                 setFilasSillas([])
-
             } else {
                 let sillas = []
                 let interarr = parseInt(filass.sillas);
@@ -84,13 +81,8 @@ const Registroseccion = (props) => {
                     numero = 1 + g
                     sillas[g] = { silla: letra + "-s-" + numero, estado: "disponible" }
                 }
-
                 ListadeFilas[index].asientos = [...sillas]
-
-
-
                 setFilas([...ListadeFilas])
-
             }
         }
     }
@@ -99,22 +91,18 @@ const Registroseccion = (props) => {
             const letrafilas = Mesass.me_inicial.replace(/[0-9]+/g, "")
             const numeroinicofilas = Mesass.me_inicial.replace(/[^0-9]+/g, "");
             const repeticiones = parseInt(numeroinicofilas) + parseInt(Mesass.me_cantidad)
-            //  console.log(repeticiones)
             for (i = numeroinicofilas; i < repeticiones; i++) {
                 ListadeMesas.push({ mesa: letrafilas + "" + i, sillas: 0, asientos: [] });
             }
         }
         setMesas(ListadeMesas)
-        //console.log(ListadeMesas)
     }
     const AgregasSillasMesa = () => {
 
         if (Mesass.mesas != "" && Mesass.me_sillas != "") {
             ListadeMesas = ListaMesa
-            console.log(ListadeMesas)
             let interar = parseInt(Mesass.me_sillas);
             if (Mesass.mesas === "todas") {
-                console.log(interar)
                 for (i = 0; i < ListadeMesas.length; i++) {
                     ListadeMesas[i]["sillas"] = interar;
                     ListadeMesas[i]["asientos"] = []
@@ -127,7 +115,6 @@ const Registroseccion = (props) => {
                 setMesas([])
                 setFilasSillas(ListadeMesas)
                 setMesas(ListadeMesas)
-                console.log("nueva lista", ListadeMesas)
                 setFilasSillas([])
                 setMesass({
                     ...Mesass,
@@ -139,7 +126,6 @@ const Registroseccion = (props) => {
                 let interarr = parseInt(Mesass.me_sillas);
                 var numero = 0
                 var index = ListadeMesas.findIndex(obj => obj.mesa == Mesass.mesas);
-                // console.log(index,ListadeMesas[index])
                 var letra = ListadeMesas[index].mesa
                 setMesass({
                     ...Mesass,
@@ -179,28 +165,22 @@ const Registroseccion = (props) => {
             [e.name]: e.value
         })
         SetSillasmes({ sillas: '', cantidad: '' })
-        //console.log(Mesass)
     }
     function handelchange(e) {
         setFilass({
             ...filass,
             [e.name]: e.value
-
         })
 
 
     }
     async function AgregaLocalidad() {
         try {
-            const agrega = await GuardarLocalidad({ "espacio": datosEs.nombre, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
-            console.log(agrega)
-            console.log({ espacio: datosEs.nombre, description: localidaname.description, nombre: localidaname.nombre, mesas_array: JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
-
+            await GuardarLocalidad({ "espacio": datosEs.nombre, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
+            logWithCallback({ espacio: datosEs.nombre, description: localidaname.description, nombre: localidaname.nombre, mesas_array: JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
         } catch (error) {
-            console.log(error)
-
+            logWithCallback(error)
         }
-
     }
     function handelchangelocalidad(e) {
         setLocalidad({
@@ -214,15 +194,11 @@ const Registroseccion = (props) => {
 
 
     useEffect(() => {
-        console.log("modal", datosEs)
         setTabactive({
             tab1: '',
             tab2: 'd-none',
             tab3: 'd-none'
         })
-        console.log(ListaFilas)
-        console.log(ListaMesa)
-        console.log(sillaarray)
     }, [show])
     return (
         <Modal

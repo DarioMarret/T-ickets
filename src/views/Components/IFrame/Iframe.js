@@ -25,7 +25,6 @@ function Iframe(props) {
         hideAlert()
     }
     const successAlert = () => {
-        console.log(url)
         if (url.includes("voucher")){
             cerrarPago()
             return

@@ -10,6 +10,7 @@ import { plantilla } from "utils/constantes"
 import { insertLocalidad, getMapacolor, getLocalidadmapa } from "utils/Localidadmap"
 import { ListarLocalidad } from "utils/LocalidadesQuery/index.js"
 import SvgselectView from "views/Pages/Svgviewa/svgseleccion.js"
+import { logWithCallback } from "utilsstile.js/style"
 const MapadelocalidadViews = (props) => {
         const { localidaname, mapaset, SetDataloca, ObtenLocalidad, datalocalidad } = props
         const usedispatch = useDispatch()
@@ -19,7 +20,6 @@ const MapadelocalidadViews = (props) => {
                 name: "",
                 color: '#A12121',
         })
-console.log(localidaname)
         const [timer, settimer] = useState(false)
 
         const [mapa, setmapa] = useState([])
@@ -53,13 +53,9 @@ console.log(localidaname)
                         let listar = await ListarLocalidad("")
                         let map = await cargarMapa()
                         let datos = map.data.filter((e) => e.nombre_espacio == localidaname.nombre)
-                        console.log(datos)
-                        console.log(localidaname.nombre)
-                        console.log(listar)
                         if (datos) {
                                 let localidadcolor = JSON.parse(datos[0].localidad)
                                 const filtrado = listar.data.filter(e => e.id_espacio == localidaname.id)
-                                // console.log(filtrado)
                                 const obten = filtrado.map((e, i) => {
                                         if (localidadcolor > 0 && localidadcolor.findIndex(e => e.id == e.id) != -1) {
                                                 let dato = JSON.parse(e.mesas_array)
@@ -76,7 +72,6 @@ console.log(localidaname)
                                 setmapa(obten)
                                 setselection({ ...localidadmap, id: datos[0].id })
                                 $('[href*="mapa"]').removeClass('d-none');
-                                //console.log("Existe")
                                 setTimeout(function () {
                                         cargarcolores()
                                 }, 90)
@@ -93,15 +88,12 @@ console.log(localidaname)
                                         color: '#A12121',
                                 })
                                 $('[href*="mapa"]').addClass('d-none');
-                                //console.log("No Existe")
                                 setTimeout(function () {
                                         cargarcolores()
                                 }, 90)
                         }
-
-
                 } catch (error) {
-                        console.log(error)
+                        logWithCallback(error)
                         $('[href*="mapa"]').addClass('d-none');
 
                 }
@@ -110,7 +102,6 @@ console.log(localidaname)
 
 
         const GuardarMapa = async () => {
-
                 let valores = {
                         "mapasvg": estadio,
                         "nombre_espacio": localidaname.nombre,
@@ -119,9 +110,8 @@ console.log(localidaname)
                 }
                 try {
                         if (localidadmap.id == '') {
-                                //  let datos = await guardarMapar(valores)
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Guardadas correctamente', color: 'bg-success', estado: 'Datos Guardado' }))
-                                console.log(datos)
+
                                 hideAlert()
                                 window.location.reload()
                         }
@@ -132,17 +122,13 @@ console.log(localidaname)
                                         "pathmap": getMapacolor(),
                                         "localidad": getLocalidadmapa(),
                                 }
-                                console.log(valor)
-
-                                let updatedatos = await editarMapa({ ...valores, id: localidadmap.id.toString() })
-                                //console.log({ ...valores, id: localidadmap.id.toString() })
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
-                                // console.log(updatedatos)
+
                                 hideAlert()
                                 window.location.reload()
                         }
                 } catch (error) {
-                        console.log(error)
+                        logWithCallback(error)
 
                 }
 
@@ -153,7 +139,7 @@ console.log(localidaname)
                         await cargardatosMapa()
                         hideAlert()
                 } catch (error) {
-                        console.log(error)
+                        logWithCallback(error)
                 }
 
         }
@@ -191,7 +177,7 @@ console.log(localidaname)
 
         function cargarcolores() {
                 let colores = getMapacolor()
-                //  console.log(colores)
+                
                 colores.length > 0 ? colores.map((e, i) => {
                         $("#" + e.path).attr("class", "seleccion")
                         $("#" + e.path).attr("fill", e.fill, "class", "seleccion")
@@ -235,7 +221,7 @@ console.log(localidaname)
                         try {
                                 await cargardatosMapa()
                         } catch (erro) {
-                                console.log(erro)
+                               logWithCallback(erro)
                         }
 
 

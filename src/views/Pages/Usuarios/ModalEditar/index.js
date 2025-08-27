@@ -46,8 +46,6 @@ const EditaruserView = (props) => {
         const editados = await EditUser(id.id, params)
         const { success, message } = editados
         if (success) {
-          //location.reload()
-          console.log(message)
           SetModalEdit(false)
         }
       } catch (error) {
@@ -84,7 +82,6 @@ const EditaruserView = (props) => {
         setValidate("was-validated")
         setShowToas(true)
         setmessage("Hubo un error Verifique  que el correo no este duplicado")
-        console.log(error)
       }
     }
 
@@ -101,7 +98,6 @@ const EditaruserView = (props) => {
     })
     setValidate("")
     if (estado == "update") {
-      //console.log(datosuser)
       setDatos({
         ...datos,
         name: datosuser.name,

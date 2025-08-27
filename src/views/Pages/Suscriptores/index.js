@@ -8,7 +8,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import { GetSuscritores, EliminarSuscrito } from "utils/SuscritorQuery";
 import ModalSuscritoView from "./ModalSuscritor";
 import { Button } from "reactstrap";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { Columnasubcrito } from "utils/ColumnTabla";
 import ResgistroView from "../Flasdeticket/ModalLogin/registro";
@@ -19,6 +19,7 @@ import { formatearNumero } from "utils/Emails";
 import WhastappWiev from "views/Components/MODAL/ModalWhast";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { Contactos_Boletos } from "utils/Querycomnet";
+import { logWithCallback } from "utilsstile.js/style";
 
 const SuscritorViews = () => {
   let usehistory = useNavigate()
@@ -49,7 +50,6 @@ const SuscritorViews = () => {
     try {
       const data = await GetSuscritores(paginasu.init, paginasu.size)
       if (data.users.length > 0) {
-        //  console.log(data.users)
         setsuscritor(data.users)
         setCantidad(data.total)
         setpagina({
@@ -58,17 +58,15 @@ const SuscritorViews = () => {
           "size": data.size,
           "total": data.total,
         })
-        // console.log(data.users.filter(f => f.id == "6670"))
       }
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
     }
   }
   const nuevoeventos = async (ini, fin, paga) => {
     try {
       const data = await GetSuscritores(ini, fin)
       if (data.users.length > 0) {
-        //  console.log(data.users)
         setsuscritor(data.users)
         setCantidad(data.total)
         setpagina({
@@ -77,10 +75,9 @@ const SuscritorViews = () => {
           "size": data.size,
           "total": data.total,
         })
-        // console.log(data.users.filter(f => f.id == "6670"))
       }
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
     }
   }
   const successDelete = () => {
@@ -119,11 +116,9 @@ const SuscritorViews = () => {
     setAlert(null);
   };
   function regsitronew() {
-    //console.log("modal")
     usedispatch(setModal({ nombre: 'registro', estado: "" }))
   }
   function masivosNew() {
-    //console.log("modal")
     usedispatch(setModal({ nombre: 'masivos', estado: suscritores.map(suscritores => { return formatearNumero(suscritores.movil) }).filter(suscr => suscr != undefined) }))
   }
   React.useEffect(() => {
@@ -131,9 +126,6 @@ const SuscritorViews = () => {
       await nuevoevento()
 
     })()
-    console.log(suscritores.map(suscritores => { return formatearNumero(suscritores.movil) }).filter(suscr => suscr != undefined))
-    //data = { suscritores } 
-
   }, [])
 
   function ExportatContactos() {
@@ -149,20 +141,16 @@ const SuscritorViews = () => {
           btnClass: 'btn-success',
           action: function () {
             Contactos_Boletos("suscriptor").then(salida => {
-              console.log(salida)
               if (salida.estado && salida.data.length) {
                 let nuevos = salida.data.filter(e => e.movil).map(Element => {
                   let nuevos = formatearNumero("" + Element["movil"])
                   return { "contactos": nuevos }
                 }).filter(e => e.contactos)
-                console.log(nuevos)
                 var myFile = "Contactos.xlsx";
                 var myWorkSheet = XLSX.utils.json_to_sheet(nuevos);
                 var myWorkBook = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "myWorkSheet");
                 XLSX.writeFile(myWorkBook, myFile);
-                console.log(nuevos)
-
               }
             }).catch(err => {
 
@@ -192,9 +180,7 @@ const SuscritorViews = () => {
 
   const handleChange = (event, value) => {
 
-    //  console.log(value,event)
     if (value == 1) {
-      // usedispatch(setPagination({ inicio: 0, final: 4, page: value }))
       setpagina({
         ...paginasu,
         page: value
@@ -207,9 +193,7 @@ const SuscritorViews = () => {
 
     nuevoeventos(principio, 500, value)
     return
-    // usedispatch(setPagination({ inicio: parseInt(principio) - 4, final: parseInt(principio) / 2 + 4, page: value }))
   };
-  console.log(clienteInfo())
   return (
     <div className="container-fluid">
       {alert}
@@ -326,7 +310,7 @@ const SuscritorViews = () => {
         <div className="col-md-12 ">
           <button className="btn btn-success" onClick={regsitronew}><i className="mr-2 fa fa-plus"></i> Nuevo Suscritores</button>
           {clienteInfo().perfil == "admin" ? <button className="btn btn-success mx-1" onClick={masivosNew} >Enviar masivo desde {paginasu.init} hasta {paginasu.size + paginasu.init} </button> : ""}
-         
+
           <button className=" btn btn-success" onClick={ExportatContactos}><i className=" fa fa-user"></i> Exportar  </button>
           <br></br>
           <div className=" container-fluid m-auto">
@@ -353,7 +337,7 @@ const SuscritorViews = () => {
                 }}
                 enableDensityToggle
                 initialState={{
-                  density: 'compact', 
+                  density: 'compact',
                 }}
                 enableRowActions
                 renderRowActions={({ row }) => (
@@ -366,7 +350,7 @@ const SuscritorViews = () => {
                   </Box>
                 )}
                 positionToolbarAlertBanner="bottom"
-                localization={MRT_Localization_ES}/>
+                localization={MRT_Localization_ES} />
             </div>
           </div>
         </div>

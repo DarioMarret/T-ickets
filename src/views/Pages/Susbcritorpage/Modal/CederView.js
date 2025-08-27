@@ -49,7 +49,6 @@ const CederView = () => {
     }
     const succesceder = async (ceder) => {
         hideAlert()
-        // console.log(ceder)
         cederboleto(ceder).then(ouput => {
             if (ouput.success) {
                 hideAlert()
@@ -68,19 +67,6 @@ const CederView = () => {
                 color: 'bg-ganger', estado: 'Cambio exitoso '
             }))
         })
-       /* try {
-            let { data } = await axios.post("https://api.t-ickets.com/ms_login//api/v1/ceder_boleto", ceder, {
-
-            }, {
-                header: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
-                }
-            })
-            console.log(data)
-        } catch (error) {
-            console.log(error)
-        }*/
     }
     const hideAlert = () => {
         setAlert(null)
@@ -106,7 +92,7 @@ const CederView = () => {
                 "email": isNaN(nombre.trim()) ? nombre.trim() : ''
             }
             buscarcliente({ ...informacion }).then(oupt => {
-                console.log(informacion, oupt)
+              
                 $("#search").removeClass("d-none")
                 if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
                     setDausuario({
@@ -137,7 +123,7 @@ const CederView = () => {
                     message: 'Usuario no encontrado ',
                     color: 'bg-danger', estado: 'Hubo un error'
                 }))
-                console.log(err)
+              
             })
 
         } else if (nombre.length == 0) {
@@ -150,14 +136,6 @@ const CederView = () => {
             [e.name]: e.value
         })
     }
-    useEffect(() => {
-      /*  GetSuscritores().then(oupt => {
-            if (oupt.users) setLista([...oupt.users])
-        }).catch(erro => {
-            console.log(erro)
-        })*/
-
-    }, [estatusModal.nombre == "ceder" ? true : false])
     return (
         <>
             {alert}

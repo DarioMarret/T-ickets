@@ -38,7 +38,6 @@ function RegisterPage() {
 
   const Registeruser = async (e) => {
     e.preventDefault();
-    console.log(registro)
     if (registro.name !== '' || registro.password !== '' || registro.username !== '') {
       try {
         const { data } = await axios.post("https://43d5-45-187-2-162.sa.ngrok.io/api/v1/crear_user", registro, {
@@ -46,9 +45,7 @@ function RegisterPage() {
             'Authorization': 'Basic YWRtaW46YWRtaW4='
           }
         })
-        console.log("registro-->", data)
       } catch (error) {
-        console.log(error)
         setShow(true)
 
       }
@@ -63,7 +60,6 @@ function RegisterPage() {
       ...registro,
       [name]: value
     })
-    //console.log(value)
   }
   React.useEffect(() => {
     (async () => {
@@ -79,7 +75,6 @@ function RegisterPage() {
     })
     if (!data.success) return
     setRoles(data.data)
-    console.log("Perfils-->", data)
   }
   const Consulcedula = async () => {
 
@@ -98,20 +93,12 @@ function RegisterPage() {
          setCedulaapi("");
        }*/
       setregistro(data.data)
-      console.log(registro.name)
       setSpiner("d-none");
       setCedulaapi("");
-      console.log("datos cedula", data)
     } catch (error) {
       setSpiner("d-none");
       setCedulaapi("");
-      console.log(error)
-
     }
-    //if (numero.length !=10) return
-
-    //console.log(numero)
-
   }
 
 

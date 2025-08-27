@@ -44,6 +44,7 @@ import Bingo_tablas from "./components/Tablaspdf";
 import ModalFirma from "views/Components/MODAL/Modalfirma";
 import { Boleteria_voucher } from "utils/EventosQuery/index";
 import { Axiosmikroserdos, boleteriaAxios } from "utils/index";
+import { logWithCallback } from "utilsstile.js/style";
 export const PreciosStore = () => {
     let datos = JSON.parse(sessionStorage.getItem("PreciosLocalidad"))
     if (datos != null) {
@@ -58,9 +59,7 @@ export default function DetalleCompraView() {
     let history = useNavigate()
     let usedispatch = useDispatch()
     let nombres = JSON.parse(sessionStorage.getItem("Detalleuid"))
-    console.log(nombres)
     let useradmin = clienteInfo()
-    console.log(useradmin)
     const [usuario, setUser] = useState({
         "id": "",
         "cedula": "",
@@ -169,7 +168,7 @@ export default function DetalleCompraView() {
     }
     const Eliminara = (parm) => {
         if (useradmin.perfil == 'suscriptores') return
-        console.log(parm)
+
         $.confirm({
             title: 'Desea eliminar este boleto ',
             content: '',
@@ -182,7 +181,7 @@ export default function DetalleCompraView() {
                     action: function () {
                         eliminartiket([parm]).then(ouput => {
                             if (ouput.success) {
-                                console.log(ouput)
+
                                 history(-1)
                             }
                             if (!ouput.success) {
@@ -190,7 +189,6 @@ export default function DetalleCompraView() {
                             }
 
                         }).catch(error => {
-                            console.log(error)
                             $.alert("hubo un error no se pudo eliminar este registro")
                         })
                     }
@@ -342,7 +340,7 @@ export default function DetalleCompraView() {
                     btnClass: 'btn-blue',
                     action: function () {
                         var name = document.getElementById('emControlTextarea1')
-                        console.log(name.value);
+
                         if (!name.value) {
                             $.alert('Ingrese un Comentario');
                             return false;
@@ -353,12 +351,12 @@ export default function DetalleCompraView() {
                             "comentario": name.value
                         }).then(mensage => {
                             if (mensage.success) {
-                                console.log(mensage)
+                                logWithCallback(mensage)
                                 buscarcliente({
                                     "cedula": !isNaN(number) ? number.trim() : '',
                                     "email": ''
                                 }).then(oupt => {
-                                    //console.log(informacion, oupt)
+
                                     $("#search").removeClass("d-none")
                                     if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
                                         $('#cedulac').val("")
@@ -377,9 +375,9 @@ export default function DetalleCompraView() {
                                 })
                                 //history(-1)
                             }
-                            console.log(mensage)
+
                         }).catch(err => {
-                            console.log(err)
+                            logWithCallback(err)
                         })
                     }
                 },
@@ -428,14 +426,12 @@ export default function DetalleCompraView() {
                             "id_operador": id_operador.id,
                             "comentario": name
                         }, e).then(mensage => {
-                            console.log(mensage)
                             if (mensage.success) {
-                                console.log(mensage)
+
                                 history(-1)
                             }
-                            console.log(mensage)
                         }).catch(err => {
-                            console.log(err)
+                            logWithCallback(err)
                         })
                     }
                 },
@@ -583,7 +579,7 @@ export default function DetalleCompraView() {
     const listarConciliacion = async (id) => {
         try {
             let { data } = await boleteriaAxios.get("Boleteria/infoconcilia/" + id)
-            console.log(data);
+
             return data
         } catch (error) {
             return error
@@ -615,7 +611,6 @@ export default function DetalleCompraView() {
 
                                 } catch (error) {
                                     self.close();
-                                    console.log(error)
                                     $.alert("Hubo un error de servicio")
                                 }
                             },
@@ -689,9 +684,8 @@ export default function DetalleCompraView() {
             if (res.success) {
                 setDatosConciloa(res.data[0])
             }
-            console.log(res);
         }).catch(err => {
-            console.log(err)
+            logWithCallback(err)
         })
         buscarcliente({
             "cedula": nombres.cedula,
@@ -699,7 +693,7 @@ export default function DetalleCompraView() {
         }).then(ouputs => {
             if (ouputs.success) {
                 setUser({ ...ouputs.data })
-                nombres.forma_pago == "Tarjeta" && (nombres.link_pago != null||nombres.forma_pago=='Anulado') ?
+                nombres.forma_pago == "Tarjeta" && (nombres.link_pago != null || nombres.forma_pago == 'Anulado') ?
                     !nombres.link_pago.includes("cloud.abitmedia.com") ?
                         infoTarjeta({
                             "token": nombres.token_pago
@@ -719,16 +713,15 @@ export default function DetalleCompraView() {
                                 comprobanteSpan.classList.add('label-warning');
                                 comprobanteSpan.textContent = 'no firmado';
                             }
-                            console.log(ouput)
                             if (ouput.success) {
                                 setDataTarjeta({ ...ouput.data })
-                                console.log(nombres.nombreCompleto)
+
                                 Verificarnomnbre(ouput.data.cardholder, ouputs.data.nombreCompleto)
                             }
                             else {
                                 infoabimedia(nombres.token_pago).then(ouput => {
                                     if (ouput.data) {
-                                        console.log(ouput)
+
                                         let data = {
                                             ...ouput.data,
                                             "payment_date": ouput.data.transactionDate,
@@ -762,7 +755,7 @@ export default function DetalleCompraView() {
                                                     nuew.push(listtarje.some(e => e == element))
 
                                                 });
-                                                console.log(nuew)
+
                                                 if (listtarje.length == nuew.filter(e => e == true).length) {
                                                     setEstadoTC(
                                                         <span className={"pb-1 label label-successtc"}>
@@ -795,18 +788,18 @@ export default function DetalleCompraView() {
                                                         </span>
                                                     )
                                                 }
-                                                console.log(listnombre, listtarje, nuew)
+
                                             }, 5000);
 
                                         }
-                                        console.log(ouput)
+
                                     }
                                 }).catch(err => {
-                                    console.log(err)
+                                    logWithCallback(err)
                                 })
                             }
                         }).catch(err => {
-                            console.log(err)
+                            logWithCallback(err)
                         }) : infoabimedia(nombres.token_pago).then(ouput => {
                             if (ouput.data) {
                                 let data = {
@@ -871,24 +864,22 @@ export default function DetalleCompraView() {
                                             )
 
                                         }
-                                        console.log(listnombre.length, listtarje, nuew.filter(e => e == true).length)
+
                                     }, 500);
                                 }
-                                console.log(ouput)
                             }
                         }).catch(err => {
-                            console.log(err)
+                            logWithCallback(err)
                         }) : ""
             }
         }).catch(erro => {
-            console.log(erro)
+            logWithCallback(erro)
         })
         nombres.forma_pago == "Deposito" ?
             nombres.numerTransacion != null && nombres.numerTransacion != "null" ?
                 BuscarTransacion({
                     "numeroTransaccion": nombres.numerTransacion
                 }).then(ouput => {
-                    console.log(ouput)
                     if (ouput.success) {
                         if (ouput.data) {
                             let comprobanteSpan = document.getElementById('comprobante');
@@ -1053,7 +1044,7 @@ export default function DetalleCompraView() {
                         }, nombres.id).then(ouput => {
                             ouput.success ? history(-1) : ""
                         }).catch(errr => {
-                            console.log(errr)
+                            logWithCallback(errr)
                         })
                     },
 
@@ -1068,7 +1059,7 @@ export default function DetalleCompraView() {
                         }, nombres.id).then(ouput => {
                             ouput.success ? history(-1) : ""
                         }).catch(errr => {
-                            console.log(errr)
+                            logWithCallback(errr)
                         })
                     }
                 },
@@ -1110,27 +1101,17 @@ export default function DetalleCompraView() {
                         action: function () {
                             spinernuevo.classList.toggle("d-none")
                             var name = this.$content.find('.name').val();
-                            // console.log(name)
-                            // return
+
                             registraPagos({ ...reporte, "bancos": name }).then(ouput => {
                                 if (ouput.success) {
-                                    console.log({ ...usuario })
+                                    logWithCallback({ ...usuario })
                                     spinernuevo.classList.toggle("d-none")
                                     sessionStorage.setItem("Suscritorid", JSON.stringify({ ...usuario }))
-                                    //cerrar()
+
                                     history("/admin/suscritor/" + usuario.id + "")
-                                    /* buscarcliente({
-                                         "cedula": nombres.cedula,
-                                         "email": ''
-                                     }).then(oupt => {
-                                        
- 
- 
-                                     })*/
-                                    //history(-1)
-                                    // return
+
                                 }
-                                //$.alert("No se registro")
+
                             }).catch(err => {
                             })
                         }
@@ -1283,7 +1264,6 @@ export default function DetalleCompraView() {
         //if (useradmin.perfil == 'suscriptores') return
         let datos = JSON.parse(sessionStorage.getItem("Detalleuid"))
         let cor = nombres.info_concierto
-        // console.log(id)
         $.confirm({
             title: 'Canjear boletos de este registro',
             type: 'yellow',
@@ -1313,7 +1293,7 @@ export default function DetalleCompraView() {
                                         )
                                     }
                                 }).catch(err => {
-                                    console.log(err)
+                                    logWithCallback(err)
                                 })
                             }
                             else {
@@ -1327,9 +1307,9 @@ export default function DetalleCompraView() {
 
 
                         }).catch(err => {
-                            console.log(err)
+                            logWithCallback(err)
                         })
-                        console.log(id)
+                        logWithCallback(id)
                     }
                 },
                 cancel: function () {
@@ -1380,13 +1360,13 @@ export default function DetalleCompraView() {
                                 "numeroTransaccion": name
                             }
                         ).then(ouput => {
-                            console.log(ouput)
+                            logWithCallback(ouput)
                             if (ouput.success) {
                                 history(-1)
                             }
 
                         }).catch(err => {
-                            console.log(err)
+                            logWithCallback(err)
                         })
                     }
                 },
@@ -2077,7 +2057,7 @@ export default function DetalleCompraView() {
                                         </div>
                                         <Iframe
                                             url={url}
-                                            detener={() => console.log("")}
+                                            detener={() => logWithCallback("")}
                                         />
 
 

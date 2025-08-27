@@ -22,6 +22,7 @@ import { Eventoid } from "utils/constantes"
 import { Triangle } from "react-loader-spinner"
 import { bancos } from "utils/Imgenesutils"
 import moment from "moment"
+import { logWithCallback } from "utilsstile.js/style"
 let { atencion } = bancos
 const ModalCarritoView = (prop) => {
     var usuario = getDatosUsuariosLocalStorag()
@@ -52,7 +53,6 @@ const ModalCarritoView = (prop) => {
     })
     const handleContinuar = () => {
         let user = getDatosUsuariosLocalStorag()
-       // console.log(user)
         if (clienteInfo() != null) {
             usedispatch(setModal({ nombre: 'ModalDetalle', estado: '' }))
             return
@@ -87,26 +87,18 @@ const ModalCarritoView = (prop) => {
 
         let users = getDatosUsuariosLocalStorag()
         checkds.current.check = (users.discapacidad == 'No')
-        //  console.log()
         let datos = UpdateDatosUsuariosLocalStorag({ discapacidad: users.discapacidad == 'No' ? 'Si' : 'No' })
-        //  console.log(getDatosUsuariosLocalStorag().discapacidad)
         usuario.discapacidad = 'Si'
-        //   console.log(checkds.current.checked)
-        // console.log("El checkbox se ha desmarcado", datos);
     }
     function Eliminar(e) {
         let user = getDatosUsuariosLocalStorag()
-        //console.log(e)
         let array = e.localidaEspacio["typo"] != "correlativo" ? listaEliminasillas(e.id) : ''
-        //console.log(array)
         e.localidaEspacio["typo"] != "correlativo" ? quitarsilla({ "array": [...array] }).then(ouput => {
             usedispatch(clearSillas(e))
             EliminarSillaLocal(e.localidad)
-           // console.log(e.localidaEspacio["idcolor"])
             $("div." + e.localidaEspacio["idcolor"] + "silla").removeClass("seleccionado").addClass("disponible");
-            //console.log(ouput)
         }
-        ).catch(err => console.log(err)) :
+        ).catch(err => logWithCallback(err)) :
             correlativosadd(
                 {
                     "id": e.id,
@@ -116,9 +108,8 @@ const ModalCarritoView = (prop) => {
                     "cantidad": e.cantidad
                 }
             ).then(oupt => {
-               // console.log(oupt)
             }).catch(err => {
-                console.log(err)
+
             })
         window.gtag('event', 'remove_from_cart', {
             currency: "USD",
@@ -146,7 +137,6 @@ const ModalCarritoView = (prop) => {
         return
     }
     useEffect(() => {
-        //console.log("aqui")
         let user = getDatosUsuariosLocalStorag()
         setDetalle(getVerTienda())
         setListarCarritoDetalle(getVerTienda())
@@ -165,7 +155,6 @@ const ModalCarritoView = (prop) => {
 
         ListaPrecioset(GetValores())
         let asientos = JSON.parse(sessionStorage.getItem("asientosList"))
-      //  console.log(precios.pathmapa)
         asientos != null ? usedispatch(cargarsilla(asientos)) : ''
         precios.pathmapa.length > 0 ? precios.pathmapa.map((e, i) => {
             $("#" + e.path).attr("class", e.id + "  disponible ")// + e.tipo)
@@ -180,7 +169,7 @@ const ModalCarritoView = (prop) => {
             }))
 
         }).catch(err => {
-            console.log(err)
+            logWithCallback(err)
         })
         const path = document.querySelectorAll('path.disponible,polygon.disponible,rect.disponible,ellipse.disponible,polyline.disponible')
         modalshow.nombre == "ModalCarritov" ? path.forEach(E => {
@@ -213,11 +202,9 @@ const ModalCarritoView = (prop) => {
             });
             E.addEventListener("click", function () {
                 if (!hasExecuted) {
-                    // Coloca aquí el código que deseas ejecutar una sola vez
-                    //  console.log("Función ejecutada");
                     let consulta = precios.precios.find((F) => F.idcolor == this.classList[0])
 
-                    console.log(consulta)
+                    logWithCallback(consulta)
                     if (sleccionlocalidad.pagados >= 10) {
                         usedispatch(setToastes({
                             show: true,
@@ -229,7 +216,6 @@ const ModalCarritoView = (prop) => {
                     }
                     else {
                         hasExecuted = true
-                        let user = getDatosUsuariosLocalStorag()
                         setSpiner("")
                         localidaandespacio(consulta.espacio, consulta.idcolor).then(ouput => {
                             let color = precios.pathmapa.filter((E) => E.id == consulta.idcolor)
@@ -307,7 +293,7 @@ const ModalCarritoView = (prop) => {
                         }
                         ).catch(err =>
 
-                            console.log(err)
+                           logWithCallback(err)
 
                         )
 
@@ -373,7 +359,7 @@ const ModalCarritoView = (prop) => {
                         }
                     })
                     usedispatch(cargarmapa(color))
-                   
+
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                     usedispatch(filtrarlocali(nuevoObjeto))
                     sessionStorage.seleccionmapa = JSON.stringify(e)
@@ -399,7 +385,7 @@ const ModalCarritoView = (prop) => {
                             silla: x.silla, estado: x.estado, idsilla: x.id
                         })
                     }) : ''
-                    console.log(precios, e)
+                    logWithCallback(precios)
                     usedispatch(cargarmapa([e]))
                     usedispatch(settypo({ nombre: precios.mapa, typo: e.tipo, precio: { ...e } }))
                     usedispatch(filtrarlocali(nuevoObjeto))
@@ -429,7 +415,7 @@ const ModalCarritoView = (prop) => {
                 }
             }
             ).catch(err =>
-                console.log(err)
+               logWithCallback(err)
             )
         }
     }
@@ -556,7 +542,6 @@ const ModalCarritoView = (prop) => {
         setAlert(null);
     };
     let fechava = (new Date().getDay() != 6 && new Date().getDay() != 0)
-    //console.log(fechava)
     return (
         <>
             {alert}
@@ -663,7 +648,7 @@ const ModalCarritoView = (prop) => {
                                                             <div className="d-flex flex-column ">
                                                                 <h5 className="card-title">{e.localidad}</h5>
 
-                                                                <p className="card-subtitle">Valor ${e.valor }</p>
+                                                                <p className="card-subtitle">Valor ${e.valor}</p>
                                                                 <p className="card-subtitle">Cantidad {e.cantidad}</p>
                                                             </div>
                                                         </div>
@@ -752,7 +737,7 @@ const ModalCarritoView = (prop) => {
                                         {modalshow.nombre == "ModalCarritov" ?
                                             (sessionStorage.getItem("eventoid") == "5UY4DT") ?
 
-                                                precios.precios.filter(e => e.habilitar_cortesia!=0).sort((a, b) => (a.precio_normal < b.precio_normal ? 1 : -1) && (a.id > b.id ? 1 : -1)).map((elm, i) => {
+                                                precios.precios.filter(e => e.habilitar_cortesia != 0).sort((a, b) => (a.precio_normal < b.precio_normal ? 1 : -1) && (a.id > b.id ? 1 : -1)).map((elm, i) => {
                                                     return (
                                                         <div className="" onClick={() => Abririlocalfirt(elm)} key={i}  >
                                                             <SvgselectView
@@ -785,7 +770,7 @@ const ModalCarritoView = (prop) => {
                                                 )
                                             }) :
                                             <div className="container-fluid d-flex  py-2  col-12 flex-wrap pb-2 justify-content-between align-items-center px-0 p-0">
-                                               
+
                                             </div>
                                         }
                                     </div>

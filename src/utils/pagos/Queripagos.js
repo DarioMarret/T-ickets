@@ -25,12 +25,10 @@ export const registraPagos = async (parms) => {
                 "bancos": parms.bancos,
                 "id": parms.id
             }).then(function (response) {
-                console.log(response)
             });
         }
         return data
     } catch (error) {
-        console.log(error)
         return error
     }
 }
@@ -49,7 +47,6 @@ export const listarRegistropanel = async (parms) => {
     }
 }
 export const ListarRegistropaneFecha = async (ini, fin) => {
-    console.log(fin, ini)
     try {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros?fecha_init=" + ini + "&fecha_fin=" + fin + "",
             {
@@ -232,7 +229,6 @@ export const ActualizaConciliacion = async (parms, id) => {
         "id_usuario": parseInt(idop),
         "id_operador": parseInt(ids),
     }
-    console.log(id)
     try {
         let { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/Conciliacion/" + id, { ...parms, ...parmspro }, {
             headers: {

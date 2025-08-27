@@ -36,14 +36,7 @@ export default function Compras() {
                 </div>
                 :
                 <div className=" d-flex justify-content-center align-items-center mx-auto vh-100">
-                    { 
-                        entries.map(([key, value]) => (
-                            <div className="d-flex flex-wrap" key={key}>
-                                <h2>{key}</h2>
-                                <p>{value}</p>
-                            </div>
-                        ))
-                    }
+                  
                 </div>
             }
         </div>

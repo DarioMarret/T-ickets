@@ -5,7 +5,7 @@ export default function NavbarView({ ...props }) {
     let userauthi = useSelector((state) => state.SuscritorSlice)
     let usedispatch = useDispatch()
     const modal = (e) => {
-        console.log(e, props.visible)
+        
         let visible = props.visible
         e.preventDefault();
         setTimeout(function(){

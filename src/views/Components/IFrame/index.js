@@ -9,7 +9,6 @@ import BingoViewticketApp from "views/Pages/Suscriptores/Bingo";
 export default function Inframene() {
     let dispatch = useDispatch()
     let modal = useSelector(state => state.SuscritorSlice.modal)
-    /// console.log(modal)
     function imprime() {
         html2canvas(document.querySelector("#printe")).then(canvas => {
             var imgWidth = 130;
@@ -19,11 +18,6 @@ export default function Inframene() {
             var position = 10;
             pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
             let frame = document.querySelector("#frame")
-            //frame.src = pdf.output("bloburl");
-            // setTimeout(function () { document.querySelector("#printe").remove() }, 1000)
-            //document.querySelector("#printe").remove()
-            //return
-            //pdf.save()
             window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
         })
     }
@@ -33,7 +27,6 @@ export default function Inframene() {
             // Agrega la imagen al contenedor
 
             html2canvas(document.querySelector("#pdfgenra")).then(canvas => {
-                console.log("aqui")
                 var imgWidth = 130;
                 var imgHeight = canvas.height * imgWidth / canvas.width;
                 const contentDataURL = canvas.toDataURL('image/png')

@@ -5,15 +5,11 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 
 export const Cargarsillas = (colornuevo) => {
     const user = getDatosUsuariosLocalStorag()
-    //console.log(colornuevo)
     return ListarLocalidad().then(ouput => {
-        // console.log(colornuevo, user)
-       
         colornuevo.map((f) => {
             
             if (ouput.data.find(ins => ins.id == f.id) != undefined) {
                 if (JSON.parse(ouput.data.find(ins => ins.id == f.id).mesas_array).Typo == "fila") {
-                    //console.log(JSON.parse(ouput.data.find(ind => ind.id == f.id).mesas_array))
                     JSON.parse(ouput.data.find(ind => ind.id == f.id).mesas_array).datos.map(filas => {
                         filas.asientos.filter(elm => elm.cedula == user.cedula).map(element => {
                             let listsillas = JSON.parse(sessionStorage.getItem(asientosList)) == null ? [] : JSON.parse(sessionStorage.getItem(asientosList))
@@ -59,9 +55,7 @@ export const Cargarsillas = (colornuevo) => {
                 }
                 if (JSON.parse(ouput.data.find(ins => ins.id == f.id).mesas_array).Typo == "correlativo") {
                     if (!JSON.parse(ouput.data.find(ins => ins.id == f.id).mesas_array).datos["info"] != undefined) {
-                        //    console.log(
-                        //      JSON.parse(ouput.data.find(ins => ins.id == f.id).mesas_array).datos["info"].find(corr => corr.cedula == user.cedula))
-                        //aqui info
+                       
                     }
 
                 }
@@ -72,7 +66,6 @@ export const Cargarsillas = (colornuevo) => {
 
     }
     ).catch(exit => {
-        //console.log(exit)
         return []
     })
 }

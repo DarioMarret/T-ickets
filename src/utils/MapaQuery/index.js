@@ -50,7 +50,7 @@ export const editarMapa = async (parm) => {
         })
         return data
     } catch (error) {
-        console.log(error)
+        
         return error
     }
 }

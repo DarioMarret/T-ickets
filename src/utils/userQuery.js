@@ -13,10 +13,8 @@ export const Listarticketporestado = async (parms) => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-        //console.log(data)
         return data
     } catch (error) {
-        console.log(error)
         return error
     }
 }
@@ -61,7 +59,7 @@ export const logs = async () => {
 
 //Ticket/get_ticket_admin
 export const BoletosTiketsGlobal = async (parms) => {
-    // console.log(parms)
+  
     try {
         const { data } = await axios.get("https://api.t-ickets.com/ms_login/ticket_admin",
             {

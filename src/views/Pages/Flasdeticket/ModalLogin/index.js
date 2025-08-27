@@ -13,6 +13,7 @@ import { DatosUsuarioLocalStorang } from "utils/constantes";
 import { Boleteria_password } from "utils/EventosQuery/index";
 
 import ReactGA from 'react-ga4';
+import { logWithCallback } from "utilsstile.js/style";
 const TRACKING_ID = "G-LJN507B5NX";
 const ModalLogin = (props) => {
   ReactGA.initialize(TRACKING_ID, { standardImplementation: true });
@@ -66,8 +67,8 @@ const ModalLogin = (props) => {
           setTimeout(() => {
             Modalstatus.estado == "" ? window.location.reload() : ""
           }, 2000);
-         
-          console.log(Modalstatus.estado)
+
+
           Modalstatus.estado != "" ? usedispatch(setModal({ nombre: Modalstatus.estado == null ? "" : 'ModalDetalle', estado: '' })) : usedispatch(setModal({ nombre: "", estado: '' }))
           if (randon) {
             axios.post("https://api.t-ickets.com/ms_login/api/v1/actulizar_identificacion_asiento",
@@ -76,9 +77,9 @@ const ModalLogin = (props) => {
                 "cedula": data.data.cedula
               }
             ).then(e => {
-              console.log(e)
+              logWithCallback(e)
             }).catch(err => {
-              console.log(err)
+              logWithCallback(err)
             })
           }
         }
@@ -91,7 +92,7 @@ const ModalLogin = (props) => {
           }))
         }
       } catch (error) {
-        console.log(error)
+        logWithCallback(error)
         usedispatch(setToastes({
           show: true,
           message: "Hubo un error Verifique correo y contraseña e intente de nuevo",

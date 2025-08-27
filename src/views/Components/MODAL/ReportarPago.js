@@ -35,27 +35,11 @@ export default function ModalReporteViews() {
         e.preventDefault();
 
         const form = new FormData(e.target)
-        console.log(Object.fromEntries(form.entries()))
         const { codigo, comprobante } = Object.fromEntries(form.entries())
-        //if([codigo,comprobante.name])
-        console.log(comprobante)
-        console.log([codigo, comprobante.name].some(e => e))
         if ([codigo, comprobante.name].some(e => e)) usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
         if (banco == "") usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
         else if (![codigo, comprobante.name].some(e => e) && banco != "") {
-            try {
-                // const link = await Obtenerlinkimagen(comprobante)
-                const reporte = {
-                    "banco": banco,
-                    "codigo": codigo,
-                    "comprobante": "link"
-                }
-                console.log(reporte)
-                //console.log  PagoRapido().then(ouput=>console.log(e))
-            } catch (error) {
-                console.log(error)
-
-            }
+        
         }
 
     }

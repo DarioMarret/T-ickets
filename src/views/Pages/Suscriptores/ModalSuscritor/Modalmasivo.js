@@ -12,13 +12,11 @@ export default function MaodalMasivo(){
         link: ""
     })
     function Cambiar(e) {
-        //  console.log(e.name,e.value)
         if (e.name == "link") {
             setDatos({
                 ...info,
                 [e.name]: e.files
             })
-            console.log(e.name, e.files)
             return
         }
         setDatos({
@@ -42,10 +40,8 @@ export default function MaodalMasivo(){
             usedispacth(setToastes({ show: true, message: 'Adjunte una imagen ', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        console.log(info.mensaje, info.link[0])
         setDisanbe(true)
         const link = await Obtenerlinkimagen(info.link[0])
-        console.log(link)
         if (link == null) {
             setDisanbe(false)
             usedispacth(
@@ -74,11 +70,9 @@ export default function MaodalMasivo(){
                     usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
                     setDisanbe(false)
                 }
-                console.log(sal)
             }).catch(err => {
                 usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
                 setDisanbe(false)
-                console.log(err)
             })
         },
             1000)
@@ -91,13 +85,11 @@ export default function MaodalMasivo(){
             usedispacth(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        console.log(datos.estado["movil"])
         
         let informa = {
             "user_id": [Celular],
             "message": info.mensaje
         }
-        console.log(informa)
         setDisanbe(true)
         MasivosWhastapp(informa).then(sal => {
             if (sal.status == 200) {
@@ -108,11 +100,9 @@ export default function MaodalMasivo(){
                 usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
                 setDisanbe(false)
             }
-            console.log(sal)
         }).catch(err => {
             usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
             setDisanbe(false)
-            console.log(err)
         })
 
     }

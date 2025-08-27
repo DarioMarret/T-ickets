@@ -13,7 +13,7 @@ import "./Pdfwie.css"
     imprimir, armas, mascotas, mascarilla, bebidas, card, cedula, comidas, desiectante, social, tc
 } = staticimg*/
 
-function PdfViewticketApp({...props}) {
+function PdfViewticketApp({ ...props }) {
     let { link } = props
 
     const [data, setData] = useState({
@@ -43,17 +43,9 @@ function PdfViewticketApp({...props}) {
         //if (props.split('http://localhost:3001/ticket_pdf/')[1]) {
         try {
             if (link.split('https://api.t-ickets.com/ticket_pdf/')[1]) {
-                console.log('entro', link.split("https://api.t-ickets.com/ticket_pdf/")[1])
-                console.log('entro', JSON.parse(decode(link.split("https://api.t-ickets.com/ticket_pdf/")[1])))
-                //let dat = JSON.parse(decode(props.split("http://localhost:3001/ticket_pdf/")[1]))
                 let dat = JSON.parse(decode(link.split("https://api.t-ickets.com/ticket_pdf/")[1]))
-                console.log(dat)
-
                 setData(dat)
                 dataQr(dat)
-
-
-                //const imagenContainer = document.getElementById('imagenContainer');
                 function toDataURL(src, callback) {
                     var image = new Image();
                     image.crossOrigin = 'Anonymous';
@@ -72,36 +64,15 @@ function PdfViewticketApp({...props}) {
                     imagens.src = src
                 }
                 toDataURL(dat.imagenConcierto, function (dataURL) {
-                    console.log(dataURL);
                     let imagen = document.getElementById('imagenContainer');
                     imagen.src = dataURL
                 })
-                //imagenContainer.appendChild(imgElement);
-
-               /* setTimeout(function () {
-                    html2canvas(document.querySelector("#printe")).then(canvas => {
-                        var imgWidth = 130;
-                        var imgHeight = canvas.height * imgWidth / canvas.width;
-                        const contentDataURL = canvas.toDataURL('image/png')
-                        let pdf = new jsPDF('p', 'mm', 'a5'); // a5 size page of PDF
-                        var position = 10;
-                        pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
-                        let frame = document.querySelector("#frame")
-                        //frame.src = pdf.output("bloburl");
-                        // setTimeout(function () { document.querySelector("#printe").remove() }, 1000)
-                        //document.querySelector("#printe").remove()
-                        //return
-                        //pdf.save()
-                         window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
-                    });
-                }, 1500)*/
 
 
             } else {
                 setLoader(false)
             }
         } catch (error) {
-            console.log("ERROR: ", error)
             setLoader(false)
         }
 
@@ -229,11 +200,11 @@ function PdfViewticketApp({...props}) {
             pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
             let frame = document.querySelector("#frame")
             //frame.src = pdf.output("bloburl");
-           // setTimeout(function () { document.querySelector("#printe").remove() }, 1000)
+            // setTimeout(function () { document.querySelector("#printe").remove() }, 1000)
             //document.querySelector("#printe").remove()
             //return
             //pdf.save()
-           // window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
+            // window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
         });
 
     }
@@ -244,7 +215,7 @@ function PdfViewticketApp({...props}) {
             justifyContent: "center",
             overflowX: "auto"
         }}>
-          
+
 
             <div id="printe" className="   "
                 style={{
@@ -444,7 +415,7 @@ function PdfViewticketApp({...props}) {
                                             Cualquier duplicado o venta no autorizada de este
                                             boleto se dará por no valido el mismo</strong></span>
                                         </div>
-                                      
+
                                     </div>
                                 </div>
                             </div>

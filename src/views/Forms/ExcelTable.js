@@ -6,7 +6,6 @@ const ExcelTable = ({ data }) => {
     const [tableData, setTableData] = useState([]);
 
     useEffect(() => {
-      //  console.log(data)
         if (data.length > 0) {
             // Obtener claves del primer objeto como columnas
             const keys = Object.keys(data[0]);
@@ -14,8 +13,6 @@ const ExcelTable = ({ data }) => {
                 data: key,
                 title: key.replace(/_/g, " ").toUpperCase()
             }));
-
-            // Calcular sumas por columna
             const columnSums = {};
             keys.forEach(key => {
              columnSums[key] = data.reduce((acc, row) => {

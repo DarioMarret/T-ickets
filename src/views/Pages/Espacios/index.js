@@ -15,6 +15,7 @@ import { ListarLocalidad } from "utils/LocalidadesQuery/index.js";
 import { EliminarLocalidad } from "utils/Querypanel.js";
 import { columns } from "utils/ColumnTabla.js";
 import { AxioBoleteria } from "utils/index.js";
+import { logWithCallback } from "utilsstile.js/style.js";
 
 const EventosViews = () => {
   const [localidaname, setLocalidad] = useState({ id: '', nombre: '', descripcion: '' })
@@ -33,23 +34,18 @@ const EventosViews = () => {
     const {data:cargarLista} = await AxioBoleteria.get("api/v1/listar_espacios")
     const { success, data } = cargarLista
     if (success) {
-      console.log(data)
       setListaEspa(data)
     }
   }
   async function Elimnar(e) {
     try {
-      console.log(e)
-      const elimonado = await EliminarEspacios(e.id)
-      console.log(elimonado)
-      
+      const elimonado = await EliminarEspacios(e.id)      
       if (elimonado.success) {
         await Lista()
         hideAlert()
       }
-
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
     }
   }
   function Editar(e, estado) {

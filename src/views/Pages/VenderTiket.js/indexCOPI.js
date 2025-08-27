@@ -53,6 +53,7 @@ import { verAsientos } from "utils/CarritoLocalStorang";
 import { isAfter, parse } from "date-fns";
 import ModalEfectivofACILITO from "views/Components/MODAL/Modalefectivo";
 import { Axiosmikroserdos } from "utils/index";
+import { logWithCallback } from "utilsstile.js/style";
 require('moment/locale/es.js')
 
 export default function StoreTickesViews() {
@@ -77,7 +78,6 @@ export default function StoreTickesViews() {
     function detenervelocidad() {
         let sillasatos = verAsientos()
         let user = getDatosUsuariosLocalStorag()
-        // console.log("qitoa")
         clearInterval(intervalRef.current)
         clearInterval(intervalRef.current)
         setMapashow(false)
@@ -87,8 +87,8 @@ export default function StoreTickesViews() {
         usedispatch(setModal({ nombre: "", estado: '' }))
         let array = ListaElimnaLCompleta()
         array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
-            console.log(ouput)
-        }).catch(err => console.log(err)) : ''
+            logWithCallback(ouput)
+        }).catch(err => logWithCallback(err)) : ''
         getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
 
             getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
@@ -100,9 +100,9 @@ export default function StoreTickesViews() {
                         "cedula": user.cedula,
                         "cantidad": elem.cantidad
                     }).then(ouput => {
-                        console.log(ouput)
+                        logWithCallback(ouput)
                     }).catch(err => {
-                        console.log(err)
+                        logWithCallback(err)
                     })
                 }, 20 * index)
             })
@@ -118,9 +118,9 @@ export default function StoreTickesViews() {
                             // , ...data
                         ]
                     }).then(ouput => {
-                        console.log(ouput)
+                        logWithCallback(ouput)
                     }).catch(err => {
-                        console.log(err)
+                        logWithCallback(err)
                     })
                 }, 20 * index)
             })
@@ -145,7 +145,6 @@ export default function StoreTickesViews() {
         try {
             const data = await cargarEventoActivo("ACTIVO/")
             const dataS = await cargarEventoActivo("PROCESO/")
-            //console.log(data, dataS)
 
             const filtro = data != null ? data.filter((e) => {
                 const fechaConcierto = parse(e.fechaConcierto + " 23:59:59", 'yyyy-MM-dd HH:mm:ss', new Date());
@@ -161,24 +160,12 @@ export default function StoreTickesViews() {
                 // Comparar las fechas
                 return isAfter(fechaConcierto, fechaActual);
             }) : []
-            //console.log(filtro, filtroS)
             setEvento([...filtro, ...filtroS].sort(sorter))
             const susct = await GetSuscritores()
-            //console.log(data, susct)
-            //  const Datos = await ListarTikets()
             const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
-            if (data != null) {
-
-                /*  if (Datos.data) setInfo({
-                      ...info,
-                      Ticket: Datos.data.length,
-                      Activos: filtro.sort(sorter).length,
-                      Venta: 0, suscritor: susct.users.length
-                  })*/
-            }
-            else if (data == null && dataS == null) setEvento([])
+            if (data == null && dataS == null) setEvento([])
         } catch (error) {
-            console.log(error)
+            logWithCallback(error)
         }
     }
     const abrir = async (e) => {
@@ -198,9 +185,7 @@ export default function StoreTickesViews() {
         try {
             let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
             let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
-            // console.log(seleccionuser)
-            //registro.success && registro.data.some(f => f.estado_pago == "Pendiente")
-            //if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
+
             if (false) {
                 setspinervi("d-none")
                 usedispatch(setToastes({
@@ -214,18 +199,6 @@ export default function StoreTickesViews() {
                 history("/admin/Aprobar/" + getDatosUsuariosLocalStorag().cedula)
                 return
             }
-            /* if (registro.success && registro.data.some(f => f.estado_pago == "Comprobar")) {
-                 setspinervi("d-none")
-                 //SetSeleccion("Tickets")
- 
-                 usedispatch(setToastes({
-                     show: true,
-                     message: "Espera a que un agente verifique tu transeferenciao deposito",
-                     color: 'bg-info',
-                     estado: "El cliente Tienes un reporte por combrobar"
-                 }))
-                 return
-             }*/
 
             else {
 
@@ -236,16 +209,15 @@ export default function StoreTickesViews() {
                 sessionStorage.consierto = e.nombreConcierto
                 if (obten.data.length > 0) {
                     let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
-                    console.log("listad", listalocal)
+                    logWithCallback({ "listad": listalocal })
                     let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-                    console.log(mapalocal, mapa, localidades)
+                    logWithCallback({ mapalocal, mapa, localidades })
                     let localidad = JSON.parse(mapa[0].localidad)
                     let path = JSON.parse(mapa[0].pathmap)
-                    // console.log(obten.data.filter(e => e != undefined))
                     let newprecios = obten.data.filter(e => e != undefined).map((g, i) => {
-                        // console.log(obten.data)
+
                         let color = localidad.filter((f, i) => f.nombre.trim() == g.localidad.trim()).filter(e => e != undefined)
-                        // console.log(localidad)
+
                         if (color.length > 0) {
                             g.color = color[0].color
                             g.idcolor = color[0].id
@@ -256,7 +228,7 @@ export default function StoreTickesViews() {
                             return g
                         }
                     }).filter(e => e != undefined)
-                    console.log("newprecios", newprecios)
+                    logWithCallback({ "newprecios": newprecios })
                     let colornuevo = mapalocal.map((L) => {
                         if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
                             {
@@ -272,13 +244,13 @@ export default function StoreTickesViews() {
                             }
                         }
                     })
-                    console.log("precios", colornuevo)
+                    logWithCallback({ "precios": colornuevo })
                     let pathnuevo = path.map((L) => {
                         if (newprecios.filter(e => e != undefined).findIndex(e => e.idcolor == L.id) != -1) {
                             return L
                         }
                     })
-                    console.log("pathnuevo", pathnuevo)
+                    logWithCallback({ "pathnuevo": pathnuevo })
                     sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
                         return e
                     })),
@@ -320,21 +292,19 @@ export default function StoreTickesViews() {
                         "ideprecio": 433,
                         "espacio": 70
                     }]))
-                    //console.log(colornuevo)
                     usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
                     let nuevosdatos = {
                         precios: newprecios,
                         pathmapa: pathnuevo.filter((e) => e != undefined),
                         mapa: mapa[0].nombre_mapa
                     }
-                    console.log(nuevosdatos)
+                    logWithCallback(nuevosdatos)
                     sessionStorage.eventoid = e.codigoEvento
                     setPrecios(nuevosdatos)
                     setDatoscon(e)
 
-                    console.log(colornuevo.filter((e) => e != undefined))
                     let { data } = await Axiosmikroserdos.get("api/Valida_Descuento/" + getDatosUsuariosLocalStorag().cedula)
-                    console.log(data)
+                    logWithCallback(data)
                     if (data.estado) {
                         usedispatch(setToastes({
                             show: true,
@@ -343,39 +313,21 @@ export default function StoreTickesViews() {
                             estado: "Verificar de que Evento"
                         }))
                     }
-                    /* let datas = await Axiosmikroserdos.get("api/Valida_DescuentoStar/" + getDatosUsuariosLocalStorag().cedula)
-                     console.log(datas.data)
-                     if (datas.data.estado) {
-                         usedispatch(setToastes({
-                             show: true,
-                             message: datas.data.message +" En star365",
-                             color: 'bg-warning',
-                             estado: "Verificar de que Evento"
-                         }))
-                     }*/
                     Cargarsillas([...colornuevo.filter((e) => e != undefined)]).then(outp => {
                         setspinervi("d-none")
-                        console.log(outp)
+                        logWithCallback(outp)
                         usedispatch(cargarsilla(outp))
                         history("/vender/" + e.codigoEvento)
-                        return
-                        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
-                        if (seleccionuser.data.length > 0) {
-                            Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula, "accion": "liverar" }).then(outp => {
-                                console.log(outp)
-                            }).catch(error => {
-                                console.log(error)
-                            })
-                        }
+
                     }).catch(err => {
-                        console.log(err)
+                        logWithCallback(err)
                         setspinervi("d-none")
                     })
 
                 }
             }
         } catch (err) {
-            console.log(err)
+            logWithCallback(err)
             setspinervi("d-none")
         }
     }
@@ -403,55 +355,36 @@ export default function StoreTickesViews() {
             }
             if (oup.data.length == 0) {
                 agregaReserva(codigo, nombre).then(Ouput => {
-                    console.log("resrva", Ouput)
+                    logWithCallback({ "resrva": Ouput })
                 }).catch(err => {
-                    console.log(err)
+                    logWithCallback(err)
                 })
                 return
             }
             if (codigo == "ZKZX3U") {
                 if (!oup.data.some(e => e.codigoEvento == "ZKZX3U")) {
-                    console.log(oup.data.some(e => e.codigoEvento == "ZKZX3U"))
+
                     agregaReserva(codigo, nombre).then(Ouput => {
-                        //console.log("resrva", Ouput)
                     }).catch(err => {
-                        console.log(err)
+                        logWithCallback(err)
                     })
                     return
-                }
-
-                else {
-                    console.log("ya tiene boleos")
                 }
                 return
             }
             if (codigo == "6E1FO4") {
                 if (!oup.data.some(e => e.codigoEvento == "6E1FO4")) {
-                    console.log(oup.data.some(e => e.codigoEvento == "6E1FO4"))
+
                     agregaReserva(codigo, nombre).then(Ouput => {
-                        //console.log("resrva", Ouput)
                     }).catch(err => {
-                        console.log(err)
+                        logWithCallback(err)
                     })
                     return
                 }
-                else {
-                    console.log("ya tiene boleos")
-                }
                 return
             }
-
-
-
-
-            //  console.log("boletos", oup)
-            /* agregaReserva("").then(Ouput => {
-                 console.log("resrva",Ouput)
-             }).catch(err => {
-                 console.log(err)
-             })*/
         }).catch(err => {
-            console.log(err)
+            logWithCallback(err)
 
         })
 
@@ -474,7 +407,7 @@ export default function StoreTickesViews() {
             usedispatch(clearMapa({}))
             usedispatch(borrarseleccion({ estado: "seleccionado" }))
         })()
-        // console.log(clienteInfo())
+        
         var popUp = window.open('url', '', 'options');
         if (popUp == null || typeof (popUp) == 'undefined') {
             //  popUp.close();     
@@ -539,7 +472,7 @@ export default function StoreTickesViews() {
             <ModalConfima />
             <ReporteView
                 repShop={repShop}
-                detener={() => console.log()}
+                detener={() => logWithCallback()}
                 setrepShow={setrepShow}
                 comprar={para}
             />

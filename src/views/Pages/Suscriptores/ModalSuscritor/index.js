@@ -37,8 +37,6 @@ const ModalSuscritoView = (props) => {
       setValidate("was-validated")
       return true
     } else {
-      console.log("paso")
-      console.log(datos)
       try {
         const editados = await EditarSuscrito(datos.id, parms)
         const { success, message } = editados
@@ -46,7 +44,6 @@ const ModalSuscritoView = (props) => {
           location.reload()
         }
       } catch (error) {
-        console.log(error)
 
       }
     }
@@ -76,7 +73,6 @@ const ModalSuscritoView = (props) => {
     }
     else {
       try {
-        console.log("crea")
         setValidate("")
         const useradd = await CrearSuscritor(params)
         const { success, message } = useradd
@@ -85,7 +81,6 @@ const ModalSuscritoView = (props) => {
         }
       } catch (error) {
         setValidate("was-validated")
-        //console.log(error)
         setDatos({
           nombreCompleto: '',
           email: '',
@@ -106,7 +101,6 @@ const ModalSuscritoView = (props) => {
       try {
         let info = await getCedula(e)
         if (info != false)
-          // console.log(info)
           setDatos({
             ...datos,
             nombreCompleto: info.name,

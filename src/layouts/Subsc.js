@@ -40,7 +40,6 @@ function Subcrito() {
   //aqui valido las rutas que deben admitirse segun el permiso
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      console.log( prop.layout , prop.path )
       if (prop.permiso != null && prop.permiso.every(e => e != "admin")) {
         return null
 

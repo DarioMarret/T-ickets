@@ -15,7 +15,7 @@ export const Authsucrito = async (parms) => {
     let randon = sessionStorage.getItem("random")
     try {
         const { data } = await AxioBoleteria.post("api/v1/auth_suscriptor", parms)
-        console.log(data)
+       
         if (randon) {
             AxioBoleteria.post("api/v1/actulizar_identificacion_asiento",
                 {
@@ -23,16 +23,15 @@ export const Authsucrito = async (parms) => {
                     "cedula": data.data.cedula
                 }
             ).then(e => {
-                console.log(e)
+              
             }).catch(err => {
-                console.log(err)
+              
             })
             return data
         }
         return data
 
     } catch (error) {
-        console.log(error)
         return error
     }
 
@@ -45,11 +44,7 @@ export const GenerarLinkPagoMedios = async () => {
     let id = clienteInfo() != null ? clienteInfo().id : 0
     let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
     let metodo = { "forma_paago": GetMetodo() }
-    console.log("se esta generando")
-    console.log(datosPersonal,
-        valores,
-        metodo,
-        concierto)
+   
 
     if (datosPersonal != null && valores != null) {
         const { data } = await axios.post("https://api.t-ickets.com/ms_login/pago_medio", {
@@ -64,13 +59,7 @@ export const GenerarLinkPagoMedios = async () => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-        console.log({
-            datosPersonal,
-            valores,
-            metodo,
-            concierto
-        }, data
-        )
+     
         return data.data
     }
 }
@@ -105,7 +94,7 @@ export const ValidarWhatsapp = async () => {
     let nuemero = datosPerson.whatsapp
     const validanumero = nuemero.length == 10 ? nuemero.substring(1, 10) : nuemero
     const { data } = await axios.post("https://api.t-ickets.com/api_whatsapp_qr/api/validarNumero", { from: "593" + validanumero })
-    console.log(validanumero, data)
+   
     if (data.success && data.msg != null) {
         sessionStorage.setItem(Whatsappnumero, data.msg["_serialized"])
         return data.msg
@@ -129,7 +118,7 @@ export const EnviarmensajeWhastapp = async (parms) => {
         message = message + " la cantidad de " + e.cantidad + " asiento para el concierto " + e.nombreConcierto + " de la localidad  " + e.localidad + ", "
     }) : ''
     message = message + codigo + " podría contactarse conmigo para terminar el proceso de compra"
-    console.log("mensaje -->", message)
+   
     return message
 }
 /**
@@ -183,7 +172,6 @@ export const ReportarEfectivoCompra = async () => {
         "id_usuario": parseInt(idop),
         "id_operador": parseInt(id),
     }
-    //console.log({datosPersonal,concierto,valores,metodo})
     const { data } = await axios.post("https://api.t-ickets.com/ms_login/pago_medio", {
         datosPersonal,
         valores,

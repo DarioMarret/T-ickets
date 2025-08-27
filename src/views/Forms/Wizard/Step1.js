@@ -5,7 +5,6 @@ const Step1 = React.forwardRef((props, ref) => {
   const [email, setEmail] = React.useState("");
   const [emailError, setEmailError] = React.useState(null);
   const isValidated = () => {
-    console.log("hey");
     var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     re.test(email) === false
       ? setEmailError(
@@ -18,7 +17,6 @@ const Step1 = React.forwardRef((props, ref) => {
   };
   React.useImperativeHandle(ref, () => ({
     isValidated: () => {
-      console.log("hey from use");
       return isValidated();
     },
   }));

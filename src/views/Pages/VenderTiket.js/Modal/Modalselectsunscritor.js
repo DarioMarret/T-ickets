@@ -17,6 +17,7 @@ import { Host } from "utils/constantes"
 import { MagnifyingGlass } from "react-loader-spinner"
 import { buscarcliente } from "utils/Querypanelsigui"
 import { Emailcontec, formatearNumero } from "utils/Emails/index"
+import { logWithCallback } from "utilsstile.js/style"
 //import{R}
 
 export default function ListaSuscritor(prop) {
@@ -36,17 +37,7 @@ export default function ListaSuscritor(prop) {
         password: ''
 
     })
-    /*const Vender = async (e) => {
-        try {
-            const cedulas = await getCedula(e.cedula)
-            DatosUsuariosLocalStorag({ ...cedulas, ...e, whatsapp: e.movil, password: '' })
-            sessionStorage.setItem(DatosUsuariocliente, JSON.stringify({ ...cedulas, whatsapp: e.movil, ...e, password: '' }))
-            abrir(modalshow.modal.estado)
-            hideAlert()
-        } catch (error) {
-            console.log(error)
-        }
-    }*/
+
     const VenderTickest = async () => {
         let cedula = getDatosUsuariosLocalStorag()
         try {
@@ -72,7 +63,7 @@ export default function ListaSuscritor(prop) {
             hideAlert()
 
         } catch (error) {
-            console.log(error)
+            logWithCallback(error)
         }
     }
     const CrearUSuario = async () => {
@@ -113,7 +104,7 @@ export default function ListaSuscritor(prop) {
             }))
             return
         }
-        console.log(Object.values(datosend).every(e => e), datosend)
+
         if (Object.values(datosend).every(e => e)) {
 
 
@@ -124,7 +115,7 @@ export default function ListaSuscritor(prop) {
                         'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                     }
                 })
-                console.log(registro.data.success)
+
                 if (registro.data.success) {
                     usedispatch(setToastes({
                         show: true,
@@ -134,13 +125,13 @@ export default function ListaSuscritor(prop) {
                     }))
                     let texto = "*" + datosend.nombreCompleto + "*\nGracias por registrarse en Tickets.com.ec.\nLos datos de ingreso son:\n *Usuario*:" + datosend.email + "\n *Clave*:" + datosend.password + "\n\nPor favor, para validar tu cuenta digita la palabra *Si*";
                     Emailcontec({ movil: [formatearNumero($("#movil").val())], nombre: datosend.nombreCompleto, password: String(datosend.password).trim(), email: datosend.email, text: texto }).then(sal => {
-                        console.log(sal)
+                        logWithCallback(sal)
                     }).catch(err => {
-                        console.log(err)
+                        logWithCallback(err)
                     })
                     let nombre = $('#cedula').val()
                     if (nombre.trim().length < 9) {
-                        console.log("error", nombre)
+                        logWithCallback({ "error": nombre })
                         return
                     }
                     let informacion = {
@@ -148,7 +139,7 @@ export default function ListaSuscritor(prop) {
                         "email": isNaN(nombre.trim()) ? nombre.trim() : ''
                     }
                     buscarcliente({ ...informacion }).then(ouput => {
-                        //  console.log(ouput)
+
                         if (!ouput.success) {
                             getCedula(nombre).then(salida => {
                                 if (salida.success) {
@@ -185,12 +176,12 @@ export default function ListaSuscritor(prop) {
                                                 movil: $("#movil").val(),
                                                     password: datos.password,
                                                         cedula: $("#cedula").val()*/
-                                    
+
                                     //$('#movil').val("")
                                     $("#search").addClass("d-none")
                                 }
                             }).catch(erro => {
-                                console.log(erro)
+                                logWithCallback(erro)
                             })
 
 
@@ -211,11 +202,11 @@ export default function ListaSuscritor(prop) {
                         }
 
                     }).catch(erro => {
-                        console.log(erro)
+                        logWithCallback(erro)
                     })
                 }
                 else {
-                    console.log(registro)
+
                     usedispatch(setToastes({
                         show: true,
                         message: "Ya existe una cuenta con este correo registro",
@@ -230,7 +221,6 @@ export default function ListaSuscritor(prop) {
                     color: 'bg-danger',
                     estado: "Huboo un error ",
                 }))
-                // console.log(error)
 
             }
 
@@ -242,8 +232,7 @@ export default function ListaSuscritor(prop) {
                 message: 'Complete toda la información ',
                 color: 'bg-danger', estado: 'Campos vacíos'
             }))
-            //console.log("nuevo")
-            /// document.getElementById("register").classList.add("needs-validation")
+
         }
 
     }
@@ -274,7 +263,7 @@ export default function ListaSuscritor(prop) {
         GetSuscritores().then(datos => {
             if (datos.users) setLista([...datos.users])
         }).catch(error => {
-            console.log(error)
+            logWithCallback(error)
         })
     }, [modalshow.modal.nombre == "suscritor" ? true : ''])
 
@@ -282,9 +271,8 @@ export default function ListaSuscritor(prop) {
         if (code == "cedula" && nombre.trim().length >= 10) {
 
             $("#search").removeClass("d-none")
-            //console.log(lista.find(e => e.cedula == nombre))
-            buscarcliente({}).then(oupt => console.log(oupt)).catch(err => {
-                console.log(err)
+            buscarcliente({}).then(oupt => logWithCallback(oupt)).catch(err => {
+                logWithCallback(err)
             })
             if (lista.find(e => e.cedula == nombre) != null) {
                 setDausuario({
@@ -298,15 +286,14 @@ export default function ListaSuscritor(prop) {
                 })
 
                 DatosUsuariosLocalStorag({ ...lista.find(e => e.cedula == nombre) })
-                //   console.log(lista.find(e => e.cedula == nombre))
-                //console.log({ ...lista.find(e => e.cedula == nombre), discapacidad: cedula.discapacidad, password: '' })
+
                 $('#movil').val(lista.find(e => e.cedula == nombre).movil)
                 $("#search").addClass("d-none")
 
                 return
             } else {
                 let cedula = await getCedula(nombre)
-                //console.log(cedula)
+
                 if (cedula) {
 
                     setDausuario({
@@ -321,7 +308,7 @@ export default function ListaSuscritor(prop) {
                     $("#search").addClass("d-none")
 
                 } else {
-                    //  console.log(cedula)
+
                     setDausuario({
                         nombreCompleto: '',
                         ciudad: '',
@@ -357,7 +344,7 @@ export default function ListaSuscritor(prop) {
     const buscarsuscritor = () => {
         let nombre = $('#cedula').val()
         if (nombre.trim().length < 9) {
-            console.log("error", nombre)
+
             return
         }
         let informacion = {
@@ -365,7 +352,6 @@ export default function ListaSuscritor(prop) {
             "email": isNaN(nombre.trim()) ? nombre.trim() : ''
         }
         buscarcliente({ ...informacion }).then(ouput => {
-            //  console.log(ouput)
             if (!ouput.success) {
                 getCedula(nombre).then(salida => {
                     if (salida.success) {
@@ -400,7 +386,7 @@ export default function ListaSuscritor(prop) {
                         $("#search").addClass("d-none")
                     }
                 }).catch(erro => {
-                    console.log(erro)
+                    logWithCallback(erro)
                 })
 
 
@@ -420,7 +406,7 @@ export default function ListaSuscritor(prop) {
             }
 
         }).catch(erro => {
-            console.log(erro)
+            logWithCallback(erro)
         })
     }
     const verificar = () => {

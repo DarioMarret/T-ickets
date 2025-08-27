@@ -15,6 +15,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { listaRegistrosuscri } from "utils/columnasub";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import moment from "moment";
+import { logWithCallback } from "utilsstile.js/style";
 export default function ListaderegistroView(props) {
     let { cedula } = props
     let usedispatch = useDispatch()
@@ -28,22 +29,17 @@ export default function ListaderegistroView(props) {
         const fechaLimite = new Date();
         fechaLimite.setDate(fechaActual.getDate() - 1);
         let user = getDatosUsuariosLocalStorag()
-        console.log(fechaLimite)
+
         listarRegistropanel({ "cedula": user.cedula }).then(
             e => {
                 if (!e.success) {
                     return
                 }
-                console.log(e)
-                /*e.data.forEach(element => {
-                    console.log(moment(element.fechaCreacion).format() +"aqui"+ moment( fechaLimite).format())
-                    console.log(moment(element.fechaCreacion).format()> moment(fechaLimite).format())
-                })*/
-                /*/.filter(e => moment(e.fechaCreacion).format() > moment(fechaLimite).format())*/
+
                 setDatos(e.data)
             }
         ).catch(err =>
-            console.log(err)
+            logWithCallback(err)
         )
     }, [])
     function detalle(e) {
@@ -54,9 +50,8 @@ export default function ListaderegistroView(props) {
         usedispatch(setModal({ nombre: "confirmar", estado: { ...row } }))
     }
     const eliminarregistro = (row) => {
-        //console.log(row)
 
-        if(row.forma_pago=="Tarjeta") return
+        if (row.forma_pago == "Tarjeta") return
         $.confirm({
             title: 'Desea eliminar el registro de compra ',
             content: '',
@@ -69,18 +64,17 @@ export default function ListaderegistroView(props) {
                     action: function () {
 
                         eliminarRegistro({ "id": row.id }).then(ouput => {
-                            console.log(ouput)
-                            console.log(row.id)
+                            
                             if (!ouput.success) { return $.alert("" + ouput.message) }
                             listarRegistropanel({ "cedula": cedula }).then(e => {
-                                //console.log(e)
+                                
                                 if (e.data) {
                                     setDatos(e.data)
                                     return
                                 }
-                                //setTikes([])
+                                
                             }).catch(err => {
-                                console.log(err)
+                                logWithCallback(err)
                             })
                             $.alert("Registro eliminado correctamente")
                             setTimeout(function () {
@@ -109,7 +103,7 @@ export default function ListaderegistroView(props) {
             estado: "Tu boleto ya están pagados"
         }))*/
         if (row.link_pago != null) {
-            (row.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante })) : usedispatch(setModal({ nombre: 'firma', estado: {  ...row } }))
+            (row.link_pago.includes('cloud.abitmedia.com')) ? usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante })) : usedispatch(setModal({ nombre: 'firma', estado: { ...row } }))
         } if (row.link_comprobante) {
             usedispatch(setModal({ nombre: 'pago', estado: row.link_comprobante }))
         }
@@ -131,7 +125,7 @@ export default function ListaderegistroView(props) {
                         return (
 
                             <Box sx={{ display: 'flex' }}>
-                                {row.original.forma_pago == "Deposito" && row.original.estado_pago != "Pagado" && row.original.estado_pago != "Comprobar"&& row.original.estado_pago!="Expirado" ?
+                                {row.original.forma_pago == "Deposito" && row.original.estado_pago != "Pagado" && row.original.estado_pago != "Comprobar" && row.original.estado_pago != "Expirado" ?
                                     <Tooltip
                                         title="Reportar pago" placement="top"
                                     >
@@ -184,8 +178,8 @@ export default function ListaderegistroView(props) {
                                             >
                                                 <i className="fa fa-print" > </i>Firmar voucher
                                             </a> : ""
-                                    
-                                        
+
+
 
                                 }
                                 {clienteInfo() && row.original.forma_pago == "Deposito" && row.original.link_comprobante == null ?

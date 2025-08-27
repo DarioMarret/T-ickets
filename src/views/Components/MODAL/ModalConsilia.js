@@ -127,9 +127,7 @@ export default function ConsiliarView() {
                     "cedula": props.estado.cedula,
                     "email": ""
                 }
-                console.log(reporte)
-                buscarcliente({ ...informacion }).then(oupt => {                   
-                    console.log(informacion)
+                buscarcliente({ ...informacion }).then(oupt => {         
                     if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {                        
                         sessionStorage.setItem("Suscritorid", JSON.stringify(oupt.data))
                         history("/admin/suscritor/" + oupt.data.id + "")
@@ -151,7 +149,6 @@ export default function ConsiliarView() {
                         message: 'Usuario no encontrado ',
                         color: 'bg-danger', estado: 'Hubo un error'
                     }))
-                    console.log(err)
                 })
 
                 return
@@ -206,7 +203,6 @@ export default function ConsiliarView() {
             banco: datos.banco,
             forma_pago: props.estado.forma_pago
         }
-        console.log(parms)
       
         if (Object.values(parms).some(e => e == "")) {
             usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
@@ -214,16 +210,13 @@ export default function ConsiliarView() {
         }
         else {
             setEstatus(true)
-            console.log(parms)
             Consiliarcompra({...parms,...datos}).then(salida => {
                 setEstatus(false)
-                console.log(salida)
                 if (salida.message =="Consolidado guardado") {
                     ConsolidarCompra()
                 }
             }).cath(err => {
                 setEstatus(false)
-                console.log(err)
             })
         }
     }
@@ -239,7 +232,6 @@ export default function ConsiliarView() {
             forma_pago: props.estado.forma_pago,
             
         }
-        console.log({...parms, ...datos})
         if (Object.values(parms).some(e => e == "")) {
             usedispatch(setToastes({ show: true, message: 'Faltan datos por completa', color: 'bg-danger', estado: 'Datos vacios' }))
             return
@@ -247,24 +239,19 @@ export default function ConsiliarView() {
         /*
         else {
             setEstatus(true)
-            //console.log(parms, ...datos)
             ActualizaConciliacion({ ...parms, ...datos }, props.estado.id).then(salida => {
                 setEstatus(false)
-                console.log(salida)
                 if (salida) {
                 }
             }).cath(err => {
                 setEstatus(false)
-                console.log(err)
             })
         }*/
     }
 
     useEffect(() => {
-        console.log(props)
         if (props.estado.forma_pago == "Deposito" && props.nombre == "actconsiliacion") {
             let valor = parseFloat(props.estado.total_pagado) 
-            console.log(valor.toFixed(2))
             setDatos({
                 ...datos,
                 banco: props.estado.banco,
@@ -279,8 +266,6 @@ export default function ConsiliarView() {
         }
         if (props.estado.forma_pago == "Deposito" && props.nombre == "consiliacion") {
             let valor = parseFloat(props.estado.total_pago) 
-            console.log(valor.toFixed(2))
-            //console.log(props)
             setDatos({
                 ...datos,
                 Valor: valor.toFixed(2)
@@ -300,7 +285,6 @@ export default function ConsiliarView() {
                 tarjeta: props.estado.transmitter,                
                 Valor: valor.toFixed(2)
             })
-            // console.log(valor)
             
         }
        if (props.estado.forma_pago == "Tarjeta" && props.nombre == "actconsiliacion") {

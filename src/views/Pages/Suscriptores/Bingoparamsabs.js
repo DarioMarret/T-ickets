@@ -7,6 +7,7 @@ import jsPDF from "jspdf";
 import html2canvas from 'html2canvas';
 import "./Pdfwie.css"
 import { useParams } from "react-router-dom";
+import { logWithCallback } from 'utilsstile.js/style';
 //import "Pdfwie.css"
 //import { Document, Page, Text, View, StyleSheet, PDFViewer } from '@react-pdf/renderer';
 
@@ -49,33 +50,17 @@ function BingoViewtiparamsasb() {
             var position = 10;
             pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
             let frame = document.querySelector("#frame")
-            //frame.src = pdf.output("bloburl");
-            // setTimeout(function () { document.querySelector("#printe").remove() }, 1000)
-            //document.querySelector("#printe").remove()
-            //return
-            //pdf.save()
             window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
         })
     }
     useEffect(() => {
-        //if (props.split('http://localhost:3001/ticket_pdf/')[1]) {
         try {
             if (id) {
-                //           console.log('entro', window.location.href.split("http://localhost:3000/ticket_pdf/")[1])
-                //          console.log('entro', JSON.parse(decode(window.location.href.split("http://localhost:3000/ticket_pdf/")[1])))
-                //let dat = JSON.parse(decode(props.split("http://localhost:3001/ticket_pdf/")[1]))
                 let dat = JSON.parse(decode(id))
-                console.log(decode(id))
-                console.log(dat)
-
                 setData(dat)
                 dataQr(dat)
-
-                let html = '';
                 let cards = dat.Bingo;
                 SetArr(cards[0])
-                console.log(cards[0])
-
                 function toDataURL(src, callback) {
                     var image = new Image();
                     image.crossOrigin = 'Anonymous';
@@ -94,42 +79,13 @@ function BingoViewtiparamsasb() {
                     imagens.src = src
                 }
                 toDataURL(dat.imagenConcierto, function (dataURL) {
-                    //console.log(dataURL);
                     let imagen = document.getElementById('imagenContainer');
                     imagen.src = dataURL
                 })
-                /* toDataURL(data.imagenConcierto, function (dataURL) {
-                     //console.log(dataURL);
-                     let imagen = document.getElementById('imagenContainer');
-                     imagen.src = dataURL
-                 })*/
-
-                //imagenContainer.appendChild(imgElement);
-
-                /* setTimeout(function () {
-                     html2canvas(document.querySelector("#printe")).then(canvas => {
-                         var imgWidth = 130;
-                         var imgHeight = canvas.height * imgWidth / canvas.width;
-                         const contentDataURL = canvas.toDataURL('image/png')
-                         let pdf = new jsPDF('p', 'mm', 'a5'); // a5 size page of PDF
-                         var position = 10;
-                         pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
-                         let frame = document.querySelector("#frame")
-                         //frame.src = pdf.output("bloburl");
-                         // setTimeout(function () { document.querySelector("#printe").remove() }, 1000)
-                         //document.querySelector("#printe").remove()
-                         //return
-                         //pdf.save()
-                          window.open(pdf.output('bloburl', { filename: 'new-file.pdf' }), '_blank');
-                     });
-                 }, 1500)*/
-
-
             } else {
                 setLoader(false)
             }
         } catch (error) {
-            console.log("ERROR: ", error)
             setLoader(false)
         }
 
@@ -183,7 +139,7 @@ function BingoViewtiparamsasb() {
             try {
                 navigator.share({ title: "reporte" + ".pdf", files: filesToShare });
             } catch (error) {
-                console.log(error)
+                logWithCallback(error)
             }
         })
     }

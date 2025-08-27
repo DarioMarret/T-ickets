@@ -5,6 +5,7 @@ import { Host, token } from "./constantes";
 import { clienteInfo, getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag";
 import { Bodyhtml, Headerhtml } from "./Emails/cuerpo";
 import { BuscarTransacion } from "./pagos/Queripagos";
+import { logWithCallback } from "utilsstile.js/style";
 /** reportar Pago */
 export const PagoRapido = async (transaccion) => {
     let codigoEvento = sessionStorage.getItem('eventoid')
@@ -43,7 +44,6 @@ export const PagoRapido = async (transaccion) => {
             "post": Eventoinfo.post ? Eventoinfo.post : ""
         }
     })
-    // console.log(concierto)
     let datos = {
         "cedula": datosPersonal,
         "id_usuario": parseInt(idop),
@@ -64,10 +64,9 @@ export const PagoRapido = async (transaccion) => {
         "transaccion": transaccion
     }
 
-    // console.log(datos, concierto)
     try {
 
-        console.log(datos)
+        logWithCallback(datos)
 
         const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/registraCompra ", datos, {
             headers: {
@@ -77,7 +76,7 @@ export const PagoRapido = async (transaccion) => {
         }
         )
 
-        console.log(data)
+        logWithCallback(data)
 
         return { ...data, id: data.idRegistro, ...datos };
         // await EnviarDetalleCompra(email, parm)
@@ -128,7 +127,7 @@ export const OCRApi = async (parms) => {
         let datos = await BuscarTransacion({
             "numeroTransaccion": data.data["numero_documento"]
         })
-        console.log(data)
+        logWithCallback(data)
         if (datos.success) {
             return { ...data, success: false, data: { "beneficiario": data.data["destinatario"], ...data.data.data, "numero_documento": "Comprobante ya registrado" } }
         }
@@ -198,10 +197,7 @@ export const cederboleto = async (ceder) => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-        console.log(data)
     } catch (error) {
-        console.log(error)
-
     }
 }
 
@@ -249,7 +245,6 @@ export const generaTiketspdf = async (parms) => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-        // console.log(data)
         return data
     } catch (error) {
         return error

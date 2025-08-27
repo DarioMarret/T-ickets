@@ -53,9 +53,7 @@ function Admin() {
     const superpuesto = document.getElementById('superpuesto');
 
     superpuesto.classList.add("d-none")
-    console.log(user)
     if(user==null){
-      console.log(user)
       history("/auth/login", { replace: true })
     }
 

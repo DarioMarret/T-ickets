@@ -21,11 +21,11 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { useNavigate, useParams } from "react-router-dom";
 import { setdetalle } from "StoreRedux/Slice/SuscritorSlice";
 import { eliminarRegistro } from "utils/pagos/Queripagos";
+import { logWithCallback } from "utilsstile.js/style";
 
 let { cedericon, atencion } = bancos
 export default function AprobarViewid() {
     let { id } = useParams()
-    console.log(id)
     let usedispatch = useDispatch()
     let history = useNavigate()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
@@ -158,18 +158,15 @@ export default function AprobarViewid() {
     const hideAlert = () => {
         setAlert(null)
     }
-    // console.log(data)
+
     useEffect(() => {
         listarRegistropanel({ "cedula": id }).then(e => {
-            // console.log(e)
             if (e.data) {
-
                 setTikes(e.data)
                 return
             }
-            //setTikes([])
         }).catch(err => {
-            console.log(err)
+            logWithCallback(err)
         })
     },
         [])
@@ -180,12 +177,12 @@ export default function AprobarViewid() {
             return valo
 
         } catch (error) {
-            console.log(error)
+            logWithCallback(error)
 
         }
     }
     const eliminarregistro = (parms) => {
-        console.log(parms)
+        logWithCallback(parms)
 
         $.confirm({
             title: 'Desea eliminar Este registro de compra ',
@@ -198,11 +195,10 @@ export default function AprobarViewid() {
                     btnClass: 'btn-red',
                     action: function () {
                         eliminarRegistro({ "id": parms.id }).then(ouput => {
-                            console.log(ouput)
-                            console.log(parms.id)
+
                             if (!ouput.success) { return $.alert("" + ouput.message) }
                             listarRegistropanel({ "cedula": id }).then(e => {
-                                // console.log(e)
+                                
                                 if (e.data) {
 
                                     setTikes(e.data)
@@ -210,7 +206,7 @@ export default function AprobarViewid() {
                                 }
                                 //setTikes([])
                             }).catch(err => {
-                                console.log(err)
+                                logWithCallback(err)
                             })
 
                             $.alert("Registro Eliminado correctamente")
@@ -228,13 +224,12 @@ export default function AprobarViewid() {
     }
     const handleChange = (event, newValue) => {
         setValue(newValue);
-        // console.log(newValue)
     };
     function Aprobarvarios() {
         usedispatch(setModal({ nombre: "Aprobar", estado: data }))
     }
     function Aprobar(e) {
-        //console.log(e)
+        
         usedispatch(setModal({ nombre: "boleto", estado: e }))
 
     }
@@ -242,7 +237,7 @@ export default function AprobarViewid() {
         usedispatch(setModal({ nombre: "confirmar", estado: e }))
     }
     function detalle(e) {
-        //  console.log(e)
+        
         usedispatch(setdetalle({ ...e }))
         history("/admin/Reporte/" + e.id)
     }
@@ -269,7 +264,7 @@ export default function AprobarViewid() {
                         <Tab label={"Reportes Pagados: " + tiketslist.filter(e => e.estado_pago == "Pagado").length} {...a11yProps(0)} />
                         <Tab label={"Reportes Pendiente: " + tiketslist.filter(e => e.estado_pago == "Pendiente").length}{...a11yProps(2)} />
                         <Tab label={"Reportes expirado : " + tiketslist.filter(e => e.estado_pago == "Expirado").length} {...a11yProps(1)} />
-                      
+
 
                     </Tabs>
                     <div className=" text-center  py-2  ">
@@ -320,7 +315,7 @@ export default function AprobarViewid() {
                                                 <Delete />
                                             </IconButton>
                                         </Tooltip>
-                                        
+
                                     </Box>
                                 )}
                                 localization={MRT_Localization_ES}
@@ -445,7 +440,7 @@ export default function AprobarViewid() {
                                             >
                                                 <Summarize />
                                             </IconButton>
-                                        </Tooltip> 
+                                        </Tooltip>
                                         <Tooltip title="Borrar" placement="top">
                                             <IconButton
                                                 onClick={() => eliminarregistro(row.original)}
@@ -458,7 +453,7 @@ export default function AprobarViewid() {
                                 localization={MRT_Localization_ES}
                             />
                         </TabPanel>
-                        
+
                     </div>
                 </div>
                 <div className="   d-flex justify-content-end align-items-end p-3">

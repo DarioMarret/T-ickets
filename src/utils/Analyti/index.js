@@ -49,9 +49,8 @@ export const renderButton = () => {
 };
 
 const onSuccess = (googleUser) => {
-    console.log("Logged in as: " + googleUser.getBasicProfile().getName());
 };
 
 const onFailure = (error) => {
-    console.log(error);
+
 };

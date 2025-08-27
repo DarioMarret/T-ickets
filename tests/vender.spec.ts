@@ -16,12 +16,10 @@ test('vender tickets', async ({ page }) => {
     const botones = page.locator('p.btn-primary', { hasText: /Vender entrada/i })
     // const eventos = await page.locator('a', { hasText: /Evento/i }).allTextContents();
     const count = await botones.count();
-   // console.log('Total encontrados:', count);
     for (let i = 0; i < count; i++) {
         const btn = botones.nth(i);
         const visible = await btn.isVisible();
         const texto = await btn.textContent();
-       // console.log(`Botón ${i}: "${texto}" visible?`, visible);
     }
     await Promise.all([
         await botones.last().click()
@@ -29,6 +27,5 @@ test('vender tickets', async ({ page }) => {
     // Validar que fuiste redirigido a la ruta que esperas
     await expect(page).toHaveURL(/\/admin\/Vender-Tickets\/vender\/\d+/);
     const currentUrl = page.url();
-    console.log('URL actual:', currentUrl);
 
 });

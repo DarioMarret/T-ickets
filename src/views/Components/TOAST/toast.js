@@ -9,8 +9,6 @@ const ToastViews = () => {
     function cerrar() {
         usedispatch(setToastes({ show: false, message: '', color: '', estado: '' }))
     }
-    // console.log(selector)
-
     return (<>
 
         <Toast

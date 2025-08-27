@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import './index.css'
 import { QRCodeCanvas } from "qrcode.react"
 import jsPDF from "jspdf"
+import { logWithCallback } from "utilsstile.js/style";
 
 const EsquemaViews = () => {
 
@@ -44,10 +45,10 @@ const EsquemaViews = () => {
                     return { ...e, tipo: dato.Typo, arry: dato }
                 })
                 setLocalidad(obten)
-                console.log("localidada", obten)
+
             }
         } catch (error) {
-            console.log(error)
+            logWithCallback(error)
         }
     }
     function AgregarEspacio() {
@@ -75,22 +76,8 @@ const EsquemaViews = () => {
     const SubmitEspacio = e => {
         e.preventDefault();
         //dataMap,setDatosMap
-        let mapa = dataMap
-        const form = new FormData(e.target)
-        const { ancho, alto, color, titel } = Object.fromEntries(form.entries())
-        let agrega = {
-            tipo: "espacio",
-            alto: alto,
-            color: color,
-            nombre: titel
-        }
-        /*     mapa.push(agrega)
-             $('#ingreso').append(
-                "<div className='espacio "+ titel +"  d-flex justify-content-center align-items-center border border-dark' style='position:relative; height:"+alto+"px;" +
-               "width:"+ancho+"px; background:"+color+
-               "'><h5 style='font-size:1.5em; color:#ffff' >"+titel+"</h5>   </div>")
-               setDatosMap(mapa)
-            // console.log(form)*/
+
+
     }
     const SubmitLocalidad = e => {
         e.preventDefault();
@@ -101,19 +88,15 @@ const EsquemaViews = () => {
 
 
     $(document).on("click", "div.espacio", function () {
-        //console.log(this.classList)
+        
         setElemnto({
             nombre: this.classList[1],
             tipo: this.classList[0],
         })
     })
-    /*$(document).on("click","div.localidad",function(e){
-       const id = e.target.id;
-      console.log(id)
-       console.log(this.classList)
-    })*/
+
     $(document).on("click", "div.disponible", function () {
-        console.log(this.classList)
+        logWithCallback(this.classList)
         $("." + this.classList).css({ "background-color": "yellow", "font-size": "200%" });
     })
     const [styletiket, setSttyle] = useState({
@@ -139,15 +122,9 @@ const EsquemaViews = () => {
         else if (e.name == "imagen") {
             //const primerArchivo = e.files[0];
             encodeImageFileAsURL(e)
-            // const objectURL = URL.createObjectURL(primerArchivo);
-            // console.log(objectURL)
-            //  setSttyle({...styletiket,
-            //      [e.name]:objectURL
-            // })
+
         } else if (e.name == "imagenmask") {
-            //  const primerArchivo = e.files[0];
-            //  const objectURL =  URL.createObjectURL(primerArchivo);
-            // console.log(objectURL)
+
             encodeImageFileAsURL(e)
         }
         else setSttyle({
@@ -160,7 +137,7 @@ const EsquemaViews = () => {
 
 
         html2canvas(document.querySelector("#tickets")).then(canvas => {
-            console.log(canvas)
+            
             var imgWidth = 90;
             var imgHeight = canvas.height * imgWidth / canvas.width;
             //   alert(imgHeight)
@@ -197,22 +174,22 @@ const EsquemaViews = () => {
         $.each(positions, function (id, pos) {
             $("#" + id).css(pos)
         })
-       /* $("div.mover").draggable({
-            containment: "#seccionuno",
-            scroll: false,
-            stop: function (event, ui) {
-                positions[event.target.id] = ui.position
-                sessionStorage.positions = JSON.stringify(positions)
-            }
-        });*/
-      /*  $(".moverdos").draggable({
-            containment: "#secciondos",
-            scroll: false,
-            stop: function (event, ui) {
-                positions[event.target.id] = ui.position
-                sessionStorage.positions = JSON.stringify(positions)
-            }
-        })*/
+        /* $("div.mover").draggable({
+             containment: "#seccionuno",
+             scroll: false,
+             stop: function (event, ui) {
+                 positions[event.target.id] = ui.position
+                 sessionStorage.positions = JSON.stringify(positions)
+             }
+         });*/
+        /*  $(".moverdos").draggable({
+              containment: "#secciondos",
+              scroll: false,
+              stop: function (event, ui) {
+                  positions[event.target.id] = ui.position
+                  sessionStorage.positions = JSON.stringify(positions)
+              }
+          })*/
     });
 
     useEffect(() => {

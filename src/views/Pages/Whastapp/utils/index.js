@@ -1,4 +1,5 @@
 import axios from "axios";
+import { logWithCallback } from "utilsstile.js/style";
 
 const interAxiosWhaspp = axios.create({
     baseURL: "https://api.t-ickets.com/qrmasivo/"
@@ -28,7 +29,7 @@ export const NuevaConexiopnQR = async qr => {
 export const getQrLista = async () => {
     try {
         let { data } = await interAxiosWhaspp.get("listarcuenta")
-        console.log(data)
+
         return data
     } catch (error) {
         return error
@@ -80,10 +81,10 @@ export const ActualizarMasivo = async qr => {
 
 export const ListarMasivos = async (qr) => {
     try {
-        console.log(qr)
+        logWithCallback(qr)
         if (qr == 0) {
             let { data } = await interAxiosWhaspp.get("allmasivos")
-            console.log(data)
+          
             return data
         } else {
             let { data } = await interAxiosWhaspp.get("listarmasivos/" + qr)
@@ -135,7 +136,7 @@ export const EliminarContacto = async (id) => {
         return error
     }
 }
-export const Imporcontactos = async (ID,cuenta, parms) => {
+export const Imporcontactos = async (ID, cuenta, parms) => {
     try {
         let nuevos = new FormData()
         nuevos.append("file", parms)

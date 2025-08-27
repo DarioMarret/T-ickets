@@ -10,6 +10,7 @@ import { columnespacio } from 'utils/ColumnTabla';
 import { EliminarLocalidad } from '../../../../../utils/Querypanel';
 import { useSelector, useDispatch } from 'react-redux';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { logWithCallback } from 'utilsstile.js/style';
 
 const LocalidadesagreViews = (props) => {
   let usedispatch = useDispatch()
@@ -19,12 +20,9 @@ const LocalidadesagreViews = (props) => {
   async function ObtenLocalidad() {
     try {
       const datos = await ListarLocalidad("")
-      //const datos2 = await Listarlocalidadid(localidaname.id)
-      console.log(datos, localidaname.id)
       const { success, data } = datos
       if (success) {
         const filtrado = datos.data.filter(e => e.id_espacio == localidaname.id)
-        console.log(filtrado)
         const obten = filtrado.map((e, i) => {
           let dato = JSON.parse(e.mesas_array)
           return { ...e, tipo: dato.Typo }
@@ -34,29 +32,23 @@ const LocalidadesagreViews = (props) => {
         else $('[href*="seleclocalidad"').addClass("d-none"), $('[href*="listas"').addClass("d-none"), $("#listas").removeClass("active")
       }
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
     }
   }
   async function Eliminar(parms) {
-    console.log({ "id": parms })
     try {
       const accion = await EliminarLocalidad(parms)
-      console.log(accion)
       const { success } = accion
       if (success) {
         await ObtenLocalidad()
         successDelete()
       }
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
     }
   }
   function Editar(parms) {
-    //export const localidaandespacio = async (parms, id) => {
-    console.log(localidaname.id, parms)
     localidaandespacio(localidaname.id, parms.id).then(ouput => {
-      console.log(ouput)
-      //    console.log(ouput.data.find(e => e.typo == "fila"))
       let nuevoObjeto = []
       if (ouput.data.find(e => e.typo == "fila")) {
         ouput.data.forEach(x => {
@@ -70,7 +62,6 @@ const LocalidadesagreViews = (props) => {
             })
           }
         })
-        console.log(nuevoObjeto)
         SetDataloca({ typo: 'fila', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: nuevoObjeto })
         $("#listas").removeClass("active")
         $("#filas").addClass("active")
@@ -103,18 +94,16 @@ const LocalidadesagreViews = (props) => {
         $('[href*="listas"]').removeClass('active');
       }
       else if (ouput.data.find(e => e.typo == "correlativo")) {
-        console.log({ typo: 'correlativo', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: { cantidad: ouput.data.length, inicio: 1 } })
+
         SetDataloca({ typo: 'correlativo', nombre: parms.nombre, description: parms.descripcion, id: parms.id, array: { cantidad: ouput.data.length, inicio: 1 } })
         $("#listas").removeClass("active")
         $("#correlativos").addClass("active")
         $('[href*="correlativos"]').addClass('active');
         $('[href*="listas"]').removeClass('active');
       }
-
-
     }
     ).catch(err =>
-      console.log(err))
+      logWithCallback(err))
   }
 
   useEffect(() => {

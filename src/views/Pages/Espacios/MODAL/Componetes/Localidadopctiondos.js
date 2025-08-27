@@ -13,6 +13,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { object } from "prop-types";
 import { color } from "@mui/system";
 import { boleteriaAxios } from "utils/index";
+import { logWithCallback } from "utilsstile.js/style";
 
 const TabdosView = (props) => {
     const { datalocalidad, SetDataloca, localidanames } = props
@@ -50,7 +51,7 @@ const TabdosView = (props) => {
     function cambiaFila(value) {
         setSingleSelectwo(value)
         var index = FilasLocalidad.filter(obj => obj.fila == value.value)
-        //console.log(index)
+        
         setMultipleSelect("")
 
         SetMesasLocalidad(index.length > 0 ? [...index[0].Mesas] : [])
@@ -91,16 +92,14 @@ const TabdosView = (props) => {
             SetFilaLocalidad([])
             let sillas = []
             var index = ListadeMesas.findIndex(obj => obj.fila == singleSelect.value);
-            console.log(index, ListadeMesas[index].fila)
+            logWithCallback({index,"fils": ListadeMesas[index].fila})
             var letra = ListadeMesas[index].fila
-            console.log(letra)
             const repeticiones = parseInt(Mesass.me_inicial)
             for (var i = 0; i < repeticiones; i++) {
                 let valor = parseInt(i) + 1
                 sillas.push({ mesa: letra + "" + valor, sillas: repeticiones, asientos: [] });
             }
             ListadeMesas[index].Mesas = [...sillas]
-            console.log(ListadeMesas)
             setTimeout(function () {
                 SetFilaLocalidad(ListadeMesas)
                 setSingleSelect({ value: "", label: "", })
@@ -135,7 +134,6 @@ const TabdosView = (props) => {
                 //Fila especifica Todas las mesas   
                 ListadeMesas = FilasLocalidad
                 var index = ListadeMesas.findIndex(obj => obj.fila == singleSelecttwo.value);
-                console.log(singleSelecttwo.value, index)
                 let fila = ListadeMesas[index].Mesas
                 if (fila.length > 0) {
                     for (var i = 0; i < fila.length; i++) {
@@ -184,7 +182,7 @@ const TabdosView = (props) => {
 
             }
         } catch (error) {
-            console.log(error)
+            logWithCallback(error)
         }
 
     }
@@ -222,8 +220,7 @@ const TabdosView = (props) => {
                     asiento.push(sillas.asientos.length)
                 })
             })
-            //console.log(asiento)
-            //console.log(Object.values(asiento).every(isValido))
+            
             if (Object.values(asiento).every(isValido)) return true
             else return false
 
@@ -232,7 +229,7 @@ const TabdosView = (props) => {
 
     }
     async function agregaLocaliad() {
-        console.log(FilasLocalidad)
+        
         if (localidaname.nombre == "" || localidaname.description == "" || ListaMesa.length < 0) {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guardar', color: 'bg-warning', estado: 'Advertencia' }))
             return
@@ -255,9 +252,9 @@ const TabdosView = (props) => {
                 }
                 setdisable(true)
                 
-                console.log(FilasLocalidad)
                 const guarda = await GuardarLocalidad({ "espacio": localidanames.nombre.trim(), "id_espacio": localidanames.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'mesa', datos: FilasLocalidad }) })
-                 console.log(guarda)
+   
+                
                 if (guarda.success) {
                     SetDataloca({
                         typo: '',
@@ -278,7 +275,7 @@ const TabdosView = (props) => {
 
             } catch (error) {
                 setdisable(false)
-                console.log(error)
+                
             }
         }
     }
@@ -318,7 +315,7 @@ const TabdosView = (props) => {
                 }
             } catch (error) {
                 setdisable(false)
-                console.log(error)
+                
             }
         }
 

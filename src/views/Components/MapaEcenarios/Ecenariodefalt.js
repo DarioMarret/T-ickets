@@ -20,12 +20,10 @@ const {success,data}=datos
 
       if(success){
       const filtrado = data.filter(e => e.espacio == localidaname.nombre)
-      //console.log("Filtrado en ecenario defec",filtrado)
       setData(filtrado)
      }
      
      } catch (error) {   
-      console.log(error)
      }
   }
    function handelChange(e){

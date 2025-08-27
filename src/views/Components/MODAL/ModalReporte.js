@@ -13,6 +13,7 @@ import { PagoRapido } from 'utils/Querycomnet';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { clienteInfo, getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
 import ReactGA from 'react-ga4';
+import { logWithCallback } from 'utilsstile.js/style';
 let { GUAYAQUIL, numero,
   pacifico, pichincha,
   produbanco, atencion } = bancos
@@ -37,7 +38,6 @@ const Reporte = (props) => {
         const info = await ReportarDepositoCompra(codigo)
         const mensajes = await EnviarmensajeWhastapp(codigo)
         const { msg } = info
-        console.log(info)
         if (msg != null) {
           Salircliente()
           setDatoToas({
@@ -56,9 +56,8 @@ const Reporte = (props) => {
           })
         }
 
-        //console.log(mensajes)
       } catch (error) {
-        console.log(error)
+        logWithCallback(error)
       }
 
     } else {
@@ -189,7 +188,6 @@ const Reporte = (props) => {
       label: "Deposito",
     })
     if (e == "pichincha") {
-      // console.log(evento)
 
       PagoRapido("").then(oupt => {
         if (oupt.success) {
@@ -227,7 +225,6 @@ const Reporte = (props) => {
               item_category: item.nombreConcierto,
             }))
           });
-          console.log(oupt)
 
           comprar()
 
@@ -256,11 +253,11 @@ const Reporte = (props) => {
           })
         }
         //setrepShow(false)
-        console.log(oupt)
+        logWithCallback(oupt)
 
       }).catch(error => {
         //seTSpiners("d-none")
-        console.log(error)
+        logWithCallback(error)
       })
 
       return
@@ -329,11 +326,11 @@ const Reporte = (props) => {
           })
         }
         //setrepShow(false)
-        console.log(oupt)
+        logWithCallback(oupt)
 
       }).catch(error => {
         seTSpiners("d-none")
-        console.log(error)
+        logWithCallback(error)
         usedispatch(setToastes({
           show: true,
           message: 'Hubo un error ',
@@ -385,10 +382,10 @@ const Reporte = (props) => {
         }
 
         //setrepShow(false)
-        console.log(oupt)
+        logWithCallback(oupt)
       }).catch(error => {
         seTSpiners("d-none")
-        console.log(error)
+        logWithCallback(error)
       })
       return
     }
@@ -420,10 +417,10 @@ const Reporte = (props) => {
             label: Math.random().toString(36).slice(-10),
           })
         }
-        console.log(oupt)
+        logWithCallback(oupt)
       }).catch(error => {
         seTSpiners("d-none")
-        console.log(error)
+        logWithCallback(error)
         ReactGA.event({
           category: e,
           action: "DepositoError",
@@ -468,7 +465,7 @@ const Reporte = (props) => {
               item_category: e
             }))
           });
-          console.log(oupt, valores)
+          logWithCallback({oupt, valores})
           let datosPersonal = getDatosUsuariosLocalStorag().cedula
           usedispatch(setModal({ nombre: "confirmar", estado: { id: oupt.idRegistro, total_pago: valores.total, ...valores, cedula: datosPersonal } }))
           usedispatch(setToastes({
@@ -492,11 +489,8 @@ const Reporte = (props) => {
             label: Math.random().toString(36).slice(-10),
           })
         }
-        //setrepShow(false)
-        console.log(oupt)
       }).catch(error => {
         seTSpiners("d-none")
-        console.log(error)
         ReactGA.event({
           category: "Error" + e,
           action: "Deposito",

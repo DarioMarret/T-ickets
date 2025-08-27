@@ -2,11 +2,6 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-
-import icon from "assets/imagen/logo-inicio.png";
-
-
-// react-bootstrap components
 import {
   Collapse,
   Nav,
@@ -14,7 +9,7 @@ import {
 
 function Sidebar({ routes, image, background }) {
   let user = clienteInfo()
-   let location = useLocation();
+  let location = useLocation();
   const [userCollapseState, setUserCollapseState] = React.useState(false);
   const [state, setState] = React.useState({});
   React.useEffect(() => {
@@ -34,9 +29,6 @@ function Sidebar({ routes, image, background }) {
     });
     return initialState;
   };
-  // this verifies if any of the collapses should be default opened on a rerender of this component
-  // for example, on the refresh of the page,
-  // while on the src/views/forms/RegularForms.jsx - route /admin/regular-forms
   const getCollapseInitialState = (routes) => {
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse && getCollapseInitialState(routes[i].views)) {
@@ -47,15 +39,13 @@ function Sidebar({ routes, image, background }) {
     }
     return false;
   };
-  // this function creates the links and collapses that appear in the sidebar (left menu)
-  //aqui puedo validar lo navitem que quiero que se rendericen 
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
-     // console.log(prop.permiso.every(e=>e!="admin"))
-     if(prop.name==null){
-      return null
-     }
-      if(prop.permiso!=null && prop.permiso.every(e=>e!=user.perfil) ){
+
+      if (prop.name == null) {
+        return null
+      }
+      if (prop.permiso != null && prop.permiso.every(e => e != user.perfil)) {
         return null
 
       }
@@ -143,29 +133,8 @@ function Sidebar({ routes, image, background }) {
               <img src={"https://tickets.com.ec/img/ticket.png"} className="img-fluid" style={{ height: '50px' }} alt="" />
             </a>
           </div>
-          {/*<div className="logo">
-            <a
-              className="simple-text logo-mini nav-link"
-             
-            >
-              <div className="logo-img">
-                
-              </div>
-            </a>
-            <a
-              className="simple-text logo-normal nav-link"
-              
-            >
-              <img
-                  src={imagen5}
-                  alt="react-logo"
-                  style={{height:'60px',width:'auto'}}
-                />
-            </a>
-             </div>*/}
           <div className="user">
             <div className="photo">
-              {/*<img alt="..." src={require("assets/img/default-avatar.png")} />*/}
             </div>
             <div className="info">
               <a
@@ -179,7 +148,7 @@ function Sidebar({ routes, image, background }) {
                 aria-expanded={userCollapseState}
               >
                 <span>
-               {user.username} <b className="caret"></b>
+                  {user.username} <b className="caret"></b>
                 </span>
               </a>
               <Collapse id="collapseExample" in={userCollapseState}>
@@ -189,7 +158,7 @@ function Sidebar({ routes, image, background }) {
                       <a
                         className="profile-dropdown"
                         href="user-page"
-                        
+
                       >
                         <span className="sidebar-mini">MD</span>
                         <span className="sidebar-normal">Mis Datos</span>
@@ -220,37 +189,10 @@ function Sidebar({ routes, image, background }) {
               </Collapse>
             </div>
           </div>
-          {
-          /*
-          <div className="user">
-            <div className="photo">
-             {/*<img alt="..." src={require("assets/img/default-avatar.png")} />}
-            </div>
-            <div className="info">
-              <a
-                className={userCollapseState ? "collapsed nav-link px-1" : " nav-link  px-1"}
-                data-toggle="collapse"
-                href="#pablo"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setUserCollapseState(!userCollapseState);
-                }}
-               
-              >
-                <span>
-                Nombre del usuario 
-                </span>
-              </a>
-              
-            </div>
-          </div>*/}
           <Nav as="ul">{createLinks(routes)}</Nav>
         </div>
         <div
           className="sidebar-background"
-          style={{
-           // backgroundImage: "url('" + image + "')"
-          }}
         ></div>
       </div>
     </>

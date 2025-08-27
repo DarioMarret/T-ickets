@@ -14,7 +14,6 @@ export const GetSuscritores = async (ini, fin) => {
 export const EditarSuscrito = async (id, parms) => {
     try {
 
-        console.log(parms, id)
         let ids = clienteInfo() != null ? clienteInfo().id : 0
         let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
         let parmspro = {
@@ -27,10 +26,8 @@ export const EditarSuscrito = async (id, parms) => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-        console.log(data)
         return data
     } catch (error) {
-        console.log(error)
     }
 }
 /**
@@ -59,7 +56,6 @@ export const CancelarSubscriptor = async (id) => {
         "id_usuario": parseInt(idop),
         "id_operador": parseInt(ids),
     }
-    //console.log("query",id)   
     const { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/cancelation_suscriptor/" + id, parmspro, {
         headers: {
             'Content-Type': 'application/json',
@@ -67,6 +63,5 @@ export const CancelarSubscriptor = async (id) => {
 
         }
     })
-    //console.log("query",data)
     return data
 }

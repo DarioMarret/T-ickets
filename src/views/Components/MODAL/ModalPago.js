@@ -17,6 +17,7 @@ import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
 import { bancos } from 'utils/Imgenesutils';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { Metodos } from 'utils/constantes';
+import { logWithCallback } from 'utilsstile.js/style';
 let { atencion, diners, visas, paypal } = bancos
 
 const TRACKING_ID = "G-LJN507B5NX";
@@ -149,14 +150,12 @@ function ModalPago(props) {
     }
     function CrearPagoMedio() {
         let user = clienteInfo()
-        //console.log(user)
         setSpiner("")
         PagoRapido("").then(ouput => {
-            //console.log(ouput)
             if (user == null) {
                 if (ouput.success) {
 
-                    console.log(ouput)
+                   logWithCallback(ouput)
                     
                     window.gtag('event', 'begin_checkout', {
                         transaction_id: "T_"+ouput.idRegistro,  // ID único de la transacción

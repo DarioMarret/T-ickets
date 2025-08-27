@@ -20,6 +20,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Row } from "react-bootstrap";
 import { Edit } from "@mui/icons-material";
+import { logWithCallback } from "utilsstile.js/style";
 
 function generate(element) {
     return [0, 1, 2].map((value) =>
@@ -76,12 +77,12 @@ export default function OCRApiViews() {
         listar_beneficiariosocr({
             "cedula": "0923980742"
         }).then(oup => {
-            console.log(oup)
+            logWithCallback(oup)
             if (oup.success == true) {
                 setData(oup.data)
             }
         }).catch(err => {
-            console.log(err)
+           logWithCallback(err)
         })
     }, [])
     return (

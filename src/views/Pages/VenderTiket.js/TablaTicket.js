@@ -10,7 +10,7 @@ export default function TableTikwtWiev(props) {
     const tableRef = useRef()
     const tableName = "table1"
     useEffect(() => {
-        //    console.log(props.data)
+        
         const table = $(`#${tableName}`).DataTable(
             {
                 data: props.data,

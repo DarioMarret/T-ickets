@@ -30,7 +30,7 @@ function Dashboard() {
     suscritor: 0
   })
   const ListaPrecio = async ()=>{ const info = await ListaPreciosEvent();
-    console.log(info)
+
   return info}
   useEffect(() => {
  ListaPrecio()
@@ -157,10 +157,11 @@ function Dashboard() {
         <Row>
           <Col md="12">
             <div className="pb-5">
-              <iframe width="100%" height="1000px" src="https://lookerstudio.google.com/embed/reporting/024acead-3e96-4f28-b3ed-eaaac472ee08/page/6zXD"
+              <iframe width="100%" height="1000px" src="https://lookerstudio.google.com/embed/reporting/45952e6d-f392-41cd-9fa3-86c0c6a9d1d3/page/1M"
                  >
 
               </iframe>
+              
             </div>
           </Col>
         </Row>

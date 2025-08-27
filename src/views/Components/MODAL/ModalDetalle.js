@@ -12,7 +12,7 @@ import { addususcritor } from 'StoreRedux/Slice/SuscritorSlice';
 import { getVerTienda, GetEstadousu } from 'utils/CarritoLocalStorang';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { clienteInfo } from 'utils/DatosUsuarioLocalStorag';
-import { index } from 'utilsstile.js/style';
+import { index, logWithCallback } from 'utilsstile.js/style';
 import { Consultar_codigos } from 'utils/index';
 
 function ModalDetalle(props) {
@@ -148,7 +148,6 @@ function ModalDetalle(props) {
             setspiner("")
             const datos = await getCedula(value)
             const { name, email, direccion, whatsapp, discapacidad } = datos
-            //console.log(datos)
             if (name) {
                 DatosUsuariosLocalStorag({ ...datos, cedula: value, envio: "Portal web", whatsapp: '', discapacidad: discapacidad })
                 setPerson({
@@ -250,7 +249,6 @@ function ModalDetalle(props) {
                 direccion: datosPersonal ? datosPersonal.direccion : ''
             })
             setChecked(false)
-            console.log(datosPersonal)
         } else {
             setChecked(true)
             setPerson({
@@ -266,7 +264,6 @@ function ModalDetalle(props) {
             })
         }
         let mostrarcomision = GetMetodo()
-        console.log(mostrarcomision)
         const mostrar = ((mostrarcomision != "Tarjeta") && mostrarcomision != "Tarjeta-Local") ? "d-none" : ""
         sethideComision(mostrar)
     }, [modalshow.nombre == "ModalDetalle" ? true : false, actualState])
@@ -295,20 +292,10 @@ function ModalDetalle(props) {
                                     let co1 = document.getElementById("codigocontry")
                                     let eventoinfo = JSON.parse(sessionStorage.getItem("infoevento"))
                                     sessionStorage.setItem("codicontry", "true")
-                                    console.log(ou)
-                                    let clineteLogeado = getCliente()
-                                    let metodoPago = GetMetodo()
                                     ListaPrecioset(GetValores())
-                                   // console.log({ ...eventoinfo, post: ou.codigo })
                                     sessionStorage.setItem("infoevento", JSON.stringify({ ...eventoinfo, post: ou.codigo }))
                                     co.classList.add("d-none")
                                     co1.classList.add("d-none")
-                                    /*setDatoToas({
-                                        show: true,
-                                        message: ou.mensaje,
-                                        color: 'bg-success',
-                                        estado: 'Verificación validad',
-                                    })*/
                                     $.confirm({
                                         title: 'Verificación validad',
                                         content: ou.mensaje,
@@ -330,7 +317,7 @@ function ModalDetalle(props) {
                                         color: 'bg-danger',
                                         estado: 'Verificación invalidad',
                                     })*/
-                                    console.log(ou)
+                                   logWithCallback(ou)
                                     $.confirm({
                                         title: 'Verificación invalidad',
                                         content: ou.mensaje,
@@ -347,13 +334,6 @@ function ModalDetalle(props) {
                                     });
                                 }
                             }).catch(erro => {
-                                console.log(erro)
-                                /*setDatoToas({
-                                    show: true,
-                                    message: "Por favor intente más tarde",
-                                    color: 'bg-danger',
-                                    estado: 'Hubo un error',
-                                })*/
                             })
                         }
                     },
@@ -387,20 +367,10 @@ function ModalDetalle(props) {
                                 let co1 = document.getElementById("codigocontry")
                                 let eventoinfo = JSON.parse(sessionStorage.getItem("infoevento"))
                                 sessionStorage.setItem("codicontry", "true")
-                                console.log(ou)
-                                let clineteLogeado = getCliente()
-                                let metodoPago = GetMetodo()
                                 ListaPrecioset(GetValores())
-                                console.log(ou)
                                 sessionStorage.setItem("infoevento", JSON.stringify({ ...eventoinfo, post: ou.codigo }))
                                 co.classList.add("d-none")
                                 co1.classList.add("d-none")
-                                /*setDatoToas({
-                                    show: true,
-                                    message: ou.mensaje,
-                                    color: 'bg-success',
-                                    estado: 'Verificación validad',
-                                })*/
                                 $.confirm({
                                     title: 'Verificación validad',
                                     content: ou.mensaje,
@@ -416,12 +386,6 @@ function ModalDetalle(props) {
                                     }
                                 });
                             } else {
-                                /*setDatoToas({
-                                    show: true,
-                                    message: ou.mensaje,
-                                    color: 'bg-danger',
-                                    estado: 'Verificación invalidad',
-                                })*/
                                 $.confirm({
                                     title: 'Verificación invalidad',
                                     content: ou.mensaje,
@@ -438,7 +402,7 @@ function ModalDetalle(props) {
                                 });
                             }
                         }).catch(erro => {
-                            console.log(erro)
+                            logWithCallback(erro)
                         })
                     }
                 },
@@ -457,7 +421,6 @@ function ModalDetalle(props) {
     }
     function tarjetaValido() {
         let codigos = document.getElementById("basic-codigo1");
-        //console.log(codigos.value)
         if (codigos.value == "") return
         $.confirm({
             theme: 'supervan',
@@ -470,26 +433,13 @@ function ModalDetalle(props) {
                     text: 'Aceptar ',
                     btnClass: 'btn-red',
                     action: function () {
-                        let datosPersonal = getDatosUsuariosLocalStorag()
                         if (sonPrimerosCuatroDigitosAmericanExpress(codigos.value)) {
                             let co = document.getElementById("codigocontry1")
                             let co1 = document.getElementById("codigocontry")
-                            let eventoinfo = JSON.parse(sessionStorage.getItem("infoevento"))
                             sessionStorage.setItem("codicontry", "true")
-                            //console.log(ou)
-                            let clineteLogeado = getCliente()
-                            let metodoPago = GetMetodo()
                             ListaPrecioset(GetValores())
-                            //console.log({ ...eventoinfo, post: ou.codigos.codigo })
-                            //sessionStorage.setItem("infoevento", JSON.stringify({ ...eventoinfo, post: ou.codigos.codigo }))
                             co.classList.add("d-none")
                             co1.classList.add("d-none")
-                            /*setDatoToas({
-                                show: true,
-                                message: ou.mensaje,
-                                color: 'bg-success',
-                                estado: 'Verificación validad',
-                            })*/
                             $.confirm({
                                 title: 'Verificación validad',
                                 content: '',

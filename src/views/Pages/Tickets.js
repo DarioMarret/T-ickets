@@ -16,6 +16,7 @@ import { Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import CederView from './Susbcritorpage/Modal/CederView';
+import { logWithCallback } from 'utilsstile.js/style';
 const TicketsViews = () => {
   let usedispatch = useDispatch()
   const [TiktesList, setTikes] = useState([])
@@ -46,10 +47,9 @@ const TicketsViews = () => {
       const ids = Filtrar.map(o => o.nombre)
       const filtered = Filtrar.filter(({ nombre }, index) => !ids.includes(nombre, index + 1))
       setEvento(filtered)
-      //  console.log(filtered)
       await Concietos(filtered[0].nombre)
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
     }
 
   }
@@ -72,7 +72,7 @@ const TicketsViews = () => {
       })
       setTikes(infor)
     } catch (error) {
-      console.log(error)
+     logWithCallback(error)
     }
 
   }
@@ -114,9 +114,7 @@ const TicketsViews = () => {
                     previousIndex,
                     realIndex,
                   } = swiperCore;
-                  //console.log(Evento[realIndex].no mbre)
-                  var arraycopia = DatosGlobal
-                  //const concierto = arraycopia.filter(e => e.concierto == Evento[realIndex].nombre)
+                  
                   Concietos(Evento[realIndex].nombre)
                 }}
                 onSwiper={e => {

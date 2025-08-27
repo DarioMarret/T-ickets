@@ -1,5 +1,6 @@
 
 import React, { useEffect } from 'react';
+import { logWithCallback } from 'utilsstile.js/style';
 
 function ButtonPago(props) {
     const { cargar } = props
@@ -37,7 +38,7 @@ function ButtonPago(props) {
                             alert("Pago " + value.transactionId + " recibido, estado " + value.transactionStatus);
                         }
                     }).catch(function (err) {
-                        console.log(err);
+                       logWithCallback(err);
                     });
                 }
             }).render("#pp-button")

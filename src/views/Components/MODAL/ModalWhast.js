@@ -8,6 +8,7 @@ import { formatearNumero } from "utils/Emails";
 import { EnviaWhast } from "utils/Emails";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { Axiosmikroserdos } from "utils/index";
+import { logWithCallback } from "utilsstile.js/style";
 
 
 export default function WhastappWiev() {
@@ -20,13 +21,11 @@ export default function WhastappWiev() {
         link: ""
     })
     function Cambiar(e) {
-        //  console.log(e.name,e.value)
         if (e.name == "link") {
             setDatos({
                 ...info,
                 [e.name]: e.files
             })
-            console.log(e.name, e.files)
             return
         }
         setDatos({
@@ -40,7 +39,7 @@ export default function WhastappWiev() {
     }
     async function Enviarmensajeadjunto() {
         let Celular = datos.estado["movil"].replace(/\s+/g, '').length == 10 ? datos.estado["movil"].replace(/\s+/g, '').slice(1) : datos.estado["movil"].replace(/\s+/g, '')
-        console.log(formatearNumero(Celular), Celular)
+      
         if (formatearNumero(Celular) == undefined) {
             usedispacth(setToastes({ show: true, message: 'Formato de celular incorrecto', color: 'bg-danger', estado: 'invalido' }))
             return
@@ -54,10 +53,8 @@ export default function WhastappWiev() {
             usedispacth(setToastes({ show: true, message: 'Adjunte una imagen ', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        console.log(info.mensaje, info.link[0])
         setDisanbe(true)
         const link = await Obtenerlinkimagen(info.link[0])
-        console.log(link)
         if (link == null) {
             setDisanbe(false)
             usedispacth(
@@ -79,12 +76,6 @@ export default function WhastappWiev() {
                     "text": info.mensaje + " " + link,
                 }
             }
-            /* let informa = {
-             "user_ids": [formatearNumero(Celular)],
-             "message": info.mensaje,
-             "link": link
-         }*/
-            console.log(informa)
             Axiosmikroserdos.post("api/canal_chat", informa).then(sal => {
                 //sal.status == "PENDING"
                 if (sal) {
@@ -95,11 +86,10 @@ export default function WhastappWiev() {
                     usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
                     setDisanbe(false)
                 }
-                console.log(sal)
             }).catch(err => {
                 usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
                 setDisanbe(false)
-                console.log(err)
+                logWithCallback(err)
             })
         },
             1000)
@@ -108,7 +98,7 @@ export default function WhastappWiev() {
     function EnviarMendaje() {
 
         let Celular = datos.estado["movil"].replace(/\s+/g, '').length == 10 ? datos.estado["movil"].replace(/\s+/g, '').slice(1) : datos.estado["movil"].replace(/\s+/g, '')
-        console.log(formatearNumero(Celular), Celular)
+       
         if (formatearNumero(Celular) == undefined) {
             usedispacth(setToastes({ show: true, message: 'Formato de celular incorrecto', color: 'bg-danger', estado: 'invalido' }))
             return
@@ -117,7 +107,6 @@ export default function WhastappWiev() {
             usedispacth(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        console.log(datos.estado["movil"])
         let informa = {
             "sessionName": "48_tickets_v20980008000",
             "numero": [formatearNumero(Celular)],
@@ -126,7 +115,6 @@ export default function WhastappWiev() {
                 "text": info.mensaje
             }
         }
-        console.log(informa)
         setDisanbe(true)
         Axiosmikroserdos.post("api/canal_chat", informa).then(sal => {
             if (sal) {
@@ -137,11 +125,9 @@ export default function WhastappWiev() {
                 usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
                 setDisanbe(false)
             }
-            console.log(sal)
         }).catch(err => {
             usedispacth(setToastes({ show: true, message: 'Hubo un error no se envió el mensaje por favor verifique el número celular', color: 'bg-success', estado: 'Datos vacios' }))
             setDisanbe(false)
-            console.log(err)
         })
 
     }
@@ -157,10 +143,8 @@ export default function WhastappWiev() {
             usedispacth(setToastes({ show: true, message: 'Adjunte una imagen ', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        console.log(info.mensaje, info.link[0])
         setDisanbe(true)
         const link = await Obtenerlinkimagen(info.link[0])
-        console.log(link)
         if (link == null) {
             setDisanbe(false)
             usedispacth(
@@ -202,17 +186,10 @@ export default function WhastappWiev() {
     }
     function EnviarMendajeMasivo() {
 
-        // let Celular = datos.estado["movil"].replace(/\s+/g, '').length == 10 ? datos.estado["movil"].replace(/\s+/g, '').slice(1) : datos.estado["movil"].replace(/\s+/g, '')
-        /* console.log(formatearNumero(Celular),Celular)
-         if (formatearNumero(Celular)==undefined){
-             usedispacth(setToastes({ show: true, message: 'Formato de celular incorrecto', color: 'bg-danger', estado: 'invalido' }))
-             return 
-         }*/
         if (info.mensaje.trim() == " ") {
             usedispacth(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        //console.log(datos.estado["movil"])
 
         let informa = {
             "sessionName": "48_tickets_v20980008000",

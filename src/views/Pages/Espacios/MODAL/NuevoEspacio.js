@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap"
 import { GuardarEspacio, ActualizarEspacio } from "utils/EspaciosQuery/index.js"
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
+import { logWithCallback } from "utilsstile.js/style"
 const NewEspacioView = (props) => {
     const { showNuevo, SetShownuev, localidaname, estado } = props
     let usedispatch = useDispatch()
@@ -18,8 +19,6 @@ const NewEspacioView = (props) => {
             [e.name]: e.value
         }
         )
-        //console.log(e)
-
     }
     async function Guardar() {
         let datos = {
@@ -36,7 +35,7 @@ const NewEspacioView = (props) => {
                 SetShownuev(false)
             }
         } catch (error) {
-            console.log(error)
+            logWithCallback(error)
             usedispatch(setToastes({ show: true, message: 'Hubo un error intente nuevamente', color: 'bg-error', estado: 'Error' }))
         }
     }
@@ -49,8 +48,7 @@ const NewEspacioView = (props) => {
                 SetShownuev(false)
             }
         } catch (error) {
-            console.log("error")
-
+            logWithCallback(error)
         }
     }
     useEffect(() => {

@@ -17,11 +17,6 @@ test('ver dashboard', async ({ page }) => {
     await page.goto('http://localhost:3000/admin/inicio');
 
     await page.waitForLoadState('networkidle');
-
-    // Debug - imprime textos de enlaces
-    const anchors = await page.locator('a').allTextContents();
-   // console.log('Textos de <a> en la página:', anchors);
     const eventos = await page.locator('a', { hasText: /Evento/i }).allTextContents();
-    console.log('Enlaces que contienen "Evento":', eventos);
 
 });

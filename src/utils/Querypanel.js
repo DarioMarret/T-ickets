@@ -2,6 +2,7 @@ import axios from "axios"
 import { id } from "date-fns/locale"
 import { Host } from "./constantes"
 import { clienteInfo, getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag"
+import { logWithCallback } from "utilsstile.js/style"
 
 /**Listar Suscritorea */
 
@@ -34,14 +35,12 @@ export const Loginadmin = async (parms) => {
  * Crear nuevo suscritor
  */
 export const CrearSuscritor = async (parms) => {
-    // console.log(parms)
     const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_suscriptor", parms, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     })
-    // console.log(data)
     return data
 }
 
@@ -103,7 +102,6 @@ export const AptualizarLocalida = async (parms) => {
 }
 /**50 */
 export const EliminarLocalidad = async (parms) => {
-    // console.log(parms)
     let ids = clienteInfo() != null ? clienteInfo().id : 0
     let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
     let parmspro = {
@@ -118,7 +116,6 @@ export const EliminarLocalidad = async (parms) => {
 
         }
     })
-    //console.log(data)
     return data
 }
 
@@ -213,7 +210,6 @@ export const Obtenerlinkimagen = async (parm) => {
     try {
         const fordata = new FormData();
         fordata.append('image', parm);
-        console.log(parm)
         const { data } = await axios.post("https://api.t-ickets.com/store/api/img/", fordata,
             {
                 header: {
@@ -222,13 +218,10 @@ export const Obtenerlinkimagen = async (parm) => {
                 }
             })
         if (!data.success) return null
-        console.log(data)
         return data.link
 
     } catch (error) {
-        console.log(error)
         return null
-
     }
 
 }
@@ -248,6 +241,6 @@ export const Iamegn = (parm) => {
 
     fetch("https://api.t-ickets.com/store/api/img/", requestOptions)
         .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
+        .then(result => logWithCallback(result))
+        .catch(error => logWithCallback( error));
 }

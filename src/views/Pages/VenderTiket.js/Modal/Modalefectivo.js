@@ -73,11 +73,11 @@ const ModalEfectivo = (param) => {
         SetSuelto(valor)
     }
     function creaComprobante() {
-        console.log("vender")
+        
         setSpiner(true)
         sessionStorage.setItem("ticktesfisio", JSON.stringify(ticktes))
         PagoRapido("").then(ouput => {
-            console.log(ouput)
+            
             if (ouput.success) {
                 usedispatch(setModal({ nombre: "", estado: "" }))
                 usedispatch(setToastes({ show: true, message: 'Registro generado exitosamente verifica los Boletos como canjeados', color: 'bg-success', estado: "compra guardada" }))
@@ -91,7 +91,7 @@ const ModalEfectivo = (param) => {
             }
         }).catch(err => {
             setSpiner(false)
-            console.log(err)
+            
         })
     }
     $(document).ready(function () {

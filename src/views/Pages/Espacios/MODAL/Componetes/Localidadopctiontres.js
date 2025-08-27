@@ -49,7 +49,7 @@ const TabtresView = (props) => {
             } catch (error) {
                 usedispatch(setToastes({ show: true, message: 'Hubo un error intente de nuevo', color: 'bg-danger', estado: 'Error' }))
                 setdisable(false)
-                console.log(error)
+                
             }
 
         } else {
@@ -58,7 +58,7 @@ const TabtresView = (props) => {
         }
     }
     async function Guardar() {
-        console.log({ "espacio":  espacioname.nombre.trim(), "id_espacio": espacioname.id, "descripcion": localidaname.description, "nombre": localidaname.nombre, "mesas_array": JSON.stringify({ Typo: 'correlativo', datos: { cantidad: localidaname.cantidad, inicio: localidaname.inicio, info: [] } }) })
+       
         if (localidaname.nombre != "" && localidaname.description != "" && localidaname.cantidad != "" && localidaname.inicio != "") {
             const nombre = await boleteriaAxios.post("Boleteria/localidades", { nombre: localidaname.nombre.trim(), id_espacio: localidaname.id })
             if (nombre.data.estado) {
@@ -90,7 +90,8 @@ const TabtresView = (props) => {
             } catch (error) {
                 setdisable(false)
                 usedispatch(setToastes({ show: true, message: 'Hubo un error intente de nuevoa mas tarde', color: 'bg-success', estado: 'Datos guadados' }))
-                console.log(error)
+              
+                
             }
         } else {
             usedispatch(setToastes({ show: true, message: 'complete todos los campos requeridos', color: 'bg-warning', estado: 'Advertencia' }))

@@ -6,7 +6,7 @@ let { proximo } = carrusel
 export default function SubscrtitoViews() {
     let usedispach= useDispatch()
     let modal = useSelector((state) => state.SuscritorSlice.modal)
-   // console.log(modal)
+   
     function cerrar(){
         usedispach(setModal({ nombre: '', estado: '' }))
     }

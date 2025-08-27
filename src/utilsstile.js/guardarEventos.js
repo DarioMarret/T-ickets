@@ -5,7 +5,6 @@ import { getDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag"
 import { correlativosadd } from "utils/Querypanelsigui"
 
 export const ReservaEvento = async (codigo,nombre) => {
-    console.log(nombre)
     let datosPersonal = getDatosUsuariosLocalStorag().cedula
     let id = clienteInfo() != null ? clienteInfo().id : getDatosUsuariosLocalStorag().id
     let metodo = "Efectivo-Local"
@@ -35,9 +34,7 @@ export const ReservaEvento = async (codigo,nombre) => {
         "idfactura": "",
         "transaccion": ""
     }
-    // console.log(datos, concierto)
     try {
-        //console.log(datos)
         const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/registraCompra ", datos, {
             headers: {
                 'Content-Type': 'application/json',
@@ -45,7 +42,6 @@ export const ReservaEvento = async (codigo,nombre) => {
             }
         }
         )
-         console.log(data)
         return data;
 
     } catch (error) {
@@ -63,7 +59,6 @@ export const agregaReserva = async (codigo, nombre) => {
             "cedula": datosPersonal, 
          "mas": "mas",
           "cantidad": 1 })
-        console.log(datos)
         if (datos.success) {
             let reserva = await ReservaEvento(codigo, nombre)
             return reserva   

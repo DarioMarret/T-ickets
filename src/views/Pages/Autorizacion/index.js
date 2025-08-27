@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { listarpreciolocalidad } from "utils/Querypanel";
 import { EventosActivos } from "utils/Querypanel";
+import { logWithCallback } from "utilsstile.js/style";
 
 export default function AutorizacionView() {
     const [Eventos, setEventos] = useState([])
@@ -8,14 +9,12 @@ export default function AutorizacionView() {
     function handelChange(e) {
         listarpreciolocalidad(e.value).then(oupt => {
             setPrecios(oupt.data)
-            //console.log(oupt)
-        }).catch(err => console.log(err))
+        }).catch(err => logWithCallback(err))
     }
     useEffect(() => {
         EventosActivos().then(oupt => {
             setEventos(oupt.data)
-            //   console.log(oupt)
-        }).catch(err => console.log(err))
+        }).catch(err => logWithCallback(err))
     }, [])
     return (
         <>

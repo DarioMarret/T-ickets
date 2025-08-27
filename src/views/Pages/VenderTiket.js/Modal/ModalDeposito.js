@@ -9,6 +9,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { useDispatch, useSelector } from 'react-redux';
 import { setToastes } from 'StoreRedux/Slice/ToastSlice';
 import { setModal } from 'StoreRedux/Slice/SuscritorSlice';
+import { logWithCallback } from 'utilsstile.js/style';
 const Reporte = (props) => {
     const { repShop, handlereportColse,
         setDatoToas, setrepShow, detener, intervalo,
@@ -25,7 +26,6 @@ const Reporte = (props) => {
                 const info = await ReportarDepositoCompra(codigo)
                 const mensajes = await EnviarmensajeWhastapp(codigo)
                 const { msg } = info
-                console.log(info)
                 if (msg != null) {
                     Salircliente()
                     usedispatch(setToastes({
@@ -43,9 +43,8 @@ const Reporte = (props) => {
                         estado: '',
                     }))
                 }
-                //console.log(mensajes)
             } catch (error) {
-                console.log(error)
+                logWithCallback(error)
             }
 
         } else {

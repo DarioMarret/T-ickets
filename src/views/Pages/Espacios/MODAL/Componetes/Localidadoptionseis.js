@@ -5,6 +5,7 @@ import { cargarMapa, guardarMapar, eliminaMapa, editarMapa } from "utils/MapaQue
 import SweetAlert from "react-bootstrap-sweetalert";
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
+import { logWithCallback } from "utilsstile.js/style";
 const OpctionLocalidadView = (props) => {
         const { localidaname, datalocalidad, SetDataloca } = props
         let usedispatch = useDispatch()
@@ -25,7 +26,7 @@ const OpctionLocalidadView = (props) => {
 
                         let datos = mapas.data.filter((e) => e.nombre_espacio == localidaname.nombre)
                         if (datos.length > 0) {
-                                console.log(datos[0])
+
                                 setMaparegistro({ ...datos[0] })
                                 filterNames(datos[0].nombre_mapa.split("-")[0])
                                 setMapaselec(datos[0].nombre_mapa.split("-")[0])
@@ -43,7 +44,7 @@ const OpctionLocalidadView = (props) => {
                         }
 
                 } catch (error) {
-                        console.log(error)
+                        logWithCallback(error)
 
                 }
         }
@@ -73,7 +74,7 @@ const OpctionLocalidadView = (props) => {
                 $('.grid').isotope({
                         filter: function () {
                                 var name = $(this).find('.nombre').text();
-                                //   console.log(name)
+                                
                                 return (name.indexOf(nombre.toLowerCase()) > -1);
                         }
                 })
@@ -93,7 +94,6 @@ const OpctionLocalidadView = (props) => {
                                 let datos = await guardarMapar(valores)
                                 if (datos.success) {
                                         usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Guardadas correctamente', color: 'bg-success', estado: 'Datos Guardado' }))
-                                        console.log(datos)
                                         await getMapa()
                                         SetDataloca({
                                                 typo: '',
@@ -114,7 +114,7 @@ const OpctionLocalidadView = (props) => {
                         else {
                                 let updatedatos = await editarMapa({ ...valores, id: "" + mapaRegstro.id })
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
-                                // console.log(updatedatos)
+                                
                                 await getMapa()
                                 hideAlert()
                                 SetDataloca({
@@ -127,7 +127,7 @@ const OpctionLocalidadView = (props) => {
                                 window.location.reload()
                         }
                 } catch (error) {
-                        console.log(error)
+                        
                         usedispatch(setToastes({ show: true, message: 'No se pudo completar la accción', color: 'bg-danger', estado: 'Hubo un error' }))
                         hideAlert()
                 }
@@ -141,7 +141,7 @@ const OpctionLocalidadView = (props) => {
                         setMapaselec("")
                         filterNames("e")
                 } catch (error) {
-                        console.log(error)
+                        
                         usedispatch(setToastes({ show: true, message: 'No se pudo completar la accción', color: 'bg-danger', estado: 'Hubo un error' }))
 
                         hideAlert()

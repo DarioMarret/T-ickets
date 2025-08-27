@@ -19,6 +19,7 @@ import { TotalSelecion } from "utils/CarritoLocalStorang";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag"
+import { logWithCallback } from "utilsstile.js/style";
 function MesasView({ text, status, list }) {
   let nombre = JSON.parse(sessionStorage.getItem("seleccionmapa"))
   let usedispatch = useDispatch();
@@ -29,7 +30,6 @@ function MesasView({ text, status, list }) {
   function Estado(e) {
     let randon = sessionStorage.getItem("random") || ""
     let estado = list.find(f => f.silla == e)
-    //console.log(estado, randon)
     if (estado.estado == null || estado.estado == undefined) return "disponible"
     if (estado.cedula != null && estado.cedula != "") {
       if ((estado.cedula == "" || estado.cedula == undefined || estado.cedula == null) && estado.estado.toLowerCase() == "ocupado") return "apartado"
@@ -56,7 +56,6 @@ function MesasView({ text, status, list }) {
             return k.estado
           }
           if (k.cedula == user.cedula) {
-            // console.log(k.cedula, user.cedula)
             return ["seleccionado"];
           }
           // if ((k.cedula == "" || k.cedula == undefined || k.cedula == null) && k.estado.toLowerCase() == "ocupado") return "apartado"
@@ -65,7 +64,6 @@ function MesasView({ text, status, list }) {
         else return [k.estado]
       }
     });
-    //console.log(asiento)
     const isSeleccion = (currentValue) => currentValue == "seleccionado";
     const isApartado = (currentValue) => currentValue == "apartado";
     const isOcupado = (currentValue) => currentValue == "Ocupado" || currentValue == "OCUPADO";
@@ -74,16 +72,12 @@ function MesasView({ text, status, list }) {
     const isDisnone = (currentValue) => currentValue == "none" || currentValue == "d-none";
     let mesas = ["A", "B", "C", "D"]
     let sillabloquea = ["D42", "D41", "D40", "D38", "D39", "D37", "D36"]
-    //console.log(e.substring(0, 1))
     let envotid = sessionStorage.getItem("eventoid")
-    //if (Object.values(asiento).every(isDispon)) { return "mesadisponible" }
     if (Object.values(asiento).every(isOcupado)) { return "mesaocupado" }
     if (Object.values(asiento).every(isReserva)) { return "mesareserva" }
     if (Object.values(asiento).every(isSeleccion)) { return "mesaselecion" }
     if (Object.values(asiento).every(isApartado)) { return "mesaapartada" }
     if (Object.values(asiento).every(isDisnone)) { return "none" }
-    // if (!mesas.includes(e.substring(0, 1))) { return "bg-secondary" }
-    //  if ((envotid == "X5U5VR") && !mesas.includes(e.substring(0, 1)) || (e.substring(0, 1) == 'D' && !sillabloquea.includes(e))) { return "bg-dark" }
     return "mesadisponible"
   }
   /*  obtener sillas  */
@@ -115,14 +109,12 @@ function MesasView({ text, status, list }) {
           }
         ]
       }
-      console.log(datos)
       hideAlert()
       usedispatch(setSpinersli({ spiner: false }))
       correlativosadd(datos).then(ou => {
 
         usedispatch(setSpinersli({ spiner: false }))
         if (ou.success) {
-          console.log(ou)
           ou.insert.map((e => {
             let asiento = silla
             AgregarAsiento({
@@ -159,7 +151,7 @@ function MesasView({ text, status, list }) {
           usedispatch(setSpinersli({ spiner: true }))
         }
       }).catch(err => {
-        console.log(err)
+        logWithCallback(err)
         usedispatch(setSpinersli({ spiner: true }))
       })
     }
@@ -185,9 +177,7 @@ function MesasView({ text, status, list }) {
       hideAlert()
       usedispatch(setSpinersli({ spiner: false }))
       correlativosadd(datos).then(ou => {
-        console.log(datos, ou)
         if (ou.success) {
-          //console.log(ou)
           ou.insert.map((e => {
             let asiento = silla
             AgregarAsiento({
@@ -214,7 +204,6 @@ function MesasView({ text, status, list }) {
               "silla": asiento.silla,
               "estado": "seleccionado"
             }))
-            //console.log(e)
             let sillaids = document.getElementById("silla-" + e)
             sillaids.classList.add('disponible')
             sillaids.classList.remove('seleccionado')
@@ -228,7 +217,7 @@ function MesasView({ text, status, list }) {
           usedispatch(setSpinersli({ spiner: true }))
         }
       }).catch(err => {
-        console.log(err)
+        logWithCallback(err)
       })
       return
     }
@@ -252,10 +241,8 @@ function MesasView({ text, status, list }) {
       hideAlert()
       usedispatch(setSpinersli({ spiner: false }))
       correlativosadd(datos).then(ou => {
-        console.log("aqui es todod", datos, ou)
         usedispatch(setSpinersli({ spiner: false }))
         if (ou.success) {
-          console.log(ou)
           ou.insert.map((e => {
             let asiento = silla
             AgregarAsiento({
@@ -297,16 +284,13 @@ function MesasView({ text, status, list }) {
           usedispatch(setSpinersli({ spiner: true }))
         }
       }).catch(err => {
-        console.log(err)
+       logWithCallback(err)
         usedispatch(setSpinersli({ spiner: true }))
       })
     }
-
-    console.log(estado, list.find(f => f.silla == e))
-    // console.log("%c%s", "color: red; background: yellow; font-size: 24px;", "ADVERTENCIA")
   }
   function enviarsillas(text) {
-    console.log(list)
+    
     let datos = document.getElementById(text).classList.value
     if (datos.includes("none")) {
       return
@@ -365,7 +349,7 @@ function MesasView({ text, status, list }) {
   const succesSilla = (e) => {
     let mesas = ["A", "B", "C"]
     let mesa = ["A"]
-    let sillabloquea = ["J4", "J5","J3"]
+    let sillabloquea = ["J4", "J5", "J3"]
     let sillesSAmor = ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "B4", "B3"]
     let sillasAmor = []
     const randon = sessionStorage.getItem("random") || ""
@@ -390,7 +374,7 @@ function MesasView({ text, status, list }) {
     //   });
     //   return
     // }
-    
+
     if ((envotid == '7EZFQ6') && (![...sillabloquea, ...sillasAmor, ...sillesSAmor].includes(text) && clienteInfo() == null)) return
     /*
    if (((envotid == "X5U5VR") && (clienteInfo() == null) && (mesas.includes(text.split("")[0])) || (sillabloquea.includes(text))) && clienteInfo() == null) return
@@ -592,7 +576,6 @@ function MesasView({ text, status, list }) {
             "silla": asiento[0].silla,
             "estado": "seleccionado"
           }))
-          console.log(e)
           let sillaids = document.getElementById("silla-" + e)
           sillaids.classList.remove('seleccionado')
           sillaids.classList.add('disponible')
@@ -668,7 +651,7 @@ function MesasView({ text, status, list }) {
               alert={alert}
               enviarsillas={() => enviarsillas(text)}
 
-                />;
+            />;
           case 12:
             return <MesadiesView text={text} list={list}
               obtenerid={obtenerid}
@@ -679,7 +662,7 @@ function MesasView({ text, status, list }) {
               alert={alert}
               enviarsillas={() => enviarsillas(text)}
 
-                  />;
+            />;
           default:
             return <MesacerView text={text} list={list}
               obtenerid={obtenerid}

@@ -15,6 +15,7 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { cambiarMetodo } from "utils/pagos/Queripagos";
 import { OCRApi } from "utils/Querycomnet";
 import { Emailcontec } from "utils/Emails/index";
+import { logWithCallback } from "utilsstile.js/style";
 const ModalReportar_pago = (prop) => {
     const { pararcontador } = prop
     let usedispatch = useDispatch()
@@ -28,7 +29,6 @@ const ModalReportar_pago = (prop) => {
     })
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     let intervalo = useSelector((state) => state.SuscritorSlice.intervalo)
-    // console.log((parseFloat(modal.estado.total_pago) / 1.07).toFixed(2))
     function cerrar() {
         usedispatch(setModal({ nombre: '', estado: '' }))
         !clienteInfo() ? usedispatch(setToastes({
@@ -40,7 +40,6 @@ const ModalReportar_pago = (prop) => {
     }
     function confirmarefectivo() {
         // $("#valor").val()
-        //console.log($("#valor").val())
         if ($("#valor").val() == "") {
             usedispatch(setToastes({ show: true, message: 'Ingrese monto', color: 'bg-danger', estado: 'Datos vacios' }))
 
@@ -53,18 +52,13 @@ const ModalReportar_pago = (prop) => {
             "link_comprobante": "",
             "total_pago": $("#valor").val()
         }
-        //console.log(datos)
-        // if (comproba.numeroTransaccion.trim() == "") { return }
         cambiarMetodo(datos).then(ouput => {
-            console.log(ouput)
             usedispatch(setToastes({ show: true, message: 'Reporte pagado ', color: 'bg-success', estado: 'Se guardo el numero de control' }))
 
         }).catch(err => {
-            console.log(err)
+
             $.alert("hubo un error")
         })
-        //  usedispatch(setModal({ nombre: '', estado: '' }))
-        //  pararcontador()
     }
 
     function onChange(e) {
@@ -73,7 +67,6 @@ const ModalReportar_pago = (prop) => {
         //if(e.files.size)
         let tamaño = parseInt(e.files[0].size / 1024);
         if (tamaño < 1024 || tamaño == 1024) {
-            //console.log(e.files[0].size)
             setcomprobante({
                 ...comproba,
                 link_comprobante: e.files
@@ -81,19 +74,11 @@ const ModalReportar_pago = (prop) => {
 
         }
         else {
-
-
-            // console.log(tamaño, e.files[0].size, (1024 <= tamaño))
             $("#comprobante").val(null);
             $.alert("Pasate el peso maximo")
             return
         }
 
-        //img.src = window.URL.createObjectURL(e.files[0])
-
-
-
-        //   console.log(e.files)
     }
     function onhandelChange(e) {
         if (e.name == "comprobante") {
@@ -110,7 +95,6 @@ const ModalReportar_pago = (prop) => {
     }
     async function onSubmit(e) {
         e.preventDefault();
-        // console.log(comproba.numeroTransaccion.trim().length < 3)
         /*if (comproba.numeroTransaccion.trim().length <= 3) {
             usedispatch(setToastes({ show: true, message: 'complete toda la información del número del recibo', color: 'bg-danger', estado: 'Datos vacios' }))
             return
@@ -132,7 +116,7 @@ const ModalReportar_pago = (prop) => {
             try {
                 setEstado(true)
                 const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
-                console.log(link)
+
                 if (link == null) {
                     usedispatch(
                         setToastes({
@@ -145,12 +129,7 @@ const ModalReportar_pago = (prop) => {
                     return;
                 }
                 setTimeout(async function () {
-                    console.log({
-                        "cedulaBeneficiario": "0923980742",
-                        "url": link,
-                        "cedula": clienteInfo() ? modal.estado.cedula : getDatosUsuariosLocalStorag().id,
-                        "valor_pagar": (parseFloat(modal.estado.total_pago)).toFixed(2)
-                    })
+
                     const reporte = {
                         "id_usuario": clienteInfo() ? modal.estado.id_usuario : getDatosUsuariosLocalStorag().id,
                         "forma_pago": spiner,
@@ -160,7 +139,6 @@ const ModalReportar_pago = (prop) => {
                         "cedula": clienteInfo() != null ? modal.estado.cedula : getDatosUsuariosLocalStorag().cedula,
                         "estado": "Comprobar"
                     }
-                    console.log(reporte)
                     registraPagos(reporte).then(ouput => {
                         if (ouput.success) {
                             setEstado(false)
@@ -170,10 +148,10 @@ const ModalReportar_pago = (prop) => {
                             setTimeout(function () {
                                 if (!clienteInfo()) {
                                     let texto = "Nuevo registro de pago de " + getDatosUsuariosLocalStorag().cedula;
-                                    Emailcontec({ movil: ["593980441911","593991916096"], text: texto }).then(sal => {
-                                        console.log(sal)
+                                    Emailcontec({ movil: ["593980441911", "593991916096"], text: texto }).then(sal => {
+                                        logWithCallback(sal)
                                     }).catch(err => {
-                                        console.log(err)
+                                        logWithCallback(err)
 
                                     })
                                 }
@@ -185,7 +163,7 @@ const ModalReportar_pago = (prop) => {
                             usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
                         }
                     }).catch(erro => {
-                        console.log(erro)
+                        logWithCallback(erro)
                         setEstado(true)
                         usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
                     })
@@ -195,7 +173,7 @@ const ModalReportar_pago = (prop) => {
 
             } catch (error) {
                 setEstado(false)
-                console.log(error)
+                logWithCallback(error)
 
             }
         }

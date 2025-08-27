@@ -15,6 +15,7 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { cambiarMetodo } from "utils/pagos/Queripagos";
 import { OCRApi } from "utils/Querycomnet";
 import { Emailcontec } from "utils/Emails/index";
+import { logWithCallback } from "utilsstile.js/style";
 const ModalConfima = (prop) => {
     const { pararcontador } = prop
     let usedispatch = useDispatch()
@@ -28,7 +29,6 @@ const ModalConfima = (prop) => {
     })
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     let intervalo = useSelector((state) => state.SuscritorSlice.intervalo)
-    // console.log((parseFloat(modal.estado.total_pago) / 1.07).toFixed(2))
     function cerrar() {
         usedispatch(setModal({ nombre: '', estado: '' }))
         !clienteInfo() ? usedispatch(setToastes({
@@ -39,8 +39,6 @@ const ModalConfima = (prop) => {
         })) : ""
     }
     function confirmarefectivo() {
-        // $("#valor").val()
-        //console.log($("#valor").val())
         if ($("#valor").val() == "") {
             usedispatch(setToastes({ show: true, message: 'Ingrese monto', color: 'bg-danger', estado: 'Datos vacios' }))
 
@@ -53,14 +51,10 @@ const ModalConfima = (prop) => {
             "link_comprobante": "",
             "total_pago": $("#valor").val()
         }
-        //console.log(datos)
-        // if (comproba.numeroTransaccion.trim() == "") { return }
         cambiarMetodo(datos).then(ouput => {
-            console.log(ouput)
             usedispatch(setToastes({ show: true, message: 'Reporte pagado ', color: 'bg-success', estado: 'Se guardo el numero de control' }))
 
         }).catch(err => {
-            console.log(err)
             $.alert("hubo un error")
         })
         //  usedispatch(setModal({ nombre: '', estado: '' }))
@@ -73,7 +67,6 @@ const ModalConfima = (prop) => {
         //if(e.files.size)
         let tamaño = parseInt(e.files[0].size / 1024);
         if (tamaño < 1024 || tamaño == 1024) {
-            //console.log(e.files[0].size)
             setcomprobante({
                 ...comproba,
                 link_comprobante: e.files
@@ -81,19 +74,10 @@ const ModalConfima = (prop) => {
 
         }
         else {
-
-
-            // console.log(tamaño, e.files[0].size, (1024 <= tamaño))
             $("#comprobante").val(null);
             $.alert("Pasate el peso maximo")
             return
         }
-
-        //img.src = window.URL.createObjectURL(e.files[0])
-
-
-
-        //   console.log(e.files)
     }
     function onhandelChange(e) {
         if (e.name == "comprobante") {
@@ -110,11 +94,6 @@ const ModalConfima = (prop) => {
     }
     async function onSubmit(e) {
         e.preventDefault();
-        // console.log(comproba.numeroTransaccion.trim().length < 3)
-        /*if (comproba.numeroTransaccion.trim().length <= 3) {
-            usedispatch(setToastes({ show: true, message: 'complete toda la información del número del recibo', color: 'bg-danger', estado: 'Datos vacios' }))
-            return
-        }*/
 
         if (comproba.banco == "") {
             usedispatch(setToastes({ show: true, message: 'complete toda la información', color: 'bg-danger', estado: 'Datos vacios' }))
@@ -124,15 +103,10 @@ const ModalConfima = (prop) => {
             usedispatch(setToastes({ show: true, message: 'Adjunte una imagen del Comprobante', color: 'bg-danger', estado: 'Datos vacios' }))
             return
         }
-        /* if (isNaN(comproba.numeroTransaccion.trim()) || !clienteInfo() == null) {
-             usedispatch(setToastes({ show: true, message: 'solo debe Ingresar Números en el comprobantes ', color: 'bg-danger', estado: 'Datos vacios' }))
-             return
-         }*/
         else if ([comproba.banco].some(e => e)) {
             try {
                 setEstado(true)
                 const link = await Obtenerlinkimagen(comproba.link_comprobante[0])
-                console.log(link)
                 if (link == null) {
                     usedispatch(
                         setToastes({
@@ -145,19 +119,12 @@ const ModalConfima = (prop) => {
                     return;
                 }
                 setTimeout(async function () {
-                    console.log({
-                        "cedulaBeneficiario": "0923980742",
-                        "url": link,
-                        "cedula": clienteInfo() ? modal.estado.cedula : getDatosUsuariosLocalStorag().id,
-                        "valor_pagar": (parseFloat(modal.estado.total_pago)).toFixed(2)
-                    })
                     OCRApi({
                         "cedulaBeneficiario": "0923980742",
                         "url": link,
                         "cedula": clienteInfo() ? modal.estado.cedula : getDatosUsuariosLocalStorag().id,
                         "valor_pagar": (parseFloat(modal.estado.total_pago)).toFixed(2)
                     }).then(ocroupt => {
-                        console.log(ocroupt)
                         if (ocroupt.success) {
                             let comprobante = ocroupt.data["numero_documento"]
                             let valor = ocroupt.data[valor]
@@ -185,13 +152,12 @@ const ModalConfima = (prop) => {
                                     usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
                                 }
                             }).catch(erro => {
-                                console.log(erro)
                                 if (!clienteInfo()) {
                                     let texto = "Nuevo registro de pago de " + getDatosUsuariosLocalStorag().cedula;
                                     Emailcontec({ movil: ["593980441911", "593991916096"], text: texto }).then(sal => {
-                                        console.log(sal)
+                                        logWithCallback(sal)
                                     }).catch(err => {
-                                        console.log(err)
+                                        logWithCallback(err)
 
                                     })
                                 }
@@ -209,16 +175,14 @@ const ModalConfima = (prop) => {
                         }
                     }).catch(salid => {
                         usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: "Comuníquese con un acceso al número  +593980008000/+593969305316" }))
-                        console.log(salid)
+                        logWithCallback(salid)
                         setEstado(false)
                     })
-
-                    //setEstado(true)
                 }, 1000)
 
             } catch (error) {
                 setEstado(false)
-                console.log(error)
+                logWithCallback(error)
 
             }
         }
@@ -258,7 +222,6 @@ const ModalConfima = (prop) => {
 
                     registraPagos(reporte).then(ouput => {
                         if (ouput.success) {
-                            console.log(ouput)
                             setEstado(false)
                             usedispatch(setModal({ nombre: '', estado: '' }))
                             usedispatch(setToastes({ show: true, message: 'Su comprobante a sido registrado con exitó ', color: 'bg-success', estado: 'Comprobante registrado' }))
@@ -266,7 +229,7 @@ const ModalConfima = (prop) => {
                             setTimeout(function () {
                                 if (!clienteInfo()) {
                                     let texto = "Nuevo registro de pago de " + getDatosUsuariosLocalStorag().cedula;
-                                    Emailcontec({ movil: ["593980441911", "593991916096"], text: texto }).then(opu => console.log(opu))
+                                    Emailcontec({ movil: ["593980441911", "593991916096"], text: texto }).then(opu => logWithCallback(opu))
                                 }
                                 //  window.location.reload()
                             }, 1000)
@@ -277,17 +240,13 @@ const ModalConfima = (prop) => {
                             usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
                         }
                     }).catch(erro => {
-                        console.log(erro)
                         setEstado(true)
                         usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
                     })
-
-                    console.log(reporte)
                     setEstado(false)
                 }, 2000)
 
             } catch (error) {
-                console.log(error)
 
             }
         }

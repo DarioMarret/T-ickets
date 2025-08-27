@@ -7,7 +7,6 @@ export default function EmitirmodlView() {
     function salir() {
         usedispatch(setModal({ nombre: "", estado: "" }))
     }
-    //console.log(modal)
     function onChange() {
 
     }

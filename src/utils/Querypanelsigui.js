@@ -69,7 +69,6 @@ export const editarMapa = async (parm) => {
         })
         return data
     } catch (error) {
-        console.log(error)
         return error
     }
 }
@@ -89,7 +88,7 @@ export const eliminaMapa = async (parm) => {
 export const enviasilla = async (info) => {
     let user = getDatosUsuariosLocalStorag()
     let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
-    console.log(info, nombres)
+
     const datos = {
         id: nombres.idcolor,
         cedula: user.cedula,
@@ -103,7 +102,6 @@ export const enviasilla = async (info) => {
         "id_usuario": parseInt(idop),
         "id_operador": parseInt(id),
     }
-    console.log("sillas--", datos)
     try {
         const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/selecionar_localidad", { ...datos, ...parmspro }, {
             headers: {
@@ -111,10 +109,8 @@ export const enviasilla = async (info) => {
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
-        console.log(data)
         return data
     } catch (error) {
-        console.log(error)
         return { error: error, info: info }
 
     }
@@ -158,7 +154,6 @@ export const correlativodelete = async (parms) => {
             }
         }
         )
-        // console.log(data)
         return data
 
     } catch (error) {

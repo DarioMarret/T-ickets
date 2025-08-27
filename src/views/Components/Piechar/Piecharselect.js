@@ -27,35 +27,8 @@ export default function PiecharViewsSlect({ ...props }) {
                     pieSliceText: "label",
                     //height:300
                 }}
-
                 chartPackages={["corechart", "controls"]}
-                chartWrapperParams={{ view: { columns: [0, 2] } }}
-                /* controls={[
-                     {
-                         controlEvents: [
-                             {
-                                 eventName: "statechange",
-                                 callback: ({ chartWrapper, controlWrapper }) => {
-                                     console.log("State changed to", controlWrapper?.getState());
-                                 },
-                             },
-                         ],
-                         controlType: "CategoryFilter",
- 
-                         options: {
-                             
-                             filterColumnIndex: 1,
-                             ui: {
-                                 caption:"Eventos...",
-                                 labelStacking: "vertical",
-                                 label: "Lista:",
-                                 className:"form-select",
-                                 allowTyping: false,
-                                 allowMultiple: false,
-                             },
-                         },
-                     },
-                 ]}*/
+                chartWrapperParams={{ view: { columns: [0, 2] } }}               
                 width={"100%"}
                 height={"360px"}
             />

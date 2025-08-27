@@ -25,6 +25,7 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { bancos } from "utils/Imgenesutils";
 import { Triangle } from "react-loader-spinner";
 import { setSpinersli } from "StoreRedux/Slice/SuscritorSlice";
+import { logWithCallback } from "utilsstile.js/style";
 let { atencion } = bancos
 const LocalidadmapViews = (props) => {
     const { intervalo, intervalolista } = props
@@ -36,10 +37,8 @@ const LocalidadmapViews = (props) => {
     const seleccion = useSelector((state) => state.sillasSlice.sillasSelecionadas.filter((e) => e.localidad == mapath.precio.localidad))
     const modalshow = useSelector((state) => state.SuscritorSlice.modal)
     const spinervi = useSelector((state) => state.SuscritorSlice.spiner)
-    //console.log(seleccion, mapath.precio.localidad)
     const [alert, setAlert] = useState(null);
     let sleccionlocalidad = useSelector((state) => state.SuscritorSlice.boletos)
-    // console.log(sleccionlocalidad)
 
     const eliminarmesas = (M, C) => {
         let nombres = JSON.parse(sessionStorage.getItem(seleccionmapa))
@@ -56,7 +55,7 @@ const LocalidadmapViews = (props) => {
                 quitarsilla({ "array": [{ estado: "disponible", "id": elm.id, "silla": elm.silla, "cedula": user.cedula }] }).then(ouput => {
                     usedispatch(deleteSillas({ "localidad": nombre.localidad, "fila": elm.silla.split("-")[0], "silla": elm.silla, "estado": "seleccionado" }))
                     EliminarsilladeMesa({ localidad: nombre.localidad + "-" + elm.silla })
-                }).catch(err => console.log(err))
+                }).catch(err => logWithCallback(err))
 
 
             }, 15 * index)
@@ -87,11 +86,10 @@ const LocalidadmapViews = (props) => {
                 random: sessionStorage.getItem("random"),
                 "cantidad": 1
             }).then(oupt => {
-               // console.log(oupt)
                 if (oupt.success) {
                     let array = oupt.idLocalidadesSillas
                     sessionStorage.setItem("sillascorre", JSON.stringify([...array]))
-                   
+
                     getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? '' : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
                     setDisable(false)
@@ -102,16 +100,9 @@ const LocalidadmapViews = (props) => {
                     return
                 }
                 usedispatch(setSpinersli({ spiner: true }))
-               /* console.log({
-                    "id": mapath.precio.idcolor,
-                    "estado": "reservado",
-                    "cedula": user.cedula,
-                    "mas": "menos",
-                    "cantidad": 1
-                })*/
             }).catch(err => {
                 setDisable(false)
-                console.log(err)
+                logWithCallback(err)
             })
     }
     const [disable, setDisable] = useState(false)
@@ -147,7 +138,7 @@ const LocalidadmapViews = (props) => {
         if (TotalSelecion() < 100) {
             setDisable(true)
             usedispatch(setSpinersli({ spiner: false }))
-           
+
             window.gtag("event", "add_to_cart", {
                 currency: "USD",
                 value: mapath.precio.precio_normal,
@@ -172,15 +163,15 @@ const LocalidadmapViews = (props) => {
                 "cantidad": 1
             }).then(oupt => {
                 if (oupt.success) {
-                    
-                 
+
+
                     let array = oupt.idLocalidadesSillas
-                   
+
                     sessionStorage.setItem("sillascorre", JSON.stringify([...array]))
                     getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
                     setDetalle(getVerTienda().filter(e => e.id == mapath.precio.idcolor))
                     setTimeout(function () {
-                        
+
                         setDisable(false)
                         usedispatch(setSpinersli({ spiner: true }))
 
@@ -191,12 +182,11 @@ const LocalidadmapViews = (props) => {
                     return
                 }
                 usedispatch(setSpinersli({ spiner: true }))
-            
+
             }
 
             ).catch(erro => {
                 setDisable(false)
-               // console.log(erro)
             })
         }
         else {
@@ -252,7 +242,6 @@ const LocalidadmapViews = (props) => {
     }
 
     function Agregarsilla(e) {
-       // console.log(e)
         if (String(e.estado.toLowerCase()) == "ocupado") return
         let info = JSON.parse(sessionStorage.getItem("DatoCliente")) || sessionStorage.getItem("random")
         let user = getDatosUsuariosLocalStorag()
@@ -360,11 +349,10 @@ const LocalidadmapViews = (props) => {
                 return
             }
             usedispatch(setSpinersli({ spiner: true }))
-          
+
         }).catch(err => {
-            console.log(err)
+            logWithCallback(err)
         })
-     //  console.log(datos)
     }
     const hideAlert = () => {
         setAlert(null);
@@ -413,7 +401,7 @@ const LocalidadmapViews = (props) => {
                         }
                     })
                     mapath.precio.typo == "fila" ? usedispatch(filtrarlocali(nuevoObjeto)) : ''
-                    //console.log(nuevoObjeto)
+                  
                 } else if (ouput.data.find(e => e.typo == "mesa")) {
                     let nuevoObjeto = []
                     ouput.data.forEach(x => {
@@ -438,8 +426,8 @@ const LocalidadmapViews = (props) => {
                     mapath.precio.typo == "mesa" ? usedispatch(filtrarlocali(nuevoObjeto)) : ''
                 }
                 else if (ouput.data.some(e => e.typo == "correlativo")) {
-                  //  console.log("aqui es ", ouput.data)
-                    mapath.precio.typo == "correlativo" ?usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == null))) : ''
+                   
+                    mapath.precio.typo == "correlativo" ? usedispatch(filtrarlocali(ouput.data.filter(e => e.estado == null))) : ''
                     usedispatch(updateboletos({
                         disponibles: ouput.data.filter(e => e.estado == null || e.estado.toLowerCase() == "disponible").length,
                         proceso: ouput.data.filter(e => e.estado.toLowerCase() == "reservado" && e.cedula == user.cedula).length,
@@ -448,26 +436,26 @@ const LocalidadmapViews = (props) => {
                     }))
                 }
             }).catch(err => {
-                console.log(err)
+               logWithCallback(err)
             })
         }, 4000)
         mapath.precio.typo == "correlativo" ? clearInterval(intervalolista.current) : ""
     }
     useEffect(() => {
         let user = getDatosUsuariosLocalStorag()
-    
+
         mapath.localidadespecica != undefined && mapath.pathmap.length > 0 ? mapath.pathmap.map((e, i) => {
             if (sessionStorage.getItem("eventoid") != "YZPQQ3") {
                 $("#mapas" + e.path).attr("fill", e.fill)
                 $("#mapas" + e.path).removeAttr("class")
-                // console.log(e.path)
+             
                 $("#mapas" + e.path).attr("fill", e.fill)
                 $("#mapas" + e.path).removeAttr("class")
             }
             else {
                 $("#mapas" + e.path).attr("fill", "red")
                 $("#mapas" + e.path).removeAttr("class")
-                // console.log(e.path)
+
                 $("#mapas" + e.path).attr("fill", "red")
                 $("#mapas" + e.path).removeAttr("class")
             }
@@ -497,7 +485,7 @@ const LocalidadmapViews = (props) => {
         usedispatch(setModal({ nombre: '', estado: '' }))
         usedispatch(filtrarlocali([]))
         sessionStorage.removeItem(seleccionmapa)
-        usedispatch(setModal({ nombre:  'ModalCarritov', estado: '' }))
+        usedispatch(setModal({ nombre: 'ModalCarritov', estado: '' }))
         hideAlert()
         return
     }
@@ -543,7 +531,7 @@ const LocalidadmapViews = (props) => {
                                 >$ {mapath.precio.precio_tarjeta} </h6>
                             </div>
                             <div className="col-12 d-flex justify-content-center align-items-center" style={{ maxHeight: "200px" }}>
-                                {modalshow.nombre == "Modallocalida" ? mapath.nombre ?<SVGView text={mapath.nombre} />:"" : ''}
+                                {modalshow.nombre == "Modallocalida" ? mapath.nombre ? <SVGView text={mapath.nombre} /> : "" : ''}
                             </div>
 
                             {modalshow.nombre == "Modallocalida" && mapath.precio.typo != "correlativo" ?
@@ -632,49 +620,49 @@ const LocalidadmapViews = (props) => {
                                         </div>
                                     </div>
                                     : ''}
-                              
-                                {
-                              
-                                modalshow.nombre == "Modallocalida" && mapath.precio.typo === "mesa" ?
-                                    <div className="col-sm-12 text-center " style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
-                                        <div className='d-flex  px-3 align-items-center' >
-                                            <div className='d-flex align-itmes-center pb-2' style={{ width: '80px' }}>
-                                                <h5>Filas</h5>
-                                            </div>
-                                            <div className='d-flex align-itmes-center pb-2' >
-                                                <h5>Mesas</h5>
-                                            </div>
-                                        </div>
-                                        {
-                                            mapath.localidadespecica.length > 0 ?
-                                                mapath.localidadespecica.map((e, index) => {
-                                                    return (
-                                                        <div className='d-flex  PX-1 align-items-center' key={index}>
-                                                            <div className='d-flex pb-2'>
-                                                                <MesasView
-                                                                    text={e.fila}
-                                                                />
-                                                            </div>
-                                                            <div className='d-flex  pb-2' >
-                                                                {e.Mesas.length > 0 ?
-                                                                    e.Mesas.map((e, i) => {
-                                                                        return (
-                                                                            <div key={i}>
-                                                                                <MesasView
-                                                                                    status={e.asientos.length}
-                                                                                    text={e.mesa}
-                                                                                    list={e.asientos}
-                                                                                />
-                                                                            </div>
-                                                                        )
-                                                                    }) : ''}
-                                                            </div>
-                                                        </div>
 
-                                                    )
-                                                }) : ''
-                                        }
-                                    </div> : ''}
+                                {
+
+                                    modalshow.nombre == "Modallocalida" && mapath.precio.typo === "mesa" ?
+                                        <div className="col-sm-12 text-center " style={{ maxHeight: '550px', minHeight: '250px', overflowY: 'auto', overflowX: 'auto', }}>
+                                            <div className='d-flex  px-3 align-items-center' >
+                                                <div className='d-flex align-itmes-center pb-2' style={{ width: '80px' }}>
+                                                    <h5>Filas</h5>
+                                                </div>
+                                                <div className='d-flex align-itmes-center pb-2' >
+                                                    <h5>Mesas</h5>
+                                                </div>
+                                            </div>
+                                            {
+                                                mapath.localidadespecica.length > 0 ?
+                                                    mapath.localidadespecica.map((e, index) => {
+                                                        return (
+                                                            <div className='d-flex  PX-1 align-items-center' key={index}>
+                                                                <div className='d-flex pb-2'>
+                                                                    <MesasView
+                                                                        text={e.fila}
+                                                                    />
+                                                                </div>
+                                                                <div className='d-flex  pb-2' >
+                                                                    {e.Mesas.length > 0 ?
+                                                                        e.Mesas.map((e, i) => {
+                                                                            return (
+                                                                                <div key={i}>
+                                                                                    <MesasView
+                                                                                        status={e.asientos.length}
+                                                                                        text={e.mesa}
+                                                                                        list={e.asientos}
+                                                                                    />
+                                                                                </div>
+                                                                            )
+                                                                        }) : ''}
+                                                                </div>
+                                                            </div>
+
+                                                        )
+                                                    }) : ''
+                                            }
+                                        </div> : ''}
                                 {mapath.precio.typo === "correlativo" ?
                                     <div className="d-flex flex-wrap justify-content-center align-items-center">
                                         <div className="text-center d-flex justify-content-end align-items-center">
@@ -766,8 +754,8 @@ const LocalidadmapViews = (props) => {
                                             seleccion.filter((e) => e.estado.toLowerCase() == "seleccionado").map((elm, id) => {
                                                 return (
                                                     <li key={id} className={elm.silla + '  d-flex agregados rounded-5  bg-success justify-content-center align-items-center '}
-                                                      
-                                                    style={{ height: '30px', width: '80px', margin: '1px' }} >
+
+                                                        style={{ height: '30px', width: '80px', margin: '1px' }} >
                                                         <div className={'d-flex   text-white justify-content-center  '} >
                                                             <div className="d-flex  justify-content-center text-center p-2">
                                                                 <span className="mx-1" style={{ fontSize: '0.8em' }}>{elm.silla.replace("-", " ").split(" ")[0]}</span>

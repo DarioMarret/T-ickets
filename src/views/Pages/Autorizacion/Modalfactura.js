@@ -50,9 +50,6 @@ export default function ModalFacturacionView(props) {
         let newSkipped = skipped;
         const form = document.getElementById("primero")
         const formData = new FormData(form);
-        const formProps = Object.fromEntries(formData);
-        console.log(formProps)
-        console.log(Object.values(Object.fromEntries(formData)).every(e => e))
         if (!Object.values(Object.fromEntries(formData)).every(e => e)) {
             form.classList.add("was-validated")
             return
@@ -70,8 +67,6 @@ export default function ModalFacturacionView(props) {
         const formse = document.getElementById("segundo")
         const formData = new FormData(formse);
         const formProps = Object.fromEntries(formData);
-        console.log(Object.values(Object.fromEntries(formData)).some(e => e))
-        console.log(formProps)
         if (!Object.values(Object.fromEntries(formData)).every(e => e)) {
             formse.classList.add("was-validated")
             return
@@ -88,10 +83,6 @@ export default function ModalFacturacionView(props) {
         let newSkipped = skipped;
         const fomrte = document.getElementById("tercero")
         const formData = new FormData(fomrte);
-        const formProps = Object.fromEntries(formData);
-        console.log(Object.values(Object.fromEntries(formData)).some(e => e))
-        console.log(formProps)
-        console.log(datos, firma)
         if (!Object.values(Object.fromEntries(formData)).every(e => e)) {
             fomrte.classList.add("was-validated")
             return
@@ -144,23 +135,16 @@ export default function ModalFacturacionView(props) {
         try {
             const conci = await Obtenerlinkimagen(logo)
             if (conci == null) {
-                console.log(conci, "mapa")
                 usedispatch(setToastes({ show: true, message: 'Imagen no se creo', color: 'bg-success', estado: 'Guardado' }))
                 return
             }
             setTimeout(async function () {
                 const mapa = await Obtenerlinkimagen(firma)
                 if (mapa == null) {
-                    console.log(conci, "mapa")
                     usedispatch(setToastes({ show: true, message: 'Imagen mapa no se creo', color: 'bg-success', estado: 'Guardado' }))
                     return
                 }
-                let defauldata = {
-                    ...datos
-                }
-                console.log(defauldata)
                 if (evento.success) {
-                    console.log(evento)
                     ListaPrecios()
                     usedispatch(setToastes({ show: true, message: 'Evento guardado correctamente', color: 'bg-success', estado: 'Guardado' }))
                 }
@@ -168,7 +152,6 @@ export default function ModalFacturacionView(props) {
 
 
         } catch (error) {
-            console.log(error)
             usedispatch(setToastes({ show: true, message: 'No se guardaron los datos del evento', color: 'bg-danger', estado: 'Hubo un error' }))
             setinput(false)
         }

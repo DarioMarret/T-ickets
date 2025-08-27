@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Emailcontec, formatearNumero } from "utils/Emails/index";
 import { buscarcliente } from "utils/Querypanelsigui";
+import { logWithCallback } from "utilsstile.js/style";
 export default function ModalFirma() {
     let usedispatch = useDispatch()
     let history = useNavigate()
@@ -22,15 +23,13 @@ export default function ModalFirma() {
     const [loading, setLoading] = useState(false);
     //const [linea,setLinea]=useState(0)
     const updateFiles = (incommingFiles) => {
-        console.log(incommingFiles)
         incommingFiles.length == 0 ? setFiles([]) : setFiles([incommingFiles[incommingFiles.length - 1]]);
         if (incommingFiles.length > 0) {
             const file = incommingFiles[incommingFiles.length - 1].file
-            //console.log(file)
             if (file.type.startsWith("image/")) {
                 const reader = new FileReader();
                 reader.onload = async () => {
-                    console.log(file)
+                    logWithCallback(file)
                     setImagenurl(reader.result)
                     if (file.type == "image/png") setType("png")
                     if (file.type == "image/jpeg") setType("jpeg")
@@ -148,13 +147,12 @@ export default function ModalFirma() {
     const functionModificaPDF = async () => {
         //setLoading(true)
         const url = modal.estado.link_pago.replace("k/", "k/voucher/");
-        console.log(url)
         let { data, status } = await boleteriaAxios.post("Boleteria/bancos", {
             "bancos": "",
             "id": "",
             "url": url
         })
-        console.log(String(data).replace("api.ticketsecuador.ec", "api.t-ickets.com"))
+     
         const existingPdfBytes = await fetch(String(data).replace("api.ticketsecuador.ec", "api.t-ickets.com")).then((res) => res.arrayBuffer());
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -166,7 +164,6 @@ export default function ModalFirma() {
         const imageBytes = await fetch(imageDataUrl).then((res) => res.arrayBuffer());
         const image = await pdfDoc.embedPng(imageBytes);
         const jpgDims = image.scale(0.5)
-        console.log(image, imageBytes)
         firstPage.drawImage(image, {
             x: 114,
             y: 5,
@@ -188,10 +185,7 @@ export default function ModalFirma() {
         });
 
         const pdfBytes = await pdfDoc.save();
-
-        // Envía el PDF como parte de un formulario de datos de usuario
         const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-        console.log(pdfBytes, pdfBlob)
         const fordata = new FormData();
         let nombre = url.split("voucher/")[1]
         fordata.append('image', pdfBlob, nombre + '.pdf');
@@ -203,13 +197,11 @@ export default function ModalFirma() {
                         'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                     }
                 })
-            console.log(data)
             if (!data.success) {
-                console.log(data)
-
+                
                 return null
             }
-            console.log(data)
+           
 
             let boleto = await Boleteria_voucher({
                 "estado": clienteInfo() == null ? 0 : 1,
@@ -218,16 +210,15 @@ export default function ModalFirma() {
             })
             if (boleto.estado) {
                 let boletos = JSON.stringify({ ...detallid, ...boleto.datos })
-                console.log(boletos)
                 sessionStorage.setItem("Detalleuid", boletos)
                 if (clienteInfo() == null) {
                     let texto = "Nuevo registro de firma de " + getDatosUsuariosLocalStorag().cedula;
                     Emailcontec({ movil: [formatearNumero("980441911"), formatearNumero("991916096")], text: texto }).then(sal => {
-                       // console.log(sal)
+                    
 
                         window.location.reload()
                     }).catch(err => {
-                        console.log(err)
+                      logWithCallback(err)
 
                     })
                     return
@@ -244,20 +235,13 @@ export default function ModalFirma() {
                 ).catch(err => {
                 })
                 cerrar()
-                // window.location.reload()
             }
-            /* console.log(boleto, {
-                 "estado": "1",
-                 "id": modal.estado.id,
-                 "link": data.link
-             })*/
 
             return data.link
 
         } catch (error) {
             // setLoading(false)
             $.alert("Hubo un error. Verifique el formato de la imagen proporcionada.")
-            console.log(error)
             return null
 
         }

@@ -17,14 +17,12 @@ export default function ConsolidaRegistr() {
         let datos = modal.estado.filter(e => e.id == first)
         //sessionStorage.setItem("Detalleuid", JSON.stringify({ ...datos[0] }))
         //history.push("/admin/Reporte/" + datos[0].id)
-        console.log(datos)
     }
     useEffect(() => {
         /*EstadosCosolidados().then(ouput => {
-            console.log(ouput)
+            
             setfirst(ouput)
         }).catch(error => {
-            console.log(error)
         })*/
     }, [modal.nombre == "ConsolidaRegistr" ? true : false])
     return (

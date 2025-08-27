@@ -14,6 +14,7 @@ import { registraPagos } from "utils/pagos/Queripagos";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import { cambiarMetodo } from "utils/pagos/Queripagos";
 import { useNavigate } from "react-router-dom";
+import { logWithCallback } from "utilsstile.js/style";
 export default function Pagarlink() {
     let history = useNavigate()
     let usedispatch = useDispatch()
@@ -28,7 +29,7 @@ export default function Pagarlink() {
     })
     let modal = useSelector((state) => state.SuscritorSlice.modal)
     let intervalo = useSelector((state) => state.SuscritorSlice.intervalo)
-   // console.log(modal)
+
 
 
     function onhandelChange(e) {
@@ -70,12 +71,9 @@ export default function Pagarlink() {
                                 "estado": "Pagado",
                                 "link_comprobante": comproba.link_comprobante,
                             }
-                            console.log(reporte)
+
                             registraPagos(reporte).then(ouput => {
-                                console.log(ouput)
                                 if (ouput.success) {
-                                    console.log(ouput)
-                                    console.log(reporte)
                                     setEstado(false)
                                     usedispatch(setModal({ nombre: '', estado: '' }))
                                     usedispatch(setToastes({ show: true, message: 'Metodo de pago realizado con éxito ', color: 'bg-success', estado: 'Comprobante registrado' }))
@@ -83,17 +81,13 @@ export default function Pagarlink() {
                                     history(-1)
                                 }
                                 else {
-                                    //console.log("aqui",ouput)
                                     setEstado(false)
                                     usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-danger', estado: 'Hubo un error' }))
                                 }
                             }).catch(erro => {
-                                console.log(erro)
                                 setEstado(true)
                                 usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
                             })
-
-                            // console.log(reporte)
                             setEstado(false)
                         }, 2000)
                     } else {
@@ -105,7 +99,7 @@ export default function Pagarlink() {
 
 
             } catch (error) {
-                console.log(error)
+                logWithCallback(error)
 
             }
         }
@@ -123,14 +117,6 @@ export default function Pagarlink() {
             ...comproba,
             total_pago: modal.estado.total_pago
         })
-        console.log(modal)
-       /* $(document).ready(function () {
-            $(".modal-content").draggable({
-                handle: ".modal-header",
-                containment: "#root",
-                scroll: false,
-            })
-        })*/
     }, [modal.nombre == "canjear" ? true : false])
     return (
         <>

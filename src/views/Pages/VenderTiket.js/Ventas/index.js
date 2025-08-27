@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { GetMetodo, GetValores, getVerTienda, LimpiarLocalStore, Limpiarseleccion, Limpiarselecciondos, TiendaIten, TotalSelecion } from "utils/CarritoLocalStorang";
-import {  AxioBoleteria, Axiosmikroserdos, mikroAxios } from "utils/index.js";
+import { AxioBoleteria, Axiosmikroserdos, mikroAxios } from "utils/index.js";
 import { buscarcliente, correlativosadd } from "utils/Querypanelsigui";
 import { useDispatch, useSelector } from "react-redux"
 import { clienteInfo, DatosUsuariosLocalStorag, getCedula, getDatosUsuariosLocalStorag, setDatosUser, UpdateDatosUsuariosLocalStorag } from "utils/DatosUsuarioLocalStorag";
@@ -19,6 +19,7 @@ import { Emailcontec, formatearNumero } from "utils/Emails/index";
 import { localidaandespacio } from "utils/Querypanel";
 import LocalidadmapViews from "views/Components/MODAL/Modallocalida";
 import axios from "axios";
+import { logWithCallback } from "utilsstile.js/style";
 function ventasView() {
     let usedispatch = useDispatch()
     let modalshow = useSelector((state) => state.SuscritorSlice)
@@ -45,36 +46,11 @@ function ventasView() {
     const checkdsss = useRef(null)
     const [check, setCheck] = useState(false)
     function CambiarCheck() {
-        //   e.preventDefault(); // Prevenir comportamiento predeterminado
         let descuento = document.getElementById("descuento")
         let users = getDatosUsuariosLocalStorag()
-        //  console.log(users.discapacidad)
         checkds.current.check = users.discapacidad ? false : (users.discapacidad == 'Si')
-        //  console.log()
         UpdateDatosUsuariosLocalStorag({ discapacidad: (users.discapacidad == 'No' || users.discapacidad == undefined) ? 'Si' : 'No' })
         ListaPrecioset(GetValores())
-        //console.log(GetValores(), datos)
-        //descuento.checked = users.discapacidad ? false : (users.discapacidad == 'Si')
-        //  console.log(getDatosUsuariosLocalStorag().discapacidad)
-        // usuario.discapacidad = 'Si'
-        //   console.log(checkds.current.checked)
-        // console.log("El checkbox se ha desmarcado", datos);
-    }
-    function CambiarChecks() {
-        //   e.preventDefault(); // Prevenir comportamiento predeterminado
-        // 
-        let users = getDatosUsuariosLocalStorag()
-        // console.log(users.menor)
-        checkdss.current.check = (users.menor == 'Si')
-        //  console.log()
-        let datos = UpdateDatosUsuariosLocalStorag({ menor: users.menor == 'No' ? 'Si' : 'No' })
-        //ListaPrecioset(GetValores())
-        //    console.log(GetValores(), datos)
-
-        //  console.log(getDatosUsuariosLocalStorag().discapacidad)
-        // usuario.discapacidad = 'Si'
-        //   console.log(checkds.current.checked)
-        // console.log("El checkbox se ha desmarcado", datos);
     }
     function CambiarCheckss() {
         let users = getDatosUsuariosLocalStorag()
@@ -98,8 +74,6 @@ function ventasView() {
 
 
     function handelChange(e) {
-
-        //console.log(e.name,e.value)
         setDausuario({
             ...datos,
             [e.name]: e.value
@@ -113,7 +87,6 @@ function ventasView() {
     const ObtenerEventos = async () => {
         try {
             let { data } = await mikroAxios.get("Boleteria/Eventos/" + id)
-            console.log(data)
             let array = data.data[0].map((el, inde) => {
                 return {
                     ...el,
@@ -124,11 +97,10 @@ function ventasView() {
                     "comision_boleto": "0.00",
                 }
             })
-            console.log(array)
             setEvento([...data.data[0]])
             setEventoCortesia([...array])
         } catch (error) {
-            console.log(error)
+            logWithCallback(error)
         }
     }
     async function buscarsuscritor() {
@@ -157,17 +129,13 @@ function ventasView() {
             }))
         }
         buscarcliente({ ...informacion }).then(ouput => {
-            //  Limpiarselecciondos()
+            
             ListaPrecioset(GetValores())
             setSelecte("Transferencia")
             if (!ouput.success) {
                 getCedula(nombre).then(salida => {
                     if (salida.success) {
-                        usedispatch(setToastes({
-                            show: true, message: ouput.message
-                            , color: 'bg-warning', estado:
-                                "No hubo ninguna coincidencia"
-                        }))
+                        usedispatch(setToastes({ show: true, message: ouput.message, color: 'bg-warning', estado:"No hubo ninguna coincidencia"}))
                         setDausuario({
                             ...datos,
                             nombreCompleto: '',
@@ -191,6 +159,8 @@ function ventasView() {
                             movil: salida.telefono ? salida.telefono : "0999999999",
                             registro: 0
                         })
+                        $.alert("Recuerda solicitar Correo y número Celular")
+                      //  usedispatch(setToastes({ show: true, message: "Ingresas los datos del usuario Correo - Telefono", color: 'bg-warning', estado: "No hubo ninguna coincidencia" }))
                         DatosUsuariosLocalStorag({
                             ...datos,
                             nombreCompleto: salida.name,
@@ -261,20 +231,14 @@ function ventasView() {
             valor: mapath.precio.precio_normal,
             nombreConcierto: sessionStorage.getItem("consierto"),
         }
-        console.log(producto)
         if (check.checked) {
             getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": "protoco", tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
 
-            console.log(getVerTienda())
-            console.log(GetValores())
             ListaPrecioset(GetValores())
-            //      console.log(e)
             return
         }
         getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": "protoco", tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
 
-        console.log(getVerTienda())
-        console.log(GetValores())
         ListaPrecioset(GetValores())
         correlativosadd({
             "id": mapath.precio.idcolor,
@@ -284,13 +248,12 @@ function ventasView() {
             random: sessionStorage.getItem("random"),
             "cantidad": 1
         }).then(oupt => {
-            // console.log(oupt)
             if (oupt.success) {
 
             }
 
         }).catch(err => {
-            console.log(err)
+            logWithCallback(err)
         })
         if (e.ideprecio == 433) {
             UpdateDatosUsuariosLocalStorag({ menor: 'No' })
@@ -300,20 +263,12 @@ function ventasView() {
     function agregar(e) {
         const valores = JSON.parse(sessionStorage.getItem(Eventolocalidad))
         let checks = document.getElementById("ventas")
-        console.log(checks.checked)
         let user = getDatosUsuariosLocalStorag()
-        console.log(e, "valores", valores)
-        // console.log("valores", valores)
+        logWithCallback({ e, "valores": valores })
         let mapath = { precio: valores.find(el => el.id == e.ideprecio) }
-        console.log(mapath, valores)
+        logWithCallback({ mapath, valores })
         let protoco = moment().format("YYYYMMDDHHMMSS")
-        console.log(mapath.precio)
-        // "precio_normal": "0",
-        //     "precio_discapacidad": "0.00",
-        //         "precio_descuento": "0.00",
-        //             "precio_tarjeta": "0.00",
-        //                 "comision_boleto": "0.00",
-        console.log
+
         let producto = {
             cantidad: 1,
             localidad: mapath.precio.localidad,
@@ -326,24 +281,17 @@ function ventasView() {
             nombreConcierto: sessionStorage.getItem("consierto") ? sessionStorage.getItem("consierto") : '',
         }
 
-        console.log(producto)
+        logWithCallback(producto)
         if (checks.checked) {
             getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
-
-            //  console.log(getVerTienda())
-            // console.log(GetValores())
             ListaPrecioset(GetValores())
-            //      console.log(e)
             return
         }
         if (TotalSelecion() < 10) {
-            //if (true) {
             getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor) == undefined ? TiendaIten({ ...producto, "protocol": protoco, tipo: "correlativo" }) : TiendaIten({ ...producto, protocol: getVerTienda().find(e => e.localidaEspacio["idcolor"] == mapath.precio.idcolor).protocol, tipo: "correlativo" })
 
-            //  console.log(getVerTienda())
-            // console.log(GetValores())
             ListaPrecioset(GetValores())
-            //      console.log(e)
+
             correlativosadd({
                 "id": mapath.precio.idcolor,
                 "estado": "reservado",
@@ -352,17 +300,10 @@ function ventasView() {
                 random: sessionStorage.getItem("random"),
                 "cantidad": 1
             }).then(oupt => {
-                if (oupt.success) {
-
-
-                }
-                //  usedispatch(setSpinersli({ spiner: true }))
 
             }
 
             ).catch(erro => {
-                //setDisable(false)
-                // console.log(erro)
             })
             if (e.ideprecio == 433) {
                 UpdateDatosUsuariosLocalStorag({ menor: 'Si' })
@@ -370,7 +311,7 @@ function ventasView() {
 
         }
         else {
-            //setDisable(false)
+
             $.confirm({
                 title: 'Limite alcanzado',
                 content: 'Solo puede registrar 10 boletos por compra',
@@ -400,8 +341,6 @@ function ventasView() {
     }
     useEffect(() => {
 
-        //setEvento([])
-        console.log(getVerTienda())
         let metodo = sessionStorage.getItem(Metodos)
         sessionStorage.setItem(Metodos, "Transferencia")
         setChecked({
@@ -480,13 +419,13 @@ function ventasView() {
 
     async function Registrar() {
         try {
-            // console.log(GetMetodo())
+
             let informacion = {
                 "cedula": '',
                 "email": String(datos.email).trim()
             }
             let data = datos.registro == 0 ? await buscarcliente({ ...informacion }) : false
-            //    console.log(data)
+
             if (!data.success) {
                 //return
                 if (GetMetodo() == "Tarjeta") {
@@ -523,7 +462,7 @@ function ventasView() {
                 alert("Correo ya esta regitrado actualice")
             }
         } catch (error) {
-            //console.log(error)
+
             $.alert(error)
         }
 
@@ -531,7 +470,7 @@ function ventasView() {
     }
     function Abririlocalfirt(e) {
         let user = getDatosUsuariosLocalStorag()
-        console.log(user)
+
         if (user.id == 0) {
             $.alert({
                 title: '',
@@ -550,9 +489,9 @@ function ventasView() {
         }
         else {
             let user = getDatosUsuariosLocalStorag()
-            console.log(user)
+
             localidaandespacio(e.id_espacio, e.id_localidad).then(ouput => {
-                console.log(ouput)
+
                 let nuevoObjeto = []
                 if (ouput.data.find(e => e.typo == "fila")) {
                     ouput.data.forEach(x => {
@@ -611,7 +550,7 @@ function ventasView() {
 
             }
             ).catch(err =>
-                console.log(err)
+                logWithCallback(err)
             )
         }
     }
@@ -627,7 +566,7 @@ function ventasView() {
             direccion: datos.direccion,
             cedula: datos.cedula,
         }
-         AxioBoleteria.post("/api/v1/crear_suscriptor", data, {
+        AxioBoleteria.post("/api/v1/crear_suscriptor", data, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
@@ -640,19 +579,18 @@ function ventasView() {
             })
             let texto = "*" + data.nombreCompleto + "*\nGracias por registrarse en Tickets.com.ec.\nLos datos de ingreso son:\n *Usuario*:" + data.email + "\n *Clave*:" + data.password.trim() + "\n\nPor favor, para validar tu cuenta digita la palabra *Si*";
             Emailcontec({ movil: [formatearNumero(data.movil)], nombre: data.nombreCompleto, password: data.password.trim(), email: data.email, text: texto }).then(sal => {
-                //  console.log(sal)
             }).catch(err => {
-                //console.log(err)
+                
                 setDausuario({
                     ...datos,
                     registro: 1
                 })
             })
         }).catch(err => {
-            //   console.log(err)
+            
 
         })
-       
+
         setDausuario({
             ...datos,
             registro: 1
@@ -891,7 +829,7 @@ function ventasView() {
                                     let tipo = String(item.mesas_array).replace('""', "");
                                     const tiendaItem = getVerTienda().find(ele => ele.id === item.id_localidad) || {};
                                     const cantidad = tiendaItem.cantidad || 0;
-                                    console.log(tiendaItem)
+                                    
                                     const cantis = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad : 0
                                     const valor = "" + (parseFloat(item.precio_normal) - parseInt(item.comision_boleto)) + "+$" + parseInt(item.comision_boleto)
                                     const totales = getVerTienda().length == 0 ? 0 : getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad) ? parseFloat(parseInt(getVerTienda().find(ele => ele.localidaEspacio.idcolor == item.id_localidad).cantidad) * (parseFloat(item.precio_normal) - parseInt(item.comision_boleto))) : 0
@@ -1034,7 +972,7 @@ function ventasView() {
             <ModalConfima />
             <ReporteView
                 repShop={"repShop"}
-                detener={() => console.log()}
+                detener={() => logWithCallback()}
                 setrepShow={() => { }}
                 comprar={para}
             />

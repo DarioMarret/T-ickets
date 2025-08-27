@@ -22,6 +22,7 @@ import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { buscarcliente } from "utils/Querypanelsigui";
 import { useDispatch } from "react-redux";
 import {useLocation,useNavigate} from "react-router-dom"
+import { logWithCallback } from "utilsstile.js/style";
 function AdminNavbar() {
   let location = useLocation()
   let history = useNavigate();
@@ -43,7 +44,7 @@ function AdminNavbar() {
       }
       history("/admin")
       buscarcliente({ ...informacion }).then(oupt => {
-        //console.log(informacion, oupt)
+      
         $("#search").removeClass("d-none")
         if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
           $('#cedulac').val("")
@@ -73,7 +74,7 @@ function AdminNavbar() {
           message: 'Usuario no encontrado ',
           color: 'bg-danger', estado: 'Hubo un error'
         }))
-        console.log(err)
+        logWithCallback(err)
       })
 
     }else{
@@ -96,7 +97,7 @@ function AdminNavbar() {
       }
       history("/admin")
       buscarcliente({ ...informacion }).then(oupt => {
-        //console.log(informacion, oupt)
+    
         $("#search").removeClass("d-none")
         if (oupt.data.nombreCompleto != undefined && oupt.data.nombreCompleto != null) {
           $('#cedulac').val("")
@@ -120,7 +121,7 @@ function AdminNavbar() {
           message: 'Usuario no encontrado ',
           color: 'bg-danger', estado: 'Hubo un error'
         }))
-        console.log(err)
+        logWithCallback(err)
       })
 
     }else{

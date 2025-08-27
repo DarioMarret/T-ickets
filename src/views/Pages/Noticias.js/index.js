@@ -24,6 +24,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ListarEventos } from "utils/Querypanel";
+import { logWithCallback } from "utilsstile.js/style";
 export default function NoticiasView() {
     let usedispatch = useDispatch()
     let fechamin = new Date().toISOString().slice(0, -14);
@@ -63,7 +64,7 @@ export default function NoticiasView() {
             encabezado: eventos.find(el => el.id == e.value).nombreConcierto,
             descipcion: eventos.find(el => el.id == e.value).descripcionConcierto,
             link_img: "",
-            mas: JSON.stringify({ ...eventos.filter(el => el.id == e.value)[0]})
+            mas: JSON.stringify({ ...eventos.filter(el => el.id == e.value)[0] })
         })
     }
     const onSubmit = async (e) => {
@@ -79,18 +80,15 @@ export default function NoticiasView() {
                     try {
                         setCargando(true)
                         let link = await Obtenerlinkimagen(imgen)
-                        console.log(Object.fromEntries(form.entries()))
                         let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
-                        console.log(link)
                         setTimeout(async function () {
                             if (link == null) {
                                 usedispatch(setToastes({ show: true, message: "La imagen tiene un peso de " + Math.floor(imgen.size / 1000000) + "MB", color: 'bg-warning', estado: 'Imagen demasiada pesada' }))
                                 setCargando(false)
                                 return
-                            }                    
+                            }
                             let mobil = await Obtenerlinkimagen(imgmovil)
-                            setTimeout(async function(){
-                                console.log(mobil)
+                            setTimeout(async function () {
                                 let parametr = {
                                     "encabezado": encabezado,
                                     "descripcion": descipcion,
@@ -101,11 +99,11 @@ export default function NoticiasView() {
                                 let carruse = await agregarNoticia(parametr)
                                 Evento()
                                 setCargando(false)
-                            },3000)
-                            
+                            }, 3000)
+
                         }, 3000)
                     } catch (error) {
-                        console.log(error)
+                        logWithCallback(error)
                     }
                 }
             }
@@ -129,15 +127,15 @@ export default function NoticiasView() {
                                     "fecha_presentacion": fechamax,
                                     "redirect": mobil
                                 }
-                                console.log(datas)
+                                logWithCallback(datas)
                                 let carruse = await noticiasEvento(datas)
-                                console.log(carruse)
+                                logWithCallback(carruse)
                                 Evento()
                                 setCargando(false)
                             }
                         }, 3000)
                     } catch (error) {
-                        console.log(error)
+                        logWithCallback(error)
                     }
                 }
             }
@@ -149,7 +147,6 @@ export default function NoticiasView() {
         e.preventDefault()
         const form = new FormData(e.target)
         let { encabezado, descipcion, fechamax, mas } = Object.fromEntries(form.entries())
-        console.log(Object.fromEntries(form.entries()), imgen)
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
             usedispatch(setToastes({ show: true, message: 'Complete todos los campos ', color: 'bg-warning', estado: 'información faltante' }))
             return
@@ -176,7 +173,6 @@ export default function NoticiasView() {
                                     "redirect": mobil
                                 }
                                 let noticia = await Actualizarpublicdad(parametr)
-                                //    console.log("Eventos", parametr)
                                 if (noticia.success) {
                                     setDatos({
                                         encabezado: '',
@@ -195,7 +191,7 @@ export default function NoticiasView() {
                     }
                 }
             } catch (error) {
-                console.log(error)
+                logWithCallback(error)
             }
         } else {
             try {
@@ -214,7 +210,7 @@ export default function NoticiasView() {
                         "redirect": mobil
                     }
                     let actualizapublicida = await Actualizarpublicdad(datos.id, parametr)
-                    // console.log(parametr)
+
                     Evento()
                     setDatos({
                         encabezado: '',
@@ -228,10 +224,8 @@ export default function NoticiasView() {
                     usedispatch(setToastes({ show: true, message: 'Publicidad actualizada', color: 'bg-success', estado: 'Actualizado' }))
 
                 }, 1000);
-
-                //console.log("actualiza publicida", parametr)
             } catch (error) {
-                console.log(error)
+                logWithCallback(error)
             }
         }
     }
@@ -244,11 +238,11 @@ export default function NoticiasView() {
     }
     function EliminaNoticias(e) {
         Eliminarpublici(e).then(oupt => {
-            console.log(oupt)
+            logWithCallback(oupt)
             Evento()
             hideAlert()
         }).catch(err => {
-            console.log(err)
+            logWithCallback(err)
         })
     }
     const successAlert = (e) => {
@@ -280,13 +274,13 @@ export default function NoticiasView() {
             setImg(img.src)
             setimagen(e.files[0])
             let totalBytes = e.files[0].size;
-            console.log(totalBytes)
+            logWithCallback(totalBytes)
             if (totalBytes < 1000000) {
                 var _size = Math.floor(totalBytes / 1000) + 'KB';
-                console.log(_size);
+                logWithCallback(_size);
             } else {
                 var _size = Math.floor(totalBytes / 1000000) + 'MB';
-                console.log(_size);
+                logWithCallback(_size);
             }
         }
         else {
@@ -304,13 +298,13 @@ export default function NoticiasView() {
             //    setImg(img.src)
             setImagenMo(e.files[0])
             let totalBytes = e.files[0].size;
-            console.log(totalBytes)
+            logWithCallback(totalBytes)
             if (totalBytes < 1000000) {
                 var _size = Math.floor(totalBytes / 1000) + 'KB';
-                console.log(_size);
+                logWithCallback(_size);
             } else {
                 var _size = Math.floor(totalBytes / 1000000) + 'MB';
-                console.log(_size);
+                logWithCallback(_size);
             }
         }
         else {
@@ -501,31 +495,10 @@ export default function NoticiasView() {
 
         ListarNoticias().then(oupt => {
             setpublicidad(oupt.data)
-            // console.log(oupt)
-        }).catch(err => console.log(err))
+        }).catch(err => logWithCallback(err))
 
     }
     function obtenervento(e) {
-        console.log(e)
-        /*{
-            "id": 34,
-                "evento": "CU1E1Q-Medio Estadio Atahualpa -ELADIO CARRION",
-                    "encabezado": "ELADIO CARRION",
-                        "descripcion": "Evento Bahia",
-                            "link_img": "https://api.t-ickets.com/store/img/cabecera.png",
-                                "fecha_presentacion": "2022-12-31",
-                                    "redirect": ""
-        }
-         {
-            "id": 35,
-            "evento": null,
-            "encabezado": "ELADIO CARRION",
-            "descripcion": "Evento Bahia",
-            "link_img": "https://api.t-ickets.com/store/img/cabecera.png",
-            "fecha_presentacion": "2022-12-22",
-            "redirect": ""
-        }
-        */
         if (e.evento == null) {
             setTipo("informativo")
             setDatos({
@@ -551,8 +524,8 @@ export default function NoticiasView() {
     useEffect(() => {
         ListarEventos("").then(oupt => {
             setEventos(oupt.data.filter(e => e.estado == "PROCESO" || e.estado == "ACTIVO"))
-            console.log(oupt.data.filter(e => e.estado == "PROCESO" || e.estado == "ACTIVO"))
-        }).catch(err => console.log(err))
+            logWithCallback(oupt.data.filter(e => e.estado == "PROCESO" || e.estado == "ACTIVO"))
+        }).catch(err => logWithCallback(err))
         Evento()
     }, [])
     return (

@@ -5,6 +5,7 @@ import TablasViwe from 'layouts/Tablasdoc';
 import { Modal } from 'react-bootstrap';
 import { Obtenerlinkimagen } from 'utils/Querypanel';
 import "./index.css"
+import { logWithCallback } from 'utilsstile.js/style';
 
 const WhatsAppViewmal = () => {
     let [listaQr, setQrList] = useState([])
@@ -28,7 +29,7 @@ const WhatsAppViewmal = () => {
     async function Enviosmasivo() {
         let { cuentaId, mensaje, fecha_envio, hora_envio } = envios
         if (!Object.values([cuentaId, mensaje, fecha_envio, hora_envio]).every(e => e)) {
-            console.log(envios)
+
             $.alert("Complete los campos requeridos")
             return
         }
@@ -45,10 +46,9 @@ const WhatsAppViewmal = () => {
                     ...envios,
                     "video": mapa
                 }
-                console.log("con imagen ", parms)
-                // return
+
                 ProgramarQR(parms).then(ouput => {
-                    console.log(ouput)
+                    logWithCallback(ouput)
                     setMensaje(false)
                     $.alert(JSON.stringify(ouput))
                 }).catch(err => {
@@ -59,9 +59,9 @@ const WhatsAppViewmal = () => {
             let parms = {
                 ...envios,
             }
-            console.log("Sin imagen", parms)
+            
             ProgramarQR(parms).then(ouput => {
-                console.log(ouput)
+                
                 $.alert(JSON.stringify(ouput))
             }).catch(err => {
                 $.alert(err.message)
@@ -110,21 +110,21 @@ const WhatsAppViewmal = () => {
                     btnClass: 'btn-success',
                     action: function () {
                         DeleteQrCuenta(e).then(ouput => {
-                            console.log(ouput)
+                            
                             let nuevo = listaQr.filter(elemen => elemen.id != e)
                             setQrList(nuevo)
                             ObtenerContactos(e.id).then(data => {
                                 setContactos([])
                                 if (data.status == 200) {
-                                    console.log(e.id)
+                                    
                                     if (data.data.length == 0) return true
                                     let contactosnumero = data.data.filter(f => f.cuentaId == e)
                                     contactosnumero.map(async function (elem) {
                                         try {
                                             let { data } = await EliminarContacto(elem.id)
-                                            console.log(data)
+                                            
                                         } catch (error) {
-                                            console.log(error);
+                                            logWithCallback(error);
                                         }
                                     })
                                     return
@@ -146,12 +146,12 @@ const WhatsAppViewmal = () => {
     }
     useEffect(() => {
         getQrLista().then(ouput => {
-            console.log(ouput)
+          
             if (ouput.length) {
                 setQrList(ouput);
             }
         }).catch(error => {
-            console.log(error)
+            logWithCallback(error)
         })
         //ObtenerMasivos(0)
     }, [])
@@ -187,7 +187,7 @@ const WhatsAppViewmal = () => {
                 return data
             }
         } catch (error) {
-            console.log(error)
+           logWithCallback(error)
             return error
         }
     }
@@ -198,7 +198,7 @@ const WhatsAppViewmal = () => {
                 let data = await ObtenerContactos(e.id)
                 setContactos([])
                 if (data.status == 200) {
-                    console.log(data)
+                    logWithCallback(data)
                     setContactos(data.data)
                     setCuenta({
                         "cuentaId": "",
@@ -210,9 +210,9 @@ const WhatsAppViewmal = () => {
                 let data = await ObtenerContactos(e.id)
                 setContactos([])
                 if (data.status == 200) {
-                    console.log(e.id)
+                    logWithCallback(e.id)
                     let contactosnumero = data.data.filter(f => f.cuentaId == e.id)
-                    console.log(contactos)
+                    
                     setCuenta({
                         "cuentaId": e.cuentaId,
                         "nombre": e.nombre
@@ -224,7 +224,7 @@ const WhatsAppViewmal = () => {
                 return data
             }
         } catch (error) {
-            console.log(error)
+            logWithCallback(error)
             return error
         }
     }
@@ -258,31 +258,28 @@ const WhatsAppViewmal = () => {
                     action: function () {
                         var name = this.$content.find('.name').val();
                         var telefono = this.$content.find('.telefono').val();
-                        console.log(name)
+                        
                         if (name != "" && telefono != "") {
                             postQRGenerado({ "nombre": name, "numero": telefono }).then((data) => {
-                                console.log(data)
+                               
                                 getQrLista().then(ouput => {
-                                    console.log(ouput)
                                     if (ouput.length) {
                                         setQrList(ouput);
                                     }
                                 }).catch(error => {
-                                    console.log(error)
+                                    logWithCallback(error)
                                 })
                             }).catch(err => {
-                                console.log(err)
+                                logWithCallback(err)
                             })
                         } else {
                             $.alert('Complete toda la información');
                         }
-                        //$.alert('Shift or Alt was pressed');
                     }
                 },
                 cancel: {
                     text: 'Cancelar',
                     action: function () {
-                        // $.alert('A or B was pressed');
                     }
                 }
             }
@@ -318,7 +315,7 @@ const WhatsAppViewmal = () => {
                                 <button class=" btn-sm btn btn-default contenedor" onClick={() => ShowModal(item)}> <span className='mostrarEnHover'>Crear Masivos</span>  <i className='fa fa-send'></i> </button>
                                 <a class=" btn-sm btn btn-default contenedor" href={item.url_qr} target="_blank"><span className='mostrarEnHover'>Scanear</span> <i className='fa fa-link'></i> </a>
                                 <button class=" btn-sm btn btn-default contenedor" onClick={() => eliminarcuenta(item.id)}><span className='mostrarEnHover'>Borrar</span>  <i className='fa fa-trash'></i> </button>
-                                <button class=" btn-sm btn btn-default contenedor" onClick={() => console.log(item.id)}> <span className='mostrarEnHover'>Importar</span> <i className='fa fa-paperclip'></i> </button>
+                                <button class=" btn-sm btn btn-default contenedor" onClick={() => logWithCallback(item.id)}> <span className='mostrarEnHover'>Importar</span> <i className='fa fa-paperclip'></i> </button>
                                 <button class=" btn-sm btn btn-default contenedor" onClick={() => ObtenerlistaContactos(item)}><span className='mostrarEnHover'>ver contactos</span>  <i className='fa fa-user'></i> </button>
                                 <button className=' btn-sm btn btn-default contenedor' onClick={() => ObtenerMasivos(item)}
 
@@ -357,7 +354,7 @@ const WhatsAppViewmal = () => {
                         <td className="text-xs text-center">{item.id}</td>
                         <td className="text-xs text-center">{item.cuentaId}</td>
                         <td className="text-xs text-center" style={{
-                            columns:"100px 2;"
+                            columns: "100px 2;"
                         }}>{item.mensaje}</td>
                         <td className='text-xs text-center'>{item.fecha_creacion}</td>
                         <td className='text-xs text-center'>{item.fecha_ultimo_envio} </td>
@@ -365,7 +362,7 @@ const WhatsAppViewmal = () => {
                         <td className="text-xs text-center ">
                             <div class="btn-group" role="group" >
                                 {item.estado == "finalizado" ? "" : <button class=" btn-sm btn btn-default contenedor" onClick={() => ImportarContactos(item)}><span className='mostrarEnHover'> Importar contactos  Masivos</span>  <i className='fa fa-send'></i> </button>}
-                                <button class=" btn-sm btn btn-default contenedor d-none" onClick={() => console.log(item.url_qr)}> <i className='fa fa-link'></i> </button>
+                                <button class=" btn-sm btn btn-default contenedor d-none" onClick={() => logWithCallback(item.url_qr)}> <i className='fa fa-link'></i> </button>
                                 <button class=" btn-sm btn btn-default contenedor" onClick={() => BorrarMasivos(item.id)}> <i className='fa fa-trash'></i> </button>
                             </div>
                         </td>
@@ -402,8 +399,8 @@ const WhatsAppViewmal = () => {
                         <td className="text-xs text-center ">{item.estado}</td>
                         <td className="text-xs text-center ">
                             <div class="btn-group" role="group" >
-                                <button class=" btn-sm btn btn-default" onClick={() => console.log(item.nombre)}> <i className='fa fa-refresh'></i> </button>
-                                <button class=" btn-sm btn btn-default" onClick={() => console.log(item.estado)}> <i className='fa fa-trash'></i> </button>
+                                <button class=" btn-sm btn btn-default" onClick={() =>logWithCallback(item.nombre)}> <i className='fa fa-refresh'></i> </button>
+                                <button class=" btn-sm btn btn-default" onClick={() =>logWithCallback(item.estado)}> <i className='fa fa-trash'></i> </button>
                             </div>
                         </td>
                     </tr>
@@ -412,7 +409,7 @@ const WhatsAppViewmal = () => {
         } catch (error) { }
     }
     const ShowModal = (item) => {
-        console.log(item)
+      
         setEmvios({
             "cuentaId": item.id,
             "nombre": item.nombre,
@@ -443,7 +440,7 @@ const WhatsAppViewmal = () => {
                         // Aquí puedes realizar alguna acción con el archivo seleccionado
                         var fileInput = this.$content.find('#fileToUpload')[0];
                         var selectedFile = fileInput.files[0];
-                        console.log('File Selected:', selectedFile);
+                       
                         Imporcontactos(item.id, item.cuentaId, selectedFile).then(ouput => {
                             // { "status": 200, "message": "Contactos importados correctamente" }
                             if (ouput.status == 200) {
@@ -548,7 +545,7 @@ const WhatsAppViewmal = () => {
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            {listaQr.length>0?   <TablasViwe
+                            {listaQr.length > 0 ? <TablasViwe
                                 number={5}
                                 thead={theads}
                                 showDatos={ShowFoder}

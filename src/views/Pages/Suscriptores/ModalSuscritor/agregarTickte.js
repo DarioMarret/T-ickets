@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
+import { logWithCallback } from "utilsstile.js/style";
 
 
 
@@ -12,7 +13,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
         cantidad: "",
         protocolo: ""
     })
-    let [localid,setLoacli]=useState([])
+    let [localid, setLoacli] = useState([])
     function handelchnge(e) {
         setInfo({
             ...info,
@@ -21,7 +22,6 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
     }
     let [spiner, setSpiner] = useState(false);
     function Summit() {
-        console.log(info)
         if (Object.values(info).some(e => e == "")) {
             $.alert("Agrega los datos faltantes");
 
@@ -29,15 +29,12 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
         }
         setSpiner(true)
         Reserva().then(ouput => {
-            console.log(ouput)
             if (ouput[0].token_ocupadas.includes("solicita")) {
                 $.alert("Localidad Agotada" + ouput[0].token_ocupadas);
                 setSpiner(false)
                 return
             }
-            console.log(ouput[0].token_ocupadas)
             Pagartickt(ouput[0].token_ocupadas, ouput[0].total).then(salida => {
-                console.log(salida[0].estado, salida[0].link_factura)
                 let info = !salida[0].qr_factura ? "" : salida[0].qr_factura
                 $.alert("" + salida[0].estado + " " + info);
                 var win = window.open(salida[0].link_factura, '_blank');
@@ -47,28 +44,21 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                         "link_external": salida[0].link_factura,
                         "observacion": "Urban fest 2 tickefacil"
                     }).then(ou => {
-                        console.log(ou)
                         setshows(false)
                         win.focus();
                     }).catch(err => {
-                        console.log(err)
+                        logWithCallback(err)
                     })
                     return
                 }
-                // Cambiar el foco al nuevo tab (punto opcional)
-
-                //$.alert("" + salida[0].link_factura);
             }).catch(err => {
-                console.log(err)
                 setSpiner(true)
             })
 
 
         }).catch(err => {
-            console.log(err)
         })
     }
-    //https://server1.ticketfacil.ec/ticket2/ajax.pventa.php?api_wts=ticketfacil_api&action=get&typedata=evento_valores&data=1102||13782||3||2"
     const Reserva = async () => {
         try {
             let { data } = await axios.get("https://server1.ticketfacil.ec/ticket2/ajax.pventa.php?api_wts=ticketfacil_api&action=get&typedata=evento_valores&data=1102||" + info.localidad + "||" + info.metodo + "||" + info.cantidad + "")
@@ -104,12 +94,10 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
     }
     useEffect(() => {
         axios.get("https://api.t-ickets.com/mikroti/api/listApi/GetLocalidad").then(sali => {
-            console.log(sali)
-            if(sali.status==200){
+            if (sali.status == 200) {
                 setLoacli(sali.data)
             }
         }).catch(err => {
-            console.log(err)
         })
     }, [shows])
     return (
@@ -138,15 +126,15 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
                                             <option value="" >
                                                 Seleccione la localidad
                                             </option>
-                                            {localid.map(e=>{
-                                                return(
-                                                    <option value={e.id} key={"nmu"+e.id} disabled={(e.disponibilidad<1)}>
+                                            {localid.map(e => {
+                                                return (
+                                                    <option value={e.id} key={"nmu" + e.id} disabled={(e.disponibilidad < 1)}>
                                                         {e.nombre + " / " + "Dispo:" + e.disponibilidad + " $" + e.subtotal}
                                                     </option>
                                                 )
                                             })}
-                                          
-                                        </select> :   <select className=" form-select" name="localidad" id="localidad"
+
+                                        </select> : <select className=" form-select" name="localidad" id="localidad"
                                             onChange={(e) => handelchnge(e.target)}
                                             value={info.localidad}
                                         >

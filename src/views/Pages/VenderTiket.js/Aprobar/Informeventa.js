@@ -79,8 +79,7 @@ export default function AprobarView() {
         //stDatos(true)
         setSpiner(true)
         ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
-            console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
-            console.log(e)
+
             if (!e.success) {
                 usedispatch(setToastes({
                     show: true,
@@ -105,8 +104,7 @@ export default function AprobarView() {
                 let order = newdatos.sort(sorter)
                 usedispatch(setCompras({ compras: order }))
                 usedispatch(setTicket({ tiketslist: order }))
-                console.log(newdatos)
-                let arayReallocalidad = []
+
                 let arrprueb = []
                 newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                     elm.ticket_usuarios.map(item => {
@@ -140,7 +138,7 @@ export default function AprobarView() {
             }
         }).catch(err => {
             setSpiner(false)
-            console.log(err)
+
         })
     }
 
@@ -165,12 +163,12 @@ export default function AprobarView() {
         22: 0
     }
     function cargar() {
-        console.log(ticket.ticket)
+
         stDatos(ticket.ticket)
         setSpiner(true)
         ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
-            //console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
-            console.log(e)
+
+
             if (!e.success) {
                 usedispatch(setToastes({
                     show: true,
@@ -185,14 +183,14 @@ export default function AprobarView() {
                 const nombresUnicos = new Set();
                 stDatos(false)
                 setSpiner(false)
-                console.log(e.data)
+
                 e.data.filter(fe => moment(fe.fechaCreacion.split(" ")[0]).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).forEach(item => {
                     nombresUnicos.add(item.info_concierto[0].nombreConcierto);
                 });
-                //console.log(e.data)
+
                 const nombresArray = Array.from(nombresUnicos);
                 setDatas(nombresArray)
-                //console.log(nombresArray);
+
                 let newdatos = e.data.filter(fe => moment(fe.fechaCreacion).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format()).map(row => {
                     let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
                     let valor = row.info_concierto.map(e => {
@@ -239,7 +237,7 @@ export default function AprobarView() {
         }).catch(err => {
             setSpiner(false)
             stDatos(false)
-            console.log(err)
+
         })
     }
     const [fecha, setFechaRange] = useState()
@@ -295,8 +293,8 @@ export default function AprobarView() {
             setMetodo("")
             stDatos(true)
             ListarRegistropaneFecha(moment(picker.startDate.format('MM-DD-YYYY')).format().replace(" ", ""), picker.endDate.format('MM/DD/YYYY')).then(e => {
-                //console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
-                //console.log(e)
+
+
                 if (!e.success) {
                     stDatos(false)
                     usedispatch(setToastes({
@@ -310,14 +308,14 @@ export default function AprobarView() {
                 if (e.data) {
                     const nombresUnicos = new Set();
                     stDatos(false)
-                    console.log(e.data)
+
                     e.data.filter(fe => moment(fe.fechaCreacion.split(" ")[0]).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).forEach(item => {
                         nombresUnicos.add(item.info_concierto[0].nombreConcierto);
                     });
-                    //console.log(e.data)
+
                     const nombresArray = Array.from(nombresUnicos);
                     setDatas(nombresArray)
-                    //console.log(nombresArray);
+
                     let newdatos = e.data.filter(fe => moment(fe.fechaCreacion).format() >= moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format() && moment(fe.fechaCreacion.split(" ")[0]).format() <= moment(states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format()).map(row => {
                         let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
                         let valor = row.info_concierto.map(e => {
@@ -332,7 +330,7 @@ export default function AprobarView() {
                     let order = newdatos.sort(sorter)
                     usedispatch(setCompras({ compras: order }))
                     usedispatch(setTicket({ tiketslist: order }))
-                    //console.log(newdatos)
+
                     let arrprueb = []
                     newdatos.filter(e => e.estado_pago == "Pagado").map(elm => {
                         elm.ticket_usuarios.map(item => {
@@ -362,7 +360,7 @@ export default function AprobarView() {
                 }
             }).catch(err => {
                 stDatos(false)
-                console.log(err)
+
             })
         });
 
@@ -392,13 +390,12 @@ export default function AprobarView() {
                     text: 'Eliminar',
                     btnClass: 'btn-red',
                     action: function () {
-                        console.log(parms.id)
+
                         eliminarRegistro({ "id": parms.id }).then(ouput => {
-                            console.log(ouput)
-                            console.log(parms.id)
+
                             if (!ouput.success) { return $.alert("" + ouput.message) }
                             ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
-                                console.log(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format(), states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-"), e)
+
                                 if (!e.success) {
                                     usedispatch(setToastes({
                                         show: true,
@@ -411,7 +408,7 @@ export default function AprobarView() {
                                 if (e.data) {
                                     let newdatos = e.data.map(row => {
                                         let nombre = row.info_concierto.map(e => { return e.nombreConcierto })
-                                        //    console.log(nombre)
+                                        
                                         let valor = row.info_concierto.map(e => {
                                             return parseFloat(precio[e.id_localidad]) * parseFloat(e.cantidad)
                                         }).reduce((a, b) => a + b, 0)
@@ -421,7 +418,6 @@ export default function AprobarView() {
                                         row.concierto = nombre[0]
                                         return { ...row }
                                     })//.filter(e => e.forma_pago =="Deposito")
-                                    console.log(newdatos)
                                     let order = newdatos.sort(sorter)
                                     usedispatch(setTicket({ tiketslist: order }))
                                     usedispatch(setCompras({ compras: order }))
@@ -445,7 +441,6 @@ export default function AprobarView() {
                                         })
                                     })
 
-                                    console.log(arayReallocalidad, arrprueb)
                                     let datos = arrprueb.map(f => {
                                         return [f.localidad, f.concierto, parseInt(f.cantidad)]
                                     })
@@ -464,7 +459,7 @@ export default function AprobarView() {
                                     return
                                 }
                             }).catch(err => {
-                                console.log(err)
+
                             })
                             $.alert("Registro Eliminado correctamente")
 
@@ -509,7 +504,7 @@ export default function AprobarView() {
 
     }
     function filtrarPorNombre(array, nombre) {
-        console.log(array)
+        
         if (!nombre) {
             return array;
         }
@@ -528,19 +523,19 @@ export default function AprobarView() {
                     btnClass: 'btn-success',
                     action: function () {
                         Contactos_Boletos(alert).then(salida => {
-                            console.log(salida)
+                            
                             if (salida.estado && salida.data.length) {
                                 let nuevos = salida.data.filter(e => e.movil).map(Element => {
                                     let nuevos = formatearNumero("" + Element["movil"])
                                     return { "contactos": nuevos }
                                 }).filter(e => e.contactos)
-                                console.log(nuevos)
+                                
                                 var myFile = alert + "Contactos.xlsx";
                                 var myWorkSheet = XLSX.utils.json_to_sheet(nuevos);
                                 var myWorkBook = XLSX.utils.book_new();
                                 XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "myWorkSheet");
                                 XLSX.writeFile(myWorkBook, myFile);
-                                console.log(nuevos)
+                                
 
                             }
                         }).catch(err => {
@@ -868,7 +863,7 @@ export default function AprobarView() {
                                 }}
                                 renderRowActions={({ row }) => (
                                     <Box sx={{ display: 'flex' }}>
-                                        
+
                                         <Tooltip
                                             title="Comprobar" placement="top"
                                         >
@@ -921,7 +916,7 @@ export default function AprobarView() {
                                 positionActionsColumn="first"
                                 renderRowActions={({ row }) => (
                                     <Box sx={{ display: 'flex' }}>
-                                        
+
                                         {clienteInfo() ? <Tooltip
                                             title="Comprobar" placement="top"
                                         >
@@ -990,7 +985,7 @@ export default function AprobarView() {
                                                 <Visibility />
                                             </IconButton>
                                         </Tooltip> : ""}
-                                       
+
                                         {/*<Tooltip
                                             title="Boletos especificos" placement="top"
                                         >

@@ -10,6 +10,7 @@ import { buscarcliente } from "utils/Querypanelsigui"
 import axios from "../../../../node_modules/axios/index"
 
 import ReactGA from 'react-ga4';
+import { logWithCallback } from "utilsstile.js/style"
 const TRACKING_ID = "G-LJN507B5NX";
 export default function FormasPagoMopadal() {
 
@@ -28,7 +29,6 @@ export default function FormasPagoMopadal() {
     const [check, setCheck] = useState(true)
     const [select, setSelecte] = useState("")
     function handelMetodopago(target, value) {
-       // console.log(target, value)
         if (target.name == "selctmet") {
             setSelecte(target.value)
             let names = target.value.replace("Efectivo-Local", "Fisico")
@@ -126,22 +126,10 @@ export default function FormasPagoMopadal() {
                             "cedula": '',
                             "email": name
                         }).then(async e => {
-                           // console.log(e)
                             if (e.success) {
                                 const cedula = await getCedula(e.data.cedula)
                                 var hoy = new Date();
-                                let client = {
-                                    cedula: e.data.cedula,
-                                    direccion: e.data.ciudad,
-                                    whatsapp: e.data.movil,
-                                    telefono: e.data.movil, name:
-                                        e.data.nombreCompleto,
-                                    email: e.data.email, hora: String(hoy),
-                                    enable: e.data.enable, id: e.data.id,
-                                    discapacidad: cedula.discapacidad || "",
-                                    envio: ''
-                                }
-
+                              
                                 usedispatch(setToastes({
                                     show: true,
                                     message: "Usuario encontrado " + e.data.nombreCompleto,
@@ -151,17 +139,8 @@ export default function FormasPagoMopadal() {
 
                                 spinercarga.classList.add("d-none");
                                 LogeodeCedula(name)
-                                //usedispatch(setModal({ nombre: 'ModalDetalle', estado: "e" }))
-                                /* usedispatch(setModal({
-                                     show: true,
-                                     message: "Tienes 30 minutos para restablecer tu contraseña ",
-                                     color: 'bg-success',
-                                     estado: "Solicitud enviada",
-                                 }))*/
                             } else {
                                 spinercarga.classList.add("d-none")
-                                // usedispatch(setModal({ nombre: 'registro', estado: "e" }))
-                                //  return false;
 
                                 usedispatch(setModal({ nombre: 'registro', estado: "e" }))
                                 usedispatch(setToastes({
@@ -212,7 +191,6 @@ export default function FormasPagoMopadal() {
                                     'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                                 }
                             }).then(function (data) {
-                              //  console.log(data);
 
                                 if (data.data.success) {
                                     getCedula(data.data.data.cedula).then(cedula => {
@@ -257,12 +235,11 @@ export default function FormasPagoMopadal() {
                                                     "cedula": data.data.data.cedula
                                                 }
                                             ).then(e => {
-                                               // console.log(e)
                                                 spinercarga.classList.add("d-none");
                                                 //useDispatch(setSpinersli({ spiner: false }))
                                             }).catch(err => {
                                                 spinercarga.classList.add("d-none");
-                                                console.log(err)
+                                                logWithCallback(err)
                                             })
 
                                         } else {
@@ -270,7 +247,7 @@ export default function FormasPagoMopadal() {
                                         }
 
                                     }).catch(err => {
-                                        console.log(err)
+                                        logWithCallback(err)
                                         spinercarga.classList.add("d-none");
                                         usedispatch(setModal({ nombre: 'formasPago', estado: "e" }))
                                         //return false
@@ -283,19 +260,12 @@ export default function FormasPagoMopadal() {
                                 }
 
                             }).catch(err => {
-                                console.log(err)
+                                logWithCallback(err)
                                 spinercarga.classList.add("d-none");
                                 $.alert("Hubo un error Verifique su contraseña e intente de nuevo")
                                 usedispatch(setModal({ nombre: 'formasPago', estado: "e" }))
                             })
-                            /*
-                            const { data } = await Authsucrito({ email: credenciales.username.trim(), password: credenciales.pass.trim() },)
-                            */
-                            //console.info(data)
-
-
                         }
-
                     }
                 },
                 cancel: function () {
@@ -314,7 +284,6 @@ export default function FormasPagoMopadal() {
             Deposito: metodoPago == "Deposito" ? "Deposito" : "",
             Transferencia: metodoPago == "Transferencia" ? "Transferencia" : ""
         }) : handelMetodopago({ name: 'Tarjeta' }, "Tarjeta"), setCheck(false)
-        //console.log(GetValores())
         ListaPrecioset(GetValores())
         setListarCarritoDetalle(getVerTienda())
     }, [(modal.nombre == "formasPago"), select])

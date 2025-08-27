@@ -1,13 +1,8 @@
-import React,{useState,useEffect} from "react";
-// react component used to create charts
-import ChartistGraph from "react-chartist";
-// react components used to create a SVG / Vector map
-import { VectorMap } from "react-jvectormap";
+import React from "react";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Badge } from "@mui/material";
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
-import { MonthPicker } from "@mui/x-date-pickers/MonthPicker";
 import { PickersDay } from "@mui/x-date-pickers";
 import TextField from '@mui/material/TextField';
 import moment from "moment";
@@ -18,15 +13,7 @@ const y = today.getFullYear();
 const m = today.getMonth();
 const d = today.getDate()+2;
 import {
-  Button,
   Card,
-  Form,
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
   Container,
   Row,
   Col
@@ -34,8 +21,6 @@ import {
 
 function Dashboardsub() {
   const [value, setValue] = React.useState( Date(y, m, d ));
-   // "Mon Sep 29 2022 10:15:40 GMT-0500"
- // console.log(value)
 
   return (
     <>
@@ -140,9 +125,6 @@ function Dashboardsub() {
         }}
         minDateTime={today}
         renderDay={(day,value,DayComponentProps)=>{
-         // console.log(moment(DayComponentProps.key).format('MM/DD/YYYY'))
-
-        // fechas.some(event => event.date ===  DayComponentProps.key).format('MM/DD/YYYY'));
           const isDate =moment(DayComponentProps.key).format('MM/DD/YYYY')=== moment("Thu Sep 29 2022 00:00:00 GMT-0500").format('MM/DD/YYYY');
             return(
               <Badge key={day.toString()}

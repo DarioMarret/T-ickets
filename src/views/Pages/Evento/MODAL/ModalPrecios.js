@@ -27,7 +27,7 @@ const PreciosViews = () => {
         })
     }
     function Guardarboletos() {
-          console.log( Object.values(precios))
+        
         if (Object.values(precios).some(e => e == "")) {
             usedispatch(setToastes({
                 show: true,
@@ -48,7 +48,7 @@ const PreciosViews = () => {
                 }
             }).catch(err => {
                 setspiner(false)
-                console.log(err)
+                
             })
         }
 

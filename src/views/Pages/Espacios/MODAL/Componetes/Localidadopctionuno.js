@@ -5,6 +5,7 @@ import { GuardarLocalidad } from "utils/LocalidadesQuery/index.js"
 import { useDispatch } from "react-redux"
 import { setToastes } from "StoreRedux/Slice/ToastSlice"
 import { boleteriaAxios } from "utils/index"
+import { logWithCallback } from "utilsstile.js/style"
 const TabunoView = (props) => {
     const { localidaname, datalocalidad, SetDataloca } = props
     let usedispatch = useDispatch()
@@ -39,7 +40,7 @@ const TabunoView = (props) => {
         ListadeFilas = ListaFilas
         let numeroinicial = filass.inicio
         let interar = parseInt(filass.sillas);
-        console.log(numeroinicial)
+
         if (filass.fila != "" && filass.sillas != "") {
 
             if (filass.fila === "Todas") {
@@ -57,7 +58,7 @@ const TabunoView = (props) => {
                 setFilasSillas(ListadeFilas)
                 setFilas(ListadeFilas)
                 setFilasSillas([])
-                console.log(ListaFilas)
+
 
             } else {
                 let sillas = []
@@ -102,8 +103,7 @@ const TabunoView = (props) => {
             ListaFilas.forEach((obj, i) => {
                 asiento[i] = obj.asientos.length
             })
-            console.log(asiento)
-            console.log(Object.values(asiento).every(isValido))
+
             if (Object.values(asiento).every(isValido)) { return true }
             else return true
         }
@@ -112,24 +112,18 @@ const TabunoView = (props) => {
     }
 
     async function AgregaLocalidad() {
-        console.log(localidaname)
         if (nmobretabuno.nombre == "" || nmobretabuno.description == "" || ListaFilas.length < 0 || !filass.sillas > 40) {
             usedispatch(setToastes({ show: true, message: 'Complete todos los datos antes de guaradar', color: 'bg-danger', estado: 'Datos incompletos' }))
             return
         }
-        /* if (!ValidarSillas()) {
-             usedispatch(setToastes({ show: true, message: 'Verifica que todas las filas tengan más de 6 sillas ', color: 'bg-danger', estado: 'Hay filas sin Asientos ' }))
-             return
-         }*/
         else {
             try {
                 const nombre = await boleteriaAxios.post("Boleteria/localidades", { nombre: nmobretabuno.nombre.trim(), id_espacio: localidaname.id })
                 if (nombre.data.estado) {
-                    usedispatch(setToastes({ show: true, message: 'El nombre de la localidad ya existe en ' + nombre.data[0].espacio|'', color: 'bg-danger', estado: 'Nombre existente' }))
+                    usedispatch(setToastes({ show: true, message: 'El nombre de la localidad ya existe en ' + nombre.data[0].espacio | '', color: 'bg-danger', estado: 'Nombre existente' }))
                     return
                 }
-                console.log(ListaFilas)
-                console.log({ Typo: 'fila', datos: ListaFilas })
+                logWithCallback({ Typo: 'fila', datos: ListaFilas })
                 const guardad = await GuardarLocalidad({ "espacio": localidaname.nombre.trim(), "descripcion": nmobretabuno.description.trim(), "id_espacio": localidaname.id, "nombre": nmobretabuno.nombre, "mesas_array": JSON.stringify({ Typo: 'fila', datos: ListaFilas }) })
                 if (guardad.success) {
                     SetDataloca({
@@ -144,7 +138,7 @@ const TabunoView = (props) => {
                     usedispatch(setToastes({ show: true, message: 'Localidad creada correctamente', color: 'bg-success', estado: 'Datos guardados' }))
                 }
             } catch (error) {
-                console.log(error)
+                logWithCallback(error)
             }
         }
 
@@ -174,18 +168,15 @@ const TabunoView = (props) => {
 
             } catch (error) {
                 usedispatch(setToastes({ show: true, message: 'Hubo un error, Complete todos los datos y verifique no sobrepasar el limite de  sillas', color: 'bg-danger', estado: 'Datos incompletos' }))
-
-                console.log(error)
-
             }
         }
 
 
     }
-    //  console.log(ListaFilas)
+    
     useEffect(() => {
         if (datalocalidad.typo == "fila") {
-            // console.log("Filas", datalocalidad)
+            
             setLocalidad({
                 nombre: datalocalidad.nombre,
                 description: datalocalidad.description,
@@ -390,7 +381,7 @@ const TabunoView = (props) => {
                                                 {e.asientos.length > 0 ?
                                                     <div className=' d-flex px-1  align-items-center  ji  ' style={{ width: '' }}>
                                                         {e.asientos.map((silla, index, arr) => {
-                                                            // console.log(silla)
+                                                            
                                                             let numero = String(silla.silla).split("-")[2]
                                                             return (
                                                                 <div key={"silla" + index} className='d-flex  bg-success   rounded-5 text-center  justify-content-center align-items-center '

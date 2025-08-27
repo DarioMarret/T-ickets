@@ -26,6 +26,7 @@ import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 require('moment/locale/es.js')
 import ExtendedForms from "views/Forms/ExcelTable";
 import HotTableView from "views/Forms/HotTableView"
+import { logWithCallback } from "utilsstile.js/style";
 const EventoEspecifico = () => {
     let { id } = useParams()
     let usehistory = useNavigate()
@@ -67,13 +68,13 @@ const EventoEspecifico = () => {
         LocalodadPrecios: []
     })
     async function Eliminar(e) {
-        console.log(e)
+
         dispatch(setModal({ nombre: "precios", estado: { ...e } }))
     }
     async function Evento(event) {
         try {
             let { data } = await boleteriaAxios.get("Boleteria/ListaPreciosLocalidades/" + id)
-            //console.log(data)
+
             const cargar = data.data
             const { data: precio } = await AxioBoleteria.get("ListaPreciosLocalidades/" + id)
             if (cargar) {
@@ -90,18 +91,18 @@ const EventoEspecifico = () => {
     }
     async function cargarlocalidad(datos, precio) {
         try {
-            const { data: espacios } = await AxioBoleteria.get("/api/v1/listar_espacios") 
-            // console.log(datos[0])
+            const { data: espacios } = await AxioBoleteria.get("/api/v1/listar_espacios")
+
             let infoes = espacios.data.filter((e) => e.nombre == datos[0].lugarConcierto)
-            //  console.log(espacios, precio.data, infoes)
+
             SetPrecios(precio.data)
             const { data: disponibles } = await AxioBoleteria.get("/api/v1/listar_localidades_id_espacio_descripcion/" + datos[0].id_espacio)
-            // console.log("disponible", disponibles)
-            const { data: dat } = await AxioBoleteria.get("api/v1/listar_localidades/") // ListarLocalidad("")
+
+            const { data: dat } = await AxioBoleteria.get("api/v1/listar_localidades/")
             let listo = dat.data.filter(e => e.id_espacio == datos[0].id_espacio)
-            ///  console.log("listo",listo)
+
             let filtros = disponibles.data.filter(e => e.id_espacio == infoes[0].id && e.espacio == infoes[0].nombre).map(el => {
-                // console.log("filto", el.typo)
+
                 const nombre = listo.filter(e => e.id == el.id_localidades)[0].nombre || ''
                 return { ...el, nombreLocalidad: nombre }
             })
@@ -150,7 +151,7 @@ const EventoEspecifico = () => {
             const arrayMesas = Object.entries(acumuladorPorNombre).map(([nombreMesa, cantidad]) => {
                 return { nombreMesa, cantidad };
             });
-            ////console.log("arrayMesas", resultado)
+
             setGobal(resultado)
             setDisponible(arrayMesas)
 
@@ -242,7 +243,7 @@ const EventoEspecifico = () => {
             responseType: 'blob'  // Important for handling binary data
         })
             .then(response => {
-                //console.log(response)
+
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
@@ -260,7 +261,6 @@ const EventoEspecifico = () => {
             responseType: 'blob'  // Important for handling binary data
         })
             .then(response => {
-                //console.log(response)
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
@@ -314,16 +314,14 @@ const EventoEspecifico = () => {
                 "id_operador": parseInt(clienteInfo().id),
                 ...info
             }
-            console.log(parmspro)
             const { data: update } = await AxioBoleteria.put("/actualizarevento_estado/" + id, { ...parmspro })// ActualizaEstadoLocalidad(id, info)
             if (update.success) {
-                //  //console.log(update)
                 hideAlert()
                 dispatch(setToastes({ show: true, message: 'Evento actualizado correctamente', color: 'bg-success', estado: 'Exito' }))
                 await Evento()
             }
         } catch (error) {
-            // //console.log(error)
+
             dispatch(setToastes({ show: true, message: 'Hubo un error intente mas tarde', color: 'bg-danger', estado: 'Error' }))
         }
     }
@@ -351,8 +349,6 @@ const EventoEspecifico = () => {
                 }
             })
 
-            boletosloading ? "" : console.log(arrayIndividual)
-            //  }
             let newdatos = boletosloading ? [] : arrayIndividual.map(f => {
                 return [f.localidad, parseInt(f.cantidad)]
             })
@@ -403,7 +399,7 @@ const EventoEspecifico = () => {
         mikroAxios.post("Boleteria/Contactos", {
             "evento": evento.nombreConcierto
         }).then(({ data: salida }) => {
-            // console.log(salida)
+
             if (salida.estado && salida.data.length) {
                 let nuevos = salida.data.filter(e => e.movil).map(Element => {
 
@@ -417,7 +413,7 @@ const EventoEspecifico = () => {
                 XLSX.writeFile(myWorkBook, myFile);
             }
         }).catch(err => {
-            //console.log(err)
+            logWithCallback(err)
         })
 
     }
@@ -466,7 +462,7 @@ const EventoEspecifico = () => {
             "botNumber": eventos,
             "codigoEvento": id
         }
-        // //console.log(evento)
+        
         SetEvento({
             ...evento,
             "botNumber": eventos != "0980008000" ? "0980008000" : "",
@@ -477,7 +473,7 @@ const EventoEspecifico = () => {
     return (
         <>{
             <PreciosViews
-              
+
             />}
             <Modalupdate
                 show={show}

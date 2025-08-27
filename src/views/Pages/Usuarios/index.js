@@ -7,13 +7,14 @@ import { Edit, Delete, Visibility } from '@mui/icons-material';
 import { Columnusuarios, Columnasubcrito } from "utils/ColumnTabla";
 import { useNavigate } from "react-router-dom";
 import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
-import {  GetRoles,  } from "utils/Querypanel";
+import { GetRoles, } from "utils/Querypanel";
 import EditaruserView from "./ModalEditar";
 import { Button, Row, Col, Card } from "react-bootstrap";
 import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { GetUserList, Eliminaruser } from "utils/QueryUser/index";
+import { logWithCallback } from "utilsstile.js/style";
 const UsersView = () => {
   const [fecha, setFecha] = useState(new Date())
   let history = useNavigate()
@@ -29,7 +30,6 @@ const UsersView = () => {
     setEstado("update")
     SetDatosUser(e)
     SetModalEdit(true)
-    // console.log(e)
   }
   const Crearuser = () => {
     setEstado("")
@@ -42,26 +42,23 @@ const UsersView = () => {
 
 
       const data = await GetUserList()
-      //  console.log(data)
       if (data.users.length > 0) {
         let dato = Roles.data.map((e, i) => {
           return { "value": e.roles, "label": e.roles }
         })
         setRoles(dato)
         setListauser(data.users)
-     
+
       }
     } catch (error) {
-      console.log(error)
+      logWithCallback(error)
 
     }
 
 
   }
   function reloadpage() {
-    // console.log("se creo")
     location.reload()
-    //history("/admin/usuario")
   }
 
   async function Eliminar(id) {
@@ -79,7 +76,7 @@ const UsersView = () => {
         }
 
       } catch (error) {
-        console.log(error)
+        logWithCallback(error)
 
       }
     }
@@ -93,7 +90,6 @@ const UsersView = () => {
 
     })()
 
-    console.log(listUsuarios)
   }, [])
 
 
