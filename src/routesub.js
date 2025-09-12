@@ -1,4 +1,5 @@
 import { lazy } from "react";
+import { clienteInfo } from "utils/DatosUsuarioLocalStorag";
 import Loadable from "views/Components/Loadable/index";
 
 const Dashboard = Loadable(lazy(() => import("views/Dashboard.js")));
@@ -24,7 +25,9 @@ const ConsolidacionView = Loadable(lazy(() => import("views/Pages/Consolidados/i
 const OCRApiViews = Loadable(lazy(() => import("views/Pages/Autorizacion/OCRapi")));
 const ListarLogs = Loadable(lazy(() => import("views/Pages/Infolog")));
 const Ventasnuevas = Loadable(lazy(() => import("views/Pages/VenderTiket.js/Ventas/index")))
+const EventoStand= Loadable(lazy(() => import("views/Pages/Evento/EventoStand")));
 //const WhatsAppViewmal = Loadable(lazy(() => import("pages/Usuarios/Covertura")));
+
 
 
 var routes = [
@@ -49,6 +52,12 @@ var routes = [
     layout: "/admin",
     component: EventoEspecifico,
     permiso: ["admin", "super_admin", "suscriptores"],
+  },
+  {
+    path: "/Stand/:id",
+    layout: "/admin",
+    component: EventoStand,
+    permiso: ["admin", "super_admin", "suscriptores", "stand"],
   },
   {
     collapse: true,

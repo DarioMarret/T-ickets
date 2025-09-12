@@ -404,7 +404,7 @@ const EventoEspecifico = () => {
                 let nuevos = salida.data.filter(e => e.movil).map(Element => {
 
                     let nuevos = formatearNumero("" + Element["movil"])
-                    return { "contactos": nuevos }
+                    return { "contactos": nuevos, "nombreCompleto": Element["nombreCompleto"] }
                 }).filter(e => e.contactos)
                 var myFile = evento.codigoEvento + "Contactos.xlsx";
                 var myWorkSheet = XLSX.utils.json_to_sheet(nuevos);
@@ -462,7 +462,7 @@ const EventoEspecifico = () => {
             "botNumber": eventos,
             "codigoEvento": id
         }
-        
+
         SetEvento({
             ...evento,
             "botNumber": eventos != "0980008000" ? "0980008000" : "",
@@ -823,16 +823,17 @@ const EventoEspecifico = () => {
                                                                         <span style={{ fontSize: '0.5em' }}>{e.fila}</span>
                                                                     </div>
                                                                 </span>
-                                                                <div className="d-flex ml-3 flex-row px-1 justify-content-lg-center align-items-stretch" style={{ width: '100%' }}>
+                                                                <div className="d-flex ml-3 flex-row px-1 j align-items-stretch" style={{ width: '100%' }}>
                                                                     {e.asientos.map((silla, index) => {
                                                                         let numero = String(silla.silla).split("-")[2];
                                                                         return (
-                                                                            <div key={"silla" + index} id={silla.idsilla}
-                                                                                className={silla.silla + ' d-flex rounded-5 sillasfila text-center justify-content-center align-items-center'}
-                                                                                style={{ height: '20px', width: '20px', marginLeft: '1px' }}>
-                                                                                <div className="px-3 d-flex text-white justify-content-center">
-                                                                                    <span style={{ fontSize: '0.5em' }}>{numero}</span>
-                                                                                </div>
+                                                                            <div key={"silla" + index} className={`d-flex  ${silla.estado == "none" ? "bg-none" : "bg-success"}   rounded-5 text-center  justify-content-center align-items-center `}
+                                                                                style={{ height: '30px', width: '30px', marginLeft: '1px' }} >
+                                                                                {silla.estado !== "none" && (<div className={'px-3 ' + silla.silla + 'd-flex   text-white justify-content-center  '} >
+                                                                                    <div className="d-flex justify-content-center">
+                                                                                        <span style={{ fontSize: '0.7em' }}>    {numero} </span>
+                                                                                    </div>
+                                                                                </div>)}
                                                                             </div>
                                                                         );
                                                                     })}

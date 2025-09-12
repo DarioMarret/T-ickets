@@ -13,8 +13,7 @@ import "views/Pages/Svgviewa/isvg.css"
 import "views/Pages/Svgviewa/class.css"
 import "views/Pages/Svgviewa/svg.css"
 import "views/Pages/Svgviewa/cultura.css"
-
-//import Indexflas from "../src/views/Pages/Flasdeticket"
+import Indexflas from "../src/views/Pages/Flasdeticket"
 import { store } from "StoreRedux/store";
 import { Provider } from 'react-redux';
 import ToastViews from "views/Components/TOAST/toast";
@@ -28,7 +27,7 @@ import ResestPassword from "views/Pages/Susbcritorpage/Passwor";
 import LoginPage from "views/Pages/LoginPage";
 const AuthLayout = Loadable(lazy(() => import("layouts/Auth.js")))
 const AdminLayout = Loadable(lazy(() => import("layouts/Admin.js")))
-const Indexflas = Loadable(lazy(() => import("../src/views/Pages/Flasdeticket")))
+//const Indexflas = Loadable(lazy(() => import("../src/views/Pages/Flasdeticket")))
 
 const Ventasnuevas = Loadable(lazy(() => import("views/Pages/VenderTiket.js/Ventas/index")))
 const root = ReactDOM.createRoot(document.getElementById("root"));

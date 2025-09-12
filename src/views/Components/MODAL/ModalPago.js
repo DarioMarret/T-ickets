@@ -239,7 +239,7 @@ function ModalPago(props) {
                 color: 'bg-primary',
                 estado: "Hubo un error de Pagomedio"
             }))
-            //  console.log(errro)
+           
             setSpiner("d-none")
         })
         /*const data = await GenerarLinkPagoMedios()
@@ -254,11 +254,11 @@ function ModalPago(props) {
     function CrearPyhome() {
         sessionStorage.setItem(Metodos, "Payphone")
         let user = clienteInfo()
-        //console.log(user)
+      
         setSpiner("")
         setTimeout(function () {
             PagoRapido("").then(ouput => {
-                console.log(ouput)
+              
                 if (user == null) {
                     if (ouput.success) {
                         window.gtag('event', 'begin_checkout', {
@@ -278,7 +278,7 @@ function ModalPago(props) {
                             }))
                         });
                         usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
-                        console.log(ouput)
+                        
                         setSpiner("d-none")
                         LimpiarLocalStore()
                         Limpiarseleccion()
@@ -306,7 +306,7 @@ function ModalPago(props) {
                 }
                 else {
                     popUp(ouput.url)
-                    console.log(ouput)
+              
                     usedispatch(setModal({ nombre: '', estado: "" }))
                     setSpiner("d-none")
                 }
@@ -324,23 +324,11 @@ function ModalPago(props) {
                     color: 'bg-primary',
                     estado: "Hubo un error de Pagomedio"
                 }))
-               
-                //  console.log(errro)
                 setSpiner("d-none")
             })
         }, 1000)
 
     }
-    /*  async function CrearLinkPayPhone() {
-          setSpiner("")
-          const data = await CrearLinkPagoPayPhone()
-          if (data.success) {
-              setUrl(data.url)
-              setEstadoFrame(!estadoFrame)
-              setSpiner("d-none")
-          }
-          setSpiner("d-none")
-      }*/
     function popUp(URL) {
         window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
         LimpiarLocalStore()

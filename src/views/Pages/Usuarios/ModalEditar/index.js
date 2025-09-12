@@ -219,7 +219,7 @@ const EditaruserView = (props) => {
                       <option value={""}></option>
                       {roles.length > 0 ?
 
-                        roles.map((e, i) => {
+                        [...roles,{value:"stand"}].map((e, i) => {
                           return (
                             <option key={"index" + i} value={e.value}>{e.value}</option>
                           )

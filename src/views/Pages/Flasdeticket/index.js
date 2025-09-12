@@ -74,6 +74,7 @@ import FormasPagoMopadal from "views/Components/MODAL/ModalFormasPago.js";
 import { isAfter, parse } from "date-fns";
 import { setSpinersli } from "StoreRedux/Slice/SuscritorSlice.js";
 import { logWithCallback } from "utilsstile.js/style.js";
+import { AxioBoleteria } from "utils/index.js";
 const TRACKING_ID = "G-LJN507B5NX";
 const IndexFlas = () => {
   ReactGA.initialize(TRACKING_ID,);
@@ -99,7 +100,12 @@ const IndexFlas = () => {
   const datatime = useRef(null);
   const intervalolista = useRef(null)
   const localidadtimer = useRef(null);
-
+  const [eventoslist, setEventos] = useState([])
+  const [publicidad, setpublicidad] = useState([])
+  const [searchValue, setSearchValue] = useState("")
+  const [mostrar, setMostrar] = useState(true)
+  const [estafun, setfunc] = useState(false)
+  const [final, setEventosCancelados] = useState([])
   function velocidad() {
     let timer = 0
     var tiempo = 60 * 10
@@ -112,7 +118,7 @@ const IndexFlas = () => {
       segundos = segundos < 10 ? "0" + segundos : segundos;
       if (timer === 0) {
         let array = ListaElimnaLCompleta()
-        array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {          
+        array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
         }).catch(err => logWithCallback(err)) : ''
         getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
           getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
@@ -184,11 +190,11 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
-    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {  }).catch(err => logWithCallback(err)) : ''
+    array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => { }).catch(err => logWithCallback(err)) : ''
     getVerTienda().filter(e => e.tipo == e.tipo).length > 0 ?
       getVerTienda().map((elem, index) => {
         setTimeout(function () {
-         
+
           correlativosadd({
             "id": elem.id,
             "estado": "disponible",
@@ -196,7 +202,7 @@ const IndexFlas = () => {
             "cedula": user.cedula,
             "cantidad": elem.cantidad
           }).then(ouput => {
-            
+
           }).catch(err => {
             logWithCallback(err)
           })
@@ -219,9 +225,9 @@ const IndexFlas = () => {
     usedispatch(clearMapa({}))
     usedispatch(borrarseleccion({ estado: "seleccionado" }))
     let array = ListaElimnaLCompleta()
-    
+
     array.length > 0 ? quitarsilla({ "array": [...array] }).then(ouput => {
-      
+
     }
     ).catch(err => logWithCallback(err)) : ''
     getVerTienda().filter(e => e.tipo == "correlativo").length > 0 ?
@@ -229,7 +235,7 @@ const IndexFlas = () => {
       getVerTienda().filter(e => e.tipo == "correlativo").map((elem, index) => {
         setTimeout(function () {
           correlativodelete({ "id": elem.id, "protocol": elem.protocol, "cantidad": elem.cantidad }).then(ouput => {
-           
+
           }).catch(err => {
             logWithCallback(err)
           })
@@ -325,7 +331,7 @@ const IndexFlas = () => {
 
       let registro = await listarRegistropanel({ "cedula": getDatosUsuariosLocalStorag().cedula })
       let seleccionuser = await Seleccionaruserlista({ "cedula": getDatosUsuariosLocalStorag().cedula })
-     
+
       if (registro.success && registro.data.some(f => f.estado_pago == "Pendiente")) {
         let comprapendiente = registro.data.find(f => f.estado_pago == "Pendiente")
         // Modal verifica 
@@ -365,17 +371,17 @@ const IndexFlas = () => {
       const listalocal = await ListarLocalidad("")
       let localidades = await cargarMapa()
       sessionStorage.consierto = e.nombreConcierto
-      
+
       if (obten.data.length > 0) {
         let mapa = localidades.data.filter((L) => L.nombre_espacio == e.lugarConcierto)
         let mapalocal = listalocal.data.filter((K) => K.espacio == e.lugarConcierto)
-        
+
         let localidad = JSON.parse(mapa[0].localidad)
         let path = JSON.parse(mapa[0].pathmap)
-        
+
         let newprecios = obten.data.filter(e => e != undefined).map((g, i) => {
           let color = localidad.filter((f, i) => f.nombre == g.localidad).filter(e => e != undefined)
-          
+
           if (color.length > 0) {
             g.color = color[0].color
             g.idcolor = color[0].id
@@ -386,9 +392,9 @@ const IndexFlas = () => {
             return g
           }
         }).filter(e => e != undefined)
-        
+
         let colornuevo = mapalocal.map((L) => {
-          if (newprecios.filter(e => e != undefined ).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
+          if (newprecios.filter(e => e != undefined).filter(e => e.espacio != undefined).findIndex(e => e.idcolor == L.id) != -1) {
             if (L.habilitar_cortesia != 0) {
               L.localidaEspacio = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].nombre
               L.precio_descuento = newprecios[newprecios.findIndex(e => e.idcolor == L.id)].precio_descuento
@@ -408,11 +414,11 @@ const IndexFlas = () => {
             return L
           }
         })
-      
-        sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined ).map((e => {
+
+        sessionStorage.setItem(Eventolocalidad, JSON.stringify([...colornuevo.filter((e) => e != undefined).map((e => {
           return e
         }))]))
-        usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined )]))
+        usedispatch(cargalocalidad([...colornuevo.filter((e) => e != undefined)]))
         let nuevosdatos = {
           precios: newprecios,
           pathmapa: pathnuevo.filter((e) => e != undefined),
@@ -435,7 +441,7 @@ const IndexFlas = () => {
                 category: "" + getDatosUsuariosLocalStorag().cedula || '',
                 label: "" + String(e.nombreConcierto),
               })
-              
+
             }).catch(error => {
               logWithCallback(error)
             })
@@ -478,7 +484,7 @@ const IndexFlas = () => {
           e.typo = color[0].tipo
           return e
         })
-        
+
         let colornuevo = mapalocal.map((L) => {
           if (newprecios.findIndex(e => e.idcolor == L.id) != -1) {
             return L
@@ -550,10 +556,7 @@ const IndexFlas = () => {
     edad: '',
     fecha: ''
   })
-  const [eventoslist, setEventos] = useState([])
-  const [publicidad, setpublicidad] = useState([])
-  const [searchValue, setSearchValue] = useState("")
-  const [mostrar, setMostrar] = useState(true)
+
   var end = new Date('01/17/2023 7:00 PM');
   var _second = 1000;
   var _minute = _second * 60;
@@ -565,7 +568,7 @@ const IndexFlas = () => {
     var distance = end - now;
     if (distance < 0) {
       clearInterval(time.current);
-      
+
       document.getElementById('regeresion').innerHTML = " 0 :  00   :   00";
       document.getElementById('regeresiondos').innerHTML = " 0 :  00   :   00";;
       return;
@@ -574,40 +577,101 @@ const IndexFlas = () => {
     var hours = Math.floor((distance % _day) / _hour);
     var minutes = Math.floor((distance % _hour) / _minute);
     var seconds = Math.floor((distance % _minute) / _second);
-    
+
     document.getElementById('regeresion').innerHTML = "  " + hours + " :  " + minutes + "  :  " + seconds + "";
     document.getElementById('regeresiondos').innerHTML = " " + hours + "  :  " + minutes + "  :  " + seconds;
 
   }
   let { data: eventos = [], error: errorevento, isLoading } = useGetEventosQuery("ACTIVO")
+  let { data: eventoCFINAL = [], error: erroreventoS, isLoading: isLoadingS } = useGetEventosQuery("CANCELADO")
   let { data: publici = [], error: errorPubli, isLoading: info } = useGetPubicidadQuery()
-  const evento = () => {
+  async function Listaevento() {
+    try {
+      const { data } = await AxioBoleteria.get("listareventos/CANCELADO/")
+      setEventosCancelados(data.data)
+      let final = isLoadingS ? eventoCFINAL : eventoCFINAL.data
+      !isLoadingS && setEventosCancelados(final)
+
+       setTimeout(function () {
+          $('.logos-slider').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 1800,
+            arrows: false,
+            dots: false,
+            pauseOnHover: false,
+            responsive: [{
+              breakpoint: 750,
+              settings: {
+                slidesToShow: 2
+              }
+            }, {
+              breakpoint: 520,
+              settings: {
+                slidesToShow: 1
+              }
+            }]
+          });
+        }, 1000)
+    } catch (error) {
+      logWithCallback(error)
+    }
+  }
+  function evento() {
     setfunc(false)
     try {
-      if (!errorevento == undefined) {
-        return
+      if (errorevento == undefined) {
+        let datos = isLoading ? eventos : eventos.data
+
+        const filtro = datos != null ? datos.filter((e) => {
+          const fechaConcierto = parse(e.fechaConcierto + " 23:59:59", 'yyyy-MM-dd HH:mm:ss', new Date());
+          const fechaActual = new Date();
+          return isAfter(fechaConcierto, fechaActual);
+        }) : []
+        const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
+        setfunc(true)
+        setEventos(filtro.sort(sorter))
+
       }
-      if (!errorPubli == undefined) {
-        return
+      if (errorPubli == undefined) {
+        let publicin = publici
+
+
+        !info ? setpublicidad(publicin.data) : ""
+      }
+      if (erroreventoS == undefined) {
+      //   let final = isLoadingS ? eventoCFINAL : eventoCFINAL.data
+      //  // !isLoadingS && setEventosCancelados(final)
+
+      //     (final != undefined && final.length > 0) && setTimeout(function () {
+      //       $('.logos-slider').slick({
+      //         slidesToShow: 3,
+      //         slidesToScroll: 1,
+      //         autoplay: true,
+      //         autoplaySpeed: 1800,
+      //         arrows: false,
+      //         dots: false,
+      //         pauseOnHover: false,
+      //         responsive: [{
+      //           breakpoint: 750,
+      //           settings: {
+      //             slidesToShow: 2
+      //           }
+      //         }, {
+      //           breakpoint: 520,
+      //           settings: {
+      //             slidesToShow: 1
+      //           }
+      //         }]
+      //       });
+      //     }, 1000)
       }
       if (!eventos == null) { return }
-      let datos = isLoading ? eventos : eventos.data
-      let publicin = publici
-      const filtro = datos != null ? datos.filter((e) => {
-        //const fechaConcierto = new Date(e.fechaConcierto + "T23:59:59");
-        //const fechaActual = new Date();
-        // return fechaConcierto > fechaActual;
-        const fechaConcierto = parse(e.fechaConcierto + " 23:59:59", 'yyyy-MM-dd HH:mm:ss', new Date());
-        // Obtener la fecha actual
-        const fechaActual = new Date();
-        // Comparar las fechas
-        return isAfter(fechaConcierto, fechaActual);
-      }) : []
-      const sorter = (a, b) => new Date(a.fechaConcierto) > new Date(b.fechaConcierto) ? 1 : -1;
-      setfunc(true)
-      isLoading ? "" : setEventos(filtro.sort(sorter))
-      info ? "" : setpublicidad(publicin.data)
+
+
       // isLoading ? "" : setShear(filtro.sort(sorter))
+
     } catch (error) {
       logWithCallback(error)
     }
@@ -625,10 +689,10 @@ const IndexFlas = () => {
     }
   }
 
-  const [estafun, setfunc] = useState(false)
-  const [final, setFinal] = useState([])
+
   useEffect(() => {
     evento()
+    Listaevento()
     $(document).keyup(function (evtobj) {
       if (!(evtobj.altKey || evtobj.ctrlKey || evtobj.shiftKey)) {
         if (evtobj.keyCode == 16) { return false; }
@@ -684,29 +748,7 @@ const IndexFlas = () => {
 
 
   }, [isLoading, info])
-  seleccion == "" && final.length > 0 ?
-    setTimeout(function () {
-      $('.logos-slider').slick({
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 1800,
-        arrows: false,
-        dots: false,
-        pauseOnHover: false,
-        responsive: [{
-          breakpoint: 750,
-          settings: {
-            slidesToShow: 2
-          }
-        }, {
-          breakpoint: 520,
-          settings: {
-            slidesToShow: 1
-          }
-        }]
-      });
-    }, 1000) : ""
+
   function regsitronew() {
     usedispatch(setModal({ nombre: 'registro', estado: "" }))
 
@@ -718,16 +760,16 @@ const IndexFlas = () => {
   }
   function eventocarrusel(e) {
     let datos = e
-    
+
     let info = JSON.parse(datos)
-    
+
     userauthi.login ? abrir({
       ...info,
     }) :
       abrir({
         ...info,
       })
-      
+
     ReactGA.event({
       category: "" + info.nombreConcierto,
       action: "Carrusel",
@@ -742,7 +784,7 @@ const IndexFlas = () => {
     const hash = window.location.hash.replace("#", "");
 
     if (hash) {
-     // let hasttwo = hash == "barcelona" ?"NS1U57":hash
+      // let hasttwo = hash == "barcelona" ?"NS1U57":hash
       const checkInterval = setInterval(() => {
         const triggerEl = document.getElementById(hash);
         const collapseId = triggerEl?.getAttribute("data-target")?.replace("#", "");
@@ -1296,11 +1338,11 @@ const IndexFlas = () => {
                     </h4>
                   </div>
                   <section className="logos-slider slider d-flex flex-wrap">
-                    {/*final.length > 0 ?
+                    {(final != undefined && final.length > 0) ?
                       [...final].filter(e => new Date(e.fechaConcierto + " 23:59:59") < new Date()).map((element, index) => {
                         return (
                           <div className="slide col-12 col-sm-6 col-md-4 px-0 pb-1" key={index} >
-                            <div
+                            <img
                               className="  rounded-7   "
                               style={{
                                 height: '150px', width: '100%',
@@ -1308,12 +1350,13 @@ const IndexFlas = () => {
                                 backgroundSize: 'cover',
                                 backgroundRepeat: "no-repeat",
                               }}
+                              loading="lazy"
                             >
-                            </div>
+                            </img>
                           </div>
                         )
                       })
-                      : ""*/}
+                      : ""}
                   </section>
                 </div>
               </div>

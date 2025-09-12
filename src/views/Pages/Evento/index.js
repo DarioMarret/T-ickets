@@ -311,7 +311,7 @@ const EventosViews = () => {
                     <IconButton
                       color="primary"
                       aria-label="Ver"
-                      onClick={() => history("/admin/Evento/" + row.original.codigoEvento)}
+                      onClick={() => row.original.codigoEvento == "M0CONJ" ? history("/admin/Stand/" + row.original.codigoEvento): history("/admin/Evento/" + row.original.codigoEvento)}
                     ><Visibility />
                     </IconButton>
                   </Box>

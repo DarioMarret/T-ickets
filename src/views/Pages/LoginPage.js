@@ -8,7 +8,7 @@ let { logo, portada } = bancos
 import { Badge, Button, Card, Form, Navbar, Nav, Toast, Container, Col, Row } from "react-bootstrap";
 import jwtDecode from "jwt-decode";
 import { logWithCallback } from "utilsstile.js/style";
-function LoginPage({setUSers}) {
+function LoginPage({ setUSers }) {
   const history = useNavigate();
   const [cardClasses, setCardClasses] = React.useState("card-hidden");
   const [show, setShow] = useState(false);
@@ -60,14 +60,20 @@ function LoginPage({setUSers}) {
         if (success) {
 
           const usuario = jwtDecode(token)
-          if (!usuario.status ==1) {
+          if (!usuario.status == 1) {
             setShow(true)
             setmessage("Usuario o contraeña incorrecta")
             setUSers(usuario)
             return
           }
-          setDatosUser(token)
-          history('/admin/inicio')
+          if (usuario.perfil == "stand") {
+            setDatosUser(token)
+            history('/admin/Stand/' + "M0CONJ")
+          } else {
+            setDatosUser(token)
+            history('/admin/inicio')
+          }
+
         }
         else {
           setShow(true)
@@ -77,11 +83,11 @@ function LoginPage({setUSers}) {
       } catch (error) {
         logWithCallback("", error)
         setmessage("Hubo un error intente de nuevo ")
-      
+
         return
       }
-    //  setShow(true)
-     // setmessage("Hubo un error intente de nuevo o verifique mas tarde")
+      //  setShow(true)
+      // setmessage("Hubo un error intente de nuevo o verifique mas tarde")
     }
     //setShow(true)
     //setmessage("Hubo un error intente de nuevo o verifique mas tarde")

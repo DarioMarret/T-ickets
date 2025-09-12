@@ -59,7 +59,7 @@ export default function Footer(props) {
                                 </div>
                                 <div className="d-flex  flex-column" style={{ alignItems: 'stretch', lineHeight: '2', minWidth: '120px', maxWidth: '' }} >
                                     <h5 className=" text-white" style={{ fontFamily: '', }} > <img src={nombrepage} style={{ height: 20 }} ></img> </h5>
-                                    <span className=" text-white" style={{ fontFamily: '', }} >Descarga nuestra aplicación </span>
+                                    <span className=" text-white d-none" style={{ fontFamily: '', }} >Descarga nuestra aplicación </span>
                                 </div>
                                 <h5 className='d-none text-white' style={{ fontFamily: ',bold,' }}>  </h5>
                                 <div className='d-flex py-2  flex-row'>
@@ -115,7 +115,7 @@ export default function Footer(props) {
                                         <h6 className='text-capitalize font-weight-bold '
 
                                         >Habla con Nosotros</h6>
-                                        <a href='https://t-ickets.net/3FynwiC' target="_blank" className=' nav-link link-light px-0 txt-white nav-icons ' >
+                                        <a href='https://api.whatsapp.com/send?phone=593980008000&text=Me%20interesa%20comprar%20vengo%20desde%20la%20pagina%20web.' target="_blank" className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <i className="bi bi-whatsapp"></i>
                                             <span className=" text-white" style={{ fontFamily: '', }} > 593980008000  </span>
                                         </a>
@@ -166,7 +166,8 @@ export default function Footer(props) {
                                     </div>
                                     <div className=' d-none d-sm-none d-md-block txt-white px-1' style={{ width: '225px', maxWidth: 225 }}>
                                         <h6 className='text-capitalize font-weight-bold '>Área de Clientes</h6>
-                                        <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
+                                        <a href="mailto:infotickets@t-ickets.com?Subject=Comunicate%20con%20nosotros%20-%20t-ickets"
+                                            target="_blank"  className=' nav-link link-light px-0 txt-white nav-icons ' >
                                             <span className=" text-white" style={{ fontFamily: '', }} >Reclamos </span>
                                         </a>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
@@ -175,7 +176,7 @@ export default function Footer(props) {
                                         </a>
                                         <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
 
-                                            <span className=" text-white" style={{ fontFamily: '', }} >Descargar Factura Electrónica</span>
+                                            <span className=" text-white d-none" style={{ fontFamily: '', }} >Descargar Factura Electrónica</span>
                                         </a>
                                         {datos.login ? <a href='#' className=' nav-link link-light px-0 txt-white nav-icons ' >
 

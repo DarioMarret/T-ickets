@@ -103,6 +103,7 @@ const MapadelocalidadViews = (props) => {
 
         const GuardarMapa = async () => {
                 let valores = {
+                        "id": localidadmap.id,
                         "mapasvg": estadio,
                         "nombre_espacio": localidaname.nombre,
                         "pathmap": JSON.stringify(getMapacolor()),
@@ -122,10 +123,11 @@ const MapadelocalidadViews = (props) => {
                                         "pathmap": getMapacolor(),
                                         "localidad": getLocalidadmapa(),
                                 }
+                                await editarMapa(valores)  
                                 usedispatch(setToastes({ show: true, message: 'Asignacion de localidades Actualizada correctamente', color: 'bg-success', estado: 'Datos Actualizados' }))
 
                                 hideAlert()
-                                window.location.reload()
+                               // window.location.reload()
                         }
                 } catch (error) {
                         logWithCallback(error)

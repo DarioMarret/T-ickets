@@ -349,31 +349,31 @@ function MesasView({ text, status, list }) {
   const succesSilla = (e) => {
     let mesas = ["A", "B", "C"]
     let mesa = ["A"]
-    let sillabloquea = ["J4", "J5", "J3"]
+    let sillabloquea = ["A1", "5", "J3"]
     let sillesSAmor = ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "B4", "B3"]
     let sillasAmor = []
     const randon = sessionStorage.getItem("random") || ""
     let info = getDatosUsuariosLocalStorag()
     let envotid = sessionStorage.getItem("eventoid")
-    // if ((envotid == 'FMNPLU') && (![...sillabloquea,].includes(text) && clienteInfo() == null)) {
-    //   $.confirm({
-    //     title: 'Mesas Habilitadas',
-    //     content: 'En esta localidad solo están habilitadas las siguientes sillas inidividuales en las localidades:<br><strong>GOLDEN BOX</strong><br><strong>J3, J4, J5,</strong><br>' +
-    //       '' +
-    //       '',
-    //     type: 'blue',
-    //     typeAnimated: true,
-    //     buttons: {
-    //       aceptar: {
-    //         text: 'Aceptar',
-    //         btnClass: 'btn-blue',
-    //         action: function () {
-    //         }
-    //       }
-    //     }
-    //   });
-    //   return
-    // }
+    if ((envotid == 'PEWIHG') && (![...mesas,].includes(text) && clienteInfo() == null)) {
+      $.confirm({
+        title: 'Mesas Habilitadas',
+        content: 'En esta localidad solo están habilitadas las siguientes fila para venta inidividual:<br><strong></strong><br><strong>D Y E,</strong><br>' +
+          '' +
+          '',
+        type: 'blue',
+        typeAnimated: true,
+        buttons: {
+          aceptar: {
+            text: 'Aceptar',
+            btnClass: 'btn-blue',
+            action: function () {
+            }
+          }
+        }
+      });
+      return
+    }
 
     if ((envotid == '7EZFQ6') && (![...sillabloquea, ...sillasAmor, ...sillesSAmor].includes(text) && clienteInfo() == null)) return
     /*
