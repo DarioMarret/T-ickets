@@ -592,28 +592,28 @@ const IndexFlas = () => {
       let final = isLoadingS ? eventoCFINAL : eventoCFINAL.data
       !isLoadingS && setEventosCancelados(final)
 
-       setTimeout(function () {
-          $('.logos-slider').slick({
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            autoplay: true,
-            autoplaySpeed: 1800,
-            arrows: false,
-            dots: false,
-            pauseOnHover: false,
-            responsive: [{
-              breakpoint: 750,
-              settings: {
-                slidesToShow: 2
-              }
-            }, {
-              breakpoint: 520,
-              settings: {
-                slidesToShow: 1
-              }
-            }]
-          });
-        }, 1000)
+      setTimeout(function () {
+        $('.logos-slider').slick({
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          autoplay: true,
+          autoplaySpeed: 1800,
+          arrows: false,
+          dots: false,
+          pauseOnHover: false,
+          responsive: [{
+            breakpoint: 750,
+            settings: {
+              slidesToShow: 2
+            }
+          }, {
+            breakpoint: 520,
+            settings: {
+              slidesToShow: 1
+            }
+          }]
+        });
+      }, 1000)
     } catch (error) {
       logWithCallback(error)
     }
@@ -641,31 +641,31 @@ const IndexFlas = () => {
         !info ? setpublicidad(publicin.data) : ""
       }
       if (erroreventoS == undefined) {
-      //   let final = isLoadingS ? eventoCFINAL : eventoCFINAL.data
-      //  // !isLoadingS && setEventosCancelados(final)
+        //   let final = isLoadingS ? eventoCFINAL : eventoCFINAL.data
+        //  // !isLoadingS && setEventosCancelados(final)
 
-      //     (final != undefined && final.length > 0) && setTimeout(function () {
-      //       $('.logos-slider').slick({
-      //         slidesToShow: 3,
-      //         slidesToScroll: 1,
-      //         autoplay: true,
-      //         autoplaySpeed: 1800,
-      //         arrows: false,
-      //         dots: false,
-      //         pauseOnHover: false,
-      //         responsive: [{
-      //           breakpoint: 750,
-      //           settings: {
-      //             slidesToShow: 2
-      //           }
-      //         }, {
-      //           breakpoint: 520,
-      //           settings: {
-      //             slidesToShow: 1
-      //           }
-      //         }]
-      //       });
-      //     }, 1000)
+        //     (final != undefined && final.length > 0) && setTimeout(function () {
+        //       $('.logos-slider').slick({
+        //         slidesToShow: 3,
+        //         slidesToScroll: 1,
+        //         autoplay: true,
+        //         autoplaySpeed: 1800,
+        //         arrows: false,
+        //         dots: false,
+        //         pauseOnHover: false,
+        //         responsive: [{
+        //           breakpoint: 750,
+        //           settings: {
+        //             slidesToShow: 2
+        //           }
+        //         }, {
+        //           breakpoint: 520,
+        //           settings: {
+        //             slidesToShow: 1
+        //           }
+        //         }]
+        //       });
+        //     }, 1000)
       }
       if (!eventos == null) { return }
 
@@ -1169,8 +1169,9 @@ const IndexFlas = () => {
                                       </div>
                                       <p className="" style={{ fontSize: '1.0em', }}><i className="bi bi-geo-alt-fill"></i> <b>Lugar:<span id="lugarEvento">{e.lugarConcierto}</span></b></p>
                                       <div className="col-12 border border-bottom mb-3"></div>
-                                      <div>
-                                      </div>
+                                      <div className=" ">
+                                        {["1RX4Q1", "D0FFSD", "TU5YMD", "OGX3DU"].includes(String(e.codigoEvento)) && (<p className="" style={{ fontSize: '1.0em', }}>El evento es organizado y producido por WAVEMUSIC ECUADOR S.A.S. TICKETSECUADOR S.A. actúa exclusivamente como la tiquetera oficial, encargándose de la venta y distribución de boletos en línea.</p>
+                                        )} </div>
                                     </div>
                                   </div>
                                   <div className=" col-12   pt-3"

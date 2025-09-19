@@ -5,7 +5,7 @@ import { Host, token } from "./constantes";
 import { clienteInfo, getDatosUsuariosLocalStorag } from "./DatosUsuarioLocalStorag";
 import { Bodyhtml, Headerhtml } from "./Emails/cuerpo";
 import { BuscarTransacion } from "./pagos/Queripagos";
-import { logWithCallback } from "utilsstile.js/style";
+import { GeneraComprobante, logWithCallback } from "utilsstile.js/style";
 /** reportar Pago */
 export const PagoRapido = async (transaccion) => {
     let codigoEvento = sessionStorage.getItem('eventoid')
@@ -34,8 +34,8 @@ export const PagoRapido = async (transaccion) => {
             "CODIGEVENTO": codigoEvento,
             "cantidad": e.cantidad,
             "localidad_nombre": e.localidad || e.localidaEspacio["nombre"],
-            "localidad_precio": (discapacidad == 'Si'  && (clienteInfo() != null)) ? parseFloat(e.localidaEspacio["precio_discapacidad"]) : parseFloat(e.valor),
-            "discapacida": (discapacidad == 'Si'  && (clienteInfo() != null)),
+            "localidad_precio": (discapacidad == 'Si' && (clienteInfo() != null)) ? parseFloat(e.localidaEspacio["precio_discapacidad"]) : parseFloat(e.valor),
+            "discapacida": (discapacidad == 'Si' && (clienteInfo() != null)),
             menor: (parseInt(e.localidaEspacio["idcolor"]) == 308),
             naipes: getDatosUsuariosLocalStorag().naipes ? (getDatosUsuariosLocalStorag().naipes == 'Si') : null,
             "comision_por_boleto": parseInt(e.cantidad) * parseFloat(e.localidaEspacio["comision_boleto"]),
@@ -48,6 +48,8 @@ export const PagoRapido = async (transaccion) => {
         "cedula": datosPersonal,
         "id_usuario": parseInt(idop),
         "id_operador": parseInt(id),
+        "nombreCompleto": getDatosUsuariosLocalStorag().nombreCompleto ?? '',
+        "email": getDatosUsuariosLocalStorag().email ?? '',
         "forma_pago": metodo,
         "concierto": [...concierto],
         "valores": {
@@ -77,11 +79,12 @@ export const PagoRapido = async (transaccion) => {
         )
 
         logWithCallback(data)
-
+        clienteInfo() != null ? GeneraComprobante(datos) : ""
         return { ...data, id: data.idRegistro, ...datos };
         // await EnviarDetalleCompra(email, parm)
 
     } catch (error) {
+        console.log(error)
         return error
 
     }

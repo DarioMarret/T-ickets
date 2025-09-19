@@ -154,7 +154,7 @@ function ventasView() {
                             ...datos,
                             nombreCompleto: salida.name,
                             email: String(salida.name).replaceAll(" ", "") + "@gmail.com",
-                            ciudad: id,
+                            ciudad: salida.direccion,
                             cedula: nombre.trim(),
                             movil: salida.telefono ? salida.telefono : "0999999999",
                             registro: 0
@@ -264,7 +264,7 @@ function ventasView() {
         const valores = JSON.parse(sessionStorage.getItem(Eventolocalidad))
         let checks = document.getElementById("ventas")
         let user = getDatosUsuariosLocalStorag()
-        logWithCallback({ e, "valores": valores })
+        logWithCallback(e)
         let mapath = { precio: valores.find(el => el.id == e.ideprecio) }
         logWithCallback({ mapath, valores })
         let protoco = moment().format("YYYYMMDDHHMMSS")

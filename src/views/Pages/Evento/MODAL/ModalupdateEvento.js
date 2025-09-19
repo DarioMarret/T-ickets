@@ -231,16 +231,15 @@ const Modalupdate = (props) => {
                 "lugarConcierto": neweventos.lugarConcierto,
                 "cuidadConcert": neweventos.cuidadConcert,
                 "descripcionConcierto": neweventos.descripcionConcierto,
-                "imagenConcierto": ouput,
-
-
+                "imagenConcierto": ouput,  
+                "mapaConcierto": neweventos.mapaConcierto       
             }
             logWithCallback(info)
             setTimeout(async function () {
                 logWithCallback("actualiza")
                 let imgen = await actualizarDescription(info)
                 if (imgen.success) {
-                    window.location.reload()
+                    Setshow(false)
                 } else {
                     usedispatch(setToastes({ show: true, message: 'Hubo un error al actualizar datos', color: 'bg-danger', estado: 'Error al actualizar' }))
                 }

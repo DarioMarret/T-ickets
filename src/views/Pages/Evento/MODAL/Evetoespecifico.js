@@ -358,7 +358,7 @@ const EventoEspecifico = () => {
             ])
             await Evento()
         })()
-    }, [boletosloading])
+    }, [boletosloading,show])
     const successAlert = (i) => {
         if (useradmin.perfil == 'suscriptores') return
         setAlert(

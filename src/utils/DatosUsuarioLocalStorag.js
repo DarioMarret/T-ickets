@@ -37,18 +37,47 @@ export function getCliente() {
         return null
     }
 }
-export async function getCedula(cedula) {
+// export async function getCedula(cedula) {
+//     try {
+//         const { data } = await axios.get("https://api.t-ickets.com/ms_login/cedula/" + cedula)
+
+//         const { success } = data
+//         if (success) {
+//             return data.data;
+//         } else {
+//             return false
+//         }
+//     } catch (error) {
+//         return false;
+//     }
+// }
+
+export async function getCedula(params) {
     try {
-        const { data } = await axios.get("https://api.t-ickets.com/ms_login/cedula/" + cedula)
- 
-        const { success } = data
-        if (success) {
-            return data.data;
-        } else {
-            return false
+        const { data } = await axios.post("https://api.t-ickets.com/sris/ConsultasCedula", {
+            "ruc": `${params}`,
+            "usuario": "CONSULTASLRSOFTSOLUTION",
+            "token": "SGFGD90890234%@DFS2354565465214234HJNFDSO4658641189"
+
+        })
+        if(data){
+            return {
+                "id": 0,
+                "cedula": data.datos.nui,
+                "direccion": data.datos.lugarNacimiento,
+                "discapacidad": String(data.datos.condicionCedulado).includes("DISCAPACIDAD")?"Si":"No",
+                "edad": "",
+                "email": "null",
+                "genero": "Masculino",
+                "name": data.datos.nombre,
+                "sexo": "Masculino",
+                "telefono": null,
+                "estado_civil": null,
+                "fecha_nacimiento": null
+            }
         }
     } catch (error) {
-        return false;
+
     }
 }
 
@@ -67,12 +96,12 @@ export function setDatosUser(data) {
 }
 export function checkLocalStorageExpiration() {
     const data = localStorage.getItem("Time");
- 
+
     if (data) {
         const parsedData = JSON.parse(data);
         const now = Date.now();
         const twelveHours = 12 * 60 * 60 * 1000; // 12 horas en milisegundos
- 
+
         if (!parsedData.timestamp) {
             //window.location.reload()
             sessionStorage.removeItem(DatoTokenusuario);
@@ -82,8 +111,8 @@ export function checkLocalStorageExpiration() {
         if (now - parsedData.timestamp > twelveHours) {
             // window.location.reload()
             sessionStorage.removeItem(DatoTokenusuario); // Borra el dato si ha pasado el tiempo
-            
-           
+
+
             return true
         }
         sessionStorage.removeItem(DatoTokenusuario); // Borra el dato si ha pasado el tiempo
@@ -94,7 +123,7 @@ export function checkLocalStorageExpiration() {
 export function getUsuario() {
     try {
         const data = sessionStorage.getItem(DatoTokenusuario)
-        
+
         return data;
 
     } catch (error) {

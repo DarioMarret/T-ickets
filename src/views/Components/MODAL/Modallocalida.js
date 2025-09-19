@@ -508,7 +508,7 @@ const LocalidadmapViews = (props) => {
                         <button className=" d-none btn btn-outline-light" onClick={() => cerrar()} >
                             <i className="fa fa-arrow-left">  </i>
                         </button>
-                        <button className=" btn  btn-outline-light mx-1" onClick={() => cerrar()} >
+                        <button className=" btn  btn-danger mx-1" onClick={() => cerrar()} >
                             Continuar <i className="fa fa-shopping-cart">  </i>
                         </button>
                     </div>

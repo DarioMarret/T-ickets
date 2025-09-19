@@ -79,7 +79,7 @@ export default function NavbarView({ ...props }) {
                             }
 
                             {!userauthi.login ? <li className="  nav-item">
-                                <button className=" btn btn-outline-nuevo rounded-7" href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i>
+                                <button className=" btn btn-outline-nuevo rounded-7 text-white" href="#" onClick={() => usedispatch(setModal({ nombre: 'loginpage', estado: null }))}> Mi Cuenta <i>
                                     <img src={props.avatar} className=" img-fluid"
                                         style={{
                                             height: 25

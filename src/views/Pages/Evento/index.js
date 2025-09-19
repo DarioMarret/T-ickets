@@ -29,7 +29,7 @@ const EventosViews = () => {
   let dispatch = useDispatch()
   let eventoslista = useSelector(state => state.mapaLocalSlice.eventos)
   const [show, setShow] = useState(false)
- //const [eventoslist, setEventos] = useState([])
+  //const [eventoslist, setEventos] = useState([])
   const [alert, setAlert] = React.useState(null)
   const sorter = (a, b) => {
     // Prioriza eventos con estado 'ACTIVO' (sin importar mayúsculas/minúsculas)
@@ -53,8 +53,8 @@ const EventosViews = () => {
       const lsyt = await EventosActivos("PROCESO")
       const cancelados = await EventosActivos("CANCELADO")
       if (lista.success) {
-        
-       
+
+
         dispatch(ObtenerEveNtis({ eventos: [...lista.data.filter((e) => e.codigoEvento != "001"), ...lsyt.data, ...cancelados.data].sort(sorter) }))
       }
     } catch (error) {
@@ -132,14 +132,14 @@ const EventosViews = () => {
   };
   const ListaPrecios = async () => {
     const info = await ListaPreciosEvent();
-    
+
     //ListaPrecio()
     return info
   }
   useEffect(() => {
 
     (async () => {
-      
+
       await ListaPrecios()
       await GetEventos()
     })()
@@ -291,7 +291,6 @@ const EventosViews = () => {
                       width: '100%',
                     }}
                   >
-
                     <Typography>Estado : {
                       (isAfter(row.original.fechaConcierto + " " + row.original.horaConcierto, 'yyyy-MM-dd HH:mm:ss', new Date()), new Date()) ?
                         row.original.estado : "FINALIZO"} </Typography>
@@ -311,7 +310,7 @@ const EventosViews = () => {
                     <IconButton
                       color="primary"
                       aria-label="Ver"
-                      onClick={() => row.original.codigoEvento == "M0CONJ" ? history("/admin/Stand/" + row.original.codigoEvento): history("/admin/Evento/" + row.original.codigoEvento)}
+                      onClick={() => row.original.codigoEvento == "M0CONJ" ? history("/admin/Stand/" + row.original.codigoEvento) : useradmin.id == '106' ? history("/admin/Evento/KUOG9N") : history("/admin/Evento/" + row.original.codigoEvento)}
                     ><Visibility />
                     </IconButton>
                   </Box>
