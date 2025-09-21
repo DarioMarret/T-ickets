@@ -29,8 +29,8 @@ const ResgistroView = (prop) => {
     const [primro, setsegundo] = useState("password")
     const [segundo, setprimero] = useState("password")
     const [check, setCheck] = useState({
-        primero: '',
-        segunfo: ''
+        primero: true,
+        segunfo: true
     })
     const [nedvalida, sedtValida] = useState("")
     const [code, setCode] = useState("cedula")

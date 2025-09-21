@@ -19,7 +19,7 @@ const initialState = {
     ticket: true,
     spiner: true,
     inicio: 0,
-    final: 4,
+    final: 6,
     page: 1,
     tabps: 0,
     labels: [],
