@@ -7,7 +7,6 @@ import { Edit, Delete, Visibility, Summarize } from '@mui/icons-material';
 import { Row, Col, Card, Container, Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import { CancelarSubscriptor } from "utils/SuscritorQuery";
-import { GetSuscritores } from "utils/SuscritorQuery";
 import ModalSuscritoView from "./ModalSuscritor";
 import { carrusel } from "../Flasdeticket/imagenstatctic";
 let { cedericon } = carrusel
@@ -15,7 +14,6 @@ import moment from "moment";
 import 'moment-timezone';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { EliminarSuscrito } from "utils/SuscritorQuery";
-import { columnsTicket } from "utils/ColumnTabla";
 import { listaRegistro } from "utils/columnasub";
 import { listarRegistropanel } from "utils/pagos/Queripagos";
 import { ticketsboletos } from "utils/columnasub";
@@ -30,8 +28,6 @@ import { eliminarRegistro } from "utils/pagos/Queripagos";
 import { eliminartiket } from "utils/pagos/Queripagos";
 import { generaTiketsBingo, generaTiketspdf } from "utils/Querycomnet";
 import ExportToExcel from "utils/Exportelemin";
-import { BoletosTikets } from "utils/userQuery";
-import { BoletosTiketsGlobal } from "utils/userQuery";
 import { Liverarasiento } from "utils/userQuery";
 import { setTabs } from "StoreRedux/Slice/SuscritorSlice";
 import ModalTickte from "./ModalSuscritor/agregarTickte";
@@ -71,13 +67,34 @@ const SuscritoridView = () => {
     movil: "",
     nombreCompleto: ""
   })
+  function Recargar() {
+    setsuscritor({ ...info })
+    Listarticketporestado("" + info.cedula).then(ouput => {
+      ouput.success ? setBoletos(ouput.data)
+        : ""
+    }).catch(err => {
+    })
+    listarRegistropanel({ "cedula": info.cedula }).then(ouput => {
+      if (ouput.success) {
+        let datos = ouput.data
+        ouput.success ? setTikes(datos) : ""
+      }
+    })
+    Listarfaci({ "cedula": info.cedula }).then(ouput => {
+      if (ouput.success) {
+        setTicket([...ouput.data])
+      }
+    }).catch(err => {
+      logWithCallback(err)
+    })
+  }
   async function Eliminasucrito() {
     try {
       if (suscritoid.email != '') {
         const cancelar = await CancelarSubscriptor(suscritoid.email)
         const { success } = cancelar
         if (success) {
-          history("/admin/suscritor")
+          Recargar()
         }
       }
     } catch (error) {
@@ -90,7 +107,7 @@ const SuscritoridView = () => {
       const deleter = await EliminarSuscrito(id)
       const { success } = deleter
       if (success) {
-        history("/admin/suscritor")
+        Recargar()
       }
     } catch (error) {
       logWithCallback(error)
@@ -153,6 +170,7 @@ const SuscritoridView = () => {
   const handleChange = (event, newValue) => {
     usedispatch(setTabs({ number: newValue }))
   };
+
   let value = useSelector((state) => state.SuscritorSlice.tabps)
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -229,6 +247,7 @@ const SuscritoridView = () => {
   }
   const eliminarregistro = (parms) => {
     if (useradmin.perfil == 'suscriptores') return
+    const datos = () => Recargar()
     $.confirm({
       title: 'Desea eliminar Este registro de compra ',
       content: '',
@@ -240,10 +259,14 @@ const SuscritoridView = () => {
           btnClass: 'btn-red',
           action: function () {
             eliminarRegistro({ "id": parms.id }).then(ouput => {
-              if (!ouput.success) { return $.alert("" + ouput.message) }
-              window.location.reload()
+              if (!ouput.success) {
+                datos()
+                return $.alert("" + ouput.message)
+              }
+              datos()
 
               $.alert("Registro Eliminado correctamente")
+
 
             }).catch(error => {
               $.alert("hubo un error no se pudo eliminar este registro")
@@ -269,11 +292,14 @@ const SuscritoridView = () => {
           btnClass: 'btn-red',
           action: function () {
             EliminarTickteTercero({ "id": parm.id }).then(ouput => {
-              if (!ouput.success) { return $.alert("" + ouput.message) }
-              //nuevoevento()
+              if (!ouput.success) {
+                Recargar()
+                return $.alert("" + ouput.message)
+              }
+              Recargar()
               $.alert("Registro eliminado correctamente")
               setTimeout(function () {
-                window.location.reload()
+                Recargar()
               }, 1000)
             }).catch(error => {
               $.alert("hubo un error no se pudo eliminar este registro")
@@ -343,10 +369,10 @@ const SuscritoridView = () => {
             eliminartiket([parm]).then(ouput => {
 
               if (ouput.success) {
-                logWithCallback(ouput)
-                window.location.reload()
+                Recargar()
               }
               if (!ouput.success) {
+                Recargar()
                 return $.alert("" + ouput.message)
               }
 
@@ -404,7 +430,7 @@ const SuscritoridView = () => {
           action: function () {
             Liverarasiento(parms).then(ouput => {
               if (ouput.success) {
-                window.location.reload()
+                Recargar()
                 return
               }
               $.alert("No se registro")

@@ -3,7 +3,7 @@ import React from 'react';
 function Footer(props) {
     const { logofla } = props;
     return (
-        <div className=" container-fluid h-55 bg-black footer-fluid"
+        <div className=" sticky-bottom container-fluid h-55 bg-black footer-fluid"
             style={{
                 position: 'static',
                 bottom: 0

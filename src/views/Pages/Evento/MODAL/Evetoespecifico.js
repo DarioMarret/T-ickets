@@ -7,7 +7,7 @@ import { Box, Button, Typography } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { ExportToCsv } from 'export-to-csv';
 import Modalupdate from "./ModalupdateEvento"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setToastes } from "StoreRedux/Slice/ToastSlice";
 import PreciosViews from "./ModalPrecios";
 import SweetAlert from 'react-bootstrap-sweetalert';
@@ -40,6 +40,7 @@ const EventoEspecifico = () => {
     const [global, setGobal] = useState([])
     const [comentarios, SetCometarios] = useState([])
     const [activeTab, setActiveTab] = useState("PRECIOS");
+    let valores = useSelector(state => state.SuscritorSlice.modal)
     let [tickes, setTikes] = useState([])
     let [report, setReport] = useState({
         canje: [],
@@ -142,7 +143,7 @@ const EventoEspecifico = () => {
                     return acc;
                 }
             }, {});
-            if (!acumuladorPorNombres) return
+            //if (!acumuladorPorNombres) return
             const resultado = Object.entries(acumuladorPorNombres).map(([nombreMesa, cantidad]) => {
                 let id = Object.values(agrupadoPorLocalidadess).find(el => el.localidad == nombreMesa)
 
@@ -153,6 +154,7 @@ const EventoEspecifico = () => {
             });
 
             setGobal(resultado)
+            console.log(arrayMesas)
             setDisponible(arrayMesas)
 
             let localidas = []
@@ -358,7 +360,7 @@ const EventoEspecifico = () => {
             ])
             await Evento()
         })()
-    }, [boletosloading,show])
+    }, [boletosloading, show, (valores.nombre == "precios")])
     const successAlert = (i) => {
         if (useradmin.perfil == 'suscriptores') return
         setAlert(

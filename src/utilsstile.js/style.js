@@ -3,7 +3,7 @@ export const index = {
     backgroundColor: "#311C7C"
 }
 export function logWithCallback(message, typo = "log") {
-    if (true) return ""
+   // if (true) return ""
     switch (typo) {
         case "error":
             console.error(message)

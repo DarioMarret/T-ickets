@@ -213,14 +213,15 @@ export default function ModalFirma() {
                 sessionStorage.setItem("Detalleuid", boletos)
                 if (clienteInfo() == null) {
                     let texto = "Nuevo registro de firma de " + getDatosUsuariosLocalStorag().cedula;
-                    Emailcontec({ movil: [formatearNumero("980441911"), formatearNumero("991916096")], text: texto }).then(sal => {
+                    window.location.reload()
+                    // Emailcontec({ movil: [formatearNumero("980441911"), formatearNumero("991916096")], text: texto }).then(sal => {
                     
 
-                        window.location.reload()
-                    }).catch(err => {
-                      logWithCallback(err)
+                    //     window.location.reload()
+                    // }).catch(err => {
+                    //   logWithCallback(err)
 
-                    })
+                    // })
                     return
                 }
 

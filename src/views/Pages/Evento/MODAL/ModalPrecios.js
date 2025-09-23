@@ -40,7 +40,7 @@ const PreciosViews = () => {
             actualizarPrecios(precios).then(ouput => {
                 setspiner(true)
                 if(ouput.success){
-                    window.location.reload()
+                   // window.location.reload()
                     setspiner(false)
                 }
                 else{

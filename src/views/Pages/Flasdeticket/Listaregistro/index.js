@@ -64,21 +64,38 @@ export default function ListaderegistroView(props) {
                     action: function () {
 
                         eliminarRegistro({ "id": row.id }).then(ouput => {
-                            
+
                             if (!ouput.success) { return $.alert("" + ouput.message) }
                             listarRegistropanel({ "cedula": cedula }).then(e => {
-                                
+
                                 if (e.data) {
                                     setDatos(e.data)
                                     return
                                 }
-                                
+
                             }).catch(err => {
                                 logWithCallback(err)
                             })
                             $.alert("Registro eliminado correctamente")
                             setTimeout(function () {
-                                window.location.reload()
+                                const fechaActual = new Date();
+
+                                // Calcula la fecha límite (hoy menos dos días)
+                                const fechaLimite = new Date();
+                                fechaLimite.setDate(fechaActual.getDate() - 1);
+                                let user = getDatosUsuariosLocalStorag()
+
+                                listarRegistropanel({ "cedula": user.cedula }).then(
+                                    e => {
+                                        if (!e.success) {
+                                            return
+                                        }
+
+                                        setDatos(e.data)
+                                    }
+                                ).catch(err =>
+                                    logWithCallback(err)
+                                )
                             }, 1000)
                         }).catch(error => {
                             $.alert("hubo un error no se pudo eliminar este registro")

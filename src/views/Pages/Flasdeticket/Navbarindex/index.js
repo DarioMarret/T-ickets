@@ -66,7 +66,7 @@ export default function NavbarView({ ...props }) {
                             </li>
                             {userauthi.login ?
                                 <li className="nav-item active" aria-current="page" onClick={() => props.SetSeleccion("Tickets")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                    <a className="nav-link " href="#">Tickets</a>
+                                    <a className="nav-link text-white" href="#">Tickets</a>
                                 </li> : ""
                             }
                             <li className="nav-item">
@@ -74,7 +74,7 @@ export default function NavbarView({ ...props }) {
                             </li>
                             {userauthi.login ?
                                 <li className="nav-item active " aria-current="page" onClick={() => props.SetSeleccion("Datos")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                    <a className="nav-link " >Datos</a>
+                                    <a className="nav-link text-white " >Datos</a>
                                 </li> : ""
                             }
 
@@ -86,7 +86,7 @@ export default function NavbarView({ ...props }) {
                                         }} />
                                 </i> </button>
                             </li> : <li className="  nav-item">
-                                <a className=" btn btn-outline-nuevo rounded-7  " href="#" onClick={props.salir}> Salir <i className="fa fa-window-close"></i> </a>
+                                    <a className=" btn btn-outline-nuevo rounded-7 text-white " href="#" onClick={props.salir}> Salir <i className="fa fa-window-close"></i> </a>
                             </li>}
                         </ul>
                     </div>
@@ -113,7 +113,7 @@ export default function NavbarView({ ...props }) {
                             </li>
                             {userauthi.login ?
                                 <li className="nav-item active" aria-current="page" onClick={() => props.SetSeleccion("Tickets")} data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                    <a className="nav-link " data-bs-dismiss="offcanvas"  href="#">Tickets</a>
+                                    <a className="nav-link  text-white" data-bs-dismiss="offcanvas"  href="#">Tickets</a>
                                 </li> : ""
                             }
                             
@@ -133,8 +133,8 @@ export default function NavbarView({ ...props }) {
                                             height: 25
                                         }} />
                                 </i> </a>
-                            </li> : <li className="  nav-item" data-bs-dismiss="offcanvas">
-                                <a className=" btn btn-outline-nuevo rounded-7  " href="#" onClick={props.salir}> Salir <i className="fa fa-window-close"></i> </a>
+                            </li> : <li className="  nav-item " data-bs-dismiss="offcanvas">
+                                    <a className="  btn btn-outline-nuevo  rounded-7 " href="#" onClick={props.salir}> Salir <i className="fa fa-window-close"></i> </a>
                             </li>}
                         </ul>
                     </div>

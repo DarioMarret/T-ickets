@@ -154,12 +154,12 @@ const ModalConfima = (prop) => {
                             }).catch(erro => {
                                 if (!clienteInfo()) {
                                     let texto = "Nuevo registro de pago de " + getDatosUsuariosLocalStorag().cedula;
-                                    Emailcontec({ movil: ["593980441911", "593991916096"], text: texto }).then(sal => {
-                                        logWithCallback(sal)
-                                    }).catch(err => {
-                                        logWithCallback(err)
+                                    // Emailcontec({ movil: ["593980441911", "593991916096"], text: texto }).then(sal => {
+                                    //     logWithCallback(sal)
+                                    // }).catch(err => {
+                                    //     logWithCallback(err)
 
-                                    })
+                                    // })
                                 }
                                 setEstado(true)
                                 usedispatch(setToastes({ show: true, message: 'Hubo un error', color: 'bg-danger', estado: 'Hubo un error, intente mas tarde' }))
@@ -229,7 +229,7 @@ const ModalConfima = (prop) => {
                             setTimeout(function () {
                                 if (!clienteInfo()) {
                                     let texto = "Nuevo registro de pago de " + getDatosUsuariosLocalStorag().cedula;
-                                    Emailcontec({ movil: ["593980441911", "593991916096"], text: texto }).then(opu => logWithCallback(opu))
+                                   // Emailcontec({ movil: ["593980441911", "593991916096"], text: texto }).then(opu => logWithCallback(opu))
                                 }
                                 //  window.location.reload()
                             }, 1000)
