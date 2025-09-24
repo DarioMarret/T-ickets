@@ -247,7 +247,6 @@ const SuscritoridView = () => {
   }
   const eliminarregistro = (parms) => {
     if (useradmin.perfil == 'suscriptores') return
-    const datos = () => Recargar()
     $.confirm({
       title: 'Desea eliminar Este registro de compra ',
       content: '',
@@ -260,10 +259,10 @@ const SuscritoridView = () => {
           action: function () {
             eliminarRegistro({ "id": parms.id }).then(ouput => {
               if (!ouput.success) {
-                datos()
+                window.location.reload();
                 return $.alert("" + ouput.message)
               }
-              datos()
+              window.location.reload();
 
               $.alert("Registro Eliminado correctamente")
 
@@ -293,13 +292,13 @@ const SuscritoridView = () => {
           action: function () {
             EliminarTickteTercero({ "id": parm.id }).then(ouput => {
               if (!ouput.success) {
-                Recargar()
+                window.location.reload();
                 return $.alert("" + ouput.message)
               }
-              Recargar()
+              window.location.reload();
               $.alert("Registro eliminado correctamente")
               setTimeout(function () {
-                Recargar()
+                window.location.reload();
               }, 1000)
             }).catch(error => {
               $.alert("hubo un error no se pudo eliminar este registro")
@@ -369,10 +368,10 @@ const SuscritoridView = () => {
             eliminartiket([parm]).then(ouput => {
 
               if (ouput.success) {
-                Recargar()
+                window.location.reload();
               }
               if (!ouput.success) {
-                Recargar()
+                window.location.reload();
                 return $.alert("" + ouput.message)
               }
 
@@ -430,7 +429,7 @@ const SuscritoridView = () => {
           action: function () {
             Liverarasiento(parms).then(ouput => {
               if (ouput.success) {
-                Recargar()
+                window.location.reload();
                 return
               }
               $.alert("No se registro")

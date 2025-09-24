@@ -65,7 +65,7 @@ export async function getCedula(params) {
                 "id": 0,
                 "cedula": data.datos.nui,
                 "direccion": data.datos.lugarNacimiento,
-                "discapacidad": String(data.datos.condicionCedulado).includes("DISCAPACIDAD")?"Si":"No",
+                "discapacidad": String(data.datos.condicionCedulado).includes("DISCAPA")?"Si":"No",
                 "edad": "",
                 "email": "null",
                 "genero": "Masculino",
