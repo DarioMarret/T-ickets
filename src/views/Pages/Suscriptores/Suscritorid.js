@@ -94,7 +94,7 @@ const SuscritoridView = () => {
         const cancelar = await CancelarSubscriptor(suscritoid.email)
         const { success } = cancelar
         if (success) {
-          Recargar()
+          window.location.reload()
         }
       }
     } catch (error) {
@@ -107,7 +107,7 @@ const SuscritoridView = () => {
       const deleter = await EliminarSuscrito(id)
       const { success } = deleter
       if (success) {
-        Recargar()
+        history(-1)
       }
     } catch (error) {
       logWithCallback(error)
