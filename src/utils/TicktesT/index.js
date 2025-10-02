@@ -12,7 +12,7 @@ export const EliminarTickteTercero = async(parms)=>{
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/delt_link_external_tickets",{...parms,...parmspro},{
             headers:{
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data

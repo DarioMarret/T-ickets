@@ -82,7 +82,7 @@ export default function ModalTickte({ shows, datosperson, setshows }) {
             let { data } = await axios.post("https://api.t-ickets.com/ms_login/set_link_external_tickets", parms, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                    'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
                 }
             }

@@ -23,7 +23,7 @@ export const api = axios.create({
     baseURL: "https://api.t-ickets.com/ms_login/api/v1/",
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+        'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
     }
 })

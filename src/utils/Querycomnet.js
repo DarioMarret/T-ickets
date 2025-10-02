@@ -73,7 +73,7 @@ export const PagoRapido = async (transaccion) => {
         const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/registraCompra ", datos, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         }
         )
@@ -146,7 +146,7 @@ export const AprobarTiket = async () => {
         let { data } = await axios.get("https://api.t-ickets.com/ms_login/ticket_admin", {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -160,7 +160,7 @@ export const ConsolidaBoleto = async () => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/boletos", {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -175,7 +175,7 @@ export const Contactos_Boletos = async (parmas) => {
         }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -197,7 +197,7 @@ export const cederboleto = async (ceder) => {
         }, {
             header: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
     } catch (error) {
@@ -209,7 +209,7 @@ export const GeneraToken = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/generar_token", parms, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -232,7 +232,7 @@ export const ValidarToken = async (parms) => {
             , {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                    'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                 }
             })
         return data
@@ -245,7 +245,7 @@ export const generaTiketspdf = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ticket/api/v1/ticket_pdf_link", parms, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -258,7 +258,7 @@ export const generaTiketsBingo = async (parms, id) => {
         let { data } = await axios.put("https://api.t-ickets.com/mikroti/Boleteria/bingo/" + id, parms, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -272,7 +272,7 @@ export const CambiarPagoTC = async (parms) => {
         let { data } = await axios.post("", parms, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data

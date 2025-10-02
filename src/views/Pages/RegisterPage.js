@@ -70,7 +70,7 @@ function RegisterPage() {
     const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listas_suscriptor", {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+        'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
       }
     })
     if (!data.success) return

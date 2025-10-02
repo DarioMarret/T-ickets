@@ -15,7 +15,7 @@ export const generarBoleto = async (parms) => {
         let { data } = await axios.post(Host + "/api/v1/generaboleto" + parmspro, {
             Headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -35,7 +35,7 @@ export const generaPDF = async (parms) => {
         let { data } = await axios.post(Host + "/api/v1/ticket_pdf", {...parms,...parmspro}, {
             Headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -56,7 +56,7 @@ export const enviarEmail = async (parm) => {
         let { data } = await axios.post(Host + "/api/v1/ticket_pdf", parmspro, {
             Headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -78,7 +78,7 @@ export const CanjearBoletoRegistro = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/canje_boleto", parmspro, {
             Headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data

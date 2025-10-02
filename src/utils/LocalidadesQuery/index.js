@@ -14,7 +14,7 @@ export const GuardarLocalidad = async (parms) => {
         const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/guardar_localidad", {...parms,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
 
             }
@@ -30,7 +30,7 @@ export const ListarLocalidad = async (parms) => {
         const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_localidades/" + parms, {
             header: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data

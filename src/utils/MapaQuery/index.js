@@ -6,7 +6,7 @@ export const cargarMapa = async () => {
         const { data } = await axios.get("https://api.t-ickets.com/ms_login/listarMapas", {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -26,7 +26,7 @@ export const guardarMapar = async (parm) => {
         const { data } = await axios.post("https://api.t-ickets.com/ms_login/guardarMapa", {...parm,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -45,7 +45,7 @@ export const editarMapa = async (parm) => {
         const { data } = await axios.put("https://api.t-ickets.com/ms_login/actualizarMapa", {...parm,...parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -65,7 +65,7 @@ export const eliminaMapa = async (parm) => {
         const { data } = await axios.delete("https://api.t-ickets.com/ms_login/eliminarMapa/" + parm,parmspro, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data

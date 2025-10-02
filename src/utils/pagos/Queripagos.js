@@ -17,7 +17,7 @@ export const registraPagos = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/registraPagos ", parmspro, {
             Headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         if (parms.forma_pago = "Deposito") {
@@ -38,7 +38,7 @@ export const listarRegistropanel = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros", parms, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -55,7 +55,7 @@ export const ListarRegistropaneFecha = async (ini, fin) => {
             , {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                    'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                 }
             })
         return data
@@ -68,7 +68,7 @@ export const listarRegistropanelComprobar = async (parms, estado) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros?estado=" + estado, parms, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -81,7 +81,7 @@ export const listarRegistroEvento = async (ini, fin, parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login//api/v1/listarRegistros?init=" + ini + "&size=" + fin + "", parms, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -101,7 +101,7 @@ export const generarBoleto = async () => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/generarBoleto", parmspro, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -122,7 +122,7 @@ export const eliminarRegistro = async (parms) => {
             { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -145,7 +145,7 @@ export const eliminartiket = async (parms) => {
             }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -166,7 +166,7 @@ export const cambiarMetodo = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/cambiandoMetodoPago", parmspro, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -194,7 +194,7 @@ export const ConsolidarReporte = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/ConsolidarCompra", parmspro, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -214,7 +214,7 @@ export const Consiliarcompra = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/Conciliacion", { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -233,7 +233,7 @@ export const ActualizaConciliacion = async (parms, id) => {
         let { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/Conciliacion/" + id, { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -248,7 +248,7 @@ export const ComentarioRegistro = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/Comentario_registro", parms, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -268,7 +268,7 @@ export const updateRegistro = async (parms, id) => {
         let { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/Comentario_registro/" + id, { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -286,7 +286,7 @@ export const BuscarTransacion = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/BuscarNumeroTransaccion", { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data;
@@ -306,7 +306,7 @@ export const ActualizarnumeroTransacion = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/ActualizarNumeroTransaccion", parmspro, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -321,7 +321,7 @@ export const EstadosCosolidados = async () => {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                    'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                 }
             }
         )
@@ -337,7 +337,7 @@ export const infoTarjeta = async (parms) => {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                    'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                 }
             })
         return data

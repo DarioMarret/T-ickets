@@ -28,7 +28,7 @@ export const sawerg = createApi({
             query: parms => ({
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                    'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                 },
                 url: '/listarRegistros',
                 method: 'POST',

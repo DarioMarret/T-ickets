@@ -569,7 +569,7 @@ function ventasView() {
         AxioBoleteria.post("/api/v1/crear_suscriptor", data, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         }).then(sal => {
             //buscarcliente()

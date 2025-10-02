@@ -38,7 +38,7 @@ export const CrearSuscritor = async (parms) => {
     const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_suscriptor", parms, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     })
     return data
@@ -57,7 +57,7 @@ export const ListarConcierto = async (parms) => {
     const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/filtrar_concierto", parms, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })
@@ -67,7 +67,7 @@ export const localidaandespacio = async (parms, id) => {
     const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_localidades_id_espacio/" + parms + "/" + id, {
         header: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })
@@ -77,7 +77,7 @@ export const Listarlocalidadid = async (parms) => {
     const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_localidades_id_espacio/" + parms, {
         header: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })
@@ -94,7 +94,7 @@ export const AptualizarLocalida = async (parms) => {
     const { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/listar_localidades", {...parms,...parmspro}, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })
@@ -112,7 +112,7 @@ export const EliminarLocalidad = async (parms) => {
     const { data } = await axios.delete("https://api.t-ickets.com/ms_login/api/v1/eliminar_localidad/" + parms ,{...parmspro}, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })
@@ -123,7 +123,7 @@ export const FiltrarConcierto = async (parms) => {
     const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/filtrar_concierto", { "nombreconcert": parms }, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })
@@ -140,7 +140,7 @@ export const GuardarEvento = async (parms) => {
     const { data } = await axios.post("https://api.t-ickets.com/ms_login/crearevento",{...parms,...parmspro}, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     })
     return data;
@@ -149,7 +149,7 @@ export const ListarEventos = async (parms) => {
     const { data } = await axios.get("https://api.t-ickets.com/ms_login/listareventos/ACTIVO/", {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     })
     
@@ -159,7 +159,7 @@ export const EventosActivos = async (parms) => {
     const { data } = await axios.get("https://api.t-ickets.com/ms_login/listareventos/" + parms +"/", {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     })
     return data;
@@ -168,7 +168,7 @@ export const listarpreciolocalidad = async (parms) => {
     const { data } = await axios.get("https://api.t-ickets.com/ms_login/ListaPreciosLocalidades/" + parms, {
         header: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })
@@ -184,7 +184,7 @@ export const EliminarEvento = async (parm) => {
     const { data } = await axios.delete("https://api.t-ickets.com/ms_login/eliminarevento/" + {...parm,...parmspro}, {
         header: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     })
     return data
@@ -199,7 +199,7 @@ export const EliminareventoLocalidad = async (parm, id) => {
     const { data } = await axios.delete("https://api.t-ickets.com/ms_login/eliminarevento/" + parm + "/" + id,parmspro, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     })
     return data
@@ -214,7 +214,7 @@ export const Obtenerlinkimagen = async (parm) => {
             {
                 header: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                    'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                 }
             })
         if (!data.success) return null

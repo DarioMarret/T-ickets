@@ -112,7 +112,7 @@ export default function ListaSuscritor(prop) {
                 const registro = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_suscriptor", datosend, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                        'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                     }
                 })
 

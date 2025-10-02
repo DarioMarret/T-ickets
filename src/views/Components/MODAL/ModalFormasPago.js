@@ -188,7 +188,7 @@ export default function FormasPagoMopadal() {
                             axios.post("https://api.t-ickets.com/ms_login/api/v1/auth_suscriptor", { email: String(cor).trim(), password: String(name).trim() }, {
                                 headers: {
                                     'Content-Type': 'application/json',
-                                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                                    'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                                 }
                             }).then(function (data) {
 

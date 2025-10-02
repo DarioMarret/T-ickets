@@ -12,7 +12,7 @@ export const GuardarEspacio = async (parms) => {
     const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/gusdar_espacio", {...parms,...parmspro}, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })
@@ -23,7 +23,7 @@ export const ListarEspacios = async () => {
     const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_espacios", {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })
@@ -40,7 +40,7 @@ export const EliminarEspacios = async (parms) => {
     const { data } = await axios.delete("https://api.t-ickets.com/ms_login/api/v1/eliminar_espacio/" +parms, {parmspro}, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })
@@ -56,7 +56,7 @@ export const ActualizarEspacio = async (parms) => {
     const { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/actualizar_espacio", {...parms,...parmspro}, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
         }
     })

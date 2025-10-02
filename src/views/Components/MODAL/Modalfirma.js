@@ -194,7 +194,7 @@ export default function ModalFirma() {
                 {
                     header: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                        'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                     }
                 })
             if (!data.success) {

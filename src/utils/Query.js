@@ -56,7 +56,7 @@ export const GenerarLinkPagoMedios = async () => {
         }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
      
@@ -81,7 +81,7 @@ export const GuardarDatosdelComprador = async () => {
         datos, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     }
     )
@@ -147,7 +147,7 @@ export const ReportarDepositoCompra = async (transaccion) => {
     }, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     }
     )
@@ -180,7 +180,7 @@ export const ReportarEfectivoCompra = async () => {
     }, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+            'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
         }
     }
     )

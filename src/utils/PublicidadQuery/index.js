@@ -13,7 +13,7 @@ export const agregarNoticia = async (datos) => {
         const { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_publicidad", parmspro, {
             header: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         }
         )
@@ -27,7 +27,7 @@ export const ListarNoticias = async () => {
         const { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_publicidad", {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -47,7 +47,7 @@ export const Actualizarpublicdad = async (id, parms) => {
         const { data } = await axios.put("https://api.t-ickets.com/ms_login/api/v1/actualizar_publicidad/" + id, {...parms,parmspro}, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -66,7 +66,7 @@ export const Eliminarpublici = async (parms) => {
         const { data } = await axios.delete("https://api.t-ickets.com/ms_login/api/v1/eliminar_publicidad/" + parms,parmspro, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data

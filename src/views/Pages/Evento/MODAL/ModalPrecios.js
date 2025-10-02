@@ -38,16 +38,15 @@ const PreciosViews = () => {
             return
         } else {
             actualizarPrecios(precios).then(ouput => {
-                setspiner(true)
+               
                 if(ouput.success){
-                   // window.location.reload()
-                    setspiner(false)
+                    dispatch(setModal({ nombre: "", estado: "" }))
                 }
                 else{
-                    setspiner(false)
+                    dispatch(setModal({ nombre: "", estado: "" }))
                 }
             }).catch(err => {
-                setspiner(false)
+                dispatch(setModal({ nombre: "", estado: "" }))
                 
             })
         }

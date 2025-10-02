@@ -233,7 +233,7 @@ const ResgistroView = (prop) => {
                 const registro = await axios.post("https://api.t-ickets.com/ms_login/api/v1/crear_suscriptor", datos, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                        'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                     }
                 })
                 if (registro.data.success) {

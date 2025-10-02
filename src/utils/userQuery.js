@@ -10,7 +10,7 @@ export const Listarticketporestado = async (parms) => {
         }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -34,7 +34,7 @@ export const Liverarasiento = async (parms) => {
         }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -48,7 +48,7 @@ export const logs = async () => {
         let { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/logs", {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -67,7 +67,7 @@ export const BoletosTiketsGlobal = async (parms) => {
             }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         }
         )
@@ -90,7 +90,7 @@ export const GEnerarBoletos = async (parms) => {
             parmspro, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         }
         )
@@ -129,7 +129,7 @@ export const Seleccionaruserlista = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/selecion_usuario", { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -151,7 +151,7 @@ export const actualizarDescription = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/actualisar_descripcion_evento", { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -173,7 +173,7 @@ export const actualizarPrecios = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/actualisar_precio_localidad", { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -197,7 +197,7 @@ export const Putdescriptionevent = async (parms) => {
             { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -211,7 +211,7 @@ export const listar_beneficiariosocr = async (parms) => {
             parms, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data
@@ -232,7 +232,7 @@ export const actualizar_beneficiario = async (parms) => {
         let { data } = await axios.post("https://api.t-ickets.com/ocr/api/v1/actualizar_beneficiario", { ...parms, ...parmspro }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data

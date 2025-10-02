@@ -8,7 +8,7 @@ export const Actualisardescripcionevento = async () => {
         let { data } = axios.get("https://api.t-ickets.com/ms_login/api/v1/actualisar_descripcion_evento", {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
             }
         })
@@ -22,7 +22,7 @@ export const ListarEventosFinalizados = async () => {
         const { data } = await axios.get("https://api.t-ickets.com/ms_login/listareventos/CANCELADO/", {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
             }
         })
@@ -37,21 +37,21 @@ const ListarEventosLis = async () => {
         const { data } = await axios.get("https://api.t-ickets.com/ms_login/listareventos/ACTIVO/", {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
             }
         })
         const datas = await axios.get("https://api.t-ickets.com/ms_login/listareventos/PROCESO/", {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
             }
         })
         const event = await axios.get("https://api.t-ickets.com/ms_login/listareventos/CANCELADO/", {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
 
             }
         })
@@ -67,7 +67,7 @@ const traerprecios = async (path) => {
         let { data } = await axios.get(path, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         return data.data
@@ -81,7 +81,7 @@ const TraerLocalidad = async () => {
         let { data } = await axios.get("https://api.t-ickets.com/ms_login/api/v1/listar_localidades/", {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
             }
         })
         // sessionStorage.setItem("nombrelocalidades", JSON.stringify(data.data))
