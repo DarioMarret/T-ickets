@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 //import { CrearLinkPagoPayPhone } from 'utils/Query';
 import Pagos from "../../../assets/imagen/pagosmedios.jpeg"
+let Dunas = "https://www.deuna.uanataca.ec/assets/images/deunalogo.png"
 import { GenerarLinkPagoMedios, EnviarEmail, EnviarmensajeWhastapp } from 'utils/Query';
 import { LimpiarLocalStore, Limpiarseleccion } from '../../../utils/CarritoLocalStorang';
 import { getDatosUsuariosLocalStorag } from 'utils/DatosUsuarioLocalStorag';
@@ -25,6 +26,7 @@ function ModalPago(props) {
     ReactGA.initialize(TRACKING_ID);
     const { setModalPago, modalPago, detenervelocidad, intervalo } = props
     let usedispatch = useDispatch();
+    let metodo = GetMetodo()
     const [spinerst, setSpiner] = useState("d-none")
     const [alert, setAlert] = useState(null)
     const [cargar, setCargar] = useState(false)
@@ -155,10 +157,10 @@ function ModalPago(props) {
             if (user == null) {
                 if (ouput.success) {
 
-                   logWithCallback(ouput)
-                    
+                    logWithCallback(ouput)
+
                     window.gtag('event', 'begin_checkout', {
-                        transaction_id: "T_"+ouput.idRegistro,  // ID único de la transacción
+                        transaction_id: "T_" + ouput.idRegistro,  // ID único de la transacción
                         value: ouput.valores.subtotal, // Valor total
                         tax: ouput.valores.iva,
                         affiliation: "Pagomedias", // Nombre de la tienda o sitio
@@ -190,12 +192,34 @@ function ModalPago(props) {
                             item_category: item.nombreConcierto,
                         }))
                     });
-                    usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
+                    if (metodo == "Duna") {
 
-                    setSpiner("d-none")
-                    LimpiarLocalStore()
-                    Limpiarseleccion()
-                    
+                        usedispatch(setModal({ nombre: '', estado: "" }))
+                        setSpiner("d-none")
+                        LimpiarLocalStore()
+                        Limpiarseleccion()
+                        const newWindow = window.open('', 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left=390,top=50");
+
+                        if (newWindow) {
+                            newWindow.document.write(`
+    <html>
+      <head><title>Pagos Medios</title></head>
+      <body style="margin:0;display:flex;align-items:center;justify-content:center;background:#eee;">
+        <img src="${ouput.url}" style="max-width:100%;max-height:100%;" />
+      </body>
+    </html>
+  `);
+                            newWindow.document.close();
+                        }
+                    }
+                    if (metodo != "Duna") {
+                        usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
+
+                        setSpiner("d-none")
+                        LimpiarLocalStore()
+                        Limpiarseleccion()
+                    }
+
                     //detenervelocidad()
                 }
                 else {
@@ -216,7 +240,7 @@ function ModalPago(props) {
                     Limpiarseleccion()
                     usedispatch(clearMapa())
 
-                   
+
                     detenervelocidad()
                 }
             }
@@ -239,7 +263,7 @@ function ModalPago(props) {
                 color: 'bg-primary',
                 estado: "Hubo un error de Pagomedio"
             }))
-           
+
             setSpiner("d-none")
         })
         /*const data = await GenerarLinkPagoMedios()
@@ -254,15 +278,15 @@ function ModalPago(props) {
     function CrearPyhome() {
         sessionStorage.setItem(Metodos, "Payphone")
         let user = clienteInfo()
-      
+
         setSpiner("")
         setTimeout(function () {
             PagoRapido("").then(ouput => {
-              
+
                 if (user == null) {
                     if (ouput.success) {
                         window.gtag('event', 'begin_checkout', {
-                            transaction_id: "T_"+ouput.idRegistro,  // ID único de la transacción
+                            transaction_id: "T_" + ouput.idRegistro,  // ID único de la transacción
                             value: ouput.valores.subtotal, // Valor total
                             tax: ouput.valores.iva,
                             affiliation: "Tienda Online", // Nombre de la tienda o sitio
@@ -278,11 +302,11 @@ function ModalPago(props) {
                             }))
                         });
                         usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))
-                        
+
                         setSpiner("d-none")
                         LimpiarLocalStore()
                         Limpiarseleccion()
-                       
+
                     }
                     else {
                         usedispatch(setToastes({
@@ -301,12 +325,12 @@ function ModalPago(props) {
                         LimpiarLocalStore()
                         Limpiarseleccion()
                         usedispatch(clearMapa())
-                       
+
                     }
                 }
                 else {
                     popUp(ouput.url)
-              
+
                     usedispatch(setModal({ nombre: '', estado: "" }))
                     setSpiner("d-none")
                 }
@@ -330,6 +354,14 @@ function ModalPago(props) {
 
     }
     function popUp(URL) {
+        if (metodo == "Duna") {
+            window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
+            LimpiarLocalStore()
+            Limpiarseleccion()
+            usedispatch(clearMapa())
+            detenervelocidad()
+            usedispatch(setModal({ nombre: '', estado: "" }))
+        }
         window.open(URL, 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left = 390,top = 50");
         LimpiarLocalStore()
         Limpiarseleccion()
@@ -386,7 +418,7 @@ function ModalPago(props) {
                              * https://codigomarret.online/img/whatsapp image 2022-09-18 at 15.12.28.jpeg
                              */}
                                     <img className=' image-fluid'
-                                        src={Pagos}
+                                        src={metodo == "Duna" ? "https://www.deuna.uanataca.ec/assets/images/deunalogo.png" : Pagos}
                                         width={420}
                                         alt="Pagos medios"
                                     />
@@ -414,7 +446,7 @@ function ModalPago(props) {
 
                                     padding: '5px',
                                     cursor: 'pointer'
-                                    
+
                                 }}
                                     onClick={CrearPyhome}
                                 >
@@ -455,7 +487,7 @@ function ModalPago(props) {
                              * https://codigomarret.online/img/whatsapp image 2022-09-18 at 15.12.28.jpeg
                              */}
                                     <img className=' image-fluid  '
-                                        src={Pagos}
+                                        src={metodo == "Duna" ? Dunas : Pagos}
                                         width={420}
                                         alt="Pagos medios"
                                     />

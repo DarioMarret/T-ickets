@@ -798,6 +798,9 @@ function ventasView() {
                             {<option value={"Efectivo-QR"}>
                                 Efectivo-QR
                             </option>}
+                            {<option value={"Duna"}>
+                                Duna
+                            </option>}
                             <option className=" d-none" value={"Recaidacion Terceros"}>
                                 Recaidacion Terceros
                             </option>

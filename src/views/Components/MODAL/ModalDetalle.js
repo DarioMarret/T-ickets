@@ -806,7 +806,7 @@ function ModalDetalle(props) {
                                         <i className="fa fa-credit-card "> </i>PAGAR</button> : ""
                             }
                             {
-                                clienteauth && (datosPerson.metodoPago == "Tarjeta") ?
+                                clienteauth && (datosPerson.metodoPago == "Tarjeta" || datosPerson.metodoPago == "Duna") ?
                                     <button id="pagarcuenta" className="btn btn-primary"
 
                                         onClick={() => (userauthi.login) ? abrirPago() : usedispatch(setModal({ nombre: 'loginpage', estado: "e" }))}

@@ -23,7 +23,8 @@ export default function FormasPagoMopadal() {
         Fisico: "",
         Tarjeta: "",
         Deposito: "",
-        Transferencia: ""
+        Transferencia: "",
+        Duna: ""
     })
     const userauthi = useSelector((state) => state.SuscritorSlice)
     const [check, setCheck] = useState(true)
@@ -129,7 +130,7 @@ export default function FormasPagoMopadal() {
                             if (e.success) {
                                 const cedula = await getCedula(e.data.cedula)
                                 var hoy = new Date();
-                              
+
                                 usedispatch(setToastes({
                                     show: true,
                                     message: "Usuario encontrado " + e.data.nombreCompleto,
@@ -188,7 +189,7 @@ export default function FormasPagoMopadal() {
                             axios.post("https://api.t-ickets.com/ms_login/api/v1/auth_suscriptor", { email: String(cor).trim(), password: String(name).trim() }, {
                                 headers: {
                                     'Content-Type': 'application/json',
-                                    'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
+                                    'Authorization': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='
                                 }
                             }).then(function (data) {
 
@@ -215,7 +216,7 @@ export default function FormasPagoMopadal() {
                                             method: "email",
                                             'userId': data.data.data.cedula
                                         })
-                                        
+
                                         sessionStorage.setItem(DatosUsuariocliente, JSON.stringify(client))
                                         sessionStorage.setItem(DatosUsuarioLocalStorang, JSON.stringify(client))
                                         usedispatch(addususcritor({ ...client }))
@@ -282,7 +283,8 @@ export default function FormasPagoMopadal() {
             Efectivo: metodoPago == "Efectivo" ? "Efectivo" : "",
             Tarjeta: metodoPago == "Tarjeta" ? "Tarjeta" : "",
             Deposito: metodoPago == "Deposito" ? "Deposito" : "",
-            Transferencia: metodoPago == "Transferencia" ? "Transferencia" : ""
+            Transferencia: metodoPago == "Transferencia" ? "Transferencia" : "",
+            Duna: metodoPago == "Duna" ? "Duna" : ""
         }) : handelMetodopago({ name: 'Tarjeta' }, "Tarjeta"), setCheck(false)
         ListaPrecioset(GetValores())
         setListarCarritoDetalle(getVerTienda())
@@ -313,6 +315,15 @@ export default function FormasPagoMopadal() {
                                     name="Tarjeta" id="Tarjeta" />
                                 <label className="form-check-label" htmlFor="Tarjeta">
                                     Tarjeta-credito
+                                </label>
+                            </div>
+                            <div className="form-check">
+                                <input className="v-check form-check-input" type="radio"
+                                    checked={checked.Duna == "Duna" ? true : false}
+                                    onChange={(e) => handelMetodopago({ name: e.target.name }, "Duna")}
+                                    name="Duna" id="Duna" />
+                                <label className="form-check-label" htmlFor="Duna">
+                                    Duna / Pichicha
                                 </label>
                             </div>
                             {clienteInfo() == null && fechava ?
@@ -381,6 +392,7 @@ export default function FormasPagoMopadal() {
                                     </label>
                                 </div>
                                 : ""}
+                           
 
 
                         </div>

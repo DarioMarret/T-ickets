@@ -237,9 +237,10 @@ const ModalReportar_pago = (prop) => {
                                         >
                                             <option value={""} disabled required ></option>
                                             <option value={"Tarjeta"}>Tarjeta</option>
+                                            <option  value={"Duna"}> Duna Pichincha </option>
                                             <option value={"Deposito"}>Deposito</option>
                                             <option value={"Efectivo"}>Deposito Efectivo facilito</option>
-                                            <option value={"Transferencia"}>Transeferencia</option>
+                                            <option value={"Transferencia"}>Transferencia Guayaquil</option>
 
                                         </select> : <select className="form-select" required value={spiner}
                                             onChange={(g) => setspiner(g.target.value)}>

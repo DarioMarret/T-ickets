@@ -285,6 +285,9 @@ export function GetValores() {
 
     let tag = JSON.parse(sessionStorage.getItem(CarritoTicket));
     let forma = sessionStorage.getItem(Metodos)
+    let metodo = forma
+    let portcentaje = metodo=="Duna"?3.5:8
+    let portcentajedos = metodo == "Duna" ? 1.035 : 1.08
     let codicontry = sessionStorage.getItem("codicontry") ? sessionStorage.getItem("codicontry") : false
     let evento = JSON.parse(sessionStorage.getItem("infoevento"))
 
@@ -342,7 +345,7 @@ export function GetValores() {
         // let ivados = (eventoiva).replace("1.","0.")
         iva = parseInt(ivados) == 0 ? ((subtotal) * parseFloat(ivados)) : (subtotal) * parseFloat(evento.iva)
         total = (valor + iva + (["1RX4Q1", "D0FFSD", "TU5YMD", "OGX3DU"].some(el => el == evento.codigoEvento) ? 0.25 : 0))
-        let totav = (sessionStorage.getItem("Metodo-pago") == "Tarjeta" || sessionStorage.getItem("Metodo-pago") == "Tarjeta-Local") ? ((parseFloat(valor) + comision) + iva) * 1.08 : (parseFloat(valor) + comision) + iva
+        let totav = (sessionStorage.getItem("Metodo-pago") == "Tarjeta" || sessionStorage.getItem("Metodo-pago") == "Tarjeta-Local" || sessionStorage.getItem("Metodo-pago") == "Duna") ? ((parseFloat(valor) + comision) + iva) *  portcentajedos : (parseFloat(valor) + comision) + iva
         let precios = {
             sumcomision: parseFloat(sumcomision.toFixed(2)),
             comision_bancaria: ((total.toFixed(2) ) * 0.08).toFixed(2),//evento.codigoEvento != "VI1U84" ? (total.toFixed(2) * 0.08).toFixed(2) : 0,
@@ -352,7 +355,7 @@ export function GetValores() {
             envio: getDatosUsuariosLocalStorag() ? getDatosUsuariosLocalStorag().envio : '',
             iva: (iva).toFixed(2),
             total: parseFloat((totav).toFixed(2)), //evento.codigoEvento != "VI1U84" ? parseFloat((totav).toFixed(2))  : (parseFloat(valor) + comision) + iva,
-            desctc: (parseFloat(valor) * 8 / 100 + parseFloat(valor)) / parseFloat(iva).toFixed(2),
+            desctc: (parseFloat(valor) * portcentaje / 100 + parseFloat(valor)) / parseFloat(iva).toFixed(2),
             desc: (parseFloat(subtotal) + parseFloat(comision)) / parseFloat(evento.iva),
             tallv: parseFloat((totav).toFixed(2)),
             tallva: parseFloat(sumcomision.toFixed(2))

@@ -119,12 +119,12 @@ function Iframe(props) {
                     </button>
                 </Modal.Header>
                 <Modal.Body
-                    className='d-flex  justify-content-center'
+                    className='d-flex   justify-content-center'
                     style={{ minHeight: '700px' }}>
                     <div>
 
                     </div>
-                    <iframe
+                    <iframe 
                         src={url ? url : ""}
                         title="W3Schools Free Online Web Tutorials"
                         width='100%'
@@ -132,6 +132,7 @@ function Iframe(props) {
                         style={{
                             border: 'none',
                             borderRadius: '10px',
+
                         }}
                     ></iframe>
 
