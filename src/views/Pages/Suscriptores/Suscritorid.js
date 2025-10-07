@@ -337,12 +337,12 @@ const SuscritoridView = () => {
       "codigoEvento": row.codigoEvento,
       "id_ticket_usuarios": row.id
     }).then(async ouput => {
-      let { data } = await axios.post("https://api.t-ickets.com/mikroti/Boleteria/acortador", {
-        "longURL": ouput.link.replace("flash", "api")
+      let { data } = await axios.post("https://api.t-ickets.com/mikrotiv2/api/shorten", {
+        "originalUrl": ouput.link.replace("flash", "api")
 
       })
       logWithCallback(data)
-      navigator.clipboard.writeText(data.link).then(() => { })
+      navigator.clipboard.writeText(data.shortUrl).then(() => { })
       $.alert("Link Copiado")
       dato.classList.add("d-none")
       logWithCallback(ouput)

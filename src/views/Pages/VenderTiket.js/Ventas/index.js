@@ -160,7 +160,6 @@ function ventasView() {
                             registro: 0
                         })
                         $.alert("Recuerda solicitar Correo y número Celular")
-                      //  usedispatch(setToastes({ show: true, message: "Ingresas los datos del usuario Correo - Telefono", color: 'bg-warning', estado: "No hubo ninguna coincidencia" }))
                         DatosUsuariosLocalStorag({
                             ...datos,
                             nombreCompleto: salida.name,

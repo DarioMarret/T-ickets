@@ -302,9 +302,10 @@ const IndexFlas = () => {
     }))
   }
   async function eliminaCompra(pams, e) {
-    await eliminarRegistro({ "id": pams })
+   
     setAlert(null)
     abrir(e)
+    eliminarRegistro({ "id": pams })
   }
   const abrir = async (e) => {
     sessionStorage.setItem("random", Math.random().toString(36).slice(-10))

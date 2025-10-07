@@ -127,13 +127,14 @@ const EditaruserView = (props) => {
 
   return (
     <>
-      <Modal className="nuevos"
+      <Modal
         show={editShow}
        
         onHide={() => SetModalEdit(false)}
-        style={{
-          width: "100% !important"
-        }}
+        //  className="nuevos"
+       // style={{
+        //   width: "100% !important"
+        // }}
       >
         <Modal.Header className=" py-3" >
           <h5>

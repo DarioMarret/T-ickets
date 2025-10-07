@@ -58,7 +58,6 @@ export async function getCedula(params) {
             "ruc": `${params}`,
             "usuario": "CONSULTASLRSOFTSOLUTION",
             "token": "SGFGD90890234%@DFS2354565465214234HJNFDSO4658641189"
-
         })
         if(data){
             return {

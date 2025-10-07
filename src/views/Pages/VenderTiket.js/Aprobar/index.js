@@ -78,9 +78,8 @@ export default function AprobarView() {
     }
     let [datos, stDatos] = useState(false)
     function refrescar() {
-        //stDatos(true)
         setSpiner(true)
-        ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+        ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
             if (!e.success) {
                 usedispatch(setToastes({
                     show: true,
@@ -171,12 +170,13 @@ export default function AprobarView() {
             "cedula": ""
         }, "Comprobar").then(oputs => {
             if (!oputs.success) return
+            console.log(oputs.data.length)
             usedispatch(setComprobar({ comprobar: oputs.data }))
 
         }).catch(err => {
             logWithCallback(err)
         })
-        ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+        ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
             logWithCallback(e)
             if (!e.success) {
                 usedispatch(setToastes({
@@ -401,7 +401,7 @@ export default function AprobarView() {
                         eliminarRegistro({ "id": parms.id }).then(ouput => {
                           
                             if (!ouput.success) { return $.alert("" + ouput.message) }
-                            ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "0" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
+                            ListarRegistropaneFecha(moment(states[0].startDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).format().replace(" ", ""), "" + states[0].endDate.toLocaleDateString("en-US").replace("/", "-").replace("/", "-")).then(e => {
                               
                                 if (!e.success) {
                                     usedispatch(setToastes({

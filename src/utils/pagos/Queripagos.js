@@ -48,7 +48,7 @@ export const listarRegistropanel = async (parms) => {
 }
 export const ListarRegistropaneFecha = async (ini, fin) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros?fecha_init=" + ini + "&fecha_fin=" + fin + "",
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros?fecha_init=" + ini + "&fecha_fin=" + fin + "&init=0&size=100",
             {
                 "cedula": ""
             }
@@ -65,7 +65,7 @@ export const ListarRegistropaneFecha = async (ini, fin) => {
 }
 export const listarRegistropanelComprobar = async (parms, estado) => {
     try {
-        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros?estado=" + estado, parms, {
+        let { data } = await axios.post("https://api.t-ickets.com/ms_login/api/v1/listarRegistros?estado=" + estado +"&init=0&size=300", parms, {
             headers: {
                 'Content-Type': 'application/json',
                 'authorization-ticket': 'Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ=='

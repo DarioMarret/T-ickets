@@ -36,6 +36,7 @@ export const PagoRapido = async (transaccion) => {
             "localidad_nombre": e.localidad || e.localidaEspacio["nombre"],
             "localidad_precio": (discapacidad == 'Si' && (clienteInfo() != null)) ? parseFloat(e.localidaEspacio["precio_discapacidad"]) : parseFloat(e.valor),
             "discapacida": (discapacidad == 'Si' && (clienteInfo() != null)),
+            "pointOfSale":'',
             menor: (parseInt(e.localidaEspacio["idcolor"]) == 308),
             naipes: getDatosUsuariosLocalStorag().naipes ? (getDatosUsuariosLocalStorag().naipes == 'Si') : null,
             "comision_por_boleto": parseInt(e.cantidad) * parseFloat(e.localidaEspacio["comision_boleto"]),

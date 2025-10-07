@@ -314,18 +314,18 @@ export default function FormasPagoMopadal() {
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Tarjeta")}
                                     name="Tarjeta" id="Tarjeta" />
                                 <label className="form-check-label" htmlFor="Tarjeta">
-                                    Tarjeta-credito
+                                    Tarjeta de credito
                                 </label>
                             </div>
-                            <div className="form-check">
-                                <input className="v-check form-check-input" type="radio"
+                         <div className="form-check ">
+                                <input className="v-check form-check-input " type="radio"
                                     checked={checked.Duna == "Duna" ? true : false}
                                     onChange={(e) => handelMetodopago({ name: e.target.name }, "Duna")}
                                     name="Duna" id="Duna" />
                                 <label className="form-check-label" htmlFor="Duna">
-                                    Duna / Pichicha
+                                    Banco pichincha /Deuna
                                 </label>
-                            </div>
+                            </div> 
                             {clienteInfo() == null && fechava ?
                                 <div className="form-check d-none">
                                     <input className="form-check-input d-none" type="radio"
@@ -356,7 +356,7 @@ export default function FormasPagoMopadal() {
                                     onChange={(e) => handelMetodopago(e.target, "Efectivo")}
                                 />
                                 <label className="form-check-label" htmlFor="Efectivo">
-                                    Efectivo
+                                    Banco Guayaquil / App
                                 </label>
                             </div> : ""}
 

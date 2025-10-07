@@ -289,7 +289,7 @@ var routes = [
     layout: "/admin",
     name: "PruSvgeba",
     component: Viesvg,
-    permiso: ["admin", "", ""]
+    permiso: ["", "", ""]
   },
   {
     collapse: true,
@@ -344,14 +344,14 @@ var routes = [
       },
 
 
-      {
-        path: "/OCR",
-        layout: "/admin",
-        name: "OCR",
-        mini: "*",
-        component: OCRApiViews,
-        permiso: ["admin", "super_admin"]
-      },
+      // {
+      //   path: "/OCR",
+      //   layout: "/admin",
+      //   name: "OCR",
+      //   mini: "*",
+      //   component: OCRApiViews,
+      //   permiso: ["", ""]
+      // },
       {
         path: "/info",
         layout: "/admin",

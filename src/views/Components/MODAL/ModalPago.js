@@ -230,7 +230,7 @@ function ModalPago(props) {
                     })
                     usedispatch(setToastes({
                         show: true,
-                        message: "Lo sentimos la plataforma de Pagomedio no género el link intente más tarde",
+                        message: "Lo sentimos la plataforma no género el link  intente más tarde",
                         color: 'bg-primary',
                         estado: "Hubo un error departe de Pagomedio"
                     }))
