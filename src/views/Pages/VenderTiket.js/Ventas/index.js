@@ -427,7 +427,7 @@ function ventasView() {
 
             if (!data.success) {
                 //return
-                if (GetMetodo() == "Tarjeta") {
+                if (GetMetodo() == "Tarjeta"|| GetMetodo() == "Duna") {
                     if (datos.resgistro == 0) {
                         nuevoUser()
                     }

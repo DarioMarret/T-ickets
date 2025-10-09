@@ -1681,7 +1681,7 @@ export default function DetalleCompraView() {
                                                             <br></br>
 
                                                             {
-                                                                nombres.forma_pago == "Deposito" ?
+                                                                nombres.forma_pago != "Pendiente" ?
                                                                     nombres.clave_acceso != null ? "" : <a className=" btn btn-default btn-sm" onClick={ConsolidaBoleto}>
                                                                         <i className="fa fa-credit-card"></i> Aprobar deposito
                                                                     </a>

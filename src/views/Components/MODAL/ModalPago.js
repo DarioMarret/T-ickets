@@ -147,6 +147,9 @@ function ModalPago(props) {
             </SweetAlert>
         )
     }
+    function esMovil() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
     const hideAlert = () => {
         setAlert(null)
     }
@@ -193,24 +196,135 @@ function ModalPago(props) {
                         }))
                     });
                     if (metodo == "Duna") {
+                        if (esMovil()) {
+                            // Opción 2 (Recomendada): Abrir en una nueva pestaña (para que no pierda tu app)
+                           // window.open(ouput.url, '_blank');
+                            usedispatch(setModal({ nombre: '', estado: "" }))
+                            setSpiner("d-none")
+                            LimpiarLocalStore()
+                            Limpiarseleccion()
+                            const botonDunaHTML = `
+    <div style="text-align: center; padding: 20px;">
+        <p style="color: #333; font-size: 1.1em; margin-bottom: 25px; font-weight: 500;">
+            Continúa el pago en tu dispositivo móvil:
+        </p>
 
+        <a 
+            href="${ouput.url}" 
+            target="_blank" 
+            style="
+                display: inline-block; /* Importante para que el padding y estilos se apliquen */
+                text-decoration: none; 
+                padding: 15px 30px; /* Hace el botón grande */
+                border: 2px solid #007bff; /* Borde azul */
+                border-radius: 12px; 
+                background-color: #f0f8ff; /* Fondo muy claro */
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra para darle profundidad */
+                transition: background-color 0.3s;
+            "
+            onmouseover="this.style.backgroundColor='#e3f2fd'" /* Efecto hover */
+            onmouseout="this.style.backgroundColor='#f0f8ff'"
+            title="Abrir app de pago Duna"
+        >
+            <img 
+                src="https://www.deuna.uanataca.ec/assets/images/deunalogo.png" 
+                alt="Logo de Deuna" 
+                style="
+                    max-width: 120px; 
+                    height: auto; 
+                    display: block; 
+                    margin: 0 auto;
+                " 
+            />
+        </a>
+
+        <p style="font-size: 0.9em; color: #888; margin-top: 25px;">
+            Se abrirá en una nueva pestaña para que puedas volver fácilmente.
+        </p>
+    </div>
+`;
+
+                            // 2. Llamada a JQuery-Confirm.js para mostrar el botón
+                            $.confirm({
+                                title: 'Pagar con Duna',
+                                content: botonDunaHTML, // Inyecta el HTML con el botón
+                                type: 'blue',
+                                icon: 'fas fa-mobile-alt',
+                                closeIcon: true,
+                                animation: 'zoom',
+                                closeAnimation: 'scale',
+                                // Quitamos los botones de confirm, solo dejamos el icono de cerrar 'x'
+                                buttons: {
+                                    // Puedes dejar esto vacío o eliminarlo si quieres que solo se cierre con el icono 'x'
+                                    // Si lo dejas, solo aparecerá el botón 'Cerrar'
+                                    cerrar: {
+                                        text: 'Cerrar',
+                                        btnClass: 'btn-default',
+                                        action: function () { }
+                                    }
+                                },
+                                backgroundDismiss: true,
+                            });
+                            return
+                        }
                         usedispatch(setModal({ nombre: '', estado: "" }))
                         setSpiner("d-none")
                         LimpiarLocalStore()
                         Limpiarseleccion()
-                        const newWindow = window.open('', 'Pagos Medios', "toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=1000,height=800,left=390,top=50");
+                        const qrContentHTML = `
+    <div style="text-align: center; padding: 10px;">
+        <img 
+            src="https://www.deuna.uanataca.ec/assets/images/deunalogo.png" 
+            alt="Logo de Deuna" 
+            style="max-width: 100px; height: auto; margin-bottom: 15px;" 
+        />
+        <p style="color: #555; font-size: 1.1em; margin-bottom: 20px; font-weight: 400;">
+            Escanea para pagar al instante
+        </p>
+        <img 
+            src="${ouput.url}" 
+            alt="Código de Pago QR" 
+            style="max-width: 90%; height: auto; display: block; margin: 0 auto;" 
+        />
+    </div>
+`;
+                        setSpiner("d-none");
+                        LimpiarLocalStore();
+                        Limpiarseleccion();
+                        // 1. Limpieza inicial
+                        // Si estás en React, mantienes estas llamadas:
+                        usedispatch(setModal({ nombre: '', estado: "" }));
+                        setSpiner("d-none"); // Oculta el spinner principal
+                        LimpiarLocalStore();
+                        Limpiarseleccion();
 
-                        if (newWindow) {
-                            newWindow.document.write(`
-    <html>
-      <head><title>Pagos Medios</title></head>
-      <body style="margin:0;display:flex;align-items:center;justify-content:center;background:#eee;">
-        <img src="${ouput.url}" style="max-width:100%;max-height:100%;" />
-      </body>
-    </html>
-  `);
-                            newWindow.document.close();
-                        }
+                        // 2. Llamada a JQuery-Confirm.js para mostrar el QR
+                        $.confirm({
+                            title: 'Pago con Duna', // Título del modal
+                            content: qrContentHTML, // Inyecta el HTML del QR
+                            type: 'blue', // Color del encabezado (opcional: 'green', 'red', 'orange', etc.)
+                            icon: 'fas fa-qrcode', // Ícono (si usas Font Awesome)
+                            closeIcon: true, // Muestra el botón de cerrar (x)
+                            animation: 'zoom', // Animación de apertura (ej: 'opacity', 'zoom', 'scale')
+                            closeAnimation: 'scale', // Animación de cierre
+                            buttons: {
+                                // Solo necesitamos un botón para cerrar
+                                cerrar: {
+                                    text: 'Cerrar',
+                                    btnClass: 'btn-primary',
+                                    action: function () {
+                                        // Aquí puedes añadir lógica si necesitas hacer algo al cerrar.
+                                        // Por ahora, solo cerramos.
+                                    }
+                                }
+                            },
+                            // Configuración para permitir cerrar al hacer clic fuera
+                            backgroundDismiss: true,
+                            // Oculta el título del botón si solo quieres que se vea el icono 'x'
+                            // Esto es opcional y depende del estilo de tu aplicación:
+                            // closeIconClass: 'fas fa-times' 
+                        });
+
                     }
                     if (metodo != "Duna") {
                         usedispatch(setModal({ nombre: 'pago', estado: ouput.url }))

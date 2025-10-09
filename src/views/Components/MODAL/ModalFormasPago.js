@@ -338,7 +338,7 @@ export default function FormasPagoMopadal() {
                                 </div> : ""}
 
                             {
-                                clienteInfo() == null && fechava ? <div className="form-check ">
+                                clienteInfo() == null && fechava ? <div className="form-check d-none ">
                                     <input className="form-check-input" type="radio"
                                         checked={checked.Deposito == "Deposito" ? true : false}
                                         onChange={(e) => handelMetodopago({ name: e.target.name }, "Deposito")}

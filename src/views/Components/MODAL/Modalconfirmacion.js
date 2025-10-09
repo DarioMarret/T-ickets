@@ -178,7 +178,7 @@ const ModalConfima = (prop) => {
                         logWithCallback(salid)
                         setEstado(false)
                     })
-                }, 1000)
+                }, 4000)
 
             } catch (error) {
                 setEstado(false)

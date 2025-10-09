@@ -6,6 +6,7 @@ import { Modal, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { formatearNumero } from "utils/Emails";
 import { EnviaWhast } from "utils/Emails";
+import { Emailcontec } from "utils/Emails/index";
 import { Obtenerlinkimagen } from "utils/Querypanel";
 import { Axiosmikroserdos } from "utils/index";
 import { logWithCallback } from "utilsstile.js/style";
@@ -110,12 +111,16 @@ export default function WhastappWiev() {
         let informa = {
             "sessionName": "48_tickets_v20980008000",
             "numero": [formatearNumero(Celular)],
+            "email": datos.estado["email"],
             "mensaje": {
                 "type": "text",
-                "text": info.mensaje
+                "text": info.mensaje,
+               
             }
         }
         setDisanbe(true)
+        Emailcontec()
+        
         Axiosmikroserdos.post("api/canal_chat", informa).then(sal => {
             if (sal) {
                 usedispacth(setToastes({ show: true, message: 'Mensaje enviado con éxito', color: 'bg-success', estado: 'Datos vacios' }))

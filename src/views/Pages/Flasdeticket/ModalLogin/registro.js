@@ -149,7 +149,7 @@ const ResgistroView = (prop) => {
         const form = new FormData(e.target)
         let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
         const { name, email, password, movil, direccion, cedula, passwordcomfirma, emailconfirma } = Object.fromEntries(form.entries())
-
+        let movils = document.getElementById("movil")
         sessionStorage.setItem(Whatsappnumero, movil)
         let datos = {
             nombreCompleto: name.trim(),
@@ -164,6 +164,7 @@ const ResgistroView = (prop) => {
 
         DatosUsuariosLocalStorag({ ...info, whatsapp: movil })
 
+       
         if (!Object.values(Object.fromEntries(form.entries())).some(e => e)) {
             usedispatch(setToastes({
                 show: true,
@@ -173,7 +174,7 @@ const ResgistroView = (prop) => {
             }))
             return
         }
-        if (parseInt(movil.substring(0, 1)) == 0) {
+        if (parseInt(movil.substring(0, 1)) && String(movils.value.trim()).length < 11) {
             usedispatch(setToastes({
                 show: true,
                 message: "Ejemplo 999 999 999 ",

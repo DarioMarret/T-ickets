@@ -21,6 +21,10 @@ export const PagoRapido = async (transaccion) => {
     let idop = clienteInfo() != null ? 0 : getDatosUsuariosLocalStorag().id
     let metodo = GetMetodo() == "Transferencia" ? "Deposito" : GetMetodo()
     //let tienda= getVerTienda();
+    let canal = "Web";
+    if (esMovil()) {
+        canal = "bot"; // Cambia el valor a "bot" si es móvil
+    }
     let cantidadTotal = getVerTienda().reduce((total, concierto) => {
         return total + concierto.cantidad;
     }, 0);
@@ -52,7 +56,8 @@ export const PagoRapido = async (transaccion) => {
         "nombreCompleto": getDatosUsuariosLocalStorag().nombreCompleto ?? '',
         "email": getDatosUsuariosLocalStorag().email ?? '',
         "forma_pago": metodo,
-        "canal":"Web",
+        "canal": canal,
+        "pointOfSale": clienteInfo() != null ? clienteInfo().pointOfSale : '',
         "concierto": [...concierto],
         "valores": {
             "total": parseFloat(GetValores().total),
@@ -91,6 +96,9 @@ export const PagoRapido = async (transaccion) => {
 
     }
 
+}
+function esMovil() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 const EnviarDetalleCompra = async (email, parms) => {
     let concieto = sessionStorage.getItem("consierto")

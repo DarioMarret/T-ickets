@@ -209,8 +209,8 @@ export const EliminareventoLocalidad = async (parm, id) => {
 export const Obtenerlinkimagen = async (parm) => {
     try {
         const fordata = new FormData();
-        fordata.append('image', parm);
-        const { data } = await axios.post("https://api.t-ickets.com/store/api/img/", fordata,
+        fordata.append('file', parm);
+        const { data } = await axios.post("https://codigomarret.online/upload/api/img", fordata,
             {
                 header: {
                     'Content-Type': 'application/json',
@@ -218,7 +218,7 @@ export const Obtenerlinkimagen = async (parm) => {
                 }
             })
         if (!data.success) return null
-        return data.link
+        return data.url
 
     } catch (error) {
         return null
@@ -230,7 +230,7 @@ export const Iamegn = (parm) => {
     myHeaders.append("Authorization", "Basic Ym9sZXRlcmlhOmJvbGV0ZXJpYQ==");
 
     var formdata = new FormData();
-    formdata.append("image", fileInput.files);
+    formdata.append("file", fileInput.files);
 
     var requestOptions = {
         method: 'POST',
@@ -239,7 +239,7 @@ export const Iamegn = (parm) => {
         redirect: 'follow'
     };
 
-    fetch("https://api.t-ickets.com/store/api/img/", requestOptions)
+    fetch("https://codigomarret.online/upload/api/img", requestOptions)
         .then(response => response.text())
         .then(result => logWithCallback(result))
         .catch(error => logWithCallback( error));

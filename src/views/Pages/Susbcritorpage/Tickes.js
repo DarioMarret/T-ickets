@@ -245,7 +245,7 @@ function Example() {
                             <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
                             <div className=" btn-group  " >
-                                {item.estado == "Pagado" && item.canje != "CANJEADO" ?
+                                {(item.estado == "Pagado" || item.estado =="Comprobar")&& item.canje != "CANJEADO" ?
                                     <Tooltip className="" title="Ver Ticket" placement="top">
                                         <a className="btn btn-default-su btn-sm text-danger" onClick={() => generaPDF(item)}>
                                             <i className="fa fa-download  "></i>
