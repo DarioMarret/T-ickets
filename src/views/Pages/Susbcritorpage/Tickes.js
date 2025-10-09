@@ -79,36 +79,41 @@ function Example() {
     }
 
     function generaPDF(row) {
-        setSpiner("")
-        generaTiketspdf({
-            "cedula": row.cedula,
-            "codigoEvento": row.codigoEvento,
-            "id_ticket_usuarios": row.id
-        }).then(ouput => {
-            if (ouput.success) {
-                window.open(ouput.link.replace("flash", "api"), "_blank");
-                setSpiner("d-none")
+        setSpiner("");
 
+        // 🔹 Abrir una nueva pestaña vacía inmediatamente al hacer clic
+        const newWindow = window.open('', '_blank');
+
+        generaTiketspdf({
+            cedula: row.cedula,
+            codigoEvento: row.codigoEvento,
+            id_ticket_usuarios: row.id
+        }).then(output => {
+            if (output.success) {
+                // 🔹 Actualiza la pestaña con el link real cuando ya tengas el PDF
+                newWindow.location.href = output.link.replace("flash", "api");
             } else {
+                newWindow.close(); // cerrar si hubo error
                 usedispatch(setToastes({
                     show: true,
-                    message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
+                    message: "No te preocupes, tu boleto ya está comprado. El PDF se generará pronto.",
                     color: 'bg-primary',
-                    estado: "Hubo un error intenta mas tarder"
-                }))
-                setSpiner("d-none")
+                    estado: "Hubo un error, intenta más tarde"
+                }));
             }
-
-        }).catch(eror => {
-            setSpiner("d-none")
+            setSpiner("d-none");
+        }).catch(error => {
+            newWindow.close();
+            setSpiner("d-none");
             usedispatch(setToastes({
                 show: true,
-                message: "No te preocupes tu boleto ya está comprado los pdf se generará pronto, paciencia gracias",
+                message: "No te preocupes, tu boleto ya está comprado. El PDF se generará pronto.",
                 color: 'bg-primary',
-                estado: "Hubo un error intenta mas tarder"
-            }))
-        })
+                estado: "Hubo un error, intenta más tarde"
+            }));
+        });
     }
+
     function generaBingo(row) {
         setSpiner("")
         generaTiketspdf({
@@ -245,9 +250,9 @@ function Example() {
                             <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
                             <div className=" btn-group  " >
-                                {(item.estado == "Pagado" || item.estado =="Comprobar")&& item.canje != "CANJEADO" ?
+                                {(item.estado == "Pagado" || item.estado =="Comprobar") ?
                                     <Tooltip className="" title="Ver Ticket" placement="top">
-                                        <a className="btn btn-default-su btn-sm text-danger" onClick={() => generaPDF(item)}>
+                                        <a id={item.id} className="generara btn btn-default-su btn-sm text-danger "  onClick={() => generaPDF(item)}>
                                             <i className="fa fa-download  "></i>
                                         </a>
                                     </Tooltip> :

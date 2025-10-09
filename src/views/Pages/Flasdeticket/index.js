@@ -302,14 +302,14 @@ const IndexFlas = () => {
     }))
   }
   async function eliminaCompra(pams, e) {
-   
+
     setAlert(null)
     abrir(e)
     eliminarRegistro({ "id": pams })
   }
   const abrir = async (e) => {
     sessionStorage.setItem("random", Math.random().toString(36).slice(-10))
-    setspinervi("")
+    //setspinervi("")
     LimpiarLocalStore()
     usedispatch(borrarseleccion({ vacio: [] }))
     sessionStorage.setItem(listaasiento, JSON.stringify([]))
@@ -324,7 +324,7 @@ const IndexFlas = () => {
     })
 
     if (!userauthi.login) {
-      Abrirelevento(e)
+      usedispatch(setModal({ nombre: 'loginpage', estado: null }))
       return
     }
     setspinervi("")
@@ -766,10 +766,7 @@ const IndexFlas = () => {
 
     userauthi.login ? abrir({
       ...info,
-    }) :
-      abrir({
-        ...info,
-      })
+    }) : usedispatch(setModal({ nombre: 'loginpage', estado: null }))
 
     ReactGA.event({
       category: "" + info.nombreConcierto,

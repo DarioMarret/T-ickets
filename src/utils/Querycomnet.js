@@ -57,7 +57,7 @@ export const PagoRapido = async (transaccion) => {
         "email": getDatosUsuariosLocalStorag().email ?? '',
         "forma_pago": metodo,
         "canal": canal,
-        "pointOfSale": clienteInfo() != null ? clienteInfo().pointOfSale : '',
+        "pointOfSale":'',
         "concierto": [...concierto],
         "valores": {
             "total": parseFloat(GetValores().total),
