@@ -89,6 +89,7 @@ function Example() {
             <p style="margin: 0;"><strong>Cédula:</strong> ${datos.cedula}</p>
             <p style="margin: 0;"><strong>Concierto:</strong> ${datos.concierto}</p>
             <p style="margin: 0 0 15px 0;"><strong>Localidad:</strong> ${datos.localidad}</p>
+               <p style="margin: 0 0 15px 0;"><strong>consecutivo:</strong> ${datos.id}</p>
 
             <div id="qrContainer" style="display: flex; justify-content: center; margin-top: 10px;"></div>
 
