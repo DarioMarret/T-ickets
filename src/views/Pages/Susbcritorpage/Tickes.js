@@ -50,7 +50,7 @@ function Example() {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    
+
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
 
@@ -78,7 +78,84 @@ function Example() {
         };
     }
 
-    function generaPDF(row) {
+    function generaPDF(datos) {
+        
+
+        // HTML base del contenido (sin el QR aún)
+        const contentHTML = `
+            <div id="boletoContainer" style="text-align: center; padding: 10px; background: white; border-radius: 10px;">
+           
+            <h4 style="margin-bottom: 10px;">Detalles del Boleto</h4>
+            <p style="margin: 0;"><strong>Cédula:</strong> ${datos.cedula}</p>
+            <p style="margin: 0;"><strong>Concierto:</strong> ${datos.concierto}</p>
+            <p style="margin: 0 0 15px 0;"><strong>Localidad:</strong> ${datos.localidad}</p>
+
+            <div id="qrContainer" style="display: flex; justify-content: center; margin-top: 10px;"></div>
+
+            <p style="color: #555; font-size: 0.9em; margin-top: 10px;">
+                QR de boleto
+            </p>
+        </div>
+    `;
+
+        $.confirm({
+            title: 'Boleto Generado',
+            content: contentHTML,
+            type: 'green',
+            icon: 'fas fa-ticket-alt',
+            animation: 'zoom',
+            closeAnimation: 'scale',
+            buttons: {
+                confirm: {
+                    text:"Captura",
+                    action: function () {
+                        capturarBoleto();
+                        return false; // evita cerrar el modal
+                    }
+                },
+                cerrar: {
+                    text: 'Cerrar',
+                    btnClass: 'btn-primary'
+                }
+            },
+            onContentReady: function () {
+                // Generar el QR cuando el modal ya está visible
+                new QRCode(document.getElementById("qrContainer"), {
+                    text: datos.pdf, // el string del campo pdf
+                    width: 150,
+                    height: 150
+                });
+            },
+            backgroundDismiss: true
+        });
+      
+    }
+
+    function capturarBoleto() {
+        const elemento = document.getElementById("boletoContainer");
+        html2canvas(elemento, { scale: 2 }).then(canvas => {
+            canvas.toBlob(blob => {
+                const file = new File([blob], "boleto.png", { type: "image/png" });
+
+                // 🔸 Opción 1: Si el navegador soporta Web Share API (móviles)
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        title: "Mi Boleto",
+                        text: "Aquí tienes tu boleto con QR 🎫",
+                        files: [file],
+                    }).catch(err => console.log("Cancelado o error:", err));
+                }
+                // 🔸 Opción 2: Descargar en navegadores normales
+                else {
+                    const link = document.createElement("a");
+                    link.href = canvas.toDataURL("image/png");
+                    link.download = "boleto.png";
+                    link.click();
+                }
+            });
+        });
+    }
+    function mostrarDetalleQR(row) {
         setSpiner("");
 
         // 🔹 Abrir una nueva pestaña vacía inmediatamente al hacer clic
@@ -202,6 +279,7 @@ function Example() {
         return (
             <thead className="">
                 <tr className="border ">
+                    <th className="text-center"> Descargar</th>
                     <th  >Concierto</th>
                     <th className="text-xs text-center"  >Boleto</th>
 
@@ -209,7 +287,7 @@ function Example() {
 
                     <th className="text-xs text-center">Fecha</th>
                     <th className="text-xs text-center">Estado</th>
-                    <th className="text-center"> Aciones</th>
+                   
 
                 </tr>
             </thead>
@@ -241,18 +319,11 @@ function Example() {
 
                 return (
                     <tr key={index}>
-
-                        <td className="text-xs ">{item.concierto}</td>
-                        <td className="text-xs text-center ">#{item.asientos["silla"] == null ? item.id_localidades_items : item.asientos["silla"]}</td>
-                        <td className="text-xs text-center">{item.localidad}</td>
-                        <td className="text-xs text-center">{item.fechaCreacion}</td>
-                        <td className="text-xs text-center">
-                            <span className={color[item.estado]}>  {item.estado} </span></td>
                         <td className="text-center ">
                             <div className=" btn-group  " >
-                                {(item.estado == "Pagado" || item.estado =="Comprobar") ?
+                                {(item.estado == "Pagado" || item.estado == "Comprobar") ?
                                     <Tooltip className="" title="Ver Ticket" placement="top">
-                                        <a id={item.id} className="generara btn btn-default-su btn-sm text-danger "  onClick={() => generaPDF(item)}>
+                                        <a id={item.id} className="generara btn btn-default-su btn-sm text-danger " onClick={() => generaPDF(item)}>
                                             <i className="fa fa-download  "></i>
                                         </a>
                                     </Tooltip> :
@@ -294,6 +365,13 @@ function Example() {
                             </div>
 
                         </td>
+                        <td className="text-xs ">{item.concierto}</td>
+                        <td className="text-xs text-center ">#{item.asientos["silla"] == null ? item.id_localidades_items : item.asientos["silla"]}</td>
+                        <td className="text-xs text-center">{item.localidad}</td>
+                        <td className="text-xs text-center">{item.fechaCreacion}</td>
+                        <td className="text-xs text-center">
+                            <span className={color[item.estado]}>  {item.estado} </span></td>
+                     
 
                     </tr>
                 )
@@ -347,7 +425,7 @@ function Example() {
     }
 
     function Pagar() {
-        let valor = Object.keys(rowSelection).length > 0 ? tiketslist.find(e => e.codigoEvento == Object.keys(rowSelection)[0]).detalle : ''        
+        let valor = Object.keys(rowSelection).length > 0 ? tiketslist.find(e => e.codigoEvento == Object.keys(rowSelection)[0]).detalle : ''
     }
     const Listarfaci = async (parms) => {
         try {
@@ -388,7 +466,7 @@ function Example() {
                 setTicket([...ouput.data])
             }
         }).catch(err => {
-          logWithCallback(err)
+            logWithCallback(err)
         })
     }, [])
     function suma(item) {
@@ -410,14 +488,24 @@ function Example() {
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example"
                 >
+
+                    <Tab className="" label="Tickets "{...a11yProps(0)} />
+                    <Tab className="d-none" label="Tickets" {...a11yProps(2)} />
                     <Tab label="Reportar Compras" {...a11yProps(1)} />
-                    <Tab className="d-none" label="Tickets" {...a11yProps(0)} />
-                    <Tab className="" label="Tickets "{...a11yProps(2)} />
                     <Tab className="" label="Otras compras  "{...a11yProps(3)} />
 
                 </Tabs>
 
                 <div className=" container-fluid py-2 px-0 ">
+                    <TabPanel value={value} index={0} >
+
+                        <TablasViwe
+                            number={5}
+                            thead={thead}
+                            showDatos={showDatos}
+                            Titel={"nuevo"}
+                        />
+                    </TabPanel>
                     <TabPanel value={value} index={1} >
 
                         <MaterialReactTable
@@ -448,7 +536,7 @@ function Example() {
                                             <Delete />
                                         </IconButton>
                                     </Tooltip>
-                                    {(row.original.estado == "Pagado"||row.estado_pago=="Anulado") && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
+                                    {(row.original.estado == "Pagado" || row.estado_pago == "Anulado") && row.original.pdf != null && row.original.cedido == "NO" ? <Tooltip title="Ceder ticket" placement="top-start">
                                         <IconButton
                                             color='success'
 
@@ -501,21 +589,13 @@ function Example() {
                             </div>
                         </div>
                     </TabPanel>
-                    <TabPanel value={value} index={0} >
+                    <TabPanel value={value} index={2} >
                         <ListaderegistroView
                             cedula={getDatosUsuariosLocalStorag().cedula}
                         />
 
                     </TabPanel>
-                    <TabPanel value={value} index={2} >
 
-                        <TablasViwe
-                            number={5}
-                            thead={thead}
-                            showDatos={showDatos}
-                            Titel={"nuevo"}
-                        />
-                    </TabPanel>
                     <TabPanel value={value} index={3}>
                         <TablasViwe
                             number={4}

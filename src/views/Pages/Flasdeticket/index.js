@@ -836,7 +836,7 @@ const IndexFlas = () => {
       />
       {modal.nombre == "formasPago" ? <FormasPagoMopadal /> : ""}
       {/* header */}
-      {publicidad != undefined && publicidad.length > 0 ?
+      {publicidad != undefined && publicidad.length > 0 && seleccion !== "Tickets" ?
         <div className="container-fluid   px-0" style={{
           minHeight: '300px'
         }}>
@@ -999,7 +999,7 @@ const IndexFlas = () => {
           </Swiper>
 
         </div> :
-        <div className="container-fluid  p-0">
+        seleccion !== "Tickets" ? <div className="container-fluid  p-0">
           <div className="col-12 mx-auto bg-header-boleteria" style={{ height: '300px', backgroundImage: `url(${header})` }}>
             <div className="container w-100 h-100 px-0">
               <div className="container btn-group-vertical  h-100 text-center px-0">
@@ -1011,7 +1011,7 @@ const IndexFlas = () => {
               </div>
             </div>
           </div>
-        </div>}
+        </div> : ""}
       {/* eventos */}
       {seleccion == "" ?
         <div className="container-fluid ">

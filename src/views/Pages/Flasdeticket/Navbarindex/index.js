@@ -69,7 +69,7 @@ export default function NavbarView({ ...props }) {
                                     <a className="nav-link text-white" href="#">Tickets</a>
                                 </li> : ""
                             }
-                            <li className="nav-item">
+                            <li className="nav-item d-none">
                                 <a className="nav-link active" aria-current="page" href="#nuevoseventos" onClick={() => props.SetSeleccion("")}>Eventos</a>
                             </li>
                             {userauthi.login ?

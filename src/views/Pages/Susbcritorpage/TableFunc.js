@@ -28,6 +28,8 @@ export default function TableWiev(props) {
 
                 responsive: true,
                 columns: [
+                    { "data": "action", "title": "acciones", "className": "col-12" },
+                    { "data": "id", "visible": false, },
                     { "data": "username", "title": "Username", },
                     { "data": "email", "title": "Email", },
                     { "data": "fecha_creacion", "title": "Registro", },
@@ -35,11 +37,10 @@ export default function TableWiev(props) {
                     { "data": "name", "title": "Nombre", },
                     { "data": "perfil", "title": "Perfil", },
                     { "data": "password", "visible": false, },
-                    { "data": "action", "title": "acciones", "className": "col-12" }
                 ],
                 "columnDefs": [
                     { responsivePriority: 1, targets: 0 },
-                    { responsivePriority: 2, targets: 4 }
+                    { responsivePriority: 2, targets: 2 }
                 ],
                 destroy: true,
             }

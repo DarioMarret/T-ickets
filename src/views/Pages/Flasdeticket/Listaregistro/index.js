@@ -158,15 +158,6 @@ export default function ListaderegistroView(props) {
                                     </Tooltip> :
                                     ""
                                 }
-                                {/*((row.original.id_espacio_localida==null)||(row.original.id_espacio_localida==0))?
-                                <Tooltip 
-                                title=""
-                                >
-
-                                </Tooltip>
-                                :""
-
-                                */}
                                 {row.original.estado_pago != "Expirado" && row.original.estado_pago != "Pagado" && row.original.forma_pago == "Tarjeta" || row.original.forma_pago == "Payphone" ?
                                     row.original.link_pago != null ?
                                         <a className=" btn btn-default btn-sm"
